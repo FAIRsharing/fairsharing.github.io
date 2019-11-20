@@ -7,6 +7,7 @@
             <li><router-link to="/databases">Databases</router-link></li>
             <li><router-link to="/policies">Policies</router-link></li>
             <li><router-link to="/collections">Collections</router-link></li>
+            <li><router-link to="/new">Add/Claim</router-link></li>
             <li><router-link to="/summary-statistics">Stats</router-link></li>
             <li><router-link to="/accounts/login">Login/Register</router-link></li>
         </ul>

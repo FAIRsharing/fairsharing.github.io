@@ -18,7 +18,6 @@
         components: {
             OutputTable
         }
-
     }
 </script>
 

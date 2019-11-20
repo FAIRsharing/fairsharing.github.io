@@ -12,6 +12,7 @@
 
   export default {
     name: 'app',
+    title: 'Home',
     components: {
       NavbarTop,
       FooterBar

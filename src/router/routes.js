@@ -13,6 +13,14 @@ import NewStandard from '../components/CreateRecord/NewStandard'
 import NewDatabase from '../components/CreateRecord/NewDatabase'
 import NewPolicy from '../components/CreateRecord/NewPolicy'
 import NewCollection from '../components/CreateRecord/NewCollection'
+import Community from '../components/Static/Community/Community'
+import Stakeholders from '../components/Static/Stakeholders/Stakeholders'
+import Timeline from '../components/Static/Timeline/Timeline'
+import License from '../components/Static/License/License'
+import Terms from '../components/Static/TermOfUse/TermsOfUse'
+import Educational from '../components/Static/Educational/Educational'
+import Privacy from '../components/Static/Privacy/Privacy'
+
 
 let routes = [
     {
@@ -53,22 +61,22 @@ let routes = [
         component: New,
     },
     {
-        name: 'New standard',
+        name: 'New_standard',
         path: '/new/standard',
         component: NewStandard,
     },
     {
-        name: 'New database',
+        name: 'New_database',
         path: '/new/database',
         component: NewDatabase,
     },
     {
-        name: 'New policy',
+        name: 'New_policy',
         path: '/new/policy',
         component: NewPolicy,
     },
     {
-        name: 'New collection',
+        name: 'New_collection',
         path: '/new/collection',
         component: NewCollection,
     },
@@ -82,7 +90,37 @@ let routes = [
     {
         name: 'Community',
         path: '/community',
-        component: Statistics,
+        component: Community,
+    },
+    {
+        name: 'Stakeholders',
+        path: '/stakeholders',
+        component: Stakeholders,
+    },
+    {
+        name: 'Timeline',
+        path: '/timeline',
+        component: Timeline,
+    },
+    {
+        name: 'License',
+        path: '/license',
+        component: License,
+    },
+    {
+        name: 'Terms_of_use',
+        path: '/terms',
+        component: Terms,
+    },
+    {
+        name: 'Educational',
+        path: '/educational',
+        component: Educational,
+    },
+    {
+        name: 'Privacy',
+        path: '/privacy',
+        component: Privacy,
     },
 
     /*

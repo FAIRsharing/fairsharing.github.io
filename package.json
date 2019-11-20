@@ -17,6 +17,7 @@
     "@vue/cli-service": "^4.0.0",
     "vue-router": "*",
     "vue-meta": "*",
+    "vue-anchor-router-link": "*",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",

@@ -4,21 +4,33 @@
 
         <div class="linkToStatic">
             <ul>
-                <li><router-link to="/">Community</router-link></li>
-                <li><router-link to="/">Stakeholders</router-link></li>
-                <li><router-link to="/">Timeline</router-link></li>
-                <li><router-link to="/">API & License</router-link></li>
-                <li><router-link to="/">Terms of use</router-link></li>
-                <li><router-link to="/">How to cite us</router-link></li>
-                <li><router-link to="/">Privacy Policy</router-link></li>
+                <li><router-link to="/community">Community</router-link></li>
+                <li><router-link to="/stakeholders">Stakeholders</router-link></li>
+                <li><router-link to="/timeline">Timeline</router-link></li>
+                <li><router-link to="/license">API & License</router-link></li>
+                <li><router-link to="/terms">Terms of use</router-link></li>
+
+                <li>
+                    <anchor-router-link :to="{name: 'Educational', hash: '#faq10-1'}"
+                                        :scrollOptions='{container: "body"}'>
+                        How to cite us
+                    </anchor-router-link>
+                </li>
+
+                <li><router-link to="/privacy">Privacy Policy</router-link></li>
             </ul>
         </div>
     </nav>
 </template>
 
 <script>
+    import AnchorRouterLink from 'vue-anchor-router-link'
+
     export default {
-        name: "Footer"
+        name: "Footer",
+        components: {
+            AnchorRouterLink
+        }
     }
 </script>
 

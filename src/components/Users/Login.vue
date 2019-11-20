@@ -1,0 +1,19 @@
+<template>
+    <div class="login" id="loginPage">
+        <h2>The login page will be here</h2>
+
+        <div>
+            <router-link to="/accounts/signup">Register</router-link>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "Login"
+    }
+</script>
+
+<style scoped>
+
+</style>

@@ -1,6 +1,5 @@
 <template>
     <nav class="footer navbar navbar-expand-lg navbar-dark navbar-transparent">
-        This will be the footer
 
         <div class="linkToStatic">
             <ul>
@@ -41,4 +40,13 @@
         border-top:1px solid #ccc;
         width: 100%;
     }
+    ul {
+        list-style: none;
+        padding:0;
+        margin-left:20px;
+    }
+     ul li {
+         text-align: left;
+     }
+
 </style>

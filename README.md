@@ -15,10 +15,12 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
+### Test with Karma
 ```
-npm run lint
+npm run test
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Source code located under
+```
+src/
+```

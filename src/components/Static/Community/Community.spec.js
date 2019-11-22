@@ -1,5 +1,5 @@
-import Vue from '../node_modules/vue'
-import Community from '../src/components/Static/Community/Community.vue'
+import Vue from 'vue'
+import Community from './Community.vue'
 
 describe('MyComponent', () => {
     // Inspecter l'instance au montage du composant

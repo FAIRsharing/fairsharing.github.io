@@ -5,18 +5,18 @@ module.exports = function(config) {
         basePath: '.',
         frameworks: ['jasmine'],
 
+        // list of files / patterns to load in the browser
         files: [
-            {
-                pattern: './src/**/*.spec.js',
-            },
+            'src/**/*spec.js',
+
         ],
 
         webpack: webpackConfig,
-        reporters: ['spec', 'coverage'],
+        reporters: ['progress', 'coverage'],
         browsers: ['ChromeHeadless'],
         preprocessors: {
-            'src/**/*spec.js': ['webpack', 'sourcemap'],
-            'src/**/*.js': ['coverage']
+            'src/**/*spec.js': ['webpack'],
+            'src/**/*.js': ['coverage', 'webpack']
         },
 
         plugins: [
@@ -31,16 +31,12 @@ module.exports = function(config) {
         client: {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
-        coverageIstanbulReporter: {
-            dir: './coverage/report',
-            reports: ['html', 'lcov', 'text-summary'],
-            fixWebpackSourcePaths: true
-        },
+
         coverageReporter: {
             dir : 'coverage/',
             reporters: [
-                { type: 'html', subdir: 'report-html' },
-                { type: 'lcov', subdir: 'report-lcov' }
+                { type: 'lcovonly', subdir: 'report-lcov' },
+                { type: 'text', file : 'coverage.txt'}
             ]
         },
 

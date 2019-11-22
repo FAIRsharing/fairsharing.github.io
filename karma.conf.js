@@ -13,7 +13,7 @@ module.exports = function(config) {
         ],
 
         webpack: webpackConfig,
-        reporters: ['progress'],
+        reporters: ['progress','coverage', 'coveralls'],
         browsers: ['ChromeHeadless'],
         preprocessors: {
             'src/**/*spec.js': ['webpack'],
@@ -26,18 +26,13 @@ module.exports = function(config) {
             require('karma-coverage'),
             require('karma-spec-reporter'),
             require('karma-chrome-launcher'),
-            require('karma-chai')
+            require('karma-coveralls')
         ],
 
-        client: {
-            clearContext: false // leave Jasmine Spec Runner output visible in browser
-        },
-
-        coverageIstanbulReporter: {
-            dir: require('path').join(__dirname, './coverage/'),
-            reports: ['html', 'text-summary'],
-            fixWebpackSourcePaths: true
-        },
+        coverageReporter: {
+            type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
+            dir: 'coverage/'
+        }
     })
 };
 

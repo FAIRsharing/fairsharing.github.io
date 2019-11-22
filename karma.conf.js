@@ -25,7 +25,6 @@ module.exports = function(config) {
             require('karma-jasmine'),
             require('karma-spec-reporter'),
             require('karma-chrome-launcher'),
-            require('karma-coverage-istanbul-reporter'),
             require('karma-coverage')
         ],
 

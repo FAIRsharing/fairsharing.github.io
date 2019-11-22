@@ -2,11 +2,12 @@ let webpackConfig = require('./webpack.config.js');
 
 module.exports = function(config) {
     config.set({
+        basePath: '.',
         frameworks: ['jasmine', 'chai'],
 
         files: [
             {
-                pattern: './tests/*.spec.js',
+                pattern: './src/**/*.spec.js',
                 type: 'module'
             }
         ],
@@ -15,8 +16,7 @@ module.exports = function(config) {
         reporters: ['progress'],
         browsers: ['ChromeHeadless'],
         preprocessors: {
-            './tests/*spec.js': ['webpack'],
-            './src/**/*.js': ['webpack'],
+            'src/**/*spec.js': ['webpack'],
         },
 
         plugins: [

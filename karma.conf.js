@@ -13,7 +13,7 @@ module.exports = function(config) {
 
         webpack: webpackConfig,
         reporters: ['progress'],
-        browsers: ['Chrome'],
+        browsers: ['ChromeHeadless'],
         preprocessors: {
             './tests/*spec.js': ['webpack'],
             './src/**/*.js': ['webpack'],

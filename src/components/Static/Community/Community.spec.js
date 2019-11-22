@@ -1,10 +1,10 @@
-import Vue from 'vue'
+import { mount } from '@vue/test-utils'
 import Community from './Community.vue'
 
-describe('MyComponent', () => {
+describe('CommunityComponent', () => {
     // Inspecter l'instance au montage du composant
-    it('affecte correctement les messages à la création', () => {
-        const vm = new Vue(Community).$mount();
-        expect(123).toBe(123)
+    it('has correct name', () => {
+        const wrapper = mount(Community);
+        expect(wrapper.name()).toBe('Community');
     })
 });

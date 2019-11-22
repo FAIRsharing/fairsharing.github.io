@@ -16,3 +16,10 @@ jobs:
       run: npm install
     - name: Run npm unit tests
       run: npm run unit
+    - name: Show tree
+      run: ls coverage/report-lcov/
+    - name: Update coverage to coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: './coverage/report-lcov/lcov.info'

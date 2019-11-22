@@ -56,9 +56,7 @@
     "tslint": "~5.15.0",
     "typescript": "~3.5.3",
     "webpack": "^4.41.2",
-    "karma-coveralls": "*",
-    "karma-coverage-istanbul-reporter": "*",
-    "karma-jasmine-html-reporter": "*"
+    "karma-coveralls": "*"
   },
   "eslintConfig": {
     "root": true,

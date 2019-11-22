@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/FAIRsharing/fairsharing.github.io/workflows/blank/badge.svg)](https://github.com/FAIRsharing/fairsharing.github.io/actions)
+[![Actions Status](https://github.com/FAIRsharing/fairsharing.github.io/workflows/CI/badge.svg)](https://github.com/FAIRsharing/fairsharing.github.io/actions)
 
 # fairsharing
 

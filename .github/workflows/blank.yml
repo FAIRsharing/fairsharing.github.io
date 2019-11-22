@@ -16,6 +16,8 @@ jobs:
       run: npm install
     - name: Run npm unit tests
       run: npm run unit
+    - name: Show tree
+      run: ls
     - name: Update coverage to coveralls
       uses: coverallsapp/github-action@master
       with:

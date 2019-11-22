@@ -26,7 +26,8 @@ module.exports = function(config) {
             require('karma-coverage'),
             require('karma-spec-reporter'),
             require('karma-chrome-launcher'),
-            require('karma-coveralls')
+            require('karma-coveralls'),
+            require('karma-chai')
         ],
 
         coverageReporter: {

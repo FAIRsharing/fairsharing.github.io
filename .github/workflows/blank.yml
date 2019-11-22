@@ -17,6 +17,6 @@ jobs:
     - name: Run npm unit tests
       run: npm run unit
     - name: Update coverage to coveralls
-          uses: coverallsapp/github-action@master
-          with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}

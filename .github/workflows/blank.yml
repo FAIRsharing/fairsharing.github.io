@@ -9,5 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Install Dependencies
+      run: npm install
     - name: Run npm unit tests
-      run:  npm test
+      run: npm run build

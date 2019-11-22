@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "unit": "karma start --single-run",
+    "unit": "cross-env BABEL_ENV=test karma start --single-run",
     "test": "karma start"
   },
   "dependencies": {
@@ -56,7 +56,10 @@
     "tslint": "~5.15.0",
     "typescript": "~3.5.3",
     "webpack": "^4.41.2",
-    "karma-coveralls": "*"
+    "karma-coveralls": "*",
+    "babel-plugin-istanbul": "*",
+    "cross-env": "*",
+    "istanbul-instrumenter-loader": "*"
   },
   "eslintConfig": {
     "root": true,

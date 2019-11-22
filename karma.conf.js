@@ -12,8 +12,8 @@ module.exports = function(config) {
         ],
 
         webpack: webpackConfig,
-        reporters: ['spec'],
-        browsers: ['Chrome'],
+        reporters: ['progress'],
+        browsers: ['ChromeHeadless'],
         preprocessors: {
             './tests/*spec.js': ['webpack'],
             './src/**/*.js': ['webpack'],
@@ -27,7 +27,17 @@ module.exports = function(config) {
             require('karma-spec-reporter'),
             require('karma-chrome-launcher'),
             require('karma-chai')
-        ]
+        ],
+
+        client: {
+            clearContext: false // leave Jasmine Spec Runner output visible in browser
+        },
+
+        coverageIstanbulReporter: {
+            dir: require('path').join(__dirname, './coverage/'),
+            reports: ['html', 'text-summary'],
+            fixWebpackSourcePaths: true
+        },
     })
 };
 

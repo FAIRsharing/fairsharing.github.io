@@ -10,13 +10,18 @@
         name: "ABA",
         id: 'ABA',
         computed: {
-          currentRoute: function(){
-              return this.$route.params['id']
-          }
+            currentRoute: function () {
+                return this.$route.params['id']
+            },
+        },
+        methods: {
+            getTitle: function(){
+                return 'FAIRsharing | ' + this.currentRoute
+            }
         },
         metaInfo() {
             return {
-                title: 'FAIRsharing | ' + this.currentRoute
+                title: this.title()
             }
         }
     }

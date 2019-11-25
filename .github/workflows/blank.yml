@@ -15,7 +15,7 @@ jobs:
     - name: Install Dependencies
       run: npm install
     - name: Run npm unit tests
-      run: npm run unit
+      run: npm run test:unit
     - name: Show tree
       run: ls coverage/report-lcov/
     - name: Update coverage to coveralls

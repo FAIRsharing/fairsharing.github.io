@@ -1,14 +1,14 @@
 <template>
-    <h2>This will be the community page</h2>
+    <h2>{{title}}</h2>
 </template>
 
 <script>
     export default {
         name: "Community",
+        title: 'This will be the community page',
         methods: {
-            greet: function (event) {
-                alert('Hello ' + this.name + '!');
-                alert(event.target.tagName)
+            greet: function () {
+                return 0
             }
         }
     }

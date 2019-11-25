@@ -7,7 +7,7 @@
 
 <script>
     export default {
-        name: "Standard",
+        name: "ABA",
         id: 'ABA',
         computed: {
           currentRoute: function(){
@@ -16,7 +16,7 @@
         },
         metaInfo() {
             return {
-                title: 'FAIRsharing | ' + this.currentRoute,
+                title: 'FAIRsharing | ' + this.currentRoute
             }
         }
     }

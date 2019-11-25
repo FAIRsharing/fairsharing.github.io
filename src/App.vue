@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <navbar-top></navbar-top>
+    {{currentRoute}}
     <router-view></router-view>
     <footer-bar></footer-bar>
   </div>
@@ -17,6 +18,7 @@
       NavbarTop,
       FooterBar
     }
+
   }
 </script>
 

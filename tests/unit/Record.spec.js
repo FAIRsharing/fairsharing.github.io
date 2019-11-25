@@ -17,7 +17,8 @@ describe('Record.vue', function() {
             mocks: {$route}
         });
     });
-    const title = '120';
+    const path = '120';
+    const title = 'FAIRsharing | ' + path;
 
 
     it('can be instantiated', () => {
@@ -26,7 +27,8 @@ describe('Record.vue', function() {
     });
 
     it('has a currentRoute computed property', () => {
-        expect(wrapper.vm.currentRoute).toMatch(title);
+        expect(wrapper.vm.currentRoute).toMatch(path);
+        expect(wrapper.vm.getTitle()).toBe(title);
     });
 
 

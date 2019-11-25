@@ -4,7 +4,13 @@
 
 <script>
     export default {
-        name: "Community"
+        name: "Community",
+        methods: {
+            greet: function (event) {
+                alert('Hello ' + this.name + '!');
+                alert(event.target.tagName)
+            }
+        }
     }
 </script>
 

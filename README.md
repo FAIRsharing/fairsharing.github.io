@@ -1,5 +1,5 @@
 [![Actions Status](https://github.com/FAIRsharing/fairsharing.github.io/workflows/CI/badge.svg)](https://github.com/FAIRsharing/fairsharing.github.io/actions)
-[![Coverage Status](https://coveralls.io/repos/github/FAIRsharing/fairsharing.github.io/badge.svg?branch=coveralls)](https://coveralls.io/github/FAIRsharing/fairsharing.github.io?branch=coveralls)
+[![Coverage Status](https://coveralls.io/repos/github/FAIRsharing/fairsharing.github.io/badge.svg?branch=master)](https://coveralls.io/github/FAIRsharing/fairsharing.github.io?branch=master)
 
 # fairsharing
 

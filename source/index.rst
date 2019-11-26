@@ -10,7 +10,7 @@ Welcome to Fairsharing Documentation!
    :titlesonly:
    :numbered:
 
-   ./components/app
+   ./components/App
    ./components/Community
    ./components/Educational
    ./components/Footer

@@ -24,14 +24,18 @@
 </template>
 
 <script>
-    /*
-    * This will need to rely on the the output of another component that handles the http requests.
-    * SearchOutputTable should build the table that can be reused.
-    * */
-
+    // This component produces the output table based on the received data.
     export default {
         name: "SearchOutputTable",
-        props: ['input_data']
+        props: {
+            // The processed data coming from the API
+            input_data: {
+                type: Object,
+                default: function(){
+                    return{}
+                }
+            }
+        }
     }
 </script>
 

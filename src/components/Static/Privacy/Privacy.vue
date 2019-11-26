@@ -3,6 +3,8 @@
 </template>
 
 <script>
+    // @vuese
+    // This component handles the privacy policy page
     export default {
         name: "Privacy"
     }

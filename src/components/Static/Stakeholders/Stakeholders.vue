@@ -3,6 +3,9 @@
 </template>
 
 <script>
+    // @vuese
+    // This component handles the stakeholders page
+
     export default {
         name: "Stakeholders"
     }

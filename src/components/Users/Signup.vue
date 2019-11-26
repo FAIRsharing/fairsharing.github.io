@@ -5,6 +5,8 @@
 </template>
 
 <script>
+    // @vuese
+    // This component handles the sign-up/register page
     export default {
         name: "Signup"
     }

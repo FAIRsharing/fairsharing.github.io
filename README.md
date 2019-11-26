@@ -4,27 +4,19 @@
 
 # fairsharing
 
-## Project setup
-```
-npm install
-```
-
 ### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Test with vue-cli & coverage
 ```
-npm run build
-```
-
-### Test with Karma
-```
-npm run test
+npm run test:unit
 ```
 
-### Source code located under
+### Generate the documentation (require python 3.x):
 ```
-src/
+npm run doc
+pip install requirement-dex.txt
+sphinx-build -b html source/ doc/
 ```

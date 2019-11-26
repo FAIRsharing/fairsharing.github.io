@@ -5,6 +5,7 @@ This component gets the request, sends it to a service, the data from it and sen
 ## Methods
 
 <!-- @vuese:Records:methods:start -->
+
 |Method|Description|Parameters|
 |---|---|---|
 |is_request_valid|Used to check if the request is valid|The argument is a request data body|
@@ -15,6 +16,7 @@ This component gets the request, sends it to a service, the data from it and sen
 ## Computed
 
 <!-- @vuese:Records:computed:start -->
+
 |Computed|Type|Description|From Store|
 |---|---|---|---|
 |currentPath|-|Gets the current path of the page to detect Standards, Databases, Polices or Collections|No|

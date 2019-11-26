@@ -2,7 +2,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/FAIRsharing/fairsharing.github.io/badge.svg?branch=master)](https://coveralls.io/github/FAIRsharing/fairsharing.github.io?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/fairsharinggithubio/badge/?version=master)](https://fairsharinggithubio.readthedocs.io/en/master/?badge=master)
 
-# fairsharing
+# FAIRsharing.org
+
+Welcome to the new FAIRsharing.org website.
 
 ### Compiles and hot-reloads for development
 ```
@@ -17,6 +19,6 @@ npm run test:unit
 ### Generate the documentation (require python 3.x):
 ```
 npm run doc
-pip install requirement-dex.txt
+pip install requirement-dev.txt
 sphinx-build -b html source/ doc/
 ```

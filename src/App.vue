@@ -11,8 +11,10 @@
   import NavbarTop from './components/Navigation/NavbarTop'
   import FooterBar from './components/Navigation/Footer'
 
+  // @vuese
+  // Entry point of the app; handles the route-view and the main display
   export default {
-    name: 'app',
+    name: 'App',
     title: 'Home',
     components: {
       NavbarTop,

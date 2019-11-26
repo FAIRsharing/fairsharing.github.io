@@ -9,7 +9,7 @@ const router = new VueRouter();
 
 describe('App.vue', () => {
     it('can be instantiated', () => {
-        const title = 'app';
+        const title = 'App';
         const wrapper = shallowMount(App, {
             localVue,
             router

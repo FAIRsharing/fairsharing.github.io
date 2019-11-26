@@ -29,7 +29,7 @@
         // set the meta-data of the page
         metaInfo() {
             return {
-                title: this.title()
+                title: this.getTitle()
             }
         }
     }

@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import Records from '@/components/Search/Records.vue'
+import Records from './Records.vue'
 
 const $route = {
     path: '/records'

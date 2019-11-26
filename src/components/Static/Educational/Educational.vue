@@ -10,6 +10,8 @@
 </template>
 
 <script>
+    // @vuese
+    // This component handles the educational page
     export default {
         name: "Educational"
     }

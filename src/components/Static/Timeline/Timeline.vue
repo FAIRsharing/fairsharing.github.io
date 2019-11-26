@@ -3,6 +3,8 @@
 </template>
 
 <script>
+    // @vuese
+    // This component handles the timeline page
     export default {
         name: "Timeline"
     }

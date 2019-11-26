@@ -10,5 +10,5 @@ Welcome to Fairsharing Documentation!
    :titlesonly:
    :numbered:
 
-   ./components/ABA.md
+   ./components/ABA
    ./components/app

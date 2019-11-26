@@ -1,5 +1,6 @@
-import { shallowMount } from '@vue/test-utils'
+import {createLocalVue, shallowMount} from '@vue/test-utils'
 import Record from './Record.vue'
+import VueMeta from 'vue-meta'
 
 const $route = {
     path: '/',
@@ -8,13 +9,17 @@ const $route = {
     }
 };
 
+let localVue = createLocalVue();
+localVue.use(VueMeta);
+
 describe('Record.vue', function() {
 
     // Set up the wrapper
     let wrapper;
     beforeEach(() => {
         wrapper = shallowMount(Record, {
-            mocks: {$route}
+            mocks: {$route},
+            localVue
         });
     });
     const path = '120';
@@ -29,6 +34,10 @@ describe('Record.vue', function() {
     it('has a currentRoute computed property', () => {
         expect(wrapper.vm.currentRoute).toMatch(path);
         expect(wrapper.vm.getTitle()).toBe(title);
+    });
+
+    it('has it meta title dynamically set', () => {
+        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(title)
     });
 
 

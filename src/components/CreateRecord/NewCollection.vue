@@ -3,6 +3,8 @@
 </template>
 
 <script>
+    // @vuese
+    // Component to handle the create new collection page
     export default {
         name: "NewCollection"
     }

@@ -3,6 +3,8 @@
 </template>
 
 <script>
+    // @vuese
+    // This component handles the license/api page
     export default {
         name: "License"
     }

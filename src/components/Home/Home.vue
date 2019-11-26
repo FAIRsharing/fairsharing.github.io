@@ -5,6 +5,8 @@
 </template>
 
 <script>
+    // @vuese
+    // Component to handle the front page (landing page)
     export default {
         name: "Home"
     }

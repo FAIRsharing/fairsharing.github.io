@@ -22,7 +22,7 @@ describe('Record.vue', function() {
 
 
     it('can be instantiated', () => {
-        expect(wrapper.name()).toMatch('ABA');
+        expect(wrapper.name()).toMatch('Record');
         expect(wrapper.attributes('id')).toMatch('ABA');
     });
 

@@ -5,5 +5,6 @@ module.exports = {
     collectCoverageFrom: [
         'src/**/*.{js,vue}',
         '!src/main.js',
-    ]
+    ],
+    testMatch: ["**/**.spec.js", "**/**/**.spec.js"]
 };

@@ -13,3 +13,4 @@ This component produces the output table based on the received data.
 <!-- @vuese:SearchOutputTable:props:end -->
 
 
+[Find me at src/components/Search/SearchOutputTable.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/master/src/components/Search/SearchOutputTable.vue)

@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit --coverage",
     "lint": "vue-cli-service lint",
-    "doc": "vuese gen --outDir source &&  node source/documentation_postprocess.js"
+    "doc": "vuese gen --outDir source &&  node src/documentation/process_doc.js"
   },
   "dependencies": {
     "core-js": "^3.3.2",
@@ -36,6 +36,7 @@
     "path": "*",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "sinon": "^7.5.0"
   }
 }

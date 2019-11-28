@@ -3,7 +3,7 @@ However, there are:
 * missing information we want to add
 * comments that prevent a correct sphinx build we want to post process.
 This script ensures that this is done properly.
-It is trigger via the ```npm run doc``` command
+It is trigger via the ```npm run doc``` command with an extra param to control the target link (see process_content)
  */
 
 let fs = require('fs');
@@ -12,7 +12,7 @@ const Log = _interopDefault(require('log-horizon')),
     logger = Log.create();
 
 
-function process_documentation_files(documentation_path){
+function process_documentation_files(documentation_path, branch){
 
     let source_files_path = get_source_files("src");
 
@@ -32,7 +32,7 @@ function process_documentation_files(documentation_path){
 
                 // Process the data
                 file_content = [...data].join('');
-                process_content(file_content, source_files_path, file_path).then(function(response){
+                process_content(file_content, source_files_path, file_path, branch).then(function(response){
                     fs.writeFile(file_path, response, function(err){
                         if (err) throw err;
                     });
@@ -42,14 +42,12 @@ function process_documentation_files(documentation_path){
     });
 }
 
-
-async function process_content(markdown_content, paths, path){
-    console.log(paths);
+async function process_content(markdown_content, paths, path, branch){
     let fileNameArray = path.split('/');
     let fileName = fileNameArray[fileNameArray.length -1].replace('.md', '');
     let filePath = paths[fileName];
 
-    let extraString = "[Find me at " + filePath + "](https://github.com/FAIRsharing/fairsharing.github.io/tree/master/" + filePath + ")";
+    let extraString = "[Find me at " + filePath + "](https://github.com/FAIRsharing/fairsharing.github.io/tree/" + branch  + "/" + filePath + ")";
 
     markdown_content += extraString;
 
@@ -76,7 +74,19 @@ function get_source_files(path){
 
 // If main, trigger the function
 if (require.main === module) {
-    process_documentation_files('source/components');
+    let branch;
+
+    if (process.argv[2] === undefined){
+        console.warn("No branch was provided, links will be built to point to master");
+        branch = 'master';
+    }
+    else {
+        branch = process.argv[2];
+        if (branch !== 'master') console.warn("Don't forget to switch the target branch to master and rebuild the library before deploying to master");
+
+    }
+
+    process_documentation_files('source/components', branch);
     logger.success('Documentation post processing succeeded');
 
 }

@@ -23,14 +23,14 @@ class DocumentationProcessor {
     process_documentation_files(){
         this.get_source_files(this.src_path);
         let files = fs.readdirSync(this.doc_path),
-            self = this;
+            _self = this;
         files.forEach(function(file){
-            let file_path = self.doc_path + '/' + file;
+            let file_path = _self.doc_path + '/' + file;
             let file_content = fs.readFileSync(file_path, 'utf-8');
-            self.doc_files[file] = file_path;
-            let processed_content = self.process_content(file_content, file_path);
+            _self.doc_files[file] = file_path;
+            let processed_content = _self.process_content(file_content, file_path);
             fs.writeFileSync(file_path, processed_content, 'utf-8');
-            self.content[file.replace('.md', '').replace('.js', '')] = processed_content;
+            _self.content[file.replace('.md', '').replace('.js', '')] = processed_content;
         });
     }
 
@@ -38,17 +38,17 @@ class DocumentationProcessor {
     @arg path: a string representing the directory to build the source files paths from.
     */
     get_source_files(path){
-        let files = fs.readdirSync(path + '/');
-
+        let files = fs.readdirSync(path + '/', {encoding: 'utf-8', withFileTypes: true});
         for (let fileIndex in files){
             let file = files[fileIndex];
-            if ((file.includes('.js') || file.includes('.vue'))
-                && !file.includes('.spec')){
-                let fileName = file.replace('.js', '').replace('.vue', '');
-                this.source_files[fileName] = path + '/' + file;
+            if (file.isFile() &&
+                (file.name.includes('.js') || file.name.includes('.vue')) &&
+                !file.name.includes('.spec')){
+                let fileName = file.name.replace('.js', '').replace('.vue', '');
+                this.source_files[fileName] = path + '/' + file.name;
             }
-            if (!file.includes(".")){
-                this.get_source_files(path + '/' + file)
+            if (!file.isFile()){
+                this.get_source_files(path + '/' + file.name)
             }
         }
     }

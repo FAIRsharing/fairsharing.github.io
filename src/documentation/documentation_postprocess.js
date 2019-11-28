@@ -1,8 +1,7 @@
 /* @vuese gen command generates documentation for vueJS code.
-However, there are:
-* missing information we want to add
-* comments that prevent a correct sphinx build we want to post process.
-This script ensures that this is done properly.
+This smaall script completes the @vuese for our documentation by:
+* adding a '\n' after each ':start -->' string in each .md files in /source/components
+* also adds a link at the bottom of each file that points to the corresponding file on github.
 It is trigger via the ```npm run doc``` command with an extra param to control the target link (see process_content)
  */
 let fs = require('fs');
@@ -13,18 +12,18 @@ export default class DocumentationProcessor {
         this.doc_path = doc_path;
         this.src_path = src_path;
         this.branch = branch;
-
         this.source_files = {};
         this.doc_files = {};
         this.content = {};
     }
 
+    /*
+    Main method to run the post process of the documentation.
+     */
     process_documentation_files(){
         this.get_source_files(this.src_path);
-        let files = fs.readdirSync(this.doc_path);
-
-        let self = this;
-
+        let files = fs.readdirSync(this.doc_path),
+            self = this;
         files.forEach(function(file){
             let file_path = self.doc_path + '/' + file;
             let file_content = fs.readFileSync(file_path, 'utf-8');
@@ -37,7 +36,7 @@ export default class DocumentationProcessor {
 
     /* This functions builds the dictionary of the source file path  given an input target (should be ```'src'```)
     @arg path: a string representing the directory to build the source files paths from.
-*/
+    */
     get_source_files(path){
         let files = fs.readdirSync(path + '/');
 
@@ -56,9 +55,7 @@ export default class DocumentationProcessor {
 
     /* Given a markdown input, adds the link to the source file at the bottom and a backspace after each ``:start-->``` string
     @arg Markdown_content: documentation markdown string coming out of vuese output files.
-    @arg paths: a dictionary of the source files paths
     @arg path: the path of the current documentation file
-    @arf branch: the branch to build the link on
      */
     process_content(markdown_content, path){
         let fileNameArray = path.split('/');

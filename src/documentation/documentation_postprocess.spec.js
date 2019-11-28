@@ -3,6 +3,11 @@ import DocProcessor from './documentation_postprocess.js'
 const sinon = require('sinon');
 const fs = require('fs');
 let docProcessor;
+let expected_source_files_output = {
+    "file1": "source_path/file1.vue",
+    "file2": "source_path/file2.js",
+    "file3": "source_path/directory/file3.vue"
+};
 
 describe('Documentation postprocessor ', function () {
 
@@ -44,20 +49,16 @@ describe('Documentation postprocessor ', function () {
     });
 
     it('has a get_source_files() method', () => {
-        docProcessor.get_source_files('source_path/');
-        // No test currently here, i don't know why but docProcessor.source_files return {}
+        docProcessor.get_source_files('source_path');
+        expect(JSON.stringify(docProcessor.source_files)).toBe(JSON.stringify(expected_source_files_output));
     });
 
     it('has a process_documentation_files method', () => {
         docProcessor.process_documentation_files();
-        expect(JSON.stringify(docProcessor.source_files)).toBe(JSON.stringify({
-            "file1": "source_path/file1.vue",
-            "file2": "source_path/file2.js",
-            "file3": "source_path/directory/file3.vue"
-        }));
+        expect(JSON.stringify(docProcessor.source_files)).toBe(JSON.stringify(expected_source_files_output));
     });
 
-    it('has a prprocess_content method that transforms the input string into the output string', () => {
+    it('has a process_content method that transforms the input string into the output string', () => {
         docProcessor.source_files = {
             "file1": "source_path/file1.vue"
         };

@@ -2,33 +2,50 @@ import DocProcessor from './documentation_postprocess.js'
 
 const sinon = require('sinon');
 const fs = require('fs');
-
 let docProcessor;
 
 describe('Documentation postprocessor ', function () {
 
+    beforeAll( () => {
+        // Mocking the Dirent classes (we use withFileType:true)
+        let source_content_vue_file = new fs.Dirent("file1.vue", 1);
+        let source_content_vue_file_2 = new fs.Dirent("file3.vue", 1);
+        let source_content_js_file = new fs.Dirent("file2.js", 1);
+        let source_content_dir = new fs.Dirent("directory", 2);
+
+        // Starting the stubs
+        sinon.stub(fs,'readFileSync').withArgs('file1.md').returns("This is markdown :start -->");
+        let readDirStub = sinon.stub(fs, 'readdirSync');
+        readDirStub.withArgs('doc_path').returns(["file1.md", "file2.md"]);
+        readDirStub.withArgs('source_path/').returns([
+            source_content_vue_file,
+            source_content_js_file,
+            source_content_dir
+        ]);
+        readDirStub.withArgs('source_path/directory/').returns([source_content_vue_file_2]);
+        sinon.stub(fs, 'writeFileSync').withArgs('file1.vue').returns('This is markdown :start -->\n');
+    });
 
     beforeEach(() => {
-        sinon.stub(fs,'readFileSync').withArgs('file1.md').returns("This is markdown :start -->");
-        let readStub = sinon.stub(fs, 'readdirSync');
-        readStub.withArgs('doc_path').returns(["file1.md", "file2.md"]);
-        readStub.withArgs('source_path/').returns(["file1.vue", "file2.js", "directory"]);
-        readStub.withArgs('source_path/directory/').returns(["file3.vue"]);
-        sinon.stub(fs, 'writeFileSync').withArgs('file1.vue').returns('This is markdown :start -->\n');
         docProcessor = new DocProcessor('doc_path', 'master', 'source_path');
     });
 
-    afterEach(() => {
+    afterAll(() => {
+        // Ending the stubs
         fs.writeFileSync.restore();
         fs.readFileSync.restore();
         fs.readdirSync.restore();
-
     });
 
     it('initializes correctly', () => {
         expect(docProcessor.branch).toBe('master');
         expect(docProcessor.doc_path).toBe('doc_path');
         expect(docProcessor.src_path).toBe('source_path');
+    });
+
+    it('has a get_source_files() method', () => {
+        docProcessor.get_source_files('source_path/');
+        // No test currently here, i don't know why but docProcessor.source_files return {}
     });
 
     it('has a process_documentation_files method', () => {

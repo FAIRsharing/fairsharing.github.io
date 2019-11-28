@@ -6,7 +6,7 @@ It is trigger via the ```npm run doc``` command with an extra param to control t
  */
 let fs = require('fs');
 
-export default class DocumentationProcessor {
+class DocumentationProcessor {
 
     constructor(doc_path, branch, src_path) {
         this.doc_path = doc_path;
@@ -66,5 +66,4 @@ export default class DocumentationProcessor {
     }
 }
 
-
-
+module.exports = DocumentationProcessor;

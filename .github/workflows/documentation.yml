@@ -16,3 +16,9 @@ jobs:
       run: npm install
     - name: Run the documentation
       run: npm run doc
+    - name: Display current branch
+      run: git branch
+    - name: Commit changes
+      uses: elstudio/actions-js-build/commit@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

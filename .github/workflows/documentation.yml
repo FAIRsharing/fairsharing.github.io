@@ -29,4 +29,4 @@ jobs:
         git config user.name "Terazus"
         git fetch origin ${GITHUB_REF}
         git add 'source/components/*'
-        git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin ${GITHUB_REF})
+        git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push)

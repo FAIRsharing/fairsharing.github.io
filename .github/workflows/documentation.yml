@@ -18,15 +18,7 @@ jobs:
       run: npm run doc
     - name: Display current branch
       run: git branch
-    - name: Commit to repository
+    - name: Commit changes
+      uses: elstudio/actions-js-build/commit@v2
       env:
-        GITHUB_TOKEN: ${{ secrets.github_token }}
-        COMMIT_MSG: |
-          <GITHUB-PIPELINE (automated msg): updating documentation files>
-          skip-checks: true
-      run: |
-        git config user.email "batistadominique@hotmail.com"
-        git config user.name "Terazus"
-        git fetch origin ${GITHUB_REF}
-        git add 'source/components/*'
-        git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push)
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

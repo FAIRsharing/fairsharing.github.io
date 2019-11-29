@@ -19,10 +19,6 @@ jobs:
 
     - name: Display current branch
       run: git branch
-    - name: Extract branch name
-      shell: bash
-      run: ls source/coomponents
-      id: extract_branch
 
     - name: Commit to repository
       env:

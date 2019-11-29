@@ -37,4 +37,4 @@ jobs:
         # Checkout the branch so we can push back to it
         git add 'source/components/*'
         # Only commit and push if we have changes
-        git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin master)
+        git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin ${GITHUB_REF#refs/heads/}))

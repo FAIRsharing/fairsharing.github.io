@@ -10,26 +10,10 @@ Welcome to Fairsharing Documentation!
    :titlesonly:
    :numbered:
 
-   ./components/App
-   ./components/Community
-   ./components/Educational
-   ./components/Footer
-   ./components/Home
-   ./components/License
-   ./components/Login
-   ./components/NavbarTop
-   ./components/New
-   ./components/NewCollection
-   ./components/NewDatabase
-   ./components/NewPolicy
-   ./components/NewRecordPage
-   ./components/NewStandard
-   ./components/Privacy
-   ./components/Record
-   ./components/Records
-   ./components/SearchOutputTable
-   ./components/Signup
-   ./components/Stakeholders
+   ./pages/navigationIndex
+   ./pages/searchIndex
+   ./pages/newRecordIndex
+   ./pages/staticIndex
+   ./pages/usersIndex
+   ./pages/rootIndex
    ./components/Statistics
-   ./components/TermsOfUse
-   ./components/Timeline

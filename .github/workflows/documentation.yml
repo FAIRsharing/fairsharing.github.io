@@ -29,4 +29,4 @@ jobs:
         git config user.name "Terazus"
         git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
         git add 'source/components/*'
-        git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push)
+        git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin ${GITHUB_REF})

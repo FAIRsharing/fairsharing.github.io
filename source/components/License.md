@@ -2,4 +2,4 @@
 
 This component handles the license/api page
 
-[Find me at src/components/Static/License/License.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/master/src/components/Static/License/License.vue)
+[Find me at src/pages/Static/License/License.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/master/src/pages/Static/License/License.vue)

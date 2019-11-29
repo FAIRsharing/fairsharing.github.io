@@ -1,6 +1,6 @@
 name: Doc
 
-on: [push]
+on: [pull_request]
 
 jobs:
   build:
@@ -16,3 +16,17 @@ jobs:
       run: npm install
     - name: Run the documentation
       run: npm run doc
+    - name: Display current branch
+      run: git branch
+    - name: Commit to repository
+      env:
+        GITHUB_TOKEN: ${{ secrets.github_token }}
+        COMMIT_MSG: |
+          <GITHUB-PIPELINE (automated msg): updating documentation files>
+          skip-checks: true
+      run: |
+        git config user.email "batistadominique@hotmail.com"
+        git config user.name "Terazus"
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        git add 'source/components/*'
+        git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin ${GITHUB_REF#refs/})

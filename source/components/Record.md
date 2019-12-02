@@ -25,4 +25,3 @@ Component to handle the display of single record.
 
 
 [Find me at src/pages/Search/Record.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/documentation/src/pages/Search/Record.vue)
-

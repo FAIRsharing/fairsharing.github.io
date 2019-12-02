@@ -9,9 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Install nodeJS
-      run: |
-        sudo apt install nodejs
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
     - name: Install Dependencies
       run: npm install
     - name: Run npm unit tests

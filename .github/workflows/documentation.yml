@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: checkout test
-      run: git checkout -
+      run: git checkout ${GITHUB_REF##*/}
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'

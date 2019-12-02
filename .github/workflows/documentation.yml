@@ -24,9 +24,9 @@ jobs:
       run: git add source/components/
     - name: Display git status
       run: git status
+    - name: Git commut
+      run: git commit -m "Autogenerate documentation"
     - name: Commit changes
       uses: elstudio/actions-js-build/commit@v2
-      with:
-        commitMessage: Autogenerate documentation
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

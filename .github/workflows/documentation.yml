@@ -9,26 +9,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
+    - name: Install nodeJS
+      run: |
+        sudo apt install nodejs
     - name: Install Dependencies
       run: npm install
-    - name: Run the documentation
-      run: npm run doc ${GITHUB_REF##*/}
+    - name: Run the documentation ${GITHUB_REF##*/}
+      run: npm run doc
     - name: Display current branch
-      run: echo ${GITHUB_REF##*/}
-    - name: display doc content
-      run: ls source/components/
-    - name: Git Add
-      run: git add source/components/
-    - name: Display git status
-      run: git status
-    - name: Git config email
-      run: git config --global user.email "batistadominique@hotmail.com"
-    - name: Git config username
-      run: git config --global user.name "Terazus"
-    - name: git commit
-      run: git commit -m "Autoregenerating doc"
-    - name: git push
-      run: git push origin HEAD:${GITHUB_REF##*/}
+      run: git branch
+    - name: Commit changes
+      uses: elstudio/actions-js-build/commit@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

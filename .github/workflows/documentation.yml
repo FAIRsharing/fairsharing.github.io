@@ -31,5 +31,4 @@ jobs:
         git remote set-url --push origin https://your_username:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
         git checkout ${GITHUB_REF##*/}
         git add .
-        git commit -m "${COMMIT_MSG}"
-        git diff --staged --quiet && echo "Tree clean" || git push
+        git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin master)

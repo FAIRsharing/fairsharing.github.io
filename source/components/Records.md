@@ -24,4 +24,4 @@ This component gets the request, sends it to a service, the data from it and sen
 <!-- @vuese:Records:computed:end -->
 
 
-[Find me at src/pages/Search/Records.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/newtest/src/pages/Search/Records.vue)
+[Find me at src/pages/Search/Records.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/master/src/pages/Search/Records.vue)

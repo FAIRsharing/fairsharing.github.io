@@ -26,6 +26,8 @@ jobs:
         # Hard-code user configuration
         git config user.email "batistadominique@hotmail.com"
         git config user.name "terazus"
+        git remote set-url --push origin https://your_username:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
+        git checkout ${GITHUB_REF##*/}
         git add .
         git commit -m "${COMMIT_MSG}"
         git push

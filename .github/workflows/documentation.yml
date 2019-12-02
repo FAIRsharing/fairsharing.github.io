@@ -20,6 +20,8 @@ jobs:
       run: echo ${GITHUB_REF##*/}
     - name: display doc content
       run: ls source/components/
+    - name: Git Add
+      run: git add source/components/*
     - name: Commit changes
       uses: elstudio/actions-js-build/commit@v2
       env:

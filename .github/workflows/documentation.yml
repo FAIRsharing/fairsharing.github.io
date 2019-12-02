@@ -9,13 +9,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+      with:
+        ref: ${{ github.head_ref }}
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
     - name: Install Dependencies
       run: npm install
     - name: Run the documentation
-      run: npm run doc
+      run: npm run doc ${GITHUB_REF##*/}
     - name: Commit to repository
       env:
         GITHUB_TOKEN: ${{ secrets.github_token }}

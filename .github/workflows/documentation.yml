@@ -24,9 +24,10 @@ jobs:
       run: git add source/components/
     - name: Display git status
       run: git status
-    - name: Git config
-      run: git config --global user.email "you@example.com"
-      run: git config --global user.name "Your Name"
+    - name: Git config email
+      run: git config --global user.email "batistadominique@hotmail.com"
+    - name: Git config username
+      run: git config --global user.name "Terazus"
     - name: git commit
       run: git commit -m "Autoregenerating doc"
     - name: git push

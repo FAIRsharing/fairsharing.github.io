@@ -14,4 +14,3 @@ This component produces the output table based on the received data.
 
 
 [Find me at src/pages/Search/SearchOutputTable.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/documentation/src/pages/Search/SearchOutputTable.vue)
-

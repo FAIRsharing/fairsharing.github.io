@@ -32,4 +32,4 @@ jobs:
         git checkout ${GITHUB_REF##*/}
         git add .
         git commit -m "${COMMIT_MSG}"
-        git diff --staged && git push
+        git diff --staged --quiet && echo "Tree clean" || git push

@@ -31,4 +31,4 @@ jobs:
     - name: git commit
       run: git commit -m "Autoregenerating doc"
     - name: git push
-      run: git push
+      run: git push origin HEAD:${GITHUB_REF##*/}

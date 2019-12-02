@@ -9,8 +9,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Checkout current branch (avoid detached HEAD)
-      run: git checkout ${GITHUB_REF##*/}
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'

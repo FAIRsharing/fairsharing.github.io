@@ -15,6 +15,6 @@ if (require.main === module) {
 
     }
 
-    let docProcessor = new DocProcessor("source/components", 'master', 'src');
+    let docProcessor = new DocProcessor("source/components", branch, 'src');
     docProcessor.process_documentation_files();
 }

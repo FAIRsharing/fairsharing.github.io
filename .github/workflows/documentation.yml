@@ -9,15 +9,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Install nodeJS
-      run: |
-        sudo apt install nodejs
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
     - name: Install Dependencies
       run: npm install
     - name: Run the documentation
       run: npm run doc ${GITHUB_REF##*/}
     - name: Display current branch
       run: echo ${GITHUB_REF##*/}
+    - name: display doc content
+      run: ls source/components/
     - name: Commit changes
       uses: elstudio/actions-js-build/commit@v2
       env:

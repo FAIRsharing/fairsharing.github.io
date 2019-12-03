@@ -1,11 +1,12 @@
-/* @vuese gen command generates documentation for vueJS code.
-This smaall script completes the @vuese for our documentation by:
-* adding a '\n' after each ':start -->' string in each .md files in /source/components
-* also adds a link at the bottom of each file that points to the corresponding file on github.
-It is trigger via the ```npm run doc``` command with an extra param to control the target link (see process_content)
- */
 let fs = require('fs');
 
+/**
+ *  The @vuese gen command generates documentation for vueJS code.
+ *  This small script completes the @vuese for our documentation by:
+ *  1) adding a '\n' after each ':start -->' string in each .md files in /source/components
+ *  2) also adds a link at the bottom of each file that points to the corresponding file on github.
+ *  It is trigger via the ```npm run doc``` command with an extra param to control the target link (see process_content)
+ */
 class DocumentationProcessor {
 
     constructor(doc_path, branch, src_path) {

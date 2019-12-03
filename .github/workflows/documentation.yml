@@ -15,7 +15,7 @@ jobs:
     - name: Install Dependencies
       run: npm install
     - name: Run the documentation
-      run: npm run doc ${GITHUB_REF##*/}
+      run: npm run doc:full
     - name: Commit to repository
       env:
         GITHUB_TOKEN: ${{ secrets.github_token }}
@@ -28,5 +28,5 @@ jobs:
         git config user.name "${GITHUB_ACTOR}"
         git remote set-url --push origin https://your_username:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
         git checkout ${GITHUB_REF##*/}
-        git add source/
+        git add source/html/
         git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push)

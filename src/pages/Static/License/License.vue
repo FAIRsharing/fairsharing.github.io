@@ -6,6 +6,8 @@
     /** This component handles the license page
      * @memberOf StaticPages
      * @name License
+     * @type module
+     * @instance
      */
     export default {
         name: "License"

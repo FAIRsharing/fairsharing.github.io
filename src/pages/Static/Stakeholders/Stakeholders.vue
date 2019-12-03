@@ -6,6 +6,8 @@
     /** This component handles the stakeholders page
      * @memberOf StaticPages
      * @name Stakeholders
+     * @type module
+     * @instance
      */
     export default {
         name: "Stakeholders"

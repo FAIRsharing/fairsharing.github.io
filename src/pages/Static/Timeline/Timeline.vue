@@ -6,6 +6,8 @@
     /** This component handles the timeline page
      * @memberOf StaticPages
      * @name Timeline
+     * @type module
+     * @instance
      */
     export default {
         name: "Timeline"

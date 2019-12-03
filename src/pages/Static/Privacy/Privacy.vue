@@ -5,7 +5,9 @@
 <script>
     /** This component handles the privacy page
      * @memberOf StaticPages
-     * @name Privay
+     * @name Privacy
+     * @type module
+     * @instance
      */
     export default {
         name: "Privacy"

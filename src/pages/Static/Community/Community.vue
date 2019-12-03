@@ -11,6 +11,8 @@
 /** This component handles the sign-up/register page
  * @memberOf StaticPages
  * @name Community
+ * @type module
+ * @instance
  * */
     export default {
         name: "Community",

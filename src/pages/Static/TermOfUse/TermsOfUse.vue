@@ -6,6 +6,8 @@
     /** This component handles the terms of use page
      * @memberOf StaticPages
      * @name TermsOfUse
+     * @type module
+     * @instance
      */
     export default {
         name: "TermsOfUse"

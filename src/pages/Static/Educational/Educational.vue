@@ -13,6 +13,8 @@
     /** This component handles the educational page
      * @memberOf StaticPages
      * @name Educational
+     * @type module
+     * @instance
      */
     export default {
         name: "Educational"

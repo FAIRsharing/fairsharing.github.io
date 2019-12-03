@@ -3,9 +3,8 @@
 </template>
 
 <script>
-
-    // @vuese
-    // Component to handle the create new standard page
+    /** Component to handle the create new standard page
+     */
     export default {
         name: "NewStandard"
     }

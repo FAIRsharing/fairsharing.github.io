@@ -24,11 +24,12 @@
 </template>
 
 <script>
-    // This component produces the output table based on the received data.
+    /** This component produces the output table based on the received data.
+     * @vue-prop {Object} input_data - The input data coming from the API
+     */
     export default {
         name: "SearchOutputTable",
         props: {
-            // The processed data coming from the API
             input_data: {
                 type: Object,
                 default: function(){

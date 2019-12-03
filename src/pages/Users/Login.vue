@@ -9,8 +9,7 @@
 </template>
 
 <script>
-    // @vuese
-    // This component handles the login page
+/** This component handles the login page */
     export default {
         name: "Login"
     }

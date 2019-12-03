@@ -3,8 +3,10 @@
 </template>
 
 <script>
-    // @vuese
-    // This component handles the privacy policy page
+    /** This component handles the privacy page
+     * @memberOf StaticPages
+     * @name Privay
+     */
     export default {
         name: "Privacy"
     }

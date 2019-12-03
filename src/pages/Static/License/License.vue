@@ -3,8 +3,10 @@
 </template>
 
 <script>
-    // @vuese
-    // This component handles the license/api page
+    /** This component handles the license page
+     * @memberOf StaticPages
+     * @name License
+     */
     export default {
         name: "License"
     }

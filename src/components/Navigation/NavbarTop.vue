@@ -15,8 +15,8 @@
 </template>
 
 <script>
-    // @vuese
-    // Component to handle the header (should be present on every page)
+/** Component to handle the header (should be present on every page)
+*/
     export default {
         name: "NavbarTop"
     }

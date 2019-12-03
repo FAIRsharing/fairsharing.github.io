@@ -6,8 +6,7 @@
 </template>
 
 <script>
-    // @vuese
-    // This component handles the statistic page
+    /** This component handles the statistic page */
     export default {
         name: "Statistics"
     }

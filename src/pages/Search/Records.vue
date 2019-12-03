@@ -11,13 +11,15 @@
 
     /**
      This module receives data from the client and display the data on the page
+     * @vue-data {Boolean} valid_request - is the current request valid or not (check before triggering the client)
+     * @vue-computed {String} currentPath - return the current path
      */
     export default {
         name: "Records",
         data: function(){
-              return {
-                  valid_request: this.is_request_valid()
-              }
+            return {
+                valid_request: this.is_request_valid("none")
+            }
         },
         computed: {
             currentPath: function(){

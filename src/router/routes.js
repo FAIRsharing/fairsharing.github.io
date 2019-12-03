@@ -1,7 +1,3 @@
-/*
-Separate routing handle to avoid a big main.js
-*/
-
 import Home from '../pages/Home/Home'
 import Login from '../pages/Users/Login'
 import Signup from '../pages/Users/Signup'
@@ -20,7 +16,6 @@ import License from '../pages/Static/License/License'
 import Terms from '../pages/Static/TermOfUse/TermsOfUse'
 import Educational from '../pages/Static/Educational/Educational'
 import Privacy from '../pages/Static/Privacy/Privacy'
-
 
 let routes = [
     {
@@ -153,5 +148,10 @@ for (let routeIndex in routes) {
     }
 }
 
-
+/**
+ * A module that provides the list of routes required by vueRouter!
+ * @module Router
+ * @requires src/pages/
+ */
+/** Return routes */
 export default routes;

@@ -10,8 +10,10 @@
 </template>
 
 <script>
-    // @vuese
-    // This component handles the educational page
+    /** This component handles the educational page
+     * @memberOf StaticPages
+     * @name Educational
+     */
     export default {
         name: "Educational"
     }

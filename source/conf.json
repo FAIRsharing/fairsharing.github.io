@@ -17,16 +17,18 @@
     "template": "./node_modules/ink-docstrap/template"
   },
   "templates": {
-    "logoFile": "",
-    "cleverLinks": false,
-    "monospaceLinks": false,
+    "cleverLinks": true,
+    "monospaceLinks": true,
     "outputSourceFiles": true,
     "outputSourcePath": true,
     "systemName": "FAIRsharing.org",
     "copyright": "DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.",
-    "theme": "cosmo",
+    "theme": "Cerulean",
     "linenums": true,
-    "collapseSymbols": false,
-    "inverseNav": true
+    "inverseNav": true,
+    "dateFormat": "ddd MMM Do YYYY"
+  },
+  "tags": {
+    "allowUnknownTags": true
   }
 }

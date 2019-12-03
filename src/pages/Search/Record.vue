@@ -7,10 +7,10 @@
 
 <script>
 /** This module receives data from the client and display the data on the page
+ * @vue-computed {String} currentRoute - Return the title of this page to be inserted as metadata
  */
     export default {
         name: "Record",
-        id: 'ABA',
         computed: {
             currentRoute: function () {
                 return this.$route.params['id']
@@ -25,11 +25,11 @@
                 return 'FAIRsharing | ' + this.currentRoute
             }
         },
-    /**
-     *
-     * @returns {{title: (*|string)}}
-     */
-    metaInfo() {
+        /** Function that sets the meta title using getTitle()
+         * @callback
+         * @type {Object}
+         */
+        metaInfo() {
             return {
                 title: this.getTitle()
             }

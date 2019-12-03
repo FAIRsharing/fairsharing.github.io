@@ -3,8 +3,8 @@
 </template>
 
 <script>
-    // @vuese
-    // Component to handle the create new policy page
+    /** Component to handle the create new policy page
+     */
     export default {
         name: "NewPolicy"
     }

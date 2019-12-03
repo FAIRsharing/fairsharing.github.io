@@ -3,8 +3,15 @@
 </template>
 
 <script>
-    // @vuese
-    // This component handles the sign-up/register page
+/**
+ * All static pages will be handle through this namespace
+ * @namespace StaticPages
+ */
+
+/** This component handles the sign-up/register page
+ * @memberOf StaticPages
+ * @name Community
+ * */
     export default {
         name: "Community",
         title: 'This will be the community page',

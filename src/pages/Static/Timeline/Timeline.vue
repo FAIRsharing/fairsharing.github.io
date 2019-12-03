@@ -3,8 +3,10 @@
 </template>
 
 <script>
-    // @vuese
-    // This component handles the timeline page
+    /** This component handles the timeline page
+     * @memberOf StaticPages
+     * @name Timeline
+     */
     export default {
         name: "Timeline"
     }

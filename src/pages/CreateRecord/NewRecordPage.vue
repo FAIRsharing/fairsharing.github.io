@@ -21,8 +21,8 @@
 </template>
 
 <script>
-    // @vuese
-    // Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database
+    /** Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database
+     */
     export default {
         name: "NewRecordPage"
     }

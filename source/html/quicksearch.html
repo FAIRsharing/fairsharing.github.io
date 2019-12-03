@@ -1,0 +1,31 @@
+<html>
+<head>
+</head>
+<body style="background: transparent;">
+    <script src="scripts/docstrap.lib.js"></script>
+    <script src="scripts/lunr.min.js"></script>
+    <script src="scripts/fulltext-search.js"></script>
+
+    <script type="text/x-docstrap-searchdb">
+    {"Record.vue.html":{"id":"Record.vue.html","title":"Source: Record.vue","body":" FAIRsharing.org Modules RecordRecords Source: Record.vue &lt;template&gt; &lt;div class=\"standard\" id=\"standard_ABA\"&gt; &lt;h2&gt;ABA Adult Mouse Brain&lt;/h2&gt; &lt;p&gt;ID: {{ currentRoute}}&lt;/p&gt; &lt;/div&gt; &lt;/template&gt; &lt;script&gt; /** This module receives data from the client and display the data on the page */ export default { name: \"Record\", id: 'ABA', computed: { currentRoute: function () { return this.$route.params['id'] }, }, methods: { /** * Method to return the title of this page to be inserted as metadata * @returns {string} */ getTitle: function(){ return 'FAIRsharing | ' + this.currentRoute } }, /** * * @returns {{title: (*|string)}} */ metaInfo() { return { title: this.getTitle() } } } &lt;/script&gt; &lt;style scoped&gt; &lt;/style&gt; × Search results Close "},"Records.vue.html":{"id":"Records.vue.html","title":"Source: Records.vue","body":" FAIRsharing.org Modules RecordRecords Source: Records.vue &lt;template&gt; &lt;div class=\"outputTable\"&gt; &lt;h1&gt;{{currentPath}}&lt;/h1&gt; &lt;output-table&gt; &lt;/output-table&gt; &lt;/div&gt; &lt;/template&gt; &lt;script&gt; import OutputTable from './SearchOutputTable' /** This module receives data from the client and display the data on the page */ export default { name: \"Records\", data: function(){ return { valid_request: this.is_request_valid() } }, computed: { currentPath: function(){ return this.$route.path.replace('/', ''); } }, components: { OutputTable }, methods: { /** Verify that the input request is valid * @param {String} request_body * @returns {boolean} is valid or not */ is_request_valid(request_body){ if (request_body) return true; return false; } } } &lt;/script&gt; &lt;style scoped&gt; &lt;/style&gt; × Search results Close "},"modules.list.html":{"id":"modules.list.html","title":"Modules","body":" FAIRsharing.org Modules RecordRecords Modules × Search results Close "},"index.html":{"id":"index.html","title":"Index","body":" FAIRsharing.org Modules RecordRecords FAIRsharing.org Welcome to the new FAIRsharing.org website. Compiles and hot-reloads for development npm run serve Test with vue-cli &amp; coverage npm run test:unit Generate the documentation (require python 3.x): npm run doc pip install requirement-dev.txt sphinx-build -b html source/ doc/ × Search results Close "},"module-Record.html":{"id":"module-Record.html","title":"Module: Record","body":" FAIRsharing.org Modules RecordRecords Module: Record This module receives data from the client and display the data on the page Source: Record.vue, line 4 Methods getTitle() Method to return the title of this page to be inserted as metadata Source: Record.vue, line 24 Returns: Type string × Search results Close "},"module-Records.html":{"id":"module-Records.html","title":"Module: Records","body":" FAIRsharing.org Modules RecordRecords Module: Records This module receives data from the client and display the data on the page Source: Records.vue, line 7 Methods is_request_valid(request_body) Verify that the input request is valid Parameters: Name Type Description request_body String Source: Records.vue, line 35 Returns: is valid or not Type boolean × Search results Close "}}
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            Searcher.init();
+        });
+
+        $(window).on("message", function(msg) {
+            var msgData = msg.originalEvent.data;
+
+            if (msgData.msgid != "docstrap.quicksearch.start") {
+                return;
+            }
+
+            var results = Searcher.search(msgData.searchTerms);
+
+            window.parent.postMessage({"results": results, "msgid": "docstrap.quicksearch.done"}, "*");
+        });
+    </script>
+</body>
+</html>

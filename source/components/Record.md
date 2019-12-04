@@ -23,3 +23,4 @@ Component to handle the display of single record.
 <!-- @vuese:Record:computed:end -->
 
 [Find me at src/pages/Search/Record.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/codeQuality/src/pages/Search/Record.vue)
+

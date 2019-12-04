@@ -57,13 +57,13 @@ class DocumentationProcessor {
     @arg Markdown_content: documentation markdown string coming out of vuese output files.
     @arg path: the path of the current documentation file
      */
-    process_content(markdown_content, path){
+    process_content(markdownContent, path){
         let fileNameArray = path.split('/');
         let fileName = fileNameArray[fileNameArray.length -1].replace('.md', '');
         let filePath = this.source_files[fileName];
-        markdown_content += "[Find me at " + filePath + "](https://github.com/FAIRsharing/fairsharing.github.io/tree/" + this.branch  + "/" + filePath + ")";
-        markdown_content = markdown_content.replace(/:end -->\n/g, ":end -->");
-        return markdown_content.replace(/:start -->/g, ':start -->\n');
+        markdownContent += "[Find me at " + filePath + "](https://github.com/FAIRsharing/fairsharing.github.io/tree/" + this.branch  + "/" + filePath + ")";
+        markdownContent = markdownContent.replace(/:end -->\n/g, ":end -->");
+        return markdownContent.replace(/:start -->/g, ':start -->\n');
     }
 }
 

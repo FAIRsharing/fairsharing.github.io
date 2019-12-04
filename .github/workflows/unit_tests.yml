@@ -21,3 +21,5 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: './coverage/lcov.info'
+    - name: Update coverage to codacy
+      run: npm run codacy ${{ secrets.CODACY_PROJECT_TOKEN }}

@@ -62,6 +62,7 @@ class DocumentationProcessor {
         let fileName = fileNameArray[fileNameArray.length -1].replace('.md', '');
         let filePath = this.source_files[fileName];
         markdown_content += "[Find me at " + filePath + "](https://github.com/FAIRsharing/fairsharing.github.io/tree/" + this.branch  + "/" + filePath + ")";
+        markdown_content = markdown_content.replace(/:end -->\n/g, ":end -->");
         return markdown_content.replace(/:start -->/g, ':start -->\n');
     }
 }

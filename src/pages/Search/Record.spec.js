@@ -1,18 +1,18 @@
-import {createLocalVue, shallowMount} from '@vue/test-utils'
-import Record from './Record.vue'
-import VueMeta from 'vue-meta'
+import {createLocalVue, shallowMount} from "@vue/test-utils"
+import Record from "./Record.vue"
+import VueMeta from "vue-meta"
 
 const $route = {
-    path: '/',
+    path: "/",
     params: {
-        id: '120'
+        id: "120"
     }
 };
 
 let localVue = createLocalVue();
 localVue.use(VueMeta);
 
-describe('Record.vue', function() {
+describe("Record.vue", function() {
 
     // Set up the wrapper
     let wrapper;
@@ -22,21 +22,21 @@ describe('Record.vue', function() {
             localVue
         });
     });
-    const path = '120';
-    const title = 'FAIRsharing | ' + path;
+    const path = "120";
+    const title = "FAIRsharing | " + path;
 
 
-    it('can be instantiated', () => {
-        expect(wrapper.name()).toMatch('Record');
-        expect(wrapper.attributes('id')).toMatch('ABA');
+    it("can be instantiated", () => {
+        expect(wrapper.name()).toMatch("Record");
+        expect(wrapper.attributes("id")).toMatch("ABA");
     });
 
-    it('has a currentRoute computed property', () => {
+    it("has a currentRoute computed property", () => {
         expect(wrapper.vm.currentRoute).toMatch(path);
         expect(wrapper.vm.getTitle()).toBe(title);
     });
 
-    it('has it meta title dynamically set', () => {
+    it("has it meta title dynamically set", () => {
         expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(title)
     });
 

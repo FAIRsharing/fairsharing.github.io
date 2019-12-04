@@ -12,7 +12,6 @@ Component to handle the display of single record.
 
 <!-- @vuese:Record:methods:end -->
 
-
 ## Computed
 
 <!-- @vuese:Record:computed:start -->
@@ -22,6 +21,5 @@ Component to handle the display of single record.
 |currentRoute|-|Gets the current route to detect the identifier of the record|No|
 
 <!-- @vuese:Record:computed:end -->
-
 
 [Find me at src/pages/Search/Record.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/master/src/pages/Search/Record.vue)

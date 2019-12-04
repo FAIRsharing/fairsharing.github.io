@@ -1,5 +1,5 @@
 <template>
-    <h2>{{title}}{{name}}sd</h2>
+    <h2>Community</h2>
 </template>
 
 <script>
@@ -7,7 +7,7 @@
     // This component handles the sign-up/register page
     export default {
         name: "Community",
-        title: 'This will be the community page',
+        title: "This will be the community page",
         methods: {
             greet: function () {
                 return 0

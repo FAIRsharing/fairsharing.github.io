@@ -146,12 +146,15 @@ let routes = [
 
 ];
 
-for (let routeIndex in routes) {
-    if (routes[routeIndex].name !== "Record"){
-        routes[routeIndex].meta = {};
-        routes[routeIndex].meta.title = routes[routeIndex].name.replace(/_/g, " ");
+routes.forEach(function(route){
+    if (route.name !== "Record"){
+        route.meta = {
+            title: route.name.replace(/_/g, " ")
+        }
     }
-}
+});
+
+
 
 
 export default routes;

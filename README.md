@@ -9,17 +9,17 @@
 
 Welcome to the new FAIRsharing.org website.
 
-### Compiles and hot-reloads for development
+## Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-### Test with vue-cli & coverage
+## Test with vue-cli & coverage
 ```
 npm run test:unit
 ```
 
-### Generate the documentation (require python 3.x):
+## Generate the documentation (require python 3.x)
 ```
 npm run doc
 pip install requirement-dev.txt

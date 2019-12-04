@@ -38,6 +38,7 @@
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.10",
-    "sinon": "^7.5.0"
+    "sinon": "^7.5.0",
+    "codacy-coverage": "^3.4.0"
   }
 }

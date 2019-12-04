@@ -5,8 +5,6 @@ describe('Community.vue', () => {
 
   it('renders', () => {
 
-    const title = 'This will be the community page';
-
     let wrapper = shallowMount(Community, {});
     expect(wrapper.vm.greet()).toBe(0);
 

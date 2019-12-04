@@ -1,9 +1,9 @@
-import { shallowMount } from '@vue/test-utils'
-import Community from './Community.vue'
+import { shallowMount } from "@vue/test-utils";
+import Community from "./Community.vue";
 
-describe('Community.vue', () => {
+describe("Community.vue", () => {
 
-  it('renders', () => {
+  it("renders", () => {
 
     let wrapper = shallowMount(Community, {});
     expect(wrapper.vm.greet()).toBe(0);

@@ -12,7 +12,6 @@ This component gets the request, sends it to a service, the data from it and sen
 
 <!-- @vuese:Records:methods:end -->
 
-
 ## Computed
 
 <!-- @vuese:Records:computed:start -->
@@ -22,6 +21,5 @@ This component gets the request, sends it to a service, the data from it and sen
 |currentPath|-|Gets the current path of the page to detect Standards, Databases, Polices or Collections|No|
 
 <!-- @vuese:Records:computed:end -->
-
 
 [Find me at src/pages/Search/Records.vue](https://github.com/FAIRsharing/fairsharing.github.io/tree/master/src/pages/Search/Records.vue)

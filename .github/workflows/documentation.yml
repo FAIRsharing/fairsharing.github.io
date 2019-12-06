@@ -18,7 +18,5 @@ jobs:
       run: npm run doc ${GITHUB_REF##*/}
     - name: Commit changes
       uses: elstudio/actions-js-build/commit@v2
-      with:
-        pushBranch: staging
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

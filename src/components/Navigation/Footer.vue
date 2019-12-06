@@ -23,11 +23,17 @@
 
 <script>
 /** Component to handle the footer (should be present on every page)
+ * @vue-data {String} someLinks - just a test
 */
     export default {
         name: "Footer",
         components: {
         },
+        data: function(){
+            return {
+                someLinks: "pouet"
+            }
+        }
     }
 </script>
 

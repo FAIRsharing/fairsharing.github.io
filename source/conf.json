@@ -23,7 +23,7 @@
     "outputSourcePath": true,
     "systemName": "FAIRsharing.org",
     "copyright": "DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.",
-    "theme": "Cerulean",
+    "theme": "yeti",
     "linenums": true,
     "inverseNav": true,
     "dateFormat": "ddd MMM Do YYYY"

@@ -7,7 +7,6 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit --coverage",
     "lint": "vue-cli-service lint",
-    "doc": "vuese gen --outDir source &&  node src/documentation/process_doc.js",
     "doc:full": "jsdoc -c source/doc.conf.json -R README.md",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage -t "
   },

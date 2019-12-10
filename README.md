@@ -15,14 +15,12 @@ Welcome to the new FAIRsharing.org website.
 npm run serve
 ```
 
-## Test with vue-cli & coverage
+## Test with vue-cli & generate coverage
 ```
 npm run test:unit
 ```
 
-## Generate the documentation (require python 3.x)
+## Generate the documentation locally
 ```
-npm run doc
-pip install requirement-dev.txt
-sphinx-build -b html source/ doc/
+npm run doc:full
 ```

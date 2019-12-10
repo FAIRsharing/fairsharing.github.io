@@ -2,24 +2,24 @@
 Separate routing handle to avoid a big main.js
 */
 
-import Home from "../pages/Home/Home";
-import Login from "../pages/Users/Login";
-import Signup from "../pages/Users/Signup";
-import Records from "../pages/Search/Records";
-import Record from "../pages/Search/Record";
-import Statistics from "../pages/Stats/Statistics";
-import New from "../pages/CreateRecord/NewRecordPage";
-import NewStandard from "../pages/CreateRecord/NewStandard";
-import NewDatabase from "../pages/CreateRecord/NewDatabase";
-import NewPolicy from "../pages/CreateRecord/NewPolicy";
-import NewCollection from "../pages/CreateRecord/NewCollection";
-import Community from "../pages/Static/Community/Community";
-import Stakeholders from "../pages/Static/Stakeholders/Stakeholders";
-import Timeline from "../pages/Static/Timeline/Timeline";
-import License from "../pages/Static/License/License";
-import Terms from "../pages/Static/TermOfUse/TermsOfUse";
-import Educational from "../pages/Static/Educational/Educational";
-import Privacy from "../pages/Static/Privacy/Privacy";
+import Home from "../views/Home/Home";
+import Login from "../views/Users/Login";
+import Signup from "../views/Users/Signup";
+import Records from "../views/Search/Records";
+import Record from "../views/Search/Record";
+import Statistics from "../views/Stats/Statistics";
+import New from "../views/CreateRecord/NewRecordPage";
+import NewStandard from "../views/CreateRecord/NewStandard";
+import NewDatabase from "../views/CreateRecord/NewDatabase";
+import NewPolicy from "../views/CreateRecord/NewPolicy";
+import NewCollection from "../views/CreateRecord/NewCollection";
+import Community from "../views/Static/Community/Community";
+import Stakeholders from "../views/Static/Stakeholders/Stakeholders";
+import Timeline from "../views/Static/Timeline/Timeline";
+import License from "../views/Static/License/License";
+import Terms from "../views/Static/TermOfUse/TermsOfUse";
+import Educational from "../views/Static/Educational/Educational";
+import Privacy from "../views/Static/Privacy/Privacy";
 
 
 let routes = [

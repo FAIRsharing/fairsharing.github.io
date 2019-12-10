@@ -22,8 +22,9 @@
 </template>
 
 <script>
-    // @vuese
-    // Component to handle the footer (should be present on every page)
+    /** Component to handle the footer (should be present on every page)
+     *
+     */
     export default {
         name: "Footer",
         components: {

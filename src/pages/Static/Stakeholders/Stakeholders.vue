@@ -3,9 +3,12 @@
 </template>
 
 <script>
-    // @vuese
-    // This component handles the stakeholders page
-
+    /** This component handles the sign-up/register page
+     * @memberOf Static
+     * @name Stakeholders
+     * @type module
+     * @instance
+     * */
     export default {
         name: "Stakeholders"
     }

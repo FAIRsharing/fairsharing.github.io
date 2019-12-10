@@ -3,8 +3,12 @@
 </template>
 
 <script>
-    // @vuese
-    // This component handles the terms of use page
+    /** This component handles the sign-up/register page
+     * @memberOf Static
+     * @name TermsOfUse
+     * @type module
+     * @instance
+     * */
     export default {
         name: "TermsOfUse"
     }

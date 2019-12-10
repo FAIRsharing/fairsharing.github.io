@@ -7,26 +7,29 @@
 
 <script>
 
-    // Component to handle the display of single record.
+    /** Component to handle the display of single record.
+     * @vue-computed {String} currentRoute - the route of the current page
+     */
     export default {
         name: "Record",
         id: 'ABA',
         computed: {
-            // @vuese
-            // Gets the current route to detect the identifier of the record
             currentRoute: function () {
                 return this.$route.params['id']
             },
         },
         methods: {
-            // @vuese
-            // Method to build and return the page title to be included as a metadata
+            /** Method to build and return the page title to be included as a metadata
+             *  @returns {String} - the title of the current page
+             */
             getTitle: function(){
                 return 'FAIRsharing | ' + this.currentRoute
             }
         },
-        // @vuese
-        // set the meta-data of the page
+        /**
+         * Setting up the metaInfo of the page
+         * @returns {{title: String}}
+         * */
         metaInfo() {
             return {
                 title: this.getTitle()

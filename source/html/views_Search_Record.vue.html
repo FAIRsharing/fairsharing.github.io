@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Signup</title>
+	<title>FAIRsharing.org Source: views/Search/Record.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,100 +67,62 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Signup</h1>
+		<h1 class="page-title">Source: views/Search/Record.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+    &lt;div class="standard" id="standard_ABA">
+        &lt;h2>ABA Adult Mouse Brain&lt;/h2>
+        &lt;p>ID: {{ currentRoute}}&lt;/p>
+    &lt;/div>
+&lt;/template>
 
-<header>
-    
-</header>
+&lt;script>
 
+    /** Component to handle the display of single record.
+     * @vue-computed {String} currentRoute - the route of the current page
+     */
+    export default {
+        name: "Record",
+        id: 'ABA',
+        computed: {
+            currentRoute: function () {
+                return this.$route.params['id']
+            },
+        },
+        methods: {
+            /** Method to build and return the page title to be included as a metadata
+             *  @returns {String} - the title of the current page
+             */
+            getTitle: function(){
+                return 'FAIRsharing | ' + this.currentRoute
+            }
+        },
+        /**
+         * Setting up the metaInfo of the page
+         * @returns {{title: String}}
+         * */
+        metaInfo() {
+            return {
+                title: this.getTitle()
+            }
+        }
+    }
+&lt;/script>
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>This component handles the sign-up/register page</p></div>
-        
+&lt;style scoped>
 
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_Users_Signup.vue.html">views/Users/Signup.vue</a>,
-				 <a href="views_Users_Signup.vue.html#sunlight-1-line-5">line 5</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+&lt;/style></pre>
+    </article>
 </section>
+
 
 
 
@@ -170,10 +132,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

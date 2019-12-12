@@ -12,7 +12,7 @@
   "recurseDepth": 10,
   "opts": {
     "encoding": "utf8",
-    "destination": "./source/html/",
+    "destination": "./documentation/html/",
     "recurse": true,
     "template": "./node_modules/ink-docstrap/template"
   },

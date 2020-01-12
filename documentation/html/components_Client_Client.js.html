@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/CreateRecord/NewRecordPage.vue</title>
+	<title>FAIRsharing.org Source: components/Client/Client.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,45 +79,54 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/CreateRecord/NewRecordPage.vue</h1>
+		<h1 class="page-title">Source: components/Client/Client.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-    &lt;div class="new" id="new">
-        &lt;h2>Create new records&lt;/h2>
+            class="sunlight-highlight-javascript linenums">/**
+ * Our client gets the Data from the API using GraphQL and send them to the web interface
+ */
 
-        &lt;button type="button" id="new_database_button">
-            &lt;router-link to="/new/database">Database&lt;/router-link>
-        &lt;/button>
+const axios = require('axios');
 
-        &lt;button type="button" id="new_standard_button">
-            &lt;router-link to="/new/standard">Standard&lt;/router-link>
-        &lt;/button>
+class GraphQLClient {
 
-        &lt;button type="button" id="new_policy_button">
-            &lt;router-link to="/new/policy">Policy&lt;/router-link>
-        &lt;/button>
-
-        &lt;button type="button" id="new_collection_button">
-            &lt;router-link to="/new/collection">Collection&lt;/router-link>
-        &lt;/button>
-    &lt;/div>
-&lt;/template>
-
-&lt;script>
-    /** Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database
-     *
-     */
-    export default {
-        name: "NewRecordPage"
+    constructor(){
+        this.url = "https://api.fairsharing.org/graphql";
+        this.headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        };
     }
-&lt;/script>
 
-&lt;style scoped>
+    async getRecordsList(pagination_string){
+        /**
+         * ASync method to get the list of fairsharing records
+         * How do we control the output fields ?
+         */
+        const output_fields = "type name abbreviation doi type subjects domains taxonomies";
+        const query_fields = "currentPage perPage totalCount totalPages firstPage ";
+        const query_name = "fairsharingRecords";
+        const object_type = "records";
 
-&lt;/style></pre>
+        let queryString = {
+            query: "{" + query_name + pagination_string + "{ " + query_fields + object_type + "{" + output_fields + "}}}"
+        };
+
+        try {
+            let resp = await axios.post(this.url, queryString, this.headers);
+            return resp.data.data[query_name]
+        }
+        catch (err){
+            console.log(queryString.query);
+            throw err;
+        }
+    }
+
+}
+
+export default GraphQLClient;</pre>
     </article>
 </section>
 

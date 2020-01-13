@@ -5,13 +5,8 @@
                 <h2>Fairsharing records</h2>
             </div>
             <div class="card-body">
-                <div class="pagination">
-                    {{pagination}}
-                </div>
                 <table class="table table-striped table-hover">
-                    <thead>
-
-                    </thead>
+                    <thead></thead>
                     <tbody>
                         <tr v-for="(record, index) in records" :key="'record_' + index">
                             <td v-for="(field, fieldIndex) in record" :key="'field_' + fieldIndex">
@@ -19,7 +14,25 @@
                             </td>
                         </tr>
                     </tbody>
+
+                    <tbody>
+                    <tr v-for="(record, index) in databases" :key="'record_' + index">
+                        <td v-for="(field, fieldIndex) in record" :key="'field_' + fieldIndex">
+                            {{field}}
+                        </td>
+                    </tr>
+                    </tbody>
+
                 </table>
+
+
+                <form>
+                    <select v-model="pagination.perPage">
+                        <option value="1">1</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                    </select>
+                </form>
             </div>
         </div>
     </div>
@@ -38,26 +51,21 @@
         data(){
             return {
                 records: [],
-                pagination: {}
+                databases: [],
+                pagination: {
+                    page: 1,
+                    perPage: 30
+                }
             }
         },
-        methods: {
-            getData: async function() {
-                const pagination = "(page:1, perPage:10)";
-                let data = await client.getRecordsList(pagination);
-                this.records = data.records;
-                this.pagination = {
-                    currentPage: data.currentPage,
-                    totalPage: data.totalPages,
-                    perPage: data.perPage,
-                    totalCount: data.totalCount,
-                    firstPage: data.firstPage
-                };
-                return data;
+        asyncComputed: {
+            async function(){
+                let clientModule = this;
+                let standard = await client.getRecordsOfType(clientModule.pagination, "Standard");
+                clientModule.records = standard.records;
+                let databases = await client.getRecordsOfType(clientModule.pagination, "Database");
+                clientModule.databases = databases.records
             }
-        },
-        created() {
-            this.getData()
         }
     };
 

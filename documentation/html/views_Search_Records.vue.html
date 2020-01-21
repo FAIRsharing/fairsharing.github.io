@@ -45,6 +45,13 @@
 			</li>
 			
 			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="GraphQLClient.html">GraphQLClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="global.html#axios">axios</a></li>
@@ -87,14 +94,19 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
     &lt;div class="outputTable">
         &lt;h1>{{currentPath}}&lt;/h1>
-        {{content}}
-        &lt;output-table>
+        &lt;output-table :input_data="content" :headers="tableHeader">
         &lt;/output-table>
+        &lt;div class="card">
+            &lt;div class="card-header">Allowed fields&lt;/div>
+            &lt;div class="card-body">
+                {{fields}}
+            &lt;/div>
+        &lt;/div>
     &lt;/div>
 &lt;/template>
 
 &lt;script>
-    import OutputTable from './SearchOutputTable'
+    import OutputTable from '../../components/Search/SearchOutputTable'
     import Client from '../../components/Client/Client.js'
 
     let client = new Client();
@@ -108,16 +120,22 @@
         name: "Records",
         data() {
             return {
+                /* Be careful, in the current system registry and type are reversed, which is why we have registry bound
+                to type and type bound to registry in the above object.
+                */
                 tableHeader: {
-                    Registry: "registry",
+                    Registry: "type",
                     Name: "name",
                     Abbreviation: "abbreviation",
-                    Type: "type",
+                    Type: "registry",
                     Domains: "domains",
                     Subjects: "subjects",
                     Taxonomy: "taxonomies",
-                    "Related Database": "recordAssociations  { recordAssocLabel linkedRecord{name registry id} } ",
-                    Status: "status"
+                    "Related Database": "recordAssociations{recordAssocLabel linkedRecord{name registry id}}",
+                    Status: "status",
+                    Relationships: {
+                        recordAssociations: "{linkedRecord{name doi}}"
+                    }
                 },
                 recordTypes: {
                     Standards: "Standard",
@@ -129,7 +147,8 @@
                     page: 1,
                     perPage: 30
                 },
-                content: []
+                content: [],
+                fields: []
             }
         },
         computed: {
@@ -140,13 +159,13 @@
         components: {
             OutputTable
         },
-        methods: {},
         asyncComputed: {
             /** This methods get the data from the client depending on the current page.
              * @returns {Promise}
              */
             async function () {
                 let clientModule = this; // The component itself
+                clientModule.fields = await client.introspectQuery("FairsharingRecord");
                 let content = await client.getRecordsOfType(clientModule.pagination,
                                                             clientModule.recordTypes[clientModule.currentPath],
                                                             clientModule.tableHeader);
@@ -155,6 +174,7 @@
             }
         }
     }
+
 &lt;/script>
 
 &lt;style scoped>

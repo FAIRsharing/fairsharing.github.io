@@ -1,6 +1,7 @@
 <template>
     <div class="outputTable">
         <h1>{{currentPath}}</h1>
+        {{content}}
         <output-table>
         </output-table>
     </div>
@@ -8,6 +9,9 @@
 
 <script>
     import OutputTable from './SearchOutputTable'
+    import Client from '../../components/Client/Client.js'
+
+    let client = new Client();
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -16,28 +20,52 @@
      */
     export default {
         name: "Records",
-        data(){
+        data() {
             return {
-                valid_request: this.is_request_valid()
+                tableHeader: {
+                    Registry: "registry",
+                    Name: "name",
+                    Abbreviation: "abbreviation",
+                    Type: "type",
+                    Domains: "domains",
+                    Subjects: "subjects",
+                    Taxonomy: "taxonomies",
+                    "Related Database": "recordAssociations  { recordAssocLabel linkedRecord{name registry id} } ",
+                    Status: "status"
+                },
+                recordTypes: {
+                    Standards: "Standard",
+                    Databases: "Database",
+                    Policies: "Policy",
+                    Collections: "Collection"
+                },
+                pagination: {
+                    page: 1,
+                    perPage: 30
+                },
+                content: []
             }
         },
         computed: {
-            currentPath: function(){
-                return this.$route.path.replace('/', '');
+            currentPath: function () {
+                return this.$route.path.replace('/', '').capitalize();
             }
         },
         components: {
             OutputTable
         },
-        methods: {
-            /**
-             * Is the request valid
-             * @param {Object} request_body - the request itself
-             * @returns {boolean}
+        methods: {},
+        asyncComputed: {
+            /** This methods get the data from the client depending on the current page.
+             * @returns {Promise}
              */
-            is_request_valid(request_body){
-                if (request_body) return true;
-                return false;
+            async function () {
+                let clientModule = this; // The component itself
+                let content = await client.getRecordsOfType(clientModule.pagination,
+                                                            clientModule.recordTypes[clientModule.currentPath],
+                                                            clientModule.tableHeader);
+                clientModule.content = content.records;
+                return content;
             }
         }
     }

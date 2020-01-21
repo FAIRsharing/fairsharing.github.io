@@ -1,21 +1,15 @@
 <template>
-    <table class="table">
+    <table class="table table-hover">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Subject</th>
-                <th>...</th>
+                <th v-for="(header, name, index) in headers" :key="index">{{name}}</th>
             </tr>
         </thead>
-
-
         <tbody>
-            <tr>
-                <td><router-link to="/ABA">ABA Adult Mouse Brain</router-link></td>
-                <td>Standard</td>
-                <td>Neuroscience</td>
-                <td>...</td>
+            <tr v-for="(record, index) in input_data" :key="index">
+                <td v-for="(property, subIndex) in record" :key="subIndex">
+                    {{property}}
+                </td>
             </tr>
         </tbody>
 
@@ -31,6 +25,12 @@
         name: "SearchOutputTable",
         props: {
             input_data: {
+                type: Array,
+                default: function(){
+                    return []
+                }
+            },
+            headers: {
                 type: Object,
                 default: function(){
                     return{}

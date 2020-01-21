@@ -29,6 +29,10 @@ router.beforeEach((to, from, next) => {
     next()
 });
 
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1)
+};
+
 
 new Vue({
   render: h => h(App),

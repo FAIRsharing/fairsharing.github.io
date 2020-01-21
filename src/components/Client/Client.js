@@ -7,6 +7,11 @@ const axios = require('axios');
 class GraphQLClient {
 
     constructor(){
+        if (GraphQLClient._instance){
+            return GraphQLClient._instance
+        }
+        GraphQLClient._instance = this;
+
         this.url = "https://api.fairsharing.org/graphql";
         this.headers = {
             "Accept": "application/json",
@@ -37,11 +42,16 @@ class GraphQLClient {
         }
     }
 
-    async getRecordsOfType(pagination, recordType){
+    async getRecordsOfType(pagination, recordType, fields){
         /**
          *
          */
-        const output_fields = "name doi type";
+
+        let output_fields = "";
+        for (let field in fields){
+            output_fields += fields[field] + " "
+        }
+
         const query_name = "searchFairsharingRecords";
         const object_type = "records";
         let query_params = "(fairsharingRegistry : " + '"' + recordType + '"';
@@ -49,6 +59,7 @@ class GraphQLClient {
             query_params += ` ${key}:${pagination[key]} `;
         });
         query_params += ')';
+
         let queryString = {
             query: "{" + query_name + query_params + "{ " + this.query_fields + object_type + "{" + output_fields + "}}}"
         };
@@ -62,12 +73,6 @@ class GraphQLClient {
             throw err;
         }
     }
-
-    __build_query() {
-        console.log(123);
-    }
-
-
 
 }
 

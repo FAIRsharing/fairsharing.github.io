@@ -1,14 +1,19 @@
 <template>
     <div class="outputTable">
         <h1>{{currentPath}}</h1>
-        {{content}}
-        <output-table>
+        <output-table :input_data="content" :headers="tableHeader">
         </output-table>
+        <div class="card">
+            <div class="card-header">Allowed fields</div>
+            <div class="card-body">
+                {{fields}}
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import OutputTable from './SearchOutputTable'
+    import OutputTable from '../../components/Search/SearchOutputTable'
     import Client from '../../components/Client/Client.js'
 
     let client = new Client();
@@ -22,16 +27,22 @@
         name: "Records",
         data() {
             return {
+                /* Be careful, in the current system registry and type are reversed, which is why we have registry bound
+                to type and type bound to registry in the above object.
+                */
                 tableHeader: {
-                    Registry: "registry",
+                    Registry: "type",
                     Name: "name",
                     Abbreviation: "abbreviation",
-                    Type: "type",
+                    Type: "registry",
                     Domains: "domains",
                     Subjects: "subjects",
                     Taxonomy: "taxonomies",
-                    "Related Database": "recordAssociations  { recordAssocLabel linkedRecord{name registry id} } ",
-                    Status: "status"
+                    "Related Database": "recordAssociations{recordAssocLabel linkedRecord{name registry id}}",
+                    Status: "status",
+                    Relationships: {
+                        recordAssociations: "{linkedRecord{name doi}}"
+                    }
                 },
                 recordTypes: {
                     Standards: "Standard",
@@ -43,7 +54,8 @@
                     page: 1,
                     perPage: 30
                 },
-                content: []
+                content: [],
+                fields: []
             }
         },
         computed: {
@@ -54,13 +66,13 @@
         components: {
             OutputTable
         },
-        methods: {},
         asyncComputed: {
             /** This methods get the data from the client depending on the current page.
              * @returns {Promise}
              */
             async function () {
                 let clientModule = this; // The component itself
+                clientModule.fields = await client.introspectQuery("FairsharingRecord");
                 let content = await client.getRecordsOfType(clientModule.pagination,
                                                             clientModule.recordTypes[clientModule.currentPath],
                                                             clientModule.tableHeader);
@@ -69,6 +81,7 @@
             }
         }
     }
+
 </script>
 
 <style scoped>

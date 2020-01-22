@@ -118,8 +118,9 @@ class GraphQLClient {
                         subQueryString += field + " "
                     });
                 }
-                catch {
+                catch(e) {
                     console.warn("the field %s is missing the attribute %s", field, subQuery.fieldTarget);
+                    throw e;
                 }
 
                 subQueryString += "}}";

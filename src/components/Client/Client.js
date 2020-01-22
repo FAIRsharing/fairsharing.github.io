@@ -1,10 +1,11 @@
+import introspectionQuery from "./introspectionQuery.js"
 const axios = require('axios');
 
 class GraphQLClient {
 
-    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end
+    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
      * Be careful, this is a singleton and trying to cast new instances will return the existing instance.
-     * @returns {GraphQLClient}
+     * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
      */
     constructor(){
         if (GraphQLClient._instance){
@@ -19,8 +20,14 @@ class GraphQLClient {
         };
         this.query_fields = "currentPage perPage totalCount totalPages firstPage ";
         this.introspection = {
-            records: null
-        }
+            records: null,
+            recordAssociations: null,
+            all: {}
+        };
+        return (async () => {
+            this.introspection.all = await this.introspectAll();
+            return this; // when done
+        })();
     }
 
     /**
@@ -34,6 +41,9 @@ class GraphQLClient {
         // Building the introspect IF it hasn't been already done !
         if (!this.introspection.records){
             this.introspection.records = await this.introspectQuery("FairsharingRecord")
+        }
+        if (!this.introspection.recordAssociations){
+            this.introspection.recordAssociations = await this.introspectQuery("RecordAssociation")
         }
 
         // No need of a if as this will throw an error if failing; You can re-catch the error with a try/catch
@@ -50,7 +60,7 @@ class GraphQLClient {
             queryFields: this.query_fields
         };
         let query = {
-            query: buildQuery(queryInput)
+            query: this.buildQuery(queryInput)
         };
 
         // trigger the query
@@ -93,7 +103,7 @@ class GraphQLClient {
         for (let field of fields){
             if (typeof field === "string"){
                 if (allowed_fields.indexOf(field) < 0){
-                    throw new TypeError("Error field " + field + "is not allowed for this query");
+                    console.warn("Error field " + field + "is not allowed for this query");
                 }
             }
             else{
@@ -106,26 +116,42 @@ class GraphQLClient {
         return true;
     }
 
-}
+    /**
+     * Given an object or query parameters and fields, build the GraphQL query string?
+     * @param {Object} queryParams - contains information about the query: pagination, fields, query name, ...
+     * @returns {string} queryString - the string query to execute with axios
+     */
+    buildQuery = function(queryParams){
+        let queryString = `{${queryParams.queryName} (fairsharingRegistry : "${queryParams.recordType}"`;
+        Object.keys(queryParams.pagination).forEach(function(key){
+            queryString += ` ${key}:${queryParams.pagination[key]} `;
+        });
+        queryString += `){ ${queryParams.queryFields} records{`;
 
-let buildQuery = function(queryParams){
-    let queryString = `{${queryParams.queryName} (fairsharingRegistry : "${queryParams.recordType}"`;
-    Object.keys(queryParams.pagination).forEach(function(key){
-        queryString += ` ${key}:${queryParams.pagination[key]} `;
-    });
-    queryString += `){ ${queryParams.queryFields} records{`;
-
-    for (const field in queryParams.fields){
-        if (typeof queryParams.fields[field] === "string") {
-            queryString += queryParams.fields[field] + " "
+        for (const field in queryParams.fields){
+            if (typeof queryParams.fields[field] === "string") {
+                queryString += queryParams.fields[field] + " "
+            }
+            else {
+                GraphQLClient.validate_fields(queryParams.fields[field].fieldTarget, this.introspection.recordAssociations);
+                queryString += queryParams.fields[field].query + " "
+            }
         }
-        else {
-            queryString += queryParams.fields[field].query + " "
+        queryString += "}}}";
+        return queryString;
+    }
+
+
+    async introspectAll(){
+        try {
+            let resp = await axios.post(this.url, introspectionQuery, this.headers);
+            return resp.data.data;
+        }
+        catch(err){
+            throw err;
         }
     }
-    queryString += "}}}";
 
-    return queryString;
-};
+}
 
 export default GraphQLClient;

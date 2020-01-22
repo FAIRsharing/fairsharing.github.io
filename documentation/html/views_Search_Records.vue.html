@@ -95,32 +95,29 @@
     &lt;div class="outputTable" v-if="client">
         &lt;h1>{{currentPath}}&lt;/h1>
 
-        &lt;div class="introspectionQuery">
-            &lt;div class="card"
-                 v-for="(type, index) in queryTypes"
-                 :key="index">
-                &lt;div class="card-header">
-                    &lt;h2>{{type.name}}&lt;/h2>
+        &lt;div class="introspectionQuery container-fluid hidden">
+            &lt;div class="row">
+                &lt;div class="col-3"
+                     v-for="(type, index) in queryTypes"
+                     :key="index">
+                    &lt;div class="card">
+                        &lt;div class="card-header">
+                            &lt;h2>{{type.name}}&lt;/h2>
+                        &lt;/div>
+                        &lt;ul>
+                            &lt;li v-for="(field, subindex) in type.fields" :key="subindex">
+                                &lt;b>{{field.name}}:&lt;/b> {{field.type}}
+                            &lt;/li>
+                        &lt;/ul>
+                    &lt;/div>
                 &lt;/div>
-                &lt;ul>
-                    &lt;li v-for="(field, subindex) in type.fields" :key="subindex">
-                        &lt;b>{{field.name}}:&lt;/b> {{field.type}}
-                    &lt;/li>
-                &lt;/ul>
             &lt;/div>
+
         &lt;/div>
 
         &lt;output-table :input_data="content" :headers="tableHeader">
         &lt;/output-table>
 
-        &lt;div class="container">
-            &lt;div class="card">
-                &lt;div class="card-header">Allowed fields&lt;/div>
-                &lt;div class="card-body">
-                    {{fields}}
-                &lt;/div>
-        &lt;/div>
-        &lt;/div>
     &lt;/div>
 &lt;/template>
 
@@ -149,17 +146,10 @@
                     Subjects: "subjects",
                     Taxonomy: "taxonomies",
                     Relationships: {
-                        query: "recordAssociations{linkedRecord{name id registry}}",
                         fieldTarget: ["linkedRecord"],
                         linkedRecord: ["name", "id", "registry"],
                         field: "recordAssociations",
-                        sorting: "registry",
-                        labels: [
-                            "Related Databases",
-                            "Related Standards",
-                            "Related Policies",
-                            "Related Collections/Recommendations",
-                        ]
+                        sorting: "registry"
                     },
                     Status: "status",
                 },
@@ -174,7 +164,6 @@
                     perPage: 30
                 },
                 content: [],
-                fields: [],
                 client: null,
             }
         },
@@ -191,18 +180,19 @@
         components: {
             OutputTable
         },
-        asyncComputed: {
+        methods: {
             /** This methods get the data from the client depending on the current page.
              * @returns {Promise}
              */
-            async function () {
+            getData: async function () {
                 if (this.client){
                     let clientModule = this; // The component itself
-                    let content = await this.client.getRecordsOfType(clientModule.pagination,
+                    let content = await this.client.getRecordsOfType(
+                        clientModule.pagination,
                         clientModule.recordTypes[clientModule.currentPath],
-                        clientModule.tableHeader);
+                        clientModule.tableHeader
+                    );
                     clientModule.content = content.records;
-                    this.fields = this.client.introspection.records;
                     return content;
                 }
             }
@@ -210,13 +200,23 @@
         mounted: function () {
             this.$nextTick(async function () {
                 this.client = await new Client();
+                await this.getData();
             })
+        },
+        watch: {
+            currentPath: async function (){
+                await this.getData();
+            }
         }
     }
 
 &lt;/script>
 
 &lt;style scoped>
+
+    .hidden {
+        display:none;
+    }
 
 &lt;/style></pre>
     </article>

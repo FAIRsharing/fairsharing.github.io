@@ -4,7 +4,8 @@ const axios = require('axios');
 class GraphQLClient {
 
     /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
-     * Be careful, this is a singleton and trying to cast new instances will return the existing instance.
+     * Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
+     * also careful, its constructor is async !!
      * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
      */
     constructor(){
@@ -12,7 +13,6 @@ class GraphQLClient {
             return GraphQLClient._instance
         }
         GraphQLClient._instance = this;
-
         this.url = "https://api.fairsharing.org/graphql";
         this.headers = {
             "Accept": "application/json",
@@ -26,6 +26,11 @@ class GraphQLClient {
         };
         return (async () => {
             this.introspection.all = await this.introspectAll();
+            const graphTypes = this.introspection.all['__schema'].types;
+            const recordGraphType = graphTypes.filter(graphType => graphType.name === "FairsharingRecord")[0].fields;
+            this.introspection.records = Array.from(recordGraphType, elem =>elem.name);
+            const associationGraphType = graphTypes.filter(graphType => graphType.name === "RecordAssociation")[0].fields;
+            this.introspection.recordAssociations = Array.from(associationGraphType, elem =>elem.name);
             return this; // when done
         })();
     }
@@ -38,13 +43,6 @@ class GraphQLClient {
      * @returns {Promise} content - the data retrieved from the API
      */
     async getRecordsOfType(pagination, recordType, fields){
-        // Building the introspect IF it hasn't been already done !
-        if (!this.introspection.records){
-            this.introspection.records = await this.introspectQuery("FairsharingRecord")
-        }
-        if (!this.introspection.recordAssociations){
-            this.introspection.recordAssociations = await this.introspectQuery("RecordAssociation")
-        }
 
         // No need of a if as this will throw an error if failing; You can re-catch the error with a try/catch
         GraphQLClient.validate_fields(Object.values(fields), this.introspection.records);
@@ -75,25 +73,6 @@ class GraphQLClient {
     }
 
     /**
-     * Given the name of a GraphQL query, run the introspection and return the list of allowed fields.
-     * @param {string} queryName - the name a the query to introspect (e.g. "FairsharingRecord")
-     * @return {array}
-     */
-    async introspectQuery(queryName){
-        let query = {
-            query: `{__type(name: "${queryName}"){name fields { name }}}`
-        };
-        try {
-            let resp = await axios.post(this.url, query, this.headers);
-            let data = resp.data.data["__type"].fields;
-            return Array.from(data, elem =>elem.name);
-        }
-        catch(err){
-            throw err;
-        }
-    }
-
-    /**
      * Given a list of fields and allowed fields, verify the validity of input fields
      * @param {array} fields - an array of field names to verify
      * @param {array} allowed_fields - an array of allowed field names to check against
@@ -103,15 +82,14 @@ class GraphQLClient {
         for (let field of fields){
             if (typeof field === "string"){
                 if (allowed_fields.indexOf(field) < 0){
-                    console.warn("Error field " + field + "is not allowed for this query");
+                    console.warn("Error field %s is not allowed for this query", field);
                 }
             }
-            else{
+            else if (typeof field === "object"){
                 if (allowed_fields.indexOf(field.field) < 0){
                     throw new TypeError("Error field " + field.field + " is not allowed for this query");
                 }
             }
-
         }
         return true;
     }
@@ -133,13 +111,26 @@ class GraphQLClient {
                 queryString += queryParams.fields[field] + " "
             }
             else {
-                GraphQLClient.validate_fields(queryParams.fields[field].fieldTarget, this.introspection.recordAssociations);
-                queryString += queryParams.fields[field].query + " "
+                let subQuery = queryParams.fields[field];
+                let subQueryString = `${subQuery.field}{${subQuery.fieldTarget}{`;
+                try {
+                    subQuery[subQuery.fieldTarget].forEach(function(field){
+                        subQueryString += field + " "
+                    });
+                }
+                catch {
+                    console.warn("the field %s is missing the attribute %s", field, subQuery.fieldTarget);
+                }
+
+                subQueryString += "}}";
+                GraphQLClient.validate_fields(subQuery.fieldTarget, this.introspection.recordAssociations);
+                GraphQLClient.validate_fields(subQuery.linkedRecord, this.introspection.records);
+                queryString += subQueryString + " ";
             }
         }
         queryString += "}}}";
         return queryString;
-    }
+    };
 
 
     async introspectAll(){

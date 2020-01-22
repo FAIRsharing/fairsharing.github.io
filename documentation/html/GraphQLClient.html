@@ -225,7 +225,189 @@ Be careful, this is a singleton and trying to cast new instances will return the
             
 <hr>
 <dt>
-    <h4 class="name" id="getRecordsOfType"><span class="type-signature">&lt;async> </span>getRecordsOfType(pagination:, recordType:, fields:)</h4>
+    <h4 class="name" id=".validate_fields"><span class="type-signature">&lt;static> </span>validate_fields(fields, allowed_fields)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Given a list of fields and allowed fields, verify the validity of input fields</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fields</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an array of field names to verify</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>allowed_fields</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an array of allowed field names to check against</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Client_Client.js.html">components/Client/Client.js</a>,
+				 <a href="components_Client_Client.js.html#sunlight-1-line-92">line 92</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getRecordsOfType"><span class="type-signature">&lt;async> </span>getRecordsOfType(pagination, recordType, fields)</h4>
     
     
 </dt>
@@ -268,7 +450,7 @@ Be careful, this is a singleton and trying to cast new instances will return the
 
         <tr>
             
-                <td class="name"><code>pagination:</code></td>
+                <td class="name"><code>pagination</code></td>
             
 
             <td class="type">
@@ -292,7 +474,7 @@ Be careful, this is a singleton and trying to cast new instances will return the
 
         <tr>
             
-                <td class="name"><code>recordType:</code></td>
+                <td class="name"><code>recordType</code></td>
             
 
             <td class="type">
@@ -316,7 +498,7 @@ Be careful, this is a singleton and trying to cast new instances will return the
 
         <tr>
             
-                <td class="name"><code>fields:</code></td>
+                <td class="name"><code>fields</code></td>
             
 
             <td class="type">
@@ -407,7 +589,7 @@ Be careful, this is a singleton and trying to cast new instances will return the
     
             
 <div class="param-desc">
-    <p>content: the data retrieved from the API</p>
+    <p>content - the data retrieved from the API</p>
 </div>
 
 
@@ -419,6 +601,164 @@ Be careful, this is a singleton and trying to cast new instances will return the
     <dd>
         
 <span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="introspectQuery"><span class="type-signature">&lt;async> </span>introspectQuery(queryName)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Given the name of a GraphQL query, run the introspection and return the list of allowed fields.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>queryName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the name a the query to introspect (e.g. &quot;FairsharingRecord&quot;)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Client_Client.js.html">components/Client/Client.js</a>,
+				 <a href="components_Client_Client.js.html#sunlight-1-line-72">line 72</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">array</span>
 
 
 

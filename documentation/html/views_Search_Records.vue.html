@@ -96,11 +96,13 @@
         &lt;h1>{{currentPath}}&lt;/h1>
         &lt;output-table :input_data="content" :headers="tableHeader">
         &lt;/output-table>
-        &lt;div class="card">
-            &lt;div class="card-header">Allowed fields&lt;/div>
-            &lt;div class="card-body">
-                {{fields}}
-            &lt;/div>
+        &lt;div class="container">
+            &lt;div class="card">
+                &lt;div class="card-header">Allowed fields&lt;/div>
+                &lt;div class="card-body">
+                    {{fields}}
+                &lt;/div>
+        &lt;/div>
         &lt;/div>
     &lt;/div>
 &lt;/template>
@@ -131,9 +133,9 @@
                     Domains: "domains",
                     Subjects: "subjects",
                     Taxonomy: "taxonomies",
-                    "Related Database": "recordAssociations{linkedRecord{name id}}",
                     Relationships: {
                         query: "recordAssociations{linkedRecord{name id}}",
+                        field: "recordAssociations",
                         sorting: "registry",
                         labels: [
                             "Related Databases",
@@ -172,11 +174,11 @@
              */
             async function () {
                 let clientModule = this; // The component itself
-                clientModule.fields = await client.introspectQuery("FairsharingRecord");
                 let content = await client.getRecordsOfType(clientModule.pagination,
                                                             clientModule.recordTypes[clientModule.currentPath],
                                                             clientModule.tableHeader);
                 clientModule.content = content.records;
+                this.fields = client.introspection.records;
                 return content;
             }
         }

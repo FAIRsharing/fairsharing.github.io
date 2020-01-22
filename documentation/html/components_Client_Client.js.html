@@ -115,6 +115,9 @@ class GraphQLClient {
             "Content-Type": "application/json"
         };
         this.query_fields = "currentPage perPage totalCount totalPages firstPage ";
+        this.introspection = {
+            records: null
+        }
     }
 
     async getRecordsOfType(pagination, recordType, fields){
@@ -125,6 +128,15 @@ class GraphQLClient {
          * @returns {Promise} content: the data retrieved from the API
          */
 
+        // Building the introspect IF it hasn't been already done !
+        if (!this.introspection.records){
+            this.introspection.records = await this.introspectQuery("FairsharingRecord")
+        }
+
+        // No need of a if as this will throw an error if failing; You can re-catch the error with a try/catch
+        GraphQLClient.validate_fields(Object.values(fields), this.introspection.records);
+
+        // Building the query
         const query_name = "searchFairsharingRecords";
         let queryInput = {
             fields: fields,
@@ -138,6 +150,7 @@ class GraphQLClient {
             query: buildQuery(queryInput)
         };
 
+        // trigger the query
         try {
             let resp = await axios.post(this.url, query, this.headers);
             return resp.data.data[query_name]
@@ -149,6 +162,11 @@ class GraphQLClient {
     }
 
     async introspectQuery(queryName){
+        /**
+         * Given the name of a GraphQL query, run the introspection and return the list of allowed fields.
+         * @param {string} queryName - the name a the query to introspect (e.g. "FairsharingRecord")
+         * @return {array}
+         */
         let query = {
             query: `{__type(name: "${queryName}"){name fields { name }}}`
         };
@@ -162,6 +180,29 @@ class GraphQLClient {
         }
     }
 
+    static validate_fields(fields, allowed_fields){
+        /**
+         * Given a list of fields and allowed fields, verify the validity of input fields
+         * @param {array} fields - an array of field names to verify
+         * @param {array} allowed_fields - an array of allowed field names to check against
+         * @return {boolean}
+         */
+        for (let field of fields){
+            if (typeof field === "string"){
+                if (allowed_fields.indexOf(field) &lt; 0){
+                    throw new TypeError("Error field " + field + "is not allowed for this query");
+                }
+            }
+            else{
+                if (allowed_fields.indexOf(field.field) &lt; 0){
+                    throw new TypeError("Error field " + field.field + " is not allowed for this query");
+                }
+            }
+
+        }
+        return true;
+    }
+
 }
 
 let buildQuery = function(queryParams){
@@ -172,10 +213,10 @@ let buildQuery = function(queryParams){
     queryString += `){ ${queryParams.queryFields} records{`;
 
     for (const field in queryParams.fields){
-        if (typeof queryParams.fields[field] === "string" &amp;&amp; field !== "Related Database") {
+        if (typeof queryParams.fields[field] === "string") {
             queryString += queryParams.fields[field] + " "
         }
-        else if (typeof queryParams.fields[field] !== "string"){
+        else {
             queryString += queryParams.fields[field].query + " "
         }
     }

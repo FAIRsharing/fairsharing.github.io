@@ -26,10 +26,4 @@ describe("Records.vue", () => {
 
     });
 
-    it("has a is_request_valid method to check if the request is valid", function(){
-        expect(wrapper.vm.is_request_valid({})).toBe(true);
-        expect(wrapper.vm.is_request_valid()).toBe(false);
-    });
-
-
 });

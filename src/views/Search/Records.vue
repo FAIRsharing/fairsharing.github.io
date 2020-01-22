@@ -1,8 +1,25 @@
 <template>
-    <div class="outputTable">
+    <div class="outputTable" v-if="client">
         <h1>{{currentPath}}</h1>
+
+        <div class="introspectionQuery">
+            <div class="card"
+                 v-for="(type, index) in queryTypes"
+                 :key="index">
+                <div class="card-header">
+                    <h2>{{type.name}}</h2>
+                </div>
+                <ul>
+                    <li v-for="(field, subindex) in type.fields" :key="subindex">
+                        <b>{{field.name}}:</b> {{field.type}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <output-table :input_data="content" :headers="tableHeader">
         </output-table>
+
         <div class="container">
             <div class="card">
                 <div class="card-header">Allowed fields</div>
@@ -17,8 +34,6 @@
 <script>
     import OutputTable from '../../components/Search/SearchOutputTable'
     import Client from '../../components/Client/Client.js'
-
-    let client = new Client();
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -41,7 +56,9 @@
                     Subjects: "subjects",
                     Taxonomy: "taxonomies",
                     Relationships: {
-                        query: "recordAssociations{linkedRecord{name id}}",
+                        query: "recordAssociations{linkedRecord{name id registry}}",
+                        fieldTarget: ["linkedRecord"],
+                        linkedRecord: ["name", "id", "registry"],
                         field: "recordAssociations",
                         sorting: "registry",
                         labels: [
@@ -64,12 +81,18 @@
                     perPage: 30
                 },
                 content: [],
-                fields: []
+                fields: [],
+                client: null,
             }
         },
         computed: {
             currentPath: function () {
                 return this.$route.path.replace('/', '').capitalize();
+            },
+            queryTypes: function(){
+                return this.client.introspection.all['__schema'].types.filter(function(u){
+                    return u.fields
+                })
             }
         },
         components: {
@@ -80,14 +103,21 @@
              * @returns {Promise}
              */
             async function () {
-                let clientModule = this; // The component itself
-                let content = await client.getRecordsOfType(clientModule.pagination,
-                                                            clientModule.recordTypes[clientModule.currentPath],
-                                                            clientModule.tableHeader);
-                clientModule.content = content.records;
-                this.fields = client.introspection.records;
-                return content;
+                if (this.client){
+                    let clientModule = this; // The component itself
+                    let content = await this.client.getRecordsOfType(clientModule.pagination,
+                        clientModule.recordTypes[clientModule.currentPath],
+                        clientModule.tableHeader);
+                    clientModule.content = content.records;
+                    this.fields = this.client.introspection.records;
+                    return content;
+                }
             }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = await new Client();
+            })
         }
     }
 

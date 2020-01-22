@@ -2,7 +2,9 @@
     <table class="table table-hover">
         <thead>
             <tr>
-                <th v-for="(header, name, index) in headers" :key="index">{{name}}</th>
+                <th v-for="(header, name, index) in headers" :key="index">
+                    {{name}}
+                </th>
             </tr>
         </thead>
         <tbody>

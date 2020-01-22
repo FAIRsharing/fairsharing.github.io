@@ -32,29 +32,7 @@ class GraphQLClient {
          * @returns {Promise} content: the data retrieved from the API
          */
 
-        // Setting up the output fields string
-        let output_fields = "";
-        for (let field in fields){
-            if (field !== "Relationships"){
-                output_fields += fields[field] + " "
-            }
-        }
-
-        // Setting up the rest of the query
         const query_name = "searchFairsharingRecords";
-        const object_type = "records";
-
-        let query_params = "(fairsharingRegistry : " + '"' + recordType + '"';
-        Object.keys(pagination).forEach(function(key){
-            query_params += ` ${key}:${pagination[key]} `;
-        });
-        query_params += ')';
-
-        let queryString = {
-            query: "{" + query_name + query_params + "{ " + this.query_fields + object_type + "{" + output_fields + "}}}"
-        };
-
-        console.log(queryString.query);
         let queryInput = {
             fields: fields,
             pagination: pagination,
@@ -63,10 +41,12 @@ class GraphQLClient {
             recordType: recordType,
             queryFields: this.query_fields
         };
-        buildQuery(queryInput);
+        let query = {
+            query: buildQuery(queryInput)
+        };
 
         try {
-            let resp = await axios.post(this.url, queryString, this.headers);
+            let resp = await axios.post(this.url, query, this.headers);
             return resp.data.data[query_name]
         }
         catch (err){
@@ -96,16 +76,18 @@ let buildQuery = function(queryParams){
     Object.keys(queryParams.pagination).forEach(function(key){
         queryString += ` ${key}:${queryParams.pagination[key]} `;
     });
-    queryString += `){ ${queryParams.queryFields}`;
+    queryString += `){ ${queryParams.queryFields} records{`;
 
     for (const field in queryParams.fields){
         if (typeof queryParams.fields[field] === "string" && field !== "Related Database") {
             queryString += queryParams.fields[field] + " "
         }
+        else if (typeof queryParams.fields[field] !== "string"){
+            queryString += queryParams.fields[field].query + " "
+        }
     }
-    queryString += "}}";
+    queryString += "}}}";
 
-    console.log(queryString);
     return queryString;
 };
 

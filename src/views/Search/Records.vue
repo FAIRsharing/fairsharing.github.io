@@ -38,11 +38,18 @@
                     Domains: "domains",
                     Subjects: "subjects",
                     Taxonomy: "taxonomies",
-                    "Related Database": "recordAssociations{recordAssocLabel linkedRecord{name registry id}}",
-                    Status: "status",
+                    "Related Database": "recordAssociations{linkedRecord{name id}}",
                     Relationships: {
-                        recordAssociations: "{linkedRecord{name doi}}"
-                    }
+                        query: "recordAssociations{linkedRecord{name id}}",
+                        sorting: "registry",
+                        labels: [
+                            "Related Databases",
+                            "Related Standards",
+                            "Related Policies",
+                            "Related Collections/Recommendations",
+                        ]
+                    },
+                    Status: "status",
                 },
                 recordTypes: {
                     Standards: "Standard",

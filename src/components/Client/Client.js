@@ -1,13 +1,9 @@
-/**
- * Our client gets the Data from the API using GraphQL and send them to the web interface
- */
-
 const axios = require('axios');
 
 class GraphQLClient {
     /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end
      * Be careful, this is a singleton and trying to cast new instances will return the existing instance.
-     * @returns {GraphQLClient|*}
+     * @returns {GraphQLClient}
      */
 
     constructor(){
@@ -27,14 +23,14 @@ class GraphQLClient {
         }
     }
 
+    /**
+     * Method to get the records
+     * @param {Object} pagination: contains the current page and number of items per pages
+     * @param {String} recordType: the type of records to retrieve among Standard, Database, Collection and Policy
+     * @param {Object} fields: the fields to retrieve from the object values (key are for labelling only)
+     * @returns {Promise} content: the data retrieved from the API
+     */
     async getRecordsOfType(pagination, recordType, fields){
-        /** Method to get the records
-         * @param {Object} pagination: contains the current page and number of items per pages
-         * @param {String} recordType: the type of records to retrieve among Standard, Database, Collection and Policy
-         * @param {Object} fields: the fields to retrieve from the object values (key are for labelling only)
-         * @returns {Promise} content: the data retrieved from the API
-         */
-
         // Building the introspect IF it hasn't been already done !
         if (!this.introspection.records){
             this.introspection.records = await this.introspectQuery("FairsharingRecord")

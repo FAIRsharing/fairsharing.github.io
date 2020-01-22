@@ -2,32 +2,29 @@
     <div class="outputTable" v-if="client">
         <h1>{{currentPath}}</h1>
 
-        <div class="introspectionQuery">
-            <div class="card"
-                 v-for="(type, index) in queryTypes"
-                 :key="index">
-                <div class="card-header">
-                    <h2>{{type.name}}</h2>
+        <div class="introspectionQuery container-fluid hidden">
+            <div class="row">
+                <div class="col-3"
+                     v-for="(type, index) in queryTypes"
+                     :key="index">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>{{type.name}}</h2>
+                        </div>
+                        <ul>
+                            <li v-for="(field, subindex) in type.fields" :key="subindex">
+                                <b>{{field.name}}:</b> {{field.type}}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <ul>
-                    <li v-for="(field, subindex) in type.fields" :key="subindex">
-                        <b>{{field.name}}:</b> {{field.type}}
-                    </li>
-                </ul>
             </div>
+
         </div>
 
         <output-table :input_data="content" :headers="tableHeader">
         </output-table>
 
-        <div class="container">
-            <div class="card">
-                <div class="card-header">Allowed fields</div>
-                <div class="card-body">
-                    {{fields}}
-                </div>
-        </div>
-        </div>
     </div>
 </template>
 
@@ -56,17 +53,10 @@
                     Subjects: "subjects",
                     Taxonomy: "taxonomies",
                     Relationships: {
-                        query: "recordAssociations{linkedRecord{name id registry}}",
                         fieldTarget: ["linkedRecord"],
                         linkedRecord: ["name", "id", "registry"],
                         field: "recordAssociations",
-                        sorting: "registry",
-                        labels: [
-                            "Related Databases",
-                            "Related Standards",
-                            "Related Policies",
-                            "Related Collections/Recommendations",
-                        ]
+                        sorting: "registry"
                     },
                     Status: "status",
                 },
@@ -81,7 +71,6 @@
                     perPage: 30
                 },
                 content: [],
-                fields: [],
                 client: null,
             }
         },
@@ -98,18 +87,19 @@
         components: {
             OutputTable
         },
-        asyncComputed: {
+        methods: {
             /** This methods get the data from the client depending on the current page.
              * @returns {Promise}
              */
-            async function () {
+            getData: async function () {
                 if (this.client){
                     let clientModule = this; // The component itself
-                    let content = await this.client.getRecordsOfType(clientModule.pagination,
+                    let content = await this.client.getRecordsOfType(
+                        clientModule.pagination,
                         clientModule.recordTypes[clientModule.currentPath],
-                        clientModule.tableHeader);
+                        clientModule.tableHeader
+                    );
                     clientModule.content = content.records;
-                    this.fields = this.client.introspection.records;
                     return content;
                 }
             }
@@ -117,12 +107,22 @@
         mounted: function () {
             this.$nextTick(async function () {
                 this.client = await new Client();
+                await this.getData();
             })
+        },
+        watch: {
+            currentPath: async function (){
+                await this.getData();
+            }
         }
     }
 
 </script>
 
 <style scoped>
+
+    .hidden {
+        display:none;
+    }
 
 </style>

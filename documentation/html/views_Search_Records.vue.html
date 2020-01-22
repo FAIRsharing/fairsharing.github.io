@@ -51,6 +51,13 @@
 				</ul>
 			</li>
 			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#myVue">myVue</a></li>
+				</ul>
+			</li>
+			
 		</ul>
         
             <div class="col-sm-3 col-md-3">
@@ -85,10 +92,27 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-    &lt;div class="outputTable">
+    &lt;div class="outputTable" v-if="client">
         &lt;h1>{{currentPath}}&lt;/h1>
+
+        &lt;div class="introspectionQuery">
+            &lt;div class="card"
+                 v-for="(type, index) in queryTypes"
+                 :key="index">
+                &lt;div class="card-header">
+                    &lt;h2>{{type.name}}&lt;/h2>
+                &lt;/div>
+                &lt;ul>
+                    &lt;li v-for="(field, subindex) in type.fields" :key="subindex">
+                        &lt;b>{{field.name}}:&lt;/b> {{field.type}}
+                    &lt;/li>
+                &lt;/ul>
+            &lt;/div>
+        &lt;/div>
+
         &lt;output-table :input_data="content" :headers="tableHeader">
         &lt;/output-table>
+
         &lt;div class="container">
             &lt;div class="card">
                 &lt;div class="card-header">Allowed fields&lt;/div>
@@ -103,8 +127,6 @@
 &lt;script>
     import OutputTable from '../../components/Search/SearchOutputTable'
     import Client from '../../components/Client/Client.js'
-
-    let client = new Client();
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -127,7 +149,9 @@
                     Subjects: "subjects",
                     Taxonomy: "taxonomies",
                     Relationships: {
-                        query: "recordAssociations{linkedRecord{name id}}",
+                        query: "recordAssociations{linkedRecord{name id registry}}",
+                        fieldTarget: ["linkedRecord"],
+                        linkedRecord: ["name", "id", "registry"],
                         field: "recordAssociations",
                         sorting: "registry",
                         labels: [
@@ -150,12 +174,18 @@
                     perPage: 30
                 },
                 content: [],
-                fields: []
+                fields: [],
+                client: null,
             }
         },
         computed: {
             currentPath: function () {
                 return this.$route.path.replace('/', '').capitalize();
+            },
+            queryTypes: function(){
+                return this.client.introspection.all['__schema'].types.filter(function(u){
+                    return u.fields
+                })
             }
         },
         components: {
@@ -166,14 +196,21 @@
              * @returns {Promise}
              */
             async function () {
-                let clientModule = this; // The component itself
-                let content = await client.getRecordsOfType(clientModule.pagination,
-                                                            clientModule.recordTypes[clientModule.currentPath],
-                                                            clientModule.tableHeader);
-                clientModule.content = content.records;
-                this.fields = client.introspection.records;
-                return content;
+                if (this.client){
+                    let clientModule = this; // The component itself
+                    let content = await this.client.getRecordsOfType(clientModule.pagination,
+                        clientModule.recordTypes[clientModule.currentPath],
+                        clientModule.tableHeader);
+                    clientModule.content = content.records;
+                    this.fields = this.client.introspection.records;
+                    return content;
+                }
             }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = await new Client();
+            })
         }
     }
 

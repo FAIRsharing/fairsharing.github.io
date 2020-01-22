@@ -1,11 +1,11 @@
 const axios = require('axios');
 
 class GraphQLClient {
+
     /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end
      * Be careful, this is a singleton and trying to cast new instances will return the existing instance.
      * @returns {GraphQLClient}
      */
-
     constructor(){
         if (GraphQLClient._instance){
             return GraphQLClient._instance
@@ -25,10 +25,10 @@ class GraphQLClient {
 
     /**
      * Method to get the records
-     * @param {Object} pagination: contains the current page and number of items per pages
-     * @param {String} recordType: the type of records to retrieve among Standard, Database, Collection and Policy
-     * @param {Object} fields: the fields to retrieve from the object values (key are for labelling only)
-     * @returns {Promise} content: the data retrieved from the API
+     * @param {Object} pagination - contains the current page and number of items per pages
+     * @param {String} recordType - the type of records to retrieve among Standard, Database, Collection and Policy
+     * @param {Object} fields - the fields to retrieve from the object values (key are for labelling only)
+     * @returns {Promise} content - the data retrieved from the API
      */
     async getRecordsOfType(pagination, recordType, fields){
         // Building the introspect IF it hasn't been already done !
@@ -64,12 +64,12 @@ class GraphQLClient {
         }
     }
 
+    /**
+     * Given the name of a GraphQL query, run the introspection and return the list of allowed fields.
+     * @param {string} queryName - the name a the query to introspect (e.g. "FairsharingRecord")
+     * @return {array}
+     */
     async introspectQuery(queryName){
-        /**
-         * Given the name of a GraphQL query, run the introspection and return the list of allowed fields.
-         * @param {string} queryName - the name a the query to introspect (e.g. "FairsharingRecord")
-         * @return {array}
-         */
         let query = {
             query: `{__type(name: "${queryName}"){name fields { name }}}`
         };
@@ -83,13 +83,13 @@ class GraphQLClient {
         }
     }
 
+    /**
+     * Given a list of fields and allowed fields, verify the validity of input fields
+     * @param {array} fields - an array of field names to verify
+     * @param {array} allowed_fields - an array of allowed field names to check against
+     * @return {boolean}
+     */
     static validate_fields(fields, allowed_fields){
-        /**
-         * Given a list of fields and allowed fields, verify the validity of input fields
-         * @param {array} fields - an array of field names to verify
-         * @param {array} allowed_fields - an array of allowed field names to check against
-         * @return {boolean}
-         */
         for (let field of fields){
             if (typeof field === "string"){
                 if (allowed_fields.indexOf(field) < 0){

@@ -61,6 +61,8 @@ class GraphQLClient {
             query: this.buildQuery(queryInput)
         };
 
+        console.log(query);
+
         // trigger the query
         try {
             let resp = await axios.post(this.url, query, this.headers);
@@ -133,7 +135,11 @@ class GraphQLClient {
         return queryString;
     };
 
-
+    /**
+     * Query introspection: get all the schemas from the graphQL endpoint and returns a list of allowed
+     * fields/parameters for each possible query
+     * @returns {Promise}
+     */
     async introspectAll(){
         try {
             let resp = await axios.post(this.url, introspectionQuery, this.headers);

@@ -43,7 +43,6 @@
     "jsdoc": "^3.6.3",
     "jsdoc-vuejs": "^3.0.5",
     "ink-docstrap": "^1.3.2",
-    "axios": "*",
-    "vue-async-computed": "^3.8.2"
+    "axios": "*"
   }
 }

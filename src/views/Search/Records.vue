@@ -2,7 +2,7 @@
     <div class="outputTable" v-if="client">
         <h1>{{currentPath}}</h1>
 
-        <div class="introspectionQuery container-fluid hidden">
+        <div class="introspectionQuery container-fluid">
             <div class="row">
                 <div class="col-3"
                      v-for="(type, index) in queryTypes"
@@ -31,6 +31,7 @@
 <script>
     import OutputTable from '../../components/Search/SearchOutputTable'
     import Client from '../../components/Client/Client.js'
+    import searchRecords from '../../components/Client/queries/getRecords.json'
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -93,6 +94,10 @@
              */
             getData: async function () {
                 if (this.client){
+                    searchRecords.queryParam['fairsharingRegistry'] =
+                        `"${this.recordTypes[this.currentPath]}"`;
+                    await this.client.executeQuery(searchRecords, true);
+
                     let clientModule = this; // The component itself
                     let content = await this.client.getRecordsOfType(
                         clientModule.pagination,

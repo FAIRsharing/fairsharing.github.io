@@ -1,17 +1,19 @@
 {
-  "queryName": "searchFairsharingRecord",
+  "queryName": "searchFairsharingRecords",
   "queryParam": {
-    "page": 1,
-    "perPage": 30,
     "fairsharingRegistry": null,
-    "q": null,
-    "domain": "Life Science"
+    "q": null
+  },
+  "pagination": {
+    "page": 1,
+    "perPage": 30
   },
   "queryFields": {
     "elasticSearchFields": [
       "currentPage",
       "perPage",
       "totalCount",
+      "totalPages",
       "firstPage"
     ],
     "target": {
@@ -56,9 +58,14 @@
           "label": "Relationship",
           "name": "recordAssociations",
           "type": "object",
-          "target": ["linkedRecord", "secondTarget"],
+          "target": "linkedRecord",
           "linkedRecord": ["name", "id", "registry"],
-          "secondTarget": ["....."]
+          "sorting": "registry"
+        },
+        {
+          "label": "Status",
+          "name": "status",
+          "type": "string"
         }
       ]
     }

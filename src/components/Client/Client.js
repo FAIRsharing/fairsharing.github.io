@@ -18,7 +18,7 @@ class GraphQLClient {
             "Accept": "application/json",
             "Content-Type": "application/json"
         };
-        this.query_fields = "currentPage perPage totalCount totalPages firstPage ";
+        this.query_fields = "";
         this.introspection = {
             records: null,
             recordAssociations: null,
@@ -31,6 +31,13 @@ class GraphQLClient {
             this.introspection.records = Array.from(recordGraphType, elem =>elem.name);
             const associationGraphType = graphTypes.filter(graphType => graphType.name === "RecordAssociation")[0].fields;
             this.introspection.recordAssociations = Array.from(associationGraphType, elem =>elem.name);
+
+
+            this.introspect = this.introspection.all["__schema"].types;
+            this.allowedQueries = this.introspect.filter(
+                allowedTypes => allowedTypes.name === "Query"
+            )[0];
+
             return this; // when done
         })();
     }
@@ -55,13 +62,11 @@ class GraphQLClient {
             queryName: "searchFairsharingRecords",
             objectType: "records",
             recordType: recordType,
-            queryFields: this.query_fields
+            queryFields: "currentPage perPage totalCount totalPages firstPage "
         };
         let query = {
             query: this.buildQuery(queryInput)
         };
-
-        console.log(query);
 
         // trigger the query
         try {
@@ -148,6 +153,150 @@ class GraphQLClient {
         catch(err){
             throw err;
         }
+    }
+
+    /**
+     * Execute the given query (coming from a json file, see /queries/getRecords.json)
+     * @param {Object} query - the query coming from the JSON file
+     * @param {Boolean} validate - control whether or not to trigger the query validation by the client before
+     * sending to the API.
+     * @returns {Promise}
+     */
+    async executeQuery(query, validate){
+        if (validate){
+            this.validateQuery(query);
+        }
+        let queryString = this.queryBuilder({
+                fields: query.queryFields.target.fields,
+                pagination: query.pagination,
+                queryName: query.queryName,
+                objectType: query.queryFields.target.name,
+                queryFields: query.queryFields["elasticSearchFields"].join(" ") + " ",
+                queryParam: query["queryParam"]
+            });
+
+        // trigger the query
+        try {
+            let resp = await axios.post(this.url, queryString, this.headers);
+            return resp.data.data
+        }
+        catch (err){
+            console.log(err);
+            throw err;
+        }
+
+    }
+
+    /**
+     * Transform the JSON query into a string for graphQL
+     * @param {Object} query - the query coming from the JSON file
+     * @returns {Object} {query: queryString} - a valid graphQL query string to execute
+     */
+    queryBuilder(query){
+        let queryString = `{${query.queryName}( `;
+        Object.keys(query.pagination).forEach(function(key){
+            queryString += ` ${key}:${query.pagination[key]} `;
+        });
+
+        Object.keys(query.queryParam).forEach(function(key){
+            if (query.queryParam[key]){
+                queryString += ` ${key}:${query.queryParam[key]} `;
+            }
+        });
+        queryString += `){ ${query.queryFields} ${query.objectType}{`;
+
+        Object.keys(query.fields).forEach(function(key){
+            let field = query.fields[key];
+            if (field.type === "string"){
+                queryString += field.name + " ";
+            }
+            else if (field.type === "object"){
+                if (Object.keys(field).indexOf(field.target) < 0 ){
+                    throw new Error(`the field ${field.name} is missing the attribute ${field.target}`);
+                }
+
+                queryString += `${field.name}{${field.target}{`;
+                queryString += field[field.target].join(" ");
+                queryString += "}} ";
+            }
+        });
+        queryString += "}}}";
+        return {query: queryString};
+
+    }
+
+    /**
+     * Validates the given query based on introspection
+     * @param {Object} query - the query coming from the JSON file
+     */
+    validateQuery(query){
+
+        const validVarTypes = {
+            "Int": "number",
+            "string": "string"
+        };
+
+        // validate query name and state
+        if (this.allowedQueries.fields.filter(allowedQuery => allowedQuery.name === query.queryName).length === 0){
+            throw new Error(`Query ${query.queryName} isn't allowed on this API`);
+        }
+        const queryMeta = this.allowedQueries.fields.filter(allowedQuery => allowedQuery.name === query.queryName)[0];
+        if (queryMeta['isDeprecated']){
+            // maybe should just warn at this point ?
+            throw new Error(`Query ${query.queryName} is deprecated: ${query['deprecationReason']}`);
+        }
+        const queryOfType = this.introspect.filter(allowedType => allowedType.name === queryMeta.type["ofType"].name)[0];
+
+        // validate pagination parameters
+        const allowedArgs = queryMeta.args;
+        Object.keys(query.pagination).forEach(function(paginationArg){
+            const currentArgument = query.pagination[paginationArg];
+            const allowedArguments = allowedArgs.filter(allowedArg => allowedArg.name === paginationArg);
+            // validate the current parameter
+            if (allowedArguments.length === 0){
+                throw new Error(`Parameter ${paginationArg} is not allowed for query ${query.queryName}`);
+            }
+            const argumentType = allowedArguments[0].type.name;
+            // validate the current parameter value type
+            if (validVarTypes[argumentType] !== typeof currentArgument && argumentType!== typeof currentArgument){
+                throw new Error(`Parameter ${paginationArg} of query ${query.queryName} should be ${argumentType} but is ${typeof currentArgument}`);
+            }
+        });
+
+
+        /* validate other parameters
+        Object.keys(query.queryParam).forEach(function(paginationArg){
+            const currentArgument = query.queryParam[paginationArg];
+            const allowedArguments = allowedArgs.filter(allowedArg => allowedArg.name === paginationArg);
+            // validate the current parameter
+            if (allowedArguments.length === 0){
+                throw new Error(`Parameter ${paginationArg} is not allowed for query ${query.queryName}`);
+            }
+            console.log(allowedArguments[0]);
+            const argumentType = allowedArguments[0].type.name;
+            // validate the current parameter value type
+            if (validVarTypes[argumentType] !== typeof currentArgument && argumentType!== typeof currentArgument){
+                throw new Error(`Parameter ${paginationArg} of query ${query.queryName} should be ${argumentType} but is ${typeof currentArgument}`);
+            }
+        });*/
+
+        // validate query target and fields
+        const currentQueryFields = queryOfType.fields;
+
+        query.queryFields["elasticSearchFields"].forEach(function(queryField){
+            const isValid = currentQueryFields.filter(allowedTarget => allowedTarget.name === queryField);
+            if (isValid.length === 0){
+                throw new Error(`Field ${queryField} not allowed for query ${query.queryName}`)
+            }
+        });
+
+        const queryTarget = currentQueryFields.filter(allowedTarget => allowedTarget.name === query.queryFields.target.name);
+        if (queryTarget.length < 0){
+            throw new Error(`Target ${query.queryFields.target.name} not allowed for query ${query.queryName}`)
+        }
+        console.log(queryTarget[0])
+
+        //console.log(currentQueryFields);
     }
 
 }

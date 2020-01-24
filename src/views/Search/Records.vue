@@ -2,7 +2,7 @@
     <div class="outputTable" v-if="client">
         <h1>{{currentPath}}</h1>
 
-        <div class="introspectionQuery container-fluid">
+        <div class="introspectionQuery container-fluid hidden">
             <div class="row">
                 <div class="col-3"
                      v-for="(type, index) in queryTypes"
@@ -21,6 +21,11 @@
             </div>
 
         </div>
+
+
+        <form>
+            <input type="text" v-model="searchString">
+        </form>
 
         <output-table :input_data="content" :headers="tableHeader">
         </output-table>
@@ -73,6 +78,7 @@
                 },
                 content: [],
                 client: null,
+                searchString: ""
             }
         },
         computed: {
@@ -94,13 +100,16 @@
              */
             getData: async function () {
                 if (this.client){
+                    // This is data coming from the JSON query
                     if (!searchRecords.hasOwnProperty("queryParam") || searchRecords.queryParam === null){
                         searchRecords.queryParam = {};
                     }
                     searchRecords.queryParam['fairsharingRegistry'] =
                         `"${this.recordTypes[this.currentPath]}"`;
+                    searchRecords.queryParam['q'] = `"${this.searchString}"`;
                     await this.client.executeQuery(searchRecords, true);
 
+                    // this is the OLD method but still active ATM
                     let clientModule = this; // The component itself
                     let content = await this.client.getRecordsOfType(
                         clientModule.pagination,
@@ -120,6 +129,9 @@
         },
         watch: {
             currentPath: async function (){
+                await this.getData();
+            },
+            searchString: async function(){
                 await this.getData();
             }
         }

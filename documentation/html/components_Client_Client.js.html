@@ -161,7 +161,28 @@ class GraphQLClient {
             }
 
             let content = resp.data.data;
-            console.log(content);
+
+            /* group By */
+            query.queryFields.target.fields.forEach(function(queryField){
+                if (queryField.hasOwnProperty("groupBy")){
+                    let sortParamValue = queryField["groupBy"];
+                    let sortParamName = queryField.name;
+                    content[query.queryName][query.queryFields.target.name].forEach(function(record){
+                        if (record[sortParamName].length > 0){
+                            let groupedRecords = {};
+                            record[sortParamName].forEach(function(item){
+                                let localTarget = queryField.target;
+                                if (!groupedRecords.hasOwnProperty(item[localTarget][sortParamValue])){
+                                    groupedRecords[item[localTarget][sortParamValue]] = [];
+                                }
+                                groupedRecords[item[localTarget][sortParamValue]].push(item[localTarget]);
+                            });
+                            record[sortParamName] = groupedRecords;
+                        }
+                    });
+                }
+            });
+
             return content
         }
         catch (err){

@@ -144,22 +144,6 @@
                 /* Be careful, in the current system registry and type are reversed, which is why we have registry bound
                 to type and type bound to registry in the above object.
                 */
-                tableHeader: {
-                    Registry: "type",
-                    Name: "name",
-                    Abbreviation: "abbreviation",
-                    Type: "registry",
-                    Domains: "domains",
-                    Subjects: "subjects",
-                    Taxonomy: "taxonomies",
-                    Relationships: {
-                        fieldTarget: ["linkedRecord"],
-                        linkedRecord: ["name", "id", "registry"],
-                        field: "recordAssociations",
-                        sorting: "registry"
-                    },
-                    Status: "status",
-                },
                 recordTypes: {
                     Standards: "Standard",
                     Databases: "Database",

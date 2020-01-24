@@ -61,7 +61,7 @@
           "type": "object",
           "target": "linkedRecord",
           "linkedRecord": ["name", "id", "registry"],
-          "sorting": "registry"
+          "groupBy": "registry"
         },
         {
           "label": "Status",

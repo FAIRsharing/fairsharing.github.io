@@ -94,6 +94,9 @@
              */
             getData: async function () {
                 if (this.client){
+                    if (!searchRecords.hasOwnProperty("queryParam") || searchRecords.queryParam === null){
+                        searchRecords.queryParam = {};
+                    }
                     searchRecords.queryParam['fairsharingRegistry'] =
                         `"${this.recordTypes[this.currentPath]}"`;
                     await this.client.executeQuery(searchRecords, true);

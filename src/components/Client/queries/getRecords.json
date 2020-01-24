@@ -1,9 +1,6 @@
 {
   "queryName": "searchFairsharingRecords",
-  "queryParam": {
-    "fairsharingRegistry": null,
-    "q": null
-  },
+  "queryParam": null,
   "pagination": {
     "page": 1,
     "perPage": 30

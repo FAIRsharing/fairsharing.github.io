@@ -194,15 +194,20 @@ class GraphQLClient {
      */
     queryBuilder(query){
         let queryString = `{${query.queryName}( `;
-        Object.keys(query.pagination).forEach(function(key){
-            queryString += ` ${key}:${query.pagination[key]} `;
-        });
 
-        Object.keys(query.queryParam).forEach(function(key){
-            if (query.queryParam[key]){
-                queryString += ` ${key}:${query.queryParam[key]} `;
-            }
-        });
+        if (query.pagination !== undefined){
+            Object.keys(query.pagination).forEach(function(key){
+                queryString += ` ${key}:${query.pagination[key]} `;
+            });
+        }
+
+        if (query.queryParam !== undefined){
+            Object.keys(query.queryParam).forEach(function(key){
+                if (query.queryParam[key]){
+                    queryString += ` ${key}:${query.queryParam[key]} `;
+                }
+            });
+        }
         queryString += `){ ${query.queryFields} ${query.objectType}{`;
 
         Object.keys(query.fields).forEach(function(key){
@@ -245,23 +250,24 @@ class GraphQLClient {
             // maybe should just warn at this point ?
             throw new Error(`Query ${query.queryName} is deprecated: ${query['deprecationReason']}`);
         }
-        const queryOfType = this.introspect.filter(allowedType => allowedType.name === queryMeta.type["ofType"].name)[0];
 
         // validate pagination parameters
         const allowedArgs = queryMeta.args;
-        Object.keys(query.pagination).forEach(function(paginationArg){
-            const currentArgument = query.pagination[paginationArg];
-            const allowedArguments = allowedArgs.filter(allowedArg => allowedArg.name === paginationArg);
-            // validate the current parameter
-            if (allowedArguments.length === 0){
-                throw new Error(`Parameter ${paginationArg} is not allowed for query ${query.queryName}`);
-            }
-            const argumentType = allowedArguments[0].type.name;
-            // validate the current parameter value type
-            if (validVarTypes[argumentType] !== typeof currentArgument && argumentType!== typeof currentArgument){
-                throw new Error(`Parameter ${paginationArg} of query ${query.queryName} should be ${argumentType} but is ${typeof currentArgument}`);
-            }
-        });
+        if (query.hasOwnProperty("pagination")) {
+            Object.keys(query.pagination).forEach(function (paginationArg) {
+                const currentArgument = query.pagination[paginationArg];
+                const allowedArguments = allowedArgs.filter(allowedArg => allowedArg.name === paginationArg);
+                // validate the current parameter
+                if (allowedArguments.length === 0) {
+                    throw new Error(`Parameter ${paginationArg} is not allowed for query ${query.queryName}`);
+                }
+                const argumentType = allowedArguments[0].type.name;
+                // validate the current parameter value type
+                if (validVarTypes[argumentType] !== typeof currentArgument && argumentType !== typeof currentArgument) {
+                    throw new Error(`Parameter ${paginationArg} of query ${query.queryName} should be ${argumentType} but is ${typeof currentArgument}`);
+                }
+            });
+        }
 
 
         /* validate other parameters
@@ -281,6 +287,7 @@ class GraphQLClient {
         });*/
 
         // validate query target and fields
+        const queryOfType = this.introspect.filter(allowedType => allowedType.name === queryMeta.type["ofType"].name)[0];
         const currentQueryFields = queryOfType.fields;
 
         query.queryFields["elasticSearchFields"].forEach(function(queryField){
@@ -295,8 +302,6 @@ class GraphQLClient {
             throw new Error(`Target ${query.queryFields.target.name} not allowed for query ${query.queryName}`)
         }
         console.log(queryTarget[0])
-
-        //console.log(currentQueryFields);
     }
 
 }

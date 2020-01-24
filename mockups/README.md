@@ -1,1 +1,1 @@
-# This directory hosts FairSharing mock ups.
+# This directory hosts FairSharing mock ups

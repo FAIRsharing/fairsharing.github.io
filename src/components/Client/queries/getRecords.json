@@ -17,6 +17,10 @@
       "name": "records",
       "fields": [
         {
+          "name": "id",
+          "label": ""
+        },
+        {
           "name": "type",
           "label": "Registry",
           "type": "string"

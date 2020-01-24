@@ -22,19 +22,20 @@
 
         </div>
 
-
         <form>
             <input type="text" v-model="searchString">
         </form>
 
-        <output-table :input_data="content" :headers="tableHeader">
-        </output-table>
+        <!--<output-table :input_data="content" :headers="tableHeader">
+        </output-table>-->
+        <output-grid :input_data="content"></output-grid>
 
     </div>
 </template>
 
 <script>
-    import OutputTable from '../../components/Search/SearchOutputTable'
+    // import OutputTable from '../../components/Search/SearchOutputTable'
+    import OutputGrid from '../../components/Search/SearchOutputGrid'
     import Client from '../../components/Client/Client.js'
     import searchRecords from '../../components/Client/queries/getRecords.json'
 
@@ -86,13 +87,14 @@
                 return this.$route.path.replace('/', '').capitalize();
             },
             queryTypes: function(){
-                return this.client.introspection.all['__schema'].types.filter(function(u){
+                return this.client.introspection['__schema'].types.filter(function(u){
                     return u.fields
                 })
             }
         },
         components: {
-            OutputTable
+           // OutputTable
+            OutputGrid
         },
         methods: {
             /** This methods get the data from the client depending on the current page.
@@ -105,18 +107,15 @@
                         searchRecords.queryParam = {};
                     }
                     searchRecords.queryParam['fairsharingRegistry'] =
-                        `"${this.recordTypes[this.currentPath]}"`;
-                    searchRecords.queryParam['q'] = `"${this.searchString}"`;
-                    await this.client.executeQuery(searchRecords, true);
-
-                    // this is the OLD method but still active ATM
-                    let clientModule = this; // The component itself
-                    let content = await this.client.getRecordsOfType(
-                        clientModule.pagination,
-                        clientModule.recordTypes[clientModule.currentPath],
-                        clientModule.tableHeader
-                    );
-                    clientModule.content = content.records;
+                        '"' + this.recordTypes[this.currentPath] + '"';
+                    if (this.searchString !== ""){
+                        searchRecords.queryParam['q'] = `"${this.searchString}"`;
+                    }
+                    else {
+                        delete searchRecords.queryParam['q'];
+                    }
+                    let content = await this.client.executeQuery(searchRecords);
+                    this.content = content['searchFairsharingRecords']['records'];
                     return content;
                 }
             }

@@ -8,6 +8,7 @@
             </tr>
         </thead>
         <tbody>
+        {{input_data}}
             <tr v-for="(record, index) in input_data" :key="index">
                 <td v-for="(property, subIndex) in record" :key="subIndex">
                     {{property}}

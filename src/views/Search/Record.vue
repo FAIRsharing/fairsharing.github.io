@@ -1,18 +1,30 @@
 <template>
-    <div class="standard" id="standard_ABA">
-        <h2>ABA Adult Mouse Brain</h2>
+    <div class="standard" :id="content['fairsharingRecord'].id" v-if="content">
+        <h2>{{content['fairsharingRecord'].name}}</h2>
         <p>ID: {{ currentRoute}}</p>
+        <div class="card">
+            <div v-for="(field, label, index) in content['fairsharingRecord']" :key="index">
+                <b>{{label}}: </b> {{field}}
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
+    import Client from '../../components/Client/Client.js'
+    import searchRecords from '../../components/Client/queries/getRecord.json'
 
     /** Component to handle the display of single record.
      * @vue-computed {String} currentRoute - the route of the current page
      */
     export default {
         name: "Record",
-        id: 'ABA',
+        data() {
+            return {
+                content: null
+            }
+        },
         computed: {
             currentRoute: function () {
                 return this.$route.params['id']
@@ -24,6 +36,11 @@
              */
             getTitle: function(){
                 return 'FAIRsharing | ' + this.currentRoute
+            },
+            getData: async function(){
+                searchRecords.queryParam["id"] = this.currentRoute;
+                let data = await this.client.executeQuery(searchRecords);
+                this.content = data;
             }
         },
         /**
@@ -34,7 +51,13 @@
             return {
                 title: this.getTitle()
             }
-        }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = await new Client();
+                await this.getData();
+            })
+        },
     }
 </script>
 

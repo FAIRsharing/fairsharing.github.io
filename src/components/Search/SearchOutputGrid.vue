@@ -4,7 +4,7 @@
             <div v-for="(record, index) in input_data" :key="index" class="col col-xl-4 col-lg-4 col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        {{record.name}}
+                        <a v-bind:href="'#/'+record.id">{{record.name}}</a>
                     </div>
                     <div class="card-body">
                         <div v-for="(itemVal, itemKey, subIndex) in record" :key="subIndex">

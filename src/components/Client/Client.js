@@ -74,19 +74,34 @@ class GraphQLClient {
                 if (queryField.hasOwnProperty("groupBy")){
                     let sortParamValue = queryField["groupBy"];
                     let sortParamName = queryField.name;
-                    content[query.queryName][query.queryFields.target.name].forEach(function(record){
-                        if (record[sortParamName].length > 0){
-                            let groupedRecords = {};
-                            record[sortParamName].forEach(function(item){
-                                let localTarget = queryField.target;
-                                if (!groupedRecords.hasOwnProperty(item[localTarget][sortParamValue])){
-                                    groupedRecords[item[localTarget][sortParamValue]] = [];
-                                }
-                                groupedRecords[item[localTarget][sortParamValue]].push(item[localTarget]);
-                            });
-                            record[sortParamName] = groupedRecords;
-                        }
-                    });
+
+                    if (content[query.queryName][query.queryFields.target.name]){
+                        content[query.queryName][query.queryFields.target.name].forEach(function(record){
+                            if (record[sortParamName].length > 0){
+                                let groupedRecords = {};
+                                record[sortParamName].forEach(function(item){
+                                    let localTarget = queryField.target;
+                                    if (!groupedRecords.hasOwnProperty(item[localTarget][sortParamValue])){
+                                        groupedRecords[item[localTarget][sortParamValue]] = [];
+                                    }
+                                    groupedRecords[item[localTarget][sortParamValue]].push(item[localTarget]);
+                                });
+                                record[sortParamName] = groupedRecords;
+                            }
+                        });
+                    }
+                    else {
+                        let groupedRecords = {};
+                        content[query.queryName][sortParamName].forEach(function(rec){
+                            let localTarget = queryField.target;
+                            if (!groupedRecords.hasOwnProperty(rec[localTarget][sortParamValue])){
+                                groupedRecords[rec[localTarget][sortParamValue]] = []
+                            }
+                            groupedRecords[rec[localTarget][sortParamValue]].push(rec[localTarget]);
+                        });
+                        content[query.queryName][sortParamName] = groupedRecords;
+                    }
+
                 }
             });
 
@@ -106,20 +121,23 @@ class GraphQLClient {
     queryBuilder(query){
         let queryString = `{${query.queryName}( `;
 
-        if (query.pagination !== undefined){
+        if (query.pagination){
             Object.keys(query.pagination).forEach(function(key){
                 queryString += ` ${key}:${query.pagination[key]} `;
             });
         }
-
-        if (query.queryParam !== undefined){
+        if (query.queryParam){
             Object.keys(query.queryParam).forEach(function(key){
                 if (query.queryParam[key]){
                     queryString += ` ${key}:${query.queryParam[key]} `;
                 }
             });
         }
-        queryString += `){ ${query.queryFields} ${query.objectType}{`;
+
+        queryString += "){";
+        if (query.objectType){
+            queryString += `${query.queryFields} ${query.objectType}{`;
+        }
 
         Object.keys(query.fields).forEach(function(key){
             let field = query.fields[key];
@@ -136,7 +154,10 @@ class GraphQLClient {
                 queryString += "}} ";
             }
         });
-        queryString += "}}}";
+        queryString += "}}";
+        if (query.objectType){
+            queryString += "}";
+        }
         return {query: queryString};
 
     }

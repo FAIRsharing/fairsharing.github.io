@@ -1,24 +1,19 @@
 {
-  "queryName": "searchFairsharingRecords",
-  "queryParam": null,
-  "pagination": {
-    "page": 1,
-    "perPage": 30
+  "queryName": "fairsharingRecord",
+  "queryParam": {
   },
   "queryFields": {
-    "elasticSearchFields": [
-      "currentPage",
-      "perPage",
-      "totalCount",
-      "totalPages",
-      "firstPage"
-    ],
+    "elasticSearchFields": [],
     "target": {
-      "name": "records",
       "fields": [
         {
           "name": "id",
           "label": "id",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "label": "description",
           "type": "string"
         },
         {

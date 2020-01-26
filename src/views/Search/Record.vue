@@ -7,6 +7,11 @@
                 <b>{{label}}: </b> {{field}}
             </div>
         </div>
+        <div class="card">
+            <div v-for="(field, label, index) in domains" :key="index">
+                <b>{{label}}: </b> {{field}}
+            </div>
+        </div>
 
     </div>
 </template>
@@ -14,6 +19,7 @@
 <script>
     import Client from '../../components/Client/Client.js'
     import searchRecords from '../../components/Client/queries/getRecord.json'
+    import getDomain from '../../components/Client/queries/getDomains.json'
 
     /** Component to handle the display of single record.
      * @vue-computed {String} currentRoute - the route of the current page
@@ -22,7 +28,8 @@
         name: "Record",
         data() {
             return {
-                content: null
+                content: null,
+                domains: null
             }
         },
         computed: {
@@ -41,6 +48,9 @@
                 searchRecords.queryParam["id"] = this.currentRoute;
                 let data = await this.client.executeQuery(searchRecords);
                 this.content = data;
+
+                let domains = await this.client.executeQuery(getDomain);
+                this.domains = domains;
             }
         },
         /**

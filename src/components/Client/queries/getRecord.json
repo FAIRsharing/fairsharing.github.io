@@ -7,8 +7,33 @@
     "target": {
       "fields": [
         {
-          "name": "id",
-          "label": "id",
+          "name": "registry",
+          "label": "registry",
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "label": "type",
+          "type": "string"
+        },
+        {
+          "name": "doi",
+          "label": "doi",
+          "type": "string"
+        },
+        {
+          "name": "status",
+          "label": "status",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "label": "name",
+          "type": "string"
+        },
+        {
+          "name": "abbreviation",
+          "label": "abbreviation",
           "type": "string"
         },
         {
@@ -17,52 +42,100 @@
           "type": "string"
         },
         {
-          "name": "type",
-          "label": "Registry",
-          "type": "string"
-        },
-        {
           "name": "name",
-          "label": "Name",
+          "label": "name",
           "type": "string"
         },
         {
-          "label": "Abbreviation",
-          "name": "abbreviation",
+          "name": "homepage",
+          "label": "homepage",
           "type": "string"
         },
         {
-          "label": "Type",
-          "name": "registry",
+          "name": "countries",
+          "label": "countries",
           "type": "string"
         },
         {
-          "label": "Domains",
-          "name": "domains",
+          "name": "metadata",
+          "label": "metadata",
           "type": "string"
         },
         {
-          "label": "Subjects",
-          "name": "subjects",
-          "type": "string"
-        },
-        {
-          "label": "Taxonomy",
           "name": "taxonomies",
+          "label": "taxonomies",
+          "type": "string"
+        },
+        {
+          "name": "domains",
+          "label": "domains",
+          "type": "string"
+        },
+        {
+          "name": "subjects",
+          "label": "subjects",
+          "type": "string"
+        },
+        {
+          "name": "history",
+          "label": "history",
+          "type": "string"
+        },
+        {
+          "name": "grants",
+          "label": "grants",
+          "type": "string"
+        },
+        {
+          "name": "isRecommended",
+          "label": "Recommended",
+          "type": "string"
+        },
+        {
+          "name": "legacyIds",
+          "label": "Old IDs",
+          "type": "string"
+        },
+        {
+          "name": "legacyLogs",
+          "label": "Old Logs",
+          "type": "string"
+        },
+        {
+          "name": "licences",
+          "label": "Licences",
+          "type": "string"
+        },
+        {
+          "name": "maintainers",
+          "label": "Maintainers",
+          "type": "object",
+          "target": ["username", "id"]
+        },
+        {
+          "name": "organisations",
+          "label": "Organisations",
+          "type": "string"
+        },
+        {
+          "name": "publications",
+          "label": "Publications",
           "type": "string"
         },
         {
           "label": "Relationship",
           "name": "recordAssociations",
           "type": "object",
-          "target": "linkedRecord",
-          "linkedRecord": ["name", "id", "registry"],
-          "groupBy": "registry"
+          "target": ["linkedRecord", "recordAssocLabel"],
+          "linkedRecord": {
+            "fields": ["name", "id", "registry"]
+          }
         },
         {
-          "label": "Status",
-          "name": "status",
-          "type": "string"
+          "label": "Reviews",
+          "name": "reviews",
+          "type": "object",
+          "target":  ["id", "fairsharingRecordId", "createdAt", "userId"]
         }
       ]
     }

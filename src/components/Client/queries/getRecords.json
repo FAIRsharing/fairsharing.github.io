@@ -60,8 +60,10 @@
           "label": "Relationship",
           "name": "recordAssociations",
           "type": "object",
-          "target": "linkedRecord",
-          "linkedRecord": ["name", "id", "registry"],
+          "target": ["linkedRecord"],
+          "linkedRecord": {
+            "fields": ["name", "id", "registry"]
+          },
           "groupBy": "registry"
         },
         {

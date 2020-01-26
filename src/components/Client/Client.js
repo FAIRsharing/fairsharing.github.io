@@ -62,6 +62,7 @@ class GraphQLClient {
 
         // trigger the query
         try {
+            console.log(queryString.query);
             let resp = await axios.post(this.url, queryString, this.headers);
             if (resp.data.errors){
                 throw new Error(resp.data.errors[0].message);
@@ -145,13 +146,19 @@ class GraphQLClient {
                 queryString += field.name + " ";
             }
             else if (field.type === "object"){
-                if (Object.keys(field).indexOf(field.target) < 0 ){
-                    throw new Error(`the field ${field.name} is missing the attribute ${field.target}`);
-                }
+                queryString += field.name + "{";
+                field.target.forEach(function(target){
+                    if (Object.keys(field).indexOf(target) > 0){
+                        queryString += `${target}{`;
+                        queryString += field[target].fields.join(" ");
+                        queryString += "} ";
+                    }
+                    else {
+                        queryString += target + " " ;
+                    }
 
-                queryString += `${field.name}{${field.target}{`;
-                queryString += field[field.target].join(" ");
-                queryString += "}} ";
+                });
+                queryString += "} ";
             }
         });
         queryString += "}}";

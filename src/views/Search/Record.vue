@@ -64,7 +64,7 @@
         },
         mounted: function () {
             this.$nextTick(async function () {
-                this.client = await new Client();
+                this.client = new Client();
                 await this.getData();
             })
         },

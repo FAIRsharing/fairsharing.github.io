@@ -1,5 +1,5 @@
-import {shallowMount} from "@vue/test-utils"
-import OutputGrid from "./SearchOutputGrid.vue"
+import {shallowMount} from "@vue/test-utils";
+import OutputGrid from "./SearchOutputGrid.vue";
 
 describe("SearchOutputGrid.vue", function(){
     let wrapper;

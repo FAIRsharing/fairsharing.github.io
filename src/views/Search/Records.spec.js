@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils"
+import {shallowMount} from "@vue/test-utils"
 import Records from "./Records.vue"
 import Client from "../../components/Client/Client.js"
 const sinon = require("sinon");

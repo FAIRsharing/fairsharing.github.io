@@ -4,15 +4,15 @@
 
 <script>
 /**
- * All static pages will be handle through this namespace
- * @namespace Static
- */
+* All static pages will be handle through this namespace
+* @namespace Static
+*/
 /** This component handles the sign-up/register page
- * @memberOf Static
- * @name Community
- * @type module
- * @instance
- * */
+* @memberOf Static
+* @name Community
+* @type module
+* @instance
+* */
     export default {
         name: "Community",
         title: "This will be the community page",

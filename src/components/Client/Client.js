@@ -1,4 +1,3 @@
-import introspectionQuery from "./introspectionQuery.js"
 const axios = require('axios');
 
 class GraphQLClient {
@@ -18,30 +17,6 @@ class GraphQLClient {
             "Accept": "application/json",
             "Content-Type": "application/json"
         };
-        return (async () => {
-            this.introspection = await this.introspectAll();
-            this.introspect = this.introspection["__schema"].types;
-            this.allowedQueries = this.introspect.filter(
-                allowedTypes => allowedTypes.name === "Query"
-            )[0];
-
-            return this; // when done
-        })();
-    }
-
-    /**
-     * Query introspection: get all the schemas from the graphQL endpoint and returns a list of allowed
-     * fields/parameters for each possible query
-     * @returns {Promise}
-     */
-    async introspectAll(){
-        try {
-            let resp = await axios.post(this.url, introspectionQuery, this.headers);
-            return resp.data.data;
-        }
-        catch(err){
-            throw err;
-        }
     }
 
     /**
@@ -167,80 +142,6 @@ class GraphQLClient {
         }
         return {query: queryString};
 
-    }
-
-    /**
-     * Validates the given query based on introspection
-     * @param {Object} query - the query coming from the JSON file
-     * TODO: finish the validation (currently server side)
-     */
-    validateQuery(query){
-
-        const validVarTypes = {
-            "Int": "number",
-            "string": "string"
-        };
-
-        // validate query name and state
-        if (this.allowedQueries.fields.filter(allowedQuery => allowedQuery.name === query.queryName).length === 0){
-            throw new Error(`Query ${query.queryName} isn't allowed on this API`);
-        }
-        const queryMeta = this.allowedQueries.fields.filter(allowedQuery => allowedQuery.name === query.queryName)[0];
-        if (queryMeta['isDeprecated']){
-            // maybe should just warn at this point ?
-            throw new Error(`Query ${query.queryName} is deprecated: ${query['deprecationReason']}`);
-        }
-
-        // validate pagination parameters
-        const allowedArgs = queryMeta.args;
-        if (query.hasOwnProperty("pagination")) {
-            Object.keys(query.pagination).forEach(function (paginationArg) {
-                const currentArgument = query.pagination[paginationArg];
-                const allowedArguments = allowedArgs.filter(allowedArg => allowedArg.name === paginationArg);
-                // validate the current parameter
-                if (allowedArguments.length === 0) {
-                    throw new Error(`Parameter ${paginationArg} is not allowed for query ${query.queryName}`);
-                }
-                const argumentType = allowedArguments[0].type.name;
-                // validate the current parameter value type
-                if (validVarTypes[argumentType] !== typeof currentArgument && argumentType !== typeof currentArgument) {
-                    throw new Error(`Parameter ${paginationArg} of query ${query.queryName} should be ${argumentType} but is ${typeof currentArgument}`);
-                }
-            });
-        }
-
-
-        /* validate other parameters
-        Object.keys(query.queryParam).forEach(function(paginationArg){
-            const currentArgument = query.queryParam[paginationArg];
-            const allowedArguments = allowedArgs.filter(allowedArg => allowedArg.name === paginationArg);
-            // validate the current parameter
-            if (allowedArguments.length === 0){
-                throw new Error(`Parameter ${paginationArg} is not allowed for query ${query.queryName}`);
-            }
-            console.log(allowedArguments[0]);
-            const argumentType = allowedArguments[0].type.name;
-            // validate the current parameter value type
-            if (validVarTypes[argumentType] !== typeof currentArgument && argumentType!== typeof currentArgument){
-                throw new Error(`Parameter ${paginationArg} of query ${query.queryName} should be ${argumentType} but is ${typeof currentArgument}`);
-            }
-        });*/
-
-        // validate query target and fields
-        const queryOfType = this.introspect.filter(allowedType => allowedType.name === queryMeta.type["ofType"].name)[0];
-        const currentQueryFields = queryOfType.fields;
-
-        query.queryFields["elasticSearchFields"].forEach(function(queryField){
-            const isValid = currentQueryFields.filter(allowedTarget => allowedTarget.name === queryField);
-            if (isValid.length === 0){
-                throw new Error(`Field ${queryField} not allowed for query ${query.queryName}`)
-            }
-        });
-
-        const queryTarget = currentQueryFields.filter(allowedTarget => allowedTarget.name === query.queryFields.target.name);
-        if (queryTarget.length === 0){
-            throw new Error(`Target ${query.queryFields.target.name} not allowed for query ${query.queryName}`)
-        }
     }
 
 }

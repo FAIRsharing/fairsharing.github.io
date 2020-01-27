@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import {shallowMount, createLocalVue} from "@vue/test-utils"
 import VueRouter from "vue-router"
 import Footer from "./Footer.vue"
 

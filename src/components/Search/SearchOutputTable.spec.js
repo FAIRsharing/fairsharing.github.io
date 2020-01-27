@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils"
+import {shallowMount} from "@vue/test-utils"
 import OutputTable from "./SearchOutputTable.vue"
 
 describe("SearchOutputTable.vue", function(){

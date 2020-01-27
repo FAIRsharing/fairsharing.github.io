@@ -1,35 +1,11 @@
 <template>
     <div class="outputTable" v-if="client">
         <h1>{{currentPath}}</h1>
-
-        <div class="introspectionQuery container-fluid hidden">
-            <div class="row">
-                <div class="col-3"
-                     v-for="(type, index) in queryTypes"
-                     :key="index">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2>{{type.name}}</h2>
-                        </div>
-                        <ul>
-                            <li v-for="(field, subindex) in type.fields" :key="subindex">
-                                <b>{{field.name}}:</b> {{field.type}}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
         <form>
             <input type="text" v-model="searchString">
+            <button type="button" @click="getData()">Search</button>
         </form>
-
-        <!--<output-table :input_data="content" :headers="tableHeader">
-        </output-table>-->
         <output-grid :input_data="content"></output-grid>
-
     </div>
 </template>
 
@@ -69,11 +45,6 @@
         computed: {
             currentPath: function () {
                 return this.$route.path.replace('/', '').capitalize();
-            },
-            queryTypes: function(){
-                return this.client.introspection['__schema'].types.filter(function(u){
-                    return u.fields
-                })
             }
         },
         components: {
@@ -90,8 +61,9 @@
                     if (!searchRecords.hasOwnProperty("queryParam") || searchRecords.queryParam === null){
                         searchRecords.queryParam = {};
                     }
+                    searchRecords.pagination = this.pagination;
                     searchRecords.queryParam['fairsharingRegistry'] =
-                        '"' + this.recordTypes[this.currentPath] + '"';
+                        "\"" + this.recordTypes[this.currentPath] + "\"";
                     if (this.searchString !== ""){
                         searchRecords.queryParam['q'] = `"${this.searchString}"`;
                     }
@@ -106,15 +78,12 @@
         },
         mounted: function () {
             this.$nextTick(async function () {
-                this.client = await new Client();
+                this.client = new Client();
                 await this.getData();
             })
         },
         watch: {
             currentPath: async function (){
-                await this.getData();
-            },
-            searchString: async function(){
                 await this.getData();
             }
         }

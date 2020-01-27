@@ -75,19 +75,16 @@ describe("GraphQL Client", function(){
         expect(groupedOutput).toBe(false);
     });
 
-    /*it("can properly raise errors", async function(){
+    it("can properly raise errors", async function(){
         postStub.withArgs(0).returns({
-            data: {errors: [{messages: ""}]}
+            data: {errors: [{messages: "abc"}]}
         });
         sinon.stub(Client.prototype, "queryBuilder").withArgs(sinon.match.any).returns(0);
-
-        expect(await client.executeQuery(query)).toThrow();
-
-
+        await expect(client.executeQuery(query)).rejects;
         axios.post.restore();
         Client.prototype.queryBuilder.restore();
         postStub.restore();
-    })*/
+    })
 
 
 });

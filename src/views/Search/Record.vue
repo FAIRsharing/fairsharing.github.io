@@ -19,7 +19,6 @@
 <script>
     import Client from '../../components/Client/Client.js'
     import searchRecords from '../../components/Client/queries/getRecord.json'
-    import getDomain from '../../components/Client/queries/getDomains.json'
 
     /** Component to handle the display of single record.
      * @vue-computed {String} currentRoute - the route of the current page
@@ -46,11 +45,7 @@
             },
             getData: async function(){
                 searchRecords.queryParam["id"] = this.currentRoute;
-                let data = await this.client.executeQuery(searchRecords);
-                this.content = data;
-
-                let domains = await this.client.executeQuery(getDomain);
-                this.domains = domains;
+                this.content = await this.client.executeQuery(searchRecords);
             }
         },
         /**

@@ -6,10 +6,11 @@ const axios = require("axios");
 describe("GraphQL Client", function(){
     let client;
     let searchFairsharingRecords = {records: [{}]};
+    let postStub = sinon.stub(axios, "post");
 
     beforeAll( () => {
         client = new Client();
-        sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
+        postStub.withArgs(sinon.match.any).returns({
             data: {
                 data: {
                     searchFairsharingRecords
@@ -19,7 +20,7 @@ describe("GraphQL Client", function(){
     });
 
     afterAll(() => {
-       axios.post.restore()
+        postStub.restore()
     });
 
     it("can be instantiated as a singleton", function(){
@@ -31,7 +32,8 @@ describe("GraphQL Client", function(){
         query.queryParam = {
             "registry": "whatever"
         };
-        sinon.stub(Client.prototype, "groupBy").withArgs(sinon.match.any).returns([123]);
+        let groupStub = sinon.stub(Client.prototype, "groupBy");
+        groupStub.withArgs(sinon.match.any).returns([123]);
         let output = await client.executeQuery(query);
         expect(JSON.stringify(output)).toBe(JSON.stringify({
             searchFairsharingRecords: {
@@ -40,7 +42,7 @@ describe("GraphQL Client", function(){
                 }]
             }
         }));
-        Client.prototype.groupBy.restore();
+        groupStub.restore();
     });
 
     it("can groupBy a given array of object based on target property", function(){
@@ -72,6 +74,20 @@ describe("GraphQL Client", function(){
         groupedOutput = client.groupBy({}, "type", "target");
         expect(groupedOutput).toBe(false);
     });
+
+    /*it("can properly raise errors", async function(){
+        postStub.withArgs(0).returns({
+            data: {errors: [{messages: ""}]}
+        });
+        sinon.stub(Client.prototype, "queryBuilder").withArgs(sinon.match.any).returns(0);
+
+        expect(await client.executeQuery(query)).toThrow();
+
+
+        axios.post.restore();
+        Client.prototype.queryBuilder.restore();
+        postStub.restore();
+    })*/
 
 
 });

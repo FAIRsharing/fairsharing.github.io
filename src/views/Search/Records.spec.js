@@ -1,11 +1,28 @@
 import { shallowMount } from "@vue/test-utils"
 import Records from "./Records.vue"
 
+import Client from "../../components/Client/Client.js"
+const sinon = require("sinon");
+
 const $route = {
     path: "/standards"
 };
 
 describe("Records.vue", () => {
+
+    beforeAll( () => {
+        sinon.stub(Client.prototype, "executeQuery").withArgs(sinon.match.object).returns({
+            searchFairsharingRecords: {
+                records: [
+                    1
+                ]
+            }
+        });
+    });
+
+    afterAll( () => {
+       Client.prototype.executeQuery.restore();
+    });
 
     // Set up the wrapper
     let wrapper;

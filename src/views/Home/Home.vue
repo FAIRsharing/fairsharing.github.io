@@ -9,11 +9,7 @@
      */
 
     let myVue = {
-        name: "Home",
-        data(){
-            return {
-            }
-        }
+        name: "Home"
     };
 
     export default myVue;

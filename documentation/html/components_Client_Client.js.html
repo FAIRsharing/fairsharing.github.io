@@ -165,6 +165,13 @@ class GraphQLClient {
 
     }
 
+    /**
+     * Giving an array of items, a field and a target, group these items based on the field value.
+     * @param {Array} data - an array of objects
+     * @param {string} field - the name of the property of groupBy
+     * @param {string} target - the target object inside the array (due to graphQL output structure)
+     * @returns {Object | boolean} - Either return the grouped array as an object or false if the array was empty
+     */
     groupBy(data, field, target) {
         let output = {};
         if (data.length > 0) {

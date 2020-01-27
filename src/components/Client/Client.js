@@ -26,6 +26,9 @@ class GraphQLClient {
      * @returns {Promise}
      */
     async executeQuery(query){
+
+        let client = this;
+
         let queryString = this.queryBuilder({
                 fields: query.queryFields.target.fields,
                 pagination: query.pagination,
@@ -37,7 +40,6 @@ class GraphQLClient {
 
         // trigger the query
         try {
-            console.log(queryString.query);
             let resp = await axios.post(this.url, queryString, this.headers);
             if (resp.data.errors){
                 throw new Error(resp.data.errors[0].message);
@@ -47,37 +49,18 @@ class GraphQLClient {
 
             /* group By */
             query.queryFields.target.fields.forEach(function(queryField){
-                if (queryField.hasOwnProperty("groupBy")){
-                    let sortParamValue = queryField["groupBy"];
-                    let sortParamName = queryField.name;
+                if (queryField.type === "object"){
+                    queryField.target.forEach(function(target){
+                        if (queryField.hasOwnProperty(target) && queryField[target].hasOwnProperty("groupBy")){
+                            content[query.queryName][query.queryFields.target.name].forEach(function(record){
+                                const groupedData = client.groupBy(record[queryField.name], queryField[target]["groupBy"], target);
+                                if (groupedData){
+                                    record[queryField.name] = groupedData;
+                                }
+                            });
 
-                    if (content[query.queryName][query.queryFields.target.name]){
-                        content[query.queryName][query.queryFields.target.name].forEach(function(record){
-                            if (record[sortParamName].length > 0){
-                                let groupedRecords = {};
-                                record[sortParamName].forEach(function(item){
-                                    let localTarget = queryField.target;
-                                    if (!groupedRecords.hasOwnProperty(item[localTarget][sortParamValue])){
-                                        groupedRecords[item[localTarget][sortParamValue]] = [];
-                                    }
-                                    groupedRecords[item[localTarget][sortParamValue]].push(item[localTarget]);
-                                });
-                                record[sortParamName] = groupedRecords;
-                            }
-                        });
-                    }
-                    else {
-                        let groupedRecords = {};
-                        content[query.queryName][sortParamName].forEach(function(rec){
-                            let localTarget = queryField.target;
-                            if (!groupedRecords.hasOwnProperty(rec[localTarget][sortParamValue])){
-                                groupedRecords[rec[localTarget][sortParamValue]] = []
-                            }
-                            groupedRecords[rec[localTarget][sortParamValue]].push(rec[localTarget]);
-                        });
-                        content[query.queryName][sortParamName] = groupedRecords;
-                    }
-
+                        }
+                    })
                 }
             });
 
@@ -88,6 +71,22 @@ class GraphQLClient {
         }
 
     }
+
+    groupBy(data, field, target) {
+        let output = {};
+        if (data.length > 0) {
+            data.forEach(function(record){
+                if (!output.hasOwnProperty(record[target][field])){
+                    output[record[target][field]] = []
+                }
+                output[record[target][field]].push(record[target])
+            });
+            return output;
+        }
+        return false;
+
+    }
+
 
     /**
      * Transform the JSON query into a string for graphQL
@@ -143,6 +142,8 @@ class GraphQLClient {
         return {query: queryString};
 
     }
+
+
 
 }
 

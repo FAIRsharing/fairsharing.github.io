@@ -1,6 +1,6 @@
-import {shallowMount} from "@vue/test-utils"
-import Records from "./Records.vue"
-import Client from "../../components/Client/Client.js"
+import { shallowMount } from "@vue/test-utils";
+import Records from "./Records.vue";
+import Client from "../../components/Client/Client.js";
 const sinon = require("sinon");
 
 const $route = {
@@ -49,6 +49,6 @@ describe("Records.vue", () => {
     it("react to path change", async () => {
         $route.path = "Database";
         expect(wrapper.vm.currentPath).toBe($route.path);
-    })
+    });
 
 });

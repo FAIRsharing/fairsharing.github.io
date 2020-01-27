@@ -8,6 +8,10 @@ import VueMeta from "vue-meta"
 import routes from "./router/routes"
 
 
+/* import HTML BoilerPlates */
+import "./styles/css/normalize.css"
+import "./styles/css/main.css"
+
 /* import external libraries */
 import "bootstrap/scss/bootstrap.scss"
 
@@ -29,6 +33,6 @@ router.beforeEach((to, from, next) => {
 
 
 new Vue({
-  render: h => h(App),
-  router
+    render: h => h(App),
+    router
 }).$mount("#app");

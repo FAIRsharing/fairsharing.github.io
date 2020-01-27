@@ -62,9 +62,9 @@
           "type": "object",
           "target": ["linkedRecord"],
           "linkedRecord": {
-            "fields": ["name", "id", "registry"]
-          },
-          "groupBy": "registry"
+            "fields": ["name", "id", "registry"],
+            "groupBy": "registry"
+          }
         },
         {
           "label": "Status",

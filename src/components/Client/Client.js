@@ -42,7 +42,7 @@ class GraphQLClient {
         try {
             let resp = await axios.post(this.url, queryString, this.headers);
             if (resp.data.errors){
-                return new Error(resp.data.errors[0].message);
+                throw new Error(resp.data.errors[0].message);
             }
 
             let content = resp.data.data;
@@ -67,7 +67,7 @@ class GraphQLClient {
             return content
         }
         catch (err){
-            throw err;
+            return err;
         }
 
     }

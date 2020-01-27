@@ -42,7 +42,7 @@ class GraphQLClient {
         try {
             let resp = await axios.post(this.url, queryString, this.headers);
             if (resp.data.errors){
-                throw new Error(resp.data.errors[0].message);
+                return new Error(resp.data.errors[0].message);
             }
 
             let content = resp.data.data;

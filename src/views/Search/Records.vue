@@ -1,5 +1,5 @@
 <template>
-    <div class="outputTable" v-if="client">
+    <div class="outputGrid" v-if="client">
         <h1>{{currentPath}}</h1>
         <form>
             <input type="text" v-model="searchString">
@@ -10,7 +10,6 @@
 </template>
 
 <script>
-    // import OutputTable from '../../components/Search/SearchOutputTable'
     import OutputGrid from '../../components/Search/SearchOutputGrid'
     import Client from '../../components/Client/Client.js'
     import searchRecords from '../../components/Client/queries/getRecords.json'
@@ -44,11 +43,11 @@
         },
         computed: {
             currentPath: function () {
-                return this.$route.path.replace('/', '').capitalize();
+                const title =  this.$route.path.replace('/', '');
+                return title.charAt(0).toUpperCase() + title.slice(1);
             }
         },
         components: {
-           // OutputTable
             OutputGrid
         },
         methods: {
@@ -92,9 +91,4 @@
 </script>
 
 <style scoped>
-
-    .hidden {
-        display:none;
-    }
-
 </style>

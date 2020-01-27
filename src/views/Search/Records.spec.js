@@ -2,8 +2,8 @@ import { shallowMount } from "@vue/test-utils"
 import Records from "./Records.vue"
 
 const $route = {
-    path: "/records"
-}
+    path: "/standards"
+};
 
 describe("Records.vue", () => {
 
@@ -14,16 +14,25 @@ describe("Records.vue", () => {
             mocks: {$route}
         });
     });
-    const title = "Records";
-
+    const title = "Standards";
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.name()).toMatch("Records");
     });
 
     it("has a currentPath computed attribute", () => {
         expect(wrapper.vm.currentPath.toUpperCase()).toMatch(title.toUpperCase());
-
     });
+
+    it("can execute the query with string search", async () => {
+        wrapper.vm.searchString = "First";
+        await wrapper.vm.getData();
+        expect(wrapper.vm.content.length).toBeGreaterThan(0);
+    });
+
+    it("react to path change", async () => {
+        $route.path = "Database";
+        expect(wrapper.vm.currentPath).toBe($route.path);
+    })
 
 });

@@ -28,7 +28,6 @@ describe("Record.vue", function() {
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("Record");
-        expect(wrapper.attributes("id")).toMatch("ABA");
     });
 
     it("has a currentRoute computed property", () => {
@@ -41,4 +40,4 @@ describe("Record.vue", function() {
     });
 
 
-})
+});

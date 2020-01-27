@@ -92,7 +92,7 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-    &lt;div class="outputTable" v-if="client">
+    &lt;div class="outputGrid" v-if="client">
         &lt;h1>{{currentPath}}&lt;/h1>
         &lt;form>
             &lt;input type="text" v-model="searchString">
@@ -103,7 +103,6 @@
 &lt;/template>
 
 &lt;script>
-    // import OutputTable from '../../components/Search/SearchOutputTable'
     import OutputGrid from '../../components/Search/SearchOutputGrid'
     import Client from '../../components/Client/Client.js'
     import searchRecords from '../../components/Client/queries/getRecords.json'
@@ -137,11 +136,11 @@
         },
         computed: {
             currentPath: function () {
-                return this.$route.path.replace('/', '').capitalize();
+                const title =  this.$route.path.replace('/', '');
+                return title.charAt(0).toUpperCase() + title.slice(1);
             }
         },
         components: {
-           // OutputTable
             OutputGrid
         },
         methods: {
@@ -185,11 +184,6 @@
 &lt;/script>
 
 &lt;style scoped>
-
-    .hidden {
-        display:none;
-    }
-
 &lt;/style></pre>
     </article>
 </section>

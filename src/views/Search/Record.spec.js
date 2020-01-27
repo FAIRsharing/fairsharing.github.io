@@ -1,8 +1,8 @@
-import {createLocalVue, shallowMount} from "@vue/test-utils"
-import Record from "./Record.vue"
-import VueMeta from "vue-meta"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Record from "./Record.vue";
+import VueMeta from "vue-meta";
 
-import Client from "../../components/Client/Client.js"
+import Client from "../../components/Client/Client.js";
 const sinon = require("sinon");
 
 const $route = {

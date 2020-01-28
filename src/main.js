@@ -1,15 +1,19 @@
 /*  import base */
-import Vue from "vue"
-import App from "./App.vue"
-import VueRouter from "vue-router"
-import VueMeta from "vue-meta"
+import Vue from "vue";
+import App from "./App.vue";
+import VueRouter from "vue-router";
+import VueMeta from "vue-meta";
 
 /* import routes */
-import routes from "./router/routes"
+import routes from "./router/routes";
 
+
+/* import HTML BoilerPlates */
+import "./styles/css/normalize.css"
+import "./styles/css/main.css"
 
 /* import external libraries */
-import "bootstrap/scss/bootstrap.scss"
+import "bootstrap/scss/bootstrap.scss";
 
 
 Vue.use(VueRouter);
@@ -29,6 +33,6 @@ router.beforeEach((to, from, next) => {
 
 
 new Vue({
-  render: h => h(App),
-  router
+    render: (h) => h(App),
+    router
 }).$mount("#app");

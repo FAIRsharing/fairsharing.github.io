@@ -40,7 +40,21 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecordPage.html">NewRecordPage</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li>
+					<li><a href="module-Footer.html">Footer</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecordPage.html">NewRecordPage</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="GraphQLClient.html">GraphQLClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#myVue">myVue</a></li>
 				</ul>
 			</li>
 			
@@ -78,15 +92,31 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-    &lt;div class="outputTable">
-        &lt;h1>{{currentPath}}&lt;/h1>
-        &lt;output-table>
-        &lt;/output-table>
-    &lt;/div>
+  &lt;div
+    v-if="client"
+    class="outputGrid"
+  >
+    &lt;h1>{{ currentPath }}&lt;/h1>
+    &lt;form>
+      &lt;input
+        v-model="searchString"
+        type="text"
+      >
+      &lt;button
+        type="button"
+        @click="getData()"
+      >
+        Search
+      &lt;/button>
+    &lt;/form>
+    &lt;output-grid :input-data="content" />
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-    import OutputTable from './SearchOutputTable'
+    import OutputGrid from '../../components/Search/SearchOutputGrid'
+    import Client from '../../components/Client/Client.js'
+    import searchRecords from '../../components/Client/queries/getRecords.json'
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -95,35 +125,78 @@
      */
     export default {
         name: "Records",
-        data(){
+        components: {
+            OutputGrid
+        },
+        data() {
             return {
-                valid_request: this.is_request_valid()
+                /* Be careful, in the current system registry and type are reversed, which is why we have registry bound
+                to type and type bound to registry in the above object.
+                */
+                recordTypes: {
+                    Standards: "Standard",
+                    Databases: "Database",
+                    Policies: "Policy",
+                    Collections: "Collection"
+                },
+                pagination: {
+                    page: 1,
+                    perPage: 30
+                },
+                content: [],
+                client: null,
+                searchString: ""
             }
         },
         computed: {
-            currentPath: function(){
-                return this.$route.path.replace('/', '');
+            currentPath: function () {
+                const title =  this.$route.path.replace('/', '');
+                return title.charAt(0).toUpperCase() + title.slice(1);
             }
         },
-        components: {
-            OutputTable
+        watch: {
+            currentPath: async function (){
+                await this.getData();
+            }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = new Client();
+                await this.getData();
+            })
         },
         methods: {
-            /**
-             * Is the request valid
-             * @param {Object} request_body - the request itself
-             * @returns {boolean}
+            /** This methods get the data from the client depending on the current page.
+             * @returns {Promise}
              */
-            is_request_valid(request_body){
-                if (request_body) return true;
-                return false;
+            getData: async function () {
+                if (this.client){
+                    // This is data coming from the JSON query
+                    let recordHasProperty = Object.prototype.hasOwnProperty.call(searchRecords, "queryParam");
+
+                    if (!recordHasProperty || searchRecords.queryParam === null){
+                        searchRecords.queryParam = {};
+                    }
+                    searchRecords.pagination = this.pagination;
+                    searchRecords.queryParam['fairsharingRegistry'] =
+                        "\"" + this.recordTypes[this.currentPath] + "\"";
+                    if (this.searchString !== ""){
+                        searchRecords.queryParam['q'] = `"${this.searchString}"`;
+                    }
+                    else {
+                        delete searchRecords.queryParam['q'];
+                    }
+                    let content = await this.client.executeQuery(searchRecords);
+                    this.content = content['searchFairsharingRecords']['records'];
+                    return content;
+                }
             }
         }
     }
+
 &lt;/script>
 
 &lt;style scoped>
-
 &lt;/style></pre>
     </article>
 </section>
@@ -169,7 +242,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
 	
-		on Thu Dec 12th 2019
+		on Tue Jan 28th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

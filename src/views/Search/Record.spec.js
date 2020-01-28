@@ -1,6 +1,9 @@
-import {createLocalVue, shallowMount} from "@vue/test-utils"
-import Record from "./Record.vue"
-import VueMeta from "vue-meta"
+import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Record from "./Record.vue";
+import VueMeta from "vue-meta";
+
+import Client from "../../components/Client/Client.js";
+const sinon = require("sinon");
 
 const $route = {
     path: "/",
@@ -13,6 +16,19 @@ let localVue = createLocalVue();
 localVue.use(VueMeta);
 
 describe("Record.vue", function() {
+
+    beforeAll( () => {
+        sinon.stub(Client.prototype, "executeQuery").withArgs(sinon.match.object).returns({
+            fairsharingRecord:{
+                id: 1,
+                name: "test"
+            }
+        });
+    });
+
+    afterAll( () => {
+        Client.prototype.executeQuery.restore();
+    });
 
     // Set up the wrapper
     let wrapper;
@@ -28,7 +44,6 @@ describe("Record.vue", function() {
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("Record");
-        expect(wrapper.attributes("id")).toMatch("ABA");
     });
 
     it("has a currentRoute computed property", () => {
@@ -41,4 +56,4 @@ describe("Record.vue", function() {
     });
 
 
-})
+});

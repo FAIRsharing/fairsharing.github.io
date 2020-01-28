@@ -1,19 +1,19 @@
 // webpack.config.js
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 module.exports = {
-    mode: 'development',
+    mode: "development",
     module: {
         rules: [
             {
                 test: /\.vue$/,
-                loader: 'vue-loader'
+                loader: "vue-loader"
             },
             // this will apply to both plain `.js` files
             // AND `<script>` blocks in `.vue` files
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
+                loader: "babel-loader",
                 exclude: /(node_modules|bower_components)/
             },
             // this will apply to both plain `.css` files
@@ -21,8 +21,8 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'vue-style-loader',
-                    'css-loader'
+                    "vue-style-loader",
+                    "css-loader"
                 ]
             }
         ]

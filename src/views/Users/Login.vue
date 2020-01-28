@@ -1,11 +1,15 @@
 <template>
-    <div class="login" id="loginPage">
-        <h2>The login page will be here</h2>
-
-        <div>
-            <router-link to="/accounts/signup">Register</router-link>
-        </div>
+  <div
+    id="loginPage"
+    class="login"
+  >
+    <h2>The login page will be here</h2>
+    <div>
+      <router-link to="/accounts/signup">
+        Register
+      </router-link>
     </div>
+  </div>
 </template>
 
 <script>

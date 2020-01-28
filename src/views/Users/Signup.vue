@@ -1,7 +1,10 @@
 <template>
-    <div class="signUp" id="signUp">
-        <h2>This will be the sign up page</h2>
-    </div>
+  <div
+    id="signUp"
+    class="signUp"
+  >
+    <h2>This will be the sign up page</h2>
+  </div>
 </template>
 
 <script>

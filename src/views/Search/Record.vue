@@ -1,19 +1,28 @@
 <template>
-    <div class="standard" :id="content['fairsharingRecord'].id" v-if="content">
-        <h2>{{content['fairsharingRecord'].name}}</h2>
-        <p>ID: {{ currentRoute}}</p>
-        <div class="card">
-            <div v-for="(field, label, index) in content['fairsharingRecord']" :key="index">
-                <b>{{label}}: </b> {{field}}
-            </div>
-        </div>
-        <div class="card">
-            <div v-for="(field, label, index) in domains" :key="index">
-                <b>{{label}}: </b> {{field}}
-            </div>
-        </div>
-
+  <div
+    v-if="content"
+    :id="content['fairsharingRecord'].id"
+    class="standard"
+  >
+    <h2>{{ content['fairsharingRecord'].name }}</h2>
+    <p>ID: {{ currentRoute }}</p>
+    <div class="card">
+      <div
+        v-for="(field, label, index) in content['fairsharingRecord']"
+        :key="index"
+      >
+        <b>{{ label }}: </b> {{ field }}
+      </div>
     </div>
+    <div class="card">
+      <div
+        v-for="(field, label, index) in domains"
+        :key="index"
+      >
+        <b>{{ label }}: </b> {{ field }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -36,6 +45,12 @@
                 return this.$route.params['id']
             },
         },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = new Client();
+                await this.getData();
+            })
+        },
         methods: {
             /** Method to build and return the page title to be included as a metadata
              *  @returns {String} - the title of the current page
@@ -56,12 +71,6 @@
             return {
                 title: this.getTitle()
             }
-        },
-        mounted: function () {
-            this.$nextTick(async function () {
-                this.client = new Client();
-                await this.getData();
-            })
         },
     }
 </script>

@@ -29,7 +29,7 @@ class GraphQLClient {
 
         let client = this;
 
-        let queryString = this.queryBuilder({
+        let queryString = this.buildQuery({
                 fields: query.queryFields.target.fields,
                 pagination: query.pagination,
                 queryName: query.queryName,
@@ -37,6 +37,7 @@ class GraphQLClient {
                 queryFields: query.queryFields["elasticSearchFields"].join(" ") + " ",
                 queryParam: query["queryParam"]
             });
+
 
         // trigger the query
         try {
@@ -107,7 +108,7 @@ class GraphQLClient {
      * @param {Object} query - the query coming from the JSON file
      * @returns {Object} {query: queryString} - a valid graphQL query string to execute
      */
-    queryBuilder(query){
+    buildQuery(query){
         let queryString = `{${query.queryName}( `;
 
         if (query.pagination){
@@ -156,8 +157,6 @@ class GraphQLClient {
         return {query: queryString};
 
     }
-
-
 
 }
 

@@ -79,10 +79,10 @@ describe("GraphQL Client", function(){
         postStub.withArgs(0).returns({
             data: {errors: [{messages: "abc"}]}
         });
-        sinon.stub(Client.prototype, "queryBuilder").withArgs(sinon.match.any).returns(0);
+        sinon.stub(Client.prototype, "buildQuery").withArgs(sinon.match.any).returns(0);
         await expect(client.executeQuery(query)).rejects;
         axios.post.restore();
-        Client.prototype.queryBuilder.restore();
+        Client.prototype.buildQuery.restore();
         postStub.restore();
     })
 

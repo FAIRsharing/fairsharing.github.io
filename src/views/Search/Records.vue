@@ -1,12 +1,23 @@
 <template>
-    <div class="outputGrid" v-if="client">
-        <h1>{{currentPath}}</h1>
-        <form>
-            <input type="text" v-model="searchString">
-            <button type="button" @click="getData()">Search</button>
-        </form>
-        <output-grid :input_data="content"></output-grid>
-    </div>
+  <div
+    v-if="client"
+    class="outputGrid"
+  >
+    <h1>{{ currentPath }}</h1>
+    <form>
+      <input
+        v-model="searchString"
+        type="text"
+      >
+      <button
+        type="button"
+        @click="getData()"
+      >
+        Search
+      </button>
+    </form>
+    <output-grid :input_data="content" />
+  </div>
 </template>
 
 <script>
@@ -21,6 +32,9 @@
      */
     export default {
         name: "Records",
+        components: {
+            OutputGrid
+        },
         data() {
             return {
                 /* Be careful, in the current system registry and type are reversed, which is why we have registry bound
@@ -47,8 +61,16 @@
                 return title.charAt(0).toUpperCase() + title.slice(1);
             }
         },
-        components: {
-            OutputGrid
+        watch: {
+            currentPath: async function (){
+                await this.getData();
+            }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = new Client();
+                await this.getData();
+            })
         },
         methods: {
             /** This methods get the data from the client depending on the current page.
@@ -73,17 +95,6 @@
                     this.content = content['searchFairsharingRecords']['records'];
                     return content;
                 }
-            }
-        },
-        mounted: function () {
-            this.$nextTick(async function () {
-                this.client = new Client();
-                await this.getData();
-            })
-        },
-        watch: {
-            currentPath: async function (){
-                await this.getData();
             }
         }
     }

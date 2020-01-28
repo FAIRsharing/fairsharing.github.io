@@ -51,7 +51,12 @@ class GraphQLClient {
             query.queryFields.target.fields.forEach(function(queryField){
                 if (queryField.type === "object"){
                     queryField.target.forEach(function(target){
-                        if (queryField.hasOwnProperty(target) && queryField[target].hasOwnProperty("groupBy")){
+                        const queryHasField = Object.prototype.hasOwnProperty.call(queryField, target);
+                        let queryHasGroupBy = false;
+                        if (queryHasField){
+                            queryHasGroupBy = Object.prototype.hasOwnProperty.call(queryField[target], "groupBy");
+                        }
+                        if (queryHasField && queryHasGroupBy){
                             content[query.queryName][query.queryFields.target.name].forEach(function(record){
                                 const groupedData = client.groupBy(record[queryField.name], queryField[target]["groupBy"], target);
                                 if (groupedData){
@@ -63,8 +68,7 @@ class GraphQLClient {
                     })
                 }
             });
-
-            return content
+            return content;
         }
         catch (err){
             return err;
@@ -83,7 +87,10 @@ class GraphQLClient {
         let output = {};
         if (data.length > 0) {
             data.forEach(function(record){
-                if (!output.hasOwnProperty(record[target][field])){
+                let outputHasField = Object.prototype.hasOwnProperty.call(output, record[target][field]);
+                console.log(outputHasField);
+
+                if (!outputHasField){
                     output[record[target][field]] = []
                 }
                 output[record[target][field]].push(record[target])

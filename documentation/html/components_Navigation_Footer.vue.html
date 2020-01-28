@@ -92,26 +92,49 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-    &lt;nav class="footer navbar navbar-expand-lg navbar-dark navbar-transparent">
+  &lt;nav class="footer navbar navbar-expand-lg navbar-dark navbar-transparent">
+    &lt;div class="linkToStatic">
+      &lt;ul>
+        &lt;li>
+          &lt;router-link to="/community">
+            Community
+          &lt;/router-link>
+        &lt;/li>
+        &lt;li>
+          &lt;router-link to="/stakeholders">
+            Stakeholders
+          &lt;/router-link>
+        &lt;/li>
+        &lt;li>
+          &lt;router-link to="/timeline">
+            Timeline
+          &lt;/router-link>
+        &lt;/li>
+        &lt;li>
+          &lt;router-link to="/license">
+            API &amp; License
+          &lt;/router-link>
+        &lt;/li>
+        &lt;li>
+          &lt;router-link to="/terms">
+            Terms of use
+          &lt;/router-link>
+        &lt;/li>
 
-        &lt;div class="linkToStatic">
-            &lt;ul>
-                &lt;li>&lt;router-link to="/community">Community&lt;/router-link>&lt;/li>
-                &lt;li>&lt;router-link to="/stakeholders">Stakeholders&lt;/router-link>&lt;/li>
-                &lt;li>&lt;router-link to="/timeline">Timeline&lt;/router-link>&lt;/li>
-                &lt;li>&lt;router-link to="/license">API &amp; License&lt;/router-link>&lt;/li>
-                &lt;li>&lt;router-link to="/terms">Terms of use&lt;/router-link>&lt;/li>
+        &lt;li>
+          &lt;router-link to="/educational#faq10-1">
+            How to cite us
+          &lt;/router-link>
+        &lt;/li>
 
-                &lt;li>
-                    &lt;router-link to="/educational#faq10-1">
-                        How to cite us
-                    &lt;/router-link>
-                &lt;/li>
-
-                &lt;li>&lt;router-link to="/privacy">Privacy Policy&lt;/router-link>&lt;/li>
-            &lt;/ul>
-        &lt;/div>
-    &lt;/nav>
+        &lt;li>
+          &lt;router-link to="/privacy">
+            Privacy Policy
+          &lt;/router-link>
+        &lt;/li>
+      &lt;/ul>
+    &lt;/div>
+  &lt;/nav>
 &lt;/template>
 
 &lt;script>

@@ -1,6 +1,10 @@
 <template>
-    <div class="home container-fluid" id="homePage">
-    </div>
+  <div
+    id="homePage"
+    class="home container-fluid"
+  >
+    Welcome to FAIRsharing.org
+  </div>
 </template>
 
 <script>

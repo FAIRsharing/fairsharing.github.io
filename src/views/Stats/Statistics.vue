@@ -1,8 +1,10 @@
 <template>
-    <div class="login" id="loginPage">
-        <h2>This will be the stat page</h2>
-
-    </div>
+  <div
+    id="loginPage"
+    class="login"
+  >
+    <h2>This will be the stat page</h2>
+  </div>
 </template>
 
 <script>

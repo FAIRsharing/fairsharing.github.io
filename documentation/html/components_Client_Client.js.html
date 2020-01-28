@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: components/Client/Client.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Footer.html">Footer</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecordPage.html">NewRecordPage</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="GraphQLClient.html">GraphQLClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#myVue">myVue</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/Client/Client.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">const axios = require("axios");
+
+class GraphQLClient {
+
+    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
+     * Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
+     * also careful, its constructor is async !!
+     * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
+     */
+    constructor(){
+        if (GraphQLClient._instance){
+            return GraphQLClient._instance
+        }
+        GraphQLClient._instance = this;
+        this.url = "https://api.fairsharing.org/graphql";
+        this.headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        };
+    }
+
+    /**
+     * Execute the given query (coming from a json file, see /queries/getRecords.json)
+     * @param {Object} query - the query coming from the JSON file
+     * sending to the API.
+     * @returns {Promise}
+     */
+    async executeQuery(query){
+
+        let client = this;
+
+        let queryString = this.buildQuery({
+                fields: query.queryFields.target.fields,
+                pagination: query.pagination,
+                queryName: query.queryName,
+                objectType: query.queryFields.target.name,
+                queryFields: query.queryFields["elasticSearchFields"].join(" ") + " ",
+                queryParam: query["queryParam"]
+            });
+
+
+        // trigger the query
+        try {
+            let resp = await axios.post(this.url, queryString, this.headers);
+            if (resp.data.errors){
+                throw new Error(resp.data.errors[0].message);
+            }
+
+            let content = resp.data.data;
+
+            /* group By */
+            query.queryFields.target.fields.forEach(function(queryField){
+                if (queryField.type === "object"){
+                    queryField.target.forEach(function(target){
+                        const queryHasField = Object.prototype.hasOwnProperty.call(queryField, target);
+                        let queryHasGroupBy = false;
+                        if (queryHasField){
+                            queryHasGroupBy = Object.prototype.hasOwnProperty.call(queryField[target], "groupBy");
+                        }
+                        if (queryHasField &amp;&amp; queryHasGroupBy){
+                            content[query.queryName][query.queryFields.target.name].forEach(function(record){
+                                const groupedData = client.groupBy(record[queryField.name], queryField[target]["groupBy"], target);
+                                if (groupedData){
+                                    record[queryField.name] = groupedData;
+                                }
+                            });
+
+                        }
+                    })
+                }
+            });
+            return content;
+        }
+        catch (err){
+            return err;
+        }
+
+    }
+
+    /**
+     * Giving an array of items, a field and a target, group these items based on the field value.
+     * @param {Array} data - an array of objects
+     * @param {string} field - the name of the property of groupBy
+     * @param {string} target - the target object inside the array (due to graphQL output structure)
+     * @returns {Object | boolean} - Either return the grouped array as an object or false if the array was empty
+     */
+    groupBy(data, field, target) {
+        let output = {};
+        if (data.length > 0) {
+            data.forEach(function(record){
+                let outputHasField = Object.prototype.hasOwnProperty.call(output, record[target][field]);
+                console.log(outputHasField);
+
+                if (!outputHasField){
+                    output[record[target][field]] = []
+                }
+                output[record[target][field]].push(record[target])
+            });
+            return output;
+        }
+        return false;
+
+    }
+
+
+    /**
+     * Transform the JSON query into a string for graphQL
+     * @param {Object} query - the query coming from the JSON file
+     * @returns {Object} {query: queryString} - a valid graphQL query string to execute
+     */
+    buildQuery(query){
+        let queryString = `{${query.queryName}( `;
+
+        if (query.pagination){
+            Object.keys(query.pagination).forEach(function(key){
+                queryString += ` ${key}:${query.pagination[key]} `;
+            });
+        }
+        if (query.queryParam){
+            Object.keys(query.queryParam).forEach(function(key){
+                if (query.queryParam[key]){
+                    queryString += ` ${key}:${query.queryParam[key]} `;
+                }
+            });
+        }
+
+        queryString += "){";
+        if (query.objectType){
+            queryString += `${query.queryFields} ${query.objectType}{`;
+        }
+
+        Object.keys(query.fields).forEach(function(key){
+            let field = query.fields[key];
+            if (field.type === "string"){
+                queryString += field.name + " ";
+            }
+            else if (field.type === "object"){
+                queryString += field.name + "{";
+                field.target.forEach(function(target){
+                    if (Object.keys(field).indexOf(target) > 0){
+                        queryString += `${target}{`;
+                        queryString += field[target].fields.join(" ");
+                        queryString += "} ";
+                    }
+                    else {
+                        queryString += target + " " ;
+                    }
+
+                });
+                queryString += "} ";
+            }
+        });
+        queryString += "}}";
+        if (query.objectType){
+            queryString += "}";
+        }
+        return {query: queryString};
+
+    }
+
+}
+
+export default GraphQLClient;</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+	
+		on Tue Jan 28th 2020
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

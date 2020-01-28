@@ -1,13 +1,29 @@
 <template>
-    <div class="outputTable">
-        <h1>{{currentPath}}</h1>
-        <output-table>
-        </output-table>
-    </div>
+  <div
+    v-if="client"
+    class="outputGrid"
+  >
+    <h1>{{ currentPath }}</h1>
+    <form>
+      <input
+        v-model="searchString"
+        type="text"
+      >
+      <button
+        type="button"
+        @click="getData()"
+      >
+        Search
+      </button>
+    </form>
+    <output-grid :input-data="content" />
+  </div>
 </template>
 
 <script>
-    import OutputTable from './SearchOutputTable'
+    import OutputGrid from '../../components/Search/SearchOutputGrid'
+    import Client from '../../components/Client/Client.js'
+    import searchRecords from '../../components/Client/queries/getRecords.json'
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -16,33 +32,76 @@
      */
     export default {
         name: "Records",
-        data(){
+        components: {
+            OutputGrid
+        },
+        data() {
             return {
-                valid_request: this.is_request_valid()
+                /* Be careful, in the current system registry and type are reversed, which is why we have registry bound
+                to type and type bound to registry in the above object.
+                */
+                recordTypes: {
+                    Standards: "Standard",
+                    Databases: "Database",
+                    Policies: "Policy",
+                    Collections: "Collection"
+                },
+                pagination: {
+                    page: 1,
+                    perPage: 30
+                },
+                content: [],
+                client: null,
+                searchString: ""
             }
         },
         computed: {
-            currentPath: function(){
-                return this.$route.path.replace('/', '');
+            currentPath: function () {
+                const title =  this.$route.path.replace('/', '');
+                return title.charAt(0).toUpperCase() + title.slice(1);
             }
         },
-        components: {
-            OutputTable
+        watch: {
+            currentPath: async function (){
+                await this.getData();
+            }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = new Client();
+                await this.getData();
+            })
         },
         methods: {
-            /**
-             * Is the request valid
-             * @param {Object} request_body - the request itself
-             * @returns {boolean}
+            /** This methods get the data from the client depending on the current page.
+             * @returns {Promise}
              */
-            is_request_valid(request_body){
-                if (request_body) return true;
-                return false;
+            getData: async function () {
+                if (this.client){
+                    // This is data coming from the JSON query
+                    let recordHasProperty = Object.prototype.hasOwnProperty.call(searchRecords, "queryParam");
+
+                    if (!recordHasProperty || searchRecords.queryParam === null){
+                        searchRecords.queryParam = {};
+                    }
+                    searchRecords.pagination = this.pagination;
+                    searchRecords.queryParam['fairsharingRegistry'] =
+                        "\"" + this.recordTypes[this.currentPath] + "\"";
+                    if (this.searchString !== ""){
+                        searchRecords.queryParam['q'] = `"${this.searchString}"`;
+                    }
+                    else {
+                        delete searchRecords.queryParam['q'];
+                    }
+                    let content = await this.client.executeQuery(searchRecords);
+                    this.content = content['searchFairsharingRecords']['records'];
+                    return content;
+                }
             }
         }
     }
+
 </script>
 
 <style scoped>
-
 </style>

@@ -1,16 +1,22 @@
 <template>
-    <div class="home" id="homePage">
-        <h1>Home Page</h1>
-    </div>
+  <div
+    id="homePage"
+    class="home container-fluid"
+  >
+    Welcome to FAIRsharing.org
+  </div>
 </template>
 
 <script>
     /** Component to handle the front page (landing page)
      *
      */
-    export default {
+
+    let myVue = {
         name: "Home"
-    }
+    };
+
+    export default myVue;
 </script>
 
 <style scoped>

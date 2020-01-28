@@ -1,11 +1,27 @@
-import { shallowMount } from "@vue/test-utils"
-import Records from "./Records.vue"
+import { shallowMount } from "@vue/test-utils";
+import Records from "./Records.vue";
+import Client from "../../components/Client/Client.js";
+const sinon = require("sinon");
 
 const $route = {
-    path: "/records"
-}
+    path: "/standards"
+};
 
 describe("Records.vue", () => {
+
+    beforeAll( () => {
+        sinon.stub(Client.prototype, "executeQuery").withArgs(sinon.match.object).returns({
+            searchFairsharingRecords: {
+                records: [
+                    1
+                ]
+            }
+        });
+    });
+
+    afterAll( () => {
+       Client.prototype.executeQuery.restore();
+    });
 
     // Set up the wrapper
     let wrapper;
@@ -14,22 +30,25 @@ describe("Records.vue", () => {
             mocks: {$route}
         });
     });
-    const title = "Records";
-
+    const title = "Standards";
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.name()).toMatch("Records");
     });
 
     it("has a currentPath computed attribute", () => {
         expect(wrapper.vm.currentPath.toUpperCase()).toMatch(title.toUpperCase());
-
     });
 
-    it("has a is_request_valid method to check if the request is valid", function(){
-        expect(wrapper.vm.is_request_valid({})).toBe(true);
-        expect(wrapper.vm.is_request_valid()).toBe(false);
+    it("can execute the query with string search", async () => {
+        wrapper.vm.searchString = "First";
+        await wrapper.vm.getData();
+        expect(wrapper.vm.content.length).toBeGreaterThan(0);
     });
 
+    it("react to path change", async () => {
+        $route.path = "Database";
+        expect(wrapper.vm.currentPath).toBe($route.path);
+    });
 
 });

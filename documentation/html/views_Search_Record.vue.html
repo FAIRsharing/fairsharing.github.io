@@ -92,21 +92,30 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-    &lt;div class="standard" :id="content['fairsharingRecord'].id" v-if="content">
-        &lt;h2>{{content['fairsharingRecord'].name}}&lt;/h2>
-        &lt;p>ID: {{ currentRoute}}&lt;/p>
-        &lt;div class="card">
-            &lt;div v-for="(field, label, index) in content['fairsharingRecord']" :key="index">
-                &lt;b>{{label}}: &lt;/b> {{field}}
-            &lt;/div>
-        &lt;/div>
-        &lt;div class="card">
-            &lt;div v-for="(field, label, index) in domains" :key="index">
-                &lt;b>{{label}}: &lt;/b> {{field}}
-            &lt;/div>
-        &lt;/div>
-
+  &lt;div
+    v-if="content"
+    :id="content['fairsharingRecord'].id"
+    class="standard"
+  >
+    &lt;h2>{{ content['fairsharingRecord'].name }}&lt;/h2>
+    &lt;p>ID: {{ currentRoute }}&lt;/p>
+    &lt;div class="card">
+      &lt;div
+        v-for="(field, label, index) in content['fairsharingRecord']"
+        :key="index"
+      >
+        &lt;b>{{ label }}: &lt;/b> {{ field }}
+      &lt;/div>
     &lt;/div>
+    &lt;div class="card">
+      &lt;div
+        v-for="(field, label, index) in domains"
+        :key="index"
+      >
+        &lt;b>{{ label }}: &lt;/b> {{ field }}
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
@@ -129,6 +138,12 @@
                 return this.$route.params['id']
             },
         },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = new Client();
+                await this.getData();
+            })
+        },
         methods: {
             /** Method to build and return the page title to be included as a metadata
              *  @returns {String} - the title of the current page
@@ -149,12 +164,6 @@
             return {
                 title: this.getTitle()
             }
-        },
-        mounted: function () {
-            this.$nextTick(async function () {
-                this.client = new Client();
-                await this.getData();
-            })
         },
     }
 &lt;/script>

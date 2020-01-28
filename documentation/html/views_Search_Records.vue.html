@@ -172,7 +172,9 @@
             getData: async function () {
                 if (this.client){
                     // This is data coming from the JSON query
-                    if (!searchRecords.hasOwnProperty("queryParam") || searchRecords.queryParam === null){
+                    let recordHasProperty = Object.prototype.hasOwnProperty.call(searchRecords, "queryParam");
+
+                    if (!recordHasProperty || searchRecords.queryParam === null){
                         searchRecords.queryParam = {};
                     }
                     searchRecords.pagination = this.pagination;

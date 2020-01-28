@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div
-        v-for="(record, index) in input_data"
+        v-for="(record, index) in inputData"
         :key="index"
         class="col col-xl-4 col-lg-4 col-sm-6"
       >

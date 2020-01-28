@@ -16,7 +16,7 @@
         Search
       </button>
     </form>
-    <output-grid :input_data="content" />
+    <output-grid :input-data="content" />
   </div>
 </template>
 

@@ -37,8 +37,6 @@ class GraphQLClient {
                 queryFields: query.queryFields["elasticSearchFields"].join(" ") + " ",
                 queryParam: query["queryParam"]
             });
-
-
         // trigger the query
         try {
             let resp = await axios.post(this.url, queryString, this.headers);
@@ -89,8 +87,6 @@ class GraphQLClient {
         if (data.length > 0) {
             data.forEach(function(record){
                 let outputHasField = Object.prototype.hasOwnProperty.call(output, record[target][field]);
-                console.log(outputHasField);
-
                 if (!outputHasField){
                     output[record[target][field]] = []
                 }
@@ -118,9 +114,7 @@ class GraphQLClient {
         }
         if (query.queryParam){
             Object.keys(query.queryParam).forEach(function(key){
-                if (query.queryParam[key]){
-                    queryString += ` ${key}:${query.queryParam[key]} `;
-                }
+                queryString += ` ${key}:${query.queryParam[key]} `;
             });
         }
 

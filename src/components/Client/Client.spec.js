@@ -1,12 +1,19 @@
 import Client from "../../components/Client/Client.js"
 import query from "../../components/Client/queries/getRecords.json"
+import recordQuery from "../../components/Client/queries/getRecord.json"
 const sinon = require("sinon");
 const axios = require("axios");
 
 describe("GraphQL Client", function(){
     let client;
-    let searchFairsharingRecords = {records: [{}]};
+    const searchFairsharingRecords = {records: [{}]};
     let postStub = sinon.stub(axios, "post");
+    const stubQuery = {};
+    let localQuery = {};
+
+    beforeEach( () => {
+        localQuery = Object.assign(stubQuery, query);
+    });
 
     beforeAll( () => {
         client = new Client();
@@ -29,12 +36,12 @@ describe("GraphQL Client", function(){
     });
 
     it("can execute a JSON query", async function(){
-        query.queryParam = {
-            "registry": "whatever"
-        };
+        localQuery.queryParam = {};
+        localQuery.queryParam["fairsharingRegistry"] = "\"" + "Standard" + "\"";
+
         let groupStub = sinon.stub(Client.prototype, "groupBy");
         groupStub.withArgs(sinon.match.any).returns([123]);
-        let output = await client.executeQuery(query);
+        let output = await client.executeQuery(localQuery);
         expect(JSON.stringify(output)).toBe(JSON.stringify({
             searchFairsharingRecords: {
                 records: [{
@@ -42,6 +49,8 @@ describe("GraphQL Client", function(){
                 }]
             }
         }));
+        groupStub.withArgs(sinon.match.any).returns(false);
+        await client.executeQuery(localQuery);
         groupStub.restore();
     });
 
@@ -80,11 +89,50 @@ describe("GraphQL Client", function(){
             data: {errors: [{messages: "abc"}]}
         });
         sinon.stub(Client.prototype, "buildQuery").withArgs(sinon.match.any).returns(0);
-        await expect(client.executeQuery(query)).rejects;
+        await expect(client.executeQuery(localQuery)).rejects;
         axios.post.restore();
         Client.prototype.buildQuery.restore();
         postStub.restore();
-    })
+    });
+
+    it("can correctly build a query string from a JSON", function() {
+        const expectedOutput = "{searchFairsharingRecords( )" +
+            "{currentPage perPage totalCount totalPages firstPage  records{id type name abbreviation registry domains " +
+            "subjects taxonomies recordAssociations{linkedRecord{name id registry} recordAssocLabel } status }}}";
+        delete localQuery.pagination;
+        localQuery.queryFields.target.fields.push({
+            name: "test",
+            label: "test",
+            type: null
+        });
+        const queryObject = {
+            fields: localQuery.queryFields.target.fields,
+            pagination: localQuery.pagination,
+            queryName: localQuery.queryName,
+            objectType: localQuery.queryFields.target.name,
+            queryFields: localQuery.queryFields["elasticSearchFields"].join(" ") + " ",
+            queryParam: localQuery["queryParam"]
+        };
+        const queryString = client.buildQuery(queryObject);
+        expect(queryString.query).toBe(expectedOutput);
+
+        const expectedRecordQueryString = "{fairsharingRecord( ){registry type doi status name " +
+            "abbreviation description name homepage countries metadata taxonomies domains subjects history " +
+            "grants isRecommended legacyIds legacyLogs licences maintainers{username id } organisations " +
+            "publications recordAssociations{linkedRecord{name id registry} recordAssocLabel } reviews{id " +
+            "fairsharingRecordId createdAt userId } }}";
+        const recordQueryObject = {
+            fields: recordQuery.queryFields.target.fields,
+            pagination: recordQuery.pagination,
+            queryName: recordQuery.queryName,
+            objectType: recordQuery.queryFields.target.name,
+            queryFields: recordQuery.queryFields["elasticSearchFields"].join(" ") + " ",
+            queryParam: recordQuery["queryParam"]
+        };
+        const recordQueryString = client.buildQuery(recordQueryObject);
+        expect(recordQueryString.query).toBe(expectedRecordQueryString);
+
+    });
 
 
 });

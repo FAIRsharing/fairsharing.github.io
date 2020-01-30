@@ -24,7 +24,7 @@ describe("Record.vue", function() {
             fairsharingRecord:{
                 id: 1,
                 name: "test",
-                licenses: [
+                licences: [
                     {
                         name: "test",
                         url: "https://example.com"
@@ -82,8 +82,7 @@ describe("Record.vue", function() {
         queryStub.withArgs(sinon.match.object).returns({
             fairsharingRecord:{
                 id: 1,
-                name: "test",
-                licenses: []
+                name: "test"
             }
         });
         await wrapper.vm.getData();

@@ -87,9 +87,9 @@
                         }
                     ]
                 };
-                let hasLicense = Object.prototype.hasOwnProperty.call(data, "licenses");
-                if (hasLicense && data["licenses"].length > 0){
-                    const license = data["licenses"][0];
+                let hasLicense = Object.prototype.hasOwnProperty.call(data, "licences");
+                if (hasLicense && data.licences.length > 0){
+                    const license = data["licences"][0];
                     output.licences = {
                         "@type": "CreativeWork",
                         name: license.name,

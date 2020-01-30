@@ -1,6 +1,5 @@
 {
   "queryName": "searchFairsharingRecords",
-  "queryParam": null,
   "pagination": {
     "page": 1,
     "perPage": 30
@@ -69,6 +68,11 @@
         {
           "label": "Status",
           "name": "status",
+          "type": "string"
+        },
+        {
+          "label": "Recommended",
+          "name": "isRecommended",
           "type": "string"
         }
       ]

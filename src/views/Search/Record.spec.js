@@ -8,20 +8,28 @@ const sinon = require("sinon");
 const $route = {
     path: "/",
     params: {
-        id: "120"
+        id: "980190962"
     }
 };
 
 let localVue = createLocalVue();
 localVue.use(VueMeta);
+let queryStub;
 
 describe("Record.vue", function() {
 
     beforeAll( () => {
-        sinon.stub(Client.prototype, "executeQuery").withArgs(sinon.match.object).returns({
+        queryStub = sinon.stub(Client.prototype, "executeQuery");
+        queryStub.withArgs(sinon.match.object).returns({
             fairsharingRecord:{
                 id: 1,
-                name: "test"
+                name: "test",
+                licenses: [
+                    {
+                        name: "test",
+                        url: "https://example.com"
+                    }
+                ]
             }
         });
     });
@@ -38,7 +46,7 @@ describe("Record.vue", function() {
             localVue
         });
     });
-    const path = "120";
+    const path = "980190962";
     const title = "FAIRsharing | " + path;
 
 
@@ -52,7 +60,36 @@ describe("Record.vue", function() {
     });
 
     it("has it meta title dynamically set", () => {
-        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(title)
+        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(title);
+    });
+
+    it("can create a JSON-LD dump for SEO", async () => {
+        let expectedOutput = { "@context": "http://schema.org",
+            "@type": "Dataset",
+            "@id": "https://doi.org/10.25504/undefined",
+            alternateName: undefined,
+            description: "This FAIRsharing record describes: undefined",
+            identifier: "10.25504/undefined",
+            name: "FAIRsharing record for test",
+            url: "https://doi.org/10.25504/undefined",
+            citation: [{
+                "@type": "CreativeWork",
+                identifier: "https://doi.org/10.25504/undefined",
+                name: "Citing FAIRsharing record for test"
+            }]
+        };
+
+        queryStub.withArgs(sinon.match.object).returns({
+            fairsharingRecord:{
+                id: 1,
+                name: "test",
+                licenses: []
+            }
+        });
+        await wrapper.vm.getData();
+        let test = wrapper.vm.getJSONLD();
+        expect(JSON.stringify(test)).toBe(JSON.stringify(expectedOutput));
+        Client.prototype.executeQuery.restore();
     });
 
 

@@ -22,6 +22,12 @@
         <b>{{ label }}: </b> {{ field }}
       </div>
     </div>
+
+    <script
+      type="application/json+ld"
+    >
+      {{ getJSONLD() }}
+    </script>
   </div>
 </template>
 
@@ -61,6 +67,35 @@
             getData: async function(){
                 searchRecords.queryParam["id"] = this.currentRoute;
                 this.content = await this.client.executeQuery(searchRecords);
+            },
+            getJSONLD: function(){
+                const data = this.content["fairsharingRecord"];
+                let output = {
+                    "@context": "http://schema.org",
+                    "@type": "Dataset",
+                    "@id": "https://doi.org/10.25504/" + data['doi'],
+                    alternateName: data['abbreviation'],
+                    description: "This FAIRsharing record describes: " + data.description,
+                    identifier: "10.25504/" + data['doi'],
+                    name: "FAIRsharing record for " + data.name,
+                    url: "https://doi.org/10.25504/" + data['doi'],
+                    citation: [
+                        {
+                            "@type": "CreativeWork",
+                            identifier: "https://doi.org/10.25504/" + data['doi'],
+                            name: "Citing FAIRsharing record for " + data.name
+                        }
+                    ]
+                };
+                if (data["licenses"].length > 0){
+                    const license = data["licenses"][0];
+                    output.licences = {
+                        "@type": "CreativeWork",
+                        name: license.name,
+                        url: license.url
+                    };
+                }
+                return output;
             }
         },
         /**

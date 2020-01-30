@@ -24,7 +24,7 @@
     </div>
 
     <script
-      type="application/json+ld"
+      type="application/ld+json"
     >
       {{ getJSONLD() }}
     </script>

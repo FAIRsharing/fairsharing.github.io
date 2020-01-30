@@ -152,10 +152,16 @@
             currentPath: function () {
                 const title =  this.$route.path.replace('/', '');
                 return title.charAt(0).toUpperCase() + title.slice(1);
+            },
+            currentQueryParameter: function(){
+                return this.$route.query;
             }
         },
         watch: {
             currentPath: async function (){
+                await this.getData();
+            },
+            currentQueryParameter: async function(){
                 await this.getData();
             }
         },
@@ -171,10 +177,8 @@
              */
             getData: async function () {
                   // This is data coming from the JSON query
-                  let recordHasProperty = Object.prototype.hasOwnProperty.call(searchRecords, "queryParam");
-                  if (!recordHasProperty || searchRecords.queryParam === null){
-                      searchRecords.queryParam = {};
-                  }
+                  //let recordHasProperty = Object.prototype.hasOwnProperty.call(searchRecords, "queryParam");
+                  searchRecords.queryParam = {};
                   searchRecords.pagination = this.pagination;
                   searchRecords.queryParam['fairsharingRegistry'] =
                       this.recordTypes[this.currentPath];
@@ -184,7 +188,20 @@
                   else {
                       delete searchRecords.queryParam['q'];
                   }
+
+                  let extraParams = this.currentQueryParameter;
+                  for (let param in extraParams){
+                      if (extraParams[param] === "true" || extraParams[param] === "false"){
+                          searchRecords.queryParam[param] = JSON.parse(extraParams[param]);
+                      }
+                      else {
+                          searchRecords.queryParam[param] = extraParams[param];
+                      }
+
+                  }
+
                   let content = await this.client.executeQuery(searchRecords);
+                  console.log(this.content);
                   this.content = content['searchFairsharingRecords']['records'];
                   return content;
             }

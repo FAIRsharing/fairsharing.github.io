@@ -172,13 +172,12 @@
             getData: async function () {
                   // This is data coming from the JSON query
                   let recordHasProperty = Object.prototype.hasOwnProperty.call(searchRecords, "queryParam");
-
                   if (!recordHasProperty || searchRecords.queryParam === null){
                       searchRecords.queryParam = {};
                   }
                   searchRecords.pagination = this.pagination;
                   searchRecords.queryParam['fairsharingRegistry'] =
-                      "\"" + this.recordTypes[this.currentPath] + "\"";
+                      this.recordTypes[this.currentPath];
                   if (this.searchString !== ""){
                       searchRecords.queryParam['q'] = `"${this.searchString}"`;
                   }

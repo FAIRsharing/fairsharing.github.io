@@ -98,7 +98,7 @@ describe("GraphQL Client", function(){
 
     it("can correctly build a query string from a JSON", function() {
         const expectedOutput = "{searchFairsharingRecords( )" +
-            "{currentPage perPage totalCount totalPages firstPage  records{id type name abbreviation registry domains " +
+            "{aggregations currentPage perPage totalCount totalPages firstPage  records{id type name abbreviation registry domains " +
             "subjects taxonomies recordAssociations{linkedRecord{name id registry} recordAssocLabel } status isRecommended }}}";
         delete localQuery.pagination;
         delete localQuery.queryParam;

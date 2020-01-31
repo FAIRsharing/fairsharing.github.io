@@ -46,10 +46,6 @@
                     Policies: "Policy",
                     Collections: "Collection"
                 },
-                pagination: {
-                    page: 1,
-                    perPage: 30
-                },
                 content: [],
                 client: null,
                 searchString: ""
@@ -61,7 +57,13 @@
                 return title.charAt(0).toUpperCase() + title.slice(1);
             },
             currentQueryParameter: function(){
-                return this.$route.query;
+                let client = this;
+                let queryParams = {};
+                for (let prop in this.$route.query){
+                    let queryVal = client.$route.query[prop];
+                    queryParams[prop] = decodeURI(queryVal);
+                }
+                return queryParams;
             }
         },
         watch: {
@@ -83,14 +85,14 @@
              * @returns {Promise}
              */
             getData: async function () {
-                  // This is data coming from the JSON query
-                  //let recordHasProperty = Object.prototype.hasOwnProperty.call(searchRecords, "queryParam");
+                  let recordHasRegistry = Object.prototype.hasOwnProperty.call(this.recordTypes, this.currentPath);
                   searchRecords.queryParam = {};
-                  searchRecords.pagination = this.pagination;
-                  searchRecords.queryParam['fairsharingRegistry'] =
-                      this.recordTypes[this.currentPath];
+                  if (recordHasRegistry){
+                      searchRecords.queryParam['fairsharingRegistry'] =
+                          this.recordTypes[this.currentPath];
+                  }
                   if (this.searchString !== ""){
-                      searchRecords.queryParam['q'] = `"${this.searchString}"`;
+                      searchRecords.queryParam['q'] = this.searchString;
                   }
                   else {
                       delete searchRecords.queryParam['q'];
@@ -104,11 +106,12 @@
                       else {
                           searchRecords.queryParam[param] = extraParams[param];
                       }
-
                   }
 
                   let content = await this.client.executeQuery(searchRecords);
-                  console.log(this.content);
+                  if (content instanceof Error){
+                      throw content;
+                  }
                   this.content = content['searchFairsharingRecords']['records'];
                   return content;
             }

@@ -1,33 +1,33 @@
 <template>
   <div
     v-if="content"
-    :id="content['fairsharingRecord'].id"
     class="standard"
   >
-    <h2>{{ content['fairsharingRecord'].name }}</h2>
-    <p>ID: {{ currentRoute }}</p>
-    <div class="card">
-      <div
-        v-for="(field, label, index) in content['fairsharingRecord']"
-        :key="index"
-      >
-        <b>{{ label }}: </b> {{ field }}
-      </div>
-    </div>
-    <div class="card">
-      <div
-        v-for="(field, label, index) in domains"
-        :key="index"
-      >
-        <b>{{ label }}: </b> {{ field }}
-      </div>
+    <div
+      v-if="error"
+      class="error"
+    >
+      {{ error }}
     </div>
 
-    <script
-      type="application/ld+json"
-    >
-      {{ getJSONLD() }}
-    </script>
+    <div v-if="!error && queryTriggered">
+      <span>{{ content['fairsharingRecord'].name }}</span>
+      <p>ID: {{ currentRoute }}</p>
+      <div class="card">
+        <div
+          v-for="(field, label, index) in content['fairsharingRecord']"
+          :key="index"
+        >
+          <b>{{ label }}: </b> {{ field }}
+        </div>
+      </div>
+
+      <script
+        type="application/ld+json"
+      >
+        {{ getJSONLD() }}
+      </script>
+    </div>
   </div>
 </template>
 
@@ -43,13 +43,19 @@
         data() {
             return {
                 content: null,
-                domains: null
+                error: null,
+                queryTriggered: false
             }
         },
         computed: {
             currentRoute: function () {
                 return this.$route.params['id']
             },
+        },
+        watch: {
+            currentRoute: async function () {
+                await this.getData();
+            }
         },
         mounted: function () {
             this.$nextTick(async function () {
@@ -65,8 +71,17 @@
                 return 'FAIRsharing | ' + this.currentRoute
             },
             getData: async function(){
+                this.queryTriggered = false;
+                this.content = null;
+                this.error = null;
                 searchRecords.queryParam["id"] = this.currentRoute;
                 this.content = await this.client.executeQuery(searchRecords);
+                this.queryTriggered = true;
+                if (this.content instanceof Error){
+                    this.error = this.content.message;
+                    return null;
+                }
+
             },
             getJSONLD: function(){
                 const data = this.content["fairsharingRecord"];
@@ -112,5 +127,15 @@
 </script>
 
 <style scoped>
+
+  .error {
+    background-color: indianred;
+    border:1px solid red;
+    padding:20px;
+    color:white;
+    margin:20px;
+    text-align: left;
+    font-size: 18px;
+  }
 
 </style>

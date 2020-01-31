@@ -1,11 +1,9 @@
 {
   "queryName": "searchFairsharingRecords",
-  "pagination": {
-    "page": 1,
-    "perPage": 30
-  },
+  "pagination": {},
   "queryFields": {
     "elasticSearchFields": [
+      "aggregations",
       "currentPage",
       "perPage",
       "totalCount",
@@ -15,6 +13,11 @@
     "target": {
       "name": "records",
       "fields": [
+        {
+          "name": "countries",
+          "label": "Countries",
+          "type": "string"
+        },
         {
           "name": "id",
           "label": "id",

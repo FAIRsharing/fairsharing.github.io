@@ -53,6 +53,12 @@ let routes = [
         component: Records,
 
     },
+    {
+        name: "Search",
+        path: "/search",
+        component: Records,
+
+    },
 
     /* CREATION */
     {
@@ -132,7 +138,6 @@ let routes = [
         path: "/:id",
         component: Record
     },
-
     {
         name: "Login",
         path: "/accounts/login",
@@ -143,6 +148,11 @@ let routes = [
         path: "/accounts/signup",
         component: Signup,
     },
+    {
+        name: "*",
+        path: "*/*",
+        redirect: "/"
+    }
 
 ];
 

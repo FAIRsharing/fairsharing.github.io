@@ -38,10 +38,9 @@ class GraphQLClient {
                 queryParam: query["queryParam"]
             });
 
-        console.log(queryString.query);
-
         // trigger the query
         try {
+            console.log(queryString.query);
             let resp = await axios.post(this.url, queryString, this.headers);
             if (resp.data.errors){
                 throw new Error(resp.data.errors[0].message);
@@ -73,6 +72,7 @@ class GraphQLClient {
             return content;
         }
         catch (err){
+            console.log(err);
             return err;
         }
 
@@ -117,13 +117,16 @@ class GraphQLClient {
         }
         if (query.queryParam){
             Object.keys(query.queryParam).forEach(function(key){
-                if (typeof query.queryParam[key] === "string"){
+                const isInt = parseInt(query.queryParam[key]);
+                if (typeof query.queryParam[key] === "string" && isNaN(isInt)){
                     queryString += ` ${key}:"${query.queryParam[key]}" `;
+                }
+                else if (!isNaN(isInt)){
+                    queryString += ` ${key}:${isInt} `;
                 }
                 else {
                     queryString += ` ${key}:${query.queryParam[key]} `;
                 }
-
             });
         }
 

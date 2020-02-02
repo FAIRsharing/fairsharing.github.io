@@ -58,22 +58,22 @@ let labelsMapping = {
         }
     },
     input: [
-        {
+        /*{
             filterName: "name",
             filterLabel: "Resource name"
         },
         {
             filterName: "abbreviation",
             filterLabel: "Abbreviation"
-        },
+        },*/
         {
             filterName: "id",
             filterLabel: "Record IDs"
         },
-        {
+        /*{
             filterName: "description",
             filterLabel: "Description"
-        }
+        }*/
     ]
 };
 

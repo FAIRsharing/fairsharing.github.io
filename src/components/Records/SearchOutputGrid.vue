@@ -4,7 +4,7 @@
       <div
         v-for="(record, index) in inputData"
         :key="index"
-        class="col col-xl-4 col-lg-4 col-sm-6"
+        class="col col-xl-3 col-lg-3 col-sm-6"
       >
         <div class="card">
           <div class="card-header">
@@ -39,5 +39,12 @@
 </script>
 
 <style scoped>
-
+  .card-body {
+    text-align: left;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  .col {
+    margin-bottom:20px;
+  }
 </style>

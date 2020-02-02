@@ -2,11 +2,14 @@
 Separate routing handle to avoid a big main.js
 */
 
+import Vue from "vue";
+import VueRouter from "vue-router";
+
 import Home from "../views/Home/Home";
 import Login from "../views/Users/Login";
 import Signup from "../views/Users/Signup";
-import Records from "../views/Search/Records";
-import Record from "../views/Search/Record";
+import Records from "../views/Records/Records";
+import Record from "../views/Records/Record";
 import Statistics from "../views/Stats/Statistics";
 import New from "../views/CreateRecord/NewRecordPage";
 import NewStandard from "../views/CreateRecord/NewStandard";
@@ -21,6 +24,7 @@ import Terms from "../views/Static/TermOfUse/TermsOfUse";
 import Educational from "../views/Static/Educational/Educational";
 import Privacy from "../views/Static/Privacy/Privacy";
 
+Vue.use(VueRouter);
 
 let routes = [
     {
@@ -54,7 +58,7 @@ let routes = [
 
     },
     {
-        name: "Search",
+        name: "search",
         path: "/search",
         component: Records,
 
@@ -154,8 +158,10 @@ let routes = [
         redirect: "/"
     }
 
-];
+    // We should have extra routes to redirect /standards ... to search?fairsharingRegistry=standard
+    // Then change the method to get the title: if there's fairsharingRegistry URL param, set the new page title;
 
+];
 routes.forEach(function(route){
     if (route.name !== "Record"){
         route.meta = {
@@ -164,7 +170,14 @@ routes.forEach(function(route){
     }
 });
 
+const router = new VueRouter({
+    routes,
+    //mode: "history"
+});
 
+router.beforeEach((to, from, next) => {
+    document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
+    next()
+});
 
-
-export default routes;
+export default router;

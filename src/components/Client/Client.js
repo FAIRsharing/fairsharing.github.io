@@ -28,19 +28,21 @@ class GraphQLClient {
     async executeQuery(query){
 
         let client = this;
+        let queryFields = (query.queryFields["elasticSearchFields"].length > 0) ? query.queryFields["elasticSearchFields"].join(" ") + " " : null;
 
         let queryString = this.buildQuery({
                 fields: query.queryFields.target.fields,
                 pagination: query.pagination,
                 queryName: query.queryName,
                 objectType: query.queryFields.target.name,
-                queryFields: query.queryFields["elasticSearchFields"].join(" ") + " ",
+                queryFields: queryFields,
                 queryParam: query["queryParam"]
             });
 
+        console.log(queryString.query);
+
         // trigger the query
         try {
-            console.log(queryString.query);
             let resp = await axios.post(this.url, queryString, this.headers);
             if (resp.data.errors){
                 throw new Error(resp.data.errors[0].message);
@@ -130,36 +132,45 @@ class GraphQLClient {
             });
         }
 
-        queryString += "){";
-        if (query.objectType){
-            queryString += `${query.queryFields} ${query.objectType}{`;
+        queryString += ")";
+        if (query.queryFields){
+            queryString += "{";
+            queryString += `${query.queryFields}`;
+            if (query.objectType) {
+                queryString += `${query.objectType}`;
+            }
         }
 
-        Object.keys(query.fields).forEach(function(key){
-            let field = query.fields[key];
-            if (field.type === "string"){
-                queryString += field.name + " ";
-            }
-            else if (field.type === "object"){
-                queryString += field.name + "{";
-                field.target.forEach(function(target){
-                    if (Object.keys(field).indexOf(target) > 0){
-                        queryString += `${target}{`;
-                        queryString += field[target].fields.join(" ");
-                        queryString += "} ";
-                    }
-                    else {
-                        queryString += target + " " ;
-                    }
+        if (Object.keys(query.fields).length > 0){
+            queryString += "{";
+            Object.keys(query.fields).forEach(function(key){
+                let field = query.fields[key];
+                if (field.type === "string"){
+                    queryString += field.name + " ";
+                }
+                else if (field.type === "object"){
+                    queryString += field.name + "{";
+                    field.target.forEach(function(target){
+                        if (Object.keys(field).indexOf(target) > 0){
+                            queryString += `${target}{`;
+                            queryString += field[target].fields.join(" ");
+                            queryString += "} ";
+                        }
+                        else {
+                            queryString += target + " " ;
+                        }
 
-                });
-                queryString += "} ";
-            }
-        });
-        queryString += "}}";
-        if (query.objectType){
+                    });
+                    queryString += "} ";
+                }
+            });
             queryString += "}";
         }
+        if (query.queryFields || query.objectType){
+            queryString += "}";
+        }
+        queryString += "}";
+
         return {query: queryString};
 
     }

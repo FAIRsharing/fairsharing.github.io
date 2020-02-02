@@ -1,29 +1,21 @@
 <template>
   <div
     v-if="client"
-    class="outputGrid"
+    class="outputGrid container-fluid"
   >
     <h1>{{ currentPath }}</h1>
-    <form>
-      <input
-        v-model="searchString"
-        type="text"
-      >
-      <button
-        type="button"
-        @click="getData()"
-      >
-        Search
-      </button>
-    </form>
-    <output-grid :input-data="content" />
+    <div class="row">
+      <search-filters class="col-3" :filters="filters" />
+      <output-grid class="col-9" :input-data="content" />
+    </div>
   </div>
 </template>
 
 <script>
-    import OutputGrid from '../../components/Search/SearchOutputGrid'
+    import OutputGrid from '../../components/Records/SearchOutputGrid'
     import Client from '../../components/Client/Client.js'
     import searchRecords from '../../components/Client/queries/getRecords.json'
+    import SearchFilters from "../../components/Records/SearchFilters";
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -33,6 +25,7 @@
     export default {
         name: "Records",
         components: {
+          SearchFilters,
             OutputGrid
         },
         data() {
@@ -48,7 +41,8 @@
                 },
                 content: [],
                 client: null,
-                searchString: ""
+                searchString: "",
+                filters: {}
             }
         },
         computed: {
@@ -113,6 +107,7 @@
                       throw content;
                   }
                   this.content = content['searchFairsharingRecords']['records'];
+                  this.filters = content["searchFairsharingRecords"]["aggregations"];
                   return content;
             }
         }

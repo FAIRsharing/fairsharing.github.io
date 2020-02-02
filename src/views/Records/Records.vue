@@ -5,7 +5,7 @@
   >
     <h1>{{ currentPath }}</h1>
     <div class="row">
-      <search-filters class="col-3" :filters="filters" />
+      <search-filters class="col-3" />
       <output-grid class="col-9" :input-data="content" />
     </div>
   </div>

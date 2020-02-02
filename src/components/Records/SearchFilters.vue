@@ -2,7 +2,7 @@
   <div class="container">
     <form class="card">
       <div class="card-header">
-        Advanced search
+        <h2>Advanced search</h2>
       </div>
       <div class="card-body filters">
         <div
@@ -11,7 +11,10 @@
         >
           <b>{{ filter.filterLabel }}:</b>
 
-          <div v-if="filter.values">
+          <div
+            v-if="filter.values"
+            class="filter"
+          >
             <select v-model="form.data[filter.filterName]">
               <option
                 v-for="(value, subKey) in filter.values"
@@ -21,24 +24,31 @@
               </option>
             </select>
           </div>
-          <div v-else>
+          <div
+            v-else
+            class="filter"
+          >
             <input v-model="form.data[filter.filterName]">
           </div>
+          <hr>
         </div>
       </div>
       <div class="card-footer">
+        <b>String search:</b>
         <input
           v-model="form.data['q']"
           type="text"
-        > <br>
+        >
         <button
           type="button"
+          class="btn btn-success"
           @click="getData()"
         >
           Search
         </button>
         <button
           type="button"
+          class="btn btn-danger"
           @click="reset()"
         >
           Reset
@@ -52,17 +62,8 @@
 
     export default {
         name: "SearchFilters",
-        props: {
-            filters: {
-                type: Object,
-                default: function () {
-                    return []
-                }
-            }
-        },
         data() {
             return {
-                searchString: null,
                 form: {
                     data: {}
                 }
@@ -70,12 +71,13 @@
         },
         computed: {
           currentPath: function () {
+            // do a better job to handle click on search that doesnt reset the form
             return this.$route.path.replace('/', '');
           }
         },
       watch: {
         currentPath: function () {
-          this.form.data = [];
+          this.form.data = {};
         }
       },
         methods: {
@@ -105,4 +107,19 @@
     .filters {
         text-align: left;
     }
+
+  div.filter {
+    display: inline-block;
+    width: 300px;
+    float:right;
+  }
+
+  div.filter select, div.filter input {
+    width:100%;
+  }
+
+  button {
+    margin-left:15px;
+  }
+
 </style>

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/CreateRecord/NewCollection.vue</title>
+	<title>FAIRsharing.org Source: views/Records/Record.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,25 +86,150 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/CreateRecord/NewCollection.vue</h1>
+		<h1 class="page-title">Source: views/Records/Record.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-    &lt;h2>Create new collection&lt;/h2>
+  &lt;div
+    v-if="content"
+    class="standard"
+  >
+    &lt;div
+      v-if="error"
+      class="error"
+    >
+      {{ error }}
+    &lt;/div>
+
+    &lt;div v-if="!error &amp;&amp; queryTriggered">
+      &lt;span>{{ content['fairsharingRecord'].name }}&lt;/span>
+      &lt;p>ID: {{ currentRoute }}&lt;/p>
+      &lt;div class="card">
+        &lt;div
+          v-for="(field, label, index) in content['fairsharingRecord']"
+          :key="index"
+        >
+          &lt;b>{{ label }}: &lt;/b> {{ field }}
+        &lt;/div>
+      &lt;/div>
+
+      &lt;script
+        type="application/ld+json"
+      >
+        {{ getJSONLD() }}
+      &lt;/script>
+    &lt;/div>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-    /** Component to handle the create new collection page
-     *
+    import Client from '../../components/Client/Client.js'
+    import searchRecords from '../../components/Client/queries/getRecord.json'
+
+    /** Component to handle the display of single record.
+     * @vue-computed {String} currentRoute - the route of the current page
      */
     export default {
-        name: "NewCollection"
+        name: "Record",
+        data() {
+            return {
+                content: null,
+                error: null,
+                queryTriggered: false
+            }
+        },
+        computed: {
+            currentRoute: function () {
+                return this.$route.params['id']
+            },
+        },
+        watch: {
+            currentRoute: async function () {
+                await this.getData();
+            }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = new Client();
+                await this.getData();
+            })
+        },
+        methods: {
+            /** Method to build and return the page title to be included as a metadata
+             *  @returns {String} - the title of the current page
+             */
+            getTitle: function(){
+                return 'FAIRsharing | ' + this.currentRoute
+            },
+            getData: async function(){
+                this.queryTriggered = false;
+                this.content = null;
+                this.error = null;
+                searchRecords.queryParam["id"] = this.currentRoute;
+                this.content = await this.client.executeQuery(searchRecords);
+                this.queryTriggered = true;
+                if (this.content instanceof Error){
+                    this.error = this.content.message;
+                    return null;
+                }
+
+            },
+            getJSONLD: function(){
+                const data = this.content["fairsharingRecord"];
+                let output = {
+                    "@context": "http://schema.org",
+                    "@type": "Dataset",
+                    "@id": "https://doi.org/10.25504/" + data['doi'],
+                    alternateName: data['abbreviation'],
+                    description: "This FAIRsharing record describes: " + data.description,
+                    identifier: "10.25504/" + data['doi'],
+                    name: "FAIRsharing record for " + data.name,
+                    url: "https://doi.org/10.25504/" + data['doi'],
+                    citation: [
+                        {
+                            "@type": "CreativeWork",
+                            identifier: "https://doi.org/10.25504/" + data['doi'],
+                            name: "Citing FAIRsharing record for " + data.name
+                        }
+                    ]
+                };
+                let hasLicense = Object.prototype.hasOwnProperty.call(data, "licences");
+                if (hasLicense &amp;&amp; data["licences"].length > 0){
+                    const license = data["licences"][0];
+                    output.license = {
+                        "@type": "CreativeWork",
+                        name: license.name,
+                        url: license.url
+                    };
+                }
+                return output;
+            }
+        },
+        /**
+         * Setting up the metaInfo of the page
+         * @returns {{title: String}}
+         * */
+        metaInfo() {
+            return {
+                title: this.getTitle()
+            }
+        },
     }
 &lt;/script>
 
 &lt;style scoped>
+
+  .error {
+    background-color: indianred;
+    border:1px solid red;
+    padding:20px;
+    color:white;
+    margin:20px;
+    text-align: left;
+    font-size: 18px;
+  }
 
 &lt;/style></pre>
     </article>

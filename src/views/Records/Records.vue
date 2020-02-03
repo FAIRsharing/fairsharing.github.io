@@ -102,6 +102,10 @@
                       }
                   }
 
+                  if (Object.keys(searchRecords.queryParam).length === 0){
+                      searchRecords.queryParam = null
+                  }
+
                   let content = await this.client.executeQuery(searchRecords);
                   if (content instanceof Error){
                       throw content;

@@ -110,7 +110,11 @@ class GraphQLClient {
      * @returns {Object} {query: queryString} - a valid graphQL query string to execute
      */
     buildQuery(query){
-        let queryString = `{${query.queryName}( `;
+        let queryString = `{${query.queryName}`;
+
+        if (query.pagination || query.queryParam){
+            queryString += `( `;
+        }
 
         if (query.pagination){
             Object.keys(query.pagination).forEach(function(key){
@@ -132,7 +136,10 @@ class GraphQLClient {
             });
         }
 
-        queryString += ")";
+        if ((query.pagination || query.queryParam)){
+            queryString += ")";
+        }
+
         if (query.queryFields){
             queryString += "{";
             queryString += `${query.queryFields}`;

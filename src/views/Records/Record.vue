@@ -74,6 +74,7 @@
                 this.queryTriggered = false;
                 this.content = null;
                 this.error = null;
+                searchRecords.queryParam = {};
                 searchRecords.queryParam["id"] = this.currentRoute;
                 this.content = await this.client.executeQuery(searchRecords);
                 this.queryTriggered = true;

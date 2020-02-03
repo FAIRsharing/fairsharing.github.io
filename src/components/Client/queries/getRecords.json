@@ -1,6 +1,7 @@
 {
   "queryName": "searchFairsharingRecords",
-  "pagination": {},
+  "queryParam": null,
+  "pagination": null,
   "queryFields": {
     "elasticSearchFields": [
       "aggregations",

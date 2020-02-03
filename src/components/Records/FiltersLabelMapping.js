@@ -30,7 +30,7 @@ let labelsMapping = {
         },
         subjects: {
             filterName: "subjects",
-            filterLabel: "Ontology Disciplines"
+            filterLabel: "Ontology Domains"
         },
         user_defined_tags: {
             filterName: "userDefinedTags",

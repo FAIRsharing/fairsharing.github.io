@@ -2,8 +2,8 @@
   <div class="container-fluid">
     <div class="row">
       <div
-        v-for="(record, index) in inputData"
-        :key="index"
+        v-for="record in inputData"
+        :key="'record'+record.id"
         class="col col-xl-3 col-lg-3 col-sm-6"
       >
         <div class="card">

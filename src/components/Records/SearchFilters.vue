@@ -82,9 +82,12 @@
       },
         methods: {
             getData: function(){
-                // Need to validate form.data
-                // Need to encoreURI() values in form.data
+                // Need to validate data before sending.
                 let currentPath = this.$route.name;
+                let client = this;
+                Object.keys(client.form.data).forEach(function(key){
+                   client.form.data[key] = encodeURI(client.form.data[key])
+                });
                 this.$router.push({
                     name: currentPath,
                     query: this.form.data

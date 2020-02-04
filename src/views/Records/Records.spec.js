@@ -1,6 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import Records from "./Records.vue";
-import Client from "../../components/Client/Client.js";
+import Client from "../../components/GraphClient/GraphClient.js";
 const sinon = require("sinon");
 
 const $route = {

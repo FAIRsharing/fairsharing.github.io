@@ -77,11 +77,6 @@
           "type": "string"
         },
         {
-          "name": "history",
-          "label": "history",
-          "type": "string"
-        },
-        {
           "name": "grants",
           "label": "grants",
           "type": "string"
@@ -94,11 +89,6 @@
         {
           "name": "legacyIds",
           "label": "Old IDs",
-          "type": "string"
-        },
-        {
-          "name": "legacyLogs",
-          "label": "Old Logs",
           "type": "string"
         },
         {

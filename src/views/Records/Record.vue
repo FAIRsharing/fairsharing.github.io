@@ -25,7 +25,7 @@
       <script
         type="application/ld+json"
       >
-        {{ getJSONLD() }}
+        {{ getJSONLD }}
       </script>
     </div>
   </div>
@@ -34,6 +34,7 @@
 <script>
     import Client from '../../components/Client/Client.js'
     import searchRecords from '../../components/Client/queries/getRecord.json'
+    import History from '../../components/Client/queries/getRecordHistory.json'
 
     /** Component to handle the display of single record.
      * @vue-computed {String} currentRoute - the route of the current page
@@ -50,39 +51,6 @@
         computed: {
             currentRoute: function () {
                 return this.$route.params['id']
-            },
-        },
-        watch: {
-            currentRoute: async function () {
-                await this.getData();
-            }
-        },
-        mounted: function () {
-            this.$nextTick(async function () {
-                this.client = new Client();
-                await this.getData();
-            })
-        },
-        methods: {
-            /** Method to build and return the page title to be included as a metadata
-             *  @returns {String} - the title of the current page
-             */
-            getTitle: function(){
-                return 'FAIRsharing | ' + this.currentRoute
-            },
-            getData: async function(){
-                this.queryTriggered = false;
-                this.content = null;
-                this.error = null;
-                searchRecords.queryParam = {};
-                searchRecords.queryParam["id"] = this.currentRoute;
-                this.content = await this.client.executeQuery(searchRecords);
-                this.queryTriggered = true;
-                if (this.content instanceof Error){
-                    this.error = this.content.message;
-                    return null;
-                }
-
             },
             getJSONLD: function(){
                 const data = this.content["fairsharingRecord"];
@@ -113,6 +81,46 @@
                     };
                 }
                 return output;
+            }
+        },
+        watch: {
+            currentRoute: async function () {
+                await this.getData();
+            }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = new Client();
+                await this.getData();
+                await this.getHistory();
+            })
+        },
+        methods: {
+            /** Method to build and return the page title to be included as a metadata
+             *  @returns {String} - the title of the current page
+             */
+            getTitle: function(){
+                return 'FAIRsharing | ' + this.currentRoute
+            },
+            getData: async function(){
+                this.queryTriggered = false;
+                this.content = null;
+                this.error = null;
+                searchRecords.queryParam = {};
+                searchRecords.queryParam["id"] = this.currentRoute;
+                this.content = await this.client.executeQuery(searchRecords);
+                this.queryTriggered = true;
+                if (this.content instanceof Error){
+                    this.error = this.content.message;
+                    return null;
+                }
+
+            },
+            getHistory: async function(){
+                History.queryParam = {};
+                History.queryParam["id"] = this.currentRoute;
+                let history = await this.client.executeQuery(History);
+                console.log(history);
             }
         },
         /**

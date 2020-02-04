@@ -32,9 +32,9 @@
 </template>
 
 <script>
-    import Client from '../../components/Client/Client.js'
-    import searchRecords from '../../components/Client/queries/getRecord.json'
-    import History from '../../components/Client/queries/getRecordHistory.json'
+    import Client from '../../components/GraphClient/GraphClient.js'
+    import searchRecords from '../../components/GraphClient/queries/getRecord.json'
+    import History from '../../components/GraphClient/queries/getRecordHistory.json'
 
     /** Component to handle the display of single record.
      * @vue-computed {String} currentRoute - the route of the current page

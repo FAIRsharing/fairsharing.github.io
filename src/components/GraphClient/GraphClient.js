@@ -123,15 +123,26 @@ class GraphQLClient {
         }
         if (query.queryParam){
             Object.keys(query.queryParam).forEach(function(key){
-                const isInt = parseInt(query.queryParam[key]);
-                if (typeof query.queryParam[key] === "string" && isNaN(isInt)){
-                    queryString += ` ${key}:"${query.queryParam[key]}" `;
-                }
-                else if (!isNaN(isInt)){
-                    queryString += ` ${key}:${isInt} `;
+                let paramValue = query.queryParam[key];
+                if (paramValue[0] === "[" && paramValue[paramValue.length -1]=== "]"){
+                    let param = [];
+                    let paramValues = paramValue.replace("[", "").replace("]", "").split(",");
+                    paramValues.forEach(function(value){
+                        param.push("\""+value+"\"")
+                    });
+                    queryString += `${key}: [${param.join(",")}]`;
                 }
                 else {
-                    queryString += ` ${key}:${query.queryParam[key]} `;
+                    const isInt = parseInt(query.queryParam[key]);
+                    if (typeof query.queryParam[key] === "string" && isNaN(isInt)){
+                        queryString += ` ${key}:"${query.queryParam[key]}" `;
+                    }
+                    else if (!isNaN(isInt)){
+                        queryString += ` ${key}:${isInt} `;
+                    }
+                    else {
+                        queryString += ` ${key}:${query.queryParam[key]} `;
+                    }
                 }
             });
         }

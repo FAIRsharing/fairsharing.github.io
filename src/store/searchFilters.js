@@ -1,14 +1,14 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import GraphQLClient from "../components/Client/Client.js"
-import query from "../components/Client/queries/getFilters.json"
+import GraphQLClient from "../components/GraphClient/GraphClient.js"
+import query from "../components/GraphClient/queries/getFilters.json"
 import filterMapping from "../components/Records/FiltersLabelMapping.js"
 
 let client = new GraphQLClient();
 
 Vue.use(Vuex);
 export default new Vuex.Store({
-    namespaced: true,
+    namespace: true,
     state: {
         filters: []
     },

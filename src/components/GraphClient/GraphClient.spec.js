@@ -1,6 +1,6 @@
-import Client from "../../components/Client/Client.js"
-import query from "../../components/Client/queries/getRecords.json"
-import recordQuery from "../../components/Client/queries/getRecord.json"
+import Client from ".//Client.js"
+import query from ".//queries/getRecords.json"
+import recordQuery from ".//queries/getRecord.json"
 const sinon = require("sinon");
 const axios = require("axios");
 

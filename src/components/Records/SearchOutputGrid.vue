@@ -1,10 +1,15 @@
 <template>
   <div class="container-fluid">
+
+    <div v-if="inputData.length === 0">
+      LOADING
+    </div>
+
     <div class="row">
       <div
         v-for="record in inputData"
         :key="'record'+record.id"
-        class="col col-xl-3 col-lg-3 col-sm-6"
+        class="col col-xl-2 col-lg-2 col-sm-6"
       >
         <div class="card">
           <div class="card-header">
@@ -43,6 +48,10 @@
     text-align: left;
     max-height: 500px;
     overflow-y: auto;
+  }
+
+  .card {
+    height:500px;
   }
   .col {
     margin-bottom:20px;

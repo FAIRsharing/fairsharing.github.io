@@ -3,6 +3,9 @@
     v-if="client"
     class="outputGrid container-fluid"
   >
+
+
+
     <h1>{{ currentPath }}</h1>
     <div class="row">
       <search-filters class="col-3" />
@@ -13,8 +16,8 @@
 
 <script>
     import OutputGrid from '../../components/Records/SearchOutputGrid'
-    import Client from '../../components/Client/Client.js'
-    import searchRecords from '../../components/Client/queries/getRecords.json'
+    import Client from '../../components/GraphClient/GraphClient.js'
+    import searchRecords from '../../components/GraphClient/queries/getRecords.json'
     import SearchFilters from "../../components/Records/SearchFilters"
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
@@ -79,6 +82,7 @@
              * @returns {Promise}
              */
             getData: async function () {
+                  this.content = [];
                   let recordHasRegistry = Object.prototype.hasOwnProperty.call(this.recordTypes, this.currentPath);
                   searchRecords.queryParam = {};
                   if (recordHasRegistry){

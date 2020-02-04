@@ -15,7 +15,7 @@
     import OutputGrid from '../../components/Records/SearchOutputGrid'
     import Client from '../../components/Client/Client.js'
     import searchRecords from '../../components/Client/queries/getRecords.json'
-    import SearchFilters from "../../components/Records/SearchFilters";
+    import SearchFilters from "../../components/Records/SearchFilters"
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -113,7 +113,8 @@
                   this.content = content['searchFairsharingRecords']['records'];
                   this.filters = content["searchFairsharingRecords"]["aggregations"];
                   return content;
-            }
+            },
+
         }
     }
 

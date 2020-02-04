@@ -20,6 +20,11 @@
           "type": "string"
         },
         {
+          "name": "countries",
+          "label": "countries",
+          "type": "string"
+        },
+        {
           "name": "type",
           "label": "Registry",
           "type": "string"

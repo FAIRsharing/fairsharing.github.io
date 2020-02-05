@@ -107,8 +107,13 @@
           :input-data="content"
         />
       &lt;/div>
-      &lt;div v-else class="col-9">
-        &lt;div class="error">{{ errors }}&lt;/div>
+      &lt;div
+        v-else
+        class="col-9"
+      >
+        &lt;div class="error">
+          {{ errors }}
+        &lt;/div>
       &lt;/div>
     &lt;/div>
   &lt;/div>
@@ -204,7 +209,7 @@
                       recordsQuery.queryParam[param] = JSON.parse(queryParameters[param]);
                     }
                     // Int
-                    else if (!isNaN(parseFloat(queryParameters[param]))) {
+                    else if (!isNaN(parseFloat(queryParameters[param])) &amp;&amp; isFinite(queryParameters[param])) {
                       recordsQuery.queryParam[param] = parseFloat(queryParameters[param]);
                     }
                     // Array

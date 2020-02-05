@@ -42,7 +42,7 @@
         <button
           type="button"
           class="btn btn-success"
-          @click="getData()"
+          @click="applyFilters()"
         >
           Search
         </button>
@@ -69,38 +69,23 @@
                 }
             }
         },
-        computed: {
-          currentPath: function () {
-            // do a better job to handle click on search that doesnt reset the form
-            return this.$route.path.replace('/', '');
-          }
-        },
-      watch: {
-        currentPath: function () {
-          this.form.data = {};
-        }
-      },
         methods: {
-            getData: function(){
-                // Need to validate data before sending.
-                let currentPath = this.$route.name;
-                let client = this;
-                Object.keys(client.form.data).forEach(function(key){
-                   client.form.data[key] = encodeURI(client.form.data[key])
+          applyFilters: function(){
+                let _module = this;
+                let formData = {};
+                Object.keys(_module.form.data).forEach(function(key){
+                  // Need to validate/sanitize data before sending.
+                  formData[key] = encodeURI(_module.form.data[key].trim());
                 });
                 this.$router.push({
-                    name: currentPath,
-                    query: this.form.data
+                    name: _module.$route.name,
+                    query: formData
                 });
-                return 0;
+                _module.form.data = {}
             },
             reset: function(){
                 this.form.data = {};
-                let currentPath = this.$route.name;
-                this.$router.push({
-                    name: currentPath
-                });
-                return 0;
+                this.$router.push({name: this.$route.name});
             }
         }
     }

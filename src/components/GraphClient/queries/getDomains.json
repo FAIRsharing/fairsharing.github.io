@@ -1,7 +1,6 @@
 {
   "queryName": "domains",
-  "queryParam": null,
-  "pagination": {
+  "queryParam": {
     "page": 1,
     "perPage": 3
   },

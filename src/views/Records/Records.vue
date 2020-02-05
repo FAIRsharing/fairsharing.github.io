@@ -3,7 +3,7 @@
     v-if="client"
     class="outputGrid container-fluid"
   >
-    <h1>{{ currentPath }}</h1>
+    <h1>{{ currentPath[0] }}</h1>
     <div class="row">
       <search-filters class="col-3" />
       <div
@@ -63,25 +63,22 @@
         computed: {
             currentPath: function () {
                 const title =  this.$route.path.replace('/', '');
-                return title.charAt(0).toUpperCase() + title.slice(1);
-            },
-            currentQueryParameter: function(){
                 const client = this;
                 let queryParams = {};
                 Object.keys(this.$route.query).forEach(function(prop){
-                  let queryVal = client.$route.query[prop];
-                  if (queryVal){
-                    queryParams[prop] = decodeURI(queryVal);
-                  }
+                    let queryVal = client.$route.query[prop];
+                    if (queryVal){
+                        queryParams[prop] = decodeURI(queryVal);
+                    }
                 });
-                return queryParams;
+                return [
+                    title.charAt(0).toUpperCase() + title.slice(1),
+                    queryParams
+                ];
             }
         },
         watch: {
             currentPath: async function (){
-                await this.getData();
-            },
-            currentQueryParameter: async function(){
                 await this.getData();
             }
         },
@@ -104,12 +101,12 @@
                   // Check if the current route correspond to a registry
                   if (Object.prototype.hasOwnProperty.call(this.recordTypes, this.currentPath)){
                       recordsQuery.queryParam['fairsharingRegistry'] =
-                          this.recordTypes[this.currentPath];
+                          this.recordTypes[this.currentPath[0]];
                   }
 
                   // get the parameters from the URL and add them to the query object
                   // with the correct type (string, int, array, bool)
-                  let queryParameters = this.currentQueryParameter;
+                  let queryParameters = this.currentPath[1];
                   Object.keys(queryParameters).forEach(function(param){
                     // Bool
                     if (queryParameters[param] === "true" || queryParameters[param] === "false"){

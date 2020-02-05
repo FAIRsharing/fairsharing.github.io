@@ -32,7 +32,6 @@ class GraphQLClient {
 
         let queryString = this.buildQuery({
                 fields: query.queryFields.target.fields,
-                pagination: query.pagination,
                 queryName: query.queryName,
                 objectType: query.queryFields.target.name,
                 queryFields: queryFields,
@@ -112,42 +111,23 @@ class GraphQLClient {
     buildQuery(query){
         let queryString = `{${query.queryName}`;
 
-        if (query.pagination || query.queryParam){
-            queryString += `( `;
-        }
-
-        if (query.pagination){
-            Object.keys(query.pagination).forEach(function(key){
-                queryString += ` ${key}:${query.pagination[key]} `;
-            });
-        }
         if (query.queryParam){
+            queryString += `( `;
             Object.keys(query.queryParam).forEach(function(key){
-                let paramValue = query.queryParam[key];
-                if (paramValue[0] === "[" && paramValue[paramValue.length -1]=== "]"){
-                    let param = [];
-                    let paramValues = paramValue.replace("[", "").replace("]", "").split(",");
-                    paramValues.forEach(function(value){
-                        param.push("\""+value+"\"")
-                    });
-                    queryString += `${key}: [${param.join(",")}]`;
+                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
+                    queryString += ` ${key}:${query.queryParam[key]} `;
                 }
-                else {
-                    const isInt = parseInt(query.queryParam[key]);
-                    if (typeof query.queryParam[key] === "string" && isNaN(isInt)){
-                        queryString += ` ${key}:"${query.queryParam[key]}" `;
-                    }
-                    else if (!isNaN(isInt)){
-                        queryString += ` ${key}:${isInt} `;
-                    }
-                    else {
-                        queryString += ` ${key}:${query.queryParam[key]} `;
-                    }
+                else if (typeof query.queryParam[key] === "string") {
+                    queryString += ` ${key}:"${query.queryParam[key]}" `;
+                }
+                else if (typeof query.queryParam[key] === "object"){
+                    let param = [];
+                    query.queryParam[key].forEach(function(paramVal){
+                        param.push("\"" + paramVal + "\"");
+                    });
+                    queryString += ` ${key}:[${param.join(",")}]`;
                 }
             });
-        }
-
-        if ((query.pagination || query.queryParam)){
             queryString += ")";
         }
 
@@ -170,9 +150,7 @@ class GraphQLClient {
                     queryString += field.name + "{";
                     field.target.forEach(function(target){
                         if (Object.keys(field).indexOf(target) > 0){
-                            queryString += `${target}{`;
-                            queryString += field[target].fields.join(" ");
-                            queryString += "} ";
+                            queryString += `${target}{${field[target].fields.join(" ")}}`;
                         }
                         else {
                             queryString += target + " " ;
@@ -188,9 +166,7 @@ class GraphQLClient {
             queryString += "}";
         }
         queryString += "}";
-
         return {query: queryString};
-
     }
 
 }

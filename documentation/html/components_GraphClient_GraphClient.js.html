@@ -119,79 +119,21 @@ class GraphQLClient {
      * @returns {Promise}
      */
     async executeQuery(query){
-
         let client = this;
-        let queryFields = (query.queryFields["elasticSearchFields"].length > 0) ? query.queryFields["elasticSearchFields"].join(" ") + " " : null;
-
-        let queryString = this.buildQuery({
-                fields: query.queryFields.target.fields,
-                queryName: query.queryName,
-                objectType: query.queryFields.target.name,
-                queryFields: queryFields,
-                queryParam: query["queryParam"]
-            });
-
-        // trigger the query
+        let queryString = {
+            query: `{${client.buildQuery(query)}}`
+        };
         try {
-            let resp = await axios.post(this.url, queryString, this.headers);
+            let resp = await axios.post(client.url, queryString, client.headers);
             if (resp.data.errors){
                 throw new Error(resp.data.errors[0].message);
             }
-
-            let content = resp.data.data;
-
-            /* group By */
-            query.queryFields.target.fields.forEach(function(queryField){
-                if (queryField.type === "object"){
-                    queryField.target.forEach(function(target){
-                        const queryHasField = Object.prototype.hasOwnProperty.call(queryField, target);
-                        let queryHasGroupBy = false;
-                        if (queryHasField){
-                            queryHasGroupBy = Object.prototype.hasOwnProperty.call(queryField[target], "groupBy");
-                        }
-                        if (queryHasField &amp;&amp; queryHasGroupBy){
-                            content[query.queryName][query.queryFields.target.name].forEach(function(record){
-                                const groupedData = client.groupBy(record[queryField.name], queryField[target]["groupBy"], target);
-                                if (groupedData){
-                                    record[queryField.name] = groupedData;
-                                }
-                            });
-
-                        }
-                    })
-                }
-            });
-            return content;
+            return resp.data.data;
         }
         catch (err){
             throw err;
         }
-
     }
-
-    /**
-     * Giving an array of items, a field and a target, group these items based on the field value.
-     * @param {Array} data - an array of objects
-     * @param {string} field - the name of the property of groupBy
-     * @param {string} target - the target object inside the array (due to graphQL output structure)
-     * @returns {Object | boolean} - Either return the grouped array as an object or false if the array was empty
-     */
-    groupBy(data, field, target) {
-        let output = {};
-        if (data.length > 0) {
-            data.forEach(function(record){
-                let outputHasField = Object.prototype.hasOwnProperty.call(output, record[target][field]);
-                if (!outputHasField){
-                    output[record[target][field]] = []
-                }
-                output[record[target][field]].push(record[target])
-            });
-            return output;
-        }
-        return false;
-
-    }
-
 
     /**
      * Transform the JSON query into a string for graphQL
@@ -199,66 +141,54 @@ class GraphQLClient {
      * @returns {Object} {query: queryString} - a valid graphQL query string to execute
      */
     buildQuery(query){
-        let queryString = `{${query.queryName}`;
+        let client = this;
+        let queryString = `${query.queryName}`; // query name
 
-        if (query.queryParam){
-            queryString += `( `;
+        // Handle query parameters
+        if (query.queryParam) {
+            queryString += "(";
             Object.keys(query.queryParam).forEach(function(key){
                 if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
-                    queryString += ` ${key}:${query.queryParam[key]} `;
+                    queryString += `${key}:${query.queryParam[key]} `;
                 }
                 else if (typeof query.queryParam[key] === "string") {
-                    queryString += ` ${key}:"${query.queryParam[key]}" `;
+                    queryString += `${key}:"${query.queryParam[key]}" `;
                 }
                 else if (typeof query.queryParam[key] === "object"){
                     let param = [];
                     query.queryParam[key].forEach(function(paramVal){
                         param.push("\"" + paramVal + "\"");
                     });
-                    queryString += ` ${key}:[${param.join(",")}]`;
+                    queryString += `${key}:[${param.join(",")}]`;
                 }
             });
             queryString += ")";
         }
 
-        if (query.queryFields){
+        // Handle query fields
+        if (query.fields){
             queryString += "{";
-            queryString += `${query.queryFields}`;
-            if (query.objectType) {
-                queryString += `${query.objectType}`;
-            }
-        }
-
-        if (Object.keys(query.fields).length > 0){
-            queryString += "{";
-            Object.keys(query.fields).forEach(function(key){
-                let field = query.fields[key];
-                if (field.type === "string"){
-                    queryString += field.name + " ";
+            query.fields.forEach(function(field){
+                if (typeof field === "string"){
+                    queryString += ` ${field}`;
                 }
-                else if (field.type === "object"){
-                    queryString += field.name + "{";
-                    field.target.forEach(function(target){
-                        if (Object.keys(field).indexOf(target) > 0){
-                            queryString += `${target}{${field[target].fields.join(" ")}}`;
+                if (typeof field === "object"){
+                    queryString += ` ${field.name}{`;
+                    field.fields.forEach(function(subField){
+                        if (typeof subField === "string"){
+                            queryString += `${subField} `;
                         }
                         else {
-                            queryString += target + " " ;
+                            queryString += `${client.buildQuery(subField)} `;
                         }
-
                     });
-                    queryString += "} ";
+                    queryString += "}";
                 }
             });
             queryString += "}";
         }
-        if (query.queryFields || query.objectType){
-            queryString += "}";
-        }
-        queryString += "}";
-        return {query: queryString};
+        return queryString;
     }
-
 }
 
 export default GraphQLClient;</pre>

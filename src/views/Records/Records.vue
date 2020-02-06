@@ -90,7 +90,6 @@
                     await this.fetchRecords(this.getParameters());
                   }
                   catch(e){
-                    console.log(e);
                     this.errors = e.message;
                   }
 

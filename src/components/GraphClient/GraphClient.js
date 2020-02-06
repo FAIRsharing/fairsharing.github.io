@@ -38,8 +38,6 @@ class GraphQLClient {
                 queryParam: query["queryParam"]
             });
 
-        console.log(queryString.query);
-
         // trigger the query
         try {
             let resp = await axios.post(this.url, queryString, this.headers);
@@ -73,8 +71,7 @@ class GraphQLClient {
             return content;
         }
         catch (err){
-            console.log(err);
-            return err;
+            throw err;
         }
 
     }

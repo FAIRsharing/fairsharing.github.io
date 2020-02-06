@@ -1,40 +1,43 @@
 <template>
   <div
-    v-if="content"
-    class="standard"
+    class="standard container-fluid"
   >
-    <div
-      v-if="error"
+    <div v-if="error"
       class="error"
     >
       {{ error }}
     </div>
 
-    <div v-if="!error && queryTriggered">
-      <span>{{ content['fairsharingRecord'].name }}</span>
-      <p>ID: {{ currentRoute }}</p>
-      <div class="card">
-        <div
-          v-for="(field, label, index) in content['fairsharingRecord']"
-          :key="index"
-        >
-          <b>{{ label }}: </b> {{ field }}
+    <div
+      v-if="!error && queryTriggered"
+      class="row"
+    >
+      <div class="col-10">
+        <span>{{ currentRecord['fairsharingRecord'].name }}</span>
+        <div class="card">
+          <div
+            v-for="(field, label, index) in currentRecord['fairsharingRecord']"
+            :key="index"
+          >
+            <b>{{ label }}: </b> {{ field }}
+          </div>
         </div>
       </div>
 
-      <script
-        type="application/ld+json"
-      >
-        {{ getJSONLD }}
-      </script>
+      <div class="col-2">
+        <button @click="fetchRecordHistory(currentRoute)" type="button" class="btn btn-dark">
+          Get History
+        </button>
+        <hr>
+        {{ currentRecordHistory }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
     import Client from '../../components/GraphClient/GraphClient.js'
-    import searchRecords from '../../components/GraphClient/queries/getRecord.json'
-    import History from '../../components/GraphClient/queries/getRecordHistory.json'
+    import { mapActions, mapState } from 'vuex'
 
     /** Component to handle the display of single record.
      * @vue-computed {String} currentRoute - the route of the current page
@@ -43,7 +46,6 @@
         name: "Record",
         data() {
             return {
-                content: null,
                 error: null,
                 queryTriggered: false
             }
@@ -52,36 +54,7 @@
             currentRoute: function () {
                 return this.$route.params['id']
             },
-            getJSONLD: function(){
-                const data = this.content["fairsharingRecord"];
-                let output = {
-                    "@context": "http://schema.org",
-                    "@type": "Dataset",
-                    "@id": "https://doi.org/10.25504/" + data['doi'],
-                    alternateName: data['abbreviation'],
-                    description: "This FAIRsharing record describes: " + data.description,
-                    identifier: "10.25504/" + data['doi'],
-                    name: "FAIRsharing record for " + data.name,
-                    url: "https://doi.org/10.25504/" + data['doi'],
-                    citation: [
-                        {
-                            "@type": "CreativeWork",
-                            identifier: "https://doi.org/10.25504/" + data['doi'],
-                            name: "Citing FAIRsharing record for " + data.name
-                        }
-                    ]
-                };
-                let hasLicense = Object.prototype.hasOwnProperty.call(data, "licences");
-                if (hasLicense && data["licences"].length > 0){
-                    const license = data["licences"][0];
-                    output.license = {
-                        "@type": "CreativeWork",
-                        name: license.name,
-                        url: license.url
-                    };
-                }
-                return output;
-            }
+            ...mapState('records', ["currentRecord", "currentRecordHistory"])
         },
         watch: {
             currentRoute: async function () {
@@ -92,7 +65,6 @@
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
-                await this.getHistory();
             })
         },
         methods: {
@@ -104,24 +76,18 @@
             },
             getData: async function(){
                 this.queryTriggered = false;
-                this.content = null;
                 this.error = null;
-                searchRecords.queryParam = {};
-                searchRecords.queryParam["id"] = this.currentRoute;
-                this.content = await this.client.executeQuery(searchRecords);
-                this.queryTriggered = true;
-                if (this.content instanceof Error){
-                    this.error = this.content.message;
-                    return null;
+                try {
+                    await this.fetchRecord(this.currentRoute);
+                }
+                catch(e){
+                    console.log(e);
+                    this.error = e.message;
                 }
 
+                this.queryTriggered = true;
             },
-            getHistory: async function(){
-                History.queryParam = {};
-                History.queryParam["id"] = this.currentRoute;
-                let history = await this.client.executeQuery(History);
-                console.log(history);
-            }
+            ...mapActions('records', ['fetchRecord', "fetchRecordHistory"])
         },
         /**
          * Setting up the metaInfo of the page

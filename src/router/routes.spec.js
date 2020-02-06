@@ -1,5 +1,5 @@
 import router from "./index"
-
+import { beforeEach } from "./index"
 
 describe("Routes", () => {
     it("routing variables are correctly set", () => {
@@ -9,4 +9,19 @@ describe("Routes", () => {
             }
         });
     })
+});
+
+describe("BeforeEach", () => {
+   it("Can set a correct title", () =>{
+       let to = {
+           meta: { title: "ABC" }
+       };
+       const next = jest.fn();
+       beforeEach(to, undefined, next);
+       expect(document.title).toMatch("FAIRsharing | ABC");
+
+       to.meta = {};
+       beforeEach(to, undefined, next);
+       expect(document.title).toMatch("FAIRsharing");
+   });
 });

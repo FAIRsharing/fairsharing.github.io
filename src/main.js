@@ -5,6 +5,7 @@ import VueMeta from "vue-meta";
 
 /* import router & store */
 import router from './router'
+import {beforeEach} from "./router";
 import store from './store'
 
 /* import HTML BoilerPlates */
@@ -22,6 +23,7 @@ Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });
 const graphQLClient = new GraphQLClient();
+router.beforeEach((to, from, next) => beforeEach(to, from, next));
 
 new Vue({
     mounted: async function(){

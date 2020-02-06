@@ -48,17 +48,6 @@ describe("GraphQL Client", function(){
         await client.executeQuery(localQuery);
     });
 
-    it("can properly raise errors", async function(){
-        postStub.withArgs(0).returns({
-            data: {errors: [{messages: "abc"}]}
-        });
-        sinon.stub(Client.prototype, "buildQuery").withArgs(sinon.match.any).returns(0);
-        await expect(client.executeQuery(localQuery)).rejects;
-        axios.post.restore();
-        Client.prototype.buildQuery.restore();
-        postStub.restore();
-    });
-
     it("can correctly build a query string from a JSON", function() {
         const expectedOutput = "searchFairsharingRecords(field1:true field2:\"true\" field3:[\"true\"," +
             "\"false\"]){ aggregations currentPage perPage totalCount totalPages firstPage records{id " +

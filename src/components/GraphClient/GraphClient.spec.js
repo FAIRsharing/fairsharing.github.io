@@ -1,6 +1,5 @@
 import Client from "./GraphClient.js"
 import query from "./queries/getRecords.json"
-import recordQuery from "./queries/getRecord.json"
 const sinon = require("sinon");
 const axios = require("axios");
 
@@ -35,54 +34,18 @@ describe("GraphQL Client", function(){
        expect(client).toBe(instance2.constructor["_instance"]);
     });
 
-    it("can execute a JSON query", async function(){
+    it("can execute a query", async function(){
         localQuery.queryParam = {};
         localQuery.queryParam["fairsharingRegistry"] = "Standard";
         localQuery.queryParam["isRecommended"] = true;
 
-        let groupStub = sinon.stub(Client.prototype, "groupBy");
-        groupStub.withArgs(sinon.match.any).returns([123]);
         let output = await client.executeQuery(localQuery);
         expect(JSON.stringify(output)).toBe(JSON.stringify({
             searchFairsharingRecords: {
-                records: [{
-                    recordAssociations: [123]
-                }]
+                records: [{}]
             }
         }));
-        groupStub.withArgs(sinon.match.any).returns(false);
         await client.executeQuery(localQuery);
-        groupStub.restore();
-    });
-
-    it("can groupBy a given array of object based on target property", function(){
-        const input = [
-            {target:{
-                name: "test1",
-                type: "standard"
-            }},
-            {target: {
-                name: "test2",
-                type: "standard"
-            }},
-            {target:{
-                name: "test3",
-                type: "collection"
-            }}
-        ];
-        let groupedOutput = client.groupBy(input, "type", "target");
-        const expectedOutput =  {
-            standard: [
-                { name: 'test1', type: 'standard' },
-                { name: 'test2', type: 'standard' }
-            ],
-            collection: [
-                { name: 'test3', type: 'collection' }
-            ]
-        };
-        expect(JSON.stringify(groupedOutput)).toBe(JSON.stringify(expectedOutput));
-        groupedOutput = client.groupBy({}, "type", "target");
-        expect(groupedOutput).toBe(false);
     });
 
     it("can properly raise errors", async function(){
@@ -97,37 +60,23 @@ describe("GraphQL Client", function(){
     });
 
     it("can correctly build a query string from a JSON", function() {
-        const expectedOutput = "{searchFairsharingRecords{aggregations currentPage perPage totalCount totalPages " +
-            "firstPage records{id countries type name abbreviation registry domains subjects taxonomies " +
-            "recordAssociations{linkedRecord{name id registry}recordAssocLabel } status isRecommended }}}";
-        delete localQuery.queryParam;
-        localQuery.queryFields.target.fields.push({
-            name: "test",
-            label: "test",
-            type: null
-        });
-        const queryObject = {
-            fields: localQuery.queryFields.target.fields,
-            queryName: localQuery.queryName,
-            objectType: localQuery.queryFields.target.name,
-            queryFields: localQuery.queryFields["elasticSearchFields"].join(" ") + " ",
-            queryParam: localQuery["queryParam"]
+        const expectedOutput = "searchFairsharingRecords(field1:true field2:\"true\" field3:[\"true\"," +
+            "\"false\"]){ aggregations currentPage perPage totalCount totalPages firstPage records{id " +
+            "type name abbreviation registry domains subjects taxonomies recordAssociations{ linkedRecord{name " +
+            "id registry } recordAssocLabel}status isRecommended }}" ;
+        query.queryParam = {
+            "field1": true,
+            "field2": "true",
+            "field3": ["true", "false"]
         };
-        const queryString = client.buildQuery(queryObject);
-        expect(queryString.query).toBe(expectedOutput);
+        const queryString = client.buildQuery(query);
+        expect(queryString).toBe(expectedOutput);
 
-        const expectedRecordQueryString = "{searchFairsharingRecords{id countries type name " +
-            "abbreviation registry domains subjects taxonomies recordAssociations{linkedRecord{name " +
-            "id registry}recordAssocLabel } status isRecommended }}}";
-        const recordQueryObject = {
-            fields: null,
-            queryName: recordQuery.queryName,
-            objectType: recordQuery.queryFields.target.name,
-            queryFields: {},
-            queryParam: recordQuery["queryParam"]
+        const smallQuery = {
+            queryName: "test"
         };
-        const recordQueryString = client.buildQuery(recordQueryObject);
-        expect(recordQueryString.query).toBe(expectedRecordQueryString);
+        const miniResponse = client.buildQuery(smallQuery);
+        expect(miniResponse).toBe("test");
 
     });
 

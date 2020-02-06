@@ -52,7 +52,7 @@ export default {
         async fetchRecordHistory(state, id){
             recordHistory.queryParam = {id: id};
             let data = await client.executeQuery(recordHistory);
-            this.commit('records/setRecordHistory', data);
+            this.commit('records/setRecordHistory', data["fairsharingRecord"]);
         }
     },
     modules: {

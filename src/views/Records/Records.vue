@@ -83,7 +83,7 @@
              * @returns {Promise}
              */
             getData: async function () {
-                  window.scrollTo(0,0);
+                  //window.scrollTo(0,0);
                   this.content = [];
                   this.errors = null;
                   try {

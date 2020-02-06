@@ -54,7 +54,7 @@ let labelsMapping = {
         },
         status: {
             filterName: "status",
-            filterLabel: "Records status"
+            filterLabel: "Output status"
         }
     },
     input: [

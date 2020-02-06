@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="client"
     class="outputGrid container-fluid"
   >
     <h1>{{ currentPath[0] }}</h1>
@@ -10,9 +9,7 @@
         v-if="!errors"
         class="col-9"
       >
-        <output-grid
-          :input-data="content"
-        />
+        <output-grid />
       </div>
       <div
         v-else
@@ -28,26 +25,21 @@
 
 <script>
     import OutputGrid from '../../components/Records/SearchOutputGrid'
-    import Client from '../../components/GraphClient/GraphClient.js'
-    import recordsQuery from '../../components/GraphClient/queries/getRecords.json'
     import SearchFilters from "../../components/Records/SearchFilters"
+    import { mapActions } from 'vuex'
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
      * @vue-computed {String} currentPath - the path of the current page.
-     *
      */
     export default {
         name: "Records",
         components: {
-          SearchFilters,
+            SearchFilters,
             OutputGrid
         },
         data() {
             return {
-                /* Be careful, in the current system registry and type are reversed, which is why we have registry bound
-                to type and type bound to registry in the above object.
-                */
                 recordTypes: {
                     Standards: "Standard",
                     Databases: "Database",
@@ -55,8 +47,7 @@
                     Collections: "Collection"
                 },
                 content: [],
-                client: null,
-                filters: {},
+                buckets: {},
                 errors: null
             }
         },
@@ -75,7 +66,7 @@
                     title.charAt(0).toUpperCase() + title.slice(1),
                     queryParams
                 ];
-            }
+            },
         },
         watch: {
             currentPath: async function (){
@@ -84,7 +75,6 @@
         },
         mounted: function () {
             this.$nextTick(async function () {
-                this.client = new Client();
                 await this.getData();
             })
         },
@@ -95,52 +85,41 @@
             getData: async function () {
                   window.scrollTo(0,0);
                   this.content = [];
-                  recordsQuery.queryParam = {};
                   this.errors = null;
-
-                  // Check if the current route correspond to a registry
-                  if (Object.prototype.hasOwnProperty.call(this.recordTypes, this.currentPath)){
-                      recordsQuery.queryParam['fairsharingRegistry'] =
-                          this.recordTypes[this.currentPath[0]];
+                  try {
+                    await this.fetchRecords(this.getParameters());
+                  }
+                  catch(e){
+                    console.log(e);
+                    this.errors = e.message;
                   }
 
-                  // get the parameters from the URL and add them to the query object
-                  // with the correct type (string, int, array, bool)
-                  let queryParameters = this.currentPath[1];
-                  Object.keys(queryParameters).forEach(function(param){
-                    // Bool
-                    if (queryParameters[param] === "true" || queryParameters[param] === "false"){
-                      recordsQuery.queryParam[param] = JSON.parse(queryParameters[param]);
-                    }
-                    // Int
-                    else if (!isNaN(parseFloat(queryParameters[param])) && isFinite(queryParameters[param])) {
-                      recordsQuery.queryParam[param] = parseFloat(queryParameters[param]);
-                    }
-                    // Array
-                    else if (queryParameters[param][0] === "[" && queryParameters[param][queryParameters[param].length -1] === "]"){
-                      recordsQuery.queryParam[param] = queryParameters[param].replace("[","").replace("]","").split(",");
-                    }
-                    // String
-                    else{
-                      recordsQuery.queryParam[param] = queryParameters[param];
-                    }
-                  });
-
-                  // Reset the query param to null if no key were added
-                  if (Object.keys(recordsQuery.queryParam).length === 0){
-                      recordsQuery.queryParam = null
-                  }
-
-                  // Trigger the query
-                  let content = await this.client.executeQuery(recordsQuery);
-                  if (content instanceof Error){
-                      this.errors = content;
-                      throw content;
-                  }
-                  this.content = content['searchFairsharingRecords']['records'];
-                  this.filters = content["searchFairsharingRecords"]["aggregations"];
-                  return content;
-            }
+            },
+            getParameters: function(){
+              let queryParameters = {};
+              const currentPath = this.currentPath[0];
+              const urlParams = this.currentPath[1];
+              if (Object.prototype.hasOwnProperty.call(this.recordTypes, currentPath)){
+                queryParameters['fairsharingRegistry'] = this.recordTypes[currentPath];
+              }
+              Object.keys(urlParams).forEach(function(urlParamName){
+                const urlParamVal = urlParams[urlParamName];
+                if (["true","false"].indexOf(urlParamVal) > 0){
+                  queryParameters[urlParamName] = JSON.parse(urlParamVal);
+                }
+                else if (!isNaN(parseFloat(urlParamVal)) && isFinite(urlParamVal)){
+                  queryParameters[urlParamName] = parseFloat(urlParamVal);
+                }
+                else if (urlParamVal[0] === "[" && urlParamVal[urlParamVal.length -1] === "]"){
+                  queryParameters[urlParamName] = urlParamVal.replace("[", "").replace("]").split(",");
+                }
+                else {
+                  queryParameters[urlParamName] = urlParamVal;
+                }
+              });
+              return queryParameters;
+            },
+            ...mapActions('records', ['fetchRecords'])
         }
     }
 

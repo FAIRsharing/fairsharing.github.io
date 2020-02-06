@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form class="card">
+    <form class="card" v-if="$store.state.searchFilters.filters.length > 0">
       <div class="card-header">
         <h2>Advanced search</h2>
       </div>

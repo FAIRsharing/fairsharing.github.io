@@ -1,33 +1,27 @@
-import Vue from "vue"
-import Vuex from "vuex"
-import GraphQLClient from "../components/GraphClient/GraphClient.js"
 import query from "../components/GraphClient/queries/getFilters.json"
 import filterMapping from "../components/Records/FiltersLabelMapping.js"
 
-let client = new GraphQLClient();
-
-Vue.use(Vuex);
-export default new Vuex.Store({
-    namespace: true,
+export default {
+    namespaced: true,
     state: {
-        filters: []
+        filters: [],
     },
     mutations: {
         setFilters(state, val){
-            if (this.state.filters.length === 0){
+            if (state.filters.length === 0){
                 let rawFilters = val['searchFairsharingRecords']['aggregations'];
                 state.filters = buildFilters(rawFilters);
             }
         }
     },
     actions: {
-        async fetchFilters(){
-            this.commit('setFilters', await client.executeQuery(query));
+        async fetchFilters(_, client){
+            this.commit('searchFilters/setFilters', await client.executeQuery(query));
         }
     },
     modules: {
     }
-})
+}
 
 let buildFilters = function(val){
     // Need to return filter values, filter label and filter name

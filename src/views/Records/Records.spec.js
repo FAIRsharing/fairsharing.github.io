@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+*/
+
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
 import Records from "./Records.vue";
@@ -24,6 +28,8 @@ const $store = new Vuex.Store({
     },
 });
 
+const jsdomScrollTo = window.scrollTo;
+
 describe("Records.vue", () => {
 
     let stub = sinon.stub(Client.prototype, "executeQuery");
@@ -49,6 +55,10 @@ describe("Records.vue", () => {
             mocks: {$route, $store},
             localVue,
         });
+        window.scrollTo = () => {};
+    });
+    afterEach( () =>{
+        window.scrollTo = jsdomScrollTo;
     });
 
     it("can be instantiated", () => {

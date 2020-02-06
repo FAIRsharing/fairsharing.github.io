@@ -49,7 +49,7 @@ class GraphQLClient {
      */
     buildQuery(query){
         let client = this;
-        let queryString = `${query.queryName}`; // query name
+        let queryString = `${query["queryName"]}`; // query name
 
         // Handle query parameters
         if (query.queryParam) {
@@ -61,7 +61,7 @@ class GraphQLClient {
                 else if (typeof query.queryParam[key] === "string") {
                     queryString += `${key}:"${query.queryParam[key]}" `;
                 }
-                else if (typeof query.queryParam[key] === "object"){
+                else {
                     let param = [];
                     query.queryParam[key].forEach(function(paramVal){
                         param.push("\"" + paramVal + "\"");
@@ -86,7 +86,7 @@ class GraphQLClient {
                             queryString += `${subField} `;
                         }
                         else {
-                            queryString += `${client.buildQuery(subField)} `;
+                            queryString += `${client.buildQuery(subField)}`;
                         }
                     });
                     queryString += "}";

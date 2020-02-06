@@ -63,33 +63,4 @@ describe("Record.vue", function() {
         expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(title);
     });
 
-    it("can create a JSON-LD dump for SEO", async () => {
-        let expectedOutput = { "@context": "http://schema.org",
-            "@type": "Dataset",
-            "@id": "https://doi.org/10.25504/undefined",
-            alternateName: undefined,
-            description: "This FAIRsharing record describes: undefined",
-            identifier: "10.25504/undefined",
-            name: "FAIRsharing record for test",
-            url: "https://doi.org/10.25504/undefined",
-            citation: [{
-                "@type": "CreativeWork",
-                identifier: "https://doi.org/10.25504/undefined",
-                name: "Citing FAIRsharing record for test"
-            }]
-        };
-
-        queryStub.withArgs(sinon.match.object).returns({
-            fairsharingRecord:{
-                id: 1,
-                name: "test"
-            }
-        });
-        await wrapper.vm.getData();
-        let test = wrapper.vm.getJSONLD();
-        expect(JSON.stringify(test)).toBe(JSON.stringify(expectedOutput));
-        Client.prototype.executeQuery.restore();
-    });
-
-
 });

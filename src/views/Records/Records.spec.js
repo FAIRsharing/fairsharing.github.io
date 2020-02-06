@@ -1,16 +1,35 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
+import Vuex from "vuex"
 import Records from "./Records.vue";
 import Client from "../../components/GraphClient/GraphClient.js";
+import records from "../../store/records.js"
 const sinon = require("sinon");
+const axios = require("axios");
 
+const localVue = createLocalVue();
+localVue.use(Vuex);
 const $route = {
-    path: "/standards"
+    path: "/standards",
+    query: {
+        param1: "string",
+        param2: null,
+        param3: "false",
+        param4: "[abc,def]",
+        param5: 123
+    }
 };
+const $store = new Vuex.Store({
+    modules: {
+        records: records
+    },
+});
 
 describe("Records.vue", () => {
 
+    let stub = sinon.stub(Client.prototype, "executeQuery");
+
     beforeAll( () => {
-        sinon.stub(Client.prototype, "executeQuery").withArgs(sinon.match.object).returns({
+        stub.withArgs(sinon.match.object).returns({
             searchFairsharingRecords: {
                 records: [
                     1
@@ -27,28 +46,36 @@ describe("Records.vue", () => {
     let wrapper;
     beforeEach(() => {
         wrapper = shallowMount(Records, {
-            mocks: {$route}
+            mocks: {$route, $store},
+            localVue,
         });
     });
-    const title = "Standards";
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("Records");
     });
 
     it("has a currentPath computed attribute", () => {
-        expect(wrapper.vm.currentPath.toUpperCase()).toMatch(title.toUpperCase());
-    });
-
-    it("can execute the query with string search", async () => {
-        wrapper.vm.searchString = "First";
-        await wrapper.vm.getData();
-        expect(wrapper.vm.content.length).toBeGreaterThan(0);
+        expect(wrapper.vm.currentPath[0]).toBe("Standards");
     });
 
     it("react to path change", async () => {
-        $route.path = "Database";
-        expect(wrapper.vm.currentPath).toBe($route.path);
+        $route.path = "/database";
+        expect(wrapper.vm.currentPath[0]).toBe("Database");
     });
+
+    it("can correctly raise an error", async () =>{
+        Client.prototype.executeQuery.restore();
+        sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
+            data: {
+                errors: [
+                    {message: "Error"}
+                ]
+            }
+        });
+        await expect(wrapper.vm.getData()).rejects;
+        axios.post.restore();
+
+    })
 
 });

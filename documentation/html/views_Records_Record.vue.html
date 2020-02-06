@@ -93,41 +93,44 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;div
-    v-if="content"
-    class="standard"
+    class="standard container-fluid"
   >
-    &lt;div
-      v-if="error"
+    &lt;div v-if="error"
       class="error"
     >
       {{ error }}
     &lt;/div>
 
-    &lt;div v-if="!error &amp;&amp; queryTriggered">
-      &lt;span>{{ content['fairsharingRecord'].name }}&lt;/span>
-      &lt;p>ID: {{ currentRoute }}&lt;/p>
-      &lt;div class="card">
-        &lt;div
-          v-for="(field, label, index) in content['fairsharingRecord']"
-          :key="index"
-        >
-          &lt;b>{{ label }}: &lt;/b> {{ field }}
+    &lt;div
+      v-if="!error &amp;&amp; queryTriggered"
+      class="row"
+    >
+      &lt;div class="col-10">
+        &lt;span>{{ currentRecord['fairsharingRecord'].name }}&lt;/span>
+        &lt;div class="card">
+          &lt;div
+            v-for="(field, label, index) in currentRecord['fairsharingRecord']"
+            :key="index"
+          >
+            &lt;b>{{ label }}: &lt;/b> {{ field }}
+          &lt;/div>
         &lt;/div>
       &lt;/div>
 
-      &lt;script
-        type="application/ld+json"
-      >
-        {{ getJSONLD }}
-      &lt;/script>
+      &lt;div class="col-2">
+        &lt;button @click="fetchRecordHistory(currentRoute)" type="button" class="btn btn-dark">
+          Get History
+        &lt;/button>
+        &lt;hr>
+        {{ currentRecordHistory }}
+      &lt;/div>
     &lt;/div>
   &lt;/div>
 &lt;/template>
 
 &lt;script>
     import Client from '../../components/GraphClient/GraphClient.js'
-    import searchRecords from '../../components/GraphClient/queries/getRecord.json'
-    import History from '../../components/GraphClient/queries/getRecordHistory.json'
+    import { mapActions, mapState } from 'vuex'
 
     /** Component to handle the display of single record.
      * @vue-computed {String} currentRoute - the route of the current page
@@ -136,7 +139,6 @@
         name: "Record",
         data() {
             return {
-                content: null,
                 error: null,
                 queryTriggered: false
             }
@@ -145,36 +147,7 @@
             currentRoute: function () {
                 return this.$route.params['id']
             },
-            getJSONLD: function(){
-                const data = this.content["fairsharingRecord"];
-                let output = {
-                    "@context": "http://schema.org",
-                    "@type": "Dataset",
-                    "@id": "https://doi.org/10.25504/" + data['doi'],
-                    alternateName: data['abbreviation'],
-                    description: "This FAIRsharing record describes: " + data.description,
-                    identifier: "10.25504/" + data['doi'],
-                    name: "FAIRsharing record for " + data.name,
-                    url: "https://doi.org/10.25504/" + data['doi'],
-                    citation: [
-                        {
-                            "@type": "CreativeWork",
-                            identifier: "https://doi.org/10.25504/" + data['doi'],
-                            name: "Citing FAIRsharing record for " + data.name
-                        }
-                    ]
-                };
-                let hasLicense = Object.prototype.hasOwnProperty.call(data, "licences");
-                if (hasLicense &amp;&amp; data["licences"].length > 0){
-                    const license = data["licences"][0];
-                    output.license = {
-                        "@type": "CreativeWork",
-                        name: license.name,
-                        url: license.url
-                    };
-                }
-                return output;
-            }
+            ...mapState('records', ["currentRecord", "currentRecordHistory"])
         },
         watch: {
             currentRoute: async function () {
@@ -185,7 +158,6 @@
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
-                await this.getHistory();
             })
         },
         methods: {
@@ -197,24 +169,18 @@
             },
             getData: async function(){
                 this.queryTriggered = false;
-                this.content = null;
                 this.error = null;
-                searchRecords.queryParam = {};
-                searchRecords.queryParam["id"] = this.currentRoute;
-                this.content = await this.client.executeQuery(searchRecords);
-                this.queryTriggered = true;
-                if (this.content instanceof Error){
-                    this.error = this.content.message;
-                    return null;
+                try {
+                    await this.fetchRecord(this.currentRoute);
+                }
+                catch(e){
+                    console.log(e);
+                    this.error = e.message;
                 }
 
+                this.queryTriggered = true;
             },
-            getHistory: async function(){
-                History.queryParam = {};
-                History.queryParam["id"] = this.currentRoute;
-                let history = await this.client.executeQuery(History);
-                console.log(history);
-            }
+            ...mapActions('records', ['fetchRecord', "fetchRecordHistory"])
         },
         /**
          * Setting up the metaInfo of the page
@@ -285,7 +251,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
 	
-		on Wed Feb 5th 2020
+		on Thu Feb 6th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

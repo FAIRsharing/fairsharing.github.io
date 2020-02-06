@@ -84,7 +84,6 @@
                     console.log(e);
                     this.error = e.message;
                 }
-
                 this.queryTriggered = true;
             },
             ...mapActions('records', ['fetchRecord', "fetchRecordHistory"])

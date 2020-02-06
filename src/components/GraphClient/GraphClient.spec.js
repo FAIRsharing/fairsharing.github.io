@@ -1,6 +1,6 @@
-import Client from ".//Client.js"
-import query from ".//queries/getRecords.json"
-import recordQuery from ".//queries/getRecord.json"
+import Client from "./GraphClient.js"
+import query from "./queries/getRecords.json"
+import recordQuery from "./queries/getRecord.json"
 const sinon = require("sinon");
 const axios = require("axios");
 
@@ -97,9 +97,9 @@ describe("GraphQL Client", function(){
     });
 
     it("can correctly build a query string from a JSON", function() {
-        const expectedOutput = "{searchFairsharingRecords( )" +
-            "{aggregations currentPage perPage totalCount totalPages firstPage records{id type name abbreviation registry domains " +
-            "subjects taxonomies recordAssociations{linkedRecord{name id registry} recordAssocLabel } status isRecommended }}}";
+        const expectedOutput = "{searchFairsharingRecords{aggregations currentPage perPage totalCount totalPages " +
+            "firstPage records{id countries type name abbreviation registry domains subjects taxonomies " +
+            "recordAssociations{linkedRecord{name id registry}recordAssocLabel } status isRecommended }}}";
         delete localQuery.pagination;
         delete localQuery.queryParam;
         localQuery.queryFields.target.fields.push({
@@ -118,11 +118,11 @@ describe("GraphQL Client", function(){
         const queryString = client.buildQuery(queryObject);
         expect(queryString.query).toBe(expectedOutput);
 
-        const expectedRecordQueryString = "{fairsharingRecord( ){registry type doi status name " +
-            "abbreviation description name homepage countries metadata taxonomies domains subjects history " +
-            "grants isRecommended legacyIds legacyLogs licences maintainers{username id } organisations " +
-            "publications recordAssociations{linkedRecord{name id registry} recordAssocLabel } reviews{id " +
-            "fairsharingRecordId createdAt userId } }}";
+        const expectedRecordQueryString = "{fairsharingRecord{registry type doi status name abbreviation description" +
+            " name homepage countries metadata taxonomies domains subjects grants " +
+            "isRecommended legacyIds licences maintainers{username id } organisations " +
+            "publications recordAssociations{linkedRecord{name id registry}recordAssocLabel } " +
+            "reviews{id fairsharingRecordId createdAt userId } }}";
         const recordQueryObject = {
             fields: recordQuery.queryFields.target.fields,
             pagination: recordQuery["pagination"],

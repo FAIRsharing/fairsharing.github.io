@@ -35,21 +35,6 @@
     export default {
         name: "SearchOutputGrid",
         computed: {
-          currentPath: function () {
-            const title =  this.$route.path.replace('/', '');
-            const client = this;
-            let queryParams = {};
-            Object.keys(this.$route.query).forEach(function(prop){
-              let queryVal = client.$route.query[prop];
-              if (queryVal){
-                queryParams[prop] = decodeURI(queryVal);
-              }
-            });
-            return [
-              title.charAt(0).toUpperCase() + title.slice(1),
-              queryParams
-            ];
-          },
           ...mapState('records', ["records"])
         },
     }

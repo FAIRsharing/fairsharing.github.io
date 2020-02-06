@@ -3,7 +3,6 @@ import Record from "./Record.vue";
 import VueMeta from "vue-meta";
 import Client from "../../components/GraphClient/GraphClient.js";
 import Vuex from "vuex";
-import searchFilters from "../../store/searchFilters";
 import records from "../../store/records";
 const sinon = require("sinon");
 const axios = require("axios");
@@ -22,7 +21,6 @@ let queryStub;
 
 const $store = new Vuex.Store({
     modules: {
-        searchFilters: searchFilters,
         records: records
     }
 });
@@ -32,7 +30,7 @@ describe("Record.vue", function() {
 
     beforeAll( () => {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
-        queryStub.withArgs(sinon.match.object).returns({
+        queryStub.withArgs(sinon.match.any).returns({
             fairsharingRecord:{
                 id: 1,
                 name: "test",
@@ -61,7 +59,6 @@ describe("Record.vue", function() {
     const path = "980190962";
     const title = "FAIRsharing | " + path;
 
-
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("Record");
     });
@@ -82,6 +79,10 @@ describe("Record.vue", function() {
         expect(wrapper.vm.currentRoute).toMatch("123");
     });
 
+    it ("can properly fetch a record history", async () => {
+        await wrapper.vm.getHistory();
+    });
+
     it("can correctly raise an error", async () =>{
         Client.prototype.executeQuery.restore();
         sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
@@ -95,8 +96,6 @@ describe("Record.vue", function() {
         axios.post.restore();
     });
 
-    it ("can properly fetch a record history", async () => {
-        await wrapper.vm.getHistory();
-    });
+
 
 });

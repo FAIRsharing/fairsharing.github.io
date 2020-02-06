@@ -1,9 +1,12 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Record from "./Record.vue";
 import VueMeta from "vue-meta";
-
 import Client from "../../components/GraphClient/GraphClient.js";
+import Vuex from "vuex";
+import searchFilters from "../../store/searchFilters";
+import records from "../../store/records";
 const sinon = require("sinon");
+const axios = require("axios");
 
 const $route = {
     path: "/",
@@ -14,7 +17,16 @@ const $route = {
 
 let localVue = createLocalVue();
 localVue.use(VueMeta);
+localVue.use(Vuex);
 let queryStub;
+
+const $store = new Vuex.Store({
+    modules: {
+        searchFilters: searchFilters,
+        records: records
+    }
+});
+
 
 describe("Record.vue", function() {
 
@@ -42,7 +54,7 @@ describe("Record.vue", function() {
     let wrapper;
     beforeEach(() => {
         wrapper = shallowMount(Record, {
-            mocks: {$route},
+            mocks: {$route, $store},
             localVue
         });
     });
@@ -61,6 +73,30 @@ describe("Record.vue", function() {
 
     it("has it meta title dynamically set", () => {
         expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(title);
+    });
+
+    it("react to path change", async () => {
+        $route.params = {
+            id: "123"
+        };
+        expect(wrapper.vm.currentRoute).toMatch("123");
+    });
+
+    it("can correctly raise an error", async () =>{
+        Client.prototype.executeQuery.restore();
+        sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
+            data: {
+                errors: [
+                    {message: "Error"}
+                ]
+            }
+        });
+        await expect(wrapper.vm.getData()).rejects;
+        axios.post.restore();
+    });
+
+    it ("can properly fetch a record history", async () => {
+        await wrapper.vm.getHistory();
     });
 
 });

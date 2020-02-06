@@ -25,7 +25,9 @@
       </div>
 
       <div class="col-2">
-        <button @click="fetchRecordHistory(currentRoute)" type="button" class="btn btn-dark">
+        <button @click="getHistory()"
+                type="button"
+                class="btn btn-dark">
           Get History
         </button>
         <hr>
@@ -81,12 +83,14 @@
                     await this.fetchRecord(this.currentRoute);
                 }
                 catch(e){
-                    console.log(e);
                     this.error = e.message;
                 }
                 this.queryTriggered = true;
             },
-            ...mapActions('records', ['fetchRecord', "fetchRecordHistory"])
+            ...mapActions('records', ['fetchRecord', "fetchRecordHistory"]),
+            getHistory: async function(){
+                await this.$store.dispatch("records/fetchRecordHistory", this.currentRoute);
+            }
         },
         /**
          * Setting up the metaInfo of the page

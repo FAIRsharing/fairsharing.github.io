@@ -175,9 +175,9 @@ const router = new VueRouter({
     //mode: "history"
 });
 
-router.beforeEach((to, from, next) => {
+export function beforeEach(to, from, next) {
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
     next()
-});
+}
 
 export default router;

@@ -1,21 +1,8 @@
 {
   "queryName": "fairsharingRecord",
   "queryParam": null,
-  "queryFields": {
-    "elasticSearchFields": [],
-    "target": {
-      "fields": [
-        {
-          "name": "history",
-          "label": "history",
-          "type": "string"
-        },
-        {
-          "name": "legacyLogs",
-          "label": "Old Logs",
-          "type": "string"
-        }
-      ]
-    }
-  }
+  "fields": [
+    "history",
+    "legacyLogs"
+  ]
 }

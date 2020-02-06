@@ -100,7 +100,6 @@ describe("GraphQL Client", function(){
         const expectedOutput = "{searchFairsharingRecords{aggregations currentPage perPage totalCount totalPages " +
             "firstPage records{id countries type name abbreviation registry domains subjects taxonomies " +
             "recordAssociations{linkedRecord{name id registry}recordAssocLabel } status isRecommended }}}";
-        delete localQuery.pagination;
         delete localQuery.queryParam;
         localQuery.queryFields.target.fields.push({
             name: "test",
@@ -109,7 +108,6 @@ describe("GraphQL Client", function(){
         });
         const queryObject = {
             fields: localQuery.queryFields.target.fields,
-            pagination: localQuery.pagination,
             queryName: localQuery.queryName,
             objectType: localQuery.queryFields.target.name,
             queryFields: localQuery.queryFields["elasticSearchFields"].join(" ") + " ",
@@ -118,17 +116,14 @@ describe("GraphQL Client", function(){
         const queryString = client.buildQuery(queryObject);
         expect(queryString.query).toBe(expectedOutput);
 
-        const expectedRecordQueryString = "{fairsharingRecord{registry type doi status name abbreviation description" +
-            " name homepage countries metadata taxonomies domains subjects grants " +
-            "isRecommended legacyIds licences maintainers{username id } organisations " +
-            "publications recordAssociations{linkedRecord{name id registry}recordAssocLabel } " +
-            "reviews{id fairsharingRecordId createdAt userId } }}";
+        const expectedRecordQueryString = "{searchFairsharingRecords{id countries type name " +
+            "abbreviation registry domains subjects taxonomies recordAssociations{linkedRecord{name " +
+            "id registry}recordAssocLabel } status isRecommended }}}";
         const recordQueryObject = {
-            fields: recordQuery.queryFields.target.fields,
-            pagination: recordQuery["pagination"],
+            fields: null,
             queryName: recordQuery.queryName,
             objectType: recordQuery.queryFields.target.name,
-            queryFields: null,
+            queryFields: {},
             queryParam: recordQuery["queryParam"]
         };
         const recordQueryString = client.buildQuery(recordQueryObject);

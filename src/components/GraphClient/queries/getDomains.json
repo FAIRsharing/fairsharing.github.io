@@ -4,23 +4,17 @@
     "page": 1,
     "perPage": 3
   },
-  "queryFields": {
-    "elasticSearchFields": [
-      "currentPage",
-      "perPage",
-      "totalCount",
-      "totalPages",
-      "firstPage"
-    ],
-    "target": {
+  "fields": [
+    "currentPage",
+    "perPage",
+    "totalCount",
+    "totalPages",
+    "firstPage",
+    {
       "name": "records",
       "fields": [
-        {
-          "name": "label",
-          "label": "label",
-          "type": "string"
-        }
+        "label"
       ]
     }
-  }
+  ]
 }

@@ -1,13 +1,7 @@
 {
   "queryName": "searchFairsharingRecords",
   "queryParam": null,
-  "queryFields": {
-    "elasticSearchFields": [
-      "aggregations"
-    ],
-    "target": {
-      "name": null,
-      "fields": []
-    }
-  }
+  "fields": [
+    "aggregations"
+  ]
 }

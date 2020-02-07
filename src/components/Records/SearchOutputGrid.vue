@@ -1,10 +1,15 @@
 <template>
   <div class="container-fluid">
+
+    <div v-if="records.length === 0">
+      LOADING
+    </div>
+
     <div class="row">
       <div
-        v-for="(record, index) in inputData"
-        :key="index"
-        class="col col-xl-4 col-lg-4 col-sm-6"
+        v-for="record in records"
+        :key="'record'+record.id"
+        class="col col-xl-3 col-lg-3 col-sm-6"
       >
         <div class="card">
           <div class="card-header">
@@ -25,19 +30,27 @@
 </template>
 
 <script>
+  import { mapState} from 'vuex'
+
     export default {
         name: "SearchOutputGrid",
-        props: {
-            inputData: {
-                type: Array,
-                default: function () {
-                    return []
-                }
-            }
-        }
+        computed: {
+          ...mapState('records', ["records"])
+        },
     }
 </script>
 
 <style scoped>
+  .card-body {
+    text-align: left;
+    max-height: 500px;
+    overflow-y: auto;
+  }
 
+  .card {
+    height:500px;
+  }
+  .col {
+    margin-bottom:20px;
+  }
 </style>

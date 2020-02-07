@@ -1,0 +1,37 @@
+{
+  "queryName": "searchFairsharingRecords",
+  "queryParam": null,
+  "fields": [
+    "aggregations",
+    "currentPage",
+    "perPage",
+    "totalCount",
+    "totalPages",
+    "firstPage",
+    {
+      "name": "records",
+      "fields": [
+          "id",
+          "type",
+          "name",
+          "abbreviation",
+          "registry",
+          "domains",
+          "subjects",
+          "taxonomies",
+          {
+              "queryName": "recordAssociations",
+              "fields": [
+                  {
+                      "name": "linkedRecord",
+                      "fields": ["name", "id", "registry"]
+                  },
+                  "recordAssocLabel"
+              ]
+          },
+          "status",
+          "isRecommended"
+        ]
+    }
+  ]
+}

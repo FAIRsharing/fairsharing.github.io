@@ -31,13 +31,7 @@ describe("Records.vue", () => {
     let stub = sinon.stub(Client.prototype, "executeQuery");
 
     beforeAll( () => {
-        stub.withArgs(sinon.match.object).returns({
-            searchFairsharingRecords: {
-                records: [
-                    1
-                ]
-            }
-        });
+        stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
     });
 
     afterAll( () => {
@@ -47,10 +41,7 @@ describe("Records.vue", () => {
     // Set up the wrapper
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(Records, {
-            mocks: {$route, $store},
-            localVue,
-        });
+        wrapper = shallowMount(Records, {mocks: {$route, $store}, localVue});
         window.scrollTo = () => {};
     });
     afterEach( () =>{

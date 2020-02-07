@@ -66,8 +66,9 @@ describe("Records.vue", () => {
     });
 
     it("react to path change", async () => {
-        $route.path = "/database";
-        expect(wrapper.vm.currentPath[0]).toBe("Database");
+        $route.path = "/search";
+        $route.query = {};
+        expect(wrapper.vm.currentPath[0]).toBe("Search");
     });
 
     it("can correctly raise an error", async () =>{

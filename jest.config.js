@@ -8,7 +8,8 @@ module.exports = {
         "src/**/*.{js,vue}",
         "!src/main.js",
         "!src/documentation/process_doc.js",
-        "!src/components/Records/FiltersLabelMapping.js"
+        "!src/components/Records/FiltersLabelMapping.js",
+        "!src/store/index.js"
     ],
     testMatch: [
         "**/**.spec.js", "**/**/**.spec.js"

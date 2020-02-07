@@ -95,7 +95,8 @@
   &lt;div
     class="standard container-fluid"
   >
-    &lt;div v-if="error"
+    &lt;div
+      v-if="error"
       class="error"
     >
       {{ error }}
@@ -118,9 +119,11 @@
       &lt;/div>
 
       &lt;div class="col-2">
-        &lt;button @click="getHistory()"
-                type="button"
-                class="btn btn-dark">
+        &lt;button
+          type="button"
+          class="btn btn-dark"
+          @click="getHistory()"
+        >
           Get History
         &lt;/button>
         &lt;hr>

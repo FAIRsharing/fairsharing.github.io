@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <form class="card" v-if="filters.length > 0">
+    <form
+      v-if="filters.length > 0"
+      class="card"
+    >
       <div class="card-header">
         <h2>Advanced search</h2>
       </div>

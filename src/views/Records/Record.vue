@@ -2,7 +2,8 @@
   <div
     class="standard container-fluid"
   >
-    <div v-if="error"
+    <div
+      v-if="error"
       class="error"
     >
       {{ error }}
@@ -25,9 +26,11 @@
       </div>
 
       <div class="col-2">
-        <button @click="getHistory()"
-                type="button"
-                class="btn btn-dark">
+        <button
+          type="button"
+          class="btn btn-dark"
+          @click="getHistory()"
+        >
           Get History
         </button>
         <hr>

@@ -1,5 +1,5 @@
 <template>
-    <h2>Create new policy</h2>
+  <h2>Create new policy</h2>
 </template>
 
 <script>

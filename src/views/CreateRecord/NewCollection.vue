@@ -1,5 +1,5 @@
 <template>
-    <h2>Create new collection</h2>
+  <h2>Create new collection</h2>
 </template>
 
 <script>

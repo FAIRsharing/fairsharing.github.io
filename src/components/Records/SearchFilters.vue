@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <form class="card" v-if="$store.state.searchFilters.filters.length > 0">
+    <form class="card" v-if="filters.length > 0">
       <div class="card-header">
         <h2>Advanced search</h2>
       </div>
       <div class="card-body filters">
         <div
-          v-for="(filter, key) in $store.state.searchFilters.filters"
+          v-for="(filter, key) in filters"
           :key="key"
         >
           <b>{{ filter.filterLabel }}:</b>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+    import { mapState } from "vuex"
 
     export default {
         name: "SearchFilters",
@@ -68,6 +69,9 @@
                     data: {}
                 }
             }
+        },
+        computed: {
+            ...mapState("searchFilters", ["filters"])
         },
         methods: {
           applyFilters: function(){

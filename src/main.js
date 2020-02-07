@@ -22,6 +22,7 @@ Vue.config.productionTip = false;
 Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });
+
 const graphQLClient = new GraphQLClient();
 router.beforeEach((to, from, next) => beforeEach(to, from, next));
 

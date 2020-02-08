@@ -36,13 +36,7 @@ let buildFilters = function(val){
     let filtersLabels = filterMapping['autocomplete'];
     // now deal with incoming data
     Object.keys(val).forEach(function(key){
-        let filterHasLabel = Object.prototype.hasOwnProperty.call(
-            filtersLabels,
-            key);
-        if (!filterHasLabel){
-            console.log("MISSING LABEL FOR: " + key)
-        }
-        else {
+        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)){
             let filter = filtersLabels[key];
             filter.values = null;
             let filterValues = [];

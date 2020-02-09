@@ -30,6 +30,7 @@ class GraphQLClient {
         let queryString = {
             query: `{${client.buildQuery(query)}}`
         };
+        console.log(queryString.query);
         try {
             let resp = await axios.post(client.url, queryString, client.headers);
             if (resp.data.errors){

@@ -1,5 +1,5 @@
 <template>
-    <h2>Create a new database</h2>
+  <h2>Create a new database</h2>
 </template>
 
 <script>

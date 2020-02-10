@@ -1,0 +1,46 @@
+{
+  "queryName": "fairsharingRecord",
+  "queryParam": null,
+  "fields": [
+      "registry",
+      "type",
+      "doi",
+      "status",
+      "name",
+      "abbreviation",
+      "description",
+      "homepage",
+      "countries",
+      "metadata",
+      "taxonomies",
+      "domains",
+      "subjects",
+      "grants",
+      "isRecommended",
+      "legacyIds",
+      "licences",
+      {
+          "name": "maintainers",
+          "fields": [
+            "username",
+            "id"
+          ]
+      },
+      "organisations",
+      "publications",
+      {
+          "name": "recordAssociations",
+          "fields": [
+              {
+                  "queryName": "linkedRecord",
+                  "fields": ["name", "id", "registry"]
+              },
+              "recordAssocLabel"
+          ]
+      },
+      {
+          "name": "reviews",
+          "fields":  ["id", "fairsharingRecordId", "createdAt", "userId"]
+      }
+  ]
+}

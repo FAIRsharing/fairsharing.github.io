@@ -1,0 +1,20 @@
+{
+  "queryName": "domains",
+  "queryParam": {
+    "page": 1,
+    "perPage": 3
+  },
+  "fields": [
+    "currentPage",
+    "perPage",
+    "totalCount",
+    "totalPages",
+    "firstPage",
+    {
+      "name": "records",
+      "fields": [
+        "label"
+      ]
+    }
+  ]
+}

@@ -8,6 +8,11 @@
         </router-link>
       </li>
       <li>
+        <router-link to="/search">
+          Search
+        </router-link>
+      </li>
+      <li>
         <router-link to="/standards">
           Standards
         </router-link>

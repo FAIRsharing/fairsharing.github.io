@@ -69,33 +69,33 @@
                 });
                 return output.sort().slice(0, size);
             },
-            addParam: function(facetName, facetVal){
+            addParam: async function(facetName, facetVal){
                 const currentQuery = {};
                 let _module = this;
+                Object.keys(_module.$route.query).forEach(function(param){
+                    currentQuery[param] = _module.$route.query[param]
+                });
 
                 if (Object.prototype.hasOwnProperty.call(this.$route.query, facetName)){
                     let output;
                     const currentParam = this.$route.query[facetName];
                     if (currentParam[0] === "[" && currentParam[currentParam.length -1] === "]"){
                         let b = encodeURI(facetVal.key);
-                        output = [currentParam.slice(0, currentParam.length -2), b, currentParam.slice(currentParam.length -2)].join('');
+                        //output = [currentParam.slice(0, currentParam.length -2), b, currentParam.slice(currentParam.length -2)].join(',');
+                        output = currentParam.replace("]", `,${b}]`)
                     }
                     else {
                         output = `[${currentParam},${encodeURI(facetVal.key)}]`;
                     }
-                    console.log(output);
+                    currentQuery[facetName] = output;
                 }
-
                 else {
-                    Object.keys(_module.$route.query).forEach(function(param){
-                        currentQuery[param] = _module.$route.query[param]
-                    });
                     currentQuery[facetName] = encodeURI(facetVal.key);
-                    this.$router.push({
-                        name: _module.$route.name,
-                        query: currentQuery
-                    });
                 }
+                await this.$router.push({
+                    name: _module.$route.name,
+                    query: currentQuery
+                })
             }
         }
         // adds watcher that reset facetsSize when URL changes

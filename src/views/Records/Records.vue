@@ -139,7 +139,7 @@
               }
               Object.keys(urlParams).forEach(function(urlParamName){
                 const urlParamVal = urlParams[urlParamName];
-                if (["true","false"].indexOf(urlParamVal) > 0){
+                if (["true","false"].indexOf(urlParamVal) > -1){
                   queryParameters[urlParamName] = JSON.parse(urlParamVal);
                 }
                 else if (!isNaN(parseFloat(urlParamVal)) && isFinite(urlParamVal)){

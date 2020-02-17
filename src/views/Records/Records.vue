@@ -42,7 +42,7 @@
         v-if="!errors"
         class="col-9"
       >
-        <output-grid />
+        <output-grid :total-pages="this.$store.state.records.totalPages" />
       </div>
       <div
         v-else
@@ -69,7 +69,7 @@
     export default {
         name: "Records",
         components: {
-          Facets,
+            Facets,
             SearchFilters,
             OutputGrid
         },
@@ -114,6 +114,10 @@
                 await this.getData();
             })
         },
+        beforeDestroy: function(){
+            this.$store.dispatch("records/resetFacets").then(function(){});
+            this.$store.dispatch("records/resetRecords").then(function(){});
+        },
         methods: {
             /** This methods get the data from the client depending on the current page.
              * @returns {Promise}
@@ -131,28 +135,7 @@
 
             },
             getParameters: function(){
-              let queryParameters = {};
-              const currentPath = this.currentPath[0];
-              const urlParams = this.currentPath[1];
-              if (Object.prototype.hasOwnProperty.call(this.recordTypes, currentPath)){
-                queryParameters['fairsharingRegistry'] = this.recordTypes[currentPath];
-              }
-              Object.keys(urlParams).forEach(function(urlParamName){
-                const urlParamVal = urlParams[urlParamName];
-                if (["true","false"].indexOf(urlParamVal) > -1){
-                  queryParameters[urlParamName] = JSON.parse(urlParamVal);
-                }
-                else if (!isNaN(parseFloat(urlParamVal)) && isFinite(urlParamVal)){
-                  queryParameters[urlParamName] = parseFloat(urlParamVal);
-                }
-                else if (urlParamVal[0] === "[" && urlParamVal[urlParamVal.length -1] === "]"){
-                  queryParameters[urlParamName] = urlParamVal.replace("[", "").replace("]").split(",");
-                }
-                else {
-                  queryParameters[urlParamName] = urlParamVal;
-                }
-              });
-              return queryParameters;
+                return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
             },
             ...mapActions('records', ['fetchRecords']),
             setPanel: function(panelName){

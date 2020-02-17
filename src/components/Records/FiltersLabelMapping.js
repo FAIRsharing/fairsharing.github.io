@@ -2,78 +2,76 @@ let labelsMapping = {
     autocomplete: {
         licences: {
             filterName: "licences",
-            filterLabel: "Licence(s)"
+            filterLabel: "Licence(s)",
+            type: "String",
+            multipleValues: false
         },
         grants: {
             filterName: "grants",
-            filterLabel: "Grant(s)"
+            filterLabel: "Grant(s)",
+            type: "String"
         },
         taxonomies: {
             filterName: "taxonomies",
-            filterLabel: "Species"
+            filterLabel: "Species",
+            type: "String"
         },
         organisations: {
             filterName: "organisations",
-            filterLabel: "Organisation(s)"
-        },
-        description: {
-            filterName: "description",
-            filterLabel: "Description"
+            filterLabel: "Organisation(s)",
+            type: "String"
         },
         countries: {
             filterName: "countries",
-            filterLabel: "Countries"
+            filterLabel: "Countries",
+            type: "String"
         },
         domains: {
             filterName: "domains",
-            filterLabel: "Ontology Domains"
+            filterLabel: "Ontology Domains",
+            type: "String"
         },
         subjects: {
             filterName: "subjects",
-            filterLabel: "Ontology Subjects"
+            filterLabel: "Ontology Subjects",
+            type: "String"
         },
         user_defined_tags: {
             filterName: "userDefinedTags",
-            filterLabel: "User defined tags"
+            filterLabel: "User defined tags",
+            type: "String"
         },
         fairsharing_registry: {
             filterName: "fairsharingRegistry",
-            filterLabel: "Registry"
+            filterLabel: "Registry",
+            type: "String"
         },
         is_recommended: {
             filterName: "isRecommended",
-            filterLabel: "Recommended"
+            filterLabel: "Recommended",
+            type: "Boolean"
         },
         record_type: {
             filterName: "recordType",
-            filterLabel: "Type of records"
+            filterLabel: "Type of records",
+            type: "String"
         },
         publications: {
             filterName: "publications",
-            filterLabel: "Publication(s)"
+            filterLabel: "Publication(s)",
+            type: "String"
         },
         status: {
             filterName: "status",
-            filterLabel: "Output status"
+            filterLabel: "Output status",
+            type: "String"
         }
     },
     input: [
-        /*{
-            filterName: "name",
-            filterLabel: "Resource name"
-        },
-        {
-            filterName: "abbreviation",
-            filterLabel: "Abbreviation"
-        },*/
         {
             filterName: "id",
             filterLabel: "Record IDs"
         },
-        /*{
-            filterName: "description",
-            filterLabel: "Description"
-        }*/
     ]
 };
 

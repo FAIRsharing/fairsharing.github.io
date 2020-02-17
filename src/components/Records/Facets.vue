@@ -3,20 +3,21 @@
     <div class="card-header">
       Facets
     </div>
+
     <div class="card-body">
       <div
-        v-for="(facetVal, facetName, key) in $store.state.records.facets"
-        :key="key"
+        v-for="(facetVal, key) in $store.state.records.facets"
+        :key="'Facet' + key"
       >
         <div class="facet">
-          <h3>{{ facetName }}</h3>
+          <h3>{{ facetVal.filterLabel }}</h3>
         </div>
 
         <div
-          v-for="(facet, subKey) in getTopValues(facetVal.buckets, facetName)"
-          :key="subKey"
+          v-for="(facet, subKey) in $store.getters['records/getFacet'](facetsSize[facetVal.filterName], facetVal.filterName)['values']"
+          :key="facetVal.filterName + subKey"
           class="facet"
-          @click="addParam(facetName, facet)"
+          @click="addParam(facetVal.filterName, facet)"
         >
           <div
             v-if="!Object.prototype.hasOwnProperty.call(facet, 'key_as_string')"
@@ -36,9 +37,17 @@
         <button
           type="button"
           class="btn btn-secondary"
-          @click="changeSize(facetName, 100)"
+          @click="changeSize(facetVal.filterName, 100)"
         >
           Show more
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          @click="changeSize(facetVal.filterName, defaultSize)"
+        >
+          Show Less
         </button>
 
         <hr>
@@ -53,7 +62,15 @@
         data() {
             return {
                 defaultSize: 4,
-                facetsSize: {}
+            }
+        },
+        computed: {
+            facetsSize: function(){
+                let sizes = {};
+                this.$store.state.records.facets.forEach(function(facet){
+                    sizes[facet.filterName] = 4;
+                });
+                return sizes;
             }
         },
         methods: {
@@ -61,44 +78,34 @@
                 this.facetsSize[facetName] = size;
                 this.$forceUpdate();
             },
-            getTopValues: function (buckets, facetName){
-                const size = (this.facetsSize.hasOwnProperty(facetName)) ? this.facetsSize[facetName] : this.defaultSize;
-                let output = [];
-                buckets.forEach(function(bucket){
-                    output.push(bucket);
-                });
-                return output.sort().slice(0, size);
-            },
             addParam: async function(facetName, facetVal){
                 const currentQuery = {};
                 let _module = this;
+                const currentParam = this.$route.query[facetName];
+
                 Object.keys(_module.$route.query).forEach(function(param){
                     currentQuery[param] = _module.$route.query[param]
                 });
 
-                if (Object.prototype.hasOwnProperty.call(this.$route.query, facetName)){
-                    let output;
-                    const currentParam = this.$route.query[facetName];
-                    if (currentParam[0] === "[" && currentParam[currentParam.length -1] === "]"){
-                        let b = encodeURI(facetVal.key);
-                        //output = [currentParam.slice(0, currentParam.length -2), b, currentParam.slice(currentParam.length -2)].join(',');
-                        output = currentParam.replace("]", `,${b}]`)
+                if (Object.prototype.hasOwnProperty.call(_module.$route.query, facetName)){
+                    const facetValue = encodeURIComponent(facetVal.key);
+                    if (currentParam.indexOf(facetValue) < 0){
+                        currentQuery[facetName] = currentParam + "," + facetValue;
                     }
-                    else {
-                        output = `[${currentParam},${encodeURI(facetVal.key)}]`;
-                    }
-                    currentQuery[facetName] = output;
                 }
                 else {
-                    currentQuery[facetName] = encodeURI(facetVal.key);
+                    currentQuery[facetName] = encodeURIComponent(facetVal.key);
                 }
-                await this.$router.push({
-                    name: _module.$route.name,
-                    query: currentQuery
-                })
+
+                // Only trigger the API call if the query is different
+                if (JSON.stringify(currentQuery) !== JSON.stringify(this.$route.query)){
+                    await _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentQuery
+                    })
+                }
             }
         }
-        // adds watcher that reset facetsSize when URL changes
     }
 </script>
 

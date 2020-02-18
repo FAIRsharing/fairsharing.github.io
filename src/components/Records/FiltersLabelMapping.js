@@ -3,8 +3,7 @@ let labelsMapping = {
         licences: {
             filterName: "licences",
             filterLabel: "Licence(s)",
-            type: "String",
-            multipleValues: false
+            type: "String"
         },
         grants: {
             filterName: "grants",

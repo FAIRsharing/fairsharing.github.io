@@ -75,14 +75,6 @@ export default {
             let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
             currentFacet['values'] = currentFacet['buckets'].sort().slice(0, size);
             return currentFacet;
-        },
-        buildParameters: () => (urlParams) => {
-            const parameters = urlParams[1];
-            Object.keys(parameters).forEach(function(paramName){
-                console.log(parameters[paramName]);
-            });
-
-            return 0;
         }
     }
 }

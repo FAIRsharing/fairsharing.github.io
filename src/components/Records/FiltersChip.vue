@@ -51,6 +51,7 @@
                     else {
                         if (_module.$route.query[queryParam].indexOf(',') > -1) {
                             query[paramName] = _module.$route.query[queryParam].replace(`,${paramVal}`, "");
+                            query[paramName] = _module.$route.query[queryParam].replace(`${paramVal},`, "");
                         }
                     }
                 });

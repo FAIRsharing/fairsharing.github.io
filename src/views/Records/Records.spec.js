@@ -215,8 +215,9 @@ describe("Records.vue", () => {
             test: 'abc',
             test2: 'abcdef',
             test3: [ 'abc', ' def' ],
-            test4: '123',
-            test5: 'true' })
+            test4: 123,
+            test5: true
+        })
 
     });
 

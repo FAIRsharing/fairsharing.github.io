@@ -34,7 +34,6 @@ export default {
     },
     getters: {
         buildQueryParameters: (state) => (params) => {
-            console.log(params);
             let queryParameters = {};
             Object.keys(params[1]).forEach(function(param){
                 let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
@@ -64,7 +63,6 @@ export default {
 }
 
 const parseParam = function(param, paramVal){
-    console.log(param);
     if (param.name === "Int"){
         return parseFloat(paramVal)
     }

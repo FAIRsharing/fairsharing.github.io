@@ -89,7 +89,8 @@
 
                 if (Object.prototype.hasOwnProperty.call(_module.$route.query, facetName)){
                     const facetValue = encodeURIComponent(facetVal.key);
-                    if (currentParam.indexOf(facetValue) < 0 || currentParam !== facetValue){
+
+                    if (currentParam.indexOf(facetValue) < 0){
                         currentQuery[facetName] = currentParam + "," + facetValue;
                     }
                 }

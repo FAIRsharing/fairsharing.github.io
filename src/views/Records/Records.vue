@@ -5,7 +5,7 @@
     <h1>{{ currentPath[0] }}</h1>
 
     <div class="chips">
-      <FiltersChip></FiltersChip>
+      <FiltersChip />
     </div>
 
     <div class="row">

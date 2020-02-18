@@ -91,7 +91,6 @@
                     const facetValue = encodeURIComponent(facetVal.key);
 
                     if (currentParam.indexOf(facetValue) < 0){
-                        console.log(currentParam.indexOf(facetValue));
                         currentQuery[facetName] = currentParam + "," + facetValue;
                     }
                 }

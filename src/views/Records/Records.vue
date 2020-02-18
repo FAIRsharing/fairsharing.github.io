@@ -3,6 +3,11 @@
     class="outputGrid container-fluid"
   >
     <h1>{{ currentPath[0] }}</h1>
+
+    <div class="chips">
+      <FiltersChip></FiltersChip>
+    </div>
+
     <div class="row">
       <!-- Left panel -->
       <div class="leftPanel col-3">
@@ -61,6 +66,7 @@
     import OutputGrid from '../../components/Records/SearchOutputGrid'
     import SearchFilters from "../../components/Records/SearchFilters"
     import Facets from "../../components/Records/Facets";
+    import FiltersChip from "../../components/Records/FiltersChip";
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -69,6 +75,7 @@
     export default {
         name: "Records",
         components: {
+            FiltersChip,
             Facets,
             SearchFilters,
             OutputGrid

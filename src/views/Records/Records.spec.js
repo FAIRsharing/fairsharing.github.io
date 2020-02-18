@@ -207,21 +207,17 @@ describe("Records.vue", () => {
             }
         };
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
-        try {
-            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-            Client.prototype.getData.restore();
-            const path = wrapper.vm.currentPath;
-            const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
-            expect(queryParameters).toStrictEqual({
-                test: 'abc',
-                test2: 'abcdef',
-                test3: [ 'abc', ' def' ],
-                test4: 123,
-                test5: true
-            })
-        }
-        catch(e){ throw e}
-
+        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+        Client.prototype.getData.restore();
+        const path = wrapper.vm.currentPath;
+        const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
+        expect(queryParameters).toStrictEqual({
+            test: 'abc',
+            test2: 'abcdef',
+            test3: [ 'abc', ' def' ],
+            test4: 123,
+            test5: true
+        })
     });
 
     it("can reset the store when destroyed", () => {

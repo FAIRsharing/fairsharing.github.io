@@ -6,10 +6,13 @@
           v-for="(chip, index) in getChips"
           :key="'Chips_' + index"
         >
-          <div class="chip" v-for="(chipValue, subKey) in chip.paramVal" :key="'Chip_' + subKey">
+          <div
+            v-for="(chipValue, subKey) in chip.paramVal"
+            :key="'Chip_' + subKey"
+            class="chip"
+          >
             <span @click="removeParam(chip.paramName, chipValue)">x</span> {{ chip.paramName }}: {{ decodeURIComponent(chipValue) }}
           </div>
-
         </div>
       </div>
     </div>

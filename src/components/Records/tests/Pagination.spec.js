@@ -1,4 +1,4 @@
-import Pagination from "../../components/Records/Pagination";
+import Pagination from "../Pagination";
 import {shallowMount} from "@vue/test-utils";
 
 let $route = {
@@ -16,7 +16,7 @@ const $router = {
 };
 
 
-describe("Pagination's Buttons Exist", () => {
+describe("Pagination.vue", () => {
     // Set up the wrapper
     let wrapper;
 
@@ -28,23 +28,20 @@ describe("Pagination's Buttons Exist", () => {
                 default: 0
             }
         });
-
-
     });
 
-    it('checking asd function', () => {
+    it('testing created() branches', () => {
+        expect(wrapper.vm.currentQuery.page).toBe(12);
 
-
-        wrapper.vm.$route.query.page = "123"; // I am a a string number.
-        wrapper.vm.refreshPage();
-        expect(wrapper.vm.currentQuery.page).toBe(123);
-
-
-        //reset to default for  other tests to be passed
-        wrapper.vm.$route.query.page = undefined; // I am a undefined.
-        wrapper.vm.refreshPage();
-        expect(wrapper.vm.currentQuery.page).toBe(1);
-
+        $route.query.page = undefined;
+        let anotherWrapper = shallowMount(Pagination, {
+            mocks: {$route, $router},
+            propsData: {
+                totalPages: 10,
+                default: 0
+            }
+        });
+        expect(anotherWrapper.vm.currentQuery.page).toBe(1);
     });
 
     it('watcher 1', () => {
@@ -53,11 +50,13 @@ describe("Pagination's Buttons Exist", () => {
 
     });
     it('watcher 2', () => {
-        wrapper.vm.$route.query = {name:"Search"};
+        wrapper.vm.$route.name = "Search";
+        wrapper.vm.$route.query =  {};
+        expect(wrapper.vm.currentQuery.page).toBe(1);
+        wrapper.vm.$route.query =  {page: 123};
         expect(wrapper.vm.currentQuery.page).toBe(1);
     });
     it('checking paginate function', () => {
-        // reinitialising route to default values
         $route.name="Standards";
         $route.query.page=12;
 

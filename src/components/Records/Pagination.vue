@@ -66,24 +66,19 @@
             },
             '$route.query': function (newVal) {
                 let _module = this;
+                console.log(newVal.page);
                 if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
                     _module.currentQuery.page = 1;
                 }
             }
         },
         created() {
-            // console.log(typeof(currentPage))
             const currentPage = this.$route.query.page;
             typeof (currentPage) !== "undefined" ? this.currentQuery.page = Number(currentPage) : this.currentQuery.page = 1;
         },
         methods: {
-            refreshPage: function () {
-              const currentPage = this.$route.query.page;
-              typeof (currentPage) !== "undefined" ? this.currentQuery.page = Number(currentPage) : this.currentQuery.page = 1;
-            },
             paginate: async function (pageNumber) {
                 if (pageNumber !== this.currentQuery.page) {
-                    // console.log(pageNumber+' first')
                     let _module = this;
                     _module.currentQuery = {};
                     Object.keys(_module.$route.query).forEach(function (param) {
@@ -97,7 +92,6 @@
                 }
             },
             First: function () {
-
                 this.paginate(1);
             },
             Last: function () {

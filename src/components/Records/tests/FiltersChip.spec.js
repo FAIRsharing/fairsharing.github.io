@@ -9,7 +9,7 @@ const $route = {
     path: "/search",
     query: {
         "grants": "ABCDEF",
-        "publications": "pub1,pub2"
+        "publications": "pub1,pub2,pub3"
     }
 };
 
@@ -37,8 +37,12 @@ describe("FiltersChips.vue", () => {
         wrapper.vm.$router.push = push;
         await wrapper.vm.removeParam("publications", "pub2");
         expect($router.push).toHaveBeenCalledTimes(1);
-        await wrapper.vm.removeParam("grants", "ABCDEF");
-        expect($router.push).toHaveBeenCalledTimes(2);
+        let query = wrapper.vm.buildNewQuery("grants", "ABCDEF");
+        expect(query).toStrictEqual({ publications: 'pub1,pub2,pub3' });
+        query = wrapper.vm.buildNewQuery("publications", "pub4");
+        expect(query).toStrictEqual({ grants: 'ABCDEF', publications: 'pub1,pub2,pub3' });
+        await wrapper.vm.removeParam("publications", "pub3");
+        expect($router.push).toHaveBeenCalledTimes(1);
     })
 
 });

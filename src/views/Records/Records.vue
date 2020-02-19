@@ -1,6 +1,6 @@
 <template>
   <div
-    class="outputGrid container-fluid"
+    class="a outputGrid container-fluid"
   >
     <h1>{{ currentPath[0] }}</h1>
     <Pagination

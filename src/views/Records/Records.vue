@@ -3,8 +3,10 @@
     class="outputGrid container-fluid"
   >
     <h1>{{ currentPath[0] }}</h1>
-    {{ this.$store.state.records.totalPages }}
-
+    <Pagination
+      class="col-12"
+      :total-pages="this.$store.state.records.totalPages"
+    />
     <div class="chips">
       <FiltersChip />
     </div>
@@ -68,6 +70,7 @@
     import SearchFilters from "../../components/Records/SearchFilters"
     import Facets from "../../components/Records/Facets";
     import FiltersChip from "../../components/Records/FiltersChip";
+    import Pagination from "../../components/Records/Pagination";
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -76,6 +79,7 @@
     export default {
         name: "Records",
         components: {
+          Pagination,
             FiltersChip,
             Facets,
             SearchFilters,

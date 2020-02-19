@@ -31,7 +31,7 @@ class GraphQLClient {
             query: `{${client.buildQuery(query)}}`
         };
         try {
-            let resp = await axios.post(client.url, queryString, client.headers);
+            let resp = await this.getData(queryString);
             if (resp.data.errors){
                 throw new Error(resp.data.errors[0].message);
             }
@@ -40,6 +40,16 @@ class GraphQLClient {
         catch (err){
             throw err;
         }
+    }
+
+    /**
+     * Takes the query, post it with axios and returns the raw data
+     * @param request
+     * @returns {Promise}
+     */
+    async getData(request){
+        let client = this;
+        return await axios.post(client.url, request, client.headers);
     }
 
     /**

@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid">
-
     <div v-if="records.length === 0">
       LOADING
     </div>
@@ -36,7 +35,7 @@
         name: "SearchOutputGrid",
         computed: {
           ...mapState('records', ["records"])
-        },
+        }
     }
 </script>
 

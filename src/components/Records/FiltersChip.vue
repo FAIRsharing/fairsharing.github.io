@@ -53,8 +53,12 @@
                     }
                     else {
                         if (_module.$route.query[queryParam].indexOf(',') > -1) {
-                            query[paramName] = _module.$route.query[queryParam].replace(`,${paramVal}`, "");
-                            query[paramName] = _module.$route.query[queryParam].replace(`${paramVal},`, "");
+                            let currentVals = _module.$route.query[queryParam].split(",");
+
+                            if (currentVals.indexOf(paramVal) > -1){
+                              currentVals.splice(paramVal.indexOf(paramVal), 1)
+                            }
+                            query[paramName] = currentVals.join(",");
                         }
                     }
                 });

@@ -20,6 +20,7 @@
 </template>
 
 <script>
+    import {throttle} from "lodash"
     export default {
         name: "FiltersChip",
         computed: {
@@ -44,7 +45,7 @@
             }
         },
         methods: {
-            removeParam: async function(paramName, paramVal){
+            removeParam: throttle(async function(paramName, paramVal){
                 let _module = this;
                 let query = {};
                 Object.keys(_module.$route.query).forEach(function(queryParam){
@@ -65,7 +66,7 @@
                     name: _module.$route.name,
                     query: query
                 })
-            }
+            }, 2000)
         }
     }
 </script>

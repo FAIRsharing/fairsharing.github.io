@@ -20,6 +20,7 @@
 </template>
 
 <script>
+    import {throttle} from "lodash"
     export default {
         name: "FiltersChip",
         computed: {
@@ -44,24 +45,32 @@
             }
         },
         methods: {
-            removeParam: async function(paramName, paramVal){
+            removeParam: throttle(async function(paramName, paramVal){
                 let _module = this;
-                let query = {};
-                Object.keys(_module.$route.query).forEach(function(queryParam){
-                    if (queryParam !== paramName){
-                        query[queryParam] = _module.$route.query[queryParam]
-                    }
-                    else {
-                        if (_module.$route.query[queryParam].indexOf(',') > -1) {
-                            query[paramName] = _module.$route.query[queryParam].replace(`,${paramVal}`, "");
-                            query[paramName] = _module.$route.query[queryParam].replace(`${paramVal},`, "");
-                        }
-                    }
-                });
+                let query = this.buildNewQuery(paramName, paramVal);
                 await _module.$router.push({
                     name: _module.$route.name,
                     query: query
                 })
+            }, 2000),
+            buildNewQuery: function(paramName, paramVal){
+                let _module = this;
+                let query = {};
+                Object.keys(_module.$route.query).forEach(function(queryParam){
+                  if (queryParam !== paramName){
+                    query[queryParam] = _module.$route.query[queryParam]
+                  }
+                  else {
+                    if (_module.$route.query[queryParam].indexOf(',') > -1) {
+                      let currentVals = _module.$route.query[queryParam].split(",");
+                      if (currentVals.indexOf(paramVal) > -1){
+                        currentVals.splice(paramVal.indexOf(paramVal), 1)
+                      }
+                      query[paramName] = currentVals.join(",");
+                    }
+                  }
+                });
+                return query;
             }
         }
     }

@@ -54,7 +54,6 @@
                     else {
                         if (_module.$route.query[queryParam].indexOf(',') > -1) {
                             let currentVals = _module.$route.query[queryParam].split(",");
-
                             if (currentVals.indexOf(paramVal) > -1){
                               currentVals.splice(paramVal.indexOf(paramVal), 1)
                             }

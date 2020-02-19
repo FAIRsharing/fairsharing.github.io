@@ -3,6 +3,8 @@ import Vuex from "vuex"
 import Records from "./Records.vue";
 import Client from "../../components/GraphClient/GraphClient.js";
 import records from "../../store/records.js"
+import introspection from "../../store/introspector.js"
+
 const sinon = require("sinon");
 const axios = require("axios");
 
@@ -11,16 +13,17 @@ localVue.use(Vuex);
 const $route = {
     path: "/standards",
     query: {
-        param1: "string",
-        param2: null,
-        param3: "false",
-        param4: "[abc,def]",
-        param5: 123
+        grants: "string",
+        publications: null,
+        isRecommended: "false",
+        registry: "[abc,def]",
+        licences: 123
     }
 };
 const $store = new Vuex.Store({
     modules: {
-        records: records
+        records: records,
+        introspection: introspection
     },
 });
 
@@ -53,13 +56,7 @@ describe("Records.vue", () => {
     });
 
     it("has a currentPath computed attribute", () => {
-        expect(wrapper.vm.currentPath[0]).toBe("Standards");
-    });
-
-    it("react to path change", async () => {
-        $route.path = "/search";
-        $route.query = {};
-        expect(wrapper.vm.currentPath[0]).toBe("Search");
+        expect(wrapper.vm.currentPath[0]).toBe("Standard");
     });
 
     it("can correctly raise an error", async () =>{
@@ -74,6 +71,166 @@ describe("Records.vue", () => {
         await expect(wrapper.vm.getData()).rejects;
         axios.post.restore();
 
-    })
+    });
+
+    it("can get the query parameters types from introspection", async () => {
+        let returnedVal = {
+            data: {
+                data: {
+                    "__schema": {
+                        "types": [
+                            {
+                                name: "Query",
+                                fields: [
+                                    {
+                                        name: "searchFairsharingRecords",
+                                        args: [
+                                            {
+                                                name: "test",
+                                                description: "testDescription",
+                                                type: "String",
+                                                defaultValue: "1"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }]
+                    }
+                }
+            }
+        };
+        let errorTest = {
+            data: {
+                errors: [
+                    {message: "Error"}
+                ]
+            }
+        };
+
+        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
+        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+        expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
+            name: "test",
+            description: "testDescription",
+            type: "String",
+            defaultValue: "1"
+        }]);
+        Client.prototype.getData.restore();
+
+
+        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(errorTest);
+        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+        expect(wrapper.vm.$store.state.introspection.error).toBe("Can't initialize application");
+        Client.prototype.getData.restore();
+    });
+
+    it("can switch between panels", () => {
+        wrapper.vm.setPanel("Facets");
+        expect(wrapper.vm.currentPanel).toBe("Facets");
+    });
+
+    it("can get the records", async () => {
+        $route.query = {
+            "test": "abc",
+            "test2": ["abcdef"],
+            "test3": "abc, def",
+            "test4": 123,
+            "test5": true
+        };
+        let returnedVal = {
+            data: {
+                data: {
+                    "__schema": {
+                        "types": [
+                            {
+                                name: "Query",
+                                fields: [
+                                    {
+                                        name: "searchFairsharingRecords",
+                                        args: [
+                                            {
+                                                name: "test",
+                                                description: "testDescription",
+                                                type: "String",
+                                                defaultValue: "1"
+                                            },
+                                            {
+                                                name: "test2",
+                                                description: "testDescription2",
+                                                type: {
+                                                    kind: "LIST",
+                                                    ofType: {
+                                                        ofType: {
+                                                            name: "String"
+                                                        }
+                                                    }
+                                                },
+                                                defaultValue: "1",
+
+                                            },
+                                            {
+                                                name: "test3",
+                                                description: "testDescription2",
+                                                type: {
+                                                    kind: "LIST",
+                                                    ofType: {
+                                                        ofType: {
+                                                            name: "String"
+                                                        }
+                                                    }
+                                                },
+                                                defaultValue: "1",
+
+                                            },
+                                            {
+                                                name: "test4",
+                                                description: "testDescription",
+                                                type: {
+                                                    name: "Int"
+                                                },
+                                                defaultValue: "1"
+                                            },
+                                            {
+                                                name: "test5",
+                                                description: "testDescription",
+                                                type: {
+                                                    name: "Boolean"
+                                                },
+                                                defaultValue: "1"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }]
+                    }
+                }
+            }
+        };
+        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
+        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+        Client.prototype.getData.restore();
+        const path = wrapper.vm.currentPath;
+        const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
+        expect(queryParameters).toStrictEqual({
+            fairsharingRegistry: "Standard",
+            test: 'abc',
+            test2: 'abcdef',
+            test3: [ 'abc', ' def' ],
+            test4: 123,
+            test5: true
+        })
+    });
+
+    it("can reset the store when destroyed", () => {
+        wrapper.destroy();
+        expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
+        expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
+    });
+
+    it("react to path change", async () => {
+        $route.path = "/search";
+        $route.query = {};
+        expect(wrapper.vm.currentPath[0]).toBe("Search");
+    });
 
 });

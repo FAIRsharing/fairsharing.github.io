@@ -1,8 +1,8 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
-import OutputGrid from "./SearchOutputGrid.vue";
-import records from "../../store/records";
-import Client from "../../components/GraphClient/GraphClient.js";
+import OutputGrid from "../SearchOutputGrid.vue";
+import records from "../../../store/records";
+import Client from "../../GraphClient/GraphClient.js";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

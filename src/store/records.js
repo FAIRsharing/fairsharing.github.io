@@ -2,6 +2,8 @@ import Client from "../components/GraphClient/GraphClient.js"
 import recordsQuery from "../components/GraphClient/queries/getRecords.json"
 import recordQuery from "../components/GraphClient/queries/getRecord.json"
 import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
+import filterMapping from "../components/Records/FiltersLabelMapping.js"
+
 
 let client = new Client();
 
@@ -11,12 +13,14 @@ export default {
         records: [],
         facets: [],
         currentRecord: {},
-        currentRecordHistory: {}
+        currentRecordHistory: {},
+        totalPages: null
     },
     mutations: {
         setRecords(state, data){
             state.records = data['records'];
-            state.facets = data["aggregations"];
+            state.facets = buildFacets(data["aggregations"]);
+            state.totalPages = data["totalPages"];
         },
         resetRecords(state){
             recordsQuery.queryParam = null;
@@ -30,6 +34,9 @@ export default {
         },
         resetCurrentRecordHistory(state){
             state.currentRecordHistory = {};
+        },
+        resetFacets(state){
+            state.facets = [];
         }
     },
     actions: {
@@ -53,8 +60,40 @@ export default {
             recordHistory.queryParam = {id: id};
             let data = await client.executeQuery(recordHistory);
             this.commit('records/setRecordHistory', data["fairsharingRecord"]);
+        },
+        resetFacets(){
+            this.commit("records/resetFacets")
+        },
+        resetRecords(){
+            this.commit("records/resetRecords");
         }
     },
     modules: {
+    },
+    getters: {
+        getFacet: (state) => (size, facetName) => {
+            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
+            currentFacet['values'] = currentFacet['buckets'].sort().slice(0, size);
+            return currentFacet;
+        }
     }
 }
+
+const buildFacets = function(rawFacets){
+    let output = [];
+    const mapper = filterMapping["autocomplete"];
+
+    Object.keys(rawFacets).forEach(function(facetName){
+        if (Object.prototype.hasOwnProperty.call(mapper, facetName)){
+            let localFacet = mapper[facetName];
+            rawFacets[facetName]["buckets"].forEach(function(bucket){
+                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")){
+                    bucket["key"] = bucket["key_as_string"];
+                }
+            });
+            localFacet['buckets'] = rawFacets[facetName]['buckets'];
+            output.push(localFacet);
+        }
+    });
+    return output;
+};

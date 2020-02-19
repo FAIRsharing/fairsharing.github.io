@@ -66,7 +66,6 @@
             },
             '$route.query': function (newVal) {
                 let _module = this;
-                console.log(newVal.page);
                 if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
                     _module.currentQuery.page = 1;
                 }

@@ -3,6 +3,7 @@
     class="outputGrid container-fluid"
   >
     <h1>{{ currentPath[0] }}</h1>
+    {{ this.$store.state.records.totalPages }}
 
     <div class="chips">
       <FiltersChip />
@@ -96,7 +97,7 @@
         },
         computed: {
             currentPath: function () {
-                const title =  this.$route.path.replace('/', '');
+                let title =  this.$route.path.replace('/', '');
                 const client = this;
                 let queryParams = {};
                 Object.keys(this.$route.query).forEach(function(prop){
@@ -105,8 +106,14 @@
                         queryParams[prop] = decodeURI(queryVal);
                     }
                 });
+                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]){
+                    title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+                }
+                else {
+                    title = title.charAt(0).toUpperCase() + title.slice(1)
+                }
                 return [
-                    title.charAt(0).toUpperCase() + title.slice(1),
+                    title,
                     queryParams
                 ];
             },
@@ -133,6 +140,7 @@
                   window.scrollTo(0,0);
                   this.content = [];
                   this.errors = null;
+
                   try {
                     await this.fetchRecords(this.getParameters());
                   }

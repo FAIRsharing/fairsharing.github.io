@@ -41,6 +41,8 @@ describe("FiltersChips.vue", () => {
         expect(query).toStrictEqual({ publications: 'pub1,pub2,pub3' });
         query = wrapper.vm.buildNewQuery("publications", "pub4");
         expect(query).toStrictEqual({ grants: 'ABCDEF', publications: 'pub1,pub2,pub3' });
+        await wrapper.vm.removeParam("publications", "pub3");
+        expect($router.push).toHaveBeenCalledTimes(1);
     })
 
 });

@@ -56,7 +56,7 @@ describe("Records.vue", () => {
     });
 
     it("has a currentPath computed attribute", () => {
-        expect(wrapper.vm.currentPath[0]).toBe("Standards");
+        expect(wrapper.vm.currentPath[0]).toBe("Standard");
     });
 
     it("can correctly raise an error", async () =>{
@@ -212,6 +212,7 @@ describe("Records.vue", () => {
         const path = wrapper.vm.currentPath;
         const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
         expect(queryParameters).toStrictEqual({
+            fairsharingRegistry: "Standard",
             test: 'abc',
             test2: 'abcdef',
             test3: [ 'abc', ' def' ],
@@ -224,7 +225,7 @@ describe("Records.vue", () => {
         wrapper.destroy();
         expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
-    })
+    });
 
     it("react to path change", async () => {
         $route.path = "/search";

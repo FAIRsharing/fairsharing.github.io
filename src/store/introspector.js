@@ -57,6 +57,9 @@ export default {
                     }
                 }
             });
+            if (params[0] !== "Search"){
+                queryParameters["fairsharingRegistry"] = params[0];
+            }
             return queryParameters;
         }
     }

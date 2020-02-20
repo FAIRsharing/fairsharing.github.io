@@ -72,6 +72,7 @@
                     }
                   }
                 });
+                query["page"] = 1;
                 return query;
             }
         }

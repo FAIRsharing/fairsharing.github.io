@@ -31,7 +31,7 @@ describe("Pagination.vue", () => {
         });
     });
 
-    it('Testing created() to see if it returns 1 instead of received undefined page value', () => {
+    it('Sets the page parameter to one on creation when receiving no values or undefined', () => {
         $route.query.page = undefined;
         anotherWrapper = shallowMount(Pagination, {
             mocks: {$route, $router},
@@ -43,7 +43,7 @@ describe("Pagination.vue", () => {
         expect(anotherWrapper.vm.currentQuery.page).toBe(1);
     });
 
-    it('testing created() to see if converts received page string value to number', () => {
+    it('Sets the page parameter to the given input on creation', () => {
         $route.query ={page:"120"};
         anotherWrapper2 = shallowMount(Pagination, {
             mocks: {$route, $router},
@@ -55,20 +55,13 @@ describe("Pagination.vue", () => {
         expect(anotherWrapper2.vm.currentQuery.page).toBe(120);
     });
 
-
-    it('Can check whether Router name changes correctly', () => {
-        wrapper.vm.$route.name = "Policies";
-        expect(wrapper.vm.$route.name).toBe("Policies");
-
-    });
-
-    it('Can check if query is empty, it returns page 1 and the other one checks if query not empty and contain page value', () => {
+    it('can react to changes in the URL query and/or name', () => {
         wrapper.vm.$route.name = "Search";
         wrapper.vm.$route.query =  {};
         expect(wrapper.vm.currentQuery.page).toBe(1);
     });
 
-    it('Can check paginate function', () => {
+    it('Has a paginate() method that sets the current page in the URL query', () => {
         $route.name="Standards";
         $route.query.page=12;
 
@@ -82,39 +75,39 @@ describe("Pagination.vue", () => {
         expect(wrapper.vm.$route.query.page).toBe("3");
     });
 
-    it('Can check First function', () => {
+    it('Has a first() method that always redirect to the first page', () => {
 
         wrapper.vm.currentQuery.page = 10;
         wrapper.vm.$route.query.page = "1";
 
         wrapper.vm.$router.push = push;
-        wrapper.vm.First();
+        wrapper.vm.first();
         wrapper.vm.$route.query.page = "1";
 
         expect(wrapper.vm.currentQuery.page).toBe(1);
         expect(wrapper.vm.$route.query.page).toBe("1");
 
-        // call the First Function again and it is not working due to router.page number is already the same
+        // call the first Function again and it is not working due to router.page number is already the same
         wrapper.vm.$router.push = push;
-        wrapper.vm.First();
+        wrapper.vm.first();
         expect($router.push).toHaveBeenCalledTimes(1);
     });
 
-    it('Can check Last function', () => {
+    it('Has a last() method that always redirect to the last page', () => {
 
         wrapper.vm.currentQuery.page = wrapper.vm.totalPages;
         wrapper.vm.$route.query.page = wrapper.vm.totalPages;
 
         wrapper.vm.$router.push = push;
-        wrapper.vm.Last();
+        wrapper.vm.last();
         wrapper.vm.$route.query.page = wrapper.vm.totalPages;
 
         expect(wrapper.vm.currentQuery.page).toBe(wrapper.vm.totalPages);
         expect(wrapper.vm.$route.query.page).toBe(wrapper.vm.totalPages);
 
-        // call the First Function again and it is not working due to router.page number is already the same
+        // call the first Function again and it is not working due to router.page number is already the same
         wrapper.vm.$router.push = push;
-        wrapper.vm.Last();
+        wrapper.vm.last();
         expect($router.push).toHaveBeenCalledTimes(1);
 
 

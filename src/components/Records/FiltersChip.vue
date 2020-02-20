@@ -28,18 +28,20 @@
                 let output = [];
                 const parameters = this.$route.query;
                 Object.keys(parameters).forEach(function(paramName){
-                    let param = parameters[paramName];
+                    if (paramName !== "page"){
+                        let param = parameters[paramName];
 
-                    if (param.indexOf(",") > -1){
-                        param = param.split(",")
+                        if (param.indexOf(",") > -1){
+                            param = param.split(",")
+                        }
+                        else {
+                            param = [param]
+                        }
+                        output.push({
+                            paramName: paramName,
+                            paramVal: param
+                        })
                     }
-                    else {
-                        param = [param]
-                    }
-                    output.push({
-                        paramName: paramName,
-                        paramVal: param
-                    })
                 });
                 return output;
             }
@@ -70,6 +72,7 @@
                     }
                   }
                 });
+                query["page"] = 1;
                 return query;
             }
         }

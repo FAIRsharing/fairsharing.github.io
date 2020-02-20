@@ -100,6 +100,7 @@
 
                 // Only trigger the API call if the query is different
                 if (JSON.stringify(currentQuery) !== JSON.stringify(this.$route.query)){
+                    currentQuery["page"] = 1;
                     await _module.$router.push({
                         name: _module.$route.name,
                         query: currentQuery

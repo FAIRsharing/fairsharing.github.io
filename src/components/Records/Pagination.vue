@@ -7,9 +7,9 @@
       >
         <button
           class="page-link"
-          @click="First"
+          @click="first"
         >
-          First
+          first
         </button>
       </li>
 
@@ -33,9 +33,9 @@
       >
         <button
           class="page-link"
-          @click="Last"
+          @click="last"
         >
-          Last
+          last
         </button>
       </li>
     </ul>
@@ -92,10 +92,10 @@
                     });
                 }
             },
-            First: function () {
+            first: function () {
                 this.paginate(1);
             },
-            Last: function () {
+            last: function () {
                 this.paginate(this.totalPages);
             }
         },

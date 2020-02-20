@@ -68,11 +68,13 @@
                 let _module = this;
                 if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
                     _module.currentQuery.page = 1;
+                } else {
+                    _module.currentQuery.page = Number(newVal.page);
                 }
             }
         },
         created() {
-            const currentPage = this.$route.query.page;
+            let currentPage = this.$route.query.page;
             typeof (currentPage) !== "undefined" ? this.currentQuery.page = Number(currentPage) : this.currentQuery.page = 1;
         },
         methods: {

@@ -96,16 +96,21 @@
     class="a outputGrid container-fluid"
   >
     &lt;h1>{{ currentPath[0] }}&lt;/h1>
+
+    &lt;!-- PAGINATION -->
     &lt;Pagination
-      class="col-12"
+      class="row col-12"
       :total-pages="this.$store.state.records.totalPages"
     />
+
+    &lt;!-- CHIPS -->
     &lt;div class="chips">
       &lt;FiltersChip />
     &lt;/div>
 
     &lt;div class="row">
-      &lt;!-- Left panel -->
+
+      &lt;!-- LEFT PANEL -->
       &lt;div class="leftPanel col-3">
         &lt;!-- navigation -->
         &lt;div class="tabs">
@@ -139,12 +144,16 @@
         &lt;search-filters v-if="currentPanel === 'AdvSearch'" />
         &lt;facets v-if="currentPanel === 'Facets'" />
       &lt;/div>
+
+      &lt;!-- OUTPUT -->
       &lt;div
         v-if="!errors"
         class="col-9"
       >
         &lt;output-grid :total-pages="this.$store.state.records.totalPages" />
       &lt;/div>
+
+      &lt;!-- ERROR HANDLING -->
       &lt;div
         v-else
         class="col-9"

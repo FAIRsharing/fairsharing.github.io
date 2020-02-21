@@ -23,13 +23,13 @@
             v-if="!Object.prototype.hasOwnProperty.call(facet, 'key_as_string')"
             class="facetName"
           >
-            {{ facet.key.replace(/_/g, " ") }}
+            {{ cleanString(facet.key) }}
           </div>
           <div
             v-else
             class="facetName"
           >
-            {{ facet['key_as_string'].replace(/_/g, " ") }}
+            {{ cleanString(facet['key_as_string']) }}
           </div>
           <em> {{ facet['doc_count'] }}</em>
         </div>
@@ -106,6 +106,12 @@
                         query: currentQuery
                     })
                 }
+            },
+            cleanString: function(string){
+              if (typeof string === "string") {
+                return string.replace(/_/g, " ");
+              }
+              return string;
             }
         }
     }

@@ -40,7 +40,8 @@ describe("SearchFilters.vue", () => {
                             aggregations: {
                                 countries: {
                                     buckets: [
-                                        {key: "the united states of america"}
+                                        {key: "the united states of america"},
+                                        {key: "the_united_of_canada"}
                                     ]
                                 },
                                 publications: {
@@ -89,6 +90,10 @@ describe("SearchFilters.vue", () => {
         wrapper.vm.form.data = {
             publications: "pub1"
         };
+        await wrapper.vm.applyFilters();
+        expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
+
+        wrapper.vm.form.data = {countries: "the united of canada"};
         await wrapper.vm.applyFilters();
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     });

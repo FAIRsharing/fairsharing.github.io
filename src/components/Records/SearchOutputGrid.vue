@@ -1,10 +1,24 @@
 <template>
   <div class="container-fluid">
-    <div v-if="records.length === 0">
+    <div v-if="hits === null">
       LOADING
     </div>
 
-    <div class="row">
+    <div
+      v-if="hits === 0"
+      class="row"
+    >
+      <div class="col-12">
+        <div class="alert alert-danger">
+          No results found for given filters.
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-if="hits > 0"
+      class="row"
+    >
       <div
         v-for="record in records"
         :key="'record'+record.id"
@@ -34,7 +48,7 @@
     export default {
         name: "SearchOutputGrid",
         computed: {
-          ...mapState('records', ["records"])
+          ...mapState('records', ["records", "hits"])
         }
     }
 </script>

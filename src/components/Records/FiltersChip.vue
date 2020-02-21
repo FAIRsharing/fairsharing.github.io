@@ -11,7 +11,7 @@
             :key="'Chip_' + subKey"
             class="chip"
           >
-            <span @click="removeParam(chip.paramName, chipValue)">x</span> {{ chip.paramName }}: {{ decodeURIComponent(chipValue) }}
+            <span @click="removeParam(chip.paramName, chipValue)">x</span> {{ chip.paramName }}: {{ decodeURIComponent(chipValue).replace(/_/g, " ") }}
           </div>
         </div>
       </div>

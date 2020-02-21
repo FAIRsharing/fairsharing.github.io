@@ -36,6 +36,9 @@ describe("Facets.vue", () =>{
                         buckets: [
                             {
                                 key: 123
+                            },
+                            {
+                                key: "test_me_please"
                             }
                         ]
                     },
@@ -97,5 +100,14 @@ describe("Facets.vue", () =>{
         await wrapper.vm.addParam("isRecommended", {key: 123});
         expect($router.push).toHaveBeenCalledTimes(2);
     })
+
+    it("has a method cleanString() that replaces underscores from input", () => {
+        const testString = "please_test_me";
+        let stringOutput = wrapper.vm.cleanString(testString);
+        expect(stringOutput).toBe("please test me");
+        const testInt = 123;
+        stringOutput = wrapper.vm.cleanString(testInt);
+        expect(stringOutput).toBe(123);
+    });
 
 });

@@ -23,7 +23,7 @@
                 v-for="(value, subKey) in filter.values"
                 :key="subKey"
               >
-                {{ value }}
+                {{ cleanString(value) }}
               </option>
             </select>
           </div>
@@ -70,7 +70,8 @@
             return {
                 form: {
                     data: {}
-                }
+                },
+                stringsReplacement: {}
             }
         },
         computed: {
@@ -82,7 +83,11 @@
                 let formData = {};
                 Object.keys(_module.form.data).forEach(function(key){
                   // Need to validate/sanitize data before sending.
-                  formData[key] = encodeURI(_module.form.data[key].trim());
+                  const paramValue = _module.form.data[key];
+                  formData[key] = encodeURIComponent(_module.form.data[key].trim());
+                  if (Object.prototype.hasOwnProperty.call(_module.stringsReplacement, paramValue)){
+                      formData[key] = encodeURIComponent(_module.stringsReplacement[paramValue].trim());
+                  }
                 });
                 this.$router.push({
                     name: _module.$route.name,
@@ -90,10 +95,18 @@
                 });
                 _module.form.data = {}
             },
-            reset: function(){
+          reset: function(){
                 this.form.data = {};
                 this.$router.push({name: this.$route.name});
+            },
+          cleanString: function(string){
+            let cleanedString = string;
+            if (string.indexOf("_") > -1){
+              cleanedString = string.replace(/_/g, " ");
+              this.stringsReplacement[cleanedString] = string;
             }
+            return cleanedString;
+          }
         }
     }
 </script>

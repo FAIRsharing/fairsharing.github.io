@@ -82,7 +82,7 @@
                 let formData = {};
                 Object.keys(_module.form.data).forEach(function(key){
                   // Need to validate/sanitize data before sending.
-                  formData[key] = encodeURI(_module.form.data[key].trim());
+                  formData[key] = encodeURIComponent(_module.form.data[key].trim());
                 });
                 this.$router.push({
                     name: _module.$route.name,

@@ -57,6 +57,8 @@
 </template>
 
 <script>
+    import paramBuilder from "./utils.js"
+
     export default {
         name: "Facets",
         data() {
@@ -79,24 +81,8 @@
                 this.$forceUpdate();
             },
             addParam: async function(facetName, facetVal){
-                const currentQuery = {};
                 let _module = this;
-                const currentParam = this.$route.query[facetName];
-
-                Object.keys(_module.$route.query).forEach(function(param){
-                    currentQuery[param] = _module.$route.query[param]
-                });
-
-                if (Object.prototype.hasOwnProperty.call(_module.$route.query, facetName)){
-                    const facetValue = encodeURIComponent(facetVal.key);
-
-                    if (currentParam.indexOf(facetValue) < 0){
-                        currentQuery[facetName] = currentParam + "," + facetValue;
-                    }
-                }
-                else {
-                    currentQuery[facetName] = encodeURIComponent(facetVal.key);
-                }
+                let currentQuery = paramBuilder(this.$route.query, {name: facetName, value: facetVal});
 
                 // Only trigger the API call if the query is different
                 if (JSON.stringify(currentQuery) !== JSON.stringify(this.$route.query)){

@@ -14,13 +14,15 @@ export default {
         facets: [],
         currentRecord: {},
         currentRecordHistory: {},
-        totalPages: null
+        totalPages: null,
+        hits: null,
     },
     mutations: {
         setRecords(state, data){
             state.records = data['records'];
             state.facets = buildFacets(data["aggregations"]);
             state.totalPages = data["totalPages"];
+            state.hits = data["totalCount"];
         },
         resetRecords(state){
             recordsQuery.queryParam = null;
@@ -37,11 +39,15 @@ export default {
         },
         resetFacets(state){
             state.facets = [];
+        },
+        resetHits(state){
+            state.hits = null;
         }
     },
     actions: {
         async fetchRecords(state, params){
             this.commit("records/resetRecords");
+            this.commit("records/resetHits");
             if (Object.keys(params).length > 0){
                 recordsQuery.queryParam = params;
             }

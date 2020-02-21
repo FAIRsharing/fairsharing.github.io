@@ -19,6 +19,9 @@
       v-if="hits > 0"
       class="row"
     >
+      <div class="col-12 alert alert-success">
+        Found {{ hits }} results.
+      </div>
       <div
         v-for="record in records"
         :key="'record'+record.id"

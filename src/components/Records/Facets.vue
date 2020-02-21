@@ -23,13 +23,13 @@
             v-if="!Object.prototype.hasOwnProperty.call(facet, 'key_as_string')"
             class="facetName"
           >
-            {{ facet.key }}
+            {{ facet.key.replace(/_/g, " ") }}
           </div>
           <div
             v-else
             class="facetName"
           >
-            {{ facet['key_as_string'] }}
+            {{ facet['key_as_string'].replace(/_/g, " ") }}
           </div>
           <em> {{ facet['doc_count'] }}</em>
         </div>

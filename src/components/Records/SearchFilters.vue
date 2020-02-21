@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" id="advancedSearch">
     <form
       v-if="filters.length > 0"
       class="card"
@@ -18,14 +18,13 @@
             v-if="filter.values"
             class="filter"
           >
-            <select v-model="form.data[filter.filterName]">
-              <option
-                v-for="(value, subKey) in filter.values"
-                :key="subKey"
-              >
-                {{ cleanString(value) }}
-              </option>
-            </select>
+            <v-autocomplete
+              v-model="form.data[filter.filterName]"
+              :items="filter.values"
+              autocomplete="true"
+              attach
+            />
+
           </div>
           <div
             v-else
@@ -63,9 +62,11 @@
 
 <script>
     import { mapState } from "vuex"
+    import { VAutocomplete } from 'vuetify/lib'
 
     export default {
         name: "SearchFilters",
+        components: {VAutocomplete},
         data() {
             return {
                 form: {
@@ -120,6 +121,11 @@
     display: inline-block;
     width: 300px;
     float:right;
+    max-height:30px;
+  }
+
+  div.filter div {
+    max-height:100%;
   }
 
   div.filter select, div.filter input {
@@ -130,4 +136,19 @@
     margin-left:15px;
   }
 
+  input {
+    background: lightgrey;
+  }
+
+</style>
+
+<style>
+  .v-autocomplete__content {
+    max-width:300px !important;
+  }
+
+  .filters .v-input {
+    margin-top:0;
+    padding-top:0;
+  }
 </style>

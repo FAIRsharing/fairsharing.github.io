@@ -3,16 +3,21 @@
     class="a outputGrid container-fluid"
   >
     <h1>{{ currentPath[0] }}</h1>
+
+    <!-- PAGINATION -->
     <Pagination
-      class="col-12"
+      class="row col-12"
       :total-pages="this.$store.state.records.totalPages"
     />
+
+    <!-- CHIPS -->
     <div class="chips">
       <FiltersChip />
     </div>
 
     <div class="row">
-      <!-- Left panel -->
+
+      <!-- LEFT PANEL -->
       <div class="leftPanel col-3">
         <!-- navigation -->
         <div class="tabs">
@@ -46,12 +51,16 @@
         <search-filters v-if="currentPanel === 'AdvSearch'" />
         <facets v-if="currentPanel === 'Facets'" />
       </div>
+
+      <!-- OUTPUT -->
       <div
         v-if="!errors"
         class="col-9"
       >
         <output-grid :total-pages="this.$store.state.records.totalPages" />
       </div>
+
+      <!-- ERROR HANDLING -->
       <div
         v-else
         class="col-9"

@@ -151,4 +151,9 @@
     margin-top:0;
     padding-top:0;
   }
+
+  .v-list-item__mask {
+    color:black;
+    background: yellowgreen !important;
+  }
 </style>

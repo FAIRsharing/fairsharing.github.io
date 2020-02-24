@@ -1,9 +1,9 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
-import searchFilters from "./SearchFilters.vue"
-import filters from "../../store/searchFilters.js"
-import records from "../../store/records.js"
-import Client from "../../components/GraphClient/GraphClient.js"
+import searchFilters from "../SearchFilters.vue"
+import filters from "../../../store/searchFilters.js"
+import records from "../../../store/records.js"
+import Client from "../../GraphClient/GraphClient.js"
 
 const axios = require("axios");
 const sinon = require("sinon");
@@ -40,7 +40,8 @@ describe("SearchFilters.vue", () => {
                             aggregations: {
                                 countries: {
                                     buckets: [
-                                        {key: "the united states of america"}
+                                        {key: "the united states of america"},
+                                        {key: "the_united_of_canada"}
                                     ]
                                 },
                                 publications: {
@@ -89,6 +90,10 @@ describe("SearchFilters.vue", () => {
         wrapper.vm.form.data = {
             publications: "pub1"
         };
+        await wrapper.vm.applyFilters();
+        expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
+
+        wrapper.vm.form.data = {countries: "the united of canada"};
         await wrapper.vm.applyFilters();
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     });

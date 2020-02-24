@@ -58,7 +58,11 @@ describe("SearchFilters.vue", () => {
                                     buckets: []
                                 },
                                 licences: {
-                                    buckets: []
+                                    buckets: [
+                                        {
+                                            key: "test_something"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -97,7 +101,8 @@ describe("SearchFilters.vue", () => {
         await wrapper.vm.applyFilters();
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
 
-        wrapper.vm.form.data = {countries: "the united of canada"};
+        wrapper.vm.cleanString("test_something");
+        wrapper.vm.form.data = {countries: "the united of canada", publications: "test_something"};
         await wrapper.vm.applyFilters();
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     });
@@ -109,7 +114,14 @@ describe("SearchFilters.vue", () => {
         };
         wrapper.vm.reset();
         expect(wrapper.vm.form.data).toStrictEqual({});
-    })
+    });
+
+    it("can clean up a given string", () => {
+        let rawString = "this_is_a_super test";
+        expect(wrapper.vm.cleanString(rawString)).toMatch("this is a super test");
+        rawString = "this/is@another-test";
+        expect(wrapper.vm.cleanString(rawString)).toMatch(rawString);
+    });
 
 
 });

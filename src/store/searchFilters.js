@@ -52,9 +52,7 @@ let buildFilters = function(val){
                     filterValues.push(bucket['key']);
                 }
             });
-            if (filterValues.length > 0){
-                filter.values = filterValues
-            }
+            filter.values = filterValues;
             filters.push(filter);
         }
     });

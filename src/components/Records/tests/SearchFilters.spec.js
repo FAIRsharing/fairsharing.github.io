@@ -1,5 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
+import Vuetify from "vuetify"
 import searchFilters from "../SearchFilters.vue"
 import filters from "../../../store/searchFilters.js"
 import records from "../../../store/records.js"
@@ -30,6 +31,7 @@ describe("SearchFilters.vue", () => {
 
     // Set up the wrapper
     let wrapper;
+    let vuetify;
     let client = new Client();
 
     beforeAll(() => {
@@ -56,7 +58,11 @@ describe("SearchFilters.vue", () => {
                                     buckets: []
                                 },
                                 licences: {
-                                    buckets: []
+                                    buckets: [
+                                        {
+                                            key: "test_something"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -67,9 +73,11 @@ describe("SearchFilters.vue", () => {
         axios.post.restore();
     });
     beforeEach(() => {
+        vuetify = new Vuetify();
         wrapper = shallowMount(searchFilters, {
             mocks: {$route, $store, $router},
-            localVue
+            localVue,
+            vuetify
         });
     });
 
@@ -93,7 +101,8 @@ describe("SearchFilters.vue", () => {
         await wrapper.vm.applyFilters();
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
 
-        wrapper.vm.form.data = {countries: "the united of canada"};
+        wrapper.vm.cleanString("test_something");
+        wrapper.vm.form.data = {countries: "the united of canada", publications: "test_something"};
         await wrapper.vm.applyFilters();
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     });
@@ -105,7 +114,14 @@ describe("SearchFilters.vue", () => {
         };
         wrapper.vm.reset();
         expect(wrapper.vm.form.data).toStrictEqual({});
-    })
+    });
+
+    it("can clean up a given string", () => {
+        let rawString = "this_is_a_super test";
+        expect(wrapper.vm.cleanString(rawString)).toMatch("this is a super test");
+        rawString = "this/is@another-test";
+        expect(wrapper.vm.cleanString(rawString)).toMatch(rawString);
+    });
 
 
 });

@@ -1,5 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
+import Vuetify from "vuetify"
 import searchFilters from "../SearchFilters.vue"
 import filters from "../../../store/searchFilters.js"
 import records from "../../../store/records.js"
@@ -30,6 +31,7 @@ describe("SearchFilters.vue", () => {
 
     // Set up the wrapper
     let wrapper;
+    let vuetify;
     let client = new Client();
 
     beforeAll(() => {
@@ -67,9 +69,11 @@ describe("SearchFilters.vue", () => {
         axios.post.restore();
     });
     beforeEach(() => {
+        vuetify = new Vuetify();
         wrapper = shallowMount(searchFilters, {
             mocks: {$route, $store, $router},
-            localVue
+            localVue,
+            vuetify
         });
     });
 

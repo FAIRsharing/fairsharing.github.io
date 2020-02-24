@@ -26,14 +26,17 @@ Vue.use(VueMeta, {
 const graphQLClient = new GraphQLClient();
 router.beforeEach((to, from, next) => beforeEach(to, from, next));
 
-new Vue({
-    mounted: async function(){
-        await store.dispatch('searchFilters/fetchFilters', graphQLClient);
-    },
-    render: (h) => h(App),
-    router,
-    store
-}).$mount("#app");
+store.dispatch("introspection/fetchParameters").then(function(){
+    new Vue({
+        mounted: async function(){
+            await store.dispatch('searchFilters/fetchFilters', graphQLClient);
+        },
+        render: (h) => h(App),
+        router,
+        store
+    }).$mount("#app");
+});
+
 
 
 

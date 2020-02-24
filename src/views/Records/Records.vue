@@ -1,16 +1,66 @@
 <template>
   <div
-    class="outputGrid container-fluid"
+    class="a outputGrid container-fluid"
   >
     <h1>{{ currentPath[0] }}</h1>
+
+    <!-- PAGINATION -->
+    <Pagination
+      class="row col-12"
+      :total-pages="this.$store.state.records.totalPages"
+    />
+
+    <!-- CHIPS -->
+    <div class="chips">
+      <FiltersChip />
+    </div>
+
     <div class="row">
-      <search-filters class="col-3" />
+
+      <!-- LEFT PANEL -->
+      <div class="leftPanel col-3">
+        <!-- navigation -->
+        <div class="tabs">
+          <ul class="nav">
+            <li class="nav-item">
+              <div class="nav-link active">
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  @click="setPanel('AdvSearch')"
+                >
+                  Advanced search
+                </button>
+              </div>
+            </li>
+            <li class="nav-item">
+              <div class="nav-link">
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  @click="setPanel('Facets')"
+                >
+                  Facets
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- filters and facets -->
+        <search-filters v-if="currentPanel === 'AdvSearch'" />
+        <facets v-if="currentPanel === 'Facets'" />
+      </div>
+
+      <!-- OUTPUT -->
       <div
         v-if="!errors"
         class="col-9"
       >
-        <output-grid />
+        <output-grid :total-pages="this.$store.state.records.totalPages" />
       </div>
+
+      <!-- ERROR HANDLING -->
       <div
         v-else
         class="col-9"
@@ -24,9 +74,12 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     import OutputGrid from '../../components/Records/SearchOutputGrid'
     import SearchFilters from "../../components/Records/SearchFilters"
-    import { mapActions } from 'vuex'
+    import Facets from "../../components/Records/Facets";
+    import FiltersChip from "../../components/Records/FiltersChip";
+    import Pagination from "../../components/Records/Pagination";
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Boolean} valid_request - is the request valid before sending to client
@@ -35,6 +88,9 @@
     export default {
         name: "Records",
         components: {
+          Pagination,
+            FiltersChip,
+            Facets,
             SearchFilters,
             OutputGrid
         },
@@ -48,12 +104,13 @@
                 },
                 content: [],
                 buckets: {},
-                errors: null
+                errors: null,
+                currentPanel: "AdvSearch"
             }
         },
         computed: {
             currentPath: function () {
-                const title =  this.$route.path.replace('/', '');
+                let title =  this.$route.path.replace('/', '');
                 const client = this;
                 let queryParams = {};
                 Object.keys(this.$route.query).forEach(function(prop){
@@ -62,8 +119,14 @@
                         queryParams[prop] = decodeURI(queryVal);
                     }
                 });
+                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]){
+                    title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+                }
+                else {
+                    title = title.charAt(0).toUpperCase() + title.slice(1)
+                }
                 return [
-                    title.charAt(0).toUpperCase() + title.slice(1),
+                    title,
                     queryParams
                 ];
             },
@@ -78,6 +141,10 @@
                 await this.getData();
             })
         },
+        beforeDestroy: function(){
+            this.$store.dispatch("records/resetFacets").then(function(){});
+            this.$store.dispatch("records/resetRecords").then(function(){});
+        },
         methods: {
             /** This methods get the data from the client depending on the current page.
              * @returns {Promise}
@@ -86,6 +153,7 @@
                   window.scrollTo(0,0);
                   this.content = [];
                   this.errors = null;
+
                   try {
                     await this.fetchRecords(this.getParameters());
                   }
@@ -95,30 +163,12 @@
 
             },
             getParameters: function(){
-              let queryParameters = {};
-              const currentPath = this.currentPath[0];
-              const urlParams = this.currentPath[1];
-              if (Object.prototype.hasOwnProperty.call(this.recordTypes, currentPath)){
-                queryParameters['fairsharingRegistry'] = this.recordTypes[currentPath];
-              }
-              Object.keys(urlParams).forEach(function(urlParamName){
-                const urlParamVal = urlParams[urlParamName];
-                if (["true","false"].indexOf(urlParamVal) > 0){
-                  queryParameters[urlParamName] = JSON.parse(urlParamVal);
-                }
-                else if (!isNaN(parseFloat(urlParamVal)) && isFinite(urlParamVal)){
-                  queryParameters[urlParamName] = parseFloat(urlParamVal);
-                }
-                else if (urlParamVal[0] === "[" && urlParamVal[urlParamVal.length -1] === "]"){
-                  queryParameters[urlParamName] = urlParamVal.replace("[", "").replace("]").split(",");
-                }
-                else {
-                  queryParameters[urlParamName] = urlParamVal;
-                }
-              });
-              return queryParameters;
+                return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
             },
-            ...mapActions('records', ['fetchRecords'])
+            ...mapActions('records', ['fetchRecords']),
+            setPanel: function(panelName){
+              this.currentPanel = panelName;
+            }
         }
     }
 

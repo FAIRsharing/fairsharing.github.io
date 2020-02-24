@@ -21,7 +21,8 @@
     "node-sass": "^4.0.0",
     "vue-anchor-router-link": "*",
     "vue-meta": "*",
-    "vue-loader": "*"
+    "vue-loader": "*",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",

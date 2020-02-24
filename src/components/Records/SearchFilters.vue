@@ -1,5 +1,8 @@
 <template>
-  <div class="container" id="advancedSearch">
+  <div
+    id="advancedSearch"
+    class="container"
+  >
     <form
       v-if="filters.length > 0"
       class="card"
@@ -24,7 +27,6 @@
               autocomplete="true"
               attach
             />
-
           </div>
           <div
             v-else

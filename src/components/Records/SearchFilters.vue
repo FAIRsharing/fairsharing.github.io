@@ -86,7 +86,6 @@
                   // Need to validate/sanitize data before sending.
                   const paramValue = _module.form.data[key];
                   formData[key] = encodeURIComponent(_module.form.data[key].trim());
-                  console.log(paramValue, _module.stringsReplacement);
                   if (Object.prototype.hasOwnProperty.call(_module.stringsReplacement, paramValue)){
                       formData[key] = encodeURIComponent(_module.stringsReplacement[paramValue].trim());
                   }

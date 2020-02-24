@@ -16,9 +16,24 @@
           "name",
           "abbreviation",
           "registry",
-          "domains",
-          "subjects",
-          "taxonomies",
+          {
+            "queryName": "domains",
+            "fields": [
+              "label"
+            ]
+          },
+          {
+            "queryName": "subjects",
+            "fields": [
+              "label"
+            ]
+          },
+          {
+            "queryName": "taxonomies",
+            "fields": [
+              "label"
+            ]
+          },
           {
               "queryName": "recordAssociations",
               "fields": [

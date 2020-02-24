@@ -12,7 +12,6 @@ import store from './store'
 /* import HTML BoilerPlates */
 import "./styles/css/normalize.css"
 import "./styles/css/main.css"
-import "../node_modules/vuetify/dist/vuetify.min.css"
 
 /* import external libraries */
 import "bootstrap/scss/bootstrap.scss";

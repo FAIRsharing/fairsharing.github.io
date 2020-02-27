@@ -85,15 +85,11 @@ describe("Record.vue", function() {
 
     it("can correctly raise an error", async () =>{
         Client.prototype.executeQuery.restore();
-        sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
-            data: {
-                errors: [
-                    {message: "Error"}
-                ]
-            }
+        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns({
+            data: {errors: [{message: "Im an error"}]}
         });
-        await expect(wrapper.vm.getData()).rejects;
-        axios.post.restore();
+        let test = await wrapper.vm.getData();
+        console.log(test);
     });
 
 

@@ -35,24 +35,32 @@ describe("GraphQL Client", function(){
     });
 
     it("can execute a query", async function(){
-        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns({
+        let stub = sinon.stub(Client.prototype, "getData")
+        stub.withArgs(sinon.match.any).returns({
             data: {
                 data: {
                     searchFairsharingRecords
                 }
-            }});
-
+            }
+        });
         localQuery.queryParam = {};
         localQuery.queryParam["fairsharingRegistry"] = "Standard";
         localQuery.queryParam["isRecommended"] = true;
-
         let output = await client.executeQuery(localQuery);
         expect(JSON.stringify(output)).toBe(JSON.stringify({
             searchFairsharingRecords: {
                 records: [{}]
             }
         }));
-        await client.executeQuery(localQuery);
+
+        stub.withArgs(sinon.match.any).returns({
+            data: {
+                errors: [
+                    {message: "Im an error"}
+                ]
+            }
+        });
+        await expect(client.executeQuery(localQuery)).rejects;
         Client.prototype.getData.restore();
     });
 

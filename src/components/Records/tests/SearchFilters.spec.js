@@ -6,7 +6,6 @@ import filters from "../../../store/searchFilters.js"
 import records from "../../../store/records.js"
 import Client from "../../GraphClient/GraphClient.js"
 
-const axios = require("axios");
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

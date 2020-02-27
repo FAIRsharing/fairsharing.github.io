@@ -64,11 +64,10 @@
 
 <script>
     import { mapState } from "vuex"
-    import { VAutocomplete } from 'vuetify/lib'
 
     export default {
         name: "SearchFilters",
-        components: {VAutocomplete},
+        components: {},
         data() {
             return {
                 form: {

@@ -16,7 +16,6 @@
     </div>
 
     <div class="row">
-
       <!-- LEFT PANEL -->
       <div class="leftPanel col-3">
         <!-- navigation -->

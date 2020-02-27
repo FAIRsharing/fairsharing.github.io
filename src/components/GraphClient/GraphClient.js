@@ -56,7 +56,6 @@ class GraphQLClient {
             data:  request,
             headers: client.headers
         };
-        console.log(request);
         return await axios(fullQuery);
     }
 

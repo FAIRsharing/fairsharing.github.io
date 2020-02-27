@@ -35,8 +35,8 @@ describe("SearchFilters.vue", () => {
     let client = new Client();
 
     beforeAll(() => {
-        sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
-                data: {
+        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns({
+            data: {
                     data: {
                         searchFairsharingRecords: {
                             aggregations: {
@@ -70,7 +70,7 @@ describe("SearchFilters.vue", () => {
                 }});
     });
     afterAll(() => {
-        axios.post.restore();
+        Client.prototype.getData.restore();
     });
     beforeEach(() => {
         vuetify = new Vuetify();

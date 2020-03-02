@@ -7,22 +7,27 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit --coverage",
     "lint": "vue-cli-service lint",
-    "doc:full": "jsdoc -c documentation/doc.conf.json -R README.md",
-    "codacy": "cat ./coverage/lcov.info | codacy-coverage -t "
+    "codacy": "cat ./coverage/lcov.info | codacy-coverage -t ",
+    "doc:full": "jsdoc -c documentation/doc.conf.json -R README.md"
   },
   "dependencies": {
-    "core-js": "^3.3.2",
-    "vue": "^2.6.10",
-    "vue-router": "^3.1.3",
-    "vuex": "^3.0.1",
+    "@babel/polyfill": "^7.4.4",
+    "@fortawesome/fontawesome-free": "^5.8.2",
+    "@mdi/font": "^4.9.95",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.4",
+    "core-js": "^3.3.2",
     "jquery": "^3.4.1",
+    "lodash": "^4.17.15",
     "node-sass": "^4.0.0",
+    "roboto-fontface": "*",
+    "vue": "^2.6.10",
     "vue-anchor-router-link": "*",
-    "vue-meta": "*",
     "vue-loader": "*",
-    "lodash": "^4.17.15"
+    "vue-meta": "*",
+    "vue-router": "^3.1.3",
+    "vuetify": "^2.2.14",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",
@@ -31,19 +36,25 @@
     "@vue/cli-service": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "@vuese/cli": "*",
+    "axios": "*",
     "babel-eslint": "^10.0.3",
+    "codacy-coverage": "^3.4.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "fs": "*",
+    "ink-docstrap": "^1.3.2",
+    "jsdoc": "^3.6.3",
+    "jsdoc-vuejs": "^3.0.5",
     "path": "*",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
-    "vue-template-compiler": "^2.6.10",
     "sinon": "^7.5.0",
-    "codacy-coverage": "^3.4.0",
-    "jsdoc": "^3.6.3",
-    "jsdoc-vuejs": "^3.0.5",
-    "ink-docstrap": "^1.3.2",
-    "axios": "*"
+    "vue-cli-plugin-vuetify": "^2.0.5",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.3.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "*",
+    "fibers": "^4.0.2"
   }
 }

@@ -10,15 +10,45 @@
       "abbreviation",
       "description",
       "homepage",
-      "countries",
+      {
+          "name": "countries",
+          "fields": [
+              "name"
+          ]
+      },
       "metadata",
-      "taxonomies",
-      "domains",
-      "subjects",
-      "grants",
+      {
+          "name": "taxonomies",
+          "fields": [
+              "label"
+          ]
+      },
+      {
+          "name": "domains",
+          "fields": [
+              "label"
+          ]
+      },
+      {
+          "name": "subjects",
+          "fields": [
+              "label"
+          ]
+      },
+      {
+          "name": "grants",
+          "fields": [
+              "name"
+          ]
+      },
       "isRecommended",
       "legacyIds",
-      "licences",
+      {
+          "name": "licences",
+          "fields": [
+              "name"
+          ]
+      },
       {
           "name": "maintainers",
           "fields": [
@@ -26,8 +56,18 @@
             "id"
           ]
       },
-      "organisations",
-      "publications",
+      {
+          "name": "organisations",
+          "fields": [
+              "name"
+          ]
+      },
+      {
+          "name": "publications",
+          "fields": [
+              "title"
+          ]
+      },
       {
           "name": "recordAssociations",
           "fields": [

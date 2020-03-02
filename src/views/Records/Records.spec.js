@@ -1,5 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
+import Vuetify from "vuetify"
 import Records from "./Records.vue";
 import Client from "../../components/GraphClient/GraphClient.js";
 import records from "../../store/records.js"
@@ -31,6 +32,7 @@ const jsdomScrollTo = window.scrollTo;
 
 describe("Records.vue", () => {
 
+    let vuetify;
     let stub = sinon.stub(Client.prototype, "executeQuery");
 
     beforeAll( () => {
@@ -44,7 +46,8 @@ describe("Records.vue", () => {
     // Set up the wrapper
     let wrapper;
     beforeEach(() => {
-        wrapper = shallowMount(Records, {mocks: {$route, $store}, localVue});
+        vuetify = new Vuetify();
+        wrapper = shallowMount(Records, {mocks: {$route, $store}, localVue, vuetify});
         window.scrollTo = () => {};
     });
     afterEach( () =>{

@@ -1,35 +1,35 @@
 <template>
-  <div id="app">
-    <navbar-top />
-    <router-view />
-    <footer-bar />
-  </div>
+  <v-app>
+    <template>
+      <div id="app">
+        <navbar-top />
+        <router-view />
+        <footer-bar />
+      </div>
+    </template>
+  </v-app>
 </template>
 
 <script>
-  import NavbarTop from './components/Navigation/NavbarTop'
-  import FooterBar from './components/Navigation/Footer'
+import NavbarTop from "./components/Navigation/NavbarTop";
+import FooterBar from "./components/Navigation/Footer";
 
-  // @vuese
-  // Entry point of the app; handles the route-view and the main display
-  export default {
-    name: 'App',
-    title: 'Home',
-    components: {
-      NavbarTop,
-      FooterBar
-    }
-
+export default {
+  name: 'App',
+  components: {
+    NavbarTop,
+    FooterBar
   }
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  min-height:99vh;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    min-height:99vh;
+  }
 </style>

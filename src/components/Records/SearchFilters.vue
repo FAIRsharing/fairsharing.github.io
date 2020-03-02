@@ -1,5 +1,8 @@
 <template>
-  <div class="container">
+  <div
+    id="advancedSearch"
+    class="container"
+  >
     <form
       v-if="filters.length > 0"
       class="card"
@@ -18,14 +21,12 @@
             v-if="filter.values"
             class="filter"
           >
-            <select v-model="form.data[filter.filterName]">
-              <option
-                v-for="(value, subKey) in filter.values"
-                :key="subKey"
-              >
-                {{ cleanString(value) }}
-              </option>
-            </select>
+            <v-autocomplete
+              v-model="form.data[filter.filterName]"
+              :items="cleanStrings(filter.values)"
+              autocomplete="true"
+              attach
+            />
           </div>
           <div
             v-else
@@ -66,6 +67,7 @@
 
     export default {
         name: "SearchFilters",
+        components: {},
         data() {
             return {
                 form: {
@@ -106,6 +108,14 @@
               this.stringsReplacement[cleanedString] = string;
             }
             return cleanedString;
+          },
+          cleanStrings: function(stringArray){
+              let output = [];
+              const _module = this;
+              stringArray.forEach(function(string){
+                output.push(_module.cleanString(string))
+              });
+              return output;
           }
         }
     }
@@ -120,6 +130,11 @@
     display: inline-block;
     width: 300px;
     float:right;
+    max-height:30px;
+  }
+
+  div.filter div {
+    max-height:100%;
   }
 
   div.filter select, div.filter input {
@@ -130,4 +145,24 @@
     margin-left:15px;
   }
 
+  input {
+    background: lightgrey;
+  }
+
+</style>
+
+<style>
+  .v-autocomplete__content {
+    max-width:300px !important;
+  }
+
+  .filters .v-input {
+    margin-top:0;
+    padding-top:0;
+  }
+
+  .v-list-item__mask {
+    color:black;
+    background: yellowgreen !important;
+  }
 </style>

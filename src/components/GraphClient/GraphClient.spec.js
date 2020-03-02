@@ -35,24 +35,40 @@ describe("GraphQL Client", function(){
     });
 
     it("can execute a query", async function(){
+        let stub = sinon.stub(Client.prototype, "getData")
+        stub.withArgs(sinon.match.any).returns({
+            data: {
+                data: {
+                    searchFairsharingRecords
+                }
+            }
+        });
         localQuery.queryParam = {};
         localQuery.queryParam["fairsharingRegistry"] = "Standard";
         localQuery.queryParam["isRecommended"] = true;
-
         let output = await client.executeQuery(localQuery);
         expect(JSON.stringify(output)).toBe(JSON.stringify({
             searchFairsharingRecords: {
                 records: [{}]
             }
         }));
-        await client.executeQuery(localQuery);
+
+        stub.withArgs(sinon.match.any).returns({
+            data: {
+                errors: [
+                    {message: "Im an error"}
+                ]
+            }
+        });
+        await expect(client.executeQuery(localQuery)).rejects;
+        Client.prototype.getData.restore();
     });
 
     it("can correctly build a query string from a JSON", function() {
-        const expectedOutput = "searchFairsharingRecords(field1:true field2:\"true\" field3:[\"true\"," +
-            "\"false\"]){ aggregations currentPage perPage totalCount totalPages firstPage records{id " +
-            "type name abbreviation registry domains subjects taxonomies recordAssociations{ linkedRecord{name " +
-            "id registry } recordAssocLabel}status isRecommended }}" ;
+        const expectedOutput = "searchFairsharingRecords(field1:true field2:\"true\" field3:[\"true\",\"false\"]){ " +
+            "aggregations currentPage perPage totalCount totalPages firstPage records{id type name abbreviation registry " +
+            "domains{ label}subjects{ label}taxonomies{ label}recordAssociations{ linkedRecord{name id registry } " +
+            "recordAssocLabel}status isRecommended }}" ;
         query.queryParam = {
             "field1": true,
             "field2": "true",

@@ -4,10 +4,13 @@ import recordQuery from "../components/GraphClient/queries/getRecord.json"
 import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
 import filterMapping from "../components/Records/FiltersLabelMapping.js"
 
-
 let client = new Client();
 
-export default {
+/**
+ * The records store handles the requests related to records (searchFairsharingRecords and fairsharingRecord).
+ * @type {Object}
+ */
+let recordsStore = {
     namespaced: true,
     state: {
         records: [],
@@ -18,6 +21,11 @@ export default {
         hits: null,
     },
     mutations: {
+        /**
+         * Set the records, facets, totalPages and number of hits for the current query
+         * @param state - the store current states
+         * @param data - the query result
+         */
         setRecords(state, data){
             state.records = data['records'];
             state.facets = buildFacets(data["aggregations"]);
@@ -83,8 +91,17 @@ export default {
             return currentFacet;
         }
     }
-}
+};
 
+
+export default recordsStore;
+
+/**
+ * Given an object containing the raw facets coming from the client and a mapping object , build the ready to use facets
+ * for usage by the Vue components.
+ * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
+ * @returns {Array} output - the array of ready to use facets containing a name, a label and values
+ */
 const buildFacets = function(rawFacets){
     let output = [];
     const mapper = filterMapping["autocomplete"];

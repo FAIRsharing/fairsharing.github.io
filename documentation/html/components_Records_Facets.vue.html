@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: NavbarTop</title>
+	<title>FAIRsharing.org Source: components/Records/Facets.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,100 +81,168 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: NavbarTop</h1>
+		<h1 class="page-title">Source: components/Records/Facets.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div class="facets card">
+    &lt;div class="card-header">
+      Facets
+    &lt;/div>
 
-<header>
-    
-</header>
+    &lt;div class="card-body">
+      &lt;div
+        v-for="(facetVal, key) in $store.state.records.facets"
+        :key="'Facet' + key"
+      >
+        &lt;div class="facet">
+          &lt;h3>{{ facetVal.filterLabel }}&lt;/h3>
+        &lt;/div>
+
+        &lt;div
+          v-for="(facet, subKey) in $store.getters['records/getFacet'](facetsSize[facetVal.filterName], facetVal.filterName)['values']"
+          :key="facetVal.filterName + subKey"
+          class="facet"
+          @click="addParam(facetVal.filterName, facet)"
+        >
+          &lt;div
+            v-if="!Object.prototype.hasOwnProperty.call(facet, 'key_as_string')"
+            class="facetName"
+          >
+            {{ cleanString(facet.key) }}
+          &lt;/div>
+          &lt;div
+            v-else
+            class="facetName"
+          >
+            {{ cleanString(facet['key_as_string']) }}
+          &lt;/div>
+          &lt;em> {{ facet['doc_count'] }}&lt;/em>
+        &lt;/div>
+
+        &lt;button
+          type="button"
+          class="btn btn-secondary"
+          @click="changeSize(facetVal.filterName, 100)"
+        >
+          Show more
+        &lt;/button>
+
+        &lt;button
+          type="button"
+          class="btn btn-secondary"
+          @click="changeSize(facetVal.filterName, defaultSize)"
+        >
+          Show Less
+        &lt;/button>
+
+        &lt;hr>
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+    import paramBuilder from "./utils.js"
 
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Component to handle the header (should be present on every page)</p></div>
-        
+    /** Component to handle the faceting systems of the search pages.
+     * @vue-data {Boolean} [defaultSize = 4] - the default number of items to show for facets.
+     * @vue-computed {String} facetsSize - get the size of each facet from the recordsStore
+     */
+    export default {
+        name: "Facets",
+        data() {
+            return {
+                defaultSize: 4,
+            }
+        },
+        computed: {
+            facetsSize: function(){
+                let sizes = {};
+                this.$store.state.records.facets.forEach(function(facet){
+                    sizes[facet.filterName] = 4;
+                });
+                return sizes;
+            }
+        },
+        methods: {
+            /**
+             * Change the size of the given facet
+             * @param {String} facetName - the name of the facet to change
+             * @param {Number} size - the new size to set for the given facet name
+             */
+            changeSize: function(facetName, size){
+                this.facetsSize[facetName] = size;
+                this.$forceUpdate();
+            },
+            /**
+             * Method to add the given facet as a parameter to the router query
+             * @param {String} facetName - the name of the facet
+             * @param {Object} facetVal - the facet value coming from the store
+             */
+            addParam: async function(facetName, facetVal){
+                let _module = this;
+                let currentQuery = paramBuilder(this.$route.query, {name: facetName, value: facetVal});
 
-        
-<dl class="details">
-    
+                // Only trigger the API call if the query is different
+                if (JSON.stringify(currentQuery) !== JSON.stringify(this.$route.query)){
+                    currentQuery["page"] = 1;
+                    await _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentQuery
+                    })
+                }
+            },
+            /**
+             * Removes all underscores from given string
+             * @param {String} string - any input string
+             * @returns {String} updatedString - string stripped of underscores
+             */
+            cleanString: function(string){
+              if (typeof string === "string") {
+                return string.replace(/_/g, " ");
+              }
+              return string;
+            }
+        }
+    }
+&lt;/script>
 
-	
+&lt;style scoped>
 
-	
+    .facet {
+        text-align: left;
+    }
 
-	
+    .facet em {
+        float:right;
+    }
 
-    
+    .facetName {
+        display:inline-block;
+        white-space: nowrap;
+        width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-    
+    .facets button {
+        right:0;
+        position: relative;
+    }
 
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Navigation_NavbarTop.vue.html">components/Navigation/NavbarTop.vue</a>,
-				 <a href="components_Navigation_NavbarTop.vue.html#sunlight-1-line-5">line 5</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+&lt;/style></pre>
+    </article>
 </section>
+
 
 
 
@@ -184,10 +252,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

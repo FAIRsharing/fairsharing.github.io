@@ -11,12 +11,9 @@
     /** Component to handle the front page (landing page)
      *
      */
-
-    let myVue = {
+    export default {
         name: "Home"
     };
-
-    export default myVue;
 </script>
 
 <style scoped>

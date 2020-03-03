@@ -21,11 +21,6 @@ let recordsStore = {
         hits: null,
     },
     mutations: {
-        /**
-         * Set the records, facets, totalPages and number of hits for the current query
-         * @param state - the store current states
-         * @param data - the query result
-         */
         setRecords(state, data){
             state.records = data['records'];
             state.facets = buildFacets(data["aggregations"]);

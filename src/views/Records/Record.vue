@@ -49,7 +49,7 @@
      * @vue-data {Boolean} [queryTriggered = false] - has the API query been triggered yet or not
      * @vue-computed {String} currentRoute - return the ID parameter value of the current route
      * @vue-computed {Object} currentRecord - the current record obtained from the store
-     * @vye-computed {Object} currentRecordHistory - the history of the current record obtained from the store
+     * @vue-computed {Object} currentRecordHistory - the history of the current record obtained from the store
      * @vue-event {Promise} fetchRecord - Method to get the current record
      * @vue-event {Promise} fetchRecordHistory - Method to get the current record history
      */

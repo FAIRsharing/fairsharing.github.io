@@ -21,6 +21,10 @@
 
 <script>
     import {throttle} from "lodash"
+
+    /** Component to handle the filters chips (allow to remove a given filter).
+     * @vue-computed {String} getChips - returns the chips based on router query parameters excluding "page"
+     */
     export default {
         name: "FiltersChip",
         computed: {
@@ -47,6 +51,11 @@
             }
         },
         methods: {
+            /**
+             * Removes the parameter value from the router query with a 2000ms throttle
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             */
             removeParam: throttle(async function(paramName, paramVal){
                 let _module = this;
                 let query = this.buildNewQuery(paramName, paramVal);
@@ -55,6 +64,12 @@
                     query: query
                 })
             }, 2000),
+            /**
+             * Build the new query given a parameter name a value by getting the current query and removing the key/value given
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             * @returns {Object} - the new query to replace in the router
+             */
             buildNewQuery: function(paramName, paramVal){
                 let _module = this;
                 let query = {};

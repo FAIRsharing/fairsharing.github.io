@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/SearchFilters.vue</title>
+	<title>FAIRsharing.org Module: Pagination</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,209 +81,445 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/SearchFilters.vue</h1>
-    
+	<h1 class="page-title">Module: Pagination</h1>
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div
-    id="advancedSearch"
-    class="container"
-  >
-    &lt;form
-      v-if="filters.length > 0"
-      class="card"
-    >
-      &lt;div class="card-header">
-        &lt;h2>Advanced search&lt;/h2>
-      &lt;/div>
-      &lt;div class="card-body filters">
-        &lt;div
-          v-for="(filter, key) in filters"
-          :key="key"
-        >
-          &lt;b>{{ filter.filterLabel }}:&lt;/b>
 
-          &lt;div
-            v-if="filter.values"
-            class="filter"
-          >
-            &lt;v-autocomplete
-              v-model="form.data[filter.filterName]"
-              :items="cleanStrings(filter.values)"
-              autocomplete="true"
-              attach
-            />
-          &lt;/div>
-          &lt;div
-            v-else
-            class="filter"
-          >
-            &lt;input v-model="form.data[filter.filterName]">
-          &lt;/div>
-          &lt;hr>
-        &lt;/div>
-      &lt;/div>
-      &lt;div class="card-footer">
-        &lt;b>String search:&lt;/b>
-        &lt;input
-          v-model="form.data['q']"
-          type="text"
-        >
-        &lt;button
-          type="button"
-          class="btn btn-success"
-          @click="applyFilters()"
-        >
-          Search
-        &lt;/button>
-        &lt;button
-          type="button"
-          class="btn btn-danger"
-          @click="reset()"
-        >
-          Reset
-        &lt;/button>
-      &lt;/div>
-    &lt;/form>
-  &lt;/div>
-&lt;/template>
+<header>
+    
+</header>
 
-&lt;script>
-    import { mapState } from "vuex"
 
-    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
-     * @vue-data {Object} [form = {}] - variable bound to the form data through v-model
-     * @vue-data {Object} [stringsReplacement = {}] - mapping between cleaned filters names and raw filters names
-     * @vue-computed {Array} filters - the array of ready to use filters coming from the store
-     */
-    export default {
-        name: "SearchFilters",
-        components: {},
-        data() {
-            return {
-                form: {
-                    data: {}
-                },
-                stringsReplacement: {}
-            }
-        },
-        computed: {
-            ...mapState("searchFilters", ["filters"])
-        },
-        methods: {
-          /**
-           * Apply the filters by building the new query parameters using the form data.
-           */
-          applyFilters: function(){
-                let _module = this;
-                let formData = {};
-                Object.keys(_module.form.data).forEach(function(key){
-                  // Need to validate/sanitize data before sending.
-                  const paramValue = _module.form.data[key];
-                  formData[key] = encodeURIComponent(_module.form.data[key].trim());
-                  if (Object.prototype.hasOwnProperty.call(_module.stringsReplacement, paramValue)){
-                      formData[key] = encodeURIComponent(_module.stringsReplacement[paramValue].trim());
-                  }
-                });
-                this.$router.push({
-                    name: _module.$route.name,
-                    query: formData
-                });
-                _module.form.data = {}
-            },
-          /**
-           * Reset the form/filters/parameters to default (go so /search?page=1)
-           */
-          reset: function(){
-                this.form.data = {};
-                this.$router.push({name: this.$route.name});
-            },
-          /**
-           * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
-           * @param {String} string - the raw string to clean
-           * @returns {String} cleanedString - the string stripped of underscores.
-           */
-          cleanString: function(string){
-            let cleanedString = string;
-            if (string.indexOf("_") > -1){
-              cleanedString = string.replace(/_/g, " ");
-              this.stringsReplacement[cleanedString] = string;
-            }
-            return cleanedString;
-          },
-          /**
-           * Clean up all the filters names using the cleanString() method of each of them.
-           * @param {Array} stringArray - an array of raw filters name
-           * @returns {Array} output - an array of cleaned filters name
-           */
-          cleanStrings: function(stringArray){
-              let output = [];
-              const _module = this;
-              stringArray.forEach(function(string){
-                output.push(_module.cleanString(string))
-              });
-              return output;
-          }
-        }
-    }
-&lt;/script>
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Component to handle the advanced search filters for the searchFairsharingRecords query.</p></div></div></p>
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
+<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-props">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Default value</th>
+        <th>Required?</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>totalPages</code></td>
+        <td>Number</td>
+        <td><code>0</code></td>
+        <td>No</td>
+        <td>the total number of pages to display</td>
+    </tr></tbody>
+</table>
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
+<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-data">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Default value</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>currentQuery</code></td>
+        <td>Number</td>
+        <td><code>null</code></td>
+        <td>the current page number</td>
+    </tr></tbody>
+</table>
+<div class="container-overview"><div><p></div>
+        
 
-&lt;style scoped>
-    .filters {
-        text-align: left;
-    }
+        
+<dl class="details">
+    
 
-  div.filter {
-    display: inline-block;
-    width: 300px;
-    float:right;
-    max-height:30px;
-  }
+	
 
-  div.filter div {
-    max-height:100%;
-  }
+	
 
-  div.filter select, div.filter input {
-    width:100%;
-  }
+	
 
-  button {
-    margin-left:15px;
-  }
+    
 
-  input {
-    background: lightgrey;
-  }
+    
 
-&lt;/style>
+    
 
-&lt;style>
-  .v-autocomplete__content {
-    max-width:300px !important;
-  }
+    
 
-  .filters .v-input {
-    margin-top:0;
-    padding-top:0;
-  }
+	
 
-  .v-list-item__mask {
-    color:black;
-    background: yellowgreen !important;
-  }
-&lt;/style>
-</pre>
-    </article>
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="first"><span class="type-signature"></span>first()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set the current page to the first page</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Records_Pagination.vue.html">components/Records/Pagination.vue</a>,
+				 <a href="components_Records_Pagination.vue.html#sunlight-1-line-104">line 104</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="last"><span class="type-signature"></span>last()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set the current page to the last page</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Records_Pagination.vue.html">components/Records/Pagination.vue</a>,
+				 <a href="components_Records_Pagination.vue.html#sunlight-1-line-110">line 110</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="paginate"><span class="type-signature"></span>paginate(pageNumber)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set the current query page parameter value to the given input for vueJs router</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pageNumber</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the page to go to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Records_Pagination.vue.html">components/Records/Pagination.vue</a>,
+				 <a href="components_Records_Pagination.vue.html#sunlight-1-line-86">line 86</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -293,6 +529,10 @@
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>

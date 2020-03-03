@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/SearchFilters.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Pagination.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,199 +86,132 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/SearchFilters.vue</h1>
+		<h1 class="page-title">Source: components/Records/Pagination.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div
-    id="advancedSearch"
-    class="container"
-  >
-    &lt;form
-      v-if="filters.length > 0"
-      class="card"
-    >
-      &lt;div class="card-header">
-        &lt;h2>Advanced search&lt;/h2>
-      &lt;/div>
-      &lt;div class="card-body filters">
-        &lt;div
-          v-for="(filter, key) in filters"
-          :key="key"
+  &lt;nav aria-label="Page navigation example">
+    &lt;ul class="pagination">
+      &lt;li
+        v-if="totalPages>5"
+        class="page-item"
+      >
+        &lt;button
+          class="page-link"
+          @click="first"
         >
-          &lt;b>{{ filter.filterLabel }}:&lt;/b>
+          first
+        &lt;/button>
+      &lt;/li>
 
-          &lt;div
-            v-if="filter.values"
-            class="filter"
-          >
-            &lt;v-autocomplete
-              v-model="form.data[filter.filterName]"
-              :items="cleanStrings(filter.values)"
-              autocomplete="true"
-              attach
-            />
-          &lt;/div>
-          &lt;div
-            v-else
-            class="filter"
-          >
-            &lt;input v-model="form.data[filter.filterName]">
-          &lt;/div>
-          &lt;hr>
-        &lt;/div>
-      &lt;/div>
-      &lt;div class="card-footer">
-        &lt;b>String search:&lt;/b>
-        &lt;input
-          v-model="form.data['q']"
-          type="text"
-        >
+      &lt;li
+        v-for="index in totalPages"
+        :key="index"
+        class="page-item"
+        :class="{'active' : index === currentPage}"
+        @click="paginate(index)"
+      >
         &lt;button
-          type="button"
-          class="btn btn-success"
-          @click="applyFilters()"
+          class="page-link"
         >
-          Search
+          {{ index }}
         &lt;/button>
+      &lt;/li>
+
+      &lt;li
+        v-if="totalPages>5"
+        class="page-item"
+      >
         &lt;button
-          type="button"
-          class="btn btn-danger"
-          @click="reset()"
+          class="page-link"
+          @click="last"
         >
-          Reset
+          last
         &lt;/button>
-      &lt;/div>
-    &lt;/form>
-  &lt;/div>
+      &lt;/li>
+    &lt;/ul>
+  &lt;/nav>
 &lt;/template>
 
 &lt;script>
-    import { mapState } from "vuex"
 
     /** Component to handle the advanced search filters for the searchFairsharingRecords query.
-     * @vue-data {Object} [form = {}] - variable bound to the form data through v-model
-     * @vue-data {Object} [stringsReplacement = {}] - mapping between cleaned filters names and raw filters names
-     * @vue-computed {Array} filters - the array of ready to use filters coming from the store
-     */
+    * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
+    * @vue-data {Number} [currentQuery = null] - the current page number
+    */
     export default {
-        name: "SearchFilters",
-        components: {},
+        name: "Pagination",
+        props: {
+            totalPages: {
+                type: Number,
+                default: 0
+            },
+        },
         data() {
             return {
-                form: {
-                    data: {}
-                },
-                stringsReplacement: {}
+                currentPage: null
             }
         },
-        computed: {
-            ...mapState("searchFilters", ["filters"])
+        watch: {
+            '$route.name': function () {
+                this.currentPage = 1;
+            },
+            '$route.query': function (newVal) {
+                let _module = this;
+                if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
+                    _module.currentPage = 1;
+                } else {
+                    _module.currentPage = Number(newVal.page);
+                }
+            }
+        },
+        created() {
+            let currentPage = this.$route.query.page;
+            currentPage !== undefined ? this.currentPage = Number(currentPage) : this.currentPage = 1;
         },
         methods: {
           /**
-           * Apply the filters by building the new query parameters using the form data.
+           * Set the current query page parameter value to the given input for vueJs router
+           * @param {Number} pageNumber - the page to go to
            */
-          applyFilters: function(){
-                let _module = this;
-                let formData = {};
-                Object.keys(_module.form.data).forEach(function(key){
-                  // Need to validate/sanitize data before sending.
-                  const paramValue = _module.form.data[key];
-                  formData[key] = encodeURIComponent(_module.form.data[key].trim());
-                  if (Object.prototype.hasOwnProperty.call(_module.stringsReplacement, paramValue)){
-                      formData[key] = encodeURIComponent(_module.stringsReplacement[paramValue].trim());
-                  }
-                });
-                this.$router.push({
-                    name: _module.$route.name,
-                    query: formData
-                });
-                _module.form.data = {}
+            paginate: async function (pageNumber) {
+                if (pageNumber !== this.currentPage) {
+                    let _module = this;
+                    let currentQuery = {};
+                    _module.currentPage = pageNumber;
+                    Object.keys(_module.$route.query).forEach(function (param) {
+                      currentQuery[param] = _module.$route.query[param]
+                    });
+                  currentQuery.page = pageNumber;
+                    await _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentQuery
+                    });
+                }
             },
           /**
-           * Reset the form/filters/parameters to default (go so /search?page=1)
+           * Set the current page to the first page
            */
-          reset: function(){
-                this.form.data = {};
-                this.$router.push({name: this.$route.name});
+            first: function () {
+                this.paginate(1);
             },
           /**
-           * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
-           * @param {String} string - the raw string to clean
-           * @returns {String} cleanedString - the string stripped of underscores.
+           * Set the current page to the last page
            */
-          cleanString: function(string){
-            let cleanedString = string;
-            if (string.indexOf("_") > -1){
-              cleanedString = string.replace(/_/g, " ");
-              this.stringsReplacement[cleanedString] = string;
+            last: function () {
+                this.paginate(this.totalPages);
             }
-            return cleanedString;
-          },
-          /**
-           * Clean up all the filters names using the cleanString() method of each of them.
-           * @param {Array} stringArray - an array of raw filters name
-           * @returns {Array} output - an array of cleaned filters name
-           */
-          cleanStrings: function(stringArray){
-              let output = [];
-              const _module = this;
-              stringArray.forEach(function(string){
-                output.push(_module.cleanString(string))
-              });
-              return output;
-          }
-        }
+        },
     }
 &lt;/script>
 
 &lt;style scoped>
-    .filters {
-        text-align: left;
+    button {
+        outline: none;
     }
 
-  div.filter {
-    display: inline-block;
-    width: 300px;
-    float:right;
-    max-height:30px;
-  }
-
-  div.filter div {
-    max-height:100%;
-  }
-
-  div.filter select, div.filter input {
-    width:100%;
-  }
-
-  button {
-    margin-left:15px;
-  }
-
-  input {
-    background: lightgrey;
-  }
-
-&lt;/style>
-
-&lt;style>
-  .v-autocomplete__content {
-    max-width:300px !important;
-  }
-
-  .filters .v-input {
-    margin-top:0;
-    padding-top:0;
-  }
-
-  .v-list-item__mask {
-    color:black;
-    background: yellowgreen !important;
-  }
 &lt;/style>
 </pre>
     </article>

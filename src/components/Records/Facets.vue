@@ -59,6 +59,11 @@
 <script>
     import paramBuilder from "./utils.js"
 
+
+    /** Component to handle the faceting systems of the search pages.
+     * @vue-data {Boolean} [defaultSize = 4] - the default number of items to show for facets.
+     * @vue-computed {String} facetsSize - get the size of each facet from the recordsStore
+     */
     export default {
         name: "Facets",
         data() {
@@ -76,10 +81,20 @@
             }
         },
         methods: {
+            /**
+             * Change the size of the given facet
+             * @param {String} facetName - the name of the facet to change
+             * @param {Number} size - the new size to set for the given facet name
+             */
             changeSize: function(facetName, size){
                 this.facetsSize[facetName] = size;
                 this.$forceUpdate();
             },
+            /**
+             * Method to add the given facet as a parameter to the router query
+             * @param {String} facetName - the name of the facet
+             * @param {Object} facetVal - the facet value coming from the store
+             */
             addParam: async function(facetName, facetVal){
                 let _module = this;
                 let currentQuery = paramBuilder(this.$route.query, {name: facetName, value: facetVal});
@@ -93,6 +108,11 @@
                     })
                 }
             },
+            /**
+             * Removes all underscores from given string
+             * @param {String} string - any input string
+             * @returns {String} updatedString - string stripped of underscores
+             */
             cleanString: function(string){
               if (typeof string === "string") {
                 return string.replace(/_/g, " ");

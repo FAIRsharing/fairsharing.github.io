@@ -65,6 +65,11 @@
 <script>
     import { mapState } from "vuex"
 
+    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
+     * @vue-data {Object} [form = {}] - variable bound to the form data through v-model
+     * @vue-data {Object} [stringsReplacement = {}] - mapping between cleaned filters names and raw filters names
+     * @vue-computed {Array} filters - the array of ready to use filters coming from the store
+     */
     export default {
         name: "SearchFilters",
         components: {},
@@ -80,6 +85,9 @@
             ...mapState("searchFilters", ["filters"])
         },
         methods: {
+          /**
+           * Apply the filters by building the new query parameters using the form data.
+           */
           applyFilters: function(){
                 let _module = this;
                 let formData = {};
@@ -97,10 +105,18 @@
                 });
                 _module.form.data = {}
             },
+          /**
+           * Reset the form/filters/parameters to default (go so /search?page=1)
+           */
           reset: function(){
                 this.form.data = {};
                 this.$router.push({name: this.$route.name});
             },
+          /**
+           * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
+           * @param {String} string - the raw string to clean
+           * @returns {String} cleanedString - the string stripped of underscores.
+           */
           cleanString: function(string){
             let cleanedString = string;
             if (string.indexOf("_") > -1){
@@ -109,6 +125,11 @@
             }
             return cleanedString;
           },
+          /**
+           * Clean up all the filters names using the cleanString() method of each of them.
+           * @param {Array} stringArray - an array of raw filters name
+           * @returns {Array} output - an array of cleaned filters name
+           */
           cleanStrings: function(stringArray){
               let output = [];
               const _module = this;

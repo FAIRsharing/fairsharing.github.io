@@ -45,8 +45,8 @@ class GraphQLClient {
 
     /**
      * Takes the query, post it with axios and returns the raw data
-     * @param request
-     * @returns {Promise}
+     * @param {Object} request - processed request coming out of buildQuery()
+     * @returns {Promise} - an axios promise representing the server response.
      */
     async getData(request){
         let client = this;

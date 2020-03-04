@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Namespaces</title>
+	<title>FAIRsharing.org Source: components/Records/FiltersChip.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,107 +81,139 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Namespaces</h1>
+		<h1 class="page-title">Source: components/Records/FiltersChip.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div>
+    &lt;div class="chipsElements container-fluid">
+      &lt;div class="row">
+        &lt;div
+          v-for="(chip, index) in getChips"
+          :key="'Chips_' + index"
+        >
+          &lt;div
+            v-for="(chipValue, subKey) in chip.paramVal"
+            :key="'Chip_' + subKey"
+            class="chip"
+          >
+            &lt;span @click="removeParam(chip.paramName, chipValue)">x&lt;/span> {{ chip.paramName }}: {{ decodeURIComponent(chipValue).replace(/_/g, " ") }}
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
+&lt;/template>
 
-<header>
-    
-        <h2>
-        
-        </h2>
-        
-    
-</header>
+&lt;script>
+    import {throttle} from "lodash"
 
+    /** Component to handle the filters chips (allow to remove a given filter).
+     * @vue-computed {String} getChips - returns the chips based on router query parameters excluding "page"
+     */
+    export default {
+        name: "FiltersChip",
+        computed: {
+            getChips: function(){
+                let output = [];
+                const parameters = this.$route.query;
+                Object.keys(parameters).forEach(function(paramName){
+                    if (paramName !== "page"){
+                        let param = parameters[paramName];
 
-<article>
-    <div class="container-overview">
-    
-        
+                        if (param.indexOf(",") > -1){
+                            param = param.split(",")
+                        }
+                        else {
+                            param = [param]
+                        }
+                        output.push({
+                            paramName: paramName,
+                            paramVal: param
+                        })
+                    }
+                });
+                return output;
+            }
+        },
+        methods: {
+            /**
+             * Removes the parameter value from the router query with a 2000ms throttle
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             */
+            removeParam: throttle(async function(paramName, paramVal){
+                let _module = this;
+                let query = this.buildNewQuery(paramName, paramVal);
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Build the new query given a parameter name a value by getting the current query and removing the key/value given
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             * @returns {Object} - the new query to replace in the router
+             */
+            buildNewQuery: function(paramName, paramVal){
+                let _module = this;
+                let query = {};
+                Object.keys(_module.$route.query).forEach(function(queryParam){
+                  if (queryParam !== paramName){
+                    query[queryParam] = _module.$route.query[queryParam]
+                  }
+                  else {
+                    if (_module.$route.query[queryParam].indexOf(',') > -1) {
+                      let currentVals = _module.$route.query[queryParam].split(",");
+                      if (currentVals.indexOf(paramVal) > -1){
+                        currentVals.splice(paramVal.indexOf(paramVal), 1)
+                      }
+                      query[paramName] = currentVals.join(",");
+                    }
+                  }
+                });
+                query["page"] = 1;
+                return query;
+            }
+        }
+    }
+&lt;/script>
 
-        
-<dl class="details">
-    
+&lt;style scoped>
 
-	
+  .chip {
+    border-radius: 20px;
+    background:darkred;
+    padding: 5px 10px;
+    color:white;
+    margin-left:10px;
+    margin-bottom: 10px;
+    text-align:left;
+    max-width:300px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+  }
 
-	
+  .chip span {
+    border: 1px solid white;
+    border-radius: 50px;
+    padding: 5px 10px;
+  }
 
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="GraphQLClient.html">GraphQLClient</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-        <h3 class="subsection-title">Namespaces</h3>
-
-        <dl>
-            <dt><a href="namespaces.html#Static"><a href="Static.html">Static</a></a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+&lt;/style></pre>
+    </article>
 </section>
+
 
 
 
@@ -191,10 +223,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

@@ -81,13 +81,17 @@
     import Pagination from "../../components/Records/Pagination";
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
-     * @vue-data {Boolean} valid_request - is the request valid before sending to client
+     * @vue-data {Object} [recordTypes = {Standards: "Standard", Databases: "Database", Policies: "Policy", Collections: "Collection"}] - a mapping of types of records used by fairsharingRegistry
+     * @vue-data {String} [Errors  = null] - a string message in case an error arises.
+     * @vue-data {String} [currentPanel = "AdvSearch"] - the current panel to display between currentPanel and Facets (to be removed)
      * @vue-computed {String} currentPath - the path of the current page.
+     * @vue-event {Promise} fetchRecords - Method to get the records based on the given parameters from the recordsStore
      */
+
     export default {
         name: "Records",
         components: {
-          Pagination,
+            Pagination,
             FiltersChip,
             Facets,
             SearchFilters,
@@ -101,8 +105,6 @@
                     Policies: "Policy",
                     Collections: "Collection"
                 },
-                content: [],
-                buckets: {},
                 errors: null,
                 currentPanel: "AdvSearch"
             }
@@ -145,12 +147,11 @@
             this.$store.dispatch("records/resetRecords").then(function(){});
         },
         methods: {
-            /** This methods get the data from the client depending on the current page.
+            /** This methods get the data from the client.
              * @returns {Promise}
              */
             getData: async function () {
                   window.scrollTo(0,0);
-                  this.content = [];
                   this.errors = null;
 
                   try {
@@ -161,10 +162,18 @@
                   }
 
             },
+            /**
+             * Get the parameters that are allowed for this query
+             * @returns {Object} parameters - parameters and types allowed for this query
+             */
             getParameters: function(){
                 return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
             },
             ...mapActions('records', ['fetchRecords']),
+            /**
+             * Method to change the current panel to be displayed
+             * @param {String} panelName - the name of the panel to display
+             */
             setPanel: function(panelName){
               this.currentPanel = panelName;
             }

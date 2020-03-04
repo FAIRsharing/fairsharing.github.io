@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Footer.html">Footer</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecordPage.html">NewRecordPage</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li>
+					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecordPage.html">NewRecordPage</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li>
 				</ul>
 			</li>
 			
@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#myVue">myVue</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li>
 				</ul>
 			</li>
 			
@@ -99,6 +99,28 @@
     
         
             <div class="description"><p>Component to handle the display of single record.</p></div></div></p>
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
+<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-data">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Default value</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>error</code></td>
+        <td>String|null</td>
+        <td><code>null</code></td>
+        <td>either null of an error message to display</td>
+    </tr><tr>
+        <td><code>queryTriggered</code></td>
+        <td>Boolean</td>
+        <td><code>false</code></td>
+        <td>has the API query been triggered yet or not</td>
+    </tr></tbody>
+</table>
 <h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-computed">Computed</h3>
 <table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-computed">
     <thead>
@@ -111,7 +133,34 @@
     <tbody><tr>
         <td><code>currentRoute</code></td>
         <td>String</td>
-        <td>the route of the current page</td>
+        <td>return the ID parameter value of the current route</td>
+    </tr><tr>
+        <td><code>currentRecord</code></td>
+        <td>Object</td>
+        <td>the current record obtained from the store</td>
+    </tr><tr>
+        <td><code>currentRecordHistory</code></td>
+        <td>Object</td>
+        <td>the history of the current record obtained from the store</td>
+    </tr></tbody>
+</table>
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-event">Events</h3>
+<table data-jsdoc-vuejs="table-event" class="table table-responsive table-hover table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Payload Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>fetchRecord</code></td>
+        <td>Promise</td>
+        <td>Method to get the current record</td>
+    </tr><tr>
+        <td><code>fetchRecordHistory</code></td>
+        <td>Promise</td>
+        <td>Method to get the current record history</td>
     </tr></tbody>
 </table>
 <div class="container-overview"><div><p></div>
@@ -180,7 +229,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getTitle"><span class="type-signature"></span>getTitle()</h4>
+    <h4 class="name" id="getData"><span class="type-signature"></span>getData()</h4>
     
     
 </dt>
@@ -188,7 +237,7 @@
 
     
     <div class="description">
-        <p>Method to build and return the page title to be included as a metadata</p>
+        <p>Method to set the current record in the store</p>
     </div>
     
 
@@ -235,7 +284,235 @@
 		<ul class="dummy">
 			<li>
 				<a href="views_Records_Record.vue.html">views/Records/Record.vue</a>,
-				 <a href="views_Records_Record.vue.html#sunlight-1-line-79">line 79</a>
+				 <a href="views_Records_Record.vue.html#sunlight-1-line-92">line 92</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <ul>
+<li>the current record</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getHistory"><span class="type-signature"></span>getHistory()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Method to dispatch the current record history into the store</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="views_Records_Record.vue.html">views/Records/Record.vue</a>,
+				 <a href="views_Records_Record.vue.html#sunlight-1-line-108">line 108</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <ul>
+<li>the current record history</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getTitle"><span class="type-signature"></span>getTitle()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Method to get the page title</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="views_Records_Record.vue.html">views/Records/Record.vue</a>,
+				 <a href="views_Records_Record.vue.html#sunlight-1-line-85">line 85</a>
 			</li>
 		</ul>
 	</dd>

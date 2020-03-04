@@ -2,7 +2,11 @@ import Client from "../components/GraphClient/GraphClient.js"
 import introspectionQuery from "../components/GraphClient/queries/introspection.json"
 let client = new Client();
 
-export default {
+/**
+ * The introspection store is related to the introspection query that let us know which fields/types are allowed by the searchFairsharingRecords query
+ * @type {Object}
+ * */
+let introspectionStore = {
     namespaced: true,
     state: {
         errors: String,
@@ -63,8 +67,18 @@ export default {
             return queryParameters;
         }
     }
-}
+};
+export default introspectionStore;
 
+/**
+ * Given a type and a value, parse the value with the expected type.
+ * @param {Object} param - the parameter types allowed
+ * @param {String} paramVal -  the value to be parsed
+ * @returns {String | Number | Boolean} paramVal - the parse value
+ * @example <caption> Example usage of parseParam </caption>
+ *  parseParam({name: "Boolean"}, "true");
+ *  // return True
+ */
 const parseParam = function(param, paramVal){
     if (param.name === "Int"){
         return parseFloat(paramVal)

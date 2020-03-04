@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Namespaces</title>
+	<title>FAIRsharing.org Source: components/Records/Pagination.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,107 +81,142 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Namespaces</h1>
+		<h1 class="page-title">Source: components/Records/Pagination.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;nav aria-label="Page navigation example">
+    &lt;ul class="pagination">
+      &lt;li
+        v-if="totalPages>5"
+        class="page-item"
+      >
+        &lt;button
+          class="page-link"
+          @click="first"
+        >
+          first
+        &lt;/button>
+      &lt;/li>
 
-<header>
-    
-        <h2>
-        
-        </h2>
-        
-    
-</header>
+      &lt;li
+        v-for="index in totalPages"
+        :key="index"
+        class="page-item"
+        :class="{'active' : index === currentPage}"
+        @click="paginate(index)"
+      >
+        &lt;button
+          class="page-link"
+        >
+          {{ index }}
+        &lt;/button>
+      &lt;/li>
 
+      &lt;li
+        v-if="totalPages>5"
+        class="page-item"
+      >
+        &lt;button
+          class="page-link"
+          @click="last"
+        >
+          last
+        &lt;/button>
+      &lt;/li>
+    &lt;/ul>
+  &lt;/nav>
+&lt;/template>
 
-<article>
-    <div class="container-overview">
-    
-        
+&lt;script>
 
-        
-<dl class="details">
-    
+    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
+    * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
+    * @vue-data {Number} [currentQuery = null] - the current page number
+    */
+    export default {
+        name: "Pagination",
+        props: {
+            totalPages: {
+                type: Number,
+                default: 0
+            },
+        },
+        data() {
+            return {
+                currentPage: null
+            }
+        },
+        watch: {
+            '$route.name': function () {
+                this.currentPage = 1;
+            },
+            '$route.query': function (newVal) {
+                let _module = this;
+                if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
+                    _module.currentPage = 1;
+                } else {
+                    _module.currentPage = Number(newVal.page);
+                }
+            }
+        },
+        created() {
+            let currentPage = this.$route.query.page;
+            currentPage !== undefined ? this.currentPage = Number(currentPage) : this.currentPage = 1;
+        },
+        methods: {
+          /**
+           * Set the current query page parameter value to the given input for vueJs router
+           * @param {Number} pageNumber - the page to go to
+           */
+            paginate: async function (pageNumber) {
+                if (pageNumber !== this.currentPage) {
+                    let _module = this;
+                    let currentQuery = {};
+                    _module.currentPage = pageNumber;
+                    Object.keys(_module.$route.query).forEach(function (param) {
+                      currentQuery[param] = _module.$route.query[param]
+                    });
+                  currentQuery.page = pageNumber;
+                    await _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentQuery
+                    });
+                }
+            },
+          /**
+           * Set the current page to the first page
+           */
+            first: function () {
+                this.paginate(1);
+            },
+          /**
+           * Set the current page to the last page
+           */
+            last: function () {
+                this.paginate(this.totalPages);
+            }
+        },
+    }
+&lt;/script>
 
-	
+&lt;style scoped>
+    button {
+        outline: none;
+    }
 
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="GraphQLClient.html">GraphQLClient</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-        <h3 class="subsection-title">Namespaces</h3>
-
-        <dl>
-            <dt><a href="namespaces.html#Static"><a href="Static.html">Static</a></a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+&lt;/style>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -191,10 +226,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

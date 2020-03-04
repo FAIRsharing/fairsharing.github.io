@@ -40,7 +40,7 @@ describe("Pagination.vue", () => {
                 default: 0
             }
         });
-        expect(anotherWrapper.vm.currentQuery.page).toBe(1);
+        expect(anotherWrapper.vm.currentPage).toBe(1);
     });
 
     it('Sets the page parameter to the given input on creation', () => {
@@ -52,39 +52,39 @@ describe("Pagination.vue", () => {
                 default: 0
             }
         });
-        expect(anotherWrapper2.vm.currentQuery.page).toBe(120);
+        expect(anotherWrapper2.vm.currentPage).toBe(120);
     });
 
     it('can react to changes in the URL query and/or name', () => {
         wrapper.vm.$route.name = "Search";
         wrapper.vm.$route.query =  {};
-        expect(wrapper.vm.currentQuery.page).toBe(1);
+        expect(wrapper.vm.currentPage).toBe(1);
     });
 
     it('Has a paginate() method that sets the current page in the URL query', () => {
         $route.name="Standards";
         $route.query.page=12;
 
-        wrapper.vm.currentQuery.page = 2;
+        wrapper.vm.currentPage = 2;
         wrapper.vm.$route.query.page = "3";
         wrapper.vm.paginate(3);
-        expect(wrapper.vm.currentQuery.page).toBe(3);
+        expect(wrapper.vm.currentPage).toBe(3);
         wrapper.vm.paginate(3);
-        expect(wrapper.vm.currentQuery.page).toBe(3);
+        expect(wrapper.vm.currentPage).toBe(3);
         expect(wrapper.vm.$route.name).toBe("Standards");
         expect(wrapper.vm.$route.query.page).toBe("3");
     });
 
     it('Has a first() method that always redirect to the first page', () => {
 
-        wrapper.vm.currentQuery.page = 10;
+        wrapper.vm.currentPage = 10;
         wrapper.vm.$route.query.page = "1";
 
         wrapper.vm.$router.push = push;
         wrapper.vm.first();
         wrapper.vm.$route.query.page = "1";
 
-        expect(wrapper.vm.currentQuery.page).toBe(1);
+        expect(wrapper.vm.currentPage).toBe(1);
         expect(wrapper.vm.$route.query.page).toBe("1");
 
         // call the first Function again and it is not working due to router.page number is already the same
@@ -95,14 +95,14 @@ describe("Pagination.vue", () => {
 
     it('Has a last() method that always redirect to the last page', () => {
 
-        wrapper.vm.currentQuery.page = wrapper.vm.totalPages;
+        wrapper.vm.currentPage = wrapper.vm.totalPages;
         wrapper.vm.$route.query.page = wrapper.vm.totalPages;
 
         wrapper.vm.$router.push = push;
         wrapper.vm.last();
         wrapper.vm.$route.query.page = wrapper.vm.totalPages;
 
-        expect(wrapper.vm.currentQuery.page).toBe(wrapper.vm.totalPages);
+        expect(wrapper.vm.currentPage).toBe(wrapper.vm.totalPages);
         expect(wrapper.vm.$route.query.page).toBe(wrapper.vm.totalPages);
 
         // call the first Function again and it is not working due to router.page number is already the same

@@ -17,7 +17,7 @@
         v-for="index in totalPages"
         :key="index"
         class="page-item"
-        :class="{'active' : index === currentQuery.page}"
+        :class="{'active' : index === currentPage}"
         @click="paginate(index)"
       >
         <button
@@ -44,6 +44,10 @@
 
 <script>
 
+    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
+    * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
+    * @vue-data {Number} [currentQuery = null] - the current page number
+    */
     export default {
         name: "Pagination",
         props: {
@@ -54,47 +58,55 @@
         },
         data() {
             return {
-                currentQuery: {
-                    page: null,
-                    type: Number,
-                },
+                currentPage: null
             }
         },
         watch: {
             '$route.name': function () {
-                this.currentQuery.page = 1;
+                this.currentPage = 1;
             },
             '$route.query': function (newVal) {
                 let _module = this;
                 if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
-                    _module.currentQuery.page = 1;
+                    _module.currentPage = 1;
                 } else {
-                    _module.currentQuery.page = Number(newVal.page);
+                    _module.currentPage = Number(newVal.page);
                 }
             }
         },
         created() {
             let currentPage = this.$route.query.page;
-            typeof (currentPage) !== "undefined" ? this.currentQuery.page = Number(currentPage) : this.currentQuery.page = 1;
+            currentPage !== undefined ? this.currentPage = Number(currentPage) : this.currentPage = 1;
         },
         methods: {
+          /**
+           * Set the current query page parameter value to the given input for vueJs router
+           * @param {Number} pageNumber - the page to go to
+           */
             paginate: async function (pageNumber) {
-                if (pageNumber !== this.currentQuery.page) {
+                if (pageNumber !== this.currentPage) {
                     let _module = this;
-                    _module.currentQuery = {};
+                    let currentQuery = {};
+                    _module.currentPage = pageNumber;
                     Object.keys(_module.$route.query).forEach(function (param) {
-                        _module.currentQuery[param] = _module.$route.query[param]
+                      currentQuery[param] = _module.$route.query[param]
                     });
-                    _module.currentQuery.page = pageNumber;
+                  currentQuery.page = pageNumber;
                     await _module.$router.push({
                         name: _module.$route.name,
-                        query: _module.currentQuery
+                        query: currentQuery
                     });
                 }
             },
+          /**
+           * Set the current page to the first page
+           */
             first: function () {
                 this.paginate(1);
             },
+          /**
+           * Set the current page to the last page
+           */
             last: function () {
                 this.paginate(this.totalPages);
             }

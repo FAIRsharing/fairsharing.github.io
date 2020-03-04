@@ -1,7 +1,12 @@
 import query from "../components/GraphClient/queries/getFilters.json"
 import filterMapping from "../components/Records/FiltersLabelMapping.js"
 
-export default {
+/**
+ * The searchFilters store trigger a single field query to searchFairsharingRecords, gets the aggregation array and
+ * builds the filtering system to be used by advanced search functions.
+ * @type {Object}
+ */
+let filtersStore = {
     namespaced: true,
     state: {
         filters: [],
@@ -21,8 +26,14 @@ export default {
     },
     modules: {
     }
-}
+};
+export default filtersStore;
 
+/**
+ * Given a searchFairsharingRecords aggregations array, build the values used by the advanced search widgets
+ * @param {Array} val - an array of raw filters coming from the api as data['searchFairsharingRecords']['aggregations']
+ * @returns {Array} filters - ready to use filters for the advanced search components
+ */
 let buildFilters = function(val){
     // Need to return filter values, filter label and filter name
     let filters = [];

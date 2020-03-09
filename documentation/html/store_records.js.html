@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/GraphClient/GraphClient.js</title>
+	<title>FAIRsharing.org Source: store/records.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,130 +86,128 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/GraphClient/GraphClient.js</h1>
+		<h1 class="page-title">Source: store/records.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">const axios = require("axios");
+            class="sunlight-highlight-javascript linenums">import Client from "../components/GraphClient/GraphClient.js"
+import recordsQuery from "../components/GraphClient/queries/getRecords.json"
+import recordQuery from "../components/GraphClient/queries/getRecord.json"
+import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
+import filterMapping from "../components/Records/FiltersLabelMapping.js"
 
-class GraphQLClient {
+let client = new Client();
 
-    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
-     * Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
-     * also careful, its constructor is async !!
-     * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
-     */
-    constructor(){
-        if (GraphQLClient._instance){
-            return GraphQLClient._instance
+/**
+ * The records store handles the requests related to records (searchFairsharingRecords and fairsharingRecord).
+ * @type {Object}
+ */
+let recordsStore = {
+    namespaced: true,
+    state: {
+        records: [],
+        facets: [],
+        currentRecord: {},
+        currentRecordHistory: {},
+        totalPages: null,
+        hits: null,
+    },
+    mutations: {
+        setRecords(state, data){
+            state.records = data['records'];
+            state.facets = buildFacets(data["aggregations"]);
+            state.totalPages = data["totalPages"];
+            state.hits = data["totalCount"];
+        },
+        resetRecords(state){
+            recordsQuery.queryParam = null;
+            state.records = [];
+        },
+        setCurrentRecord(state, data){
+            state.currentRecord = data;
+        },
+        setRecordHistory(state, data){
+            state.currentRecordHistory = data;
+        },
+        resetCurrentRecordHistory(state){
+            state.currentRecordHistory = {};
+        },
+        resetFacets(state){
+            state.facets = [];
+        },
+        resetHits(state){
+            state.hits = null;
         }
-        GraphQLClient._instance = this;
-        this.url = "https://api.fairsharing.org/graphql";
-        this.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "X-Client-Id": "3154b8ec21a2e46c935d25484378ca0a75ba14dc99b3e047dec46045f052b147701340182ed5cbe1b06abeaf52250a31b5a2a6718bf2c9966405aa236fa1aabf",
-        };
-    }
-
-    /**
-     * Execute the given query (coming from a json file, see /queries/getRecords.json)
-     * @param {Object} query - the query coming from the JSON file
-     * sending to the API.
-     * @returns {Promise}
-     */
-    async executeQuery(query){
-        let client = this;
-        let queryString = {
-            query: `{${client.buildQuery(query)}}`
-        };
-        try {
-            let resp = await this.getData(queryString);
-            if (resp.data.errors){
-                throw new Error(resp.data.errors[0].message);
+    },
+    actions: {
+        async fetchRecords(state, params){
+            this.commit("records/resetRecords");
+            this.commit("records/resetHits");
+            if (Object.keys(params).length > 0){
+                recordsQuery.queryParam = params;
             }
-            return resp.data.data;
+            const data = await client.executeQuery(recordsQuery);
+            this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        },
+        async fetchRecord(state, id){
+            this.commit("records/resetCurrentRecordHistory");
+            recordQuery.queryParam = {
+                id: id
+            };
+            let data = await client.executeQuery(recordQuery);
+            this.commit('records/setCurrentRecord', data);
+        },
+        async fetchRecordHistory(state, id){
+            recordHistory.queryParam = {id: id};
+            let data = await client.executeQuery(recordHistory);
+            this.commit('records/setRecordHistory', data["fairsharingRecord"]);
+        },
+        resetFacets(){
+            this.commit("records/resetFacets")
+        },
+        resetRecords(){
+            this.commit("records/resetRecords");
         }
-        catch (err){
-            throw err;
+    },
+    modules: {
+    },
+    getters: {
+        getFacet: (state) => (size, facetName) => {
+            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
+            currentFacet['values'] = currentFacet['buckets'].sort().slice(0, size);
+            return currentFacet;
         }
     }
+};
 
-    /**
-     * Takes the query, post it with axios and returns the raw data
-     * @param {Object} request - processed request coming out of buildQuery()
-     * @returns {Promise} - an axios promise representing the server response.
-     */
-    async getData(request){
-        let client = this;
-        const fullQuery = {
-            method: "post",
-            baseURL: client.url,
-            data:  request,
-            headers: client.headers
-        };
-        return await axios(fullQuery);
-    }
 
-    /**
-     * Transform the JSON query into a string for graphQL
-     * @param {Object} query - the query coming from the JSON file
-     * @returns {Object} {query: queryString} - a valid graphQL query string to execute
-     */
-    buildQuery(query){
-        let client = this;
-        let queryString = `${query["queryName"]}`; // query name
+export default recordsStore;
 
-        // Handle query parameters
-        if (query.queryParam) {
-            queryString += "(";
-            Object.keys(query.queryParam).forEach(function(key){
-                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
-                    queryString += `${key}:${query.queryParam[key]} `;
-                }
-                else if (typeof query.queryParam[key] === "string") {
-                    queryString += `${key}:"${query.queryParam[key]}" `;
-                }
-                else {
-                    let param = [];
-                    query.queryParam[key].forEach(function(paramVal){
-                        param.push("\"" + paramVal + "\"");
-                    });
-                    queryString += `${key}:[${param.join(",")}]`;
+/**
+ * Given an object containing the raw facets coming from the client and a mapping object , build the ready to use facets
+ * for usage by the Vue components.
+ * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
+ * @returns {Array} output - the array of ready to use facets containing a name, a label and values
+ */
+const buildFacets = function(rawFacets){
+    let output = [];
+    const mapper = filterMapping["autocomplete"];
+
+    Object.keys(rawFacets).forEach(function(facetName){
+        if (Object.prototype.hasOwnProperty.call(mapper, facetName)){
+            let localFacet = mapper[facetName];
+            rawFacets[facetName]["buckets"].forEach(function(bucket){
+                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")){
+                    bucket["key"] = bucket["key_as_string"];
                 }
             });
-            queryString += ")";
+            localFacet['buckets'] = rawFacets[facetName]['buckets'];
+            output.push(localFacet);
         }
-
-        // Handle query fields
-        if (query.fields){
-            queryString += "{";
-            query.fields.forEach(function(field){
-                if (typeof field === "string"){
-                    queryString += ` ${field}`;
-                }
-                if (typeof field === "object"){
-                    queryString += ` ${field.name}{`;
-                    field.fields.forEach(function(subField){
-                        if (typeof subField === "string"){
-                            queryString += `${subField} `;
-                        }
-                        else {
-                            queryString += `${client.buildQuery(subField)}`;
-                        }
-                    });
-                    queryString += "}";
-                }
-            });
-            queryString += "}";
-        }
-        return queryString;
-    }
-}
-
-export default GraphQLClient;
-</pre>
+    });
+    return output;
+};</pre>
     </article>
 </section>
 

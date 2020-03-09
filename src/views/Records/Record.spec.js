@@ -88,8 +88,7 @@ describe("Record.vue", function() {
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns({
             data: {errors: [{message: "Im an error"}]}
         });
-        let test = await wrapper.vm.getData();
-        console.log(test);
+        await wrapper.vm.getData();
     });
 
 

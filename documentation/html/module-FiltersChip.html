@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/GraphClient/GraphClient.js</title>
+	<title>FAIRsharing.org Module: FiltersChip</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,138 +81,298 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/GraphClient/GraphClient.js</h1>
-    
+	<h1 class="page-title">Module: FiltersChip</h1>
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">const axios = require("axios");
 
-class GraphQLClient {
+<header>
+    
+</header>
 
-    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
-     * Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
-     * also careful, its constructor is async !!
-     * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
-     */
-    constructor(){
-        if (GraphQLClient._instance){
-            return GraphQLClient._instance
-        }
-        GraphQLClient._instance = this;
-        this.url = "https://api.fairsharing.org/graphql";
-        this.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "X-Client-Id": "3154b8ec21a2e46c935d25484378ca0a75ba14dc99b3e047dec46045f052b147701340182ed5cbe1b06abeaf52250a31b5a2a6718bf2c9966405aa236fa1aabf",
-        };
-    }
 
-    /**
-     * Execute the given query (coming from a json file, see /queries/getRecords.json)
-     * @param {Object} query - the query coming from the JSON file
-     * sending to the API.
-     * @returns {Promise}
-     */
-    async executeQuery(query){
-        let client = this;
-        let queryString = {
-            query: `{${client.buildQuery(query)}}`
-        };
-        try {
-            let resp = await this.getData(queryString);
-            if (resp.data.errors){
-                throw new Error(resp.data.errors[0].message);
-            }
-            return resp.data.data;
-        }
-        catch (err){
-            throw err;
-        }
-    }
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Component to handle the filters chips (allow to remove a given filter).</p></div></div></p>
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-computed">Computed</h3>
+<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-computed">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>getChips</code></td>
+        <td>String</td>
+        <td>returns the chips based on router query parameters excluding "page"</td>
+    </tr></tbody>
+</table>
+<div class="container-overview"><div><p></div>
+        
 
-    /**
-     * Takes the query, post it with axios and returns the raw data
-     * @param {Object} request - processed request coming out of buildQuery()
-     * @returns {Promise} - an axios promise representing the server response.
-     */
-    async getData(request){
-        let client = this;
-        const fullQuery = {
-            method: "post",
-            baseURL: client.url,
-            data:  request,
-            headers: client.headers
-        };
-        return await axios(fullQuery);
-    }
+        
+<dl class="details">
+    
 
-    /**
-     * Transform the JSON query into a string for graphQL
-     * @param {Object} query - the query coming from the JSON file
-     * @returns {Object} {query: queryString} - a valid graphQL query string to execute
-     */
-    buildQuery(query){
-        let client = this;
-        let queryString = `${query["queryName"]}`; // query name
+	
 
-        // Handle query parameters
-        if (query.queryParam) {
-            queryString += "(";
-            Object.keys(query.queryParam).forEach(function(key){
-                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
-                    queryString += `${key}:${query.queryParam[key]} `;
-                }
-                else if (typeof query.queryParam[key] === "string") {
-                    queryString += `${key}:"${query.queryParam[key]}" `;
-                }
-                else {
-                    let param = [];
-                    query.queryParam[key].forEach(function(paramVal){
-                        param.push("\"" + paramVal + "\"");
-                    });
-                    queryString += `${key}:[${param.join(",")}]`;
-                }
-            });
-            queryString += ")";
-        }
+	
 
-        // Handle query fields
-        if (query.fields){
-            queryString += "{";
-            query.fields.forEach(function(field){
-                if (typeof field === "string"){
-                    queryString += ` ${field}`;
-                }
-                if (typeof field === "object"){
-                    queryString += ` ${field.name}{`;
-                    field.fields.forEach(function(subField){
-                        if (typeof subField === "string"){
-                            queryString += `${subField} `;
-                        }
-                        else {
-                            queryString += `${client.buildQuery(subField)}`;
-                        }
-                    });
-                    queryString += "}";
-                }
-            });
-            queryString += "}";
-        }
-        return queryString;
-    }
-}
+	
 
-export default GraphQLClient;
-</pre>
-    </article>
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="buildNewQuery"><span class="type-signature"></span>buildNewQuery(paramName, paramVal)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Build the new query given a parameter name a value by getting the current query and removing the key/value given</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>paramName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of the parameter to remove</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>paramVal</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>value of the parameter to remove</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Records_FiltersChip.vue.html">components/Records/FiltersChip.vue</a>,
+				 <a href="components_Records_FiltersChip.vue.html#sunlight-1-line-73">line 73</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <ul>
+<li>the new query to replace in the router</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -222,6 +382,10 @@ export default GraphQLClient;
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/GraphClient/GraphClient.js</title>
+	<title>FAIRsharing.org Source: store/introspector.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,130 +86,101 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/GraphClient/GraphClient.js</h1>
+		<h1 class="page-title">Source: store/introspector.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">const axios = require("axios");
+            class="sunlight-highlight-javascript linenums">import Client from "../components/GraphClient/GraphClient.js"
+import introspectionQuery from "../components/GraphClient/queries/introspection.json"
+let client = new Client();
 
-class GraphQLClient {
+/**
+ * The introspection store is related to the introspection query that let us know which fields/types are allowed by the searchFairsharingRecords query
+ * @type {Object}
+ * */
+let introspectionStore = {
+    namespaced: true,
+    state: {
+        errors: String,
+        searchQueryParameters: {}
+    },
+    mutations: {
+        setParameters(state, data){
+            try {
+                if (Object.prototype.hasOwnProperty.call(data, "errors")){
+                    state.error = data.errors[0].message
+                }
+                let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
+                state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
 
-    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
-     * Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
-     * also careful, its constructor is async !!
-     * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
-     */
-    constructor(){
-        if (GraphQLClient._instance){
-            return GraphQLClient._instance
-        }
-        GraphQLClient._instance = this;
-        this.url = "https://api.fairsharing.org/graphql";
-        this.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "X-Client-Id": "3154b8ec21a2e46c935d25484378ca0a75ba14dc99b3e047dec46045f052b147701340182ed5cbe1b06abeaf52250a31b5a2a6718bf2c9966405aa236fa1aabf",
-        };
-    }
-
-    /**
-     * Execute the given query (coming from a json file, see /queries/getRecords.json)
-     * @param {Object} query - the query coming from the JSON file
-     * sending to the API.
-     * @returns {Promise}
-     */
-    async executeQuery(query){
-        let client = this;
-        let queryString = {
-            query: `{${client.buildQuery(query)}}`
-        };
-        try {
-            let resp = await this.getData(queryString);
-            if (resp.data.errors){
-                throw new Error(resp.data.errors[0].message);
             }
-            return resp.data.data;
+            catch (e) {
+                state.error = "Can't initialize application"
+            }
+
         }
-        catch (err){
-            throw err;
+    },
+    actions: {
+        async fetchParameters(){
+            let data = await client.getData(introspectionQuery);
+            this.commit("introspection/setParameters", data.data);
         }
-    }
+    },
+    modules: {
+    },
+    getters: {
+        buildQueryParameters: (state) => (params) => {
+            let queryParameters = {};
+            Object.keys(params[1]).forEach(function(param){
+                let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
+                const expectedTypeObject = currentParam.type;
 
-    /**
-     * Takes the query, post it with axios and returns the raw data
-     * @param {Object} request - processed request coming out of buildQuery()
-     * @returns {Promise} - an axios promise representing the server response.
-     */
-    async getData(request){
-        let client = this;
-        const fullQuery = {
-            method: "post",
-            baseURL: client.url,
-            data:  request,
-            headers: client.headers
-        };
-        return await axios(fullQuery);
-    }
-
-    /**
-     * Transform the JSON query into a string for graphQL
-     * @param {Object} query - the query coming from the JSON file
-     * @returns {Object} {query: queryString} - a valid graphQL query string to execute
-     */
-    buildQuery(query){
-        let client = this;
-        let queryString = `${query["queryName"]}`; // query name
-
-        // Handle query parameters
-        if (query.queryParam) {
-            queryString += "(";
-            Object.keys(query.queryParam).forEach(function(key){
-                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
-                    queryString += `${key}:${query.queryParam[key]} `;
+                if (expectedTypeObject.kind !== "LIST"){
+                    queryParameters[param] = parseParam(expectedTypeObject, params[1][param]);
                 }
-                else if (typeof query.queryParam[key] === "string") {
-                    queryString += `${key}:"${query.queryParam[key]}" `;
-                }
+
                 else {
-                    let param = [];
-                    query.queryParam[key].forEach(function(paramVal){
-                        param.push("\"" + paramVal + "\"");
-                    });
-                    queryString += `${key}:[${param.join(",")}]`;
+                    const currentVal = params[1][param];
+                    const expectedType = expectedTypeObject["ofType"]["ofType"].name;
+                    queryParameters[param] = [];
+                    if (currentVal.indexOf(",") > 0){
+                        currentVal.split(",").forEach(function(val){
+                            queryParameters[param].push(decodeURIComponent(parseParam(expectedType, val)))
+                        });
+                    }
+                    else {
+                        queryParameters[param] = decodeURIComponent(parseParam(expectedType, currentVal))
+                    }
                 }
             });
-            queryString += ")";
+            if (params[0] !== "Search"){
+                queryParameters["fairsharingRegistry"] = params[0];
+            }
+            return queryParameters;
         }
-
-        // Handle query fields
-        if (query.fields){
-            queryString += "{";
-            query.fields.forEach(function(field){
-                if (typeof field === "string"){
-                    queryString += ` ${field}`;
-                }
-                if (typeof field === "object"){
-                    queryString += ` ${field.name}{`;
-                    field.fields.forEach(function(subField){
-                        if (typeof subField === "string"){
-                            queryString += `${subField} `;
-                        }
-                        else {
-                            queryString += `${client.buildQuery(subField)}`;
-                        }
-                    });
-                    queryString += "}";
-                }
-            });
-            queryString += "}";
-        }
-        return queryString;
     }
-}
+};
+export default introspectionStore;
 
-export default GraphQLClient;
-</pre>
+/**
+ * Given a type and a value, parse the value with the expected type.
+ * @param {Object} param - the parameter types allowed
+ * @param {String} paramVal -  the value to be parsed
+ * @returns {String | Number | Boolean} paramVal - the parse value
+ * @example &lt;caption> Example usage of parseParam &lt;/caption>
+ *  parseParam({name: "Boolean"}, "true");
+ *  // return True
+ */
+const parseParam = function(param, paramVal){
+    if (param.name === "Int"){
+        return parseFloat(paramVal)
+    }
+    else if (param.name === "Boolean"){
+       return JSON.parse(paramVal)
+    }
+    return paramVal
+};</pre>
     </article>
 </section>
 

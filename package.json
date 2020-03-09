@@ -8,7 +8,8 @@
     "test:unit": "vue-cli-service test:unit --coverage",
     "lint": "vue-cli-service lint",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage -t ",
-    "doc:full": "jsdoc -c documentation/doc.conf.json -R README.md"
+    "doc:full": "jsdoc -c documentation/doc.conf.json -R README.md",
+    "doc:dev": "jsdoc -c documentatioN/doc.conf.json -d docTemp"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",

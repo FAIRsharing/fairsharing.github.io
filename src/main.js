@@ -35,6 +35,7 @@ store.dispatch("introspection/fetchParameters").then(function(){
     new Vue({
         mounted: async function(){
             await store.dispatch('searchFilters/fetchFilters', graphQLClient);
+            await store.dispatch('users/login');
         },
         render: (h) => h(App),
         router,

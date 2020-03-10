@@ -2,6 +2,8 @@
   <div
     class="standard container-fluid"
   >
+
+    <div v-if="$store.state.users.userLoggedIn" class="alert alert-success"> You are logged in.</div>
     <div
       v-if="error"
       class="error"

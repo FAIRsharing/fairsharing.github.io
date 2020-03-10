@@ -14,7 +14,7 @@ let currentUser = {
         /*
         TODO: store password in cookies instead of the localstorage to mitigate XSS attacks.
         */
-        loginUser(state, user){
+        login(state, user){
             state.userLoggedIn = true;
             state.currentUserID = user.user.username;
             state.currentUserToken = user.user["jwt"];
@@ -23,7 +23,7 @@ let currentUser = {
             localStorage.jwt = user.user.jwt;
             localStorage.pwd = user.pwd;
         },
-        autologin(state){
+        autoLogin(state){
             state.userLoggedIn = true;
             state.currentUserToken = localStorage["jwt"];
             state.currentUserID = localStorage.username;
@@ -41,14 +41,14 @@ let currentUser = {
             if (!localStorage.jwt){
                 if (user){
                     let response = await client.login(user.name, user.password);
-                    this.commit("users/loginUser", {
+                    this.commit("users/login", {
                         user: response,
                         pwd: user.password
                     });
                 }
             }
             else {
-                this.commit("users/autologin");
+                this.commit("users/autoLogin");
             }
         },
         logout(){

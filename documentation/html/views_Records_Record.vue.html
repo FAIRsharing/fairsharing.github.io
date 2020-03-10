@@ -95,6 +95,8 @@
   &lt;div
     class="standard container-fluid"
   >
+
+    &lt;div v-if="$store.state.users.userLoggedIn" class="alert alert-success"> You are logged in.&lt;/div>
     &lt;div
       v-if="error"
       class="error"

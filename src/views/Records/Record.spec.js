@@ -4,8 +4,8 @@ import VueMeta from "vue-meta";
 import Client from "../../components/GraphClient/GraphClient.js";
 import Vuex from "vuex";
 import records from "../../store/records";
+import users from "../../store/users";
 const sinon = require("sinon");
-const axios = require("axios");
 
 const $route = {
     path: "/",
@@ -21,7 +21,8 @@ let queryStub;
 
 const $store = new Vuex.Store({
     modules: {
-        records: records
+        records: records,
+        users: users,
     }
 });
 
@@ -42,6 +43,24 @@ describe("Record.vue", function() {
                 ]
             }
         });
+        let localStorageMock = (function() {
+            let store = {};
+            return {
+                getItem: function(key) {
+                    return store[key];
+                },
+                setItem: function(key, value) {
+                    store[key] = value.toString();
+                },
+                clear: function() {
+                    store = {};
+                },
+                removeItem: function(key) {
+                    delete store[key];
+                }
+            };
+        })();
+        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
     });
 
     afterAll( () => {

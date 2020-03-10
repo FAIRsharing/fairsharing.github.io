@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Classes</title>
+	<title>FAIRsharing.org Source: components/Client/RESTClient.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,110 +81,99 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Classes</h1>
+		<h1 class="page-title">Source: components/Client/RESTClient.js</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import axios from "axios"
 
-<header>
-    
-        <h2>
-        
-        </h2>
-        
-    
-</header>
+class RESTClient {
 
+    /**
+     * The RESTClient is a singleton class that handles the connection and data exchange from the back-end
+     * REST API.
+     */
+    constructor(){
+        if (RESTClient._instance){
+            return RESTClient._instance
+        }
+        RESTClient._instance = this;
+        this.baseURL = "https://api.fairsharing.org";
+        this.headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache"
+        };
+    }
 
-<article>
-    <div class="container-overview">
-    
-        
+    /* USERS: all methods below related to handling user authentication */
 
-        
-<dl class="details">
-    
+    /**
+     * Method to log in the user
+     * @param username - name of the user
+     * @param password - password of the user
+     * @return {Promise} - the response of the server
+     */
+    async login(username, password){
+        const endpoint = "/users/sign_in";
+        const body = {
+            user: {
+                login: username,
+                password: password
+            }
+        };
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + endpoint,
+            data: body
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
-	
+    /**
+     *  Method to create a new user
+     * @param {Object} userLogin - the user account to create
+     * @returns {Promise} response - server response
+     */
+    async createAccount(userLogin){
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/users",
+            data: {user: userLogin}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
-	
+    /**
+     * Trigger the given query with Axios
+     * @param query
+     * @returns {Promise&lt;*>}
+     */
+    async executeQuery(query) {
+        try {
+            let client = this;
+            query.headers = client.headers;
+            return await axios(query);
+        }
+        catch(e){
+            console.log(e);
+            return({data: e});
+        }
+    }
+}
 
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="GraphQLClient.html">GraphQLClient</a></dt>
-            <dd></dd>
-        
-            <dt><a href="RESTClient.html">RESTClient</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-        <h3 class="subsection-title">Namespaces</h3>
-
-        <dl>
-            <dt><a href="namespaces.html#Static"><a href="Static.html">Static</a></a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+export default RESTClient;</pre>
+    </article>
 </section>
+
 
 
 
@@ -194,10 +183,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

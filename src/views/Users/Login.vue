@@ -29,7 +29,6 @@
           sm="12"
         >
           <v-card
-            v-if="currentPanel === 'login'"
             outline
           >
             <!-- card title -->
@@ -42,7 +41,7 @@
             </v-list-item>
 
             <!-- card content // Form -->
-            <v-card-text>
+            <v-card-text v-if="currentPanel === 'login'">
               <v-form
                 v-if="loggedIn === false"
                 id="loginForm"
@@ -92,7 +91,13 @@
                 Logout
               </v-btn>
             </v-card-text>
+
+            <v-card-text v-if="currentPanel === 'register'">
+              <register></register>
+            </v-card-text>
+
           </v-card>
+
         </v-col>
       </v-row>
     </v-container>
@@ -103,12 +108,14 @@
 
 <script>
     import { mapActions } from 'vuex'
+    import Register from "../../components/Users/Register";
 
     /** This component handles the login page
      *
      */
     export default {
         name: "Login",
+        components: {Register},
         filters: {
             capitalize: function(value){
                 return value.charAt(0).toUpperCase() + value.slice(1)

@@ -8,7 +8,7 @@ let currentUser = {
         userLoggedIn: false,
         currentUserID: null,
         currentUserToken: null,
-        autoLogin: true,
+        tokenValidity: null
     },
     mutations: {
         /*
@@ -18,23 +18,25 @@ let currentUser = {
             state.userLoggedIn = true;
             state.currentUserID = user.user.username;
             state.currentUserToken = user.user["jwt"];
-
+            state.tokenValidity = user.user.expiry;
             localStorage.username = user.user.username;
             localStorage.jwt = user.user.jwt;
             localStorage.pwd = user.pwd;
+            localStorage.tokenValidity = user.user.expiry;
         },
         autoLogin(state){
             state.userLoggedIn = true;
             state.currentUserToken = localStorage["jwt"];
             state.currentUserID = localStorage.username;
-    },
+            state.tokenValidity = localStorage.tokenValidity;
+        },
         logoutUser(state){
             state.userLoggedIn = false;
             state.currentUserID = null;
             state.currentUserToken = null;
-            state.autoLogin = false;
+            state.tokenValidity = null;
             localStorage.clear();
-    }
+        }
     },
     actions: {
         async login(state, user){
@@ -48,7 +50,21 @@ let currentUser = {
                 }
             }
             else {
-                this.commit("users/autoLogin");
+                if (validateToken(state.state.tokenValidity)){
+                    this.commit("users/autoLogin");
+                }
+                else {
+                    console.log("Token invalid, regenerating");
+                    const user = {
+                        name: localStorage.username,
+                        password: localStorage.pwd
+                    };
+                    let response = await client.login(user.name, user.password);
+                    this.commit("users/login", {
+                        user: response,
+                        pwd: user.password
+                    });
+                }
             }
         },
         logout(){
@@ -60,3 +76,9 @@ let currentUser = {
 };
 
 export default currentUser;
+
+const validateToken = function(tokenExpiry){
+    const today = new Date();
+    return today - tokenExpiry > 0;
+
+};

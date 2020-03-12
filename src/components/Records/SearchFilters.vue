@@ -82,7 +82,15 @@
             }
         },
         computed: {
-            ...mapState("searchFilters", ["filters"])
+            ...mapState("searchFilters", ["filters"]),
+            currentPath: function(){
+              return [this.$route.path,  this.$route.query]
+            }
+        },
+        watch: {
+          currentPath: async function (){
+            this.$forceUpdate();
+          }
         },
         methods: {
           /**
@@ -137,8 +145,8 @@
                 output.push(_module.cleanString(string))
               });
               return output;
-          }
-        }
+          },
+        },
     }
 </script>
 

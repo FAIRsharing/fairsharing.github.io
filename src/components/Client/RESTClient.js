@@ -46,22 +46,6 @@ class RESTClient {
     }
 
     /**
-     *  Method to create a new user
-     * @param {Object} userLogin - the user account to create
-     * @returns {Promise} response - server response
-     */
-    async createAccount(userLogin){
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/users",
-            data: {user: userLogin},
-            headers: this.headers
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
-    /**
      * Logout the user from the back, expiring the current jwt.
      * @param {String} jwt - the user token to expire.
      * @returns {Promise}
@@ -78,12 +62,45 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     *  Method to create a new user
+     * @param {Object} userLogin - the user account to create
+     * @returns {Promise} response - server response
+     */
+    async createAccount(userLogin){
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/users",
+            data: {user: userLogin},
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Validate the account given the corresponding token
+     * @param {String} token - the account token to validate
+     * @returns {Promise}
+     */
     async confirmAccount(token){
         const request = {
             method: "post",
             baseURL: this.baseURL + "/users/confirmation",
             headers: this.headers,
             data: {name: token}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async getUser(token){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/users/edit",
+            headers: headers
         };
         let response = await this.executeQuery(request);
         return response.data;

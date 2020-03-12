@@ -132,6 +132,8 @@
                     "password":  this.loginData.password
                 };
                 await this.login(user);
+                // TODO: dynamic routing (go to previous page if it was protected)
+                this.$router.push({path: "/users/" + this.currentUser.name})
             },
             unlogUser: function(){
                 this.logout(this.currentUser.token);

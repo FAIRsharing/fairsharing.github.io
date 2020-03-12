@@ -97,24 +97,6 @@
     class="login"
   >
     &lt;v-container fluid>
-      &lt;!-- tabulation controls -->
-      &lt;v-row>
-        &lt;v-col
-          cols="12"
-        >
-          &lt;v-btn class="mr-5"
-            @click="currentPanel = 'login' "
-          >
-            Login
-          &lt;/v-btn>
-          &lt;v-btn
-            @click="currentPanel = 'register'"
-          >
-            Register
-          &lt;/v-btn>
-        &lt;/v-col>
-      &lt;/v-row>
-
       &lt;!-- forms -->
       &lt;v-row>
         &lt;v-col
@@ -134,7 +116,9 @@
             &lt;/v-list-item>
 
             &lt;v-card-text v-if="$store.state.users.errors">
-              &lt;div class="alert alert-danger">{{ $store.state.users.errors }}&lt;/div>
+              &lt;div class="alert alert-danger">
+                {{ $store.state.users.errors }}
+              &lt;/div>
             &lt;/v-card-text>
 
             &lt;!-- card content // Form -->
@@ -187,14 +171,13 @@
               >
                 Logout
               &lt;/v-btn>
+              &lt;v-btn
+                href="#/accounts/signup"
+              >
+                Register
+              &lt;/v-btn>
             &lt;/v-card-text>
-
-            &lt;v-card-text v-if="currentPanel === 'register'">
-              &lt;register>&lt;/register>
-            &lt;/v-card-text>
-
           &lt;/v-card>
-
         &lt;/v-col>
       &lt;/v-row>
     &lt;/v-container>
@@ -205,14 +188,12 @@
 
 &lt;script>
     import { mapActions } from 'vuex'
-    import Register from "../../components/Users/Register";
 
     /** This component handles the login page
      *
      */
     export default {
         name: "Login",
-        components: {Register},
         filters: {
             capitalize: function(value){
                 return value.charAt(0).toUpperCase() + value.slice(1)
@@ -255,7 +236,8 @@
 
 &lt;style scoped>
 
-&lt;/style></pre>
+&lt;/style>
+</pre>
     </article>
 </section>
 

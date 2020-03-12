@@ -136,8 +136,17 @@
         &lt;/router-link>
       &lt;/li>
       &lt;li>
-        &lt;router-link to="/accounts/login">
+        &lt;router-link
+          v-if="!userLoggedIn"
+          to="/accounts/login"
+        >
           Login/Register
+        &lt;/router-link>
+        &lt;router-link
+          v-else
+          :to="'/accounts/' + 'login'"
+        >
+          Welcome, {{ currentUserID }}
         &lt;/router-link>
       &lt;/li>
     &lt;/ul>
@@ -145,11 +154,16 @@
 &lt;/template>
 
 &lt;script>
-    /** Component to handle the header (should be present on every page)
+  import { mapState } from 'vuex'
+
+  /** Component to handle the header (should be present on every page)
      *
      */
     export default {
-        name: "NavbarTop"
+        name: "NavbarTop",
+        computed: {
+          ...mapState('users', ["userLoggedIn", "currentUserID"])
+        }
     }
 &lt;/script>
 
@@ -168,7 +182,8 @@
         border-radius:5px;
         padding:10px 20px;
     }
-&lt;/style></pre>
+&lt;/style>
+</pre>
     </article>
 </section>
 

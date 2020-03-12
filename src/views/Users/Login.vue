@@ -40,6 +40,10 @@
               </v-list-item-content>
             </v-list-item>
 
+            <v-card-text v-if="$store.state.users.errors">
+              <div class="alert alert-danger">{{ $store.state.users.errors }}</div>
+            </v-card-text>
+
             <!-- card content // Form -->
             <v-card-text v-if="currentPanel === 'login'">
               <v-form
@@ -141,15 +145,6 @@
        },
         methods: {
             ...mapActions('users', ['login', 'logout']),
-            /*createAccount: async function(){
-                const user = {
-                    username: "TeraTEST",
-                    email: "domwow13@gmail.com",
-                    password: "Nickeldoor92!",
-                    password_confirmation: "Nickeldoor92!"
-                };
-                await client.createAccount(user)
-            },*/
             logUser: async function(){
                 const user = {
                     "name": this.loginData.name,

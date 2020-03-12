@@ -43,8 +43,17 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/accounts/login">
+        <router-link
+          v-if="!userLoggedIn"
+          to="/accounts/login"
+        >
           Login/Register
+        </router-link>
+        <router-link
+          v-else
+          :to="'/accounts/' + 'login'"
+        >
+          Welcome, {{ currentUserID }}
         </router-link>
       </li>
     </ul>
@@ -52,11 +61,16 @@
 </template>
 
 <script>
-    /** Component to handle the header (should be present on every page)
+  import { mapState } from 'vuex'
+
+  /** Component to handle the header (should be present on every page)
      *
      */
     export default {
-        name: "NavbarTop"
+        name: "NavbarTop",
+        computed: {
+          ...mapState('users', ["userLoggedIn", "currentUserID"])
+        }
     }
 </script>
 

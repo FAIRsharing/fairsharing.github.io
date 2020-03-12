@@ -51,7 +51,7 @@
         </router-link>
         <router-link
           v-else
-          :to="'/accounts/' + 'login'"
+          :to="'/users/' + currentUserID"
         >
           Welcome, {{ currentUserID }}
         </router-link>

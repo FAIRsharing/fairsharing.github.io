@@ -16,10 +16,16 @@
     </div>
 
     <div v-if="message">
-      <div class="alert alert-success" v-if="created">
+      <div
+        v-if="created"
+        class="alert alert-success"
+      >
         {{ message }}
       </div>
-      <div v-else class="alert alert-danger">
+      <div
+        v-else
+        class="alert alert-danger"
+      >
         {{ message }}
       </div>
     </div>
@@ -68,6 +74,11 @@
           @click="register()"
         >
           Register a new account
+        </v-btn>
+        <v-btn
+          href="#/accounts/login"
+        >
+          Login
         </v-btn>
       </v-card-actions>
     </v-form>

@@ -3,11 +3,11 @@
     <h2>
       Confirm your account:
     </h2>
-    <div v-if="getToken">
-      {{ message }}
-    </div>
-    <div v-else class="alert alert-danger">
-      {{ message }}
+    <div
+      class="alert"
+      :class="{'alert-success': !error, 'alert-danger': error}"
+    >
+      {{ message.message }}
     </div>
   </div>
 </template>
@@ -21,7 +21,10 @@
         name: "ConfirmAccount",
         data: () => {
             return {
-                message: null
+                message: {
+                  message: null
+                },
+                error: false
             }
         },
         computed: {
@@ -32,13 +35,14 @@
                 return false;
             }
         },
-        async mounted(){
+        async created(){
+          this.error = false;
             if (this.getToken){
-                let response = await client.confirmAccount(this.getToken)
-                this.message = response;
+              this.message = await client.confirmAccount(this.getToken);
             }
             else {
-                this.message = "No token"
+                this.error = true;
+                this.message.message = "No token"
             }
         }
     }

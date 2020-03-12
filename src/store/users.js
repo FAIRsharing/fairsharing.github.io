@@ -28,7 +28,6 @@ let currentUser = {
                 localStorage.tokenValidity = user.user.expiry;
             }
             else {
-                console.log(user.user.error.response.data.error);
                 state.errors = user.user.error.response.data.error;
             }
 
@@ -38,7 +37,6 @@ let currentUser = {
             state.currentUserToken = localStorage["jwt"];
             state.currentUserID = localStorage.username;
             state.tokenValidity = localStorage.tokenValidity;
-            console.log(new Date(1000*state.tokenValidity));
         },
         logoutUser(state){
             state.userLoggedIn = false;
@@ -64,7 +62,6 @@ let currentUser = {
                     this.commit("users/autoLogin");
                 }
                 else {
-                    console.log("Token invalid, regenerating");
                     const user = {
                         name: localStorage.username,
                         password: localStorage.pwd
@@ -77,8 +74,9 @@ let currentUser = {
                 }
             }
         },
-        logout(){
-            this.commit("users/logoutUser")
+        async logout(state, token){
+            await client.logout(token);
+            this.commit("users/logoutUser");
         }
     },
     getters: {},

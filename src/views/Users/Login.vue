@@ -4,24 +4,6 @@
     class="login"
   >
     <v-container fluid>
-      <!-- tabulation controls -->
-      <v-row>
-        <v-col
-          cols="12"
-        >
-          <v-btn class="mr-5"
-            @click="currentPanel = 'login' "
-          >
-            Login
-          </v-btn>
-          <v-btn
-            @click="currentPanel = 'register'"
-          >
-            Register
-          </v-btn>
-        </v-col>
-      </v-row>
-
       <!-- forms -->
       <v-row>
         <v-col
@@ -41,7 +23,9 @@
             </v-list-item>
 
             <v-card-text v-if="$store.state.users.errors">
-              <div class="alert alert-danger">{{ $store.state.users.errors }}</div>
+              <div class="alert alert-danger">
+                {{ $store.state.users.errors }}
+              </div>
             </v-card-text>
 
             <!-- card content // Form -->
@@ -94,14 +78,13 @@
               >
                 Logout
               </v-btn>
+              <v-btn
+                href="#/accounts/signup"
+              >
+                Register
+              </v-btn>
             </v-card-text>
-
-            <v-card-text v-if="currentPanel === 'register'">
-              <register></register>
-            </v-card-text>
-
           </v-card>
-
         </v-col>
       </v-row>
     </v-container>
@@ -112,14 +95,12 @@
 
 <script>
     import { mapActions } from 'vuex'
-    import Register from "../../components/Users/Register";
 
     /** This component handles the login page
      *
      */
     export default {
         name: "Login",
-        components: {Register},
         filters: {
             capitalize: function(value){
                 return value.charAt(0).toUpperCase() + value.slice(1)

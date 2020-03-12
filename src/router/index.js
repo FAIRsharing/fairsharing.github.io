@@ -23,6 +23,7 @@ import License from "../views/Static/License/License";
 import Terms from "../views/Static/TermOfUse/TermsOfUse";
 import Educational from "../views/Static/Educational/Educational";
 import Privacy from "../views/Static/Privacy/Privacy";
+import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
 
 Vue.use(VueRouter);
 
@@ -151,6 +152,11 @@ let routes = [
         name: "Register",
         path: "/accounts/signup",
         component: Signup,
+    },
+    {
+        name: "Confirm email",
+        path: "/accounts/confirm",
+        component: ConfirmAccount,
     },
     {
         name: "*",

@@ -82,15 +82,7 @@
             }
         },
         computed: {
-            ...mapState("searchFilters", ["filters"]),
-            currentPath: function(){
-              return [this.$route.path,  this.$route.query]
-            }
-        },
-        watch: {
-          currentPath: async function (){
-            this.$forceUpdate();
-          }
+            ...mapState("searchFilters", ["filters"])
         },
         methods: {
           /**

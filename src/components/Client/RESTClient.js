@@ -53,7 +53,8 @@ class RESTClient {
         const request = {
             method: "post",
             baseURL: this.baseURL + "/users",
-            data: {user: userLogin}
+            data: {user: userLogin},
+            mode :'cors'
         };
         let response = await this.executeQuery(request);
         return response.data;
@@ -71,8 +72,7 @@ class RESTClient {
             return await axios(query);
         }
         catch(e){
-            console.log(e);
-            return({data: e});
+            return({data: {error: e}});
         }
     }
 }

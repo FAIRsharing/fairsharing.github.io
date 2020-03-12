@@ -15,6 +15,15 @@
       </ul>
     </div>
 
+    <div v-if="message">
+      <div class="alert alert-success" v-if="created">
+        {{ message }}
+      </div>
+      <div v-else class="alert alert-danger">
+        {{ message }}
+      </div>
+    </div>
+
     <v-form
       id="loginForm"
     >
@@ -22,13 +31,6 @@
       <v-text-field
         v-model="loginData.name"
         label="Username"
-        required
-      />
-
-      <!-- email -->
-      <v-text-field
-        v-model="loginData.email"
-        label="Email address"
         required
       />
 
@@ -52,6 +54,13 @@
         @click:append="showRepeat = !showRepeat"
       />
 
+      <!-- email -->
+      <v-text-field
+        v-model="loginData.email"
+        label="Email address"
+        required
+      />
+
       <v-card-actions>
         <v-btn
           type="submit"
@@ -66,6 +75,10 @@
 </template>
 
 <script>
+    import RESTclient from "@/components/Client/RESTClient.js";
+
+    const Client = new RESTclient();
+
     export default {
         name: "Register",
         data: () => {
@@ -73,12 +86,15 @@
                 showPwd: false,
                 showRepeat: false,
                 loginData: {},
-                errors: []
+                errors: [],
+                created: false,
+                message: null
             }
         },
         methods: {
             register: async function(){
                 const _module = this;
+                const user_mail = _module.loginData.email;
                 _module.errors = [];
                 const fields = ["name", "email", "password", "repeatPwd"];
                 let valid = true;
@@ -94,10 +110,22 @@
                        valid = false;
                    }
                 }
-
-
                 if (valid){
-                    console.log("ATTEMPTING ACCOUNT CREATION")
+                    let user = {
+                        username: _module.loginData.name,
+                        email: _module.loginData.email,
+                        password: _module.loginData.password,
+                        password_confirmation: _module.loginData['repeatPwd']
+                    };
+                    let response = await Client.createAccount(user);
+                    if (!response.error){
+                        _module.created = true;
+                        _module.message = "Account created, please verify your email address " + user_mail;
+                    }
+                    else {
+                        _module.message = response.error;
+                    }
+
                 }
 
             }

@@ -8,27 +8,37 @@ let currentUser = {
         userLoggedIn: false,
         currentUserID: null,
         currentUserToken: null,
-        tokenValidity: null
+        tokenValidity: null,
+        errors: null
     },
     mutations: {
         /*
         TODO: store password in cookies instead of the localstorage to mitigate XSS attacks.
         */
         login(state, user){
-            state.userLoggedIn = true;
-            state.currentUserID = user.user.username;
-            state.currentUserToken = user.user["jwt"];
-            state.tokenValidity = user.user.expiry;
-            localStorage.username = user.user.username;
-            localStorage.jwt = user.user.jwt;
-            localStorage.pwd = user.pwd;
-            localStorage.tokenValidity = user.user.expiry;
+            state.errors = null;
+            if (!user.user.error){
+                state.userLoggedIn = true;
+                state.currentUserID = user.user.username;
+                state.currentUserToken = user.user["jwt"];
+                state.tokenValidity = user.user.expiry;
+                localStorage.username = user.user.username;
+                localStorage.jwt = user.user.jwt;
+                localStorage.pwd = user.pwd;
+                localStorage.tokenValidity = user.user.expiry;
+            }
+            else {
+                console.log(user.user.error.response.data.error);
+                state.errors = user.user.error.response.data.error;
+            }
+
         },
         autoLogin(state){
             state.userLoggedIn = true;
             state.currentUserToken = localStorage["jwt"];
             state.currentUserID = localStorage.username;
             state.tokenValidity = localStorage.tokenValidity;
+            console.log(new Date(1000*state.tokenValidity));
         },
         logoutUser(state){
             state.userLoggedIn = false;
@@ -80,5 +90,4 @@ export default currentUser;
 const validateToken = function(tokenExpiry){
     const today = new Date();
     return today - tokenExpiry > 0;
-
 };

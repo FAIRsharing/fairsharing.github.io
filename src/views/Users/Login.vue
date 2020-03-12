@@ -153,7 +153,7 @@
                 await this.login(user);
             },
             unlogUser: function(){
-                this.logout();
+                this.logout(this.currentUser.token);
                 this.loginData = {};
             }
         }

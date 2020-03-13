@@ -92,72 +92,73 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div
-    id="advancedSearch"
-    class="container"
-  >
-    &lt;form
-      v-if="filters.length > 0"
-      class="card"
+    &lt;div
+            id="advancedSearch"
+            class="container"
     >
-      &lt;div class="card-header">
-        &lt;h2>Advanced search&lt;/h2>
-      &lt;/div>
-      &lt;div class="card-body filters">
-        &lt;div
-          v-for="(filter, key) in filters"
-          :key="computedKey(filter,key)"
+        &lt;form
+                v-if="filters.length > 0"
+                class="card"
         >
-          &lt;!--                    {{filter.hasOwnProperty('key')?filtersKey[key].key:key}}-->
-          &lt;b>{{ filter.filterLabel }}:&lt;/b>
+            &lt;div class="card-header">
+                &lt;h2>Advanced search&lt;/h2>
+            &lt;/div>
+            &lt;div class="card-body filters">
+                &lt;div
+                        v-for="(filter, key) in filters"
+                        :key="computedKey(filter,key)"
+                >
+                    &lt;!--                    {{filter.hasOwnProperty('key')?filtersKey[key].key:key}}-->
+                    &lt;b>{{ filter.filterLabel }}:&lt;/b>
 
-          &lt;div
-            v-if="filter.values"
-            class="filter"
-          >
-            &lt;v-autocomplete
-              v-model="form.data[filter.filterName]"
-              :items="cleanStrings(filter.values)"
-              autocomplete="true"
-              attach
-            />
-          &lt;/div>
-          &lt;div
-            v-else
-            class="filter"
-          >
-            &lt;input v-model="form.data[filter.filterName]">
-          &lt;/div>
-          &lt;hr>
-        &lt;/div>
-      &lt;/div>
-      &lt;div class="card-footer">
-        &lt;b>String search:&lt;/b>
-        &lt;input
-          v-model="form.data['q']"
-          type="text"
-        >
-        &lt;button
-          type="button"
-          class="btn btn-success"
-          @click="applyFilters()"
-        >
-          Search
-        &lt;/button>
-        &lt;button
-          type="button"
-          class="btn btn-danger"
-          @click="reset()"
-        >
-          Reset
-        &lt;/button>
-      &lt;/div>
-    &lt;/form>
-  &lt;/div>
+                    &lt;div
+                            v-if="filter.values"
+                            class="filter"
+                    >
+                        &lt;v-autocomplete
+                                v-model="form.data[filter.filterName]"
+                                :items="cleanStrings(filter.values)"
+                                autocomplete="true"
+                                attach
+                        />
+                    &lt;/div>
+                    &lt;div
+                            v-else
+                            class="filter"
+                    >
+                        &lt;input v-model="form.data[filter.filterName]">
+                    &lt;/div>
+                    &lt;hr>
+                &lt;/div>
+            &lt;/div>
+            &lt;div class="card-footer">
+                &lt;b>String search:&lt;/b>
+                &lt;input
+                        v-model="form.data['q']"
+                        type="text"
+                >
+                &lt;button
+                        type="button"
+                        class="btn btn-success"
+                        @click="applyFilters()"
+                >
+                    Search
+                &lt;/button>
+                &lt;button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="reset()"
+                >
+                    Reset
+                &lt;/button>
+            &lt;/div>
+        &lt;/form>
+    &lt;/div>
 &lt;/template>
 
 &lt;script>
     import {mapState} from "vuex"
+    import {isEmpty} from "lodash"
 
     /** Component to handle the advanced search filters for the searchFairsharingRecords query.
      * @vue-data {Object} [form = {}] - variable bound to the form data through v-model
@@ -189,7 +190,7 @@
             let Key = 0;
             this.filtersKey.forEach(function (filter) {
                     if (Key !== 0) {
-                        filter["key"] = Key;
+                        filter["key"] = filter.filterName + '_' + Key;
                         Key++
                     } else {
                         Key++
@@ -212,19 +213,25 @@
                         formData[key] = encodeURIComponent(_module.stringsReplacement[paramValue].trim());
                     }
                 });
-                this.clearAdvancedSearch();
+
+              console.log(isEmpty(this.$route.query));
+              if (isEmpty(this.$route.query) &amp;&amp; !isEmpty(this.form.data) ) {
                 this.$router.push({
-                    name: _module.$route.name,
-                    query: formData
+                  name: _module.$route.name,
+                  query: formData
                 });
+              }
+              this.clearAdvancedSearch();
+
             },
             /**
              * Reset the form/filters/parameters to default (go so /search?page=1)
              */
             reset: function () {
                 this.clearAdvancedSearch();
-                if(this.form.data.length>0)
-                this.$router.push({name: this.$route.name});
+                if (!isEmpty(this.$route.query)) {
+                    this.$router.push({name: this.$route.name});
+                }
             },
             /**
              * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
@@ -267,13 +274,11 @@
 
                 this.form.data = {};
 
-                let Key = 0;
+
                 this.filtersKey.forEach(function (filter) {
+                  let Key = filter["key"];
                     if (Key !== 0) {
-                        filter["key"] = filter["key"] + 20;
-                        Key++
-                    } else {
-                        Key++
+                        filter["key"] = filter.filterName + '_' + Key+1;
                     }
                 })
             }

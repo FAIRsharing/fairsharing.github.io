@@ -94,6 +94,24 @@ class RESTClient {
         return response.data;
     }
 
+    async resetPassword(jwt){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + jwt;
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/users/password",
+            headers: headers
+        };
+        console.log(request);
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Get the current user data
+     * @param token
+     * @returns {Promise}
+     */
     async getUser(token){
         let headers = JSON.parse(JSON.stringify(this.headers));
         headers['Authorization'] = 'Bearer ' + token;

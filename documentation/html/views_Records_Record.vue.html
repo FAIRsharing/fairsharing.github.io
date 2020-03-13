@@ -91,45 +91,90 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
+            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   &lt;div
     class="standard container-fluid"
   >
-
-    &lt;div v-if="$store.state.users.userLoggedIn" class="alert alert-success"> You are logged in.&lt;/div>
     &lt;div
-      v-if="error"
-      class="error"
+      class="container-fluid"
     >
-      {{ error }}
-    &lt;/div>
+      &lt;v-row>
+        &lt;v-col cols12>
+          &lt;v-card>
+            &lt;v-list-item class="blue">
+              &lt;v-list-item-content class="pa-0">
+                &lt;v-list-item-title class="headline text-left white--text">
+                  {{ currentRecord['fairsharingRecord'].name }} - {{ currentRecord['fairsharingRecord'].doi }}
+                &lt;/v-list-item-title>
+              &lt;/v-list-item-content>
+              &lt;v-list-item-avatar
+                v-if="userLoggedIn"
+                style="height:auto !important"
+              >
+                &lt;v-menu
+                  v-if="$store.state.users.userLoggedIn"
+                  offset-y
+                >
+                  &lt;template v-slot:activator="{ on }">
+                    &lt;v-btn
+                      dark
+                      icon
+                      v-on="on"
+                    >
+                      &lt;v-icon>
+                        fa-ellipsis-v
+                      &lt;/v-icon>
+                    &lt;/v-btn>
+                  &lt;/template>
+                  &lt;v-list>
+                    &lt;v-list-item
+                      v-for="(item, index) in items"
+                      :key="index"
+                      @click="console.log('Hello')"
+                    >
+                      &lt;v-list-item-title class="text-left">
+                        {{ item }}
+                      &lt;/v-list-item-title>
+                    &lt;/v-list-item>
+                  &lt;/v-list>
+                &lt;/v-menu>
+              &lt;/v-list-item-avatar>
+            &lt;/v-list-item>
 
-    &lt;div
-      v-if="!error &amp;&amp; queryTriggered"
-      class="row"
-    >
-      &lt;div class="col-10">
-        &lt;span>{{ currentRecord['fairsharingRecord'].name }}&lt;/span>
-        &lt;div class="card">
-          &lt;div
-            v-for="(field, label, index) in currentRecord['fairsharingRecord']"
-            :key="index"
-          >
-            &lt;b>{{ label }}: &lt;/b> {{ field }}
-          &lt;/div>
-        &lt;/div>
-      &lt;/div>
+            &lt;v-card-text class="container-fluid">
+              &lt;v-row v-if="!error &amp;&amp; queryTriggered">
+                &lt;v-col class="col-12">
+                  &lt;div
+                    v-for="(field, label, index) in currentRecord['fairsharingRecord']"
+                    :key="index"
+                    class="text-left"
+                  >
+                    &lt;b>{{ label }}: &lt;/b> {{ field }}
+                  &lt;/div>
+                &lt;/v-col>
 
-      &lt;div class="col-2">
-        &lt;button
-          type="button"
-          class="btn btn-dark"
-          @click="getHistory()"
-        >
-          Get History
-        &lt;/button>
-        &lt;hr>
-        {{ currentRecordHistory }}
+                &lt;div class="col-12">
+                  &lt;button
+                    type="button"
+                    class="btn btn-dark"
+                    @click="getHistory()"
+                  >
+                    Get History
+                  &lt;/button>
+                  &lt;hr>
+                  {{ currentRecordHistory }}
+                &lt;/div>
+              &lt;/v-row>
+            &lt;/v-card-text>
+          &lt;/v-card>
+        &lt;/v-col>
+      &lt;/v-row>
+
+      &lt;div
+        v-if="error"
+        class="error"
+      >
+        {{ error }}
       &lt;/div>
     &lt;/div>
   &lt;/div>
@@ -153,14 +198,16 @@
         data() {
             return {
                 error: null,
-                queryTriggered: false
+                queryTriggered: false,
+                items: ["Edit", "Admin Edit", "Claim Ownership", "Suggest and edit/Questions?", "Watch Record"]
             }
         },
         computed: {
             currentRoute: function () {
                 return this.$route.params['id']
             },
-            ...mapState('records', ["currentRecord", "currentRecordHistory"])
+            ...mapState('records', ["currentRecord", "currentRecordHistory"]),
+            ...mapState('users', ["userLoggedIn"])
         },
         watch: {
             currentRoute: async function () {

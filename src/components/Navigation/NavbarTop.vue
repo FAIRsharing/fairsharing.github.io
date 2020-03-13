@@ -42,7 +42,7 @@
           Stats
         </router-link>
       </li>
-      <li>
+      <li :class="{'blue': userLoggedIn}">
         <router-link
           v-if="!userLoggedIn"
           to="/accounts/login"
@@ -52,6 +52,7 @@
         <router-link
           v-else
           :to="'/users/' + currentUserID"
+          class="white--text"
         >
           Welcome, {{ currentUserID }}
         </router-link>
@@ -89,4 +90,7 @@
         border-radius:5px;
         padding:10px 20px;
     }
+  a:hover {
+    text-decoration: none !important;
+  }
 </style>

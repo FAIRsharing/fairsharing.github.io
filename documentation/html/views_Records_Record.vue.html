@@ -149,18 +149,27 @@
                     :key="index"
                     class="text-left"
                   >
-                    &lt;b>{{ label }}: &lt;/b> {{ field }}
+                    &lt;div v-if="field">
+                      &lt;b class="blue--text">{{ label }}: &lt;/b>
+                      &lt;span v-if="typeof field === 'string'">
+                        {{ field }}
+                      &lt;/span>
+                      &lt;v-list-item v-else>
+                        &lt;v-list-item-content>
+                          &lt;v-list-item-subtitle>{{ field }}&lt;/v-list-item-subtitle>
+                        &lt;/v-list-item-content>
+                      &lt;/v-list-item>
+                    &lt;/div>
                   &lt;/div>
                 &lt;/v-col>
 
                 &lt;div class="col-12">
-                  &lt;button
+                  &lt;v-btn
                     type="button"
-                    class="btn btn-dark"
                     @click="getHistory()"
                   >
                     Get History
-                  &lt;/button>
+                  &lt;/v-btn>
                   &lt;hr>
                   {{ currentRecordHistory }}
                 &lt;/div>

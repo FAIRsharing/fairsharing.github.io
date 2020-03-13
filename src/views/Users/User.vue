@@ -9,6 +9,9 @@
       <v-btn @click="logoutUser()">
         Logout
       </v-btn>
+      <v-btn @click="resetPwd()">
+        Reset password
+      </v-btn>
     </div>
   </div>
 </template>
@@ -41,6 +44,10 @@
             logoutUser: async function(){
                 await this.logout(this.$store.state.users.currentUserToken);
                 this.$router.push({name: "Login"})
+            },
+            resetPwd: async function(){
+                await client.resetPassword(this.$store.state.users.currentUserToken);
+                console.log("Check your email")
             }
         }
     }

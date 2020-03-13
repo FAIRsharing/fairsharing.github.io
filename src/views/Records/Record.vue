@@ -56,18 +56,27 @@
                     :key="index"
                     class="text-left"
                   >
-                    <b>{{ label }}: </b> {{ field }}
+                    <div v-if="field">
+                      <b class="blue--text">{{ label }}: </b>
+                      <span v-if="typeof field === 'string'">
+                        {{ field }}
+                      </span>
+                      <v-list-item v-else>
+                        <v-list-item-content>
+                          <v-list-item-subtitle>{{ field }}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </div>
                   </div>
                 </v-col>
 
                 <div class="col-12">
-                  <button
+                  <v-btn
                     type="button"
-                    class="btn btn-dark"
                     @click="getHistory()"
                   >
                     Get History
-                  </button>
+                  </v-btn>
                   <hr>
                   {{ currentRecordHistory }}
                 </div>

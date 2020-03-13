@@ -1,70 +1,71 @@
 <template>
-  <div
-    id="advancedSearch"
-    class="container"
-  >
-    <form
-      v-if="filters.length > 0"
-      class="card"
+    <div
+            id="advancedSearch"
+            class="container"
     >
-      <div class="card-header">
-        <h2>Advanced search</h2>
-      </div>
-      <div class="card-body filters">
-        <div
-          v-for="(filter, key) in filters"
-          :key="computedKey(filter,key)"
+        <form
+                v-if="filters.length > 0"
+                class="card"
         >
-          <!--                    {{filter.hasOwnProperty('key')?filtersKey[key].key:key}}-->
-          <b>{{ filter.filterLabel }}:</b>
+            <div class="card-header">
+                <h2>Advanced search</h2>
+            </div>
+            <div class="card-body filters">
+                <div
+                        v-for="(filter, key) in filters"
+                        :key="computedKey(filter,key)"
+                >
+                    <!--                    {{filter.hasOwnProperty('key')?filtersKey[key].key:key}}-->
+                    <b>{{ filter.filterLabel }}:</b>
 
-          <div
-            v-if="filter.values"
-            class="filter"
-          >
-            <v-autocomplete
-              v-model="form.data[filter.filterName]"
-              :items="cleanStrings(filter.values)"
-              autocomplete="true"
-              attach
-            />
-          </div>
-          <div
-            v-else
-            class="filter"
-          >
-            <input v-model="form.data[filter.filterName]">
-          </div>
-          <hr>
-        </div>
-      </div>
-      <div class="card-footer">
-        <b>String search:</b>
-        <input
-          v-model="form.data['q']"
-          type="text"
-        >
-        <button
-          type="button"
-          class="btn btn-success"
-          @click="applyFilters()"
-        >
-          Search
-        </button>
-        <button
-          type="button"
-          class="btn btn-danger"
-          @click="reset()"
-        >
-          Reset
-        </button>
-      </div>
-    </form>
-  </div>
+                    <div
+                            v-if="filter.values"
+                            class="filter"
+                    >
+                        <v-autocomplete
+                                v-model="form.data[filter.filterName]"
+                                :items="cleanStrings(filter.values)"
+                                autocomplete="true"
+                                attach
+                        />
+                    </div>
+                    <div
+                            v-else
+                            class="filter"
+                    >
+                        <input v-model="form.data[filter.filterName]">
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <div class="card-footer">
+                <b>String search:</b>
+                <input
+                        v-model="form.data['q']"
+                        type="text"
+                >
+                <button
+                        type="button"
+                        class="btn btn-success"
+                        @click="applyFilters()"
+                >
+                    Search
+                </button>
+                <button
+                        type="button"
+                        class="btn btn-danger"
+                        @click="reset()"
+                >
+                    Reset
+                </button>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
     import {mapState} from "vuex"
+    import {isEmpty} from "lodash"
 
     /** Component to handle the advanced search filters for the searchFairsharingRecords query.
      * @vue-data {Object} [form = {}] - variable bound to the form data through v-model
@@ -96,7 +97,7 @@
             let Key = 0;
             this.filtersKey.forEach(function (filter) {
                     if (Key !== 0) {
-                        filter["key"] = Key;
+                        filter["key"] = filter.filterName + '_' + Key;
                         Key++
                     } else {
                         Key++
@@ -119,19 +120,25 @@
                         formData[key] = encodeURIComponent(_module.stringsReplacement[paramValue].trim());
                     }
                 });
-                this.clearAdvancedSearch();
+
+              console.log(isEmpty(this.$route.query));
+              if (isEmpty(this.$route.query) && !isEmpty(this.form.data) ) {
                 this.$router.push({
-                    name: _module.$route.name,
-                    query: formData
+                  name: _module.$route.name,
+                  query: formData
                 });
+              }
+              this.clearAdvancedSearch();
+
             },
             /**
              * Reset the form/filters/parameters to default (go so /search?page=1)
              */
             reset: function () {
                 this.clearAdvancedSearch();
-                if(this.form.data.length>0)
-                this.$router.push({name: this.$route.name});
+                if (!isEmpty(this.$route.query)) {
+                    this.$router.push({name: this.$route.name});
+                }
             },
             /**
              * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
@@ -174,13 +181,11 @@
 
                 this.form.data = {};
 
-                let Key = 0;
+
                 this.filtersKey.forEach(function (filter) {
+                  let Key = filter["key"];
                     if (Key !== 0) {
-                        filter["key"] = filter["key"] + 20;
-                        Key++
-                    } else {
-                        Key++
+                        filter["key"] = filter.filterName + '_' + Key+1;
                     }
                 })
             }

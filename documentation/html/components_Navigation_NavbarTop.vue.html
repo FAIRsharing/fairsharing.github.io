@@ -135,7 +135,7 @@
           Stats
         &lt;/router-link>
       &lt;/li>
-      &lt;li>
+      &lt;li :class="{'blue': userLoggedIn}">
         &lt;router-link
           v-if="!userLoggedIn"
           to="/accounts/login"
@@ -145,6 +145,7 @@
         &lt;router-link
           v-else
           :to="'/users/' + currentUserID"
+          class="white--text"
         >
           Welcome, {{ currentUserID }}
         &lt;/router-link>
@@ -182,6 +183,9 @@
         border-radius:5px;
         padding:10px 20px;
     }
+  a:hover {
+    text-decoration: none !important;
+  }
 &lt;/style>
 </pre>
     </article>

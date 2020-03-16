@@ -86,9 +86,9 @@
 </template>
 
 <script>
-    import RESTclient from "@/components/Client/RESTClient.js";
+    import RESTClient from "@/components/Client/RESTClient.js";
 
-    const Client = new RESTclient();
+    const Client = new RESTClient();
 
     export default {
         name: "Register",

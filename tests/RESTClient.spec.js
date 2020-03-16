@@ -1,7 +1,5 @@
 import Client from "@/components/Client/RESTClient.js";
 const sinon = require("sinon");
-import axios from "axios";
-
 
 describe("RESTClient", () =>{
 

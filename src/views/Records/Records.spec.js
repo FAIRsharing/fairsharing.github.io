@@ -213,8 +213,14 @@ describe("Records.vue", () => {
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
         await wrapper.vm.$store.dispatch("introspection/fetchParameters");
         Client.prototype.getData.restore();
-        let path = wrapper.vm.currentPath;
+        // let path = wrapper.vm.currentPath;
 
+        let path=[
+            "Standard",
+            {
+                fairsharingRegistry: "standard"
+            }
+        ];
 
         console.log("PATH0",path[0]);
         console.log("PATH1",path[1]);

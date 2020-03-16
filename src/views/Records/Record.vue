@@ -10,7 +10,10 @@
           <v-card>
             <v-list-item class="blue">
               <v-list-item-content class="pa-0">
-                <v-list-item-title class="headline text-left white--text">
+                <v-list-item-title
+                  v-if="currentRecord['fairsharingRecord']"
+                  class="headline text-left white--text"
+                >
                   {{ currentRecord['fairsharingRecord'].name }} - {{ currentRecord['fairsharingRecord'].doi }}
                 </v-list-item-title>
               </v-list-item-content>

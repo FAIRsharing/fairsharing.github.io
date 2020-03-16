@@ -12,8 +12,9 @@ const axios = require("axios");
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const $route = {
-    path: "/standards",
+    path: "/search",
     query: {
+        fairsharingRegistry:"standard",
         grants: "string",
         publications: null,
         isRecommended: "false",
@@ -212,10 +213,16 @@ describe("Records.vue", () => {
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
         await wrapper.vm.$store.dispatch("introspection/fetchParameters");
         Client.prototype.getData.restore();
-        const path = wrapper.vm.currentPath;
+        let path = wrapper.vm.currentPath;
+
+
+        console.log("PATH0",path[0]);
+        console.log("PATH1",path[1]);
+        console.log("PATH",path);
+
         const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
         expect(queryParameters).toStrictEqual({
-            fairsharingRegistry: "Standard",
+            fairsharingRegistry: "standard",
             test: 'abc',
             test2: 'abcdef',
             test3: [ 'abc', ' def' ],

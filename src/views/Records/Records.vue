@@ -2,7 +2,7 @@
   <div
     class="a outputGrid container-fluid"
   >
-    <h1>{{ currentPath[1].fairsharingRegistry?currentPath[1].fairsharingRegistry:currentPath[0]}}</h1>
+    <h1>{{ currentPath[1].fairsharingRegistry?currentPath[1].fairsharingRegistry:currentPath[0] }}</h1>
 
     <!-- PAGINATION -->
     <Pagination
@@ -79,9 +79,9 @@
     import Facets from "../../components/Records/Facets";
     import FiltersChip from "../../components/Records/FiltersChip";
     import Pagination from "../../components/Records/Pagination";
+    import {startCase, toLower} from "lodash"
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
-     * @vue-data {Object} [recordTypes = {Standards: "Standard", Databases: "Database", Policies: "Policy", Collections: "Collection"}] - a mapping of types of records used by fairsharingRegistry
      * @vue-data {String} [Errors  = null] - a string message in case an error arises.
      * @vue-data {String} [currentPanel = "AdvSearch"] - the current panel to display between currentPanel and Facets (to be removed)
      * @vue-computed {String} currentPath - the path of the current page.
@@ -99,50 +99,30 @@
         },
         data() {
             return {
-                recordTypes: {
-                    Standards: "Standard",
-                    Databases: "Database",
-                    Policies: "Policy",
-                    Collections: "Collection"
-                },
-                form: {
-                    data: {}
-                },
                 errors: null,
                 currentPanel: "AdvSearch"
             }
         },
         computed: {
             currentPath: function () {
-                let title = this.$route.path.replace('/', '');
+                let title = this.$route.query.fairsharingRegistry !== undefined ? this.$route.query.fairsharingRegistry : 'search';
+                document.title = this.setMetaTitle();
+
                 const client = this;
-              /*
-              let formData = {};
-              this.$router.push({
-                name: _module.$route.name,
-                query: formData
-              });
-              */
-              let queryParams = {};
+
+                let queryParams = {};
                 Object.keys(this.$route.query).forEach(function (prop) {
                     let queryVal = client.$route.query[prop];
-                    console.log('prop',prop);
-                    console.log('queryVal',queryVal);
                     if (queryVal) {
                         queryParams[prop] = decodeURI(queryVal);
                     }
                 });
-                console.log('Title ' + title);
-                console.log('route ' + this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]);
 
-                    // this.currentPath[1].fairsharingRegistry?title=this.currentPath[1].fairsharingRegistry:title=this.currentPath[0];
-                    // title=this.currentPath[1].fairsharingRegistry;
-                      title = title.charAt(0).toUpperCase() + title.slice(1);
-                    //IT IS SEARCH PAGE NOT THE RECORDTYPE ONES
-                    console.log('title else ' + title);
-
-              console.log('queryParam ', queryParams);
-              return [
+                // this.currentPath[1].fairsharingRegistry?title=this.currentPath[1].fairsharingRegistry:title=this.currentPath[0];
+                // title=this.currentPath[1].fairsharingRegistry;
+                title = title.charAt(0).toUpperCase() + title.slice(1);
+                //IT IS SEARCH PAGE NOT THE RECORDTYPE ONES
+                return [
                     title,
                     queryParams
                 ];
@@ -173,8 +153,6 @@
                 this.errors = null;
 
                 try {
-                    console.log('getParameters', this.getParameters());
-                    console.log('currentPath', this.currentPath);
                     await this.fetchRecords(this.getParameters());
                 } catch (e) {
                     this.errors = e.message;
@@ -186,6 +164,7 @@
              * @returns {Object} parameters - parameters and types allowed for this query
              */
             getParameters: function () {
+              console.log(this.currentPath)
                 return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
             },
             ...mapActions('records', ['fetchRecords']),
@@ -195,7 +174,15 @@
              */
             setPanel: function (panelName) {
                 this.currentPanel = panelName;
+            },
+            setMetaTitle: function () {
+                if (this.$route.query.fairsharingRegistry !== undefined) {
+                    return "FAIRsharing | " + startCase(toLower(this.$route.query.fairsharingRegistry));
+                } else {
+                    return "FAIRsharing | " + "Search";
+                }
             }
+
         }
     }
 

@@ -24,6 +24,7 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.config.productionTip = false;
+
 Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });
@@ -31,16 +32,18 @@ Vue.use(VueMeta, {
 const graphQLClient = new GraphQLClient();
 router.beforeEach((to, from, next) => beforeEach(to, from, next));
 
-store.dispatch("introspection/fetchParameters").then(function(){
+store.dispatch('users/login').then(function(){
+    store.dispatch("introspection/fetchParameters").then(async function(){
     new Vue({
-        mounted: async function(){
-            await store.dispatch('searchFilters/fetchFilters', graphQLClient);
-        },
-        render: (h) => h(App),
-        router,
-        store,
-        vuetify
-    }).$mount("#app");
+            mounted: async function(){
+                await store.dispatch('searchFilters/fetchFilters', graphQLClient);
+            },
+            render: (h) => h(App),
+            router,
+            store,
+            vuetify
+        }).$mount("#app")
+    });
 });
 
 

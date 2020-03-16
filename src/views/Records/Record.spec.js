@@ -1,11 +1,12 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify"
 import Record from "./Record.vue";
 import VueMeta from "vue-meta";
 import Client from "../../components/GraphClient/GraphClient.js";
 import Vuex from "vuex";
 import records from "../../store/records";
+import users from "../../store/users";
 const sinon = require("sinon");
-const axios = require("axios");
 
 const $route = {
     path: "/",
@@ -21,12 +22,14 @@ let queryStub;
 
 const $store = new Vuex.Store({
     modules: {
-        records: records
+        records: records,
+        users: users,
     }
 });
 
-
 describe("Record.vue", function() {
+    let wrapper;
+    let vuetify;
 
     beforeAll( () => {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
@@ -49,11 +52,12 @@ describe("Record.vue", function() {
     });
 
     // Set up the wrapper
-    let wrapper;
     beforeEach(() => {
+        vuetify = new Vuetify();
         wrapper = shallowMount(Record, {
             mocks: {$route, $store},
-            localVue
+            localVue,
+            vuetify
         });
     });
     const path = "980190962";

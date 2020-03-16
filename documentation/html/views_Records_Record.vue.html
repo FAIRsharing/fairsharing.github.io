@@ -47,7 +47,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="GraphQLClient.html">GraphQLClient</a></li>
+					<li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
 				</ul>
 			</li>
 			
@@ -91,43 +91,101 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
+            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   &lt;div
     class="standard container-fluid"
   >
     &lt;div
-      v-if="error"
-      class="error"
+      class="container-fluid"
     >
-      {{ error }}
-    &lt;/div>
+      &lt;v-row>
+        &lt;v-col cols12>
+          &lt;v-card>
+            &lt;v-list-item class="blue">
+              &lt;v-list-item-content class="pa-0">
+                &lt;v-list-item-title
+                  v-if="currentRecord['fairsharingRecord']"
+                  class="headline text-left white--text"
+                >
+                  {{ currentRecord['fairsharingRecord'].name }} - {{ currentRecord['fairsharingRecord'].doi }}
+                &lt;/v-list-item-title>
+              &lt;/v-list-item-content>
+              &lt;v-list-item-avatar
+                v-if="userLoggedIn"
+                style="height:auto !important"
+              >
+                &lt;v-menu
+                  v-if="$store.state.users.userLoggedIn"
+                  offset-y
+                >
+                  &lt;template v-slot:activator="{ on }">
+                    &lt;v-btn
+                      dark
+                      icon
+                      v-on="on"
+                    >
+                      &lt;v-icon>
+                        fa-ellipsis-v
+                      &lt;/v-icon>
+                    &lt;/v-btn>
+                  &lt;/template>
+                  &lt;v-list>
+                    &lt;v-list-item
+                      v-for="(item, index) in items"
+                      :key="index"
+                    >
+                      &lt;v-list-item-title class="text-left">
+                        {{ item }}
+                      &lt;/v-list-item-title>
+                    &lt;/v-list-item>
+                  &lt;/v-list>
+                &lt;/v-menu>
+              &lt;/v-list-item-avatar>
+            &lt;/v-list-item>
 
-    &lt;div
-      v-if="!error &amp;&amp; queryTriggered"
-      class="row"
-    >
-      &lt;div class="col-10">
-        &lt;span>{{ currentRecord['fairsharingRecord'].name }}&lt;/span>
-        &lt;div class="card">
-          &lt;div
-            v-for="(field, label, index) in currentRecord['fairsharingRecord']"
-            :key="index"
-          >
-            &lt;b>{{ label }}: &lt;/b> {{ field }}
-          &lt;/div>
-        &lt;/div>
-      &lt;/div>
+            &lt;v-card-text class="container-fluid">
+              &lt;v-row v-if="!error &amp;&amp; queryTriggered">
+                &lt;v-col class="col-12">
+                  &lt;div
+                    v-for="(field, label, index) in currentRecord['fairsharingRecord']"
+                    :key="index"
+                    class="text-left"
+                  >
+                    &lt;div v-if="field">
+                      &lt;b class="blue--text">{{ label }}: &lt;/b>
+                      &lt;span v-if="typeof field === 'string'">
+                        {{ field }}
+                      &lt;/span>
+                      &lt;v-list-item v-else>
+                        &lt;v-list-item-content>
+                          &lt;v-list-item-subtitle>{{ field }}&lt;/v-list-item-subtitle>
+                        &lt;/v-list-item-content>
+                      &lt;/v-list-item>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/v-col>
 
-      &lt;div class="col-2">
-        &lt;button
-          type="button"
-          class="btn btn-dark"
-          @click="getHistory()"
-        >
-          Get History
-        &lt;/button>
-        &lt;hr>
-        {{ currentRecordHistory }}
+                &lt;div class="col-12">
+                  &lt;v-btn
+                    type="button"
+                    @click="getHistory()"
+                  >
+                    Get History
+                  &lt;/v-btn>
+                  &lt;hr>
+                  {{ currentRecordHistory }}
+                &lt;/div>
+              &lt;/v-row>
+            &lt;/v-card-text>
+          &lt;/v-card>
+        &lt;/v-col>
+      &lt;/v-row>
+
+      &lt;div
+        v-if="error"
+        class="error"
+      >
+        {{ error }}
       &lt;/div>
     &lt;/div>
   &lt;/div>
@@ -151,14 +209,16 @@
         data() {
             return {
                 error: null,
-                queryTriggered: false
+                queryTriggered: false,
+                items: ["Edit", "Admin Edit", "Claim Ownership", "Suggest and edit/Questions?", "Watch Record"]
             }
         },
         computed: {
             currentRoute: function () {
                 return this.$route.params['id']
             },
-            ...mapState('records', ["currentRecord", "currentRecordHistory"])
+            ...mapState('records', ["currentRecord", "currentRecordHistory"]),
+            ...mapState('users', ["userLoggedIn"])
         },
         watch: {
             currentRoute: async function () {
@@ -272,7 +332,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
 	
-		on Wed Mar 4th 2020
+		on Mon Mar 16th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

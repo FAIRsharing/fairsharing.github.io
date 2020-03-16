@@ -40,7 +40,6 @@
                     <v-list-item
                       v-for="(item, index) in items"
                       :key="index"
-                      @click="console.log('Hello')"
                     >
                       <v-list-item-title class="text-left">
                         {{ item }}

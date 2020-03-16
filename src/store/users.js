@@ -90,7 +90,6 @@ let currentUser = {
 export default currentUser;
 
 const validateToken = function(tokenExpiry){
-    console.log(tokenExpiry)
     const today = new Date();
-    return today - tokenExpiry > 0;
+    return today - tokenExpiry >= 0;
 };

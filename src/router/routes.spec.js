@@ -1,5 +1,6 @@
 import router from "./index"
 import { beforeEach } from "./index"
+import { isLoggedIn } from "@/router/index.js"
 
 describe("Routes", () => {
     it("routing variables are correctly set", () => {
@@ -7,8 +8,20 @@ describe("Routes", () => {
             if (route.name !== "Record"){
                 expect(route.meta.title).toBe(route.name.replace(/_/g, " "))
             }
+            if (route.name === "User"){
+                const next = jest.fn();
+                route.beforeEnter(undefined, undefined, next);
+            }
         });
-    })
+    });
+
+    it ("- NAVGUARD - redirect if the user is not logged in", () => {
+        const store = {
+          state: {users: {userLoggedIn: true}}
+        };
+        const next = jest.fn();
+        isLoggedIn(undefined, undefined, next, store)
+    });
 });
 
 describe("BeforeEach", () => {

@@ -165,14 +165,7 @@ let routes = [
         path: "/users/:id",
         component: User,
         beforeEnter(to, from, next) {
-            if (store.state.users.userLoggedIn) {
-                next()
-            }
-            else {
-                next({
-                    name: "Login" // back to safety route //
-                });
-            }
+            isLoggedIn(to, from, next, store);
         }
     },
     {
@@ -201,6 +194,17 @@ const router = new VueRouter({
 export function beforeEach(to, from, next) {
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
     next()
+}
+
+export function isLoggedIn(to, from, next, store) {
+    if (store.state.users.userLoggedIn) {
+        next()
+    }
+    else {
+        next({
+            name: "Login" // back to safety route //
+        });
+    }
 }
 
 export default router;

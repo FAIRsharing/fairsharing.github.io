@@ -47,7 +47,6 @@
             },
             resetPwd: async function(){
                 await client.resetPassword(this.$store.state.users.currentUserToken);
-                console.log("Check your email")
             }
         }
     }

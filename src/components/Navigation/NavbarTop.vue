@@ -13,22 +13,22 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/standards">
+        <router-link :to="{ name: 'Standards',query: { fairsharingRegistry:'standard' }}">
           Standards
         </router-link>
       </li>
       <li>
-        <router-link to="/databases">
+        <router-link :to="{ name: 'Databases',query: { fairsharingRegistry:'database' }}">
           Databases
         </router-link>
       </li>
       <li>
-        <router-link to="/policies">
+        <router-link :to="{ name: 'Policies',query: { fairsharingRegistry:'policy' }}">
           Policies
         </router-link>
       </li>
       <li>
-        <router-link to="/collections">
+        <router-link :to="{ name: 'Collections',query: { fairsharingRegistry:'collection' }}">
           Collections
         </router-link>
       </li>

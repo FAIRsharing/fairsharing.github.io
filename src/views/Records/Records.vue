@@ -73,7 +73,7 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
+    import {mapActions} from 'vuex'
     import OutputGrid from '../../components/Records/SearchOutputGrid'
     import SearchFilters from "../../components/Records/SearchFilters"
     import Facets from "../../components/Records/Facets";
@@ -105,35 +105,58 @@
                     Policies: "Policy",
                     Collections: "Collection"
                 },
+                form: {
+                    data: {}
+                },
                 errors: null,
                 currentPanel: "AdvSearch"
             }
         },
         computed: {
             currentPath: function () {
-                let title =  this.$route.path.replace('/', '');
+                let title = this.$route.path.replace('/', '');
                 const client = this;
-                let queryParams = {};
-                Object.keys(this.$route.query).forEach(function(prop){
+              /*
+              let formData = {};
+              this.$router.push({
+                name: _module.$route.name,
+                query: formData
+              });
+              */
+              let queryParams = {};
+                Object.keys(this.$route.query).forEach(function (prop) {
                     let queryVal = client.$route.query[prop];
-                    if (queryVal){
+                    console.log('prop',prop);
+                    console.log('queryVal',queryVal);
+                    if (queryVal) {
                         queryParams[prop] = decodeURI(queryVal);
                     }
                 });
-                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]){
-                    title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+                console.log('route ' + this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]);
+                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
+                    console.log('title if ');
+                    title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
+                } else {
+                    title = title.charAt(0).toUpperCase() + title.slice(1);
+                    //IT IS SEARCH PAGE NOT THE RECORDTYPE ONES
+                    console.log('title else ' + title);
                 }
-                else {
-                    title = title.charAt(0).toUpperCase() + title.slice(1)
-                }
-                return [
+
+/*
+              queryParams={fairsharingRegistry: "standards"};
+              queryParams={fairsharingRegistry: "databases"};
+              queryParams={fairsharingRegistry: "policy"};
+*/
+              // queryParams={fairsharingRegistry: "database"};
+              console.log('queryParam ', queryParams);
+              return [
                     title,
                     queryParams
                 ];
             },
         },
         watch: {
-            currentPath: async function (){
+            currentPath: async function () {
                 await this.getData();
             }
         },
@@ -142,31 +165,34 @@
                 await this.getData();
             })
         },
-        beforeDestroy: function(){
-            this.$store.dispatch("records/resetFacets").then(function(){});
-            this.$store.dispatch("records/resetRecords").then(function(){});
+        beforeDestroy: function () {
+            this.$store.dispatch("records/resetFacets").then(function () {
+            });
+            this.$store.dispatch("records/resetRecords").then(function () {
+            });
         },
         methods: {
             /** This methods get the data from the client.
              * @returns {Promise}
              */
             getData: async function () {
-                  window.scrollTo(0,0);
-                  this.errors = null;
+                window.scrollTo(0, 0);
+                this.errors = null;
 
-                  try {
+                try {
+                    console.log('getParameters', this.getParameters());
+                    console.log('currentPath', this.currentPath);
                     await this.fetchRecords(this.getParameters());
-                  }
-                  catch(e){
+                } catch (e) {
                     this.errors = e.message;
-                  }
+                }
 
             },
             /**
              * Get the parameters that are allowed for this query
              * @returns {Object} parameters - parameters and types allowed for this query
              */
-            getParameters: function(){
+            getParameters: function () {
                 return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
             },
             ...mapActions('records', ['fetchRecords']),
@@ -174,8 +200,8 @@
              * Method to change the current panel to be displayed
              * @param {String} panelName - the name of the panel to display
              */
-            setPanel: function(panelName){
-              this.currentPanel = panelName;
+            setPanel: function (panelName) {
+                this.currentPanel = panelName;
             }
         }
     }
@@ -183,12 +209,12 @@
 </script>
 
 <style scoped>
-  .error {
-    background-color: indianred;
-    border:1px solid red;
-    padding:20px;
-    color:white;
-    text-align: left;
-    font-size: 18px;
-  }
+    .error {
+        background-color: indianred;
+        border: 1px solid red;
+        padding: 20px;
+        color: white;
+        text-align: left;
+        font-size: 18px;
+    }
 </style>

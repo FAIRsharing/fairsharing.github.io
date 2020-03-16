@@ -35,25 +35,24 @@ let routes = [
     },
     {
         name: "Standards",
-        path: "/standards",
+        path: "/search",
         component: Records,
-
     },
     {
         name: "Databases",
-        path: "/databases",
+        path: "/search",
         component: Records,
 
     },
     {
         name: "Policies",
-        path: "/policies",
+        path: "/search",
         component: Records,
 
     },
     {
         name: "Collections",
-        path: "/collections",
+        path: "/search",
         component: Records,
 
     },

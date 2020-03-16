@@ -8,7 +8,7 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/search">
+        <router-link :to="{ name: 'Search'}">
           Search
         </router-link>
       </li>

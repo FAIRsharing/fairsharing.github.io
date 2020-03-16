@@ -2,7 +2,7 @@
   <div
     class="a outputGrid container-fluid"
   >
-    <h1>{{ currentPath[0] }}</h1>
+    <h1>{{ currentPath[1].fairsharingRegistry?currentPath[1].fairsharingRegistry:currentPath[0]}}</h1>
 
     <!-- PAGINATION -->
     <Pagination
@@ -132,22 +132,15 @@
                         queryParams[prop] = decodeURI(queryVal);
                     }
                 });
+                console.log('Title ' + title);
                 console.log('route ' + this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]);
-                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-                    console.log('title if ');
-                    title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
-                } else {
-                    title = title.charAt(0).toUpperCase() + title.slice(1);
+
+                    // this.currentPath[1].fairsharingRegistry?title=this.currentPath[1].fairsharingRegistry:title=this.currentPath[0];
+                    // title=this.currentPath[1].fairsharingRegistry;
+                      title = title.charAt(0).toUpperCase() + title.slice(1);
                     //IT IS SEARCH PAGE NOT THE RECORDTYPE ONES
                     console.log('title else ' + title);
-                }
 
-/*
-              queryParams={fairsharingRegistry: "standards"};
-              queryParams={fairsharingRegistry: "databases"};
-              queryParams={fairsharingRegistry: "policy"};
-*/
-              // queryParams={fairsharingRegistry: "database"};
               console.log('queryParam ', queryParams);
               return [
                     title,

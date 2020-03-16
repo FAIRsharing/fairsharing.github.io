@@ -57,7 +57,7 @@ let routes = [
 
     },
     {
-        name: "search",
+        name: "Search",
         path: "/search",
         component: Records,
 

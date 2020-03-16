@@ -14,7 +14,6 @@
 
 <script>
     import RESTclient from "@/components/Client/RESTClient.js"
-
     const client = new RESTclient();
 
     export default {
@@ -36,7 +35,7 @@
             }
         },
         async created(){
-          this.error = false;
+            this.error = false;
             if (this.getToken){
               this.message = await client.confirmAccount(this.getToken);
             }

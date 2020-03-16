@@ -1,4 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify"
 import Record from "./Record.vue";
 import VueMeta from "vue-meta";
 import Client from "../../components/GraphClient/GraphClient.js";
@@ -26,8 +27,9 @@ const $store = new Vuex.Store({
     }
 });
 
-
 describe("Record.vue", function() {
+    let wrapper;
+    let vuetify;
 
     beforeAll( () => {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
@@ -43,24 +45,6 @@ describe("Record.vue", function() {
                 ]
             }
         });
-        let localStorageMock = (function() {
-            let store = {};
-            return {
-                getItem: function(key) {
-                    return store[key];
-                },
-                setItem: function(key, value) {
-                    store[key] = value.toString();
-                },
-                clear: function() {
-                    store = {};
-                },
-                removeItem: function(key) {
-                    delete store[key];
-                }
-            };
-        })();
-        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
     });
 
     afterAll( () => {
@@ -68,11 +52,12 @@ describe("Record.vue", function() {
     });
 
     // Set up the wrapper
-    let wrapper;
     beforeEach(() => {
+        vuetify = new Vuetify();
         wrapper = shallowMount(Record, {
             mocks: {$route, $store},
-            localVue
+            localVue,
+            vuetify
         });
     });
     const path = "980190962";

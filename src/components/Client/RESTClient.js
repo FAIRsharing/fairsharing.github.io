@@ -94,6 +94,11 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Reset the password of the given user
+     * @param {String} jwt - token corresponding to your user account.
+     * @returns {Promise}
+     */
     async resetPassword(jwt){
         let headers = JSON.parse(JSON.stringify(this.headers));
         headers['Authorization'] = 'Bearer ' + jwt;

@@ -58,7 +58,7 @@ let currentUser = {
                 }
             }
             else {
-                if (validateToken(state.state.tokenValidity)){
+                if (validateToken(state.tokenValidity)){
                     this.commit("users/autoLogin");
                 }
                 else {

@@ -210,11 +210,7 @@
                         queryParams[prop] = decodeURI(queryVal);
                     }
                 });
-
-                // this.currentPath[1].fairsharingRegistry?title=this.currentPath[1].fairsharingRegistry:title=this.currentPath[0];
-                // title=this.currentPath[1].fairsharingRegistry;
-                title = title.charAt(0).toUpperCase() + title.slice(1);
-                //IT IS SEARCH PAGE NOT THE RECORDTYPE ONES
+               title = title.charAt(0).toUpperCase() + title.slice(1);
                 return [
                     title,
                     queryParams
@@ -257,10 +253,7 @@
              * @returns {Object} parameters - parameters and types allowed for this query
              */
             getParameters: function () {
-              console.log('currentPath',this.currentPath);
-                let a= this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
-              console.log('a',a);
-              return a
+              return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
             },
             ...mapActions('records', ['fetchRecords']),
             /**
@@ -270,6 +263,10 @@
             setPanel: function (panelName) {
                 this.currentPanel = panelName;
             },
+          /**
+           *  Method to change the current document meta title to be displayed
+           * @returns {string}
+           */
             setMetaTitle: function () {
                 if (this.$route.query.fairsharingRegistry !== undefined) {
                     return "FAIRsharing | " + startCase(toLower(this.$route.query.fairsharingRegistry));

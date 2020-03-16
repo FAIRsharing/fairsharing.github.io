@@ -200,7 +200,6 @@ class RESTClient {
             baseURL: this.baseURL + "/users/password",
             headers: headers
         };
-        console.log(request);
         let response = await this.executeQuery(request);
         return response.data;
     }

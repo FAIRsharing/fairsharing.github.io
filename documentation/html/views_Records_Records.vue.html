@@ -257,8 +257,10 @@
              * @returns {Object} parameters - parameters and types allowed for this query
              */
             getParameters: function () {
-              console.log(this.currentPath)
-                return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
+              console.log('currentPath',this.currentPath);
+                let a= this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
+              console.log('a',a);
+              return a
             },
             ...mapActions('records', ['fetchRecords']),
             /**

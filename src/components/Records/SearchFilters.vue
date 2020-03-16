@@ -137,8 +137,8 @@
                 output.push(_module.cleanString(string))
               });
               return output;
-          }
-        }
+          },
+        },
     }
 </script>
 

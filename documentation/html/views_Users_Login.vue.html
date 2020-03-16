@@ -47,7 +47,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="GraphQLClient.html">GraphQLClient</a></li>
+					<li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
 				</ul>
 			</li>
 			
@@ -96,27 +96,150 @@
     id="loginPage"
     class="login"
   >
-    &lt;h2>The login page will be here&lt;/h2>
-    &lt;div>
-      &lt;router-link to="/accounts/signup">
-        Register
-      &lt;/router-link>
-    &lt;/div>
+    &lt;v-container fluid>
+      &lt;!-- forms -->
+      &lt;v-row>
+        &lt;v-col
+          cols="12"
+          sm="12"
+        >
+          &lt;v-card
+            outline
+          >
+            &lt;!-- card title -->
+            &lt;v-list-item>
+              &lt;v-list-item-content>
+                &lt;v-list-item-title class="headline">
+                  {{ currentPanel | capitalize }} form:
+                &lt;/v-list-item-title>
+              &lt;/v-list-item-content>
+            &lt;/v-list-item>
+
+            &lt;v-card-text v-if="$store.state.users.errors">
+              &lt;div class="alert alert-danger">
+                {{ $store.state.users.errors }}
+              &lt;/div>
+            &lt;/v-card-text>
+
+            &lt;!-- card content // Form -->
+            &lt;v-card-text v-if="currentPanel === 'login'">
+              &lt;v-form
+                v-if="loggedIn === false"
+                id="loginForm"
+              >
+                &lt;!-- account -->
+                &lt;v-text-field
+                  v-model="loginData.name"
+                  label="Username of email"
+                  required
+                />
+
+                &lt;!-- password -->
+                &lt;v-text-field
+                  v-model="loginData.password"
+                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
+                  :type="show1 ? 'text' : 'password'"
+                  label="Password"
+                  counter
+                  required
+                  @click:append="show1 = !show1"
+                />
+
+                &lt;v-card-actions>
+                  &lt;v-btn
+                    v-if="loggedIn === false"
+                    type="submit"
+                    value="submit"
+                    @click="logUser()"
+                  >
+                    LOGIN
+                  &lt;/v-btn>
+                &lt;/v-card-actions>
+              &lt;/v-form>
+
+              &lt;v-alert
+                v-else
+                class="align-left"
+                type="success"
+              >
+                You are logged in.
+              &lt;/v-alert>
+
+              &lt;v-btn
+                v-if="loggedIn"
+                @click="unlogUser"
+              >
+                Logout
+              &lt;/v-btn>
+              &lt;v-btn
+                href="#/accounts/signup"
+              >
+                Register
+              &lt;/v-btn>
+            &lt;/v-card-text>
+          &lt;/v-card>
+        &lt;/v-col>
+      &lt;/v-row>
+    &lt;/v-container>
+
+    &lt;v-layout />
   &lt;/div>
 &lt;/template>
 
 &lt;script>
+    import { mapActions } from 'vuex'
+
     /** This component handles the login page
      *
      */
     export default {
-        name: "Login"
+        name: "Login",
+        filters: {
+            capitalize: function(value){
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            }
+        },
+        data: () => {
+            return {
+                show1: false,
+                currentPanel: "login",
+                loginData: {}
+            }
+        },
+        computed: {
+            loggedIn: function() {
+                return this.$store.state.users.userLoggedIn
+            },
+            currentUser: function(){
+                return {
+                    name: this.$store.state.users.currentUserID,
+                    token: this.$store.state.users.currentUserToken
+                }
+            }
+       },
+        methods: {
+            ...mapActions('users', ['login', 'logout']),
+            logUser: async function(){
+                const user = {
+                    "name": this.loginData.name,
+                    "password":  this.loginData.password
+                };
+                await this.login(user);
+                // TODO: dynamic routing (go to previous page if it was protected)
+                this.$router.push({path: "/users/" + this.currentUser.name})
+            },
+            unlogUser: function(){
+                this.logout(this.currentUser.token);
+                this.loginData = {};
+            }
+        }
     }
 &lt;/script>
 
 &lt;style scoped>
 
-&lt;/style></pre>
+&lt;/style>
+</pre>
     </article>
 </section>
 
@@ -161,7 +284,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
 	
-		on Wed Mar 4th 2020
+		on Mon Mar 16th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

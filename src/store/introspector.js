@@ -61,10 +61,6 @@ let introspectionStore = {
                     }
                 }
             });
-            if (params[0] !== "Search"){
-                queryParameters["fairsharingRegistry"] = params[0];
-            }
-            console.log('from inside inspector',queryParameters)
             return queryParameters;
         }
     }

@@ -61,9 +61,6 @@ let introspectionStore = {
                     }
                 }
             });
-            if (params[0] !== "Search"){
-                queryParameters["fairsharingRegistry"] = params[0];
-            }
             return queryParameters;
         }
     }
@@ -84,7 +81,7 @@ const parseParam = function(param, paramVal){
         return parseFloat(paramVal)
     }
     else if (param.name === "Boolean"){
-       return JSON.parse(paramVal)
+        return JSON.parse(paramVal)
     }
     return paramVal
 };

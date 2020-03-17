@@ -11,9 +11,13 @@ const axios = require("axios");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
+
+
 const $route = {
-    path: "/standards",
+    path: "/search",
     query: {
+        fairsharingRegistry:"standard",
         grants: "string",
         publications: null,
         isRecommended: "false",
@@ -21,6 +25,7 @@ const $route = {
         licences: 123
     }
 };
+
 const $store = new Vuex.Store({
     modules: {
         records: records,
@@ -40,7 +45,7 @@ describe("Records.vue", () => {
     });
 
     afterAll( () => {
-       Client.prototype.executeQuery.restore();
+        Client.prototype.executeQuery.restore();
     });
 
     // Set up the wrapper
@@ -73,7 +78,6 @@ describe("Records.vue", () => {
         });
         await expect(wrapper.vm.getData()).rejects;
         axios.post.restore();
-
     });
 
     it("can get the query parameters types from introspection", async () => {
@@ -212,10 +216,10 @@ describe("Records.vue", () => {
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
         await wrapper.vm.$store.dispatch("introspection/fetchParameters");
         Client.prototype.getData.restore();
-        const path = wrapper.vm.currentPath;
+        let path = wrapper.vm.currentPath;
+
         const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
         expect(queryParameters).toStrictEqual({
-            fairsharingRegistry: "Standard",
             test: 'abc',
             test2: 'abcdef',
             test3: [ 'abc', ' def' ],

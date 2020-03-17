@@ -1,13 +1,13 @@
 <template>
   <div
-          class="a outputGrid container-fluid"
+    class="a outputGrid container-fluid"
   >
     <h1>{{ currentPath[1].fairsharingRegistry?currentPath[1].fairsharingRegistry:currentPath[0] }}</h1>
 
     <!-- PAGINATION -->
     <Pagination
-            class="row col-12"
-            :total-pages="this.$store.state.records.totalPages"
+      class="row col-12"
+      :total-pages="this.$store.state.records.totalPages"
     />
 
     <!-- CHIPS -->
@@ -24,9 +24,9 @@
             <li class="nav-item">
               <div class="nav-link active">
                 <button
-                        type="button"
-                        class="btn btn-light"
-                        @click="setPanel('AdvSearch')"
+                  type="button"
+                  class="btn btn-light"
+                  @click="setPanel('AdvSearch')"
                 >
                   Advanced search
                 </button>
@@ -35,9 +35,9 @@
             <li class="nav-item">
               <div class="nav-link">
                 <button
-                        type="button"
-                        class="btn btn-light"
-                        @click="setPanel('Facets')"
+                  type="button"
+                  class="btn btn-light"
+                  @click="setPanel('Facets')"
                 >
                   Facets
                 </button>
@@ -53,16 +53,16 @@
 
       <!-- OUTPUT -->
       <div
-              v-if="!errors"
-              class="col-9"
+        v-if="!errors"
+        class="col-9"
       >
         <output-grid :total-pages="this.$store.state.records.totalPages" />
       </div>
 
       <!-- ERROR HANDLING -->
       <div
-              v-else
-              class="col-9"
+        v-else
+        class="col-9"
       >
         <div class="error">
           {{ errors }}
@@ -176,7 +176,7 @@
        */
       setMetaTitle: function () {
         if (this.$route.query.fairsharingRegistry !== undefined) {
-          return "FAIRsharing | " + startCase(toLower(this.$route.query.fairsharingRegistry));
+          return "FAIRsharing | " + startCase(toLower(this.$route.name));
         } else {
           return "FAIRsharing | " + "Search";
         }

@@ -93,14 +93,14 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;div
-          class="a outputGrid container-fluid"
+    class="a outputGrid container-fluid"
   >
     &lt;h1>{{ currentPath[1].fairsharingRegistry?currentPath[1].fairsharingRegistry:currentPath[0] }}&lt;/h1>
 
     &lt;!-- PAGINATION -->
     &lt;Pagination
-            class="row col-12"
-            :total-pages="this.$store.state.records.totalPages"
+      class="row col-12"
+      :total-pages="this.$store.state.records.totalPages"
     />
 
     &lt;!-- CHIPS -->
@@ -117,9 +117,9 @@
             &lt;li class="nav-item">
               &lt;div class="nav-link active">
                 &lt;button
-                        type="button"
-                        class="btn btn-light"
-                        @click="setPanel('AdvSearch')"
+                  type="button"
+                  class="btn btn-light"
+                  @click="setPanel('AdvSearch')"
                 >
                   Advanced search
                 &lt;/button>
@@ -128,9 +128,9 @@
             &lt;li class="nav-item">
               &lt;div class="nav-link">
                 &lt;button
-                        type="button"
-                        class="btn btn-light"
-                        @click="setPanel('Facets')"
+                  type="button"
+                  class="btn btn-light"
+                  @click="setPanel('Facets')"
                 >
                   Facets
                 &lt;/button>
@@ -146,16 +146,16 @@
 
       &lt;!-- OUTPUT -->
       &lt;div
-              v-if="!errors"
-              class="col-9"
+        v-if="!errors"
+        class="col-9"
       >
         &lt;output-grid :total-pages="this.$store.state.records.totalPages" />
       &lt;/div>
 
       &lt;!-- ERROR HANDLING -->
       &lt;div
-              v-else
-              class="col-9"
+        v-else
+        class="col-9"
       >
         &lt;div class="error">
           {{ errors }}
@@ -269,7 +269,7 @@
        */
       setMetaTitle: function () {
         if (this.$route.query.fairsharingRegistry !== undefined) {
-          return "FAIRsharing | " + startCase(toLower(this.$route.query.fairsharingRegistry));
+          return "FAIRsharing | " + startCase(toLower(this.$route.name));
         } else {
           return "FAIRsharing | " + "Search";
         }

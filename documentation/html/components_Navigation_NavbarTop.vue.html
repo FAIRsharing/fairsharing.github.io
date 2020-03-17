@@ -106,22 +106,25 @@
         &lt;/router-link>
       &lt;/li>
       &lt;li>
-        &lt;router-link to="/standards">
+        &lt;router-link :to="{name:'Standards',query:{fairsharingRegistry:'standard'}}">
           Standards
         &lt;/router-link>
       &lt;/li>
       &lt;li>
-        &lt;router-link to="/databases">
+        &lt;router-link :to="{name:'Databases',query:{fairsharingRegistry:'database'}}">
           Databases
         &lt;/router-link>
       &lt;/li>
       &lt;li>
-        &lt;router-link to="/policies">
+        &lt;router-link
+          git
+          :to="{name:'Policies',query:{fairsharingRegistry:'policy'}}"
+        >
           Policies
         &lt;/router-link>
       &lt;/li>
       &lt;li>
-        &lt;router-link to="/collections">
+        &lt;router-link :to="{name:'Collections',query:{fairsharingRegistry:'collection'}}">
           Collections
         &lt;/router-link>
       &lt;/li>

@@ -12,7 +12,7 @@ const axios = require("axios");
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const $route = {
-    path: "/standards",
+    path: "/search",
     query: {
         grants: "string",
         publications: null,
@@ -215,7 +215,6 @@ describe("Records.vue", () => {
         const path = wrapper.vm.currentPath;
         const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
         expect(queryParameters).toStrictEqual({
-            fairsharingRegistry: "Standard",
             test: 'abc',
             test2: 'abcdef',
             test3: [ 'abc', ' def' ],

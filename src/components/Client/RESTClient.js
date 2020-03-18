@@ -95,7 +95,9 @@ class RESTClient {
     }
 
     /**
-     *
+     * Method to send a reset password link to the given email address
+     * @param {String} email to send the link to
+     * @returns {Promise}
      */
     async requestResetPwd(email){
         const request = {
@@ -103,10 +105,11 @@ class RESTClient {
             baseURL: this.baseURL + "/users/password",
             headers: this.headers,
             data: {
-                email: email
+                user: {email: email}
             }
         };
-        console.log(request);
+        let response = await this.executeQuery(request);
+        return response.data;
     }
 
     /**

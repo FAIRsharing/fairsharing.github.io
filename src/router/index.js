@@ -163,7 +163,7 @@ let routes = [
     },
     {
         name: "Request a new password",
-        path: "/accounts/newPassword",
+        path: "/accounts/forgotPassword",
         component: NewPassword,
     },
     {

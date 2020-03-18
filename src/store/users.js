@@ -19,6 +19,7 @@ export const mutations = {
             localStorage.tokenValidity = user.user.expiry;
         }
         else {
+            localStorage.clear();
             state.errors = user.user.error.response.data.error;
         }
 

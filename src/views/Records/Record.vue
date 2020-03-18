@@ -124,7 +124,7 @@
             currentRoute: function () {
                 return this.$route.params['id']
             },
-            ...mapState('records', ["currentRecord", "currentRecordHistory"]),
+            ...mapState('record', ["currentRecord", "currentRecordHistory"]),
             ...mapState('users', ["userLoggedIn"])
         },
         watch: {
@@ -160,13 +160,13 @@
                 }
                 this.queryTriggered = true;
             },
-            ...mapActions('records', ['fetchRecord', "fetchRecordHistory"]),
+            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
             /**
              * Method to dispatch the current record history into the store
              * @returns {Promise} - the current record history
              * */
             getHistory: async function(){
-                await this.$store.dispatch("records/fetchRecordHistory", this.currentRoute);
+                await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
             }
         },
         /**

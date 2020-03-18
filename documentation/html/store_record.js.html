@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: SearchOutputTable</title>
+	<title>FAIRsharing.org Source: store/record.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,110 +81,69 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: SearchOutputTable</h1>
+		<h1 class="page-title">Source: store/record.js</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import Client from "../components/GraphClient/GraphClient.js"
+import recordQuery from "../components/GraphClient/queries/getRecord.json"
+import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
 
-<header>
-    
-</header>
+let client = new Client();
 
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>This component produces the output table based on the received data.</p></div></div></p>
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-props">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Required?</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>input_data</code></td>
-        <td>Object</td>
-        <td>-</td>
-        <td><b>Yes</b></td>
-        <td>the data that comes from the API</td>
-    </tr></tbody>
-</table>
-<div class="container-overview"><div><p></div>
-        
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
+/**
+ * The record store handles the requests related to record (fairsharingRecord).
+ * @type {Object}
+ */
+let recordStore = {
+    namespaced: true,
+    state: {
+        currentRecord: {},
+        currentRecordHistory: {},
+    },
+    mutations: {
+        setCurrentRecord(state, data){
+            state.currentRecord = data;
+        },
+        setRecordHistory(state, data){
+            state.currentRecordHistory = data;
+        },
+        resetCurrentRecordHistory(state){
+            state.currentRecordHistory = {};
+        },
+    },
+    actions: {
+        async fetchRecord(state, id){
+            this.commit("record/resetCurrentRecordHistory");
+            recordQuery.queryParam = {
+                id: id
+            };
+            let data = await client.executeQuery(recordQuery);
+            this.commit('record/setCurrentRecord', data);
+        },
+        async fetchRecordHistory(state, id){
+            recordHistory.queryParam = {id: id};
+            let data = await client.executeQuery(recordHistory);
+            this.commit('record/setRecordHistory', data["fairsharingRecord"]);
+        }
+    },
+    modules: {
+    }
+};
 
 
+export default recordStore;
 
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -194,10 +153,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

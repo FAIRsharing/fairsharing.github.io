@@ -56,7 +56,7 @@
             this.triggered = true;
             let response = await client.requestResetPwd(this.formData.email);
             this.message = response.message;
-            this.error = response.success;
+            this.error = !response.success;
           }
         }
     }

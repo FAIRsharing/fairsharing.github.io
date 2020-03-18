@@ -95,6 +95,21 @@ class RESTClient {
     }
 
     /**
+     *
+     */
+    async requestResetPwd(email){
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/users/password",
+            headers: this.headers,
+            data: {
+                email: email
+            }
+        };
+        console.log(request);
+    }
+
+    /**
      * Reset the password of the given user
      * @param {String} jwt - token corresponding to your user account.
      * @returns {Promise}

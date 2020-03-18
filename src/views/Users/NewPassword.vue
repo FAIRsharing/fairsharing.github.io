@@ -1,5 +1,7 @@
 <template>
-
+  <v-layout column>
+    <h2> Request a new password</h2>
+  </v-layout>
 </template>
 
 <script>

@@ -52,6 +52,12 @@
                   @click:append="show1 = !show1"
                 />
 
+                <v-card-text class="text-left">
+                  <router-link to="/accounts/newPassword">
+                    Forgot your password ?
+                  </router-link>
+                </v-card-text>
+
                 <v-card-actions>
                   <v-btn
                     v-if="loggedIn === false"

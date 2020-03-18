@@ -26,6 +26,7 @@ import Educational from "../views/Static/Educational/Educational";
 import Privacy from "../views/Static/Privacy/Privacy";
 import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
 import User from "@/views/Users/User.vue"
+import NewPassword from "@/views/Users/NewPassword";
 
 Vue.use(VueRouter);
 
@@ -159,6 +160,11 @@ let routes = [
         name: "Confirm email",
         path: "/accounts/confirm",
         component: ConfirmAccount,
+    },
+    {
+        name: "Request a new password",
+        path: "/accounts/newPassword",
+        component: NewPassword,
     },
     {
         name: "User",

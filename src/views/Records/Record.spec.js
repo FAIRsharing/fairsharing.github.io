@@ -1,11 +1,11 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vuex from "vuex";
 import Vuetify from "vuetify"
 import Record from "./Record.vue";
 import VueMeta from "vue-meta";
 import Client from "../../components/GraphClient/GraphClient.js";
-import Vuex from "vuex";
-import records from "../../store/records";
-import users from "../../store/users";
+import record from "../../store/record.js";
+import users from "../../store/users.js";
 const sinon = require("sinon");
 
 const $route = {
@@ -15,14 +15,14 @@ const $route = {
     }
 };
 
-let localVue = createLocalVue();
-localVue.use(VueMeta);
+const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueMeta);
 let queryStub;
 
 const $store = new Vuex.Store({
     modules: {
-        records: records,
+        record: record,
         users: users,
     }
 });

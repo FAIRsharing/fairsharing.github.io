@@ -85,10 +85,9 @@ class RESTClient {
      */
     async confirmAccount(token){
         const request = {
-            method: "post",
-            baseURL: this.baseURL + "/users/confirmation",
+            method: "get",
+            baseURL: this.baseURL + "/users/confirmation?confirmation_token=" + token,
             headers: this.headers,
-            data: {name: token}
         };
         let response = await this.executeQuery(request);
         return response.data;
@@ -114,16 +113,15 @@ class RESTClient {
 
     /**
      * Reset the password of the given user
-     * @param {String} jwt - token corresponding to your user account.
+     * @param {Object} user - contains the new pwd, repeated pwd and token.
      * @returns {Promise}
      */
-    async resetPassword(jwt){
-        let headers = JSON.parse(JSON.stringify(this.headers));
-        headers['Authorization'] = 'Bearer ' + jwt;
+    async resetPassword(user){
         const request = {
-            method: "post",
+            method: "put",
             baseURL: this.baseURL + "/users/password",
-            headers: headers
+            headers: this.headers,
+            data: {user: user}
         };
         let response = await this.executeQuery(request);
         return response.data;

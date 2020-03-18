@@ -14,7 +14,7 @@ export default new Vuex.Store({
     modules: {
         searchFilters: searchFilters,
         records: records,
-        record:record,
+        record: record,
         introspection: introspection,
         users: users
     }

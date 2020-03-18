@@ -5,7 +5,7 @@ import recordHistory from '../components/GraphClient/queries/getRecordHistory.js
 let client = new Client();
 
 /**
- * The records store handles the requests related to records (searchFairsharingRecords and fairsharingRecord).
+ * The record store handles the requests related to record (fairsharingRecord).
  * @type {Object}
  */
 let recordStore = {

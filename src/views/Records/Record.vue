@@ -160,7 +160,7 @@
                 }
                 this.queryTriggered = true;
             },
-            ...mapActions('records', ['fetchRecord', "fetchRecordHistory"]),
+            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
             /**
              * Method to dispatch the current record history into the store
              * @returns {Promise} - the current record history

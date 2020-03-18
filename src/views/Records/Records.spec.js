@@ -59,7 +59,7 @@ describe("Records.vue", () => {
     });
 
     it("has a currentPath computed attribute", () => {
-        expect(wrapper.vm.currentPath[0]).toBe("Standard");
+        expect(wrapper.vm.currentPath[0]).toBe("Search");
     });
 
     it("can correctly raise an error", async () =>{

@@ -74,7 +74,7 @@
                 this.message = response;
                 if (response.error){
                     this.error = true;
-                    this.message = response.error.response
+                    this.message = response.error
                 }
             }
         }

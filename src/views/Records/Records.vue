@@ -2,6 +2,7 @@
   <div
     class="a outputGrid container-fluid"
   >
+    <h3>{{ this.currentPath }}</h3>
     <h1>{{ currentPath[1].fairsharingRegistry?currentPath[1].fairsharingRegistry:currentPath[0] }}</h1>
     <!-- PAGINATION -->
     <Pagination
@@ -99,12 +100,12 @@
         data() {
             return {
                 errors: null,
-                currentPanel: "AdvSearch"
+                currentPanel: "AdvSearch",
             }
         },
         computed: {
             currentPath: function () {
-                let title = this.$route.query.fairsharingRegistry !== undefined ? this.$route.query.fairsharingRegistry : 'search';
+                console.log(this.title);
                 document.title = this.setMetaTitle();
                 const client = this;
                 let queryParams = {};
@@ -114,12 +115,14 @@
                         queryParams[prop] = decodeURI(queryVal);
                     }
                 });
-                title = title.charAt(0).toUpperCase() + title.slice(1);
                 return [
-                    title,
+                    this.title.charAt(0).toUpperCase() + this.title.slice(1),
                     queryParams
                 ];
             },
+            title: function () {
+                return this.$route.query['fairsharingRegistry'] ? this.$route.query.fairsharingRegistry : 'search';
+            }
         },
         watch: {
             currentPath: async function () {

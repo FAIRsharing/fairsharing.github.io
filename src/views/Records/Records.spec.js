@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import Records from "./Records.vue";
@@ -35,12 +35,12 @@ describe("Records.vue", () => {
     let vuetify;
     let stub = sinon.stub(Client.prototype, "executeQuery");
 
-    beforeAll( () => {
+    beforeAll(() => {
         stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
     });
 
-    afterAll( () => {
-       Client.prototype.executeQuery.restore();
+    afterAll(() => {
+        Client.prototype.executeQuery.restore();
     });
 
     // Set up the wrapper
@@ -48,9 +48,10 @@ describe("Records.vue", () => {
     beforeEach(() => {
         vuetify = new Vuetify();
         wrapper = shallowMount(Records, {mocks: {$route, $store}, localVue, vuetify});
-        window.scrollTo = () => {};
+        window.scrollTo = () => {
+        };
     });
-    afterEach( () =>{
+    afterEach(() => {
         window.scrollTo = jsdomScrollTo;
     });
 
@@ -62,7 +63,7 @@ describe("Records.vue", () => {
         expect(wrapper.vm.currentPath[0]).toBe("Search");
     });
 
-    it("can correctly raise an error", async () =>{
+    it("can correctly raise an error", async () => {
         Client.prototype.executeQuery.restore();
         sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
             data: {
@@ -217,7 +218,7 @@ describe("Records.vue", () => {
         expect(queryParameters).toStrictEqual({
             test: 'abc',
             test2: 'abcdef',
-            test3: [ 'abc', ' def' ],
+            test3: ['abc', ' def'],
             test4: 123,
             test5: true
         })
@@ -233,6 +234,16 @@ describe("Records.vue", () => {
         $route.path = "/search";
         $route.query = {};
         expect(wrapper.vm.currentPath[0]).toBe("Search");
+    });
+
+    it("react to meta change", async () => {
+        $route.name = "Standards";
+        $route.query = {"fairsharingRegistry": "standard"};
+        expect(wrapper.vm.title).toBe("standard");
+
+        $route.name = "Search";
+        $route.query = {};
+        expect(wrapper.vm.title).toBe("search");
     });
 
 });

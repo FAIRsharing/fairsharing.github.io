@@ -5,7 +5,7 @@ import sinon from "sinon"
 import User from "@/views/Users/User.vue"
 import Client from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
-import usersStore from "../../src/store/users";
+import usersStore from "../../../../src/store/users";
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);

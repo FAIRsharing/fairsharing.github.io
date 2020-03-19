@@ -30,8 +30,7 @@ describe("User.vue", () => {
            data: {id: "12345"}
        });
        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-           data: {user: {name: "Terazus", expiry: undefined
-               }}
+           data: {user: {name: "Terazus"}}
        })
     });
 

@@ -4,7 +4,7 @@ import sinon from "sinon"
 
 describe('Mutations', () => {
 
-    it('can auto login', () => {
+    it('can autologin', () => {
         const state = {};
         mutations.autoLogin(state);
         expect(state).toStrictEqual({ userLoggedIn: true,

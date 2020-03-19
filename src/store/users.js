@@ -1,4 +1,4 @@
-import RESTClient from "@/components/Client/RESTClient.js"
+import RESTClient from "../components/Client/RESTClient.js"
 
 let client = new RESTClient();
 

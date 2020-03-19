@@ -24,10 +24,10 @@ import License from "../views/Static/License/License";
 import Terms from "../views/Static/TermOfUse/TermsOfUse";
 import Educational from "../views/Static/Educational/Educational";
 import Privacy from "../views/Static/Privacy/Privacy";
-import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
-import User from "@/views/Users/User.vue"
-import RequestNewPassword from "@/views/Users/RequestNewPassword";
-import ResetPassword from "@/views/Users/ResetPassword";
+import ConfirmAccount from "../views/Users/ConfirmAccount.vue"
+import User from "../views/Users/User.vue"
+import RequestNewPassword from "../views/Users/RequestNewPassword";
+import ResetPassword from "../views/Users/ResetPassword";
 
 Vue.use(VueRouter);
 

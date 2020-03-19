@@ -1,10 +1,10 @@
-import { mutations, actions } from "@/store/users.js"
-import Client from "@/components/Client/RESTClient.js"
+import { mutations, actions } from "src/store/users.js"
+import Client from "src/components/Client/RESTClient.js"
 import sinon from "sinon"
 
 describe('Mutations', () => {
 
-    it('can autologin', () => {
+    it('can auto login', () => {
         const state = {};
         mutations.autoLogin(state);
         expect(state).toStrictEqual({ userLoggedIn: true,

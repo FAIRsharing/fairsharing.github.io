@@ -43,33 +43,47 @@ export const actions = {
     async login(state, user){
         if (!localStorage.jwt){
             if (user){
-                let response = await client.login(user.name, user.password);
-                this.commit("users/login", {
-                    user: response,
-                    pwd: user.password
-                });
+                try {
+                    let response = await client.login(user.name, user.password);
+                    this.commit("users/login", {
+                        user: response,
+                        pwd: user.password
+                    });
+                }
+                catch(e){
+                    //
+                }
             }
         }
         else {
-            if (validateToken(state.tokenValidity)){
-                this.commit("users/autoLogin");
+            try {
+                if (validateToken(state.tokenValidity)) {
+                    this.commit("users/autoLogin");
+                } else {
+                    const user = {
+                        name: localStorage.username,
+                        password: localStorage.pwd
+                    };
+                    let response = await client.login(user.name, user.password);
+                    this.commit("users/login", {
+                        user: response,
+                        pwd: user.password
+                    });
+                }
             }
-            else {
-                const user = {
-                    name: localStorage.username,
-                    password: localStorage.pwd
-                };
-                let response = await client.login(user.name, user.password);
-                this.commit("users/login", {
-                    user: response,
-                    pwd: user.password
-                });
+            catch(e){
+                //
             }
         }
     },
     async logout(state, token){
-        await client.logout(token);
-        this.commit("users/logoutUser");
+        try {
+            await client.logout(token);
+            this.commit("users/logoutUser");
+        }
+        catch(e){
+            //
+        }
     }
 };
 

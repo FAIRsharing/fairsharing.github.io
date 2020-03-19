@@ -55,9 +55,9 @@ let labelsMapping = {
             filterLabel: "Type of records",
             type: "String"
         },
-        publications: {
-            filterName: "publications",
-            filterLabel: "Publication(s)",
+        journals: {
+            filterName: "journals",
+            filterLabel: "Journals(s)",
             type: "String"
         },
         status: {

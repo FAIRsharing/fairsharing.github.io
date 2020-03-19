@@ -37,7 +37,7 @@
                 <!-- account -->
                 <v-text-field
                   v-model="loginData.name"
-                  label="Username of email"
+                  label="Username or email"
                   required
                 />
 
@@ -51,6 +51,12 @@
                   required
                   @click:append="show1 = !show1"
                 />
+
+                <v-card-text class="text-left">
+                  <router-link to="/accounts/forgotPassword">
+                    Forgot your password ?
+                  </router-link>
+                </v-card-text>
 
                 <v-card-actions>
                   <v-btn

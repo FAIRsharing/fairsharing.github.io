@@ -23,12 +23,12 @@ let introspectionStore = {
                 state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
                 // if local localStorage.searchQueryParameters not exists, then create it.
                 if (!localStorage.searchQueryParameters) {
-                    console.log('created localStorage.searchQueryParameters');
+                    // console.log('created localStorage.searchQueryParameters');
                     localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
                 } else {
                     // if local localStorage.searchQueryParameters exists but the data arrived is new then update it
                     if (JSON.parse(localStorage.searchQueryParameters) !== JSON.parse(JSON.stringify(state.searchQueryParameters))) {
-                        console.log('update localStorage.searchQueryParameters with new data');
+                        // console.log('update localStorage.searchQueryParameters with new data');
                         localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
                     }
                     state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
@@ -44,13 +44,13 @@ let introspectionStore = {
         async fetchParameters() {
             // if local localStorage.intorspectionQuery not exists, then create it.
             if (!localStorage.intorspectionQuery) {
-                console.log(localStorage.intorspectionQuery);
+                // console.log(localStorage.intorspectionQuery);
                 let data = await client.getData(introspectionQuery);
                 localStorage.intorspectionQuery = JSON.stringify(data.data);
                 this.commit("introspection/setParameters", data.data);
             } else {
                 // Otherwise, read from localStorage.intorspectionQuery .
-                console.log(JSON.parse(localStorage.intorspectionQuery));
+                // console.log(JSON.parse(localStorage.intorspectionQuery));
                 this.commit("introspection/setParameters", JSON.parse(localStorage.intorspectionQuery));
             }
         }

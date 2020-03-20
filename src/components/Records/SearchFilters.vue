@@ -84,7 +84,10 @@
         computed: {
             ...mapState("searchFilters", ["filters"])
         },
-        methods: {
+      updated() {
+        // console.log(this.filters);
+      },
+      methods: {
           /**
            * Apply the filters by building the new query parameters using the form data.
            */
@@ -119,7 +122,7 @@
            */
           cleanString: function(string){
             let cleanedString = string;
-            if (string.indexOf("_") > -1){
+            if (string.includes('_')){
               cleanedString = string.replace(/_/g, " ");
               this.stringsReplacement[cleanedString] = string;
             }

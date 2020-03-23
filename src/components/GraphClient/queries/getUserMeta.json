@@ -27,7 +27,8 @@
         "type",
         "name",
         "description",
-        "doi"
+        "doi",
+        "legacyIds"
       ]
     },
     {
@@ -37,7 +38,8 @@
         "type",
         "name",
         "description",
-        "doi"
+        "doi",
+        "legacyIds"
       ]
     },
     {
@@ -47,7 +49,8 @@
         "type",
         "name",
         "description",
-        "doi"
+        "doi",
+        "legacyIds"
       ]
     }
   ]

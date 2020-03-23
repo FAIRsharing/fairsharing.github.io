@@ -27,10 +27,20 @@ describe("User.vue", () => {
 
     beforeAll( () => {
        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-           data: {id: "12345"}
+           data: {id: "12345", name: "Terazus"}
        });
        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-           data: {user: {name: "Terazus"}}
+           user: {
+               name: "Terazus",
+               maintenanceRequests: [
+                   {
+                       fairsharingRecord: {
+                           name: "recordTest"
+                       }
+
+                   }
+               ]
+           }
        })
     });
 
@@ -57,5 +67,10 @@ describe("User.vue", () => {
         await wrapper.vm.logoutUser();
         expect(wrapper.vm.$route.path).toBe("/accounts/login");
     });
+
+    it("has a getRecords methods that sorts the records for easy use", () => {
+        let records = wrapper.vm.getRecords('maintenanceRequests');
+        expect(records).toStrictEqual([{name: "recordTest"}])
+    })
 
 });

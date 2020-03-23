@@ -47,6 +47,7 @@ let introspectionStore = {
             let ValidatedMonth = currentMonth + validTimeRange.month;
             let ValidatedDay = currentDay + validTimeRange.day;
 
+/*
             console.log("date", date);
             console.log("currentMonth", currentMonth);
             console.log("currentDay", currentDay);
@@ -54,12 +55,15 @@ let introspectionStore = {
             console.log("ValidatedMonth", ValidatedMonth);
             console.log("ValidatedDay", ValidatedDay);
             console.log("ValidatedYear", ValidatedYear);
+*/
 
-            let currentDate = String(currentYear) + String(currentMonth) + String(currentDay);
+            // let currentDate = String(currentYear) + String(currentMonth) + String(currentDay);
             localStorage.expiryDate = String(ValidatedYear) + String(ValidatedMonth) + String(ValidatedDay);
 
+/*
             console.log("currentDate", currentDate);
             console.log(localStorage.expiryDate);
+*/
         },
         getLocalStorageExpiryTime: function () {
             return localStorage.expiryDate
@@ -75,29 +79,36 @@ let introspectionStore = {
                 const currentDay = date.getDate();
                 let currentDate = String(currentYear) + String(currentMonth) + String(currentDay);
 
+/*
                 console.log("currentDate", currentDate);
                 console.log(localStorage.expiryDate);
+                console.log(currentDate > localStorage.expiryDate);
+*/
 
-                if (JSON.stringify(localStorage.expiryDate) < currentDate) {
-                    console.log('outdated session')
+                if (currentDate > localStorage.expiryDate) {
+                    // console.log('outdated session - call the api to update');
+                    let data = await client.getData(introspectionQuery);
+                    localStorage.intorspectionQuery = JSON.stringify(data.data);
+                    let validTimeRange = {day: 1, month: 0, year: 0};
+                    this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
+
+                    // localStorage.expiryDate = new Date() +;
+                    this.commit("introspection/setParameters", data.data);
                 } else {
-                    console.log('valid session')
+                    // Otherwise, read from localStorage.intorspectionQuery .
+                    // console.log(JSON.parse(localStorage.intorspectionQuery));
+                    this.commit("introspection/setParameters", JSON.parse(localStorage.intorspectionQuery));
                 }
-            }
-
-            if (!localStorage.intorspectionQuery) {
+                //session still is valid. returns and do not execute the rest of the code.
+            } else if (!localStorage.intorspectionQuery) {
                 // console.log(localStorage.intorspectionQuery);
                 let data = await client.getData(introspectionQuery);
                 localStorage.intorspectionQuery = JSON.stringify(data.data);
-                let validTimeRange = {day: 0, month: 0, year: 0};
+                let validTimeRange = {day: 1, month: 0, year: 0};
                 this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
 
                 // localStorage.expiryDate = new Date() +;
                 this.commit("introspection/setParameters", data.data);
-            } else {
-                // Otherwise, read from localStorage.intorspectionQuery .
-                // console.log(JSON.parse(localStorage.intorspectionQuery));
-                this.commit("introspection/setParameters", JSON.parse(localStorage.intorspectionQuery));
             }
         }
     },

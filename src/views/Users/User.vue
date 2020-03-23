@@ -182,7 +182,6 @@
             getRecords: function(fieldName){
               let output = this.userDetail[fieldName];
               if (fieldName === "maintenanceRequests"){
-                console.log(this.userDetail[fieldName]);
                 output = [];
                 this.userDetail[fieldName].forEach(function(record){
                   output.push(record["fairsharingRecord"])

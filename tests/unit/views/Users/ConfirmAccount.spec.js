@@ -36,7 +36,7 @@ describe('ConfirmAccount.vue', () => {
         });
         const title = "ConfirmAccount";
         expect(wrapper.name()).toMatch(title);
-        expect(wrapper.vm.message.message).toBe("No token")
+        expect(wrapper.vm.message).toBe("No token")
     });
 
     it("can validate a token", async () => {

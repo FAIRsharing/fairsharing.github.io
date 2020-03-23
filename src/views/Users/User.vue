@@ -187,7 +187,6 @@
                   output.push(record["fairsharingRecord"])
                 });
               }
-              console.log(output);
               return output;
             }
         }

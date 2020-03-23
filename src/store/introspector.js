@@ -64,9 +64,6 @@ let introspectionStore = {
             console.log("currentDate", currentDate);
             console.log(localStorage.expiryDate);
 */
-        },
-        getLocalStorageExpiryTime: function () {
-            return localStorage.expiryDate
         }
     },
     actions: {

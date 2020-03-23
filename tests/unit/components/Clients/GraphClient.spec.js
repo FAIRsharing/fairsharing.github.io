@@ -1,20 +1,21 @@
 import Client from "@/components/GraphClient/GraphClient.js"
 import query from "@/components/GraphClient/queries/getRecords.json"
+
 const sinon = require("sinon");
 const axios = require("axios");
 
-describe("GraphQL Client", function(){
+describe("GraphQL Client", function () {
     let client;
     const searchFairsharingRecords = {records: [{}]};
     let postStub = sinon.stub(axios, "post");
     const stubQuery = {};
     let localQuery = {};
 
-    beforeEach( () => {
+    beforeEach(() => {
         localQuery = Object.assign(stubQuery, query);
     });
 
-    beforeAll( () => {
+    beforeAll(() => {
         client = new Client();
         postStub.withArgs(sinon.match.any).returns({
             data: {
@@ -29,20 +30,12 @@ describe("GraphQL Client", function(){
         postStub.restore()
     });
 
-    it("can be instantiated as a singleton", function(){
-       const instance2 = new Client();
-       expect(client).toBe(instance2.constructor["_instance"]);
+    it("can be instantiated as a singleton", function () {
+        const instance2 = new Client();
+        expect(client).toBe(instance2.constructor["_instance"]);
     });
 
-    it("can execute a query", async function(){
-        let stub = sinon.stub(Client.prototype, "getData")
-        stub.withArgs(sinon.match.any).returns({
-            data: {
-                data: {
-                    searchFairsharingRecords
-                }
-            }
-        });
+    it("can execute a query", async function () {
         localQuery.queryParam = {};
         localQuery.queryParam["fairsharingRegistry"] = "Standard";
         localQuery.queryParam["isRecommended"] = true;
@@ -53,6 +46,23 @@ describe("GraphQL Client", function(){
             }
         }));
 
+        let output2 = await client.getData(localQuery);
+        expect(JSON.stringify(output2.data)).toBe(JSON.stringify({
+            data: {
+                searchFairsharingRecords: {
+                    records: [{}]
+                }
+            }
+        }));
+
+    });
+
+    it("can check either function returns errors or correct response ", async function () {
+        let stub = sinon.stub(Client.prototype, "getData");
+        localQuery.queryParam = {};
+        localQuery.queryParam["fairsharingRegistry"] = "Standard";
+        localQuery.queryParam["isRecommended"] = true;
+
         stub.withArgs(sinon.match.any).returns({
             data: {
                 errors: [
@@ -61,14 +71,31 @@ describe("GraphQL Client", function(){
             }
         });
         await expect(client.executeQuery(localQuery)).rejects;
+        stub.withArgs(sinon.match.any).returns({
+            data: {
+                data: {
+                    searchFairsharingRecords
+                }
+            }
+        });
+
+        await expect(client.executeQuery(localQuery)).resolves.toBe(JSON.stringify({
+            searchFairsharingRecords: {
+                records: [{}]
+            }
+        }));
+
+
         Client.prototype.getData.restore();
+
     });
 
-    it("can correctly build a query string from a JSON", function() {
+
+    it("can correctly build a query string from a JSON", function () {
         const expectedOutput = "searchFairsharingRecords(field1:true field2:\"true\" field3:[\"true\",\"false\"]){ " +
             "aggregations currentPage perPage totalCount totalPages firstPage records{id type name abbreviation registry " +
             "domains{ label}subjects{ label}taxonomies{ label}recordAssociations{ linkedRecord{name id registry } " +
-            "recordAssocLabel}status isRecommended }}" ;
+            "recordAssocLabel}status isRecommended }}";
         query.queryParam = {
             "field1": true,
             "field2": "true",

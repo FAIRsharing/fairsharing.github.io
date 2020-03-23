@@ -101,7 +101,6 @@
 
 <script>
     import { mapActions } from 'vuex'
-
     /** This component handles the login page
      *
      */
@@ -129,7 +128,7 @@
                     token: this.$store.state.users.currentUserToken
                 }
             }
-       },
+        },
         methods: {
             ...mapActions('users', ['login', 'logout']),
             logUser: async function(){
@@ -150,5 +149,4 @@
 </script>
 
 <style scoped>
-
 </style>

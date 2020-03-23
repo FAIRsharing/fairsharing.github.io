@@ -99,7 +99,6 @@ let introspectionStore = {
                     // console.log(JSON.parse(localStorage.intorspectionQuery));
                     this.commit("introspection/setParameters", JSON.parse(localStorage.intorspectionQuery));
                 }
-                //session still is valid. returns and do not execute the rest of the code.
             } else if (!localStorage.intorspectionQuery) {
                 // console.log(localStorage.intorspectionQuery);
                 let data = await client.getData(introspectionQuery);

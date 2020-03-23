@@ -45,7 +45,7 @@ describe("SearchFilters.vue", () => {
                                         {key: "the_united_of_canada"}
                                     ]
                                 },
-                                publications: {
+                                journals: {
                                     buckets: [
                                         {
                                             key_as_string: "a publication",
@@ -88,20 +88,20 @@ describe("SearchFilters.vue", () => {
         await wrapper.vm.$store.dispatch('searchFilters/fetchFilters', client);
         expect(wrapper.vm.filters[0].filterName).toMatch("id");
         expect(wrapper.vm.filters[1].filterName).toMatch("countries");
-        expect(wrapper.vm.filters[2].filterName).toMatch("publications");
+        expect(wrapper.vm.filters[2].filterName).toMatch("journals");
         await wrapper.vm.$store.dispatch('searchFilters/fetchFilters', client);
     });
 
     it("can append/modify query parameters", async () => {
         await wrapper.vm.$store.dispatch('searchFilters/fetchFilters', client);
         wrapper.vm.form.data = {
-            publications: "pub1"
+            journals: "pub1"
         };
         await wrapper.vm.applyFilters();
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
 
         wrapper.vm.cleanString("test_something");
-        wrapper.vm.form.data = {countries: "the united of canada", publications: "test_something"};
+        wrapper.vm.form.data = {countries: "the united of canada", journals: "test_something"};
         await wrapper.vm.applyFilters();
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     });
@@ -109,7 +109,7 @@ describe("SearchFilters.vue", () => {
     it("can reset the filter values", async () => {
         await wrapper.vm.$store.dispatch('searchFilters/fetchFilters', client);
         wrapper.vm.form.data = {
-            publications: "pub1"
+            journals: "pub1"
         };
         wrapper.vm.reset();
         expect(wrapper.vm.form.data).toStrictEqual({});

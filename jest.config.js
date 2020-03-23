@@ -13,7 +13,7 @@ module.exports = {
         "!src/plugins/**"
     ],
     testMatch: [
-        "**/**.spec.js", "**/**/**.spec.js"
+        "**/**.spec.js", "**/**/**.spec.js", "tests/**/**.spec.js", "tests/**/**/**.spec.js"
     ],
     setupFiles: [
       "./jest-setup.js"

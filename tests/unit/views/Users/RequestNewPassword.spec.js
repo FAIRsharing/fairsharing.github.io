@@ -38,6 +38,6 @@ describe('ConfirmAccount.vue', () => {
         };
         await wrapper.vm.sendEmail();
         expect(wrapper.vm.message).toMatch("Hello");
-        expect(wrapper.vm.error).toBe(false);
+        expect(wrapper.vm.success).toBe(true);
     });
 });

@@ -159,7 +159,7 @@ let routes = [
     },
     {
         name: "Confirm email",
-        path: "/accounts/confirm",
+        path: "/users/confirmation",
         component: ConfirmAccount,
     },
     {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container class="container--fluid">
     <h2>
       Confirm your account:
     </h2>
@@ -7,41 +7,34 @@
       class="alert"
       :class="{'alert-success': !error, 'alert-danger': error}"
     >
-      {{ message.message }}
+      {{ message }}
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
-    import RESTclient from "@/components/Client/RESTClient.js"
-    const client = new RESTclient();
+    import RESTClient from "@/components/Client/RESTClient.js"
+    const client = new RESTClient();
 
     export default {
         name: "ConfirmAccount",
         data: () => {
             return {
-                message: {
-                  message: null
-                },
+                message: null,
                 error: false
-            }
-        },
-        computed: {
-            getToken: function(){
-                if (this.$route.query.token){
-                    return this.$route.query.token
-                }
-                return false;
             }
         },
         async created(){
             this.error = false;
-            if (this.getToken){
-              this.message = await client.confirmAccount(this.getToken);
+            const token = (this.$route.query.confirmation_token) ? this.$route.query.confirmation_token : false;
+            if (token){
+              let response = await client.confirmAccount(token);
+              this.message = response;
+              this.error = !response.success
             }
             else {
                 this.error = true;
-                this.message.message = "No token"
+                this.message = "No token"
             }
         }
     }

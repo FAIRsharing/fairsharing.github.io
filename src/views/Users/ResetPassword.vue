@@ -8,8 +8,9 @@
       >
         <h2>Reset your password</h2>
         <div
-          v-if="error"
-          class="alert alert-danger"
+          v-if="message"
+          class="alert"
+          :class="{'alert-danger': error, 'alert-success': !error}"
         >
           {{ message }}
         </div>
@@ -57,7 +58,7 @@
         mounted() {
             this.$nextTick(async function () {
                 const params = this.$route.query;
-                if (!Object.keys(params).includes('token')){
+                if (!Object.keys(params).includes('reset_password_token')){
                     this.error = true;
                     this.message = "Missing token"
                 }
@@ -68,7 +69,7 @@
                 let query = {
                     password: this.formData.password,
                     password_confirmation: this.formData.passwordRepeat,
-                    reset_password_token: this.$route.query.token
+                    reset_password_token: this.$route.query.reset_password_token
                 };
                 let response = await client.resetPassword(query);
                 this.message = response;

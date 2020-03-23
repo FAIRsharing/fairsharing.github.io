@@ -1,0 +1,54 @@
+{
+  "queryName": "user",
+  "queryParam": {
+    "id": null
+  },
+  "fields": [
+    {
+      "name": "maintenanceRequests",
+      "fields": [
+        {
+          "queryName": "fairsharingRecord",
+          "fields": [
+            "id",
+            "name",
+            "type",
+            "description",
+            "doi",
+            "legacyIds"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "createdRecords",
+      "fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "doi"
+      ]
+    },
+    {
+      "name": "maintainedRecords",
+      "fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "doi"
+      ]
+    },
+    {
+      "name": "recordsInCuration",
+      "fields": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "doi"
+      ]
+    }
+  ]
+}

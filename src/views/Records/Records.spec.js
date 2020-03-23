@@ -1,6 +1,9 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
 import Vuetify from "vuetify"
+import VueMeta from "vue-meta";
+import VueRouter from "vue-router"
+
 import Records from "./Records.vue";
 import Client from "../../components/GraphClient/GraphClient.js";
 import records from "../../store/records.js"
@@ -11,7 +14,10 @@ const axios = require("axios");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueMeta);
+
 const $route = {
+    name: "Standards",
     path: "/standards",
     query: {
         grants: "string",
@@ -45,10 +51,14 @@ describe("Records.vue", () => {
 
     // Set up the wrapper
     let wrapper;
-    beforeEach(() => {
+    beforeEach(async () => {
         vuetify = new Vuetify();
-        wrapper = shallowMount(Records, {mocks: {$route, $store}, localVue, vuetify});
         window.scrollTo = () => {};
+        wrapper = await shallowMount(Records, {
+            mocks: {$route, $store},
+            localVue,
+            vuetify
+        });
     });
     afterEach( () =>{
         window.scrollTo = jsdomScrollTo;
@@ -235,5 +245,26 @@ describe("Records.vue", () => {
         $route.query = {};
         expect(wrapper.vm.currentPath[0]).toBe("Search");
     });
+
+    it("can correctly redirect", async () => {
+        $route.path = "/standards";
+        $route.params = {fairsharingRegistry: "Standard"};
+        $route.query = {fairsharingRegistry: "Standard"};
+        const $router = {
+            push: jest.fn(),
+        };
+        let localWrapper = await shallowMount(Records, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify
+        });
+        await localWrapper.vm.tryRedirect();
+        expect($router.push).toHaveBeenCalledTimes(2);
+        $route.name = "test";
+        $route.params = {fairsharingRegistry: "123"};
+        $route.query = {fairsharingRegistry: "123"};
+        await localWrapper.vm.tryRedirect();
+        expect($router.push).toHaveBeenCalledTimes(2);
+    })
 
 });

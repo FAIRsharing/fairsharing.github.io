@@ -2,7 +2,7 @@
   <div
     class="a outputGrid container-fluid"
   >
-    <h1>{{ currentPath[0] }}</h1>
+    <h1>{{ getTitle }}</h1>
 
     <!-- PAGINATION -->
     <Pagination
@@ -85,6 +85,7 @@
      * @vue-data {String} [Errors  = null] - a string message in case an error arises.
      * @vue-data {String} [currentPanel = "AdvSearch"] - the current panel to display between currentPanel and Facets (to be removed)
      * @vue-computed {String} currentPath - the path of the current page.
+     * @vue-computed {String} getTitle - return "Search" of the fairsharing Registry name.
      * @vue-event {Promise} fetchRecords - Method to get the records based on the given parameters from the recordsStore
      */
 
@@ -131,14 +132,26 @@
                     queryParams
                 ];
             },
+            getTitle: function(){
+              const flipRecordTypes = Object.entries(this.recordTypes).reduce((obj, [key, value]) => ({ ...obj, [value]: key }), {});
+              let title = "Search" ;
+              if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')){
+                if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)){
+                  title = flipRecordTypes[this.$route.query.fairsharingRegistry];
+                }
+              }
+              return title;
+            }
         },
         watch: {
             currentPath: async function (){
-                await this.getData();
+              this.tryRedirect();
+              await this.getData();
             }
         },
         mounted: function () {
             this.$nextTick(async function () {
+                this.tryRedirect();
                 await this.getData();
             })
         },
@@ -147,6 +160,28 @@
             this.$store.dispatch("records/resetRecords").then(function(){});
         },
         methods: {
+          /**
+           * Try to redirect to search of the page that is hit is /standards /databases
+           * /policies or /collections
+           * */
+            tryRedirect: async function(){
+                if (Object.keys(this.recordTypes).includes(this.$route.name)){
+                    let fairsharingRegistry = this.recordTypes[this.$route.name];
+                    let query = this.$route.params;
+                    if (query) {
+                      query.fairsharingRegistry = fairsharingRegistry;
+                      try {
+                        this.$router.push({
+                          name: "search",
+                          query: query
+                        });
+                      }
+                      catch(e){
+                        //
+                      }
+                    }
+                }
+            },
             /** This methods get the data from the client.
              * @returns {Promise}
              */
@@ -177,7 +212,16 @@
             setPanel: function(panelName){
               this.currentPanel = panelName;
             }
-        }
+        },
+        /**
+         * Setting up the metaInfo of the page
+         * @returns {{title: String}}
+         * */
+        metaInfo() {
+          return {
+            title: 'FAIRsharing | ' + this.getTitle
+          }
+        },
     }
 
 </script>

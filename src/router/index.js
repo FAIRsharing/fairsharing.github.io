@@ -4,6 +4,7 @@ Separate routing handle to avoid a big main.js
 
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from '../store'
 
 import Home from "../views/Home/Home";
 import Login from "../views/Users/Login";
@@ -23,6 +24,10 @@ import License from "../views/Static/License/License";
 import Terms from "../views/Static/TermOfUse/TermsOfUse";
 import Educational from "../views/Static/Educational/Educational";
 import Privacy from "../views/Static/Privacy/Privacy";
+import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
+import User from "@/views/Users/User.vue"
+import RequestNewPassword from "@/views/Users/RequestNewPassword";
+import ResetPassword from "@/views/Users/ResetPassword";
 
 Vue.use(VueRouter);
 
@@ -153,6 +158,29 @@ let routes = [
         component: Signup,
     },
     {
+        name: "Confirm email",
+        path: "/accounts/confirm",
+        component: ConfirmAccount,
+    },
+    {
+        name: "Request a new password",
+        path: "/accounts/forgotPassword",
+        component: RequestNewPassword,
+    },
+    {
+        name: "Reset your password",
+        path: "/users/password/edit",
+        component: ResetPassword
+    },
+    {
+        name: "User",
+        path: "/users/:id",
+        component: User,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+        }
+    },
+    {
         name: "*",
         path: "*/*",
         redirect: "/"
@@ -178,6 +206,17 @@ const router = new VueRouter({
 export function beforeEach(to, from, next) {
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
     next()
+}
+
+export function isLoggedIn(to, from, next, store) {
+    if (store.state.users.userLoggedIn) {
+        next()
+    }
+    else {
+        next({
+            name: "Login" // back to safety route //
+        });
+    }
 }
 
 export default router;

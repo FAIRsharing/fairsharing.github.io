@@ -1,7 +1,5 @@
 import Client from "../components/GraphClient/GraphClient.js"
 import recordsQuery from "../components/GraphClient/queries/getRecords.json"
-import recordQuery from "../components/GraphClient/queries/getRecord.json"
-import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
 import filterMapping from "../components/Records/FiltersLabelMapping.js"
 
 let client = new Client();
@@ -15,8 +13,6 @@ let recordsStore = {
     state: {
         records: [],
         facets: [],
-        currentRecord: {},
-        currentRecordHistory: {},
         totalPages: null,
         hits: null,
     },
@@ -30,15 +26,6 @@ let recordsStore = {
         resetRecords(state){
             recordsQuery.queryParam = null;
             state.records = [];
-        },
-        setCurrentRecord(state, data){
-            state.currentRecord = data;
-        },
-        setRecordHistory(state, data){
-            state.currentRecordHistory = data;
-        },
-        resetCurrentRecordHistory(state){
-            state.currentRecordHistory = {};
         },
         resetFacets(state){
             state.facets = [];
@@ -56,19 +43,6 @@ let recordsStore = {
             }
             const data = await client.executeQuery(recordsQuery);
             this.commit('records/setRecords', data["searchFairsharingRecords"]);
-        },
-        async fetchRecord(state, id){
-            this.commit("records/resetCurrentRecordHistory");
-            recordQuery.queryParam = {
-                id: id
-            };
-            let data = await client.executeQuery(recordQuery);
-            this.commit('records/setCurrentRecord', data);
-        },
-        async fetchRecordHistory(state, id){
-            recordHistory.queryParam = {id: id};
-            let data = await client.executeQuery(recordHistory);
-            this.commit('records/setRecordHistory', data["fairsharingRecord"]);
         },
         resetFacets(){
             this.commit("records/resetFacets")

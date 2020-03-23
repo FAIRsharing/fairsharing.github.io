@@ -53,7 +53,7 @@
 
                       <v-expansion-panel-content>
                         <div class="body-1 py-5">
-                          <div v-if="records.length === undefined || records.length > 0">
+                          <div v-if="records.length > 0">
                             <div class="container--fluid">
                               <v-row>
                                 <v-col

@@ -8,7 +8,7 @@
       >
         <h2> Request a new password</h2>
         <div
-          v-if="triggered"
+          v-if="triggered && message"
           class="alert"
           :class="{'alert-success': success, 'alert-danger': !success}"
         >
@@ -56,7 +56,7 @@
             this.triggered = true;
             let response = await client.requestResetPwd(this.formData.email);
             this.message = response.message;
-            this.error = !response.success;
+            this.success = response.success;
           }
         }
     }

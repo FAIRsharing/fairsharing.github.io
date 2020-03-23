@@ -37,16 +37,62 @@ let introspectionStore = {
             } catch (e) {
                 state.error = "Can't initialize application"
             }
+        },
+        setLocalStorageExpiryTime: function (_, validTimeRange) {
+            let date = new Date();
+            const currentYear = date.getFullYear();
+            let currentMonth = date.getMonth() + 1;
+            const currentDay = date.getDate();
+            let ValidatedYear = currentYear + validTimeRange.year;
+            let ValidatedMonth = currentMonth + validTimeRange.month;
+            let ValidatedDay = currentDay + validTimeRange.day;
 
+            console.log("date", date);
+            console.log("currentMonth", currentMonth);
+            console.log("currentDay", currentDay);
+            console.log("currentYear", currentYear);
+            console.log("ValidatedMonth", ValidatedMonth);
+            console.log("ValidatedDay", ValidatedDay);
+            console.log("ValidatedYear", ValidatedYear);
+
+            let currentDate = String(currentYear) + String(currentMonth) + String(currentDay);
+            localStorage.expiryDate = String(ValidatedYear) + String(ValidatedMonth) + String(ValidatedDay);
+
+            console.log("currentDate", currentDate);
+            console.log(localStorage.expiryDate);
+        },
+        getLocalStorageExpiryTime: function () {
+            return localStorage.expiryDate
         }
     },
     actions: {
         async fetchParameters() {
             // if local localStorage.intorspectionQuery not exists, then create it.
+            if (localStorage.expiryDate) {
+                let date = new Date();
+                const currentYear = date.getFullYear();
+                let currentMonth = date.getMonth() + 1;
+                const currentDay = date.getDate();
+                let currentDate = String(currentYear) + String(currentMonth) + String(currentDay);
+
+                console.log("currentDate", currentDate);
+                console.log(localStorage.expiryDate);
+
+                if (JSON.stringify(localStorage.expiryDate) < currentDate) {
+                    console.log('outdated session')
+                } else {
+                    console.log('valid session')
+                }
+            }
+
             if (!localStorage.intorspectionQuery) {
                 // console.log(localStorage.intorspectionQuery);
                 let data = await client.getData(introspectionQuery);
                 localStorage.intorspectionQuery = JSON.stringify(data.data);
+                let validTimeRange = {day: 0, month: 0, year: 0};
+                this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
+
+                // localStorage.expiryDate = new Date() +;
                 this.commit("introspection/setParameters", data.data);
             } else {
                 // Otherwise, read from localStorage.intorspectionQuery .
@@ -104,3 +150,4 @@ const parseParam = function (param, paramVal) {
     }
     return paramVal
 };
+

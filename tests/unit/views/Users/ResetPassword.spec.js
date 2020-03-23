@@ -11,7 +11,7 @@ const router = new VueRouter();
 const $route = {
     path: "/",
     query: {
-        token: "imatoken"
+        reset_password_token: "imatoken"
     }
 };
 

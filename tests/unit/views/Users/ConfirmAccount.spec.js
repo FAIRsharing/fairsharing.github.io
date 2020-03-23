@@ -11,7 +11,7 @@ const router = new VueRouter();
 const $route = {
     path: "/hhh",
     query: {
-        token: "imatoken"
+        confirmation_token: "imatoken"
     }
 };
 
@@ -46,7 +46,7 @@ describe('ConfirmAccount.vue', () => {
             secondLocalVue,
             router
         });
-        expect(wrapper.vm.message).toStrictEqual({message: null});
+        expect(wrapper.vm.message).toBe(null);
     });
 
 });

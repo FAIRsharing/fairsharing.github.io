@@ -86,9 +86,9 @@ export const actions = {
             }
         }
     },
-    async logout(state, token){
+    async logout(state){
         try {
-            await client.logout(token);
+            await client.logout(state.state.currentUserToken);
             this.commit("users/logoutUser");
         }
         catch(e){

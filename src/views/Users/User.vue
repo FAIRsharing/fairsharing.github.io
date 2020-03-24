@@ -14,6 +14,7 @@
                 Welcome, {{ $store.state.users.currentUserID }}
               </v-list-item-title>
             </v-list-item-content>
+            <user-profile-menu />
           </v-list-item>
 
           <v-card-text class="container-fluid">
@@ -107,63 +108,6 @@
               </v-list-item-content>
             </v-list-item>
           </v-card-text>
-
-          <v-card-actions>
-            <v-btn @click="logoutUser()">
-              Logout
-            </v-btn>
-
-            <!-- Reset PWD dialog box -->
-            <template>
-              <div class="text-center">
-                <v-dialog
-                  v-model="dialog"
-                  width="500"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-btn
-                      color="red lighten-2"
-                      dark
-                      v-on="on"
-                      @click="resetPwd()"
-                    >
-                      Reset Password
-                    </v-btn>
-                  </template>
-
-                  <v-card v-if="userResetPwdMessage">
-                    <v-card-title
-                      class="headline grey lighten-2"
-                      primary-title
-                    >
-                      Your password has been reset
-                    </v-card-title>
-                    <v-card-text>
-                      <div
-                        class="alert mt-10"
-                        :class="{'alert-danger': !userResetPwdMessage.success, 'alert-success': userResetPwdMessage.success, }"
-                      >
-                        {{ userResetPwdMessage.message }}
-                      </div>
-                    </v-card-text>
-
-                    <v-divider />
-
-                    <v-card-actions>
-                      <v-spacer />
-                      <v-btn
-                        color="primary"
-                        text
-                        @click="dialog = false"
-                      >
-                        Ok
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </div>
-            </template>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -172,6 +116,7 @@
 
 <script>
     import { mapActions, mapState } from "vuex"
+    import UserProfileMenu from "../../components/Users/UserProfileMenu";
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -179,7 +124,8 @@
 
     export default {
         name: "User",
-        filters: {
+      components: {UserProfileMenu},
+      filters: {
           cleanString: function(str){
             return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
           }
@@ -187,7 +133,6 @@
         data: () => {
           return {
               panel: 0,
-              dialog: false,
               hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"]
           }
         },
@@ -210,11 +155,7 @@
             await this.getUser();
         },
         methods: {
-            ...mapActions('users', ['logout', 'getUser', 'resetPwd']),
-            logoutUser: async function(){
-                await this.logout(this.$store.state.users.currentUserToken);
-                this.$router.push({name: "Login"})
-            },
+            ...mapActions('users', ['getUser', 'resetPwd']),
             getRecords: function(fieldName){
               let output = this.userRecords[fieldName];
               if (fieldName === "maintenanceRequests"){

@@ -2,7 +2,6 @@ import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueMeta from "vue-meta";
-
 import Records from "./Records.vue";
 import Client from "@/components/GraphClient/GraphClient.js";
 import records from "../../store/records.js"
@@ -169,22 +168,6 @@ describe("Records.vue", () => {
         Client.prototype.getData.restore();
 
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedValDif);
-        wrapper.vm.$store.state.introspection._localStorage= {searchQueryParameters:'a'};
-        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-        expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
-            name: "test",
-            description: "testDescription",
-            type: "String",
-            defaultValue: "1"
-        }, {
-            name: "test2",
-            description: "testDescription",
-            type: "String",
-            defaultValue: "1"
-        }
-        ]);
-
-        wrapper.vm.$store.state.introspection._localStorage= {searchQueryParameters:returnedVal};
         await wrapper.vm.$store.dispatch("introspection/fetchParameters");
         expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
             name: "test",
@@ -200,6 +183,20 @@ describe("Records.vue", () => {
         ]);
         Client.prototype.getData.restore();
 
+        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
+
+        wrapper.vm.$store.state.introspection.searchQueryParameters={};
+        // localStorage.searchQueryParameters= undefined;
+        wrapper.vm.$store.state.introspection.searchQueryParameters = returnedVal;
+        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+        expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
+            name: "test",
+            description: "testDescription",
+            type: "String",
+            defaultValue: "1"
+        }
+        ]);
+        Client.prototype.getData.restore();
 
 
     });

@@ -166,7 +166,7 @@
 &lt;/template>
 
 &lt;script>
-    import { mapActions } from 'vuex'
+    import {mapActions} from 'vuex'
     import OutputGrid from '../../components/Records/SearchOutputGrid'
     import SearchFilters from "../../components/Records/SearchFilters"
     import Facets from "../../components/Records/Facets";
@@ -205,19 +205,18 @@
         },
         computed: {
             currentPath: function () {
-                let title =  this.$route.path.replace('/', '');
+                let title = this.$route.path.replace('/', '');
                 const client = this;
                 let queryParams = {};
-                Object.keys(this.$route.query).forEach(function(prop){
+                Object.keys(this.$route.query).forEach(function (prop) {
                     let queryVal = client.$route.query[prop];
-                    if (queryVal){
+                    if (queryVal) {
                         queryParams[prop] = decodeURI(queryVal);
                     }
                 });
-                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]){
+                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
                     title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-                }
-                else {
+                } else {
                     title = title.charAt(0).toUpperCase() + title.slice(1)
                 }
                 return [
@@ -225,21 +224,24 @@
                     queryParams
                 ];
             },
-            getTitle: function(){
-              const flipRecordTypes = Object.entries(this.recordTypes).reduce((obj, [key, value]) => ({ ...obj, [value]: key }), {});
-              let title = "Search" ;
-              if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')){
-                if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)){
-                  title = flipRecordTypes[this.$route.query.fairsharingRegistry];
+            getTitle: function () {
+                const flipRecordTypes = Object.entries(this.recordTypes).reduce((obj, [key, value]) => ({
+                    ...obj,
+                    [value]: key
+                }), {});
+                let title = "Search";
+                if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
+                    if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
+                        title = flipRecordTypes[this.$route.query.fairsharingRegistry];
+                    }
                 }
-              }
-              return title;
+                return title;
             }
         },
         watch: {
-            currentPath: async function (){
-              this.tryRedirect();
-              await this.getData();
+            currentPath: async function () {
+                this.tryRedirect();
+                await this.getData();
             }
         },
         mounted: function () {
@@ -248,30 +250,31 @@
                 await this.getData();
             })
         },
-        beforeDestroy: function(){
-            this.$store.dispatch("records/resetFacets").then(function(){});
-            this.$store.dispatch("records/resetRecords").then(function(){});
+        beforeDestroy: function () {
+            this.$store.dispatch("records/resetFacets").then(function () {
+            });
+            this.$store.dispatch("records/resetRecords").then(function () {
+            });
         },
         methods: {
-          /**
-           * Try to redirect to search of the page that is hit is /standards /databases
-           * /policies or /collections
-           * */
-            tryRedirect: async function(){
-                if (Object.keys(this.recordTypes).includes(this.$route.name)){
+            /**
+             * Try to redirect to search of the page that is hit is /standards /databases
+             * /policies or /collections
+             * */
+            tryRedirect: async function () {
+                if (Object.keys(this.recordTypes).includes(this.$route.name)) {
                     let fairsharingRegistry = this.recordTypes[this.$route.name];
                     let query = this.$route.params;
                     if (query) {
-                      query.fairsharingRegistry = fairsharingRegistry;
-                      try {
-                        this.$router.push({
-                          name: "search",
-                          query: query
-                        });
-                      }
-                      catch(e){
-                        //
-                      }
+                        query.fairsharingRegistry = fairsharingRegistry;
+                        try {
+                            this.$router.push({
+                                name: "search",
+                                query: query
+                            });
+                        } catch (e) {
+                            //
+                        }
                     }
                 }
             },
@@ -279,22 +282,21 @@
              * @returns {Promise}
              */
             getData: async function () {
-                  window.scrollTo(0,0);
-                  this.errors = null;
-
-                  try {
-                    await this.fetchRecords(this.getParameters());
-                  }
-                  catch(e){
+                window.scrollTo(0, 0);
+                this.errors = null;
+                const _module = this;
+                try {
+                    await _module.fetchRecords(this.getParameters());
+                } catch (e) {
                     this.errors = e.message;
-                  }
+                }
 
             },
             /**
              * Get the parameters that are allowed for this query
              * @returns {Object} parameters - parameters and types allowed for this query
              */
-            getParameters: function(){
+            getParameters: function () {
                 return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
             },
             ...mapActions('records', ['fetchRecords']),
@@ -302,8 +304,8 @@
              * Method to change the current panel to be displayed
              * @param {String} panelName - the name of the panel to display
              */
-            setPanel: function(panelName){
-              this.currentPanel = panelName;
+            setPanel: function (panelName) {
+                this.currentPanel = panelName;
             }
         },
         /**
@@ -311,23 +313,23 @@
          * @returns {{title: String}}
          * */
         metaInfo() {
-          return {
-            title: 'FAIRsharing | ' + this.getTitle
-          }
+            return {
+                title: 'FAIRsharing | ' + this.getTitle
+            }
         },
     }
 
 &lt;/script>
 
 &lt;style scoped>
-  .error {
-    background-color: indianred;
-    border:1px solid red;
-    padding:20px;
-    color:white;
-    text-align: left;
-    font-size: 18px;
-  }
+    .error {
+        background-color: indianred;
+        border: 1px solid red;
+        padding: 20px;
+        color: white;
+        text-align: left;
+        font-size: 18px;
+    }
 &lt;/style>
 </pre>
     </article>

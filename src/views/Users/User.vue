@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div
     id="userPage"
     class="standard container-fluid"
@@ -41,7 +41,7 @@
                     tile
                   >
                     <v-expansion-panel
-                      v-for="(records, sectionName, sectionKey) in userDetail"
+                      v-for="(records, sectionName, sectionKey) in userRecords"
                       :key="sectionKey"
                     >
                       <v-expansion-panel-header
@@ -112,9 +112,57 @@
             <v-btn @click="logoutUser()">
               Logout
             </v-btn>
-            <v-btn @click="resetPwd()">
-              Reset password
-            </v-btn>
+
+            <!-- Reset PWD dialog box -->
+            <template>
+              <div class="text-center">
+                <v-dialog
+                  v-model="dialog"
+                  width="500"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      color="red lighten-2"
+                      dark
+                      v-on="on"
+                      @click="resetPwd()"
+                    >
+                      Reset Password
+                    </v-btn>
+                  </template>
+
+                  <v-card v-if="userResetPwdMessage">
+                    <v-card-title
+                      class="headline grey lighten-2"
+                      primary-title
+                    >
+                      Your password has been reset
+                    </v-card-title>
+                    <v-card-text>
+                      <div
+                        class="alert mt-10"
+                        :class="{'alert-danger': !userResetPwdMessage.success, 'alert-success': userResetPwdMessage.success, }"
+                      >
+                        {{ userResetPwdMessage.message }}
+                      </div>
+                    </v-card-text>
+
+                    <v-divider />
+
+                    <v-card-actions>
+                      <v-spacer />
+                      <v-btn
+                        color="primary"
+                        text
+                        @click="dialog = false"
+                      >
+                        Ok
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </div>
+            </template>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -123,13 +171,7 @@
 </template>
 
 <script>
-    import { mapActions } from "vuex"
-    import RESTClient from "@/components/Client/RESTClient.js"
-    import GraphClient from "@/components/GraphClient/GraphClient.js"
-    import query from "@/components/GraphClient/queries/getUserMeta.json"
-
-    let client = new RESTClient();
-    let graphClient = new GraphClient();
+    import { mapActions, mapState } from "vuex"
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -145,12 +187,12 @@
         data: () => {
           return {
               panel: 0,
-              user: null,
-              userDetail: null,
+              dialog: false,
               hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"]
           }
         },
         computed: {
+          ...mapState('users', ['userRecords', 'user', "userResetPwdMessage"]),
           getUserMeta: function(){
             let userMeta = {};
             const _module = this;
@@ -165,25 +207,19 @@
           }
         },
         async created(){
-            this.user = await client.getUser(this.$store.state.users.currentUserToken);
-            query.queryParam.id = this.user.id;
-            let response = await graphClient.executeQuery(query);
-            this.userDetail = response.user
+            await this.getUser();
         },
         methods: {
-            ...mapActions('users', ['logout']),
+            ...mapActions('users', ['logout', 'getUser', 'resetPwd']),
             logoutUser: async function(){
                 await this.logout(this.$store.state.users.currentUserToken);
                 this.$router.push({name: "Login"})
             },
-            resetPwd: async function(){
-                await client.resetPassword(this.$store.state.users.currentUserToken);
-            },
             getRecords: function(fieldName){
-              let output = this.userDetail[fieldName];
+              let output = this.userRecords[fieldName];
               if (fieldName === "maintenanceRequests"){
                 output = [];
-                this.userDetail[fieldName].forEach(function(record){
+                this.userRecords[fieldName].forEach(function(record){
                   output.push(record["fairsharingRecord"])
                 });
               }

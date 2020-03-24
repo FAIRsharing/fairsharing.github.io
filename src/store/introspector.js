@@ -76,6 +76,7 @@ let introspectionStore = {
     },
     actions: {
         async fetchParameters() {
+/*
             // if local localStorage.intorspectionQuery not exists, then create it. if (!localStorage.intorspectionQuery) {
             // console.log(localStorage.intorspectionQuery);
                   let data = await client.getData(introspectionQuery);
@@ -88,6 +89,7 @@ let introspectionStore = {
                   this.commit("introspection/setParameters", data.data);
             // !localStorage.expiryDate ? this.state._localStorage = {} : this.state._localStorage = {expiryDate: localStorage.expiryDate};
 
+*/
            if (localStorage.expiryDate) {
                 let date = new Date();
                 const currentYear = date.getFullYear();

@@ -93,7 +93,7 @@
         <pre
             class="sunlight-highlight-javascript linenums">import Client from "../components/GraphClient/GraphClient.js"
 import introspectionQuery from "../components/GraphClient/queries/introspection.json"
-
+import {isEqual} from 'lodash'
 let client = new Client();
 
 /**
@@ -105,8 +105,6 @@ let introspectionStore = {
     state: {
         errors: String,
         searchQueryParameters: {},
-        _localStorage: {},
-        ss: {}
     },
     mutations: {
         setParameters(state, data) {
@@ -117,31 +115,24 @@ let introspectionStore = {
                 let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
                 state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
                 // if local localStorage.searchQueryParameters not exists, then create it.
-                console.log('a',JSON.stringify(state.searchQueryParameters));
 
-                !localStorage.searchQueryParameters?state._localStorage={}:state._localStorage = {searchQueryParameters:localStorage.searchQueryParameters}
-                if (!state._localStorage.searchQueryParameters) {
+                // !localStorage.searchQueryParameters ? state._localStorage = {} : state._localStorage = {searchQueryParameters: localStorage.searchQueryParameters}
+                if (!localStorage.searchQueryParameters) {
                     // console.log('created localStorage.searchQueryParameters');
                     localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                    state._localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
                 } else {
                     // if local localStorage.searchQueryParameters exists but the data arrived is new then update it
-                    state._localStorage.searchQueryParameters = localStorage.searchQueryParameters;
-                    console.log('1',state._localStorage.searchQueryParameters);
-                    console.log('2',JSON.stringify(state.searchQueryParameters));
-                    console.log('3',state._localStorage.searchQueryParameters!==JSON.stringify(state.searchQueryParameters));
-                    if (state._localStorage.searchQueryParameters!==JSON.stringify(state.searchQueryParameters)) {
-                        // console.log('update localStorage.searchQueryParameters with new data');
+                    // state._localStorage.searchQueryParameters = localStorage.searchQueryParameters;
+                    console.log('state.searchQueryParameters', JSON.parse(JSON.stringify(state.searchQueryParameters)));
+                    console.log('localStorage.searchQueryParameters', JSON.parse(localStorage.searchQueryParameters));
+                    console.log('compare', isEqual(JSON.parse(localStorage.searchQueryParameters),JSON.parse(JSON.stringify(state.searchQueryParameters))));
+                    if (JSON.parse(localStorage.searchQueryParameters) !== JSON.parse(JSON.stringify(state.searchQueryParameters))) {
+                         console.log('update localStorage.searchQueryParameters with new data');
                         localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                        state._localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                    }else
-                    {
-                        localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                        state._localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
+                    } else {
+                        state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
                     }
                 }
-
-                state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
 
             } catch (e) {
                 state.error = "Can't initialize application"
@@ -179,16 +170,54 @@ let introspectionStore = {
     actions: {
         async fetchParameters() {
             // if local localStorage.intorspectionQuery not exists, then create it. if (!localStorage.intorspectionQuery) {
+            // console.log(localStorage.intorspectionQuery);
+                  let data = await client.getData(introspectionQuery);
+                  localStorage.intorspectionQuery = JSON.stringify(data.data);
+
+                  let validTimeRange = {day: 1, month: 0, year: 0};
+                  this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
+
+                  // localStorage.expiryDate = new Date() +;
+                  this.commit("introspection/setParameters", data.data);
+            // !localStorage.expiryDate ? this.state._localStorage = {} : this.state._localStorage = {expiryDate: localStorage.expiryDate};
+
+           if (localStorage.expiryDate) {
+                let date = new Date();
+                const currentYear = date.getFullYear();
+                let currentMonth = date.getMonth() + 1;
+                const currentDay = date.getDate();
+                let currentDate = String(currentYear) + String(currentMonth) + String(currentDay);
+
+                                console.log("currentDate", currentDate);
+                                console.log(localStorage.expiryDate);
+                                console.log(currentDate > localStorage.expiryDate);
+
+
+                if (currentDate > localStorage.expiryDate) {
+                    // console.log('outdated session - call the api to update');
+                    let data = await client.getData(introspectionQuery);
+                    localStorage.intorspectionQuery = JSON.stringify(data.data);
+                    let validTimeRange = {day: 1, month: 0, year: 0};
+                    this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
+
+                    // localStorage.expiryDate = new Date() +;
+                    this.commit("introspection/setParameters", data.data);
+                } else {
+                    // Otherwise, read from localStorage.intorspectionQuery .
+                    // console.log(JSON.parse(localStorage.intorspectionQuery));
+                    this.commit("introspection/setParameters", JSON.parse(localStorage.intorspectionQuery));
+                }
+            }else if (!localStorage.intorspectionQuery) {
                 // console.log(localStorage.intorspectionQuery);
                 let data = await client.getData(introspectionQuery);
                 localStorage.intorspectionQuery = JSON.stringify(data.data);
-
                 let validTimeRange = {day: 1, month: 0, year: 0};
                 this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
 
                 // localStorage.expiryDate = new Date() +;
                 this.commit("introspection/setParameters", data.data);
             }
+        }
 
     },
     modules: {},

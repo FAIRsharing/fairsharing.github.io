@@ -1,6 +1,9 @@
 import RESTClient from "@/components/Client/RESTClient.js"
+import GraphClient from "@/components/GraphClient/GraphClient.js"
+import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
 
 let client = new RESTClient();
+let graphClient = new GraphClient();
 
 export const mutations = {
     /*
@@ -36,6 +39,13 @@ export const mutations = {
         state.currentUserToken = null;
         state.tokenValidity = null;
         localStorage.clear();
+    },
+    setUserRecords(state, user){
+        state.userRecords = user.records.user;
+        state.user = user.metadata;
+    },
+    setResetPwdMessage(state, message){
+        state.userResetPwdMessage = message
     }
 };
 
@@ -84,6 +94,19 @@ export const actions = {
         catch(e){
             //
         }
+    },
+    async getUser(state){
+        let metadata = await client.getUser(state.state.currentUserToken);
+        getUserQuery.queryParam.id = metadata.id;
+        const userResponse =  {
+            metadata: metadata,
+            records: await graphClient.executeQuery(getUserQuery)
+        };
+        this.commit('users/setUserRecords', await userResponse);
+    },
+    async resetPwd(state){
+        let resetPwd = await client.requestResetPwd(state.state.user.email);
+        this.commit('users/setResetPwdMessage', resetPwd)
     }
 };
 
@@ -94,7 +117,10 @@ let currentUser = {
         currentUserID: null,
         currentUserToken: null,
         tokenValidity: null,
-        errors: null
+        errors: null,
+        userRecords: null,
+        user: null,
+        userResetPwdMessage: null
     },
     mutations: mutations,
     actions: actions,

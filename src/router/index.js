@@ -174,7 +174,7 @@ let routes = [
     },
     {
         name: "User",
-        path: "/users/:id",
+        path: "/accounts/profile",
         component: User,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);

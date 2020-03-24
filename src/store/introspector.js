@@ -11,7 +11,9 @@ let introspectionStore = {
     namespaced: true,
     state: {
         errors: String,
-        searchQueryParameters: {}
+        searchQueryParameters: {},
+        _localStorage: {},
+        ss: {}
     },
     mutations: {
         setParameters(state, data) {
@@ -22,24 +24,37 @@ let introspectionStore = {
                 let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
                 state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
                 // if local localStorage.searchQueryParameters not exists, then create it.
-                if (!localStorage.searchQueryParameters) {
+                console.log('a',JSON.stringify(state.searchQueryParameters));
+
+                !localStorage.searchQueryParameters?state._localStorage={}:state._localStorage = {searchQueryParameters:localStorage.searchQueryParameters}
+                if (!state._localStorage.searchQueryParameters) {
                     // console.log('created localStorage.searchQueryParameters');
                     localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
+                    state._localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
                 } else {
                     // if local localStorage.searchQueryParameters exists but the data arrived is new then update it
-                    if (JSON.parse(localStorage.searchQueryParameters) !== JSON.parse(JSON.stringify(state.searchQueryParameters))) {
+                    state._localStorage.searchQueryParameters = localStorage.searchQueryParameters;
+                    console.log('1',state._localStorage.searchQueryParameters);
+                    console.log('2',JSON.stringify(state.searchQueryParameters));
+                    console.log('3',state._localStorage.searchQueryParameters!==JSON.stringify(state.searchQueryParameters));
+                    if (state._localStorage.searchQueryParameters!==JSON.stringify(state.searchQueryParameters)) {
                         // console.log('update localStorage.searchQueryParameters with new data');
                         localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-
+                        state._localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
+                    }else
+                    {
+                        localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
+                        state._localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
                     }
-                    state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
                 }
+
+                state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
 
             } catch (e) {
                 state.error = "Can't initialize application"
             }
         },
-        setLocalStorageExpiryTime: function (_, validTimeRange) {
+        setLocalStorageExpiryTime: function (state, validTimeRange) {
             let date = new Date();
             const currentYear = date.getFullYear();
             let currentMonth = date.getMonth() + 1;
@@ -70,45 +85,18 @@ let introspectionStore = {
     },
     actions: {
         async fetchParameters() {
-            // if local localStorage.intorspectionQuery not exists, then create it.
-            if (localStorage.expiryDate) {
-                let date = new Date();
-                const currentYear = date.getFullYear();
-                let currentMonth = date.getMonth() + 1;
-                const currentDay = date.getDate();
-                let currentDate = String(currentYear) + String(currentMonth) + String(currentDay);
-
-                /*
-                                console.log("currentDate", currentDate);
-                                console.log(localStorage.expiryDate);
-                                console.log(currentDate > localStorage.expiryDate);
-                */
-
-                if (currentDate > localStorage.expiryDate) {
-                    // console.log('outdated session - call the api to update');
-                    let data = await client.getData(introspectionQuery);
-                    localStorage.intorspectionQuery = JSON.stringify(data.data);
-                    let validTimeRange = {day: 1, month: 0, year: 0};
-                    this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
-
-                    // localStorage.expiryDate = new Date() +;
-                    this.commit("introspection/setParameters", data.data);
-                } else {
-                    // Otherwise, read from localStorage.intorspectionQuery .
-                    // console.log(JSON.parse(localStorage.intorspectionQuery));
-                    this.commit("introspection/setParameters", JSON.parse(localStorage.intorspectionQuery));
-                }
-            } else if (!localStorage.intorspectionQuery) {
+            // if local localStorage.intorspectionQuery not exists, then create it. if (!localStorage.intorspectionQuery) {
                 // console.log(localStorage.intorspectionQuery);
                 let data = await client.getData(introspectionQuery);
                 localStorage.intorspectionQuery = JSON.stringify(data.data);
+
                 let validTimeRange = {day: 1, month: 0, year: 0};
                 this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
 
                 // localStorage.expiryDate = new Date() +;
                 this.commit("introspection/setParameters", data.data);
             }
-        }
+
     },
     modules: {},
     getters: {
@@ -116,6 +104,8 @@ let introspectionStore = {
             let queryParameters = {};
             Object.keys(params[1]).forEach(function (param) {
                 let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
+                // console.log('currentParam',currentParam)
+                // console.log('Type',currentParam.type)
                 const expectedTypeObject = currentParam.type;
 
                 if (expectedTypeObject.kind !== "LIST") {

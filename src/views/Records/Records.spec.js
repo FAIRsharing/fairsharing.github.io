@@ -1,11 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueMeta from "vue-meta";
-import VueRouter from "vue-router"
 
 import Records from "./Records.vue";
-import Client from "../../components/GraphClient/GraphClient.js";
+import Client from "@/components/GraphClient/GraphClient.js";
 import records from "../../store/records.js"
 import introspection from "../../store/introspector.js"
 
@@ -41,26 +40,27 @@ describe("Records.vue", () => {
     let vuetify;
     let stub = sinon.stub(Client.prototype, "executeQuery");
 
-    beforeAll( () => {
+    beforeAll(() => {
         stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
     });
 
-    afterAll( () => {
-       Client.prototype.executeQuery.restore();
+    afterAll(() => {
+        Client.prototype.executeQuery.restore();
     });
 
     // Set up the wrapper
     let wrapper;
     beforeEach(async () => {
         vuetify = new Vuetify();
-        window.scrollTo = () => {};
+        window.scrollTo = () => {
+        };
         wrapper = await shallowMount(Records, {
             mocks: {$route, $store},
             localVue,
             vuetify
         });
     });
-    afterEach( () =>{
+    afterEach(() => {
         window.scrollTo = jsdomScrollTo;
     });
 
@@ -72,7 +72,7 @@ describe("Records.vue", () => {
         expect(wrapper.vm.currentPath[0]).toBe("Standard");
     });
 
-    it("can correctly raise an error", async () =>{
+    it("can correctly raise an error", async () => {
         Client.prototype.executeQuery.restore();
         sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
             data: {
@@ -112,6 +112,38 @@ describe("Records.vue", () => {
                 }
             }
         };
+        let returnedValDif = {
+            data: {
+                data: {
+                    "__schema": {
+                        "types": [
+                            {
+                                name: "Query",
+                                fields: [
+                                    {
+                                        name: "searchFairsharingRecords",
+                                        args: [
+                                            {
+                                                name: "test",
+                                                description: "testDescription",
+                                                type: "String",
+                                                defaultValue: "1"
+                                            },
+                                            {
+                                                name: "test2",
+                                                description: "testDescription",
+                                                type: "String",
+                                                defaultValue: "1"
+                                            }
+
+                                        ]
+                                    }
+                                ]
+                            }]
+                    }
+                }
+            }
+        };
         let errorTest = {
             data: {
                 errors: [
@@ -119,6 +151,12 @@ describe("Records.vue", () => {
                 ]
             }
         };
+
+        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(errorTest);
+        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+        expect(wrapper.vm.$store.state.introspection.error).toBe("Can't initialize application");
+        Client.prototype.getData.restore();
+
 
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
         await wrapper.vm.$store.dispatch("introspection/fetchParameters");
@@ -130,11 +168,40 @@ describe("Records.vue", () => {
         }]);
         Client.prototype.getData.restore();
 
-
-        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(errorTest);
+        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedValDif);
+        wrapper.vm.$store.state.introspection._localStorage= {searchQueryParameters:'a'};
         await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-        expect(wrapper.vm.$store.state.introspection.error).toBe("Can't initialize application");
+        expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
+            name: "test",
+            description: "testDescription",
+            type: "String",
+            defaultValue: "1"
+        }, {
+            name: "test2",
+            description: "testDescription",
+            type: "String",
+            defaultValue: "1"
+        }
+        ]);
+
+        wrapper.vm.$store.state.introspection._localStorage= {searchQueryParameters:returnedVal};
+        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+        expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
+            name: "test",
+            description: "testDescription",
+            type: "String",
+            defaultValue: "1"
+        }, {
+            name: "test2",
+            description: "testDescription",
+            type: "String",
+            defaultValue: "1"
+        }
+        ]);
         Client.prototype.getData.restore();
+
+
+
     });
 
     it("can switch between panels", () => {
@@ -228,7 +295,7 @@ describe("Records.vue", () => {
             fairsharingRegistry: "Standard",
             test: 'abc',
             test2: 'abcdef',
-            test3: [ 'abc', ' def' ],
+            test3: ['abc', ' def'],
             test4: 123,
             test5: true
         })

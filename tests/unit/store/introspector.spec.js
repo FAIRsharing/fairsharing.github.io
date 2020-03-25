@@ -122,8 +122,7 @@ describe( "", () => {
         delete global.window.localStorage;
         global.window = Object.create(window);
         global.window.localStorage = {};
-        actions.commit = jest.fn(() => {
-        });
+        actions.commit = jest.fn();
         await actions.fetchParameters(state, 24);
         expect(actions.commit).toHaveBeenCalledTimes(2);
 

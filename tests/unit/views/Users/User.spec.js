@@ -5,7 +5,7 @@ import sinon from "sinon"
 import User from "@/views/Users/User.vue"
 import Client from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
-import usersStore from "../../../../src/store/users";
+import usersStore from "@/store/users";
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
@@ -60,12 +60,6 @@ describe("User.vue", () => {
     it("can be instantiated", () => {
         const title = "User";
         expect(wrapper.name()).toMatch(title);
-    });
-
-    it("can logout users", async () => {
-        await wrapper.vm.resetPwd(); // Still needs more testing
-        await wrapper.vm.logoutUser();
-        expect(wrapper.vm.$route.path).toBe("/accounts/login");
     });
 
     it("has a getRecords methods that sorts the records for easy use", () => {

@@ -12,6 +12,10 @@ describe("Routes", () => {
                 const next = jest.fn();
                 route.beforeEnter(undefined, undefined, next);
             }
+            if (route.name === "Edit profile"){
+                const next = jest.fn();
+                route.beforeEnter(undefined, undefined, next);
+            }
         });
     });
 

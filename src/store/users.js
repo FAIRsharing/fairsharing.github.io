@@ -1,6 +1,9 @@
 import RESTClient from "@/components/Client/RESTClient.js"
+import GraphClient from "@/components/GraphClient/GraphClient.js"
+import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
 
 let client = new RESTClient();
+let graphClient = new GraphClient();
 
 export const mutations = {
     /*
@@ -36,6 +39,15 @@ export const mutations = {
         state.currentUserToken = null;
         state.tokenValidity = null;
         localStorage.clear();
+    },
+    setUserRecords(state, record){
+        state.userRecords = record.user;
+    },
+    setUserMeta(state, user){
+        state.user = user;
+    },
+    setResetPwdMessage(state, message){
+        state.userResetPwdMessage = message
     }
 };
 
@@ -76,14 +88,28 @@ export const actions = {
             }
         }
     },
-    async logout(state, token){
+    async logout(state){
         try {
-            await client.logout(token);
+            await client.logout(state.state.currentUserToken);
             this.commit("users/logoutUser");
         }
         catch(e){
             //
         }
+    },
+    async getUser(state){
+        let metadata = await client.getUser(state.state.currentUserToken);
+        getUserQuery.queryParam.id = metadata.id;
+        this.commit('users/setUserRecords', await await graphClient.executeQuery(getUserQuery));
+        this.commit('users/setUserMeta', metadata);
+    },
+    async getUserMeta(state){
+        let metadata = await client.getUser(state.state.currentUserToken);
+        this.commit('users/setUserMeta', metadata);
+    },
+    async resetPwd(state){
+        let resetPwd = await client.requestResetPwd(state.state.user.email);
+        this.commit('users/setResetPwdMessage', resetPwd)
     }
 };
 
@@ -94,7 +120,10 @@ let currentUser = {
         currentUserID: null,
         currentUserToken: null,
         tokenValidity: null,
-        errors: null
+        errors: null,
+        userRecords: null,
+        user: null,
+        userResetPwdMessage: null
     },
     mutations: mutations,
     actions: actions,

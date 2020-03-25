@@ -145,6 +145,25 @@ class RESTClient {
     }
 
     /**
+     * Edit the current logged in user profile
+     * @param {Object} newUser - the new values for the logged in user
+     * @param {String} token - JWT of the logged in user
+     * @returns {Promise}
+     */
+    async editUser(newUser, token){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + "/users",
+            headers: headers,
+            data: {user: newUser}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Trigger the given query with Axios
      * @param query
      * @returns {Promise<*>}

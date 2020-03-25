@@ -43,80 +43,88 @@
 </template>
 
 <script>
+  import {throttle} from 'lodash';
 
-    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
-    * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
-    * @vue-data {Number} [currentQuery = null] - the current page number
-    */
-    export default {
-        name: "Pagination",
-        props: {
-            totalPages: {
-                type: Number,
-                default: 0
-            },
-        },
-        data() {
-            return {
-                currentPage: null
-            }
-        },
-        watch: {
-            '$route.name': function () {
-                this.currentPage = 1;
-            },
-            '$route.query': function (newVal) {
-                let _module = this;
-                if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
-                    _module.currentPage = 1;
-                } else {
-                    _module.currentPage = Number(newVal.page);
-                }
-            }
-        },
-        created() {
-            let currentPage = this.$route.query.page;
-            currentPage !== undefined ? this.currentPage = Number(currentPage) : this.currentPage = 1;
-        },
-        methods: {
-          /**
-           * Set the current query page parameter value to the given input for vueJs router
-           * @param {Number} pageNumber - the page to go to
-           */
-            paginate: async function (pageNumber) {
-                if (pageNumber !== this.currentPage) {
-                    let _module = this;
-                    let currentQuery = {};
-                    _module.currentPage = pageNumber;
-                    Object.keys(_module.$route.query).forEach(function (param) {
-                      currentQuery[param] = _module.$route.query[param]
-                    });
-                  currentQuery.page = pageNumber;
-                    await _module.$router.push({
-                        name: _module.$route.name,
-                        query: currentQuery
-                    });
-                }
-            },
-          /**
-           * Set the current page to the first page
-           */
-            first: function () {
-                this.paginate(1);
-            },
-          /**
-           * Set the current page to the last page
-           */
-            last: function () {
-                this.paginate(this.totalPages);
-            }
-        },
-    }
+  /** Component to handle the advanced search filters for the searchFairsharingRecords query.
+   * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
+   * @vue-data {Number} [currentQuery = null] - the current page number
+   */
+  export default {
+    name: "Pagination",
+    props: {
+      totalPages: {
+        type: Number,
+        default: 0
+      },
+    },
+    data() {
+      return {
+        currentPage: null,
+        allowPaginate: true
+      }
+    },
+    watch: {
+      '$route.name': function () {
+        this.currentPage = 1;
+      },
+      '$route.query': function (newVal) {
+        let _module = this;
+        if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
+          _module.currentPage = 1;
+        } else {
+          _module.currentPage = Number(newVal.page);
+        }
+      }
+    },
+    created() {
+      let currentPage = this.$route.query.page;
+      currentPage !== undefined ? this.currentPage = Number(currentPage) : this.currentPage = 1;
+
+    },
+    methods: {
+      /**
+       * Set the current query page parameter value to the given input for vueJs router
+       * @param {Number} pageNumber - the page to go to
+       */
+      paginate: async function (pageNumber) {
+        if (this.allowPaginate){
+          this.allowPaginate = false;
+          this.PaginatePermission();
+          if (pageNumber !== this.currentPage && this.allowPaginate) {
+            let _module = this;
+            let currentQuery = {};
+            _module.currentPage = pageNumber;
+            Object.keys(_module.$route.query).forEach(function (param) {
+              currentQuery[param] = _module.$route.query[param]
+            });
+            currentQuery.page = pageNumber;
+            await _module.$router.push({
+              name: _module.$route.name,
+              query: currentQuery
+            });
+          }
+        }
+      },
+      PaginatePermission: throttle(function () { this.allowPaginate=true }, 1200),
+      /**
+       * Set the current page to the first page
+       */
+      first: function () {
+        this.paginate(1);
+      },
+      /**
+       * Set the current page to the last page
+       */
+      last: function () {
+        this.paginate(this.totalPages);
+      }
+    },
+  }
 </script>
 
 <style scoped>
-    button {
-        outline: none;
-    }
+  button {
+    outline: none;
+  }
 
 </style>

@@ -40,9 +40,11 @@ export const mutations = {
         state.tokenValidity = null;
         localStorage.clear();
     },
-    setUserRecords(state, user){
-        state.userRecords = user.records.user;
-        state.user = user.metadata;
+    setUserRecords(state, record){
+        state.userRecords = record.user;
+    },
+    setUserMeta(state, user){
+        state.user = user;
     },
     setResetPwdMessage(state, message){
         state.userResetPwdMessage = message
@@ -98,11 +100,12 @@ export const actions = {
     async getUser(state){
         let metadata = await client.getUser(state.state.currentUserToken);
         getUserQuery.queryParam.id = metadata.id;
-        const userResponse =  {
-            metadata: metadata,
-            records: await graphClient.executeQuery(getUserQuery)
-        };
-        this.commit('users/setUserRecords', await userResponse);
+        this.commit('users/setUserRecords', await await graphClient.executeQuery(getUserQuery));
+        this.commit('users/setUserMeta', metadata);
+    },
+    async getUserMeta(state){
+        let metadata = await client.getUser(state.state.currentUserToken);
+        this.commit('users/setUserMeta', metadata);
     },
     async resetPwd(state){
         let resetPwd = await client.requestResetPwd(state.state.user.email);

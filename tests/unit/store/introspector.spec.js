@@ -99,13 +99,15 @@ describe('Mutations', () => {
 describe( "Actions", () => {
     let state = {};
     let stub;
+
     beforeEach(() => {
         state = {};
-        delete global.window.localStorage;
+        delete global.window['localStorage'];
         global.window = Object.create(window);
     });
 
     beforeAll(() => {
+        global.window.localStorage  = {};
         stub = sinon.stub(Client.prototype, "executeQuery");
         stub.returns({
             data: {

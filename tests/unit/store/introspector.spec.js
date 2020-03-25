@@ -100,11 +100,13 @@ describe( "", () => {
     let state = {};
     let stub;
     beforeEach(() => {
+        delete global.window['localStorage'];
+        global.window = Object.create(window);
         state = {};
     });
 
     beforeAll(() => {
-        stub = sinon.stub(Client.prototype, "executeQuery");
+        stub = sinon.stub(Client.prototype, "getData");
         stub.returns({
             data: {
                 message: "Hello"
@@ -117,10 +119,6 @@ describe( "", () => {
     });
 
     it('testing with empty localStorage', async () => {
-
-        // Mock local storage
-        delete global.window.localStorage;
-        global.window = Object.create(window);
         global.window.localStorage = {};
         actions.commit = jest.fn();
         await actions.fetchParameters(state, 24);
@@ -129,9 +127,6 @@ describe( "", () => {
     });
 
     it( "testing with an introspectionQuery present but no timer", async () => {
-
-        delete global.window.localStorage;
-        global.window = Object.create(window);
         global.window.localStorage = {
             introspectionQuery: JSON.stringify({test: "ABC"})
         };
@@ -143,9 +138,6 @@ describe( "", () => {
     });
 
     it("testing with non expired dated AND introspection query", async () => {
-
-        delete global.window.localStorage;
-        global.window = Object.create(window);
         global.window.localStorage = {
             expiryDate: new Date(),
             introspectionQuery: JSON.stringify({test: "ABC"})
@@ -155,9 +147,6 @@ describe( "", () => {
     });
 
     it("testing with expired dated AND introspection query", async () => {
-
-        delete global.window.localStorage;
-        global.window = Object.create(window);
         global.window.localStorage = {
             expiryDate: new Date(),
             introspectionQuery: JSON.stringify({test: "ABC"})

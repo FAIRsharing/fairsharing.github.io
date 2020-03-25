@@ -104,7 +104,9 @@
                     {
                         name: "Edit profile",
                         action: function(){
-                            return null;
+                            _module.$router.push({
+                              path: "/profiles/edit"
+                            })
                         }
                     },
                     {

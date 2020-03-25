@@ -28,6 +28,7 @@ import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
 import User from "@/views/Users/User.vue"
 import RequestNewPassword from "@/views/Users/RequestNewPassword";
 import ResetPassword from "@/views/Users/ResetPassword";
+import EditProfile from "@/views/Users/EditProfile";
 
 Vue.use(VueRouter);
 
@@ -176,6 +177,14 @@ let routes = [
         name: "User",
         path: "/accounts/profile",
         component: User,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+        }
+    },
+    {
+        name: "Edit profile",
+        path: "/profiles/edit",
+        component: EditProfile,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
         }

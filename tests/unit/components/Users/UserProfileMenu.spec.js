@@ -18,7 +18,10 @@ const $store = new Vuex.Store({
         users: usersStore
     }
 });
-let routes = [{name: "Login", path: "/accounts/login"}];
+let routes = [
+    {name: "Login", path: "/accounts/login"},
+    {name: "User", path: "/accounts/profile"}
+];
 const router = new VueRouter({routes});
 
 
@@ -66,8 +69,8 @@ describe("UserProfileMenu.vue", () => {
     });
 
     it("can redirect to user edit profile", async () => {
-        let response = await wrapper.vm.menuItems.filter(obj => obj.name === 'Edit profile')[0].action();
-        expect(response).toBe(null);
+        await wrapper.vm.menuItems.filter(obj => obj.name === 'Edit profile')[0].action();
+        expect(wrapper.vm.$route.path).toBe("/profiles/edit");
     });
 
 });

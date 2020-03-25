@@ -38,7 +38,6 @@
                   <v-text-field
                     v-model="formData[field.name]"
                     :label="field.label"
-                    :append-icon="getIcon(field)"
                     outlined
                     :type="field.type"
                     :disabled="field.disabled"
@@ -128,10 +127,7 @@
                   hint: null,
                   type: "checkbox"
                 },
-              ],
-              required: [
-                value => !!value || 'Required.'
-              ],
+              ]
             }
         },
         computed: {
@@ -154,10 +150,6 @@
         },
         methods: {
           ...mapActions('users', ['getUserMeta', "login"]),
-          getIcon: function(field){
-            if (field.hint) return "fa-question-circle";
-            return ""
-          },
           updateProfile: async function(){
             let response = await client.editUser(this.formData, this.currentUserToken);
 

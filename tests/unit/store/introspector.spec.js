@@ -2,7 +2,7 @@ import Client from "@/components/GraphClient/GraphClient.js";
 import {mutations, actions, paramsAreExpired} from "@/store/introspector.js"
 import sinon from "sinon"
 
-describe('Mutations', () => {
+describe('Mutations & Actions', () => {
     let state = {};
     let stub;
 
@@ -96,18 +96,14 @@ describe('Mutations', () => {
     });
 });
 
-describe( "Actions", () => {
+describe( "", () => {
     let state = {};
     let stub;
-
     beforeEach(() => {
         state = {};
-        delete global.window['localStorage'];
-        global.window = Object.create(window);
     });
 
     beforeAll(() => {
-        global.window.localStorage  = {};
         stub = sinon.stub(Client.prototype, "executeQuery");
         stub.returns({
             data: {
@@ -121,6 +117,10 @@ describe( "Actions", () => {
     });
 
     it('testing with empty localStorage', async () => {
+
+        // Mock local storage
+        delete global.window.localStorage;
+        global.window = Object.create(window);
         global.window.localStorage = {};
         actions.commit = jest.fn(() => {
         });
@@ -130,6 +130,9 @@ describe( "Actions", () => {
     });
 
     it( "testing with an introspectionQuery present but no timer", async () => {
+
+        delete global.window.localStorage;
+        global.window = Object.create(window);
         global.window.localStorage = {
             introspectionQuery: JSON.stringify({test: "ABC"})
         };
@@ -141,6 +144,9 @@ describe( "Actions", () => {
     });
 
     it("testing with non expired dated AND introspection query", async () => {
+
+        delete global.window.localStorage;
+        global.window = Object.create(window);
         global.window.localStorage = {
             expiryDate: new Date(),
             introspectionQuery: JSON.stringify({test: "ABC"})
@@ -150,6 +156,9 @@ describe( "Actions", () => {
     });
 
     it("testing with expired dated AND introspection query", async () => {
+
+        delete global.window.localStorage;
+        global.window = Object.create(window);
         global.window.localStorage = {
             expiryDate: new Date(),
             introspectionQuery: JSON.stringify({test: "ABC"})

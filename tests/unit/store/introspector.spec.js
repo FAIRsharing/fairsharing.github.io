@@ -1,142 +1,162 @@
 import Client from "@/components/GraphClient/GraphClient.js";
-import {mutations, actions} from "@/store/introspector.js"
-
+import {mutations, actions, paramsAreExpired} from "@/store/introspector.js"
+import sinon from "sinon"
 
 describe('Mutations', () => {
     let state = {};
+    let stub;
 
     beforeEach(() => {
         state = {};
     });
 
-
-    it('can raise an error ', () => {
-        let errorTest = {
+    beforeAll(() => {
+        stub = sinon.stub(Client.prototype, "executeQuery");
+        stub.returns({
             data: {
-                errors: [
-                    {message: "Error"}
-                ]
+                message: "Hello"
             }
-        };
-        actions.fetchParameters(state, errorTest);
-        let validTimeRange = {day: 1, month: 0, year: 0};
-        mutations.setLocalStorageExpiryTime(state, validTimeRange);
-        mutations.setParameters(state, errorTest.data);
-        console.log(state.error);
-        console.log(errorTest);
-        expect(state.error).toBe("Can't initialize application");
+        })
     });
 
+    afterAll(() => {
+        stub.restore();
+    });
 
-    it('can gets the data correctly ', () => {
-        let returnedVal = {
-            data: {
-                data: {
-                    "__schema": {
-                        "types": [
-                            {
-                                name: "Query",
-                                fields: [
-                                    {
-                                        name: "searchFairsharingRecords",
-                                        args: [
-                                            {
-                                                name: "test",
-                                                description: "testDescription",
-                                                type: "String",
-                                                defaultValue: "1"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }]
-                    }
-                }
-            }
+    it('can raise errors or set the filters', async () => {
+        let errorMessage = {
+            errors: [
+                {message: "Error"}
+            ]
         };
-        let returnedValDif = {
-            data: {
-                data: {
-                    "__schema": {
-                        "types": [
-                            {
-                                name: "Query",
-                                fields: [
-                                    {
-                                        name: "searchFairsharingRecords",
-                                        args: [
-                                            {
-                                                name: "test",
-                                                description: "testDescription",
-                                                type: "String",
-                                                defaultValue: "1"
-                                            },
-                                            {
-                                                name: "test2",
-                                                description: "testDescription",
-                                                type: "String",
-                                                defaultValue: "1"
-                                            }
+        await mutations.setParameters(state, errorMessage);
+        expect(state.error).toBe("Error");
 
-                                        ]
-                                    }
-                                ]
-                            }]
-                    }
+        await mutations.setParameters(state);
+        expect(state.error).toBe("Can't initialize application")
+    });
+
+    it("can set the filters", async () => {
+        let dataMock = {
+            data: {
+                "__schema": {
+                    "types": [
+                        {
+                            name: "Query",
+                            fields: [
+                                {
+                                    name: "searchFairsharingRecords",
+                                    args: [
+                                        {
+                                            name: "test",
+                                            description: "testDescription",
+                                            type: "String",
+                                            defaultValue: "1"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             }
         };
 
-        let localStorageMock = (function () {
-            return {
-                searchQueryParameters: "ass"
-            };
-        })();
-        Object.defineProperty(window, 'localStorage', {value: localStorageMock});
-        let localStorageObject = window.localStorage;
-        console.log("localStorageObject",localStorageObject);
+        // first time called => localStorage is empty
+        await mutations.setParameters(state, dataMock);
+        expect(state.searchQueryParameters).toStrictEqual(dataMock.data["__schema"].types[0].fields[0]);
 
-        actions.fetchParameters(state, returnedVal);
-        let validTimeRange = {day: 1, month: 0, year: 0};
-        mutations.setLocalStorageExpiryTime(state, validTimeRange);
-        mutations.setParameters(state, returnedVal.data);
-        console.log(returnedVal.data);
-        console.log(state.searchQueryParameters);
-        expect(state.searchQueryParameters).toStrictEqual(returnedVal);
+        // second time called, localStorage now exists
+        await mutations.setParameters(state, dataMock);
+        expect(state.searchQueryParameters).toStrictEqual(dataMock.data["__schema"].types[0].fields[0]);
 
-
-         localStorageMock = (function () {
-            return {
-            };
-        })();
-        Object.defineProperty(window, 'localStorage', {value: localStorageMock});
-
-        console.log("localStorageObject",localStorageObject);
-
-        actions.fetchParameters(state, returnedVal);
-        mutations.setLocalStorageExpiryTime(state, validTimeRange);
-        mutations.setParameters(state, returnedVal.data);
-        console.log(returnedVal.data);
-        console.log(state.searchQueryParameters);
-        expect(state.searchQueryParameters).toStrictEqual(returnedVal);
-
-
-
-/*
-        localStorageMock = (function () {
-            return {
-                searchQueryParameters: "diff"
-            };
-        })();        Object.defineProperty(window, 'localStorage', {value: localStorageMock});
-
-        actions.fetchParameters(state, returnedValDif);
-        mutations.setLocalStorageExpiryTime(state, validTimeRange);
-        mutations.setParameters(state, returnedValDif.data);
-        console.log(returnedValDif.data);
-        console.log(state.searchQueryParameters);
-        expect(state.searchQueryParameters).toStrictEqual(returnedValDif);
-*/
+        // finally, change the data to make sure we can override the local storage
+        dataMock.data["__schema"].types[0].fields[0].args = {
+            name: "anothertest",
+            description: "anotherDescription",
+            type: "String",
+            defaultValue: "2"
+        };
+        await mutations.setParameters(state, dataMock);
+        expect(state.searchQueryParameters).toStrictEqual(dataMock.data["__schema"].types[0].fields[0]);
     });
 
+    it("can write the expiry date to the store", async () => {
+        let date = mutations.setLocalStorageExpiryTime();
+        date = String(date);
+        expect(localStorage.expiryDate).toBe(date);
+    });
 
+    it("can test a given date to see if its expired", () => {
+        let now = new Date();
+        let isExpired = paramsAreExpired(now, 24);
+        expect(isExpired).toBe(false);
+        isExpired = paramsAreExpired(now, -10);
+        expect(isExpired).toBe(true);
+    });
 });
+
+describe( "Actions", () => {
+    let state = {};
+    let stub;
+    beforeEach(() => {
+        state = {};
+        delete global.window.localStorage;
+        global.window = Object.create(window);
+    });
+
+    beforeAll(() => {
+        stub = sinon.stub(Client.prototype, "executeQuery");
+        stub.returns({
+            data: {
+                message: "Hello"
+            }
+        })
+    });
+
+    afterAll(() => {
+        stub.restore();
+    });
+
+    it('testing with empty localStorage', async () => {
+        global.window.localStorage = {};
+        actions.commit = jest.fn(() => {
+        });
+        await actions.fetchParameters(state, 24);
+        expect(actions.commit).toHaveBeenCalledTimes(2);
+
+    });
+
+    it( "testing with an introspectionQuery present but no timer", async () => {
+        global.window.localStorage = {
+            introspectionQuery: JSON.stringify({test: "ABC"})
+        };
+        await actions.fetchParameters(state, 24);
+        expect(actions.commit).toHaveBeenCalledTimes(2);
+        await actions.fetchParameters(state);
+        expect(actions.commit).toHaveBeenCalledTimes(2);
+
+    });
+
+    it("testing with non expired dated AND introspection query", async () => {
+        global.window.localStorage = {
+            expiryDate: new Date(),
+            introspectionQuery: JSON.stringify({test: "ABC"})
+        };
+        await actions.fetchParameters(state, 24);
+        expect(actions.commit).toHaveBeenCalledTimes(3);
+    });
+
+    it("testing with expired dated AND introspection query", async () => {
+        global.window.localStorage = {
+            expiryDate: new Date(),
+            introspectionQuery: JSON.stringify({test: "ABC"})
+        };
+        await actions.fetchParameters(state, -10);
+        expect(actions.commit).toHaveBeenCalledTimes(5);
+
+    });
+});
+
+
+

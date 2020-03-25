@@ -6,129 +6,62 @@ let client = new Client();
 export const mutations = {
     setParameters(state, data) {
         try {
-            console.log('dataaaa', data);
-            if (Object.prototype.hasOwnProperty.call(data, "errors")) {
+            if (Object.keys(data).includes("errors")) {
                 state.error = data.errors[0].message
             }
-            let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
-            state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
-            console.log('state.searchQueryParameters', JSON.stringify(state.searchQueryParameters));
-            // if local localStorage.searchQueryParameters not exists, then create it.
-
-            // !localStorage.searchQueryParameters ? state._localStorage = {} : state._localStorage = {searchQueryParameters: localStorage.searchQueryParameters}
-            if (!localStorage.searchQueryParameters) {
-                // console.log('created localStorage.searchQueryParameters');
-                localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-            } else {
-                // if local localStorage.searchQueryParameters exists but the data arrived is new then update it
-                // state._localStorage.searchQueryParameters = localStorage.searchQueryParameters;
-                console.log('state.searchQueryParameters', JSON.parse(JSON.stringify(state.searchQueryParameters)));
-                console.log('localStorage.searchQueryParameters', JSON.parse(localStorage.searchQueryParameters));
-                if (!isEqual(JSON.parse(localStorage.searchQueryParameters), JSON.parse(JSON.stringify(state.searchQueryParameters)))) {
-                    console.log('update localStorage.searchQueryParameters with new data');
+            else {
+                localStorage.introspectionQuery = JSON.stringify(data);
+                let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
+                state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
+                if (!localStorage.searchQueryParameters) {
                     localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                } else {
-                    console.log('else');
-                    state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
+                }
+                else {
+                    if (!isEqual(JSON.parse(localStorage.searchQueryParameters), JSON.parse(JSON.stringify(state.searchQueryParameters)))) {
+                        localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
+                    } else {
+                        state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
+                    }
                 }
             }
-
-        } catch (e) {
+        }
+        catch (e) {
             state.error = "Can't initialize application"
         }
     },
-    setLocalStorageExpiryTime: function (state, validTimeRange) {
-        console.log(validTimeRange);
-        let date = new Date();
-        const currentYear = date.getFullYear();
-        let currentMonth = date.getMonth() + 1;
-        const currentDay = date.getDate();
-        let ValidatedYear = currentYear + validTimeRange.year;
-        let ValidatedMonth = currentMonth + validTimeRange.month;
-        let ValidatedDay = currentDay + validTimeRange.day;
-
-        /*
-                    console.log("date", date);
-                    console.log("currentMonth", currentMonth);
-                    console.log("currentDay", currentDay);
-                    console.log("currentYear", currentYear);
-                    console.log("ValidatedMonth", ValidatedMonth);
-                    console.log("ValidatedDay", ValidatedDay);
-                    console.log("ValidatedYear", ValidatedYear);
-        */
-
-        // let currentDate = String(currentYear) + String(currentMonth) + String(currentDay);
-        localStorage.expiryDate = String(ValidatedYear) + String(ValidatedMonth) + String(ValidatedDay);
-
-        /*
-                    console.log("currentDate", currentDate);
-                    console.log(localStorage.expiryDate);
-        */
-
+    setLocalStorageExpiryTime: function () {
+        let now = new Date();
+        localStorage.expiryDate = now;
+        return now;
     }
 };
+
 export const actions = {
-    async fetchParameters() {
-        /*
-                    // if local localStorage.intorspectionQuery not exists, then create it. if (!localStorage.intorspectionQuery) {
-                    // console.log(localStorage.intorspectionQuery);
-                          let data = await client.getData(introspectionQuery);
-                          localStorage.intorspectionQuery = JSON.stringify(data.data);
-
-                          let validTimeRange = {day: 1, month: 0, year: 0};
-                          this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
-
-                          // localStorage.expiryDate = new Date() +;
-                          this.commit("introspection/setParameters", data.data);
-                    // !localStorage.expiryDate ? this.state._localStorage = {} : this.state._localStorage = {expiryDate: localStorage.expiryDate};
-
-        */
+    async fetchParameters(state, timer) {
+        let expirationTimer = (timer) ? timer : 24;
         if (localStorage.expiryDate) {
-            let date = new Date();
-            const currentYear = date.getFullYear();
-            let currentMonth = date.getMonth() + 1;
-            const currentDay = date.getDate();
-            let currentDate = String(currentYear) + String(currentMonth) + String(currentDay);
-
-            console.log("currentDate", currentDate);
-            console.log(localStorage.expiryDate);
-            console.log(currentDate > localStorage.expiryDate);
-
-
-            if (currentDate > localStorage.expiryDate) {
-                // console.log('outdated session - call the api to update');
+            const expiration = paramsAreExpired(localStorage.expiryDate, expirationTimer);
+            if (expiration) {
                 let data = await client.getData(introspectionQuery);
-                localStorage.intorspectionQuery = JSON.stringify(data.data);
-                let validTimeRange = {day: 1, month: 0, year: 0};
-                this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
-
-                // localStorage.expiryDate = new Date() +;
+                this.commit("introspection/setLocalStorageExpiryTime");
                 this.commit("introspection/setParameters", data.data);
-            } else {
-                // Otherwise, read from localStorage.intorspectionQuery .
-                // console.log(JSON.parse(localStorage.intorspectionQuery));
-                this.commit("introspection/setParameters", JSON.parse(localStorage.intorspectionQuery));
             }
-        } else if (!localStorage.intorspectionQuery) {
-            // console.log(localStorage.intorspectionQuery);
+            else {
+                this.commit("introspection/setParameters", JSON.parse(localStorage.introspectionQuery));
+            }
+        }
+        if (!localStorage.introspectionQuery) {
             let data = await client.getData(introspectionQuery);
-            localStorage.intorspectionQuery = JSON.stringify(data.data);
-            let validTimeRange = {day: 1, month: 0, year: 0};
-            this.commit("introspection/setLocalStorageExpiryTime", validTimeRange);
-
-            // localStorage.expiryDate = new Date() +;
+            this.commit("introspection/setLocalStorageExpiryTime");
             this.commit("introspection/setParameters", data.data);
         }
     }
-
 };
 export const getters = {
     buildQueryParameters: (state) => (params) => {
         let queryParameters = {};
         Object.keys(params[1]).forEach(function (param) {
             let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
-            // console.log('currentParam',currentParam)
-            // console.log('Type',currentParam.type)
             const expectedTypeObject = currentParam.type;
 
             if (expectedTypeObject.kind !== "LIST") {
@@ -190,4 +123,17 @@ const parseParam = function (param, paramVal) {
         return JSON.parse(paramVal)
     }
     return paramVal
+};
+
+/**
+ * Compares the given date with now and returns true if it greater than the given timer
+ * @param {Date} expiryDate - the date to compare
+ * @param {Number} expirationTimer - the timer to determine if the date has been expired or not
+ * @returns {boolean} - is the data expired or not
+ */
+export const paramsAreExpired = function(expiryDate, expirationTimer){
+    const limit = expirationTimer * 3600;
+    const expiration = new Date(expiryDate);
+    const now = new Date();
+    return ((now - expiration) - limit) >= 0
 };

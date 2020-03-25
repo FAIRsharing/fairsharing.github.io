@@ -199,8 +199,8 @@ let routes = [
     // Then change the method to get the title: if there's fairsharingRegistry URL param, set the new page title;
 
 ];
-routes.forEach(function(route){
-    if (route.name !== "Record"){
+routes.forEach(function (route) {
+    if (route.name !== "Record") {
         route.meta = {
             title: route.name.replace(/_/g, " ")
         }
@@ -220,8 +220,7 @@ export function beforeEach(to, from, next) {
 export function isLoggedIn(to, from, next, store) {
     if (store.state.users.userLoggedIn) {
         next()
-    }
-    else {
+    } else {
         next({
             name: "Login" // back to safety route //
         });

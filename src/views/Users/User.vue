@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div
     id="userPage"
     class="standard container-fluid"
@@ -14,6 +14,7 @@
                 Welcome, {{ $store.state.users.currentUserID }}
               </v-list-item-title>
             </v-list-item-content>
+            <user-profile-menu />
           </v-list-item>
 
           <v-card-text class="container-fluid">
@@ -41,7 +42,7 @@
                     tile
                   >
                     <v-expansion-panel
-                      v-for="(records, sectionName, sectionKey) in userDetail"
+                      v-for="(records, sectionName, sectionKey) in userRecords"
                       :key="sectionKey"
                     >
                       <v-expansion-panel-header
@@ -107,15 +108,6 @@
               </v-list-item-content>
             </v-list-item>
           </v-card-text>
-
-          <v-card-actions>
-            <v-btn @click="logoutUser()">
-              Logout
-            </v-btn>
-            <v-btn @click="resetPwd()">
-              Reset password
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -123,13 +115,8 @@
 </template>
 
 <script>
-    import { mapActions } from "vuex"
-    import RESTClient from "@/components/Client/RESTClient.js"
-    import GraphClient from "@/components/GraphClient/GraphClient.js"
-    import query from "@/components/GraphClient/queries/getUserMeta.json"
-
-    let client = new RESTClient();
-    let graphClient = new GraphClient();
+    import { mapActions, mapState } from "vuex"
+    import UserProfileMenu from "../../components/Users/UserProfileMenu";
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -137,7 +124,8 @@
 
     export default {
         name: "User",
-        filters: {
+      components: {UserProfileMenu},
+      filters: {
           cleanString: function(str){
             return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
           }
@@ -145,12 +133,11 @@
         data: () => {
           return {
               panel: 0,
-              user: null,
-              userDetail: null,
               hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"]
           }
         },
         computed: {
+          ...mapState('users', ['userRecords', 'user', "userResetPwdMessage"]),
           getUserMeta: function(){
             let userMeta = {};
             const _module = this;
@@ -165,25 +152,15 @@
           }
         },
         async created(){
-            this.user = await client.getUser(this.$store.state.users.currentUserToken);
-            query.queryParam.id = this.user.id;
-            let response = await graphClient.executeQuery(query);
-            this.userDetail = response.user
+            await this.getUser();
         },
         methods: {
-            ...mapActions('users', ['logout']),
-            logoutUser: async function(){
-                await this.logout(this.$store.state.users.currentUserToken);
-                this.$router.push({name: "Login"})
-            },
-            resetPwd: async function(){
-                await client.resetPassword(this.$store.state.users.currentUserToken);
-            },
+            ...mapActions('users', ['getUser', 'resetPwd']),
             getRecords: function(fieldName){
-              let output = this.userDetail[fieldName];
+              let output = this.userRecords[fieldName];
               if (fieldName === "maintenanceRequests"){
                 output = [];
-                this.userDetail[fieldName].forEach(function(record){
+                this.userRecords[fieldName].forEach(function(record){
                   output.push(record["fairsharingRecord"])
                 });
               }

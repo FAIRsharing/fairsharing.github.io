@@ -57,7 +57,7 @@ describe("Login.vue", ()=> {
             password: "niceTry!Lolz"
         };
         await wrapper.vm.logUser();
-        expect(wrapper.vm.$route.path).toBe("/users/Terazus");
+        expect(wrapper.vm.$route.path).toBe("/accounts/profile");
     });
 
     it("can prevent users from logging in", async () => {
@@ -75,7 +75,7 @@ describe("Login.vue", ()=> {
         wrapper.vm.loginData = {};
         await wrapper.vm.logUser();
         expect(wrapper.vm.$store.state.users.errors).toBe("Error !")
-    })
+    });
 
 
     it("can unlog users in", async () => {

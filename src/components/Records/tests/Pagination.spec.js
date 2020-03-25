@@ -43,8 +43,15 @@ describe("Pagination.vue", () => {
         expect(anotherWrapper.vm.currentPage).toBe(1);
     });
 
+
+    it('can react to changes in the URL query and/or name', () => {
+        wrapper.vm.$route.name = "Search";
+        wrapper.vm.$route.query = {};
+        expect(wrapper.vm.currentPage).toBe(1);
+    });
+
     it('Sets the page parameter to the given input on creation', () => {
-        $route.query ={page:"120"};
+        $route.query = {page: "120"};
         anotherWrapper2 = shallowMount(Pagination, {
             mocks: {$route, $router},
             propsData: {
@@ -55,35 +62,17 @@ describe("Pagination.vue", () => {
         expect(anotherWrapper2.vm.currentPage).toBe(120);
     });
 
-    it('can react to changes in the URL query and/or name', () => {
-        wrapper.vm.$route.name = "Search";
-        wrapper.vm.$route.query =  {};
-        expect(wrapper.vm.currentPage).toBe(1);
-    });
-
-    it('Has a paginate() method that sets the current page in the URL query', () => {
-        $route.name="Standards";
-        $route.query.page=12;
-
-        wrapper.vm.currentPage = 2;
-        wrapper.vm.$route.query.page = "3";
-        wrapper.vm.paginate(3);
-        expect(wrapper.vm.currentPage).toBe(3);
-        wrapper.vm.paginate(3);
-        expect(wrapper.vm.currentPage).toBe(3);
-        expect(wrapper.vm.$route.name).toBe("Standards");
-        expect(wrapper.vm.$route.query.page).toBe("3");
-    });
 
     it('Has a first() method that always redirect to the first page', () => {
+
 
         wrapper.vm.currentPage = 10;
         wrapper.vm.$route.query.page = "1";
 
+        wrapper.vm.allowPaginate = true;
         wrapper.vm.$router.push = push;
         wrapper.vm.first();
         wrapper.vm.$route.query.page = "1";
-
         expect(wrapper.vm.currentPage).toBe(1);
         expect(wrapper.vm.$route.query.page).toBe("1");
 
@@ -91,7 +80,9 @@ describe("Pagination.vue", () => {
         wrapper.vm.$router.push = push;
         wrapper.vm.first();
         expect($router.push).toHaveBeenCalledTimes(1);
+
     });
+
 
     it('Has a last() method that always redirect to the last page', () => {
 
@@ -113,6 +104,26 @@ describe("Pagination.vue", () => {
 
     });
 
+
+    it('Has a paginate() method that sets the current page in the URL query', () => {
+
+        $route.query = {page: "12"};
+        $route.name = "Standards";
+        anotherWrapper2 = shallowMount(Pagination, {
+            mocks: {$route, $router},
+            propsData: {
+                totalPages: 10,
+                default: 0
+            }
+        });
+
+        wrapper.vm.$route.query.page = "12";
+        wrapper.vm.currentPage = 2;
+        wrapper.vm.paginate(12);
+        expect(wrapper.vm.currentPage).toBe(2);
+        expect(wrapper.vm.$route.name).toBe("Standards");
+        expect(wrapper.vm.$route.query.page).toBe("12");
+    });
 
 
 });

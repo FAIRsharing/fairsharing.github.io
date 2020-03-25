@@ -91,7 +91,6 @@
           this.allowPaginate = false;
           this.PaginatePermission();
           if (pageNumber !== this.currentPage && this.allowPaginate) {
-            console.log('throttle worked!');
             let _module = this;
             let currentQuery = {};
             _module.currentPage = pageNumber;

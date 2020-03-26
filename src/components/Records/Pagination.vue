@@ -60,7 +60,8 @@
     data() {
       return {
         currentPage: null,
-        allowPaginate: true
+        allowPaginate: true,
+        isTesting:false
       }
     },
     watch: {
@@ -89,7 +90,7 @@
       paginate: async function (pageNumber) {
         if (this.allowPaginate){
           this.allowPaginate = false;
-          this.PaginatePermission();
+          !this.isTesting?this.PaginatePermission():this.allowPaginate=true;
           if (pageNumber !== this.currentPage && this.allowPaginate) {
             let _module = this;
             let currentQuery = {};
@@ -106,7 +107,8 @@
         }
       },
       PaginatePermission: throttle(function () { this.allowPaginate=true }, 1200),
-      /**
+
+  /**
        * Set the current page to the first page
        */
       first: function () {

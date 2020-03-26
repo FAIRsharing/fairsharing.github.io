@@ -2,38 +2,38 @@
   <nav aria-label="Page navigation example">
     <ul class="pagination">
       <li
-        v-if="totalPages>5"
-        class="page-item"
+              v-if="totalPages>5"
+              class="page-item"
       >
         <button
-          class="page-link"
-          @click="first"
+                class="page-link"
+                @click="first"
         >
           first
         </button>
       </li>
 
       <li
-        v-for="index in totalPages"
-        :key="index"
-        class="page-item"
-        :class="{'active' : index === currentPage}"
-        @click="paginate(index)"
+              v-for="index in totalPages"
+              :key="index"
+              class="page-item"
+              :class="{'active' : index === currentPage}"
+              @click="paginate(index)"
       >
         <button
-          class="page-link"
+                class="page-link"
         >
           {{ index }}
         </button>
       </li>
 
       <li
-        v-if="totalPages>5"
-        class="page-item"
+              v-if="totalPages>5"
+              class="page-item"
       >
         <button
-          class="page-link"
-          @click="last"
+                class="page-link"
+                @click="last"
         >
           last
         </button>
@@ -61,7 +61,7 @@
       return {
         currentPage: null,
         allowPaginate: true,
-        testingStatus:false
+        disable:false
       }
     },
     watch: {
@@ -80,7 +80,6 @@
     created() {
       let currentPage = this.$route.query.page;
       currentPage !== undefined ? this.currentPage = Number(currentPage) : this.currentPage = 1;
-
     },
     methods: {
       /**
@@ -90,7 +89,7 @@
       paginate: async function (pageNumber) {
         if (this.allowPaginate){
           this.allowPaginate = false;
-          this.isUnderTesting(this.testingStatus);
+          this.disableThrottle(this.disable);
           if (pageNumber !== this.currentPage && this.allowPaginate) {
             let _module = this;
             let currentQuery = {};
@@ -113,11 +112,12 @@
 
       /**
        * Set the environment ready for testing or development
+       * @param {Boolean} disable - should disable or not the throttle for the next call
        */
-      isUnderTesting:function(testingStatus){
-        !testingStatus?this.PaginatePermission():this.allowPaginate=true;
+      disableThrottle:function(disable){
+        !disable?this.PaginatePermission():this.allowPaginate=true;
       },
-  /**
+      /**
        * Set the current page to the first page
        */
       first: function () {

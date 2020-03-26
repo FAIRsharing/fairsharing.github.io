@@ -61,7 +61,7 @@
       return {
         currentPage: null,
         allowPaginate: true,
-        isTesting:false
+        testingStatus:false
       }
     },
     watch: {
@@ -90,7 +90,7 @@
       paginate: async function (pageNumber) {
         if (this.allowPaginate){
           this.allowPaginate = false;
-          !this.isTesting?this.PaginatePermission():this.allowPaginate=true;
+          this.isUnderTesting(this.testingStatus);
           if (pageNumber !== this.currentPage && this.allowPaginate) {
             let _module = this;
             let currentQuery = {};
@@ -107,7 +107,9 @@
         }
       },
       PaginatePermission: throttle(function () { this.allowPaginate=true }, 1200),
-
+      isUnderTesting:function(testingStatus){
+        !testingStatus?this.PaginatePermission():this.allowPaginate=true;
+      },
   /**
        * Set the current page to the first page
        */

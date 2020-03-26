@@ -64,7 +64,7 @@ describe("Pagination.vue", () => {
 
 
     it('Has a first() method that always redirect to the first page', () => {
-        wrapper.vm.isTesting=true;
+        wrapper.vm.testingStatus=true;
         wrapper.vm.currentPage = 10;
         wrapper.vm.$route.query.page = "1";
 
@@ -81,7 +81,7 @@ describe("Pagination.vue", () => {
 
 
     it('Has a last() method that always redirect to the last page', () => {
-        wrapper.vm.isTesting=true;
+        wrapper.vm.testingStatus=true;
         wrapper.vm.currentPage = wrapper.vm.totalPages;
         wrapper.vm.$route.query.page = wrapper.vm.totalPages;
 
@@ -100,12 +100,24 @@ describe("Pagination.vue", () => {
 
 
     it('Has a paginate() method that sets the current page in the URL query', () => {
-        wrapper.vm.isTesting=true;
+        wrapper.vm.testingStatus=true;
         wrapper.vm.$router.push = push;
         wrapper.vm.paginate(8);
         expect(wrapper.vm.currentPage).toBe(8);
         expect(wrapper.vm.$route.name).toBe("Search");
     });
 
+    it('can define whether it is testing or development environment',()=>{
+        wrapper.vm.isUnderTesting(true);
+        expect(wrapper.vm.allowPaginate).toBe(true);
+        wrapper.vm.isUnderTesting(false);
+        expect(wrapper.vm.allowPaginate).toBe(false);
+    })
+
+    it('can check whether paginate works if it is not allowed',()=>{
+        wrapper.vm.allowPaginate=false;
+        wrapper.vm.paginate(2);
+        expect(wrapper.vm.currentPage).toBe(8);
+    })
 
 });

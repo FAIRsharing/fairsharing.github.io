@@ -108,16 +108,16 @@ describe("Pagination.vue", () => {
     });
 
     it('can define whether it is testing or development environment',()=>{
-        wrapper.vm.disableThrottle(true);
+        wrapper.vm.disableThrottle(false);
         expect(wrapper.vm.allowPaginate).toBe(true);
         wrapper.vm.disableThrottle(false);
         expect(wrapper.vm.allowPaginate).toBe(false);
     });
 
-    it('can check whether paginate works if it is not allowed',()=>{
-        wrapper.vm.allowPaginate=false;
-        wrapper.vm.paginate(2);
-        expect(wrapper.vm.currentPage).toBe(8);
+   it('can check whether paginate works if it is not allowed',()=>{
+       wrapper.vm.disable=true;
+       wrapper.vm.paginate(2);
+        expect(wrapper.vm.currentPage).toBe(2);
     })
 
 });

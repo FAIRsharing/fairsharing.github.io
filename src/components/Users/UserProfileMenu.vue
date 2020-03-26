@@ -112,7 +112,9 @@
                     {
                         name: "Reset Password",
                         action: async function(){
-                            await _module.resetPwd();
+                          _module.$router.push({
+                            path: "/users/password/edit"
+                          })
                         }
                     },
                     {

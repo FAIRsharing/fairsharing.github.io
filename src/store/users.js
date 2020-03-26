@@ -34,6 +34,7 @@ export const mutations = {
         state.tokenValidity = localStorage.tokenValidity;
     },
     logoutUser(state){
+        state.errors = null;
         state.userLoggedIn = false;
         state.currentUserID = null;
         state.currentUserToken = null;
@@ -110,6 +111,20 @@ export const actions = {
     async resetPwd(state){
         let resetPwd = await client.requestResetPwd(state.state.user.email);
         this.commit('users/setResetPwdMessage', resetPwd)
+    },
+    async resetPwdWithoutToken(state, user){
+        try {
+            let response = await client.resetPasswordWithoutToken(state.state.currentUserToken, user);
+            if (response.error){
+                state.state.errors = response.error;
+            }
+            else {
+                this.commit("users/logoutUser");
+            }
+        }
+        catch(e){
+            state.state.errors = e.message
+        }
     }
 };
 

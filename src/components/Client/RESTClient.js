@@ -127,6 +127,19 @@ class RESTClient {
         return response.data;
     }
 
+    async resetPasswordWithoutToken(jwt, user){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + jwt;
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + "/users/",
+            headers: headers,
+            data: {user: user}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
     /**
      * Get the current user data
      * @param token

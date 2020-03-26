@@ -24,61 +24,8 @@
           :key="index"
           @click="item.action()"
         >
-          <v-list-item-title
-            v-if="item.name !== 'Reset Password'"
-          >
+          <v-list-item-title>
             {{ item.name }}
-          </v-list-item-title>
-
-          <!-- dialog box when resetting pwd -->
-          <v-list-item-title v-else>
-            <div class="text-center">
-              <v-dialog
-                v-model="dialog"
-                transition="scale-transition"
-                width="500"
-              >
-                <template v-slot:activator="{ on }">
-                  <div
-                    class="text-left"
-                    v-on="on"
-                    @click="item.action()"
-                  >
-                    {{ item.name }}
-                  </div>
-                </template>
-                <!-- popup -->
-                <v-card>
-                  <v-card-title
-                    class="headline grey lighten-2"
-                    primary-title
-                  >
-                    Resetting a password:
-                  </v-card-title>
-                  <v-card-text v-if="userResetPwdMessage">
-                    <div
-                      class="alert mt-10"
-                      :class="{'alert-danger': !userResetPwdMessage.success, 'alert-success': userResetPwdMessage.success, }"
-                    >
-                      {{ userResetPwdMessage.message }}
-                    </div>
-                  </v-card-text>
-
-                  <v-divider />
-
-                  <v-card-actions>
-                    <v-spacer />
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="dialog = false"
-                    >
-                      Ok
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </div>
           </v-list-item-title>
         </v-list-item>
       </v-list>
@@ -87,7 +34,7 @@
 </template>
 
 <script>
-    import { mapActions, mapState } from "vuex"
+    import { mapActions } from "vuex"
 
     export default {
         name: "UserProfileMenu",
@@ -97,7 +44,6 @@
             }
         },
         computed: {
-            ...mapState('users', ['userResetPwdMessage']),
             menuItems: function(){
                 const _module = this;
                 return [
@@ -112,7 +58,9 @@
                     {
                         name: "Reset Password",
                         action: async function(){
-                            await _module.resetPwd();
+                          _module.$router.push({
+                            path: "/users/password/edit"
+                          })
                         }
                     },
                     {
@@ -125,7 +73,7 @@
             }
         },
         methods: {
-            ...mapActions('users', ['logout', 'resetPwd']),
+            ...mapActions('users', ['logout']),
             logoutUser: async function(){
                 await this.logout();
                 this.$router.push({name: "Login"})

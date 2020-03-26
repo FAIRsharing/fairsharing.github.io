@@ -128,6 +128,25 @@ class RESTClient {
     }
 
     /**
+     * Changes the password of the logged in user
+     * @param {String} jwt - the user token
+     * @param {Object} user - contains the current, new and repeated new password
+     * @returns {Promise}
+     */
+    async resetPasswordWithoutToken(jwt, user){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + jwt;
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + "/users/",
+            headers: headers,
+            data: {user: user}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Get the current user data
      * @param token
      * @returns {Promise}

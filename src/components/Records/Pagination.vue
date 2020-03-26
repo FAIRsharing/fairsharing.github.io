@@ -106,7 +106,14 @@
           }
         }
       },
+      /**
+       * Postpone the pagination buttons to be clickable
+       */
       PaginatePermission: throttle(function () { this.allowPaginate=true }, 1200),
+
+      /**
+       * Set the environment ready for testing or development
+       */
       isUnderTesting:function(testingStatus){
         !testingStatus?this.PaginatePermission():this.allowPaginate=true;
       },

@@ -1,144 +1,294 @@
 import RESTClient from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
+import { initStateMessages, initUserDataState, validateToken } from "./utils.js"
 
 let client = new RESTClient();
 let graphClient = new GraphClient();
 
 export const mutations = {
-    /*
-    TODO: store password in cookies instead of the localstorage to mitigate XSS attacks.
-    */
     login(state, user){
-        state.errors = null;
-        if (!user.user.error){
-            state.userLoggedIn = true;
-            state.currentUserID = user.user.username;
-            state.currentUserToken = user.user["jwt"];
-            state.tokenValidity = user.user.expiry;
-            localStorage.username = user.user.username;
-            localStorage.jwt = user.user.jwt;
-            localStorage.pwd = user.pwd;
-            localStorage.tokenValidity = user.user.expiry;
-        }
-        else {
-            localStorage.clear();
-            state.errors = user.user.error.response.data.error;
-        }
-
+        state.user = function(){
+            return {
+                isLoggedIn: true,
+                credentials: {
+                    username: user.user.username,
+                    token: user.user["jwt"],
+                    tokenValidity: user.user["expiry"]
+                },
+                metadata: {},
+                records: {}
+            }
+        };
+        localStorage.setItem("user", JSON.stringify(state.user()));
     },
     autoLogin(state){
-        state.userLoggedIn = true;
-        state.currentUserToken = localStorage["jwt"];
-        state.currentUserID = localStorage.username;
-        state.tokenValidity = localStorage.tokenValidity;
+        let user = JSON.parse(localStorage.getItem("user"));
+        state.user = function(){
+            return user
+        };
     },
-    logoutUser(state){
-        state.errors = null;
-        state.userLoggedIn = false;
-        state.currentUserID = null;
-        state.currentUserToken = null;
-        state.tokenValidity = null;
-        localStorage.clear();
+    logout(state){
+        localStorage.removeItem("user");
+        state.user = function(){
+            return initUserDataState;
+        };
+        state.messages = function(){
+            return initStateMessages();
+        }
     },
-    setUserRecords(state, record){
-        state.userRecords = record.user;
+    setUser(state, record){
+        let user = JSON.parse(localStorage.getItem("user"));
+        state.user = function(){
+            return {
+                isLoggedIn: true,
+                credentials: {
+                    username: user.credentials.username,
+                    token: user.credentials.token,
+                    tokenValidity: user.credentials.tokenValidity
+                },
+                metadata: record.metadata,
+                records: record.records.user
+            }
+        };
     },
-    setUserMeta(state, user){
-        state.user = user;
+    setUserMeta(state, metadata){
+        let user = JSON.parse(localStorage.getItem("user"));
+        state.user = function(){
+            return {
+                isLoggedIn: true,
+                credentials: {
+                    username: user.credentials.username,
+                    token: user.credentials.token,
+                    tokenValidity: user.credentials.tokenValidity
+                },
+                metadata: metadata,
+                records: {}
+            }
+        };
     },
-    setResetPwdMessage(state, message){
-        state.userResetPwdMessage = message
+    setError(state, message){
+        state.messages = function(){
+            let output = initStateMessages();
+            output[message.field] = {
+                message: message.message,
+                error: true
+            };
+            return output;
+        }
+    },
+    clearUserData(state){
+        state.user = function(){
+            return initUserDataState()
+        };
+        localStorage.removeItem("user");
+    },
+    setMessage(state, message){
+        state.messages = function(){
+            let output = initStateMessages();
+            output[message.field] = {
+                message: message.message,
+                error: false
+            };
+            return output;
+        }
+    },
+    clearMessages(state){
+        state.messages = function(){
+            return initStateMessages();
+        }
     }
 };
 
 export const actions = {
     async login(state, user){
-        if (!localStorage.jwt){
-            if (user){
-                try {
-                    let response = await client.login(user.name, user.password);
+        if (user){
+            try {
+                let response = await client.login(user.name, user.password);
+                if (!response.error) {
+                    this.commit("users/clearMessages");
                     this.commit("users/login", {
                         user: response,
                         pwd: user.password
                     });
                 }
-                catch(e){
-                    //
-                }
-            }
-        }
-        else {
-            try {
-                if (validateToken(state.tokenValidity)) {
-                    this.commit("users/autoLogin");
-                } else {
-                    const user = {
-                        name: localStorage.username,
-                        password: localStorage.pwd
-                    };
-                    let response = await client.login(user.name, user.password);
-                    this.commit("users/login", {
-                        user: response,
-                        pwd: user.password
+                else {
+                    this.commit("users/clearUserData");
+                    this.commit("users/setError", {
+                        field:"login",
+                        message:response.error.response.data.error
                     });
                 }
             }
             catch(e){
-                //
+                this.commit("users/setError", {field: "login", message: e.message})
+            }
+        }
+        else {
+            if (localStorage.user){
+                let userData = JSON.parse(localStorage.getItem("user"));
+                if (validateToken(userData.credentials.tokenValidity)){
+                    this.commit("users/autoLogin");
+                }
+                else {
+                    this.commit("users/setError", {
+                        field: "login",
+                        message: "You session has expired. Please log in again."
+                    });
+                    this.commit("users/clearUserData");
+                }
             }
         }
     },
     async logout(state){
         try {
-            await client.logout(state.state.currentUserToken);
-            this.commit("users/logoutUser");
+            await client.logout(state.state.user().credentials.token);
+            this.commit("users/logout");
         }
         catch(e){
-            //
+            this.commit("users/setError", {field: "logout", message: e.message});
         }
     },
     async getUser(state){
-        let metadata = await client.getUser(state.state.currentUserToken);
-        getUserQuery.queryParam.id = metadata.id;
-        this.commit('users/setUserRecords', await await graphClient.executeQuery(getUserQuery));
-        this.commit('users/setUserMeta', metadata);
-    },
-    async getUserMeta(state){
-        let metadata = await client.getUser(state.state.currentUserToken);
-        this.commit('users/setUserMeta', metadata);
-    },
-    async resetPwd(state){
-        let resetPwd = await client.requestResetPwd(state.state.user.email);
-        this.commit('users/setResetPwdMessage', resetPwd)
-    },
-    async resetPwdWithoutToken(state, user){
         try {
-            let response = await client.resetPasswordWithoutToken(state.state.currentUserToken, user);
-            if (response.error){
-                state.state.errors = response.error;
+            const userMetadata = await client.getUser(state.state.user().credentials.token);
+            if (userMetadata.error) {
+                this.commit("users/setError", {
+                    field: "getUser",
+                    message: userMetadata.error.response.data.error
+                });
             }
             else {
-                this.commit("users/logoutUser");
+                getUserQuery.queryParam.id = userMetadata.id;
+                const userRecords = await graphClient.executeQuery(getUserQuery);
+                if (userRecords.error) {
+                    this.commit("users/setError", {
+                        field: "getUser",
+                        message: userRecords.error.response.data.error.message
+                    });
+                }
+                else {
+                    this.commit('users/setUser', {
+                        metadata: userMetadata,
+                        records: userRecords
+                    });
+                }
             }
         }
         catch(e){
-            state.state.errors = e.message
+            this.commit("users/setError", {
+                field: "getUser",
+                message: e.message
+            });
         }
+    },
+    async getUserMeta(state){
+        try {
+            let metadata = await client.getUser(state.state.user().credentials.token);
+            if (metadata.error) {
+                this.commit("user/setError", {
+                    field: "getUser",
+                    message: metadata.error
+                });
+            }
+            else {
+                this.commit('users/setUserMeta', metadata);
+            }
+        }
+        catch(e){
+            this.commit("users/setError", {
+                field: "getUser",
+                message: e.message
+            })
+        }
+
+
+    },
+    async updateUser(state, user){
+        try {
+            let response = await client.editUser(user, state.state.user().credentials.token);
+            if (response.error){
+                this.commit("users/setError", {
+                    field: "updateProfile",
+                    message: response.error.response.data.errors
+                })
+            }
+            else {
+                this.commit("users/setMessage", {
+                    field: "updateProfile",
+                    message: "Update successful !"
+                })
+            }
+        }
+        catch(e) {
+            this.commit("users/setError", {field: "updateProfile", message: e.message})
+        }
+    },
+    async resetPwd(state, query){
+        try {
+            let resetPwd = await client.resetPassword(query);
+            if (resetPwd.error){
+                this.commit("users/setError", {
+                    field: "resetPassword",
+                    message: resetPwd.error.response.data.errors
+                })
+            }
+            else {
+                this.commit('users/setMessage', {
+                    field: "resetPassword",
+                    message: resetPwd
+                });
+                this.commit("users/setMessage", {
+                    field: "login",
+                    message: "Password change successful. Please log back in."
+                });
+            }
+        }
+        catch(e) {
+            this.commit('users/setMessage', {
+                field: "resetPassword",
+                message: e.message
+            })
+        }
+    },
+    async resetPwdWithoutToken(state, user){
+        try {
+            let response = await client.resetPasswordWithoutToken(state.state.user().credentials.token, user);
+            if (response.error){
+                this.commit("users/setError", {
+                    field: "resetPassword",
+                    message: response.error.response.data.errors
+                })
+            }
+            else {
+                this.commit("users/logout");
+                this.commit("users/setMessage", {
+                    field: "login",
+                    message: "Password change successful. Please log back in."
+                });
+            }
+        }
+        catch(e){
+            this.commit("users/setError", {field: "resetPassword", message: e.message})
+        }
+    },
+    setError(state, error){
+        this.commit("users/setError", {
+            field: error.field,
+            message: error.message
+        })
     }
 };
 
 let currentUser = {
     namespaced: true,
     state: {
-        userLoggedIn: false,
-        currentUserID: null,
-        currentUserToken: null,
-        tokenValidity: null,
-        errors: null,
-        userRecords: null,
-        user: null,
-        userResetPwdMessage: null
+        user: function(){
+            return initUserDataState()
+        },
+        messages: function(){
+            return initStateMessages();
+        }
     },
     mutations: mutations,
     actions: actions,
@@ -148,7 +298,4 @@ let currentUser = {
 
 export default currentUser;
 
-const validateToken = function(tokenExpiry){
-    const today = new Date();
-    return today - tokenExpiry >= 0;
-};
+

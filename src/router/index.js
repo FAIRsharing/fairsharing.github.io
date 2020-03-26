@@ -218,7 +218,7 @@ export function beforeEach(to, from, next) {
 }
 
 export function isLoggedIn(to, from, next, store) {
-    if (store.state.users.userLoggedIn) {
+    if (store.state.users.user().isLoggedIn) {
         next()
     } else {
         next({

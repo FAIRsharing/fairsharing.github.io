@@ -8,15 +8,13 @@ export const mutations = {
         try {
             if (Object.keys(data).includes("errors")) {
                 state.error = data.errors[0].message
-            }
-            else {
+            } else {
                 localStorage.introspectionQuery = JSON.stringify(data);
                 let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
                 state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
                 if (!localStorage.searchQueryParameters) {
                     localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                }
-                else {
+                } else {
                     if (!isEqual(JSON.parse(localStorage.searchQueryParameters), JSON.parse(JSON.stringify(state.searchQueryParameters)))) {
                         localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
                     } else {
@@ -24,8 +22,7 @@ export const mutations = {
                     }
                 }
             }
-        }
-        catch (e) {
+        } catch (e) {
             state.error = "Can't initialize application"
         }
     },
@@ -45,8 +42,7 @@ export const actions = {
                 let data = await client.getData(introspectionQuery);
                 this.commit("introspection/setLocalStorageExpiryTime");
                 this.commit("introspection/setParameters", data.data);
-            }
-            else {
+            } else {
                 this.commit("introspection/setParameters", JSON.parse(localStorage.introspectionQuery));
             }
         }
@@ -95,6 +91,12 @@ export const getters = {
  * */
 let introspectionStore = {
     namespaced: true,
+    /**
+     * @name states
+     * @type {Object}
+     * @property {String} errors - collects errors while introspecting.
+     * @property {object} searchQueryParameters -  filters query parameters object coming from API.
+     */
     state: {
         errors: String,
         searchQueryParameters: {},
@@ -102,7 +104,7 @@ let introspectionStore = {
     modules: {},
     mutations: mutations,
     actions: actions,
-    getters:getters
+    getters: getters
 };
 export default introspectionStore;
 
@@ -131,7 +133,7 @@ const parseParam = function (param, paramVal) {
  * @param {Number} expirationTimer - the timer to determine if the date has been expired or not
  * @returns {boolean} - is the data expired or not
  */
-export const paramsAreExpired = function(expiryDate, expirationTimer){
+export const paramsAreExpired = function (expiryDate, expirationTimer) {
     const limit = expirationTimer * 3600;
     const expiration = new Date(expiryDate);
     const now = new Date();

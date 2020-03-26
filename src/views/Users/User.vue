@@ -6,12 +6,16 @@
     <v-row>
       <v-col cols12>
         <v-card>
+          <v-card-text>
+            <MessageHandler field="getUser" />
+          </v-card-text>
           <v-list-item class="blue">
             <v-list-item-content class="pa-0">
               <v-list-item-title
+                v-if="user().credentials"
                 class="headline text-left white--text"
               >
-                Welcome, {{ $store.state.users.currentUserID }}
+                Welcome, {{ user().credentials.username }}
               </v-list-item-title>
             </v-list-item-content>
             <user-profile-menu />
@@ -38,11 +42,12 @@
                 <!-- NEW DETAILS PANELS -->
                 <v-list-item>
                   <v-expansion-panels
+                    v-if="user().records"
                     v-model="panel"
                     tile
                   >
                     <v-expansion-panel
-                      v-for="(records, sectionName, sectionKey) in userRecords"
+                      v-for="(records, sectionName, sectionKey) in user().records"
                       :key="sectionKey"
                     >
                       <v-expansion-panel-header
@@ -117,14 +122,15 @@
 <script>
     import { mapActions, mapState } from "vuex"
     import UserProfileMenu from "../../components/Users/UserProfileMenu";
+    import MessageHandler from "../../components/Users/MessageHandler";
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
      * */
 
     export default {
-        name: "User",
-      components: {UserProfileMenu},
+      name: "User",
+      components: {MessageHandler, UserProfileMenu},
       filters: {
           cleanString: function(str){
             return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
@@ -137,14 +143,14 @@
           }
         },
         computed: {
-          ...mapState('users', ['userRecords', 'user', "userResetPwdMessage"]),
+          ...mapState('users', ['user', "userResetPwdMessage"]),
           getUserMeta: function(){
             let userMeta = {};
             const _module = this;
-            if (_module.user) {
-              Object.keys(_module.user).forEach(function (field) {
+            if (_module.user() && _module.user().metadata) {
+              Object.keys(_module.user().metadata).forEach(function(field) {
                 if (!_module.hideFields.includes(field)) {
-                  userMeta[field] = _module.user[field]
+                  userMeta[field] = _module.user().metadata[field]
                 }
               });
             }
@@ -157,10 +163,10 @@
         methods: {
             ...mapActions('users', ['getUser', 'resetPwd']),
             getRecords: function(fieldName){
-              let output = this.userRecords[fieldName];
+              let output = this.user().records[fieldName];
               if (fieldName === "maintenanceRequests"){
                 output = [];
-                this.userRecords[fieldName].forEach(function(record){
+                this.user().records[fieldName].forEach(function(record){
                   output.push(record["fairsharingRecord"])
                 });
               }

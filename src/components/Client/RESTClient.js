@@ -127,6 +127,12 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Changes the password of the logged in user
+     * @param {String} jwt - the user token
+     * @param {Object} user - contains the current, new and repeated new password
+     * @returns {Promise}
+     */
     async resetPasswordWithoutToken(jwt, user){
         let headers = JSON.parse(JSON.stringify(this.headers));
         headers['Authorization'] = 'Bearer ' + jwt;

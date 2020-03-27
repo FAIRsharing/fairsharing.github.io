@@ -2,7 +2,7 @@ import { mutations, actions } from "@/store/users.js"
 import Client from "@/components/Client/RESTClient.js"
 import sinon from "sinon"
 
-describe('Actions', () => {
+describe('Login Action', () => {
     let getStub;
     let restClientStub;
 
@@ -18,7 +18,7 @@ describe('Actions', () => {
         restClientStub.restore();
     });
 
-    it("testing login action: no user and valid token", async () => {
+    it("testing no user and valid token", async () => {
         let now = new Date();
         getStub.withArgs("user").returns(JSON.stringify({
             credentials: {
@@ -32,7 +32,7 @@ describe('Actions', () => {
         expect(actions.commit).toHaveBeenCalledWith('users/autoLogin');
     });
 
-    it("testing login action: no user and invalid token", async () => {
+    it("testing no user and invalid token", async () => {
         let state = {};
         getStub.withArgs("user").returns(JSON.stringify({
             credentials: {
@@ -45,14 +45,14 @@ describe('Actions', () => {
         expect(actions.commit).toHaveBeenCalledWith("users/setError", {"field": "login", "message": "You session has expired. Please log in again."});
     });
 
-    it("testing login action: no user and no data", async () => {
+    it("testing no user and no data", async () => {
         let state = {};
         getStub.withArgs("user").returns();
         await actions.login(state);
         expect(actions.commit).not.toHaveBeenCalled()
     });
 
-    it("testing login action with a user and no error", async () => {
+    it("testing with a user and no error", async () => {
         let state = {};
         restClientStub.withArgs(sinon.match.any).returns({
             data: {message: "Hello"}
@@ -67,7 +67,7 @@ describe('Actions', () => {
             {pwd: "fakePassword", user: {"message": "Hello"}})
     });
 
-    it("testing login action with a user and errors", async () => {
+    it("testing with a user and errors", async () => {
         let state = {};
         restClientStub.withArgs(sinon.match.any).returns({
             data: {error: {response: {data: {error: "Error"}}}}

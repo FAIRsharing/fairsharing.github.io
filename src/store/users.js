@@ -1,7 +1,7 @@
 import RESTClient from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
-import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
 import { initStateMessages, initUserDataState, validateToken } from "./utils.js"
+import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
 
 let client = new RESTClient();
 let graphClient = new GraphClient();
@@ -27,6 +27,7 @@ export const mutations = {
         state.user = function(){
             return user
         };
+        state.user();
     },
     logout(state){
         localStorage.removeItem("user");
@@ -77,12 +78,6 @@ export const mutations = {
             return output;
         }
     },
-    clearUserData(state){
-        state.user = function(){
-            return initUserDataState()
-        };
-        localStorage.removeItem("user");
-    },
     setMessage(state, message){
         state.messages = function(){
             let output = initStateMessages();
@@ -92,6 +87,12 @@ export const mutations = {
             };
             return output;
         }
+    },
+    clearUserData(state){
+        state.user = function(){
+            return initUserDataState()
+        };
+        localStorage.removeItem("user");
     },
     clearMessages(state){
         state.messages = function(){
@@ -125,8 +126,9 @@ export const actions = {
             }
         }
         else {
-            if (localStorage.user){
-                let userData = JSON.parse(localStorage.getItem("user"));
+            let user = localStorage.getItem('user');
+            if (user){
+                let userData = JSON.parse(user);
                 if (validateToken(userData.credentials.tokenValidity)){
                     this.commit("users/autoLogin");
                 }

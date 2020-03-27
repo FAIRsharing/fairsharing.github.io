@@ -74,15 +74,6 @@ describe("Login.vue", ()=> {
         });
         wrapper.vm.loginData = {};
         await wrapper.vm.logUser();
-        expect(wrapper.vm.$store.state.users.errors).toBe("Error !")
-    });
-
-
-    it("can unlog users in", async () => {
-        restStub.returns({
-            data: {}
-        });
-        await wrapper.vm.unlogUser();
-        expect(wrapper.vm.loginData).toStrictEqual({});
+        expect(wrapper.vm.messages().login).toStrictEqual({"error": true, "message": "Error !"})
     });
 });

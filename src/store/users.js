@@ -36,7 +36,8 @@ export const mutations = {
         };
         state.messages = function(){
             return initStateMessages();
-        }
+        };
+        state.messages();
     },
     setUser(state, record){
         let user = JSON.parse(localStorage.getItem("user"));
@@ -181,7 +182,7 @@ export const actions = {
                 if (userRecords.error) {
                     this.commit("users/setError", {
                         field: "getUser",
-                        message: userRecords.error.response.data.error.message
+                        message: userRecords.error.response.data.error
                     });
                 }
                 else {
@@ -203,7 +204,7 @@ export const actions = {
         try {
             let metadata = await client.getUser(state.state.user().credentials.token);
             if (metadata.error) {
-                this.commit("user/setError", {
+                this.commit("users/setError", {
                     field: "getUser",
                     message: metadata.error
                 });
@@ -262,7 +263,7 @@ export const actions = {
             }
         }
         catch(e) {
-            this.commit('users/setMessage', {
+            this.commit('users/setError', {
                 field: "resetPassword",
                 message: e.message
             })

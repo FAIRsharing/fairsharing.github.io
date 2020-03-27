@@ -129,14 +129,14 @@
         computed: {
           ...mapState("users", ["user", "messages"]),
           formData: function(){
-            return {
-              username: this.user().credentials.username,
-              email: this.user().metadata.email,
-              hide_email: this.user().metadata.hide_email,
-              first_name: this.user().metadata.first_name,
-              last_name: this.user().metadata.last_name,
-              homepage: this.user().metadata.homepage
-            }
+              return {
+                username: this.user().credentials.username,
+                email: this.user().metadata.email,
+                hide_email: this.user().metadata.hide_email,
+                first_name: this.user().metadata.first_name,
+                last_name: this.user().metadata.last_name,
+                homepage: this.user().metadata.homepage
+              }
           }
         },
         async created(){

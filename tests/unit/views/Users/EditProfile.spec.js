@@ -49,19 +49,4 @@ describe("UserProfileMenu.vue", () => {
         await wrapper.vm.updateProfile();
         expect(wrapper.vm.messages().updateProfile).toStrictEqual( {"error": false, "message": "Update successful !"});
     });
-/*
-        it ('can raise errors correctly', async () => {
-            //restStub.restore();
-            restStub.withArgs(sinon.match.any).returns({
-                data: {
-                    error: {
-                        message: "Error !"
-                    },
-                }
-            });
-            await wrapper.vm.updateProfile();
-            expect(wrapper.vm.message.message).toBe("Error !");
-            expect(wrapper.vm.error).toBe(true);
-        })
-    */
 });

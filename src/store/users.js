@@ -40,18 +40,31 @@ export const mutations = {
     },
     setUser(state, record){
         let user = JSON.parse(localStorage.getItem("user"));
-        state.user = function(){
-            return {
-                isLoggedIn: true,
-                credentials: {
-                    username: user.credentials.username,
-                    token: user.credentials.token,
-                    tokenValidity: user.credentials.tokenValidity
-                },
-                metadata: record.metadata,
-                records: record.records.user
-            }
-        };
+        if (user) {
+            state.user = function () {
+                return {
+                    isLoggedIn: true,
+                    credentials: {
+                        username: user.credentials.username,
+                        token: user.credentials.token,
+                        tokenValidity: user.credentials.tokenValidity
+                    },
+                    metadata: record.metadata,
+                    records: record.records.user
+                }
+            };
+        }
+        else {
+            state.user = function () {
+                return {
+                    isLoggedIn: true,
+                    credentials: {
+                    },
+                    metadata: record.metadata,
+                    records: record.records.user
+                }
+            };
+        }
     },
     setUserMeta(state, metadata){
         let user = JSON.parse(localStorage.getItem("user"));
@@ -211,7 +224,6 @@ export const actions = {
     async updateUser(state, user){
         try {
             let response = await client.editUser(user, state.state.user().credentials.token);
-            console.log(response);
             if (response.error){
                 this.commit("users/setError", {
                     field: "updateProfile",

@@ -21,7 +21,10 @@ describe("Routes", () => {
 
     it ("- NAVGUARD - redirect if the user is not logged in", () => {
         const store = {
-          state: {users: {userLoggedIn: true}}
+          state: {
+              users: {
+                  user: function(){return {userLoggedIn: true}}
+              }}
         };
         const next = jest.fn();
         isLoggedIn(undefined, undefined, next, store)

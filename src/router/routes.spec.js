@@ -23,7 +23,7 @@ describe("Routes", () => {
         const store = {
           state: {
               users: {
-                  user: function(){return {userLoggedIn: true}}
+                  user: function(){return {isLoggedIn: true}}
               }}
         };
         const next = jest.fn();

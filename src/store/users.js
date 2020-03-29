@@ -1,7 +1,7 @@
 import RESTClient from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
-import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
 import { initStateMessages, initUserDataState, validateToken } from "./utils.js"
+import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
 
 let client = new RESTClient();
 let graphClient = new GraphClient();
@@ -27,6 +27,7 @@ export const mutations = {
         state.user = function(){
             return user
         };
+        state.user();
     },
     logout(state){
         localStorage.removeItem("user");
@@ -35,37 +36,53 @@ export const mutations = {
         };
         state.messages = function(){
             return initStateMessages();
-        }
+        };
+        state.messages();
     },
     setUser(state, record){
         let user = JSON.parse(localStorage.getItem("user"));
-        state.user = function(){
-            return {
-                isLoggedIn: true,
-                credentials: {
-                    username: user.credentials.username,
-                    token: user.credentials.token,
-                    tokenValidity: user.credentials.tokenValidity
-                },
-                metadata: record.metadata,
-                records: record.records.user
-            }
-        };
+        if (user) {
+            state.user = function () {
+                return {
+                    isLoggedIn: true,
+                    credentials: {
+                        username: user.credentials.username,
+                        token: user.credentials.token,
+                        tokenValidity: user.credentials.tokenValidity
+                    },
+                    metadata: record.metadata,
+                    records: record.records.user
+                }
+            };
+        }
+        else {
+            state.user = function () {
+                return {
+                    isLoggedIn: true,
+                    credentials: {
+                    },
+                    metadata: record.metadata,
+                    records: record.records.user
+                }
+            };
+        }
     },
     setUserMeta(state, metadata){
         let user = JSON.parse(localStorage.getItem("user"));
-        state.user = function(){
-            return {
-                isLoggedIn: true,
-                credentials: {
-                    username: user.credentials.username,
-                    token: user.credentials.token,
-                    tokenValidity: user.credentials.tokenValidity
-                },
-                metadata: metadata,
-                records: {}
-            }
-        };
+        if (user) {
+            state.user = function () {
+                return {
+                    isLoggedIn: true,
+                    credentials: {
+                        username: user.credentials.username,
+                        token: user.credentials.token,
+                        tokenValidity: user.credentials.tokenValidity
+                    },
+                    metadata: metadata,
+                    records: {}
+                }
+            };
+        }
     },
     setError(state, message){
         state.messages = function(){
@@ -77,12 +94,6 @@ export const mutations = {
             return output;
         }
     },
-    clearUserData(state){
-        state.user = function(){
-            return initUserDataState()
-        };
-        localStorage.removeItem("user");
-    },
     setMessage(state, message){
         state.messages = function(){
             let output = initStateMessages();
@@ -92,6 +103,12 @@ export const mutations = {
             };
             return output;
         }
+    },
+    clearUserData(state){
+        state.user = function(){
+            return initUserDataState()
+        };
+        localStorage.removeItem("user");
     },
     clearMessages(state){
         state.messages = function(){
@@ -125,8 +142,9 @@ export const actions = {
             }
         }
         else {
-            if (localStorage.user){
-                let userData = JSON.parse(localStorage.getItem("user"));
+            let user = localStorage.getItem('user');
+            if (user){
+                let userData = JSON.parse(user);
                 if (validateToken(userData.credentials.tokenValidity)){
                     this.commit("users/autoLogin");
                 }
@@ -164,7 +182,7 @@ export const actions = {
                 if (userRecords.error) {
                     this.commit("users/setError", {
                         field: "getUser",
-                        message: userRecords.error.response.data.error.message
+                        message: userRecords.error.response.data.error
                     });
                 }
                 else {
@@ -186,7 +204,7 @@ export const actions = {
         try {
             let metadata = await client.getUser(state.state.user().credentials.token);
             if (metadata.error) {
-                this.commit("user/setError", {
+                this.commit("users/setError", {
                     field: "getUser",
                     message: metadata.error
                 });
@@ -245,7 +263,7 @@ export const actions = {
             }
         }
         catch(e) {
-            this.commit('users/setMessage', {
+            this.commit('users/setError', {
                 field: "resetPassword",
                 message: e.message
             })

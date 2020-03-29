@@ -103,16 +103,7 @@
             }
         },
         computed: {
-            ...mapState("users", ["messages", "user"]),
-            loggedIn: function() {
-                return this.$store.state.users.user().isLoggedIn
-            },
-            currentUser: function(){
-                return {
-                    name: this.$store.state.users.currentUserID,
-                    token: this.$store.state.users.currentUserToken
-                }
-            }
+            ...mapState("users", ["messages", "user"])
         },
         methods: {
             ...mapActions('users', ['login', 'logout']),

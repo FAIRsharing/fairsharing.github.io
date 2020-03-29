@@ -8,11 +8,6 @@ import userStore from "@/store/users";
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
-/*
-userStore.state.user = {
-    userLoggedIn: false
-};*/
-
 const $store = new Vuex.Store({
     modules: {
         users: userStore
@@ -28,7 +23,7 @@ describe("UserProfileMenu.vue", () => {
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {
                 user: {
-                    error: true,
+                    error: {response: {data: { errors: true }}},
                     message: "Success !"
                 }
             }
@@ -52,22 +47,6 @@ describe("UserProfileMenu.vue", () => {
 
     it('can post the new user', async () => {
         await wrapper.vm.updateProfile();
-        expect(wrapper.vm.message.message).toBe("Success !");
-        expect(wrapper.vm.error).toBe(null);
+        expect(wrapper.vm.messages().updateProfile).toStrictEqual( {"error": false, "message": "Update successful !"});
     });
-
-    it ('can raise errors correctly', async () => {
-        //restStub.restore();
-        restStub.withArgs(sinon.match.any).returns({
-            data: {
-                error: {
-                    message: "Error !"
-                },
-            }
-        });
-        await wrapper.vm.updateProfile();
-        expect(wrapper.vm.message.message).toBe("Error !");
-        expect(wrapper.vm.error).toBe(true);
-    })
-
 });

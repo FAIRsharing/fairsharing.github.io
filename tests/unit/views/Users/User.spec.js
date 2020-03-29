@@ -31,13 +31,16 @@ describe("User.vue", () => {
        });
        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
            user: {
-               name: "Terazus",
                maintenanceRequests: [
                    {
                        fairsharingRecord: {
                            name: "recordTest"
                        }
-
+                   }
+               ],
+               maintainedRecords: [
+                   {
+                       name: "anotherRecord"
                    }
                ]
            }

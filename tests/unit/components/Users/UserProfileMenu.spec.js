@@ -62,10 +62,7 @@ describe("UserProfileMenu.vue", () => {
 
     it("can reset user pwd", async () => {
         await wrapper.vm.menuItems.filter(obj => obj.name === 'Reset Password')[0].action();
-        expect(wrapper.vm.userResetPwdMessage).toStrictEqual({
-            success: true,
-            message: "Success !"
-        });
+        expect(wrapper.vm.$route.path).toBe("/users/password/edit");
     });
 
     it("can redirect to user edit profile", async () => {

@@ -70,43 +70,39 @@
           },
           mounted() {
               this.$nextTick(async function () {
-                if (!this.user().isLoggedIn) {
                   const params = this.$route.query;
-                  if (!Object.keys(params).includes('reset_password_token')) {
+                  if (!Object.keys(params).includes('reset_password_token') && !this.user().isLoggedIn) {
                     this.setError({
                       field: "resetPassword",
                       message: "Missing Token"
                     });
                   }
-                }
               })
           },
           methods: {
               ...mapActions("users", ["resetPwdWithoutToken", 'resetPwd', "setError"]),
               submitPassword: async function(){
-                  let query = {
-                      password: this.formData.password,
-                      password_confirmation: this.formData['passwordRepeat'],
-                  };
-                  // Not logged in
-                  if (!this.user().isLoggedIn){
-                    query.reset_password_token = this.$route.query['reset_password_token'];
-                    await this.resetPwd(query);
-                    if (!this.messages().resetPassword.error){
-                      this.$router.push({path: "/accounts/login"})
-                    }
+                  this.login(this.user().isLoggedIn);
+              },
+              login: async function(isLoggedIn){
+                let query = {
+                  password: this.formData.password,
+                  password_confirmation: this.formData['passwordRepeat'],
+                };
+                if (isLoggedIn){
+                  query.current_password = this.formData['oldPwd'];
+                  await this.resetPwdWithoutToken(query);
+                  if (!this.messages().resetPassword.error){
+                    this.$router.push({path: "/accounts/login"})
                   }
-
-                  // Logged in users
-                  else {
-                    query.current_password = this.formData['oldPwd'];
-                    await this.resetPwdWithoutToken(query);
-                    if (!this.messages().resetPassword.error){
-                      this.$router.push({path: "/accounts/login"})
-                    }
+                }
+                else {
+                  query.reset_password_token = this.$route.query['reset_password_token'];
+                  await this.resetPwd(query);
+                  if (!this.messages().resetPassword.error){
+                    this.$router.push({path: "/accounts/login"})
                   }
-
-
+                }
               }
           }
     }

@@ -6,10 +6,11 @@
     <v-row>
       <v-col cols12>
         <v-card>
+
           <v-card-text>
             <MessageHandler field="getUser" />
           </v-card-text>
-          <v-list-item class="blue">
+            <v-list-item class="blue">
             <v-list-item-content class="pa-0">
               <v-list-item-title
                 v-if="user().credentials"
@@ -23,7 +24,7 @@
 
           <v-card-text class="container-fluid">
             <v-list-item>
-              <v-list-item-content>
+              <v-list-item-content v-if="user().metadata">
                 <!-- META -->
                 <v-list-item
                   v-for="(field, fieldName, fieldKey) in getUserMeta"
@@ -147,13 +148,11 @@
           getUserMeta: function(){
             let userMeta = {};
             const _module = this;
-            if (_module.user() && _module.user().metadata) {
-              Object.keys(_module.user().metadata).forEach(function(field) {
-                if (!_module.hideFields.includes(field)) {
-                  userMeta[field] = _module.user().metadata[field]
-                }
-              });
-            }
+            Object.keys(_module.user().metadata).forEach(function(field) {
+              if (!_module.hideFields.includes(field)) {
+                userMeta[field] = _module.user().metadata[field]
+              }
+            });
             return userMeta;
           }
         },

@@ -22,16 +22,13 @@
               </v-list-item-content>
             </v-list-item>
 
-            <v-card-text v-if="$store.state.users.errors">
-              <div class="alert alert-danger">
-                {{ $store.state.users.errors }}
-              </div>
+            <v-card-text>
+              <MessageHandler field="login" />
             </v-card-text>
 
             <!-- card content // Form -->
             <v-card-text v-if="currentPanel === 'login'">
               <v-form
-                v-if="loggedIn === false"
                 id="loginForm"
               >
                 <!-- account -->
@@ -60,7 +57,6 @@
 
                 <v-card-actions>
                   <v-btn
-                    v-if="loggedIn === false"
                     type="submit"
                     value="submit"
                     @click="logUser()"
@@ -70,20 +66,6 @@
                 </v-card-actions>
               </v-form>
 
-              <v-alert
-                v-else
-                class="align-left"
-                type="success"
-              >
-                You are logged in.
-              </v-alert>
-
-              <v-btn
-                v-if="loggedIn"
-                @click="unlogUser"
-              >
-                Logout
-              </v-btn>
               <v-btn
                 href="#/accounts/signup"
               >
@@ -100,18 +82,19 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex'
-
+    import { mapActions, mapState } from 'vuex'
+    import MessageHandler from "../../components/Users/MessageHandler";
     /** This component handles the login page
      *
      */
     export default {
         name: "Login",
+        components: {MessageHandler},
         filters: {
-            capitalize: function(value){
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            }
-        },
+              capitalize: function(value){
+                  return value.charAt(0).toUpperCase() + value.slice(1)
+              }
+          },
         data: () => {
             return {
                 show1: false,
@@ -120,16 +103,8 @@
             }
         },
         computed: {
-            loggedIn: function() {
-                return this.$store.state.users.userLoggedIn
-            },
-            currentUser: function(){
-                return {
-                    name: this.$store.state.users.currentUserID,
-                    token: this.$store.state.users.currentUserToken
-                }
-            }
-       },
+            ...mapState("users", ["messages", "user"])
+        },
         methods: {
             ...mapActions('users', ['login', 'logout']),
             logUser: async function(){
@@ -138,17 +113,13 @@
                     "password":  this.loginData.password
                 };
                 await this.login(user);
-                // TODO: dynamic routing (go to previous page if it was protected)
-                this.$router.push({path: "/users/" + this.currentUser.name})
-            },
-            unlogUser: function(){
-                this.logout(this.currentUser.token);
-                this.loginData = {};
+                if (!this.messages().login.error) {
+                  this.$router.push({path: "/accounts/profile"})
+                }
             }
         }
     }
 </script>
 
 <style scoped>
-
 </style>

@@ -42,19 +42,19 @@
           Stats
         </router-link>
       </li>
-      <li :class="{'blue': userLoggedIn}">
+      <li :class="{'blue': user().isLoggedIn}">
         <router-link
-          v-if="!userLoggedIn"
+          v-if="!user().isLoggedIn"
           to="/accounts/login"
         >
           Login/Register
         </router-link>
         <router-link
           v-else
-          :to="'/users/' + currentUserID"
+          to="/accounts/profile"
           class="white--text"
         >
-          Welcome, {{ currentUserID }}
+            Welcome, {{ user().credentials.username }}
         </router-link>
       </li>
     </ul>
@@ -70,7 +70,7 @@
     export default {
         name: "NavbarTop",
         computed: {
-          ...mapState('users', ["userLoggedIn", "currentUserID"])
+          ...mapState('users', ["user"])
         }
     }
 </script>

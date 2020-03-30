@@ -18,11 +18,11 @@
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-avatar
-                v-if="userLoggedIn"
+                v-if="user().isLoggedIn"
                 style="height:auto !important"
               >
                 <v-menu
-                  v-if="$store.state.users.userLoggedIn"
+                  v-if="$store.state.users.user().isLoggedIn"
                   offset-y
                 >
                   <template v-slot:activator="{ on }">
@@ -125,7 +125,7 @@
                 return this.$route.params['id']
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
-            ...mapState('users', ["userLoggedIn"])
+            ...mapState('users', ["user"])
         },
         watch: {
             currentRoute: async function () {

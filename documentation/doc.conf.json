@@ -1,6 +1,7 @@
 {
   "plugins": [
     "node_modules/jsdoc-vuejs",
+    "jsdoc-vuex-plugin",
     "plugins/markdown"
   ],
   "source": {

@@ -12,12 +12,19 @@ describe("Routes", () => {
                 const next = jest.fn();
                 route.beforeEnter(undefined, undefined, next);
             }
+            if (route.name === "Edit profile"){
+                const next = jest.fn();
+                route.beforeEnter(undefined, undefined, next);
+            }
         });
     });
 
     it ("- NAVGUARD - redirect if the user is not logged in", () => {
         const store = {
-          state: {users: {userLoggedIn: true}}
+          state: {
+              users: {
+                  user: function(){return {isLoggedIn: true}}
+              }}
         };
         const next = jest.fn();
         isLoggedIn(undefined, undefined, next, store)

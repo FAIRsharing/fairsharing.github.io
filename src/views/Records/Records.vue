@@ -3,17 +3,16 @@
     class="a outputGrid container-fluid"
   >
     <h1>{{ getTitle }}</h1>
-
     <!-- PAGINATION -->
     <Pagination
       class="row col-12"
       :total-pages="this.$store.state.records.totalPages"
     />
-
     <!-- CHIPS -->
     <div class="chips">
       <FiltersChip />
     </div>
+    <!-- SORTING -->
 
     <div class="row">
       <!-- LEFT PANEL -->
@@ -56,6 +55,7 @@
         v-if="!errors"
         class="col-9"
       >
+        <Sorting class="mb-4"/>
         <output-grid :total-pages="this.$store.state.records.totalPages" />
       </div>
 
@@ -79,6 +79,7 @@
     import Facets from "../../components/Records/Facets";
     import FiltersChip from "../../components/Records/FiltersChip";
     import Pagination from "../../components/Records/Pagination";
+    import Sorting from "../../components/Records/Sorting";
 
     /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
      * @vue-data {Object} [recordTypes = {Standards: "Standard", Databases: "Database", Policies: "Policy", Collections: "Collection"}] - a mapping of types of records used by fairsharingRegistry
@@ -92,6 +93,7 @@
     export default {
         name: "Records",
         components: {
+          Sorting,
             Pagination,
             FiltersChip,
             Facets,

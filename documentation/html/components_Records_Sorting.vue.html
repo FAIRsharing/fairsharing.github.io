@@ -135,7 +135,8 @@
 &lt;/template>
 
 &lt;script>
-  import {isEqual} from 'lodash';
+    import {isEqual} from 'lodash';
+
     export default {
         name: "Sorting",
         data() {
@@ -143,7 +144,7 @@
                 sortFilters: [
                     {name: 'name', active: false},
                     {name: 'abbreviation', active: false},
-                    {name: 'best-match', active: false},
+                    // as much as possible accepts filter as object containing name and active. active default is false.
                 ],
                 activeSortFilterName: 'name',
                 toggleButtonText: ['asc', 'desc'],
@@ -160,36 +161,32 @@
         },
         created() {
             if (Object.prototype.hasOwnProperty.call(this.$route.query, "orderBy")) {
-                console.log(this.$route.query.orderBy);
                 let arrayedQuery = this.$route.query.orderBy.toString().split(",");
-                console.log("arrayedQuery - created", arrayedQuery);
                 if (arrayedQuery.length === 2) {
                     let activeFilter = {name: arrayedQuery[0], active: false}; // sortName name/best-match-etc
-                  console.log("activeFilter - created",activeFilter);
                     this.toggleButtonText = arrayedQuery[1]; // sortMethod asc or desc
                     this.changeActiveFilter(activeFilter);
                 }
-            } else {
-                console.log('deActivate filters');
-                // this.deActiveSortFilters();
             }
         },
         methods:
             {
                 changeActiveFilter: function (activeFilter) {
-                    this.sortFilters.map((item) => {
-                      isEqual(item,activeFilter)  ? item.active = true : item.active = false
-                    });
-                  console.log('sortFilters',this.sortFilters);
+                  this.activateSortFilters();
                   this.activeSortFilterName = activeFilter.name;
-                  this.sortingMethodStatus = true;
-                  if (this.toggleButtonText.length === 2) // if its the first time page is initialized.
+                    this.sortingMethodStatus = true;
+                    if (this.toggleButtonText.length === 2) // if its the first time page is initialized.
                     {
-                      this.applySortQuery(this.activeSortFilterName, 'asc');
+                        this.applySortQuery(this.activeSortFilterName, 'asc');
                     } else {
                         this.applySortQuery(this.activeSortFilterName, this.toggleButtonText);
                     }
-                  console.log('s3');
+                },
+                activateSortFilters: function (activeFilter) {
+                    this.sortFilters.map((item) => {
+                        isEqual(item, activeFilter) ? item.active = true : item.active = false
+                    });
+                    this.sortingMethodStatus = true;
                 },
                 deActiveSortFilters: function () {
                     this.sortFilters.map((item) => {
@@ -201,15 +198,15 @@
                     let _module = this;
                     if (Object.prototype.hasOwnProperty.call(queryExistsInput, "orderBy")) {
                         let arrayedQuery = queryExistsInput.orderBy.toString().split(",");
-                        // console.log("arrayedQuery - function",arrayedQuery);
                         if (arrayedQuery.length === 2) {
-                            console.log(' array is ', arrayedQuery);
                             _module.toggleButtonText = arrayedQuery[1];
+                            this.deActiveSortFilters();
+                            let activeFilter = {name: arrayedQuery[0], active: false}; // sortName name/best-match-etc
+                            _module.activateSortFilters(activeFilter);
                         } else {
-                            console.log('need more function - array is ', arrayedQuery)
+                            // console.log('need more function to handle one function - array is ', arrayedQuery)
                         }
                     } else {
-                        console.log('deActivate filters - route changed');
                         this.deActiveSortFilters();
                     }
                 },
@@ -227,10 +224,12 @@
                         currentQuery[param] = _module.$route.query[param]
                     });
                     currentQuery.orderBy = currentQueryValues.join(',');
-                    await _module.$router.push({
-                        name: _module.$route.name,
-                        query: currentQuery
-                    });
+                    if (!isEqual(_module.$route.query, currentQuery)) {
+                        await _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentQuery
+                        });
+                    }
                 },
             }
     }

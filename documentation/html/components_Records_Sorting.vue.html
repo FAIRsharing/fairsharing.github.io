@@ -112,21 +112,21 @@
       &lt;/ul>
     &lt;/div>
     &lt;v-btn-toggle
-      v-model="ToggleButtonText"
+      v-model="toggleButtonText"
       mandatory
       shaped
     >
       &lt;v-btn
         value="asc"
+        :disabled="!sortingMethodStatus"
         @click="applySortQuery(activeSortFilterName,'asc')"
-        :class="'v-btn--active'?ToggleButtonText==='asc':''"
       >
         ASC
       &lt;/v-btn>
       &lt;v-btn
         value="desc"
+        :disabled="!sortingMethodStatus"
         @click="applySortQuery(activeSortFilterName,'desc')"
-        :class="'v-btn--active'?ToggleButtonText==='desc':''"
       >
         DESC
       &lt;/v-btn>
@@ -135,68 +135,104 @@
 &lt;/template>
 
 &lt;script>
+  import {isEqual} from 'lodash';
     export default {
         name: "Sorting",
         data() {
             return {
                 sortFilters: [
-                    {name: 'name', active: true},
+                    {name: 'name', active: false},
                     {name: 'abbreviation', active: false},
                     {name: 'best-match', active: false},
                 ],
                 activeSortFilterName: 'name',
-                ToggleButtonText: ['asc', 'desc'],
+                toggleButtonText: ['asc', 'desc'],
+                sortingMethodStatus: false,
             }
         },
         watch: {
-/*           '$route.name': function () {
-             // let _module = this;
-             //  this.applySortQuery(_module.activeSortFilterName,'asc');
-             console.log('$routeName',this.$route.name);
-           },
+            '$route.name': function () {
+                // this.currentPage = 1;
+            },
             '$route.query': function (newVal) {
-                 let _module = this;
-                if (Object.prototype.hasOwnProperty.call(newVal, "orderBy")) {
-                    console.log('if clouse');
-                } else {
-                    console.log('apply order again',_module.activeSortFilterName);
-                  // this.applySortQuery(_module.activeSortFilterName,'asc');
+                this.checkOrderByQueryExists(newVal);
+            }
+        },
+        created() {
+            if (Object.prototype.hasOwnProperty.call(this.$route.query, "orderBy")) {
+                console.log(this.$route.query.orderBy);
+                let arrayedQuery = this.$route.query.orderBy.toString().split(",");
+                console.log("arrayedQuery - created", arrayedQuery);
+                if (arrayedQuery.length === 2) {
+                    let activeFilter = {name: arrayedQuery[0], active: false}; // sortName name/best-match-etc
+                  console.log("activeFilter - created",activeFilter);
+                    this.toggleButtonText = arrayedQuery[1]; // sortMethod asc or desc
+                    this.changeActiveFilter(activeFilter);
                 }
-            }*/
+            } else {
+                console.log('deActivate filters');
+                // this.deActiveSortFilters();
+            }
         },
         methods:
             {
-                changeActiveFilter(activeFilter) {
-                    // console.log('sortFilters', this.sortFilters);
+                changeActiveFilter: function (activeFilter) {
                     this.sortFilters.map((item) => {
-                        item === activeFilter ? item.active = true : item.active = false
+                      isEqual(item,activeFilter)  ? item.active = true : item.active = false
                     });
-                    this.activeSortFilterName = activeFilter.name;
-                    const _module = this;
-                     console.log("activeSortFilterName", this.activeSortFilterName);
-                    this.applySortQuery(_module.activeSortFilterName,'asc');
+                  console.log('sortFilters',this.sortFilters);
+                  this.activeSortFilterName = activeFilter.name;
+                  this.sortingMethodStatus = true;
+                  if (this.toggleButtonText.length === 2) // if its the first time page is initialized.
+                    {
+                      this.applySortQuery(this.activeSortFilterName, 'asc');
+                    } else {
+                        this.applySortQuery(this.activeSortFilterName, this.toggleButtonText);
+                    }
+                  console.log('s3');
                 },
-              /**
-               * Set the orderBy parameter value to the given input for vueJs router
-               * @param {string} activeSortFilterName - sorting under this name
-               * @param {string} sortMethod - can be either ASC or DESC
-               */
-              applySortQuery: async function (activeSortFilterName,sortMethod) {
-                let _module = this;
-                let currentQueryValues = [];
-                let currentQuery = {};
-                currentQueryValues = [activeSortFilterName,sortMethod];
-                Object.keys(_module.$route.query).forEach(function (param) {
-                  currentQuery[param] = _module.$route.query[param]
-                });
-                currentQueryValues = currentQueryValues.join(',');
-                currentQuery.orderBy = currentQueryValues;
-                await _module.$router.push({
-                  name: _module.$route.name,
-                  query: currentQuery
-                });
-              },
-            },
+                deActiveSortFilters: function () {
+                    this.sortFilters.map((item) => {
+                        item.active = false
+                    });
+                    this.sortingMethodStatus = false;
+                },
+                checkOrderByQueryExists: function (queryExistsInput) {
+                    let _module = this;
+                    if (Object.prototype.hasOwnProperty.call(queryExistsInput, "orderBy")) {
+                        let arrayedQuery = queryExistsInput.orderBy.toString().split(",");
+                        // console.log("arrayedQuery - function",arrayedQuery);
+                        if (arrayedQuery.length === 2) {
+                            console.log(' array is ', arrayedQuery);
+                            _module.toggleButtonText = arrayedQuery[1];
+                        } else {
+                            console.log('need more function - array is ', arrayedQuery)
+                        }
+                    } else {
+                        console.log('deActivate filters - route changed');
+                        this.deActiveSortFilters();
+                    }
+                },
+                /**
+                 * Set the orderBy parameter value to the given input for vueJs router
+                 * @param {string} activeSortFilterName - sorting under this name
+                 * @param {string} sortMethod - can be either ASC or DESC
+                 */
+                applySortQuery: async function (activeSortFilterName, sortMethod) {
+                    let _module = this;
+                    let currentQueryValues;
+                    let currentQuery = {};
+                    currentQueryValues = [activeSortFilterName, sortMethod];
+                    Object.keys(_module.$route.query).forEach(function (param) {
+                        currentQuery[param] = _module.$route.query[param]
+                    });
+                    currentQuery.orderBy = currentQueryValues.join(',');
+                    await _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentQuery
+                    });
+                },
+            }
     }
 &lt;/script>
 

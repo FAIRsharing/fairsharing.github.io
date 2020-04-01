@@ -71,7 +71,6 @@ describe("Sorting.vue", () => {
 
     it('can check watcher', () => {
         wrapper.vm.toggleButtonText = ['name', 'desc'];
-        console.log(wrapper.vm.toggleButtonText);
         let filterObject = {name: 'abbreviation', active: false}; // sortName name/best-match-etc
         wrapper.vm.changeActiveFilter(filterObject);
 

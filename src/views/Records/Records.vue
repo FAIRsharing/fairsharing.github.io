@@ -55,7 +55,7 @@
         v-if="!errors"
         class="col-9"
       >
-        <Sorting class="mb-4"/>
+        <Sorting class="mb-4" />
         <output-grid :total-pages="this.$store.state.records.totalPages" />
       </div>
 

@@ -32,22 +32,21 @@
                 let output = [];
                 const parameters = this.$route.query;
                 Object.keys(parameters).forEach(function(paramName){
-                    if (paramName !== "page"){
+                    if (paramName !== "page" && paramName !== "orderBy"){
                         let param = parameters[paramName];
-
                         if (param.indexOf(",") > -1){
                             param = param.split(",")
                         }
                         else {
-                            param = [param]
+                            param = [param];
                         }
                         output.push({
                             paramName: paramName,
                             paramVal: param
-                        })
+                        });
                     }
                 });
-                return output;
+              return output;
             }
         },
         methods: {

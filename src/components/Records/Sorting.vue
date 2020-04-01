@@ -81,7 +81,6 @@
                 changeActiveFilter: function (activeFilter) {
                   this.activateSortFilters();
                   this.activeSortFilterName = activeFilter.name;
-                    this.sortingMethodStatus = true;
                     if (this.toggleButtonText.length === 2) // if its the first time page is initialized.
                     {
                         this.applySortQuery(this.activeSortFilterName, 'asc');
@@ -110,9 +109,7 @@
                             this.deActiveSortFilters();
                             let activeFilter = {name: arrayedQuery[0], active: false}; // sortName name/best-match-etc
                             _module.activateSortFilters(activeFilter);
-                        } else {
-                            // console.log('need more function to handle one function - array is ', arrayedQuery)
-                        }
+                        } 
                     } else {
                         this.deActiveSortFilters();
                     }

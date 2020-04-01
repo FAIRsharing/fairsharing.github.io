@@ -1,0 +1,82 @@
+import Sorting from "../Sorting";
+import {shallowMount} from "@vue/test-utils";
+
+let $route = {
+    name: "Standards",
+    query: {
+        orderBy: 'name,asc',
+    }
+};
+
+const $router = {
+    push: jest.fn(),
+};
+
+describe("Sorting.vue", () => {
+    // Set up the wrapper
+    let wrapper;
+    // let anotherWrapper;
+    // let anotherWrapper2;
+    beforeEach(() => {
+        wrapper = shallowMount(Sorting, {
+            mocks: {$route, $router},
+        });
+    });
+
+    it('can check activateSortFilter', () => {
+        let filterObject = {name: 'abbreviation', active: false}; // sortName name/best-match-etc
+        wrapper.vm.activateSortFilters(filterObject);
+        expect(wrapper.vm.sortingMethodStatus).toBe(true);
+    });
+
+    it('can check deActivateSortFilter', () => {
+        wrapper.vm.deActiveSortFilters();
+        expect(wrapper.vm.sortFilters).toStrictEqual([{name: 'name', active: false}, {
+            name: 'abbreviation',
+            active: false
+        }]);
+        expect(wrapper.vm.sortingMethodStatus).toBe(false);
+    });
+
+    it('can check checkOrderByQueryExists', () => {
+        const receivedObjectDefault = {fairsharingRegistry: 'Standard'};
+        wrapper.vm.checkOrderByQueryExists(receivedObjectDefault);
+        expect(wrapper.vm.sortFilters).toStrictEqual([{name: 'name', active: false}, {
+            name: 'abbreviation',
+            active: false
+        }]);
+
+        const receivedObjectWithOrderBy = {fairsharingRegistry: 'Standard', orderBy: "name,desc"};
+        wrapper.vm.checkOrderByQueryExists(receivedObjectWithOrderBy);
+        expect(wrapper.vm.sortFilters[0]).toStrictEqual({name: 'name', active: true});
+
+        const receivedObjectWithOrderByWithoutSortMethod = {fairsharingRegistry: 'Standard', orderBy: "name"};
+        wrapper.vm.checkOrderByQueryExists(receivedObjectWithOrderByWithoutSortMethod);
+        expect(wrapper.vm.$route.query).toStrictEqual({orderBy: 'name,asc'});
+
+    });
+
+    it('can check applySortQuery', async () => {
+        await wrapper.vm.applySortQuery('name', 'desc');
+        expect(wrapper.vm.$route.query.orderBy).toBe('name,asc');
+    });
+
+    it('can check checkOnceOrderByExists', () => {
+        wrapper.vm.checkOnceOrderByExists({fairsharingRegistry: 'Standard'});
+        expect(wrapper.vm.$route.query.orderBy).toBe('name,asc');
+
+        wrapper.vm.checkOnceOrderByExists({fairsharingRegistry: 'Standard', orderBy: 'name,desc'});
+        expect(wrapper.vm.toggleButtonText).toBe('asc');
+    });
+
+    it('can check watcher', () => {
+        wrapper.vm.toggleButtonText = ['name', 'desc'];
+        console.log(wrapper.vm.toggleButtonText);
+        let filterObject = {name: 'abbreviation', active: false}; // sortName name/best-match-etc
+        wrapper.vm.changeActiveFilter(filterObject);
+
+        wrapper.vm.$route.query = {orderBy: 'name,desc'};
+        wrapper.vm.changeActiveFilter(filterObject)
+    });
+
+});

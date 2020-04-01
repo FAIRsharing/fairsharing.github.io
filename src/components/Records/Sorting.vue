@@ -59,28 +59,26 @@
             }
         },
         watch: {
-            '$route.name': function () {
-                // this.currentPage = 1;
-            },
             '$route.query': function (newVal) {
                 this.checkOrderByQueryExists(newVal);
             }
         },
         created() {
-            if (Object.prototype.hasOwnProperty.call(this.$route.query, "orderBy")) {
-                let arrayedQuery = this.$route.query.orderBy.toString().split(",");
-                if (arrayedQuery.length === 2) {
-                    let activeFilter = {name: arrayedQuery[0], active: false}; // sortName name/best-match-etc
-                    this.toggleButtonText = arrayedQuery[1]; // sortMethod asc or desc
-                    this.changeActiveFilter(activeFilter);
-                }
-            }
+            this.checkOnceOrderByExists(this.$route.query);
         },
         methods:
             {
+                checkOnceOrderByExists: function (query) {
+                    if (Object.prototype.hasOwnProperty.call(query, "orderBy")) {
+                        let arrayedQuery = this.$route.query.orderBy.toString().split(",");
+                        let activeFilter = {name: arrayedQuery[0], active: false}; // sortName name/best-match-etc
+                        this.toggleButtonText = arrayedQuery[1]; // sortMethod asc or desc
+                        this.changeActiveFilter(activeFilter);
+                    }
+                },
                 changeActiveFilter: function (activeFilter) {
-                  this.activateSortFilters();
-                  this.activeSortFilterName = activeFilter.name;
+                    this.activateSortFilters(activeFilter);
+                    this.activeSortFilterName = activeFilter.name;
                     if (this.toggleButtonText.length === 2) // if its the first time page is initialized.
                     {
                         this.applySortQuery(this.activeSortFilterName, 'asc');
@@ -104,12 +102,10 @@
                     let _module = this;
                     if (Object.prototype.hasOwnProperty.call(queryExistsInput, "orderBy")) {
                         let arrayedQuery = queryExistsInput.orderBy.toString().split(",");
-                        if (arrayedQuery.length === 2) {
-                            _module.toggleButtonText = arrayedQuery[1];
-                            this.deActiveSortFilters();
-                            let activeFilter = {name: arrayedQuery[0], active: false}; // sortName name/best-match-etc
-                            _module.activateSortFilters(activeFilter);
-                        } 
+                        _module.toggleButtonText = arrayedQuery[1];
+                        this.deActiveSortFilters();
+                        let activeFilter = {name: arrayedQuery[0], active: false}; // sortName name/best-match-etc
+                        _module.activateSortFilters(activeFilter);
                     } else {
                         this.deActiveSortFilters();
                     }

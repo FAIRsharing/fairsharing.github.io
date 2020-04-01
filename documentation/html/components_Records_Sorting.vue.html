@@ -161,6 +161,10 @@
         },
         methods:
             {
+              /**
+               * Get the query first time in OnCreate and update sorting filter status either active or deActive based on received query
+               * @param {Object} query - the orderBy query is checked whether it is existed or not
+               */
                 checkOnceOrderByExists: function (query) {
                     if (Object.prototype.hasOwnProperty.call(query, "orderBy")) {
                         let arrayedQuery = this.$route.query.orderBy.toString().split(",");
@@ -169,6 +173,10 @@
                         this.changeActiveFilter(activeFilter);
                     }
                 },
+              /**
+               * Set the sorting filter specific item active and also call applySortQuery in order to sort
+               * @param {Object} activeFilter - the filter that needs to be activated
+               */
                 changeActiveFilter: function (activeFilter) {
                     this.activateSortFilters(activeFilter);
                     this.activeSortFilterName = activeFilter.name;
@@ -179,19 +187,30 @@
                         this.applySortQuery(this.activeSortFilterName, this.toggleButtonText);
                     }
                 },
-                activateSortFilters: function (activeFilter) {
+              /**
+               * Set the sorting filter specific item active
+               * @param {Object} activeFilter - the filter that needs to be activated
+               */
+              activateSortFilters: function (activeFilter) {
                     this.sortFilters.map((item) => {
                         isEqual(item, activeFilter) ? item.active = true : item.active = false
                     });
                     this.sortingMethodStatus = true;
                 },
+              /**
+               * Set the sorting filter to be reset so no filter will be active
+               */
                 deActiveSortFilters: function () {
                     this.sortFilters.map((item) => {
                         item.active = false
                     });
                     this.sortingMethodStatus = false;
                 },
-                checkOrderByQueryExists: function (queryExistsInput) {
+              /**
+               * Set the sorting filter list active or de-active based on the received query object
+               * @param {Object} queryExistsInput - the query object to activate sorting filters
+               */
+              checkOrderByQueryExists: function (queryExistsInput) {
                     let _module = this;
                     if (Object.prototype.hasOwnProperty.call(queryExistsInput, "orderBy")) {
                         let arrayedQuery = queryExistsInput.orderBy.toString().split(",");

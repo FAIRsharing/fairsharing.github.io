@@ -6,11 +6,10 @@
     <v-row>
       <v-col cols12>
         <v-card>
-
           <v-card-text>
             <MessageHandler field="getUser" />
           </v-card-text>
-            <v-list-item class="blue">
+          <v-list-item class="blue">
             <v-list-item-content class="pa-0">
               <v-list-item-title
                 v-if="user().credentials"
@@ -121,58 +120,56 @@
 </template>
 
 <script>
-    import { mapActions, mapState } from "vuex"
-    import UserProfileMenu from "../../components/Users/UserProfileMenu";
-    import MessageHandler from "../../components/Users/MessageHandler";
-
-    /**
-     * @vue-data {Object} hideFields - an array of field to NOT display
-     * */
-
-    export default {
-      name: "User",
-      components: {MessageHandler, UserProfileMenu},
-      filters: {
-          cleanString: function(str){
-            return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
+  import { mapActions, mapState } from "vuex"
+  import UserProfileMenu from "../../components/Users/UserProfileMenu";
+  import MessageHandler from "../../components/Users/MessageHandler";
+  /**
+   * @vue-data {Object} hideFields - an array of field to NOT display
+   * */
+  export default {
+    name: "User",
+    components: {MessageHandler, UserProfileMenu},
+    filters: {
+      cleanString: function(str){
+        return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
+      }
+    },
+    data: () => {
+      return {
+        panel: 0,
+        hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"]
+      }
+    },
+    computed: {
+      ...mapState('users', ['user', "userResetPwdMessage"]),
+      getUserMeta: function(){
+        let userMeta = {};
+        const _module = this;
+        Object.keys(_module.user().metadata).forEach(function(field) {
+          if (!_module.hideFields.includes(field)) {
+            userMeta[field] = _module.user().metadata[field]
           }
-        },
-        data: () => {
-          return {
-              panel: 0,
-              hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"]
-          }
-        },
-        computed: {
-          ...mapState('users', ['user', "userResetPwdMessage"]),
-          getUserMeta: function(){
-            let userMeta = {};
-            const _module = this;
-            Object.keys(_module.user().metadata).forEach(function(field) {
-              if (!_module.hideFields.includes(field)) {
-                userMeta[field] = _module.user().metadata[field]
-              }
-            });
-            return userMeta;
-          }
-        },
-        async created(){
-            await this.getUser();
-        },
-        methods: {
-            ...mapActions('users', ['getUser', 'resetPwd']),
-            getRecords: function(fieldName){
-              let output = this.user().records[fieldName];
-              if (fieldName === "maintenanceRequests"){
-                output = [];
-                this.user().records[fieldName].forEach(function(record){
-                  output.push(record["fairsharingRecord"])
-                });
-              }
-              return output;
-            }
+        });
+        return userMeta;
+      }
+    },
+    async created(){
+      await this.getUser();
+    },
+    methods: {
+      ...mapActions('users', ['getUser', 'resetPwd']),
+      getRecords: function(fieldName){
+        let output = this.user().records[fieldName];
+        if (fieldName === "maintenanceRequests"){
+          output = [];
+          this.user().records[fieldName].forEach(function(record){
+            output.push(record["fairsharingRecord"])
+          });
         }
+        return output;
+      }
     }
+  }
 </script>
 
 <style>

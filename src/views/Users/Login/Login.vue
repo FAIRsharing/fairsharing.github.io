@@ -1,7 +1,8 @@
 <template>
-  <div
+  <v-layout
     id="loginPage"
     class="login"
+    width="100%"
   >
     <v-container fluid>
       <!-- forms -->
@@ -11,19 +12,47 @@
           sm="12"
         >
           <v-card
-            outline
+            flat
+            dark
+            color="#253442"
           >
             <!-- card title -->
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title class="headline">
-                  {{ currentPanel | capitalize }} form:
+                  {{ currentPanel | capitalize }}:
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
+            <!-- message handler -->
+            <MessageHandler field="login" />
+
+            <!-- OAUTH -->
             <v-card-text>
-              <MessageHandler field="login" />
+              <v-list color="#253442">
+                <v-list-item
+                  v-for="(provider, providerIndex) in oauthLogin"
+                  :key="'provider_' + providerIndex"
+                  style="justify-content: center"
+                >
+                  <v-btn
+                    width="250px"
+                    :class="provider.color"
+                    class="text-left"
+                  >
+                    <v-layout width="100%">
+                      <v-icon
+                        left
+                        class="mr-5"
+                      >
+                        {{ provider.icon }}
+                      </v-icon>
+                      <v-layout>with {{ provider.name }}</v-layout>
+                    </v-layout>
+                  </v-btn>
+                </v-list-item>
+              </v-list>
             </v-card-text>
 
             <!-- card content // Form -->
@@ -55,35 +84,34 @@
                   </router-link>
                 </v-card-text>
 
-                <v-card-actions>
+                <v-card-actions class="mt-3">
                   <v-btn
-                    type="submit"
-                    value="submit"
+                    class="mr-5 px-4"
+                    light
                     @click="logUser()"
                   >
                     LOGIN
                   </v-btn>
+                  <v-btn
+                    light
+                    class="px-4"
+                    href="/accounts/signup"
+                  >
+                    Register
+                  </v-btn>
                 </v-card-actions>
               </v-form>
-
-              <v-btn
-                href="#/accounts/signup"
-              >
-                Register
-              </v-btn>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
-
-    <v-layout />
-  </div>
+  </v-layout>
 </template>
 
 <script>
     import { mapActions, mapState } from 'vuex'
-    import MessageHandler from "../../components/Users/MessageHandler";
+    import MessageHandler from "../../../components/Users/MessageHandler";
     /** This component handles the login page
      *
      */
@@ -91,15 +119,35 @@
         name: "Login",
         components: {MessageHandler},
         filters: {
-              capitalize: function(value){
-                  return value.charAt(0).toUpperCase() + value.slice(1)
-              }
-          },
+            capitalize: function(value){
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            }
+        },
+        props: {},
         data: () => {
             return {
                 show1: false,
                 currentPanel: "login",
-                loginData: {}
+                loginData: {},
+                oauthLogin: [
+                  {
+                    name: "GitHub",
+                    icon: "fab fa-github",
+                    color: "black white--text",
+                    callback: "https://api.fairsharing.org/users/auth/github",
+                  },
+                  {
+                    name: "Twitter",
+                    icon: "fab fa-twitter",
+                    color: "blue white--text"
+                  },
+                  {
+
+                    name: "ORCID",
+                    icon: "fab fa-orcid",
+                    color: "green white--text"
+                  }
+                ]
             }
         },
         computed: {
@@ -121,5 +169,8 @@
     }
 </script>
 
-<style scoped>
+<style>
+  #loginPage a {
+    text-decoration: none !important;
+  }
 </style>

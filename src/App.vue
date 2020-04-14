@@ -3,7 +3,7 @@
     <template>
       <div id="app">
         <navbar-top />
-        <router-view />
+        <router-view class="py-5" />
         <footer-bar />
       </div>
     </template>

@@ -91,101 +91,156 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;nav class="navbar navbar-expand-lg nav-top">
-    &lt;h2>Navbar top will be here&lt;/h2>
-    &lt;ul class="navbar-nav mr-auto">
-      &lt;li>
-        &lt;router-link to="/">
-          Home
-        &lt;/router-link>
-      &lt;/li>
-      &lt;li>
-        &lt;router-link to="/search">
-          Search
-        &lt;/router-link>
-      &lt;/li>
-      &lt;li>
-        &lt;router-link to="/standards">
-          Standards
-        &lt;/router-link>
-      &lt;/li>
-      &lt;li>
-        &lt;router-link to="/databases">
-          Databases
-        &lt;/router-link>
-      &lt;/li>
-      &lt;li>
-        &lt;router-link to="/policies">
-          Policies
-        &lt;/router-link>
-      &lt;/li>
-      &lt;li>
-        &lt;router-link to="/collections">
-          Collections
-        &lt;/router-link>
-      &lt;/li>
-      &lt;li>
-        &lt;router-link to="/new">
-          Add/Claim
-        &lt;/router-link>
-      &lt;/li>
-      &lt;li>
-        &lt;router-link to="/summary-statistics">
-          Stats
-        &lt;/router-link>
-      &lt;/li>
-      &lt;li :class="{'blue': user().isLoggedIn}">
-        &lt;router-link
-          v-if="!user().isLoggedIn"
-          to="/accounts/login"
+            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  &lt;v-toolbar
+    id="navigationBarTop"
+    class="grey lighten-3"
+    flat
+    height="80px"
+  >
+    &lt;v-toolbar-title>
+      &lt;router-link to="/">
+        &lt;v-img
+          src="@/assets/logo.svg"
+          contain
+          alt="FAIRsharing"
+        />
+      &lt;/router-link>
+    &lt;/v-toolbar-title>
+
+    &lt;v-spacer />
+
+    &lt;v-btn
+      v-for="(item, itemIndex) in links"
+      :key="'navBarTopMenuItem_' + itemIndex"
+      class="mr-1"
+      :class="item.color"
+      :to="item.link"
+    >
+      &lt;span class="white--text">{{ item.label }}&lt;/span>
+    &lt;/v-btn>
+
+    &lt;!-- LOGIN -->
+    &lt;v-menu
+      v-if="!user().isLoggedIn"
+      offset-y
+      left
+      fixed
+      transition="slide-y-transition"
+      :close-on-content-click="false"
+      class="mt-5"
+    >
+      &lt;template v-slot:activator="{ on }">
+        &lt;v-btn
+          color="teal darken-2 white--text"
+          dark
+          v-on="on"
         >
-          Login/Register
-        &lt;/router-link>
-        &lt;router-link
-          v-else
-          to="/accounts/profile"
-          class="white--text"
-        >
-            Welcome, {{ user().credentials.username }}
-        &lt;/router-link>
-      &lt;/li>
-    &lt;/ul>
-  &lt;/nav>
+          Login
+        &lt;/v-btn>
+      &lt;/template>
+      &lt;v-list
+        width="400px"
+        dark
+        color="#253442"
+      >
+        &lt;v-list-item>
+          &lt;Login />
+        &lt;/v-list-item>
+      &lt;/v-list>
+    &lt;/v-menu>
+
+    &lt;v-btn
+      v-else
+      class="teal darken-2"
+      to="/accounts/profile"
+    >
+      &lt;span class="white--text">Welcome, {{ user().metadata.username }}&lt;/span>
+    &lt;/v-btn>
+  &lt;/v-toolbar>
 &lt;/template>
 
 &lt;script>
   import { mapState } from 'vuex'
+  import Login from "../../views/Users/Login/Login";
 
   /** Component to handle the header (should be present on every page)
      *
      */
     export default {
         name: "NavbarTop",
-        computed: {
+    components: {Login},
+    computed: {
           ...mapState('users', ["user"])
+        },
+        data() {
+          return {
+            links: [
+              {
+                label: "Search",
+                link: "/search",
+                color: "blue"
+              },
+              {
+                label: "Standards",
+                link: "/standards",
+                color: "blue"
+              },
+              {
+                label: "Databases",
+                link: "/databases",
+                color: "blue"
+              },
+              {
+                label: "Policies",
+                link: "/policies",
+                color: "blue"
+              },
+              {
+                label: "Collections",
+                link: "/collections",
+                color: "blue"
+              },
+              {
+                label: "Add/Claim content",
+                link: "/new",
+                color: "grey"
+              },
+              {
+                label: "Stats",
+                link: "/summary-statistics",
+                color: "teal darken-2"
+              }
+            ]
+          }
         }
     }
 &lt;/script>
 
 &lt;style scoped>
-    .nav-top {
-        border-bottom:1px solid #ccc;
-    }
+  .nav-top {
+      border-bottom:1px solid #ccc;
+  }
 
-    .navbar-nav {
-        margin-left:auto;
-    }
+  .navbar-nav {
+      margin-left:auto;
+  }
 
-    li {
-        margin-left: 15px;
-        border:1px solid #ccc;
-        border-radius:5px;
-        padding:10px 20px;
-    }
+  li {
+      margin-left: 15px;
+      border:1px solid #ccc;
+      border-radius:5px;
+      padding:10px 20px;
+  }
+
   a:hover {
     text-decoration: none !important;
   }
+
+  .menuable__content__active {
+    margin-top:7px !important;
+  }
+
 &lt;/style>
 </pre>
     </article>
@@ -230,9 +285,9 @@
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Sun Mar 29th 2020
+		on Tue Apr 14th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

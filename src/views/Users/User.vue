@@ -6,11 +6,9 @@
     <v-row>
       <v-col cols12>
         <v-card>
+          <MessageHandler field="getUser" />
 
-          <v-card-text>
-            <MessageHandler field="getUser" />
-          </v-card-text>
-            <v-list-item class="blue">
+          <v-list-item class="blue">
             <v-list-item-content class="pa-0">
               <v-list-item-title
                 v-if="user().credentials"

@@ -7,7 +7,7 @@ import VueRouter from "vue-router";
 import store from '../store'
 
 import Home from "../views/Home/Home";
-import Login from "../views/Users/Login";
+import Login from "../views/Users/Login/Login";
 import Signup from "../views/Users/Signup";
 import Records from "../views/Records/Records";
 import Record from "../views/Records/Record";
@@ -29,6 +29,7 @@ import User from "@/views/Users/User.vue"
 import RequestNewPassword from "@/views/Users/RequestNewPassword";
 import ResetPassword from "@/views/Users/ResetPassword";
 import EditProfile from "@/views/Users/EditProfile";
+import GithubLogin from "../views/Users/Login/GithubLogin";
 
 Vue.use(VueRouter);
 
@@ -189,6 +190,12 @@ let routes = [
             isLoggedIn(to, from, next, store);
         }
     },
+    // OAUTH
+    {
+        name: "GitHub Login",
+        path: "/users/auth/github/callback",
+        component: GithubLogin
+    },
     {
         name: "*",
         path: "*/*",
@@ -209,7 +216,7 @@ routes.forEach(function (route) {
 
 const router = new VueRouter({
     routes,
-    //mode: "history"
+    mode: "history"
 });
 
 export function beforeEach(to, from, next) {

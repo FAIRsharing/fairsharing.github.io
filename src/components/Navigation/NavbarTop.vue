@@ -1,96 +1,151 @@
-<template>
-  <nav class="navbar navbar-expand-lg nav-top">
-    <h2>Navbar top will be here</h2>
-    <ul class="navbar-nav mr-auto">
-      <li>
-        <router-link to="/">
-          Home
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/search">
-          Search
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/standards">
-          Standards
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/databases">
-          Databases
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/policies">
-          Policies
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/collections">
-          Collections
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/new">
-          Add/Claim
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/summary-statistics">
-          Stats
-        </router-link>
-      </li>
-      <li :class="{'blue': user().isLoggedIn}">
-        <router-link
-          v-if="!user().isLoggedIn"
-          to="/accounts/login"
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  <v-toolbar
+    id="navigationBarTop"
+    class="grey lighten-3"
+    flat
+    height="80px"
+  >
+    <v-toolbar-title>
+      <router-link to="/">
+        <v-img
+          src="@/assets/logo.svg"
+          contain
+          alt="FAIRsharing"
+        />
+      </router-link>
+    </v-toolbar-title>
+
+    <v-spacer />
+
+    <v-btn
+      v-for="(item, itemIndex) in links"
+      :key="'navBarTopMenuItem_' + itemIndex"
+      class="mr-1"
+      :class="item.color"
+      :to="item.link"
+    >
+      <span class="white--text">{{ item.label }}</span>
+    </v-btn>
+
+    <!-- LOGIN -->
+    <v-menu
+      v-if="!user().isLoggedIn"
+      offset-y
+      left
+      fixed
+      transition="slide-y-transition"
+      :close-on-content-click="false"
+      class="mt-5"
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn
+          color="teal darken-2 white--text"
+          dark
+          v-on="on"
         >
-          Login/Register
-        </router-link>
-        <router-link
-          v-else
-          to="/accounts/profile"
-          class="white--text"
-        >
-            Welcome, {{ user().credentials.username }}
-        </router-link>
-      </li>
-    </ul>
-  </nav>
+          Login
+        </v-btn>
+      </template>
+      <v-list
+        width="400px"
+        dark
+        color="#253442"
+      >
+        <v-list-item>
+          <Login />
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+    <v-btn
+      v-else
+      class="teal darken-2"
+      to="/accounts/profile"
+    >
+      <span class="white--text">Welcome, {{ user().metadata.username }}</span>
+    </v-btn>
+  </v-toolbar>
 </template>
 
 <script>
   import { mapState } from 'vuex'
+  import Login from "../../views/Users/Login/Login";
 
   /** Component to handle the header (should be present on every page)
      *
      */
     export default {
         name: "NavbarTop",
-        computed: {
+    components: {Login},
+    computed: {
           ...mapState('users', ["user"])
+        },
+        data() {
+          return {
+            links: [
+              {
+                label: "Search",
+                link: "/search",
+                color: "blue"
+              },
+              {
+                label: "Standards",
+                link: "/standards",
+                color: "blue"
+              },
+              {
+                label: "Databases",
+                link: "/databases",
+                color: "blue"
+              },
+              {
+                label: "Policies",
+                link: "/policies",
+                color: "blue"
+              },
+              {
+                label: "Collections",
+                link: "/collections",
+                color: "blue"
+              },
+              {
+                label: "Add/Claim content",
+                link: "/new",
+                color: "grey"
+              },
+              {
+                label: "Stats",
+                link: "/summary-statistics",
+                color: "teal darken-2"
+              }
+            ]
+          }
         }
     }
 </script>
 
 <style scoped>
-    .nav-top {
-        border-bottom:1px solid #ccc;
-    }
+  .nav-top {
+      border-bottom:1px solid #ccc;
+  }
 
-    .navbar-nav {
-        margin-left:auto;
-    }
+  .navbar-nav {
+      margin-left:auto;
+  }
 
-    li {
-        margin-left: 15px;
-        border:1px solid #ccc;
-        border-radius:5px;
-        padding:10px 20px;
-    }
+  li {
+      margin-left: 15px;
+      border:1px solid #ccc;
+      border-radius:5px;
+      padding:10px 20px;
+  }
+
   a:hover {
     text-decoration: none !important;
   }
+
+  .menuable__content__active {
+    margin-top:7px !important;
+  }
+
 </style>

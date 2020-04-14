@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils"
 import VueRouter from "vue-router"
 import Vuex from "vuex"
 import sinon from "sinon"
-import Login from "@/views/Users/Login.vue"
+import Login from "@/views/Users/Login/Login.vue"
 import Client from "@/components/Client/RESTClient.js"
 import usersStore from "@/store/users.js";
 

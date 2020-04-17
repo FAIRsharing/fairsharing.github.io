@@ -62,8 +62,6 @@ export const getters = {
 
             if (expectedTypeObject.kind !== "LIST") {
                 queryParameters[param] = parseParam(expectedTypeObject, params[1][param]);
-
-
             } else {
                 const currentVal = params[1][param];
                 const expectedType = expectedTypeObject["ofType"]["ofType"].name;

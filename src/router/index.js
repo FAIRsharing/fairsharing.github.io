@@ -29,7 +29,7 @@ import User from "@/views/Users/User.vue"
 import RequestNewPassword from "@/views/Users/RequestNewPassword";
 import ResetPassword from "@/views/Users/ResetPassword";
 import EditProfile from "@/views/Users/EditProfile";
-import GithubLogin from "../views/Users/Login/GithubLogin";
+import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
 
 Vue.use(VueRouter);
 
@@ -194,7 +194,7 @@ let routes = [
     {
         name: "GitHub Login",
         path: "/users/auth/github/callback",
-        component: GithubLogin
+        component: OauthLogin
     },
     {
         name: "*",

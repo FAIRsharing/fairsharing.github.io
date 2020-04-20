@@ -46,6 +46,21 @@ class RESTClient {
     }
 
     /**
+     * Login the given user using OAuth of the given provider
+     * @param {Object} user - contains the parameters and provider name set by the OAuth callback
+     * @returns {Object} user - the logged in user
+     */
+    async loginFromOAuth(user) {
+        const endpoint = `/users/auth/${user.provider}/callback?${user.params}`;
+        const request = {
+            method: "GET",
+            url: this.baseURL + endpoint,
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Logout the user from the back, expiring the current jwt.
      * @param {String} jwt - the user token to expire.
      * @returns {Promise}

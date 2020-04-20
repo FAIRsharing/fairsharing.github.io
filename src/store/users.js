@@ -158,6 +158,9 @@ export const actions = {
             }
         }
     },
+    async loginFromOauth(state, user){
+        return await client.loginFromOAuth(user);
+    },
     async logout(state){
         try {
             await client.logout(state.state.user().credentials.token);

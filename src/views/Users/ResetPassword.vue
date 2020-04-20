@@ -39,8 +39,6 @@
             required
           />
           <v-btn
-            type="submit"
-            value="submit"
             @click="submitPassword()"
           >
             Request new password

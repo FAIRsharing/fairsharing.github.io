@@ -24,8 +24,6 @@
             required
           />
           <v-btn
-            type="submit"
-            value="submit"
             @click="sendEmail()"
           >
             Request new password

@@ -96,7 +96,7 @@ describe('Mutations & Actions', () => {
     });
 });
 
-describe( "", () => {
+describe("", () => {
     let state = {};
     let stub;
     beforeEach(() => {
@@ -126,7 +126,7 @@ describe( "", () => {
 
     });
 
-    it( "testing with an introspectionQuery present but no timer", async () => {
+    it("testing with an introspectionQuery present but no timer", async () => {
         global.window.localStorage = {
             introspectionQuery: JSON.stringify({test: "ABC"})
         };
@@ -156,6 +156,3 @@ describe( "", () => {
 
     });
 });
-
-
-

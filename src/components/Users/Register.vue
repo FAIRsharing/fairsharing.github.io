@@ -69,8 +69,6 @@
 
       <v-card-actions>
         <v-btn
-          type="submit"
-          value="submit"
           @click="register()"
         >
           Register a new account

@@ -57,7 +57,7 @@
 </template>
 
 <script>
-    import paramBuilder from "./utils.js"
+    import paramBuilder from "../utils.js"
 
 
     /** Component to handle the faceting systems of the search pages.

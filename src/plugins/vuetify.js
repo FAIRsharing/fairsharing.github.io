@@ -6,6 +6,17 @@ Vue.use(Vuetify);
 const opts = {
     icons: {
         iconfont: "fa"
+    },
+    theme: {
+        light: true,
+        themes: {
+            light: {
+                secondary: "#2C3E50"
+            },
+            dark: {
+                secondary: "#2C3E50"
+            }
+        }
     }
 };
 

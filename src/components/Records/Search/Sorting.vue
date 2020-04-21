@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="white pa-5">
     <div class="d-flex align-items-center mb-4">
       <span class="mr-4">Sort By</span>
       <ul class="d-flex align-items-center">

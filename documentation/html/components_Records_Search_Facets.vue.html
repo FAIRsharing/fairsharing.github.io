@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Users/Login/Login.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Facets.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,188 +86,159 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Users/Login/Login.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Facets.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-layout
-    id="loginPage"
-    class="login"
-    width="100%"
-  >
-    &lt;v-container fluid>
-      &lt;!-- forms -->
-      &lt;v-row>
-        &lt;v-col
-          cols="12"
-          sm="12"
+  &lt;div class="facets card">
+    &lt;div class="card-header">
+      Facets
+    &lt;/div>
+
+    &lt;div class="card-body">
+      &lt;div
+        v-for="(facetVal, key) in $store.state.records.facets"
+        :key="'Facet' + key"
+      >
+        &lt;div class="facet">
+          &lt;h3>{{ facetVal.filterLabel }}&lt;/h3>
+        &lt;/div>
+
+        &lt;div
+          v-for="(facet, subKey) in $store.getters['records/getFacet'](facetsSize[facetVal.filterName], facetVal.filterName)['values']"
+          :key="facetVal.filterName + subKey"
+          class="facet"
+          @click="addParam(facetVal.filterName, facet)"
         >
-          &lt;v-card
-            flat
-            dark
-            color="#253442"
+          &lt;div
+            v-if="!Object.prototype.hasOwnProperty.call(facet, 'key_as_string')"
+            class="facetName"
           >
-            &lt;!-- card title -->
-            &lt;v-list-item>
-              &lt;v-list-item-content>
-                &lt;v-list-item-title class="headline">
-                  {{ currentPanel | capitalize }}:
-                &lt;/v-list-item-title>
-              &lt;/v-list-item-content>
-            &lt;/v-list-item>
+            {{ cleanString(facet.key) }}
+          &lt;/div>
+          &lt;div
+            v-else
+            class="facetName"
+          >
+            {{ cleanString(facet['key_as_string']) }}
+          &lt;/div>
+          &lt;em> {{ facet['doc_count'] }}&lt;/em>
+        &lt;/div>
 
-            &lt;!-- message handler -->
-            &lt;MessageHandler field="login" />
+        &lt;button
+          type="button"
+          class="btn btn-secondary"
+          @click="changeSize(facetVal.filterName, 100)"
+        >
+          Show more
+        &lt;/button>
 
-            &lt;!-- OAUTH -->
-            &lt;v-card-text>
-              &lt;v-list color="#253442">
-                &lt;v-list-item
-                  v-for="(provider, providerIndex) in oauthLogin"
-                  :key="'provider_' + providerIndex"
-                  style="justify-content: center"
-                >
-                  &lt;v-btn
-                    width="250px"
-                    :class="provider.color"
-                    class="text-left"
-                    :href="provider.callback"
-                  >
-                    &lt;v-layout width="100%">
-                      &lt;v-icon
-                        left
-                        class="mr-5"
-                      >
-                        {{ provider.icon }}
-                      &lt;/v-icon>
-                      &lt;v-layout>with {{ provider.name }}&lt;/v-layout>
-                    &lt;/v-layout>
-                  &lt;/v-btn>
-                &lt;/v-list-item>
-              &lt;/v-list>
-            &lt;/v-card-text>
+        &lt;button
+          type="button"
+          class="btn btn-secondary"
+          @click="changeSize(facetVal.filterName, defaultSize)"
+        >
+          Show Less
+        &lt;/button>
 
-            &lt;!-- card content // Form -->
-            &lt;v-card-text v-if="currentPanel === 'login'">
-              &lt;v-form
-                id="loginForm"
-              >
-                &lt;!-- account -->
-                &lt;v-text-field
-                  v-model="loginData.name"
-                  label="Username or email"
-                  required
-                />
-
-                &lt;!-- password -->
-                &lt;v-text-field
-                  v-model="loginData.password"
-                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
-                  :type="show1 ? 'text' : 'password'"
-                  label="Password"
-                  counter
-                  required
-                  @click:append="show1 = !show1"
-                />
-
-                &lt;v-card-text class="text-left">
-                  &lt;router-link to="/accounts/forgotPassword">
-                    Forgot your password ?
-                  &lt;/router-link>
-                &lt;/v-card-text>
-
-                &lt;v-card-actions class="mt-3">
-                  &lt;v-btn
-                    class="mr-5 px-4"
-                    light
-                    @click="logUser()"
-                  >
-                    LOGIN
-                  &lt;/v-btn>
-                  &lt;v-btn
-                    light
-                    class="px-4"
-                    href="#/accounts/signup"
-                  >
-                    Register
-                  &lt;/v-btn>
-                &lt;/v-card-actions>
-              &lt;/v-form>
-            &lt;/v-card-text>
-          &lt;/v-card>
-        &lt;/v-col>
-      &lt;/v-row>
-    &lt;/v-container>
-  &lt;/v-layout>
+        &lt;hr>
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-    import { mapActions, mapState } from 'vuex'
-    import MessageHandler from "../../../components/Users/MessageHandler";
-    /** This component handles the login page
-     *
+    import paramBuilder from "../utils.js"
+
+
+    /** Component to handle the faceting systems of the search pages.
+     * @vue-data {Boolean} [defaultSize = 4] - the default number of items to show for facets.
+     * @vue-computed {String} facetsSize - get the size of each facet from the recordsStore
      */
     export default {
-        name: "Login",
-        components: {MessageHandler},
-        filters: {
-            capitalize: function(value){
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            }
-        },
-        props: {},
-        data: () => {
+        name: "Facets",
+        data() {
             return {
-                show1: false,
-                currentPanel: "login",
-                loginData: {},
-              oauthLogin: [
-                {
-                  name: "GitHub",
-                  icon: "fab fa-github",
-                  color: "black white--text",
-                  callback: "https://api.fairsharing.org/#/users/auth/github",
-                },
-                {
-                  name: "Twitter",
-                  icon: "fab fa-twitter",
-                  color: "blue white--text",
-                  callback: "https://api.fairsharing.org/#/users/auth/twitter",
-                },
-                {
-                  name: "ORCID",
-                  icon: "fab fa-orcid",
-                  color: "green white--text",
-                  callback: "https://api.fairsharing.org/#/users/auth/orcid",
-                }
-              ]
+                defaultSize: 4,
             }
         },
         computed: {
-            ...mapState("users", ["messages", "user"])
+            facetsSize: function(){
+                let sizes = {};
+                this.$store.state.records.facets.forEach(function(facet){
+                    sizes[facet.filterName] = 4;
+                });
+                return sizes;
+            }
         },
         methods: {
-            ...mapActions('users', ['login', 'logout']),
-            logUser: async function(){
-                const user = {
-                    "name": this.loginData.name,
-                    "password":  this.loginData.password
-                };
-                await this.login(user);
-                if (!this.messages().login.error) {
-                  this.$router.push({path: "/accounts/profile"})
+            /**
+             * Change the size of the given facet
+             * @param {String} facetName - the name of the facet to change
+             * @param {Number} size - the new size to set for the given facet name
+             */
+            changeSize: function(facetName, size){
+                this.facetsSize[facetName] = size;
+                this.$forceUpdate();
+            },
+            /**
+             * Method to add the given facet as a parameter to the router query
+             * @param {String} facetName - the name of the facet
+             * @param {Object} facetVal - the facet value coming from the store
+             */
+            addParam: async function(facetName, facetVal){
+                let _module = this;
+                let currentQuery = paramBuilder(this.$route.query, {name: facetName, value: facetVal});
+
+                // Only trigger the API call if the query is different
+                if (JSON.stringify(currentQuery) !== JSON.stringify(this.$route.query)){
+                    currentQuery["page"] = 1;
+                    await _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentQuery
+                    })
                 }
+            },
+            /**
+             * Removes all underscores from given string
+             * @param {String} string - any input string
+             * @returns {String} updatedString - string stripped of underscores
+             */
+            cleanString: function(string){
+              if (typeof string === "string") {
+                return string.replace(/_/g, " ");
+              }
+              return string;
             }
         }
     }
 &lt;/script>
 
-&lt;style>
-  #loginPage a {
-    text-decoration: none !important;
-  }
+&lt;style scoped>
+
+    .facet {
+        text-align: left;
+    }
+
+    .facet em {
+        float:right;
+    }
+
+    .facetName {
+        display:inline-block;
+        white-space: nowrap;
+        width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .facets button {
+        right:0;
+        position: relative;
+    }
+
 &lt;/style>
 </pre>
     </article>

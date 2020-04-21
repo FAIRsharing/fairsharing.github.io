@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Users/Login/Login.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/FiltersChip.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,190 +86,127 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Users/Login/Login.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/FiltersChip.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-layout
-    id="loginPage"
-    class="login"
-    width="100%"
-  >
-    &lt;v-container fluid>
-      &lt;!-- forms -->
-      &lt;v-row>
-        &lt;v-col
-          cols="12"
-          sm="12"
+  &lt;div>
+    &lt;div class="chipsElements container-fluid">
+      &lt;div class="row">
+        &lt;div
+          v-for="(chip, index) in getChips"
+          :key="'Chips_' + index"
         >
-          &lt;v-card
-            flat
-            dark
-            color="#253442"
+          &lt;div
+            v-for="(chipValue, subKey) in chip.paramVal"
+            :key="'Chip_' + subKey"
+            class="chip"
           >
-            &lt;!-- card title -->
-            &lt;v-list-item>
-              &lt;v-list-item-content>
-                &lt;v-list-item-title class="headline">
-                  {{ currentPanel | capitalize }}:
-                &lt;/v-list-item-title>
-              &lt;/v-list-item-content>
-            &lt;/v-list-item>
-
-            &lt;!-- message handler -->
-            &lt;MessageHandler field="login" />
-
-            &lt;!-- OAUTH -->
-            &lt;v-card-text>
-              &lt;v-list color="#253442">
-                &lt;v-list-item
-                  v-for="(provider, providerIndex) in oauthLogin"
-                  :key="'provider_' + providerIndex"
-                  style="justify-content: center"
-                >
-                  &lt;v-btn
-                    width="250px"
-                    :class="provider.color"
-                    class="text-left"
-                    :href="provider.callback"
-                  >
-                    &lt;v-layout width="100%">
-                      &lt;v-icon
-                        left
-                        class="mr-5"
-                      >
-                        {{ provider.icon }}
-                      &lt;/v-icon>
-                      &lt;v-layout>with {{ provider.name }}&lt;/v-layout>
-                    &lt;/v-layout>
-                  &lt;/v-btn>
-                &lt;/v-list-item>
-              &lt;/v-list>
-            &lt;/v-card-text>
-
-            &lt;!-- card content // Form -->
-            &lt;v-card-text v-if="currentPanel === 'login'">
-              &lt;v-form
-                id="loginForm"
-              >
-                &lt;!-- account -->
-                &lt;v-text-field
-                  v-model="loginData.name"
-                  label="Username or email"
-                  required
-                />
-
-                &lt;!-- password -->
-                &lt;v-text-field
-                  v-model="loginData.password"
-                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
-                  :type="show1 ? 'text' : 'password'"
-                  label="Password"
-                  counter
-                  required
-                  @click:append="show1 = !show1"
-                />
-
-                &lt;v-card-text class="text-left">
-                  &lt;router-link to="/accounts/forgotPassword">
-                    Forgot your password ?
-                  &lt;/router-link>
-                &lt;/v-card-text>
-
-                &lt;v-card-actions class="mt-3">
-                  &lt;v-btn
-                    class="mr-5 px-4"
-                    light
-                    @click="logUser()"
-                  >
-                    LOGIN
-                  &lt;/v-btn>
-                  &lt;v-btn
-                    light
-                    class="px-4"
-                    href="#/accounts/signup"
-                  >
-                    Register
-                  &lt;/v-btn>
-                &lt;/v-card-actions>
-              &lt;/v-form>
-            &lt;/v-card-text>
-          &lt;/v-card>
-        &lt;/v-col>
-      &lt;/v-row>
-    &lt;/v-container>
-  &lt;/v-layout>
+            &lt;span @click="removeParam(chip.paramName, chipValue)">x&lt;/span> {{ chip.paramName }}: {{
+              decodeURIComponent(chipValue).replace(/_/g, " ") }}
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-    import { mapActions, mapState } from 'vuex'
-    import MessageHandler from "../../../components/Users/MessageHandler";
-    /** This component handles the login page
-     *
+    import {throttle} from "lodash"
+
+    /** Component to handle the filters chips (allow to remove a given filter).
+     * @vue-computed {String} getChips - returns the chips based on router query parameters excluding "page"
      */
     export default {
-        name: "Login",
-        components: {MessageHandler},
-        filters: {
-            capitalize: function(value){
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            }
-        },
-        props: {},
-        data: () => {
-            return {
-                show1: false,
-                currentPanel: "login",
-                loginData: {},
-              oauthLogin: [
-                {
-                  name: "GitHub",
-                  icon: "fab fa-github",
-                  color: "black white--text",
-                  callback: "https://api.fairsharing.org/#/users/auth/github",
-                },
-                {
-                  name: "Twitter",
-                  icon: "fab fa-twitter",
-                  color: "blue white--text",
-                  callback: "https://api.fairsharing.org/#/users/auth/twitter",
-                },
-                {
-                  name: "ORCID",
-                  icon: "fab fa-orcid",
-                  color: "green white--text",
-                  callback: "https://api.fairsharing.org/#/users/auth/orcid",
-                }
-              ]
-            }
-        },
+        name: "FiltersChip",
         computed: {
-            ...mapState("users", ["messages", "user"])
+            getChips: function () {
+                let output = [];
+                const parameters = this.$route.query;
+                Object.keys(parameters).forEach(function (paramName) {
+                    if (paramName !== "page" &amp;&amp; paramName !== "orderBy") {
+                        let param = parameters[paramName];
+                        if (param.indexOf(",") > -1) {
+                            param = param.split(",")
+                        } else {
+                            param = [param];
+                        }
+                        output.push({
+                            paramName: paramName,
+                            paramVal: param
+                        });
+                    }
+                });
+                return output;
+            }
         },
         methods: {
-            ...mapActions('users', ['login', 'logout']),
-            logUser: async function(){
-                const user = {
-                    "name": this.loginData.name,
-                    "password":  this.loginData.password
-                };
-                await this.login(user);
-                if (!this.messages().login.error) {
-                  this.$router.push({path: "/accounts/profile"})
-                }
+            /**
+             * Removes the parameter value from the router query with a 2000ms throttle
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             */
+            removeParam: throttle(async function (paramName, paramVal) {
+                let _module = this;
+                let query = this.buildNewQuery(paramName, paramVal);
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Build the new query given a parameter name a value by getting the current query and removing the key/value given
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             * @returns {Object} - the new query to replace in the router
+             */
+            buildNewQuery: function (paramName, paramVal) {
+                let _module = this;
+                let query = {};
+                Object.keys(_module.$route.query).forEach(function (queryParam) {
+                    if (queryParam !== paramName) {
+                        query[queryParam] = _module.$route.query[queryParam]
+                    } else {
+                        if (_module.$route.query[queryParam].indexOf(',') > -1) {
+                            let currentVals = _module.$route.query[queryParam].split(",");
+                            if (currentVals.indexOf(paramVal) > -1) {
+                                currentVals.splice(paramVal.indexOf(paramVal), 1)
+                            }
+                            query[paramName] = currentVals.join(",");
+                        }
+                    }
+                });
+                query["page"] = 1;
+                return query;
             }
         }
     }
 &lt;/script>
 
-&lt;style>
-  #loginPage a {
-    text-decoration: none !important;
-  }
-&lt;/style>
-</pre>
+&lt;style scoped>
+    .chip {
+        border-radius: 20px;
+        background: darkred;
+        padding: 5px 10px;
+        color: white;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+        max-width: 300px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-block;
+    }
+
+    .chip span {
+        border: 1px solid white;
+        border-radius: 50px;
+        padding: 5px 10px;
+    }
+&lt;/style></pre>
     </article>
 </section>
 

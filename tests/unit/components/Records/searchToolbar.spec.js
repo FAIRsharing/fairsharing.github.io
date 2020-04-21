@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
-import OutputGrid from "@/components/Records/search/searchToolbar.vue";
+import Toolbar from "@/components/Records/Search/searchToolbar.vue";
 import records from "@/store/records";
 
 const localVue = createLocalVue();
@@ -17,7 +17,7 @@ describe("SearchOutputGrid.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(OutputGrid, {
+        wrapper = shallowMount(Toolbar, {
             mocks: {$store},
             localVue
         });

@@ -1,4 +1,78 @@
 <template>
+  <div
+    id="facets"
+    class="container-fluid pa-0 ma-0"
+  >
+    <v-row>
+      <v-col
+        cols="12"
+        class="py-0"
+      >
+        <v-card>
+          <div class="card-header">
+            <h2> Facets </h2>
+          </div>
+          <div class="card-body filters">
+            <div class="container-fluid">
+              <v-row>
+                <v-col
+                  v-for="(facetVal, key) in $store.state.records.facets"
+                  :key="'Facet' + key"
+                  cols="3"
+                >
+                  <v-card height="100%" tile>
+                    <v-card-title>
+                      <h3> {{ facetVal.filterLabel }} </h3>
+                    </v-card-title>
+                    <v-card-text>
+                      <div
+                        v-for="(facet, subKey) in $store.getters['records/getFacet'](facetsSize[facetVal.filterName], facetVal.filterName)['values']"
+                        :key="facetVal.filterName + subKey"
+                        class="facet"
+                        @click="addParam(facetVal.filterName, facet)"
+                      >
+                        <div
+                          v-if="!Object.prototype.hasOwnProperty.call(facet, 'key_as_string')"
+                          class="facetName"
+                        >
+                          {{ cleanString(facet.key) }}
+                        </div>
+                        <div
+                          v-else
+                          class="facetName"
+                        >
+                          {{ cleanString(facet['key_as_string']) }}
+                        </div>
+                        <em> {{ facet['doc_count'] }}</em>
+                      </div>
+                    </v-card-text>
+                    <v-card-actions>
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        @click="changeSize(facetVal.filterName, 100)"
+                      >
+                        Show more
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        @click="changeSize(facetVal.filterName, defaultSize)"
+                      >
+                        Show Less
+                      </button>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </div>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+  </div>
+
+  <!--
   <div class="facets card">
     <div class="card-header">
       Facets
@@ -54,6 +128,7 @@
       </div>
     </div>
   </div>
+  -->
 </template>
 
 <script>

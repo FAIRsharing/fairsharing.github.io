@@ -23,7 +23,10 @@ records.state.records = [
                     registry: "collection"
                 }
             }
-        ]
+        ],
+        domains: ["ab", "c_d"],
+        taxonomies: ["ab", "c_d"],
+        subjects: ["ab", "c_d"],
     }
 ];
 

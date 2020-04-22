@@ -71,64 +71,6 @@
       </v-col>
     </v-row>
   </div>
-
-  <!--
-  <div class="facets card">
-    <div class="card-header">
-      Facets
-    </div>
-
-    <div class="card-body">
-      <div
-        v-for="(facetVal, key) in $store.state.records.facets"
-        :key="'Facet' + key"
-      >
-        <div class="facet">
-          <h3>{{ facetVal.filterLabel }}</h3>
-        </div>
-
-        <div
-          v-for="(facet, subKey) in $store.getters['records/getFacet'](facetsSize[facetVal.filterName], facetVal.filterName)['values']"
-          :key="facetVal.filterName + subKey"
-          class="facet"
-          @click="addParam(facetVal.filterName, facet)"
-        >
-          <div
-            v-if="!Object.prototype.hasOwnProperty.call(facet, 'key_as_string')"
-            class="facetName"
-          >
-            {{ cleanString(facet.key) }}
-          </div>
-          <div
-            v-else
-            class="facetName"
-          >
-            {{ cleanString(facet['key_as_string']) }}
-          </div>
-          <em> {{ facet['doc_count'] }}</em>
-        </div>
-
-        <button
-          type="button"
-          class="btn btn-secondary"
-          @click="changeSize(facetVal.filterName, 100)"
-        >
-          Show more
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-secondary"
-          @click="changeSize(facetVal.filterName, defaultSize)"
-        >
-          Show Less
-        </button>
-
-        <hr>
-      </div>
-    </div>
-  </div>
-  -->
 </template>
 
 <script>

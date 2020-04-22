@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <v-row v-if="hits > 0">
+    <v-row>
       <!-- top toolbar -->
       <v-col
         cols="12"
@@ -12,11 +12,22 @@
       <!-- CHIPS -->
       <v-col
         cols="12"
-        class="mb-0 pb-0"
+        class="my-0 py-0"
       >
         <FiltersChip />
+        <v-divider />
       </v-col>
 
+      <!-- NO RESULTS -->
+      <v-col v-if="hits === 0">
+        <v-col cols="12">
+          <div class="alert alert-danger">
+            No results found for given filters.
+          </div>
+        </v-col>
+      </v-col>
+
+      <!-- MAIN -->
       <v-col
         v-for="record in records"
         :key="'record'+record.id"
@@ -214,21 +225,15 @@
     </v-row>
 
     <div v-if="hits === null">
-      LOADING
+      <h1 class="py-5 blue white--text text-center">
+        LOADING
+      </h1>
     </div>
-
-    <v-row v-if="hits === 0">
-      <v-col cols="12">
-        <div class="alert alert-danger">
-          No results found for given filters.
-        </div>
-      </v-col>
-    </v-row>
   </div>
 </template>
 
 <script>
-  import { mapState} from 'vuex'
+  import { mapState } from 'vuex'
   import FiltersChip from "../../components/Records/Search/FiltersChip";
   import SearchToolbar from "./Search/searchToolbar";
 
@@ -251,7 +256,7 @@
       }
     },
     computed: {
-      ...mapState('records', ["records", "hits"])
+      ...mapState('records', ["records", "hits", "loading"])
     },
     methods: {
       associatedRecords: function(record){
@@ -293,7 +298,8 @@
         return colors[recordStatus];
       },
       cleanString: function(string){
-        return string.replace(/_/g, " ").toUpperCase()
+        if (string) return string.replace(/_/g, " ").toUpperCase()
+        return null
       }
     }
   }

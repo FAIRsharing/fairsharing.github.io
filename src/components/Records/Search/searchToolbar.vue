@@ -1,7 +1,9 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-toolbar>
+    <!-- Advanced search -->
     <v-menu
       bottom
+      offset-y
       fixed
       transition="slide-y-transition"
       :close-on-content-click="false"
@@ -17,6 +19,26 @@
       <search-filters />
     </v-menu>
 
+    <!-- facet -->
+    <v-menu
+      bottom
+      offset-y
+      fixed
+      transition="slide-y-transition"
+      :close-on-content-click="false"
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn
+          icon
+          v-on="on"
+        >
+          <v-icon>F</v-icon>
+        </v-btn>
+      </template>
+      <facets></facets>
+    </v-menu>
+
+    <!-- sorting -->
     <v-menu
       offset-y
       bottom
@@ -55,10 +77,11 @@
     import Pagination from "./Pagination";
     import SearchFilters from "./SearchFilters";
     import Sorting from "./Sorting";
+    import Facets from "./Facets";
 
     export default {
         name: "SearchToolbar",
-        components: {Sorting, SearchFilters, Pagination},
+        components: {Facets, Sorting, SearchFilters, Pagination},
         data(){
           return {
             showPanel: null

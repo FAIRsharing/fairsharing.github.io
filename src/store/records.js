@@ -15,6 +15,7 @@ let recordsStore = {
         facets: [],
         totalPages: null,
         hits: null,
+        loading: false,
     },
     mutations: {
         setRecords(state, data){
@@ -32,10 +33,14 @@ let recordsStore = {
         },
         resetHits(state){
             state.hits = null;
+        },
+        setLoadingStatus(state, status){
+            state.loading = status;
         }
     },
     actions: {
         async fetchRecords(state, params){
+            this.commit("records/setLoadingStatus", true);
             this.commit("records/resetRecords");
             this.commit("records/resetHits");
             if (Object.keys(params).length > 0){
@@ -43,6 +48,7 @@ let recordsStore = {
             }
             const data = await client.executeQuery(recordsQuery);
             this.commit('records/setRecords', data["searchFairsharingRecords"]);
+            this.commit("records/setLoadingStatus", false);
         },
         resetFacets(){
             this.commit("records/resetFacets")

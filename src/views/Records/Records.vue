@@ -30,43 +30,8 @@
       </v-col>
     </v-row>
 
-
-
     <!-- MAIN -->
     <v-row>
-      <!-- LEFT PANEL
-      <div class="leftPanel col-3">
-        <div class="tabs">
-          <ul class="nav">
-            <li class="nav-item">
-              <div class="nav-link active">
-                <button
-                  type="button"
-                  class="btn btn-light"
-                  @click="setPanel('AdvSearch')"
-                >
-                  Advanced search
-                </button>
-              </div>
-            </li>
-            <li class="nav-item">
-              <div class="nav-link">
-                <button
-                  type="button"
-                  class="btn btn-light"
-                  @click="setPanel('Facets')"
-                >
-                  Facets
-                </button>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <search-filters v-if="currentPanel === 'AdvSearch'" />
-        <facets v-if="currentPanel === 'Facets'" />
-      </div>
-      -->
-
       <!-- OUTPUT -->
       <v-col
         v-if="!errors"

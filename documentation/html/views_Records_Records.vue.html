@@ -123,43 +123,8 @@
       &lt;/v-col>
     &lt;/v-row>
 
-
-
     &lt;!-- MAIN -->
     &lt;v-row>
-      &lt;!-- LEFT PANEL
-      &lt;div class="leftPanel col-3">
-        &lt;div class="tabs">
-          &lt;ul class="nav">
-            &lt;li class="nav-item">
-              &lt;div class="nav-link active">
-                &lt;button
-                  type="button"
-                  class="btn btn-light"
-                  @click="setPanel('AdvSearch')"
-                >
-                  Advanced search
-                &lt;/button>
-              &lt;/div>
-            &lt;/li>
-            &lt;li class="nav-item">
-              &lt;div class="nav-link">
-                &lt;button
-                  type="button"
-                  class="btn btn-light"
-                  @click="setPanel('Facets')"
-                >
-                  Facets
-                &lt;/button>
-              &lt;/div>
-            &lt;/li>
-          &lt;/ul>
-        &lt;/div>
-        &lt;search-filters v-if="currentPanel === 'AdvSearch'" />
-        &lt;facets v-if="currentPanel === 'Facets'" />
-      &lt;/div>
-      -->
-
       &lt;!-- OUTPUT -->
       &lt;v-col
         v-if="!errors"

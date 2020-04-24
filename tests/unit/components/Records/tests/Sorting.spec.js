@@ -1,4 +1,4 @@
-import Sorting from "../Sorting";
+import Sorting from "../../../../../src/components/Records/Search/Sorting";
 import {shallowMount} from "@vue/test-utils";
 
 let $route = {

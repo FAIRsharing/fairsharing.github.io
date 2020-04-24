@@ -62,7 +62,7 @@
       class="teal darken-2"
       to="/accounts/profile"
     >
-      <span class="white--text">Welcome, {{ user().metadata.username }}</span>
+      <span class="white--text">Welcome, {{ user().credentials.username }}</span>
     </v-btn>
   </v-toolbar>
 </template>

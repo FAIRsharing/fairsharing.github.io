@@ -1,45 +1,9 @@
 <template>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      <li
-        v-if="totalPages>5"
-        class="page-item"
-      >
-        <button
-          class="page-link"
-          @click="first"
-        >
-          first
-        </button>
-      </li>
-
-      <li
-        v-for="index in totalPages"
-        :key="index"
-        class="page-item"
-        :class="{'active' : index === currentPage}"
-        @click="paginate(index)"
-      >
-        <button
-          class="page-link"
-        >
-          {{ index }}
-        </button>
-      </li>
-
-      <li
-        v-if="totalPages>5"
-        class="page-item"
-      >
-        <button
-          class="page-link"
-          @click="last"
-        >
-          last
-        </button>
-      </li>
-    </ul>
-  </nav>
+  <v-pagination
+    v-model="page"
+    :length="totalPages"
+    :total-visible="7"
+  />
 </template>
 
 <script>
@@ -61,7 +25,8 @@
             return {
                 currentPage: null,
                 allowPaginate: true,
-                disable: false
+                disable: false,
+                page: 1
             }
         },
         watch: {
@@ -75,11 +40,15 @@
                 } else {
                     _module.currentPage = Number(newVal.page);
                 }
+            },
+            'page': function (newPage) {
+                this.paginate(newPage);
             }
         },
         created() {
-            let currentPage = this.$route.query.page;
-            currentPage !== undefined ? this.currentPage = Number(currentPage) : this.currentPage = 1;
+            let currentPage = (this.$route.query.page !== undefined) ? Number(this.$route.query.page ) : 1;
+            this.currentPage = currentPage;
+            this.page = currentPage;
         },
         methods: {
             /**
@@ -88,7 +57,6 @@
              */
             paginate: async function (pageNumber) {
                 if (this.allowPaginate) {
-                    this.disableThrottle(this.disable);
                     if (pageNumber !== this.currentPage && this.allowPaginate) {
                         let _module = this;
                         let currentQuery = {};
@@ -97,6 +65,7 @@
                             currentQuery[param] = _module.$route.query[param]
                         });
                         currentQuery.page = pageNumber;
+                        this.disableThrottle(this.disable);
                         await _module.$router.push({
                             name: _module.$route.name,
                             query: currentQuery
@@ -122,18 +91,6 @@
                 } else {
                     this.allowPaginate = true;
                 }
-            },
-            /**
-             * Set the current page to the first page
-             */
-            first: function () {
-                this.paginate(1);
-            },
-            /**
-             * Set the current page to the last page
-             */
-            last: function () {
-                this.paginate(this.totalPages);
             }
         },
     }
@@ -144,4 +101,10 @@
         outline: none;
     }
 
+</style>
+
+<style>
+  #advancedSearch {
+    top:20px;
+  }
 </style>

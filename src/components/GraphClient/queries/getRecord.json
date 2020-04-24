@@ -79,6 +79,16 @@
           ]
       },
       {
+          "name": "reverseRecordAssociations",
+          "fields": [
+              {
+                  "queryName": "fairsharingRecord",
+                  "fields": ["name", "id", "registry"]
+              },
+              "recordAssocLabel"
+          ]
+      },
+      {
           "name": "reviews",
           "fields":  ["id", "fairsharingRecordId", "createdAt", "userId"]
       }

@@ -216,7 +216,7 @@ routes.forEach(function (route) {
 
 const router = new VueRouter({
     routes,
-    mode: "history"
+    //mode: "history"
 });
 
 export function beforeEach(to, from, next) {

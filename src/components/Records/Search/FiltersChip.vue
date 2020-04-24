@@ -1,21 +1,22 @@
 <template>
   <div>
     <div class="chipsElements container-fluid">
-      <div class="row">
+      <v-row>
         <div
           v-for="(chip, index) in getChips"
           :key="'Chips_' + index"
         >
-          <div
-            v-for="(chipValue, subKey) in chip.paramVal"
-            :key="'Chip_' + subKey"
-            class="chip"
+          <v-chip
+            class="ma-2"
+            close
+            color="primary"
+            text-color="white"
+            @click:close="removeParam(chip.paramName, chip.paramVal)"
           >
-            <span @click="removeParam(chip.paramName, chipValue)">x</span> {{ chip.paramName }}: {{
-              decodeURIComponent(chipValue).replace(/_/g, " ") }}
-          </div>
+            {{ chip.paramName }}: <b>{{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
+          </v-chip>
         </div>
-      </div>
+      </v-row>
     </div>
   </div>
 </template>
@@ -37,13 +38,17 @@
                         let param = parameters[paramName];
                         if (param.indexOf(",") > -1) {
                             param = param.split(",")
-                        } else {
+                        }
+                        else {
                             param = [param];
                         }
-                        output.push({
+                        param.forEach(function(val){
+                          output.push({
                             paramName: paramName,
-                            paramVal: param
-                        });
+                            paramVal: val
+                          });
+                        })
+
                     }
                 });
                 return output;
@@ -75,7 +80,8 @@
                 Object.keys(_module.$route.query).forEach(function (queryParam) {
                     if (queryParam !== paramName) {
                         query[queryParam] = _module.$route.query[queryParam]
-                    } else {
+                    }
+                    else {
                         if (_module.$route.query[queryParam].indexOf(',') > -1) {
                             let currentVals = _module.$route.query[queryParam].split(",");
                             if (currentVals.indexOf(paramVal) > -1) {

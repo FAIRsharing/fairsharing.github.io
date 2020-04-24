@@ -1,4 +1,4 @@
-import Pagination from "../Pagination";
+import Pagination from "../../../../../src/components/Records/Search/Pagination";
 import {shallowMount} from "@vue/test-utils";
 
 let $route = {
@@ -8,7 +8,6 @@ let $route = {
         type: Number
     }
 };
-
 
 const push = jest.fn();
 const $router = {
@@ -62,56 +61,20 @@ describe("Pagination.vue", () => {
         expect(anotherWrapper2.vm.currentPage).toBe(120);
     });
 
-
-    it('Has a first() method that always redirect to the first page', () => {
-        wrapper.vm.disable=true;
-        wrapper.vm.currentPage = 10;
-        wrapper.vm.$route.query.page = "1";
-
+    it('Has a paginate() method that sets the current page in the URL query', async () => {
+        wrapper.vm.allowPaginate = true;
         wrapper.vm.$router.push = push;
-        wrapper.vm.first();
-        expect(wrapper.vm.currentPage).toBe(1);
-        expect($router.push).toHaveBeenCalledTimes(1);
-
-        // call the first Function again and it is not working due to router.page number is already the same
-        wrapper.vm.$router.push = push;
-        wrapper.vm.first();
-        expect($router.push).toHaveBeenCalledTimes(1);
-    });
-
-
-    it('Has a last() method that always redirect to the last page', () => {
-        wrapper.vm.disable=true;
-        wrapper.vm.currentPage = wrapper.vm.totalPages;
-        wrapper.vm.$route.query.page = wrapper.vm.totalPages;
-
-        wrapper.vm.$router.push = push;
-        wrapper.vm.last();
-        wrapper.vm.$route.query.page = wrapper.vm.totalPages;
-
-        expect(wrapper.vm.currentPage).toBe(wrapper.vm.totalPages);
-        expect(wrapper.vm.$route.query.page).toBe(wrapper.vm.totalPages);
-
-        // call the first Function again and it is not working due to router.page number is already the same
-        wrapper.vm.$router.push = push;
-        wrapper.vm.last();
-        expect($router.push).toHaveBeenCalledTimes(1);
-    });
-
-
-    it('Has a paginate() method that sets the current page in the URL query', () => {
-        wrapper.vm.disable=true;
-        wrapper.vm.$router.push = push;
-        wrapper.vm.paginate(8);
-        expect(wrapper.vm.currentPage).toBe(8);
+        await wrapper.vm.paginate(2);
+        expect(push).toHaveBeenCalledWith({"name": "Search", "query": {"page": 2}});
         expect(wrapper.vm.$route.name).toBe("Search");
     });
 
     it('can define whether it is testing or development environment',()=>{
         wrapper.vm.disableThrottle(false);
+        expect(wrapper.vm.allowPaginate).toBe(false);
+        wrapper.vm.disableThrottle(true);
         expect(wrapper.vm.allowPaginate).toBe(true);
     });
-
 
     it('can check whether paginate works if it is not allowed',()=>{
         wrapper.vm.allowPaginate=false;

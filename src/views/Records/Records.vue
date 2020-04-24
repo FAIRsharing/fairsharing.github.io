@@ -1,63 +1,44 @@
 <template>
   <div
-    class="a outputGrid container-fluid"
+    id="SearchFAIRSharing"
+    class="container-fluid pt-0"
   >
-    <h1>{{ getTitle }}</h1>
-    <!-- PAGINATION -->
-    <Pagination
-      class="row col-12"
-      :total-pages="this.$store.state.records.totalPages"
-    />
-    <!-- CHIPS -->
-    <div class="chips">
-      <FiltersChip />
-    </div>
-    <!-- SORTING -->
+    <!-- Title banner -->
+    <v-row
+      style="height:250px"
+      align="center"
+      justify="center"
+      class="secondary"
+    >
+      <v-col>
+        <v-list class="secondary">
+          <v-list-item two-line>
+            <v-list-item-content>
+              <v-list-item-title>
+                <h1 class="text-center white--text">
+                  {{ getTitle }}
+                </h1>
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                <div class="text-center body-1 white--text">
+                  {{ recordsSubTitles[getTitle] }}
+                </div>
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-col>
+    </v-row>
 
-    <div class="row">
-      <!-- LEFT PANEL -->
-      <div class="leftPanel col-3">
-        <!-- navigation -->
-        <div class="tabs">
-          <ul class="nav">
-            <li class="nav-item">
-              <div class="nav-link active">
-                <button
-                  type="button"
-                  class="btn btn-light"
-                  @click="setPanel('AdvSearch')"
-                >
-                  Advanced search
-                </button>
-              </div>
-            </li>
-            <li class="nav-item">
-              <div class="nav-link">
-                <button
-                  type="button"
-                  class="btn btn-light"
-                  @click="setPanel('Facets')"
-                >
-                  Facets
-                </button>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        <!-- filters and facets -->
-        <search-filters v-if="currentPanel === 'AdvSearch'" />
-        <facets v-if="currentPanel === 'Facets'" />
-      </div>
-
+    <!-- MAIN -->
+    <v-row>
       <!-- OUTPUT -->
-      <div
+      <v-col
         v-if="!errors"
-        class="col-9"
+        cols="12"
       >
-        <Sorting class="mb-4" />
-        <output-grid :total-pages="this.$store.state.records.totalPages" />
-      </div>
+        <output-grid />
+      </v-col>
 
       <!-- ERROR HANDLING -->
       <div
@@ -68,18 +49,14 @@
           {{ errors }}
         </div>
       </div>
-    </div>
+    </v-row>
   </div>
 </template>
 
 <script>
   import {mapActions} from 'vuex'
   import OutputGrid from '../../components/Records/SearchOutputGrid'
-  import SearchFilters from "../../components/Records/SearchFilters"
-  import Facets from "../../components/Records/Facets";
-  import FiltersChip from "../../components/Records/FiltersChip";
-  import Pagination from "../../components/Records/Pagination";
-  import Sorting from "../../components/Records/Sorting";
+
   /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
    * @vue-data {Object} [recordTypes = {Standards: "Standard", Databases: "Database", Policies: "Policy", Collections: "Collection"}] - a mapping of types of records used by fairsharingRegistry
    * @vue-data {String} [Errors  = null] - a string message in case an error arises.
@@ -91,11 +68,6 @@
   export default {
     name: "Records",
     components: {
-      Sorting,
-      Pagination,
-      FiltersChip,
-      Facets,
-      SearchFilters,
       OutputGrid
     },
     data() {
@@ -105,6 +77,19 @@
           Databases: "Database",
           Policies: "Policy",
           Collections: "Collection"
+        },
+        recordsSubTitles: {
+          Standards: "The standards in FAIRsharing are manually curated from a variety of sources, including BioPortal, " +
+                  "MIBBI and the Equator Network.",
+          Collections: "Collections group together one or more types of resource (standard, database or policy) by " +
+                  "domain, project or organisation. A Recommendation is a core-set of resources that are selected or " +
+                  "endorsed by data policies from journals, funders or other organizations.",
+          Databases: "A catalogue of databases, described according to the BioDBcore guidelines, along with the standards " +
+                  "used within them; partly compiled with the support of Oxford University Press (NAR Database Issue " +
+                  "and DATABASE Journal).",
+          Policies: "FAIRsharing policies: A catalogue of data preservation, management and sharing policies from " +
+                  "international funding agencies, regulators and journals.",
+          Search: "Search the FAIRsharing records using advanced filtering"
         },
         errors: null,
         currentPanel: "AdvSearch"

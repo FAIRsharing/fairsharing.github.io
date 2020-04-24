@@ -93,64 +93,45 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;div
-    class="a outputGrid container-fluid"
+    id="SearchFAIRSharing"
+    class="container-fluid pt-0"
   >
-    &lt;h1>{{ getTitle }}&lt;/h1>
-    &lt;!-- PAGINATION -->
-    &lt;Pagination
-      class="row col-12"
-      :total-pages="this.$store.state.records.totalPages"
-    />
-    &lt;!-- CHIPS -->
-    &lt;div class="chips">
-      &lt;FiltersChip />
-    &lt;/div>
-    &lt;!-- SORTING -->
+    &lt;!-- Title banner -->
+    &lt;v-row
+      style="height:250px"
+      align="center"
+      justify="center"
+      class="secondary"
+    >
+      &lt;v-col>
+        &lt;v-list class="secondary">
+          &lt;v-list-item two-line>
+            &lt;v-list-item-content>
+              &lt;v-list-item-title>
+                &lt;h1 class="text-center white--text">
+                  {{ getTitle }}
+                &lt;/h1>
+              &lt;/v-list-item-title>
+              &lt;v-list-item-subtitle>
+                &lt;div class="text-center body-1 white--text">
+                  {{ recordsSubTitles[getTitle] }}
+                &lt;/div>
+              &lt;/v-list-item-subtitle>
+            &lt;/v-list-item-content>
+          &lt;/v-list-item>
+        &lt;/v-list>
+      &lt;/v-col>
+    &lt;/v-row>
 
-    &lt;div class="row">
-      &lt;!-- LEFT PANEL -->
-      &lt;div class="leftPanel col-3">
-        &lt;!-- navigation -->
-        &lt;div class="tabs">
-          &lt;ul class="nav">
-            &lt;li class="nav-item">
-              &lt;div class="nav-link active">
-                &lt;button
-                  type="button"
-                  class="btn btn-light"
-                  @click="setPanel('AdvSearch')"
-                >
-                  Advanced search
-                &lt;/button>
-              &lt;/div>
-            &lt;/li>
-            &lt;li class="nav-item">
-              &lt;div class="nav-link">
-                &lt;button
-                  type="button"
-                  class="btn btn-light"
-                  @click="setPanel('Facets')"
-                >
-                  Facets
-                &lt;/button>
-              &lt;/div>
-            &lt;/li>
-          &lt;/ul>
-        &lt;/div>
-
-        &lt;!-- filters and facets -->
-        &lt;search-filters v-if="currentPanel === 'AdvSearch'" />
-        &lt;facets v-if="currentPanel === 'Facets'" />
-      &lt;/div>
-
+    &lt;!-- MAIN -->
+    &lt;v-row>
       &lt;!-- OUTPUT -->
-      &lt;div
+      &lt;v-col
         v-if="!errors"
-        class="col-9"
+        cols="12"
       >
-        &lt;Sorting class="mb-4" />
-        &lt;output-grid :total-pages="this.$store.state.records.totalPages" />
-      &lt;/div>
+        &lt;output-grid />
+      &lt;/v-col>
 
       &lt;!-- ERROR HANDLING -->
       &lt;div
@@ -161,18 +142,14 @@
           {{ errors }}
         &lt;/div>
       &lt;/div>
-    &lt;/div>
+    &lt;/v-row>
   &lt;/div>
 &lt;/template>
 
 &lt;script>
   import {mapActions} from 'vuex'
   import OutputGrid from '../../components/Records/SearchOutputGrid'
-  import SearchFilters from "../../components/Records/SearchFilters"
-  import Facets from "../../components/Records/Facets";
-  import FiltersChip from "../../components/Records/FiltersChip";
-  import Pagination from "../../components/Records/Pagination";
-  import Sorting from "../../components/Records/Sorting";
+
   /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
    * @vue-data {Object} [recordTypes = {Standards: "Standard", Databases: "Database", Policies: "Policy", Collections: "Collection"}] - a mapping of types of records used by fairsharingRegistry
    * @vue-data {String} [Errors  = null] - a string message in case an error arises.
@@ -184,11 +161,6 @@
   export default {
     name: "Records",
     components: {
-      Sorting,
-      Pagination,
-      FiltersChip,
-      Facets,
-      SearchFilters,
       OutputGrid
     },
     data() {
@@ -198,6 +170,19 @@
           Databases: "Database",
           Policies: "Policy",
           Collections: "Collection"
+        },
+        recordsSubTitles: {
+          Standards: "The standards in FAIRsharing are manually curated from a variety of sources, including BioPortal, " +
+                  "MIBBI and the Equator Network.",
+          Collections: "Collections group together one or more types of resource (standard, database or policy) by " +
+                  "domain, project or organisation. A Recommendation is a core-set of resources that are selected or " +
+                  "endorsed by data policies from journals, funders or other organizations.",
+          Databases: "A catalogue of databases, described according to the BioDBcore guidelines, along with the standards " +
+                  "used within them; partly compiled with the support of Oxford University Press (NAR Database Issue " +
+                  "and DATABASE Journal).",
+          Policies: "FAIRsharing policies: A catalogue of data preservation, management and sharing policies from " +
+                  "international funding agencies, regulators and journals.",
+          Search: "Search the FAIRsharing records using advanced filtering"
         },
         errors: null,
         currentPanel: "AdvSearch"
@@ -328,7 +313,8 @@
     text-align: left;
     font-size: 18px;
   }
-&lt;/style></pre>
+&lt;/style>
+</pre>
     </article>
 </section>
 
@@ -373,7 +359,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Mon Apr 20th 2020
+		on Wed Apr 22nd 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

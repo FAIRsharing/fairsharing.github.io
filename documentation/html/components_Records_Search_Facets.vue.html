@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: components/Records/Search/Facets.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecordPage.html">NewRecordPage</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/Records/Search/Facets.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div
+    id="facets"
+    class="container-fluid pa-0 ma-0"
+  >
+    &lt;v-row>
+      &lt;v-col
+        cols="12"
+        class="py-0"
+      >
+        &lt;v-card>
+          &lt;div class="card-header">
+            &lt;h2> Facets &lt;/h2>
+          &lt;/div>
+          &lt;div class="card-body filters">
+            &lt;div class="container-fluid">
+              &lt;v-row>
+                &lt;v-col
+                  v-for="(facetVal, key) in $store.state.records.facets"
+                  :key="'Facet' + key"
+                  cols="3"
+                >
+                  &lt;v-card height="100%" tile>
+                    &lt;v-card-title>
+                      &lt;h3> {{ facetVal.filterLabel }} &lt;/h3>
+                    &lt;/v-card-title>
+                    &lt;v-card-text>
+                      &lt;div
+                        v-for="(facet, subKey) in $store.getters['records/getFacet'](facetsSize[facetVal.filterName], facetVal.filterName)['values']"
+                        :key="facetVal.filterName + subKey"
+                        class="facet"
+                        @click="addParam(facetVal.filterName, facet)"
+                      >
+                        &lt;div
+                          v-if="!Object.prototype.hasOwnProperty.call(facet, 'key_as_string')"
+                          class="facetName"
+                        >
+                          {{ cleanString(facet.key) }}
+                        &lt;/div>
+                        &lt;div
+                          v-else
+                          class="facetName"
+                        >
+                          {{ cleanString(facet['key_as_string']) }}
+                        &lt;/div>
+                        &lt;em> {{ facet['doc_count'] }}&lt;/em>
+                      &lt;/div>
+                    &lt;/v-card-text>
+                    &lt;v-card-actions>
+                      &lt;button
+                        type="button"
+                        class="btn btn-secondary"
+                        @click="changeSize(facetVal.filterName, 100)"
+                      >
+                        Show more
+                      &lt;/button>
+                      &lt;button
+                        type="button"
+                        class="btn btn-secondary"
+                        @click="changeSize(facetVal.filterName, defaultSize)"
+                      >
+                        Show Less
+                      &lt;/button>
+                    &lt;/v-card-actions>
+                  &lt;/v-card>
+                &lt;/v-col>
+              &lt;/v-row>
+            &lt;/div>
+          &lt;/div>
+        &lt;/v-card>
+      &lt;/v-col>
+    &lt;/v-row>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+    import paramBuilder from "../utils.js"
+
+
+    /** Component to handle the faceting systems of the search pages.
+     * @vue-data {Boolean} [defaultSize = 4] - the default number of items to show for facets.
+     * @vue-computed {String} facetsSize - get the size of each facet from the recordsStore
+     */
+    export default {
+        name: "Facets",
+        data() {
+            return {
+                defaultSize: 4,
+            }
+        },
+        computed: {
+            facetsSize: function(){
+                let sizes = {};
+                this.$store.state.records.facets.forEach(function(facet){
+                    sizes[facet.filterName] = 4;
+                });
+                return sizes;
+            }
+        },
+        methods: {
+            /**
+             * Change the size of the given facet
+             * @param {String} facetName - the name of the facet to change
+             * @param {Number} size - the new size to set for the given facet name
+             */
+            changeSize: function(facetName, size){
+                this.facetsSize[facetName] = size;
+                this.$forceUpdate();
+            },
+            /**
+             * Method to add the given facet as a parameter to the router query
+             * @param {String} facetName - the name of the facet
+             * @param {Object} facetVal - the facet value coming from the store
+             */
+            addParam: async function(facetName, facetVal){
+                let _module = this;
+                let currentQuery = paramBuilder(this.$route.query, {name: facetName, value: facetVal});
+
+                // Only trigger the API call if the query is different
+                if (JSON.stringify(currentQuery) !== JSON.stringify(this.$route.query)){
+                    currentQuery["page"] = 1;
+                    await _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentQuery
+                    })
+                }
+            },
+            /**
+             * Removes all underscores from given string
+             * @param {String} string - any input string
+             * @returns {String} updatedString - string stripped of underscores
+             */
+            cleanString: function(string){
+              if (typeof string === "string") {
+                return string.replace(/_/g, " ");
+              }
+              return string;
+            }
+        }
+    }
+&lt;/script>
+
+&lt;style scoped>
+
+    .facet {
+        text-align: left;
+    }
+
+    .facet em {
+        float:right;
+    }
+
+    .facetName {
+        display:inline-block;
+        white-space: nowrap;
+        width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .facets button {
+        right:0;
+        position: relative;
+    }
+
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+	
+		on Wed Apr 22nd 2020
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

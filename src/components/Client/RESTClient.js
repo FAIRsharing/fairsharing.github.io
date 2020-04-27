@@ -51,12 +51,15 @@ class RESTClient {
      * @returns {Object} user - the logged in user
      */
     async loginFromOAuth(user) {
+        console.log(user);
         const endpoint = `/users/auth/${user.provider}/callback?${user.params}`;
         const request = {
             method: "GET",
             url: this.baseURL + endpoint,
+            headers: {"Accept": "application/json"}
         };
         let response = await this.executeQuery(request);
+        console.log(response);
         return response.data;
     }
 

@@ -135,19 +135,19 @@
                   name: "GitHub",
                   icon: "fab fa-github",
                   color: "black white--text",
-                  callback: "https://api.fairsharing.org/#/users/auth/github",
+                  callback: "https://api.fairsharing.org/users/auth/github",
                 },
                 {
                   name: "Twitter",
                   icon: "fab fa-twitter",
                   color: "blue white--text",
-                  callback: "https://api.fairsharing.org/#/users/auth/twitter",
+                  callback: "https://api.fairsharing.org/users/auth/twitter",
                 },
                 {
                   name: "ORCID",
                   icon: "fab fa-orcid",
                   color: "green white--text",
-                  callback: "https://api.fairsharing.org/#/users/auth/orcid",
+                  callback: "https://api.fairsharing.org/users/auth/orcid",
                 }
               ]
             }

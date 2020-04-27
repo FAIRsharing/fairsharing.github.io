@@ -159,7 +159,9 @@ export const actions = {
         }
     },
     async loginFromOauth(state, user){
-        return await client.loginFromOAuth(user);
+        let resp = await client.loginFromOAuth(user);
+        console.log(resp);
+        return resp;
     },
     async logout(state){
         try {

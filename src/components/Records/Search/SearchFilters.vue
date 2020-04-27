@@ -1,64 +1,71 @@
 <template>
   <div
     id="advancedSearch"
-    class="container"
+    class="container-fluid pa-0 ma-0"
   >
-    <form
-      v-if="filters.length > 0"
-      class="card"
-    >
-      <div class="card-header">
-        <h2>Advanced search</h2>
-      </div>
-      <div class="card-body filters">
-        <div
-          v-for="(filter, key) in filters"
-          :key="key"
+    <v-row>
+      <v-col cols="12" class="py-0">
+        <form
+          v-if="filters.length > 0"
+          class="card"
         >
-          <b>{{ filter.filterLabel }}:</b>
-
-          <div
-            v-if="filter.values"
-            class="filter"
-          >
-            <v-autocomplete
-              v-model="form.data[filter.filterName]"
-              :items="cleanStrings(filter.values)"
-              autocomplete="true"
-              attach
-            />
+          <div class="card-header">
+            <h2>Advanced search</h2>
           </div>
-          <div
-            v-else
-            class="filter"
-          >
-            <input v-model="form.data[filter.filterName]">
+          <div class="card-body filters">
+            <div class="container-fluid">
+              <v-row>
+                <v-col
+                  v-for="(filter, key) in filters"
+                  :key="key"
+                  cols="2"
+                >
+                  <div
+                    v-if="filter.values"
+                    class="filter"
+                  >
+                    <v-autocomplete
+                      v-model="form.data[filter.filterName]"
+                      :items="cleanStrings(filter.values)"
+                      solo
+                      rounded
+                      :label="filter.filterLabel"
+                    />
+                  </div>
+                  <div
+                    v-else
+                    class="filter"
+                  >
+                    <input v-model="form.data[filter.filterName]" :placeholder="filter.filterLabel">
+                  </div>
+                </v-col>
+              </v-row>
+            </div>
           </div>
-          <hr>
-        </div>
-      </div>
-      <div class="card-footer">
-        <b>String search:</b>
-        <input
-          v-model="form.data['q']"
-          type="text"
-        >
-        <button
-          type="button"
-          class="btn btn-success"
-          @click="applyFilters()"
-        >
-          Search
-        </button>
-        <button
-          type="button"
-          class="btn btn-danger"
-          @click="reset()"
-        >
-          Reset
-        </button>
-      </div>
-    </form>
+          <div class="card-footer">
+            <b>String search:</b>
+            <input
+              v-model="form.data['q']"
+              type="text"
+            >
+            <button
+              type="button"
+              class="btn btn-success"
+              @click="applyFilters()"
+            >
+              Search
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="reset()"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -173,17 +180,4 @@
 </style>
 
 <style>
-    .v-autocomplete__content {
-        max-width: 300px !important;
-    }
-
-    .filters .v-input {
-        margin-top: 0;
-        padding-top: 0;
-    }
-
-    .v-list-item__mask {
-        color: black;
-        background: yellowgreen !important;
-    }
 </style>

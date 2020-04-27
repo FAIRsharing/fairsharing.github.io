@@ -101,8 +101,9 @@ describe("GraphQL Client", function () {
 
     it("can correctly build a query string from a JSON", function () {
         const expectedOutput = "searchFairsharingRecords(field1:true field2:\"true\" field3:[\"true\",\"false\"]){ " +
-            "aggregations currentPage perPage totalCount totalPages firstPage records{id type name abbreviation registry " +
-            "domains{ label}subjects{ label}taxonomies{ label}recordAssociations{ linkedRecord{name id registry } " +
+            "aggregations currentPage perPage totalCount totalPages firstPage records{id type name abbreviation " +
+            "registry description domains{ label}subjects{ label}taxonomies{ label}recordAssociations{ linkedRecord{name " +
+            "id registry } recordAssocLabel}reverseRecordAssociations{ fairsharingRecord{name id registry } " +
             "recordAssocLabel}status isRecommended }}";
         query.queryParam = {
             "field1": true,

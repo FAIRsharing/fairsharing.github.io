@@ -11,42 +11,53 @@
     {
       "name": "records",
       "fields": [
-          "id",
-          "type",
-          "name",
-          "abbreviation",
-          "registry",
-          {
-            "queryName": "domains",
+        "id",
+        "type",
+        "name",
+        "abbreviation",
+        "registry",
+        "description",
+        {
+          "queryName": "domains",
+          "fields": [
+            "label"
+          ]
+        },
+        {
+          "queryName": "subjects",
+          "fields": [
+            "label"
+          ]
+        },
+        {
+          "queryName": "taxonomies",
+          "fields": [
+            "label"
+          ]
+        },
+        {
+            "queryName": "recordAssociations",
             "fields": [
-              "label"
+                {
+                    "name": "linkedRecord",
+                    "fields": ["name", "id", "registry"]
+                },
+                "recordAssocLabel"
             ]
-          },
-          {
-            "queryName": "subjects",
-            "fields": [
-              "label"
-            ]
-          },
-          {
-            "queryName": "taxonomies",
-            "fields": [
-              "label"
-            ]
-          },
-          {
-              "queryName": "recordAssociations",
-              "fields": [
-                  {
-                      "name": "linkedRecord",
-                      "fields": ["name", "id", "registry"]
-                  },
-                  "recordAssocLabel"
-              ]
-          },
-          "status",
-          "isRecommended"
-        ]
+        },
+        {
+          "queryName": "reverseRecordAssociations",
+          "fields": [
+            {
+              "name": "fairsharingRecord",
+              "fields": ["name", "id", "registry"]
+            },
+            "recordAssocLabel"
+          ]
+        },
+        "status",
+        "isRecommended"
+      ]
     }
   ]
 }

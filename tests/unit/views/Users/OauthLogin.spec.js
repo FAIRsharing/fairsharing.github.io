@@ -26,9 +26,7 @@ describe("Login.vue", ()=> {
     beforeAll( () => {
         restStub = sinon.stub(Client.prototype, "executeQuery");
         restStub.returns({
-            data: {
-                username: "Terazus"
-            }
+            username: "Terazus"
         });
     });
     afterAll(() => {

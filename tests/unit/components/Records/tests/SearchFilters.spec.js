@@ -1,10 +1,10 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
 import Vuetify from "vuetify"
-import searchFilters from "../SearchFilters.vue"
-import filters from "../../../store/searchFilters.js"
-import records from "../../../store/records.js"
-import Client from "../../GraphClient/GraphClient.js"
+import searchFilters from "@/components/Records/Search/SearchFilters.vue"
+import filters from "@/store/searchFilters.js"
+import records from "@/store/records.js"
+import Client from "@/components/GraphClient/GraphClient.js"
 
 const sinon = require("sinon");
 

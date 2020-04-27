@@ -197,6 +197,16 @@ let routes = [
         component: OauthLogin
     },
     {
+        name: "Twitter Login",
+        path: "/users/auth/twitter/callback",
+        component: OauthLogin
+    },
+    {
+        name: "ORCID Login",
+        path: "/users/auth/orcid/callback",
+        component: OauthLogin
+    },
+    {
         name: "*",
         path: "*/*",
         redirect: "/"

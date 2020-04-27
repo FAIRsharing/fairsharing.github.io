@@ -55,9 +55,9 @@ class RESTClient {
         const request = {
             method: "GET",
             url: this.baseURL + endpoint,
+            headers: {"Accept": "application/json"}
         };
-        let response = await this.executeQuery(request);
-        return response.data;
+        return await this.executeQuery(request);
     }
 
     /**

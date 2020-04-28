@@ -1,5 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vuex from "vuex"
+import VueRouter from "vue-router"
 import sinon from "sinon"
 import OauthLogin from "@/views/Users/Login/OauthLogin.vue"
 import Client from "@/components/Client/RESTClient.js"
@@ -13,9 +14,18 @@ const $store = new Vuex.Store({
     },
 });
 let $route = {
-    name: "GitHub Login",
-    fullPath: "/users/auth/github/callback?code=123&state=456",
-    path: "/users/auth/github/callback"
+    fullPath: "/login_success?jwt=123&expiry=456",
+    name: "OAuth Login",
+    path: "/login_success",
+    query: {
+        jwt: 123,
+        expiry: 456
+    }
+
+};
+const router = new VueRouter();
+const $router = {
+    push: jest.fn()
 };
 
 describe("Login.vue", ()=> {
@@ -25,23 +35,40 @@ describe("Login.vue", ()=> {
 
     beforeAll( () => {
         restStub = sinon.stub(Client.prototype, "executeQuery");
-        restStub.returns({
-            username: "Terazus"
-        });
+        restStub.returns({data:{
+            username: "Terazus",
+        }});
     });
     afterAll(() => {
         restStub.restore();
     });
-    beforeEach( async () => {
+
+    it("can instantiate", async () => {
         wrapper = await shallowMount(OauthLogin, {
             localVue,
-            mocks: {$store, $route}
+            router,
+            mocks: {$store, $route, $router}
         });
-    });
-
-    it("can instantiate", () => {
         const title = "OauthLogin";
         expect(wrapper.name()).toMatch(title);
-        expect(wrapper.vm.user).toStrictEqual({username: "Terazus"})
+    });
+
+    it("can process missing token error", async () =>{
+        $route = {
+            fullPath: "/login_success?jwt=123",
+            name: "OAuth Login",
+            path: "/login_success",
+            query: {
+                jwt: 123,
+            }
+        };
+        wrapper = await shallowMount(OauthLogin, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router}
+        });
+        expect(wrapper.vm.messages().login.message).toBe("Missing token or expiry");
+        expect(wrapper.vm.messages().login.error).toBe(true);
+
     });
 });

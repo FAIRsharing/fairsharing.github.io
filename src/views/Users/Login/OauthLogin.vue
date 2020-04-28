@@ -1,11 +1,9 @@
 <template>
-  <div class="container-fluid">
-    <h3>{{ user }}</h3>
-  </div>
+  <div class="container-fluid" />
 </template>
 
 <script>
-  import { mapActions } from "vuex"
+  import { mapActions, mapState } from "vuex"
   export default {
     name: "OauthLogin",
     data(){
@@ -13,18 +11,31 @@
         user: ""
       }
     },
+    computed: {
+      ...mapState("users", ["messages"])
+    },
     async mounted(){
       await this.login();
     },
     methods: {
-      ...mapActions("users", ["loginFromOauth"]),
+      ...mapActions("users", ["loginFromOauth", "setError", "oauthLogin"]),
       login: async function(){
-        const params = this.$route.fullPath.split("?")[1];
-        const provider = this.$route.fullPath.split("/")[3];
-        this.user = await this.loginFromOauth({
-          params: params,
-          provider: provider
+        const parseError = {
+          field: "login",
+          message: "Missing token or expiry"
+        };
+        let paramsArray = this.$route.query;
+        if (Object.keys(paramsArray).length === 0 || !Object.keys(paramsArray).includes("jwt") || !Object.keys(paramsArray).includes("expiry")){
+          this.setError(parseError);
+          return null
+        }
+        await this.oauthLogin({
+          jwt: paramsArray.jwt,
+          expiry: paramsArray.expiry
         });
+        this.$router.push({
+          path: "accounts/profile"
+        })
       }
     }
   }

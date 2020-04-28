@@ -12,9 +12,9 @@ export const mutations = {
             return {
                 isLoggedIn: true,
                 credentials: {
-                    username: user.user.username,
-                    token: user.user["jwt"],
-                    tokenValidity: user.user["expiry"]
+                    username: user.username,
+                    token: user["jwt"],
+                    tokenValidity: user["expiry"]
                 },
                 metadata: {},
                 records: {}
@@ -124,10 +124,7 @@ export const actions = {
                 let response = await client.login(user.name, user.password);
                 if (!response.error) {
                     this.commit("users/clearMessages");
-                    this.commit("users/login", {
-                        user: response,
-                        pwd: user.password
-                    });
+                    this.commit("users/login", response);
                 }
                 else {
                     this.commit("users/clearUserData");
@@ -158,8 +155,13 @@ export const actions = {
             }
         }
     },
-    async loginFromOauth(state, user){
-        return await client.loginFromOAuth(user);
+    async oauthLogin(state, user){
+        let userResponse = await client.getUser(user.jwt);
+        state.commit("login", {
+            username: userResponse.username,
+            jwt: user.jwt,
+            expiry: user.expiry
+        })
     },
     async logout(state){
         try {

@@ -1,11 +1,11 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import Record from "./Record.vue";
+import Record from "../../../../src/views/Records/Record.vue";
 import VueMeta from "vue-meta";
-import Client from "../../components/GraphClient/GraphClient.js";
-import record from "../../store/record.js";
-import users from "../../store/users.js";
+import Client from "../../../../src/components/GraphClient/GraphClient.js";
+import record from "../../../../src/store/record.js";
+import users from "../../../../src/store/users.js";
 const sinon = require("sinon");
 
 const $route = {

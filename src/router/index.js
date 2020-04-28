@@ -30,6 +30,7 @@ import RequestNewPassword from "@/views/Users/RequestNewPassword";
 import ResetPassword from "@/views/Users/ResetPassword";
 import EditProfile from "@/views/Users/EditProfile";
 import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
+import LoginFailure from "../views/Users/Login/LoginFailure";
 
 Vue.use(VueRouter);
 
@@ -144,6 +145,11 @@ let routes = [
         name: "OAuth Login",
         path: "/login_success",
         component: OauthLogin
+    },
+    {
+        name: "OAuth Login Failure",
+        path: "/login_failure",
+        component: LoginFailure
     },
 
     /*

@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import VueRouter from "vue-router"
 import Vuex from "vuex"
-import NavBar from "./NavbarTop.vue"
+import NavBar from "../../../../src/components/Navigation/NavbarTop.vue"
 import users from "@/store/users.js"
 
 

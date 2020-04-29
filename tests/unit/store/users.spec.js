@@ -60,17 +60,22 @@ describe('Actions/Mutations', () => {
 
     it("Login: testing with a user and no error", async () => {
         let state = {};
-        restClientStub.withArgs(sinon.match.any).returns({
-            data: {message: "Hello"}
-        });
+        restClientStub.withArgs(sinon.match.any).returns({data:{
+            username: "Terazus",
+            jwt: 123,
+            expiry: 456
+        }});
         let user = {
             name: "Terazus",
             password: "fakePassword"
         };
         await actions.login(state, user);
         expect(actions.commit).toHaveBeenCalledWith("users/clearMessages");
-        expect(actions.commit).toHaveBeenCalledWith("users/login",
-            {pwd: "fakePassword", user: {"message": "Hello"}})
+        expect(actions.commit).toHaveBeenCalledWith("users/login", {
+            expiry: 456,
+            jwt: 123,
+            username: "Terazus",
+        })
     });
 
     it("Login: testing with a user and errors", async () => {

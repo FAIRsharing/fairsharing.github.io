@@ -30,6 +30,7 @@ import RequestNewPassword from "@/views/Users/RequestNewPassword";
 import ResetPassword from "@/views/Users/ResetPassword";
 import EditProfile from "@/views/Users/EditProfile";
 import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
+import LoginFailure from "../views/Users/Login/LoginFailure";
 
 Vue.use(VueRouter);
 
@@ -139,6 +140,17 @@ let routes = [
         path: "/privacy",
         component: Privacy,
     },
+    // OAUTH
+    {
+        name: "OAuth Login",
+        path: "/login_success",
+        component: OauthLogin
+    },
+    {
+        name: "OAuth Login Failure",
+        path: "/login_failure",
+        component: LoginFailure
+    },
 
     /*
     Careful, this has to be the very last base path  !!!!
@@ -189,22 +201,6 @@ let routes = [
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
         }
-    },
-    // OAUTH
-    {
-        name: "GitHub Login",
-        path: "/users/auth/github/callback",
-        component: OauthLogin
-    },
-    {
-        name: "Twitter Login",
-        path: "/users/auth/twitter/callback",
-        component: OauthLogin
-    },
-    {
-        name: "ORCID Login",
-        path: "/users/auth/orcid/callback",
-        component: OauthLogin
     },
     {
         name: "*",

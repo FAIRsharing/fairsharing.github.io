@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import VueRouter from "vue-router"
-import Footer from "./Footer.vue"
+import Footer from "../../../../src/components/Navigation/Footer.vue"
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);

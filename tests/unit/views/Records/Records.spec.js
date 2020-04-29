@@ -2,10 +2,10 @@ import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueMeta from "vue-meta";
-import Records from "./Records.vue";
+import Records from "../../../../src/views/Records/Records.vue";
 import Client from "@/components/GraphClient/GraphClient.js";
-import records from "../../store/records.js"
-import introspection from "../../store/introspector.js"
+import records from "../../../../src/store/records.js"
+import introspection from "../../../../src/store/introspector.js"
 
 const sinon = require("sinon");
 const axios = require("axios");

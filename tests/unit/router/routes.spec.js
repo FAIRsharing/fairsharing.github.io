@@ -1,5 +1,5 @@
-import router from "./index"
-import { beforeEach } from "./index"
+import router from "../../../src/router"
+import { beforeEach } from "../../../src/router"
 import { isLoggedIn } from "@/router/index.js"
 
 describe("Routes", () => {

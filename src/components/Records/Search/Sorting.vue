@@ -40,10 +40,9 @@
           applySortQuery: async function (activeSortFilterName, sortMethod) {
               let _module = this;
               let inputOrderBy = `${activeSortFilterName},${sortMethod}`;
-              let previousOrderBy = _module.$route.query.orderBy;
               let currentQuery = JSON.parse(JSON.stringify(_module.$route.query));
               currentQuery["orderBy"] = inputOrderBy;
-              if (inputOrderBy !== previousOrderBy){
+              if (inputOrderBy !== _module.activeFilter){
                 await _module.$router.push({
                   name: _module.$route.name,
                   query: currentQuery

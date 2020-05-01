@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecordPage.html">NewRecordPage</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -92,50 +92,22 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div class="white pa-5">
-    &lt;div class="d-flex align-items-center mb-4">
-      &lt;span class="mr-4">Sort By&lt;/span>
-      &lt;ul class="d-flex align-items-center">
-        &lt;li
-          v-for="(sortButton,index) in sortFilters"
-          :key="index"
-          class="mr-1"
-        >
-          &lt;v-btn
-            :class="sortButton.active?'primary':'depressed'"
-            class="mr-2"
-            @click="changeActiveFilter(sortButton)"
-          >
-            &lt;b>{{ sortButton.label }}&lt;/b>
-          &lt;/v-btn>
-        &lt;/li>
-      &lt;/ul>
-    &lt;/div>
-    &lt;v-btn-toggle
-      v-model="toggleButtonText"
-      mandatory
-      shaped
+  &lt;v-list>
+    &lt;v-list-item
+      v-for="(item, index) in getFilters()"
+      :key="'sorter_' + index"
+      :class="{'v-list-item--active': activeFilter === item.name + ',' + item.order}"
+      @click="applySortQuery(item.name, item.order)"
     >
-      &lt;v-btn
-        value="asc"
-        :disabled="!sortingMethodStatus"
-        @click="applySortQuery(activeSortFilterName,'asc')"
-      >
-        ASC
-      &lt;/v-btn>
-      &lt;v-btn
-        value="desc"
-        :disabled="!sortingMethodStatus"
-        @click="applySortQuery(activeSortFilterName,'desc')"
-      >
-        DESC
-      &lt;/v-btn>
-    &lt;/v-btn-toggle>
-  &lt;/div>
+      &lt;v-list-item-title>
+        {{ item.label }} ({{ item.orderLabel }})
+      &lt;/v-list-item-title>
+    &lt;/v-list-item>
+
+  &lt;/v-list>
 &lt;/template>
 
 &lt;script>
-    import {isEqual} from 'lodash';
     export default {
         name: "Sorting",
         data() {
@@ -144,122 +116,61 @@
                     {name: 'name', label: 'name', active: false},
                     {name: 'abbreviation', label: 'abbreviation', active: false},
                     {name: '_score', label: 'best-match', active: false},
-                    // as much as possible accepts filter as object containing name and active. active default is false.
                 ],
-                activeSortFilterName: 'name',
-                toggleButtonText: ['asc', 'desc'],
-                sortingMethodStatus: false,
+                activeFilter: null
             }
         },
-        watch: {
-            '$route.query': function (newVal) {
-                this.checkOrderByQueryExists(newVal);
-            }
+        mounted(){
+          const _module = this;
+          _module.activeFilter = (_module.$route.query.orderBy) ? _module.$route.query.orderBy : '_score,asc';
         },
-        created() {
-            this.checkOnceOrderByExists(this.$route.query);
-        },
-        methods:
-            {
-                /**
-                 * Get the query first time in OnCreate and update sorting filter status either active or deActive based on received query
-                 * @param {Object} query - the orderBy query is checked whether it is existed or not
-                 */
-                checkOnceOrderByExists: function (query) {
-                    if (Object.prototype.hasOwnProperty.call(query, "orderBy")) {
-                        let arrayedQuery = this.$route.query.orderBy.toString().split(",");
-                        let _label = arrayedQuery[0] === '_score' ? 'best-match' : arrayedQuery[0];
-                        let activeFilter = {name: arrayedQuery[0], label:_label, active: false}; // sortName name/best-match-etc
-                        this.toggleButtonText = arrayedQuery[1]; // sortMethod asc or desc
-                        this.changeActiveFilter(activeFilter);
-                    }
-                },
-                /**
-                 * Set the sorting filter specific item active and also call applySortQuery in order to sort
-                 * @param {Object} activeFilter - the filter that needs to be activated
-                 */
-                changeActiveFilter: function (activeFilter) {
-                    this.activateSortFilters(activeFilter);
-                    this.activeSortFilterName = activeFilter.name;
-                    if (this.toggleButtonText.length === 2) // if its the first time page is initialized.
-                    {
-                        this.applySortQuery(this.activeSortFilterName, 'asc');
-                    } else {
-                        this.applySortQuery(this.activeSortFilterName, this.toggleButtonText);
-                    }
-                },
-                /**
-                 * Set the sorting filter specific item active
-                 * @param {Object} activeFilter - the filter that needs to be activated
-                 */
-                activateSortFilters: function (activeFilter) {
-                    this.sortFilters.map((item) => {
-                        isEqual(item, activeFilter) ? item.active = true : item.active = false
+        methods: {
+          /**
+           * Set the orderBy parameter value to the given input for vueJs router
+           * @param {string} activeSortFilterName - sorting under this name
+           * @param {string} sortMethod - can be either ASC or DESC
+           */
+          applySortQuery: async function (activeSortFilterName, sortMethod) {
+              let _module = this;
+              let inputOrderBy = `${activeSortFilterName},${sortMethod}`;
+              let previousOrderBy = _module.$route.query.orderBy;
+              let currentQuery = JSON.parse(JSON.stringify(_module.$route.query));
+              currentQuery["orderBy"] = inputOrderBy;
+              if (inputOrderBy !== previousOrderBy){
+                await _module.$router.push({
+                  name: _module.$route.name,
+                  query: currentQuery
+                });
+              }
+          },
+          getFilters: function(){
+                  let filters = [];
+                  this.sortFilters.forEach(function(filter){
+                    filters.push({
+                      label: filter.label,
+                      name: filter.name,
+                      order: "asc",
+                      orderLabel: "ascending"
                     });
-                    this.sortingMethodStatus = true;
-                },
-                /**
-                 * Set the sorting filter to be reset so no filter will be active
-                 */
-                deActiveSortFilters: function () {
-                    this.sortFilters.map((item) => {
-                        item.active = false
-                    });
-                    this.sortingMethodStatus = false;
-                },
-                /**
-                 * Set the sorting filter list active or de-active based on the received query object
-                 * @param {Object} queryExistsInput - the query object to activate sorting filters
-                 */
-                checkOrderByQueryExists: function (queryExistsInput) {
-                    let _module = this;
-                    if (Object.prototype.hasOwnProperty.call(queryExistsInput, "orderBy")) {
-                        let arrayedQuery = queryExistsInput.orderBy.toString().split(",");
-                        _module.toggleButtonText = arrayedQuery[1];
-                        this.deActiveSortFilters();
-                        let _label = arrayedQuery[0] === '_score' ? 'best-match' : arrayedQuery[0];
-                        let activeFilter = {name: arrayedQuery[0], label: _label, active: false}; // sortName name/best-match-etc
-                        _module.activateSortFilters(activeFilter);
-                    } else {
-                        this.deActiveSortFilters();
+                    if (filter.name !== '_score') {
+                      filters.push({
+                        label: filter.label,
+                        name: filter.name,
+                        order: "desc",
+                        orderLabel: "descending"
+                      })
                     }
-                },
-                /**
-                 * Set the orderBy parameter value to the given input for vueJs router
-                 * @param {string} activeSortFilterName - sorting under this name
-                 * @param {string} sortMethod - can be either ASC or DESC
-                 */
-                applySortQuery: async function (activeSortFilterName, sortMethod) {
-                    let _module = this;
-                    let currentQueryValues;
-                    let currentQuery = {};
-                    currentQueryValues = [activeSortFilterName, sortMethod];
-                    Object.keys(_module.$route.query).forEach(function (param) {
-                        currentQuery[param] = _module.$route.query[param]
-                    });
-                    currentQuery.orderBy = currentQueryValues.join(',');
-                    if (!isEqual(_module.$route.query, currentQuery)) {
-                        await _module.$router.push({
-                            name: _module.$route.name,
-                            query: currentQuery
-                        });
-                    }
-                },
-            }
+                  });
+                  return filters;
+                }
+        }
     }
 &lt;/script>
 
-&lt;style scoped lang="scss">
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        li {
-            .v-btn {
-                width: 150px;
-            }
-        }
-    }
+&lt;style>
+  .highlighted {
+    color: red !important;
+  }
 &lt;/style>
 </pre>
     </article>
@@ -306,7 +217,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Tue Apr 28th 2020
+		on Fri May 1st 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

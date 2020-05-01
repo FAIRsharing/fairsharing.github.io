@@ -130,26 +130,26 @@
                 show1: false,
                 currentPanel: "login",
                 loginData: {},
-              oauthLogin: [
-                {
-                  name: "GitHub",
-                  icon: "fab fa-github",
-                  color: "black white--text",
-                  callback: "https://api.fairsharing.org/users/auth/github",
-                },
-                {
-                  name: "Twitter",
-                  icon: "fab fa-twitter",
-                  color: "blue white--text",
-                  callback: "https://api.fairsharing.org/users/auth/twitter",
-                },
-                {
-                  name: "ORCID",
-                  icon: "fab fa-orcid",
-                  color: "green white--text",
-                  callback: "https://api.fairsharing.org/users/auth/orcid",
-                }
-              ]
+                oauthLogin: [
+                  {
+                    name: "ORCID",
+                    icon: "fab fa-orcid",
+                    color: "green white--text",
+                    callback: "https://api.fairsharing.org/users/auth/orcid",
+                  },
+                  {
+                    name: "Twitter",
+                    icon: "fab fa-twitter",
+                    color: "blue white--text",
+                    callback: "https://api.fairsharing.org/users/auth/twitter",
+                  },
+                  {
+                    name: "GitHub",
+                    icon: "fab fa-github",
+                    color: "black white--text",
+                    callback: "https://api.fairsharing.org/users/auth/github",
+                  }
+                ]
             }
         },
         computed: {

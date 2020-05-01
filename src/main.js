@@ -13,9 +13,6 @@ import store from './store'
 import "./styles/css/normalize.css"
 import "./styles/css/main.css"
 
-/* import external libraries */
-import "bootstrap/scss/bootstrap.scss";
-
 /* import clients */
 import GraphQLClient from "./components/GraphClient/GraphClient.js"
 

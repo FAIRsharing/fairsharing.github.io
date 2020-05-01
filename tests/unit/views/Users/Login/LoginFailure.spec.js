@@ -2,7 +2,6 @@ import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vuex from "vuex"
 import VueRouter from "vue-router"
 import LoginFailure from "@/views/Users/Login/LoginFailure.vue"
-import Client from "@/components/Client/RESTClient.js"
 import usersStore from "@/store/users.js";
 
 const localVue = createLocalVue();

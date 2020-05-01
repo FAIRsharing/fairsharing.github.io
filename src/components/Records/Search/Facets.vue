@@ -1,7 +1,8 @@
 <template>
-  <div
+  <v-container
     id="facets"
-    class="container-fluid pa-0 ma-0"
+    fluid
+    class="pa-0 ma-0"
   >
     <v-row>
       <v-col
@@ -9,18 +10,21 @@
         class="py-0"
       >
         <v-card>
-          <div class="card-header">
-            <h2> Facets </h2>
-          </div>
-          <div class="card-body filters">
-            <div class="container-fluid">
+          <v-card-title class="primary white--text">
+            <h3> Facets </h3>
+          </v-card-title>
+          <v-card-text class="filters">
+            <v-container fluid>
               <v-row>
                 <v-col
                   v-for="(facetVal, key) in $store.state.records.facets"
                   :key="'Facet' + key"
                   cols="3"
                 >
-                  <v-card height="100%" tile>
+                  <v-card
+                    height="100%"
+                    tile
+                  >
                     <v-card-title>
                       <h3> {{ facetVal.filterLabel }} </h3>
                     </v-card-title>
@@ -47,30 +51,30 @@
                       </div>
                     </v-card-text>
                     <v-card-actions>
-                      <button
+                      <v-btn
                         type="button"
-                        class="btn btn-secondary"
+                        class="primary"
                         @click="changeSize(facetVal.filterName, 100)"
                       >
                         Show more
-                      </button>
-                      <button
+                      </v-btn>
+                      <v-btn
                         type="button"
-                        class="btn btn-secondary"
+                        class="primary"
                         @click="changeSize(facetVal.filterName, defaultSize)"
                       >
                         Show Less
-                      </button>
+                      </v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-col>
               </v-row>
-            </div>
-          </div>
+            </v-container>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>

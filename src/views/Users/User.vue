@@ -1,7 +1,8 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <div
+  <v-container
     id="userPage"
-    class="standard container-fluid"
+    fluid
+    class="standard"
   >
     <v-row>
       <v-col cols12>
@@ -115,7 +116,7 @@
         </v-card>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>

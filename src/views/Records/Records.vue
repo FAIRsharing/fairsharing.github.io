@@ -1,7 +1,8 @@
 <template>
-  <div
+  <v-container
     id="SearchFAIRSharing"
-    class="container-fluid pt-0"
+    fluid
+    class="pt-0"
   >
     <!-- Title banner -->
     <v-row
@@ -50,7 +51,7 @@
         </div>
       </div>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>

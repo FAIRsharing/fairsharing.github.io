@@ -8,13 +8,15 @@ export const mutations = {
         try {
             if (Object.keys(data).includes("errors")) {
                 state.error = data.errors[0].message
-            } else {
+            }
+            else {
                 localStorage.introspectionQuery = JSON.stringify(data);
                 let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
                 state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
                 if (!localStorage.searchQueryParameters) {
                     localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                } else {
+                }
+                else {
                     if (!isEqual(JSON.parse(localStorage.searchQueryParameters), JSON.parse(JSON.stringify(state.searchQueryParameters)))) {
                         localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
                     } else {
@@ -22,7 +24,8 @@ export const mutations = {
                     }
                 }
             }
-        } catch (e) {
+        }
+        catch (e) {
             state.error = "Can't initialize application"
         }
     },
@@ -42,7 +45,8 @@ export const actions = {
                 let data = await client.getData(introspectionQuery);
                 this.commit("introspection/setLocalStorageExpiryTime");
                 this.commit("introspection/setParameters", data.data);
-            } else {
+            }
+            else {
                 this.commit("introspection/setParameters", JSON.parse(localStorage.introspectionQuery));
             }
         }
@@ -62,7 +66,8 @@ export const getters = {
 
             if (expectedTypeObject.kind !== "LIST") {
                 queryParameters[param] = parseParam(expectedTypeObject, params[1][param]);
-            } else {
+            }
+            else {
                 const currentVal = params[1][param];
                 const expectedType = expectedTypeObject["ofType"]["ofType"].name;
                 queryParameters[param] = [];
@@ -71,7 +76,8 @@ export const getters = {
                         queryParameters[param].push(decodeURIComponent(parseParam(expectedType, val)))
                     });
 
-                } else {
+                }
+                else {
                     queryParameters[param] = decodeURIComponent(parseParam(expectedType, currentVal))
                 }
             }
@@ -119,7 +125,8 @@ const parseParam = function (param, paramVal) {
     if (param.name === "Int") {
         return parseFloat(paramVal)
 
-    } else if (param.name === "Boolean") {
+    }
+    else if (param.name === "Boolean") {
         return JSON.parse(paramVal)
     }
     return paramVal

@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecordPage.html">NewRecordPage</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -92,74 +92,87 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div
+  &lt;v-container
     id="advancedSearch"
-    class="container-fluid pa-0 ma-0"
+    fluid
+    class="pa-0 ma-0"
   >
     &lt;v-row>
-      &lt;v-col cols="12" class="py-0">
-        &lt;form
-          v-if="filters.length > 0"
-          class="card"
-        >
-          &lt;div class="card-header">
-            &lt;h2>Advanced search&lt;/h2>
-          &lt;/div>
-          &lt;div class="card-body filters">
-            &lt;div class="container-fluid">
-              &lt;v-row>
-                &lt;v-col
-                  v-for="(filter, key) in filters"
-                  :key="key"
-                  cols="2"
-                >
-                  &lt;div
-                    v-if="filter.values"
-                    class="filter"
+      &lt;v-col
+        cols="12"
+        class="py-0"
+      >
+        &lt;form v-if="filters.length > 0">
+          &lt;v-card>
+            &lt;v-card-title class="primary white--text">
+              &lt;h3> Advanced search &lt;/h3>
+            &lt;/v-card-title>
+
+            &lt;v-card-text class="pt-3 pb-0">
+              &lt;v-container fluid class="pb-0 mb-0">
+                &lt;v-row>
+                  &lt;v-col
+                    v-for="(filter, key) in filters"
+                    :key="key"
+                    cols="2"
                   >
-                    &lt;v-autocomplete
-                      v-model="form.data[filter.filterName]"
-                      :items="cleanStrings(filter.values)"
+                    &lt;div
+                      v-if="filter.values"
+                      class="filter"
+                    >
+                      &lt;v-autocomplete
+                        v-model="form.data[filter.filterName]"
+                        :items="cleanStrings(filter.values)"
+                        solo
+                        rounded
+                        :label="filter.filterLabel"
+                      />
+                    &lt;/div>
+                    &lt;div
+                      v-else
+                      class="filter"
+                    >
+                      &lt;v-text-field
+                        v-model="form.data[filter.filterName]"
+                        :label="filter.filterLabel"
+                        solo
+                        rounded
+                      />
+                    &lt;/div>
+                  &lt;/v-col>
+                  &lt;v-col cols="2">
+                    &lt;v-text-field
+                      v-model="form.data['q']"
+                      type="text"
+                      label="Search for any string"
                       solo
                       rounded
-                      :label="filter.filterLabel"
                     />
-                  &lt;/div>
-                  &lt;div
-                    v-else
-                    class="filter"
-                  >
-                    &lt;input v-model="form.data[filter.filterName]" :placeholder="filter.filterLabel">
-                  &lt;/div>
-                &lt;/v-col>
-              &lt;/v-row>
-            &lt;/div>
-          &lt;/div>
-          &lt;div class="card-footer">
-            &lt;b>String search:&lt;/b>
-            &lt;input
-              v-model="form.data['q']"
-              type="text"
-            >
-            &lt;button
-              type="button"
-              class="btn btn-success"
-              @click="applyFilters()"
-            >
-              Search
-            &lt;/button>
-            &lt;button
-              type="button"
-              class="btn btn-danger"
-              @click="reset()"
-            >
-              Reset
-            &lt;/button>
-          &lt;/div>
+                  &lt;/v-col>
+                &lt;/v-row>
+              &lt;/v-container>
+            &lt;/v-card-text>
+            &lt;v-card-actions>
+              &lt;v-btn
+                type="button"
+                class="success"
+                @click="applyFilters()"
+              >
+                Search
+              &lt;/v-btn>
+              &lt;v-btn
+                type="button"
+                class="error"
+                @click="reset()"
+              >
+                Reset
+              &lt;/v-btn>
+            &lt;/v-card-actions>
+          &lt;/v-card>
         &lt;/form>
       &lt;/v-col>
     &lt;/v-row>
-  &lt;/div>
+  &lt;/v-container>
 &lt;/template>
 
 &lt;script>
@@ -319,7 +332,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Tue Apr 28th 2020
+		on Mon May 4th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

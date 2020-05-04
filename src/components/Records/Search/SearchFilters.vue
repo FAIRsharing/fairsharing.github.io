@@ -1,72 +1,85 @@
 <template>
-  <div
+  <v-container
     id="advancedSearch"
-    class="container-fluid pa-0 ma-0"
+    fluid
+    class="pa-0 ma-0"
   >
     <v-row>
-      <v-col cols="12" class="py-0">
-        <form
-          v-if="filters.length > 0"
-          class="card"
-        >
-          <div class="card-header">
-            <h2>Advanced search</h2>
-          </div>
-          <div class="card-body filters">
-            <div class="container-fluid">
-              <v-row>
-                <v-col
-                  v-for="(filter, key) in filters"
-                  :key="key"
-                  cols="2"
-                >
-                  <div
-                    v-if="filter.values"
-                    class="filter"
+      <v-col
+        cols="12"
+        class="py-0"
+      >
+        <form v-if="filters.length > 0">
+          <v-card>
+            <v-card-title class="primary white--text">
+              <h3> Advanced search </h3>
+            </v-card-title>
+
+            <v-card-text class="pt-3 pb-0">
+              <v-container fluid class="pb-0 mb-0">
+                <v-row>
+                  <v-col
+                    v-for="(filter, key) in filters"
+                    :key="key"
+                    cols="2"
                   >
-                    <v-autocomplete
-                      v-model="form.data[filter.filterName]"
-                      :items="cleanStrings(filter.values)"
+                    <div
+                      v-if="filter.values"
+                      class="filter"
+                    >
+                      <v-autocomplete
+                        v-model="form.data[filter.filterName]"
+                        :items="cleanStrings(filter.values)"
+                        solo
+                        rounded
+                        :label="filter.filterLabel"
+                      />
+                    </div>
+                    <div
+                      v-else
+                      class="filter"
+                    >
+                      <v-text-field
+                        v-model="form.data[filter.filterName]"
+                        :label="filter.filterLabel"
+                        solo
+                        rounded
+                      />
+                    </div>
+                  </v-col>
+                  <v-col cols="2">
+                    <v-text-field
+                      v-model="form.data['q']"
+                      type="text"
+                      label="Search for any string"
                       solo
                       rounded
-                      :label="filter.filterLabel"
                     />
-                  </div>
-                  <div
-                    v-else
-                    class="filter"
-                  >
-                    <input v-model="form.data[filter.filterName]" :placeholder="filter.filterLabel">
-                  </div>
-                </v-col>
-              </v-row>
-            </div>
-          </div>
-          <div class="card-footer">
-            <b>String search:</b>
-            <input
-              v-model="form.data['q']"
-              type="text"
-            >
-            <button
-              type="button"
-              class="btn btn-success"
-              @click="applyFilters()"
-            >
-              Search
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              @click="reset()"
-            >
-              Reset
-            </button>
-          </div>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                type="button"
+                class="success"
+                @click="applyFilters()"
+              >
+                Search
+              </v-btn>
+              <v-btn
+                type="button"
+                class="error"
+                @click="reset()"
+              >
+                Reset
+              </v-btn>
+            </v-card-actions>
+          </v-card>
         </form>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>

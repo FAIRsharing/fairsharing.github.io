@@ -1,8 +1,8 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
-import Facets from "../../../../../src/components/Records/Search/Facets.vue"
-import records from "../../../../../src/store/records.js"
-import Client from "../../../../../src/components/GraphClient/GraphClient.js"
+import Facets from "../../../../src/components/Records/Search/Facets.vue"
+import records from "../../../../src/store/records.js"
+import Client from "../../../../src/components/GraphClient/GraphClient.js"
 
 const sinon  =  require("sinon");
 const localVue = createLocalVue();

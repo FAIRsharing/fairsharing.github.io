@@ -12,7 +12,7 @@ import Signup from "../views/Users/Signup";
 import Records from "../views/Records/Records";
 import Record from "../views/Records/Record";
 import Statistics from "../views/Stats/Statistics";
-import New from "../views/CreateRecord/NewRecordPage";
+import New from "../views/CreateRecord/NewRecord";
 import NewStandard from "../views/CreateRecord/NewStandard";
 import NewDatabase from "../views/CreateRecord/NewDatabase";
 import NewPolicy from "../views/CreateRecord/NewPolicy";

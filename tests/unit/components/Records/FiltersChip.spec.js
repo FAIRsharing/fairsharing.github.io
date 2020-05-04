@@ -1,5 +1,5 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Chips from "../../../../../src/components/Records/Search/FiltersChip.vue"
+import Chips from "../../../../src/components/Records/Search/FiltersChip.vue"
 import Vuex from "vuex";
 
 const localVue = createLocalVue();

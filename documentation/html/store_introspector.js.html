@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecordPage.html">NewRecordPage</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewCollection.html">NewCollection</a></li><li><a href="module-NewDatabase.html">NewDatabase</a></li><li><a href="module-NewPolicy.html">NewPolicy</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-NewStandard.html">NewStandard</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -101,13 +101,15 @@ export const mutations = {
         try {
             if (Object.keys(data).includes("errors")) {
                 state.error = data.errors[0].message
-            } else {
+            }
+            else {
                 localStorage.introspectionQuery = JSON.stringify(data);
                 let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
                 state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
                 if (!localStorage.searchQueryParameters) {
                     localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                } else {
+                }
+                else {
                     if (!isEqual(JSON.parse(localStorage.searchQueryParameters), JSON.parse(JSON.stringify(state.searchQueryParameters)))) {
                         localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
                     } else {
@@ -115,7 +117,8 @@ export const mutations = {
                     }
                 }
             }
-        } catch (e) {
+        }
+        catch (e) {
             state.error = "Can't initialize application"
         }
     },
@@ -135,7 +138,8 @@ export const actions = {
                 let data = await client.getData(introspectionQuery);
                 this.commit("introspection/setLocalStorageExpiryTime");
                 this.commit("introspection/setParameters", data.data);
-            } else {
+            }
+            else {
                 this.commit("introspection/setParameters", JSON.parse(localStorage.introspectionQuery));
             }
         }
@@ -155,7 +159,8 @@ export const getters = {
 
             if (expectedTypeObject.kind !== "LIST") {
                 queryParameters[param] = parseParam(expectedTypeObject, params[1][param]);
-            } else {
+            }
+            else {
                 const currentVal = params[1][param];
                 const expectedType = expectedTypeObject["ofType"]["ofType"].name;
                 queryParameters[param] = [];
@@ -164,7 +169,8 @@ export const getters = {
                         queryParameters[param].push(decodeURIComponent(parseParam(expectedType, val)))
                     });
 
-                } else {
+                }
+                else {
                     queryParameters[param] = decodeURIComponent(parseParam(expectedType, currentVal))
                 }
             }
@@ -212,7 +218,8 @@ const parseParam = function (param, paramVal) {
     if (param.name === "Int") {
         return parseFloat(paramVal)
 
-    } else if (param.name === "Boolean") {
+    }
+    else if (param.name === "Boolean") {
         return JSON.parse(paramVal)
     }
     return paramVal
@@ -229,7 +236,8 @@ export const paramsAreExpired = function (expiryDate, expirationTimer) {
     const expiration = new Date(expiryDate);
     const now = new Date();
     return ((now - expiration) - limit) >= 0
-};</pre>
+};
+</pre>
     </article>
 </section>
 
@@ -274,7 +282,7 @@ export const paramsAreExpired = function (expiryDate, expirationTimer) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Tue Apr 28th 2020
+		on Mon May 4th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -3,7 +3,7 @@
   "title": "Parameters to create a FairsharingRecord",
   "type": "object",
   "definitions": {
-    "metadata":{
+    "metadata": {
       "title": "Parameters for the metadata of a FairsharingRecord.",
       "type": "object",
       "properties": {
@@ -21,7 +21,7 @@
         },
         "status": {
           "type": "string",
-          "description":"The resource's current status.",
+          "description": "The resource's current status.",
           "enum": [
             "uncertain",
             "deprecated",
@@ -76,12 +76,13 @@
         }
       },
       "required": [
-        "name", "status"
+        "name",
+        "status"
       ]
     },
     "contacts": {
       "type": "object",
-      "properties":{
+      "properties": {
         "contact-name": {
           "type": "string",
           "description": "Contact's full name."
@@ -230,7 +231,7 @@
     }
   },
   "required": [
-    "metadata", "record_type_id"
+    "metadata",
+    "record_type_id"
   ]
 }
-

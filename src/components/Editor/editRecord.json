@@ -1,0 +1,236 @@
+{
+  "queryName": "FairsharingRecordSchema",
+  "title": "Parameters to create a FairsharingRecord",
+  "type": "object",
+  "definitions": {
+    "metadata":{
+      "title": "Parameters for the metadata of a FairsharingRecord.",
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "number",
+          "description": "Primary key of this record in the FAIRsharing database."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the record."
+        },
+        "abbreviation": {
+          "type": "string",
+          "description": "The abbreviation or short name of the resource."
+        },
+        "status": {
+          "type": "string",
+          "description":"The resource's current status.",
+          "enum": [
+            "uncertain",
+            "deprecated",
+            "in_development",
+            "ready"
+          ]
+        },
+        "homepage": {
+          "type": "string",
+          "format": "uri",
+          "description": "The resource's home page."
+        },
+        "deprecation_reason": {
+          "type": "string",
+          "description": "A short description of why the resource is no longer actively maintained."
+        },
+        "doi": {
+          "type": "string",
+          "description": "DOI of the record.",
+          "format": "uri"
+        },
+        "contacts": {
+          "type": "array",
+          "description": "Contact details of the people responsible of the resource.",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/contact"
+          }
+        },
+        "year_creation": {
+          "type": "number",
+          "description": "Year the record was created."
+        },
+        "description": {
+          "description": "A description of the record.",
+          "type": "string"
+        },
+        "support": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "Links to support documentation and links outside of the FAIRsharing metadata record."
+        },
+        "previous_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Previous names of the record."
+        }
+      },
+      "required": [
+        "name", "status"
+      ]
+    },
+    "contacts": {
+      "type": "object",
+      "properties":{
+        "contact-name": {
+          "type": "string",
+          "description": "Contact's full name."
+        },
+        "contact-orcid": {
+          "type": "string",
+          "description": "Contact's ORCID ID."
+        },
+        "contact-email": {
+          "type": "string",
+          "description": "Contact's email address.",
+          "format": "email"
+        }
+      }
+    },
+    "source": {
+      "store": "searchFilters",
+      "field": "filters"
+    }
+  },
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "$ref": "#/definitions/metadata"
+    },
+    "record_type_id": {
+      "type": "number",
+      "description": "ID of the RecordType to which this FairsharingRecord belongs."
+    },
+    "subject_ids": {
+      "type": "array",
+      "description": "IDs of Subjects with which this record is to be labelled.",
+      "items": {
+        "type": "number"
+      },
+      "_widget": {
+        "type": "autocomplete",
+        "name": "subjects",
+        "source": {
+          "$ref": "#/definitions/source"
+        }
+      }
+    },
+    "domain_ids": {
+      "type": "array",
+      "description": "IDs of Domains with which this record is to be labelled.",
+      "items": {
+        "type": "number"
+      },
+      "_widget": {
+        "type": "autocomplete",
+        "name": "domains",
+        "source": {
+          "$ref": "#/definitions/source"
+        }
+      }
+    },
+    "taxonomy_ids": {
+      "type": "array",
+      "description": "IDs of Taxonomies with which this record is to be labelled.",
+      "items": {
+        "type": "number"
+      },
+      "_widget": {
+        "type": "autocomplete",
+        "name": "taxonomies",
+        "source": {
+          "$ref": "#/definitions/source"
+        }
+      }
+    },
+    "user_defined_tags_ids": {
+      "type": "array",
+      "description": "IDs of UserDefinedTags with which this record is to be labelled.",
+      "items": {
+        "type": "number"
+      },
+      "_widget": {
+        "type": "autocomplete",
+        "name": "userDefinedTags",
+        "source": {
+          "$ref": "#/definitions/source"
+        }
+      }
+    },
+    "country_ids": {
+      "type": "array",
+      "description": "IDs of Countries with which this record is to be labelled.",
+      "items": {
+        "type": "number"
+      },
+      "_widget": {
+        "type": "autocomplete",
+        "name": "countries",
+        "source": {
+          "$ref": "#/definitions/source"
+        }
+      }
+    },
+    "user_defined_tags_attributes": {
+      "type": "object",
+      "description": "Details of any new UserDefinedTags to be created.",
+      "properties": {
+        "name": {
+          "description": "Name of the UserDefinedTag.",
+          "type": "string"
+        }
+      }
+    },
+    "logo": {
+      "type": "object",
+      "description": "Optional logo file for the record.",
+      "properties": {
+        "filename": {
+          "description": "Original filename of logo file.",
+          "type": "string"
+        },
+        "data": {
+          "description": "Base64 encoded file data",
+          "type": "string"
+        },
+        "content_type": {
+          "description": "Content type of the file (e.g. 'image/jpeg')",
+          "type": "string"
+        }
+      }
+    },
+    "curator_notes": {
+      "description": "Notes by/for any curators dealing with this record.",
+      "type": "string"
+    },
+    "legacy_ids": {
+      "description": "Array of ids this record may have had in the previous version of this application.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "curator_id": {
+      "description": "User ID of the curator currently managing this record.",
+      "type": "number"
+    },
+    "approved": {
+      "description": "Set to true if the record isn't currently in need of attention from a curator.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "metadata", "record_type_id"
+  ]
+}
+

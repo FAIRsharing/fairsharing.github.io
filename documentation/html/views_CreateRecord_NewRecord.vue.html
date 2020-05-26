@@ -128,9 +128,9 @@
                     &lt;!-- long text -->
                     &lt;div v-if="fieldVal.type === 'longtext'">
                       &lt;v-textarea
-                        v-if="fieldName !== 'Deprecation reason' || (models.recordStatus !== null &amp;&amp; models.recordStatus.name === 'deprecated')"
+                        v-if="fieldName !== 'deprecation_reason' || (models.recordStatus !== null &amp;&amp; models.recordStatus.name === 'deprecated')"
                         v-model="record[fieldName]"
-                        :label="fieldName"
+                        :label="fieldVal.label"
                         :hint="fieldVal.description"
                         outlined
                         :required="fieldVal.required"
@@ -165,8 +165,8 @@
                           >
                             &lt;v-list-item min-height="0px">
                               &lt;v-list-item-content class="py-0">
-                                &lt;v-list-item-title v-html="data.item.name.replace(/_/g, ' ')" />
-                                &lt;v-list-item-subtitle v-html="data.item.description" />
+                                &lt;v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} &lt;/v-list-item-title>
+                                &lt;v-list-item-subtitle> {{ data.item.description }} &lt;/v-list-item-subtitle>
                               &lt;/v-list-item-content>
                             &lt;/v-list-item>
                           &lt;/v-list>
@@ -229,7 +229,7 @@
                 const _module = this;
                 if (newVal.recordType !== null &amp;&amp; newVal.recordType.name === "collection"){
                   _module.models.recordStatus = null;
-                  delete _module.record["Deprecation reason"];
+                  delete _module.record["deprecation_reason"];
                 }
               }
             }
@@ -288,15 +288,17 @@
                     required: false,
                     target: "recordStatus"
                 },
-                "Deprecation reason": {
+                "deprecation_reason": {
                     type: "longtext",
                     description: "A short description of why the resource is no longer actively maintained.",
-                    required: false
+                    required: false,
+                    label: "Deprecation reason"
                 },
                 description: {
                     type: "longtext",
                     description: "The description of the record",
-                    required: false
+                    required: false,
+                    label: "description"
                 }
             }
           },
@@ -311,7 +313,7 @@
             record.metadata.status = _module.models.recordStatus.name;
             record.record_type_id = _module.models.recordType.id;
             let new_record = await restClient.createRecord(record, _module.user().credentials.token);
-            if (new_record.data.hasOwnProperty('id')) {
+            if (Object.prototype.hasOwnProperty.call(new_record.data, "id")) {
               _module.$router.push({
                 path: new_record.data.id
               });

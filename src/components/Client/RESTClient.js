@@ -182,6 +182,28 @@ class RESTClient {
         return response.data;
     }
 
+
+    /* EDITORS METHODS */
+
+    /**
+     * Post the given object to the API to create the corresponding record.
+     * @param record
+     * @param {String} token - JWT of the logged in user
+     * @returns {Promise}
+     */
+    async createRecord(record, token){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/fairsharing_records",
+            headers: headers,
+            data: {fairsharing_record: record}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
     /**
      * Trigger the given query with Axios
      * @param query

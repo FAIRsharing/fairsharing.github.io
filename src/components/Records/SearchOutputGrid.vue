@@ -250,6 +250,7 @@
           terminology_artefact: require("@/assets/records/terminology_artifact.png"),
           model_and_format: require("@/assets/records/model_and_format.png"),
           reporting_guideline: require("@/assets/records/reporting_guidelines.png"),
+          identifier_schema: require("@/assets/records/identifier_schema.png"),
           metric: require("@/assets/records/std-metric.png"),
           repository: require("@/assets/records/db-icon.png"),
         }

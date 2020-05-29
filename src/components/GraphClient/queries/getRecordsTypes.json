@@ -1,0 +1,24 @@
+{
+  "queryName": "fairsharingRegistries",
+  "queryParam": {
+    "page": 1
+  },
+  "fields": [
+    {
+      "name": "records",
+      "fields": [
+        "id",
+        "name",
+        "description",
+        {
+          "queryName": "recordTypes",
+          "fields": [
+            "id",
+            "name",
+            "description"
+          ]
+        }
+      ]
+    }
+  ]
+}

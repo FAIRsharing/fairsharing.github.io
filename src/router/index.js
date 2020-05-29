@@ -77,6 +77,9 @@ let routes = [
         name: "New_content",
         path: "/new",
         component: New,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+        }
     },
     {
         name: "New_standard",

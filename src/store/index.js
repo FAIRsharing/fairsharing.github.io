@@ -16,6 +16,6 @@ export default new Vuex.Store({
         records: records,
         record: record,
         introspection: introspection,
-        users: users
+        users: users,
     }
 })

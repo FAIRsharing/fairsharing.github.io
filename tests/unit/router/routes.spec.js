@@ -4,15 +4,16 @@ import { isLoggedIn } from "@/router/index.js"
 
 describe("Routes", () => {
     it("routing variables are correctly set", () => {
+
+        const beforeEachTester = [
+            "User", "Edit profile", "New_content"
+        ];
+
         router.options.routes.forEach(function(route){
             if (route.name !== "Record"){
                 expect(route.meta.title).toBe(route.name.replace(/_/g, " "))
             }
-            if (route.name === "User"){
-                const next = jest.fn();
-                route.beforeEnter(undefined, undefined, next);
-            }
-            if (route.name === "Edit profile"){
+            if (beforeEachTester.indexOf(route.name) > -1){
                 const next = jest.fn();
                 route.beforeEnter(undefined, undefined, next);
             }

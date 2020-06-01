@@ -1,0 +1,20 @@
+{
+  "status": [
+    {
+      "name": "ready",
+      "description": "Records marked as 'Ready' are considered suitable for production use."
+    },
+    {
+      "name": "in_development",
+      "description": "This status is used when a resource is in development. These resources can be used, but be aware that their specifications may change in future."
+    },
+    {
+      "name": "deprecated",
+      "description": "Deprecated records are no longer considered suitable for use but information on them is retained for historical reference."
+    },
+    {
+      "name": "uncertain",
+      "description": "The FAIRsharing curators don't have sufficient information to categorise this record; use these resources with caution. Please contact us, if you know more about the status of an 'uncertain' resource."
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  <v-card
+    v-if="metaTemplate.metadata"
+    id="editGeneralInfo"
+  >
+    <v-alert
+      v-if="recordUpdate.message !== null"
+      :class="{'success': !recordUpdate.error, 'error': recordUpdate.error}"
+    >
+      {{ recordUpdate.message }}
+    </v-alert>
+
+    <v-card-title class="blue white--text">
+      EDIT GENERAL INFORMATION
+    </v-card-title>
+    <v-card-text>
+      <v-container fluid>
+        <v-row>
+          <!-- name -->
+          <v-col class="col-3">
+            <v-text-field
+              v-model="metaTemplate.metadata.name"
+              label="Name"
+              hint="Name of the record"
+              outlined
+            />
+          </v-col>
+
+          <!-- abbreviation -->
+          <v-col class="col-3">
+            <v-text-field
+              v-model="metaTemplate.metadata.abbreviation"
+              label="Abbreviation"
+              hint="Abbreviation or short name of the record"
+              outlined
+            />
+          </v-col>
+
+          <!-- homepage -->
+          <v-col class="col-3">
+            <v-text-field
+              v-model="metaTemplate.metadata.homepage"
+              label="Homepage"
+              hint="External URL of the resource"
+              outlined
+            />
+          </v-col>
+
+          <!-- registry -->
+          <v-col class="col-3">
+            <v-autocomplete
+              v-model="metaTemplate.type"
+              label="Registry type"
+              hint="Select between given elements"
+              :items="recordsTypes"
+              item-text="name"
+              item-value="name"
+              outlined
+              return-object
+            >
+              <!-- autocomplete selected -->
+              <template v-slot:selection="data">
+                {{ data.item.name.replace(/_/g, ' ') }}
+              </template>
+
+              <!-- autocomplete data -->
+              <template v-slot:item="data">
+                <v-list
+                  id="autocompleteSelect"
+                  max-width="565px"
+                  three-line
+                >
+                  <v-list-item min-height="0px">
+                    <v-list-item-content class="py-0">
+                      <v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} </v-list-item-title>
+                      <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </template>
+            </v-autocomplete>
+          </v-col>
+
+          <!-- countries -->
+          <v-col class="col-3">
+            <v-autocomplete
+              v-model="metaTemplate.countries"
+              label="Countries"
+              :items="countries"
+              hint="Countries developing the resource"
+              item-text="name"
+              item-value="name"
+              outlined
+              multiple
+              return-object
+            >
+              <!-- autocomplete selected -->
+              <template v-slot:selection="data">
+                <v-chip class="blue white--text">
+                  {{ data.item.name }}
+                </v-chip>
+              </template>
+
+              <!-- autocomplete data -->
+              <template v-slot:item="data">
+                <country-flag
+                  v-if="data.item.code !== null"
+                  :country="data.item.code"
+                  size="normal"
+                />
+                <img v-else src="@/assets/placeholders/country.png" class="ml-4 mr-3">
+                <div> {{ data.item.name }} </div>
+              </template>
+            </v-autocomplete>
+          </v-col>
+
+          <!-- status -->
+          <v-col class="col-3">
+            <v-autocomplete
+              v-model="metaTemplate.status"
+              label="Status"
+              :items="status"
+              item-text="name"
+              item-value="name"
+              outlined
+              :disabled="metaTemplate.type === 'collection' || metaTemplate.type.name === 'collection'"
+            >
+              <!-- autocomplete selected -->
+              <template v-slot:selection="data">
+                {{ data.item.name.replace(/_/g, ' ') }}
+              </template>
+
+              <!-- autocomplete data -->
+              <template v-slot:item="data">
+                <v-list
+                  max-width="565px"
+                  two-line
+                  class="py-0 my-0"
+                >
+                  <v-list-item min-height="0px">
+                    <v-list-item-content class="py-0 my-0">
+                      <v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} </v-list-item-title>
+                      <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </template>
+            </v-autocomplete>
+          </v-col>
+
+          <!-- deprecation reasons -->
+          <v-col class="col-12">
+            <v-textarea
+              v-if="metaTemplate.status === 'deprecated'"
+              v-model="metaTemplate['deprecation_reason']"
+              label="Reason for deprecation"
+              hint="A short description of why the resource is no longer actively maintained."
+              outlined
+            />
+          </v-col>
+
+          <!-- description -->
+          <v-col class="col-12">
+            <v-textarea
+              v-model="metaTemplate.metadata.description"
+              label="Description"
+              hint="The description of the record."
+              outlined
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <v-divider />
+      {{ metaTemplate }}
+    </v-card-text>
+
+    <v-card-actions>
+      <v-btn
+        class="primary"
+        @click="editRecord()"
+      >
+        Submit
+      </v-btn>
+    </v-card-actions>
+
+    {{ countries.filter(obj => obj.code === null) }}
+
+  </v-card>
+</template>
+
+<script>
+    import { mapState, mapActions } from "vuex"
+    import CountryFlag from 'vue-country-flag'
+    import GraphClient from "@/components/GraphClient/GraphClient.js"
+    import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
+    import status from "@/components/Editor/status.json"
+    import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
+    const graphClient = new GraphClient();
+
+    export default {
+        name: "EditGeneralInfo",
+        components: { CountryFlag },
+        data(){
+            return {
+                recordsTypes: [],
+                countries: []
+            }
+        },
+        computed: {
+            ...mapState("record", ["metaTemplate", "recordUpdate"]),
+            ...mapState("users", ["user"]),
+            status: function(){ return status.status; },
+        },
+        watch: {
+          metaTemplate: {
+            deep: true,
+            handler(newVal){
+              if (newVal.type === "collection" || newVal.type.name === "collection"){
+                this.metaTemplate.status = "uncertain";
+              }
+            }
+          }
+        },
+        async mounted(){
+            const _module = this;
+            let data = await graphClient.executeQuery(typesQuery);
+            const size = data['fairsharingRegistries'].records.length;
+            let currentItem = 0;
+            data['fairsharingRegistries'].records.forEach(function(type){
+                currentItem += 1;
+                _module.recordsTypes.push({
+                    header: type.name
+                });
+                type.recordTypes.forEach(function(subType){
+                    _module.recordsTypes.push({
+                        name: subType.name,
+                        group: type.name,
+                        id: subType.id,
+                        description: subType.description
+                    })
+                });
+                if (currentItem < size) _module.recordsTypes.push({ divider: true });
+            });
+            _module.countries = await _module.getCountries();
+        },
+        methods: {
+          ...mapActions("record", ["updateRecord"]),
+          getCountries: async function(){
+            let countries = await graphClient.executeQuery(countriesQuery);
+            return countries['searchCountries'];
+          },
+          editRecord: async function(){
+            // PREPARE THE DATA
+            let countries = [];
+            let newRecord = JSON.parse(JSON.stringify(this.metaTemplate));
+            this.metaTemplate.countries.forEach(function(country){ countries.push(country.id) });
+            newRecord.country_ids = countries;
+            newRecord.record_type_id = this.metaTemplate.type.id;
+            newRecord.metadata.status = this.metaTemplate.status;
+            delete newRecord.countries;
+            delete newRecord.type;
+            delete newRecord.status;
+            let data = {
+              record: newRecord,
+              id: this.$route.params.id,
+              token: this.user().credentials.token
+            };
+
+            // POST THE DATA AND REACT THE RESPONSE
+            await this.updateRecord(data);
+            if (!this.recordUpdate.error){
+              let ID = this.recordUpdate.id.data.id;
+              this.$router.push({
+                path: "/" + ID
+              })
+            }
+          }
+        },
+    }
+</script>
+

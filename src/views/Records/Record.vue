@@ -38,11 +38,11 @@
                   </template>
                   <v-list>
                     <v-list-item
-                      v-for="(item, index) in items"
+                      v-for="(item, index) in links"
                       :key="index"
                     >
                       <v-list-item-title class="text-left">
-                        {{ item }}
+                        <a :href="item.link">{{ item.name }}</a>
                       </v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -117,7 +117,13 @@
             return {
                 error: null,
                 queryTriggered: false,
-                items: ["Edit", "Admin Edit", "Claim Ownership", "Suggest and edit/Questions?", "Watch Record"]
+                //items: ["Edit", "Admin Edit", "Claim Ownership", "Suggest and edit/Questions?", "Watch Record"],
+                links: [
+                  {
+                    name: "Edit",
+                    link: "#/" + this.$route.params['id'] + '/edit'
+                  }
+                ]
             }
         },
         computed: {

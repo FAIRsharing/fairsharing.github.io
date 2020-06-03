@@ -13,7 +13,8 @@
       {
           "name": "countries",
           "fields": [
-              "name"
+              "name",
+              "id"
           ]
       },
       "metadata",
@@ -38,7 +39,8 @@
       {
           "name": "grants",
           "fields": [
-              "name"
+              "name",
+              "description"
           ]
       },
       "isRecommended",
@@ -73,7 +75,7 @@
           "fields": [
               {
                   "queryName": "linkedRecord",
-                  "fields": ["name", "id", "registry"]
+                  "fields": ["name", "id", "registry", "type"]
               },
               "recordAssocLabel"
           ]

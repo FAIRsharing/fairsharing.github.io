@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import CreateRecord from "@/views/CreateRecord/Editor.vue"
 import recordStore from "@/store/record.js";
 import GraphClient from "@/components/GraphClient/GraphClient.js";
+import metaTemplate from "../../../fixtures/metaTemplate.json"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
@@ -19,18 +20,7 @@ describe("Editor.vue", function() {
     let wrapper;
 
     beforeAll(() => {
-        let returnedData = {
-            type: "standard",
-            status: "ready",
-            countries: "",
-            metadata: {
-                name: "",
-                abbreviation: "",
-                year_creation: 2020,
-                homepage: "",
-                description: ""
-            }
-        };
+        let returnedData = metaTemplate.data;
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         graphStub.withArgs(sinon.match.any).returns({
             fairsharingRecord: returnedData

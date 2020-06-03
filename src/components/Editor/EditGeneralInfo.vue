@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-card
     v-if="metaTemplate.metadata"
     id="editGeneralInfo"
@@ -172,7 +172,6 @@
       </v-container>
 
       <v-divider />
-      {{ metaTemplate }}
     </v-card-text>
 
     <v-card-actions>
@@ -183,9 +182,6 @@
         Submit
       </v-btn>
     </v-card-actions>
-
-    {{ countries.filter(obj => obj.code === null) }}
-
   </v-card>
 </template>
 

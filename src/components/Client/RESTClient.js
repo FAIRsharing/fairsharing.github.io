@@ -205,6 +205,27 @@ class RESTClient {
     }
 
     /**
+     * Update the given record
+     * @param {Object} record - the record to update containing the ID to target, the new values
+     * and the user token
+     * @returns {Promise}
+     */
+    async updateRecord(record){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + record.token;
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + "/fairsharing_records/" + record.id,
+            headers: headers,
+            data: {fairsharing_record: record.record}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /* EXTRA METHODS */
+
+    /**
      * Trigger the given query with Axios
      * @param query
      * @returns {Promise<*>}

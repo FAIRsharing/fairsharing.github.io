@@ -1,0 +1,9 @@
+{
+  "queryName": "searchCountries",
+  "queryParam": null,
+  "fields": [
+    "code",
+    "id",
+    "name"
+  ]
+}

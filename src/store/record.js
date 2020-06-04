@@ -49,13 +49,6 @@ let recordStore = {
         resetCurrentRecordHistory(state){
             state.currentRecordHistory = {};
         },
-        resetNewRecord(state){
-            state.recordUpdate = {
-                error: false,
-                message: null,
-                id: null,
-            };
-        },
         setNewRecord(state, id){
             state.recordUpdate = {
                 error: false,

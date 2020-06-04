@@ -1,72 +1,95 @@
 <template>
-    <v-content>
-        <h1 class="d-none">
-            Content
-        </h1>
-        <transition name="fade">
-            <jump-top target-object="scroll-target" v-if="showScrollToTopButton"/>
-        </transition>
-        <v-container fluid
-                     class="overflow-y-auto overflow-x-hidden content-custom "
-                     id="scroll-target"
+  <v-content>
+    <h1 class="d-none">
+      Content
+    </h1>
+    <transition name="fade">
+      <jump-top
+        v-if="showScrollToTopButton"
+        target-object="scroll-target"
+      />
+    </transition>
+    <v-container
+      id="scroll-target"
+      fluid
+      class="overflow-y-auto overflow-x-hidden content-custom "
+    >
+      <!-- Title banner -->
+      <div>
+        <section
+          id="banner"
+          class="secondary"
         >
-            <!-- Title banner -->
-            <div>
-                <section
-                        id="banner"
-                        class="secondary"
-                >
-                    <h1 class="text-center white--text">
-                        {{ getTitle }}
-                    </h1>
-                    <p class="text-center white--text">
-                        {{ recordsSubTitles[getTitle] }}
-                    </p>
-                </section>
-            </div>
+          <h1 class="text-center white--text">
+            {{ getTitle }}
+          </h1>
+          <p class="text-center white--text">
+            {{ recordsSubTitles[getTitle] }}
+          </p>
+        </section>
+      </div>
 
-            <!-- Search Box -->
-            <div class="d-flex flex-row align-center mt-1  mr-2 ml-2">
-                <v-text-field
-                        solo
-                        single-line
-                        clearable
-                        v-model="searchTerm"
-                        :placeholder="`Can't find what you'r looking for?! search through all data`"
-                ></v-text-field>
-                <v-btn color="primary" outlined height="52px" class="mt-1 ml-2">
-                    <v-icon>search</v-icon>
-                    <span>Search</span>
-                </v-btn>
-            </div>
-            <!--advanced Search button  -->
-            <div class="text-right">
-                <v-btn text small class="button-text-color" to="/advanced-search">Advanced</v-btn>
-            </div>
-            <!--  Content  -->
-            <v-row no-gutters
-            >
-                <v-col cols="12" lg="4" md="4" xl="3" class="d-none d-md-flex mt-2 ml-2">
-                    <LeftPanel
-                            :class="[responsiveClassObject]"/>
-                    <!--                    <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">-->
-
-                </v-col>
-                <v-col class="mt-2">
-                    <RightContentStackList
-                            v-scroll:#scroll-target="onScroll"
-                            class="pb-5 mr-0 mr-md-2"
-                    />
-                </v-col>
-            </v-row>
-        </v-container>
-    </v-content>
+      <!-- Search Box -->
+      <div class="d-flex flex-row align-center mt-1  mr-2 ml-2">
+        <v-text-field
+          v-model="searchTerm"
+          solo
+          single-line
+          clearable
+          :placeholder="`Can't find what you'r looking for?! search through all data`"
+        />
+        <v-btn
+          color="primary"
+          outlined
+          height="52px"
+          class="mt-1 ml-2"
+        >
+          <v-icon>search</v-icon>
+          <span>Search</span>
+        </v-btn>
+      </div>
+      <!--advanced Search button  -->
+      <div class="text-right">
+        <v-btn
+          text
+          small
+          class="button-text-color"
+          to="/advanced-search"
+        >
+          Advanced
+        </v-btn>
+      </div>
+      <!--  Content  -->
+      <v-row
+        no-gutters
+      >
+        <v-col
+          cols="12"
+          lg="4"
+          md="4"
+          xl="3"
+          class="d-none d-md-flex mt-2 ml-2"
+        >
+          <LeftPanel
+            :class="[responsiveClassObject]"
+          />
+          <!--                    <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">-->
+        </v-col>
+        <v-col class="mt-2">
+          <RightContentStackList
+            v-scroll:#scroll-target="onScroll"
+            class="pb-5 mr-0 mr-md-2"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-content>
 </template>
 
 <script>
-    import LeftPanel from "@/components/LeftPanel";
-    import JumpTop from "@/components/jumpToTop";
-    import RightContentStackList from "../components/RightContentList";
+    import JumpTop from "@/components/IndividualComponents/jumpToTop";
+    import LeftPanel from "@/components/Records-new/LeftPanel";
+    import RightContentStackList from "@/components/Records-new/RightContentList";
 
     export default {
         name: "Records",
@@ -94,6 +117,19 @@
                 Search: "Search the FAIRsharing records using advanced filtering"
             },
         }),
+        computed: {
+            getTitle: function () {
+                return 'Standards';
+            },
+            responsiveClassObject: function () {
+                return {
+                    'left-panel-fixed-lg': this.stickToLeft && this.$vuetify.breakpoint.xlOnly,
+                    'left-panel-default-lg': !this.stickToLeft && this.$vuetify.breakpoint.xlOnly,
+                    'left-panel-default': !this.stickToLeft && !this.$vuetify.breakpoint.xlOnly,
+                    'left-panel-fixed': this.stickToLeft && !this.$vuetify.breakpoint.xlOnly
+                }
+            }
+        },
         created() {
             // change the overflow to have Records behavior scroll
             this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
@@ -128,19 +164,6 @@
                     });
                 }
                 _module.offsetTop > 500 ? _module.showScrollToTopButton = true : _module.showScrollToTopButton = false;
-            }
-        },
-        computed: {
-            getTitle: function () {
-                return 'Standards';
-            },
-            responsiveClassObject: function () {
-                return {
-                    'left-panel-fixed-lg': this.stickToLeft && this.$vuetify.breakpoint.xlOnly,
-                    'left-panel-default-lg': !this.stickToLeft && this.$vuetify.breakpoint.xlOnly,
-                    'left-panel-default': !this.stickToLeft && !this.$vuetify.breakpoint.xlOnly,
-                    'left-panel-fixed': this.stickToLeft && !this.$vuetify.breakpoint.xlOnly
-                }
             }
         }
     }

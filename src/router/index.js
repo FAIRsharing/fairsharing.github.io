@@ -9,8 +9,10 @@ import store from '@/store'
 import Home from "@/views/Home/Home";
 import Login from "@/views/Users/Login/Login";
 import Signup from "@/views/Users/Signup";
+/*
 import Records from "@/views/Records/Records";
 import Record from "@/views/Records/Record";
+*/
 import Statistics from "@/views/Stats/Statistics";
 import New from "@/views/CreateRecord/NewRecord";
 import Community from "@/views/Static/Community/Community";
@@ -29,10 +31,8 @@ import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
 import LoginFailure from "@/views/Users/Login/LoginFailure";
 import Editor from "@/views/CreateRecord/Editor";
 /*new routes*/
-/*
 import Records from "@/views/Records-new/Records";
 import Record from "@/views/Records-new/Record";
-*/
 
 Vue.use(VueRouter);
 

@@ -481,9 +481,9 @@
 </template>
 
 <script>
-    import Ribbon from "@/components/individualComponents/Ribbon";
-    import CircleHolder from "@/components/individualComponents/CircleHolder";
-    import Footer from "@/components/individualComponents/Footer";
+    import Ribbon from "@/components/IndividualComponents/Ribbon";
+    import CircleHolder from "@/components/IndividualComponents/CircleHolder";
+    import Footer from "@/components/IndividualComponents/Footer";
     import CountryFlag from 'vue-country-flag';
 
     export default {

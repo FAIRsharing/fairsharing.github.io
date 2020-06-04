@@ -82,7 +82,7 @@
         methods: {
             toggleDrawerLeft: function () {
                 this.drawerLeft = true;
-                this.$store.dispatch("utils/setGeneralUIAttributesAction", {
+                this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                     headerVisibilityState: true,
                     drawerVisibilityState: this.drawerLeft
                 });

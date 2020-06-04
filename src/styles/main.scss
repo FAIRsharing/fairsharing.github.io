@@ -1,0 +1,71 @@
+//custom colors
+$color-gray-light1: #bebebe;
+$color-gray-light2: #757575;
+
+$max-width-val: 30%;
+$max-height-val: 100px;
+
+$color-primary: #27aae1;
+$color-secondary: #004d40;
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.2em;
+  color: $color-gray-light2;
+  font-weight: normal;
+  overflow: hidden;
+}
+
+.max-width {
+  max-width: $max-width-val;
+}
+
+.max-height {
+  max-height: $max-height-val;
+}
+
+.button-text-color {
+  color: $color-gray-light1 !important;
+}
+
+.card-description {
+  font-size: .8em;
+  color: $color-gray-light1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.text-primary {
+  color: $color-primary;
+}
+
+//Animations
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .7s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+  opacity: 0;
+}
+
+.opacity-0-transition {
+  transition: opacity .7s;
+  opacity: 0;
+}
+
+.opacity-1-transition {
+  opacity: 1;
+}
+
+//End of Animations

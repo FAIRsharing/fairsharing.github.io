@@ -6,7 +6,7 @@ describe("Routes", () => {
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [
-            "User", "Edit profile", "New_content"
+            "User", "Edit profile", "New_content", "Edit Content"
         ];
 
         router.options.routes.forEach(function(route){

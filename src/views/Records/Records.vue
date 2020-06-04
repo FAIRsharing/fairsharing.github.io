@@ -133,13 +133,13 @@
     },
     watch: {
       currentPath: async function () {
-        this.tryRedirect();
+        await this.tryRedirect();
         await this.getData();
       }
     },
     mounted: function () {
       this.$nextTick(async function () {
-        this.tryRedirect();
+        await this.tryRedirect();
         await this.getData();
       })
     },

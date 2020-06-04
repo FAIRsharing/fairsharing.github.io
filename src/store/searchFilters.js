@@ -25,7 +25,8 @@ let filtersStore = {
         }
     },
     modules: {
-    }
+    },
+    getters: {}
 };
 export default filtersStore;
 

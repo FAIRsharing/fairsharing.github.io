@@ -28,6 +28,11 @@ import EditProfile from "@/views/Users/EditProfile";
 import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
 import LoginFailure from "@/views/Users/Login/LoginFailure";
 import Editor from "@/views/CreateRecord/Editor";
+/*new routes*/
+/*
+import Records from "@/views/Records-new/Records";
+import Record from "@/views/Records-new/Record";
+*/
 
 Vue.use(VueRouter);
 

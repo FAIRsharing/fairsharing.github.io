@@ -115,9 +115,15 @@ describe("CreateRecord.vue", function() {
         await wrapper.vm.editRecord();
         expect($router.push).toHaveBeenCalledWith({"path": "/123"});
         expect($router.push).toHaveBeenCalledTimes(1);
-        restStub.restore();
-        restStub.returns(new Error("Im an error"));
+    });
+
+    it("can raise an error", async () => {
+        restStub.returns({data: {error: {
+            response: {
+                statusText: 123
+            }
+        }}});
         await wrapper.vm.editRecord();
         expect($router.push).toHaveBeenCalledTimes(1);
-    })
+    });
 });

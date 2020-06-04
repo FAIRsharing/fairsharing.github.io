@@ -1,24 +1,24 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
+
+// import colors from 'vuetify/lib/util/colors';
+import light from './theme'
+import customIcons from './icons'
+import customBreakPoints from './breakPoints'
+
 Vue.use(Vuetify);
 
-const opts = {
-    icons: {
-        iconfont: "fa"
-    },
+export default new Vuetify({
     theme: {
-        light: true,
-        themes: {
-            light: {
-                secondary: "#2C3E50"
-            },
-            dark: {
-                secondary: "#2C3E50"
-            }
-        }
-    }
-};
-
-export default new Vuetify(opts);
+        // dark:true
+        themes: {light},
+        options: {
+            customProperties: true,
+        },
+    },
+    iconfont: 'mdi',
+    icons: customIcons,
+    breakpoint: customBreakPoints,
+});
 

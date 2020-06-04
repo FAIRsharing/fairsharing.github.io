@@ -31,7 +31,7 @@
         >
           <div class=" d-flex flex-column align-center justify-center">
             <circle-holder :status="RecordStatus" />
-            <h3 class="max-height ">
+            <h3 class="max-height">
               <u>Record title example</u>
             </h3>
           </div>
@@ -117,8 +117,8 @@
         name: "RecordsCardColumn",
         components: {AssociatedRecordsStack, Ribbon, CircleHolder},
         props: {
-            recordStatus: null,
-            recommended: null,
+            recordStatus: {default: null, type: String},
+            recommended: {default: false, type: Boolean},
         },
         data() {
             return {

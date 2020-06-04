@@ -113,8 +113,8 @@
 </template>
 
 <script>
-    import CircleHolder from "../IndividualComponents/CircleHolder";
-    import Ribbon from "../IndividualComponents/Ribbon";
+    import CircleHolder from "@/components/IndividualComponents/CircleHolder";
+    import Ribbon from "@/components/IndividualComponents/Ribbon";
     import AssociatedRecordsStack from "./AssociatedRecordsStack";
 
     export default {

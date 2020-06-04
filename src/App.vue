@@ -11,22 +11,22 @@
 </template>
 
 <script>
-import NavbarTop from "./components/Navigation/NavbarTop";
-import FooterBar from "./components/Navigation/Footer";
+    import NavbarTop from "./components/Navigation/NavbarTop";
+    import FooterBar from "./components/Navigation/Footer";
 
-export default {
-  name: 'App',
-  components: {
-    NavbarTop,
-    FooterBar
-  }
-};
+    export default {
+        name: 'App',
+        components: {
+            NavbarTop,
+            FooterBar
+        }
+    };
 </script>
 
 <style>
-  #app {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 99vh;
-  }
+    #app {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        min-height: 99vh;
+    }
 </style>

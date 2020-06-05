@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar height="100">
+  <v-app-bar app  hide-on-scroll short height="100" >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.smAndDown"
       @click="toggleDrawerLeft"

@@ -381,7 +381,6 @@
             async createNewTerm(){
               const _module = this;
                 let newTerm = await restClient.createNewUserDefinedTag(_module.search, _module.user().credentials.token);
-                console.log(newTerm);
                 let addTerm = {
                     label: newTerm.label,
                     id: newTerm.id,

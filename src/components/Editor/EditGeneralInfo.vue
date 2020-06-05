@@ -170,8 +170,6 @@
           </v-col>
         </v-row>
       </v-container>
-
-      <v-divider />
     </v-card-text>
 
     <v-card-actions>

@@ -1,5 +1,5 @@
 {
-  "queryName": "searchDomains",
+  "queryName": "searchTaxonomies",
   "queryParam": null,
   "fields": [
     "definitions",

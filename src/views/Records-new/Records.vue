@@ -126,7 +126,17 @@
         }),
         computed: {
             getTitle: function () {
-                return 'Standards';
+                const flipRecordTypes = Object.entries(this.recordTypes).reduce((obj, [key, value]) => ({
+                    ...obj,
+                    [value]: key
+                }), {});
+                let title = "Search";
+                if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
+                    if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
+                        title = flipRecordTypes[this.$route.query.fairsharingRegistry];
+                    }
+                }
+                return title;
             },
             responsiveClassObject: function () {
                 return {
@@ -253,7 +263,16 @@
             setPanel: function (panelName) {
                 this.currentPanel = panelName;
             }
-        }
+        },
+        /**
+         * Setting up the metaInfo of the page
+         * @returns {{title: String}}
+         * */
+        metaInfo() {
+            return {
+                title: 'FAIRsharing | ' + this.getTitle
+            }
+        },
     }
 </script>
 

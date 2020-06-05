@@ -100,10 +100,12 @@
         {{ description }}
       </p>
       <!--  Associated Records      -->
+<!--
       <AssociatedRecordsStack
         :is-column="true"
         :associated-records="associatedRecords"
       />
+-->
     </v-card>
   </v-col>
 </template>
@@ -111,11 +113,12 @@
 <script>
     import CircleHolder from "../IndividualComponents/CircleHolder";
     import Ribbon from "../IndividualComponents/Ribbon";
-    import AssociatedRecordsStack from "./AssociatedRecordsStack";
+    // import AssociatedRecordsStack from "./AssociatedRecordsStack";
 
     export default {
         name: "RecordsCardColumn",
-        components: {AssociatedRecordsStack, Ribbon, CircleHolder},
+        // components: {AssociatedRecordsStack, Ribbon, CircleHolder},
+        components: { Ribbon, CircleHolder},
         props: {
             recommended: {default: false, type: Boolean},
         },

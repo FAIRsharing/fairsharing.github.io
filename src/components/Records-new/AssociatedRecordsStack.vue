@@ -7,26 +7,27 @@
       class="associated-records-holder"
     >
       <div
-        v-for="associatedRecord in associatedRecords"
-        :key="associatedRecord.title"
+        v-for="(associatedRecord, associationName) in associatedRecords"
+        :key="associationName+associatedRecord.val"
         class="associated-records"
       >
-        <span>{{ associatedRecord.title }}</span>
-        <b>{{ associatedRecord.amount }}</b>
+        <span>{{ associatedRecord.label }}</span>
+        <b>{{ associatedRecord.val }}</b>
       </div>
     </div>
+      
     <!--   column style     -->
     <div
       v-else
       class="associated-records-holder-column"
     >
       <div
-        v-for="associatedRecord in associatedRecords"
-        :key="associatedRecord.title"
-        class="associated-records-column"
+        v-for="(associatedRecord, associationName) in associatedRecords"
+        :key="associationName+associatedRecord.val"
+        class="associated-records"
       >
-        <span>{{ associatedRecord.title }}</span>
-        <b>{{ associatedRecord.amount }}</b>
+        <span>{{ associatedRecord.label }}</span>
+        <b>{{ associatedRecord.val }}</b>
       </div>
     </div>
   </div>
@@ -37,7 +38,7 @@
         name: "AssociatedRecordsStack",
         props: {
             associatedRecords: {
-                type: Array,
+                type: Object,
                 default: null,
             },
             isColumn: {

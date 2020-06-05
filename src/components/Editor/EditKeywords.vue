@@ -1,10 +1,13 @@
 <template>
   <v-card id="editKeywords">
-    <v-card-title class="blue white--text">
-      EDIT RECORD KEYWORDS
-    </v-card-title>
+    <v-alert
+      v-if="recordUpdate.message !== null"
+      :class="{'success': !recordUpdate.error, 'error': recordUpdate.error}"
+    >
+      {{ recordUpdate.message }}
+    </v-alert>
     <v-card-text class="pb-0">
-      <div class="pt-5 selectedTermsSection">
+      <div class="selectedTermsSection">
         <div
           v-for="(itemVal, itemName) in getSelectedTerms"
           :key="'term_' + itemName"
@@ -105,7 +108,10 @@
                 @change="props.select($event)"
               />
             </td>
-            <td :class="colors[props.item.type] + '--text'" class="termType">
+            <td
+              :class="colors[props.item.type] + '--text'"
+              class="termType"
+            >
               <b>{{ props.item.type.toUpperCase() }}</b>
             </td>
             <td class="termLabel">
@@ -133,7 +139,12 @@
       </v-data-table>
     </v-card-text>
     <v-card-actions class="p-5">
-      <v-btn class="primary" @click="submitRecord()">Submit </v-btn>
+      <v-btn
+        class="primary"
+        @click="submitRecord()"
+      >
+        Submit
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>

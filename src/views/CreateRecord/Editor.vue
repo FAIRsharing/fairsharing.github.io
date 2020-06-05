@@ -4,11 +4,30 @@
     fluid
   >
     <v-row>
-      <!--<v-col cols="12">
-        <edit-general-info />
-      </v-col>-->
-      <v-col cols="12">
-        <edit-keywords></edit-keywords>
+      <v-col>
+        <v-toolbar
+          flat
+          color="primary"
+          dark
+        >
+          <v-toolbar-title>Edit Record</v-toolbar-title>
+        </v-toolbar>
+        <v-tabs vertical dark>
+          <v-tab>
+            Edit General Information
+          </v-tab>
+          <v-tab>
+            Edit Keywords
+          </v-tab>
+
+          <v-tab-item class="px-10 py-3">
+            <edit-general-info />
+          </v-tab-item>
+
+          <v-tab-item class="px-10 py-3">
+            <edit-keywords />
+          </v-tab-item>
+        </v-tabs>
       </v-col>
     </v-row>
   </v-container>
@@ -16,12 +35,12 @@
 
 <script>
     import { mapActions } from "vuex"
-    // import EditGeneralInfo from "@/components/Editor/EditGeneralInfo";
-    import EditKeywords from "../../components/Editor/EditKeywords";
+    import EditGeneralInfo from "@/components/Editor/EditGeneralInfo";
+    import EditKeywords from "@/components/Editor/EditKeywords";
 
     export default {
         name: "Editor",
-        components: {EditKeywords},
+        components: {EditKeywords, EditGeneralInfo},
         async mounted(){
             let id = this.$route.params.id;
             await this.fetchRecord(id)

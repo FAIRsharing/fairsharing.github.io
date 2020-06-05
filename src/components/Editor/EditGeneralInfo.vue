@@ -9,10 +9,6 @@
     >
       {{ recordUpdate.message }}
     </v-alert>
-
-    <v-card-title class="blue white--text">
-      EDIT GENERAL INFORMATION
-    </v-card-title>
     <v-card-text>
       <v-container fluid>
         <v-row>
@@ -171,7 +167,6 @@
         </v-row>
       </v-container>
     </v-card-text>
-
     <v-card-actions>
       <v-btn
         class="primary"

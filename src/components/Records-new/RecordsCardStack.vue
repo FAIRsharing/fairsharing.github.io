@@ -27,7 +27,6 @@
       >
         <div class="mt-1 ml-2 pr-6 d-flex flex-row align-center justify-start">
           <circle-holder
-            :status="recordStatus"
             class="mr-8"
           />
           <h3
@@ -121,7 +120,6 @@
         name: "RecordsCardStack",
         components: {AssociatedRecordsStack, Ribbon, CircleHolder},
         props: {
-            recordStatus: {default: null, type: String},
             recommended: {default: false, type: Boolean},
         },
         data() {

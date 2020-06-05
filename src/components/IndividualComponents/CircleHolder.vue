@@ -4,20 +4,20 @@
       size="50"
       class="iconClass"
     >
-      {{ getRecordStatus.icon }}
     </v-icon>
     <span
       id="innerCircle"
-      :style="getRecordStatus.backColor"
     >
+      <!--      :style="getRecordStatus.backColor" for the span above-->
+
       <v-tooltip right>
         <template v-slot:activator="{ on }">
           <b
             id="status-style"
             v-on="on"
-          >{{ getRecordStatus.title }}</b>
+          >{{ /*getRecordStatus.title*/ }}</b>
         </template>
-        <span>{{ getRecordStatus.toolTip }}</span>
+        <span>{{ /*getRecordStatus.toolTip*/ }}</span>
       </v-tooltip>
     </span>
   </div>
@@ -61,7 +61,9 @@
             }
         }, computed: {
             getRecordStatus: function () {
-                return this.statusStyles[this.status];
+              let _module=this;
+
+              return this.statusStyles[_module.status];
             }
         }
     }

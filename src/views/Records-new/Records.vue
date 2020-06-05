@@ -90,6 +90,7 @@
     import JumpTop from "@/components/IndividualComponents/jumpToTop";
     import LeftPanel from "@/components/Records-new/LeftPanel";
     import RightContentList from "@/components/Records-new/RightContentList";
+    import {mapActions} from 'vuex'
 
     export default {
         name: "Records",
@@ -116,6 +117,12 @@
                     "international funding agencies, regulators and journals.",
                 Search: "Search the FAIRsharing records using advanced filtering"
             },
+            recordTypes: {
+                Standards: "Standard",
+                Databases: "Database",
+                Policies: "Policy",
+                Collections: "Collection"
+            },
         }),
         computed: {
             getTitle: function () {
@@ -128,7 +135,39 @@
                     'left-panel-default': !this.stickToLeft && !this.$vuetify.breakpoint.xlOnly,
                     'left-panel-fixed': this.stickToLeft && !this.$vuetify.breakpoint.xlOnly
                 }
+            },
+            currentPath: function () {
+                let title = this.$route.path.replace('/', '');
+                const client = this;
+                let queryParams = {};
+                Object.keys(this.$route.query).forEach(function (prop) {
+                    let queryVal = client.$route.query[prop];
+                    if (queryVal) {
+                        queryParams[prop] = decodeURI(queryVal);
+                    }
+                });
+                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
+                    title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+                } else {
+                    title = title.charAt(0).toUpperCase() + title.slice(1)
+                }
+                return [
+                    title,
+                    queryParams
+                ];
+            },
+        },
+        watch: {
+            currentPath: async function () {
+                await this.tryRedirect();
+                await this.getData();
             }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                await this.tryRedirect();
+                await this.getData();
+            })
         },
         created() {
             // change the overflow to have Records behavior scroll
@@ -164,6 +203,55 @@
                     });
                 }
                 _module.offsetTop > 500 ? _module.showScrollToTopButton = true : _module.showScrollToTopButton = false;
+            },
+            /**
+             * Try to redirect to search of the page that is hit is /standards /databases
+             * /policies or /collections
+             * */
+            tryRedirect: async function () {
+                if (Object.keys(this.recordTypes).includes(this.$route.name)) {
+                    let fairsharingRegistry = this.recordTypes[this.$route.name];
+                    let query = this.$route.params;
+                    if (query) {
+                        query.fairsharingRegistry = fairsharingRegistry;
+                        try {
+                            this.$router.push({
+                                name: "search",
+                                query: query
+                            });
+                        } catch (e) {
+                            //
+                        }
+                    }
+                }
+            },
+            /** This methods get the data from the client.
+             * @returns {Promise}
+             */
+            getData: async function () {
+                window.scrollTo(0, 0);
+                this.errors = null;
+                const _module = this;
+                try {
+                    await _module.fetchRecords(this.getParameters());
+                } catch (e) {
+                    this.errors = e.message;
+                }
+            },
+            /**
+             * Get the parameters that are allowed for this query
+             * @returns {Object} parameters - parameters and types allowed for this query
+             */
+            getParameters: function () {
+                return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
+            },
+            ...mapActions('records', ['fetchRecords']),
+            /**
+             * Method to change the current panel to be displayed
+             * @param {String} panelName - the name of the panel to display
+             */
+            setPanel: function (panelName) {
+                this.currentPanel = panelName;
             }
         }
     }

@@ -3,7 +3,6 @@
     <h1 class="d-none">
       Records
     </h1>
-
     <!--Filtered Chips-->
     <div style="background: lightblue;width: 100%;height: 50px;display: flex;justify-content: center;align-items: center">
       place of filter Chip
@@ -53,6 +52,7 @@
     import RecordsCardStack from "./RecordsCardStack";
     import ListController from "./ListController";
     import RecordsCardColumn from "./RecordsCardColumn";
+    import {mapState} from 'vuex'
 
     export default {
         name: "RightContentList",
@@ -61,6 +61,9 @@
             return {
                 isColumnList: false
             }
+        },
+        computed: {
+            ...mapState('records', ["records", "hits", "loading"])
         },
         methods: {
             changeListType: function (listType) {

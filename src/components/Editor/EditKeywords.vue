@@ -362,7 +362,6 @@
               // POST THE DATA AND REACT THE RESPONSE
               await _module.updateRecord(data);
               if (!_module.recordUpdate.error){
-                console.log(_module.recordUpdate);
                 let ID = _module.recordUpdate.id.data.id;
                 _module.$router.push({
                   path: "/" + ID

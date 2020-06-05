@@ -20,7 +20,8 @@ let recordStore = {
             error: false,
             message: null,
             id: null
-        }
+        },
+        keywordsTemplate: {}
     },
     mutations: {
         setCurrentRecord(state, data){
@@ -89,6 +90,11 @@ let recordStore = {
         },
     },
     modules: {
+    },
+    getters: {
+        getField: (state) => (fieldName) => {
+            if (state.currentRecord['fairsharingRecord']) return state.currentRecord['fairsharingRecord'][fieldName]
+        }
     }
 };
 

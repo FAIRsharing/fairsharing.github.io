@@ -34,7 +34,7 @@
               class="max-height "
               style="width: 60%"
             >
-              <u>{{record.name}}</u>
+              <u>{{ record.name }}</u>
             </h3>
           </div>
         </v-col>
@@ -108,8 +108,8 @@
       </p>
 
       <!--  Associated Records      -->
-      <AssociatedRecordsStack  />
-      {{associatedRecords(record)}}
+      <AssociatedRecordsStack :associated-records="associatedRecords(record)" />
+      
     </v-card>
   </section>
 </template>
@@ -127,15 +127,6 @@
         },
         data() {
             return {
-/*
-                associatedRecords: [{title: 'standards', amount: 10}, {title: 'databases', amount: 8}, {
-                    title: 'policies',
-                    amount: 2,
-                }, {
-                    title: 'collections',
-                    amount: 6,
-                }],
-*/
                 allowClicking: false,
                 buttons: [{title: 'SUBJECTS', active: false}, {title: 'DOMAINS', active: true}, {
                     title: 'TAXONOMIES',
@@ -159,7 +150,14 @@
                     ],
                 },
                 currentActiveChips: 'DOMAINS',
-                vChipActive: 'v-chip--active'
+                vChipActive: 'v-chip--active',
+                associatedRecordsArray: [{title: 'standards', amount: 10}, {title: 'databases', amount: 8}, {
+                    title: 'policies',
+                    amount: 2,
+                }, {
+                    title: 'collections',
+                    amount: 6,
+                }],
             }
         },
         methods: {

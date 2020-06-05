@@ -30,7 +30,6 @@
         </div>
       </div>
     </v-card-text>
-    <v-divider />
     <v-card-text>
       <v-text-field
         v-model="search"
@@ -96,6 +95,15 @@
         loading-text="Loading... Please wait"
         calculate-widths
       >
+        <template slot="no-results">
+          <div class="noTerm mt-3">
+            No terms where found, do you want to create a new user defined tag?
+          </div>
+          <v-btn @click="createNewTerm()" class="green white--text my-3">
+            Create new term
+          </v-btn>
+        </template>
+
         <template
           v-slot:item="props"
           class="alTerm"
@@ -152,12 +160,14 @@
 <script>
     import { mapGetters, mapActions, mapState } from "vuex"
     import GraphClient from "@/components/GraphClient/GraphClient.js"
+    import RestClient from "@/components/Client/RESTClient.js"
     import domainsQuery from "@/components/GraphClient/queries/getDomains.json"
     import taxonomiesQuery from "@/components/GraphClient/queries/getTaxonomies.json"
     import subjectsQuery from "@/components/GraphClient/queries/getSubjects.json"
     import userTagQuery from "@/components/GraphClient/queries/getUserDefinedTags.json"
 
     let graphClient = new GraphClient();
+    let restClient = new RestClient();
 
     export default {
         name: "EditKeywords",
@@ -367,6 +377,18 @@
                   path: "/" + ID
                 })
               }
+            },
+            async createNewTerm(){
+              const _module = this;
+                let newTerm = await restClient.createNewUserDefinedTag(_module.search, _module.user().credentials.token);
+                console.log(newTerm);
+                let addTerm = {
+                    label: newTerm.label,
+                    id: newTerm.id,
+                    type: "userDefinedTags"
+                };
+                _module.selectedKeywords.push(addTerm);
+                _module.keywords.push(addTerm);
             }
         }
     }

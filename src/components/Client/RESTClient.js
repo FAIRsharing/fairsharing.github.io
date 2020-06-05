@@ -223,6 +223,26 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Create a new user defined tag in the database for users to tag their records.
+     * @param {String} term - the string value of the term
+     * @param {String} token - the user JWT
+     * @returns {Promise}
+     */
+    async createNewUserDefinedTag(term, token){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/user_defined_tags",
+            headers: headers,
+            data: {user_defined_tag: {label:term}}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+
     /* EXTRA METHODS */
 
     /**

@@ -28,7 +28,6 @@
         >
           <RecordsCardStack
             :key="n"
-            :record-status="n%2===0?'ready':'deprecated'"
             :recommended="n%3===0"
           />
         </section>
@@ -40,7 +39,6 @@
         <RecordsCardColumn
           v-for="n in 30"
           :key="n"
-          :record-status="n%2===0?'ready':'deprecated'"
           :recommended="n%3===0"
         />
       </v-row>

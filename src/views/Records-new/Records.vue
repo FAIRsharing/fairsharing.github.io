@@ -76,7 +76,7 @@
           <!--                    <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">-->
         </v-col>
         <v-col class="mt-2">
-          <RightContentStackList
+          <RightContentList
             v-scroll:#scroll-target="onScroll"
             class="pb-5 mr-0 mr-md-2"
           />
@@ -89,11 +89,11 @@
 <script>
     import JumpTop from "@/components/IndividualComponents/jumpToTop";
     import LeftPanel from "@/components/Records-new/LeftPanel";
-    import RightContentStackList from "@/components/Records-new/RightContentList";
+    import RightContentList from "@/components/Records-new/RightContentList";
 
     export default {
         name: "Records",
-        components: {RightContentStackList, JumpTop, LeftPanel},
+        components: {RightContentList, JumpTop, LeftPanel},
         data: () => ({
             searchTerm: '',
             offsetTop: 0,

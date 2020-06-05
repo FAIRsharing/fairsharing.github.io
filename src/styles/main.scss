@@ -36,6 +36,8 @@ h3 {
 }
 
 .card-description {
+  max-height: 38px;
+  overflow: hidden;
   font-size: .8em;
   color: $color-gray-light1;
 }

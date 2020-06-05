@@ -20,25 +20,20 @@
         <h2 class="d-none">
           Result
         </h2>
-        <section
-          v-for="n in 30"
-          :key="n"
-          class="pt-3 pt-lg-4"
-        >
-          <RecordsCardStack
-            :key="n"
-            :recommended="n%3===0"
-          />
-        </section>
+        <RecordsCardStack
+          v-for="record in records"
+          :key="'record'+record.id"
+          :record="record"
+        />
       </article>
     </div>
 
     <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
       <v-row v-show="isColumnList">
         <RecordsCardColumn
-          v-for="n in 30"
-          :key="n"
-          :recommended="n%3===0"
+          v-for="record in records"
+          :key="'record'+record.id"
+          :recommended="record.recommended"
         />
       </v-row>
     </div>
@@ -65,10 +60,17 @@
         computed: {
             ...mapState('records', ["records", "hits", "loading"])
         },
+        watch: {
+            /*
+                        records: function () {
+                            console.log(this.records)
+                        }
+            */
+        },
         methods: {
             changeListType: function (listType) {
                 this.isColumnList = listType;
             },
-        }
+        },
     }
 </script>

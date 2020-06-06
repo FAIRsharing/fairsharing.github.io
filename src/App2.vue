@@ -7,30 +7,35 @@
       left
       width="70%"
     />
+
     <transition name="fade">
       <Header v-if="showHeader" />
     </transition>
+    <Arm
+      :count-inside="count"
+      style="position: fixed;left: 0;z-index: 100;background: red;color: black"
+    />
     <router-view />
   </v-app>
 </template>
 
 <script>
     import Header from "./components/IndividualComponents/Header";
+    import {mapState} from 'vuex';
+    import Arm from "./components/Records-new/Arm";
 
     export default {
-        components: {Header},
+        components: {Arm, Header},
         data: () => ({
             showHeader: true,
             showDrawerLeft: false,
             hideOverflow: 'overflow-hidden'
         }),
         computed: {
-            watcherOnUIGeneralStatus: function () {
-                return this.$store.state.uiController.UIGeneralStatus;
-            },
+            ...mapState('uiController', ["UIGeneralStatus", "count"]),
         },
         watch: {
-            watcherOnUIGeneralStatus: {
+            UIGeneralStatus: {
                 handler(UIGeneralStatus) {
                     this.toggleOverFlow(UIGeneralStatus.bodyOverflowState);
                     this.toggleDrawer(UIGeneralStatus.drawerVisibilityState);
@@ -38,11 +43,6 @@
                 },
                 deep: true
             },
-            showDrawerLeft: function () {
-                this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-                    drawerVisibilityState: this.showDrawerLeft,
-                });
-            }
         },
         created() {
             // this.$vuetify.theme.dark = true;
@@ -64,7 +64,6 @@
                 this.showHeader = status;
             },
         },
-
     }
 </script>
 

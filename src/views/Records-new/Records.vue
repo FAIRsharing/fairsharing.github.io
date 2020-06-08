@@ -177,15 +177,13 @@
             this.$nextTick(async function () {
                 await this.tryRedirect();
                 await this.getData();
-            })
-        },
-        created() {
-            // change the overflow to have Records behavior scroll
-            this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+              // change the overflow to have Records behavior scroll
+              this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                 bodyOverflowState: true,
                 drawerVisibilityState: false,
                 headerVisibilityState: true,
-            });
+              });
+            })
         },
         destroyed() {
             // change the overflow to have normal behavior of main scroll and having header

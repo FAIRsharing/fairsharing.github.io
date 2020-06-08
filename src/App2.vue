@@ -27,7 +27,7 @@
             hideOverflow: 'overflow-hidden'
         }),
         computed: {
-            ...mapState('uiController', ["UIGeneralStatus", "count"]),
+            ...mapState('uiController', ["UIGeneralStatus"]),
         },
         watch: {
             UIGeneralStatus: {

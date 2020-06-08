@@ -11,10 +11,6 @@
     <transition name="fade">
       <Header v-if="showHeader" />
     </transition>
-    <Arm
-      :count-inside="count"
-      style="position: fixed;left: 0;z-index: 100;background: red;color: black"
-    />
     <router-view />
   </v-app>
 </template>
@@ -22,10 +18,9 @@
 <script>
     import Header from "./components/IndividualComponents/Header";
     import {mapState} from 'vuex';
-    import Arm from "./components/Records-new/Arm";
 
     export default {
-        components: {Arm, Header},
+        components: {Header},
         data: () => ({
             showHeader: true,
             showDrawerLeft: false,

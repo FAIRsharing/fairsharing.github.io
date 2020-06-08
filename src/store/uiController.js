@@ -11,9 +11,6 @@ let uiController = {
         },
     },
     mutations: {
-        changeCountMutate: function (state) {
-            state.count++;
-        },
         setGeneralUIAttributesMutation: function (state, statusObject) {
             if (has(statusObject, 'bodyOverflowState')) {
                 state.UIGeneralStatus.bodyOverflowState = statusObject.bodyOverflowState;
@@ -29,12 +26,7 @@ let uiController = {
     actions: {
         setGeneralUIAttributesAction: function (state, statusObject) {
             this.commit('uiController/setGeneralUIAttributesMutation', statusObject);
-        },
-        callAction: function () {
-            console.log('aa')
-            this.commit('uiController/changeCountMutate');
-        },
-
+        }
     }
 };
 export default uiController;

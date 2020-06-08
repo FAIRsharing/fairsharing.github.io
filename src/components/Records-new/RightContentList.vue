@@ -60,13 +60,6 @@
         computed: {
             ...mapState('records', ["records", "hits", "loading"])
         },
-        watch: {
-            /*
-                        records: function () {
-                            console.log(this.records)
-                        }
-            */
-        },
         methods: {
             changeListType: function (listType) {
                 this.isColumnList = listType;

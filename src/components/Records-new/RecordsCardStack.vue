@@ -80,7 +80,7 @@
             >
               <v-chip
                 v-for="chip in Chips[currentActiveChips]"
-                :key="chip.title"
+                :key="chip.label+'_'+chip.active"
                 small
                 text-color="secondary"
                 color="secondary"
@@ -88,7 +88,7 @@
                 outlined
                 @click="toggleChipActiveness(chip)"
               >
-                {{ chip.title }}
+                {{ chip.label }}
               </v-chip>
             </v-chip-group>
           </section>
@@ -109,7 +109,6 @@
 
       <!--  Associated Records      -->
       <AssociatedRecordsStack :associated-records="associatedRecords(record)" />
-      
     </v-card>
   </section>
 </template>
@@ -128,28 +127,14 @@
         data() {
             return {
                 allowClicking: false,
-                buttons: [{title: 'SUBJECTS', active: false}, {title: 'DOMAINS', active: true}, {
-                    title: 'TAXONOMIES',
+                buttons: [{title: 'subjects', active: false}, {title: 'domains', active: true}, {
+                    title: 'taxonomies',
                     active: false,
                 }],
                 Chips: {
-                    SUBJECTS: [
-                        {title: 'subject-Chip1', active: false}, {title: 'subject-Chip2', active: false},
-                    ],
-                    DOMAINS: [
-                        {title: 'domain-Chip1', active: false}, {title: 'domain-Chip2', active: false},
-                        {title: 'domain-Chip3', active: false}, {title: 'domain-Chip4', active: false},
-                    ],
-                    TAXONOMIES: [
-                        {title: 'taxonomies-Chip1', active: false}, {title: 'taxonomies-Chip2', active: false},
-                        {title: 'taxonomies-Chip3', active: false}, {title: 'taxonomies-Chip4', active: false},
-                        {title: 'taxonomies-Chip5', active: false}, {title: 'taxonomies-Chip6', active: false},
-                        {title: 'taxonomies-Chip7', active: false}, {title: 'taxonomies-Chip8', active: false},
-                        {title: 'taxonomies-Chip9', active: false}, {title: 'taxonomies-Chip10', active: false},
-                        {title: 'taxonomies-Chip11', active: false}, {title: 'taxonomies-Chip12', active: false},
-                    ],
+                    subjects: [], domains: [], taxonomies: [],
                 },
-                currentActiveChips: 'DOMAINS',
+                currentActiveChips: 'domains',
                 vChipActive: 'v-chip--active',
                 associatedRecordsArray: [{title: 'standards', amount: 10}, {title: 'databases', amount: 8}, {
                     title: 'policies',
@@ -159,6 +144,9 @@
                     amount: 6,
                 }],
             }
+        },
+        created() {
+            this.setChips(this.record);
         },
         methods: {
             gotoRecordPage: function () {
@@ -175,11 +163,13 @@
                 this.Chips[this.currentActiveChips].map(item => {
                     if (item === selectedItem) {
                         item.active = !item.active;
-                        //    should call scroll to top from store.
+                        //    should call scroll to top after a delay.
+                        setTimeout(this.scrollToTop, 500);
+                        //    should call Api for the selected chip to be added in chips list.
                     }
                 });
             },
-            associatedRecords: function(record){
+            associatedRecords: function (record) {
                 let records = {
                     standard: {
                         val: 0,
@@ -198,14 +188,29 @@
                         label: "collections"
                     },
                 };
-                record['recordAssociations'].forEach(function(association){
+                record['recordAssociations'].forEach(function (association) {
                     records[association['linkedRecord'].registry].val += 1
                 });
-                record['reverseRecordAssociations'].forEach(function(association){
+                record['reverseRecordAssociations'].forEach(function (association) {
                     records[association['fairsharingRecord'].registry].val += 1
                 });
                 return records;
             },
+            setChips: function (record) {
+                record.subjects.forEach(item => {
+                    this.Chips.subjects.push({label: item.label, active: false});
+                })
+                record.domains.forEach(item => {
+                    this.Chips.domains.push({label: item.label, active: false});
+                })
+                record.taxonomies.forEach(item => {
+                    this.Chips.taxonomies.push({label: item.label, active: false});
+                })
+            },
+            scrollToTop: function () {
+                let myDiv = document.getElementById('scroll-target');
+                myDiv.scrollTo(0, 0);
+            }
         },
     }
 </script>

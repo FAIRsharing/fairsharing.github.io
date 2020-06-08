@@ -27,7 +27,8 @@
           @click="gotoRecordPage"
         >
           <div class="mt-1 ml-2 pr-6 d-flex flex-row align-center justify-start">
-            <circle-holder
+            <record-status
+              :record="record"
               class="mr-8"
             />
             <h3
@@ -114,13 +115,13 @@
 </template>
 
 <script>
-    import CircleHolder from "@/components/IndividualComponents/CircleHolder";
     import Ribbon from "@/components/IndividualComponents/Ribbon";
     import AssociatedRecordsStack from "./AssociatedRecordsStack";
+    import RecordStatus from "@/components/IndividualComponents/RecordStatus"
 
     export default {
         name: "RecordsCardStack",
-        components: {AssociatedRecordsStack, Ribbon, CircleHolder},
+        components: {RecordStatus, AssociatedRecordsStack, Ribbon},
         props: {
             record: {default: null, type: Object},
         },

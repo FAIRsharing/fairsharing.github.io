@@ -30,7 +30,6 @@
           @click="gotoRecordPage"
         >
           <div class=" d-flex flex-column align-center justify-center">
-            <circle-holder />
             <h3 class="max-height">
               <u>Record title example</u>
             </h3>
@@ -111,14 +110,13 @@
 </template>
 
 <script>
-    import CircleHolder from "../IndividualComponents/CircleHolder";
     import Ribbon from "../IndividualComponents/Ribbon";
     // import AssociatedRecordsStack from "./AssociatedRecordsStack";
 
     export default {
         name: "RecordsCardColumn",
-        // components: {AssociatedRecordsStack, Ribbon, CircleHolder},
-        components: { Ribbon, CircleHolder},
+        // components: {AssociatedRecordsStack, Ribbon},
+        components: { Ribbon},
         props: {
             recommended: {default: false, type: Boolean},
         },

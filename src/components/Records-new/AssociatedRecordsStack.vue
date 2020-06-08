@@ -15,7 +15,7 @@
         <b>{{ associatedRecord.val }}</b>
       </div>
     </div>
-      
+
     <!--   column style     -->
     <div
       v-else
@@ -50,6 +50,10 @@
 </script>
 
 <style scoped lang="scss">
+
+    .associated-records b {
+        padding: 0 3px 0 2px;
+    }
 
     .associated-records-holder {
         display: flex;

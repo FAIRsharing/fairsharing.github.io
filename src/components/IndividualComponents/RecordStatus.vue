@@ -1,11 +1,11 @@
 <template>
   <div class="circle">
     <!--
-                <v-icon
-                  size="50"
-                >
-                </v-icon>
-            -->
+                        <v-icon
+                          size="50"
+                        >
+                        </v-icon>
+                    -->
     <v-img
       v-if="Object.keys(icons).includes(record.type)"
       :src="icons[record.type]"
@@ -88,10 +88,10 @@
         border: lightgray 1px solid;
         background: linear-gradient(#a7a7a7, white);
         height: 100px;
+        width: 100px;
         border-radius: 150px;
         -moz-border-radius: 150px;
         -webkit-border-radius: 150px;
-        width: 100px;
 
         #innerCircle {
             position: absolute;
@@ -102,7 +102,7 @@
             -moz-border-radius: 45px;
             -webkit-border-radius: 45px;
             width: 45px;
-            opacity: .8;
+            opacity: .9;
             background: linear-gradient(gray, lightgray);
 
             #status-style {
@@ -120,8 +120,11 @@
             left: 25%;
             top: 25%;
             width: 50%;
-            border: #bababa dotted 3px;
+            border: #b3b3b3 dotted 3px;
             border-radius: 50%;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+
         }
     }
 

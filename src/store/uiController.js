@@ -3,7 +3,6 @@ import {has} from 'lodash'
 let uiController = {
     namespaced: true,
     state: {
-        count: 1,
         UIGeneralStatus: {
             bodyOverflowState: false,
             drawerVisibilityState: false,
@@ -11,7 +10,7 @@ let uiController = {
         },
     },
     mutations: {
-        setGeneralUIAttributesMutation: function (state, statusObject) {
+        setUIStatus: function (state, statusObject) {
             if (has(statusObject, 'bodyOverflowState')) {
                 state.UIGeneralStatus.bodyOverflowState = statusObject.bodyOverflowState;
             }
@@ -25,7 +24,7 @@ let uiController = {
     },
     actions: {
         setGeneralUIAttributesAction: function (state, statusObject) {
-            this.commit('uiController/setGeneralUIAttributesMutation', statusObject);
+            this.commit('uiController/setUIStatus', statusObject);
         }
     }
 };

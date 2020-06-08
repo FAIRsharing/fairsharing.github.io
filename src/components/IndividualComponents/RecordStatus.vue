@@ -1,69 +1,82 @@
 <template>
   <div class="circle">
-    <v-icon
-      size="50"
+    <!--
+                <v-icon
+                  size="50"
+                >
+                </v-icon>
+            -->
+    <v-img
+      v-if="Object.keys(icons).includes(record.type)"
+      :src="icons[record.type]"
       class="iconClass"
-    >
-    </v-icon>
+    />
+
     <span
       id="innerCircle"
+      :style="getRecordStatus.backColor"
     >
-      <!--      :style="getRecordStatus.backColor" for the span above-->
 
       <v-tooltip right>
         <template v-slot:activator="{ on }">
           <b
             id="status-style"
             v-on="on"
-          >{{ /*getRecordStatus.title*/ }}</b>
+          >{{ getRecordStatus.title }}</b>
         </template>
-        <span>{{ /*getRecordStatus.toolTip*/ }}</span>
+        <span>{{ getRecordStatus.toolTip }}</span>
       </v-tooltip>
     </span>
   </div>
 </template>
 
 <script>
-
     export default {
-        name: "CircleHolder",
+        name: "RecordStatus",
         props: {
-            status: {default: null, type: String}
+            record: {default: null, type: Object}
         },
         data() {
             return {
+                icons: {
+                    collection: require("@/assets/records/collection-icon.svg"),
+                    journal: require("@/assets/records/policy.png"),
+                    society: require("@/assets/records/policy.png"),
+                    funder: require("@/assets/records/policy.png"),
+                    terminology_artefact: require("@/assets/records/terminology_artifact.png"),
+                    model_and_format: require("@/assets/records/model_and_format.png"),
+                    reporting_guideline: require("@/assets/records/reporting_guidelines.png"),
+                    metric: require("@/assets/records/std-metric.png"),
+                    repository: require("@/assets/records/db-icon.png"),
+                },
                 statusStyles: {
                     ready: {
                         title: 'R',
                         toolTip: 'Ready',
-                        icon: 'mdi-database',
                         backColor: 'background: linear-gradient(green, lightgreen)'
                     },
                     deprecated: {
                         title: 'D',
                         toolTip: 'Deprecated',
-                        icon: 'mdi-database',
                         backColor: 'background: linear-gradient(#8F4309, #a57202)'
                     },
                     uncertain: {
                         title: 'U',
                         toolTip: 'Uncertain',
-                        icon: 'mdi-database',
-                        backColor: 'background: linear-gradient(yellow, yellow)'
+                        backColor: 'background: linear-gradient(#2d2b2b, #757575)'
                     },
                     inDevelopment: {
                         title: 'I',
                         toolTip: 'In Development',
-                        icon: 'mdi-database',
-                        backColor: 'background: linear-gradient(pink, pink)'
+                        backColor: 'background: linear-gradient(#35baef, #02364b)'
                     }
                 },
             }
         }, computed: {
             getRecordStatus: function () {
-              let _module=this;
+                let _module = this;
 
-              return this.statusStyles[_module.status];
+                return this.statusStyles[_module.record.status];
             }
         }
     }
@@ -73,7 +86,7 @@
     .circle {
         position: relative;
         border: lightgray 1px solid;
-        background-color: white;
+        background: linear-gradient(#a7a7a7, white);
         height: 100px;
         border-radius: 150px;
         -moz-border-radius: 150px;
@@ -106,6 +119,9 @@
             position: absolute;
             left: 25%;
             top: 25%;
+            width: 50%;
+            border: #bababa dotted 3px;
+            border-radius: 50%;
         }
     }
 

@@ -54,7 +54,7 @@
                       xl="1"
                       class="d-flex flex-row align-center mt-4 "
                     >
-                      <circle-holder status="ready" />
+                      <record-status status="ready" />
                     </v-col>
                     <v-col
                       class="d-flex flex-column justify-center"
@@ -482,13 +482,13 @@
 
 <script>
     import Ribbon from "@/components/IndividualComponents/Ribbon";
-    import CircleHolder from "@/components/IndividualComponents/CircleHolder";
     import Footer from "@/components/IndividualComponents/Footer";
     import CountryFlag from 'vue-country-flag';
+    import RecordStatus from "../../components/IndividualComponents/RecordStatus";
 
     export default {
         name: "Record",
-        components: {Footer, CircleHolder, Ribbon, CountryFlag},
+        components: {RecordStatus, Footer,  Ribbon, CountryFlag},
         filters: {
             capitalize: function (value) {
                 return value.charAt(0).toUpperCase() + value.slice(1)

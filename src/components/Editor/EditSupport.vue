@@ -1,5 +1,10 @@
 <template>
   <v-card id="editSupport">
+    <v-card-text v-if="error">
+      <v-alert class="alert-danger">
+        {{ error }}
+      </v-alert>
+    </v-card-text>
     <v-card-text>
       <v-container fluid>
         <v-row>
@@ -71,7 +76,6 @@
         </v-row>
       </v-container>
     </v-card-text>
-
     <v-card-actions>
       <v-btn
         class="primary"
@@ -90,7 +94,8 @@
         name: "EditSupport",
         data(){
           return {
-            contacts: []
+            contacts: [],
+            error: false
           }
         },
         computed: {
@@ -130,6 +135,9 @@
                     this.$router.push({
                         path: "/" + ID
                     })
+                }
+                else {
+                  this.error = this.recordUpdate.message;
                 }
             }
         }

@@ -39,7 +39,7 @@
 
           <!-- EDIT LICENSES -->
           <v-tab-item class="px-10 py-3">
-            <edit-licenses />
+            <edit-licences />
           </v-tab-item>
 
           <!-- EDIT MAINTAINERS -->
@@ -74,7 +74,7 @@
     import EditKeywords from "@/components/Editor/EditKeywords";
     import EditSupport from "../../components/Editor/EditSupport";
     import EditRelationships from "../../components/Editor/EditRelationships";
-    import EditLicenses from "../../components/Editor/EditLicenses";
+    import EditLicences from "../../components/Editor/EditLicences";
     import EditMaintainers from "../../components/Editor/EditMaintainers";
     import EditOrganisations from "../../components/Editor/EditOrganisations";
     import EditGrants from "../../components/Editor/EditGrants";
@@ -87,7 +87,7 @@
           EditGrants,
           EditOrganisations,
           EditMaintainers,
-          EditLicenses,
+          EditLicences,
           EditRelationships,
           EditSupport,
           EditKeywords,

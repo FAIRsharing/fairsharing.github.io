@@ -29,7 +29,6 @@
       <v-btn
         disabled
         class="primary"
-        @click="submitRecord"
       >
         Submit Licences
       </v-btn>
@@ -47,14 +46,10 @@
     //let restClient = new RESTClient();
 
     export default {
-        name: "EditLicenses",
+        name: "EditLicences",
         data(){
             return {
-              licences: [],
-              newLicence: {
-                name: "",
-                url: ""
-              }
+              licences: []
             }
         },
         computed: {
@@ -72,16 +67,6 @@
           },
           removeItem: function(item){
             this.currentRecord['fairsharingRecord'].licences = this.currentRecord['fairsharingRecord'].licences.filter(obj => obj.name !== item.name);
-          },
-          submitRecord: async function(){
-            let record = {
-              id: 'id',
-              token: 'token',
-              record: {
-                licences: this.currentRecord['fairsharingRecord'].licences
-              }
-            };
-            return record;
           }
         }
     }

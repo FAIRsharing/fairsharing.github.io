@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>Associated Records</h3>
+    <h4 class="text-center">Associated Records</h4>
     <!--   row style     -->
     <div
       v-if="!isColumn"
@@ -82,11 +82,12 @@
 
     .associated-records-holder-column {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
 
-        .associated-records-column {
-            margin-top: 2px;
-            margin-right: 5px;
+        .associated-records {
+            margin: 5px 5px 0 0;
             background: rgb(2, 0, 36);
             background: linear-gradient(rgba(102, 137, 153, 0.5), rgba(102, 137, 153, 0.2));
             padding: 2px 10px 2px 10px;

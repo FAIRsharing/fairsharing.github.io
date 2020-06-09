@@ -1,6 +1,7 @@
 //custom colors
 $color-gray-light1: #bebebe;
 $color-gray-light2: #757575;
+$color-gray-light3: #5a5a5a;
 
 $max-width-val: 30%;
 $max-height-val: 100px;
@@ -23,6 +24,13 @@ h3 {
   overflow: hidden;
 }
 
+h4 {
+  font-size: 1.2em;
+  color: $color-gray-light2;
+  font-weight: bold;
+  overflow: hidden;
+}
+
 .max-width {
   max-width: $max-width-val;
 }
@@ -36,10 +44,11 @@ h3 {
 }
 
 .card-description {
-  max-height: 38px;
+  margin: 0 .6rem 0 .6rem;
+  max-height: 40px;
   overflow: hidden;
-  font-size: .8em;
-  color: $color-gray-light1;
+  font-size: .9em;
+  color: $color-gray-light3;
 }
 
 .full-width {

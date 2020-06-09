@@ -20,7 +20,7 @@
         class="full-width"
       >
         <Ribbon
-          v-if="recommended"
+          v-if="record.isRecommended"
           title="RECOMMENDED"
         />
         <v-col
@@ -30,8 +30,12 @@
           @click="gotoRecordPage"
         >
           <div class=" d-flex flex-column align-center justify-center">
-            <h3 class="max-height">
-              <u>Record title example</u>
+            <record-status
+              :record="record"
+              class="mr-8"
+            />
+            <h3 id="title-style">
+              <u>{{ record.name }}</u>
             </h3>
           </div>
         </v-col>
@@ -67,12 +71,16 @@
             <h5 class="d-none">
               Choose Subject , Domain , Taxonomy
             </h5>
+            <i
+              v-if="Chips[currentActiveChips].length===0"
+              class="warning"
+            >No chips for {{ currentActiveChips }}!</i>
             <v-chip-group
               column
             >
               <v-chip
                 v-for="chip in Chips[currentActiveChips]"
-                :key="chip.title"
+                :key="chip.label+'_'+chip.active"
                 small
                 text-color="secondary"
                 color="secondary"
@@ -80,7 +88,7 @@
                 outlined
                 @click="toggleChipActiveness(chip)"
               >
-                {{ chip.title }}
+                {{ chip.label }}
               </v-chip>
             </v-chip-group>
           </section>
@@ -96,65 +104,45 @@
         />
       </div>
       <p class="ma-2 card-description text-justify">
-        {{ description }}
+        {{ record.description }}
       </p>
       <!--  Associated Records      -->
-<!--
       <AssociatedRecordsStack
+        :associated-records="associatedRecords(record)"
         :is-column="true"
-        :associated-records="associatedRecords"
       />
--->
     </v-card>
   </v-col>
 </template>
 
 <script>
     import Ribbon from "../IndividualComponents/Ribbon";
-    // import AssociatedRecordsStack from "./AssociatedRecordsStack";
+    import RecordStatus from "../IndividualComponents/RecordStatus";
+    import AssociatedRecordsStack from "./AssociatedRecordsStack";
 
     export default {
         name: "RecordsCardColumn",
-        // components: {AssociatedRecordsStack, Ribbon},
-        components: { Ribbon},
+        // components: {AssociatedRecordsStack, Ribbon,RecordStatus},
+        components: {AssociatedRecordsStack, RecordStatus, Ribbon},
         props: {
-            recommended: {default: false, type: Boolean},
+            record: {default: null, type: Object},
         },
         data() {
             return {
                 allowClicking: false,
-                associatedRecords: [{title: 'standards', amount: 10}, {title: 'databases', amount: 8}, {
-                    title: 'policies',
-                    amount: 2,
-                }, {
-                    title: 'collections',
-                    amount: 6,
-                }],
-                buttons: [{title: 'SUBJECTS', active: false}, {title: 'DOMAINS', active: true}, {
-                    title: 'TAXONOMIES',
+                buttons: [{title: 'subjects', active: false}, {title: 'domains', active: true}, {
+                    title: 'taxonomies',
                     active: false,
                 }],
-                description: 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer ... ',
                 Chips: {
-                    SUBJECTS: [
-                        {title: 'subject-Chip1', active: false}, {title: 'subject-Chip2', active: false},
-                    ],
-                    DOMAINS: [
-                        {title: 'domain-Chip1', active: false}, {title: 'domain-Chip2', active: false},
-                        {title: 'domain-Chip3', active: false}, {title: 'domain-Chip4', active: false},
-                    ],
-                    TAXONOMIES: [
-                        {title: 'taxonomies-Chip1', active: false}, {title: 'taxonomies-Chip2', active: false},
-                        {title: 'taxonomies-Chip3', active: false}, {title: 'taxonomies-Chip4', active: false},
-                        {title: 'taxonomies-Chip5', active: false}, {title: 'taxonomies-Chip6', active: false},
-                        {title: 'taxonomies-Chip7', active: false}, {title: 'taxonomies-Chip8', active: false},
-                        {title: 'taxonomies-Chip9', active: false}, {title: 'taxonomies-Chip10', active: false},
-                        {title: 'taxonomies-Chip11', active: false}, {title: 'taxonomies-Chip12', active: false},
-                    ],
+                    subjects: [], domains: [], taxonomies: [],
                 },
-                currentActiveChips: 'DOMAINS',
+                currentActiveChips: 'domains',
                 vChipActive: 'v-chip--active'
             }
+        },
+        created() {
+            this.setChips(this.record);
         },
         methods: {
             gotoRecordPage: function () {
@@ -171,15 +159,73 @@
                 this.Chips[this.currentActiveChips].map(item => {
                     if (item === selectedItem) {
                         item.active = !item.active;
-                        //    should call scroll to top from store.
+                        //    should call scroll to top after a delay.
+                        setTimeout(this.scrollToTop, 500);
+                        //    should call Api for the selected chip to be added in chips list.
                     }
                 });
             },
-        }
+            associatedRecords: function (record) {
+                let records = {
+                    standard: {
+                        val: 0,
+                        label: "standards"
+                    },
+                    database: {
+                        val: 0,
+                        label: "databases"
+                    },
+                    policy: {
+                        val: 0,
+                        label: "policies"
+                    },
+                    collection: {
+                        val: 0,
+                        label: "collections"
+                    },
+                };
+                record['recordAssociations'].forEach(function (association) {
+                    records[association['linkedRecord'].registry].val += 1
+                });
+                record['reverseRecordAssociations'].forEach(function (association) {
+                    records[association['fairsharingRecord'].registry].val += 1
+                });
+                return records;
+            },
+            setChips: function (record) {
+                let counter = 0;
+                record.subjects.forEach(item => {
+                    if (counter < 3) {
+                        this.Chips.subjects.push({label: item.label, active: false});
+                    }
+                    counter++;
+                })
+                record.domains.forEach(item => {
+                    if (counter < 3) {
+                        this.Chips.domains.push({label: item.label, active: false});
+                    }
+                    counter++;
+                })
+                record.taxonomies.forEach(item => {
+                    if (counter < 3) {
+                        this.Chips.taxonomies.push({label: item.label, active: false});
+                    }
+                    counter++;
+                })
+            },
+            scrollToTop: function () {
+                let myDiv = document.getElementById('scroll-target');
+                myDiv.scrollTo(0, 0);
+            }
+        },
     }
 </script>
 
 <style scoped>
+    #title-style {
+        height: 55px;
+    }
+
     .chips-container-margin {
         margin-right: 10%;
         margin-left: 24%;
@@ -189,6 +235,7 @@
         height: 110px;
         overflow-x: hidden;
         scroll-behavior: smooth;
+        position: relative;
     }
 
     .v-chip.v-chip--outlined.v-chip--active::before {

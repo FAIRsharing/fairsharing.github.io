@@ -5,7 +5,14 @@
         {
           "label": "domainTest",
           "id": 1,
-          "type": "domains"
+          "type": "domains",
+          "inFairsharing": true
+        },
+        {
+          "label": "domainTest2",
+          "id": 2,
+          "type": "domains",
+          "inFairsharing": false
         }
       ]
     },

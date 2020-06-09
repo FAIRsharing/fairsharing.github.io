@@ -317,7 +317,8 @@
           },
             getDomains: async function(){
                 let domains = await graphClient.executeQuery(domainsQuery);
-                return domains["searchDomains"]
+                domains = domains['searchDomains'].filter(obj => obj['inFairsharing'] === true);
+                return domains
             },
             getTaxonomies: async function(){
                 let taxonomies = await graphClient.executeQuery(taxonomiesQuery);

@@ -33,7 +33,7 @@
         <RecordsCardColumn
           v-for="record in records"
           :key="'record'+record.id"
-          :recommended="record.recommended"
+          :record="record"
         />
       </v-row>
     </div>

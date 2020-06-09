@@ -76,6 +76,10 @@
             <h5 class="d-none">
               Choose Subject , Domain , Taxonomy
             </h5>
+            <i
+              v-if="Chips[currentActiveChips].length===0"
+              class="warning no-chips"
+            >No chips for {{ currentActiveChips }}!</i>
             <v-chip-group
               column
             >
@@ -221,6 +225,13 @@
         height: 90px;
         overflow-x: hidden;
         scroll-behavior: smooth;
+        position: relative;
+
+        .no-chips {
+            position: absolute;
+            left: 20%;
+            top: 30%;
+        }
     }
 
     .v-chip.v-chip--outlined.v-chip--active::before {

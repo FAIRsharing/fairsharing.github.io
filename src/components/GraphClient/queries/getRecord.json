@@ -58,7 +58,15 @@
       {
           "name": "licences",
           "fields": [
-              "name"
+              "id",
+              "name",
+              "url",
+              {
+                  "queryName": "licenceLinks",
+                  "fields": [
+                      "relation"
+                  ]
+              }
           ]
       },
       {

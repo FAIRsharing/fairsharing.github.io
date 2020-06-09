@@ -98,7 +98,10 @@
               </template>
 
               <!-- autocomplete data -->
+
               <template v-slot:item="data">
+                <v-checkbox :input-value="data.isSelected"
+                            @change="props.select($event)"></v-checkbox>
                 <country-flag
                   v-if="data.item.code !== null"
                   :country="data.item.code"

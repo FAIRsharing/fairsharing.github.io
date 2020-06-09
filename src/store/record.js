@@ -93,7 +93,7 @@ let recordStore = {
     },
     getters: {
         getField: (state) => (fieldName) => {
-            if (state.currentRecord['fairsharingRecord']) return state.currentRecord['fairsharingRecord'][fieldName]
+            return state.currentRecord['fairsharingRecord'][fieldName];
         }
     }
 };

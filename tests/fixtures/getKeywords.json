@@ -1,0 +1,45 @@
+{
+  "keywords": {
+    "domains": {
+      "searchDomains": [
+        {
+          "label": "domainTest",
+          "id": 1,
+          "type": "domains"
+        }
+      ]
+    },
+    "subjects": {
+      "searchSubjects": [
+        {
+          "label": "subjectTest",
+          "id": 1,
+          "type": "subjects"
+        }
+      ]
+    },
+    "taxonomies": {
+      "searchTaxonomies": [
+        {
+          "label": "taxonomyTest",
+          "id": 1,
+          "type": "taxonomies"
+        },
+        {
+          "label": "speciesTest",
+          "id": 2,
+          "type": "species"
+        }
+      ]
+    },
+    "userDefinedTags": {
+      "searchUserDefinedTags": [
+        {
+          "label": "userTagTest",
+          "id": 1,
+          "type": "userDefinedTags"
+        }
+      ]
+    }
+  }
+}

@@ -219,7 +219,8 @@
                   "species": "green",
                   "taxonomies": "green",
                   "userDefinedTags": "grey"
-                }
+                },
+                error: null
             }
         },
         computed: {
@@ -271,27 +272,29 @@
                 }
             },
             recordKeywords: {
-            deep: true,
-            handler: function(after){
-              const _module = this;
-              if (_module.initialized){
-                _module.selectedKeywords = after;
-              }
-            }
+                deep: true,
+                handler: function(after){
+                  const _module = this;
+                  if (_module.initialized){
+                    _module.selectedKeywords = after;
+                  }
+                }
           }
         },
         async mounted(){
-            let _module = this;
-            await _module.getData();
-            _module.initialized = true;
+          await this.$nextTick(async function () {
+              let _module = this;
+              await _module.getData();
+              _module.initialized = true;
+          })
         },
         methods: {
             ...mapActions("record", ["updateRecord"]),
-            getFields: async function(){
+            getFields: function(){
               let currentKeywords = [];
               const _module = this;
-              await _module.fields.forEach(async function(field){
-                let values = await _module.getField(field);
+              _module.fields.forEach(function(field){
+                let values = _module.getField(field);
                 if (values){
                   values.forEach(function(val){
                     val.type = field;
@@ -323,7 +326,7 @@
                 _module.addToKeywords(await _module.getTaxonomies(), "species");
                 _module.addToKeywords(await _module.getSubjects(), "subjects");
                 _module.addToKeywords(await _module.getUserTags(), "userDefinedTags");
-                _module.recordKeywords = await _module.getFields();
+                _module.recordKeywords = _module.getFields();
                 _module.recordKeywords.forEach(function(field){
                     let keyword = _module.keywords.filter(obj => obj.label === field.label);
                     _module.selectedKeywords.push(keyword[0]);
@@ -349,20 +352,19 @@
                 taxonomy_ids: [],
                 user_defined_tag_ids: []
               };
+
+              const types = {
+                domains: "domain_ids",
+                subjects: "subject_ids",
+                taxonomies: "taxonomy_ids",
+                species: "taxonomy_ids",
+                userDefinedTags: "user_defined_tag_ids"
+              };
+
               _module.recordKeywords.forEach(function(keyword){
-                if (keyword.type === 'domains'){
-                  preparedRecord.domain_ids.push(keyword.id)
-                }
-                else if (keyword.type === 'subjects'){
-                  preparedRecord.subject_ids.push(keyword.id)
-                }
-                else if (keyword.type === 'species' || keyword.type === 'taxonomies'){
-                  preparedRecord.taxonomy_ids.push(keyword.id)
-                }
-                else if (keyword.type === 'userDefinedTags'){
-                  preparedRecord.user_defined_tag_ids.push(keyword.id)
-                }
+                  preparedRecord[types[keyword.type]].push(keyword.id)
               });
+
               let data = {
                 record: preparedRecord,
                 id: _module.$route.params.id,
@@ -376,6 +378,9 @@
                 _module.$router.push({
                   path: "/" + ID
                 })
+              }
+              else {
+                _module.error = _module.recordUpdate.message;
               }
             },
             async createNewTerm(){

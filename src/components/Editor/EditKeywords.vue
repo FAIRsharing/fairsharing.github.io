@@ -96,12 +96,23 @@
         calculate-widths
       >
         <template slot="no-results">
-          <div class="noTerm mt-3">
-            No terms where found, do you want to create a new user defined tag?
+          <div v-if="showTypes.length === 4">
+            <div class="noTerm mt-3">
+              No terms where found, do you want to create a new user defined tag?
+            </div>
+            <v-btn
+              class="green white--text my-3"
+              @click="createNewTerm()"
+            >
+              Create new term
+            </v-btn>
           </div>
-          <v-btn @click="createNewTerm()" class="green white--text my-3">
-            Create new term
-          </v-btn>
+
+          <div v-else>
+            <div class="noTerm mt-3">
+              No term found. To create a new term please activate all ontology's switches above the table.
+            </div>
+          </div>
         </template>
 
         <template

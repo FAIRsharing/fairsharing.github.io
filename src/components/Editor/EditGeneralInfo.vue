@@ -42,8 +42,19 @@
             />
           </v-col>
 
-          <!-- registry -->
+          <!-- year of creation -->
           <v-col class="col-3">
+            <v-autocomplete
+              v-model="metaTemplate.metadata.year_creation"
+              label="Year of creation"
+              hint="Year the resource was created"
+              :items="years"
+              outlined
+            />
+          </v-col>
+
+          <!-- registry -->
+          <v-col class="col-4">
             <v-autocomplete
               v-model="metaTemplate.type"
               label="Registry type"
@@ -78,7 +89,7 @@
           </v-col>
 
           <!-- countries -->
-          <v-col class="col-3">
+          <v-col class="col-4">
             <v-autocomplete
               v-model="metaTemplate.countries"
               label="Countries"
@@ -100,21 +111,27 @@
               <!-- autocomplete data -->
 
               <template v-slot:item="data">
-                <v-checkbox :input-value="data.isSelected"
-                            @change="props.select($event)"></v-checkbox>
+                <v-checkbox
+                  :input-value="data.isSelected"
+                  @change="props.select($event)"
+                />
                 <country-flag
                   v-if="data.item.code !== null"
                   :country="data.item.code"
                   size="normal"
                 />
-                <img v-else src="@/assets/placeholders/country.png" class="ml-4 mr-3">
+                <img
+                  v-else
+                  src="@/assets/placeholders/country.png"
+                  class="ml-4 mr-3"
+                >
                 <div> {{ data.item.name }} </div>
               </template>
             </v-autocomplete>
           </v-col>
 
           <!-- status -->
-          <v-col class="col-3">
+          <v-col class="col-4">
             <v-autocomplete
               v-model="metaTemplate.status"
               label="Status"
@@ -132,7 +149,7 @@
               <!-- autocomplete data -->
               <template v-slot:item="data">
                 <v-list
-                  max-width="565px"
+                  max-width="430px"
                   two-line
                   class="py-0 my-0"
                 >
@@ -196,13 +213,24 @@
         data(){
             return {
                 recordsTypes: [],
-                countries: []
+                countries: [],
+                yearRange: 100
             }
         },
         computed: {
             ...mapState("record", ["metaTemplate", "recordUpdate"]),
             ...mapState("users", ["user"]),
             status: function(){ return status.status; },
+            years: function(){
+              let years = [];
+              const rangeArray = [...Array(this.yearRange).keys()];
+              let d = new Date();
+              let thisYear = d.getFullYear();
+              rangeArray.forEach(function(year){
+                years.push(thisYear - year);
+              });
+              return years;
+            }
         },
         watch: {
           metaTemplate: {

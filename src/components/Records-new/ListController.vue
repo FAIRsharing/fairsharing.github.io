@@ -1,44 +1,80 @@
 <template>
-  <div class="d-flex  justify-center">
-    <v-icon
-      x-large
-      class="mouse-cursor"
-      :class="{'active':!isSortHovered}"
-      @mouseenter="isSortHovered=true"
-      @mouseleave="isSortHovered=false"
+  <div class="d-flex justify-space-between justify-center">
+    <!--Sorting-->
+    <v-skeleton-loader
+      :loading="loading"
+      width="60px"
+      type="avatar"
     >
-      sort
-    </v-icon>
-      
+      <v-menu
+        offset-y
+        bottom
+        fixed
+      >
+        <template v-slot:activator="{ on }">
+          <v-icon
+            x-large
+            class="mouse-cursor"
+            :class="{'active':!isSortHovered}"
+            v-on="on"
+            @mouseenter="isSortHovered=true"
+            @mouseleave="isSortHovered=false"
+          >
+            sort
+          </v-icon>
+        </template>
+        <sorting />
+      </v-menu>
+    </v-skeleton-loader>
     <!--Pagination-->
-    <Pagination :total-pages="totalPages" />
-
+    <v-skeleton-loader
+      :loading="loading"
+      width="100%"
+      type="list-item"
+    >
+      <Pagination :total-pages="totalPages" />
+    </v-skeleton-loader>
+      
     <!--Stack or Column list toggle buttons-->
-    <v-icon
-      x-large
-      :class="{'active':isColumnList}"
-      @click="changeListType('stackList')"
-    >
-      view_headline
-    </v-icon>
-    <v-icon
-      x-large
-      style="font-size: 2.8rem"
-      :class="{'active':!isColumnList}"
-      @click="changeListType('columnList')"
-    >
-      view_column
-    </v-icon>
+    <div class="d-flex flex-row align-center">
+      <v-skeleton-loader
+        :loading="loading"
+        type="avatar"
+      >
+        <v-icon
+          x-large
+          :class="{'active':isColumnList}"
+          @click="changeListType('stackList')"
+        >
+          view_headline
+        </v-icon>
+      </v-skeleton-loader>
+      <v-skeleton-loader
+        :loading="loading"
+        type="avatar"
+      >
+        <v-icon
+          x-large
+          style="font-size: 2.8rem"
+          :class="{'active':!isColumnList}"
+          @click="changeListType('columnList')"
+        >
+          view_column
+        </v-icon>
+      </v-skeleton-loader>
+    </div>
   </div>
 </template>
 
 <script>
     import Pagination from "@/components/IndividualComponents/Pagination";
+    import Sorting from "@/components/IndividualComponents/Sorting";
+
     import {mapState} from "vuex";
 
     export default {
         name: "ListController",
-        components:{Pagination},
+        components: {Pagination, Sorting},
         data() {
             return {
                 page: 1,

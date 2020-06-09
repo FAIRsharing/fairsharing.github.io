@@ -69,14 +69,23 @@
                         title: 'I',
                         toolTip: 'In Development',
                         backColor: 'background: linear-gradient(#35baef, #02364b)'
-                    }
+                    },
+                  undefined: {
+                    title: '?',
+                    toolTip: 'undefined',
+                    backColor: 'background: linear-gradient(red, red)'
+                  },
                 },
             }
         }, computed: {
             getRecordStatus: function () {
                 let _module = this;
 
+                if(this.statusStyles[_module.record.status]!==undefined)
                 return this.statusStyles[_module.record.status];
+                else {
+                  return this.statusStyles[undefined]
+                }
             }
         }
     }

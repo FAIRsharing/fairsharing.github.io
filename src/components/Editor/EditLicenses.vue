@@ -41,10 +41,10 @@
     import { mapState } from "vuex"
     import licenceQuery from "@/components/GraphClient/queries/getLicences.json"
     import GraphClient from "@/components/GraphClient/GraphClient.js"
-    import RESTClient from "@/components/Client/RESTClient.js"
+    //import RESTClient from "@/components/Client/RESTClient.js"
 
     let graphClient = new GraphClient();
-    let restClient = new RESTClient();
+    //let restClient = new RESTClient();
 
     export default {
         name: "EditLicenses",
@@ -70,9 +70,6 @@
             let licences = await graphClient.executeQuery(licenceQuery);
             return licences['searchLicences']
           },
-          createNewLicence: async function(){
-            console.log(this.newLicence)
-          },
           removeItem: function(item){
             this.currentRecord['fairsharingRecord'].licences = this.currentRecord['fairsharingRecord'].licences.filter(obj => obj.name !== item.name);
           },
@@ -84,8 +81,7 @@
                 licences: this.currentRecord['fairsharingRecord'].licences
               }
             };
-            console.log(record);
-            console.log(restClient);
+            return record;
           }
         }
     }

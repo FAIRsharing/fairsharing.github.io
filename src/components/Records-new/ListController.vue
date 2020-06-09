@@ -9,10 +9,11 @@
     >
       sort
     </v-icon>
-    <v-pagination
-      v-model="page"
-      :length="5"
-    />
+      
+    <!--Pagination-->
+    <Pagination :total-pages="totalPages" />
+
+    <!--Stack or Column list toggle buttons-->
     <v-icon
       x-large
       :class="{'active':isColumnList}"
@@ -32,14 +33,21 @@
 </template>
 
 <script>
+    import Pagination from "@/components/IndividualComponents/Pagination";
+    import {mapState} from "vuex";
+
     export default {
         name: "ListController",
+        components:{Pagination},
         data() {
             return {
                 page: 1,
                 isSortHovered: false,
                 isColumnList: false // need to go to store to have them synced in everywhere.
             }
+        },
+        computed: {
+            ...mapState('records', ["totalPages", "loading"])
         },
         methods: {
             changeListType: function (listType) {

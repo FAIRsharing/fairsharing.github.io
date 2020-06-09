@@ -1,0 +1,15 @@
+{
+  "queryName": "searchLicences",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "name",
+    "url",
+    {
+      "name": "licenceLinks",
+      "fields": [
+        "relation"
+      ]
+    }
+  ]
+}

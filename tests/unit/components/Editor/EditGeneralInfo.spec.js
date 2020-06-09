@@ -44,7 +44,7 @@ const $router = { push: jest.fn() };
 let graphStub;
 let restStub;
 
-describe("CreateRecord.vue", function() {
+describe("EditGeneralInfo.vue", function() {
     let wrapper;
 
     beforeEach( async () => {

@@ -21,19 +21,29 @@
       {
           "name": "taxonomies",
           "fields": [
-              "label"
+              "label",
+              "id"
           ]
       },
       {
           "name": "domains",
           "fields": [
-              "label"
+              "label",
+              "id"
           ]
       },
       {
           "name": "subjects",
           "fields": [
-              "label"
+              "label",
+              "id"
+          ]
+      },
+      {
+          "name": "userDefinedTags",
+          "fields": [
+              "label",
+              "id"
           ]
       },
       {
@@ -48,7 +58,15 @@
       {
           "name": "licences",
           "fields": [
-              "name"
+              "id",
+              "name",
+              "url",
+              {
+                  "queryName": "licenceLinks",
+                  "fields": [
+                      "relation"
+                  ]
+              }
           ]
       },
       {

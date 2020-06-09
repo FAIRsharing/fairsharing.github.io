@@ -20,22 +20,18 @@ let recordStore = {
             error: false,
             message: null,
             id: null
-        }
+        },
+        keywordsTemplate: {}
     },
     mutations: {
         setCurrentRecord(state, data){
             state.currentRecord = data;
+            if (!data["fairsharingRecord"]['metadata']['contacts']) state.currentRecord["fairsharingRecord"]['metadata']['contacts'] = [];
             state.metaTemplate = {
                 type: data["fairsharingRecord"].type,
                 status: data["fairsharingRecord"].status,
                 countries: data["fairsharingRecord"].countries,
-                metadata: {
-                    name: data["fairsharingRecord"].metadata.name,
-                    abbreviation: data["fairsharingRecord"].metadata.abbreviation,
-                    year_creation: data["fairsharingRecord"].metadata.year_creation,
-                    homepage: data["fairsharingRecord"].metadata.homepage,
-                    description: data["fairsharingRecord"].metadata.description
-                }
+                metadata: data["fairsharingRecord"].metadata
             };
             state.recordUpdate = {
                 error: false,
@@ -89,6 +85,11 @@ let recordStore = {
         },
     },
     modules: {
+    },
+    getters: {
+        getField: (state) => (fieldName) => {
+            return state.currentRecord['fairsharingRecord'][fieldName];
+        }
     }
 };
 

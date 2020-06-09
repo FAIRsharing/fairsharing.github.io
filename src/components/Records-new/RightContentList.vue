@@ -17,25 +17,37 @@
     <!--List Row-->
     <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
       <article v-if="!isColumnList">
-        <h2 class="d-none">
-          Result
-        </h2>
-        <RecordsCardStack
-          v-for="record in records"
-          :key="'record'+record.id"
-          :record="record"
-        />
+        <v-skeleton-loader
+          class="mt-5"
+          :loading="loading"
+          type="card"
+        >
+          <h2 class="d-none">
+            Result
+          </h2>
+          <RecordsCardStack
+            v-for="record in records"
+            :key="'record_'+record.id"
+            :record="record"
+          />
+        </v-skeleton-loader>
       </article>
     </div>
 
     <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
-      <v-row v-show="isColumnList">
-        <RecordsCardColumn
-          v-for="record in records"
-          :key="'record'+record.id"
-          :record="record"
-        />
-      </v-row>
+      <v-skeleton-loader
+        class="mt-5"
+        :loading="loading"
+        type="card"
+      >
+        <v-row v-show="isColumnList">
+          <RecordsCardColumn
+            v-for="record in records"
+            :key="'record_'+record.id"
+            :record="record"
+          />
+        </v-row>
+      </v-skeleton-loader>
     </div>
 
     <!--List Controller-->

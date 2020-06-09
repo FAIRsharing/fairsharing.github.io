@@ -122,7 +122,6 @@
 
     export default {
         name: "RecordsCardColumn",
-        // components: {AssociatedRecordsStack, Ribbon,RecordStatus},
         components: {AssociatedRecordsStack, RecordStatus, Ribbon},
         props: {
             record: {default: null, type: Object},

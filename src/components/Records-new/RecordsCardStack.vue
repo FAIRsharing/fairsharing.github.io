@@ -1,5 +1,6 @@
 <template>
   <!--Stack List-->
+
   <section class="pt-3 pt-lg-4">
     <v-card
       class="pl-2 pr-2 pt-2 d-flex  align-center flex-column"
@@ -24,20 +25,21 @@
           xl="3"
           @mouseenter="allowClicking=true"
           @mouseleave="allowClicking=false"
-          @click="gotoRecordPage"
         >
-          <div class="mt-1 ml-2 pr-6 d-flex flex-row align-center justify-start">
-            <record-status
-              :record="record"
-              class="mr-8"
-            />
-            <h3
-              class="max-height "
-              style="width: 60%"
-            >
-              <u>{{ record.name }}</u>
-            </h3>
-          </div>
+          <router-link :to="'/' +record.id">
+            <div class="mt-1 ml-2 pr-6 d-flex flex-row align-center justify-start">
+              <record-status
+                :record="record"
+                class="mr-8"
+              />
+              <h3
+                class="max-height "
+                style="width: 60%"
+              >
+                <u>{{ record.name }}</u>
+              </h3>
+            </div>
+          </router-link>
         </v-col>
         <v-col
           cols="12"
@@ -155,7 +157,7 @@
         },
         methods: {
             gotoRecordPage: function () {
-                this.$router.push({path: '/record'});
+                this.$router.push({path: `${this.record.id}`});
             },
             changeActiveItem: function (itemIndex) {
                 this.buttons.map(item => item.active = false);

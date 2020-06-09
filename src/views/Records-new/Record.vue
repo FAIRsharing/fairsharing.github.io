@@ -1,9 +1,12 @@
 <template>
-  <v-content>
+  <v-content >
     <h1 class="d-none">
       Content
     </h1>
-    <v-container fluid>
+    <v-container
+      fluid
+      v-if="!error && queryTriggered"
+    >
       <!--  Content  -->
       <v-row
         no-gutters
@@ -21,7 +24,9 @@
             elevation="1"
           >
             <!-- General Information -->
-            <v-row no-gutters>
+            <v-row
+              no-gutters
+            >
               <v-col>
                 <v-card
                   class="pa-4 mt-5 d-flex flex-column"
@@ -38,7 +43,7 @@
 
                   <!-- Ribbon -->
                   <Ribbon
-                    v-if="fairsharingRecord.isRecommended"
+                    v-if="currentRecord['fairsharingRecord'].isRecommended"
                     title="RECOMMENDED"
                   />
                   <!-- Title and DOI -->
@@ -54,7 +59,7 @@
                       xl="1"
                       class="d-flex flex-row align-center mt-4 "
                     >
-                      <record-status status="ready" />
+<!--                      <record-status :status=currentRecord['fairsharingRecord'] />-->
                     </v-col>
                     <v-col
                       class="d-flex flex-column justify-center"
@@ -66,49 +71,49 @@
                     >
                       <div class="d-flex flex-column mt-2  ml-sm-6 ml-lg-8">
                         <div class="d-flex flex-row mb-2 align-center">
-                          <h3>{{ fairsharingRecord.name }}</h3>
-                          <b class="ml-2">({{ fairsharingRecord.abbreviation }})</b>
+                          <h3>{{ currentRecord['fairsharingRecord'].name }}</h3>
+                          <b class="ml-2">({{ currentRecord['fairsharingRecord'].abbreviation }})</b>
                         </div>
                         <div class="d-flex align-center">
                           <h3 class="mr-1">
                             doi:
                           </h3>
-                          <router-link :to="fairsharingRecord.doi">
-                            {{ fairsharingRecord.doi }}
+                          <router-link :to="currentRecord['fairsharingRecord'].doi">
+                            {{ currentRecord['fairsharingRecord'].doi }}
                           </router-link>
                         </div>
                       </div>
                     </v-col>
                   </v-row>
 
-                  <section>
+                  <section >
                     <!--Type-->
                     <div class="d-flex">
                       <b class="mr-2">Type:</b>
-                      <p>{{ fairsharingRecord.type | capitalize | cleanString }}</p>
+                      <p>{{ currentRecord['fairsharingRecord'].type | capitalize | cleanString }}</p>
                     </div>
                     <!--Year of Creation-->
                     <!--!! Attention need data model to be changed. must be sent by fairsharing Object like below!! -->
                     <!--fairsharingRecord.year_creation-->
                     <div class="d-flex">
                       <b class="mr-2">Year of Creation:</b>
-                      <p>{{ fairsharingRecord.metadata.year_creation }}</p>
+                      <p>{{ currentRecord['fairsharingRecord'].metadata.year_creation }}</p>
                     </div>
                     <!--Registry-->
                     <div class="d-flex">
                       <b class="mr-2">Registry:</b>
-                      <p>{{ fairsharingRecord.registry | capitalize }}</p>
+                      <p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}</p>
                     </div>
                     <!--Description-->
                     <div class="d-flex align-center">
                       <b class="mr-2">Description:</b>
-                      <p>{{ fairsharingRecord.description | capitalize }}</p>
+                      <p>{{ currentRecord['fairsharingRecord'].description | capitalize }}</p>
                     </div>
                     <!--HomePage-->
                     <div class="d-flex">
                       <b class="mr-2 mb-4">Home Page:</b>
-                      <router-link :to="fairsharingRecord.homepage">
-                        {{ fairsharingRecord.homepage }}
+                      <router-link :to="currentRecord['fairsharingRecord'].homepage">
+                        {{ currentRecord['fairsharingRecord'].homepage }}
                       </router-link>
                     </div>
                     <!--Developed Countries -->
@@ -139,7 +144,7 @@
             </v-row>
 
             <!-- Single Row -->
-            <v-row>
+            <v-row v-if="!a">
               <!--Left Column-->
               <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
                 <!-- KEYWORDS -->
@@ -159,7 +164,7 @@
                     <div class="d-flex mt-4 flex-wrap">
                       <b class="mr-2">Taxonomies:</b>
                       <v-chip
-                        v-for="item in fairsharingRecord.taxonomies"
+                        v-for="item in currentRecord['fairsharingRecord'].taxonomies"
                         :key="item.label"
                         class="mr-2 mb-2 "
                         color="primary"
@@ -177,7 +182,7 @@
                     <div class="d-flex mt-2 flex-wrap">
                       <b class="mr-8">Domains:</b>
                       <v-chip
-                        v-for="item in fairsharingRecord.domains"
+                        v-for="item in currentRecord['fairsharingRecord'].domains"
                         :key="item.label"
                         class="mr-2 mb-2"
                         color="secondary"
@@ -195,7 +200,7 @@
                     <div class="d-flex mt-2 flex-wrap">
                       <b class="mr-8">Subjects:</b>
                       <v-chip
-                        v-for="item in fairsharingRecord.subjects"
+                        v-for="item in currentRecord['fairsharingRecord'].subjects"
                         :key="item.label"
                         class="mr-2 mb-2"
                         color="accent"
@@ -225,7 +230,7 @@
                   </h4>
                   <!--Contact-->
                   <v-card
-                    v-for="(contact,index) in fairsharingRecord.metadata.contacts"
+                    v-for="(contact,index) in currentRecord['fairsharingRecord'].metadata.contacts"
                     :key="contact.contact_name"
                     class="pa-4 d-flex flex-column"
                     :class="index===0?'mt-4':'mt-2'"
@@ -271,7 +276,7 @@
                     />
                   </h4>
                   <v-card
-                    v-for="(grant,index) in fairsharingRecord.grants"
+                    v-for="(grant,index) in currentRecord['fairsharingRecord'].grants"
                     :key="grant.name"
                     class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
                     :class="index===0?'mt-4':'mt-2'"
@@ -306,7 +311,7 @@
                     />
                   </h4>
                   <v-card
-                    v-for="(organisation,index) in fairsharingRecord.organisations"
+                    v-for="(organisation,index) in currentRecord['fairsharingRecord'].organisations"
                     :key="organisation.name"
                     class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
                     :class="index===0?'mt-4':'mt-2'"
@@ -434,7 +439,9 @@
             </v-row>
 
             <!-- Associated Records -->
-            <v-row no-gutters>
+            <v-row
+              no-gutters
+            >
               <v-col>
                 <v-card
                   class="pa-4 mt-2 d-flex flex-column"
@@ -484,11 +491,13 @@
     import Ribbon from "@/components/IndividualComponents/Ribbon";
     import Footer from "@/components/IndividualComponents/Footer";
     import CountryFlag from 'vue-country-flag';
-    import RecordStatus from "../../components/IndividualComponents/RecordStatus";
+    // import RecordStatus from "@/components/IndividualComponents/RecordStatus";
+    import Client from '@/components/GraphClient/GraphClient.js'
+    import {mapActions, mapState} from 'vuex'
 
     export default {
         name: "Record",
-        components: {RecordStatus, Footer,  Ribbon, CountryFlag},
+        components: { Footer, Ribbon, CountryFlag},
         filters: {
             capitalize: function (value) {
                 return value.charAt(0).toUpperCase() + value.slice(1)
@@ -502,6 +511,16 @@
         },
         data: () => {
             return {
+                a:true,
+                error: null,
+                queryTriggered: false,
+                //items: ["Edit", "Admin Edit", "Claim Ownership", "Suggest and edit/Questions?", "Watch Record"],
+                links: [
+                    {
+                        name: "Edit",
+                        // link: "#/" + this.$route.params['id'] + '/edit'
+                    }
+                ],
                 search: '',
                 headers: [
                     {text: 'Name', value: 'name'},
@@ -510,193 +529,244 @@
                     {text: 'Subject', value: 'subject'},
                 ],
                 showScrollToTopButton: false,
-                fairsharingRecord: {
-                    "registry": "standard",
-                    "type": "terminology_artefact",
-                    "doi": "10.25504/FAIRsharing.1414v8",
-                    "status": "ready",
-                    "name": "BRENDA tissue / enzyme source",
-                    "abbreviation": "BTO",
-                    "description": "A structured controlled vocabulary for the source of an enzyme.A structured controlled vocabulary for the source of an enzyme.A structured controlled vocabulary for the source of an enzyme.A structured controlled vocabulary for the source of an enzyme.A structured controlled vocabulary for the source of an enzyme. It comprises terms for tissues, cell lines, cell types and cell cultures from uni- and multicellular organisms.",
-                    "homepage": "http://www.brenda-enzymes.info",
-                    "countries": [{"name": "Germany"}],
-                    "metadata": {
-                        "doi": "10.25504/FAIRsharing.1414v8",
-                        "name": "BRENDA tissue / enzyme source",
-                        "status": "ready",
-                        "contacts": [{
-                            "contact_name": "BrendaTissue Administrators",
-                            "contact_email": "a.chang@tu-bs.de"
-                        }],
-                        "homepage": "http://www.brenda-enzymes.info",
-                        "identifier": 2,
-                        "description": "A structured controlled vocabulary for the source of an enzyme. It comprises terms for tissues, cell lines, cell types and cell cultures from uni- and multicellular organisms.",
-                        "abbreviation": "BTO",
-                        "year_creation": 1991
-                    },
-                    "taxonomies": [{"label": "All"}],
-                    "domains": [{"label": "Reaction data"}, {"label": "Cell"}, {"label": "Enzyme"}, {"label": "Organ"}],
-                    "subjects": [{"label": "Life Science"}, {"label": "Ontology and Terminology"}, {"label": "Enzymology"}],
-                    "grants": [{"name": "R01 GM071872"}, {"name": "AA b21221"}, {"name": "GF GAA1872"}],
-                    "isRecommended": true,
-                    "legacyIds": ["bsg-000063", "bsg-s000063"],
-                    "licences": [{"name": "ORCID MIT-Style License"}, {"name": "The MIT License (MIT)"}],
-                    "maintainers": [{"username": "ORCID", "id": 2267}],
-                    "organisations": [{"name": "The Federal Ministry of Education and Research (BMBF)"}, {"name": "European Union, Free European Life-Science Information and Computational Services (FELICS)"}, {"name": "European Union, Serving Life-science Information for the Next Generation (SLING)"}, {"name": "BRENDA Administrators"}, {"name": "Ministry of Science and Culture of Lower Saxony, Hannover, Germany"}, {"name": "National Institutes of Health (NIH), Bethesda, MD, USA"}],
-                    "publications": [{"title": "The BRENDA Tissue Ontology (BTO): the first all-integrating ontology of all organisms for enzyme sources."}, {"title": "BRENDA in 2019: a European ELIXIR core data resource."}, {"title": "BRENDA, the enzyme database: updates and major new developments."}, {"title": "BRENDA in 2015: exciting developments in its 25th year of existence."}, {"title": "BRENDA in 2013: integrated reactions, kinetic data, enzyme function data, improved disease classification: new options and contents in BRENDA."}],
-                    "recordAssociations": [{
-                        "linkedRecord": {
-                            "name": "FAANG metadata experiment specification standard",
-                            "id": 222,
-                            "registry": "standard"
-                        }, "recordAssocLabel": "related_to"
-                    }, {
-                        "linkedRecord": {
-                            "name": "Fission Yeast Phenotype Ontology",
-                            "id": 340,
-                            "registry": "standard"
-                        }, "recordAssocLabel": "related_to"
-                    }, {
-                        "linkedRecord": {
-                            "name": "Investigation Study Assay Tabular",
-                            "id": 1140,
-                            "registry": "standard"
-                        }, "recordAssocLabel": "related_to"
-                    }, {
-                        "linkedRecord": {
-                            "name": "Ontology for Parasite LifeCycle",
-                            "id": 186,
-                            "registry": "standard"
-                        }, "recordAssocLabel": "related_to"
-                    }, {
-                        "linkedRecord": {
-                            "name": "FAANG metadata sample specification standard",
-                            "id": 648,
-                            "registry": "standard"
-                        }, "recordAssocLabel": "related_to"
-                    }, {
-                        "linkedRecord": {"name": "PRIDE XML Format", "id": 480, "registry": "standard"},
-                        "recordAssocLabel": "related_to"
-                    }],
-                    "reverseRecordAssociations": [{
-                        "fairsharingRecord": {
-                            "name": "ChEMBL",
-                            "id": 1420,
-                            "registry": "database"
-                        }, "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "neXtProt", "id": 1540, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {
-                            "name": "Stem Cell Discovery Engine",
-                            "id": 1547,
-                            "registry": "database"
-                        }, "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "MetaboLights", "id": 1570, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "BRENDA", "id": 1648, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {
-                            "name": "SABIO-RK Biochemical Reaction Kinetics Database",
-                            "id": 1750,
-                            "registry": "database"
-                        }, "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {
-                            "name": "The Global Proteome Machine Database",
-                            "id": 1809,
-                            "registry": "database"
-                        }, "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {
-                            "name": "Biological General Repository for Interaction Datasets",
-                            "id": 1888,
-                            "registry": "database"
-                        }, "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "ReMap", "id": 2080, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {
-                            "name": "SIGnaling Network Open Resource",
-                            "id": 2084,
-                            "registry": "database"
-                        }, "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {
-                            "name": "Immune Epitope Database",
-                            "id": 2206,
-                            "registry": "database"
-                        }, "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {
-                            "name": "Target Central Resource Database",
-                            "id": 2224,
-                            "registry": "database"
-                        }, "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "OBO Foundry", "id": 2460, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "Bovine Genome Database", "id": 2493, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "BovineMine", "id": 2576, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "Chickspress", "id": 2726, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "miRwayDB", "id": 2729, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "TISSUES", "id": 2730, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }, {
-                        "fairsharingRecord": {"name": "LEAFDATA", "id": 2731, "registry": "database"},
-                        "recordAssocLabel": "implements"
-                    }],
-                    "reviews": []
-                }
+                // fairsharingRecord: {
+                //     "registry": "standard",
+                //     "type": "terminology_artefact",
+                //     "doi": "10.25504/FAIRsharing.1414v8",
+                //     "status": "ready",
+                //     "name": "BRENDA tissue / enzyme source",
+                //     "abbreviation": "BTO",
+                //     "description": "A structured controlled vocabulary for the source of an enzyme.A structured controlled vocabulary for the source of an enzyme.A structured controlled vocabulary for the source of an enzyme.A structured controlled vocabulary for the source of an enzyme.A structured controlled vocabulary for the source of an enzyme. It comprises terms for tissues, cell lines, cell types and cell cultures from uni- and multicellular organisms.",
+                //     "homepage": "http://www.brenda-enzymes.info",
+                //     "countries": [{"name": "Germany"}],
+                //     "metadata": {
+                //         "doi": "10.25504/FAIRsharing.1414v8",
+                //         "name": "BRENDA tissue / enzyme source",
+                //         "status": "ready",
+                //         "contacts": [{
+                //             "contact_name": "BrendaTissue Administrators",
+                //             "contact_email": "a.chang@tu-bs.de"
+                //         }],
+                //         "homepage": "http://www.brenda-enzymes.info",
+                //         "identifier": 2,
+                //         "description": "A structured controlled vocabulary for the source of an enzyme. It comprises terms for tissues, cell lines, cell types and cell cultures from uni- and multicellular organisms.",
+                //         "abbreviation": "BTO",
+                //         "year_creation": 1991
+                //     },
+                //     "taxonomies": [{"label": "All"}],
+                //     "domains": [{"label": "Reaction data"}, {"label": "Cell"}, {"label": "Enzyme"}, {"label": "Organ"}],
+                //     "subjects": [{"label": "Life Science"}, {"label": "Ontology and Terminology"}, {"label": "Enzymology"}],
+                //     "grants": [{"name": "R01 GM071872"}, {"name": "AA b21221"}, {"name": "GF GAA1872"}],
+                //     "isRecommended": true,
+                //     "legacyIds": ["bsg-000063", "bsg-s000063"],
+                //     "licences": [{"name": "ORCID MIT-Style License"}, {"name": "The MIT License (MIT)"}],
+                //     "maintainers": [{"username": "ORCID", "id": 2267}],
+                //     "organisations": [{"name": "The Federal Ministry of Education and Research (BMBF)"}, {"name": "European Union, Free European Life-Science Information and Computational Services (FELICS)"}, {"name": "European Union, Serving Life-science Information for the Next Generation (SLING)"}, {"name": "BRENDA Administrators"}, {"name": "Ministry of Science and Culture of Lower Saxony, Hannover, Germany"}, {"name": "National Institutes of Health (NIH), Bethesda, MD, USA"}],
+                //     "publications": [{"title": "The BRENDA Tissue Ontology (BTO): the first all-integrating ontology of all organisms for enzyme sources."}, {"title": "BRENDA in 2019: a European ELIXIR core data resource."}, {"title": "BRENDA, the enzyme database: updates and major new developments."}, {"title": "BRENDA in 2015: exciting developments in its 25th year of existence."}, {"title": "BRENDA in 2013: integrated reactions, kinetic data, enzyme function data, improved disease classification: new options and contents in BRENDA."}],
+                //     "recordAssociations": [{
+                //         "linkedRecord": {
+                //             "name": "FAANG metadata experiment specification standard",
+                //             "id": 222,
+                //             "registry": "standard"
+                //         }, "recordAssocLabel": "related_to"
+                //     }, {
+                //         "linkedRecord": {
+                //             "name": "Fission Yeast Phenotype Ontology",
+                //             "id": 340,
+                //             "registry": "standard"
+                //         }, "recordAssocLabel": "related_to"
+                //     }, {
+                //         "linkedRecord": {
+                //             "name": "Investigation Study Assay Tabular",
+                //             "id": 1140,
+                //             "registry": "standard"
+                //         }, "recordAssocLabel": "related_to"
+                //     }, {
+                //         "linkedRecord": {
+                //             "name": "Ontology for Parasite LifeCycle",
+                //             "id": 186,
+                //             "registry": "standard"
+                //         }, "recordAssocLabel": "related_to"
+                //     }, {
+                //         "linkedRecord": {
+                //             "name": "FAANG metadata sample specification standard",
+                //             "id": 648,
+                //             "registry": "standard"
+                //         }, "recordAssocLabel": "related_to"
+                //     }, {
+                //         "linkedRecord": {"name": "PRIDE XML Format", "id": 480, "registry": "standard"},
+                //         "recordAssocLabel": "related_to"
+                //     }],
+                //     "reverseRecordAssociations": [{
+                //         "fairsharingRecord": {
+                //             "name": "ChEMBL",
+                //             "id": 1420,
+                //             "registry": "database"
+                //         }, "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "neXtProt", "id": 1540, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {
+                //             "name": "Stem Cell Discovery Engine",
+                //             "id": 1547,
+                //             "registry": "database"
+                //         }, "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "MetaboLights", "id": 1570, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "BRENDA", "id": 1648, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {
+                //             "name": "SABIO-RK Biochemical Reaction Kinetics Database",
+                //             "id": 1750,
+                //             "registry": "database"
+                //         }, "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {
+                //             "name": "The Global Proteome Machine Database",
+                //             "id": 1809,
+                //             "registry": "database"
+                //         }, "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {
+                //             "name": "Biological General Repository for Interaction Datasets",
+                //             "id": 1888,
+                //             "registry": "database"
+                //         }, "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "ReMap", "id": 2080, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {
+                //             "name": "SIGnaling Network Open Resource",
+                //             "id": 2084,
+                //             "registry": "database"
+                //         }, "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {
+                //             "name": "Immune Epitope Database",
+                //             "id": 2206,
+                //             "registry": "database"
+                //         }, "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {
+                //             "name": "Target Central Resource Database",
+                //             "id": 2224,
+                //             "registry": "database"
+                //         }, "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "OBO Foundry", "id": 2460, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "Bovine Genome Database", "id": 2493, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "BovineMine", "id": 2576, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "Chickspress", "id": 2726, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "miRwayDB", "id": 2729, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "TISSUES", "id": 2730, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }, {
+                //         "fairsharingRecord": {"name": "LEAFDATA", "id": 2731, "registry": "database"},
+                //         "recordAssocLabel": "implements"
+                //     }],
+                //     "reviews": []
+                // }
             }
         },
         computed: {
             // flatten the associatedRecords and AssociatedRecordsReverse into one array
             flattenAssociatedRecordsArray: function () {
                 let flatten_recordAssociations = [];
-                this.fairsharingRecord.recordAssociations.forEach(item => {
+                let _module=this;
+                _module.currentRecord['fairsharingRecord'].recordAssociations.forEach(item => {
                     let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
                     object.id = item.linkedRecord.id;
                     object.registry = item.linkedRecord.registry;
                     object.name = item.linkedRecord.name;
                     object.recordAssocLabel = this.cleanString(item.recordAssocLabel + ' ->');
-                    object.subject = this.fairsharingRecord.name;
+                    object.subject = _module.currentRecord['fairsharingRecord'].name;
                     flatten_recordAssociations.push(object);
                 });
-                this.fairsharingRecord.reverseRecordAssociations.forEach(item => {
+                _module.currentRecord['fairsharingRecord'].reverseRecordAssociations.forEach(item => {
                     let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
                     object.id = item.fairsharingRecord.id;
                     object.registry = item.fairsharingRecord.registry;
                     object.name = item.fairsharingRecord.name;
                     object.recordAssocLabel = this.cleanString(item.recordAssocLabel + ' ->');
-                    object.subject = this.fairsharingRecord.name;
+                    object.subject = _module.currentRecord['fairsharingRecord'].name;
                     flatten_recordAssociations.push(object);
                 });
+
                 return flatten_recordAssociations;
+            },
+            currentRoute: function () {
+                return this.$route.params['id']
+            },
+            ...mapState('record', ["currentRecord", "currentRecordHistory"]),
+            ...mapState('users', ["user"])
+        },
+        watch: {
+            currentRoute: async function () {
+                await this.getData();
             }
         },
+        mounted: function () {
+            this.$nextTick(async function () {
+                this.client = new Client();
+                await this.getData();
+            })
+        },
         methods: {
+            /** Method to get the page title
+             *  @returns {String} - the title of the current page
+             */
+            getTitle: function () {
+                return 'FAIRsharing | ' + this.currentRoute
+            },
+            /**
+             * Method to set the current record in the store
+             * @returns {Promise} - the current record
+             * */
+            getData: async function () {
+                this.queryTriggered = false;
+                this.error = null;
+                try {
+                    await this.fetchRecord(this.currentRoute);
+                } catch (e) {
+                    this.error = e.message;
+                }
+                this.queryTriggered = true;
+            },
+            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
+            /**
+             * Method to dispatch the current record history into the store
+             * @returns {Promise} - the current record history
+             * */
+            getHistory: async function () {
+                await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
+            },
             cleanString: function (string) {
                 if (typeof string === "string") {
                     return string.replace(/_/g, " ");
                 }
                 return string;
             }
-        }
+        },
+        metaInfo() {
+            return {
+                title: this.getTitle()
+            }
+        },
     }
 </script>
 

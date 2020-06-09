@@ -77,7 +77,6 @@
         components: {Pagination, Sorting},
         data() {
             return {
-                page: 1,
                 isSortHovered: false,
                 isColumnList: false // need to go to store to have them synced in everywhere.
             }

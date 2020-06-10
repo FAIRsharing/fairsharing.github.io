@@ -36,12 +36,14 @@
             },
         },
         created() {
-            // this.$vuetify.theme.dark = true;
-            // console.log( this.$vuetify.theme);
-            //  console.log( this.$vuetify.icons.values);
-            //  console.log( this.$vuetify);
-            // console.log( this.$vuetify.breakpoint);
-            // console.log( this.$vuetify.breakpoint.width + ' '+this.$vuetify.breakpoint.height);
+            /*
+                        this.$vuetify.theme.dark = true;
+                        console.log( this.$vuetify.theme);
+                         console.log( this.$vuetify.icons.values);
+                         console.log( this.$vuetify);
+                        console.log( this.$vuetify.breakpoint);
+                        console.log( this.$vuetify.breakpoint.width + ' '+this.$vuetify.breakpoint.height);
+            */
         },
         methods: {
             toggleOverFlow: function (status) {

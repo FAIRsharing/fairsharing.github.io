@@ -11,7 +11,7 @@ describe('Actions/Mutations', () => {
 
     beforeEach(() => {
         // jest.spyOn(Storage.prototype, 'setItem');
-        jest.spyOn(Storage.prototype, 'removeLicence');
+        jest.spyOn(Storage.prototype, 'removeItem');
         getStub = sinon.stub(Storage.prototype, 'getItem');
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         actions.commit = jest.fn();

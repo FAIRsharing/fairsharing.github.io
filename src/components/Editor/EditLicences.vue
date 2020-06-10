@@ -95,16 +95,12 @@
     import licenceQuery from "@/components/GraphClient/queries/getLicences.json"
     import GraphClient from "@/components/GraphClient/GraphClient.js"
     import RESTClient from "@/components/Client/RESTClient.js"
+    import { asyncForEach } from "@/utils/utils.js"
 
     const diff = require("deep-object-diff").diff;
     const graphClient = new GraphClient();
     const restClient = new RESTClient();
 
-    export async function asyncForEach(array, callback) {
-      for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
-      }
-    }
 
     export default {
         name: "EditLicences",
@@ -128,10 +124,10 @@
         },
         mounted(){
           this.$nextTick(async function () {
-            const _module = this;
-            _module.licences = await _module.getLicences();
-            _module.currentLicences = JSON.parse(JSON.stringify(_module.currentRecord['fairsharingRecord']['licenceLinks']));
-            _module.initialLicences = JSON.parse(JSON.stringify(_module.currentRecord['fairsharingRecord']['licenceLinks']));
+              const _module = this;
+              _module.licences = await _module.getLicences();
+              _module.currentLicences = JSON.parse(JSON.stringify(_module.currentRecord['fairsharingRecord']['licenceLinks']));
+              _module.initialLicences = JSON.parse(JSON.stringify(_module.currentRecord['fairsharingRecord']['licenceLinks']));
           })
         },
         methods: {

@@ -40,6 +40,8 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
+
     export default {
         name: "Header",
         data() {
@@ -86,12 +88,15 @@
         },
         methods: {
             toggleDrawerLeft: function () {
-                this.drawerLeft = true;
+                this.drawerLeft = !this.UIGeneralStatus.drawerVisibilityState;
                 this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                     headerVisibilityState: true,
                     drawerVisibilityState: this.drawerLeft
                 });
             }
+        },
+        computed: {
+            ...mapState('uiController', ["UIGeneralStatus"]),
         }
     }
 </script>

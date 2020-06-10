@@ -561,7 +561,6 @@
         },
         data: () => {
             return {
-                a: true,
                 error: null,
                 queryTriggered: false,
                 //items: ["Edit", "Admin Edit", "Claim Ownership", "Suggest and edit/Questions?", "Watch Record"],

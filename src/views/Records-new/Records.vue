@@ -205,7 +205,6 @@
                     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                         bodyOverflowState: true,
                         headerVisibilityState: false,
-                        drawerVisibilityState: false,
                     });
                 } else {
                     _module.stickToLeft = false;

@@ -80,7 +80,6 @@
         }, computed: {
             getRecordStatus: function () {
                 let _module = this;
-                console.log(_module.record.status)
                 if(this.statusStyles[_module.record.status]!==undefined)
                 return this.statusStyles[_module.record.status];
                 else {

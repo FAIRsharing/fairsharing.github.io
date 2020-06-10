@@ -2,14 +2,14 @@
   <v-app id="app">
     <v-navigation-drawer
       v-if="$vuetify.breakpoint.smAndDown"
-      v-model="showDrawerLeft"
+      v-model="UIGeneralStatus.drawerVisibilityState"
       app
       left
       width="70%"
     />
 
     <transition name="fade">
-      <Header v-if="showHeader" />
+      <Header v-if="UIGeneralStatus.headerVisibilityState" />
     </transition>
     <router-view />
   </v-app>
@@ -22,8 +22,6 @@
     export default {
         components: {Header},
         data: () => ({
-            showHeader: true,
-            showDrawerLeft: false,
             hideOverflow: 'overflow-hidden'
         }),
         computed: {
@@ -33,8 +31,6 @@
             UIGeneralStatus: {
                 handler(UIGeneralStatus) {
                     this.toggleOverFlow(UIGeneralStatus.bodyOverflowState);
-                    this.toggleDrawer(UIGeneralStatus.drawerVisibilityState);
-                    this.toggleHeader(UIGeneralStatus.headerVisibilityState);
                 },
                 deep: true
             },
@@ -51,12 +47,6 @@
             toggleOverFlow: function (status) {
                 let root = document.getElementsByTagName('html')[0]; // '0' to assign the first (and only `HTML` tag)
                 status ? root.setAttribute('class', this.hideOverflow) : root.removeAttribute('class');
-            },
-            toggleDrawer: function (status) {
-                this.showDrawerLeft = status;
-            },
-            toggleHeader: function (status) {
-                this.showHeader = status;
             },
         },
     }

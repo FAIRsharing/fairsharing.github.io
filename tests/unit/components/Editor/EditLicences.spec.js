@@ -63,7 +63,7 @@ describe("EditLicences.vue", function() {
     });
 
     it("can remove an item", () => {
-        wrapper.vm.removeItem({
+        wrapper.vm.removeLicence({
             name: "name"
         });
     });

@@ -242,6 +242,77 @@ class RESTClient {
         return response.data;
     }
 
+    /* LICENCES */
+
+    /**
+     * Create new a licence link
+     * @param {Object} licenceLink - the licence link to create
+     * @param {String} token - the user token
+     * @returns {Promise}
+     */
+    async createLicenceLink(licenceLink, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        let newLicence = {
+            fairsharing_record_id: licenceLink.fairsharing_record_id,
+            licence_id: licenceLink.licence.id,
+            relation: licenceLink.relation
+        };
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/licence_links",
+            headers: headers,
+            data: {licence_link: newLicence}
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Delete the given licence
+     * @param {Number} id - id of the licence link to delete
+     * @param {String} token - the user token
+     * @returns {Promise}
+     */
+    async deleteLicenceLink(id, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "delete",
+            baseURL: _client.baseURL + "/licence_links/" + id,
+            headers: headers,
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Update the licenceLink
+     * @param {Object} licenceLink - the new values for the licence link
+     * @param {String} token the user token
+     * @returns {Promise}
+     */
+    async updateLicenceLink(licenceLink, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        let updateLicence = {
+            fairsharing_record_id: licenceLink.fairsharingRecord.id,
+            licence_id: licenceLink.licence.id,
+            relation: licenceLink.relation
+        };
+        const request = {
+            method: "put",
+            baseURL: _client.baseURL + "/licence_links/" + licenceLink.id,
+            headers: headers,
+            data: {licence_link: updateLicence}
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
 
     /* EXTRA METHODS */
 

@@ -156,9 +156,6 @@
             this.setChips(this.record);
         },
         methods: {
-            gotoRecordPage: function () {
-                this.$router.push({path: `${this.record.id}`});
-            },
             changeActiveItem: function (itemIndex) {
                 this.buttons.map(item => item.active = false);
                 this.buttons[itemIndex].active = true;

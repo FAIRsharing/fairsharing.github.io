@@ -1,14 +1,15 @@
 <template>
-  <v-content >
+  <v-content>
     <h1 class="d-none">
       Content
     </h1>
     <v-container
-      fluid
       v-if="!error && queryTriggered"
+      fluid
     >
       <!--  Content  -->
       <v-row
+        v-if="currentRecord['fairsharingRecord']"
         no-gutters
       >
         <v-col
@@ -17,473 +18,522 @@
           md="12"
           xl="12"
         >
-          <v-card
-            class="pa-4"
-            outlined
-            tile
-            elevation="1"
+          <!-- General Information -->
+          <v-row
+            no-gutters
           >
-            <!-- General Information -->
-            <v-row
-              no-gutters
-            >
-              <v-col>
-                <v-card
-                  class="pa-4 mt-5 d-flex flex-column"
-                  outlined
-                  tile
-                  elevation="1"
-                >
-                  <h4 class="title-style">
-                    <span class="triangle-bottomLeft" />GENERAL
-                    INFO<span
+            <v-col>
+              <v-card
+                class="pa-4 mt-5 d-flex flex-column"
+                outlined
+                tile
+                elevation="1"
+              >
+                <div class="title-style">
+                  <div>
+                    <h4>
+                      GENERAL
+                      INFO
+                    </h4>
+                    <span class="triangle-bottomLeft" /><span
                       class="triangle-bottomRight"
                     />
-                  </h4>
-
-                  <!-- Ribbon -->
-                  <Ribbon
-                    v-if="currentRecord['fairsharingRecord'].isRecommended"
-                    title="RECOMMENDED"
-                  />
-                  <!-- Title and DOI -->
-                  <v-row
-                    no-gutters
-                    class="mb-2"
+                  </div>
+                </div>
+                <!-- Ribbon -->
+                <Ribbon
+                  v-if="currentRecord['fairsharingRecord'].isRecommended"
+                  title="RECOMMENDED"
+                />
+                <!-- Title and DOI -->
+                <v-row
+                  no-gutters
+                  class="mb-2"
+                >
+                  <v-col
+                    cols="4"
+                    sm="2"
+                    md="2"
+                    lg="1"
+                    xl="1"
+                    class="d-flex flex-row align-center mt-4 "
                   >
-                    <v-col
-                      cols="4"
-                      sm="2"
-                      md="2"
-                      lg="1"
-                      xl="1"
-                      class="d-flex flex-row align-center mt-4 "
-                    >
-<!--                      <record-status :status=currentRecord['fairsharingRecord'] />-->
-                    </v-col>
-                    <v-col
-                      class="d-flex flex-column justify-center"
-                      cols="12"
-                      sm="10"
-                      md="10"
-                      lg="11"
-                      xl="11"
-                    >
-                      <div class="d-flex flex-column mt-2  ml-sm-6 ml-lg-8">
-                        <div class="d-flex flex-row mb-2 align-center">
-                          <h3>{{ currentRecord['fairsharingRecord'].name }}</h3>
-                          <b class="ml-2">({{ currentRecord['fairsharingRecord'].abbreviation }})</b>
-                        </div>
-                        <div class="d-flex align-center">
-                          <h3 class="mr-1">
-                            doi:
-                          </h3>
-                          <router-link :to="currentRecord['fairsharingRecord'].doi">
-                            {{ currentRecord['fairsharingRecord'].doi }}
-                          </router-link>
-                        </div>
+                    <record-status :record="currentRecord['fairsharingRecord']" />
+                  </v-col>
+                  <v-col
+                    class="d-flex flex-column justify-center"
+                    cols="12"
+                    sm="10"
+                    md="10"
+                    lg="11"
+                    xl="11"
+                  >
+                    <div class="d-flex flex-column mt-2  ml-sm-6 ml-lg-8">
+                      <div class="d-flex flex-row mb-2 align-center">
+                        <h3>{{ currentRecord['fairsharingRecord'].name }}</h3>
+                        <b class="ml-2">({{ currentRecord['fairsharingRecord'].abbreviation
+                        }})</b>
                       </div>
-                    </v-col>
-                  </v-row>
+                      <div class="d-flex align-center">
+                        <h3 class="mr-1">
+                          doi:
+                        </h3>
+                        <router-link :to="currentRecord['fairsharingRecord'].doi">
+                          {{ currentRecord['fairsharingRecord'].doi }}
+                        </router-link>
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
 
-                  <section >
-                    <!--Type-->
-                    <div class="d-flex">
-                      <b class="mr-2">Type:</b>
-                      <p>{{ currentRecord['fairsharingRecord'].type | capitalize | cleanString }}</p>
-                    </div>
-                    <!--Year of Creation-->
-                    <!--!! Attention need data model to be changed. must be sent by fairsharing Object like below!! -->
-                    <!--fairsharingRecord.year_creation-->
-                    <div class="d-flex">
-                      <b class="mr-2">Year of Creation:</b>
-                      <p>{{ currentRecord['fairsharingRecord'].metadata.year_creation }}</p>
-                    </div>
-                    <!--Registry-->
-                    <div class="d-flex">
-                      <b class="mr-2">Registry:</b>
-                      <p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}</p>
-                    </div>
-                    <!--Description-->
-                    <div class="d-flex align-center">
-                      <b class="mr-2">Description:</b>
-                      <p>{{ currentRecord['fairsharingRecord'].description | capitalize }}</p>
-                    </div>
-                    <!--HomePage-->
-                    <div class="d-flex">
-                      <b class="mr-2 mb-4">Home Page:</b>
-                      <router-link :to="currentRecord['fairsharingRecord'].homepage">
-                        {{ currentRecord['fairsharingRecord'].homepage }}
-                      </router-link>
-                    </div>
-                    <!--Developed Countries -->
-                    <div class="d-flex flex-wrap">
-                      <b class="mr-2">Countries developed this resource:</b>
-                      <v-tooltip
-                        v-for="n in 20"
-                        :key="n"
-                        top
-                      >
-                        <template v-slot:activator="{ on }">
-                          <button
-                            class="mb-2 flag-mr"
-                            v-on="on"
-                          >
-                            <country-flag
-                              :country="n%2===0?'de':'it'"
-                              size="big"
-                            />
-                          </button>
-                        </template>
-                        <span class="white--text">{{ n%2===0?'Germany':'Italy' }}</span>
-                      </v-tooltip>
-                    </div>
-                  </section>
-                </v-card>
-              </v-col>
-            </v-row>
+                <section>
+                  <!--Type-->
+                  <div class="d-flex">
+                    <b class="mr-2">Type:</b>
+                    <p>
+                      {{ currentRecord['fairsharingRecord'].type | capitalize | cleanString }}
+                    </p>
+                  </div>
+                  <!--Year of Creation-->
+                  <!--!! Attention need data model to be changed. must be sent by fairsharing Object like below!! -->
+                  <!--fairsharingRecord.year_creation-->
+                  <div class="d-flex">
+                    <b class="mr-2">Year of Creation:</b>
+                    <p>{{ currentRecord['fairsharingRecord'].metadata.year_creation }}</p>
+                  </div>
+                  <!--Registry-->
+                  <div class="d-flex">
+                    <b class="mr-2">Registry:</b>
+                    <p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}</p>
+                  </div>
+                  <!--Description-->
+                  <div class="d-flex align-center">
+                    <b class="mr-2">Description:</b>
+                    <p>{{ currentRecord['fairsharingRecord'].description | capitalize }}</p>
+                  </div>
+                  <!--HomePage-->
+                  <div class="d-flex">
+                    <b class="mr-2 mb-4">Home Page:</b>
+                    <a
+                      :href="currentRecord['fairsharingRecord'].homepage"
+                      target="_blank"
+                    >{{ currentRecord['fairsharingRecord'].homepage }}</a>
+                  </div>
+                  <!--Developed Countries -->
+                  <div class="d-flex flex-wrap">
+                    <b class="mr-2">Countries developed this resource:</b>
+                    <v-tooltip
+                      v-for="country in currentRecord['fairsharingRecord'].countries"
+                      :key="country.id"
+                      top
+                    >
+                      <template v-slot:activator="{ on }">
+                        <button
+                          class="mb-2 flag-mr"
+                          v-on="on"
+                        >
+                          <country-flag
+                            :country="country.code"
+                            size="big"
+                          />
+                        </button>
+                      </template>
+                      <span class="white--text">{{ country.name }}</span>
+                    </v-tooltip>
+                  </div>
+                </section>
+              </v-card>
+            </v-col>
+          </v-row>
 
-            <!-- Single Row -->
-            <v-row v-if="!a">
-              <!--Left Column-->
-              <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-                <!-- KEYWORDS -->
-                <v-card
-                  class="pa-4 mt-3 mt-lg-2 d-flex flex-column"
-                  outlined
-                  tile
-                  elevation="1"
-                >
-                  <h4 class="title-style">
-                    <span class="triangle-bottomLeft" />KEYWORDS<span
+          <!-- Single Row -->
+          <v-row>
+            <!--Left Column-->
+            <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+              <!-- KEYWORDS -->
+              <v-card
+                class="pa-4 mt-3 mt-lg-2 d-flex flex-column"
+                outlined
+                tile
+                elevation="1"
+              >
+                <div class="title-style">
+                  <div>
+                    <h4>
+                      KEYWORDS
+                    </h4>
+                    <span class="triangle-bottomLeft" /><span
                       class="triangle-bottomRight"
                     />
-                  </h4>
-                  <section>
-                    <!--Taxonomies-->
-                    <div class="d-flex mt-4 flex-wrap">
-                      <b class="mr-2">Taxonomies:</b>
-                      <v-chip
-                        v-for="item in currentRecord['fairsharingRecord'].taxonomies"
-                        :key="item.label"
-                        class="mr-2 mb-2 "
-                        color="primary"
-                        label
-                        outlined
-                        text-color="primary"
-                      >
-                        <v-icon left>
-                          mdi-label
-                        </v-icon>
-                        {{ item.label }}
-                      </v-chip>
-                    </div>
-                    <!--Domains-->
-                    <div class="d-flex mt-2 flex-wrap">
-                      <b class="mr-8">Domains:</b>
-                      <v-chip
-                        v-for="item in currentRecord['fairsharingRecord'].domains"
-                        :key="item.label"
-                        class="mr-2 mb-2"
-                        color="secondary"
-                        label
-                        outlined
-                        text-color="secondary"
-                      >
-                        <v-icon left>
-                          mdi-label
-                        </v-icon>
-                        {{ item.label }}
-                      </v-chip>
-                    </div>
-                    <!--Subjects-->
-                    <div class="d-flex mt-2 flex-wrap">
-                      <b class="mr-8">Subjects:</b>
-                      <v-chip
-                        v-for="item in currentRecord['fairsharingRecord'].subjects"
-                        :key="item.label"
-                        class="mr-2 mb-2"
-                        color="accent"
-                        label
-                        outlined
-                        text-color="accent"
-                      >
-                        <v-icon left>
-                          mdi-label
-                        </v-icon>
-                        {{ item.label }}
-                      </v-chip>
-                    </div>
-                  </section>
-                </v-card>
-                <!-- SUPPORT -->
-                <v-card
-                  class="pa-4 mt-5 d-flex flex-column"
-                  outlined
-                  tile
-                  elevation="1"
-                >
-                  <h4 class="title-style">
-                    <span class="triangle-bottomLeft" />SUPPORT<span
-                      class="triangle-bottomRight"
-                    />
-                  </h4>
-                  <!--Contact-->
-                  <v-card
-                    v-for="(contact,index) in currentRecord['fairsharingRecord'].metadata.contacts"
-                    :key="contact.contact_name"
-                    class="pa-4 d-flex flex-column"
-                    :class="index===0?'mt-4':'mt-2'"
-                    flat
-                    outlined
+                  </div>
+                </div>
+                <section>
+                  <!--Taxonomies-->
+                  <div class="d-flex mt-4 flex-wrap">
+                    <b class="mr-2">Taxonomies:</b>
+                    <v-chip
+                      v-for="item in currentRecord['fairsharingRecord'].taxonomies"
+                      :key="item.label"
+                      class="mr-2 mb-2 "
+                      color="primary"
+                      label
+                      outlined
+                      text-color="primary"
+                    >
+                      <v-icon left>
+                        mdi-label
+                      </v-icon>
+                      {{ item.label }}
+                    </v-chip>
+                  </div>
+                  <!--Domains-->
+                  <div
+                    class="d-flex mt-2 flex-wrap"
                   >
-                    <div class="d-flex mt-2 flex-wrap">
-                      <v-icon
-                        color="secondary"
-                        class="mr-2"
-                      >
-                        mdi-account
+                    <b class="mr-8">Domains:</b>
+                    <v-chip
+                      v-for="item in currentRecord['fairsharingRecord'].domains"
+                      :key="item.label"
+                      class="mr-2 mb-2"
+                      color="secondary"
+                      label
+                      outlined
+                      text-color="secondary"
+                    >
+                      <v-icon left>
+                        mdi-label
                       </v-icon>
-                      <b class="mr-2">Contact Name:</b>
-                      <p class="ma-0">
-                        {{ contact.contact_name }}
-                      </p>
-                    </div>
-                    <div class="d-flex mt-2 flex-wrap">
-                      <v-icon
-                        color="secondary"
-                        class="mr-2"
-                      >
-                        mdi-email
+                      {{ item.label }}
+                    </v-chip>
+                  </div>
+                  <!--Subjects-->
+                  <div
+                    class="d-flex mt-2 flex-wrap"
+                  >
+                    <b class="mr-8">Subjects:</b>
+                    <v-chip
+                      v-for="item in currentRecord['fairsharingRecord'].subjects"
+                      :key="item.label"
+                      class="mr-2 mb-2"
+                      color="accent"
+                      label
+                      outlined
+                      text-color="accent"
+                    >
+                      <v-icon left>
+                        mdi-label
                       </v-icon>
-                      <b class="mr-2">Contact Email:</b>
-                      <p class="ma-0">
-                        {{ contact.contact_email }}
-                      </p>
-                    </div>
-                  </v-card>
-                </v-card>
-                <!-- GRANTS -->
-                <v-card
-                  class="pa-4 mt-5 d-flex flex-column"
-                  outlined
-                  tile
-                  elevation="1"
-                >
-                  <h4 class="title-style">
-                    <span class="triangle-bottomLeft" />GRANTS<span
+                      {{ item.label }}
+                    </v-chip>
+                  </div>
+                </section>
+              </v-card>
+              <!-- SUPPORT -->
+              <v-card
+                class="pa-4 mt-5 d-flex flex-column"
+                outlined
+                tile
+                elevation="1"
+              >
+                <div class="title-style">
+                  <div>
+                    <h4>
+                      SUPPORT
+                    </h4>
+                    <span class="triangle-bottomLeft" /><span
                       class="triangle-bottomRight"
                     />
-                  </h4>
-                  <v-card
-                    v-for="(grant,index) in currentRecord['fairsharingRecord'].grants"
-                    :key="grant.name"
-                    class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-                    :class="index===0?'mt-4':'mt-2'"
-                    flat
-                    outlined
-                  >
-                    <div class="d-flex mt-2 ">
-                      <v-icon
-                        color="secondary"
-                        class="mr-2"
-                      >
-                        mdi-cash-multiple
-                      </v-icon>
-                      <p class="ma-0">
-                        {{ grant.name }}
-                      </p>
-                    </div>
-                  </v-card>
-                </v-card>
-                <!-- ORGANISATION -->
+                  </div>
+                </div>
+                <!--Contact-->
                 <v-card
-                  class="pa-4 mt-5 d-flex flex-column"
+                  v-for="(contact,index) in currentRecord['fairsharingRecord'].metadata.contacts"
+                  :key="contact.contact_name"
+                  class="pa-4 d-flex flex-column"
+                  :class="index===0?'mt-4':'mt-2'"
+                  flat
                   outlined
-                  tile
-                  elevation="1"
                 >
-                  <h4 class="title-style">
-                    <span
-                      class="triangle-bottomLeft"
-                    />ORGANISATION<span
+                  <div class="d-flex mt-2 flex-wrap">
+                    <v-icon
+                      color="secondary"
+                      class="mr-2"
+                    >
+                      mdi-account
+                    </v-icon>
+                    <b class="mr-2">Contact Name:</b>
+                    <p class="ma-0">
+                      {{ contact.contact_name }}
+                    </p>
+                  </div>
+                  <div class="d-flex mt-2 flex-wrap">
+                    <v-icon
+                      color="secondary"
+                      class="mr-2"
+                    >
+                      mdi-email
+                    </v-icon>
+                    <b class="mr-2">Contact Email:</b>
+                    <p class="ma-0">
+                      {{ contact.contact_email }}
+                    </p>
+                  </div>
+                </v-card>
+              </v-card>
+              <!-- ORGANISATION -->
+              <v-card
+                class="pa-4 mt-5 d-flex flex-column"
+                outlined
+                tile
+                elevation="1"
+              >
+                <div class="title-style">
+                  <div>
+                    <h4>
+                      ORGANISATION
+                    </h4>
+                    <span class="triangle-bottomLeft" /><span
                       class="triangle-bottomRight"
                     />
-                  </h4>
-                  <v-card
-                    v-for="(organisation,index) in currentRecord['fairsharingRecord'].organisations"
-                    :key="organisation.name"
-                    class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-                    :class="index===0?'mt-4':'mt-2'"
-                    flat
-                    outlined
-                  >
-                    <div class="d-flex mt-2 ">
-                      <v-icon
-                        color="secondary"
-                        class="mr-2"
-                      >
-                        mdi-factory
-                      </v-icon>
-                      <p class="ma-0">
-                        {{ organisation.name }}
-                      </p>
-                    </div>
-                  </v-card>
-                </v-card>
-              </v-col>
-              <!--Right Column-->
-              <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-                <!-- LICENSES -->
+                  </div>
+                </div>
                 <v-card
-                  class="pa-4 mt-0 mt-lg-2 d-flex flex-column"
+                  v-for="(organisation,index) in currentRecord['fairsharingRecord'].organisations"
+                  :key="organisation.name"
+                  class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+                  :class="index===0?'mt-4':'mt-2'"
+                  flat
                   outlined
-                  tile
-                  elevation="1"
                 >
-                  <h4 class="title-style">
-                    <span class="triangle-bottomLeft" />LICENSES<span
+                  <div class="d-flex mt-2 ">
+                    <v-icon
+                      color="secondary"
+                      class="mr-2"
+                    >
+                      mdi-factory
+                    </v-icon>
+                    <p class="ma-0">
+                      {{ organisation.name }}
+                    </p>
+                  </div>
+                </v-card>
+              </v-card>
+            </v-col>
+            <!--Right Column-->
+            <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+              <!-- LICENSES -->
+              <v-card
+                class="pa-4 mt-0 mt-lg-2 d-flex flex-column"
+                outlined
+                tile
+                elevation="1"
+              >
+                <div class="title-style">
+                  <div>
+                    <h4>
+                      LICENSES
+                    </h4>
+                    <span class="triangle-bottomLeft" /><span
                       class="triangle-bottomRight"
                     />
-                  </h4>
-                  <v-card
-                    v-for="(licence,index) in fairsharingRecord.licences"
-                    :key="licence.name"
-                    class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-                    :class="index===0?'mt-4':'mt-2'"
-                    flat
-                    outlined
-                  >
-                    <div class="d-flex mt-2 ">
-                      <v-icon
-                        color="secondary"
-                        class="mr-2"
-                      >
-                        mdi-certificate
-                      </v-icon>
-                      <p class="ma-0">
-                        {{ licence.name }}
-                      </p>
-                    </div>
-                  </v-card>
-                </v-card>
-                <!-- MAINTAINERS -->
+                  </div>
+                </div>
                 <v-card
-                  class="pa-4 mt-5 d-flex flex-column"
+                  v-for="(licence,index) in currentRecord['fairsharingRecord'].licences"
+                  :key="licence.name"
+                  class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+                  :class="index===0?'mt-4':'mt-2'"
+                  flat
                   outlined
-                  tile
-                  elevation="1"
                 >
-                  <h4 class="title-style">
-                    <span class="triangle-bottomLeft" />MAINTAINERS<span
+                  <div class="d-flex mt-2 ">
+                    <v-icon
+                      color="secondary"
+                      class="mr-2"
+                    >
+                      mdi-certificate
+                    </v-icon>
+                    <p class="ma-0">
+                      {{ licence.name }}
+                    </p>
+                  </div>
+                </v-card>
+              </v-card>
+              <!-- MAINTAINERS -->
+              <v-card
+                class="pa-4 mt-5 d-flex flex-column"
+                outlined
+                tile
+                elevation="1"
+              >
+                <div class="title-style">
+                  <div>
+                    <h4>
+                      MAINTAINERS
+                    </h4>
+                    <span class="triangle-bottomLeft" /><span
                       class="triangle-bottomRight"
                     />
-                  </h4>
-                  <!--Contact-->
-                  <v-card
-                    v-for="(maintainer,index) in fairsharingRecord.maintainers"
-                    :key="maintainer.contact_name"
-                    class="pa-4 d-flex flex-column"
-                    :class="index===0?'mt-4':'mt-2'"
-                    flat
-                    outlined
-                  >
-                    <div class="d-flex mt-2 flex-wrap">
-                      <v-icon
-                        color="secondary"
-                        class="mr-2"
-                      >
-                        mdi-account-circle
-                      </v-icon>
-                      <b class="mr-2">User Name:</b>
-                      <router-link :to="maintainer.username+'/'+maintainer.id">
-                        {{ maintainer.username+'/'+maintainer.id }}
-                      </router-link>
-                    </div>
-                  </v-card>
-                </v-card>
-                <!-- PUBLICATIONS -->
+                  </div>
+                </div>
+                <!--Contact-->
                 <v-card
-                  class="pa-4 mt-5 d-flex flex-column"
+                  v-for="(maintainer,index) in currentRecord['fairsharingRecord'].maintainers"
+                  :key="maintainer.contact_name"
+                  class="pa-4 d-flex flex-column"
+                  :class="index===0?'mt-4':'mt-2'"
+                  flat
                   outlined
-                  tile
-                  elevation="1"
                 >
-                  <h4 class="title-style">
-                    <span class="triangle-bottomLeft" />PUBLICATIONS<span
+                  <div class="d-flex mt-2 flex-wrap">
+                    <v-icon
+                      color="secondary"
+                      class="mr-2"
+                    >
+                      mdi-account-circle
+                    </v-icon>
+                    <b class="mr-2">User Name:</b>
+                    <router-link :to="maintainer.username+'/'+maintainer.id">
+                      {{ maintainer.username+'/'+maintainer.id }}
+                    </router-link>
+                  </div>
+                </v-card>
+              </v-card>
+              <!-- GRANTS -->
+              <v-card
+                class="pa-4 mt-5 d-flex flex-column"
+                outlined
+                tile
+                elevation="1"
+              >
+                <div class="title-style">
+                  <div>
+                    <h4>
+                      GRANTS
+                    </h4>
+                    <span class="triangle-bottomLeft" /><span
                       class="triangle-bottomRight"
                     />
-                  </h4>
-                  <v-card
-                    v-for="(publication,index) in fairsharingRecord.publications"
-                    :key="publication.title"
-                    class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-                    :class="index===0?'mt-4':'mt-2'"
-                    flat
-                    outlined
-                  >
-                    <div class="d-flex mt-2 ">
-                      <v-icon
-                        color="secondary"
-                        class="mr-2"
-                      >
-                        mdi-book-open
-                      </v-icon>
-                      <p class="ma-0">
-                        {{ publication.title }}
-                      </p>
-                    </div>
-                  </v-card>
+                  </div>
+                </div>
+                <v-card
+                  v-for="(grant,index) in currentRecord['fairsharingRecord'].grants"
+                  :key="grant.name"
+                  class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+                  :class="index===0?'mt-4':'mt-2'"
+                  flat
+                  outlined
+                >
+                  <div class="d-flex mt-2 ">
+                    <v-icon
+                      color="secondary"
+                      class="mr-2"
+                    >
+                      mdi-cash-multiple
+                    </v-icon>
+                    <p class="ma-0">
+                      {{ grant.name }}
+                    </p>
+                  </div>
                 </v-card>
-              </v-col>
-            </v-row>
+              </v-card>
+              <!-- PUBLICATIONS -->
+              <v-card
+                class="pa-4 mt-5 d-flex flex-column"
+                outlined
+                tile
+                elevation="1"
+              >
+                <div class="title-style">
+                  <div>
+                    <h4>
+                      PUBLICATIONS
+                    </h4>
+                    <span class="triangle-bottomLeft" /><span
+                      class="triangle-bottomRight"
+                    />
+                  </div>
+                </div>
+                <v-card
+                  v-for="(publication,index) in currentRecord['fairsharingRecord'].publications"
+                  :key="publication.title"
+                  class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+                  :class="index===0?'mt-4':'mt-2'"
+                  flat
+                  outlined
+                >
+                  <div class="d-flex mt-2 ">
+                    <v-icon
+                      color="secondary"
+                      class="mr-2"
+                    >
+                      mdi-book-open
+                    </v-icon>
+                    <p class="ma-0">
+                      {{ publication.title }}
+                    </p>
+                  </div>
+                </v-card>
+              </v-card>
+            </v-col>
+          </v-row>
 
-            <!-- Associated Records -->
-            <v-row
-              no-gutters
-            >
-              <v-col>
-                <v-card
-                  class="pa-4 mt-2 d-flex flex-column"
-                  outlined
-                  tile
-                  elevation="1"
-                >
-                  <h4 class="title-style">
-                    <span class="triangle-bottomLeft" />ASSOCIATED
-                    RECORDS<span
+          <!-- Associated Records -->
+          <v-row
+            no-gutters
+          >
+            <v-col>
+              <v-card
+                class="pa-4 mt-2 d-flex flex-column"
+                outlined
+                tile
+                elevation="1"
+              >
+                <div class="title-style">
+                  <div>
+                    <h4>
+                      ASSOCIATED
+                      RECORDS
+                    </h4>
+                    <span class="triangle-bottomLeft" /><span
                       class="triangle-bottomRight"
                     />
-                  </h4>
-                  <section class="mt-2">
-                    <v-card class="mt-3">
-                      <v-card-title>
-                        Data Table
-                        <v-spacer />
-                        <v-text-field
-                          v-model="search"
-                          append-icon="mdi-magnify"
-                          label="Search"
-                          single-line
-                          hide-details
-                        />
-                      </v-card-title>
-                      <v-data-table
-                        :headers="headers"
-                        :items="flattenAssociatedRecordsArray"
-                        :search="search"
+                  </div>
+                </div>
+                <section class="mt-2">
+                  <v-card class="mt-3">
+                    <v-card-title>
+                      Data Table
+                      <v-spacer />
+                      <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
                       />
-                    </v-card>
-                  </section>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-card>
+                    </v-card-title>
+                    <v-data-table
+                      :headers="headers"
+                      :items="flattenAssociatedRecordsArray"
+                      :search="search"
+                    />
+                  </v-card>
+                </section>
+              </v-card>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
       <!--  Footer  -->
       <Footer />
     </v-container>
+    <div
+      v-if="error"
+      class="error"
+    >
+      {{ error }}
+    </div>
   </v-content>
 </template>
 
@@ -491,13 +541,13 @@
     import Ribbon from "@/components/IndividualComponents/Ribbon";
     import Footer from "@/components/IndividualComponents/Footer";
     import CountryFlag from 'vue-country-flag';
-    // import RecordStatus from "@/components/IndividualComponents/RecordStatus";
+    import RecordStatus from "@/components/IndividualComponents/RecordStatus";
     import Client from '@/components/GraphClient/GraphClient.js'
     import {mapActions, mapState} from 'vuex'
 
     export default {
         name: "Record",
-        components: { Footer, Ribbon, CountryFlag},
+        components: {RecordStatus, Footer, Ribbon, CountryFlag},
         filters: {
             capitalize: function (value) {
                 return value.charAt(0).toUpperCase() + value.slice(1)
@@ -511,7 +561,7 @@
         },
         data: () => {
             return {
-                a:true,
+                a: true,
                 error: null,
                 queryTriggered: false,
                 //items: ["Edit", "Admin Edit", "Claim Ownership", "Suggest and edit/Questions?", "Watch Record"],
@@ -687,7 +737,7 @@
             // flatten the associatedRecords and AssociatedRecordsReverse into one array
             flattenAssociatedRecordsArray: function () {
                 let flatten_recordAssociations = [];
-                let _module=this;
+                let _module = this;
                 _module.currentRecord['fairsharingRecord'].recordAssociations.forEach(item => {
                     let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
                     object.id = item.linkedRecord.id;
@@ -738,10 +788,11 @@
              * @returns {Promise} - the current record
              * */
             getData: async function () {
+                let _module = this;
                 this.queryTriggered = false;
                 this.error = null;
                 try {
-                    await this.fetchRecord(this.currentRoute);
+                    await _module.fetchRecord(this.currentRoute);
                 } catch (e) {
                     this.error = e.message;
                 }
@@ -799,13 +850,12 @@
 
     .title-style {
         position: absolute;
-        top: -8px;
+        top: -10px;
         /*
                         color: #909090;
                         background: linear-gradient(#bebebe,transparent);
                         border: #bebebe solid 1px;
         */
-        color: white;
         background: linear-gradient(#4f5f5d, #00aa8e);
         background: -moz-linear-gradient(#4f5f5d, #00aa8e);
         background: -webkit-linear-gradient(#4f5f5d, #00aa8e);
@@ -815,24 +865,33 @@
         -webkit-border-radius: 10px;
         -moz-border-radius: 10px;
 
-        .triangle-bottomLeft {
-            width: 0;
-            height: 0;
-            position: absolute;
-            top: 0;
-            left: -8px;
-            border-bottom: 8px solid #aaaaaa;
-            border-left: 8px solid transparent;
-        }
+        div {
+            position: relative;
 
-        .triangle-bottomRight {
-            width: 0;
-            height: 0;
-            position: absolute;
-            top: 0;
-            right: -8px;
-            border-bottom: 8px solid #aaaaaa;
-            border-right: 8px solid transparent;
+            h4 {
+                font-size: 1rem;
+                color: white;
+            }
+
+            .triangle-bottomLeft {
+                width: 0;
+                height: 0;
+                position: absolute;
+                top: 0;
+                left: -18px;
+                border-bottom: 8px solid #aaaaaa;
+                border-left: 8px solid transparent;
+            }
+
+            .triangle-bottomRight {
+                width: 0;
+                height: 0;
+                position: absolute;
+                top: 0;
+                right: -18px;
+                border-bottom: 8px solid #aaaaaa;
+                border-right: 8px solid transparent;
+            }
         }
 
     }

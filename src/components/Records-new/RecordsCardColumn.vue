@@ -27,17 +27,18 @@
           cols="12"
           @mouseenter="allowClicking=true"
           @mouseleave="allowClicking=false"
-          @click="gotoRecordPage"
         >
-          <div class=" d-flex flex-column align-center justify-center">
-            <record-status
-              :record="record"
-              class="mr-8"
-            />
-            <h3 id="title-style">
-              <u>{{ record.name }}</u>
-            </h3>
-          </div>
+          <router-link :to="'/' +record.id">
+            <div class=" d-flex flex-column align-center justify-center">
+              <record-status
+                :record="record"
+                class="mr-8"
+              />
+              <h3 id="title-style">
+                <u>{{ record.name }}</u>
+              </h3>
+            </div>
+          </router-link>
         </v-col>
       </v-row>
       <!-- Buttons -->
@@ -144,9 +145,6 @@
             this.setChips(this.record);
         },
         methods: {
-            gotoRecordPage: function () {
-                this.$router.push({path: '/record'});
-            },
             changeActiveItem: function (itemIndex) {
                 this.buttons.map(item => item.active = false);
                 this.buttons[itemIndex].active = true;

@@ -14,7 +14,8 @@
           "name": "countries",
           "fields": [
               "name",
-              "id"
+              "id",
+              "code"
           ]
       },
       "metadata",

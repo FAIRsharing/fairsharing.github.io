@@ -42,6 +42,7 @@
     </div>
     <!-- expansion Panels    -->
     <v-expansion-panels
+      v-if="filters.length>0"
       v-model="panel"
       multiple
       flat
@@ -49,7 +50,7 @@
       accordion
     >
       <ExpansionPanel
-        v-for="object in filters"
+        v-for="object in calc"
         :key="object.filter"
         :object="object"
         @AddParam="addParam"
@@ -59,8 +60,8 @@
 </template>
 
 <script>
-    import ExpansionPanel from "./ExpansionPanel";
     import {mapState} from "vuex"
+    import ExpansionPanel from "./ExpansionPanel";
 
     export default {
         name: "FilterButtons",
@@ -79,7 +80,8 @@
                 ],
                 panel: [],
                 filterSelected: {},
-                filters: [
+                filters3: [],
+                filters2: [
                     {
                         filter: 'GRANTS',
                         filterSelected: {},
@@ -190,13 +192,45 @@
             }
         },
         computed: {
-            ...mapState("searchFilters", ["filters"])
+            ...mapState("searchFilters", ["filters"]),
+            calc() {
+                // let output = [];
+                this.all();
+                this.createIndexForFilters();
+/*
+                this.filters.forEach(item => {
+                    // if(item.filterName!=='id')
+                    output.push(
+                        {
+                            filter: item.filterLabel,
+                            filterSelected: {},
+                            searchTerm: null,
+                            subFilters: [{
+                                subFilter: 'subfilter-1',
+                                active: false,
+                                inventory: 12
+                            },
+                                {
+                                    subFilter: 'subfilter-2',
+                                    active: false,
+                                    inventory: 9
+                                },
+                            ]
+                        }
+                    )
+                })
+*/
+                return this.filters;
+            }
         },
         created() {
             //open first expandable panel.
             // this.panel['0'] = 0;
+/*
             this.all();
             this.createIndexForFilters();
+*/
+
         },
         methods: {
             selectFilter: function (index, selectedButtonsArray) {
@@ -214,17 +248,17 @@
                 this.panel = []
             },
             addParam: async function (subFilterName, subFilterObject, parentFilterName) {
-                // console.log('subFilterName', subFilterName);
-                // console.log('subFilterObject', subFilterObject);
-                // console.log('parentFilterName', parentFilterName)
-                // console.log('filterSelected', this.filterSelected);
+                console.log('subFilterName', subFilterName);
+                console.log('subFilterObject', subFilterObject);
+                console.log('parentFilterName', parentFilterName)
+                console.log('filterSelected', this.filterSelected);
+                console.log('filters', this.filters);
                 let clickedObject = this.filters.find(item => item.filter === parentFilterName)
                 // console.log('clickedObject', clickedObject);
                 let clickedIndex = clickedObject.subFilters.findIndex(item => item.subFilter === subFilterName);
                 // console.log('clickedIndex', clickedIndex);
                 // console.log(clickedObject.subFilters[clickedIndex]);
                 clickedObject.subFilters[clickedIndex].active = !clickedObject.subFilters[clickedIndex].active;
-
                 // this.$forceUpdate();
                 // clickedObject.updateKey++;
             },
@@ -238,7 +272,6 @@
 </script>
 
 <style scoped lang="scss">
-
     .button-style-md-screens {
         font-size: 9px !important;
     }
@@ -265,6 +298,4 @@
         font-size: 20px;
         cursor: help;
     }
-
-
 </style>

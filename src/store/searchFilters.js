@@ -16,6 +16,26 @@ let filtersStore = {
             if (state.filters.length === 0){
                 let rawFilters = val['searchFairsharingRecords']['aggregations'];
                 state.filters = buildFilters(rawFilters);
+                let output=[]
+                state.filters.forEach(item=>{
+                    output.push({
+                        filter: item.filterLabel,
+                            filterSelected: {},
+                        searchTerm: null,
+                            subFilters: [{
+                        subFilter: 'subfilter-1',
+                        active: false,
+                        inventory: 12
+                    },
+                        {
+                            subFilter: 'subfilter-2',
+                            active: false,
+                            inventory: 9
+                        },
+                    ]
+                })
+                })
+                state.filters = output
             }
         }
     },

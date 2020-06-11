@@ -256,9 +256,11 @@ class RESTClient {
         headers['Authorization'] = 'Bearer ' + token;
         let newLicence = {
             fairsharing_record_id: licenceLink.fairsharing_record_id,
-            licence_id: licenceLink.licence.id,
             relation: licenceLink.relation
         };
+        if (licenceLink.licence) newLicence.licence_id = licenceLink.licence.id;
+        else newLicence.licence_attributes = licenceLink.licence_attributes;
+
         const request = {
             method: "post",
             baseURL: _client.baseURL + "/licence_links",
@@ -300,9 +302,10 @@ class RESTClient {
         headers['Authorization'] = 'Bearer ' + token;
         let updateLicence = {
             fairsharing_record_id: licenceLink.fairsharingRecord.id,
-            licence_id: licenceLink.licence.id,
             relation: licenceLink.relation
         };
+        if (licenceLink.licence) updateLicence.licence_id = licenceLink.licence.id;
+        else updateLicence.licence_attributes = licenceLink.licence_attributes;
         const request = {
             method: "put",
             baseURL: _client.baseURL + "/licence_links/" + licenceLink.id,

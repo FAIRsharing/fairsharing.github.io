@@ -38,9 +38,10 @@
             :key="'licence_' + licenceIndex"
             class="col-4"
           >
-            <v-card>
-              <v-card-text>
+            <v-card height="100%">
+              <v-card-text style="height:80%">
                 <v-autocomplete
+                  v-if="licence.licence && licence.licence.id !== false"
                   v-model="licence['licence']"
                   :items="licences"
                   item-text="name"
@@ -48,7 +49,38 @@
                   outlined
                   return-object
                   label="Select the Licence name"
-                />
+                  :search-input.sync="searchInput[licenceIndex]"
+                >
+                  <template slot="no-data">
+                    <v-container>
+                      <v-row>
+                        <v-row justify="center">
+                          <div>No licence found.</div>
+                        </v-row>
+                      </v-row>
+                      <v-row justify="center">
+                        <v-btn
+                          class="green white--text my-3"
+                          @click="createNewLicence(licence, licenceIndex)"
+                        >
+                          Create a new licence
+                        </v-btn>
+                      </v-row>
+                    </v-container>
+                  </template>
+                </v-autocomplete>
+                <div v-else>
+                  <v-text-field
+                    v-model="licence['licence_attributes'].name"
+                    label="Licence Name"
+                    outlined
+                  />
+                  <v-text-field
+                    v-model="licence['licence_attributes'].url"
+                    label="Licence URL"
+                    outlined
+                  />
+                </div>
                 <v-autocomplete
                   v-model="licence.relation"
                   :items="relationValues"
@@ -115,7 +147,8 @@
                 "least_permissive"
               ],
               removedLicences: [],
-              errors: []
+              errors: [],
+              searchInput: []
             }
         },
         computed: {
@@ -142,7 +175,11 @@
                 name: "",
                 id: ""
               },
-              relation: ""
+              relation: "",
+              licence_attributes: {
+                name: "",
+                url: ""
+              }
             });
           },
           removeLicence: function (itemIndex) {
@@ -166,6 +203,12 @@
             const _module = this;
             let toAdd = this.currentLicences.filter(obj => Object.keys(obj).indexOf("id") === -1);
             await asyncForEach(toAdd, async function (licence) {
+              if (licence.licence.id === false) {
+                delete licence.licence;
+              }
+              else {
+                delete licence.licence_attributes;
+              }
               let createData = await restClient.createLicenceLink(licence, _module.user().credentials.token);
               if (createData.error) {
                 _module.errors.push(createData.error);
@@ -187,12 +230,31 @@
             await asyncForEach(_module.initialLicences, async (initialLicence) => {
               let matchingLicence = _module.currentLicences.filter(obj => obj.id === initialLicence.id)[0];
               if (matchingLicence && Object.keys(diff(initialLicence, matchingLicence)).length > 0 ){
+                if (matchingLicence.licence.id === false) {
+                  delete matchingLicence.licence;
+                }
+                else {
+                  delete matchingLicence.licence_attributes;
+                }
                 let updatedLicence = await restClient.updateLicenceLink(matchingLicence, _module.user().credentials.token);
                 if (updatedLicence.error) {
                   _module.errors.push(updatedLicence.error);
                 }
               }
             });
+          },
+          createNewLicence: function(licence, index){
+            let input = this.searchInput[index];
+            licence.licence.id = false;
+            licence.licence_attributes = {
+              name: input,
+              url: '',
+            }
+          },
+          prepareData: function(data){
+            let preparedData = data;
+            return preparedData;
+
           }
         }
     }

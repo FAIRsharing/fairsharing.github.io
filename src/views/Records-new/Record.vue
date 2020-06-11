@@ -742,7 +742,7 @@
                     object.id = item.linkedRecord.id;
                     object.registry = item.linkedRecord.registry;
                     object.name = item.linkedRecord.name;
-                    object.recordAssocLabel = this.cleanString(item.recordAssocLabel + ' ->');
+                    object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
                     object.subject = _module.currentRecord['fairsharingRecord'].name;
                     flatten_recordAssociations.push(object);
                 });
@@ -751,7 +751,7 @@
                     object.id = item.fairsharingRecord.id;
                     object.registry = item.fairsharingRecord.registry;
                     object.name = item.fairsharingRecord.name;
-                    object.recordAssocLabel = this.cleanString(item.recordAssocLabel + ' ->');
+                    object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
                     object.subject = _module.currentRecord['fairsharingRecord'].name;
                     flatten_recordAssociations.push(object);
                 });

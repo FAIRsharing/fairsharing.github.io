@@ -26,21 +26,16 @@ class GraphQLClient {
      * sending to the API.
      * @returns {Promise}
      */
-    async executeQuery(query){
+    async executeQuery(query) {
         let client = this;
         let queryString = {
             query: `{${client.buildQuery(query)}}`
         };
-        try {
-            let resp = await this.getData(queryString);
-            if (resp.data.errors){
-                throw new Error(resp.data.errors[0].message);
-            }
-            return resp.data.data;
+        let resp = await this.getData(queryString);
+        if (resp.data.errors) {
+            return resp.data.errors;
         }
-        catch (err){
-            throw err;
-        }
+        return resp.data.data;
     }
 
     /**

@@ -3,10 +3,10 @@
     <v-expansion-panel-header>{{ object.filter }}</v-expansion-panel-header>
     <v-expansion-panel-content class="pl-5 pr-5">
       <v-list
-        v-if="object.subFilters.length<5"
+        v-if="object.subFilters.length<=5"
         flat
-        :class="{'fixed-scrollable-height':object.subFilters.length>5}"
       >
+        <!--          :class="{'fixed-scrollable-height':object.subFilters.length>5}"-->
         <v-list-item-group
           color="primary"
           multiple
@@ -48,17 +48,27 @@
                                       :placeholder="`Search through ${object.filter}`"
                               ></v-text-field>
                   -->
-      <v-autocomplete
+      <div
         v-if="object.subFilters.length>5"
-        v-model="object.filterSelected"
-        class="mt-2"
-        :items="returnSubFilters(object.subFilters)"
-        solo
-        dense
-        clearable
-        :placeholder="`Search through ${object.filter}`"
-      />
-      {{ object.filterSelected }}
+        :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
+      >
+        <v-autocomplete
+          v-model="object.filterSelected"
+          class="mt-2"
+          :items="returnSubFilters(object.subFilters)"
+          solo
+          dense
+          clearable
+          :placeholder="`Search through ${object.filter}`"
+        />
+        <v-btn
+          color="primary"
+          class="mt-lg-2 ml-lg-2"
+          style="height: 38px"
+        >
+          Apply
+        </v-btn>
+      </div>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>

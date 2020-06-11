@@ -21,12 +21,21 @@ recordStore.state.currentRecord = {
                 fairsharing_record_id: 1,
                 licence: {
                     id: 2
+                },
+                licence_attributes: {
+                    name: "",
+                    url: ""
                 }
             },
             {
                 name: "name1",
-                id: 1
-            }
+                id: 1,
+                licence_attributes: {
+                    name: "",
+                    url: ""
+                }
+            },
+
         ]
     }
 };
@@ -76,7 +85,11 @@ describe("EditLicences.vue", function() {
                 name: "",
                 id: ""
             },
-            relation: ""
+            relation: "",
+            licence_attributes: {
+                name: "",
+                url: ""
+            }
         });
         expect(wrapper.vm.currentLicences.length).toBe(3);
         wrapper.vm.removeLicence(2);
@@ -143,6 +156,10 @@ describe("EditLicences.vue", function() {
                 },
                 licence: {
                     id: 2
+                },
+                licence_attributes: {
+                    name: "",
+                    url: ""
                 }
             }
         ] ;

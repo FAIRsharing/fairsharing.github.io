@@ -7,10 +7,10 @@
       class="d-flex flex-row justify-start mb-1 mb-lg-2"
     >
       <v-btn
-        color="primary"
         v-for="(item,index) in buttonsGroup[filterHolderIndex-1]"
-        class="mr-1 mr-lg-2"
         :key="index"
+        color="primary"
+        class="mr-1 mr-lg-2"
         :class="[index===0?'first-child':'flex-1',{'button-style-md-screens':mdScreens}]"
         :outlined="!item.active"
         @click="selectFilter(index,buttonsGroup[filterHolderIndex-1])"
@@ -40,6 +40,7 @@
         <span>{{ item.toolTip }}</span>
       </v-tooltip>
     </div>
+    <!-- expansion Panels    -->
     <v-expansion-panels
       v-model="panel"
       multiple
@@ -49,7 +50,7 @@
     >
       <ExpansionPanel
         v-for="object in filters"
-        :key="object.filter+'_'+object.updateKey"
+        :key="object.filter"
         :object="object"
         @AddParam="addParam"
       />
@@ -63,7 +64,7 @@
     export default {
         name: "FilterButtons",
         components: {ExpansionPanel},
-        props: {mdScreens: null},
+        props: {mdScreens: {default: null, type: Boolean}},
         data() {
             return {
                 searchTerm: '',

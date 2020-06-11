@@ -60,6 +60,7 @@
 
 <script>
     import ExpansionPanel from "./ExpansionPanel";
+    import {mapState} from "vuex"
 
     export default {
         name: "FilterButtons",
@@ -188,6 +189,9 @@
                 }]
             }
         },
+        computed: {
+            ...mapState("searchFilters", ["filters"])
+        },
         created() {
             //open first expandable panel.
             // this.panel['0'] = 0;
@@ -229,7 +233,7 @@
                     this.filterSelected[item.filter] = [];
                 });
             },
-        }
+        },
     }
 </script>
 

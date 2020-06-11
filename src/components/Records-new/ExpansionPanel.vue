@@ -3,6 +3,7 @@
     <v-expansion-panel-header>{{ object.filter }}</v-expansion-panel-header>
     <v-expansion-panel-content class="pl-5 pr-5">
       <v-list
+        v-if="object.subFilters.length<5"
         flat
         :class="{'fixed-scrollable-height':object.subFilters.length>5}"
       >
@@ -37,16 +38,16 @@
         </v-list-item-group>
       </v-list>
       <!--
-                        <v-text-field
-                                v-if="object.subFilters.length>5"
-                                class="mt-2"
-                                solo
-                                dense
-                                clearable
-                                v-model="searchTerm"
-                                :placeholder="`Search through ${object.filter}`"
-                        ></v-text-field>
-            -->
+                              <v-text-field
+                                      v-if="object.subFilters.length>5"
+                                      class="mt-2"
+                                      solo
+                                      dense
+                                      clearable
+                                      v-model="searchTerm"
+                                      :placeholder="`Search through ${object.filter}`"
+                              ></v-text-field>
+                  -->
       <v-autocomplete
         v-if="object.subFilters.length>5"
         v-model="object.filterSelected"
@@ -57,6 +58,7 @@
         clearable
         :placeholder="`Search through ${object.filter}`"
       />
+      {{ object.filterSelected }}
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -64,7 +66,7 @@
 <script>
     export default {
         name: "ExpansionPanel",
-        props: {object: null},
+        props: {object: {default: null, type: Object}},
         data: () => {
             return {
                 searchTerm: ''

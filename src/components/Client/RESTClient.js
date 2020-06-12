@@ -254,18 +254,11 @@ class RESTClient {
         let _client = this;
         let headers = JSON.parse(JSON.stringify(_client.headers));
         headers['Authorization'] = 'Bearer ' + token;
-        let newLicence = {
-            fairsharing_record_id: licenceLink.fairsharing_record_id,
-            relation: licenceLink.relation
-        };
-        if (licenceLink.licence) newLicence.licence_id = licenceLink.licence.id;
-        else newLicence.licence_attributes = licenceLink.licence_attributes;
-
         const request = {
             method: "post",
             baseURL: _client.baseURL + "/licence_links",
             headers: headers,
-            data: {licence_link: newLicence}
+            data: {licence_link: licenceLink}
         };
         let response = await _client.executeQuery(request);
         return response.data;
@@ -300,17 +293,11 @@ class RESTClient {
         let _client = this;
         let headers = JSON.parse(JSON.stringify(_client.headers));
         headers['Authorization'] = 'Bearer ' + token;
-        let updateLicence = {
-            fairsharing_record_id: licenceLink.fairsharingRecord.id,
-            relation: licenceLink.relation
-        };
-        if (licenceLink.licence) updateLicence.licence_id = licenceLink.licence.id;
-        else updateLicence.licence_attributes = licenceLink.licence_attributes;
         const request = {
             method: "put",
             baseURL: _client.baseURL + "/licence_links/" + licenceLink.id,
             headers: headers,
-            data: {licence_link: updateLicence}
+            data: {licence_link: licenceLink}
         };
         let response = await _client.executeQuery(request);
         return response.data;

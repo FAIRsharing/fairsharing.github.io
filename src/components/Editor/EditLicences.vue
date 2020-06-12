@@ -203,13 +203,8 @@
             const _module = this;
             let toAdd = this.currentLicences.filter(obj => Object.keys(obj).indexOf("id") === -1);
             await asyncForEach(toAdd, async function (licence) {
-              if (licence.licence.id === false) {
-                delete licence.licence;
-              }
-              else {
-                delete licence.licence_attributes;
-              }
-              let createData = await restClient.createLicenceLink(licence, _module.user().credentials.token);
+              let preparedLicence = _module.prepareData(licence);
+              let createData = await restClient.createLicenceLink(preparedLicence, _module.user().credentials.token);
               if (createData.error) {
                 _module.errors.push(createData.error);
               }
@@ -230,13 +225,8 @@
             await asyncForEach(_module.initialLicences, async (initialLicence) => {
               let matchingLicence = _module.currentLicences.filter(obj => obj.id === initialLicence.id)[0];
               if (matchingLicence && Object.keys(diff(initialLicence, matchingLicence)).length > 0 ){
-                if (matchingLicence.licence.id === false) {
-                  delete matchingLicence.licence;
-                }
-                else {
-                  delete matchingLicence.licence_attributes;
-                }
-                let updatedLicence = await restClient.updateLicenceLink(matchingLicence, _module.user().credentials.token);
+                let preparedLicence = _module.prepareData(matchingLicence);
+                let updatedLicence = await restClient.updateLicenceLink(preparedLicence, _module.user().credentials.token);
                 if (updatedLicence.error) {
                   _module.errors.push(updatedLicence.error);
                 }
@@ -249,12 +239,20 @@
             licence.licence_attributes = {
               name: input,
               url: '',
-            }
+            };
+            return licence;
           },
-          prepareData: function(data){
-            let preparedData = data;
-            return preparedData;
-
+          prepareData: function(rawLicence){
+            let preparedLicence = { relation: rawLicence.relation };
+            preparedLicence.fairsharing_record_id = (rawLicence.fairsharingRecord) ? rawLicence.fairsharingRecord.id : rawLicence.fairsharing_record_id;
+            if (rawLicence.id) preparedLicence.id = rawLicence.id;
+            if (rawLicence.licence && rawLicence.licence.id !== false){
+              preparedLicence.licence_id = rawLicence.licence.id
+            }
+            else {
+              preparedLicence.licence_attributes = rawLicence.licence_attributes;
+            }
+            return preparedLicence;
           }
         }
     }

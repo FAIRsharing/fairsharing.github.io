@@ -216,6 +216,39 @@ describe("EditLicences.vue", function() {
         createStub.restore();
         deleteStub.restore();
         updateStub.restore();
+    });
+
+    it("can create a new licence", () => {
+        wrapper.vm.searchInput[0] = "test";
+        let oldLicence = {
+            relation: "name",
+            fairsharing_record_id: 1,
+            licence: {
+                id: 2
+            }
+        };
+        let newLicence = wrapper.vm.createNewLicence(oldLicence, 0);
+        expect(newLicence.licence.id).toBe(false);
+        expect(newLicence.licence_attributes).toStrictEqual({
+            name: 'test',
+            url: ''
+        })
+    });
+
+    it("can prepare the data for posting", () =>{
+        const rawLicence = {
+            fairsharing_record_id: 123,
+            relation: "test",
+            id: 123,
+            licence_attributes: {}
+        };
+        let preparedData = wrapper.vm.prepareData(rawLicence);
+        expect(preparedData).toStrictEqual({
+            relation: 'test',
+            fairsharing_record_id: 123,
+            id: 123,
+            licence_attributes: {}
+        })
     })
 
 });

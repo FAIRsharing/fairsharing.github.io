@@ -53,7 +53,6 @@
         v-for="object in calc"
         :key="object.filter"
         :object="object"
-        @AddParam="addParam"
       />
     </v-expansion-panels>
   </div>
@@ -62,7 +61,6 @@
 <script>
     import {mapState} from "vuex"
     import ExpansionPanel from "./ExpansionPanel";
-
     export default {
         name: "FilterButtons",
         components: {ExpansionPanel},
@@ -188,49 +186,55 @@
                     title: 'R',
                     active: false,
                     toolTip: 'Show Ready Records'
-                }]
+                }],
+              i:0
             }
         },
         computed: {
             ...mapState("searchFilters", ["filters"]),
             calc() {
                 // let output = [];
+              // let _module=this;
+/*
+              _module.i++;
+              if(_module.i===1){
+*/
                 this.all();
                 this.createIndexForFilters();
-/*
-                this.filters.forEach(item => {
-                    // if(item.filterName!=='id')
-                    output.push(
-                        {
-                            filter: item.filterLabel,
-                            filterSelected: {},
-                            searchTerm: null,
-                            subFilters: [{
-                                subFilter: 'subfilter-1',
-                                active: false,
-                                inventory: 12
-                            },
-                                {
-                                    subFilter: 'subfilter-2',
-                                    active: false,
-                                    inventory: 9
-                                },
-                            ]
-                        }
-                    )
-                })
-*/
+              // }
+                /*
+                                this.filters.forEach(item => {
+                                    // if(item.filterName!=='id')
+                                    output.push(
+                                        {
+                                            filter: item.filterLabel,
+                                            filterSelected: {},
+                                            searchTerm: null,
+                                            subFilters: [{
+                                                subFilter: 'subfilter-1',
+                                                active: false,
+                                                inventory: 12
+                                            },
+                                                {
+                                                    subFilter: 'subfilter-2',
+                                                    active: false,
+                                                    inventory: 9
+                                                },
+                                            ]
+                                        }
+                                    )
+                                })
+                */
                 return this.filters;
             }
         },
         created() {
             //open first expandable panel.
             // this.panel['0'] = 0;
-/*
-            this.all();
-            this.createIndexForFilters();
-*/
-
+            /*
+                        this.all();
+                        this.createIndexForFilters();
+            */
         },
         methods: {
             selectFilter: function (index, selectedButtonsArray) {
@@ -247,21 +251,6 @@
             none() {
                 this.panel = []
             },
-            addParam: async function (subFilterName, subFilterObject, parentFilterName) {
-                console.log('subFilterName', subFilterName);
-                console.log('subFilterObject', subFilterObject);
-                console.log('parentFilterName', parentFilterName)
-                console.log('filterSelected', this.filterSelected);
-                console.log('filters', this.filters);
-                let clickedObject = this.filters.find(item => item.filter === parentFilterName)
-                // console.log('clickedObject', clickedObject);
-                let clickedIndex = clickedObject.subFilters.findIndex(item => item.subFilter === subFilterName);
-                // console.log('clickedIndex', clickedIndex);
-                // console.log(clickedObject.subFilters[clickedIndex]);
-                clickedObject.subFilters[clickedIndex].active = !clickedObject.subFilters[clickedIndex].active;
-                // this.$forceUpdate();
-                // clickedObject.updateKey++;
-            },
             createIndexForFilters: function () {
                 this.filters.forEach(item => {
                     this.filterSelected[item.filter] = [];
@@ -275,21 +264,17 @@
     .button-style-md-screens {
         font-size: 9px !important;
     }
-
     .first-child {
         font-size: 11px;
         width: 16.5%;
     }
-
     .flex-1 {
         font-size: 11px;
         flex: 1;
     }
-
     .buttons-md-style {
         min-width: 32px !important;
     }
-
     #status-style {
         color: white;
         position: absolute;

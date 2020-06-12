@@ -14,7 +14,7 @@
           <v-list-item
             v-for="(subObject,index) in searchSubFilters.subFilters"
             :key="subObject.subFilter+'_'+index"
-            @click="$emit('AddParam',subObject.subFilter, subObject,object.filter)"
+            @click="callAction"
           >
             <v-list-item-content>
               <v-list-item-title
@@ -38,16 +38,16 @@
         </v-list-item-group>
       </v-list>
       <!--
-                              <v-text-field
-                                      v-if="object.subFilters.length>5"
-                                      class="mt-2"
-                                      solo
-                                      dense
-                                      clearable
-                                      v-model="searchTerm"
-                                      :placeholder="`Search through ${object.filter}`"
-                              ></v-text-field>
-                  -->
+                                    <v-text-field
+                                            v-if="object.subFilters.length>5"
+                                            class="mt-2"
+                                            solo
+                                            dense
+                                            clearable
+                                            v-model="searchTerm"
+                                            :placeholder="`Search through ${object.filter}`"
+                                    ></v-text-field>
+                        -->
       <div
         v-if="object.subFilters.length>5"
         :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
@@ -74,6 +74,8 @@
 </template>
 
 <script>
+    import {mapActions} from 'vuex'
+
     export default {
         name: "ExpansionPanel",
         props: {object: {default: null, type: Object}},
@@ -124,13 +126,13 @@
                         {
                             return {};
                         }*/
-            }
+            },
+            ...mapActions('searchFilters', ["callAction"]),
         }
     }
 </script>
 
 <style scoped lang="scss">
-
     .badge {
         width: 35px;
         height: 25px;
@@ -166,7 +168,6 @@
             top: 6%;
             left: 20%;
         }
-
     }
 
     .triangle-left {

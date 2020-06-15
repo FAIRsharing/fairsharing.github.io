@@ -53,22 +53,22 @@ let filtersStore = {
             state.filters = output
         },
         refain(state) {
-            console.log('called');
+            // console.log('called');
             // let output = []
             // output = state.filters
             state.filters.forEach(item => {
                 if (item.filter === 'isRecommended') {
-                    console.log(item.subFilters)
+                    // console.log(item.subFilters)
                     let temp = item.subFilters
                     temp[0].active = !temp[0].active
-                    console.log(temp)
+                    // console.log(temp)
                     item.subFilters = function () {
                         return temp;
                     }
                 }
                 // state.filters[1]=item;
             })
-            console.log('whole', state.filters[1])
+            // console.log('whole', state.filters[1])
             // state.filters = output
         }
     },

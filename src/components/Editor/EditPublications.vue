@@ -240,6 +240,7 @@
 
 <script>
     import { mapState, mapActions } from "vuex"
+    import { parseBibFile } from "bibtex";
     import PublicationClient from "@/components/Client/ExternalClients.js"
     import GraphClient from "@/components/GraphClient/GraphClient.js"
     import publicationsQuery from "@/components/GraphClient/queries/getPublications.json"
@@ -318,9 +319,13 @@
                 this.errors.doi = true;
               }
               else {
-                this.newPublication = data[0].entryTags;
-                this.newPublication.authors = data[0].entryTags.author;
-                this.newPublication.url = decodeURIComponent(data[0].entryTags.url);
+                let publication = parseBibFile(data).content[0];
+                this.newPublication.authors = publication.getField('author').data.join('');
+                this.newPublication.doi = publication.getField('doi').data.join('');
+                this.newPublication.title = publication.getField('title').data.join('');
+                this.newPublication.journal = publication.getField('journal').data.join('');
+                this.newPublication.url = decodeURIComponent(publication.getField('url').data.join(''));
+                this.newPublication.year = publication.getField('year');
                 this.openEditor = true;
               }
           },

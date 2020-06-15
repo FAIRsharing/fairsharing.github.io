@@ -1,6 +1,4 @@
 import axios from "axios"
-// const bibtexParse = require('bibtex-parse-js');
-
 
 class ExternalRESTClients {
 
@@ -30,6 +28,7 @@ class ExternalRESTClients {
         if (!response.error){
             return response.data;
         }
+        console.log(response);
         return response;
     }
 

@@ -141,7 +141,7 @@
     <v-card-actions>
       <v-btn
         class="primary"
-        @click="updateLicences()"
+        @click="updateRecordPub()"
       >
         Submit Publications
       </v-btn>
@@ -373,7 +373,7 @@
           },
           addPublication(){
             let newPub = JSON.parse(JSON.stringify(this.newPublication));
-            if (this.currentPublicationIndex){
+            if (this.currentPublicationIndex !== false){
               delete this.availablePublications[newPub.pubIndex];
               this.publications[this.currentPublicationIndex] = newPub;
               newPub.pubIndex = this.availablePublications.length;
@@ -402,7 +402,7 @@
             this.openEditor = true;
             this.newPublication = JSON.parse(JSON.stringify(publication));
           },
-          async updateLicences(){
+          async updateRecordPub(){
               this.openEditor = false;
               let licences = {
                 publication_ids: [],
@@ -423,7 +423,7 @@
               };
               await this.updateRecord(record);
               if (!this.recordUpdate.error){
-                let ID = this.recordUpdate.id.data.id;
+                let ID = this.$route.params.id;
                 this.$router.push({
                   path: "/" + ID
                 })

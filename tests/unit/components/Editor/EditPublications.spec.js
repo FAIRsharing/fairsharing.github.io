@@ -6,7 +6,7 @@ import editPublications from "@/components/Editor/EditPublications.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
 import GraphClient from "@/components/GraphClient/GraphClient.js";
-// import RestClient from "../../../../src/components/Client/RESTClient.js"
+import RestClient from "../../../../src/components/Client/RESTClient.js"
 import ExternalClient from "../../../../src/components/Client/ExternalClients.js"
 const sinon = require("sinon");
 
@@ -18,7 +18,7 @@ recordStore.state.currentRecord = {
     fairsharingRecord: {
         publications: [
             {
-                name: "Hello",
+                title: "Hello",
                 id: 1
             }
         ]
@@ -36,7 +36,7 @@ const router = new VueRouter();
 const $router = { push: jest.fn() };
 
 let graphStub;
-//let restStub;
+let restStub;
 let fetchStub;
 
 const article = '@article{Culliton_1989,' +
@@ -55,11 +55,14 @@ const article = '@article{Culliton_1989,' +
 
 describe("EditLicences.vue", function() {
     let wrapper;
-
     beforeEach(() => {
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         graphStub.returns({
-            searchLicences: []
+            searchPublications: [
+                { title: "Hello", id: 1 },
+                { title: "title", doi: "123" },
+                { title: "title"}
+            ]
         });
         wrapper = shallowMount(editPublications, {
             localVue,
@@ -68,7 +71,6 @@ describe("EditLicences.vue", function() {
             mocks: {$store, $route, $router}
         });
     });
-
     afterEach( () => {
         graphStub.restore();
     });
@@ -151,8 +153,65 @@ describe("EditLicences.vue", function() {
     });
 
     it("can add/remove a publication to the array of publications", () => {
-        wrapper.vm.newPublication = {}
+        wrapper.vm.newPublication = {title: "title"};
+        wrapper.vm.addPublication();
+        expect(wrapper.vm.search).toBe("title");
+        expect(wrapper.vm.publications[1]).toStrictEqual({pubIndex: 3, title: "title"});
+        expect(wrapper.vm.publications.length).toBe(2);
+
+        wrapper.vm.currentPublicationIndex = 2;
+        wrapper.vm.newPublication = {pubIndex: 3, title: "title", doi: "123"};
+        wrapper.vm.addPublication();
+        expect(wrapper.vm.search).toBe("123");
+        expect(wrapper.vm.publications.length).toBe(3);
+        expect(wrapper.vm.publications[2]).toStrictEqual({pubIndex: 4, title: "title", doi: "123"});
+
+        expect(wrapper.vm.publications.length).toBe(3);
+        wrapper.vm.removePublication(2);
+        expect(wrapper.vm.publications.length).toBe(2);
+
+        wrapper.vm.createNewPublication();
+        expect(wrapper.vm.errors).toStrictEqual({
+            doi: null,
+            general: null,
+            pmid: null
+        });
+        expect(wrapper.vm.newPublication ).toStrictEqual({
+            doi: "",
+            title: "",
+            journal: "",
+            year: "",
+            authors: "",
+            pubmed_id: ""
+        });
+        expect(wrapper.vm.openEditor).toBe(true);
     });
 
+    it("can edit an added publication", () => {
+        let newPub = {};
+        wrapper.vm.editPublication(newPub, 0);
+        expect(wrapper.vm.newPublication).toStrictEqual({});
+    });
+
+    it("can update a record", async () => {
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data: {id: 123}});
+        wrapper.vm.publications = [
+            {
+                id: 1
+            },
+            {
+                doi: 123
+            }
+        ];
+        await wrapper.vm.updateRecordPub();
+        restStub.restore();
+
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data: {error: { response: "Im an error"}}});
+        await wrapper.vm.updateRecordPub();
+        expect(wrapper.vm.errors.general).toBe("Im an error");
+        restStub.restore();
+    })
 
 });

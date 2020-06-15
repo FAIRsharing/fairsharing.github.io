@@ -20,8 +20,7 @@ class ExternalRESTClients {
 
     async getDOI(doi){
         const request = {
-            method: "get",
-            baseURL: this.doiBaseURL + doi,
+            url: this.doiBaseURL + doi,
             headers: this.headers
         };
         let response = await this.executeQuery(request);
@@ -30,8 +29,7 @@ class ExternalRESTClients {
 
     async getPMID(id){
         const request = {
-            method: "get",
-            baseURL: this.pmidBaseURL + id
+            url: this.pmidBaseURL + id
         };
         let response = await this.executeQuery(request);
         return response.data;
@@ -44,7 +42,7 @@ class ExternalRESTClients {
      */
     async executeQuery(query) {
         try {
-            return await axios(query);
+            return await axios.get(query.url, {headers: query.headers});
         }
         catch(e){
             return({data: {error: e}});

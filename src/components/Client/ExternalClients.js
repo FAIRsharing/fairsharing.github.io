@@ -28,7 +28,6 @@ class ExternalRESTClients {
         if (!response.error){
             return response.data;
         }
-        console.log(response);
         return response;
     }
 

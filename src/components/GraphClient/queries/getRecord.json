@@ -91,7 +91,13 @@
       {
           "name": "publications",
           "fields": [
-              "title"
+              "title",
+              "doi",
+              "authors",
+              "id",
+              "journal",
+              "url",
+              "year"
           ]
       },
       {

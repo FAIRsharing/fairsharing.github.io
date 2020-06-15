@@ -31,7 +31,8 @@
     "vuetify": "^2.2.14",
     "vuex": "^3.0.1",
     "vue-country-flag": "^2.0.1",
-    "deep-object-diff": "^1.1.0"
+    "deep-object-diff": "^1.1.0",
+    "bibtex-parse-js": "*"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",

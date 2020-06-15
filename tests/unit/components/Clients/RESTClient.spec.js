@@ -1,5 +1,4 @@
 import Client from "@/components/Client/RESTClient.js";
-import axios from "axios";
 const sinon = require("sinon");
 
 
@@ -57,14 +56,9 @@ describe("RESTClient", () =>{
 
     it("can process network errors", async () => {
         stub.restore();
-        let axiosStub = sinon.stub(axios, "request");
-        axiosStub.returns({
-            data: {error: new Error("Request failed with status code 404")}
-        });
         let resp = await client.executeQuery({
-            url: "testURL"
+            url: "http://google.com"
         });
-        expect(resp.data.error.message).toBe("Request failed with status code 404");
-        axiosStub.restore();
+        expect(resp.data.error.message).toBe("Network Error");
     })
 });

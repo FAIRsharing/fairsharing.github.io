@@ -39,6 +39,20 @@ let graphStub;
 //let restStub;
 let fetchStub;
 
+const article = '@article{Culliton_1989,' +
+    'doi = {10.1126/science.2781281},' +
+    'url = {https://doi.org/10.1126%2Fscience.2781281},' +
+    'year = 1989,' +
+    'month = {sep},' +
+    'publisher = {American Association for the Advancement of Science ({AAAS})},' +
+    'volume = {245},' +
+    'number = {4924},' +
+    'pages = {1325--1325},' +
+    'author = {B. Culliton},' +
+    'title = {Gene transfer test: so far, so good},' +
+    'journal = {Science} }';
+
+
 describe("EditLicences.vue", function() {
     let wrapper;
 
@@ -65,9 +79,80 @@ describe("EditLicences.vue", function() {
 
     it("can get a DOI and process related errors", async () => {
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-        fetchStub.returns({});
+        fetchStub.returns({data:article});
+        const expectedArticle = {
+            authors: 'B. Culliton',
+            doi: '10.1126/science.2781281',
+            title: 'Gene transfer test: so far, so good',
+            journal: 'Science',
+            url: 'https://doi.org/10.1126/science.2781281',
+            year: 1989
+        };
         wrapper.vm.search = 'amIaDoi?';
+        await wrapper.vm.getDOI();
+        expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
         fetchStub.restore();
-    })
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data: {error: 'Im an error'}});
+        await wrapper.vm.getDOI();
+        expect(wrapper.vm.errors.doi).toBe(true);
+        fetchStub.restore();
+    });
+
+    it("can get a PMID and process related errors", async () => {
+        let returnedData = {
+            title: "title",
+            fulljournalname: "journal",
+            pubdate: "year",
+            authors: [
+                {
+                    name: "authorName"
+                },
+                {
+                    name: "otherAuthor"
+                }
+            ],
+            uid: "pmid",
+            elocationid: "pii: S0092-8674(20)30740-6. doi: 10.1016/j.cell.2020.06.009"
+        };
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data: {result: {test: returnedData}}});
+        let expectedOutput = {
+            title: "title",
+            journal: "journal",
+            year: "year",
+            authors: "authorName, otherAuthor",
+            pubmed_id: "pmid",
+            doi: '10.1016/j.cell.2020.06.009',
+            url: 'https://doi.org/10.1016/j.cell.2020.06.009'
+        };
+        wrapper.vm.search = "test";
+        await wrapper.vm.getPMID();
+        expect(wrapper.vm.newPublication).toStrictEqual(expectedOutput);
+        fetchStub.restore();
+
+        // NO PMID PROCESS
+        returnedData.elocationid = null;
+        delete expectedOutput.doi;
+        delete expectedOutput.url;
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data: {result: {test: returnedData}}});
+        wrapper.vm.search = "test";
+        await wrapper.vm.getPMID();
+        expect(wrapper.vm.newPublication).toStrictEqual(expectedOutput);
+        fetchStub.restore();
+
+        // ERROR PROCESS
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data: {error: 'Im an error'}});
+        await wrapper.vm.getPMID();
+        expect(wrapper.vm.errors.pmid).toBe(true);
+        fetchStub.restore();
+    });
+
+    it("can add/remove a publication to the array of publications", () => {
+        wrapper.vm.newPublication = {}
+    });
+
 
 });

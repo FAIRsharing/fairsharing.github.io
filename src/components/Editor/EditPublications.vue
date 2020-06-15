@@ -315,7 +315,7 @@
               };
               let doi = (' ' + this.search).slice(1).trim(); // make a copy of the string and trim it
               let data = await pubClient.getDOI(doi);
-              if (data.length === 0){
+              if (data.error){
                 this.errors.doi = true;
               }
               else {
@@ -343,7 +343,7 @@
               }
               else {
                 const pub = data.result[id];
-                let doiArray = pub['elocationid'].split(": ");
+                let doi = this.processIDs(pub['elocationid']);
                 this.newPublication = {
                   title: pub.title,
                   journal: pub['fulljournalname'],
@@ -351,13 +351,26 @@
                   authors: pub['authors'].map(function(elem){return elem.name;}).join(", "),
                   pubmed_id: pub['uid']
                 };
-                if (doiArray[0] && doiArray[0] === 'doi') {
-                  this.newPublication.doi = doiArray[1];
-                  this.newPublication.url = "https://doi.org/" + doiArray[1];
+                if (doi) {
+                  this.newPublication.doi = doi;
+                  this.newPublication.url = "https://doi.org/" + doi;
                 }
                 this.openEditor = true;
               }
-            },
+          },
+          processIDs(idsString){
+            let doi = null;
+            if (idsString){
+              let IDsArray = idsString.split(". ");
+              IDsArray.forEach(function(IDString){
+                let IDArray = IDString.split(": ");
+                if (IDArray[0] === 'doi'){
+                  doi = IDArray[1]
+                }
+              });
+            }
+            return doi;
+          },
           addPublication(){
             let newPub = JSON.parse(JSON.stringify(this.newPublication));
             if (this.currentPublicationIndex){

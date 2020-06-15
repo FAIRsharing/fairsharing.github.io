@@ -31,7 +31,8 @@ let recordStore = {
                 type: data["fairsharingRecord"].type,
                 status: data["fairsharingRecord"].status,
                 countries: data["fairsharingRecord"].countries,
-                metadata: data["fairsharingRecord"].metadata
+                metadata: data["fairsharingRecord"].metadata,
+                deprecation_reason: data["fairsharingRecord"].metadata.deprecation_reason
             };
             state.recordUpdate = {
                 error: false,
@@ -77,7 +78,7 @@ let recordStore = {
         async updateRecord(state, newRecord){
             let response = await restClient.updateRecord(newRecord);
             if (response.error){
-                state.commit("setError", response.error.response.statusText)
+                state.commit("setError", response.error.response)
             }
             else {
                 state.commit("setNewRecord", response)

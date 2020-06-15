@@ -1,8 +1,8 @@
 <template>
   <v-card id="editSupport">
     <v-card-text v-if="error">
-      <v-alert class="alert-danger">
-        {{ error }}
+      <v-alert type="error">
+        {{ error.data }}
       </v-alert>
     </v-card-text>
     <v-card-text>

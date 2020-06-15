@@ -1,11 +1,15 @@
 <template>
   <v-card id="editLicenses">
     <v-card-text v-if="errors.length > 0">
-      <v-alert
-        type="error"
-        max-width="1500px"
-      >
-        {{ errors }}
+      <v-alert type="error">
+        <v-list color="transparent">
+          <v-list-item
+            v-for="(error, errorIndex) in errors"
+            :key="'error_' + errorIndex"
+          >
+            {{ error }}
+          </v-list-item>
+        </v-list>
       </v-alert>
     </v-card-text>
     <v-card-text>
@@ -190,6 +194,7 @@
           },
           updateRecord: async function () {
             const _module = this;
+            _module.errors = [];
             await _module.createLicences();
             await _module.deleteLicences();
             await _module.updateLicences();
@@ -206,7 +211,7 @@
               let preparedLicence = _module.prepareData(licence);
               let createData = await restClient.createLicenceLink(preparedLicence, _module.user().credentials.token);
               if (createData.error) {
-                _module.errors.push(createData.error);
+                _module.errors.push(createData.error.response);
               }
             });
           },
@@ -216,7 +221,7 @@
             await asyncForEach(toDelete, async (deleteLicence) => {
               let deleteData = await restClient.deleteLicenceLink(deleteLicence, _module.user().credentials.token);
               if (deleteData.error) {
-                _module.errors.push(deleteData.error)
+                _module.errors.push(deleteData.error.response)
               }
             });
           },
@@ -228,7 +233,7 @@
                 let preparedLicence = _module.prepareData(matchingLicence);
                 let updatedLicence = await restClient.updateLicenceLink(preparedLicence, _module.user().credentials.token);
                 if (updatedLicence.error) {
-                  _module.errors.push(updatedLicence.error);
+                  _module.errors.push(updatedLicence.error.response);
                 }
               }
             });

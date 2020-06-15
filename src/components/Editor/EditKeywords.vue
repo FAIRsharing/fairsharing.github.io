@@ -1,10 +1,10 @@
 <template>
   <v-card id="editKeywords">
     <v-alert
-      v-if="recordUpdate.message !== null"
-      :class="{'success': !recordUpdate.error, 'error': recordUpdate.error}"
+      v-if="error"
+      type="error"
     >
-      {{ recordUpdate.message }}
+      {{ error.message }}
     </v-alert>
     <v-card-text class="pb-0">
       <div class="selectedTermsSection">
@@ -392,7 +392,7 @@
                 })
               }
               else {
-                _module.error = _module.recordUpdate.message;
+                _module.error = _module.recordUpdate;
               }
             },
             async createNewTerm(){

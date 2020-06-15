@@ -12,9 +12,13 @@
         >
           <v-toolbar-title>Edit Record</v-toolbar-title>
         </v-toolbar>
-        <v-tabs vertical dark>
-          <v-tab v-for="tab in tabs" :key="'tab_' + tab">
-            {{ tab }}
+        <v-tabs dark>
+          <v-tab
+            v-for="tab in tabs"
+            :key="'tab_' + tab.name"
+            :disabled="tab.disabled"
+          >
+            {{ tab.name }}
           </v-tab>
 
           <!-- EDIT GENERAL INFO -->
@@ -32,14 +36,19 @@
             <edit-support />
           </v-tab-item>
 
-          <!-- EDIT RELATIONS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-relationships />
-          </v-tab-item>
-
           <!-- EDIT LICENSES -->
           <v-tab-item class="px-10 py-3">
             <edit-licences />
+          </v-tab-item>
+
+          <!-- EDIT PUBLICATIONS -->
+          <v-tab-item class="px-10 py-3">
+            <edit-publications />
+          </v-tab-item>
+
+          <!-- EDIT RELATIONS -->
+          <v-tab-item class="px-10 py-3">
+            <edit-relationships />
           </v-tab-item>
 
           <!-- EDIT MAINTAINERS -->
@@ -56,12 +65,6 @@
           <v-tab-item class="px-10 py-3">
             <edit-grants />
           </v-tab-item>
-
-          <!-- EDIT ORGANIZATIONS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-publications />
-          </v-tab-item>
-
         </v-tabs>
       </v-col>
     </v-row>
@@ -96,15 +99,42 @@
         data(){
           return {
             tabs: [
-              "Edit General Information",
-              "Edit Keywords",
-              "Edit Support Information",
-              "Edit Relations to other records",
-              "Edit Licenses",
-              "Edit Maintainers",
-              "Edit Organisations",
-              "Edit Grants",
-              "Edit Publications"
+              {
+                name: "Edit General Information",
+                disabled: false
+              },
+              {
+                name: "Edit Keywords",
+                disabled: false
+              },
+              {
+                name: "Edit Support Information",
+                disabled: false
+              },
+              {
+                name: "Edit Licenses",
+                disabled: false
+              },
+              {
+                name: "Edit Publications",
+                disabled: false
+              },
+              {
+                name: "Edit Relations to other records",
+                disabled: true
+              },
+              {
+                name: "Edit Maintainers",
+                disabled: true
+              },
+              {
+                name: "Edit Organisations",
+                disabled: true
+              },
+              {
+                name: "Edit Grants",
+                disabled: true
+              }
             ]
           }
         },

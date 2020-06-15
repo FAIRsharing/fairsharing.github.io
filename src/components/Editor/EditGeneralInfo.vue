@@ -4,10 +4,10 @@
     id="editGeneralInfo"
   >
     <v-alert
-      v-if="recordUpdate.message !== null"
-      :class="{'success': !recordUpdate.error, 'error': recordUpdate.error}"
+      v-if="error.message && error.message.data"
+      type="error"
     >
-      {{ recordUpdate.message }}
+      {{ error.message.data }}
     </v-alert>
     <v-card-text>
       <v-container fluid>
@@ -209,7 +209,8 @@
             return {
                 recordsTypes: [],
                 countries: [],
-                yearRange: 100
+                yearRange: 100,
+                error: false
             }
         },
         computed: {
@@ -267,12 +268,14 @@
           },
           editRecord: async function(){
             // PREPARE THE DATA
+            this.error = false;
             let countries = [];
             let newRecord = JSON.parse(JSON.stringify(this.metaTemplate));
             this.metaTemplate.countries.forEach(function(country){ countries.push(country.id) });
             newRecord.country_ids = countries;
             newRecord.record_type_id = this.metaTemplate.type.id;
             newRecord.metadata.status = this.metaTemplate.status;
+            newRecord.metadata.deprecation_reason = this.metaTemplate.deprecation_reason;
             delete newRecord.countries;
             delete newRecord.type;
             delete newRecord.status;
@@ -289,6 +292,9 @@
               this.$router.push({
                 path: "/" + ID
               })
+            }
+            else {
+              this.error = this.recordUpdate.error;
             }
           }
         },

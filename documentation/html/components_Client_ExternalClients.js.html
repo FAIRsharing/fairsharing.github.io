@@ -118,10 +118,7 @@ class ExternalRESTClients {
             headers: this.headers
         };
         let response = await this.executeQuery(request);
-        if (!response.error){
-            return response.data;
-        }
-        return response;
+        return response.data;
     }
 
     async getPMID(id){

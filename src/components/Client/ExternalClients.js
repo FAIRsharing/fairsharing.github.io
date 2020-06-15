@@ -1,5 +1,4 @@
 import axios from "axios"
-const bibtexParse = require('bibtex-parse-js');
 
 
 class ExternalRESTClients {
@@ -28,7 +27,7 @@ class ExternalRESTClients {
         };
         let response = await this.executeQuery(request);
         if (!response.error){
-            return bibtexParse.toJSON(response.data);
+            return response.data;
         }
         return response;
     }

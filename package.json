@@ -35,7 +35,7 @@
     "bibtex-parse-js": "^0.0.24"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.0.0",
+    "@vue/cli-plugin-babel": "4.4.4",
     "@vue/cli-plugin-eslint": "^4.1.2",
     "@vue/cli-plugin-unit-jest": "^4.0.0",
     "@vue/cli-service": "^4.0.0",

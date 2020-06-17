@@ -1,7 +1,7 @@
 <template>
   <v-card id="editPublications">
-    <v-card-title>
-      Edit Publications
+    <v-card-title class="blue--text">
+      EDIT PUBLICATIONS
     </v-card-title>
     <v-card-text v-if="errors.general">
       <v-alert type="error">
@@ -30,51 +30,50 @@
             class="col-3"
           >
             <v-card
-              class="pb-4"
               height="100%"
+              class="flexCard"
             >
-              <v-card-text class="text-justify mb-12">
-                <div> <b>{{ publication.title }} </b> <i>({{ publication.journal }}, {{ publication.year }}).</i></div>
-                <div> <b>DOI:</b> {{ publication.doi }}</div>
-                <div> <b>AUTHORS:</b> {{ publication.authors }}</div>
-              </v-card-text>
-              <v-card-actions
-                class="justify-center"
-                style="bottom:0; position:absolute"
+              <v-card-title
+                class="white--text"
+                :class="{'grey': !publication.isCitation, 'green': publication.isCitation}"
               >
+                Publication <span
+                  v-if="publication.doi"
+                  class="ml-2"
+                > - {{ publication.doi }}</span>
+              </v-card-title>
+              <v-card-text
+                class="pt-4 pb-0"
+                style="flex-grow: 1;"
+              >
+                <div> <b>TITLE:</b> {{ publication.title }}</div>
+                <div> <b>PUBLISHED IN:</b> {{ publication.journal }}, {{ publication.year }}</div>
+                <div> <b>AUTHORS:</b> {{ publication.authors }}</div>
+                <v-switch
+                  v-model="publication.isCitation"
+                  color="green"
+                  label="Cite record using this publication?"
+                />
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
                 <v-btn
-                  :disabled="Object.keys(publication).indexOf('id') > -1"
-                  class="green mr-3 white--text"
+                  class="green white--text"
+                  icon
                   @click="editPublication(publication, pubIndex)"
                 >
-                  <v-icon
-                    small
-                    left
-                  >
+                  <v-icon small>
                     fas fa-pen
                   </v-icon>
-                  EDIT
                 </v-btn>
                 <v-btn
-                  class="red mr-3 white--text"
+                  class="red white--text"
+                  icon
                   @click="removePublication(pubIndex)"
                 >
-                  <v-icon
-                    small
-                    left
-                  >
+                  <v-icon small>
                     fa-trash
                   </v-icon>
-                  REMOVE
-                </v-btn>
-                <v-btn class="primary">
-                  <v-icon
-                    small
-                    left
-                  >
-                    fas fa-quote-left
-                  </v-icon>
-                  CITE RECORD
                 </v-btn>
               </v-card-actions>
             </v-card>
@@ -214,6 +213,13 @@
                       outlined
                     />
                   </v-col>
+                  <v-col class="col-12">
+                    <v-switch
+                      v-model="newPublication.isCitation"
+                      color="primary"
+                      label="Do you want to cite this record using this publication?"
+                    />
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -239,14 +245,16 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from "vuex"
+    import { mapState, mapActions, mapGetters } from "vuex"
     import { parseBibFile } from "bibtex";
     import PublicationClient from "@/components/Client/ExternalClients.js"
     import GraphClient from "@/components/GraphClient/GraphClient.js"
+    import RestClient from "@/components/Client/RESTClient.js"
     import publicationsQuery from "@/components/GraphClient/queries/getPublications.json"
 
     const graphClient = new GraphClient();
     const pubClient = new PublicationClient();
+    const restClient = new RestClient();
 
     export default {
         name: "EditPublications",
@@ -289,19 +297,43 @@
               pmid: null
             },
             openEditor: false,
-            currentPublicationIndex: false
+            currentPublicationIndex: false,
+            citations_ids: []
           }
         },
         computed: {
           ...mapState('record', ['currentRecord', 'recordUpdate']),
-          ...mapState('users', ['user'])
+          ...mapState('users', ['user']),
+          ...mapGetters("record", ["citations"]),
         },
         mounted(){
           this.$nextTick(async function () {
-            this.publications = JSON.parse(JSON.stringify(this.currentRecord["fairsharingRecord"].publications));
+            const _module = this;
+
+            // get selected publications.
+            _module.currentRecord["fairsharingRecord"].publications.forEach(function(pub){
+                let pubCopy = JSON.parse(JSON.stringify(pub));
+                pubCopy.isCitation = _module.citations.indexOf(pubCopy.id) > -1;
+                _module.publications.push(pubCopy);
+            });
+
+            // get available publications from the DB.
             let pub = await graphClient.executeQuery(publicationsQuery);
-            this.availablePublications = pub['searchPublications'];
-            this.loading = false;
+            let position = 0;
+            pub['searchPublications'].forEach(function(pub){
+                pub.isCitation = false;
+                _module.publications.forEach(function(publication){
+                  if (pub.id === publication.id){
+                    publication.tablePosition = position;
+                    pub.tablePosition = position;
+                  }
+                });
+              _module.availablePublications.push(pub);
+              position += 1;
+            });
+
+            // neutralize loading.
+            _module.loading = false;
           });
         },
         methods: {
@@ -320,12 +352,26 @@
               }
               else {
                 let publication = parseBibFile(data).content[0];
+                let title = "";
+                publication.getField('title').data.forEach(function(titleComponent){
+                  if (typeof titleComponent !== "object" ){
+                    title += titleComponent
+                  }
+                  else {
+                    let subTitle = "";
+                    titleComponent.data.forEach(function (subTitleComponent) {
+                      subTitle += subTitleComponent;
+                    });
+                    title += subTitle;
+                  }
+                });
                 this.newPublication.authors = publication.getField('author').data.join('');
                 this.newPublication.doi = publication.getField('doi').data.join('');
-                this.newPublication.title = publication.getField('title').data.join('');
+                this.newPublication.title = title;
                 this.newPublication.journal = publication.getField('journal').data.join('');
                 this.newPublication.url = decodeURIComponent(publication.getField('url').data.join(''));
                 this.newPublication.year = publication.getField('year');
+                this.newPublication.isCitation = false;
                 this.openEditor = true;
               }
           },
@@ -355,6 +401,7 @@
                   this.newPublication.doi = doi;
                   this.newPublication.url = "https://doi.org/" + doi;
                 }
+                this.newPublication.isCitation = false;
                 this.openEditor = true;
               }
           },
@@ -371,28 +418,48 @@
             }
             return doi;
           },
-          addPublication(){
-            let newPub = JSON.parse(JSON.stringify(this.newPublication));
-            if (this.currentPublicationIndex !== false){
-              delete this.availablePublications[newPub.pubIndex];
-              this.publications[this.currentPublicationIndex] = newPub;
-              newPub.pubIndex = this.availablePublications.length;
-              this.availablePublications.push(newPub);
+          async addPublication(){
+            const _module = this;
+            let newPub = JSON.parse(JSON.stringify(_module.newPublication));
+
+            // PUT/UPDATE
+            if (_module.currentPublicationIndex !== false){
+              let editedPublication = await restClient.editPublication(newPub, _module.user().credentials.token);
+              if (editedPublication.error){
+                _module.errors.general = editedPublication.error;
+              }
+              else {
+                editedPublication.isCitation = newPub.isCitation;
+                delete this.availablePublications[newPub.tablePosition];
+                editedPublication.tablePosition = this.availablePublications.length;
+                this.availablePublications.push(editedPublication);
+                this.publications[this.currentPublicationIndex] = editedPublication;
+              }
             }
-            else{
-              this.publications.push(newPub);
-              newPub.pubIndex = this.availablePublications.length;
-              this.availablePublications.push(newPub);
+
+            // POST/CREATE
+            else {
+              let createdPublication = await restClient.createPublication(newPub, _module.user().credentials.token);
+              if (createdPublication.error) {
+                _module.errors.general = createdPublication.error;
+              }
+              else {
+                this.publications.push(createdPublication);
+                createdPublication.tablePosition = this.availablePublications.length;
+                this.availablePublications.push(createdPublication);
+              }
             }
+
             if (!newPub.doi){
-              this.search = newPub.title;
+              _module.search = newPub.title;
             }
             else {
-              this.search = newPub.doi;
+              _module.search = newPub.doi;
             }
-            this.newPublication = {};
-            this.openEditor = false;
-            this.currentPublicationIndex = false;
+
+            _module.newPublication = {};
+            _module.openEditor = false;
+            _module.currentPublicationIndex = false;
           },
           removePublication(pubIndex){
             this.publications.splice(pubIndex, 1);
@@ -403,33 +470,34 @@
             this.newPublication = JSON.parse(JSON.stringify(publication));
           },
           async updateRecordPub(){
-              this.openEditor = false;
-              let licences = {
+              const _module = this;
+              _module.openEditor = false;
+              let publications = {
                 publication_ids: [],
-                publications_attributes: []
+                citation_ids: []
               };
-              this.publications.forEach(function(publication){
-                if (publication.id){
-                  licences.publication_ids.push(publication.id);
+              _module.publications.forEach(function(publication){
+                publications.publication_ids.push(publication.id);
+                if (publication.isCitation) {
+                    publications.citation_ids.push(publication.id);
                 }
-                else {
-                  licences.publications_attributes.push(publication);
-                }
+                // delete the isCitation field
+                delete publication.isCitation;
               });
               const record = {
-                record: licences,
-                token: this.user().credentials.token,
-                id: this.$route.params.id
+                record: publications,
+                token: _module.user().credentials.token,
+                id: _module.$route.params.id
               };
-              await this.updateRecord(record);
-              if (!this.recordUpdate.error){
-                let ID = this.$route.params.id;
-                this.$router.push({
+              await _module.updateRecord(record);
+              if (!_module.recordUpdate.error){
+                let ID = _module.$route.params.id;
+                _module.$router.push({
                   path: "/" + ID
                 })
               }
               else {
-                this.errors.general = this.recordUpdate.message;
+                _module.errors.general = _module.recordUpdate.message;
               }
             },
           createNewPublication(){
@@ -444,7 +512,8 @@
               journal: "",
               year: "",
               authors: "",
-              pubmed_id: ""
+              pubmed_id: "",
+              isCitation: false
             };
             this.openEditor = true;
           }
@@ -453,4 +522,8 @@
 </script>
 
 <style scoped>
+  .flexCard {
+    display:flex;
+    flex-direction: column;
+  }
 </style>

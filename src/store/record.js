@@ -90,6 +90,13 @@ let recordStore = {
     getters: {
         getField: (state) => (fieldName) => {
             return state.currentRecord['fairsharingRecord'][fieldName];
+        },
+        citations: (state) => {
+            let citations = [];
+            state.currentRecord['fairsharingRecord'].metadata.citations.forEach(function(citation){
+                citations.push(citation['publication_id']);
+            });
+            return citations;
         }
     }
 };

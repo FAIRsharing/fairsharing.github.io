@@ -20,8 +20,17 @@ recordStore.state.currentRecord = {
             {
                 title: "Hello",
                 id: 1
+            },
+            {
+                title: "World",
+                id: 2
             }
-        ]
+        ],
+        metadata: {
+            citations: [
+                {id:2}
+            ]
+        }
     }
 };
 userStore.state.user().credentials.token = "thisisatoken";
@@ -39,21 +48,22 @@ let graphStub;
 let restStub;
 let fetchStub;
 
-const article = '@article{Culliton_1989,' +
-    'doi = {10.1126/science.2781281},' +
-    'url = {https://doi.org/10.1126%2Fscience.2781281},' +
+const article = '@article{Baulieu_1989,' +
+    'doi = {10.1126/science.2781282},' +
+    'url = {https://doi.org/10.1126%2Fscience.2781282},' +
     'year = 1989,' +
     'month = {sep},' +
     'publisher = {American Association for the Advancement of Science ({AAAS})},' +
     'volume = {245},' +
     'number = {4924},' +
-    'pages = {1325--1325},' +
-    'author = {B. Culliton},' +
-    'title = {Gene transfer test: so far, so good},' +
-    'journal = {Science} }';
+    'pages = {1351--1357},' +
+    'author = {E. Baulieu},' +
+    'title = {Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor},' +
+    'journal = {Science}' +
+    '} EditPublications.vue:360';
 
 
-describe("EditLicences.vue", function() {
+describe("EditPublications.vue", function() {
     let wrapper;
     beforeEach(() => {
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
@@ -83,12 +93,13 @@ describe("EditLicences.vue", function() {
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data:article});
         const expectedArticle = {
-            authors: 'B. Culliton',
-            doi: '10.1126/science.2781281',
-            title: 'Gene transfer test: so far, so good',
+            authors: 'E. Baulieu',
+            doi: '10.1126/science.2781282',
+            title: 'Contragestion and other clinical applications of RU 486, an antiprogesterone at the receptor',
             journal: 'Science',
-            url: 'https://doi.org/10.1126/science.2781281',
-            year: 1989
+            url: 'https://doi.org/10.1126/science.2781282',
+            year: 1989,
+            isCitation: false,
         };
         wrapper.vm.search = 'amIaDoi?';
         await wrapper.vm.getDOI();
@@ -126,7 +137,8 @@ describe("EditLicences.vue", function() {
             authors: "authorName, otherAuthor",
             pubmed_id: "pmid",
             doi: '10.1016/j.cell.2020.06.009',
-            url: 'https://doi.org/10.1016/j.cell.2020.06.009'
+            url: 'https://doi.org/10.1016/j.cell.2020.06.009',
+            isCitation: false
         };
         wrapper.vm.search = "test";
         await wrapper.vm.getPMID();
@@ -152,19 +164,25 @@ describe("EditLicences.vue", function() {
         fetchStub.restore();
     });
 
-    it("can add/remove a publication to the array of publications", () => {
+    it("can add/remove a publication to the array of publications", async () => {
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data: {id: 123, title: "Im a publication"}});
         wrapper.vm.newPublication = {title: "title"};
-        wrapper.vm.addPublication();
+        await wrapper.vm.addPublication();
         expect(wrapper.vm.search).toBe("title");
-        expect(wrapper.vm.publications[1]).toStrictEqual({pubIndex: 3, title: "title"});
-        expect(wrapper.vm.publications.length).toBe(2);
+        expect(wrapper.vm.publications[2]).toStrictEqual({id: 123, tablePosition: 3, title: "Im a publication"});
+        expect(wrapper.vm.publications.length).toBe(3);
+        restStub.restore();
 
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data: {id: 456}});
         wrapper.vm.currentPublicationIndex = 2;
-        wrapper.vm.newPublication = {pubIndex: 3, title: "title", doi: "123"};
-        wrapper.vm.addPublication();
+        wrapper.vm.newPublication = {pubIndex: 3, title: "title", doi: "123", isCitation: true};
+        await wrapper.vm.addPublication();
         expect(wrapper.vm.search).toBe("123");
         expect(wrapper.vm.publications.length).toBe(3);
-        expect(wrapper.vm.publications[2]).toStrictEqual({pubIndex: 4, title: "title", doi: "123"});
+        expect(wrapper.vm.publications[2]).toStrictEqual({id: 456, tablePosition: 4, isCitation: true});
+        restStub.restore();
 
         expect(wrapper.vm.publications.length).toBe(3);
         wrapper.vm.removePublication(2);
@@ -182,9 +200,29 @@ describe("EditLicences.vue", function() {
             journal: "",
             year: "",
             authors: "",
-            pubmed_id: ""
+            pubmed_id: "",
+            isCitation: false
         });
         expect(wrapper.vm.openEditor).toBe(true);
+    });
+
+    it("can process errors", async () => {
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data: {error: "Im an error"}});
+        wrapper.vm.newPublication = {title: "title"};
+        await wrapper.vm.addPublication();
+        expect(wrapper.vm.errors.general).toBe("Im an error");
+        restStub.restore();
+
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data: {error: "Im an error"}});
+        wrapper.vm.currentPublicationIndex = 2;
+        wrapper.vm.newPublication = {pubIndex: 3, title: "title", doi: "123", isCitation: true};
+        await wrapper.vm.addPublication();
+        expect(wrapper.vm.errors.general).toBe("Im an error");
+        restStub.restore();
+
+
     });
 
     it("can edit an added publication", () => {
@@ -198,7 +236,8 @@ describe("EditLicences.vue", function() {
         restStub.returns({data: {id: 123}});
         wrapper.vm.publications = [
             {
-                id: 1
+                id: 1,
+                isCitation: true
             },
             {
                 doi: 123

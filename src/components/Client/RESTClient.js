@@ -19,6 +19,7 @@ class RESTClient {
         };
     }
 
+
     /* USERS: all methods below related to handling user authentication */
 
     /**
@@ -223,6 +224,9 @@ class RESTClient {
         return response.data;
     }
 
+
+    /* USER DEFINED TAGS */
+
     /**
      * Create a new user defined tag in the database for users to tag their records.
      * @param {String} term - the string value of the term
@@ -241,6 +245,7 @@ class RESTClient {
         let response = await this.executeQuery(request);
         return response.data;
     }
+
 
     /* LICENCES */
 
@@ -298,6 +303,37 @@ class RESTClient {
             baseURL: _client.baseURL + "/licence_links/" + licenceLink.id,
             headers: headers,
             data: {licence_link: licenceLink}
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+
+    /* PUBLICATIONS */
+
+    async createPublication(publication, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/publications",
+            headers: headers,
+            data: { publication: publication }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    async editPublication(publication, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "put",
+            baseURL: _client.baseURL + "/publications/" + publication.id,
+            headers: headers,
+            data: { publication: publication }
         };
         let response = await _client.executeQuery(request);
         return response.data;

@@ -13,7 +13,13 @@ let restClient = new RESTClient();
 let recordStore = {
     namespaced: true,
     state: {
-        currentRecord: {},
+        currentRecord: {
+            fairsharingRecord: {
+                metadata: {
+                    citations: []
+                }
+            }
+        },
         currentRecordHistory: {},
         metaTemplate: {},
         recordUpdate: {
@@ -93,7 +99,7 @@ let recordStore = {
         },
         citations: (state) => {
             let citations = [];
-            state.currentRecord['fairsharingRecord'].metadata.citations.forEach(function(citation){
+            state.currentRecord['fairsharingRecord'].metadata.citations.forEach(function (citation) {
                 citations.push(citation['publication_id']);
             });
             return citations;

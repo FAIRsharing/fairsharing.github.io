@@ -33,6 +33,8 @@ let recordStore = {
         setCurrentRecord(state, data){
             state.currentRecord = data;
             if (!data["fairsharingRecord"]['metadata']['contacts']) state.currentRecord["fairsharingRecord"]['metadata']['contacts'] = [];
+            if (!data["fairsharingRecord"]['metadata']['citations']) state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
+
             state.metaTemplate = {
                 type: data["fairsharingRecord"].type,
                 status: data["fairsharingRecord"].status,

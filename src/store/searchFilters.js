@@ -20,7 +20,7 @@ let filtersStore = {
             }
         },
         reformatState(state) {
-            let output = []
+            let output = [];
             state.filters.forEach(item => {
                 output.push({
                     filter: item.filterLabel,
@@ -35,7 +35,7 @@ let filtersStore = {
                 subFilter: null,
                 active: false,
                 inventory: 9
-            }
+            };
 
             for (let i = 0; i < output.length; i++) {
                     if (state.filters[i].values) {
@@ -44,7 +44,7 @@ let filtersStore = {
                                 subFilter: state.filters[i].values[k],
                                 active: false,
                                 inventory: 9
-                            }
+                            };
                             output[i].subFilters.push(ObjectModel);
                         }
                     }
@@ -59,8 +59,8 @@ let filtersStore = {
             state.filters.forEach(item => {
                 if (item.filter === 'isRecommended') {
                     // console.log(item.subFilters)
-                    let temp = item.subFilters
-                    temp[0].active = !temp[0].active
+                    let temp = item.subFilters;
+                    temp[0].active = !temp[0].active;
                     // console.log(temp)
                     item.subFilters = function () {
                         return temp;

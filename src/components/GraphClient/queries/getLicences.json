@@ -3,13 +3,6 @@
   "queryParam": null,
   "fields": [
     "id",
-    "name",
-    "url",
-    {
-      "name": "licenceLinks",
-      "fields": [
-        "relation"
-      ]
-    }
+    "name"
   ]
 }

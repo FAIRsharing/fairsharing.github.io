@@ -13,29 +13,34 @@ let restClient = new RESTClient();
 let recordStore = {
     namespaced: true,
     state: {
-        currentRecord: {},
+        currentRecord: {
+            fairsharingRecord: {
+                metadata: {
+                    citations: []
+                }
+            }
+        },
         currentRecordHistory: {},
         metaTemplate: {},
         recordUpdate: {
             error: false,
             message: null,
             id: null
-        }
+        },
+        keywordsTemplate: {}
     },
     mutations: {
         setCurrentRecord(state, data){
             state.currentRecord = data;
+            if (!data["fairsharingRecord"]['metadata']['contacts']) state.currentRecord["fairsharingRecord"]['metadata']['contacts'] = [];
+            if (!data["fairsharingRecord"]['metadata']['citations']) state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
+
             state.metaTemplate = {
                 type: data["fairsharingRecord"].type,
                 status: data["fairsharingRecord"].status,
                 countries: data["fairsharingRecord"].countries,
-                metadata: {
-                    name: data["fairsharingRecord"].metadata.name,
-                    abbreviation: data["fairsharingRecord"].metadata.abbreviation,
-                    year_creation: data["fairsharingRecord"].metadata.year_creation,
-                    homepage: data["fairsharingRecord"].metadata.homepage,
-                    description: data["fairsharingRecord"].metadata.description
-                }
+                metadata: data["fairsharingRecord"].metadata,
+                deprecation_reason: data["fairsharingRecord"].metadata.deprecation_reason
             };
             state.recordUpdate = {
                 error: false,
@@ -81,7 +86,7 @@ let recordStore = {
         async updateRecord(state, newRecord){
             let response = await restClient.updateRecord(newRecord);
             if (response.error){
-                state.commit("setError", response.error.response.statusText)
+                state.commit("setError", response.error.response)
             }
             else {
                 state.commit("setNewRecord", response)
@@ -89,6 +94,18 @@ let recordStore = {
         },
     },
     modules: {
+    },
+    getters: {
+        getField: (state) => (fieldName) => {
+            return state.currentRecord['fairsharingRecord'][fieldName];
+        },
+        citations: (state) => {
+            let citations = [];
+            state.currentRecord['fairsharingRecord'].metadata.citations.forEach(function (citation) {
+                citations.push(citation['publication_id']);
+            });
+            return citations;
+        }
     }
 };
 

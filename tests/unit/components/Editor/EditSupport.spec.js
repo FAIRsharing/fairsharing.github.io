@@ -91,7 +91,7 @@ describe("EditSupport.vue", function() {
         }}});
         await wrapper.vm.editRecord();
         expect($router.push).toHaveBeenCalledTimes(1);
-        expect(wrapper.vm.error).toBe(123);
+        expect(wrapper.vm.error).toStrictEqual({"statusText": 123});
         restStub.restore();
     });
 

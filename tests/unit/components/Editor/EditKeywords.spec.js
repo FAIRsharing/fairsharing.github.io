@@ -153,7 +153,7 @@ describe("EditKeywords.vue", function() {
         });
         await wrapper.vm.submitRecord();
         expect($router.push).toHaveBeenCalledTimes(1);
-        expect(wrapper.vm.error).toMatch("I am an error");
+        expect(wrapper.vm.error.message).toStrictEqual({"statusText":"I am an error"});
         restStub.restore();
     });
 

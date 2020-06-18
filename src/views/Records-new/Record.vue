@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-main>
     <h1 class="d-none">
       Content
     </h1>
@@ -534,7 +534,7 @@
     >
       {{ error }}
     </div>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

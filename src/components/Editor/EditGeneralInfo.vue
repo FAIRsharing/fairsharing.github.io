@@ -1,278 +1,157 @@
 <template>
-  <v-card
-    v-if="metaTemplate.metadata"
-    id="editGeneralInfo"
+  <v-container
+          id="recordEditor"
+          fluid
   >
-    <v-alert
-      v-if="recordUpdate.message !== null"
-      :class="{'success': !recordUpdate.error, 'error': recordUpdate.error}"
-    >
-      {{ recordUpdate.message }}
-    </v-alert>
+    <v-row>
+      <v-col>
+        <v-toolbar
+                flat
+                color="primary"
+                dark
+        >
+          <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
+        </v-toolbar>
+        <v-tabs dark>
+          <v-tab
+                  v-for="tab in tabs"
+                  :key="'tab_' + tab.name"
+                  :disabled="tab.disabled"
+          >
+            {{ tab.name }}
+          </v-tab>
 
-    <v-card-title class="blue white--text">
-      EDIT GENERAL INFORMATION
-    </v-card-title>
-    <v-card-text>
-      <v-container fluid>
-        <v-row>
-          <!-- name -->
-          <v-col class="col-3">
-            <v-text-field
-              v-model="metaTemplate.metadata.name"
-              label="Name"
-              hint="Name of the record"
-              outlined
-            />
-          </v-col>
+          <!-- EDIT GENERAL INFO -->
+          <v-tab-item class="px-10 py-3">
+            <edit-general-info />
+          </v-tab-item>
 
-          <!-- abbreviation -->
-          <v-col class="col-3">
-            <v-text-field
-              v-model="metaTemplate.metadata.abbreviation"
-              label="Abbreviation"
-              hint="Abbreviation or short name of the record"
-              outlined
-            />
-          </v-col>
+          <!-- EDIT KEYWORDS -->
+          <v-tab-item class="px-10 py-3">
+            <edit-keywords />
+          </v-tab-item>
 
-          <!-- homepage -->
-          <v-col class="col-3">
-            <v-text-field
-              v-model="metaTemplate.metadata.homepage"
-              label="Homepage"
-              hint="External URL of the resource"
-              outlined
-            />
-          </v-col>
+          <!-- EDIT SUPPORT -->
+          <v-tab-item class="px-10 py-3">
+            <edit-support />
+          </v-tab-item>
 
-          <!-- registry -->
-          <v-col class="col-3">
-            <v-autocomplete
-              v-model="metaTemplate.type"
-              label="Registry type"
-              hint="Select between given elements"
-              :items="recordsTypes"
-              item-text="name"
-              item-value="name"
-              outlined
-              return-object
-            >
-              <!-- autocomplete selected -->
-              <template v-slot:selection="data">
-                {{ data.item.name.replace(/_/g, ' ') }}
-              </template>
+          <!-- EDIT LICENSES -->
+          <v-tab-item class="px-10 py-3">
+            <edit-licences />
+          </v-tab-item>
 
-              <!-- autocomplete data -->
-              <template v-slot:item="data">
-                <v-list
-                  id="autocompleteSelect"
-                  max-width="565px"
-                  three-line
-                >
-                  <v-list-item min-height="0px">
-                    <v-list-item-content class="py-0">
-                      <v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} </v-list-item-title>
-                      <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </template>
-            </v-autocomplete>
-          </v-col>
+          <!-- EDIT PUBLICATIONS -->
+          <v-tab-item class="px-10 py-3">
+            <edit-publications />
+          </v-tab-item>
 
-          <!-- countries -->
-          <v-col class="col-3">
-            <v-autocomplete
-              v-model="metaTemplate.countries"
-              label="Countries"
-              :items="countries"
-              hint="Countries developing the resource"
-              item-text="name"
-              item-value="name"
-              outlined
-              multiple
-              return-object
-            >
-              <!-- autocomplete selected -->
-              <template v-slot:selection="data">
-                <v-chip class="blue white--text">
-                  {{ data.item.name }}
-                </v-chip>
-              </template>
+          <!-- EDIT RELATIONS -->
+          <v-tab-item class="px-10 py-3">
+            <edit-relationships />
+          </v-tab-item>
 
-              <!-- autocomplete data -->
-              <template v-slot:item="data">
-                <country-flag
-                  v-if="data.item.code !== null"
-                  :country="data.item.code"
-                  size="normal"
-                />
-                <img v-else src="@/assets/placeholders/country.png" class="ml-4 mr-3">
-                <div> {{ data.item.name }} </div>
-              </template>
-            </v-autocomplete>
-          </v-col>
+          <!-- EDIT MAINTAINERS -->
+          <v-tab-item class="px-10 py-3">
+            <edit-maintainers />
+          </v-tab-item>
 
-          <!-- status -->
-          <v-col class="col-3">
-            <v-autocomplete
-              v-model="metaTemplate.status"
-              label="Status"
-              :items="status"
-              item-text="name"
-              item-value="name"
-              outlined
-              :disabled="metaTemplate.type === 'collection' || metaTemplate.type.name === 'collection'"
-            >
-              <!-- autocomplete selected -->
-              <template v-slot:selection="data">
-                {{ data.item.name.replace(/_/g, ' ') }}
-              </template>
+          <!-- EDIT ORGANIZATIONS -->
+          <v-tab-item class="px-10 py-3">
+            <edit-organisations />
+          </v-tab-item>
 
-              <!-- autocomplete data -->
-              <template v-slot:item="data">
-                <v-list
-                  max-width="565px"
-                  two-line
-                  class="py-0 my-0"
-                >
-                  <v-list-item min-height="0px">
-                    <v-list-item-content class="py-0 my-0">
-                      <v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} </v-list-item-title>
-                      <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </template>
-            </v-autocomplete>
-          </v-col>
-
-          <!-- deprecation reasons -->
-          <v-col class="col-12">
-            <v-textarea
-              v-if="metaTemplate.status === 'deprecated'"
-              v-model="metaTemplate['deprecation_reason']"
-              label="Reason for deprecation"
-              hint="A short description of why the resource is no longer actively maintained."
-              outlined
-            />
-          </v-col>
-
-          <!-- description -->
-          <v-col class="col-12">
-            <v-textarea
-              v-model="metaTemplate.metadata.description"
-              label="Description"
-              hint="The description of the record."
-              outlined
-            />
-          </v-col>
-        </v-row>
-      </v-container>
-
-      <v-divider />
-    </v-card-text>
-
-    <v-card-actions>
-      <v-btn
-        class="primary"
-        @click="editRecord()"
-      >
-        Submit
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+          <!-- EDIT GRANTS -->
+          <v-tab-item class="px-10 py-3">
+            <edit-grants />
+          </v-tab-item>
+        </v-tabs>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-    import { mapState, mapActions } from "vuex"
-    import CountryFlag from 'vue-country-flag'
-    import GraphClient from "@/components/GraphClient/GraphClient.js"
-    import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
-    import status from "@/components/Editor/status.json"
-    import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
-    const graphClient = new GraphClient();
+  import { mapActions, mapState } from "vuex"
+  import EditGeneralInfo from "@/components/Editor/EditGeneralInfo";
+  import EditKeywords from "@/components/Editor/EditKeywords";
+  import EditSupport from "../../components/Editor/EditSupport";
+  import EditRelationships from "../../components/Editor/EditRelationships";
+  import EditLicences from "../../components/Editor/EditLicences";
+  import EditMaintainers from "../../components/Editor/EditMaintainers";
+  import EditOrganisations from "../../components/Editor/EditOrganisations";
+  import EditGrants from "../../components/Editor/EditGrants";
+  import EditPublications from "../../components/Editor/EditPublications";
 
-    export default {
-        name: "EditGeneralInfo",
-        components: { CountryFlag },
-        data(){
-            return {
-                recordsTypes: [],
-                countries: []
-            }
-        },
-        computed: {
-            ...mapState("record", ["metaTemplate", "recordUpdate"]),
-            ...mapState("users", ["user"]),
-            status: function(){ return status.status; },
-        },
-        watch: {
-          metaTemplate: {
-            deep: true,
-            handler(newVal){
-              if (newVal.type === "collection" || newVal.type.name === "collection"){
-                this.metaTemplate.status = "uncertain";
-              }
-            }
-          }
-        },
-        async mounted(){
-            const _module = this;
-            let data = await graphClient.executeQuery(typesQuery);
-            const size = data['fairsharingRegistries'].records.length;
-            let currentItem = 0;
-            data['fairsharingRegistries'].records.forEach(function(type){
-                currentItem += 1;
-                _module.recordsTypes.push({
-                    header: type.name
-                });
-                type.recordTypes.forEach(function(subType){
-                    _module.recordsTypes.push({
-                        name: subType.name,
-                        group: type.name,
-                        id: subType.id,
-                        description: subType.description
-                    })
-                });
-                if (currentItem < size) _module.recordsTypes.push({ divider: true });
-            });
-            _module.countries = await _module.getCountries();
-        },
-        methods: {
-          ...mapActions("record", ["updateRecord"]),
-          getCountries: async function(){
-            let countries = await graphClient.executeQuery(countriesQuery);
-            return countries['searchCountries'];
+  export default {
+    name: "Editor",
+    components: {
+      EditPublications,
+      EditGrants,
+      EditOrganisations,
+      EditMaintainers,
+      EditLicences,
+      EditRelationships,
+      EditSupport,
+      EditKeywords,
+      EditGeneralInfo
+    },
+    data(){
+      return {
+        tabs: [
+          {
+            name: "Edit General Information",
+            disabled: false
           },
-          editRecord: async function(){
-            // PREPARE THE DATA
-            let countries = [];
-            let newRecord = JSON.parse(JSON.stringify(this.metaTemplate));
-            this.metaTemplate.countries.forEach(function(country){ countries.push(country.id) });
-            newRecord.country_ids = countries;
-            newRecord.record_type_id = this.metaTemplate.type.id;
-            newRecord.metadata.status = this.metaTemplate.status;
-            delete newRecord.countries;
-            delete newRecord.type;
-            delete newRecord.status;
-            let data = {
-              record: newRecord,
-              id: this.$route.params.id,
-              token: this.user().credentials.token
-            };
-
-            // POST THE DATA AND REACT THE RESPONSE
-            await this.updateRecord(data);
-            if (!this.recordUpdate.error){
-              let ID = this.recordUpdate.id.data.id;
-              this.$router.push({
-                path: "/" + ID
-              })
-            }
+          {
+            name: "Edit Keywords",
+            disabled: false
+          },
+          {
+            name: "Edit Support Information",
+            disabled: false
+          },
+          {
+            name: "Edit Licenses",
+            disabled: false
+          },
+          {
+            name: "Edit Publications",
+            disabled: false
+          },
+          {
+            name: "Edit Relations to other records",
+            disabled: true
+          },
+          {
+            name: "Edit Maintainers",
+            disabled: true
+          },
+          {
+            name: "Edit Organisations",
+            disabled: true
+          },
+          {
+            name: "Edit Grants",
+            disabled: true
           }
-        },
-    }
+        ]
+      }
+    },
+    computed: {
+      ...mapState('record', ['currentRecord'])
+    },
+    async mounted(){
+      let id = this.$route.params.id;
+      await this.fetchRecord(id)
+    },
+    methods: {
+      ...mapActions("record", ["fetchRecord"])
+    },
+
+  }
 </script>
 
+<style scoped>
+
+</style>

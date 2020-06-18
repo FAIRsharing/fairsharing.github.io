@@ -75,7 +75,7 @@
                                         <v-list-item-content>
                                           <v-list-item-title>
                                             <span>
-                                              <router-link :to="'#/' + record.id">
+                                              <router-link :to="'/' + record.id">
                                                 {{ record.name }}
                                               </router-link>
 
@@ -92,7 +92,10 @@
                                       </v-list-item>
                                     </v-card-text>
                                     <v-card-actions class="px-5 pb-5">
-                                      <v-btn class="red white--text">
+                                      <v-btn
+                                        class="red white--text"
+                                        :to="'/' + record.id + '/edit'"
+                                      >
                                         Admin Edit
                                       </v-btn>
                                       <v-btn class="green white--text">

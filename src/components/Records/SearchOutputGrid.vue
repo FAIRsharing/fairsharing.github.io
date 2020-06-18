@@ -252,6 +252,7 @@
           reporting_guideline: require("@/assets/records/reporting_guidelines.png"),
           metric: require("@/assets/records/std-metric.png"),
           repository: require("@/assets/records/db-icon.png"),
+          identifier_schema: require("@/assets/records/identifier_schema.png")
         }
       }
     },

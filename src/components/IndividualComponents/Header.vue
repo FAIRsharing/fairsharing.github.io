@@ -1,6 +1,5 @@
 <template>
   <v-app-bar
-    app
     short
     height="100"
   >

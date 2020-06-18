@@ -2,6 +2,7 @@
   <v-app-bar
     short
     height="100"
+    max-height="100"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.smAndDown"

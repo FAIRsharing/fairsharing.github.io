@@ -81,11 +81,19 @@ const buildFacets = function(rawFacets){
     let output = [];
     const mapper = filterMapping["autocomplete"];
 
+    // let i =0;
     Object.keys(rawFacets).forEach(function(facetName){
         if (Object.prototype.hasOwnProperty.call(mapper, facetName)){
             let localFacet = mapper[facetName];
             rawFacets[facetName]["buckets"].forEach(function(bucket){
+
                 if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")){
+/*
+                    i++;
+                    if(i<10)
+                        console.log(bucket);
+*/
+
                     bucket["key"] = bucket["key_as_string"];
                 }
             });

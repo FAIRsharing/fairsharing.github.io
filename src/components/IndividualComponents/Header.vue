@@ -1,7 +1,6 @@
 <template>
   <v-app-bar
     app
-    hide-on-scroll
     short
     height="100"
   >

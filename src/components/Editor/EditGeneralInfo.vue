@@ -32,6 +32,7 @@
             <v-text-field
               v-model="metaTemplate.metadata.name"
               hint="Name of the record"
+              label="Record Name"
               outlined
             >
               <template v-slot:prepend>

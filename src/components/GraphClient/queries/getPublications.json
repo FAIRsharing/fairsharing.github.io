@@ -1,0 +1,13 @@
+{
+  "queryName": "searchPublications",
+  "queryParam": null,
+  "fields": [
+    "title",
+    "doi",
+    "authors",
+    "id",
+    "journal",
+    "url",
+    "year"
+  ]
+}

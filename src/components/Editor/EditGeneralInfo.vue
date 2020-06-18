@@ -3,11 +3,26 @@
     v-if="metaTemplate.metadata"
     id="editGeneralInfo"
   >
+    <v-card-title class="grey lighten-4 blue--text">
+      <v-btn
+        class="blue mr-4"
+        fab
+        x-small
+      >
+        <v-icon
+          class="white--text"
+          small
+        >
+          fa fa-info
+        </v-icon>
+      </v-btn>
+      <b> EDIT GENERAL INFORMATION </b>
+    </v-card-title>
     <v-alert
-      v-if="recordUpdate.message !== null"
-      :class="{'success': !recordUpdate.error, 'error': recordUpdate.error}"
+      v-if="error.message && error.message.data"
+      type="error"
     >
-      {{ recordUpdate.message }}
+      {{ error.message.data }}
     </v-alert>
     <v-card-text>
       <v-container fluid>
@@ -16,10 +31,21 @@
           <v-col class="col-3">
             <v-text-field
               v-model="metaTemplate.metadata.name"
-              label="Name"
               hint="Name of the record"
+              label="Record Name"
               outlined
-            />
+            >
+              <template v-slot:prepend>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  Name of the record
+                </v-tooltip>
+              </template>
+            </v-text-field>
           </v-col>
 
           <!-- abbreviation -->
@@ -27,9 +53,24 @@
             <v-text-field
               v-model="metaTemplate.metadata.abbreviation"
               label="Abbreviation"
-              hint="Abbreviation or short name of the record"
+              :hint="descriptions['abbreviation']"
               outlined
-            />
+            >
+              <template v-slot:prepend>
+                <v-tooltip
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ descriptions['abbreviation'] }}
+                </v-tooltip>
+              </template>
+            </v-text-field>
           </v-col>
 
           <!-- homepage -->
@@ -37,9 +78,24 @@
             <v-text-field
               v-model="metaTemplate.metadata.homepage"
               label="Homepage"
-              hint="External URL of the resource"
+              :hint="descriptions['homepage']"
               outlined
-            />
+            >
+              <template v-slot:prepend>
+                <v-tooltip
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ descriptions['homepage'] }}
+                </v-tooltip>
+              </template>
+            </v-text-field>
           </v-col>
 
           <!-- year of creation -->
@@ -47,10 +103,77 @@
             <v-autocomplete
               v-model="metaTemplate.metadata.year_creation"
               label="Year of creation"
-              hint="Year the resource was created"
+              :hint="descriptions['year']"
               :items="years"
               outlined
-            />
+            >
+              <template v-slot:prepend>
+                <v-tooltip
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ descriptions['year'] }}
+                </v-tooltip>
+              </template>
+            </v-autocomplete>
+          </v-col>
+
+          <!-- countries -->
+          <v-col class="col-4">
+            <v-autocomplete
+              v-model="metaTemplate.countries"
+              label="Countries"
+              :items="countries"
+              :hint="descriptions['countries']"
+              item-text="name"
+              item-value="name"
+              outlined
+              multiple
+              return-object
+            >
+              <template v-slot:prepend>
+                <v-tooltip
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ descriptions['countries'] }}
+                </v-tooltip>
+              </template>
+
+              <!-- autocomplete selected -->
+              <template v-slot:selection="data">
+                <v-chip class="blue white--text">
+                  {{ data.item.name }}
+                </v-chip>
+              </template>
+
+              <!-- autocomplete data -->
+              <template v-slot:item="data">
+                <country-flag
+                  v-if="data.item.code !== null"
+                  :country="data.item.code"
+                  size="normal"
+                />
+                <img
+                  v-else
+                  src="@/assets/placeholders/country.png"
+                  class="ml-4 mr-3"
+                >
+                <div> {{ data.item.name }} </div>
+              </template>
+            </v-autocomplete>
           </v-col>
 
           <!-- registry -->
@@ -88,43 +211,6 @@
             </v-autocomplete>
           </v-col>
 
-          <!-- countries -->
-          <v-col class="col-4">
-            <v-autocomplete
-              v-model="metaTemplate.countries"
-              label="Countries"
-              :items="countries"
-              hint="Countries developing the resource"
-              item-text="name"
-              item-value="name"
-              outlined
-              multiple
-              return-object
-            >
-              <!-- autocomplete selected -->
-              <template v-slot:selection="data">
-                <v-chip class="blue white--text">
-                  {{ data.item.name }}
-                </v-chip>
-              </template>
-
-              <!-- autocomplete data -->
-              <template v-slot:item="data">
-                <country-flag
-                  v-if="data.item.code !== null"
-                  :country="data.item.code"
-                  size="normal"
-                />
-                <img
-                  v-else
-                  src="@/assets/placeholders/country.png"
-                  class="ml-4 mr-3"
-                >
-                <div> {{ data.item.name }} </div>
-              </template>
-            </v-autocomplete>
-          </v-col>
-
           <!-- status -->
           <v-col class="col-4">
             <v-autocomplete
@@ -144,13 +230,13 @@
               <!-- autocomplete data -->
               <template v-slot:item="data">
                 <v-list
-                  max-width="430px"
+                  max-width="745px"
                   two-line
                   class="py-0 my-0"
                 >
                   <v-list-item min-height="0px">
                     <v-list-item-content class="py-0 my-0">
-                      <v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} </v-list-item-title>
+                      <v-list-item-title> <b>{{ data.item.name.replace(/_/g, ' ').toUpperCase() }} </b></v-list-item-title>
                       <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
@@ -165,9 +251,24 @@
               v-if="metaTemplate.status === 'deprecated'"
               v-model="metaTemplate['deprecation_reason']"
               label="Reason for deprecation"
-              hint="A short description of why the resource is no longer actively maintained."
+              :hint="descriptions['deprecation_reason']"
               outlined
-            />
+            >
+              <template v-slot:prepend>
+                <v-tooltip
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ descriptions['deprecation_reason'] }}
+                </v-tooltip>
+              </template>
+            </v-textarea>
           </v-col>
 
           <!-- description -->
@@ -175,9 +276,25 @@
             <v-textarea
               v-model="metaTemplate.metadata.description"
               label="Description"
-              hint="The description of the record."
+              :hint="descriptions['description']"
               outlined
-            />
+              prepend-icon="fa-question-circle"
+            >
+              <template v-slot:prepend>
+                <v-tooltip
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ descriptions['description'] }}
+                </v-tooltip>
+              </template>
+            </v-textarea>
           </v-col>
         </v-row>
       </v-container>
@@ -200,6 +317,7 @@
     import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
     import status from "@/components/Editor/status.json"
     import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
+    import des from "./data/fieldsDescription.json"
     const graphClient = new GraphClient();
 
     export default {
@@ -209,14 +327,15 @@
             return {
                 recordsTypes: [],
                 countries: [],
-                yearRange: 100
+                yearRange: 100,
+                error: false
             }
         },
         computed: {
             ...mapState("record", ["metaTemplate", "recordUpdate"]),
             ...mapState("users", ["user"]),
-            status: function(){ return status.status; },
-            years: function(){
+            status(){ return status.status; },
+            years(){
               let years = [];
               const rangeArray = [...Array(this.yearRange).keys()];
               let d = new Date();
@@ -225,6 +344,9 @@
                 years.push(thisYear - year);
               });
               return years;
+            },
+            descriptions() {
+              return des.descriptions;
             }
         },
         watch: {
@@ -267,12 +389,14 @@
           },
           editRecord: async function(){
             // PREPARE THE DATA
+            this.error = false;
             let countries = [];
             let newRecord = JSON.parse(JSON.stringify(this.metaTemplate));
             this.metaTemplate.countries.forEach(function(country){ countries.push(country.id) });
             newRecord.country_ids = countries;
             newRecord.record_type_id = this.metaTemplate.type.id;
             newRecord.metadata.status = this.metaTemplate.status;
+            newRecord.metadata.deprecation_reason = this.metaTemplate.deprecation_reason;
             delete newRecord.countries;
             delete newRecord.type;
             delete newRecord.status;
@@ -289,6 +413,9 @@
               this.$router.push({
                 path: "/" + ID
               })
+            }
+            else {
+              this.error = this.recordUpdate.error;
             }
           }
         },

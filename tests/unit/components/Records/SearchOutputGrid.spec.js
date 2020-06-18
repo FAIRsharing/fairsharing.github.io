@@ -1,5 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex"
+import Vuetify from "vuetify"
+const vuetify = new Vuetify();
 import OutputGrid from "@/components/Records/SearchOutputGrid.vue";
 import records from "@/store/records";
 
@@ -42,7 +44,8 @@ describe("SearchOutputGrid.vue", function(){
     beforeEach(() => {
         wrapper = shallowMount(OutputGrid, {
             mocks: {$store},
-            localVue
+            localVue,
+            vuetify
         });
     });
 

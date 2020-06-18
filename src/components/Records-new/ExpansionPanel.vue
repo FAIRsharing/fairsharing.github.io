@@ -3,7 +3,7 @@
     <v-expansion-panel-header>{{ object.filter }}</v-expansion-panel-header>
     <v-expansion-panel-content class="pl-5 pr-5">
       <v-list
-        v-if="object.subFilters.length<=5"
+        v-if="object.subFilters.length<=1"
         flat
       >
         <!--          :class="{'fixed-scrollable-height':object.subFilters.length>5}"-->
@@ -49,7 +49,7 @@
                                     ></v-text-field>
                         -->
       <div
-        v-if="object.subFilters.length>5"
+        v-if="object.subFilters.length>2"
         :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
       >
         <v-autocomplete

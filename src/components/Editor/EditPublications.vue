@@ -2,7 +2,7 @@
   <v-card id="editPublications">
     <v-card-title class="grey lighten-4 blue--text">
       <v-btn
-        class="blue mr-3"
+        class="blue mr-4"
         fab
         x-small
       >
@@ -10,7 +10,7 @@
           class="white--text"
           small
         >
-          fa fa-pen
+          fa fa-info
         </v-icon>
       </v-btn>
       <b> EDIT PUBLICATIONS </b>
@@ -54,6 +54,7 @@
                 > - {{ publication.doi }}</span>
               </v-card-title>
               <v-card-text
+                :class="{'grey lighten-3': !publication.isCitation, 'green lighten-3': publication.isCitation}"
                 class="pt-4 pb-0"
                 style="flex-grow: 1;"
               >
@@ -66,7 +67,7 @@
                   label="Cite record using this publication?"
                 />
               </v-card-text>
-              <v-card-actions>
+              <v-card-actions :class="{'grey lighten-3': !publication.isCitation, 'green lighten-3': publication.isCitation}">
                 <v-spacer />
 
                 <v-btn

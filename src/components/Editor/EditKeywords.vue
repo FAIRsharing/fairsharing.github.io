@@ -2,7 +2,7 @@
   <v-card id="editKeywords">
     <v-card-title class="grey lighten-4 blue--text">
       <v-btn
-        class="blue mr-3"
+        class="blue mr-4"
         fab
         x-small
       >
@@ -10,7 +10,7 @@
           class="white--text"
           small
         >
-          fa fa-pen
+          fa fa-info
         </v-icon>
       </v-btn>
       <b> EDIT KEYWORDS </b>
@@ -21,29 +21,62 @@
     >
       {{ error.message }}
     </v-alert>
-    <v-card-text class="pb-0">
-      <div class="selectedTermsSection">
-        <div
-          v-for="(itemVal, itemName) in getSelectedTerms"
-          :key="'term_' + itemName"
-        >
-          <div v-if="itemVal.length > 0">
-            <h4><u>Selected {{ itemName }}:</u></h4>
-            <v-chip-group class="mb-5">
-              <v-chip
-                v-for="item in itemVal"
-                :key="'item_' + item.id + '_' + item.label"
-                :color="colors[item.type]"
-                close
-                outlined
-                @click:close="removeKeyword(item)"
+    <v-card-text class="pb-0 pt-3">
+      <v-container
+        fluid
+        class="selectedTermsSection"
+      >
+        <v-row>
+          <v-col
+            v-for="(itemVal, itemName) in getSelectedTerms"
+            :key="'term_' + itemName"
+            class="col-3"
+          >
+            <v-card
+              height="100%"
+              style="display:flex; flex-direction: column"
+            >
+              <v-card-title
+                :class="colors[itemName]"
+                class="white--text"
               >
-                {{ item.label }}
-              </v-chip>
-            </v-chip-group>
-          </div>
-        </div>
-      </div>
+                <v-tooltip
+                  bottom
+                  max-width="300px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      class="white--text mr-3"
+                      v-on="on"
+                    >
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ descriptions[itemName] }}
+                </v-tooltip>
+
+                <h4>Selected {{ itemName }}</h4>
+              </v-card-title>
+              <v-card-text
+                :class="colors[itemName] + ' lighten-3'"
+                class="pt-3"
+                style="flex:1"
+              >
+                <v-chip
+                  v-for="item in itemVal"
+                  :key="'item_' + item.id + '_' + item.label"
+                  :color="'white ' + colors[item.type] + '--text'"
+                  close
+                  class="mr-3 mb-2"
+                  @click:close="removeKeyword(item)"
+                >
+                  {{ item.label }}
+                </v-chip>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card-text>
     <v-card-text>
       <v-text-field
@@ -161,7 +194,7 @@
                 <v-chip
                   v-for="name in props.item.synonyms"
                   :key="'subName_' + name"
-                  color="blue"
+                  :color="colors[props.item.type]"
                   dark
                 >
                   {{ name }}
@@ -191,6 +224,7 @@
     import taxonomiesQuery from "@/components/GraphClient/queries/getTaxonomies.json"
     import subjectsQuery from "@/components/GraphClient/queries/getSubjects.json"
     import userTagQuery from "@/components/GraphClient/queries/getUserDefinedTags.json"
+    import desc from './data/fieldsDescription.json'
 
     let graphClient = new GraphClient();
     let restClient = new RestClient();
@@ -253,7 +287,7 @@
             ...mapGetters("record", ["getField"]),
             ...mapState("users", ["user"]),
             ...mapState("record", ["recordUpdate"]),
-            getKeywords: function(){
+            getKeywords(){
                 const _module = this;
                 let keywords = [];
                 _module.keywords.forEach(function(keyword){
@@ -285,6 +319,9 @@
                 });
               }
               return (added) ? terms : null;
+            },
+            descriptions(){
+                return desc.descriptions;
             }
         },
         watch: {
@@ -438,8 +475,8 @@
     width: 250px;
   }
 
-  table td.termDef{
-    width: 900px;
+  table td.termSynonyms {
+    max-width: 900px;
   }
 
 </style>

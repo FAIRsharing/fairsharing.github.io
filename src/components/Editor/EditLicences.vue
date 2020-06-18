@@ -2,7 +2,7 @@
   <v-card id="editLicenses">
     <v-card-title class="grey lighten-4 blue--text">
       <v-btn
-        class="blue mr-3"
+        class="blue mr-4"
         fab
         x-small
       >
@@ -10,7 +10,7 @@
           class="white--text"
           small
         >
-          fa fa-pen
+          fa fa-info
         </v-icon>
       </v-btn>
       <b> EDIT LICENCES </b>
@@ -30,6 +30,16 @@
     </v-card-text>
     <v-card-text>
       <v-container fluid>
+        <v-row class="mb-3">
+          <v-alert
+            width="100%"
+            type="info"
+            dismissible
+          >
+            <b>Note:</b> To create a new licence name and URL, type a new name in the search box. If it doesn't already exist, you will
+            be asked if you want to create a new licence.
+          </v-alert>
+        </v-row>
         <v-row>
           <v-col class="col-12 pt-0">
             <v-btn
@@ -51,7 +61,6 @@
             <v-divider />
           </v-col>
         </v-row>
-
         <v-row>
           <v-col
             v-for="(licence, licenceIndex) in currentLicences"

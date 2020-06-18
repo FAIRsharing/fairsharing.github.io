@@ -2,7 +2,7 @@
   <v-card id="editSupport">
     <v-card-title class="grey lighten-4 blue--text">
       <v-btn
-        class="blue mr-3"
+        class="blue mr-4"
         fab
         x-small
       >
@@ -10,7 +10,7 @@
           class="white--text"
           small
         >
-          fa fa-pen
+          fa fa-info
         </v-icon>
       </v-btn>
       <b> EDIT SUPPORT INFORMATION </b>

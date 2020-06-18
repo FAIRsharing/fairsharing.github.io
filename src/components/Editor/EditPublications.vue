@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card id="editPublications">
     <v-card-title class="grey lighten-4 blue--text">
       <v-btn
@@ -69,26 +69,39 @@
               </v-card-text>
               <v-card-actions :class="{'grey lighten-3': !publication.isCitation, 'green lighten-3': publication.isCitation}">
                 <v-spacer />
-
-                <v-btn
-                  v-if="user().is_curator"
-                  class="green white--text"
-                  icon
-                  @click="editPublication(publication, pubIndex)"
-                >
-                  <v-icon small>
-                    fas fa-pen
-                  </v-icon>
-                </v-btn>
-                <v-btn
-                  class="red white--text"
-                  icon
-                  @click="removePublication(pubIndex)"
-                >
-                  <v-icon small>
-                    fa-trash
-                  </v-icon>
-                </v-btn>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-if="user().is_curator"
+                      v-bind="attrs"
+                      class="green white--text mr-2"
+                      icon
+                      v-on="on"
+                      @click="editPublication(publication, pubIndex)"
+                    >
+                      <v-icon small>
+                        fas fa-pen
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Edit this publication</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      v-bind="attrs"
+                      class="red white--text"
+                      icon
+                      v-on="on"
+                      @click="removePublication(pubIndex)"
+                    >
+                      <v-icon small>
+                        fa-trash
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Remove this publication</span>
+                </v-tooltip>
               </v-card-actions>
             </v-card>
           </v-col>

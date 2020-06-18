@@ -83,14 +83,6 @@ let routes = [
             isLoggedIn(to, from, next, store);
         }
     },
-    {
-        name: "Edit Content",
-        path: "/:id/edit",
-        component: Editor,
-        beforeEnter(to, from, next) {
-            isLoggedIn(to, from, next, store);
-        }
-    },
 
     /* Static pages */
     {
@@ -191,6 +183,14 @@ let routes = [
     Careful, this has to be the very last base path  !!!!
     This component"s page title is handled in the component itself as it needs the :id param
     */
+    {
+        name: "Edit Content",
+        path: "/:id/edit",
+        component: Editor,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+        }
+    },
     {
         name: "Record",
         path: "/:id",

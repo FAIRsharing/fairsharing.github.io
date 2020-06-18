@@ -2,98 +2,127 @@
   "queryName": "fairsharingRecord",
   "queryParam": null,
   "fields": [
-      "registry",
-      "type",
-      "doi",
-      "status",
-      "name",
-      "abbreviation",
-      "description",
-      "homepage",
-      {
-          "name": "countries",
+    "registry",
+    "type",
+    "doi",
+    "status",
+    "name",
+    "abbreviation",
+    "description",
+    "homepage",
+    {
+      "name": "countries",
+      "fields": [
+        "name",
+        "id"
+      ]
+    },
+    "metadata",
+    {
+      "name": "taxonomies",
+      "fields": [
+        "label",
+        "id"
+      ]
+    },
+    {
+      "name": "domains",
+      "fields": [
+        "label",
+        "id"
+      ]
+    },
+    {
+      "name": "subjects",
+      "fields": [
+        "label",
+        "id"
+      ]
+    },
+    {
+      "name": "userDefinedTags",
+      "fields": [
+        "label",
+        "id"
+      ]
+    },
+    {
+      "name": "grants",
+      "fields": [
+        "name",
+        "description"
+      ]
+    },
+    "isRecommended",
+    "legacyIds",
+    {
+      "name": "licenceLinks",
+      "fields": [
+        "relation",
+        "id",
+        {
+          "queryName": "fairsharingRecord",
           "fields": [
-              "name",
-              "id",
-              "code"
-          ]
-      },
-      "metadata",
-      {
-          "name": "taxonomies",
-          "fields": [
-              "label"
-          ]
-      },
-      {
-          "name": "domains",
-          "fields": [
-              "label"
-          ]
-      },
-      {
-          "name": "subjects",
-          "fields": [
-              "label"
-          ]
-      },
-      {
-          "name": "grants",
-          "fields": [
-              "name",
-              "description"
-          ]
-      },
-      "isRecommended",
-      "legacyIds",
-      {
-          "name": "licences",
-          "fields": [
-              "name"
-          ]
-      },
-      {
-          "name": "maintainers",
-          "fields": [
-            "username",
             "id"
           ]
-      },
-      {
-          "name": "organisations",
+        },
+        {
+          "queryName": "licence",
           "fields": [
-              "name"
+            "id",
+            "name"
           ]
-      },
-      {
-          "name": "publications",
-          "fields": [
-              "title"
-          ]
-      },
-      {
-          "name": "recordAssociations",
-          "fields": [
-              {
-                  "queryName": "linkedRecord",
-                  "fields": ["name", "id", "registry", "type"]
-              },
-              "recordAssocLabel"
-          ]
-      },
-      {
-          "name": "reverseRecordAssociations",
-          "fields": [
-              {
-                  "queryName": "fairsharingRecord",
-                  "fields": ["name", "id", "registry"]
-              },
-              "recordAssocLabel"
-          ]
-      },
-      {
-          "name": "reviews",
-          "fields":  ["id", "fairsharingRecordId", "createdAt", "userId"]
-      }
+        }
+      ]
+    },
+    {
+      "name": "maintainers",
+      "fields": [
+        "username",
+        "id"
+      ]
+    },
+    {
+      "name": "organisations",
+      "fields": [
+        "name"
+      ]
+    },
+    {
+      "name": "publications",
+      "fields": [
+        "title",
+        "doi",
+        "authors",
+        "id",
+        "journal",
+        "url",
+        "year"
+      ]
+    },
+    {
+      "name": "recordAssociations",
+      "fields": [
+        {
+          "queryName": "linkedRecord",
+          "fields": ["name", "id", "registry", "type"]
+        },
+        "recordAssocLabel"
+      ]
+    },
+    {
+      "name": "reverseRecordAssociations",
+      "fields": [
+        {
+          "queryName": "fairsharingRecord",
+          "fields": ["name", "id", "registry"]
+        },
+        "recordAssocLabel"
+      ]
+    },
+    {
+      "name": "reviews",
+      "fields":  ["id", "fairsharingRecordId", "createdAt", "userId"]
+    }
   ]
 }

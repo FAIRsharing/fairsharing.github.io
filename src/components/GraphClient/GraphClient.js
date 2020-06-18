@@ -7,8 +7,8 @@ class GraphQLClient {
      * also careful, its constructor is async !!
      * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
      */
-    constructor() {
-        if (GraphQLClient._instance) {
+    constructor(){
+        if (GraphQLClient._instance){
             return GraphQLClient._instance
         }
         GraphQLClient._instance = this;
@@ -26,7 +26,7 @@ class GraphQLClient {
      * sending to the API.
      * @returns {Promise}
      */
-    async executeQuery(query) {
+    async executeQuery(query){
         let client = this;
         let queryString = {
             query: `{${client.buildQuery(query)}}`
@@ -35,7 +35,7 @@ class GraphQLClient {
         if (resp.data.errors) {
             return resp.data.errors;
         }
-        return resp.data.data;
+        return resp.data.data
     }
 
     /**
@@ -43,12 +43,12 @@ class GraphQLClient {
      * @param {Object} request - processed request coming out of buildQuery()
      * @returns {Promise} - an axios promise representing the server response.
      */
-    async getData(request) {
+    async getData(request){
         let client = this;
         const fullQuery = {
             method: "post",
             baseURL: client.url,
-            data: request,
+            data:  request,
             headers: client.headers
         };
         return await axios(fullQuery);
@@ -59,21 +59,23 @@ class GraphQLClient {
      * @param {Object} query - the query coming from the JSON file
      * @returns {Object} {query: queryString} - a valid graphQL query string to execute
      */
-    buildQuery(query) {
+    buildQuery(query){
         let client = this;
         let queryString = `${query["queryName"]}`; // query name
 
         // Handle query parameters
         if (query.queryParam) {
             queryString += "(";
-            Object.keys(query.queryParam).forEach(function (key) {
-                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number") {
+            Object.keys(query.queryParam).forEach(function(key){
+                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
                     queryString += `${key}:${query.queryParam[key]} `;
-                } else if (typeof query.queryParam[key] === "string") {
+                }
+                else if (typeof query.queryParam[key] === "string") {
                     queryString += `${key}:"${query.queryParam[key]}" `;
-                } else {
+                }
+                else {
                     let param = [];
-                    query.queryParam[key].forEach(function (paramVal) {
+                    query.queryParam[key].forEach(function(paramVal){
                         param.push("\"" + paramVal + "\"");
                     });
                     queryString += `${key}:[${param.join(",")}]`;
@@ -83,18 +85,19 @@ class GraphQLClient {
         }
 
         // Handle query fields
-        if (query.fields) {
+        if (query.fields){
             queryString += "{";
-            query.fields.forEach(function (field) {
-                if (typeof field === "string") {
+            query.fields.forEach(function(field){
+                if (typeof field === "string"){
                     queryString += ` ${field}`;
                 }
-                if (typeof field === "object") {
+                if (typeof field === "object"){
                     queryString += ` ${field.name}{`;
-                    field.fields.forEach(function (subField) {
-                        if (typeof subField === "string") {
+                    field.fields.forEach(function(subField){
+                        if (typeof subField === "string"){
                             queryString += `${subField} `;
-                        } else {
+                        }
+                        else {
                             queryString += `${client.buildQuery(subField)}`;
                         }
                     });

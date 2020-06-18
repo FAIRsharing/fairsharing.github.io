@@ -1,5 +1,20 @@
 <template>
   <v-card id="editKeywords">
+    <v-card-title class="grey lighten-4 blue--text">
+      <v-btn
+        class="blue mr-3"
+        fab
+        x-small
+      >
+        <v-icon
+          class="white--text"
+          small
+        >
+          fa fa-pen
+        </v-icon>
+      </v-btn>
+      <b> EDIT KEYWORDS </b>
+    </v-card-title>
     <v-alert
       v-if="error"
       type="error"

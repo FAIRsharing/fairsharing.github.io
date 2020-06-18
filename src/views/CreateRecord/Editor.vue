@@ -10,7 +10,7 @@
           color="primary"
           dark
         >
-          <v-toolbar-title>Edit Record</v-toolbar-title>
+          <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
         </v-toolbar>
         <v-tabs dark>
           <v-tab
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-    import { mapActions } from "vuex"
+    import { mapActions, mapState } from "vuex"
     import EditGeneralInfo from "@/components/Editor/EditGeneralInfo";
     import EditKeywords from "@/components/Editor/EditKeywords";
     import EditSupport from "../../components/Editor/EditSupport";
@@ -137,6 +137,9 @@
               }
             ]
           }
+        },
+        computed: {
+          ...mapState('record', ['currentRecord'])
         },
         async mounted(){
             let id = this.$route.params.id;

@@ -1,8 +1,23 @@
 <template>
   <v-card id="editSupport">
+    <v-card-title class="grey lighten-4 blue--text">
+      <v-btn
+        class="blue mr-4"
+        fab
+        x-small
+      >
+        <v-icon
+          class="white--text"
+          small
+        >
+          fa fa-info
+        </v-icon>
+      </v-btn>
+      <b> EDIT SUPPORT INFORMATION </b>
+    </v-card-title>
     <v-card-text v-if="error">
-      <v-alert class="alert-danger">
-        {{ error }}
+      <v-alert type="error">
+        {{ error.data }}
       </v-alert>
     </v-card-text>
     <v-card-text>

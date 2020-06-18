@@ -56,15 +56,21 @@
       "isRecommended",
       "legacyIds",
       {
-          "name": "licences",
+          "name": "licenceLinks",
           "fields": [
+              "relation",
               "id",
-              "name",
-              "url",
               {
-                  "queryName": "licenceLinks",
+                  "queryName": "fairsharingRecord",
                   "fields": [
-                      "relation"
+                      "id"
+                  ]
+              },
+              {
+                  "queryName": "licence",
+                  "fields": [
+                      "id",
+                      "name"
                   ]
               }
           ]
@@ -85,7 +91,13 @@
       {
           "name": "publications",
           "fields": [
-              "title"
+              "title",
+              "doi",
+              "authors",
+              "id",
+              "journal",
+              "url",
+              "year"
           ]
       },
       {

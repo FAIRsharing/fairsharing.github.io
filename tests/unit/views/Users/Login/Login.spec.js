@@ -57,7 +57,7 @@ describe("Login.vue", ()=> {
             password: "niceTry!Lolz"
         };
         await wrapper.vm.logUser();
-        expect(wrapper.vm.$route.path).toBe("/accounts/profile");
+        expect(wrapper.vm.$route.path).toBe("/");
     });
 
     it("can prevent users from logging in", async () => {

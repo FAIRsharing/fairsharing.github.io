@@ -66,6 +66,7 @@
                   v-model="loginData.name"
                   label="Username or email"
                   required
+                  outlined
                 />
 
                 <!-- password -->
@@ -77,6 +78,7 @@
                   counter
                   required
                   @click:append="show1 = !show1"
+                  outlined
                 />
 
                 <v-card-text class="text-left">
@@ -124,7 +126,12 @@
                 return value.charAt(0).toUpperCase() + value.slice(1)
             }
         },
-        props: {},
+        props: {
+          redirect: {
+            type: Boolean,
+            default: true,
+          }
+        },
         data: () => {
             return {
                 show1: false,
@@ -164,7 +171,7 @@
                 };
                 await this.login(user);
                 if (!this.messages().login.error) {
-                  this.$router.push({path: "/accounts/profile"})
+                  this.$router.go(-1);
                 }
             }
         }

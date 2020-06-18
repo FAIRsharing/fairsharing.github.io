@@ -24,6 +24,7 @@ let filtersStore = {
                 state.filters.forEach(item => {
                     output.push({
                         filter: item.filterLabel,
+                        filterName: item.filterName,
                         filterSelected: {},
                         searchTerm: null,
                         subFilters: []

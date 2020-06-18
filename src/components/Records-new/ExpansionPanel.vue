@@ -38,16 +38,16 @@
         </v-list-item-group>
       </v-list>
       <!--
-                                    <v-text-field
-                                            v-if="object.subFilters.length>5"
-                                            class="mt-2"
-                                            solo
-                                            dense
-                                            clearable
-                                            v-model="searchTerm"
-                                            :placeholder="`Search through ${object.filter}`"
-                                    ></v-text-field>
-                        -->
+                                          <v-text-field
+                                                  v-if="object.subFilters.length>5"
+                                                  class="mt-2"
+                                                  solo
+                                                  dense
+                                                  clearable
+                                                  v-model="searchTerm"
+                                                  :placeholder="`Search through ${object.filter}`"
+                                          ></v-text-field>
+                              -->
       <div
         v-if="object.subFilters.length>2"
         :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
@@ -65,6 +65,7 @@
           color="primary"
           class="mt-lg-2 ml-lg-2"
           style="height: 38px"
+          @click="call(object)"
         >
           Apply
         </v-btn>
@@ -81,7 +82,11 @@
         props: {object: {default: null, type: Object}},
         data: () => {
             return {
-                searchTerm: ''
+                searchTerm: '',
+                form: {
+                    data: {}
+                },
+                stringsReplacement: {}
             }
         },
         computed: {
@@ -128,6 +133,63 @@
                         }*/
             },
             ...mapActions('searchFilters', ["callAction"]),
+            /**
+             * Apply the filters by building the new query parameters using the form data.
+             */
+            applyFilters: function (selectedItem) {
+                if (selectedItem!==undefined)
+                    console.log(selectedItem.filter);
+                console.log(selectedItem.filterSelected);
+
+                let _module = this;
+                let formData = {};
+                Object.keys(_module.form.data).forEach(function (key) {
+                    // Need to validate/sanitize data before sending.
+                    const paramValue = _module.form.data[key];
+                    formData[key] = encodeURIComponent(_module.form.data[key].trim());
+                    if (Object.prototype.hasOwnProperty.call(_module.stringsReplacement, paramValue)) {
+                        formData[key] = encodeURIComponent(_module.stringsReplacement[paramValue].trim());
+                    }
+                });
+                this.$router.push({
+                    name: _module.$route.name,
+                    query: formData
+                });
+                _module.form.data = {}
+            },
+            /**
+             * Reset the form/filters/parameters to default (go so /search?page=1)
+             */
+            reset: function () {
+                this.form.data = {};
+                this.$router.push({name: this.$route.name});
+            },
+            /**
+             * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
+             * @param {String} string - the raw string to clean
+             * @returns {String} cleanedString - the string stripped of underscores.
+             */
+            cleanString: function (string) {
+                let cleanedString = string;
+                if (string.includes('_')) {
+                    cleanedString = string.replace(/_/g, " ");
+                    this.stringsReplacement[cleanedString] = string;
+                }
+                return cleanedString;
+            },
+            /**
+             * Clean up all the filters names using the cleanString() method of each of them.
+             * @param {Array} stringArray - an array of raw filters name
+             * @returns {Array} output - an array of cleaned filters name
+             */
+            cleanStrings: function (stringArray) {
+                let output = [];
+                const _module = this;
+                stringArray.forEach(function (string) {
+                    output.push(_module.cleanString(string))
+                });
+                return output;
+            },
         }
     }
 </script>

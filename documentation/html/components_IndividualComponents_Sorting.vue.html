@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/SearchFilters.vue</title>
+	<title>FAIRsharing.org Source: components/IndividualComponents/Sorting.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,207 +86,89 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/SearchFilters.vue</h1>
+		<h1 class="page-title">Source: components/IndividualComponents/Sorting.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-container
-    id="advancedSearch"
-    fluid
-    class="pa-0 ma-0"
-  >
-    &lt;v-row>
-      &lt;v-col
-        cols="12"
-        class="py-0"
-      >
-        &lt;form v-if="filters.length > 0">
-          &lt;v-card>
-            &lt;v-card-title class="primary white--text">
-              &lt;h3> Advanced search &lt;/h3>
-            &lt;/v-card-title>
-
-            &lt;v-card-text class="pt-3 pb-0">
-              &lt;v-container fluid class="pb-0 mb-0">
-                &lt;v-row>
-                  &lt;v-col
-                    v-for="(filter, key) in filters"
-                    :key="key"
-                    cols="2"
-                  >
-                    &lt;div
-                      v-if="filter.values"
-                      class="filter"
-                    >
-                      &lt;v-autocomplete
-                        v-model="form.data[filter.filterName]"
-                        :items="cleanStrings(filter.values)"
-                        solo
-                        rounded
-                        :label="filter.filterLabel"
-                      />
-                    &lt;/div>
-                    &lt;div
-                      v-else
-                      class="filter"
-                    >
-                      &lt;v-text-field
-                        v-model="form.data[filter.filterName]"
-                        :label="filter.filterLabel"
-                        solo
-                        rounded
-                      />
-                    &lt;/div>
-                  &lt;/v-col>
-                  &lt;v-col cols="2">
-                    &lt;v-text-field
-                      v-model="form.data['q']"
-                      type="text"
-                      label="Search for any string"
-                      solo
-                      rounded
-                    />
-                  &lt;/v-col>
-                &lt;/v-row>
-              &lt;/v-container>
-            &lt;/v-card-text>
-            &lt;v-card-actions>
-              &lt;v-btn
-                type="button"
-                class="success"
-                @click="applyFilters()"
-              >
-                Search
-              &lt;/v-btn>
-              &lt;v-btn
-                type="button"
-                class="error"
-                @click="reset()"
-              >
-                Reset
-              &lt;/v-btn>
-            &lt;/v-card-actions>
-          &lt;/v-card>
-        &lt;/form>
-      &lt;/v-col>
-    &lt;/v-row>
-  &lt;/v-container>
+  &lt;v-list>
+    &lt;v-list-item
+      v-for="(item, index) in getFilters()"
+      :key="'sorter_' + index"
+      :class="{'v-list-item--active': activeFilter === item.name + ',' + item.order}"
+      @click="applySortQuery(item.name, item.order)"
+    >
+      &lt;v-list-item-title>
+        {{ item.label }} ({{ item.orderLabel }})
+      &lt;/v-list-item-title>
+    &lt;/v-list-item>
+  &lt;/v-list>
 &lt;/template>
 
 &lt;script>
-    import {mapState} from "vuex"
-
-    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
-     * @vue-data {Object} [form = {}] - variable bound to the form data through v-model
-     * @vue-data {Object} [stringsReplacement = {}] - mapping between cleaned filters names and raw filters names
-     * @vue-computed {Array} filters - the array of ready to use filters coming from the store
-     */
     export default {
-        name: "SearchFilters",
-        components: {},
+        name: "Sorting",
         data() {
             return {
-                form: {
-                    data: {}
-                },
-                stringsReplacement: {}
+                sortFilters: [
+                    {name: 'name', label: 'name', active: false},
+                    {name: 'abbreviation', label: 'abbreviation', active: false},
+                    {name: '_score', label: 'best-match', active: false},
+                ],
+                activeFilter: null
             }
         },
-        computed: {
-            ...mapState("searchFilters", ["filters"])
+        mounted(){
+          const _module = this;
+          _module.activeFilter = (_module.$route.query.orderBy) ? _module.$route.query.orderBy : '_score,asc';
         },
         methods: {
-            /**
-             * Apply the filters by building the new query parameters using the form data.
-             */
-            applyFilters: function () {
-                let _module = this;
-                let formData = {};
-                console.log(_module.form.data)
-                Object.keys(_module.form.data).forEach(function (key) {
-                    // Need to validate/sanitize data before sending.
-                    const paramValue = _module.form.data[key];
-                    formData[key] = encodeURIComponent(_module.form.data[key].trim());
-                    if (Object.prototype.hasOwnProperty.call(_module.stringsReplacement, paramValue)) {
-                        formData[key] = encodeURIComponent(_module.stringsReplacement[paramValue].trim());
+          /**
+           * Set the orderBy parameter value to the given input for vueJs router
+           * @param {string} activeSortFilterName - sorting under this name
+           * @param {string} sortMethod - can be either ASC or DESC
+           */
+          applySortQuery: async function (activeSortFilterName, sortMethod) {
+              let _module = this;
+              let inputOrderBy = `${activeSortFilterName},${sortMethod}`;
+              let currentQuery = JSON.parse(JSON.stringify(_module.$route.query));
+              currentQuery["orderBy"] = inputOrderBy;
+              if (inputOrderBy !== _module.activeFilter){
+                await _module.$router.push({
+                  name: _module.$route.name,
+                  query: currentQuery
+                });
+              }
+          },
+          getFilters: function(){
+                  let filters = [];
+                  this.sortFilters.forEach(function(filter){
+                    filters.push({
+                      label: filter.label,
+                      name: filter.name,
+                      order: "asc",
+                      orderLabel: "ascending"
+                    });
+                    if (filter.name !== '_score') {
+                      filters.push({
+                        label: filter.label,
+                        name: filter.name,
+                        order: "desc",
+                        orderLabel: "descending"
+                      })
                     }
-                });
-                this.$router.push({
-                    name: _module.$route.name,
-                    query: formData
-                });
-                _module.form.data = {}
-            },
-            /**
-             * Reset the form/filters/parameters to default (go so /search?page=1)
-             */
-            reset: function () {
-                this.form.data = {};
-                this.$router.push({name: this.$route.name});
-            },
-            /**
-             * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
-             * @param {String} string - the raw string to clean
-             * @returns {String} cleanedString - the string stripped of underscores.
-             */
-            cleanString: function (string) {
-                let cleanedString = string;
-                if (string.includes('_')) {
-                    cleanedString = string.replace(/_/g, " ");
-                    this.stringsReplacement[cleanedString] = string;
+                  });
+                  return filters;
                 }
-                return cleanedString;
-            },
-            /**
-             * Clean up all the filters names using the cleanString() method of each of them.
-             * @param {Array} stringArray - an array of raw filters name
-             * @returns {Array} output - an array of cleaned filters name
-             */
-            cleanStrings: function (stringArray) {
-                let output = [];
-                const _module = this;
-                stringArray.forEach(function (string) {
-                    output.push(_module.cleanString(string))
-                });
-                return output;
-            },
-        },
+        }
     }
 &lt;/script>
 
-&lt;style scoped>
-    .filters {
-        text-align: left;
-    }
-
-    div.filter {
-        display: inline-block;
-        width: 300px;
-        float: right;
-        max-height: 30px;
-    }
-
-    div.filter div {
-        max-height: 100%;
-    }
-
-    div.filter select, div.filter input {
-        width: 100%;
-    }
-
-    button {
-        margin-left: 15px;
-    }
-
-    input {
-        background: lightgrey;
-    }
-
-&lt;/style>
-
 &lt;style>
+  .highlighted {
+    color: red !important;
+  }
 &lt;/style>
 </pre>
     </article>

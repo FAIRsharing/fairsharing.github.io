@@ -1,5 +1,21 @@
 <template>
   <v-card id="editLicenses">
+    <v-card-title class="grey lighten-4 blue--text">
+      <v-btn
+        class="blue mr-3"
+        fab
+        x-small
+      >
+        <v-icon
+          class="white--text"
+          small
+        >
+          fa fa-pen
+        </v-icon>
+      </v-btn>
+      <b> EDIT LICENCES </b>
+    </v-card-title>
+
     <v-card-text v-if="errors.length > 0">
       <v-alert type="error">
         <v-list color="transparent">

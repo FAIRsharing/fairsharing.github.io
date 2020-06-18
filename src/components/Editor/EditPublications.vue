@@ -16,11 +16,10 @@
         <v-row>
           <v-alert
             width="100%"
-            type="warning"
+            type="info"
             dismissible
           >
-            <b>Note:</b> Publications can only be edited before being saved. Once saved to the database, you will have to ask an administrator
-            to modify it for you. However, you can associate and create as many publications as required.
+            <b>Note:</b> Only curators can edit saved publications. Please contact us if you have an issue.
           </v-alert>
         </v-row>
         <v-row>
@@ -57,7 +56,9 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
+
                 <v-btn
+                  v-if="user().is_curator"
                   class="green white--text"
                   icon
                   @click="editPublication(publication, pubIndex)"

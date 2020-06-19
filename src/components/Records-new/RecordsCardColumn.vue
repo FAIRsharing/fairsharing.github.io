@@ -34,7 +34,7 @@
                 :record="record"
                 class="mr-8"
               />
-              <h3 id="title-style">
+              <h3 class="title-style">
                 <u>{{ record.name }}</u>
               </h3>
             </div>
@@ -219,13 +219,14 @@
 </script>
 
 <style scoped>
-    #title-style {
+    .title-style {
         height: 55px;
+        text-align: center;
     }
 
     .chips-container-margin {
         margin-right: 10%;
-        margin-left: 24%;
+        margin-left: 10%;
     }
 
     .chips-container {

@@ -11,7 +11,7 @@ class ExternalRESTClients {
             return ExternalRESTClients._instance
         }
         ExternalRESTClients._instance = this;
-        this.doiBaseURL = 'http://dx.doi.org/';
+        this.doiBaseURL = 'https://dx.doi.org/';
         this.headers = {
             'Accept': 'application/x-bibtex',
         };

@@ -245,8 +245,8 @@
              * Reset the form/filters/parameters to default (go so /search?page=1)
              */
             reset: function (selectedItem) {
-                this.$nextTick(() => {
-                    selectedItem.filterSelected = {}
+              selectedItem.filterSelected = {}
+              this.$nextTick(() => {
                     // this.formData = {};
                     // this.$router.push({name: this.$route.name});
                 })

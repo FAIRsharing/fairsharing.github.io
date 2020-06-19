@@ -11,7 +11,7 @@
         text-color="teal"
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
-        {{ chip.paramName }}: <b>{{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
+        {{ chip.paramName }}: <b>{{ decodeURIComponent(chip.paramVal.substr(0,50)).replace(/_/g, " ") }}</b>
       </v-chip>
     </div>
   </v-row>
@@ -90,3 +90,24 @@
         }
     }
 </script>
+<style scoped>
+  .v-chip  {
+    border-radius: 20px;
+    background: darkred;
+    padding: 5px 10px;
+    color: white;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+  }
+
+  .v-chip  span {
+    border: 1px solid white;
+    border-radius: 50px;
+    padding: 5px 10px;
+  }
+</style>

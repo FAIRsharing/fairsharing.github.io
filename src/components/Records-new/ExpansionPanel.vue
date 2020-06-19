@@ -38,16 +38,16 @@
         </v-list-item-group>
       </v-list>
       <!--
-                                                                  <v-text-field
-                                                                          v-if="object.subFilters.length>5"
-                                                                          class="mt-2"
-                                                                          solo
-                                                                          dense
-                                                                          clearable
-                                                                          v-model="searchTerm"
-                                                                          :placeholder="`Search through ${object.filter}`"
-                                                                  ></v-text-field>
-                                                      -->
+                                                                        <v-text-field
+                                                                                v-if="object.subFilters.length>5"
+                                                                                class="mt-2"
+                                                                                solo
+                                                                                dense
+                                                                                clearable
+                                                                                v-model="searchTerm"
+                                                                                :placeholder="`Search through ${object.filter}`"
+                                                                        ></v-text-field>
+                                                            -->
       <div
         v-if="object.subFilters.length>2"
         :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
@@ -144,7 +144,7 @@
                             name: _module.$route.name,
                             query: this.formData
                         });
-                      selectedItem.filterSelected = {}
+                        selectedItem.filterSelected = {}
                     }
                 }
             },
@@ -154,6 +154,7 @@
             reset: function (selectedItem) {
                 this.$nextTick(() => {
                     selectedItem.filterSelected = {}
+                    this.$forceUpdate();
                     // this.formData = {};
                     // this.$router.push({name: this.$route.name});
                 })

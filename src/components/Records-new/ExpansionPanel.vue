@@ -148,7 +148,7 @@
                             name: _module.$route.name,
                             query: this.formData
                         });
-                        _module.selectedFilters[selectedItem.filterName] = {};
+                        _module.selectedFilters = {};
                     }
                 }
             },

@@ -237,7 +237,7 @@
                             name: _module.$route.name,
                             query: this.formData
                         });
-                        _module.reset(selectedItem)
+                      selectedItem.filterSelected = {}
                     }
                 }
             },
@@ -245,8 +245,8 @@
              * Reset the form/filters/parameters to default (go so /search?page=1)
              */
             reset: function (selectedItem) {
-              selectedItem.filterSelected = {}
-              this.$nextTick(() => {
+                this.$nextTick(() => {
+                    selectedItem.filterSelected = {}
                     // this.formData = {};
                     // this.$router.push({name: this.$route.name});
                 })

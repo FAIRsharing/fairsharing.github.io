@@ -1,58 +1,58 @@
 <template>
-    <section>
-        <h1 class="d-none">
-            Records
-        </h1>
-        <!--Filtered Chips-->
-        <div class="d-flex align-content-center justify-content-center chips-holder">
-            <FiltersChip/>
-        </div>
+  <section>
+    <h1 class="d-none">
+      Records
+    </h1>
+    <!--Filtered Chips-->
+    <div class="d-flex align-content-center justify-content-center chips-holder">
+      <FiltersChip />
+    </div>
 
-        <!--List Controller-->
-        <ListController
-                class="mt-2"
-                @ChangeListType="changeListType"
-        />
+    <!--List Controller-->
+    <ListController
+      class="mt-2"
+      @ChangeListType="changeListType"
+    />
 
-        <!--List Row-->
-        <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
-            <article v-if="!isColumnList">
-                <v-skeleton-loader
-                        class="mt-5"
-                        :loading="loading"
-                        type="card"
-                >
-                    <h2 class="d-none">
-                        Result
-                    </h2>
-                    <RecordsCardStack
-                            v-for="record in records"
-                            :key="'record_'+record.id"
-                            :record="record"
-                    />
-                </v-skeleton-loader>
-            </article>
-        </div>
+    <!--List Row-->
+    <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
+      <article v-if="!isColumnList">
+        <v-skeleton-loader
+          class="mt-5"
+          :loading="loading"
+          type="card"
+        >
+          <h2 class="d-none">
+            Result
+          </h2>
+          <RecordsCardStack
+            v-for="record in records"
+            :key="'record_'+record.id"
+            :record="record"
+          />
+        </v-skeleton-loader>
+      </article>
+    </div>
 
-        <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
-            <v-skeleton-loader
-                    class="mt-5"
-                    :loading="loading"
-                    type="card"
-            >
-                <v-row v-show="isColumnList">
-                    <RecordsCardColumn
-                            v-for="record in records"
-                            :key="'record_'+record.id"
-                            :record="record"
-                    />
-                </v-row>
-            </v-skeleton-loader>
-        </div>
+    <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
+      <v-skeleton-loader
+        class="mt-5"
+        :loading="loading"
+        type="card"
+      >
+        <v-row v-show="isColumnList">
+          <RecordsCardColumn
+            v-for="record in records"
+            :key="'record_'+record.id"
+            :record="record"
+          />
+        </v-row>
+      </v-skeleton-loader>
+    </div>
 
-        <!--List Controller-->
-        <!--        <ListController class="mt-2 " @ChangeListType="changeListType"></ListController>-->
-    </section>
+    <!--List Controller-->
+    <!--        <ListController class="mt-2 " @ChangeListType="changeListType"></ListController>-->
+  </section>
 </template>
 
 <script>

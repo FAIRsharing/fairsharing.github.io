@@ -11,7 +11,8 @@
         text-color="teal"
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
-        {{ chip.paramName+' ' }}: <b>{{ decodeURIComponent(chip.paramVal.substr(0,50)).replace(/_/g, " ")+'...' }}</b>
+        {{ chip.paramName+' ' }}: <b>{{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
+<!--        {{ chip.paramName+' ' }}: <b>{{ decodeURIComponent(chip.paramVal.substr(0,50)).replace(/_/g, " ") }}</b>-->
       </v-chip>
     </div>
   </v-row>

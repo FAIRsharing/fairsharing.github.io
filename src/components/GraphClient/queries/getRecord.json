@@ -77,6 +77,13 @@
       ]
     },
     {
+      "name": "licences",
+      "fields": [
+        "id",
+        "name"
+      ]
+    },
+    {
       "name": "maintainers",
       "fields": [
         "username",

@@ -38,16 +38,16 @@
         </v-list-item-group>
       </v-list>
       <!--
-                                                      <v-text-field
-                                                              v-if="object.subFilters.length>5"
-                                                              class="mt-2"
-                                                              solo
-                                                              dense
-                                                              clearable
-                                                              v-model="searchTerm"
-                                                              :placeholder="`Search through ${object.filter}`"
-                                                      ></v-text-field>
-                                          -->
+                                                                  <v-text-field
+                                                                          v-if="object.subFilters.length>5"
+                                                                          class="mt-2"
+                                                                          solo
+                                                                          dense
+                                                                          clearable
+                                                                          v-model="searchTerm"
+                                                                          :placeholder="`Search through ${object.filter}`"
+                                                                  ></v-text-field>
+                                                      -->
       <div
         v-if="object.subFilters.length>2"
         :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
@@ -60,7 +60,7 @@
           dense
           clearable
           :placeholder="`Search through ${object.filter}`"
-          @click:clear="reset"
+          @click:clear="reset(object)"
         />
         <v-btn
           color="primary"
@@ -135,22 +135,27 @@
              * Apply the filters by building the new query parameters using the form data.
              */
             applyFilters: function (selectedItem) {
-                if (selectedItem !== undefined) {
+                if (selectedItem.filterSelected && selectedItem.filterSelected.length) {
                     let _module = this;
-                    this.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.filterSelected.trim());
-                    this.$router.push({
-                        name: _module.$route.name,
-                        query: this.formData
-                    });
+                    let previousQuery = _module.formData[selectedItem.filterName]
+                    _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.filterSelected.trim());
+                    if (this.formData[selectedItem.filterName] !== previousQuery) {
+                        this.$router.push({
+                            name: _module.$route.name,
+                            query: this.formData
+                        });
+                        _module.reset(selectedItem)
+                    }
                 }
             },
             /**
              * Reset the form/filters/parameters to default (go so /search?page=1)
              */
-            reset: function () {
+            reset: function (selectedItem) {
                 this.$nextTick(() => {
-                    this.formData = {};
-                    this.$router.push({name: this.$route.name});
+                    selectedItem.filterSelected = {}
+                    // this.formData = {};
+                    // this.$router.push({name: this.$route.name});
                 })
             },
             /**

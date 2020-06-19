@@ -53,7 +53,7 @@
         :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
       >
         <v-autocomplete
-          v-model="object.filterSelected"
+          v-model="selectedFilters[object.filterName]"
           class="mt-2"
           :items="returnSubFilters(object.subFilters)"
           solo
@@ -62,6 +62,7 @@
           :placeholder="`Search through ${object.filter}`"
           @click:clear="reset(object)"
         />
+
         <v-btn
           color="primary"
           class="mt-lg-2 ml-lg-2"
@@ -71,6 +72,7 @@
           Apply
         </v-btn>
       </div>
+      <pre>{{ selectedFilters[object.filter] }}</pre>
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -84,7 +86,8 @@
         data: () => {
             return {
                 searchTerm: '',
-                formData: {}
+                formData: {},
+                selectedFilters: {}
             }
         },
         computed: {
@@ -135,16 +138,17 @@
              * Apply the filters by building the new query parameters using the form data.
              */
             applyFilters: function (selectedItem) {
-                if (selectedItem.filterSelected && selectedItem.filterSelected.length) {
-                    let _module = this;
+                let _module = this;
+                let currentItem = _module.selectedFilters[selectedItem.filterName];
+                if (currentItem && currentItem.length) {
                     let previousQuery = _module.formData[selectedItem.filterName]
-                    _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.filterSelected.trim());
+                    _module.formData[selectedItem.filterName] = encodeURIComponent(currentItem.trim());
                     if (this.formData[selectedItem.filterName] !== previousQuery) {
                         this.$router.push({
                             name: _module.$route.name,
                             query: this.formData
                         });
-                        selectedItem.filterSelected = {}
+                        _module.reset(selectedItem);
                     }
                 }
             },
@@ -152,9 +156,9 @@
              * Reset the form/filters/parameters to default (go so /search?page=1)
              */
             reset: function (selectedItem) {
+                let _module = this;
                 this.$nextTick(() => {
-                    selectedItem.filterSelected = {}
-                    this.$forceUpdate();
+                    _module.selectedFilters[selectedItem.filterName] = {};
                     // this.formData = {};
                     // this.$router.push({name: this.$route.name});
                 })

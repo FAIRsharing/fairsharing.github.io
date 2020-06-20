@@ -165,13 +165,22 @@
         methods: {
             ...mapActions('users', ['login', 'logout']),
             logUser: async function(){
+                const _module = this;
                 const user = {
-                    "name": this.loginData.name,
-                    "password":  this.loginData.password
+                    "name": _module.loginData.name,
+                    "password":  _module.loginData.password
                 };
-                await this.login(user);
-                if (!this.messages().login.error) {
-                  this.$router.go(-1);
+                await _module.login(user);
+                if (!_module.messages().login.error) {
+                  const goTo = _module.$route.query.redirect;
+                  if (goTo){
+                    _module.$router.push({
+                      path: goTo
+                    })
+                  }
+                  else if (_module.redirect) {
+                    _module.$router.go(-1);
+                  }
                 }
             }
         }

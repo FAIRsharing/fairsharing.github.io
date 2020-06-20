@@ -1,10 +1,18 @@
 <template>
-  <div
-    v-if="messages()[field].message"
-    class="alert"
-    :class="{'alert-danger': messages()[field].error, 'alert-success': !messages()[field].error}"
-  >
-    {{ messages()[field] }}
+  <div>
+    <v-alert
+      v-if="messages()[field].message && messages()[field].error"
+      type="error"
+    >
+      {{ messages()[field].message }}
+    </v-alert>
+
+    <v-alert
+      v-if="messages()[field].message && !messages()[field].error"
+      type="success"
+    >
+      {{ messages()[field].message }}
+    </v-alert>
   </div>
 </template>
 

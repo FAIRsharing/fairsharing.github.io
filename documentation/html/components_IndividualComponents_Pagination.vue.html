@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Index</title>
+	<title>FAIRsharing.org Source: components/IndividualComponents/Pagination.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,53 +81,129 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	
-	
+		<h1 class="page-title">Source: components/IndividualComponents/Pagination.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-pagination
+    v-model="page"
+    :length="totalPages"
+    :total-visible="7"
+  />
+&lt;/template>
 
+&lt;script>
+    import {throttle} from 'lodash';
 
+    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
+     * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
+     * @vue-data {Number} [currentQuery = null] - the current page number
+     */
+    export default {
+        name: "Pagination",
+        props: {
+            totalPages: {
+                type: Number,
+                default: 0
+            },
+        },
+        data() {
+            return {
+                currentPage: null,
+                allowPaginate: true,
+                disable: false,
+                page: 1
+            }
+        },
+        watch: {
+            '$route.name': function () {
+                this.currentPage = 1;
+            },
+            '$route.query': function (newVal) {
+                let _module = this;
+                if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
+                    _module.currentPage = 1;
+                } else {
+                    _module.currentPage = Number(newVal.page);
+                }
+            },
+            'page': function (newPage) {
+                this.paginate(newPage);
+            }
+        },
+        created() {
+            let currentPage = (this.$route.query.page !== undefined) ? Number(this.$route.query.page ) : 1;
+            this.currentPage = currentPage;
+            this.page = currentPage;
+        },
+        methods: {
+            /**
+             * Set the current query page parameter value to the given input for vueJs router
+             * @param {Number} pageNumber - the page to go to
+             */
+            paginate: async function (pageNumber) {
+                if (this.allowPaginate) {
+                    if (pageNumber !== this.currentPage &amp;&amp; this.allowPaginate) {
+                        let _module = this;
+                        let currentQuery = {};
+                        _module.currentPage = pageNumber;
+                        Object.keys(_module.$route.query).forEach(function (param) {
+                            currentQuery[param] = _module.$route.query[param]
+                        });
+                        currentQuery.page = pageNumber;
+                        this.disableThrottle(this.disable);
+                        await _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentQuery
+                        });
+                    }
+                }
+            },
+            /**
+             * Postpone the pagination buttons to be clickable
+             */
+            PaginatePermission: throttle(function () {
+                this.allowPaginate = true
+            }, 1200),
 
+            /**
+             * Set the environment ready for testing or development
+             * @param {Boolean} disable - should disable or not the throttle for the next call
+             */
+            disableThrottle: function (disable) {
+                if (!disable) {
+                    this.allowPaginate = false;
+                    this.PaginatePermission();
+                } else {
+                    this.allowPaginate = true;
+                }
+            }
+        },
+    }
+&lt;/script>
 
+&lt;style scoped>
+    button {
+        outline: none;
+    }
 
+&lt;/style>
 
-
-
-
-
-
-	
-	
-
-
-
-
-
-    <section class="readme-section">
-        <article><p><a href="https://github.com/FAIRsharing/fairsharing.github.io/actions"><img src="https://github.com/FAIRsharing/fairsharing.github.io/workflows/CI/badge.svg" alt="Actions Status"></a>
-<a href="https://coveralls.io/github/FAIRsharing/fairsharing.github.io?branch=master"><img src="https://coveralls.io/repos/github/FAIRsharing/fairsharing.github.io/badge.svg?branch=master" alt="Coverage Status"></a>
-<a href="https://fairsharing.github.io/documentation/html/"><img src="https://github.com/FAIRsharing/fairsharing.github.io/workflows/Doc/badge.svg" alt="Actions Status"></a>
-<a href="https://david-dm.org/fairsharing/fairsharing.github.io"><img src="https://david-dm.org/fairsharing/fairsharing.github.io/status.svg" alt="dependencies Status"></a>
-<a href="https://www.codacy.com/gh/FAIRsharing/fairsharing.github.io?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FAIRsharing/fairsharing.github.io&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/e5d5a125a61b4b7a91a13cf85015ff89" alt="Codacy Badge"></a>
-<a href="https://app.netlify.com/sites/fairsharing/deploys"><img src="https://api.netlify.com/api/v1/badges/22cbc339-165f-4d87-ba40-4d28bcb14af6/deploy-status" alt="Netlify Status"></a></p>
-<p><a href="https://fairsharing.org/"><img src="https://fairsharing.org/static/img/home/svg/FAIRsharing-sdp.svg" alt="FAIRsharing.org"></a></p>
-<h1>FAIRsharing.org</h1>
-<p>Welcome to the new FAIRsharing.org website.</p>
-<h2>Compiles and hot-reloads for development</h2>
-<pre class="prettyprint source"><code>npm run serve
-</code></pre>
-<h2>Test with vue-cli &amp; generate coverage</h2>
-<pre class="prettyprint source"><code>npm run test:unit
-</code></pre>
-<h2>Generate the documentation locally</h2>
-<pre class="prettyprint source"><code>npm run doc:full
-</code></pre></article>
-    </section>
-
-
+&lt;style>
+  #advancedSearch {
+    top:20px;
+  }
+&lt;/style>
+</pre>
+    </article>
+</section>
 
 
 
@@ -138,10 +214,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

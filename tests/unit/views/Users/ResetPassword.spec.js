@@ -90,14 +90,14 @@ describe('ResetPassword.vue', () => {
             password_confirmation: 123,
             oldPwd: 123
         };
-        await wrapper.vm.login(true);
+        await wrapper.vm.submit(true);
 
         stub.restore();
         stub = sinon.stub(Client.prototype, "executeQuery");
         stub.returns({
             data: {message: 'Hello'}
         });
-        await wrapper.vm.login(true);
+        await wrapper.vm.submit(true);
         expect(wrapper.vm.messages().login).toStrictEqual({
             message: 'Password change successful. Please log back in.',
             error: false

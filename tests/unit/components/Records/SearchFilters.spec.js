@@ -86,9 +86,8 @@ describe("SearchFilters.vue", () => {
 
     it("can render the filters from the store", async () => {
         await wrapper.vm.$store.dispatch('searchFilters/fetchFilters', client);
-        expect(wrapper.vm.filters[0].filterName).toMatch("id");
-        expect(wrapper.vm.filters[1].filterName).toMatch("countries");
-        expect(wrapper.vm.filters[2].filterName).toMatch("journals");
+        expect(wrapper.vm.filters[0].filterName).toMatch("countries");
+        expect(wrapper.vm.filters[1].filterName).toMatch("journals");
         await wrapper.vm.$store.dispatch('searchFilters/fetchFilters', client);
     });
 

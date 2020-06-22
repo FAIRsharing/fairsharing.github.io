@@ -109,7 +109,7 @@ let filtersStore = {
                 if (state.filters.length === 0) {
                     let rawFilters = val['searchFairsharingRecords']['aggregations'];
                     state.filters = buildFilters(rawFilters);
-                    this.commit('searchFilters/reformatState');
+                    // this.commit('searchFilters/reformatState');
                 }
             },
             reformatState(state) {

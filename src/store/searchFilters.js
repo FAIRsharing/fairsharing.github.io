@@ -16,7 +16,6 @@ let filtersStore = {
                 if (state.filters.length === 0) {
                     let rawFilters = val['searchFairsharingRecords']['aggregations'];
                     state.filters = buildFilters(rawFilters);
-                    // this.commit('searchFilters/reformatState');
                 }
             },
             reformatState(state) {
@@ -86,7 +85,8 @@ let filtersStore = {
         },
         actions: {
             async fetchFilters(_, client) {
-                this.commit('searchFilters/setFilters', await client.executeQuery(query));
+                await this.commit('searchFilters/setFilters', await client.executeQuery(query));
+                this.commit('searchFilters/reformatState');
             },
             callAction:
                 function () {

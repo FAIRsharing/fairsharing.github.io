@@ -111,7 +111,6 @@
             applyFilters: function () {
                 let _module = this;
                 let formData = {};
-                console.log(_module.form.data)
                 Object.keys(_module.form.data).forEach(function (key) {
                     // Need to validate/sanitize data before sending.
                     const paramValue = _module.form.data[key];

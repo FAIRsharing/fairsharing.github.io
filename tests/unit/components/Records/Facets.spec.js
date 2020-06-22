@@ -77,11 +77,6 @@ describe("Facets.vue", () =>{
         expect(wrapper.name()).toMatch("Facets");
     });
 
-    it("can get the facets sizes from the store", () => {
-        const sizes = wrapper.vm.facetsSize;
-        expect(sizes).toStrictEqual({userDefinedTags: 4, isRecommended: 4});
-    });
-
     it("can change the display size of a given facet", () => {
         wrapper.vm.changeSize("is_recommended", 10);
         const sizes = wrapper.vm.facetsSize;

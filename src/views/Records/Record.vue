@@ -7,6 +7,16 @@
       v-if="!error && queryTriggered"
       fluid
     >
+      <v-row
+        v-if="user().isLoggedIn"
+        class="pr-3"
+      >
+        <v-spacer />
+        <v-btn class="success" :href="'#/' + currentRoute + '/edit'">
+          EDIT
+        </v-btn>
+      </v-row>
+
       <!--  Content  -->
       <v-row
         v-if="currentRecord['fairsharingRecord']"

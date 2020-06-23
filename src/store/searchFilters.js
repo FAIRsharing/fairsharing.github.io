@@ -42,31 +42,11 @@ let filtersStore = {
                             };
                             output[i].subFilters.push(ObjectModel);
                         }
-                        // }
-                        /*
-                                                else if (state.filters[i].buckets) {
-                                                    console.log('bb', state.filters[i].buckets);
-                                                    for (let k = 0; k < state.filters[i].buckets.length; k++) {
-                                                        ObjectModel = {
-                                                            subFilter: state.filters[i].buckets[k].key,
-                                                            active: false,
-                                                            inventory: state.filters[i].buckets[k].doc_count
-                                                        };
-                                                        output[i].subFilters.push(ObjectModel);
-                                                    }
-                                                } else {
-                                                    console.log('aaa', state.filters[i].buckets)
-                                                }
-                        */
-
                     }
                 }
                 state.filters = output
             },
             refain(state) {
-                // console.log('called');
-                // let output = []
-                // output = state.filters
                 state.filters.forEach(item => {
                     if (item.filter === 'isRecommended') {
                         // console.log(item.subFilters)
@@ -77,24 +57,20 @@ let filtersStore = {
                             return temp;
                         }
                     }
-                    // state.filters[1]=item;
                 })
-                // console.log('whole', state.filters[1])
-                // state.filters = output
             }
         },
         actions: {
             async fetchFilters(_, client) {
                 await this.commit('searchFilters/setFilters', await client.executeQuery(query));
-                this.commit('searchFilters/reformatState');
+                // this.commit('searchFilters/reformatState');
             },
             callAction:
                 function () {
                     this.commit('searchFilters/refain');
                 }
         },
-        modules: {}
-        ,
+        modules: {},
         getters: {}
     }
 ;
@@ -107,19 +83,8 @@ export default filtersStore;
  */
 
 let buildFilters = function (val) {
-    // Need to return filter values, filter label and filter name
     let filters = [];
-
-    // start with simple input
-    /*
-        filterMapping.input.forEach(function (filter) {
-            filter.values = null;
-            filters.push(filter)
-        });
-    */
-
     let filtersLabels = filterMapping['autocomplete'];
-    // now deal with incoming data
     Object.keys(val).forEach(function (key) {
         if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
             let filter = filtersLabels[key];
@@ -132,7 +97,8 @@ let buildFilters = function (val) {
                     bucket,
                     "key_as_string")) {
                     filterValues.push(bucket["key_as_string"]);
-                } else {
+                }
+                else {
                     filterValues.push(bucket['key']);
                 }
             });

@@ -1,72 +1,40 @@
 <template>
-  <v-expansion-panel>
-    <v-expansion-panel-header>{{ object.filter }}</v-expansion-panel-header>
+  <v-expansion-panel v-if="filter.filterName">
+    <v-expansion-panel-header> {{ filter.filterLabel }} </v-expansion-panel-header>
     <v-expansion-panel-content class="pl-5 pr-5">
-      <v-list
-        v-if="object.subFilters.length<=1"
-        flat
-      >
-        <!--          :class="{'fixed-scrollable-height':object.subFilters.length>5}"-->
-        <v-list-item-group
-          color="primary"
-          multiple
-        >
-          <v-list-item
-            v-for="(subObject,index) in searchSubFilters.subFilters"
-            :key="subObject.subFilter+'_'+index"
-            @click="callAction"
-          >
-            <v-list-item-content>
-              <v-list-item-title
-                class="text-primary"
-                v-text="subObject.subFilter"
-              />
-            </v-list-item-content>
-            <v-list-item-icon>
-              <div :class="!subObject.active?'badge':'badge-active'">
-                <span
-                  id="inventory"
-                  class="text-primary "
-                >{{ subObject.inventory }}</span>
-                <span
-                  v-if="subObject.active"
-                  class="triangle-left"
-                />
-              </div>
-            </v-list-item-icon>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-      <!--
-                                                                  <v-text-field
-                                                                          v-if="object.subFilters.length>5"
-                                                                          class="mt-2"
-                                                                          solo
-                                                                          dense
-                                                                          clearable
-                                                                          v-model="searchTerm"
-                                                                          :placeholder="`Search through ${object.filter}`"
-                                                                  ></v-text-field>
-                                                      -->
-      <div
-        v-if="object.subFilters.length>2"
-        :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
-      >
+      <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
         <v-autocomplete
-          v-model="object.filterSelected"
-          class="mt-2"
-          :items="returnSubFilters(object.subFilters)"
+          v-model="selectedValues"
+          :items="getValues"
           solo
           dense
           clearable
-          :placeholder="`Search through ${object.filter}`"
-          @click:clear="reset(object)"
-        />
+          multiple
+          prepend-inner-icon="mdi-magnify"
+          :placeholder="`Search through ${filter.filterLabel}`"
+          item-text="key"
+          item-value="key"
+          @click:clear="reset(filter)"
+        >
+          <template v-slot:selection="data">
+            <v-chip class="blue white--text">
+              {{ cleanString(data.item.key) }}
+            </v-chip>
+          </template>
+          <template v-slot:item="data">
+            <div class="filterValueName">
+              {{ cleanString(data.item.key) }}
+            </div>
+            <div class="filterValueCount">
+              {{ data.item['doc_count'] }}
+            </div>
+          </template>
+        </v-autocomplete>
         <v-btn
           color="primary"
-          class="mt-lg-2 ml-lg-2"
+          class="ml-lg-2"
           style="height: 38px"
-          @click="applyFilters(object)"
+          @click="applyFilters(filter)"
         >
           Apply
         </v-btn>
@@ -76,77 +44,69 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
         name: "ExpansionPanel",
-        props: {object: {default: null, type: Object}},
+        props: {
+            filter: {default: null, type: Object}},
         data: () => {
             return {
-                searchTerm: '',
-                formData: {},
-                arr:[]
+                selectedValues: null
             }
         },
         computed: {
-            searchSubFilters: function () {
-                let _module = this;
-                if (_module.searchTerm === null || _module.searchTerm === '') {
-                    return _module.object;
-                } else {
-                    let output = {subFilters: []}
-                    _module.object.subFilters.forEach(item => {
-                        if (item.subFilter.includes(_module.searchTerm)) {
-                            output.subFilters.push(item)
-                        }
-                    });
-                    // output = _module.object.subFilters.find(item => item.subFilter.includes(_module.searchTerm));
-                    // console.log('output', output)
-                    return output;
-                }
-            },
+          ...mapGetters('records', ['getFacet']),
+          getValues: function(){
+            let output = this.getFacet(this.filter.filterName);
+            if (output.values && typeof output.values === 'object') {
+              return output.values;
+            }
+            return []
+          }
         },
         methods: {
-            returnSubFilters(subFiltersObject) {
-                let output = [];
-                subFiltersObject.forEach(object => output.push(this.cleanString(object.subFilter)));
-                return output;
-                /*        if (subFiltersObject.filterSelected) {
-                            console.log('subFiltersObject from ret ', subFiltersObject.filterSelected);
-                            if (!subFiltersObject.filterSelected.length) { // if there is nothing in search box
-                                subFiltersObject.subFilters.forEach(object => outPut.push(object.subFilter));
-                            } else {
-                                // subFiltersObject.subFilters.forEach(object => object.subFilter.toLowerCase().includes(subFiltersObject.filterSelected)
-                                subFiltersObject.subFilters.filter(item => {
-                                        return item.subFilter.toLowerCase() === subFiltersObject.filterSelected;
-                                    }
-                                )
-                                console.log('yo', subFiltersObject.filterSelected);
-                                outPut.push(subFiltersObject.filterSelected);
-                            }
-                            console.log(outPut);
-                            return outPut;
-                        }else
-                        {
-                            return {};
-                        }*/
-            },
             ...mapActions('searchFilters', ["callAction"]),
             /**
              * Apply the filters by building the new query parameters using the form data.
              */
-            applyFilters: function (selectedItem) {
-                if (selectedItem.filterSelected && selectedItem.filterSelected.length) {
-                    let _module = this;
-                    let previousQuery = _module.formData[selectedItem.filterName]
-                    _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.filterSelected.trim());
-                    if (this.formData[selectedItem.filterName] !== previousQuery) {
-                        this.$router.push({
-                            name: _module.$route.name,
-                            query: this.formData
-                        });
-                        _module.reset(selectedItem)
+            applyFilters: function () {
+                let _module = this;
+                let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
+                if (Object.keys(currentParams).indexOf(_module.filter.filterName) === -1){
+                  if (_module.selectedValues !== null && _module.selectedValues.length > 0) {
+                    currentParams[_module.filter.filterName] = _module.selectedValues.join(',');
+                    _module.$router.push({
+                      name: _module.$route.name,
+                      query: currentParams
+                    });
+                  }
+                }
+                else {
+                  if (_module.selectedValues === null || _module.selectedValues.length === 0){
+                    delete currentParams[_module.filter.filterName];
+                    _module.$router.push({
+                      name: _module.$route.name,
+                      query: currentParams
+                    });
+                  }
+                  else {
+                    let newParams = [];
+                    let existingValues = currentParams[_module.filter.filterName].split(",");
+                    _module.selectedValues.forEach(function(selectedValue){
+                      if (existingValues.indexOf(selectedValue) === -1) {
+                        newParams.push(selectedValue);
+                      }
+                    });
+                    currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
+                    if (newParams.length > 0) {
+                      _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentParams
+                      });
                     }
+                  }
+
                 }
             },
             /**
@@ -154,9 +114,7 @@
              */
             reset: function (selectedItem) {
                 this.$nextTick(() => {
-                    selectedItem.filterSelected = {}
-                    // this.formData = {};
-                    // this.$router.push({name: this.$route.name});
+                    selectedItem.filterSelected = {};
                 })
             },
             /**
@@ -170,20 +128,7 @@
                     cleanedString = string.replace(/_/g, " ");
                 }
                 return cleanedString;
-            },
-            /**
-             * Clean up all the filters names using the cleanString() method of each of them.
-             * @param {Array} stringArray - an array of raw filters name
-             * @returns {Array} output - an array of cleaned filters name
-             */
-            cleanStrings: function (stringArray) {
-                let output = [];
-                const _module = this;
-                stringArray.forEach(function (string) {
-                    output.push(_module.cleanString(string))
-                });
-                return output;
-            },
+            }
         }
     }
 </script>
@@ -242,4 +187,19 @@
         overflow-x: hidden;
         scroll-behavior: smooth;
     }
+
+    .filterValueName {
+      flex:1;
+      max-width:348px;
+      text-overflow:ellipsis;
+      overflow:hidden;
+      white-space: nowrap;
+    }
+
+    .filterValueCount {
+      background: #2196F3;
+      color:white;
+      padding:0 7px;
+    }
+
 </style>

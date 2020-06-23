@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel v-if="filter.filterName">
-    <v-expansion-panel-header> {{ filter.filterLabel }} </v-expansion-panel-header>
+    <v-expansion-panel-header> {{ filter.filterLabel }}</v-expansion-panel-header>
     <v-expansion-panel-content class="pl-5 pr-5">
       <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
         <v-autocomplete
@@ -49,21 +49,23 @@
     export default {
         name: "ExpansionPanel",
         props: {
-            filter: {default: null, type: Object}},
+            filter: {default: null, type: Object}
+        },
         data: () => {
             return {
                 selectedValues: null
             }
         },
         computed: {
-          ...mapGetters('records', ['getFilter']),
-          getValues: function(){
-            let output = this.getFilter(this.filter.filterName);
-            if (output.values && typeof output.values === 'object') {
-              return output.values;
+            ...mapGetters('records', ['getFilter']),
+            getValues: function () {
+                let _module = this;
+                let output = _module.getFilter(this.filter.filterName);
+                if (output.values && typeof output.values === 'object') {
+                    return output.values;
+                }
+                return []
             }
-            return []
-          }
         },
         methods: {
             ...mapActions('searchFilters', ["callAction"]),
@@ -73,39 +75,37 @@
             applyFilters: function () {
                 let _module = this;
                 let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
-                if (Object.keys(currentParams).indexOf(_module.filter.filterName) === -1){
-                  if (_module.selectedValues !== null && _module.selectedValues.length > 0) {
-                    currentParams[_module.filter.filterName] = _module.selectedValues.join(',');
-                    _module.$router.push({
-                      name: _module.$route.name,
-                      query: currentParams
-                    });
-                  }
-                }
-                else {
-                  if (_module.selectedValues === null || _module.selectedValues.length === 0){
-                    delete currentParams[_module.filter.filterName];
-                    _module.$router.push({
-                      name: _module.$route.name,
-                      query: currentParams
-                    });
-                  }
-                  else {
-                    let newParams = [];
-                    let existingValues = currentParams[_module.filter.filterName].split(",");
-                    _module.selectedValues.forEach(function(selectedValue){
-                      if (existingValues.indexOf(selectedValue) === -1) {
-                        newParams.push(selectedValue);
-                      }
-                    });
-                    currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
-                    if (newParams.length > 0) {
-                      _module.$router.push({
-                        name: _module.$route.name,
-                        query: currentParams
-                      });
+                if (Object.keys(currentParams).indexOf(_module.filter.filterName) === -1) {
+                    if (_module.selectedValues !== null && _module.selectedValues.length > 0) {
+                        currentParams[_module.filter.filterName] = _module.selectedValues.join(',');
+                        _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentParams
+                        });
                     }
-                  }
+                } else {
+                    if (_module.selectedValues === null || _module.selectedValues.length === 0) {
+                        delete currentParams[_module.filter.filterName];
+                        _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentParams
+                        });
+                    } else {
+                        let newParams = [];
+                        let existingValues = currentParams[_module.filter.filterName].split(",");
+                        _module.selectedValues.forEach(function (selectedValue) {
+                            if (existingValues.indexOf(selectedValue) === -1) {
+                                newParams.push(selectedValue);
+                            }
+                        });
+                        currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
+                        if (newParams.length > 0) {
+                            _module.$router.push({
+                                name: _module.$route.name,
+                                query: currentParams
+                            });
+                        }
+                    }
 
                 }
             },
@@ -189,17 +189,17 @@
     }
 
     .filterValueName {
-      flex:1;
-      max-width:348px;
-      text-overflow:ellipsis;
-      overflow:hidden;
-      white-space: nowrap;
+        flex: 1;
+        max-width: 348px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     .filterValueCount {
-      background: #2196F3;
-      color:white;
-      padding:0 7px;
+        background: #2196F3;
+        color: white;
+        padding: 0 7px;
     }
 
 </style>

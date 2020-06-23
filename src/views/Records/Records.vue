@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-main>
     <h1 class="d-none">
       Content
     </h1>
@@ -83,7 +83,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

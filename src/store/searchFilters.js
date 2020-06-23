@@ -10,6 +10,7 @@ let filtersStore = {
         namespaced: true,
         state: {
             filters: [],
+            filterButtons: [],
         },
         mutations: {
             setFilters(state, val) {
@@ -17,6 +18,34 @@ let filtersStore = {
                     let rawFilters = val['searchFairsharingRecords']['aggregations'];
                     state.filters = buildFilters(rawFilters);
                 }
+            },
+            setFilterButtons(state) {
+                state.filters.forEach(item => {
+                    if (item.type === 'Boolean') {
+                        //if it is a boolean object then it will go to the Buttons
+                        let ObjectModel = null;
+                        switch (item.filterName) {
+                            case 'isRecommended':
+                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
+                                    {title: 'RECOMMENDED', active: false, filterName: item.filterName, value: true}
+                                    , {title: 'NOT RECOMMENDED', active: false, filterName: item.filterName, value: false}];
+                                state.filterButtons.push(ObjectModel);
+                                break;
+                            case 'isMaintained':
+                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
+                                    {title: 'MAINTAINED', active: false, filterName: item.filterName, value: true}
+                                    , {title: 'NOT MAINTAINED', active: false, filterName: item.filterName, value: false}];
+                                state.filterButtons.push(ObjectModel);
+                                break;
+                            case 'isApproved':
+                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
+                                    {title: 'APPROVED', active: false, filterName: item.filterName, value: true}
+                                    , {title: 'NOT APPROVED', active: false, filterName: item.filterName, value: false}];
+                                state.filterButtons.push(ObjectModel);
+                                break;
+                        }
+                    }
+                });
             },
             reformatState(state) {
                 let output = [];
@@ -63,7 +92,7 @@ let filtersStore = {
         actions: {
             async fetchFilters(_, client) {
                 await this.commit('searchFilters/setFilters', await client.executeQuery(query));
-                // this.commit('searchFilters/reformatState');
+                this.commit('searchFilters/setFilterButtons');
             },
             callAction:
                 function () {
@@ -74,11 +103,42 @@ let filtersStore = {
         getters: {
             getFilters: (state) => {
                 let output = [];
-                state.filters.forEach(function(filter){
-                   output.push({
-                       filterName: filter.filterName,
-                       filterLabel: filter.filterLabel
-                   })
+                state.filters.forEach(function (filter) {
+                    output.push({
+                        filterName: filter.filterName,
+                        filterLabel: filter.filterLabel
+                    })
+                });
+                return output
+            },
+            getButtonFilters: (state) => {
+                let output = [];
+                state.filters.forEach(item => {
+                    if (item.type === 'Boolean') {
+                        //if it is a boolean object then it will go to the Buttons
+                        let ObjectModel = null;
+                        switch (item.filterName) {
+                            case 'isRecommended':
+                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
+                                    {title: 'RECOMMENDED', active: false, filterName: item.filterName, value: true}
+                                    , {title: 'NOT RECOMMENDED', active: false, filterName: item.filterName, value: false}];
+                                output.push(ObjectModel);
+                                break;
+                            case 'isMaintained':
+                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
+                                    {title: 'MAINTAINED', active: false, filterName: item.filterName, value: true}
+                                    , {title: 'NOT MAINTAINED', active: false, filterName: item.filterName, value: false}];
+                                output.push(ObjectModel);
+                                break;
+                            case 'isApproved':
+                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
+                                    {title: 'APPROVED', active: false, filterName: item.filterName, value: true}
+                                    , {title: 'NOT APPROVED', active: false, filterName: item.filterName, value: false}];
+                                output.push(ObjectModel);
+                                break;
+                        }
+
+                    }
                 });
                 return output
             }
@@ -108,8 +168,7 @@ let buildFilters = function (val) {
                     bucket,
                     "key_as_string")) {
                     filterValues.push(bucket["key_as_string"]);
-                }
-                else {
+                } else {
                     filterValues.push(bucket['key']);
                 }
             });

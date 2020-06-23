@@ -1,6 +1,7 @@
 import Client from "@/components/Client/RESTClient.js";
 const sinon = require("sinon");
 
+
 describe("RESTClient", () =>{
 
     let client;
@@ -56,8 +57,8 @@ describe("RESTClient", () =>{
     it("can process network errors", async () => {
         stub.restore();
         let resp = await client.executeQuery({
-            url: "testURL"
+            url: "http://google.com"
         });
-        expect(resp.data.error.message).toBe("Network Error")
+        expect(resp.data.error.message).toBe("Network Error");
     })
 });

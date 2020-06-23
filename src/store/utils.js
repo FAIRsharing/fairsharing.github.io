@@ -26,7 +26,9 @@ export const initUserDataState = function(){
             tokenValidity: null
         },
         metadata: {},
-        records: {}
+        records: {},
+        is_curator: false,
+        role: null
     }
 };
 

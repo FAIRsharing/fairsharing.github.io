@@ -1,20 +1,12 @@
 {
-  "queryName": "domains",
-  "queryParam": {
-    "page": 1,
-    "perPage": 3
-  },
+  "queryName": "searchDomains",
+  "queryParam": null,
   "fields": [
-    "currentPage",
-    "perPage",
-    "totalCount",
-    "totalPages",
-    "firstPage",
-    {
-      "name": "records",
-      "fields": [
-        "label"
-      ]
-    }
+    "definitions",
+    "expandedNames",
+    "id",
+    "label",
+    "synonyms",
+    "inFairsharing"
   ]
 }

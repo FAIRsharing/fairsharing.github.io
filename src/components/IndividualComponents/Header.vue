@@ -1,9 +1,8 @@
 <template>
   <v-app-bar
-    app
-    hide-on-scroll
     short
     height="100"
+    max-height="100"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.smAndDown"

@@ -47,7 +47,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
 				</ul>
 			</li>
 			
@@ -100,27 +100,97 @@ import filterMapping from "../components/Records/FiltersLabelMapping.js"
  * @type {Object}
  */
 let filtersStore = {
-    namespaced: true,
-    state: {
-        filters: [],
-    },
-    mutations: {
-        setFilters(state, val){
-            if (state.filters.length === 0){
-                let rawFilters = val['searchFairsharingRecords']['aggregations'];
-                state.filters = buildFilters(rawFilters);
+        namespaced: true,
+        state: {
+            filters: [],
+        },
+        mutations: {
+            setFilters(state, val) {
+                if (state.filters.length === 0) {
+                    let rawFilters = val['searchFairsharingRecords']['aggregations'];
+                    state.filters = buildFilters(rawFilters);
+                }
+            },
+            reformatState(state) {
+                let output = [];
+                state.filters.forEach(item => {
+                    output.push({
+                        filter: item.filterLabel,
+                        filterName: item.filterName,
+                        filterSelected: {},
+                        searchTerm: null,
+                        subFilters: []
+                    })
+                });
+
+
+                for (let i = 0; i &lt; output.length; i++) {
+                    if (state.filters[i].values) {
+                        // if (state.filters[i].values.length > 10) {
+                        for (let k = 0; k &lt; state.filters[i].values.length; k++) {
+                            let ObjectModel = {
+                                subFilter: state.filters[i].values[k],
+                                active: false,
+                                inventory: 12
+                            };
+                            output[i].subFilters.push(ObjectModel);
+                        }
+                        // }
+                        /*
+                                                else if (state.filters[i].buckets) {
+                                                    console.log('bb', state.filters[i].buckets);
+                                                    for (let k = 0; k &lt; state.filters[i].buckets.length; k++) {
+                                                        ObjectModel = {
+                                                            subFilter: state.filters[i].buckets[k].key,
+                                                            active: false,
+                                                            inventory: state.filters[i].buckets[k].doc_count
+                                                        };
+                                                        output[i].subFilters.push(ObjectModel);
+                                                    }
+                                                } else {
+                                                    console.log('aaa', state.filters[i].buckets)
+                                                }
+                        */
+
+                    }
+                }
+                state.filters = output
+            },
+            refain(state) {
+                // console.log('called');
+                // let output = []
+                // output = state.filters
+                state.filters.forEach(item => {
+                    if (item.filter === 'isRecommended') {
+                        // console.log(item.subFilters)
+                        let temp = item.subFilters;
+                        temp[0].active = !temp[0].active;
+                        // console.log(temp)
+                        item.subFilters = function () {
+                            return temp;
+                        }
+                    }
+                    // state.filters[1]=item;
+                })
+                // console.log('whole', state.filters[1])
+                // state.filters = output
             }
-        }
-    },
-    actions: {
-        async fetchFilters(_, client){
-            this.commit('searchFilters/setFilters', await client.executeQuery(query));
-        }
-    },
-    modules: {
-    },
-    getters: {}
-};
+        },
+        actions: {
+            async fetchFilters(_, client) {
+                await this.commit('searchFilters/setFilters', await client.executeQuery(query));
+                this.commit('searchFilters/reformatState');
+            },
+            callAction:
+                function () {
+                    this.commit('searchFilters/refain');
+                }
+        },
+        modules: {}
+        ,
+        getters: {}
+    }
+;
 export default filtersStore;
 
 /**
@@ -128,32 +198,34 @@ export default filtersStore;
  * @param {Array} val - an array of raw filters coming from the api as data['searchFairsharingRecords']['aggregations']
  * @returns {Array} filters - ready to use filters for the advanced search components
  */
-let buildFilters = function(val){
+
+let buildFilters = function (val) {
     // Need to return filter values, filter label and filter name
     let filters = [];
 
     // start with simple input
-    filterMapping.input.forEach(function(filter){
-        filter.values = null;
-        filters.push(filter)
-    });
+    /*
+        filterMapping.input.forEach(function (filter) {
+            filter.values = null;
+            filters.push(filter)
+        });
+    */
 
     let filtersLabels = filterMapping['autocomplete'];
     // now deal with incoming data
-    Object.keys(val).forEach(function(key){
-        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)){
+    Object.keys(val).forEach(function (key) {
+        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
             let filter = filtersLabels[key];
             filter.values = null;
             let filterValues = [];
 
             let buckets = val[key]['buckets'];
-            buckets.forEach(function(bucket){
+            buckets.forEach(function (bucket) {
                 if (Object.prototype.hasOwnProperty.call(
                     bucket,
-                    "key_as_string")){
+                    "key_as_string")) {
                     filterValues.push(bucket["key_as_string"]);
-                }
-                else {
+                } else {
                     filterValues.push(bucket['key']);
                 }
             });
@@ -208,7 +280,7 @@ let buildFilters = function(val){
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Tue Jun 9th 2020
+		on Mon Jun 22nd 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

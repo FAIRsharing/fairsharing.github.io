@@ -31,8 +31,8 @@ import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
 import LoginFailure from "@/views/Users/Login/LoginFailure";
 import Editor from "@/views/CreateRecord/Editor";
 /*new routes*/
-import Records from "@/views/Records-new/Records";
-import Record from "@/views/Records-new/Record";
+import Records from "@/views/Records/Records";
+import Record from "@/views/Records/Record";
 
 Vue.use(VueRouter);
 
@@ -79,14 +79,6 @@ let routes = [
         name: "New_content",
         path: "/new",
         component: New,
-        beforeEnter(to, from, next) {
-            isLoggedIn(to, from, next, store);
-        }
-    },
-    {
-        name: "Edit Content",
-        path: "/:id/edit",
-        component: Editor,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
         }
@@ -191,6 +183,14 @@ let routes = [
     Careful, this has to be the very last base path  !!!!
     This component"s page title is handled in the component itself as it needs the :id param
     */
+    {
+        name: "Edit Content",
+        path: "/:id/edit",
+        component: Editor,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+        }
+    },
     {
         name: "Record",
         path: "/:id",

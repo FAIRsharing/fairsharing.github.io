@@ -59,10 +59,13 @@ let recordsStore = {
     },
     modules: {},
     getters: {
-        getFacet: (state) => (size, facetName) => {
-            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
-            currentFacet['values'] = currentFacet['buckets'].sort().slice(0, size);
-            return currentFacet;
+        getFacet: (state) => (facetName) => {
+            if (state.facets.length > 0) {
+                let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
+                currentFacet['values'] = currentFacet['buckets'];
+                return currentFacet;
+            }
+            return [];
         }
     }
 };

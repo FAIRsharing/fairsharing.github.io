@@ -50,9 +50,9 @@
       accordion
     >
       <ExpansionPanel
-        v-for="object in calc"
-        :key="object.filter"
-        :object="object"
+        v-for="filter in calc"
+        :key="filter.filterLabel"
+        :filter="filter"
       />
     </v-expansion-panels>
   </div>
@@ -69,95 +69,8 @@
             return {
                 searchTerm: '',
                 selectedSubFilter: null,
-                items: [
-                    {text: 'Real-Time', icon: 'mdi-clock'},
-                    {text: 'Audience', icon: 'mdi-account'},
-                    {text: 'Conversions', icon: 'mdi-flag'},
-                    {text: 'Real-Time', icon: 'mdi-clock'},
-                    {text: 'Audience', icon: 'mdi-account'},
-                ],
                 panel: [],
                 filterSelected: {},
-                filters3: [],
-                filters2: [
-                    {
-                        filter: 'GRANTS',
-                        filterSelected: {},
-                        searchTerm: null,
-                        updateKey: 0,
-                        subFilters: [{
-                            subFilter: 'subfilter-1',
-                            icon: 'mdi-clock',
-                            active: false,
-                            inventory: 15
-                        }, {subFilter: 'subfilter-2', icon: 'mdi-flag', active: false, inventory: 10}]
-                    },
-                    {
-                        filter: 'LICENSES',
-                        filterSelected: {},
-                        searchTerm: null,
-                        updateKey: 0,
-                        subFilters: [{
-                            subFilter: 'subfilter-1',
-                            icon: 'mdi-account',
-                            active: false,
-                            inventory: 100
-                        }, {
-                            subFilter: 'subfilter-2',
-                            icon: 'mdi-flag',
-                            active: false,
-                            inventory: 10
-                        }, {
-                            subFilter: 'subfilter-3',
-                            icon: 'mdi-flag',
-                            active: false,
-                            inventory: 95
-                        }, {
-                            subFilter: 'biology',
-                            icon: 'mdi-account',
-                            active: false,
-                            inventory: 11
-                        },
-                            {
-                                subFilter: 'refactor-4',
-                                icon: 'mdi-account',
-                                active: false,
-                                inventory: 76
-                            },
-                            {
-                                subFilter: 'research-3',
-                                icon: 'mdi-flag',
-                                active: false,
-                                inventory: 54
-                            }, {
-                                subFilter: 'arad-4',
-                                icon: 'mdi-account',
-                                active: false,
-                                inventory: 13
-                            },
-                            {
-                                subFilter: 'test',
-                                icon: 'mdi-account',
-                                active: false,
-                                inventory: 2
-                            }]
-                    },
-                    {
-                        filter: 'ORGANISATION(s)',
-                        filterSelected: {},
-                        updateKey: 0,
-                        subFilters: [{
-                            subFilter: 'organ',
-                            icon: 'mdi-clock',
-                            active: false,
-                            inventory: 14
-                        }, {subFilter: 'organ airplane', icon: 'mdi-flag', active: false, inventory: 10},
-                            {subFilter: 'organ car', icon: 'mdi-flag', active: false, inventory: 7},
-                            {subFilter: 'organ flat', icon: 'mdi-flag', active: false, inventory: 45},
-                            {subFilter: 'organ aparat', icon: 'mdi-flag', active: false, inventory: 89},
-                        ]
-                    },
-                ],
                 buttonsGroup: [
                     [{title: 'ALL', active: true}, {title: 'RECOMMENDED', active: false}, {
                         title: 'NOT RECOMMENDED',
@@ -172,83 +85,51 @@
                         active: false
                     }],
                 ],
-                buttonsRecordsState: [{
-                    title: 'ALL', active: true, toolTip: 'Show All Records',
-                }, {title: 'U', active: false, toolTip: 'Show Uncertain Records'}, {
-                    title: 'D',
-                    active: false,
-                    toolTip: 'Show Deprecated Records'
-                }, {
-                    title: 'I',
-                    active: false,
-                    toolTip: 'Show In Development Records'
-                }, {
-                    title: 'R',
-                    active: false,
-                    toolTip: 'Show Ready Records'
-                }],
-              i:0
+                buttonsRecordsState: [
+                  {
+                      title: 'ALL',
+                      active: true,
+                      toolTip: 'Show All Records',
+                  },
+                  {
+                      title: 'U',
+                      active: false,
+                      toolTip: 'Show Uncertain Records'
+                  },
+                  {
+                      title: 'D',
+                      active: false,
+                      toolTip: 'Show Deprecated Records'
+                  },
+                  {
+                      title: 'I',
+                      active: false,
+                      toolTip: 'Show In Development Records'
+                  },
+                  {
+                      title: 'R',
+                      active: false,
+                      toolTip: 'Show Ready Records'
+                  }]
             }
         },
         computed: {
             ...mapState("searchFilters", ["filters"]),
             calc() {
-                // let output = [];
-              // let _module=this;
-/*
-              _module.i++;
-              if(_module.i===1){
-*/
-                this.all();
+                this.setPanel();
                 this.createIndexForFilters();
-              // }
-                /*
-                                this.filters.forEach(item => {
-                                    // if(item.filterName!=='id')
-                                    output.push(
-                                        {
-                                            filter: item.filterLabel,
-                                            filterSelected: {},
-                                            searchTerm: null,
-                                            subFilters: [{
-                                                subFilter: 'subfilter-1',
-                                                active: false,
-                                                inventory: 12
-                                            },
-                                                {
-                                                    subFilter: 'subfilter-2',
-                                                    active: false,
-                                                    inventory: 9
-                                                },
-                                            ]
-                                        }
-                                    )
-                                })
-                */
                 return this.filters;
             }
-        },
-        created() {
-            //open first expandable panel.
-            // this.panel['0'] = 0;
-            /*
-                        this.all();
-                        this.createIndexForFilters();
-            */
         },
         methods: {
             selectFilter: function (index, selectedButtonsArray) {
                 selectedButtonsArray.map(item => item.active = false);
                 selectedButtonsArray[index].active = true;
             },
-            // Create an array the length of our items
-            // with all values as true
-            all() {
-                // console.log([...Object(this.filters.subFilters).values()])
+            setPanel() {
                 this.panel = [...Array(this.filters.length).keys()].map((k, i) => i)
             },
-            // Reset the panel
-            none() {
+            resetPanel() {
                 this.panel = []
             },
             createIndexForFilters: function () {

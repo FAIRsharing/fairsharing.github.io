@@ -1,0 +1,205 @@
+<template>
+  <v-expansion-panel v-if="filter.filterName">
+    <v-expansion-panel-header> {{ filter.filterLabel }} </v-expansion-panel-header>
+    <v-expansion-panel-content class="pl-5 pr-5">
+      <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
+        <v-autocomplete
+          v-model="selectedValues"
+          :items="getValues"
+          solo
+          dense
+          clearable
+          multiple
+          prepend-inner-icon="mdi-magnify"
+          :placeholder="`Search through ${filter.filterLabel}`"
+          item-text="key"
+          item-value="key"
+          @click:clear="reset(filter)"
+        >
+          <template v-slot:selection="data">
+            <v-chip class="blue white--text">
+              {{ cleanString(data.item.key) }}
+            </v-chip>
+          </template>
+          <template v-slot:item="data">
+            <div class="filterValueName">
+              {{ cleanString(data.item.key) }}
+            </div>
+            <div class="filterValueCount">
+              {{ data.item['doc_count'] }}
+            </div>
+          </template>
+        </v-autocomplete>
+        <v-btn
+          color="primary"
+          class="ml-lg-2"
+          style="height: 38px"
+          @click="applyFilters(filter)"
+        >
+          Apply
+        </v-btn>
+      </div>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
+</template>
+
+<script>
+    import {mapActions, mapGetters} from 'vuex'
+
+    export default {
+        name: "ExpansionPanel",
+        props: {
+            filter: {default: null, type: Object}},
+        data: () => {
+            return {
+                selectedValues: null
+            }
+        },
+        computed: {
+          ...mapGetters('records', ['getFilter']),
+          getValues: function(){
+            let output = this.getFilter(this.filter.filterName);
+            if (output.values && typeof output.values === 'object') {
+              return output.values;
+            }
+            return []
+          }
+        },
+        methods: {
+            ...mapActions('searchFilters', ["callAction"]),
+            /**
+             * Apply the filters by building the new query parameters using the form data.
+             */
+            applyFilters: function () {
+                let _module = this;
+                let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
+                if (Object.keys(currentParams).indexOf(_module.filter.filterName) === -1){
+                  if (_module.selectedValues !== null && _module.selectedValues.length > 0) {
+                    currentParams[_module.filter.filterName] = _module.selectedValues.join(',');
+                    _module.$router.push({
+                      name: _module.$route.name,
+                      query: currentParams
+                    });
+                  }
+                }
+                else {
+                  if (_module.selectedValues === null || _module.selectedValues.length === 0){
+                    delete currentParams[_module.filter.filterName];
+                    _module.$router.push({
+                      name: _module.$route.name,
+                      query: currentParams
+                    });
+                  }
+                  else {
+                    let newParams = [];
+                    let existingValues = currentParams[_module.filter.filterName].split(",");
+                    _module.selectedValues.forEach(function(selectedValue){
+                      if (existingValues.indexOf(selectedValue) === -1) {
+                        newParams.push(selectedValue);
+                      }
+                    });
+                    currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
+                    if (newParams.length > 0) {
+                      _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentParams
+                      });
+                    }
+                  }
+
+                }
+            },
+            /**
+             * Reset the form/filters/parameters to default (go so /search?page=1)
+             */
+            reset: function (selectedItem) {
+                this.$nextTick(() => {
+                    selectedItem.filterSelected = {};
+                })
+            },
+            /**
+             * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
+             * @param {String} string - the raw string to clean
+             * @returns {String} cleanedString - the string stripped of underscores.
+             */
+            cleanString: function (string) {
+                let cleanedString = string;
+                if (string.includes('_')) {
+                    cleanedString = string.replace(/_/g, " ");
+                }
+                return cleanedString;
+            }
+        }
+    }
+</script>
+
+<style scoped lang="scss">
+    .badge {
+        width: 35px;
+        height: 25px;
+        background: white;
+        border: #27aae1 solid 1px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        position: relative;
+
+        #inventory {
+            font-size: small;
+            position: absolute;
+            top: 6%;
+            left: 20%;
+        }
+    }
+
+    .badge-active {
+        width: 35px;
+        height: 24px;
+        background: #27aae1;
+        border: #27aae1 solid 1px;
+        border-radius: 5px 5px 5px 5px;
+        -moz-border-radius: 5px 5px 5px 5px;
+        -webkit-border-radius: 5px 5px 5px 5px;
+        position: relative;
+
+        #inventory {
+            color: white;
+            font-size: small;
+            position: absolute;
+            top: 6%;
+            left: 20%;
+        }
+    }
+
+    .triangle-left {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 12px solid transparent;
+        border-right: 15px solid #27aae1;
+        border-bottom: 11px solid transparent;
+        left: -30%;
+    }
+
+    .fixed-scrollable-height {
+        max-height: 300px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    }
+
+    .filterValueName {
+      flex:1;
+      max-width:348px;
+      text-overflow:ellipsis;
+      overflow:hidden;
+      white-space: nowrap;
+    }
+
+    .filterValueCount {
+      background: #2196F3;
+      color:white;
+      padding:0 7px;
+    }
+
+</style>

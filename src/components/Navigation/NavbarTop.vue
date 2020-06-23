@@ -52,7 +52,7 @@
         color="#253442"
       >
         <v-list-item>
-          <Login />
+          <Login :redirect="false" />
         </v-list-item>
       </v-list>
     </v-menu>

@@ -59,7 +59,7 @@
                         toolTip: 'Uncertain',
                         backColor: 'background: linear-gradient(#2d2b2b, #757575)'
                     },
-                    inDevelopment: {
+                    in_development: {
                         title: 'I',
                         toolTip: 'In Development',
                         backColor: 'background: linear-gradient(#35baef, #02364b)'

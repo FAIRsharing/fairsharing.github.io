@@ -18,52 +18,54 @@ let recordsStore = {
         loading: false,
     },
     mutations: {
-        setRecords(state, data){
+        setRecords(state, data) {
             state.records = data['records'];
             state.facets = buildFacets(data["aggregations"]);
             state.totalPages = data["totalPages"];
             state.hits = data["totalCount"];
         },
-        resetRecords(state){
+        resetRecords(state) {
             recordsQuery.queryParam = null;
             state.records = [];
         },
-        resetFacets(state){
+        resetFacets(state) {
             state.facets = [];
         },
-        resetHits(state){
+        resetHits(state) {
             state.hits = null;
         },
-        setLoadingStatus(state, status){
+        setLoadingStatus(state, status) {
             state.loading = status;
         }
     },
     actions: {
-        async fetchRecords(state, params){
+        async fetchRecords(state, params) {
             this.commit("records/setLoadingStatus", true);
             this.commit("records/resetRecords");
             this.commit("records/resetHits");
-            if (Object.keys(params).length > 0){
+            if (Object.keys(params).length > 0) {
                 recordsQuery.queryParam = params;
             }
             const data = await client.executeQuery(recordsQuery);
             this.commit('records/setRecords', data["searchFairsharingRecords"]);
             this.commit("records/setLoadingStatus", false);
         },
-        resetFacets(){
+        resetFacets() {
             this.commit("records/resetFacets")
         },
-        resetRecords(){
+        resetRecords() {
             this.commit("records/resetRecords");
         }
     },
-    modules: {
-    },
+    modules: {},
     getters: {
-        getFacet: (state) => (size, facetName) => {
-            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
-            currentFacet['values'] = currentFacet['buckets'].sort().slice(0, size);
-            return currentFacet;
+        getFilter: (state) => (facetName) => {
+            if (state.facets.length > 0) {
+                let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
+                currentFacet['values'] = currentFacet['buckets'];
+                return currentFacet;
+            }
+            return [];
         }
     }
 };
@@ -77,15 +79,15 @@ export default recordsStore;
  * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
  * @returns {Array} output - the array of ready to use facets containing a name, a label and values
  */
-const buildFacets = function(rawFacets){
+const buildFacets = function (rawFacets) {
     let output = [];
     const mapper = filterMapping["autocomplete"];
 
-    Object.keys(rawFacets).forEach(function(facetName){
-        if (Object.prototype.hasOwnProperty.call(mapper, facetName)){
+    Object.keys(rawFacets).forEach(function (facetName) {
+        if (Object.prototype.hasOwnProperty.call(mapper, facetName)) {
             let localFacet = mapper[facetName];
-            rawFacets[facetName]["buckets"].forEach(function(bucket){
-                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")){
+            rawFacets[facetName]["buckets"].forEach(function (bucket) {
+                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
                     bucket["key"] = bucket["key_as_string"];
                 }
             });

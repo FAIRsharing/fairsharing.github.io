@@ -110,37 +110,6 @@ let filtersStore = {
                     })
                 });
                 return output
-            },
-            getButtonFilters: (state) => {
-                let output = [];
-                state.filters.forEach(item => {
-                    if (item.type === 'Boolean') {
-                        //if it is a boolean object then it will go to the Buttons
-                        let ObjectModel = null;
-                        switch (item.filterName) {
-                            case 'isRecommended':
-                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
-                                    {title: 'RECOMMENDED', active: false, filterName: item.filterName, value: true}
-                                    , {title: 'NOT RECOMMENDED', active: false, filterName: item.filterName, value: false}];
-                                output.push(ObjectModel);
-                                break;
-                            case 'isMaintained':
-                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
-                                    {title: 'MAINTAINED', active: false, filterName: item.filterName, value: true}
-                                    , {title: 'NOT MAINTAINED', active: false, filterName: item.filterName, value: false}];
-                                output.push(ObjectModel);
-                                break;
-                            case 'isApproved':
-                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
-                                    {title: 'APPROVED', active: false, filterName: item.filterName, value: true}
-                                    , {title: 'NOT APPROVED', active: false, filterName: item.filterName, value: false}];
-                                output.push(ObjectModel);
-                                break;
-                        }
-
-                    }
-                });
-                return output
             }
         }
     }

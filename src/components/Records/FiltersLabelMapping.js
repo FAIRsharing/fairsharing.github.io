@@ -45,13 +45,12 @@ let labelsMapping = {
             filterLabel: "Registry",
             type: "String"
         },
-/*
         is_recommended: {
             filterName: "isRecommended",
             filterLabel: "Recommended",
             type: "Boolean"
         },
-*/
+
         record_type: {
             filterName: "recordType",
             filterLabel: "Type of records",
@@ -62,22 +61,30 @@ let labelsMapping = {
             filterLabel: "Journals(s)",
             type: "String"
         },
-/*
         status: {
             filterName: "status",
             filterLabel: "Output status",
             type: "String"
-        }
-*/
-    },
-/*
-    input: [
-        {
-            filterName: "id",
-            filterLabel: "Record IDs"
         },
-    ]
-*/
+        is_approved: {
+            filterName: "isApproved",
+            filterLabel: "Approved",
+            type: "Boolean"
+        },
+        is_maintained: {
+            filterName: "isMaintained",
+            filterLabel: "Maintained",
+            type: "Boolean"
+        },
+    },
+    /*
+        input: [
+            {
+                filterName: "id",
+                filterLabel: "Record IDs"
+            },
+        ]
+    */
 };
 
 export default labelsMapping;

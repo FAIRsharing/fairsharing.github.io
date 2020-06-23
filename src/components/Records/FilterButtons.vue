@@ -2,18 +2,18 @@
   <div>
     <!-- 3 row buttons     -->
     <div
-      v-for="filterHolderIndex in 3"
-      :key="filterHolderIndex"
+      v-for="index in filterButtons.length"
+      :key="index"
       class="d-flex flex-row justify-start mb-1 mb-lg-2"
     >
       <v-btn
-        v-for="(item,index) in buttonsGroup[filterHolderIndex-1]"
-        :key="index"
+        v-for="(item,filter_index) in filterButtons[index-1]"
+        :key="filter_index"
         color="primary"
         class="mr-1 mr-lg-2"
-        :class="[index===0?'first-child':'flex-1',{'button-style-md-screens':mdScreens}]"
+        :class="[filter_index===0?'first-child':'flex-1',{'button-style-md-screens':mdScreens}]"
         :outlined="!item.active"
-        @click="selectFilter(index,buttonsGroup[filterHolderIndex-1])"
+        @click="selectFilter(filter_index,filterButtons[index-1],item)"
       >
         {{ item.title }}
       </v-btn>
@@ -31,7 +31,7 @@
             class="mr-1 mr-lg-2 "
             :class="[index===0?'first-child':'flex-1',{'buttons-md-style':mdScreens && index!==0}]"
             :outlined="!item.active"
-            @click="selectFilter(index,buttonsRecordsState)"
+            @click="selectFilter(index,buttonsRecordsState,item)"
             v-on="on"
           >
             {{ item.title }}
@@ -59,8 +59,10 @@
 </template>
 
 <script>
-    import { mapGetters } from "vuex"
+    import {mapGetters, mapState} from "vuex"
     import ExpansionPanel from "./ExpansionPanel";
+    import {has} from 'lodash'
+
     export default {
         name: "FilterButtons",
         components: {ExpansionPanel},
@@ -71,60 +73,65 @@
                 selectedSubFilter: null,
                 panel: [],
                 filterSelected: {},
-                buttonsGroup: [
-                    [{title: 'ALL', active: true}, {title: 'RECOMMENDED', active: false}, {
-                        title: 'NOT RECOMMENDED',
-                        active: false
-                    }],
-                    [{title: 'ALL', active: true}, {title: 'PUBLISHED', active: false}, {
-                        title: 'NOT PUBLISHED',
-                        active: false
-                    }],
-                    [{title: 'ALL', active: true}, {title: 'MAINTAINED', active: false}, {
-                        title: 'NOT MAINTAINED',
-                        active: false
-                    }],
-                ],
                 buttonsRecordsState: [
-                  {
-                      title: 'ALL',
-                      active: true,
-                      toolTip: 'Show All Records',
-                  },
-                  {
-                      title: 'U',
-                      active: false,
-                      toolTip: 'Show Uncertain Records'
-                  },
-                  {
-                      title: 'D',
-                      active: false,
-                      toolTip: 'Show Deprecated Records'
-                  },
-                  {
-                      title: 'I',
-                      active: false,
-                      toolTip: 'Show In Development Records'
-                  },
-                  {
-                      title: 'R',
-                      active: false,
-                      toolTip: 'Show Ready Records'
-                  }]
+                    {
+                        title: 'ALL',
+                        active: true,
+                        toolTip: 'Show All Records',
+                    },
+                    {
+                        title: 'U',
+                        active: false,
+                        toolTip: 'Show Uncertain Records'
+                    },
+                    {
+                        title: 'D',
+                        active: false,
+                        toolTip: 'Show Deprecated Records'
+                    },
+                    {
+                        title: 'I',
+                        active: false,
+                        toolTip: 'Show In Development Records'
+                    },
+                    {
+                        title: 'R',
+                        active: false,
+                        toolTip: 'Show Ready Records'
+                    }],
+                formData: {},
             }
         },
         computed: {
             ...mapGetters("searchFilters", ["getFilters"]),
+            ...mapState("searchFilters", ["filterButtons"]),
             calc() {
                 this.setPanel();
                 this.createIndexForFilters();
                 return this.getFilters;
-            }
+            },
         },
         methods: {
-            selectFilter: function (index, selectedButtonsArray) {
+            /**
+             * Apply the filters by building the new query parameters using the form data.
+             */
+            applyFilters: function (selectedItem) {
+                if (has(selectedItem, 'value')) {
+                    let _module = this;
+                    let previousQuery = _module.formData[selectedItem.filterName]
+                    _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.value.trim());
+                    if (this.formData[selectedItem.filterName] !== previousQuery) {
+                        this.$router.push({
+                            name: _module.$route.name,
+                            query: this.formData
+                        });
+                    }
+                }
+            },
+            selectFilter: function (filter_index, selectedButtonsArray, item) {
                 selectedButtonsArray.map(item => item.active = false);
-                selectedButtonsArray[index].active = true;
+                selectedButtonsArray[filter_index].active = true;
+                this.applyFilters(item);
             },
             setPanel() {
                 this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i)
@@ -145,17 +152,21 @@
     .button-style-md-screens {
         font-size: 9px !important;
     }
+
     .first-child {
         font-size: 11px;
         width: 16.5%;
     }
+
     .flex-1 {
         font-size: 11px;
         flex: 1;
     }
+
     .buttons-md-style {
         min-width: 32px !important;
     }
+
     #status-style {
         color: white;
         position: absolute;

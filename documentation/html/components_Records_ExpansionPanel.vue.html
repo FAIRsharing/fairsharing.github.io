@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: store/records.js</title>
+	<title>FAIRsharing.org Source: components/Records/ExpansionPanel.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,110 +86,216 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: store/records.js</h1>
+		<h1 class="page-title">Source: components/Records/ExpansionPanel.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import Client from "../components/GraphClient/GraphClient.js"
-import recordsQuery from "../components/GraphClient/queries/getRecords.json"
-import filterMapping from "../components/Records/FiltersLabelMapping.js"
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-expansion-panel v-if="filter.filterName">
+    &lt;v-expansion-panel-header> {{ filter.filterLabel }} &lt;/v-expansion-panel-header>
+    &lt;v-expansion-panel-content class="pl-5 pr-5">
+      &lt;div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
+        &lt;v-autocomplete
+          v-model="selectedValues"
+          :items="getValues"
+          solo
+          dense
+          clearable
+          multiple
+          prepend-inner-icon="mdi-magnify"
+          :placeholder="`Search through ${filter.filterLabel}`"
+          item-text="key"
+          item-value="key"
+          @click:clear="reset(filter)"
+        >
+          &lt;template v-slot:selection="data">
+            &lt;v-chip class="blue white--text">
+              {{ cleanString(data.item.key) }}
+            &lt;/v-chip>
+          &lt;/template>
+          &lt;template v-slot:item="data">
+            &lt;div class="filterValueName">
+              {{ cleanString(data.item.key) }}
+            &lt;/div>
+            &lt;div class="filterValueCount">
+              {{ data.item['doc_count'] }}
+            &lt;/div>
+          &lt;/template>
+        &lt;/v-autocomplete>
+        &lt;v-btn
+          color="primary"
+          class="ml-lg-2"
+          style="height: 38px"
+          @click="applyFilters(filter)"
+        >
+          Apply
+        &lt;/v-btn>
+      &lt;/div>
+    &lt;/v-expansion-panel-content>
+  &lt;/v-expansion-panel>
+&lt;/template>
 
-let client = new Client();
+&lt;script>
+    import {mapActions, mapGetters} from 'vuex'
 
-/**
- * The records store handles the requests related to records (searchFairsharingRecords and fairsharingRecord).
- * @type {Object}
- */
-let recordsStore = {
-    namespaced: true,
-    state: {
-        records: [],
-        facets: [],
-        totalPages: null,
-        hits: null,
-        loading: false,
-    },
-    mutations: {
-        setRecords(state, data) {
-            state.records = data['records'];
-            state.facets = buildFacets(data["aggregations"]);
-            state.totalPages = data["totalPages"];
-            state.hits = data["totalCount"];
-        },
-        resetRecords(state) {
-            recordsQuery.queryParam = null;
-            state.records = [];
-        },
-        resetFacets(state) {
-            state.facets = [];
-        },
-        resetHits(state) {
-            state.hits = null;
-        },
-        setLoadingStatus(state, status) {
-            state.loading = status;
-        }
-    },
-    actions: {
-        async fetchRecords(state, params) {
-            this.commit("records/setLoadingStatus", true);
-            this.commit("records/resetRecords");
-            this.commit("records/resetHits");
-            if (Object.keys(params).length > 0) {
-                recordsQuery.queryParam = params;
+    export default {
+        name: "ExpansionPanel",
+        props: {
+            filter: {default: null, type: Object}},
+        data: () => {
+            return {
+                selectedValues: null
             }
-            const data = await client.executeQuery(recordsQuery);
-            this.commit('records/setRecords', data["searchFairsharingRecords"]);
-            this.commit("records/setLoadingStatus", false);
         },
-        resetFacets() {
-            this.commit("records/resetFacets")
-        },
-        resetRecords() {
-            this.commit("records/resetRecords");
-        }
-    },
-    modules: {},
-    getters: {
-        getFilter: (state) => (facetName) => {
-            if (state.facets.length > 0) {
-                let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
-                currentFacet['values'] = currentFacet['buckets'];
-                return currentFacet;
+        computed: {
+          ...mapGetters('records', ['getFilter']),
+          getValues: function(){
+            let output = this.getFilter(this.filter.filterName);
+            if (output.values &amp;&amp; typeof output.values === 'object') {
+              return output.values;
             }
-            return [];
+            return []
+          }
+        },
+        methods: {
+            ...mapActions('searchFilters', ["callAction"]),
+            /**
+             * Apply the filters by building the new query parameters using the form data.
+             */
+            applyFilters: function () {
+                let _module = this;
+                let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
+                if (Object.keys(currentParams).indexOf(_module.filter.filterName) === -1){
+                  if (_module.selectedValues !== null &amp;&amp; _module.selectedValues.length > 0) {
+                    currentParams[_module.filter.filterName] = _module.selectedValues.join(',');
+                    _module.$router.push({
+                      name: _module.$route.name,
+                      query: currentParams
+                    });
+                  }
+                }
+                else {
+                  if (_module.selectedValues === null || _module.selectedValues.length === 0){
+                    delete currentParams[_module.filter.filterName];
+                    _module.$router.push({
+                      name: _module.$route.name,
+                      query: currentParams
+                    });
+                  }
+                  else {
+                    let newParams = [];
+                    let existingValues = currentParams[_module.filter.filterName].split(",");
+                    _module.selectedValues.forEach(function(selectedValue){
+                      if (existingValues.indexOf(selectedValue) === -1) {
+                        newParams.push(selectedValue);
+                      }
+                    });
+                    currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
+                    if (newParams.length > 0) {
+                      _module.$router.push({
+                        name: _module.$route.name,
+                        query: currentParams
+                      });
+                    }
+                  }
+
+                }
+            },
+            /**
+             * Reset the form/filters/parameters to default (go so /search?page=1)
+             */
+            reset: function (selectedItem) {
+                this.$nextTick(() => {
+                    selectedItem.filterSelected = {};
+                })
+            },
+            /**
+             * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
+             * @param {String} string - the raw string to clean
+             * @returns {String} cleanedString - the string stripped of underscores.
+             */
+            cleanString: function (string) {
+                let cleanedString = string;
+                if (string.includes('_')) {
+                    cleanedString = string.replace(/_/g, " ");
+                }
+                return cleanedString;
+            }
         }
     }
-};
+&lt;/script>
 
+&lt;style scoped lang="scss">
+    .badge {
+        width: 35px;
+        height: 25px;
+        background: white;
+        border: #27aae1 solid 1px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        position: relative;
 
-export default recordsStore;
-
-/**
- * Given an object containing the raw facets coming from the client and a mapping object , build the ready to use facets
- * for usage by the Vue components.
- * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
- * @returns {Array} output - the array of ready to use facets containing a name, a label and values
- */
-const buildFacets = function (rawFacets) {
-    let output = [];
-    const mapper = filterMapping["autocomplete"];
-
-    Object.keys(rawFacets).forEach(function (facetName) {
-        if (Object.prototype.hasOwnProperty.call(mapper, facetName)) {
-            let localFacet = mapper[facetName];
-            rawFacets[facetName]["buckets"].forEach(function (bucket) {
-                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
-                    bucket["key"] = bucket["key_as_string"];
-                }
-            });
-            localFacet['buckets'] = rawFacets[facetName]['buckets'];
-            output.push(localFacet);
+        #inventory {
+            font-size: small;
+            position: absolute;
+            top: 6%;
+            left: 20%;
         }
-    });
-    return output;
-};
+    }
+
+    .badge-active {
+        width: 35px;
+        height: 24px;
+        background: #27aae1;
+        border: #27aae1 solid 1px;
+        border-radius: 5px 5px 5px 5px;
+        -moz-border-radius: 5px 5px 5px 5px;
+        -webkit-border-radius: 5px 5px 5px 5px;
+        position: relative;
+
+        #inventory {
+            color: white;
+            font-size: small;
+            position: absolute;
+            top: 6%;
+            left: 20%;
+        }
+    }
+
+    .triangle-left {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 12px solid transparent;
+        border-right: 15px solid #27aae1;
+        border-bottom: 11px solid transparent;
+        left: -30%;
+    }
+
+    .fixed-scrollable-height {
+        max-height: 300px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    }
+
+    .filterValueName {
+      flex:1;
+      max-width:348px;
+      text-overflow:ellipsis;
+      overflow:hidden;
+      white-space: nowrap;
+    }
+
+    .filterValueCount {
+      background: #2196F3;
+      color:white;
+      padding:0 7px;
+    }
+
+&lt;/style>
 </pre>
     </article>
 </section>

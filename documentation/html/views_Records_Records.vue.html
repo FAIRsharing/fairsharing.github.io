@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -92,228 +92,327 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-container
-    id="SearchFAIRSharing"
-    fluid
-    class="pt-0"
-  >
-    &lt;!-- Title banner -->
-    &lt;v-row
-      style="height:250px"
-      align="center"
-      justify="center"
-      class="secondary"
+  &lt;v-content>
+    &lt;h1 class="d-none">
+      Content
+    &lt;/h1>
+    &lt;transition name="fade">
+      &lt;jump-top
+        v-if="showScrollToTopButton"
+        target-object="scroll-target"
+      />
+    &lt;/transition>
+    &lt;v-container
+      id="scroll-target"
+      fluid
+      class="overflow-y-auto overflow-x-hidden content-custom "
     >
-      &lt;v-col>
-        &lt;v-list class="secondary">
-          &lt;v-list-item two-line>
-            &lt;v-list-item-content>
-              &lt;v-list-item-title>
-                &lt;h1 class="text-center white--text">
-                  {{ getTitle }}
-                &lt;/h1>
-              &lt;/v-list-item-title>
-              &lt;v-list-item-subtitle>
-                &lt;div class="text-center body-1 white--text">
-                  {{ recordsSubTitles[getTitle] }}
-                &lt;/div>
-              &lt;/v-list-item-subtitle>
-            &lt;/v-list-item-content>
-          &lt;/v-list-item>
-        &lt;/v-list>
-      &lt;/v-col>
-    &lt;/v-row>
-
-    &lt;!-- MAIN -->
-    &lt;v-row>
-      &lt;!-- OUTPUT -->
-      &lt;v-col
-        v-if="!errors"
-        cols="12"
-      >
-        &lt;output-grid />
-      &lt;/v-col>
-
-      &lt;!-- ERROR HANDLING -->
-      &lt;div
-        v-else
-        class="col-9"
-      >
-        &lt;div class="error">
-          {{ errors }}
-        &lt;/div>
+      &lt;!-- Title banner -->
+      &lt;div>
+        &lt;section
+          id="banner"
+          class="secondary"
+        >
+          &lt;h1 class="text-center white--text">
+            {{ getTitle }}
+          &lt;/h1>
+          &lt;p class="text-center white--text">
+            {{ recordsSubTitles[getTitle] }}
+          &lt;/p>
+        &lt;/section>
       &lt;/div>
-    &lt;/v-row>
-  &lt;/v-container>
+
+      &lt;!-- Search Box -->
+      &lt;div class="d-flex flex-row align-center mt-1  mr-2 ml-2">
+        &lt;v-text-field
+          v-model="searchTerm"
+          solo
+          single-line
+          clearable
+          :placeholder="`Can't find what you'r looking for?! search through all data`"
+        />
+        &lt;v-btn
+          color="primary"
+          outlined
+          height="52px"
+          class="mt-1 ml-2"
+        >
+          &lt;v-icon>search&lt;/v-icon>
+          &lt;span>Search&lt;/span>
+        &lt;/v-btn>
+      &lt;/div>
+      &lt;!--advanced Search button  -->
+      &lt;div class="text-right">
+        &lt;v-btn
+          text
+          small
+          class="button-text-color"
+          to="/advanced-search"
+        >
+          Advanced
+        &lt;/v-btn>
+      &lt;/div>
+      &lt;!--  Content  -->
+      &lt;v-row
+        no-gutters
+      >
+        &lt;v-col
+          cols="12"
+          lg="4"
+          md="4"
+          xl="3"
+          class="d-none d-md-flex mt-2 ml-2"
+        >
+          &lt;LeftPanel
+            :class="[responsiveClassObject]"
+          />
+          &lt;!--                    &lt;div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">-->
+        &lt;/v-col>
+        &lt;v-col class="mt-2">
+          &lt;RightContentList
+            v-scroll:#scroll-target="onScroll"
+            class="pb-5 mr-0 mr-md-2"
+          />
+        &lt;/v-col>
+      &lt;/v-row>
+    &lt;/v-container>
+  &lt;/v-content>
 &lt;/template>
 
 &lt;script>
-  import {mapActions} from 'vuex'
-  import OutputGrid from '../../components/Records/SearchOutputGrid'
+    import JumpTop from "@/components/IndividualComponents/jumpToTop";
+    import LeftPanel from "@/components/Records/LeftPanel";
+    import RightContentList from "@/components/Records/RightContentList";
+    import {mapActions} from 'vuex'
 
-  /** This component gets the request, sends it to a service, the data from it and sends it to a child component OutputTable or OutputGrid (to be added)
-   * @vue-data {Object} [recordTypes = {Standards: "Standard", Databases: "Database", Policies: "Policy", Collections: "Collection"}] - a mapping of types of records used by fairsharingRegistry
-   * @vue-data {String} [Errors  = null] - a string message in case an error arises.
-   * @vue-data {String} [currentPanel = "AdvSearch"] - the current panel to display between currentPanel and Facets (to be removed)
-   * @vue-computed {String} currentPath - the path of the current page.
-   * @vue-computed {String} getTitle - return "Search" of the fairsharing Registry name.
-   * @vue-event {Promise} fetchRecords - Method to get the records based on the given parameters from the recordsStore
-   */
-  export default {
-    name: "Records",
-    components: {
-      OutputGrid
-    },
-    data() {
-      return {
-        recordTypes: {
-          Standards: "Standard",
-          Databases: "Database",
-          Policies: "Policy",
-          Collections: "Collection"
+    export default {
+        name: "Records",
+        components: {RightContentList, JumpTop, LeftPanel},
+        data: () => ({
+            searchTerm: '',
+            offsetTop: 0,
+            stickToLeft: false,
+            bodyOverflowActive: true,
+            hideOverflow: 'overflow-hidden',
+            showScrollToTopButton: false,
+            showHeader: true,
+            showDrawerLeft: false,
+            recordsSubTitles: {
+                Standards: "The standards in FAIRsharing are manually curated from a variety of sources, including BioPortal, " +
+                    "MIBBI and the Equator Network.",
+                Collections: "Collections group together one or more types of resource (standard, database or policy) by " +
+                    "domain, project or organisation. A Recommendation is a core-set of resources that are selected or " +
+                    "endorsed by data policies from journals, funders or other organizations.",
+                Databases: "A catalogue of databases, described according to the BioDBcore guidelines, along with the standards " +
+                    "used within them; partly compiled with the support of Oxford University Press (NAR Database Issue " +
+                    "and DATABASE Journal).",
+                Policies: "FAIRsharing policies: A catalogue of data preservation, management and sharing policies from " +
+                    "international funding agencies, regulators and journals.",
+                Search: "Search the FAIRsharing records using advanced filtering"
+            },
+            recordTypes: {
+                Standards: "Standard",
+                Databases: "Database",
+                Policies: "Policy",
+                Collections: "Collection"
+            },
+        }),
+        computed: {
+            getTitle: function () {
+                const flipRecordTypes = Object.entries(this.recordTypes).reduce((obj, [key, value]) => ({
+                    ...obj,
+                    [value]: key
+                }), {});
+                let title = "Search";
+                if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
+                    if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
+                        title = flipRecordTypes[this.$route.query.fairsharingRegistry];
+                    }
+                }
+                return title;
+            },
+            responsiveClassObject: function () {
+                return {
+                    'left-panel-fixed-lg': this.stickToLeft &amp;&amp; this.$vuetify.breakpoint.xlOnly,
+                    'left-panel-default-lg': !this.stickToLeft &amp;&amp; this.$vuetify.breakpoint.xlOnly,
+                    'left-panel-default': !this.stickToLeft &amp;&amp; !this.$vuetify.breakpoint.xlOnly,
+                    'left-panel-fixed': this.stickToLeft &amp;&amp; !this.$vuetify.breakpoint.xlOnly
+                }
+            },
+            currentPath: function () {
+                let title = this.$route.path.replace('/', '');
+                const client = this;
+                let queryParams = {};
+                Object.keys(this.$route.query).forEach(function (prop) {
+                    let queryVal = client.$route.query[prop];
+                    if (queryVal) {
+                        queryParams[prop] = decodeURI(queryVal);
+                    }
+                });
+                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
+                    title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+                } else {
+                    title = title.charAt(0).toUpperCase() + title.slice(1)
+                }
+                return [
+                    title,
+                    queryParams
+                ];
+            },
         },
-        recordsSubTitles: {
-          Standards: "The standards in FAIRsharing are manually curated from a variety of sources, including BioPortal, " +
-                  "MIBBI and the Equator Network.",
-          Collections: "Collections group together one or more types of resource (standard, database or policy) by " +
-                  "domain, project or organisation. A Recommendation is a core-set of resources that are selected or " +
-                  "endorsed by data policies from journals, funders or other organizations.",
-          Databases: "A catalogue of databases, described according to the BioDBcore guidelines, along with the standards " +
-                  "used within them; partly compiled with the support of Oxford University Press (NAR Database Issue " +
-                  "and DATABASE Journal).",
-          Policies: "FAIRsharing policies: A catalogue of data preservation, management and sharing policies from " +
-                  "international funding agencies, regulators and journals.",
-          Search: "Search the FAIRsharing records using advanced filtering"
-        },
-        errors: null,
-        currentPanel: "AdvSearch"
-      }
-    },
-    computed: {
-      currentPath: function () {
-        let title = this.$route.path.replace('/', '');
-        const client = this;
-        let queryParams = {};
-        Object.keys(this.$route.query).forEach(function (prop) {
-          let queryVal = client.$route.query[prop];
-          if (queryVal) {
-            queryParams[prop] = decodeURI(queryVal);
-          }
-        });
-        if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-          title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-        } else {
-          title = title.charAt(0).toUpperCase() + title.slice(1)
-        }
-        return [
-          title,
-          queryParams
-        ];
-      },
-      getTitle: function () {
-        const flipRecordTypes = Object.entries(this.recordTypes).reduce((obj, [key, value]) => ({
-          ...obj,
-          [value]: key
-        }), {});
-        let title = "Search";
-        if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
-          if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
-            title = flipRecordTypes[this.$route.query.fairsharingRegistry];
-          }
-        }
-        return title;
-      }
-    },
-    watch: {
-      currentPath: async function () {
-        await this.tryRedirect();
-        await this.getData();
-      }
-    },
-    mounted: function () {
-      this.$nextTick(async function () {
-        await this.tryRedirect();
-        await this.getData();
-      })
-    },
-    beforeDestroy: function () {
-      this.$store.dispatch("records/resetFacets").then(function () {
-      });
-      this.$store.dispatch("records/resetRecords").then(function () {
-      });
-    },
-    methods: {
-      /**
-       * Try to redirect to search of the page that is hit is /standards /databases
-       * /policies or /collections
-       * */
-      tryRedirect: async function () {
-        if (Object.keys(this.recordTypes).includes(this.$route.name)) {
-          let fairsharingRegistry = this.recordTypes[this.$route.name];
-          let query = this.$route.params;
-          if (query) {
-            query.fairsharingRegistry = fairsharingRegistry;
-            try {
-              this.$router.push({
-                name: "search",
-                query: query
-              });
-            } catch (e) {
-              //
+        watch: {
+            currentPath: async function () {
+                await this.tryRedirect();
+                await this.getData();
             }
-          }
-        }
-      },
-      /** This methods get the data from the client.
-       * @returns {Promise}
-       */
-      getData: async function () {
-        window.scrollTo(0, 0);
-        this.errors = null;
-        const _module = this;
-        try {
-          await _module.fetchRecords(this.getParameters());
-        } catch (e) {
-          this.errors = e.message;
-        }
-      },
-      /**
-       * Get the parameters that are allowed for this query
-       * @returns {Object} parameters - parameters and types allowed for this query
-       */
-      getParameters: function () {
-        return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
-      },
-      ...mapActions('records', ['fetchRecords']),
-      /**
-       * Method to change the current panel to be displayed
-       * @param {String} panelName - the name of the panel to display
-       */
-      setPanel: function (panelName) {
-        this.currentPanel = panelName;
-      }
-    },
-    /**
-     * Setting up the metaInfo of the page
-     * @returns {{title: String}}
-     * */
-    metaInfo() {
-      return {
-        title: 'FAIRsharing | ' + this.getTitle
-      }
-    },
-  }
+        },
+        mounted: function () {
+            this.$nextTick(async function () {
+                await this.tryRedirect();
+                await this.getData();
+            });
+        },
+        created() {
+            // change the overflow to have Records behavior scroll
+            this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+                bodyOverflowState: true,
+                drawerVisibilityState: false,
+                headerVisibilityState: true,
+            });
+
+        },
+        destroyed() {
+            // change the overflow to have normal behavior of main scroll and having header
+            this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+                bodyOverflowState: false,
+                drawerVisibilityState: false,
+                headerVisibilityState: true,
+            });
+        },
+        methods: {
+            onScroll: function (e) {
+                let _module = this;
+                _module.offsetTop = e.target.scrollTop;
+                if (_module.offsetTop > 125) {
+                    _module.stickToLeft = true;
+                    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+                        bodyOverflowState: true,
+                        headerVisibilityState: false,
+                    });
+                } else {
+                    _module.stickToLeft = false;
+                    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+                        bodyOverflowState: true,
+                        drawerVisibilityState: false,
+                        headerVisibilityState: true,
+                    });
+                }
+                _module.offsetTop > 500 ? _module.showScrollToTopButton = true : _module.showScrollToTopButton = false;
+            },
+            /**
+             * Try to redirect to search of the page that is hit is /standards /databases
+             * /policies or /collections
+             * */
+            tryRedirect: async function () {
+                if (Object.keys(this.recordTypes).includes(this.$route.name)) {
+                    let fairsharingRegistry = this.recordTypes[this.$route.name];
+                    let query = this.$route.params;
+                    if (query) {
+                        query.fairsharingRegistry = fairsharingRegistry;
+                        try {
+                            this.$router.push({
+                                name: "search",
+                                query: query
+                            });
+                        } catch (e) {
+                            //
+                        }
+                    }
+                }
+            },
+            /** This methods get the data from the client.
+             * @returns {Promise}
+             */
+            getData: async function () {
+                window.scrollTo(0, 0);
+                this.errors = null;
+                const _module = this;
+                try {
+                    await _module.fetchRecords(this.getParameters());
+                } catch (e) {
+                    this.errors = e.message;
+                }
+            },
+            /**
+             * Get the parameters that are allowed for this query
+             * @returns {Object} parameters - parameters and types allowed for this query
+             */
+            getParameters: function () {
+                return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
+            },
+            ...mapActions('records', ['fetchRecords']),
+            /**
+             * Method to change the current panel to be displayed
+             * @param {String} panelName - the name of the panel to display
+             */
+            setPanel: function (panelName) {
+                this.currentPanel = panelName;
+            }
+        },
+        /**
+         * Setting up the metaInfo of the page
+         * @returns {{title: String}}
+         * */
+        metaInfo() {
+            return {
+                title: 'FAIRsharing | ' + this.getTitle
+            }
+        },
+    }
 &lt;/script>
 
-&lt;style scoped>
-  .error {
-    background-color: indianred;
-    border: 1px solid red;
-    padding: 20px;
-    color: white;
-    text-align: left;
-    font-size: 18px;
-  }
+&lt;style scoped lang="scss">
+    .left-panel-fixed {
+        position: fixed;
+        top: 0;
+        width: 32vw;
+    }
+
+    .left-panel-default {
+        position: relative;
+        width: 32vw;
+        height: 100%;
+    }
+
+    .left-panel-fixed-lg {
+        position: fixed;
+        top: 0;
+        width: 24vw;
+    }
+
+    .left-panel-default-lg {
+        position: relative;
+        width: 24vw;
+        height: 100%;
+    }
+
+    .content-custom {
+        max-height: 100vh;
+        scroll-behavior: smooth;
+        padding: 0;
+    }
+
+    #banner {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 1em;
+    }
+
+    .v-input {
+        height: 42px;
+    }
+
 &lt;/style>
 </pre>
     </article>
@@ -360,7 +459,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Mon Jun 22nd 2020
+		on Tue Jun 23rd 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

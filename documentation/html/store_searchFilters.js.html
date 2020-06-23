@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -135,31 +135,11 @@ let filtersStore = {
                             };
                             output[i].subFilters.push(ObjectModel);
                         }
-                        // }
-                        /*
-                                                else if (state.filters[i].buckets) {
-                                                    console.log('bb', state.filters[i].buckets);
-                                                    for (let k = 0; k &lt; state.filters[i].buckets.length; k++) {
-                                                        ObjectModel = {
-                                                            subFilter: state.filters[i].buckets[k].key,
-                                                            active: false,
-                                                            inventory: state.filters[i].buckets[k].doc_count
-                                                        };
-                                                        output[i].subFilters.push(ObjectModel);
-                                                    }
-                                                } else {
-                                                    console.log('aaa', state.filters[i].buckets)
-                                                }
-                        */
-
                     }
                 }
                 state.filters = output
             },
             refain(state) {
-                // console.log('called');
-                // let output = []
-                // output = state.filters
                 state.filters.forEach(item => {
                     if (item.filter === 'isRecommended') {
                         // console.log(item.subFilters)
@@ -170,25 +150,32 @@ let filtersStore = {
                             return temp;
                         }
                     }
-                    // state.filters[1]=item;
                 })
-                // console.log('whole', state.filters[1])
-                // state.filters = output
             }
         },
         actions: {
             async fetchFilters(_, client) {
                 await this.commit('searchFilters/setFilters', await client.executeQuery(query));
-                this.commit('searchFilters/reformatState');
+                // this.commit('searchFilters/reformatState');
             },
             callAction:
                 function () {
                     this.commit('searchFilters/refain');
                 }
         },
-        modules: {}
-        ,
-        getters: {}
+        modules: {},
+        getters: {
+            getFilters: (state) => {
+                let output = [];
+                state.filters.forEach(function(filter){
+                   output.push({
+                       filterName: filter.filterName,
+                       filterLabel: filter.filterLabel
+                   })
+                });
+                return output
+            }
+        }
     }
 ;
 export default filtersStore;
@@ -200,19 +187,8 @@ export default filtersStore;
  */
 
 let buildFilters = function (val) {
-    // Need to return filter values, filter label and filter name
     let filters = [];
-
-    // start with simple input
-    /*
-        filterMapping.input.forEach(function (filter) {
-            filter.values = null;
-            filters.push(filter)
-        });
-    */
-
     let filtersLabels = filterMapping['autocomplete'];
-    // now deal with incoming data
     Object.keys(val).forEach(function (key) {
         if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
             let filter = filtersLabels[key];
@@ -225,7 +201,8 @@ let buildFilters = function (val) {
                     bucket,
                     "key_as_string")) {
                     filterValues.push(bucket["key_as_string"]);
-                } else {
+                }
+                else {
                     filterValues.push(bucket['key']);
                 }
             });
@@ -280,7 +257,7 @@ let buildFilters = function (val) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Mon Jun 22nd 2020
+		on Tue Jun 23rd 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

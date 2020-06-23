@@ -56,9 +56,9 @@
             }
         },
         computed: {
-          ...mapGetters('records', ['getFacet']),
+          ...mapGetters('records', ['getFilter']),
           getValues: function(){
-            let output = this.getFacet(this.filter.filterName);
+            let output = this.getFilter(this.filter.filterName);
             if (output.values && typeof output.values === 'object') {
               return output.values;
             }

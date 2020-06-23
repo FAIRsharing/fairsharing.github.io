@@ -71,7 +71,18 @@ let filtersStore = {
                 }
         },
         modules: {},
-        getters: {}
+        getters: {
+            getFilters: (state) => {
+                let output = [];
+                state.filters.forEach(function(filter){
+                   output.push({
+                       filterName: filter.filterName,
+                       filterLabel: filter.filterLabel
+                   })
+                });
+                return output
+            }
+        }
     }
 ;
 export default filtersStore;

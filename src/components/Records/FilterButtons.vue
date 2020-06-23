@@ -42,7 +42,7 @@
     </div>
     <!-- expansion Panels    -->
     <v-expansion-panels
-      v-if="filters.length>0"
+      v-if="getFilters.length>0"
       v-model="panel"
       multiple
       flat
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-    import {mapState} from "vuex"
+    import { mapGetters } from "vuex"
     import ExpansionPanel from "./ExpansionPanel";
     export default {
         name: "FilterButtons",
@@ -114,11 +114,11 @@
             }
         },
         computed: {
-            ...mapState("searchFilters", ["filters"]),
+            ...mapGetters("searchFilters", ["getFilters"]),
             calc() {
                 this.setPanel();
                 this.createIndexForFilters();
-                return this.filters;
+                return this.getFilters;
             }
         },
         methods: {
@@ -127,13 +127,13 @@
                 selectedButtonsArray[index].active = true;
             },
             setPanel() {
-                this.panel = [...Array(this.filters.length).keys()].map((k, i) => i)
+                this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i)
             },
             resetPanel() {
                 this.panel = []
             },
             createIndexForFilters: function () {
-                this.filters.forEach(item => {
+                this.getFilters.forEach(item => {
                     this.filterSelected[item.filter] = [];
                 });
             },

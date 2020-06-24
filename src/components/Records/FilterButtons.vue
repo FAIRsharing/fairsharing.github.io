@@ -119,13 +119,15 @@
                 if (has(selectedItem, 'value')) {
                     let _module = this;
                     let previousQuery = _module.formData[selectedItem.filterName]
-                    _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.value.trim());
+                    _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
                     if (this.formData[selectedItem.filterName] !== previousQuery) {
                         this.$router.push({
                             name: _module.$route.name,
                             query: this.formData
                         });
                     }
+                }else {
+                  console.log('must remove the coresponding filter chip')
                 }
             },
             selectFilter: function (filter_index, selectedButtonsArray, item) {

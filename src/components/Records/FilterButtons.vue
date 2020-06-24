@@ -110,14 +110,43 @@
                 this.createIndexForFilters();
                 return this.getFilters;
             },
+            currentPath() {
+                return this.$route.query;
+            }
+        },
+        watch: {
+            currentPath: async function () {
+                let _module = this;
+                Object.keys(_module.$route.query).forEach(function (prop) {
+                    console.log(prop);
+                    for(let i=0;i<_module.filterButtons.length;i++){
+                        _module.filterButtons[i].forEach(function (item)
+                        {
+                            if(item.filterName===prop){
+                                item.active = false;
+                            }
+                        });
+                    }
+                    // _module.filterButtons[0][2].active = true;
+                    // console.log(_module.filterButtons[0][2]);
+                });
+            }
         },
         methods: {
+            updateFilterButtons: function (filter_index, selectedButtonsArray, selectedItem) {
+                // console.log(filter_index)
+                // console.log(selectedButtonsArray)
+                console.log('a', selectedItem)
+                selectedButtonsArray.map(item => item.active = false);
+                selectedButtonsArray[filter_index].active = true;
+                console.log(selectedButtonsArray)
+            },
             /**
              * Apply the filters by building the new query parameters using the form data.
              */
-            applyFilters: function (selectedItem) {
+            applyFilters: function (filter_index, selectedItem) {
+                let _module = this;
                 if (has(selectedItem, 'value')) {
-                    let _module = this;
                     let previousQuery = _module.formData[selectedItem.filterName]
                     _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
                     if (this.formData[selectedItem.filterName] !== previousQuery) {
@@ -126,14 +155,20 @@
                             query: this.formData
                         });
                     }
-                }else {
-                  console.log('must remove the coresponding filter chip')
+                } else {
+                    if (has(_module.formData, selectedItem.filterName)) {
+                        delete _module.formData[selectedItem.filterName]
+                        this.$router.push({
+                            name: _module.$route.name,
+                            query: this.formData
+                        });
+                    }
                 }
             },
-            selectFilter: function (filter_index, selectedButtonsArray, item) {
+            selectFilter: function (filter_index, selectedButtonsArray, selectedItem) {
                 selectedButtonsArray.map(item => item.active = false);
                 selectedButtonsArray[filter_index].active = true;
-                this.applyFilters(item);
+                this.applyFilters(filter_index, selectedItem);
             },
             setPanel() {
                 this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i)

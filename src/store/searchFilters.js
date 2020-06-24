@@ -9,18 +9,20 @@ import filterMapping from "../components/Records/FiltersLabelMapping.js"
 let filtersStore = {
         namespaced: true,
         state: {
+            rawFilters:[],
             filters: [],
             filterButtons: [],
         },
         mutations: {
             setFilters(state, val) {
-                if (state.filters.length === 0) {
+                if (state.rawFilters.length === 0) {
                     let rawFilters = val['searchFairsharingRecords']['aggregations'];
-                    state.filters = buildFilters(rawFilters);
+                    state.rawFilters = buildFilters(rawFilters);
+                    state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName!=='status'));
                 }
             },
             setFilterButtons(state) {
-                state.filters.forEach(item => {
+                state.rawFilters.forEach(item => {
                     if (item.type === 'Boolean') {
                         //if it is a boolean object then it will go to the Buttons
                         let ObjectModel = null;

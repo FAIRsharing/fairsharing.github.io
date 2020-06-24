@@ -9,7 +9,7 @@ import filterMapping from "../components/Records/FiltersLabelMapping.js"
 let filtersStore = {
         namespaced: true,
         state: {
-            rawFilters:[],
+            rawFilters: [],
             filters: [],
             filterButtons: [],
         },
@@ -18,7 +18,7 @@ let filtersStore = {
                 if (state.rawFilters.length === 0) {
                     let rawFilters = val['searchFairsharingRecords']['aggregations'];
                     state.rawFilters = buildFilters(rawFilters);
-                    state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName!=='status'));
+                    state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName !== 'status'));
                 }
             },
             setFilterButtons(state) {
@@ -89,6 +89,11 @@ let filtersStore = {
                         }
                     }
                 })
+            },
+            resetFilterButtons(state, itemParentIndex) {
+                state.filterButtons[itemParentIndex].map((item) => {
+                    item.active = false;
+                });
             }
         },
         actions: {
@@ -99,7 +104,10 @@ let filtersStore = {
             callAction:
                 function () {
                     this.commit('searchFilters/refain');
-                }
+                },
+            resetFilterButtons: function (_, itemParentIndex) {
+                this.commit('searchFilters/resetFilterButtons', itemParentIndex)
+            }
         },
         modules: {},
         getters: {

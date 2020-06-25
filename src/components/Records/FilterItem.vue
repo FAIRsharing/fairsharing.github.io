@@ -1,13 +1,22 @@
 <template>
-  <v-btn
-    color="primary"
-    class="mr-1 mr-lg-2"
-    :outlined="!item.active"
-    :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens}]"
-    @click="selectFilter(item)"
+  <v-tooltip
+    bottom
+    :disabled="item.toolTip===undefined"
   >
-    {{ item.title }}
-  </v-btn>
+    <template v-slot:activator="{ on }">
+      <v-btn
+        color="primary"
+        class="mr-1 mr-lg-2"
+        :outlined="!item.active"
+        :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens}]"
+        @click="selectFilter(item)"
+        v-on="on"
+      >
+        {{ item.title }}
+      </v-btn>
+    </template>
+    <span>{{ item.toolTip }}</span>
+  </v-tooltip>
 </template>
 
 <script>

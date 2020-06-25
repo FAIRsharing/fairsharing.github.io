@@ -55,9 +55,10 @@
               text
               class="button-text-color"
               :color="item.active?'primary':null"
+              :disabled="Chips[item.title].length === 0"
               @click="changeActiveItem(index)"
             >
-              {{ item.title }}
+              {{ item.title }} ({{ Chips[item.title].length }})
             </v-btn>
           </section>
         </v-col>

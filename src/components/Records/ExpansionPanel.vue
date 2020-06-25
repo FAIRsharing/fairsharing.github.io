@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters} from 'vuex'
+    import { mapGetters} from 'vuex'
 
     export default {
         name: "ExpansionPanel",
@@ -68,7 +68,6 @@
             }
         },
         methods: {
-            ...mapActions('searchFilters', ["callAction"]),
             /**
              * Apply the filters by building the new query parameters using the form data.
              */

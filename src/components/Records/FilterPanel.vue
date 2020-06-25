@@ -1,28 +1,8 @@
 <template>
   <div>
-    <!-- 3 row buttons     -->
+    <!-- Filter Buttons     -->
     <FilterButtons/>
-    <!-- 1 row buttons for records status    -->
-    <div class="d-flex flex-row justify-start mb-1 mb-lg-2">
-      <v-tooltip
-        v-for="(item,index) in buttonsRecordsState"
-        :key="index"
-        bottom
-      >
-        <template v-slot:activator="{ on }">
-          <v-btn
-            color="primary"
-            class="mr-1 mr-lg-2 "
-            :outlined="!item.active"
-            v-on="on"
-            :class="[index===0?'first-child':'flex-1',{'buttons-md-style':$vuetify.breakpoint.mdAndDown && index!==0}]"
-          >
-            {{ item.title }}
-          </v-btn>
-        </template>
-        <span>{{ item.toolTip }}</span>
-      </v-tooltip>
-    </div>
+
     <!-- expansion Panels    -->
     <v-expansion-panels
       v-if="getFilters.length>0"

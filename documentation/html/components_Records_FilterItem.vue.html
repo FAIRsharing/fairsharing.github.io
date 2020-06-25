@@ -92,15 +92,24 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-btn
-    color="primary"
-    class="mr-1 mr-lg-2"
-    :outlined="!item.active"
-    :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens}]"
-    @click="selectFilter(item)"
+  &lt;v-tooltip
+    bottom
+    :disabled="item.toolTip===undefined"
   >
-    {{ item.title }}
-  &lt;/v-btn>
+    &lt;template v-slot:activator="{ on }">
+      &lt;v-btn
+        color="primary"
+        class="mr-1 mr-lg-2"
+        :outlined="!item.active"
+        :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens}]"
+        @click="selectFilter(item)"
+        v-on="on"
+      >
+        {{ item.title }}
+      &lt;/v-btn>
+    &lt;/template>
+    &lt;span>{{ item.toolTip }}&lt;/span>
+  &lt;/v-tooltip>
 &lt;/template>
 
 &lt;script>

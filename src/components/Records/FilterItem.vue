@@ -12,44 +12,47 @@
 
 <script>
     import {has} from "lodash";
-    import {mapActions} from 'vuex'
+    import {mapActions, mapState} from 'vuex'
+
     export default {
         name: "FilterItem",
         props: {
             item: {default: null, type: Object},
             isFirstItem: {default: false, type: Boolean},
             mdScreens: {default: null, type: Boolean},
-            itemParentIndex:{default:0,type:Number}
+            itemParentIndex: {default: 0, type: Number}
+        },
+        computed: {
+            ...mapState("searchFilters", ["formData"])
         },
         methods: {
             /**
              * Apply the filters by building the new query parameters using the form data.
              */
             applyFilters: function (selectedItem) {
-                let _module = this;
+                const _module = this;
                 if (has(selectedItem, 'value')) {
-                    let previousQuery = _module.formData[selectedItem.filterName]
                     _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
-                    if (this.formData[selectedItem.filterName] !== previousQuery) {
-                        this.$router.push({
-                            name: _module.$route.name,
-                            query: this.formData
-                        });
-                    }
+                    _module.previousFormData = _module.formData;
+                    _module.$router.push({
+                        name: _module.$route.name,
+                        query: _module.formData
+                    });
                 } else {
                     if (has(_module.formData, selectedItem.filterName)) {
                         delete _module.formData[selectedItem.filterName]
                         this.$router.push({
                             name: _module.$route.name,
-                            query: this.formData
+                            query: _module.formData
                         });
                     }
                 }
             },
             selectFilter: function (selectedItem) {
-                let _module=this;
+                let _module = this;
                 _module.resetFilterButtons(this.itemParentIndex);
                 selectedItem.active = true;
+                this.applyFilters(selectedItem);
             },
             ...mapActions("searchFilters", ["resetFilterButtons"])
         }

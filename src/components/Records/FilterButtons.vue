@@ -23,11 +23,6 @@
     export default {
         name: "FilterButtons",
         components: {FilterItem},
-        data() {
-            return {
-                formData: {}
-            }
-        },
         computed: {
             ...mapState("searchFilters", ["filterButtons"]),
         }

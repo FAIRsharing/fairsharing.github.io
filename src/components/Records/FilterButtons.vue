@@ -16,10 +16,6 @@
   </div>
 </template>
 
-
-
-
-
 <script>
     import {mapState} from "vuex";
     import FilterItem from "./FilterItem";

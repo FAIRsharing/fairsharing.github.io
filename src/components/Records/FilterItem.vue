@@ -23,7 +23,7 @@
             itemParentIndex: {default: 0, type: Number}
         },
         computed: {
-            ...mapState("searchFilters", ["formData"])
+            ...mapState("routeData", ["formData"])
         },
         methods: {
             /**

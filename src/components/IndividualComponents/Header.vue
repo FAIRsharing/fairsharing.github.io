@@ -18,12 +18,13 @@
     <nav>
       <ul
         v-if="!$vuetify.breakpoint.sm && !$vuetify.breakpoint.xs"
-        id="nav-md-lg-screens"
+        class="d-flex flex-row align-center flex-wrap"
       >
-        <li>
+        <li
+          v-for="(item, itemIndex) in links"
+          :key="'navBarTopMenuItem_' + itemIndex"
+        >
           <v-btn
-            v-for="(item, itemIndex) in links"
-            :key="'navBarTopMenuItem_' + itemIndex"
             :small="$vuetify.breakpoint.mdAndDown"
             :x-large="$vuetify.breakpoint.xlOnly"
             class="mr-1 mt-sm-1"
@@ -33,6 +34,38 @@
             <span class="white--text">{{ item.label }}</span>
           </v-btn>
         </li>
+        <!-- LOGIN -->
+        <v-menu
+          v-if="!user().isLoggedIn"
+          offset-y
+          left
+          fixed
+          transition="slide-y-transition"
+          :close-on-content-click="false"
+          class="mt-5"
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn
+              :small="$vuetify.breakpoint.mdAndDown"
+              :x-large="$vuetify.breakpoint.xlOnly"
+              color="teal darken-2 white--text"
+              class="mr-1 mt-sm-1"
+              dark
+              v-on="on"
+            >
+              Login
+            </v-btn>
+          </template>
+          <v-list
+            width="400px"
+            dark
+            color="#253442"
+          >
+            <v-list-item>
+              <Login :redirect="false" />
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </ul>
     </nav>
   </v-app-bar>
@@ -40,9 +73,15 @@
 
 <script>
     import {mapState} from 'vuex'
+    import Login from "@/views/Users/Login/Login";
 
     export default {
         name: "Header",
+        components: {Login},
+        computed: {
+            ...mapState('uiController', ["UIGeneralStatus"]),
+            ...mapState('users', ["user"])
+        },
         data() {
             return {
                 drawerLeft: false,
@@ -94,10 +133,8 @@
                 });
             }
         },
-        computed: {
-            ...mapState('uiController', ["UIGeneralStatus"]),
-        }
     }
+
 </script>
 
 <style scoped lang="scss">

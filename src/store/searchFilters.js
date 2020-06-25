@@ -12,7 +12,6 @@ let filtersStore = {
             rawFilters: [],
             filters: [],
             filterButtons: [],
-            formData: {},
         },
         mutations: {
             setFilters(state, val) {

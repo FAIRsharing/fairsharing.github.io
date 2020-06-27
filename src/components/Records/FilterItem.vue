@@ -8,7 +8,7 @@
         color="primary"
         class="mr-1 mr-lg-2"
         :outlined="!item.active"
-        :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens}]"
+        :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens,'buttons-md-style':multipleItems && !isFirstItem}]"
         @click="selectFilter(item)"
         v-on="on"
       >
@@ -29,7 +29,8 @@
             item: {default: null, type: Object},
             isFirstItem: {default: false, type: Boolean},
             mdScreens: {default: null, type: Boolean},
-            itemParentIndex: {default: 0, type: Number}
+            itemParentIndex: {default: 0, type: Number},
+            multipleItems: {default: false, type: Boolean},
         },
         computed: {
             ...mapState("routeData", ["formData"])
@@ -81,6 +82,10 @@
     .flex-1 {
         font-size: 11px;
         flex: 1;
+    }
+
+    .buttons-md-style {
+      min-width: 32px !important;
     }
 
 </style>

@@ -10,7 +10,9 @@
         :key="item_index"
         :item="item"
         :is-first-item="item_index===0"
-        :itemParentIndex="index-1"
+        :item-parent-index="index-1"
+        :md-screens="$vuetify.breakpoint.mdAndDown"
+        :multiple-items="filterButtons[index-1].length>3"
       />
     </div>
   </div>

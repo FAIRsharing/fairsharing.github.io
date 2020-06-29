@@ -30,7 +30,7 @@ describe("Header.vue", function () {
         mocks: {$store, $router}
     });
 
-    it("can update the uiController store's UIGeneralStatus state", async () => {
+    it("can update the uiController store's UIGeneralStatus state", () => {
         const expectedData = {
             headerVisibilityState: true,
             drawerVisibilityState: true,

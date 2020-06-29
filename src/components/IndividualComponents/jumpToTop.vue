@@ -23,7 +23,7 @@
         data: () => {
             return {
                 scrolledCorrectly: false,
-                TestEnvironment:false
+                myDiv:null
             }
         },
         methods: {
@@ -31,10 +31,9 @@
                 if (isTestEnvironment) {
                     this.scrolledCorrectly = true;
                 } else {
-                    if (this.TestEnvironment) return;
-                    this.scrolledCorrectly = true;
-                    let myDiv = document.getElementById(this.targetObject);
-                    myDiv.scrollTo(0, 0)
+                  this.scrolledCorrectly = true;
+                  this.myDiv = document.getElementById(this.targetObject);
+                  this.myDiv.scrollTo(0, 0);
                 }
             },
         }

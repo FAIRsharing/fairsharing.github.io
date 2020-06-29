@@ -22,7 +22,8 @@
     export default {
         components: {Header},
         data: () => ({
-            hideOverflow: 'overflow-hidden'
+            hideOverflow: 'overflow-hidden',
+            root:null
         }),
         computed: {
             ...mapState('uiController', ["UIGeneralStatus"]),
@@ -30,25 +31,16 @@
         watch: {
             UIGeneralStatus: {
                 handler(UIGeneralStatus) {
+                  // console.log(UIGeneralStatus)
                     this.toggleOverFlow(UIGeneralStatus.bodyOverflowState);
                 },
                 deep: true
             },
         },
-        created() {
-            /*
-                        this.$vuetify.theme.dark = true;
-                        console.log( this.$vuetify.theme);
-                         console.log( this.$vuetify.icons.values);
-                         console.log( this.$vuetify);
-                        console.log( this.$vuetify.breakpoint);
-                        console.log( this.$vuetify.breakpoint.width + ' '+this.$vuetify.breakpoint.height);
-            */
-        },
         methods: {
             toggleOverFlow: function (status) {
-                let root = document.getElementsByTagName('html')[0]; // '0' to assign the first (and only `HTML` tag)
-                status ? root.setAttribute('class', this.hideOverflow) : root.removeAttribute('class');
+                this.root = document.getElementsByTagName('html')[0]; // '0' to assign the first (and only `HTML` tag)
+                status ? this.root.setAttribute('class', this.hideOverflow) : this.root.removeAttribute('class');
             },
         },
     }

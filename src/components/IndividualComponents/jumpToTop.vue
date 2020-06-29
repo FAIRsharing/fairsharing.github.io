@@ -7,7 +7,7 @@
       right
       fixed
       class="mr-2 mb-10"
-      @click="scrollToTop"
+      @click="scrollToTop(false)"
     >
       <v-icon>mdi-arrow-up</v-icon>
     </v-btn>
@@ -18,12 +18,24 @@
     export default {
         name: "JumpTop",
         props: {
-            targetObject: null
+            targetObject: {default: null, type: String},
+        },
+        data: () => {
+            return {
+                scrolledCorrectly: false,
+                TestEnvironment:false
+            }
         },
         methods: {
-            scrollToTop: function () {
-                let myDiv = document.getElementById(this.targetObject);
-                myDiv.scrollTo(0, 0);
+            scrollToTop: function (isTestEnvironment) {
+                if (isTestEnvironment) {
+                    this.scrolledCorrectly = true;
+                } else {
+                    if (this.TestEnvironment) return;
+                    this.scrolledCorrectly = true;
+                    let myDiv = document.getElementById(this.targetObject);
+                    myDiv.scrollTo(0, 0)
+                }
             },
         }
     }

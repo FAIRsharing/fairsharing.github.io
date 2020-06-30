@@ -621,7 +621,7 @@
                     &lt;/v-card-title>
                     &lt;v-data-table
                       :headers="headers"
-                      :items="flattenAssociatedRecordsArray"
+                      :items="flattenAssociatedRecordsArray()"
                       :search="search"
                     />
                   &lt;/v-card>
@@ -650,13 +650,13 @@
     import RecordStatus from "@/components/IndividualComponents/RecordStatus";
     import Client from '@/components/GraphClient/GraphClient.js'
     import {mapActions, mapState} from 'vuex'
+    import {concat} from 'lodash'
 
     export default {
         name: "Record",
         components: {RecordStatus, Footer, Ribbon, CountryFlag},
         filters: {
             capitalize: function (value) {
-                if (value.length)
                     return value.charAt(0).toUpperCase() + value.slice(1)
             },
         },
@@ -675,30 +675,6 @@
             }
         },
         computed: {
-            // flatten the associatedRecords and AssociatedRecordsReverse into one array
-            flattenAssociatedRecordsArray: function () {
-                let flatten_recordAssociations = [];
-                let _module = this;
-                _module.currentRecord['fairsharingRecord'].recordAssociations.forEach(item => {
-                    let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
-                    object.id = item.linkedRecord.id;
-                    object.registry = item.linkedRecord.registry;
-                    object.name = item.linkedRecord.name;
-                    object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                    object.subject = _module.currentRecord['fairsharingRecord'].name;
-                    flatten_recordAssociations.push(object);
-                });
-                _module.currentRecord['fairsharingRecord'].reverseRecordAssociations.forEach(item => {
-                    let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
-                    object.id = item.fairsharingRecord.id;
-                    object.registry = item.fairsharingRecord.registry;
-                    object.name = item.fairsharingRecord.name;
-                    object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                    object.subject = _module.currentRecord['fairsharingRecord'].name;
-                    flatten_recordAssociations.push(object);
-                });
-                return flatten_recordAssociations;
-            },
             currentRoute: function () {
                 return this.$route.params['id']
             },
@@ -717,7 +693,36 @@
             })
         },
         methods: {
-            /** Method to get the page title
+          // flatten the associatedRecords and AssociatedRecordsReverse into one array
+          flattenAssociatedRecordsArray: function () {
+            let flatten_recordAssociations = [];
+            let _module = this;
+
+            let joinedArrays = concat(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations);
+
+            joinedArrays.forEach(item => {
+              let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
+              if (item.linkedRecord) {
+                object.id = item.linkedRecord.id;
+                object.registry = item.linkedRecord.registry;
+                object.name = item.linkedRecord.name;
+                object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
+                object.subject = _module.currentRecord['fairsharingRecord'].name;
+                flatten_recordAssociations.push(object);
+              } else {
+                let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
+                object.id = item.fairsharingRecord.id;
+                object.registry = item.fairsharingRecord.registry;
+                object.name = item.fairsharingRecord.name;
+                object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
+                object.subject = _module.currentRecord['fairsharingRecord'].name;
+                flatten_recordAssociations.push(object);
+              }
+            })
+             return flatten_recordAssociations;
+          },
+
+          /** Method to get the page title
              *  @returns {String} - the title of the current page
              */
             getTitle: function () {

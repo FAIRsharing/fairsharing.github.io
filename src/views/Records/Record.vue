@@ -12,7 +12,10 @@
         class="pr-3"
       >
         <v-spacer />
-        <v-btn class="success" :href="'#/' + currentRoute + '/edit'">
+        <v-btn
+          class="success"
+          :href="'#/' + currentRoute + '/edit'"
+        >
           EDIT
         </v-btn>
       </v-row>
@@ -101,7 +104,7 @@
                   <div class="d-flex">
                     <b class="mr-2">Type:</b>
                     <p>
-                      {{ currentRecord['fairsharingRecord'].type | capitalize | cleanString }}
+                      {{ cleanString(currentRecord['fairsharingRecord'].type) | capitalize }}
                     </p>
                   </div>
                   <!--Year of Creation-->
@@ -560,13 +563,8 @@
         components: {RecordStatus, Footer, Ribbon, CountryFlag},
         filters: {
             capitalize: function (value) {
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            },
-            cleanString: function (string) {
-                if (typeof string === "string") {
-                    return string.replace(/_/g, " ");
-                }
-                return string;
+                if (value.length)
+                    return value.charAt(0).toUpperCase() + value.slice(1)
             },
         },
         data: () => {
@@ -606,7 +604,6 @@
                     object.subject = _module.currentRecord['fairsharingRecord'].name;
                     flatten_recordAssociations.push(object);
                 });
-
                 return flatten_recordAssociations;
             },
             currentRoute: function () {

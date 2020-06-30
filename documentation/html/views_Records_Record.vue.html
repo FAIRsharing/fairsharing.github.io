@@ -184,9 +184,9 @@
                         &lt;h3 class="mr-1">
                           doi:
                         &lt;/h3>
-                        &lt;router-link :to="currentRecord['fairsharingRecord'].doi">
+                        &lt;a :href="currentRecord['fairsharingRecord'].doi">
                           {{ currentRecord['fairsharingRecord'].doi }}
-                        &lt;/router-link>
+                        &lt;/a>
                       &lt;/div>
                     &lt;/div>
                   &lt;/v-col>
@@ -197,7 +197,7 @@
                   &lt;div class="d-flex">
                     &lt;b class="mr-2">Type:&lt;/b>
                     &lt;p>
-                      {{ cleanString(currentRecord['fairsharingRecord'].type) | capitalize }}
+                      {{ capitalize(cleanString(currentRecord['fairsharingRecord'].type)) }}
                     &lt;/p>
                   &lt;/div>
                   &lt;!--Year of Creation-->
@@ -210,12 +210,12 @@
                   &lt;!--Registry-->
                   &lt;div class="d-flex">
                     &lt;b class="mr-2">Registry:&lt;/b>
-                    &lt;p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}&lt;/p>
+                    &lt;p>{{ capitalize(currentRecord['fairsharingRecord'].registry) }}&lt;/p>
                   &lt;/div>
                   &lt;!--Description-->
                   &lt;div class="d-flex align-center">
                     &lt;b class="mr-2">Description:&lt;/b>
-                    &lt;p>{{ currentRecord['fairsharingRecord'].description | capitalize }}&lt;/p>
+                    &lt;p>{{ capitalize(currentRecord['fairsharingRecord'].description) }}&lt;/p>
                   &lt;/div>
                   &lt;!--HomePage-->
                   &lt;div class="d-flex">
@@ -499,9 +499,9 @@
                       mdi-account-circle
                     &lt;/v-icon>
                     &lt;b class="mr-2">User Name:&lt;/b>
-                    &lt;router-link :to="maintainer.username+'/'+maintainer.id">
+                    &lt;a :href="maintainer.username+'/'+maintainer.id">
                       {{ maintainer.username+'/'+maintainer.id }}
-                    &lt;/router-link>
+                    &lt;/a>
                   &lt;/div>
                 &lt;/v-card>
               &lt;/v-card>
@@ -621,7 +621,7 @@
                     &lt;/v-card-title>
                     &lt;v-data-table
                       :headers="headers"
-                      :items="flattenAssociatedRecordsArray()"
+                      :items="flatAscociatedRecords"
                       :search="search"
                     />
                   &lt;/v-card>
@@ -650,16 +650,11 @@
     import RecordStatus from "@/components/IndividualComponents/RecordStatus";
     import Client from '@/components/GraphClient/GraphClient.js'
     import {mapActions, mapState} from 'vuex'
-    import {concat} from 'lodash'
+    import {concat, has} from 'lodash'
 
     export default {
         name: "Record",
         components: {RecordStatus, Footer, Ribbon, CountryFlag},
-        filters: {
-            capitalize: function (value) {
-                    return value.charAt(0).toUpperCase() + value.slice(1)
-            },
-        },
         data: () => {
             return {
                 error: null,
@@ -672,6 +667,7 @@
                     {text: 'Subject', value: 'subject'},
                 ],
                 showScrollToTopButton: false,
+                flatAscociatedRecords: []
             }
         },
         computed: {
@@ -687,42 +683,52 @@
             }
         },
         mounted: function () {
+            let _module = this;
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
+               try {
+                _module.flattenAssociatedRecordsArray(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
+               }catch (e) {
+                 console.log(e)
+               }
             })
         },
         methods: {
-          // flatten the associatedRecords and AssociatedRecordsReverse into one array
-          flattenAssociatedRecordsArray: function () {
-            let flatten_recordAssociations = [];
-            let _module = this;
+            capitalize: function (value) {
+                if (!value) return ''
+                value = value.toString()
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            },
+            // flatten the associatedRecords and AssociatedRecordsReverse into one array
+            flattenAssociatedRecordsArray: function (FirstArray, SecondArray) {
+                let _module = this;
 
-            let joinedArrays = concat(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations);
+                let joinedArrays = concat(FirstArray, SecondArray);
 
-            joinedArrays.forEach(item => {
-              let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
-              if (item.linkedRecord) {
-                object.id = item.linkedRecord.id;
-                object.registry = item.linkedRecord.registry;
-                object.name = item.linkedRecord.name;
-                object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                object.subject = _module.currentRecord['fairsharingRecord'].name;
-                flatten_recordAssociations.push(object);
-              } else {
-                let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
-                object.id = item.fairsharingRecord.id;
-                object.registry = item.fairsharingRecord.registry;
-                object.name = item.fairsharingRecord.name;
-                object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                object.subject = _module.currentRecord['fairsharingRecord'].name;
-                flatten_recordAssociations.push(object);
-              }
-            })
-             return flatten_recordAssociations;
-          },
+                joinedArrays.forEach(item => {
+                    let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
+                    if (has(item, 'linkedRecord')) {
+                        object.id = item.linkedRecord.id;
+                        object.registry = item.linkedRecord.registry;
+                        object.name = item.linkedRecord.name;
+                        object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
+                        // object.subject = _module.currentRecord['fairsharingRecord'].name;
+                    }
+                    else if (has(item, 'fairsharingRecord')) {
+                      object = {registry: null, name: null, recordAssocLabel: null, subject: null}
+                      object.id = item.fairsharingRecord.id;
+                      object.registry = item.fairsharingRecord.registry;
+                      object.name = item.fairsharingRecord.name;
+                      object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
+                      // object.subject = _module.currentRecord['fairsharingRecord'].name;
+                    }
+                  _module.flatAscociatedRecords.push(object);
 
-          /** Method to get the page title
+                });
+            },
+
+            /** Method to get the page title
              *  @returns {String} - the title of the current page
              */
             getTitle: function () {

@@ -28,6 +28,7 @@ const $store = new Vuex.Store({
 
 describe("FilterItem.vue", function () {
     let wrapper;
+    let anotherWrapper;
 
     wrapper = shallowMount(FilterItem, {
         localVue,
@@ -43,9 +44,9 @@ describe("FilterItem.vue", function () {
     });
 
     it("can check selectFilter method", () => {
-        const selectedItem ={active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true};
+        let selectedItem = {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true};
 
-            $store.state.searchFilters.filterButtons =
+        $store.state.searchFilters.filterButtons =
             [
                 [
                     {active: true, filterName: 'isMaintained', title: 'All'},
@@ -59,7 +60,6 @@ describe("FilterItem.vue", function () {
                 ]
             ];
 
-
         const expectedData =
             [
                 {active: false, filterName: 'isMaintained', title: 'All'},
@@ -68,7 +68,27 @@ describe("FilterItem.vue", function () {
             ]
 
         wrapper.vm.selectFilter(selectedItem);
-
         expect($store.state.searchFilters.filterButtons[wrapper.vm.itemParentIndex]).toStrictEqual(expectedData);
+
+//-------------
+
+        anotherWrapper = shallowMount(FilterItem, {
+            localVue,
+            vuetify,
+            propsData: {
+                item: {active: true, filterName: 'isMaintained', title: 'All'},
+                isFirstItem: false,
+                mdScreens: false,
+                itemParentIndex: 0,
+                multipleItems: false,
+            },
+            mocks: {$store, $router, $route}
+        });
+        selectedItem = {active: true, filterName: 'isMaintained', title: 'All'};
+        anotherWrapper.vm.selectFilter(selectedItem);
+
+        $store.state.routeData.formData = {}
+        anotherWrapper.vm.selectFilter(selectedItem);
+
     });
 });

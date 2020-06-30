@@ -60,11 +60,11 @@
             },
             selectFilter: function (selectedItem) {
                 let _module = this;
-                _module.resetFilterButtons(this.itemParentIndex);
-                selectedItem.active = true;
+                _module.resetFilterButtons(_module.itemParentIndex);
+                _module.activateFilterButtonsItem({'activeItem':selectedItem,'itemParentIndex': _module.itemParentIndex});
                 this.applyFilters(selectedItem);
             },
-            ...mapActions("searchFilters", ["resetFilterButtons"])
+            ...mapActions("searchFilters", ["resetFilterButtons","activateFilterButtonsItem"])
         }
     }
 </script>

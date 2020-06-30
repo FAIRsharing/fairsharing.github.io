@@ -23,13 +23,13 @@
         data: () => {
             return {
                 scrolledCorrectly: false,
-                myDiv:null
+                myDiv: null
             }
         },
         methods: {
             scrollToTop: function (isTestEnvironment) {
                 if (isTestEnvironment) {
-                    this.scrolledCorrectly = true;
+                  this.scrolledCorrectly = false;
                 } else {
                   this.scrolledCorrectly = true;
                   this.myDiv = document.getElementById(this.targetObject);

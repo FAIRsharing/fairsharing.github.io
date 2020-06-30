@@ -84,10 +84,9 @@
         },
         watch: {
             currentPath: async function () {
-                let _module = this;
-                console.log(_module.$route.query)
+                // let _module = this;
                 // _module.$route.query.forEach(prop=>{console.log('b',prop)});
-                Object.keys(_module.$route.query).forEach(function (prop) {console.log(prop);});
+                // Object.keys(_module.$route.query).forEach(function (prop) {console.log(prop);});
             }
         },
         methods: {

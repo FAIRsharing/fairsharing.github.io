@@ -21,9 +21,8 @@ describe("jumpToTop.vue", function () {
     it("can scroll to top", () => {
 
         wrapper.vm.scrollToTop(true);
+        expect(wrapper.vm.scrolledCorrectly).toBe(false);
 
-        wrapper.vm.scrollToTop(true);
-        expect(wrapper.vm.scrolledCorrectly).toBe(true);
         wrapper.vm.scrollToTop(false);
         expect(wrapper.vm.scrolledCorrectly).toBe(true);
 

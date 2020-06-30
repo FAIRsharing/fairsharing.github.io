@@ -1,6 +1,6 @@
 import query from "../components/GraphClient/queries/getFilters.json"
 import filterMapping from "../components/Records/FiltersLabelMapping.js"
-
+import {isEqual} from 'lodash'
 /**
  * The searchFilters store trigger a single field query to searchFairsharingRecords, gets the aggregation array and
  * builds the filtering system to be used by advanced search functions.
@@ -93,6 +93,13 @@ let filtersStore = {
                 state.filterButtons[itemParentIndex].map((item) => {
                     item.active = false;
                 });
+            },
+            activateFilterButtonsItem(state, {activeItem, itemParentIndex}) {
+                state.filterButtons[itemParentIndex].map((item) => {
+                    if (isEqual(item,activeItem) ) {
+                        item.active = true;
+                    }
+                });
             }
         },
         actions: {
@@ -102,7 +109,8 @@ let filtersStore = {
             },
             resetFilterButtons: function (_, itemParentIndex) {
                 this.commit('searchFilters/resetFilterButtons', itemParentIndex)
-            }
+            },
+            activateFilterButtonsItem: ({commit}, activeItem, itemParentIndexValue) => commit('activateFilterButtonsItem', activeItem, itemParentIndexValue)
         },
         modules: {},
         getters: {

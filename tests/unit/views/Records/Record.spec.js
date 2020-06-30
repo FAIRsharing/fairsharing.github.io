@@ -104,6 +104,11 @@ describe("Record.vue", function() {
         expect(returnedValue).toBe('hosein mirian');
     });
 
+    it("can check capitalize function works fine ",()=>{
+        const expected = wrapper.vm.capitalize('hosein')
+        expect(expected).toBe('Hosein');
+    })
+
     it("can check flattenAssociatedRecordsArray returns a flat joined array ",()=>{
         let fakeAssociatedRecords = [
             {
@@ -205,9 +210,27 @@ describe("Record.vue", function() {
             }
         ];
 
-        $store.state.record.currentRecord['fairsharingRecord'] ={'recordAssociations':fakeAssociatedRecords,'reverseRecordAssociations' : fakeReverseAssociatedRecords} ;
-        let joinedArrays = wrapper.vm.flattenAssociatedRecordsArray();
-        expect(joinedArrays.length).toBe(11);
+        wrapper.vm.flattenAssociatedRecordsArray(fakeAssociatedRecords,fakeReverseAssociatedRecords);
+        expect(wrapper.vm.flatAscociatedRecords.length).toBe(11);
+
+
+/*
+         fakeReverseAssociatedRecords=[
+            {
+                "UNDEFINED": {
+                    "name": "RDA Covid-19 WG Resources",
+                    "id": 3012,
+                    "registry": "collection"
+                },
+                "recordAssocLabel": "collects"
+            },
+        ];
+        wrapper.vm.flattenAssociatedRecordsArray(fakeAssociatedRecords,fakeReverseAssociatedRecords)
+*/
+
+
+
     })
+
 
 });

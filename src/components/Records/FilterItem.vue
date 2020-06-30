@@ -61,10 +61,13 @@
             selectFilter: function (selectedItem) {
                 let _module = this;
                 _module.resetFilterButtons(_module.itemParentIndex);
-                _module.activateFilterButtonsItem({'activeItem':selectedItem,'itemParentIndex': _module.itemParentIndex});
+                _module.activateFilterButtonsItem({
+                    'activeItem': selectedItem,
+                    'itemParentIndex': _module.itemParentIndex
+                });
                 this.applyFilters(selectedItem);
             },
-            ...mapActions("searchFilters", ["resetFilterButtons","activateFilterButtonsItem"])
+            ...mapActions("searchFilters", ["resetFilterButtons", "activateFilterButtonsItem"])
         }
     }
 </script>
@@ -85,7 +88,7 @@
     }
 
     .buttons-md-style {
-      min-width: 32px !important;
+        min-width: 32px !important;
     }
 
 </style>

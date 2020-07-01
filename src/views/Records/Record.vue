@@ -586,7 +586,12 @@
         },
         watch: {
             currentRoute: async function () {
+              let _module = this;
                 await this.getData();
+                _module.flatAscociatedRecords =[]
+              if(has(_module.currentRecord['fairsharingRecord'],'recordAssociations') ||  has(_module.currentRecord['fairsharingRecord'],'reverseRecordAssociations'))
+                _module.flattenAssociatedRecordsArray(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
+
             }
         },
         mounted: function () {
@@ -594,11 +599,10 @@
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
-               try {
+              _module.flatAscociatedRecords =[]
+               if(has(_module.currentRecord['fairsharingRecord'],'recordAssociations') ||  has(_module.currentRecord['fairsharingRecord'],'reverseRecordAssociations'))
                 _module.flattenAssociatedRecordsArray(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-               }catch (e) {
-                 console.log(e)
-               }
+
             })
         },
         methods: {
@@ -629,6 +633,8 @@
                       object.name = item.fairsharingRecord.name;
                       object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
                       // object.subject = _module.currentRecord['fairsharingRecord'].name;
+                    }else {
+                      return
                     }
                   _module.flatAscociatedRecords.push(object);
 

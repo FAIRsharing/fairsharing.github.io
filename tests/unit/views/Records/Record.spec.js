@@ -213,8 +213,6 @@ describe("Record.vue", function() {
         wrapper.vm.flattenAssociatedRecordsArray(fakeAssociatedRecords,fakeReverseAssociatedRecords);
         expect(wrapper.vm.flatAscociatedRecords.length).toBe(11);
 
-
-/*
          fakeReverseAssociatedRecords=[
             {
                 "UNDEFINED": {
@@ -226,10 +224,6 @@ describe("Record.vue", function() {
             },
         ];
         wrapper.vm.flattenAssociatedRecordsArray(fakeAssociatedRecords,fakeReverseAssociatedRecords)
-*/
-
-
-
     })
 
 

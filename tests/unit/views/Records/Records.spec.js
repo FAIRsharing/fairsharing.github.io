@@ -338,10 +338,22 @@ describe("Records.vue", () => {
 
     it("can onScroll function work properly",  () => {
 
-        wrapper.vm.offsetTop = 150
-        wrapper.vm.isTest=true;
-        wrapper.vm.onScroll();
-        // expect($router.push).toHaveBeenCalledTimes(2);
+        wrapper.vm.offsetTop = 150;
+        let mEvent = {
+            target: { scrollTop:150},
+        };
+        wrapper.vm.onScroll(mEvent);
+
+        mEvent = {
+            target: { scrollTop:50},
+        };
+        wrapper.vm.onScroll(mEvent);
+
+        mEvent = {
+            target: { scrollTop:501},
+        };
+        wrapper.vm.onScroll(mEvent);
+        expect(wrapper.vm.showScrollToTopButton).toBe(true);
     })
 
 

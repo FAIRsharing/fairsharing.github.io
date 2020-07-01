@@ -21,7 +21,7 @@
     import {throttle} from "lodash"
 
     export default {
-        name: "FiltersChip",
+        name: "FilterChips",
         computed: {
             getChips: function () {
                 let output = [];

@@ -210,6 +210,7 @@ describe("Record.vue", function() {
             }
         ];
 
+        wrapper.vm.currentRecord['fairsharingRecord']={name:'test'};
         wrapper.vm.flattenAssociatedRecordsArray(fakeAssociatedRecords,fakeReverseAssociatedRecords);
         expect(wrapper.vm.flatAscociatedRecords.length).toBe(11);
 

@@ -717,7 +717,7 @@
                         object.registry = item.linkedRecord.registry;
                         object.name = item.linkedRecord.name;
                         object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                        // object.subject = _module.currentRecord['fairsharingRecord'].name;
+                        object.subject = _module.currentRecord['fairsharingRecord'].name;
                     }
                     else if (has(item, 'fairsharingRecord')) {
                       object = {registry: null, name: null, recordAssocLabel: null, subject: null}
@@ -725,7 +725,7 @@
                       object.registry = item.fairsharingRecord.registry;
                       object.name = item.fairsharingRecord.name;
                       object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                      // object.subject = _module.currentRecord['fairsharingRecord'].name;
+                      object.subject = _module.currentRecord['fairsharingRecord'].name;
                     }else {
                       return
                     }

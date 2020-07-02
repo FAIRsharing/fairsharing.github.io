@@ -25,13 +25,21 @@
                 required
                 outlined
               />
+
               <v-text-field
-                v-model="formData.password"
+                v-model="password"
                 type="password"
                 label="Enter your new password"
                 required
                 outlined
-              />
+              >
+                <template slot="append">
+                  <v-progress-circular
+                    :value="passwordValidity"
+                    :color="passwordColor"
+                  ></v-progress-circular>
+                </template>
+              </v-text-field>
               <v-text-field
                 v-model="formData.passwordRepeat"
                 type="password"
@@ -55,19 +63,30 @@
 <script>
     import { mapState, mapActions } from "vuex"
     import MessageHandler from "../../components/Users/MessageHandler";
+    import RESTClient from "@/components/Client/RESTClient.js"
+
+    let restClient = new RESTClient();
 
     export default {
-          name: "ResetPassword",
+      name: "ResetPassword",
       components: {MessageHandler},
       data: () => {
               return {
                   message: null,
                   error: null,
-                  formData: {}
+                  formData: {},
+                  password: null,
+                  passwordValidity: 0,
+                  passwordColor: "red"
               }
           },
           computed: {
               ...mapState("users", ["user", "messages"])
+          },
+          watch: {
+            password: async function(){
+                await this.verifyPwd();
+            },
           },
           mounted() {
               this.$nextTick(async function () {
@@ -82,12 +101,12 @@
           },
           methods: {
               ...mapActions("users", ["resetPwdWithoutToken", 'resetPwd', "setError"]),
-              submitPassword: async function(){
+              async submitPassword(){
                   this.submit(this.user().isLoggedIn);
               },
-              submit: async function(isLoggedIn){
+              async submit(isLoggedIn){
                 let query = {
-                  password: this.formData.password,
+                  password: this.password,
                   password_confirmation: this.formData['passwordRepeat'],
                 };
                 if (isLoggedIn){
@@ -104,11 +123,29 @@
                     this.$router.push({path: "/accounts/login", query: {redirect: '/accounts/profile'}})
                   }
                 }
+              },
+              async verifyPwd(){
+                const pwd = await restClient.verifyPassword(this.password);
+                this.passwordValidity = pwd.percent;
+                if (this.passwordValidity < 25){
+                  this.passwordColor = "red"
+                }
+                else if (25 <= this.passwordValidity && this.passwordValidity < 50){
+                  this.passwordColor = "orange"
+                }
+                else if (50 <= this.passwordValidity && this.passwordValidity < 74){
+                  this.passwordColor = "yellow"
+                }
+                else {
+                  this.passwordColor = "green"
+                }
               }
           }
     }
 </script>
 
-<style scoped>
-
+<style>
+  .v-input__append-inner {
+    margin-top: 13px !important
+  }
 </style>

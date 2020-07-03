@@ -42,7 +42,10 @@ describe("Record.vue", function() {
                         name: "test",
                         url: "https://example.com"
                     }
-                ]
+                ],
+                metadata: {
+                    contacts: []
+                }
             }
         });
     });

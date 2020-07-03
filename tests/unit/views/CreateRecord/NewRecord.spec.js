@@ -92,7 +92,7 @@ describe("CreateRecord.vue", function() {
         };
         expect(wrapper.vm.models).toStrictEqual({
             recordType: {name: "collection"},
-            recordStatus: null
+            recordStatus: "uncertain"
         });
         wrapper.vm.models.recordStatus = {
             name: "ready"
@@ -102,7 +102,7 @@ describe("CreateRecord.vue", function() {
         };
         expect(wrapper.vm.models).toStrictEqual({
             recordType: {name: "NotCollection"},
-            recordStatus:null
+            recordStatus: "uncertain"
         })
     });
 

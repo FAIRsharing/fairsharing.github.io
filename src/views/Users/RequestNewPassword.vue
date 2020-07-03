@@ -6,29 +6,43 @@
         sm="12"
         xl="12"
       >
-        <h2> Request a new password</h2>
-        <div
-          v-if="triggered && message"
-          class="alert"
-          :class="{'alert-success': success, 'alert-danger': !success}"
-        >
-          {{ message }}
-        </div>
-        <v-form
-          id="requestNewPassword"
-        >
-          <!-- account -->
-          <v-text-field
-            v-model="formData.email"
-            label="Email address of the account"
-            required
-          />
-          <v-btn
-            @click="sendEmail()"
-          >
-            Request new password
-          </v-btn>
-        </v-form>
+        <v-card>
+          <v-card-title class="blue white--text mb-5">
+            <h2> Request a new password</h2>
+          </v-card-title>
+          <v-card-text v-if="triggered && message">
+            <v-alert
+              v-if="success"
+              type="success"
+            >
+              {{ message }}
+            </v-alert>
+            <v-alert
+              v-if="!success"
+              type="error"
+            >
+              {{ message }}
+            </v-alert>
+          </v-card-text>
+          <v-card-text>
+            <v-form
+              id="requestNewPassword"
+            >
+              <!-- account -->
+              <v-text-field
+                v-model="formData.email"
+                label="Email address of the account"
+                required
+                outlined
+              />
+              <v-btn
+                @click="sendEmail()"
+              >
+                Request new password
+              </v-btn>
+            </v-form>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -51,10 +65,11 @@
         },
         methods: {
           sendEmail: async function(){
-            this.triggered = true;
+            this.triggered = false;
             let response = await client.requestResetPwd(this.formData.email);
             this.message = response.message;
             this.success = response.success;
+            this.triggered = true;
           }
         }
     }

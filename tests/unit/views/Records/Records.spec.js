@@ -87,119 +87,6 @@ describe("Records.vue", () => {
 
     });
 
-    /*
-        it("can get the query parameters types from introspection", async () => {
-            let returnedVal = {
-                data: {
-                    data: {
-                        "__schema": {
-                            "types": [
-                                {
-                                    name: "Query",
-                                    fields: [
-                                        {
-                                            name: "searchFairsharingRecords",
-                                            args: [
-                                                {
-                                                    name: "test",
-                                                    description: "testDescription",
-                                                    type: "String",
-                                                    defaultValue: "1"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }]
-                        }
-                    }
-                }
-            };
-            let returnedValDif = {
-                data: {
-                    data: {
-                        "__schema": {
-                            "types": [
-                                {
-                                    name: "Query",
-                                    fields: [
-                                        {
-                                            name: "searchFairsharingRecords",
-                                            args: [
-                                                {
-                                                    name: "test",
-                                                    description: "testDescription",
-                                                    type: "String",
-                                                    defaultValue: "1"
-                                                },
-                                                {
-                                                    name: "test2",
-                                                    description: "testDescription",
-                                                    type: "String",
-                                                    defaultValue: "1"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }]
-                        }
-                    }
-                }
-            };
-            let errorTest = {
-                data: {
-                    errors: [
-                        {message: "Error"}
-                    ]
-                }
-            };
-            sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(errorTest);
-            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-            expect(wrapper.vm.$store.state.introspection.error).toBe("Can't initialize application");
-            Client.prototype.getData.restore();
-            sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
-            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-            // wrapper.vm.$store.state.introspection.searchQueryParameters={};
-            // // localStorage.searchQueryParameters= undefined;
-            // wrapper.vm.$store.state.introspection.searchQueryParameters = returnedVal;
-            expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
-                name: "test",
-                description: "testDescription",
-                type: "String",
-                defaultValue: "1"
-            }]);
-            Client.prototype.getData.restore();
-    /!*
-            sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedValDif);
-            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-            expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
-                name: "test",
-                description: "testDescription",
-                type: "String",
-                defaultValue: "1"
-            }, {
-                name: "test2",
-                description: "testDescription",
-                type: "String",
-                defaultValue: "1"
-            }
-            ]);
-            Client.prototype.getData.restore();
-            sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
-            wrapper.vm.$store.state.introspection.searchQueryParameters={};
-            // localStorage.searchQueryParameters= undefined;
-            wrapper.vm.$store.state.introspection.searchQueryParameters = returnedVal;
-            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-            expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
-                name: "test",
-                description: "testDescription",
-                type: "String",
-                defaultValue: "1"
-            }
-            ]);
-            Client.prototype.getData.restore();*!/
-        });
-    */
-
     it("can switch between panels", () => {
         wrapper.vm.setPanel("Facets");
         expect(wrapper.vm.currentPanel).toBe("Facets");
@@ -353,7 +240,6 @@ describe("Records.vue", () => {
             target: { scrollTop:501},
         };
         wrapper.vm.onScroll(mEvent);
-        expect(wrapper.vm.showScrollToTopButton).toBe(true);
     })
 
 

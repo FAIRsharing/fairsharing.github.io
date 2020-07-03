@@ -5,7 +5,7 @@
     </h1>
     <!--Filtered Chips-->
     <div class="d-flex align-content-center justify-content-center chips-holder">
-      <FiltersChip />
+      <filter-chips />
     </div>
 
     <!--List Controller-->
@@ -49,9 +49,6 @@
         </v-row>
       </v-skeleton-loader>
     </div>
-
-    <!--List Controller-->
-    <!--        <ListController class="mt-2 " @ChangeListType="changeListType"></ListController>-->
   </section>
 </template>
 
@@ -60,11 +57,11 @@
     import ListController from "./ListController";
     import RecordsCardColumn from "./RecordsCardColumn";
     import {mapState} from 'vuex'
-    import FiltersChip from ".//FilterChips";
+    import FilterChips from "./FilterChips";
 
     export default {
         name: "RightContentList",
-        components: {FiltersChip, RecordsCardColumn, ListController, RecordsCardStack},
+        components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack},
         data() {
             return {
                 isColumnList: false

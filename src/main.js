@@ -1,7 +1,6 @@
 /*  import base */
 import Vue from "vue";
-// import App from "./App.vue";
-import App from "./App2.vue";
+import App from "./App.vue";
 import VueMeta from "vue-meta";
 import vuetify from './plugins/vuetify'
 
@@ -24,18 +23,12 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
 
-/* import Mixin */
-// This is a global mixin, it is applied to every vue instance
-import {applicationMixin} from "./mixins/applicationMixin";
 // This is a global sass file, it is applied to every vue instance
-
 /* import Global Sass */
 import "./styles/main.scss"
 
 
 Vue.config.productionTip = false;
-
-Vue.mixin(applicationMixin);
 
 Vue.use(VueMeta, {
     refreshOnceOnNavigation: true

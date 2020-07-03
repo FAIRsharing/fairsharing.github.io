@@ -55,9 +55,10 @@
               text
               class="button-text-color"
               :color="item.active?'primary':null"
+              :disabled="Chips[item.title].length === 0"
               @click="changeActiveItem(index)"
             >
-              {{ item.title }}
+              {{ item.title }} ({{ Chips[item.title].length }})
             </v-btn>
           </section>
         </v-col>
@@ -80,8 +81,8 @@
               column
             >
               <v-chip
-                v-for="chip in Chips[currentActiveChips]"
-                :key="chip.label+'_'+chip.active"
+                v-for="(chip,index) in Chips[currentActiveChips]"
+                :key="chip.label+'_'+index"
                 small
                 text-color="secondary"
                 color="secondary"
@@ -120,6 +121,7 @@
     import Ribbon from "../IndividualComponents/Ribbon";
     import RecordStatus from "../IndividualComponents/RecordStatus";
     import AssociatedRecordsStack from "./AssociatedRecordsStack";
+    import {isEqual} from "lodash";
 
     export default {
         name: "RecordsCardColumn",
@@ -145,75 +147,69 @@
             this.setChips(this.record);
         },
         methods: {
-            changeActiveItem: function (itemIndex) {
-                this.buttons.map(item => item.active = false);
-                this.buttons[itemIndex].active = true;
-                // changing currentChips data
-                this.currentActiveChips = this.buttons[itemIndex].title;
-            },
-            toggleChipActiveness: function (chip) {
-                let selectedItem = this.Chips[this.currentActiveChips].find(item => item === chip);
-                this.Chips[this.currentActiveChips].map(item => {
-                    if (item === selectedItem) {
-                        item.active = !item.active;
-                        //    should call scroll to top after a delay.
-                        setTimeout(this.scrollToTop, 500);
-                        //    should call Api for the selected chip to be added in chips list.
-                    }
-                });
-            },
-            associatedRecords: function (record) {
-                let records = {
-                    standard: {
-                        val: 0,
-                        label: "standards"
-                    },
-                    database: {
-                        val: 0,
-                        label: "databases"
-                    },
-                    policy: {
-                        val: 0,
-                        label: "policies"
-                    },
-                    collection: {
-                        val: 0,
-                        label: "collections"
-                    },
-                };
-                record['recordAssociations'].forEach(function (association) {
-                    records[association['linkedRecord'].registry].val += 1
-                });
-                record['reverseRecordAssociations'].forEach(function (association) {
-                    records[association['fairsharingRecord'].registry].val += 1
-                });
-                return records;
-            },
-            setChips: function (record) {
-                let counter = 0;
-                record.subjects.forEach(item => {
-                    if (counter < 3) {
-                        this.Chips.subjects.push({label: item.label, active: false});
-                    }
-                    counter++;
-                })
-                record.domains.forEach(item => {
-                    if (counter < 3) {
-                        this.Chips.domains.push({label: item.label, active: false});
-                    }
-                    counter++;
-                })
-                record.taxonomies.forEach(item => {
-                    if (counter < 3) {
-                        this.Chips.taxonomies.push({label: item.label, active: false});
-                    }
-                    counter++;
-                })
-            },
-            scrollToTop: function () {
-                let myDiv = document.getElementById('scroll-target');
-                myDiv.scrollTo(0, 0);
+          changeActiveItem: function (itemIndex) {
+            this.buttons.map(item => item.active = false);
+            this.buttons[itemIndex].active = true;
+            // changing currentChips data
+            this.currentActiveChips = this.buttons[itemIndex].title;
+          },
+          toggleChipActiveness: function (chip) {
+            let selectedItem = this.Chips[this.currentActiveChips].find(item => isEqual(item,chip));
+            this.Chips[this.currentActiveChips].map(item => {
+              if (isEqual(item, selectedItem)) {
+                item.active = !item.active;
+                //    should call scroll to top after a delay.
+                // setTimeout(this.scrollToTop, 500);
+                //    should call Api for the selected chip to be added in chips list.
+              }
+            });
+          },
+          associatedRecords: function (record) {
+            let records = {
+              standard: {
+                val: 0,
+                label: "standards"
+              },
+              database: {
+                val: 0,
+                label: "databases"
+              },
+              policy: {
+                val: 0,
+                label: "policies"
+              },
+              collection: {
+                val: 0,
+                label: "collections"
+              },
+            };
+            record['recordAssociations'].forEach(function (association) {
+              records[association['linkedRecord'].registry].val += 1
+            });
+            record['reverseRecordAssociations'].forEach(function (association) {
+              records[association['fairsharingRecord'].registry].val += 1
+            });
+            return records;
+          },
+          setChips: function (record) {
+            let node;
+            for (node in record) {
+              if(node==='subjects' || node==='domains' || node==='taxonomies'){
+                this.organizeChips(record,node);
+              }
             }
+          },
+          organizeChips(record, node){
+            record[node].forEach(item => {
+              this.Chips[node].push({label: item.label, active: false});
+            })
+          },
+          /*
+                      scrollToTop: function () {
+                          let myDiv = document.getElementById('scroll-target');
+                          myDiv.scrollTo(0, 0);
+                      }
+          */
         },
     }
 </script>

@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex'
 
     export default {
         name: "ExpansionPanel",
@@ -53,7 +53,7 @@
         },
         data: () => {
             return {
-                selectedValues: null
+                selectedValues: []
             }
         },
         computed: {
@@ -68,7 +68,6 @@
             }
         },
         methods: {
-            ...mapActions('searchFilters', ["callAction"]),
             /**
              * Apply the filters by building the new query parameters using the form data.
              */
@@ -113,9 +112,7 @@
              * Reset the form/filters/parameters to default (go so /search?page=1)
              */
             reset: function (selectedItem) {
-                this.$nextTick(() => {
-                    selectedItem.filterSelected = {};
-                })
+                selectedItem.filterSelected = {};
             },
             /**
              * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.

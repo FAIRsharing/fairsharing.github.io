@@ -10,17 +10,17 @@
       <h2 class="d-none">
         Filter List
       </h2>
-      <FilterButtons :md-screens="$vuetify.breakpoint.mdAndDown" />
+      <FilterPanel/>
     </v-card>
   </aside>
 </template>
 
 <script>
-    import FilterButtons from "./FilterButtons";
+    import FilterPanel from "./FilterPanel";
 
     export default {
         name: "LeftPanel",
-        components: {FilterButtons},
+        components: {FilterPanel},
     }
 </script>
 

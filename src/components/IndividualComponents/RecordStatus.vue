@@ -74,7 +74,7 @@
         }, computed: {
             getRecordStatus: function () {
                 let _module = this;
-                if (this.statusStyles[_module.record.status] !== undefined)
+                if (this.statusStyles[_module.record.status] !== undefined && _module.record.status!==undefined)
                     return this.statusStyles[_module.record.status];
                 else {
                     return this.statusStyles[undefined]

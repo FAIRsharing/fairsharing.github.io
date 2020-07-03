@@ -7,7 +7,6 @@
       right
       fixed
       class="mr-2 mb-10"
-      @click="scrollToTop"
     >
       <v-icon>mdi-arrow-up</v-icon>
     </v-btn>
@@ -16,15 +15,22 @@
 
 <script>
     export default {
-        name: "JumpTop",
+        name: "JumpToTop",
         props: {
-            targetObject: null
+            targetObject: {default: null, type: String},
+        },
+        data: () => {
+            return {
+                myDiv: null
+            }
         },
         methods: {
+/*
             scrollToTop: function () {
-                let myDiv = document.getElementById(this.targetObject);
-                myDiv.scrollTo(0, 0);
+                  this.myDiv = document.getElementById(this.targetObject);
+                  this.myDiv.scrollTo(0, 0);
             },
+*/
         }
     }
 </script>

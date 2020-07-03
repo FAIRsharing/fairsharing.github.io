@@ -61,9 +61,10 @@
               text
               class="button-text-color"
               :color="item.active?'primary':null"
+              :disabled="Chips[item.title].length === 0"
               @click="changeActiveItem(index)"
             >
-              {{ item.title }}
+              {{ item.title }} ({{ Chips[item.title].length }})
             </v-btn>
           </section>
         </v-col>
@@ -86,8 +87,8 @@
               column
             >
               <v-chip
-                v-for="chip in Chips[currentActiveChips]"
-                :key="chip.label+'_'+chip.active"
+                v-for="(chip,index) in Chips[currentActiveChips]"
+                :key="chip.label+'_'+index"
                 small
                 text-color="secondary"
                 color="secondary"
@@ -124,7 +125,7 @@
     import Ribbon from "@/components/IndividualComponents/Ribbon";
     import AssociatedRecordsStack from "./AssociatedRecordsStack";
     import RecordStatus from "@/components/IndividualComponents/RecordStatus"
-
+    import {isEqual} from 'lodash'
     export default {
         name: "RecordsCardStack",
         components: {RecordStatus, AssociatedRecordsStack, Ribbon},
@@ -163,12 +164,12 @@
                 this.currentActiveChips = this.buttons[itemIndex].title;
             },
             toggleChipActiveness: function (chip) {
-                let selectedItem = this.Chips[this.currentActiveChips].find(item => item === chip);
+                let selectedItem = this.Chips[this.currentActiveChips].find(item => isEqual(item,chip));
                 this.Chips[this.currentActiveChips].map(item => {
-                    if (item === selectedItem) {
+                    if (isEqual(item, selectedItem)) {
                         item.active = !item.active;
                         //    should call scroll to top after a delay.
-                        setTimeout(this.scrollToTop, 500);
+                        // setTimeout(this.scrollToTop, 500);
                         //    should call Api for the selected chip to be added in chips list.
                     }
                 });
@@ -201,20 +202,24 @@
                 return records;
             },
             setChips: function (record) {
-                record.subjects.forEach(item => {
-                    this.Chips.subjects.push({label: item.label, active: false});
-                })
-                record.domains.forEach(item => {
-                    this.Chips.domains.push({label: item.label, active: false});
-                })
-                record.taxonomies.forEach(item => {
-                    this.Chips.taxonomies.push({label: item.label, active: false});
+                let node;
+                for (node in record) {
+                    if(node==='subjects' || node==='domains' || node==='taxonomies'){
+                        this.organizeChips(record,node);
+                    }
+                }
+            },
+            organizeChips(record, node){
+                record[node].forEach(item => {
+                    this.Chips[node].push({label: item.label, active: false});
                 })
             },
+/*
             scrollToTop: function () {
                 let myDiv = document.getElementById('scroll-target');
                 myDiv.scrollTo(0, 0);
             }
+*/
         },
     }
 </script>

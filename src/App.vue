@@ -1,32 +1,69 @@
 <template>
-  <v-app>
-    <template>
-      <div id="app">
-        <navbar-top />
-        <router-view class="py-5" />
-        <footer-bar />
-      </div>
-    </template>
+  <v-app id="app">
+    <v-navigation-drawer
+      v-if="$vuetify.breakpoint.smAndDown"
+      v-model="UIGeneralStatus.drawerVisibilityState"
+      app
+      left
+      width="70%"
+    />
+
+    <transition name="fade">
+      <Header v-if="UIGeneralStatus.headerVisibilityState" />
+    </transition>
+    <router-view />
   </v-app>
 </template>
 
 <script>
-    import NavbarTop from "./components/Navigation/NavbarTop";
-    import FooterBar from "./components/Navigation/Footer";
+    import Header from "./components/IndividualComponents/Header";
+    import {mapState} from 'vuex';
 
     export default {
-        name: 'App',
-        components: {
-            NavbarTop,
-            FooterBar
-        }
-    };
+        name: "App2",
+        components: {Header},
+        data: () => ({
+            hideOverflow: 'overflow-hidden',
+            root: null
+        }),
+        computed: {
+            ...mapState('uiController', ["UIGeneralStatus","scrollStatus"]),
+        },
+        watch: {
+            UIGeneralStatus: {
+                handler(UIGeneralStatus) {
+                    this.toggleOverFlow(UIGeneralStatus.bodyOverflowState);
+                },
+                deep: true
+            },
+        },
+        methods: {
+            toggleOverFlow: function (status) {
+                this.root = document.getElementsByTagName('html')[0]; // '0' to assign the first (and only `HTML` tag)
+                status ? this.root.setAttribute('class', this.hideOverflow) : this.root.removeAttribute('class');
+            },
+        },
+    }
 </script>
 
-<style>
+<style lang="scss">
     #app {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         min-height: 99vh;
     }
+
+    html, body {
+        height: 100%;
+    }
+
+    .footer-content {
+
+    }
+
+    .overflow-hidden {
+        overflow: hidden !important;
+    }
+
+
 </style>

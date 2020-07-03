@@ -185,7 +185,6 @@
                     } else {
                         let newParams = [];
                         let existingValues = currentParams[_module.filter.filterName].split(",");
-                        console.log(existingValues)
                         _module.selectedValues.forEach(function (selectedValue) {
                             if (existingValues.indexOf(selectedValue) === -1) {
                                 newParams.push(selectedValue);

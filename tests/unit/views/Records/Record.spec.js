@@ -49,7 +49,6 @@ describe("Record.vue", function() {
             }
         });
     });
-
     afterAll( () => {
         Client.prototype.executeQuery.restore();
     });
@@ -73,6 +72,19 @@ describe("Record.vue", function() {
     it("has a currentRoute computed property", () => {
         expect(wrapper.vm.currentRoute).toMatch(path);
         expect(wrapper.vm.getTitle()).toBe(title);
+        let $route = {
+            path: "/",
+            params: {
+                id: "FAIRsharing.p9xm4v"
+            }
+        };
+        const anotherWrapper = shallowMount(Record, {
+            mocks: {$route, $store},
+            localVue,
+            vuetify
+        });
+        expect(anotherWrapper.vm.currentRoute).toMatch("FAIRsharing.p9xm4v");
+
     });
 
     it("has it meta title dynamically set", () => {

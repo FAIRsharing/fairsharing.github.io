@@ -128,6 +128,10 @@
         },
         computed: {
             currentRoute: function () {
+              let id = this.$route.params['id'];
+              if (id.includes("FAIRsharing.")){
+                return "10.25504/" + id;
+              }
                 return this.$route.params['id']
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),

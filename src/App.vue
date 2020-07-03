@@ -27,12 +27,11 @@
             root: null
         }),
         computed: {
-            ...mapState('uiController', ["UIGeneralStatus"]),
+            ...mapState('uiController', ["UIGeneralStatus","scrollStatus"]),
         },
         watch: {
             UIGeneralStatus: {
                 handler(UIGeneralStatus) {
-                    // console.log(UIGeneralStatus)
                     this.toggleOverFlow(UIGeneralStatus.bodyOverflowState);
                 },
                 deep: true

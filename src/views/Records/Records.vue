@@ -4,8 +4,8 @@
       Content
     </h1>
     <transition name="fade">
-      <jump-top
-        v-if="showScrollToTopButton"
+      <jump-to-top
+        v-if="scrollStatus"
         target-object="scroll-target"
       />
     </transition>
@@ -87,21 +87,20 @@
 </template>
 
 <script>
-    import JumpTop from "@/components/IndividualComponents/jumpToTop";
     import LeftPanel from "@/components/Records/LeftPanel";
     import RightContentList from "@/components/Records/RightContentList";
-    import {mapActions} from 'vuex'
+    import {mapActions, mapState} from 'vuex'
+    import JumpToTop from "@/components/IndividualComponents/jumpToTop";
 
     export default {
         name: "Records",
-        components: {RightContentList, JumpTop, LeftPanel},
+        components: {JumpToTop, RightContentList, LeftPanel},
         data: () => ({
             searchTerm: '',
             offsetTop: 0,
             stickToLeft: false,
             bodyOverflowActive: true,
             hideOverflow: 'overflow-hidden',
-            showScrollToTopButton: false,
             showHeader: true,
             showDrawerLeft: false,
             recordsSubTitles: {
@@ -125,6 +124,7 @@
             },
         }),
         computed: {
+            ...mapState('uiController', ['scrollStatus']),
             getTitle: function () {
                 const flipRecordTypes = Object.entries(this.recordTypes).reduce((obj, [key, value]) => ({
                     ...obj,
@@ -197,24 +197,28 @@
             });
         },
         methods: {
+            ...mapActions('records', ['fetchRecords']),
+            ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
             onScroll: function (e) {
                 let _module = this;
                 _module.offsetTop = e.target.scrollTop;
                 if (_module.offsetTop > 125) {
                     _module.stickToLeft = true;
-                    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+                    _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                         bodyOverflowState: true,
                         headerVisibilityState: false,
                     });
+
                 } else {
                     _module.stickToLeft = false;
-                    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+                    _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                         bodyOverflowState: true,
                         drawerVisibilityState: false,
                         headerVisibilityState: true,
                     });
                 }
-                _module.offsetTop > 500 ? _module.showScrollToTopButton = true : _module.showScrollToTopButton = false;
+                _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
+                    _module.setScrollStatusLocal(false);
             },
             /**
              * Try to redirect to search of the page that is hit is /standards /databases
@@ -257,7 +261,6 @@
             getParameters: function () {
                 return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
             },
-            ...mapActions('records', ['fetchRecords']),
             /**
              * Method to change the current panel to be displayed
              * @param {String} panelName - the name of the panel to display

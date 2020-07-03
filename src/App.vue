@@ -20,10 +20,11 @@
     import {mapState} from 'vuex';
 
     export default {
+        name: "App2",
         components: {Header},
         data: () => ({
             hideOverflow: 'overflow-hidden',
-            root:null
+            root: null
         }),
         computed: {
             ...mapState('uiController', ["UIGeneralStatus"]),
@@ -31,7 +32,7 @@
         watch: {
             UIGeneralStatus: {
                 handler(UIGeneralStatus) {
-                  // console.log(UIGeneralStatus)
+                    // console.log(UIGeneralStatus)
                     this.toggleOverFlow(UIGeneralStatus.bodyOverflowState);
                 },
                 deep: true

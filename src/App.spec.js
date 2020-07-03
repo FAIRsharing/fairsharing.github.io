@@ -2,14 +2,19 @@ import {shallowMount, createLocalVue} from "@vue/test-utils";
 import VueRouter from "vue-router";
 import App from "./App.vue";
 import Vuetify from "vuetify"
-
+import uiControllerStore from "@/store/uiController.js";
+import Vuex from "vuex";
+import Vue from 'vue'
 
 const localVue = createLocalVue();
-localVue.use(VueRouter);
+localVue.use(Vuex);
+Vue.use(VueRouter)
 
-let $route = { path: "/123/edit", params: {id: 123} };
-const router = new VueRouter();
-// const $router = { push: jest.fn() };
+const $store = new Vuex.Store({
+    modules: {
+        uiController: uiControllerStore,
+    }
+});
 
 
 describe("App.vue", () => {
@@ -20,30 +25,25 @@ describe("App.vue", () => {
         const title = "App";
         wrapper = shallowMount(App, {
             localVue,
-            router,
             vuetify,
-            mocks: {$route, vuetify:{breakpoint:{smAndDown:false}}}
+            mocks: { $store}
         });
         expect(wrapper.name()).toMatch(title);
     });
 
 
     it("can check the toggleOverFlow", () => {
-        wrapper.vm.toggleOverFlow(false);
-        expect(wrapper.root).toBe(null);
+        $store.state.uiController.UIGeneralStatus={
+            bodyOverflowState: false,
+            drawerVisibilityState: false,
+            headerVisibilityState: true,
+        };
+        $store.state.uiController.UIGeneralStatus={
+            bodyOverflowState: true,
+            drawerVisibilityState: false,
+            headerVisibilityState: true,
+        };
     });
 
-    /*   it("can check watcher", () => {
-           console.log(wrapper.vm.UIGeneralStatus)
-
-           wrapper.vm.UIGeneralStatus.recordType = {
-               name: "collection"
-           };
-           expect(wrapper.vm.models).toStrictEqual({
-               recordType: {name: "collection"},
-               recordStatus: "uncertain"
-           });
-    });
-   */
 
 });

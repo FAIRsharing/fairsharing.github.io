@@ -66,6 +66,7 @@
                   v-model="loginData.name"
                   label="Username or email"
                   required
+                  outlined
                 />
 
                 <!-- password -->
@@ -77,6 +78,7 @@
                   counter
                   required
                   @click:append="show1 = !show1"
+                  outlined
                 />
 
                 <v-card-text class="text-left">
@@ -124,7 +126,12 @@
                 return value.charAt(0).toUpperCase() + value.slice(1)
             }
         },
-        props: {},
+        props: {
+          redirect: {
+            type: Boolean,
+            default: true,
+          }
+        },
         data: () => {
             return {
                 show1: false,
@@ -158,13 +165,22 @@
         methods: {
             ...mapActions('users', ['login', 'logout']),
             logUser: async function(){
+                const _module = this;
                 const user = {
-                    "name": this.loginData.name,
-                    "password":  this.loginData.password
+                    "name": _module.loginData.name,
+                    "password":  _module.loginData.password
                 };
-                await this.login(user);
-                if (!this.messages().login.error) {
-                  this.$router.push({path: "/accounts/profile"})
+                await _module.login(user);
+                if (!_module.messages().login.error) {
+                  const goTo = _module.$route.query.redirect;
+                  if (goTo){
+                    _module.$router.push({
+                      path: goTo
+                    })
+                  }
+                  else if (_module.redirect) {
+                    _module.$router.go(-1);
+                  }
                 }
             }
         }

@@ -13,40 +13,66 @@
       {
           "name": "countries",
           "fields": [
-              "name"
+              "name",
+              "id"
           ]
       },
       "metadata",
       {
           "name": "taxonomies",
           "fields": [
-              "label"
+              "label",
+              "id"
           ]
       },
       {
           "name": "domains",
           "fields": [
-              "label"
+              "label",
+              "id"
           ]
       },
       {
           "name": "subjects",
           "fields": [
-              "label"
+              "label",
+              "id"
+          ]
+      },
+      {
+          "name": "userDefinedTags",
+          "fields": [
+              "label",
+              "id"
           ]
       },
       {
           "name": "grants",
           "fields": [
-              "name"
+              "name",
+              "description"
           ]
       },
       "isRecommended",
       "legacyIds",
       {
-          "name": "licences",
+          "name": "licenceLinks",
           "fields": [
-              "name"
+              "relation",
+              "id",
+              {
+                  "queryName": "fairsharingRecord",
+                  "fields": [
+                      "id"
+                  ]
+              },
+              {
+                  "queryName": "licence",
+                  "fields": [
+                      "id",
+                      "name"
+                  ]
+              }
           ]
       },
       {
@@ -65,7 +91,13 @@
       {
           "name": "publications",
           "fields": [
-              "title"
+              "title",
+              "doi",
+              "authors",
+              "id",
+              "journal",
+              "url",
+              "year"
           ]
       },
       {
@@ -73,7 +105,7 @@
           "fields": [
               {
                   "queryName": "linkedRecord",
-                  "fields": ["name", "id", "registry"]
+                  "fields": ["name", "id", "registry", "type"]
               },
               "recordAssocLabel"
           ]

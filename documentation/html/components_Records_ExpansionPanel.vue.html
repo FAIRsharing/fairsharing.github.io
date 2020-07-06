@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Users/Login/Login.vue</title>
+	<title>FAIRsharing.org Source: components/Records/ExpansionPanel.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,204 +86,212 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Users/Login/Login.vue</h1>
+		<h1 class="page-title">Source: components/Records/ExpansionPanel.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-layout
-    id="loginPage"
-    class="login"
-    width="100%"
-  >
-    &lt;v-container fluid>
-      &lt;!-- forms -->
-      &lt;v-row>
-        &lt;v-col
-          cols="12"
-          sm="12"
+  &lt;v-expansion-panel v-if="filter.filterName">
+    &lt;v-expansion-panel-header> {{ filter.filterLabel }}&lt;/v-expansion-panel-header>
+    &lt;v-expansion-panel-content class="pl-5 pr-5">
+      &lt;div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
+        &lt;v-autocomplete
+          v-model="selectedValues"
+          :items="getValues"
+          solo
+          dense
+          clearable
+          multiple
+          prepend-inner-icon="mdi-magnify"
+          :placeholder="`Search through ${filter.filterLabel}`"
+          item-text="key"
+          item-value="key"
+          @click:clear="reset(filter)"
         >
-          &lt;v-card
-            flat
-            dark
-            color="#253442"
-          >
-            &lt;!-- card title -->
-            &lt;v-list-item>
-              &lt;v-list-item-content>
-                &lt;v-list-item-title class="headline">
-                  {{ currentPanel | capitalize }}:
-                &lt;/v-list-item-title>
-              &lt;/v-list-item-content>
-            &lt;/v-list-item>
-
-            &lt;!-- message handler -->
-            &lt;MessageHandler field="login" />
-
-            &lt;!-- OAUTH -->
-            &lt;v-card-text>
-              &lt;v-list color="#253442">
-                &lt;v-list-item
-                  v-for="(provider, providerIndex) in oauthLogin"
-                  :key="'provider_' + providerIndex"
-                  style="justify-content: center"
-                >
-                  &lt;v-btn
-                    width="250px"
-                    :class="provider.color"
-                    class="text-left"
-                    :href="provider.callback"
-                  >
-                    &lt;v-layout width="100%">
-                      &lt;v-icon
-                        left
-                        class="mr-5"
-                      >
-                        {{ provider.icon }}
-                      &lt;/v-icon>
-                      &lt;v-layout>with {{ provider.name }}&lt;/v-layout>
-                    &lt;/v-layout>
-                  &lt;/v-btn>
-                &lt;/v-list-item>
-              &lt;/v-list>
-            &lt;/v-card-text>
-
-            &lt;!-- card content // Form -->
-            &lt;v-card-text v-if="currentPanel === 'login'">
-              &lt;v-form
-                id="loginForm"
-              >
-                &lt;!-- account -->
-                &lt;v-text-field
-                  v-model="loginData.name"
-                  label="Username or email"
-                  required
-                  outlined
-                />
-
-                &lt;!-- password -->
-                &lt;v-text-field
-                  v-model="loginData.password"
-                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
-                  :type="show1 ? 'text' : 'password'"
-                  label="Password"
-                  counter
-                  required
-                  @click:append="show1 = !show1"
-                  outlined
-                />
-
-                &lt;v-card-text class="text-left">
-                  &lt;router-link to="/accounts/forgotPassword">
-                    Forgot your password ?
-                  &lt;/router-link>
-                &lt;/v-card-text>
-
-                &lt;v-card-actions class="mt-3">
-                  &lt;v-btn
-                    class="mr-5 px-4"
-                    light
-                    @click="logUser()"
-                  >
-                    LOGIN
-                  &lt;/v-btn>
-                  &lt;v-btn
-                    light
-                    class="px-4"
-                    href="#/accounts/signup"
-                  >
-                    Register
-                  &lt;/v-btn>
-                &lt;/v-card-actions>
-              &lt;/v-form>
-            &lt;/v-card-text>
-          &lt;/v-card>
-        &lt;/v-col>
-      &lt;/v-row>
-    &lt;/v-container>
-  &lt;/v-layout>
+          &lt;template v-slot:selection="data">
+            &lt;v-chip class="blue white--text">
+              {{ cleanString(data.item.key) }}
+            &lt;/v-chip>
+          &lt;/template>
+          &lt;template v-slot:item="data">
+            &lt;div class="filterValueName">
+              {{ cleanString(data.item.key) }}
+            &lt;/div>
+            &lt;div class="filterValueCount">
+              {{ data.item['doc_count'] }}
+            &lt;/div>
+          &lt;/template>
+        &lt;/v-autocomplete>
+        &lt;v-btn
+          color="primary"
+          class="ml-lg-2"
+          style="height: 38px"
+          @click="applyFilters(filter)"
+        >
+          Apply
+        &lt;/v-btn>
+      &lt;/div>
+    &lt;/v-expansion-panel-content>
+  &lt;/v-expansion-panel>
 &lt;/template>
 
 &lt;script>
-    import { mapActions, mapState } from 'vuex'
-    import MessageHandler from "../../../components/Users/MessageHandler";
-    /** This component handles the login page
-     *
-     */
+    import {mapGetters} from 'vuex'
+
     export default {
-        name: "Login",
-        components: {MessageHandler},
-        filters: {
-            capitalize: function(value){
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            }
-        },
+        name: "ExpansionPanel",
         props: {
-          redirect: {
-            type: Boolean,
-            default: true,
-          }
+            filter: {default: null, type: Object}
         },
         data: () => {
             return {
-                show1: false,
-                currentPanel: "login",
-                loginData: {},
-                oauthLogin: [
-                  {
-                    name: "ORCID",
-                    icon: "fab fa-orcid",
-                    color: "green white--text",
-                    callback: "https://api.fairsharing.org/users/auth/orcid",
-                  },
-                  {
-                    name: "Twitter",
-                    icon: "fab fa-twitter",
-                    color: "blue white--text",
-                    callback: "https://api.fairsharing.org/users/auth/twitter",
-                  },
-                  {
-                    name: "GitHub",
-                    icon: "fab fa-github",
-                    color: "black white--text",
-                    callback: "https://api.fairsharing.org/users/auth/github",
-                  }
-                ]
+                selectedValues: []
             }
         },
         computed: {
-            ...mapState("users", ["messages", "user"])
+            ...mapGetters('records', ['getFilter']),
+            getValues: function () {
+                let _module = this;
+                let output = _module.getFilter(this.filter.filterName);
+                if (output.values &amp;&amp; typeof output.values === 'object') {
+                    return output.values;
+                }
+                return []
+            }
         },
         methods: {
-            ...mapActions('users', ['login', 'logout']),
-            logUser: async function(){
-                const _module = this;
-                const user = {
-                    "name": _module.loginData.name,
-                    "password":  _module.loginData.password
-                };
-                await _module.login(user);
-                if (!_module.messages().login.error) {
-                  const goTo = _module.$route.query.redirect;
-                  if (goTo){
-                    _module.$router.push({
-                      path: goTo
-                    })
-                  }
-                  else if (_module.redirect) {
-                    _module.$router.go(-1);
-                  }
+            /**
+             * Apply the filters by building the new query parameters using the form data.
+             */
+            applyFilters: function () {
+                let _module = this;
+                let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
+                if (Object.keys(currentParams).indexOf(_module.filter.filterName) === -1) {
+                    if (_module.selectedValues !== null &amp;&amp; _module.selectedValues.length > 0) {
+                        currentParams[_module.filter.filterName] = _module.selectedValues.join(',');
+                        _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentParams
+                        });
+                    }
+                } else {
+                    if (_module.selectedValues === null || _module.selectedValues.length === 0) {
+                        delete currentParams[_module.filter.filterName];
+                        _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentParams
+                        });
+                    } else {
+                        let newParams = [];
+                        let existingValues = currentParams[_module.filter.filterName].split(",");
+                        _module.selectedValues.forEach(function (selectedValue) {
+                            if (existingValues.indexOf(selectedValue) === -1) {
+                                newParams.push(selectedValue);
+                            }
+                        });
+                        currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
+                        if (newParams.length > 0) {
+                            _module.$router.push({
+                                name: _module.$route.name,
+                                query: currentParams
+                            });
+                        }
+                    }
+
                 }
+            },
+            /**
+             * Reset the form/filters/parameters to default (go so /search?page=1)
+             */
+            reset: function (selectedItem) {
+                selectedItem.filterSelected = {};
+            },
+            /**
+             * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
+             * @param {String} string - the raw string to clean
+             * @returns {String} cleanedString - the string stripped of underscores.
+             */
+            cleanString: function (string) {
+                let cleanedString = string;
+                if (string.includes('_')) {
+                    cleanedString = string.replace(/_/g, " ");
+                }
+                return cleanedString;
             }
         }
     }
 &lt;/script>
 
-&lt;style>
-  #loginPage a {
-    text-decoration: none !important;
-  }
+&lt;style scoped lang="scss">
+    .badge {
+        width: 35px;
+        height: 25px;
+        background: white;
+        border: #27aae1 solid 1px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        position: relative;
+
+        #inventory {
+            font-size: small;
+            position: absolute;
+            top: 6%;
+            left: 20%;
+        }
+    }
+
+    .badge-active {
+        width: 35px;
+        height: 24px;
+        background: #27aae1;
+        border: #27aae1 solid 1px;
+        border-radius: 5px 5px 5px 5px;
+        -moz-border-radius: 5px 5px 5px 5px;
+        -webkit-border-radius: 5px 5px 5px 5px;
+        position: relative;
+
+        #inventory {
+            color: white;
+            font-size: small;
+            position: absolute;
+            top: 6%;
+            left: 20%;
+        }
+    }
+
+    .triangle-left {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 12px solid transparent;
+        border-right: 15px solid #27aae1;
+        border-bottom: 11px solid transparent;
+        left: -30%;
+    }
+
+    .fixed-scrollable-height {
+        max-height: 300px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+    }
+
+    .filterValueName {
+        flex: 1;
+        max-width: 348px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .filterValueCount {
+        background: #2196F3;
+        color: white;
+        padding: 0 7px;
+    }
+
 &lt;/style>
 </pre>
     </article>

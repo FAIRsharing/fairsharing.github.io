@@ -8,12 +8,14 @@
       v-if="$vuetify.breakpoint.smAndDown"
       @click="toggleDrawerLeft"
     />
+    <router-link to="/">
     <v-img
       src="@/assets/fairsharing-logo.svg"
       height="70"
       class="d-flex flex-grow-0"
       contain
     />
+    </router-link>
     <v-spacer />
     <nav>
       <ul

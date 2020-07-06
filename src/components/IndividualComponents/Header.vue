@@ -66,6 +66,13 @@
             </v-list-item>
           </v-list>
         </v-menu>
+        <v-btn
+                v-else
+                class="teal darken-2 "
+                to="/accounts/profile"
+        >
+          <span class="white--text">Welcome, {{ user().credentials.username }}</span>
+        </v-btn>
       </ul>
     </nav>
   </v-app-bar>

@@ -321,10 +321,30 @@
                       v-for="item in currentRecord['fairsharingRecord'].subjects"
                       :key="item.label"
                       class="mr-2 mb-2"
-                      color="accent"
+                      color="tertiary"
                       label
                       outlined
-                      text-color="accent"
+                      text-color="tertiary"
+                    >
+                      &lt;v-icon left>
+                        mdi-label
+                      &lt;/v-icon>
+                      {{ item.label }}
+                    &lt;/v-chip>
+                  &lt;/div>
+                  &lt;!--User Defined Tags-->
+                  &lt;div
+                          class="d-flex mt-2 flex-wrap"
+                  >
+                    &lt;b class="mr-8">User Defined Tags:&lt;/b>
+                    &lt;v-chip
+                            v-for="item in currentRecord['fairsharingRecord'].userDefinedTags"
+                            :key="item.label"
+                            class="mr-2 mb-2"
+                            color="accent"
+                            label
+                            outlined
+                            text-color="accent"
                     >
                       &lt;v-icon left>
                         mdi-label

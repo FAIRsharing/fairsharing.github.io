@@ -17,7 +17,9 @@ export const mutations = {
                     tokenValidity: user["expiry"]
                 },
                 metadata: {},
-                records: {}
+                records: {},
+                is_curator: user.is_curator,
+                role: user.role
             }
         };
         localStorage.setItem("user", JSON.stringify(state.user()));
@@ -42,6 +44,8 @@ export const mutations = {
     setUser(state, record){
         let user = JSON.parse(localStorage.getItem("user"));
         if (user) {
+            let isCurator = user.is_curator;
+            let role = user.role;
             state.user = function () {
                 return {
                     isLoggedIn: true,
@@ -51,7 +55,9 @@ export const mutations = {
                         tokenValidity: user.credentials.tokenValidity
                     },
                     metadata: record.metadata,
-                    records: record.records.user
+                    records: record.records.user,
+                    is_curator: isCurator,
+                    role: role
                 }
             };
         }
@@ -62,7 +68,9 @@ export const mutations = {
                     credentials: {
                     },
                     metadata: record.metadata,
-                    records: record.records.user
+                    records: record.records.user,
+                    is_curator: false,
+                    role: null
                 }
             };
         }

@@ -1,0 +1,18 @@
+{
+  "queryName": "searchFairsharingRecords",
+  "queryParam": null,
+  "fields": [
+    "currentPage",
+    "perPage",
+    "totalCount",
+    "totalPages",
+    "firstPage",
+    {
+      "name": "records",
+      "fields": [
+        "id",
+        "name"
+      ]
+    }
+  ]
+}

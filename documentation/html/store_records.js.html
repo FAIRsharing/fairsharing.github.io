@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -91,9 +91,9 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import Client from "@/components/GraphClient/GraphClient.js"
-import recordsQuery from "@/components/GraphClient/queries/getRecords.json"
-import filterMapping from "@/components/Records/FiltersLabelMapping.js"
+            class="sunlight-highlight-javascript linenums">import Client from "../components/GraphClient/GraphClient.js"
+import recordsQuery from "../components/GraphClient/queries/getRecords.json"
+import filterMapping from "../components/Records/FiltersLabelMapping.js"
 
 let client = new Client();
 
@@ -111,54 +111,52 @@ let recordsStore = {
         loading: false,
     },
     mutations: {
-        setRecords(state, data) {
+        setRecords(state, data){
             state.records = data['records'];
             state.facets = buildFacets(data["aggregations"]);
             state.totalPages = data["totalPages"];
             state.hits = data["totalCount"];
         },
-        resetRecords(state) {
+        resetRecords(state){
             recordsQuery.queryParam = null;
             state.records = [];
         },
-        resetFacets(state) {
+        resetFacets(state){
             state.facets = [];
         },
-        resetHits(state) {
+        resetHits(state){
             state.hits = null;
         },
-        setLoadingStatus(state, status) {
+        setLoadingStatus(state, status){
             state.loading = status;
         }
     },
     actions: {
-        async fetchRecords(state, params) {
+        async fetchRecords(state, params){
             this.commit("records/setLoadingStatus", true);
             this.commit("records/resetRecords");
             this.commit("records/resetHits");
-            if (Object.keys(params).length > 0) {
+            if (Object.keys(params).length > 0){
                 recordsQuery.queryParam = params;
             }
             const data = await client.executeQuery(recordsQuery);
             this.commit('records/setRecords', data["searchFairsharingRecords"]);
             this.commit("records/setLoadingStatus", false);
         },
-        resetFacets() {
+        resetFacets(){
             this.commit("records/resetFacets")
         },
-        resetRecords() {
+        resetRecords(){
             this.commit("records/resetRecords");
         }
     },
-    modules: {},
+    modules: {
+    },
     getters: {
-        getFilter: (state) => (facetName) => {
-            if (state.facets.length > 0) {
-                let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
-                currentFacet['values'] = currentFacet['buckets'];
-                return currentFacet;
-            }
-            return [];
+        getFacet: (state) => (size, facetName) => {
+            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
+            currentFacet['values'] = currentFacet['buckets'].sort().slice(0, size);
+            return currentFacet;
         }
     }
 };
@@ -172,15 +170,15 @@ export default recordsStore;
  * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
  * @returns {Array} output - the array of ready to use facets containing a name, a label and values
  */
-const buildFacets = function (rawFacets) {
+const buildFacets = function(rawFacets){
     let output = [];
     const mapper = filterMapping["autocomplete"];
 
-    Object.keys(rawFacets).forEach(function (facetName) {
-        if (Object.prototype.hasOwnProperty.call(mapper, facetName)) {
+    Object.keys(rawFacets).forEach(function(facetName){
+        if (Object.prototype.hasOwnProperty.call(mapper, facetName)){
             let localFacet = mapper[facetName];
-            rawFacets[facetName]["buckets"].forEach(function (bucket) {
-                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
+            rawFacets[facetName]["buckets"].forEach(function(bucket){
+                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")){
                     bucket["key"] = bucket["key_as_string"];
                 }
             });
@@ -235,7 +233,7 @@ const buildFacets = function (rawFacets) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Fri Jul 3rd 2020
+		on Mon Jul 6th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

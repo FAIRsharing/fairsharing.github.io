@@ -1,0 +1,11 @@
+{
+  "queryName": "searchSubjects",
+  "queryParam": null,
+  "fields": [
+    "definitions",
+    "expandedNames",
+    "id",
+    "label",
+    "synonyms"
+  ]
+}

@@ -4,33 +4,30 @@ Separate routing handle to avoid a big main.js
 
 import Vue from "vue";
 import VueRouter from "vue-router";
-import store from '../store'
+import store from '@/store'
 
-import Home from "../views/Home/Home";
-import Login from "../views/Users/Login/Login";
-import Signup from "../views/Users/Signup";
-import Records from "../views/Records/Records";
-import Record from "../views/Records/Record";
-import Statistics from "../views/Stats/Statistics";
-import New from "../views/CreateRecord/NewRecord";
-import NewStandard from "../views/CreateRecord/NewStandard";
-import NewDatabase from "../views/CreateRecord/NewDatabase";
-import NewPolicy from "../views/CreateRecord/NewPolicy";
-import NewCollection from "../views/CreateRecord/NewCollection";
-import Community from "../views/Static/Community/Community";
-import Stakeholders from "../views/Static/Stakeholders/Stakeholders";
-import Timeline from "../views/Static/Timeline/Timeline";
-import License from "../views/Static/License/License";
-import Terms from "../views/Static/TermOfUse/TermsOfUse";
-import Educational from "../views/Static/Educational/Educational";
-import Privacy from "../views/Static/Privacy/Privacy";
+import Home from "@/views/Home/Home";
+import Login from "@/views/Users/Login/Login";
+import Signup from "@/views/Users/Signup";
+import Records from "@/views/Records/Records";
+import Record from "@/views/Records/Record";
+import Statistics from "@/views/Stats/Statistics";
+import New from "@/views/CreateRecord/NewRecord";
+import Community from "@/views/Static/Community/Community";
+import Stakeholders from "@/views/Static/Stakeholders/Stakeholders";
+import Timeline from "@/views/Static/Timeline/Timeline";
+import License from "@/views/Static/License/License";
+import Terms from "@/views/Static/TermOfUse/TermsOfUse";
+import Educational from "@/views/Static/Educational/Educational";
+import Privacy from "@/views/Static/Privacy/Privacy";
 import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
 import User from "@/views/Users/User.vue"
 import RequestNewPassword from "@/views/Users/RequestNewPassword";
 import ResetPassword from "@/views/Users/ResetPassword";
 import EditProfile from "@/views/Users/EditProfile";
 import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
-import LoginFailure from "../views/Users/Login/LoginFailure";
+import LoginFailure from "@/views/Users/Login/LoginFailure";
+import Editor from "@/views/CreateRecord/Editor";
 
 Vue.use(VueRouter);
 
@@ -81,33 +78,13 @@ let routes = [
             isLoggedIn(to, from, next, store);
         }
     },
-    {
-        name: "New_standard",
-        path: "/new/standard",
-        component: NewStandard,
-    },
-    {
-        name: "New_database",
-        path: "/new/database",
-        component: NewDatabase,
-    },
-    {
-        name: "New_policy",
-        path: "/new/policy",
-        component: NewPolicy,
-    },
-    {
-        name: "New_collection",
-        path: "/new/collection",
-        component: NewCollection,
-    },
+
+    /* Static pages */
     {
         name: "Statistics",
         path: "/summary-statistics",
         component: Statistics,
     },
-
-    /* Static pages */
     {
         name: "Community",
         path: "/community",
@@ -143,7 +120,8 @@ let routes = [
         path: "/privacy",
         component: Privacy,
     },
-    // OAUTH
+
+    // AUTHENTICATION AND USERS
     {
         name: "OAuth Login",
         path: "/login_success",
@@ -153,16 +131,6 @@ let routes = [
         name: "OAuth Login Failure",
         path: "/login_failure",
         component: LoginFailure
-    },
-
-    /*
-    Careful, this has to be the very last base path  !!!!
-    This component"s page title is handled in the component itself as it needs the :id param
-    */
-    {
-        name: "Record",
-        path: "/:id",
-        component: Record
     },
     {
         name: "Login",
@@ -205,15 +173,29 @@ let routes = [
             isLoggedIn(to, from, next, store);
         }
     },
+
+    /*
+    Careful, this has to be the very last base path  !!!!
+    This component"s page title is handled in the component itself as it needs the :id param
+    */
+    {
+        name: "Edit Content",
+        path: "/:id/edit",
+        component: Editor,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+        }
+    },
+    {
+        name: "Record",
+        path: "/:id",
+        component: Record
+    },
     {
         name: "*",
         path: "*/*",
         redirect: "/"
     }
-
-    // We should have extra routes to redirect /standards ... to search?fairsharingRegistry=standard
-    // Then change the method to get the title: if there's fairsharingRegistry URL param, set the new page title;
-
 ];
 routes.forEach(function (route) {
     if (route.name !== "Record") {
@@ -236,11 +218,26 @@ export function beforeEach(to, from, next) {
 export function isLoggedIn(to, from, next, store) {
     if (store.state.users.user().isLoggedIn) {
         next()
-    } else {
+    }
+    else {
         next({
             name: "Login" // back to safety route //
         });
     }
 }
+
+/*
+export function canEdit(to, from, next, store){
+    if (!store.state.users.user().isLoggedIn) {
+        next({
+            name: "Login" // back to safety route //
+        });
+    }
+    else {
+        // implement canEdit here. If can edit go next() else create a cant edit page/error message.
+        next();
+    }
+}
+*/
 
 export default router;

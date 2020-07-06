@@ -135,7 +135,7 @@
               handler(oldVal, newVal){
                 const _module = this;
                 if (newVal.recordType !== null && newVal.recordType.name === "collection"){
-                  _module.models.recordStatus = null;
+                  _module.models.recordStatus = "uncertain";
                   delete _module.record["deprecation_reason"];
                 }
               }

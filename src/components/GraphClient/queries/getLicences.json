@@ -1,0 +1,8 @@
+{
+  "queryName": "searchLicences",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "name"
+  ]
+}

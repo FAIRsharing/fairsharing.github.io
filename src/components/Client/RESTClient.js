@@ -19,6 +19,7 @@ class RESTClient {
         };
     }
 
+
     /* USERS: all methods below related to handling user authentication */
 
     /**
@@ -147,6 +148,23 @@ class RESTClient {
     }
 
     /**
+     * Verify the validity of the given password
+     * @param {String} password - the password to test
+     * @returns {Promise}
+     */
+    async verifyPassword(password){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/users/check_password",
+            headers: headers,
+            data: {password: password}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Get the current user data
      * @param token
      * @returns {Promise}
@@ -203,6 +221,143 @@ class RESTClient {
         let response = await this.executeQuery(request);
         return response.data;
     }
+
+    /**
+     * Update the given record
+     * @param {Object} record - the record to update containing the ID to target, the new values
+     * and the user token
+     * @returns {Promise}
+     */
+    async updateRecord(record){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + record.token;
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + "/fairsharing_records/" + record.id,
+            headers: headers,
+            data: {fairsharing_record: record.record}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+
+    /* USER DEFINED TAGS */
+
+    /**
+     * Create a new user defined tag in the database for users to tag their records.
+     * @param {String} term - the string value of the term
+     * @param {String} token - the user JWT
+     * @returns {Promise}
+     */
+    async createNewUserDefinedTag(term, token){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/user_defined_tags",
+            headers: headers,
+            data: {user_defined_tag: {label:term}}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+
+    /* LICENCES */
+
+    /**
+     * Create new a licence link
+     * @param {Object} licenceLink - the licence link to create
+     * @param {String} token - the user token
+     * @returns {Promise}
+     */
+    async createLicenceLink(licenceLink, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/licence_links",
+            headers: headers,
+            data: {licence_link: licenceLink}
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Delete the given licence
+     * @param {Number} id - id of the licence link to delete
+     * @param {String} token - the user token
+     * @returns {Promise}
+     */
+    async deleteLicenceLink(id, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "delete",
+            baseURL: _client.baseURL + "/licence_links/" + id,
+            headers: headers,
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Update the licenceLink
+     * @param {Object} licenceLink - the new values for the licence link
+     * @param {String} token the user token
+     * @returns {Promise}
+     */
+    async updateLicenceLink(licenceLink, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "put",
+            baseURL: _client.baseURL + "/licence_links/" + licenceLink.id,
+            headers: headers,
+            data: {licence_link: licenceLink}
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+
+    /* PUBLICATIONS */
+
+    async createPublication(publication, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/publications",
+            headers: headers,
+            data: { publication: publication }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    async editPublication(publication, token){
+        let _client = this;
+        let headers = JSON.parse(JSON.stringify(_client.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "put",
+            baseURL: _client.baseURL + "/publications/" + publication.id,
+            headers: headers,
+            data: { publication: publication }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+
+    /* EXTRA METHODS */
 
     /**
      * Trigger the given query with Axios

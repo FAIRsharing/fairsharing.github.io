@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -93,133 +93,34 @@
         <pre
             class="sunlight-highlight-javascript linenums">import query from "../components/GraphClient/queries/getFilters.json"
 import filterMapping from "../components/Records/FiltersLabelMapping.js"
-import {isEqual} from 'lodash'
+
 /**
  * The searchFilters store trigger a single field query to searchFairsharingRecords, gets the aggregation array and
  * builds the filtering system to be used by advanced search functions.
  * @type {Object}
  */
 let filtersStore = {
-        namespaced: true,
-        state: {
-            rawFilters: [],
-            filters: [],
-            filterButtons: [],
-        },
-        mutations: {
-            setFilters(state, val) {
-                if (state.rawFilters.length === 0) {
-                    let rawFilters = val['searchFairsharingRecords']['aggregations'];
-                    state.rawFilters = buildFilters(rawFilters);
-                    state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' &amp;&amp; item.filterName !== 'status'));
-                }
-            },
-            setFilterButtons(state) {
-                state.rawFilters.forEach(item => {
-                    if (item.type === 'Boolean') {
-                        //if it is a boolean object then it will go to the Buttons
-                        let ObjectModel = null;
-                        switch (item.filterName) {
-                            case 'isRecommended':
-                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
-                                    {title: 'RECOMMENDED', active: false, filterName: item.filterName, value: true}
-                                    , {title: 'NOT RECOMMENDED', active: false, filterName: item.filterName, value: false}];
-                                state.filterButtons.push(ObjectModel);
-                                break;
-                            case 'isMaintained':
-                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName,},
-                                    {title: 'MAINTAINED', active: false, filterName: item.filterName, value: true}
-                                    , {title: 'NOT MAINTAINED', active: false, filterName: item.filterName, value: false}];
-                                state.filterButtons.push(ObjectModel);
-                                break;
-                            case 'isApproved':
-                                ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
-                                    {title: 'APPROVED', active: false, filterName: item.filterName, value: true}
-                                    , {title: 'NOT APPROVED', active: false, filterName: item.filterName, value: false}];
-                                state.filterButtons.push(ObjectModel);
-                                break;
-                        }
-                    }
-                    // else if its a unique case like status which is a 4-options Filter Group
-                    else if (item.filterName === 'status') {
-                        let ObjectModel;
-                        ObjectModel = [{
-                            title: 'ALL',
-                            active: true,
-                            filterName: item.filterName,
-                            toolTip: 'Show All Records'
-                        },
-                            {
-                                title: 'R',
-                                active: false,
-                                filterName: item.filterName,
-                                value: item.values[0],
-                                toolTip: 'Show Ready Records'
-                            },
-                            {
-                                title: 'D',
-                                active: false,
-                                filterName: item.filterName,
-                                value: item.values[1],
-                                toolTip: 'Show Deprecated Records'
-                            },
-                            {
-                                title: 'U',
-                                active: false,
-                                filterName: item.filterName,
-                                value: item.values[2],
-                                toolTip: 'Show Uncertain Records'
-                            }
-                            , {
-                                title: 'I',
-                                active: false,
-                                filterName: item.filterName,
-                                value: item.values[3],
-                                toolTip: 'Show In Development Records'
-                            }
-                        ];
-                        state.filterButtons.push(ObjectModel);
-                    }
-                });
-            },
-            resetFilterButtons(state, itemParentIndex) {
-                state.filterButtons[itemParentIndex].map((item) => {
-                    item.active = false;
-                });
-            },
-            activateFilterButtonsItem(state, {activeItem, itemParentIndex}) {
-                state.filterButtons[itemParentIndex].map((item) => {
-                    if (isEqual(item,activeItem) ) {
-                        item.active = true;
-                    }
-                });
-            }
-        },
-        actions: {
-            async fetchFilters(_, client) {
-                await this.commit('searchFilters/setFilters', await client.executeQuery(query));
-                this.commit('searchFilters/setFilterButtons');
-            },
-            resetFilterButtons: function (_, itemParentIndex) {
-                this.commit('searchFilters/resetFilterButtons', itemParentIndex)
-            },
-            activateFilterButtonsItem: ({commit}, activeItem, itemParentIndexValue) => commit('activateFilterButtonsItem', activeItem, itemParentIndexValue)
-        },
-        modules: {},
-        getters: {
-            getFilters: (state) => {
-                let output = [];
-                state.filters.forEach(function (filter) {
-                    output.push({
-                        filterName: filter.filterName,
-                        filterLabel: filter.filterLabel
-                    })
-                });
-                return output
+    namespaced: true,
+    state: {
+        filters: [],
+    },
+    mutations: {
+        setFilters(state, val){
+            if (state.filters.length === 0){
+                let rawFilters = val['searchFairsharingRecords']['aggregations'];
+                state.filters = buildFilters(rawFilters);
             }
         }
-    }
-;
+    },
+    actions: {
+        async fetchFilters(_, client){
+            this.commit('searchFilters/setFilters', await client.executeQuery(query));
+        }
+    },
+    modules: {
+    },
+    getters: {}
+};
 export default filtersStore;
 
 /**
@@ -227,23 +128,32 @@ export default filtersStore;
  * @param {Array} val - an array of raw filters coming from the api as data['searchFairsharingRecords']['aggregations']
  * @returns {Array} filters - ready to use filters for the advanced search components
  */
-
-let buildFilters = function (val) {
+let buildFilters = function(val){
+    // Need to return filter values, filter label and filter name
     let filters = [];
+
+    // start with simple input
+    filterMapping.input.forEach(function(filter){
+        filter.values = null;
+        filters.push(filter)
+    });
+
     let filtersLabels = filterMapping['autocomplete'];
-    Object.keys(val).forEach(function (key) {
-        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
+    // now deal with incoming data
+    Object.keys(val).forEach(function(key){
+        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)){
             let filter = filtersLabels[key];
             filter.values = null;
             let filterValues = [];
 
             let buckets = val[key]['buckets'];
-            buckets.forEach(function (bucket) {
+            buckets.forEach(function(bucket){
                 if (Object.prototype.hasOwnProperty.call(
                     bucket,
-                    "key_as_string")) {
+                    "key_as_string")){
                     filterValues.push(bucket["key_as_string"]);
-                } else {
+                }
+                else {
                     filterValues.push(bucket['key']);
                 }
             });
@@ -298,7 +208,7 @@ let buildFilters = function (val) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Fri Jul 3rd 2020
+		on Mon Jul 6th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

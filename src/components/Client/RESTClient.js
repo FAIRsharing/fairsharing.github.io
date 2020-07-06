@@ -148,6 +148,23 @@ class RESTClient {
     }
 
     /**
+     * Verify the validity of the given password
+     * @param {String} password - the password to test
+     * @returns {Promise}
+     */
+    async verifyPassword(password){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/users/check_password",
+            headers: headers,
+            data: {password: password}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Get the current user data
      * @param token
      * @returns {Promise}

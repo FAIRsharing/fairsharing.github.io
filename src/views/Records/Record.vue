@@ -4,11 +4,19 @@
       Content
     </h1>
     <v-container
-      v-if="!error && queryTriggered"
+      v-if="queryTriggered"
       fluid
     >
+      <v-row v-if="error">
+        <v-col cols="12">
+          <v-alert type="error">
+            {{ error }}
+          </v-alert>
+        </v-col>
+      </v-row>
+
       <v-row
-        v-if="user().isLoggedIn"
+        v-if="user().isLoggedIn && !error"
         class="pr-3"
       >
         <v-spacer />
@@ -22,7 +30,7 @@
 
       <!--  Content  -->
       <v-row
-        v-if="currentRecord['fairsharingRecord']"
+        v-if="currentRecord['fairsharingRecord'] && !error"
         no-gutters
       >
         <v-col
@@ -104,7 +112,7 @@
                   <div class="d-flex">
                     <b class="mr-2">Type:</b>
                     <p>
-                      {{ capitalize(cleanString(currentRecord['fairsharingRecord'].type)) }}
+                      {{ cleanString(currentRecord['fairsharingRecord'].type) | capitalize }}
                     </p>
                   </div>
                   <!--Year of Creation-->
@@ -117,12 +125,12 @@
                   <!--Registry-->
                   <div class="d-flex">
                     <b class="mr-2">Registry:</b>
-                    <p>{{ capitalize(currentRecord['fairsharingRecord'].registry) }}</p>
+                    <p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}</p>
                   </div>
                   <!--Description-->
                   <div class="d-flex align-center">
                     <b class="mr-2">Description:</b>
-                    <p>{{ capitalize(currentRecord['fairsharingRecord'].description) }}</p>
+                    <p>{{ currentRecord['fairsharingRecord'].description | capitalize }}</p>
                   </div>
                   <!--HomePage-->
                   <div class="d-flex">
@@ -228,30 +236,10 @@
                       v-for="item in currentRecord['fairsharingRecord'].subjects"
                       :key="item.label"
                       class="mr-2 mb-2"
-                      color="tertiary"
+                      color="accent"
                       label
                       outlined
-                      text-color="tertiary"
-                    >
-                      <v-icon left>
-                        mdi-label
-                      </v-icon>
-                      {{ item.label }}
-                    </v-chip>
-                  </div>
-                  <!--User Defined Tags-->
-                  <div
-                          class="d-flex mt-2 flex-wrap"
-                  >
-                    <b class="mr-8">User Defined Tags:</b>
-                    <v-chip
-                            v-for="item in currentRecord['fairsharingRecord'].userDefinedTags"
-                            :key="item.label"
-                            class="mr-2 mb-2"
-                            color="accent"
-                            label
-                            outlined
-                            text-color="accent"
+                      text-color="accent"
                     >
                       <v-icon left>
                         mdi-label
@@ -548,7 +536,7 @@
                     </v-card-title>
                     <v-data-table
                       :headers="headers"
-                      :items="flatAscociatedRecords"
+                      :items="recordAssociations"
                       :search="search"
                     />
                   </v-card>
@@ -558,229 +546,198 @@
           </v-row>
         </v-col>
       </v-row>
-      <!--  Footer  -->
-      <Footer />
     </v-container>
-    <div
-      v-if="error"
-      class="error"
-    >
-      {{ error }}
-    </div>
   </v-main>
 </template>
 
 <script>
-    import Ribbon from "@/components/IndividualComponents/Ribbon";
-    import Footer from "@/components/IndividualComponents/Footer";
-    import CountryFlag from 'vue-country-flag';
-    import RecordStatus from "@/components/IndividualComponents/RecordStatus";
-    import Client from '@/components/GraphClient/GraphClient.js'
-    import {mapActions, mapState} from 'vuex'
-    import {concat, has} from 'lodash'
+  import Ribbon from "@/components/IndividualComponents/Ribbon";
+  import CountryFlag from 'vue-country-flag';
+  import RecordStatus from "@/components/IndividualComponents/RecordStatus";
+  import Client from '@/components/GraphClient/GraphClient.js'
+  import {mapActions, mapState} from 'vuex'
 
-    export default {
-        name: "Record",
-        components: {RecordStatus, Footer, Ribbon, CountryFlag},
-        data: () => {
-            return {
-                error: null,
-                queryTriggered: false,
-                search: '',
-                headers: [
-                    {text: 'Name', value: 'name'},
-                    {text: 'Registry', value: 'registry'},
-                    {text: 'Relationship', value: 'recordAssocLabel'},
-                    {text: 'Subject', value: 'subject'},
-                ],
-                showScrollToTopButton: false,
-                flatAscociatedRecords: []
+  export default {
+    name: "Record",
+    components: {RecordStatus, Ribbon, CountryFlag},
+    filters: {
+      capitalize (str){
+        if (!str) return "";
+        return str.charAt(0).toUpperCase() + str.slice(1)
+      }
+    },
+    data: () => {
+      return {
+        error: null,
+        queryTriggered: false,
+        search: '',
+        headers: [
+          { text: 'Name', value: 'name' },
+          { text: 'Registry', value: 'registry' },
+          { text: 'Relationship', value: 'recordAssocLabel' },
+          { text: 'Subject', value: 'subject' },
+        ],
+        showScrollToTopButton: false,
+        recordAssociations: []
+      }
+    },
+    computed: {
+      currentRoute () {
+        let id = this.$route.params['id'];
+        if (id.includes("FAIRsharing.")) {
+          return "10.25504/" + id;
+        }
+        return this.$route.params['id'];
+      },
+      ...mapState('record', ["currentRecord", "currentRecordHistory"]),
+      ...mapState('users', ["user"]),
+      getTitle: function () {
+        return 'FAIRsharing | ' + this.currentRoute
+      },
+    },
+    watch: {
+      async currentRoute() {
+        await this.getData();
+      }
+    },
+    mounted() {
+      this.$nextTick(async function () {
+        this.client = new Client();
+        await this.getData();
+      })
+    },
+    methods: {
+      ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
+      /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+      prepareAssociations: function (associations, reverseAssociations) {
+        let _module = this;
+        let joinedArrays = associations.concat(reverseAssociations);
+        const properties = ['fairsharingRecord', 'linkedRecord'];
+        joinedArrays.forEach(item => {
+          let object = {
+            recordAssocLabel: _module.cleanString(item.recordAssocLabel),
+            subject: _module.currentRecord['fairsharingRecord'].name
+          };
+          properties.forEach(prop => {
+            if (Object.prototype.hasOwnProperty.call(item, prop)) {
+              object.id = item[prop].id;
+              object.registry = item[prop].registry;
+              object.name = item[prop].name;
             }
-        },
-        computed: {
-            currentRoute: function () {
-              let id = this.$route.params['id'];
-              if (id.includes("FAIRsharing.")){
-                return "10.25504/" + id;
-              }
-                return this.$route.params['id']
-            },
-            ...mapState('record', ["currentRecord", "currentRecordHistory"]),
-            ...mapState('users', ["user"])
-        },
-        watch: {
-            currentRoute: async function () {
-              let _module = this;
-                await this.getData();
-                _module.flatAscociatedRecords =[]
-              if(has(_module.currentRecord['fairsharingRecord'],'recordAssociations') ||  has(_module.currentRecord['fairsharingRecord'],'reverseRecordAssociations'))
-                _module.flattenAssociatedRecordsArray(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-
-            }
-        },
-        mounted: function () {
-            let _module = this;
-            this.$nextTick(async function () {
-                this.client = new Client();
-                await this.getData();
-              _module.flatAscociatedRecords =[]
-               if(has(_module.currentRecord['fairsharingRecord'],'recordAssociations') ||  has(_module.currentRecord['fairsharingRecord'],'reverseRecordAssociations'))
-                _module.flattenAssociatedRecordsArray(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-
-            })
-        },
-        methods: {
-            capitalize: function (value) {
-                if (!value) return ''
-                value = value.toString()
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            },
-            // flatten the associatedRecords and AssociatedRecordsReverse into one array
-            flattenAssociatedRecordsArray: function (FirstArray, SecondArray) {
-                let _module = this;
-
-                let joinedArrays = concat(FirstArray, SecondArray);
-
-                joinedArrays.forEach(item => {
-                    let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
-                    if (has(item, 'linkedRecord')) {
-                        object.id = item.linkedRecord.id;
-                        object.registry = item.linkedRecord.registry;
-                        object.name = item.linkedRecord.name;
-                        object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                        object.subject = _module.currentRecord['fairsharingRecord'].name;
-                    }
-                    else if (has(item, 'fairsharingRecord')) {
-                      object = {registry: null, name: null, recordAssocLabel: null, subject: null}
-                      object.id = item.fairsharingRecord.id;
-                      object.registry = item.fairsharingRecord.registry;
-                      object.name = item.fairsharingRecord.name;
-                      object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                      object.subject = _module.currentRecord['fairsharingRecord'].name;
-                    }else {
-                      return
-                    }
-                  _module.flatAscociatedRecords.push(object);
-
-                });
-            },
-
-            /** Method to get the page title
-             *  @returns {String} - the title of the current page
-             */
-            getTitle: function () {
-                return 'FAIRsharing | ' + this.currentRoute
-            },
-            /**
-             * Method to set the current record in the store
-             * @returns {Promise} - the current record
-             * */
-            getData: async function () {
-                let _module = this;
-                this.queryTriggered = false;
-                this.error = null;
-                try {
-                    await _module.fetchRecord(this.currentRoute);
-                } catch (e) {
-                    this.error = e.message;
-                }
-                this.queryTriggered = true;
-            },
-            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-            /**
-             * Method to dispatch the current record history into the store
-             * @returns {Promise} - the current record history
-             * */
-            getHistory: async function () {
-                await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
-            },
-            cleanString: function (string) {
-                if (typeof string === "string") {
-                    return string.replace(/_/g, " ");
-                }
-                return string;
-            }
-        },
-        metaInfo() {
-            return {
-                title: this.getTitle()
-            }
-        },
-    }
+          });
+          _module.recordAssociations.push(object);
+        });
+      },
+      /**
+       * Method to set the current record in the store
+       * @returns {Promise} - the current record
+       * */
+      getData: async function () {
+        let _module = this;
+        this.queryTriggered = false;
+        this.error = null;
+        try {
+          await _module.fetchRecord(this.currentRoute);
+          const currentRecord = _module.currentRecord['fairsharingRecord'];
+          _module.recordAssociations = [];
+          if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
+            _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
+          }
+        }
+        catch (e) {
+          this.error = e.message;
+        }
+        this.queryTriggered = true;
+      },
+      /**
+       * Method to dispatch the current record history into the store
+       * @returns {Promise} - the current record history
+       * */
+      getHistory: async function () {
+        await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
+      },
+      cleanString: function (string) {
+        if (typeof string === "string") {
+          return string.replace(/_/g, " ");
+        }
+        return string;
+      }
+    },
+    metaInfo() {
+      return {
+        title: this.getTitle
+      }
+    },
+  }
 </script>
 
 <style scoped lang="scss">
-    a {
-        text-decoration: none;
+  a {
+    text-decoration: none;
 
-        &:hover, &:focus {
-            text-decoration: underline;
-            outline: 0;
-        }
+    &:hover, &:focus {
+      text-decoration: underline;
+      outline: 0;
     }
+  }
 
-    .flag-mr {
-        margin-right: .29em;
-    }
+  .flag-mr {
+    margin-right: .29em;
+  }
 
-    #banner {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        padding: 1em;
-    }
+  #banner {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1em;
+  }
 
-    .content-custom {
-        max-height: 100vh;
-        scroll-behavior: smooth;
-        padding: 0;
-    }
+  .content-custom {
+    max-height: 100vh;
+    scroll-behavior: smooth;
+    padding: 0;
+  }
 
-    .title-style {
+  .title-style {
+    position: absolute;
+    top: -10px;
+    background: linear-gradient(#4f5f5d, #00aa8e);
+    background: -moz-linear-gradient(#4f5f5d, #00aa8e);
+    background: -webkit-linear-gradient(#4f5f5d, #00aa8e);
+    background: -o-linear-gradient(#4f5f5d, #00aa8e);
+    padding: 1px 10px 1px 10px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+
+    div {
+      position: relative;
+
+      h4 {
+        font-size: 1rem;
+        color: white;
+      }
+
+      .triangle-bottomLeft {
+        width: 0;
+        height: 0;
         position: absolute;
-        top: -10px;
-        /*
-                        color: #909090;
-                        background: linear-gradient(#bebebe,transparent);
-                        border: #bebebe solid 1px;
-        */
-        background: linear-gradient(#4f5f5d, #00aa8e);
-        background: -moz-linear-gradient(#4f5f5d, #00aa8e);
-        background: -webkit-linear-gradient(#4f5f5d, #00aa8e);
-        background: -o-linear-gradient(#4f5f5d, #00aa8e);
-        padding: 1px 10px 1px 10px;
-        border-radius: 10px;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
+        top: 0;
+        left: -18px;
+        border-bottom: 8px solid #aaaaaa;
+        border-left: 8px solid transparent;
+      }
 
-        div {
-            position: relative;
-
-            h4 {
-                font-size: 1rem;
-                color: white;
-            }
-
-            .triangle-bottomLeft {
-                width: 0;
-                height: 0;
-                position: absolute;
-                top: 0;
-                left: -18px;
-                border-bottom: 8px solid #aaaaaa;
-                border-left: 8px solid transparent;
-            }
-
-            .triangle-bottomRight {
-                width: 0;
-                height: 0;
-                position: absolute;
-                top: 0;
-                right: -18px;
-                border-bottom: 8px solid #aaaaaa;
-                border-right: 8px solid transparent;
-            }
-        }
-
+      .triangle-bottomRight {
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        right: -18px;
+        border-bottom: 8px solid #aaaaaa;
+        border-right: 8px solid transparent;
+      }
     }
+
+  }
 </style>

@@ -95,7 +95,7 @@
   &lt;v-expansion-panel v-if="filter.filterName">
     &lt;v-expansion-panel-header> {{ filter.filterLabel }}&lt;/v-expansion-panel-header>
     &lt;v-expansion-panel-content class="pl-5 pr-5">
-      &lt;div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
+      &lt;div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]" >
         &lt;v-autocomplete
           v-model="selectedValues"
           :items="getValues"
@@ -107,10 +107,11 @@
           :placeholder="`Search through ${filter.filterLabel}`"
           item-text="key"
           item-value="key"
+          class="autocomplete-max-width"
           @click:clear="reset(filter)"
         >
           &lt;template v-slot:selection="data">
-            &lt;v-chip class="blue white--text">
+            &lt;v-chip class="blue white--text  mb-1">
               {{ cleanString(data.item.key) }}
             &lt;/v-chip>
           &lt;/template>
@@ -284,6 +285,14 @@
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+    }
+
+    .autocomplete-max-width{
+      flex: 1;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     .filterValueCount {

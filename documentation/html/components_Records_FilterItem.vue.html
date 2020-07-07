@@ -134,7 +134,16 @@
              */
             applyFilters: function (selectedItem) {
                 const _module = this;
-                if (has(selectedItem, 'value')) {
+                for(let filter in _module.$route.query){
+                  console.log(filter)
+                }
+/*
+              Object.keys(_module.$route.query).forEach(function (param) {
+                currentQuery[param] = _module.$route.query[param]
+              });
+*/
+
+              if (has(selectedItem, 'value')) {
                     _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
                     _module.previousFormData = _module.formData;
                     _module.$router.push({

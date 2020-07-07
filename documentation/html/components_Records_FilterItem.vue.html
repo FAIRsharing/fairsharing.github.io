@@ -92,29 +92,29 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-tooltip
-    bottom
-    :disabled="item.toolTip===undefined"
-  >
-    &lt;template v-slot:activator="{ on }">
-      &lt;v-btn
-        color="primary"
-        class="mr-1 mr-lg-2"
-        :outlined="!item.active"
-        :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens,'buttons-md-style':multipleItems &amp;&amp; !isFirstItem}]"
-        @click="selectFilter(item)"
-        v-on="on"
-      >
-        {{ item.title }}
-      &lt;/v-btn>
-    &lt;/template>
-    &lt;span>{{ item.toolTip }}&lt;/span>
-  &lt;/v-tooltip>
+    &lt;v-tooltip
+            bottom
+            :disabled="item.toolTip===undefined"
+    >
+        &lt;template v-slot:activator="{ on }">
+            &lt;v-btn
+                    color="primary"
+                    class="mr-1 mr-lg-2"
+                    :outlined="!item.active"
+                    :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens,'buttons-md-style':multipleItems &amp;&amp; !isFirstItem}]"
+                    @click="selectFilter(item)"
+                    v-on="on"
+            >
+                {{ item.title }}
+            &lt;/v-btn>
+        &lt;/template>
+        &lt;span>{{ item.toolTip }}&lt;/span>
+    &lt;/v-tooltip>
 &lt;/template>
 
 &lt;script>
-    import {has} from "lodash";
-    import {mapActions, mapState} from 'vuex'
+    import {has, isEqual} from "lodash";
+    import {mapActions} from 'vuex'
 
     export default {
         name: "FilterItem",
@@ -125,39 +125,33 @@
             itemParentIndex: {default: 0, type: Number},
             multipleItems: {default: false, type: Boolean},
         },
-        computed: {
-            ...mapState("routeData", ["formData"])
-        },
         methods: {
             /**
              * Apply the filters by building the new query parameters using the form data.
              */
             applyFilters: function (selectedItem) {
                 const _module = this;
-                for(let filter in _module.$route.query){
-                  console.log(filter)
+                let currentQuery = {};
+                let oldQuery = {};
+                for (let param in _module.$route.query) {
+                    currentQuery[param] = _module.$route.query[param]
+                    oldQuery[param] = _module.$route.query[param]
                 }
-/*
-              Object.keys(_module.$route.query).forEach(function (param) {
-                currentQuery[param] = _module.$route.query[param]
-              });
-*/
-
-              if (has(selectedItem, 'value')) {
-                    _module.formData[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
-                    _module.previousFormData = _module.formData;
-                    _module.$router.push({
-                        name: _module.$route.name,
-                        query: _module.formData
-                    });
-                } else {
-                    if (has(_module.formData, selectedItem.filterName)) {
-                        delete _module.formData[selectedItem.filterName]
-                        this.$router.push({
+                if (has(selectedItem, 'value')) {
+                    currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
+                    if (!isEqual(currentQuery, oldQuery)) {
+                        _module.$router.push({
                             name: _module.$route.name,
-                            query: _module.formData
+                            query: currentQuery
                         });
                     }
+                } else {
+                        delete currentQuery[selectedItem.filterName]
+                        this.$router.push({
+                            name: _module.$route.name,
+                            query: currentQuery
+                        });
+
                 }
             },
             selectFilter: function (selectedItem) {

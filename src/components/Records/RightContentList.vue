@@ -20,7 +20,7 @@
         <v-skeleton-loader
           class="mt-5"
           :loading="loading"
-          type="card"
+          type="image"
         >
           <h2 class="d-none">
             Result
@@ -38,7 +38,7 @@
       <v-skeleton-loader
         class="mt-5"
         :loading="loading"
-        type="card"
+        type="image"
       >
         <v-row v-show="isColumnList">
           <RecordsCardColumn

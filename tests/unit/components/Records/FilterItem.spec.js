@@ -2,7 +2,6 @@ import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import FilterItem from "@/components/Records/FilterItem.vue"
-import routeDataStore from "@/store/routeData.js";
 import searchFiltersStore from "@/store/searchFilters.js";
 
 const localVue = createLocalVue();
@@ -20,7 +19,6 @@ const $router = {
 
 const $store = new Vuex.Store({
     modules: {
-        routeData: routeDataStore,
         searchFilters: searchFiltersStore,
     }
 });
@@ -69,8 +67,9 @@ describe("FilterItem.vue", function () {
 
         wrapper.vm.selectFilter(selectedItem);
         expect($store.state.searchFilters.filterButtons[wrapper.vm.itemParentIndex]).toStrictEqual(expectedData);
+    });
 
-//-------------
+    it('can check applyFilter function', () => {
 
         anotherWrapper = shallowMount(FilterItem, {
             localVue,
@@ -84,11 +83,16 @@ describe("FilterItem.vue", function () {
             },
             mocks: {$store, $router, $route}
         });
-        selectedItem = {active: true, filterName: 'isMaintained', title: 'All'};
-        anotherWrapper.vm.selectFilter(selectedItem);
+        anotherWrapper.vm.$route.query = {isMaintained: 'false'}
+        let selectedItem = {active: false, filterName: 'isMaintained', title: 'Maintained', value: true};
+        anotherWrapper.vm.applyFilters(selectedItem);
 
-        $store.state.routeData.formData = {}
-        anotherWrapper.vm.selectFilter(selectedItem);
+        anotherWrapper.vm.$route.query = {isMaintained: 'true'}
+        selectedItem = {active: false, filterName: 'isMaintained', title: 'Maintained', value: true};
+        anotherWrapper.vm.applyFilters(selectedItem);
 
-    });
+        selectedItem = {active: false, filterName: 'isMaintained', title: 'All'};
+        anotherWrapper.vm.applyFilters(selectedItem);
+
+    })
 });

@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app-bar
     short
     height="100"
@@ -9,12 +9,12 @@
       @click="toggleDrawerLeft"
     />
     <router-link to="/">
-    <v-img
-      src="@/assets/fairsharing-logo.svg"
-      height="70"
-      class="d-flex flex-grow-0"
-      contain
-    />
+      <v-img
+        src="@/assets/fairsharing-logo.svg"
+        height="70"
+        class="d-flex flex-grow-0"
+        contain
+      />
     </router-link>
     <v-spacer />
     <nav>
@@ -69,9 +69,11 @@
           </v-list>
         </v-menu>
         <v-btn
-                v-else
-                class="teal darken-2 "
-                to="/accounts/profile"
+          v-else
+          :small="$vuetify.breakpoint.mdAndDown"
+          :x-large="$vuetify.breakpoint.xlOnly"
+          class="mr-1 mt-sm-1 teal darken-2"
+          to="/accounts/profile"
         >
           <span class="white--text">Welcome, {{ user().credentials.username }}</span>
         </v-btn>

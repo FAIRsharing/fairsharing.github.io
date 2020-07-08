@@ -31,7 +31,7 @@ describe("Record.vue", function() {
     let wrapper;
     let vuetify;
 
-    beforeAll( () => {
+    beforeEach( async () => {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
         queryStub.withArgs(sinon.match.any).returns({
             fairsharingRecord:{
@@ -48,20 +48,17 @@ describe("Record.vue", function() {
                 }
             }
         });
-    });
-    afterAll( () => {
-        Client.prototype.executeQuery.restore();
-    });
-
-    // Set up the wrapper
-    beforeEach(() => {
         vuetify = new Vuetify();
-        wrapper = shallowMount(Record, {
+        wrapper = await shallowMount(Record, {
             mocks: {$route, $store},
             localVue,
             vuetify
         });
     });
+    afterEach( () => {
+        Client.prototype.executeQuery.restore();
+    });
+
     const path = "980190962";
     const title = "FAIRsharing | " + path;
 
@@ -71,7 +68,7 @@ describe("Record.vue", function() {
 
     it("has a currentRoute computed property", () => {
         expect(wrapper.vm.currentRoute).toMatch(path);
-        expect(wrapper.vm.getTitle()).toBe(title);
+        expect(wrapper.vm.getTitle).toBe(title);
         let $route = {
             path: "/",
             params: {
@@ -104,24 +101,20 @@ describe("Record.vue", function() {
 
     it("can correctly raise an error", async () =>{
         Client.prototype.executeQuery.restore();
-        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns({
+        sinon.stub(Client.prototype, "executeQuery").withArgs(sinon.match.any).returns({
             data: {errors: [{message: "Im an error"}]}
         });
         await wrapper.vm.getData();
+        expect(wrapper.vm.error).toBe("Cannot read property 'metadata' of undefined")
     });
 
     it("can check cleanString returns properly",  () =>{
-        const term = 'hosein_mirian'
-        let returnedValue = wrapper.vm.cleanString(term)
+        const term = 'hosein_mirian';
+        let returnedValue = wrapper.vm.cleanString(term);
         expect(returnedValue).toBe('hosein mirian');
     });
 
-    it("can check capitalize function works fine ",()=>{
-        const expected = wrapper.vm.capitalize('hosein')
-        expect(expected).toBe('Hosein');
-    })
-
-    it("can check flattenAssociatedRecordsArray returns a flat joined array ",()=>{
+    it("can check prepareAssociations returns a flat joined array ",()=>{
         let fakeAssociatedRecords = [
             {
                 "linkedRecord": {
@@ -187,7 +180,7 @@ describe("Record.vue", function() {
                 "recordAssocLabel": "related_to"
             }
         ];
-        let fakeReverseAssociatedRecords=[
+        let fakeReverseAssociatedRecords = [
             {
                 "fairsharingRecord": {
                     "name": "RDA Covid-19 WG Resources",
@@ -222,11 +215,15 @@ describe("Record.vue", function() {
             }
         ];
 
-        wrapper.vm.currentRecord['fairsharingRecord']={name:'test'};
-        wrapper.vm.flattenAssociatedRecordsArray(fakeAssociatedRecords,fakeReverseAssociatedRecords);
-        expect(wrapper.vm.flatAscociatedRecords.length).toBe(11);
-
-         fakeReverseAssociatedRecords=[
+        wrapper.vm.currentRecord['fairsharingRecord'] = {
+            name: "test",
+            metadata: {
+                year_creation: 2018
+            }
+        };
+        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
+        expect(wrapper.vm.recordAssociations.length).toBe(11);
+        fakeReverseAssociatedRecords = [
             {
                 "UNDEFINED": {
                     "name": "RDA Covid-19 WG Resources",
@@ -236,8 +233,36 @@ describe("Record.vue", function() {
                 "recordAssocLabel": "collects"
             },
         ];
-        wrapper.vm.flattenAssociatedRecordsArray(fakeAssociatedRecords,fakeReverseAssociatedRecords)
-    })
+        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords)
+    });
+
+    it("can properly fetch record associations", async() => {
+        queryStub.restore();
+        queryStub = sinon.stub(Client.prototype, "executeQuery");
+        queryStub.withArgs(sinon.match.any).returns({
+            fairsharingRecord:{
+                id: 1,
+                type: "testType",
+                name: "test",
+                licences: [
+                    {
+                        name: "test",
+                        url: "https://example.com"
+                    }
+                ],
+                metadata: {
+                    contacts: []
+                },
+                recordAssociations: [{}]
+            }
+        });
+        let anotherWrapper = await shallowMount(Record, {
+            mocks: {$route, $store},
+            localVue,
+            vuetify
+        });
+        expect(anotherWrapper.vm.recordAssociations.length).toBe(0);
+    });
 
 
 });

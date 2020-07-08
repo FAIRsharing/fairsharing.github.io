@@ -12,16 +12,18 @@
       <Header v-if="UIGeneralStatus.headerVisibilityState" />
     </transition>
     <router-view />
+    <Footer />
   </v-app>
 </template>
 
 <script>
-    import Header from "./components/IndividualComponents/Header";
+    import Header from "./components/Navigation/Header";
     import {mapState} from 'vuex';
+    import Footer from "./components/Navigation/Footer";
 
     export default {
         name: "App2",
-        components: {Header},
+        components: {Footer, Header},
         data: () => ({
             hideOverflow: 'overflow-hidden',
             root: null

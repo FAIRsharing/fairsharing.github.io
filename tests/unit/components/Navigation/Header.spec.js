@@ -2,12 +2,13 @@ import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import Header from "@/components/IndividualComponents/Header.vue"
+import Header from "@/components/Navigation/Header.vue"
 import uiControllerStore from "@/store/uiController.js";
 import usersStore from "@/store/users.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueRouter);
 const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
@@ -16,9 +17,6 @@ const $store = new Vuex.Store({
         users: usersStore,
     }
 });
-const router = new VueRouter();
-const $router = {push: jest.fn()};
-
 
 describe("Header.vue", function () {
     let wrapper;
@@ -26,8 +24,7 @@ describe("Header.vue", function () {
     wrapper = shallowMount(Header, {
         localVue,
         vuetify,
-        router,
-        mocks: {$store, $router}
+        mocks: {$store}
     });
 
     it("can update the uiController store's UIGeneralStatus state", () => {

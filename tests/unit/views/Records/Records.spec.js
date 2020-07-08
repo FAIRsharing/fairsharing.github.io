@@ -87,11 +87,6 @@ describe("Records.vue", () => {
 
     });
 
-    it("can switch between panels", () => {
-        wrapper.vm.setPanel("Facets");
-        expect(wrapper.vm.currentPanel).toBe("Facets");
-    });
-
     it("can get the records", async () => {
         $route.query = {
             "test": "abc",

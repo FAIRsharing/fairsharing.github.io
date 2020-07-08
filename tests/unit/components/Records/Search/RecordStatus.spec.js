@@ -1,5 +1,5 @@
 import {shallowMount} from "@vue/test-utils";
-import RecordStatus from "@/components/IndividualComponents/RecordStatus.vue"
+import RecordStatus from "@/components/Records/Shared/RecordStatus.vue"
 
 
 describe("RecordStatus.vue", function () {

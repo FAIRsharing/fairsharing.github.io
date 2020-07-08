@@ -2,7 +2,7 @@ import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import Header from "@/components/IndividualComponents/Header.vue"
+import Header from "@/components/Navigation/Header.vue"
 import uiControllerStore from "@/store/uiController.js";
 import usersStore from "@/store/users.js";
 

@@ -354,13 +354,6 @@
             getParameters: function () {
                 return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
             },
-            /**
-             * Method to change the current panel to be displayed
-             * @param {String} panelName - the name of the panel to display
-             */
-            setPanel: function (panelName) {
-                this.currentPanel = panelName;
-            }
         },
         /**
          * Setting up the metaInfo of the page

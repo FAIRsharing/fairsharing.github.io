@@ -118,9 +118,9 @@
 </template>
 
 <script>
-    import Ribbon from "@/components/IndividualComponents/Ribbon";
+    import Ribbon from "@/components/Records/Shared//Ribbon";
     import AssociatedRecordsStack from "./AssociatedRecordsStack";
-    import RecordStatus from "@/components/IndividualComponents/RecordStatus"
+    import RecordStatus from "@/components/Records/Shared/RecordStatus"
     import {isEqual} from 'lodash'
 
     export default {

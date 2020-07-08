@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -97,11 +97,19 @@
       Content
     &lt;/h1>
     &lt;v-container
-      v-if="!error &amp;&amp; queryTriggered"
+      v-if="queryTriggered"
       fluid
     >
+      &lt;v-row v-if="error">
+        &lt;v-col cols="12">
+          &lt;v-alert type="error">
+            {{ error }}
+          &lt;/v-alert>
+        &lt;/v-col>
+      &lt;/v-row>
+
       &lt;v-row
-        v-if="user().isLoggedIn"
+        v-if="user().isLoggedIn &amp;&amp; !error"
         class="pr-3"
       >
         &lt;v-spacer />
@@ -115,7 +123,7 @@
 
       &lt;!--  Content  -->
       &lt;v-row
-        v-if="currentRecord['fairsharingRecord']"
+        v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error"
         no-gutters
       >
         &lt;v-col
@@ -141,9 +149,8 @@
                       GENERAL
                       INFO
                     &lt;/h4>
-                    &lt;span class="triangle-bottomLeft" />&lt;span
-                      class="triangle-bottomRight"
-                    />
+                    &lt;span class="triangle-bottomLeft" />
+                    &lt;span class="triangle-bottomRight" />
                   &lt;/div>
                 &lt;/div>
                 &lt;!-- Ribbon -->
@@ -197,7 +204,7 @@
                   &lt;div class="d-flex">
                     &lt;b class="mr-2">Type:&lt;/b>
                     &lt;p>
-                      {{ capitalize(cleanString(currentRecord['fairsharingRecord'].type)) }}
+                      {{ cleanString(currentRecord['fairsharingRecord'].type) | capitalize }}
                     &lt;/p>
                   &lt;/div>
                   &lt;!--Year of Creation-->
@@ -210,12 +217,12 @@
                   &lt;!--Registry-->
                   &lt;div class="d-flex">
                     &lt;b class="mr-2">Registry:&lt;/b>
-                    &lt;p>{{ capitalize(currentRecord['fairsharingRecord'].registry) }}&lt;/p>
+                    &lt;p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}&lt;/p>
                   &lt;/div>
                   &lt;!--Description-->
                   &lt;div class="d-flex align-center">
                     &lt;b class="mr-2">Description:&lt;/b>
-                    &lt;p>{{ capitalize(currentRecord['fairsharingRecord'].description) }}&lt;/p>
+                    &lt;p>{{ currentRecord['fairsharingRecord'].description | capitalize }}&lt;/p>
                   &lt;/div>
                   &lt;!--HomePage-->
                   &lt;div class="d-flex">
@@ -234,7 +241,7 @@
                       top
                     >
                       &lt;template v-slot:activator="{ on }">
-                        &lt;button
+                        &lt;v-sheet
                           class="mb-2 flag-mr"
                           v-on="on"
                         >
@@ -242,7 +249,7 @@
                             :country="country.code"
                             size="big"
                           />
-                        &lt;/button>
+                        &lt;/v-sheet>
                       &lt;/template>
                       &lt;span class="white--text">{{ country.name }}&lt;/span>
                     &lt;/v-tooltip>
@@ -321,30 +328,10 @@
                       v-for="item in currentRecord['fairsharingRecord'].subjects"
                       :key="item.label"
                       class="mr-2 mb-2"
-                      color="tertiary"
+                      color="accent"
                       label
                       outlined
-                      text-color="tertiary"
-                    >
-                      &lt;v-icon left>
-                        mdi-label
-                      &lt;/v-icon>
-                      {{ item.label }}
-                    &lt;/v-chip>
-                  &lt;/div>
-                  &lt;!--User Defined Tags-->
-                  &lt;div
-                          class="d-flex mt-2 flex-wrap"
-                  >
-                    &lt;b class="mr-8">User Defined Tags:&lt;/b>
-                    &lt;v-chip
-                            v-for="item in currentRecord['fairsharingRecord'].userDefinedTags"
-                            :key="item.label"
-                            class="mr-2 mb-2"
-                            color="accent"
-                            label
-                            outlined
-                            text-color="accent"
+                      text-color="accent"
                     >
                       &lt;v-icon left>
                         mdi-label
@@ -641,7 +628,7 @@
                     &lt;/v-card-title>
                     &lt;v-data-table
                       :headers="headers"
-                      :items="flatAscociatedRecords"
+                      :items="recordAssociations"
                       :search="search"
                     />
                   &lt;/v-card>
@@ -651,231 +638,200 @@
           &lt;/v-row>
         &lt;/v-col>
       &lt;/v-row>
-      &lt;!--  Footer  -->
-      &lt;Footer />
     &lt;/v-container>
-    &lt;div
-      v-if="error"
-      class="error"
-    >
-      {{ error }}
-    &lt;/div>
   &lt;/v-main>
 &lt;/template>
 
 &lt;script>
-    import Ribbon from "@/components/IndividualComponents/Ribbon";
-    import Footer from "@/components/IndividualComponents/Footer";
-    import CountryFlag from 'vue-country-flag';
-    import RecordStatus from "@/components/IndividualComponents/RecordStatus";
-    import Client from '@/components/GraphClient/GraphClient.js'
-    import {mapActions, mapState} from 'vuex'
-    import {concat, has} from 'lodash'
+  import {mapActions, mapState} from 'vuex'
+  import CountryFlag from 'vue-country-flag';
+  import Ribbon from "@/components/Records/Shared/Ribbon";
+  import RecordStatus from "@/components/Records/Shared/RecordStatus";
+  import Client from '@/components/GraphClient/GraphClient.js'
 
-    export default {
-        name: "Record",
-        components: {RecordStatus, Footer, Ribbon, CountryFlag},
-        data: () => {
-            return {
-                error: null,
-                queryTriggered: false,
-                search: '',
-                headers: [
-                    {text: 'Name', value: 'name'},
-                    {text: 'Registry', value: 'registry'},
-                    {text: 'Relationship', value: 'recordAssocLabel'},
-                    {text: 'Subject', value: 'subject'},
-                ],
-                showScrollToTopButton: false,
-                flatAscociatedRecords: []
+  export default {
+    name: "Record",
+    components: {RecordStatus, Ribbon, CountryFlag},
+    filters: {
+      capitalize (str){
+        if (!str) return "";
+        return str.charAt(0).toUpperCase() + str.slice(1)
+      }
+    },
+    data: () => {
+      return {
+        error: null,
+        queryTriggered: false,
+        search: '',
+        headers: [
+          { text: 'Name', value: 'name' },
+          { text: 'Registry', value: 'registry' },
+          { text: 'Relationship', value: 'recordAssocLabel' },
+          { text: 'Subject', value: 'subject' },
+        ],
+        showScrollToTopButton: false,
+        recordAssociations: []
+      }
+    },
+    computed: {
+      currentRoute () {
+        let id = this.$route.params['id'];
+        if (id.includes("FAIRsharing.")) {
+          return "10.25504/" + id;
+        }
+        return this.$route.params['id'];
+      },
+      ...mapState('record', ["currentRecord", "currentRecordHistory"]),
+      ...mapState('users', ["user"]),
+      getTitle () {
+        return 'FAIRsharing | ' + this.currentRoute;
+      },
+    },
+    watch: {
+      async currentRoute() {
+        await this.getData();
+      }
+    },
+    mounted() {
+      this.$nextTick(async function () {
+        this.client = new Client();
+        await this.getData();
+      })
+    },
+    methods: {
+      ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
+      /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+      prepareAssociations (associations, reverseAssociations) {
+        let _module = this;
+        let joinedArrays = associations.concat(reverseAssociations);
+        const properties = ['fairsharingRecord', 'linkedRecord'];
+        joinedArrays.forEach(item => {
+          let object = {
+            recordAssocLabel: _module.cleanString(item.recordAssocLabel),
+            subject: _module.currentRecord['fairsharingRecord'].name
+          };
+          properties.forEach(prop => {
+            if (Object.prototype.hasOwnProperty.call(item, prop)) {
+              object.id = item[prop].id;
+              object.registry = item[prop].registry;
+              object.name = item[prop].name;
             }
-        },
-        computed: {
-            currentRoute: function () {
-              let id = this.$route.params['id'];
-              if (id.includes("FAIRsharing.")){
-                return "10.25504/" + id;
-              }
-                return this.$route.params['id']
-            },
-            ...mapState('record', ["currentRecord", "currentRecordHistory"]),
-            ...mapState('users', ["user"])
-        },
-        watch: {
-            currentRoute: async function () {
-              let _module = this;
-                await this.getData();
-                _module.flatAscociatedRecords =[]
-              if(has(_module.currentRecord['fairsharingRecord'],'recordAssociations') ||  has(_module.currentRecord['fairsharingRecord'],'reverseRecordAssociations'))
-                _module.flattenAssociatedRecordsArray(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-
-            }
-        },
-        mounted: function () {
-            let _module = this;
-            this.$nextTick(async function () {
-                this.client = new Client();
-                await this.getData();
-              _module.flatAscociatedRecords =[]
-               if(has(_module.currentRecord['fairsharingRecord'],'recordAssociations') ||  has(_module.currentRecord['fairsharingRecord'],'reverseRecordAssociations'))
-                _module.flattenAssociatedRecordsArray(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-
-            })
-        },
-        methods: {
-            capitalize: function (value) {
-                if (!value) return ''
-                value = value.toString()
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            },
-            // flatten the associatedRecords and AssociatedRecordsReverse into one array
-            flattenAssociatedRecordsArray: function (FirstArray, SecondArray) {
-                let _module = this;
-
-                let joinedArrays = concat(FirstArray, SecondArray);
-
-                joinedArrays.forEach(item => {
-                    let object = {registry: null, name: null, recordAssocLabel: null, subject: null}
-                    if (has(item, 'linkedRecord')) {
-                        object.id = item.linkedRecord.id;
-                        object.registry = item.linkedRecord.registry;
-                        object.name = item.linkedRecord.name;
-                        object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                        object.subject = _module.currentRecord['fairsharingRecord'].name;
-                    }
-                    else if (has(item, 'fairsharingRecord')) {
-                      object = {registry: null, name: null, recordAssocLabel: null, subject: null}
-                      object.id = item.fairsharingRecord.id;
-                      object.registry = item.fairsharingRecord.registry;
-                      object.name = item.fairsharingRecord.name;
-                      object.recordAssocLabel = this.cleanString(item.recordAssocLabel);
-                      object.subject = _module.currentRecord['fairsharingRecord'].name;
-                    }else {
-                      return
-                    }
-                  _module.flatAscociatedRecords.push(object);
-
-                });
-            },
-
-            /** Method to get the page title
-             *  @returns {String} - the title of the current page
-             */
-            getTitle: function () {
-                return 'FAIRsharing | ' + this.currentRoute
-            },
-            /**
-             * Method to set the current record in the store
-             * @returns {Promise} - the current record
-             * */
-            getData: async function () {
-                let _module = this;
-                this.queryTriggered = false;
-                this.error = null;
-                try {
-                    await _module.fetchRecord(this.currentRoute);
-                } catch (e) {
-                    this.error = e.message;
-                }
-                this.queryTriggered = true;
-            },
-            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-            /**
-             * Method to dispatch the current record history into the store
-             * @returns {Promise} - the current record history
-             * */
-            getHistory: async function () {
-                await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
-            },
-            cleanString: function (string) {
-                if (typeof string === "string") {
-                    return string.replace(/_/g, " ");
-                }
-                return string;
-            }
-        },
-        metaInfo() {
-            return {
-                title: this.getTitle()
-            }
-        },
-    }
+          });
+          _module.recordAssociations.push(object);
+        });
+      },
+      /**
+       * Method to set the current record in the store
+       * @returns {Promise} - the current record
+       * */
+      async getData () {
+        let _module = this;
+        this.queryTriggered = false;
+        this.error = null;
+        try {
+          await _module.fetchRecord(this.currentRoute);
+          const currentRecord = _module.currentRecord['fairsharingRecord'];
+          _module.recordAssociations = [];
+          if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
+            _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
+          }
+        }
+        catch (e) {
+          this.error = e.message;
+        }
+        this.queryTriggered = true;
+      },
+      /**
+       * Method to dispatch the current record history into the store
+       * @returns {Promise} - the current record history
+       * */
+      async getHistory () {
+        await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
+      },
+      cleanString (string) {
+        if (typeof string === "string") {
+          return string.replace(/_/g, " ");
+        }
+        return string;
+      }
+    },
+    metaInfo() {
+      return {
+        title: this.getTitle
+      }
+    },
+  }
 &lt;/script>
 
 &lt;style scoped lang="scss">
-    a {
-        text-decoration: none;
+  a {
+    text-decoration: none;
 
-        &amp;:hover, &amp;:focus {
-            text-decoration: underline;
-            outline: 0;
-        }
+    &amp;:hover, &amp;:focus {
+      text-decoration: underline;
+      outline: 0;
     }
+  }
 
-    .flag-mr {
-        margin-right: .29em;
-    }
+  .flag-mr {
+    margin-right: .29em;
+  }
 
-    #banner {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        padding: 1em;
-    }
+  #banner {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1em;
+  }
 
-    .content-custom {
-        max-height: 100vh;
-        scroll-behavior: smooth;
-        padding: 0;
-    }
+  .content-custom {
+    max-height: 100vh;
+    scroll-behavior: smooth;
+    padding: 0;
+  }
 
-    .title-style {
+  .title-style {
+    position: absolute;
+    top: -10px;
+    background: linear-gradient(#4f5f5d, #00aa8e);
+    background: -moz-linear-gradient(#4f5f5d, #00aa8e);
+    background: -webkit-linear-gradient(#4f5f5d, #00aa8e);
+    background: -o-linear-gradient(#4f5f5d, #00aa8e);
+    padding: 1px 10px 1px 10px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+
+    div {
+      position: relative;
+
+      h4 {
+        font-size: 1rem;
+        color: white;
+      }
+
+      .triangle-bottomLeft {
+        width: 0;
+        height: 0;
         position: absolute;
-        top: -10px;
-        /*
-                        color: #909090;
-                        background: linear-gradient(#bebebe,transparent);
-                        border: #bebebe solid 1px;
-        */
-        background: linear-gradient(#4f5f5d, #00aa8e);
-        background: -moz-linear-gradient(#4f5f5d, #00aa8e);
-        background: -webkit-linear-gradient(#4f5f5d, #00aa8e);
-        background: -o-linear-gradient(#4f5f5d, #00aa8e);
-        padding: 1px 10px 1px 10px;
-        border-radius: 10px;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
+        top: 0;
+        left: -18px;
+        border-bottom: 8px solid #aaaaaa;
+        border-left: 8px solid transparent;
+      }
 
-        div {
-            position: relative;
-
-            h4 {
-                font-size: 1rem;
-                color: white;
-            }
-
-            .triangle-bottomLeft {
-                width: 0;
-                height: 0;
-                position: absolute;
-                top: 0;
-                left: -18px;
-                border-bottom: 8px solid #aaaaaa;
-                border-left: 8px solid transparent;
-            }
-
-            .triangle-bottomRight {
-                width: 0;
-                height: 0;
-                position: absolute;
-                top: 0;
-                right: -18px;
-                border-bottom: 8px solid #aaaaaa;
-                border-right: 8px solid transparent;
-            }
-        }
-
+      .triangle-bottomRight {
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        right: -18px;
+        border-bottom: 8px solid #aaaaaa;
+        border-right: 8px solid transparent;
+      }
     }
+
+  }
 &lt;/style>
 </pre>
     </article>
@@ -922,7 +878,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Tue Jul 7th 2020
+		on Wed Jul 8th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

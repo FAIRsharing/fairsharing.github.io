@@ -79,11 +79,6 @@
                         <h5 class="d-none">
                             Choose Subject , Domain , Taxonomy
                         </h5>
-                        <v-alert class="d-flex justify-center" type="info" colored-border
-                                 v-if="Chips[currentActiveChips].length===0"
-                        >
-                            No data available
-                        </v-alert>
                         <v-chip-group
                                 column
                         >

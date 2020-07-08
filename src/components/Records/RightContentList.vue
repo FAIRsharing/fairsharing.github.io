@@ -80,7 +80,7 @@
 <style lang="scss">
     .chips-holder {
         background: #f5f5f5;
-        height: 50px;
+        min-height: 50px;
         border: #dbdbdb dotted 2px;
         border-radius: 10px;
         -moz-border-radius: 10px;

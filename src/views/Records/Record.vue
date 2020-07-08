@@ -56,9 +56,8 @@
                       GENERAL
                       INFO
                     </h4>
-                    <span class="triangle-bottomLeft" /><span
-                      class="triangle-bottomRight"
-                    />
+                    <span class="triangle-bottomLeft" />
+                    <span class="triangle-bottomRight" />
                   </div>
                 </div>
                 <!-- Ribbon -->
@@ -149,7 +148,7 @@
                       top
                     >
                       <template v-slot:activator="{ on }">
-                        <button
+                        <v-sheet
                           class="mb-2 flag-mr"
                           v-on="on"
                         >
@@ -157,7 +156,7 @@
                             :country="country.code"
                             size="big"
                           />
-                        </button>
+                        </v-sheet>
                       </template>
                       <span class="white--text">{{ country.name }}</span>
                     </v-tooltip>
@@ -551,11 +550,11 @@
 </template>
 
 <script>
-  import Ribbon from "@/components/IndividualComponents/Ribbon";
-  import CountryFlag from 'vue-country-flag';
-  import RecordStatus from "@/components/IndividualComponents/RecordStatus";
-  import Client from '@/components/GraphClient/GraphClient.js'
   import {mapActions, mapState} from 'vuex'
+  import CountryFlag from 'vue-country-flag';
+  import Ribbon from "@/components/Records/Shared/Ribbon";
+  import RecordStatus from "@/components/Records/Shared/RecordStatus";
+  import Client from '@/components/GraphClient/GraphClient.js'
 
   export default {
     name: "Record",
@@ -591,8 +590,8 @@
       },
       ...mapState('record', ["currentRecord", "currentRecordHistory"]),
       ...mapState('users', ["user"]),
-      getTitle: function () {
-        return 'FAIRsharing | ' + this.currentRoute
+      getTitle () {
+        return 'FAIRsharing | ' + this.currentRoute;
       },
     },
     watch: {
@@ -609,7 +608,7 @@
     methods: {
       ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
       /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
-      prepareAssociations: function (associations, reverseAssociations) {
+      prepareAssociations (associations, reverseAssociations) {
         let _module = this;
         let joinedArrays = associations.concat(reverseAssociations);
         const properties = ['fairsharingRecord', 'linkedRecord'];
@@ -632,7 +631,7 @@
        * Method to set the current record in the store
        * @returns {Promise} - the current record
        * */
-      getData: async function () {
+      async getData () {
         let _module = this;
         this.queryTriggered = false;
         this.error = null;
@@ -653,10 +652,10 @@
        * Method to dispatch the current record history into the store
        * @returns {Promise} - the current record history
        * */
-      getHistory: async function () {
+      async getHistory () {
         await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
       },
-      cleanString: function (string) {
+      cleanString (string) {
         if (typeof string === "string") {
           return string.replace(/_/g, " ");
         }

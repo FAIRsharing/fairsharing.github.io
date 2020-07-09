@@ -21,7 +21,7 @@
                 close
                 color="white"
                 text-color="red"
-                @click:close="removeParam(null, null)"
+                @click:close="removeAllParams"
         >
             Clear All
         </v-chip>
@@ -65,10 +65,18 @@
              */
             removeParam: throttle(async function (paramName, paramVal) {
                 let _module = this;
-                let query;
-                if (paramName !== null && paramVal !== null) {
-                    query = this.buildNewQuery(paramName, paramVal);
-                }
+                let query = this.buildNewQuery(paramName, paramVal);
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Removes all the  parameters value from the router query with a 2000ms throttle
+             */
+            removeAllParams: throttle(async function () {
+                let _module = this;
+                let query = {};
                 await _module.$router.push({
                     name: _module.$route.name,
                     query: query

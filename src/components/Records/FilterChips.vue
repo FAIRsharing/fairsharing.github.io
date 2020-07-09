@@ -1,20 +1,31 @@
 <template>
-  <v-row class="mr-2 ml-2">
-    <div
-      v-for="(chip, index) in getChips"
-      :key="'Chips_' + index"
-    >
-      <v-chip
-        class="ma-2"
-        close
-        color="white"
-        text-color="teal"
-        @click:close="removeParam(chip.paramName, chip.paramVal)"
-      >
-        {{ chip.paramName }}:<b class="ml-1"> {{decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
-      </v-chip>
-    </div>
-  </v-row>
+    <v-row class="mr-2 ml-2">
+        <div
+                v-for="(chip, index) in getChips"
+                :key="'Chips_' + index"
+        >
+            <v-chip
+                    class="ma-2"
+                    close
+                    color="white"
+                    text-color="teal"
+                    @click:close="removeParam(chip.paramName, chip.paramVal)"
+            >
+                {{ chip.paramName }}:<b class="ml-1"> {{decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
+            </v-chip>
+
+        </div>
+        <v-chip
+                v-if="getChips.length"
+                class="ma-2"
+                close
+                color="white"
+                text-color="red"
+                @click:close="removeParam(null, null)"
+        >
+            Clear All
+        </v-chip>
+    </v-row>
 </template>
 
 <script>
@@ -31,11 +42,10 @@
                         let param = parameters[paramName];
                         if (param.indexOf(",") > -1) {
                             param = param.split(",")
-                        }
-                        else {
+                        } else {
                             param = [param];
                         }
-                        param.forEach(function(val){
+                        param.forEach(function (val) {
                             output.push({
                                 paramName: paramName,
                                 paramVal: val
@@ -55,7 +65,10 @@
              */
             removeParam: throttle(async function (paramName, paramVal) {
                 let _module = this;
-                let query = this.buildNewQuery(paramName, paramVal);
+                let query;
+                if (paramName !== null && paramVal !== null) {
+                    query = this.buildNewQuery(paramName, paramVal);
+                }
                 await _module.$router.push({
                     name: _module.$route.name,
                     query: query
@@ -73,8 +86,7 @@
                 Object.keys(_module.$route.query).forEach(function (queryParam) {
                     if (queryParam !== paramName) {
                         query[queryParam] = _module.$route.query[queryParam]
-                    }
-                    else {
+                    } else {
                         if (_module.$route.query[queryParam].indexOf(',') > -1) {
                             let currentVals = _module.$route.query[queryParam].split(",");
                             if (currentVals.indexOf(paramVal) > -1) {
@@ -91,23 +103,23 @@
     }
 </script>
 <style scoped>
-  .v-chip  {
-    border-radius: 20px;
-    background: darkred;
-    padding: 5px 10px;
-    color: white;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-  }
+    .v-chip {
+        border-radius: 20px;
+        background: darkred;
+        padding: 5px 10px;
+        color: white;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-block;
+    }
 
-  .v-chip  span {
-    border: 1px solid white;
-    border-radius: 50px;
-    padding: 5px 10px;
-  }
+    .v-chip span {
+        border: 1px solid white;
+        border-radius: 50px;
+        padding: 5px 10px;
+    }
 </style>

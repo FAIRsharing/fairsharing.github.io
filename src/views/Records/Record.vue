@@ -188,24 +188,6 @@
                   </div>
                 </div>
                 <section>
-                  <!--Taxonomies-->
-                  <div class="d-flex mt-4 flex-wrap">
-                    <b class="mr-2">Taxonomies:</b>
-                    <v-chip
-                      v-for="item in currentRecord['fairsharingRecord'].taxonomies"
-                      :key="item.label"
-                      class="mr-2 mb-2 "
-                      color="primary"
-                      label
-                      outlined
-                      text-color="primary"
-                    >
-                      <v-icon left>
-                        mdi-label
-                      </v-icon>
-                      {{ item.label }}
-                    </v-chip>
-                  </div>
                   <!--Domains-->
                   <div
                     class="d-flex mt-2 flex-wrap"
@@ -235,10 +217,46 @@
                       v-for="item in currentRecord['fairsharingRecord'].subjects"
                       :key="item.label"
                       class="mr-2 mb-2"
-                      color="accent"
+                      color="tertiary"
                       label
                       outlined
-                      text-color="accent"
+                      text-color="tertiary"
+                    >
+                      <v-icon left>
+                        mdi-label
+                      </v-icon>
+                      {{ item.label }}
+                    </v-chip>
+                  </div>
+                  <!--Taxonomies-->
+                  <div class="d-flex mt-4 flex-wrap">
+                    <b class="mr-2">Taxonomies:</b>
+                    <v-chip
+                            v-for="item in currentRecord['fairsharingRecord'].taxonomies"
+                            :key="item.label"
+                            class="mr-2 mb-2 "
+                            color="primary"
+                            label
+                            outlined
+                            text-color="primary"
+                    >
+                      <v-icon left>
+                        mdi-label
+                      </v-icon>
+                      {{ item.label }}
+                    </v-chip>
+                  </div>
+                  <!--User Defined Tags-->
+                  <div class="d-flex mt-4 flex-wrap">
+                    <b class="mr-2">User Defined Tags:</b>
+                    <v-chip
+                            v-for="item in currentRecord['fairsharingRecord'].userDefinedTags"
+                            :key="item.label"
+                            class="mr-2 mb-2 "
+                            color="accent"
+                            label
+                            outlined
+                            text-color="accent"
                     >
                       <v-icon left>
                         mdi-label

@@ -7,6 +7,7 @@ localVue.use(Vuex);
 
 const $route = {
     path: "/search",
+    name:"search",
     query: {
         "grants": "ABCDEF",
         "publications": "pub1,pub2,pub3",
@@ -44,6 +45,13 @@ describe("FilterChips.vue", () => {
         expect(query).toStrictEqual({ page: 1, grants: 'ABCDEF', publications: 'pub1,pub2,pub3' });
         await wrapper.vm.removeParam("publications", "pub3");
         expect($router.push).toHaveBeenCalledTimes(1);
-    })
+    });
+
+    it("can remove all parameters value", async () => {
+        await wrapper.vm.removeAllParams();
+        expect($router.push).toHaveBeenCalledTimes(2);
+    });
+
+
 
 });

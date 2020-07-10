@@ -6,22 +6,15 @@ describe("RecordStatus.vue", function () {
     let wrapper;
 
     wrapper = shallowMount(RecordStatus, {
-        propsData: {record: {status: 'ready'}}
+        propsData: {record: {status: 'ready', type: 'collection'}}
     });
 
 
     it("can check either record state as props is passed or not ", () => {
-
-        expect(wrapper.vm.statusStyles[wrapper.vm.record.status]).toStrictEqual({
-            title: 'R',
-            toolTip: 'Ready',
-            backColor: 'background: linear-gradient(green, lightgreen)'
-        });
-
-        wrapper.setProps({record: {status:undefined}})
+        wrapper.setProps({record: {status: undefined, type: 'collection'}})
         expect(wrapper.vm.statusStyles[wrapper.vm.record.status]).toStrictEqual({
             title: '?',
-            toolTip: 'undefined',
+            toolTip: 'Undefined',
             backColor: 'background: linear-gradient(red, red)'
         });
 

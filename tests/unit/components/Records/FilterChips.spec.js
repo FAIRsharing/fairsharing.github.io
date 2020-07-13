@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import {shallowMount, createLocalVue} from "@vue/test-utils";
 import FilterChips from "@/components/Records/FilterChips.vue"
 import Vuex from "vuex";
 
@@ -7,6 +7,7 @@ localVue.use(Vuex);
 
 const $route = {
     path: "/search",
+    name: "search",
     query: {
         "grants": "ABCDEF",
         "publications": "pub1,pub2,pub3",
@@ -39,11 +40,16 @@ describe("FilterChips.vue", () => {
         await wrapper.vm.removeParam("publications", "pub2");
         expect($router.push).toHaveBeenCalledTimes(1);
         let query = wrapper.vm.buildNewQuery("grants", "ABCDEF");
-        expect(query).toStrictEqual({ page: 1, publications: 'pub1,pub2,pub3' });
+        expect(query).toStrictEqual({page: 1, publications: 'pub1,pub2,pub3'});
         query = wrapper.vm.buildNewQuery("publications", "pub4");
-        expect(query).toStrictEqual({ page: 1, grants: 'ABCDEF', publications: 'pub1,pub2,pub3' });
+        expect(query).toStrictEqual({page: 1, grants: 'ABCDEF', publications: 'pub1,pub2,pub3'});
         await wrapper.vm.removeParam("publications", "pub3");
         expect($router.push).toHaveBeenCalledTimes(1);
-    })
+    });
+
+    it("can remove all parameters value", async () => {
+        await wrapper.vm.removeAllParams();
+        expect($router.push).toHaveBeenCalledTimes(2);
+    });
 
 });

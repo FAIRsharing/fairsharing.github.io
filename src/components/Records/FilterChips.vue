@@ -94,7 +94,8 @@
                 Object.keys(_module.$route.query).forEach(function (queryParam) {
                     if (queryParam !== paramName) {
                         query[queryParam] = _module.$route.query[queryParam]
-                    } else {
+                    }
+                    else {
                         if (_module.$route.query[queryParam].indexOf(',') > -1) {
                             let currentVals = _module.$route.query[queryParam].split(",");
                             if (currentVals.indexOf(paramVal) > -1) {

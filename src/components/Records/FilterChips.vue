@@ -41,7 +41,8 @@
                         let param = parameters[paramName];
                         if (param.indexOf(",") > -1) {
                             param = param.split(",")
-                        } else {
+                        }
+                        else {
                             param = [param];
                         }
                         param.forEach(function (val) {

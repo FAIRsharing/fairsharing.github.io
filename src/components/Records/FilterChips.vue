@@ -11,9 +11,19 @@
         text-color="teal"
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
-        {{ chip.paramName }}:<b class="ml-1"> {{decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
+        {{ chip.paramName }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
       </v-chip>
     </div>
+    <v-chip
+      v-if="getChips.length"
+      class="ma-2"
+      close
+      color="white"
+      text-color="red"
+      @click:close="removeAllParams"
+    >
+      Clear All
+    </v-chip>
   </v-row>
 </template>
 
@@ -35,7 +45,7 @@
                         else {
                             param = [param];
                         }
-                        param.forEach(function(val){
+                        param.forEach(function (val) {
                             output.push({
                                 paramName: paramName,
                                 paramVal: val
@@ -56,6 +66,17 @@
             removeParam: throttle(async function (paramName, paramVal) {
                 let _module = this;
                 let query = this.buildNewQuery(paramName, paramVal);
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Removes all the  parameters value from the router query with a 2000ms throttle
+             */
+            removeAllParams: throttle(async function () {
+                let _module = this;
+                let query = {};
                 await _module.$router.push({
                     name: _module.$route.name,
                     query: query
@@ -90,24 +111,3 @@
         }
     }
 </script>
-<style scoped>
-  .v-chip  {
-    border-radius: 20px;
-    background: darkred;
-    padding: 5px 10px;
-    color: white;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-  }
-
-  .v-chip  span {
-    border: 1px solid white;
-    border-radius: 50px;
-    padding: 5px 10px;
-  }
-</style>

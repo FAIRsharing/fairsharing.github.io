@@ -1,31 +1,30 @@
 <template>
-    <v-row class="mr-2 ml-2">
-        <div
-                v-for="(chip, index) in getChips"
-                :key="'Chips_' + index"
-        >
-            <v-chip
-                    class="ma-2"
-                    close
-                    color="white"
-                    text-color="teal"
-                    @click:close="removeParam(chip.paramName, chip.paramVal)"
-            >
-                {{ chip.paramName }}:<b class="ml-1"> {{decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
-            </v-chip>
-
-        </div>
-        <v-chip
-                v-if="getChips.length"
-                class="ma-2"
-                close
-                color="white"
-                text-color="red"
-                @click:close="removeAllParams"
-        >
-            Clear All
-        </v-chip>
-    </v-row>
+  <v-row class="mr-2 ml-2">
+    <div
+      v-for="(chip, index) in getChips"
+      :key="'Chips_' + index"
+    >
+      <v-chip
+        class="ma-2"
+        close
+        color="white"
+        text-color="teal"
+        @click:close="removeParam(chip.paramName, chip.paramVal)"
+      >
+        {{ chip.paramName }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
+      </v-chip>
+    </div>
+    <v-chip
+      v-if="getChips.length"
+      class="ma-2"
+      close
+      color="white"
+      text-color="red"
+      @click:close="removeAllParams"
+    >
+      Clear All
+    </v-chip>
+  </v-row>
 </template>
 
 <script>

@@ -148,6 +148,6 @@
 
 <style>
   .v-input__append-inner {
-    margin-top: 13px !important
+    margin-top: 14px !important
   }
 </style>

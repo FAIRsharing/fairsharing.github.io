@@ -53,11 +53,11 @@
 </template>
 
 <script>
-    import RecordsCardStack from "./RecordsCardStack";
-    import ListController from "./ListController";
-    import RecordsCardColumn from "./RecordsCardColumn";
+    import RecordsCardStack from "../RecordsCardStack";
+    import ListController from "../ListController";
+    import RecordsCardColumn from "../RecordsCardColumn";
     import {mapState} from 'vuex'
-    import FilterChips from "./FilterChips";
+    import FilterChips from "../FilterChips";
 
     export default {
         name: "RightContentList",

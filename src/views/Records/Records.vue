@@ -59,6 +59,7 @@
           Advanced
         </v-btn>
       </div>
+
       <!--  Content  -->
       <v-row
         no-gutters
@@ -70,13 +71,13 @@
           xl="3"
           class="d-none d-md-flex mt-2 ml-2"
         >
-          <LeftPanel
+          <SearchInput
             :class="[responsiveClassObject]"
           />
           <!--                    <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">-->
         </v-col>
         <v-col class="mt-2">
-          <RightContentList
+          <SearchOutput
             v-scroll:#scroll-target="onScroll"
             class="pb-5 mr-0 mr-md-2"
           />
@@ -87,14 +88,14 @@
 </template>
 
 <script>
-    import LeftPanel from "@/components/Records/LeftPanel";
-    import RightContentList from "@/components/Records/RightContentList";
+    import SearchInput from "@/components/Records/Search/SearchInput";
+    import SearchOutput from "@/components/Records/Search/SearchOutput";
     import {mapActions, mapState} from 'vuex'
-    import JumpToTop from "@/components/IndividualComponents/jumpToTop";
+    import JumpToTop from "@/components/Navigation/jumpToTop";
 
     export default {
         name: "Records",
-        components: {JumpToTop, RightContentList, LeftPanel},
+        components: {JumpToTop, SearchOutput, SearchInput},
         data: () => ({
             searchTerm: '',
             offsetTop: 0,

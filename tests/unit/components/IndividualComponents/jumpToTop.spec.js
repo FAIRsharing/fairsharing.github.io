@@ -1,6 +1,6 @@
 import {shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
-import jumpToTop from "@/components/IndividualComponents/jumpToTop.vue"
+import jumpToTop from "@/components/Navigation/jumpToTop.vue"
 
 const vuetify = new Vuetify();
 

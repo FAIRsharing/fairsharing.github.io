@@ -1,4 +1,4 @@
-import Pagination from "@/components/IndividualComponents/Pagination";
+import Pagination from "@/components/Records/Search/Pagination";
 import {shallowMount} from "@vue/test-utils";
 
 let $route = {

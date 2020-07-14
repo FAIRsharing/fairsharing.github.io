@@ -1,7 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import RightContentList from "@/components/Records/RightContentList.vue"
+import SearchOutput from "@/components/Records/Search/SearchOutput.vue"
 import recordsStore from "@/store/records.js";
 
 const localVue = createLocalVue();
@@ -19,7 +19,7 @@ const $store = new Vuex.Store({
 describe("ListController.vue", function () {
     let wrapper;
 
-    wrapper = shallowMount(RightContentList, {
+    wrapper = shallowMount(SearchOutput, {
         localVue,
         vuetify,
         mocks: {$store}
@@ -27,6 +27,8 @@ describe("ListController.vue", function () {
 
     it("can check changeListType function", () => {
         wrapper.vm.changeListType(true);
+        // Missing an expect() ???
+        // Missing an instanciation test.
     });
 
 });

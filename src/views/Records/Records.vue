@@ -90,7 +90,7 @@
     import LeftPanel from "@/components/Records/LeftPanel";
     import RightContentList from "@/components/Records/RightContentList";
     import {mapActions, mapState} from 'vuex'
-    import JumpToTop from "@/components/IndividualComponents/jumpToTop";
+    import JumpToTop from "@/components/Navigation/jumpToTop";
 
     export default {
         name: "Records",

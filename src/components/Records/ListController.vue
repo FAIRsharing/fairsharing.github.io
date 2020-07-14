@@ -34,7 +34,7 @@
     >
       <Pagination :total-pages="totalPages" />
     </v-skeleton-loader>
-      
+
     <!--Stack or Column list toggle buttons-->
     <div class="d-flex flex-row align-center">
       <v-skeleton-loader
@@ -67,8 +67,8 @@
 </template>
 
 <script>
-    import Pagination from "@/components/IndividualComponents/Pagination";
-    import Sorting from "@/components/IndividualComponents/Sorting";
+    import Pagination from "@/components/Records/Search/Pagination";
+    import Sorting from "@/components/Records/Search/Sorting";
 
     import {mapState} from "vuex";
 

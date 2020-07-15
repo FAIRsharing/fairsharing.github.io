@@ -24,7 +24,7 @@
 <script>
     import {mapGetters} from "vuex"
     import ExpansionPanel from "./FilterAutocomplete";
-    import FilterButtons from "../../FilterButtons";
+    import FilterButtons from "./FilterButtons";
 
     export default {
         name: "FilterPanel",

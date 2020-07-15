@@ -23,8 +23,8 @@
 
 <script>
     import {mapGetters} from "vuex"
-    import ExpansionPanel from "./ExpansionPanel";
-    import FilterButtons from "./FilterButtons";
+    import ExpansionPanel from "../../ExpansionPanel";
+    import FilterButtons from "../../FilterButtons";
 
     export default {
         name: "FilterPanel",

@@ -34,6 +34,7 @@
       </article>
     </div>
 
+    <!-- Card view -->
     <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
       <v-skeleton-loader
         class="mt-5"
@@ -53,9 +54,9 @@
 </template>
 
 <script>
-    import RecordsCardStack from "../../RecordsCardStack";
+    import RecordsCardStack from "./RecordsCardStack";
     import ListController from "../../ListController";
-    import RecordsCardColumn from "../../RecordsCardColumn";
+    import RecordsCardColumn from "./RecordsCardColumn";
     import {mapState} from 'vuex'
     import FilterChips from "../FilterChips";
 

@@ -88,8 +88,8 @@
 </template>
 
 <script>
-    import SearchInput from "@/components/Records/Search/SearchInput";
-    import SearchOutput from "@/components/Records/Search/SearchOutput";
+    import SearchInput from "@/components/Records/Search/Input/SearchInput";
+    import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
     import {mapActions, mapState} from 'vuex'
     import JumpToTop from "@/components/Navigation/jumpToTop";
 

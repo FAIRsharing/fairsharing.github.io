@@ -57,7 +57,7 @@
     import ListController from "../../ListController";
     import RecordsCardColumn from "../../RecordsCardColumn";
     import {mapState} from 'vuex'
-    import FilterChips from "../Input/FilterChips";
+    import FilterChips from "../FilterChips";
 
     export default {
         name: "RightContentList",

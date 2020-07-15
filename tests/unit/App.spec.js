@@ -16,14 +16,11 @@ const $store = new Vuex.Store({
     }
 });
 
-
 describe("App.vue", () => {
-
     let wrapper;
     const vuetify = new Vuetify();
 
     it("can be instantiated", () => {
-
         const title = "App";
         wrapper = shallowMount(App, {
             localVue,
@@ -31,23 +28,29 @@ describe("App.vue", () => {
             mocks: {$store}
         });
         expect(wrapper.name()).toMatch(title);
-
     });
 
     it("can check the toggleOverFlow", () => {
-
         $store.state.uiController.UIGeneralStatus = {
             bodyOverflowState: false,
             drawerVisibilityState: false,
             headerVisibilityState: true,
         };
+        expect($store.state.uiController.UIGeneralStatus).toStrictEqual({
+            bodyOverflowState: false,
+            drawerVisibilityState: false,
+            headerVisibilityState: true,
+        });
         $store.state.uiController.UIGeneralStatus = {
             bodyOverflowState: true,
             drawerVisibilityState: false,
             headerVisibilityState: true,
         };
-        $store.commit("uiController/setUIStatus", {});
-
+        expect($store.state.uiController.UIGeneralStatus).toStrictEqual({
+            bodyOverflowState: true,
+            drawerVisibilityState: false,
+            headerVisibilityState: true,
+        })
     });
 
 });

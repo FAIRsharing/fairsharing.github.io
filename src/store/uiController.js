@@ -1,14 +1,4 @@
-let uiController = {
-    namespaced: true,
-    state: {
-        scrollStatus: false,
-        UIGeneralStatus: {
-            bodyOverflowState: false,
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-        },
-    },
-    mutations: {
+export const mutations = {
         setScrollStatus(state, status) {
             state.scrollStatus = status;
         },
@@ -23,14 +13,26 @@ let uiController = {
                 state.UIGeneralStatus.headerVisibilityState = statusObject.headerVisibilityState;
             }
         }
+    };
+export const actions = {
+    setGeneralUIAttributesAction: function (state, statusObject) {
+        this.commit('uiController/setUIStatus', statusObject);
     },
-    actions: {
-        setGeneralUIAttributesAction: function (state, statusObject) {
-            this.commit('uiController/setUIStatus', statusObject);
-        },
-        setScrollStatus: function (state, status) {
-            this.commit('uiController/setScrollStatus', status);
-        }
+    setScrollStatus: function (state, status) {
+        this.commit('uiController/setScrollStatus', status);
     }
+};
+let uiController = {
+    namespaced: true,
+    state: {
+        scrollStatus: false,
+        UIGeneralStatus: {
+            bodyOverflowState: false,
+            drawerVisibilityState: false,
+            headerVisibilityState: true,
+        },
+    },
+    mutations: mutations,
+    actions: actions
 };
 export default uiController;

@@ -1,7 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import ListController from "@/components/Records/ListController.vue"
+import ListController from "@/components/Records/Search/ListController.vue"
 import recordsStore from "@/store/records.js";
 
 const localVue = createLocalVue();

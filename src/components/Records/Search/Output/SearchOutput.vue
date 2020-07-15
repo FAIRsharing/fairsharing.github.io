@@ -55,7 +55,7 @@
 
 <script>
     import RecordsCardStack from "./RecordsCardStack";
-    import ListController from "../../ListController";
+    import ListController from "../ListController";
     import RecordsCardColumn from "./RecordsCardColumn";
     import {mapState} from 'vuex'
     import FilterChips from "../FilterChips";

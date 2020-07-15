@@ -16,7 +16,7 @@
 </template>
 
 <script>
-    import FilterPanel from "../FilterPanel";
+    import FilterPanel from "./FilterPanel";
 
     export default {
         name: "LeftPanel",

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Stats/Statistics.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/FilterChips.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,32 +86,125 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Stats/Statistics.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/FilterChips.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div
-    id="loginPage"
-    class="login"
-  >
-    &lt;h2>This will be the stat page&lt;/h2>
-  &lt;/div>
+  &lt;v-row class="mr-2 ml-2">
+    &lt;div
+      v-for="(chip, index) in getChips"
+      :key="'Chips_' + index"
+    >
+      &lt;v-chip
+        class="ma-2"
+        close
+        color="white"
+        text-color="teal"
+        @click:close="removeParam(chip.paramName, chip.paramVal)"
+      >
+        {{ chip.paramName }}:&lt;b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}&lt;/b>
+      &lt;/v-chip>
+    &lt;/div>
+    &lt;v-chip
+      v-if="getChips.length"
+      class="ma-2"
+      close
+      color="white"
+      text-color="red"
+      @click:close="removeAllParams"
+    >
+      Clear All
+    &lt;/v-chip>
+  &lt;/v-row>
 &lt;/template>
 
 &lt;script>
-    /** This component handles the statistic page
-     *
-     */
+    import {throttle} from "lodash"
+
     export default {
-        name: "Statistics"
+        name: "FilterChips",
+        computed: {
+            getChips: function () {
+                let output = [];
+                const parameters = this.$route.query;
+                Object.keys(parameters).forEach(function (paramName) {
+                    if (paramName !== "page" &amp;&amp; paramName !== "orderBy") {
+                        let param = parameters[paramName];
+                        if (param.indexOf(",") > -1) {
+                            param = param.split(",")
+                        }
+                        else {
+                            param = [param];
+                        }
+                        param.forEach(function (val) {
+                            output.push({
+                                paramName: paramName,
+                                paramVal: val
+                            });
+                        })
+
+                    }
+                });
+                return output;
+            }
+        },
+        methods: {
+            /**
+             * Removes the parameter value from the router query with a 2000ms throttle
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             */
+            removeParam: throttle(async function (paramName, paramVal) {
+                let _module = this;
+                let query = this.buildNewQuery(paramName, paramVal);
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Removes all the  parameters value from the router query with a 2000ms throttle
+             */
+            removeAllParams: throttle(async function () {
+                let _module = this;
+                let query = {};
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Build the new query given a parameter name a value by getting the current query and removing the key/value given
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             * @returns {Object} - the new query to replace in the router
+             */
+            buildNewQuery: function (paramName, paramVal) {
+                let _module = this;
+                let query = {};
+                Object.keys(_module.$route.query).forEach(function (queryParam) {
+                    if (queryParam !== paramName) {
+                        query[queryParam] = _module.$route.query[queryParam]
+                    }
+                    else {
+                        if (_module.$route.query[queryParam].indexOf(',') > -1) {
+                            let currentVals = _module.$route.query[queryParam].split(",");
+                            if (currentVals.indexOf(paramVal) > -1) {
+                                currentVals.splice(paramVal.indexOf(paramVal), 1)
+                            }
+                            query[paramName] = currentVals.join(",");
+                        }
+                    }
+                });
+                query["page"] = 1;
+                return query;
+            }
+        }
     }
 &lt;/script>
-
-&lt;style scoped>
-
-&lt;/style></pre>
+</pre>
     </article>
 </section>
 

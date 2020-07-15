@@ -1,7 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import SearchOutput from "@/components/Records/Search/SearchOutput.vue"
+import SearchOutput from "@/components/Records/Search/Output/SearchOutput.vue"
 import recordsStore from "@/store/records.js";
 
 const localVue = createLocalVue();

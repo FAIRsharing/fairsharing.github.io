@@ -114,8 +114,8 @@
 </template>
 
 <script>
-    import Ribbon from "./Shared/Ribbon";
-    import RecordStatus from "./Shared/RecordStatus";
+    import Ribbon from "../../Shared/Ribbon";
+    import RecordStatus from "../../Shared/RecordStatus";
     import AssociatedRecordsStack from "./AssociatedRecordsStack";
     import {isEqual} from "lodash";
 

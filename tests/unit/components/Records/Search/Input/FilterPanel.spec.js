@@ -1,7 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import FilterPanel from "@/components/Records/FilterPanel.vue"
+import FilterPanel from "@/components/Records/Search/Input/FilterPanel.vue"
 import searchFiltersStore from "@/store/searchFilters.js";
 
 const localVue = createLocalVue();

@@ -1,6 +1,6 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
-import ExpansionPanel from "@/components/Records/ExpansionPanel.vue"
+import ExpansionPanel from "@/components/Records/Search/Input/FilterAutocomplete.vue"
 import recordsStore from "@/store/records.js";
 import Vuex from "vuex";
 
@@ -25,7 +25,9 @@ const $router = {
     push: jest.fn(),
 };
 
-describe("ExpansionPanel.vue", function () {
+describe("FilterAutocomplete.vue", function () {
+
+    // complex fake data needs to be moved to fixtures/
     let wrapper;
     let fake_GetFilter_Grants_Response = {
         "filterName": "grants",
@@ -5045,6 +5047,10 @@ describe("ExpansionPanel.vue", function () {
             filter:{filterName:'grants'}
         }
     });
+
+    // Missing instanciation test.
+    // Please close each line with ";"
+    // Please add whitespaces before and after equal sign and comparator signs.
 
     it("check getValues computed", () => {
         $store.state.records.facets.push(fake_GetFilter_Grants_Response)

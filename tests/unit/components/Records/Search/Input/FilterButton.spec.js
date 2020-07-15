@@ -1,7 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import FilterItem from "@/components/Records/FilterItem.vue"
+import FilterItem from "@/components/Records/Search/Input/FilterButton.vue"
 import searchFiltersStore from "@/store/searchFilters.js";
 
 const localVue = createLocalVue();
@@ -40,6 +40,8 @@ describe("FilterItem.vue", function () {
         },
         mocks: {$store, $router, $route}
     });
+
+    // Missing instanciation test
 
     it("can check selectFilter method", () => {
         let selectedItem = {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true};

@@ -23,7 +23,7 @@
 
 <script>
     import {mapGetters} from "vuex"
-    import ExpansionPanel from "./ExpansionPanel";
+    import ExpansionPanel from "./FilterAutocomplete";
     import FilterButtons from "./FilterButtons";
 
     export default {

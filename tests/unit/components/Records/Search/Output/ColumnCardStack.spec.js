@@ -1,13 +1,13 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
-import RecordsCardStack from "@/components/Records/RecordsCardStack.vue"
+import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardColumn.vue"
 import VueRouter from "vue-router";
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
 const vuetify = new Vuetify();
 
-describe("RecordsCardStack.vue", function () {
+describe("RecordsCardColumn.vue", function () {
     let wrapper;
     let record = {
         "id": 1325,
@@ -141,10 +141,9 @@ describe("RecordsCardStack.vue", function () {
         localVue,
         vuetify,
         propsData:{
-          record:record
+            record:record
         }
     });
-
 
     it("can check changeActiveItem function", () => {
         const itemIndex=0
@@ -152,13 +151,11 @@ describe("RecordsCardStack.vue", function () {
         expect(wrapper.vm.buttons[itemIndex].active).toBe(true);
     });
 
-
     it("can check toggleChipActiveness function", () => {
         wrapper.vm.currentActiveChips = 'domains'
         const chip={label:'domains1',active:false}
         wrapper.vm.toggleChipActiveness(chip);
         expect(wrapper.vm.Chips[wrapper.vm.currentActiveChips][0].active).toBe(true);
     });
-
 
 });

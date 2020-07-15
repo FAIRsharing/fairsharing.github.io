@@ -28,9 +28,6 @@ let recordsStore = {
             recordsQuery.queryParam = null;
             state.records = [];
         },
-        resetFacets(state) {
-            state.facets = [];
-        },
         resetHits(state) {
             state.hits = null;
         },
@@ -49,9 +46,6 @@ let recordsStore = {
             const data = await client.executeQuery(recordsQuery);
             this.commit('records/setRecords', data["searchFairsharingRecords"]);
             this.commit("records/setLoadingStatus", false);
-        },
-        resetFacets() {
-            this.commit("records/resetFacets")
         },
         resetRecords() {
             this.commit("records/resetRecords");

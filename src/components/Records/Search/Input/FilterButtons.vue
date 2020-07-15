@@ -20,7 +20,7 @@
 
 <script>
     import {mapState} from "vuex";
-    import FilterItem from "../../FilterItem";
+    import FilterItem from "./FilterButton";
 
     export default {
         name: "FilterButtons",

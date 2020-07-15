@@ -24,7 +24,7 @@
     import {mapActions} from 'vuex'
 
     export default {
-        name: "FilterItem",
+        name: "FilterButton",
         props: {
             item: {default: null, type: Object},
             isFirstItem: {default: false, type: Boolean},

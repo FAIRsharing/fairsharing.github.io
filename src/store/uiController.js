@@ -1,9 +1,7 @@
-import {has} from 'lodash'
-
 let uiController = {
     namespaced: true,
     state: {
-        scrollStatus:false,
+        scrollStatus: false,
         UIGeneralStatus: {
             bodyOverflowState: false,
             drawerVisibilityState: false,
@@ -11,17 +9,17 @@ let uiController = {
         },
     },
     mutations: {
-        setScrollStatus(state, status){
-            state.scrollStatus=status;
+        setScrollStatus(state, status) {
+            state.scrollStatus = status;
         },
         setUIStatus: function (state, statusObject) {
-            if (has(statusObject, 'bodyOverflowState')) {
+            if (Object.prototype.hasOwnProperty.call(statusObject, 'bodyOverflowState')) {
                 state.UIGeneralStatus.bodyOverflowState = statusObject.bodyOverflowState;
             }
-            if (has(statusObject, 'drawerVisibilityState')) {
+            if (Object.prototype.hasOwnProperty.call(statusObject, 'drawerVisibilityState')) {
                 state.UIGeneralStatus.drawerVisibilityState = statusObject.drawerVisibilityState;
             }
-            if (has(statusObject, 'headerVisibilityState')) {
+            if (Object.prototype.hasOwnProperty.call(statusObject, 'headerVisibilityState')) {
                 state.UIGeneralStatus.headerVisibilityState = statusObject.headerVisibilityState;
             }
         }
@@ -36,4 +34,3 @@ let uiController = {
     }
 };
 export default uiController;
-

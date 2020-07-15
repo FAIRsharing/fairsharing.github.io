@@ -2,14 +2,7 @@ import {actions, mutations} from "@/store/uiController.js"
 
 describe('Mutations & Actions', () => {
 
-    let state = {
-        scrollStatus: false,
-        UIGeneralStatus: {
-            bodyOverflowState: false,
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-        },
-    };
+    let state = {};
 
     beforeEach(() => {
         state = {

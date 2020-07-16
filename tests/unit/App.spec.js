@@ -19,6 +19,11 @@ const $store = new Vuex.Store({
 describe("App.vue", () => {
     let wrapper;
     const vuetify = new Vuetify();
+    $store.state.uiController.UIGeneralStatus = {
+        bodyOverflowState: false,
+        drawerVisibilityState: false,
+        headerVisibilityState: true,
+    };
 
     it("can be instantiated", () => {
         const title = "App";
@@ -30,27 +35,14 @@ describe("App.vue", () => {
         expect(wrapper.name()).toMatch(title);
     });
 
+    it("can trigger watcher", () => {
+        $store.commit("uiController/setUIStatus",{bodyOverflowState: true});
+        expect(wrapper.vm._status).toBe(true);
+    });
+
     it("can check the toggleOverFlow", () => {
-        $store.state.uiController.UIGeneralStatus = {
-            bodyOverflowState: false,
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-        };
-        expect($store.state.uiController.UIGeneralStatus).toStrictEqual({
-            bodyOverflowState: false,
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-        });
-        $store.state.uiController.UIGeneralStatus = {
-            bodyOverflowState: true,
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-        };
-        expect($store.state.uiController.UIGeneralStatus).toStrictEqual({
-            bodyOverflowState: true,
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-        })
+        $store.commit("uiController/setUIStatus",{bodyOverflowState: false});
+        expect(wrapper.vm._status).toBe(false);
     });
 
 });

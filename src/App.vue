@@ -26,10 +26,11 @@
         components: {Footer, Header},
         data: () => ({
             hideOverflow: 'overflow-hidden',
-            root: null
+            root: null,
+            _status:false
         }),
         computed: {
-            ...mapState('uiController', ["UIGeneralStatus","scrollStatus"]),
+            ...mapState('uiController', ["UIGeneralStatus", "scrollStatus"]),
         },
         watch: {
             UIGeneralStatus: {
@@ -41,8 +42,9 @@
         },
         methods: {
             toggleOverFlow: function (status) {
+                this._status = status
                 this.root = document.getElementsByTagName('html')[0]; // '0' to assign the first (and only `HTML` tag)
-                status ? this.root.setAttribute('class', this.hideOverflow) : this.root.removeAttribute('class');
+                this._status ? this.root.setAttribute('class', this.hideOverflow) : this.root.removeAttribute('class');
             },
         },
     }

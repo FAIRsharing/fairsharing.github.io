@@ -375,7 +375,7 @@ describe('Mutation & Actions & Getters', () => {
         ]);
     });
 
-    it("can check setFilters mutations", () => {
+    it("can check buildFilters function", () => {
         const returnedVal_NewKey = {
             "searchFairsharingRecords": {
                 "aggregations": {

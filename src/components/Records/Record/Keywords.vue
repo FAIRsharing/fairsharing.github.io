@@ -11,7 +11,7 @@
             <div class="d-flex mt-4 flex-wrap">
                 <b class="mr-2">Taxonomies:</b>
                 <v-chip
-                        v-for="item in taxonomies"
+                        v-for="item in getField('taxonomies')"
                         :key="item.label"
                         class="mr-2 mb-2 "
                         color="primary"
@@ -31,7 +31,7 @@
             >
                 <b class="mr-8">Domains:</b>
                 <v-chip
-                        v-for="item in domains"
+                        v-for="item in getField('domains')"
                         :key="item.label"
                         class="mr-2 mb-2"
                         color="secondary"
@@ -51,7 +51,7 @@
             >
                 <b class="mr-8">Subjects:</b>
                 <v-chip
-                        v-for="item in subjects"
+                        v-for="item in getField('subjects')"
                         :key="item.label"
                         class="mr-2 mb-2"
                         color="accent"
@@ -70,6 +70,9 @@
 </template>
 
 <script>
+    // TODO: Also needs user defined tags
+    import { mapGetters } from 'vuex';
+
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     export default {
@@ -77,21 +80,10 @@
         components: {
             SectionTitle
         },
-        props: {
-            taxonomies: {
-                default: null,
-                type: Array
-            },
-            domains: {
-                default: null,
-                type: Array
-            },
-            subjects: {
-                default: null,
-                type: Array
-            }
-            // TODO: Also needs user defined tags
-        },
+        computed: {
+            ...mapGetters("record", ["getField"])
+        }
+
     }
 </script>
 

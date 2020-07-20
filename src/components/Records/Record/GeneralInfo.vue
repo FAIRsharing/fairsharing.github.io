@@ -136,7 +136,6 @@
         mixins: [recordMixin],
         computed: {
             ...mapState("record", ["currentRecord"])
-            //...mapGetters("record", ["getField"])
         }
     }
 </script>

@@ -8,7 +8,7 @@
     <SectionTitle title="Maintainers" />
     <!--Contact-->
         <v-card
-            v-for="(maintainer, index) in maintainerData"
+            v-for="(maintainer, index) in getField('maintainers')"
             :key="maintainer.contact_name"
             class="pa-4 d-flex flex-column"
             :class="index===0?'mt-4':'mt-2'"
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     export default {
@@ -39,12 +41,10 @@
         components: {
             SectionTitle
         },
-        props: {
-            maintainerData: {
-                default: null,
-                type: Array
-            },
-        },
+        computed: {
+            ...mapGetters("record", ["getField"])
+        }
+
     }
 </script>
 

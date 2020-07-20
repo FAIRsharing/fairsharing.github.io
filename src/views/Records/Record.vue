@@ -52,11 +52,7 @@
             <!--Left Column-->
             <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
               <!-- KEYWORDS -->
-              <Keywords
-                :taxonomies="currentRecord['fairsharingRecord'].taxonomies"
-                :domains="currentRecord['fairsharingRecord'].domains"
-                :subjects="currentRecord['fairsharingRecord'].subjects"
-              />
+              <Keywords />
 
               <!-- SUPPORT -->
               <Support
@@ -76,7 +72,7 @@
               <Maintainers :maintainerData="currentRecord['fairsharingRecord'].maintainers" />
 
               <!-- GRANTS -->
-              <Grants :grantData="currentRecord['fairsharingRecord'].grants" />
+              <Grants />
 
               <!-- PUBLICATIONS -->
               <Publications :publicationData="currentRecord['fairsharingRecord'].publications" />

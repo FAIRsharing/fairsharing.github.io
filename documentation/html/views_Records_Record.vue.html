@@ -136,117 +136,7 @@
             no-gutters
           >
             &lt;v-col>
-              &lt;v-card
-                class="pa-4 mt-5 d-flex flex-column"
-                outlined
-                tile
-                elevation="1"
-              >
-                &lt;!-- General Info -->
-                &lt;SectionTitle title="General Info"/>
-                &lt;!-- Ribbon -->
-                &lt;Ribbon
-                  v-if="currentRecord['fairsharingRecord'].isRecommended"
-                  title="RECOMMENDED"
-                />
-                &lt;!-- Title and DOI -->
-                &lt;v-row
-                  no-gutters
-                  class="mb-2"
-                >
-                  &lt;v-col
-                    cols="4"
-                    sm="2"
-                    md="2"
-                    lg="1"
-                    xl="1"
-                    class="d-flex flex-row align-center mt-4 "
-                  >
-                    &lt;record-status :record="currentRecord['fairsharingRecord']" />
-                  &lt;/v-col>
-                  &lt;v-col
-                    class="d-flex flex-column justify-center"
-                    cols="12"
-                    sm="10"
-                    md="10"
-                    lg="11"
-                    xl="11"
-                  >
-                    &lt;div class="d-flex flex-column mt-2  ml-sm-6 ml-lg-8">
-                      &lt;div class="d-flex flex-row mb-2 align-center">
-                        &lt;h3>{{ currentRecord['fairsharingRecord'].name }}&lt;/h3>
-                        &lt;b class="ml-2">({{ currentRecord['fairsharingRecord'].abbreviation
-                        }})&lt;/b>
-                      &lt;/div>
-                      &lt;div class="d-flex align-center">
-                        &lt;h3 class="mr-1">
-                          doi:
-                        &lt;/h3>
-                        &lt;a :href="currentRecord['fairsharingRecord'].doi">
-                          {{ currentRecord['fairsharingRecord'].doi }}
-                        &lt;/a>
-                      &lt;/div>
-                    &lt;/div>
-                  &lt;/v-col>
-                &lt;/v-row>
-
-                &lt;section>
-                  &lt;!--Type-->
-                  &lt;div class="d-flex">
-                    &lt;b class="mr-2">Type:&lt;/b>
-                    &lt;p>
-                      {{ cleanString(currentRecord['fairsharingRecord'].type) | capitalize }}
-                    &lt;/p>
-                  &lt;/div>
-                  &lt;!--Year of Creation-->
-                  &lt;!--!! Attention need data model to be changed. must be sent by fairsharing Object like below!! -->
-                  &lt;!--fairsharingRecord.year_creation-->
-                  &lt;div class="d-flex">
-                    &lt;b class="mr-2">Year of Creation:&lt;/b>
-                    &lt;p>{{ currentRecord['fairsharingRecord'].metadata.year_creation }}&lt;/p>
-                  &lt;/div>
-                  &lt;!--Registry-->
-                  &lt;div class="d-flex">
-                    &lt;b class="mr-2">Registry:&lt;/b>
-                    &lt;p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}&lt;/p>
-                  &lt;/div>
-                  &lt;!--Description-->
-                  &lt;div class="d-flex align-center">
-                    &lt;b class="mr-2">Description:&lt;/b>
-                    &lt;p>{{ currentRecord['fairsharingRecord'].description | capitalize }}&lt;/p>
-                  &lt;/div>
-                  &lt;!--HomePage-->
-                  &lt;div class="d-flex">
-                    &lt;b class="mr-2 mb-4">Home Page:&lt;/b>
-                    &lt;a
-                      :href="currentRecord['fairsharingRecord'].homepage"
-                      target="_blank"
-                    >{{ currentRecord['fairsharingRecord'].homepage }}&lt;/a>
-                  &lt;/div>
-                  &lt;!--Developed Countries -->
-                  &lt;div class="d-flex flex-wrap">
-                    &lt;b class="mr-2">Countries developed this resource:&lt;/b>
-                    &lt;v-tooltip
-                      v-for="country in currentRecord['fairsharingRecord'].countries"
-                      :key="country.id"
-                      top
-                    >
-                      &lt;template v-slot:activator="{ on }">
-                        &lt;v-sheet
-                          class="mb-2 flag-mr"
-                          v-on="on"
-                        >
-                          &lt;country-flag
-                            :country="country.code"
-                            size="big"
-                          />
-                        &lt;/v-sheet>
-                      &lt;/template>
-                      &lt;span class="white--text">{{ country.name }}&lt;/span>
-                    &lt;/v-tooltip>
-                  &lt;/div>
-                &lt;/section>
-              &lt;/v-card>
+              &lt;GeneralInfo :currentRecord="currentRecord['fairsharingRecord']" />
             &lt;/v-col>
           &lt;/v-row>
 
@@ -255,32 +145,34 @@
             &lt;!--Left Column-->
             &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
               &lt;!-- KEYWORDS -->
-              &lt;Keywords :taxonomies="currentRecord['fairsharingRecord'].taxonomies"
-                        :domains="currentRecord['fairsharingRecord'].domains"
-                        :subjects="currentRecord['fairsharingRecord'].subjects"
+              &lt;Keywords
+                :taxonomies="currentRecord['fairsharingRecord'].taxonomies"
+                :domains="currentRecord['fairsharingRecord'].domains"
+                :subjects="currentRecord['fairsharingRecord'].subjects"
               />
 
               &lt;!-- SUPPORT -->
-              &lt;Support :contactData="currentRecord['fairsharingRecord'].metadata.contacts" :supportLinkData="null" />
+              &lt;Support
+                :contactData="currentRecord['fairsharingRecord'].metadata.contacts"
+                :supportLinkData="null"
+              />
 
               &lt;!-- ORGANISATION -->
-              &lt;Organisations :organisationData="currentRecord['fairsharingRecord'].organisations"/>
-
+              &lt;Organisations :organisationData="currentRecord['fairsharingRecord'].organisations" />
             &lt;/v-col>
             &lt;!--Right Column-->
             &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
               &lt;!-- LICENCES -->
-              &lt;Licences :licenceData="currentRecord['fairsharingRecord'].licences"/>
+              &lt;Licences :licenceData="currentRecord['fairsharingRecord'].licences" />
 
               &lt;!-- MAINTAINERS -->
-              &lt;Maintainers :maintainerData="currentRecord['fairsharingRecord'].maintainers"/>
+              &lt;Maintainers :maintainerData="currentRecord['fairsharingRecord'].maintainers" />
 
               &lt;!-- GRANTS -->
-              &lt;Grants :grantData="currentRecord['fairsharingRecord'].grants"/>
+              &lt;Grants :grantData="currentRecord['fairsharingRecord'].grants" />
 
               &lt;!-- PUBLICATIONS -->
-              &lt;Publications :publicationData="currentRecord['fairsharingRecord'].publications"/>
-
+              &lt;Publications :publicationData="currentRecord['fairsharingRecord'].publications" />
             &lt;/v-col>
           &lt;/v-row>
           &lt;!-- Associated Records -->
@@ -336,40 +228,31 @@
 
 &lt;script>
   import {mapActions, mapState} from 'vuex'
-  import CountryFlag from 'vue-country-flag';
   import Client from '@/components/GraphClient/GraphClient.js'
+  import GeneralInfo from "../../components/Records/Record/GeneralInfo";
   import Grants from '@/components/Records/Record/Grants';
   import Keywords from '@/components/Records/Record/Keywords';
   import Licences from '@/components/Records/Record/Licences';
   import Maintainers from '@/components/Records/Record/Maintainers';
   import Organisations from '@/components/Records/Record/Organisations';
   import Publications from '@/components/Records/Record/Publications';
-  import RecordStatus from "@/components/Records/Shared/RecordStatus";
-  import Ribbon from "@/components/Records/Shared/Ribbon";
-  import SectionTitle from '@/components/Records/Record/SectionTitle';
   import Support from '@/components/Records/Record/Support';
+
+  import recordMixin from '@/components/Mixins/recordMixin';
 
   export default {
     name: "Record",
     components: {
-      CountryFlag,
+      GeneralInfo,
       Grants,
       Keywords,
       Licences,
       Maintainers,
       Organisations,
       Publications,
-      RecordStatus,
-      Ribbon,
-      SectionTitle,
       Support
     },
-    filters: {
-      capitalize (str){
-        if (!str) return "";
-        return str.charAt(0).toUpperCase() + str.slice(1)
-      }
-    },
+    mixins: [recordMixin],
     data: () => {
       return {
         error: null,
@@ -459,12 +342,6 @@
        * */
       async getHistory () {
         await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
-      },
-      cleanString (string) {
-        if (typeof string === "string") {
-          return string.replace(/_/g, " ");
-        }
-        return string;
       }
     },
     metaInfo() {
@@ -590,7 +467,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
 	
-		on Fri Jul 17th 2020
+		on Mon Jul 20th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

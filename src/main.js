@@ -13,8 +13,11 @@ import store from './store'
 import "./styles/css/normalize.css"
 import "./styles/css/main.css"
 
-/* import clients */
+/* import GraphQLClient */
 import GraphQLClient from "./components/GraphClient/GraphClient.js"
+
+/*import query*/
+import query from "@/components/GraphClient/queries/getFilters.json";
 
 import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
@@ -41,7 +44,8 @@ store.dispatch('users/login').then(function () {
     store.dispatch("introspection/fetchParameters").then(async function () {
         new Vue({
             mounted: async function () {
-                await store.dispatch('searchFilters/fetchFilters', graphQLClient);
+                const data = await graphQLClient.executeQuery(query);
+                await store.dispatch('searchFilters/fetchFilters', data);
             },
             render: (h) => h(App),
             router,

@@ -12,10 +12,10 @@
 
         <!--Contact-->
         <v-card
-                v-for="(contact, index) in contactData"
+                v-for="(contact, index) in getField('metadata')['contacts']"
                 :key="contact.contact_name"
                 class="pa-4 d-flex flex-column"
-                :class="index===0?'mt-4':'mt-2'"
+                :class="index === 0 ? 'mt-4':'mt-2'"
                 flat
                 outlined
         >
@@ -49,6 +49,8 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     export default {
@@ -56,16 +58,10 @@
         components: {
             SectionTitle
         },
-        props: {
-            supportLinkData: {
-                default: null,
-                type: Array
-            },
-            contactData: {
-                default: null,
-                type: Array
-            }
-        },
+        computed: {
+            ...mapGetters("record", ["getField"])
+        }
+
     }
 </script>
 

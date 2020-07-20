@@ -7,10 +7,10 @@
     >
         <SectionTitle title="Licences"/>
         <v-card
-            v-for="(licence, index) in licenceData"
+            v-for="(licence, index) in getField('licences')"
             :key="licence.name"
             class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-            :class="index===0?'mt-4':'mt-2'"
+            :class="index === 0 ? 'mt-4':'mt-2'"
             flat
             outlined
         >
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     export default {
@@ -37,12 +39,10 @@
         components: {
             SectionTitle
         },
-        props: {
-            licenceData: {
-                default: null,
-                type: Array
-            },
-        },
+        computed: {
+            ...mapGetters("record", ["getField"])
+        }
+
     }
 </script>
 

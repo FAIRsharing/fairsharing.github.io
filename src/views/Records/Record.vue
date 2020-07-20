@@ -43,7 +43,7 @@
             no-gutters
           >
             <v-col>
-              <GeneralInfo :currentRecord="currentRecord['fairsharingRecord']" />
+              <GeneralInfo />
             </v-col>
           </v-row>
 
@@ -70,7 +70,7 @@
             <!--Right Column-->
             <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
               <!-- LICENCES -->
-              <Licences :licenceData="currentRecord['fairsharingRecord'].licences" />
+              <Licences :licence-data="currentRecord['fairsharingRecord'].licences" />
 
               <!-- MAINTAINERS -->
               <Maintainers :maintainerData="currentRecord['fairsharingRecord'].maintainers" />
@@ -145,7 +145,7 @@
   import Publications from '@/components/Records/Record/Publications';
   import Support from '@/components/Records/Record/Support';
 
-  import recordMixin from '@/components/Mixins/recordMixin';
+  import recordMixin from '@/utils/recordMixin';
 
   export default {
     name: "Record",

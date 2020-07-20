@@ -9,7 +9,7 @@
         <SectionTitle title="General Info"/>
         <!-- Ribbon -->
         <Ribbon
-                v-if="currentRecord.isRecommended"
+                v-if="currentRecord['fairsharingRecord'].isRecommended"
                 title="RECOMMENDED"
         />
         <!-- Title and DOI -->
@@ -37,16 +37,16 @@
             >
                 <div class="d-flex flex-column mt-2  ml-sm-6 ml-lg-8">
                     <div class="d-flex flex-row mb-2 align-center">
-                        <h3>{{ currentRecord.name }}</h3>
-                        <b class="ml-2">({{ currentRecord.abbreviation
+                        <h3>{{ currentRecord['fairsharingRecord'].name }}</h3>
+                        <b class="ml-2">({{ currentRecord['fairsharingRecord'].abbreviation
                             }})</b>
                     </div>
                     <div class="d-flex align-center">
                         <h3 class="mr-1">
                             doi:
                         </h3>
-                        <a :href="currentRecord.doi">
-                            {{ currentRecord.doi }}
+                        <a :href="currentRecord['fairsharingRecord'].doi">
+                            {{ currentRecord['fairsharingRecord'].doi }}
                         </a>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
             <div class="d-flex">
                 <b class="mr-2">Type:</b>
                 <p>
-                    {{ cleanString(currentRecord.type) | capitalize }}
+                    {{ cleanString(currentRecord['fairsharingRecord'].type) | capitalize }}
                 </p>
             </div>
             <!--Year of Creation-->
@@ -66,31 +66,31 @@
             <!--fairsharingRecord.year_creation-->
             <div class="d-flex">
                 <b class="mr-2">Year of Creation:</b>
-                <p>{{ currentRecord.metadata.year_creation }}</p>
+                <p>{{ currentRecord['fairsharingRecord'].metadata.year_creation }}</p>
             </div>
             <!--Registry-->
             <div class="d-flex">
                 <b class="mr-2">Registry:</b>
-                <p>{{ currentRecord.registry | capitalize }}</p>
+                <p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}</p>
             </div>
             <!--Description-->
             <div class="d-flex align-center">
                 <b class="mr-2">Description:</b>
-                <p>{{ currentRecord.description | capitalize }}</p>
+                <p>{{ currentRecord['fairsharingRecord'].description | capitalize }}</p>
             </div>
             <!--HomePage-->
             <div class="d-flex">
                 <b class="mr-2 mb-4">Home Page:</b>
                 <a
-                        :href="currentRecord.homepage"
+                        :href="currentRecord['fairsharingRecord'].homepage"
                         target="_blank"
-                >{{ currentRecord.homepage }}</a>
+                >{{ currentRecord['fairsharingRecord'].homepage }}</a>
             </div>
             <!--Developed Countries -->
             <div class="d-flex flex-wrap">
                 <b class="mr-2">Countries developed this resource:</b>
                 <v-tooltip
-                        v-for="country in currentRecord.countries"
+                        v-for="country in currentRecord['fairsharingRecord'].countries"
                         :key="country.id"
                         top
                 >
@@ -114,11 +114,16 @@
 
 <script>
     import CountryFlag from 'vue-country-flag';
+    import { mapState } from 'vuex';
+    // TODO:
+    //import { mapState, mapGetters } from 'vuex';
+
     import Ribbon from "@/components/Records/Shared/Ribbon";
     import SectionTitle from '@/components/Records/Record/SectionTitle';
     import RecordStatus from "@/components/Records/Shared/RecordStatus";
 
-    import recordMixin from '@/components/Mixins/recordMixin';
+    import recordMixin from '@/utils/recordMixin';
+
 
     export default {
         name: "GeneralInfo",
@@ -129,19 +134,9 @@
             SectionTitle
         },
         mixins: [recordMixin],
-        props: {
-            currentRecord: {
-                default: null,
-                type: Object
-            },
-        },
-        methods: {
-            cleanString (string) {
-                if (typeof string === "string") {
-                    return string.replace(/_/g, " ");
-                }
-                return string;
-            }
+        computed: {
+            ...mapState("record", ["currentRecord"])
+            //...mapGetters("record", ["getField"])
         }
     }
 </script>

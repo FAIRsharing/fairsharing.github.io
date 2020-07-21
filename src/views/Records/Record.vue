@@ -55,27 +55,24 @@
               <Keywords />
 
               <!-- SUPPORT -->
-              <Support
-                :contactData="currentRecord['fairsharingRecord'].metadata.contacts"
-                :supportLinkData="null"
-              />
+              <Support />
 
               <!-- ORGANISATION -->
-              <Organisations :organisationData="currentRecord['fairsharingRecord'].organisations" />
+              <Organisations />
             </v-col>
             <!--Right Column-->
             <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
               <!-- LICENCES -->
-              <Licences :licence-data="currentRecord['fairsharingRecord'].licences" />
+              <Licences />
 
               <!-- MAINTAINERS -->
-              <Maintainers :maintainerData="currentRecord['fairsharingRecord'].maintainers" />
+              <Maintainers />
 
               <!-- GRANTS -->
               <Grants />
 
               <!-- PUBLICATIONS -->
-              <Publications :publicationData="currentRecord['fairsharingRecord'].publications" />
+              <Publications />
             </v-col>
           </v-row>
           <!-- Associated Records -->
@@ -83,44 +80,7 @@
             no-gutters
           >
             <v-col>
-              <v-card
-                class="pa-4 mt-2 d-flex flex-column"
-                outlined
-                tile
-                elevation="1"
-              >
-                <div class="title-style">
-                  <div>
-                    <h4>
-                      ASSOCIATED
-                      RECORDS
-                    </h4>
-                    <span class="triangle-bottomLeft" /><span
-                      class="triangle-bottomRight"
-                    />
-                  </div>
-                </div>
-                <section class="mt-2">
-                  <v-card class="mt-3">
-                    <v-card-title>
-                      Data Table
-                      <v-spacer />
-                      <v-text-field
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        single-line
-                        hide-details
-                      />
-                    </v-card-title>
-                    <v-data-table
-                      :headers="headers"
-                      :items="recordAssociations"
-                      :search="search"
-                    />
-                  </v-card>
-                </section>
-              </v-card>
+              <AssociatedRecords :record-associations="recordAssociations"/>
             </v-col>
           </v-row>
         </v-col>
@@ -132,6 +92,7 @@
 <script>
   import {mapActions, mapState} from 'vuex'
   import Client from '@/components/GraphClient/GraphClient.js'
+  import AssociatedRecords from "../../components/Records/Record/AssociatedRecords";
   import GeneralInfo from "../../components/Records/Record/GeneralInfo";
   import Grants from '@/components/Records/Record/Grants';
   import Keywords from '@/components/Records/Record/Keywords';
@@ -146,6 +107,7 @@
   export default {
     name: "Record",
     components: {
+      AssociatedRecords,
       GeneralInfo,
       Grants,
       Keywords,
@@ -160,13 +122,6 @@
       return {
         error: null,
         queryTriggered: false,
-        search: '',
-        headers: [
-          { text: 'Name', value: 'name' },
-          { text: 'Registry', value: 'registry' },
-          { text: 'Relationship', value: 'recordAssocLabel' },
-          { text: 'Subject', value: 'subject' },
-        ],
         showScrollToTopButton: false,
         recordAssociations: []
       }
@@ -198,7 +153,7 @@
     },
     methods: {
       ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-      /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+      /** Combines associations and reserveAssociations into a single array and prepare the data for the earch table */
       prepareAssociations (associations, reverseAssociations) {
         let _module = this;
         let joinedArrays = associations.concat(reverseAssociations);

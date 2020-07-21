@@ -40,11 +40,10 @@
         <v-menu
           v-if="!user().isLoggedIn"
           offset-y
-          left
-          fixed
           transition="slide-y-transition"
-          :close-on-content-click="false"
+          :close-on-content-click="closeMenuStatus"
           class="mt-5"
+          max-height="90vh"
         >
           <template v-slot:activator="{ on }">
             <v-btn
@@ -58,15 +57,7 @@
               Login
             </v-btn>
           </template>
-          <v-list
-            width="400px"
-            dark
-            color="#253442"
-          >
-            <v-list-item>
-              <Login :redirect="false" />
-            </v-list-item>
-          </v-list>
+          <Login :redirect="false" />
         </v-menu>
         <v-btn
           v-else
@@ -95,6 +86,7 @@
         },
         data() {
             return {
+                closeMenuStatus: false,
                 drawerLeft: false,
                 links: [
                     {
@@ -166,3 +158,9 @@
         padding-right: .5rem;
     }
 </style>
+
+
+
+
+
+

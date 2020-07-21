@@ -148,27 +148,24 @@
               &lt;Keywords />
 
               &lt;!-- SUPPORT -->
-              &lt;Support
-                :contactData="currentRecord['fairsharingRecord'].metadata.contacts"
-                :supportLinkData="null"
-              />
+              &lt;Support />
 
               &lt;!-- ORGANISATION -->
-              &lt;Organisations :organisationData="currentRecord['fairsharingRecord'].organisations" />
+              &lt;Organisations />
             &lt;/v-col>
             &lt;!--Right Column-->
             &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
               &lt;!-- LICENCES -->
-              &lt;Licences :licence-data="currentRecord['fairsharingRecord'].licences" />
+              &lt;Licences />
 
               &lt;!-- MAINTAINERS -->
-              &lt;Maintainers :maintainerData="currentRecord['fairsharingRecord'].maintainers" />
+              &lt;Maintainers />
 
               &lt;!-- GRANTS -->
               &lt;Grants />
 
               &lt;!-- PUBLICATIONS -->
-              &lt;Publications :publicationData="currentRecord['fairsharingRecord'].publications" />
+              &lt;Publications />
             &lt;/v-col>
           &lt;/v-row>
           &lt;!-- Associated Records -->
@@ -176,44 +173,7 @@
             no-gutters
           >
             &lt;v-col>
-              &lt;v-card
-                class="pa-4 mt-2 d-flex flex-column"
-                outlined
-                tile
-                elevation="1"
-              >
-                &lt;div class="title-style">
-                  &lt;div>
-                    &lt;h4>
-                      ASSOCIATED
-                      RECORDS
-                    &lt;/h4>
-                    &lt;span class="triangle-bottomLeft" />&lt;span
-                      class="triangle-bottomRight"
-                    />
-                  &lt;/div>
-                &lt;/div>
-                &lt;section class="mt-2">
-                  &lt;v-card class="mt-3">
-                    &lt;v-card-title>
-                      Data Table
-                      &lt;v-spacer />
-                      &lt;v-text-field
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        single-line
-                        hide-details
-                      />
-                    &lt;/v-card-title>
-                    &lt;v-data-table
-                      :headers="headers"
-                      :items="recordAssociations"
-                      :search="search"
-                    />
-                  &lt;/v-card>
-                &lt;/section>
-              &lt;/v-card>
+              &lt;AssociatedRecords :record-associations="recordAssociations"/>
             &lt;/v-col>
           &lt;/v-row>
         &lt;/v-col>
@@ -225,6 +185,7 @@
 &lt;script>
   import {mapActions, mapState} from 'vuex'
   import Client from '@/components/GraphClient/GraphClient.js'
+  import AssociatedRecords from "../../components/Records/Record/AssociatedRecords";
   import GeneralInfo from "../../components/Records/Record/GeneralInfo";
   import Grants from '@/components/Records/Record/Grants';
   import Keywords from '@/components/Records/Record/Keywords';
@@ -239,6 +200,7 @@
   export default {
     name: "Record",
     components: {
+      AssociatedRecords,
       GeneralInfo,
       Grants,
       Keywords,
@@ -253,13 +215,6 @@
       return {
         error: null,
         queryTriggered: false,
-        search: '',
-        headers: [
-          { text: 'Name', value: 'name' },
-          { text: 'Registry', value: 'registry' },
-          { text: 'Relationship', value: 'recordAssocLabel' },
-          { text: 'Subject', value: 'subject' },
-        ],
         showScrollToTopButton: false,
         recordAssociations: []
       }
@@ -291,7 +246,7 @@
     },
     methods: {
       ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-      /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+      /** Combines associations and reserveAssociations into a single array and prepare the data for the earch table */
       prepareAssociations (associations, reverseAssociations) {
         let _module = this;
         let joinedArrays = associations.concat(reverseAssociations);

@@ -2,7 +2,7 @@
   <v-expansion-panel v-if="filter.filterName">
     <v-expansion-panel-header> {{ filter.filterLabel }}</v-expansion-panel-header>
     <v-expansion-panel-content class="pl-5 pr-5">
-      <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]" >
+      <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
         <v-autocomplete
           v-model="selectedValues"
           :items="getValues"
@@ -18,16 +18,16 @@
           @click:clear="reset(filter)"
         >
           <template v-slot:selection="data">
-            <v-chip class="blue white--text  mb-1">
-              {{ cleanString(data.item.key) }}
+            <v-chip class="blue white--text  mb-1 ">
+              <span class="chipsValueName">
+                {{ cleanString(data.item.key) }}
+              </span>
             </v-chip>
           </template>
           <template v-slot:item="data">
-            <div class="filterValueName">
-              {{ cleanString(data.item.key) }}
-            </div>
-            <div class="filterValueCount">
-              {{ data.item['doc_count'] }}
+            <div class="d-flex align-content-around">
+              <span class="filterValueName"> {{ cleanString(data.item.key) }}</span>
+              <span class="filterValueCount"> {{ data.item['doc_count'] }}</span>
             </div>
           </template>
         </v-autocomplete>
@@ -187,19 +187,23 @@
     }
 
     .filterValueName {
-        flex: 1;
-        max-width: 348px;
+        width: 315px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
     }
 
-    .autocomplete-max-width{
-      flex: 1;
-      max-width: 100%;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
+    .chipsValueName {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .autocomplete-max-width {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     .filterValueCount {

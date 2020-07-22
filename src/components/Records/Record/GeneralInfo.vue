@@ -25,7 +25,7 @@
                     xl="1"
                     class="d-flex flex-row align-center mt-4 "
             >
-                <record-status :record="currentRecord" />
+                <record-status :record="currentRecord['fairsharingRecord']" />
             </v-col>
             <v-col
                     class="d-flex flex-column justify-center"

@@ -1,7 +1,7 @@
-import { shallowMount } from "@vue/test-utils";
+import {shallowMount} from "@vue/test-utils";
 import AssociatedRecords from "@/components/Records/Record/AssociatedRecords.vue"
 
-describe("AssociatedRecords.vue", function(){
+describe("AssociatedRecords.vue", function () {
     let wrapper;
 
     // TODO: Mock properties in options {}.

@@ -69,21 +69,23 @@
                 @click:append="show1 = !show1"
               />
 
-              <v-card-text class="text-left">
+              <v-card-text class="text-center">
                 <router-link to="/accounts/forgotPassword">
                   Forgot your password ?
                 </router-link>
               </v-card-text>
 
-              <v-card-actions class="mt-3">
+              <v-card-actions class="mt-2">
                 <v-btn
-                  class="mr-5 px-4"
+                  class=" px-4"
                   light
                   @click="logUser()"
+                  color="primary"
                 >
                   LOGIN
                 </v-btn>
                 <v-btn
+                  text
                   light
                   class="px-4"
                   href="#/accounts/signup"
@@ -177,5 +179,8 @@
 <style scoped>
     #loginPage a {
         text-decoration: none !important;
+    }
+    .v-card__actions {
+      justify-content: center;
     }
 </style>

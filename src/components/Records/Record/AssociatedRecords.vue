@@ -41,16 +41,16 @@
         props: {
             recordAssociations: {
                 type: Array,
-                default: () => []
+                default: null
             }
         },
         data: () => {
             return {
                 headers: [
-                    { text: 'Name', value: 'name' },
-                    { text: 'Registry', value: 'registry' },
-                    { text: 'Relationship', value: 'recordAssocLabel' },
-                    { text: 'Subject', value: 'subject' },
+                    {text: 'Name', value: 'name'},
+                    {text: 'Registry', value: 'registry'},
+                    {text: 'Relationship', value: 'recordAssocLabel'},
+                    {text: 'Subject', value: 'subject'},
                 ],
                 search: '',
             }

@@ -1,32 +1,32 @@
 <template>
+  <v-card
+    class="pa-4 mt-5 d-flex flex-column"
+    outlined
+    tile
+    elevation="1"
+  >
+    <SectionTitle title="Grants" />
     <v-card
-            class="pa-4 mt-5 d-flex flex-column"
-            outlined
-            tile
-            elevation="1"
+      v-for="(grant, index) in getField('grants')"
+      :key="grant.name"
+      class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+      :class="index === 0 ? 'mt-4' : 'mt-2'"
+      flat
+      outlined
     >
-        <SectionTitle title="Grants"/>
-        <v-card
-                v-for="(grant, index) in getField('grants')"
-                :key="grant.name"
-                class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-                :class="index === 0 ? 'mt-4' : 'mt-2'"
-                flat
-                outlined
+      <div class="d-flex mt-2 ">
+        <v-icon
+          color="secondary"
+          class="mr-2"
         >
-            <div class="d-flex mt-2 ">
-                <v-icon
-                        color="secondary"
-                        class="mr-2"
-                >
-                    mdi-cash-multiple
-                </v-icon>
-                <p class="ma-0">
-                    {{ grant.name }}
-                </p>
-            </div>
-        </v-card>
+          mdi-cash-multiple
+        </v-icon>
+        <p class="ma-0">
+          {{ grant.name }}
+        </p>
+      </div>
     </v-card>
+  </v-card>
 </template>
 
 <script>

@@ -41,7 +41,7 @@
         props: {
             recordAssociations: {
                 type: Array,
-                defaultValue: []
+                default: () => []
             }
         },
         data: () => {

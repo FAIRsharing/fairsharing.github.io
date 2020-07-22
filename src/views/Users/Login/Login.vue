@@ -12,14 +12,7 @@
           sm="12"
         >
           <!-- card title -->
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="headline">
-                {{ currentPanel | capitalize }}:
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
+          <h2 class="text-center">{{ currentPanel | capitalize }}</h2>
           <!-- message handler -->
           <MessageHandler field="login" />
 

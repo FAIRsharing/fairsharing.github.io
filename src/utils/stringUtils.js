@@ -1,4 +1,4 @@
-const recordMixin = {
+const stringUtils = {
     methods: {
         cleanString (string) {
             if (typeof string === "string") {
@@ -15,4 +15,4 @@ const recordMixin = {
     }
 }
 
-export default recordMixin;
+export default stringUtils;

@@ -80,7 +80,7 @@
             no-gutters
           >
             <v-col>
-              <AssociatedRecords :record-associations="recordAssociations"/>
+              <AssociatedRecords :record-associations="recordAssociations" />
             </v-col>
           </v-row>
         </v-col>
@@ -102,7 +102,7 @@
   import Publications from '@/components/Records/Record/Publications';
   import Support from '@/components/Records/Record/Support';
 
-  import recordMixin from '@/utils/recordMixin';
+  import stringUtils from '@/utils/stringUtils';
 
   export default {
     name: "Record",
@@ -117,7 +117,7 @@
       Publications,
       Support
     },
-    mixins: [recordMixin],
+    mixins: [stringUtils],
     data: () => {
       return {
         error: null,

@@ -122,7 +122,7 @@
     import SectionTitle from '@/components/Records/Record/SectionTitle';
     import RecordStatus from "@/components/Records/Shared/RecordStatus";
 
-    import recordMixin from '@/utils/recordMixin';
+    import stringUtils from '@/utils/stringUtils';
 
 
     export default {
@@ -133,7 +133,7 @@
             Ribbon,
             SectionTitle
         },
-        mixins: [recordMixin],
+        mixins: [stringUtils],
         computed: {
             ...mapState("record", ["currentRecord"])
         }

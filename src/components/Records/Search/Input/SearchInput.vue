@@ -10,30 +10,105 @@
       <h2 class="d-none">
         Filter List
       </h2>
-      <FilterPanel/>
+      <!-- Filter Buttons     -->
+      <FilterButtons />
+
+      <!-- expansion Panels    -->
+      <v-expansion-panels
+        v-if="getFilters.length>0"
+        v-model="panel"
+        multiple
+        flat
+        hover
+        accordion
+      >
+        <ExpansionPanel
+          v-for="filter in setup"
+          :key="filter.filterLabel"
+          :filter="filter"
+        />
+      </v-expansion-panels>
     </v-card>
   </aside>
 </template>
 
 <script>
-    import FilterPanel from "./FilterPanel";
+    import {mapGetters} from "vuex"
+    import ExpansionPanel from "./FilterAutocomplete";
+    import FilterButtons from "./FilterButtons";
 
     export default {
-        name: "LeftPanel",
-        components: {FilterPanel},
+        name: "SearchInput",
+        components: {FilterButtons, ExpansionPanel},
+        data() {
+            return {
+                panel: [],
+                filterSelected: {},
+            }
+        },
+        computed: {
+            ...mapGetters("searchFilters", ["getFilters"]),
+            setup() {
+                this.setPanel();
+                this.createIndexForFilters();
+                return this.getFilters;
+            },
+            /* currentPath() {
+
+                                 return this.$route.query;
+
+            }, */
+        }
+        /*watch: {
+            currentPath: async function () {
+                // let _module = this;
+                // _module.$route.query.forEach(prop=>{console.log('b',prop)});
+                // Object.keys(_module.$route.query).forEach(function (prop) {console.log(prop);});
+            }
+
+        }*/
+        ,
+        methods: {
+            setPanel() {
+                this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i)
+            },
+            resetPanel() {
+                this.panel = []
+            },
+            createIndexForFilters: function () {
+                this.getFilters.forEach(item => {
+                    this.filterSelected[item.filterName] = [];
+                });
+            },
+        },
     }
 </script>
 
 <style scoped lang="scss">
 
     aside {
-        #filters-holder {
-            border-radius: 0;
-            -moz-border-radius: 0;
-            -webkit-border-radius: 0;
-            overflow-x: hidden;
-            height: 100vh;
-        }
+      #filters-holder {
+        border-radius: 0;
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        overflow-x: hidden;
+        height: 100vh;
+      }
     }
+
+    .buttons-md-style {
+        min-width: 32px !important;
+    }
+
+    .first-child {
+        font-size: 11px;
+        width: 16.5%;
+    }
+
+    .flex-1 {
+        font-size: 11px;
+        flex: 1;
+    }
+
 
 </style>

@@ -1,7 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import FilterPanel from "@/components/Records/Search/Input/FilterPanel.vue"
+import FilterPanel from "@/components/Records/Search/Input/SearchInput"
 import searchFiltersStore from "@/store/searchFilters.js";
 
 const localVue = createLocalVue();
@@ -30,6 +30,10 @@ describe("FilterPanel.vue", function () {
         localVue,
         vuetify,
         mocks: {$store, $router, $route}
+    });
+
+    it("can be mounted", () => {
+        expect(wrapper.name()).toBe('SearchInput')
     });
 
     it("can check setup function", () => {

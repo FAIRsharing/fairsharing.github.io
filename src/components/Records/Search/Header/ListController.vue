@@ -67,8 +67,8 @@
 </template>
 
 <script>
-    import Pagination from "@/components/Records/Search/Pagination";
-    import Sorting from "@/components/Records/Search/Sorting";
+    import Pagination from "./Pagination";
+    import Sorting from "./Sorting";
 
     import {mapState} from "vuex";
 

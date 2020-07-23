@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Users/Login/Login.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Header/Pagination.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,204 +86,120 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Users/Login/Login.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Header/Pagination.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-layout
-    id="loginPage"
-    class="login"
-    style="background: white"
-  >
-    &lt;v-container>
-      &lt;!-- forms -->
-      &lt;v-row justify="center">
-        &lt;v-col
-          cols="12"
-          sm="12"
-          :class="{'col-xl-4': !popUp}"
-        >
-          &lt;v-card :flat="popUp">
-            &lt;v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">
-              &lt;!-- card title -->
-              &lt;h2 class="ma-0">
-                {{ currentPanel | capitalize }}
-              &lt;/h2>
-            &lt;/v-card-title>
-            &lt;v-card-text>
-              &lt;!-- message handler -->
-              &lt;MessageHandler field="login" />
-            &lt;/v-card-text>
-            &lt;!-- OAUTH -->
-            &lt;v-card-text>
-              &lt;v-list>
-                &lt;v-list-item
-                  v-for="(provider, providerIndex) in oauthLogin"
-                  :key="'provider_' + providerIndex"
-                  style="justify-content: center"
-                >
-                  &lt;v-btn
-                    width="250px"
-                    :class="provider.color"
-                    class="text-left"
-                    :href="provider.callback"
-                  >
-                    &lt;v-layout width="100%">
-                      &lt;v-icon
-                        left
-                        class="mr-5"
-                      >
-                        {{ provider.icon }}
-                      &lt;/v-icon>
-                      &lt;v-layout>with {{ provider.name }}&lt;/v-layout>
-                    &lt;/v-layout>
-                  &lt;/v-btn>
-                &lt;/v-list-item>
-              &lt;/v-list>
-            &lt;/v-card-text>
-            &lt;!-- card content // Form -->
-            &lt;v-card-text v-if="currentPanel === 'login'">
-              &lt;v-form
-                id="loginForm"
-              >
-                &lt;!-- account -->
-                &lt;v-text-field
-                  v-model="loginData.name"
-                  label="Username or email"
-                  required
-                  outlined
-                />
-
-                &lt;!-- password -->
-                &lt;v-text-field
-                  v-model="loginData.password"
-                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
-                  :type="show1 ? 'text' : 'password'"
-                  label="Password"
-                  counter
-                  required
-                  outlined
-                  @click:append="show1 = !show1"
-                />
-
-                &lt;v-card-text class="text-center">
-                  &lt;router-link to="/accounts/forgotPassword">
-                    Forgot your password ?
-                  &lt;/router-link>
-                &lt;/v-card-text>
-
-                &lt;v-card-actions class="mt-2">
-                  &lt;v-btn
-                    class=" px-4"
-                    light
-                    color="primary"
-                    @click="logUser()"
-                  >
-                    LOGIN
-                  &lt;/v-btn>
-                  &lt;v-btn
-                    text
-                    light
-                    class="px-4"
-                    href="#/accounts/signup"
-                  >
-                    Register
-                  &lt;/v-btn>
-                &lt;/v-card-actions>
-              &lt;/v-form>
-            &lt;/v-card-text>
-          &lt;/v-card>
-        &lt;/v-col>
-      &lt;/v-row>
-    &lt;/v-container>
-  &lt;/v-layout>
+  &lt;v-pagination
+    v-model="page"
+    :length="totalPages"
+    :total-visible="7"
+  />
 &lt;/template>
 
 &lt;script>
-    import {mapActions, mapState} from 'vuex'
-    import MessageHandler from "@/components/Users/MessageHandler";
-    import stringUtils from '@/utils/stringUtils';
+    import {throttle} from 'lodash';
 
-    /** This component handles the login page
-     *
+    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
+     * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
+     * @vue-data {Number} [currentQuery = null] - the current page number
      */
     export default {
-        name: "Login",
-        components: {MessageHandler},
-        mixins: [stringUtils],
+        name: "Pagination",
         props: {
-            redirect: {
-                type: Boolean,
-                default: true,
+            totalPages: {
+                type: Number,
+                default: 0
             },
-            popUp: {
-                type: Boolean,
-                default: false,
-            }
         },
-        data: () => {
+        data() {
             return {
-                show1: false,
-                currentPanel: "login",
-                loginData: {},
-                oauthLogin: [
-                    {
-                        name: "ORCID",
-                        icon: "fab fa-orcid",
-                        color: "green white--text",
-                        callback: "https://api.fairsharing.org/users/auth/orcid",
-                    },
-                    {
-                        name: "Twitter",
-                        icon: "fab fa-twitter",
-                        color: "blue white--text",
-                        callback: "https://api.fairsharing.org/users/auth/twitter",
-                    },
-                    {
-                        name: "GitHub",
-                        icon: "fab fa-github",
-                        color: "black white--text",
-                        callback: "https://api.fairsharing.org/users/auth/github",
-                    }
-                ]
+                currentPage: null,
+                allowPaginate: true,
+                disable: false,
+                page: 1
             }
         },
-        computed: {
-            ...mapState("users", ["messages", "user"])
+        watch: {
+            '$route.name': function () {
+                this.currentPage = 1;
+            },
+            '$route.query': function (newVal) {
+                let _module = this;
+                if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
+                    _module.currentPage = 1;
+                } else {
+                    _module.currentPage = Number(newVal.page);
+                }
+            },
+            'page': function (newPage) {
+                this.paginate(newPage);
+            }
+        },
+        created() {
+            let currentPage = (this.$route.query.page !== undefined) ? Number(this.$route.query.page ) : 1;
+            this.currentPage = currentPage;
+            this.page = currentPage;
         },
         methods: {
-            ...mapActions('users', ['login', 'logout']),
-            logUser: async function () {
-                const _module = this;
-                const user = {
-                    "name": _module.loginData.name,
-                    "password": _module.loginData.password
-                };
-                await _module.login(user);
-                if (!_module.messages().login.error) {
-                    const goTo = _module.$route.query.redirect;
-                    if (goTo) {
-                        _module.$router.push({
-                            path: goTo
-                        })
-                    } else if (_module.redirect) {
-                        _module.$router.go(-1);
+            /**
+             * Set the current query page parameter value to the given input for vueJs router
+             * @param {Number} pageNumber - the page to go to
+             */
+            paginate: async function (pageNumber) {
+                if (this.allowPaginate) {
+                    if (pageNumber !== this.currentPage &amp;&amp; this.allowPaginate) {
+                        let _module = this;
+                        let currentQuery = {};
+                        _module.currentPage = pageNumber;
+                        Object.keys(_module.$route.query).forEach(function (param) {
+                            currentQuery[param] = _module.$route.query[param]
+                        });
+                        currentQuery.page = pageNumber;
+                        this.disableThrottle(this.disable);
+                        await _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentQuery
+                        });
                     }
                 }
+            },
+            /**
+             * Postpone the pagination buttons to be clickable
+             */
+            PaginatePermission: throttle(function () {
+                this.allowPaginate = true
+            }, 1200),
+
+            /**
+             * Set the environment ready for testing or development
+             * @param {Boolean} disable - should disable or not the throttle for the next call
+             */
+            disableThrottle: function (disable) {
+                if (!disable) {
+                    this.allowPaginate = false;
+                    this.PaginatePermission();
+                } else {
+                    this.allowPaginate = true;
+                }
             }
-        }
+        },
     }
 &lt;/script>
 
 &lt;style scoped>
-    #loginPage a {
-        text-decoration: none !important;
+    button {
+        outline: none;
     }
-    .v-card__actions {
-      justify-content: center;
-    }
+
+&lt;/style>
+
+&lt;style>
+  #advancedSearch {
+    top:20px;
+  }
 &lt;/style>
 </pre>
     </article>

@@ -133,22 +133,50 @@
             return {
                 allowLoop: true,
                 allowClicking: false,
-                buttons: [{title: 'domains', active: false}, {title: 'subjects', active: false}, {
+                buttons: [
+                  {
+                    title: 'domains',
+                    active: false
+                  },
+                  {
+                    title: 'subjects',
+                    active: false
+                  },
+                  {
                     title: 'taxonomies',
                     active: false,
-                }, {title: 'userDefinedTags', active: false}],
+                  },
+                  {
+                    title: 'userDefinedTags',
+                    active: false
+                  }
+                ],
                 Chips: {
-                    domains: [], subjects: [], taxonomies: [], userDefinedTags: []
+                  domains: [],
+                  subjects: [],
+                  taxonomies: [],
+                  userDefinedTags: []
                 },
                 currentActiveChips: null,
                 vChipActive: 'v-chip--active',
-                associatedRecordsArray: [{title: 'standards', amount: 10}, {title: 'databases', amount: 8}, {
+                associatedRecordsArray: [
+                  {
+                    title: 'standards',
+                    amount: 10
+                  },
+                  {
+                    title: 'databases',
+                    amount: 8
+                  },
+                  {
                     title: 'policies',
                     amount: 2,
-                }, {
-                    title: 'collections',
-                    amount: 6,
-                }],
+                  },
+                  {
+                      title: 'collections',
+                      amount: 6,
+                  }
+                ],
             }
         },
         created() {
@@ -158,7 +186,6 @@
             changeActiveItem: function (itemIndex) {
                 this.buttons.map(item => item.active = false);
                 this.buttons[itemIndex].active = true;
-                // changing currentChips data
                 this.currentActiveChips = this.buttons[itemIndex].title;
             },
             toggleChipActiveness: function (chip) {
@@ -166,9 +193,6 @@
                 this.Chips[this.currentActiveChips].map(item => {
                     if (isEqual(item, selectedItem)) {
                         item.active = !item.active;
-                        //    should call scroll to top after a delay.
-                        // setTimeout(this.scrollToTop, 500);
-                        //    should call Api for the selected chip to be added in chips list.
                     }
                 });
             },
@@ -202,9 +226,10 @@
             setChips: function (record) {
                 let node;
                 for (node in record) {
-                    if (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags') {
-                        this.organizeChips(record, node);
-                    }
+                  if (Object.prototype.hasOwnProperty.call(record, node)
+                      && (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags')){
+                    this.organizeChips(record, node);
+                  }
                 }
             },
             organizeChips(record, node) {
@@ -224,19 +249,13 @@
                     });
                 }
             },
-            /*
-                        scrollToTop: function () {
-                            let myDiv = document.getElementById('scroll-target');
-                            myDiv.scrollTo(0, 0);
-                        }
-            */
         },
     }
 </script>
 
 <style scoped lang="scss">
     .chips-container {
-        height: 90px;
+        height: 130px;
         overflow-x: hidden;
         scroll-behavior: smooth;
         position: relative;

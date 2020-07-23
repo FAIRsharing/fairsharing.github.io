@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Pagination</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Header/FilterChips.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,407 +81,133 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Pagination</h1>
+		<h1 class="page-title">Source: components/Records/Search/Header/FilterChips.vue</h1>
+    
 <section>
-
-<header>
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Component to handle the advanced search filters for the searchFairsharingRecords query.</p></div></div></p>
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-props">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Required?</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>totalPages</code></td>
-        <td>Number</td>
-        <td><code>0</code></td>
-        <td>No</td>
-        <td>the total number of pages to display</td>
-    </tr></tbody>
-</table>
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-data">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>currentQuery</code></td>
-        <td>Number</td>
-        <td><code>null</code></td>
-        <td>the current page number</td>
-    </tr></tbody>
-</table>
-<div class="container-overview"><div><p></div>
-        
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="disableThrottle"><span class="type-signature"></span>disableThrottle(disable)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Set the environment ready for testing or development</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>disable</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>should disable or not the throttle for the next call</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
-				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-87">line 87</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="paginate"><span class="type-signature"></span>paginate(pageNumber)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Set the current query page parameter value to the given input for vueJs router</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pageNumber</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>the page to go to</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
-				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-58">line 58</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-</article>
-
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-row class="mr-2 ml-2">
+    &lt;div
+      v-for="(chip, index) in getChips"
+      :key="'Chips_' + index"
+    >
+      &lt;v-chip
+        class="ma-2"
+        close
+        color="white"
+        text-color="teal"
+        @click:close="removeParam(chip.paramName, chip.paramVal)"
+      >
+        {{ chip.paramName }}:&lt;b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}&lt;/b>
+      &lt;/v-chip>
+    &lt;/div>
+    &lt;v-chip
+      v-if="getChips.length"
+      class="ma-2"
+      close
+      color="white"
+      text-color="red"
+      @click:close="removeAllParams"
+    >
+      Clear All
+    &lt;/v-chip>
+  &lt;/v-row>
+&lt;/template>
+
+&lt;script>
+    import {throttle} from "lodash"
+
+    export default {
+        name: "FilterChips",
+        computed: {
+            getChips: function () {
+                let output = [];
+                const parameters = this.$route.query;
+                Object.keys(parameters).forEach(function (paramName) {
+                    if (paramName !== "page" &amp;&amp; paramName !== "orderBy") {
+                        let param = parameters[paramName];
+                        if (param.indexOf(",") > -1) {
+                            param = param.split(",")
+                        }
+                        else {
+                            param = [param];
+                        }
+                        param.forEach(function (val) {
+                            output.push({
+                                paramName: paramName,
+                                paramVal: val
+                            });
+                        })
+
+                    }
+                });
+                return output;
+            }
+        },
+        methods: {
+            /**
+             * Removes the parameter value from the router query with a 2000ms throttle
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             */
+            removeParam: throttle(async function (paramName, paramVal) {
+                let _module = this;
+                let query = this.buildNewQuery(paramName, paramVal);
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Removes all the  parameters value from the router query with a 2000ms throttle
+             */
+            removeAllParams: throttle(async function () {
+                let _module = this;
+                let query = {};
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Build the new query given a parameter name a value by getting the current query and removing the key/value given
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             * @returns {Object} - the new query to replace in the router
+             */
+            buildNewQuery: function (paramName, paramVal) {
+                let _module = this;
+                let query = {};
+                Object.keys(_module.$route.query).forEach(function (queryParam) {
+                    if (queryParam !== paramName) {
+                        query[queryParam] = _module.$route.query[queryParam]
+                    }
+                    else {
+                        if (_module.$route.query[queryParam].indexOf(',') > -1) {
+                            let currentVals = _module.$route.query[queryParam].split(",");
+                            if (currentVals.indexOf(paramVal) > -1) {
+                                currentVals.splice(paramVal.indexOf(paramVal), 1)
+                            }
+                            query[paramName] = currentVals.join(",");
+                        }
+                    }
+                });
+                query["page"] = 1;
+                return query;
+            }
+        }
+    }
+&lt;/script>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -491,10 +217,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

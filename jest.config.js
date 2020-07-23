@@ -9,7 +9,6 @@ module.exports = {
         "!src/main.js",
         "!src/utils/utils.js",
         "!src/documentation/process_doc.js",
-        "!src/components/Records/FiltersLabelMapping.js",
         "!src/store/index.js",
         "!src/plugins/**"
     ],

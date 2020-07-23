@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Pagination</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Header/Sorting.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,407 +81,99 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Pagination</h1>
+		<h1 class="page-title">Source: components/Records/Search/Header/Sorting.vue</h1>
+    
 <section>
-
-<header>
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Component to handle the advanced search filters for the searchFairsharingRecords query.</p></div></div></p>
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-props">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Required?</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>totalPages</code></td>
-        <td>Number</td>
-        <td><code>0</code></td>
-        <td>No</td>
-        <td>the total number of pages to display</td>
-    </tr></tbody>
-</table>
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-data">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>currentQuery</code></td>
-        <td>Number</td>
-        <td><code>null</code></td>
-        <td>the current page number</td>
-    </tr></tbody>
-</table>
-<div class="container-overview"><div><p></div>
-        
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="disableThrottle"><span class="type-signature"></span>disableThrottle(disable)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Set the environment ready for testing or development</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>disable</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>should disable or not the throttle for the next call</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
-				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-87">line 87</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="paginate"><span class="type-signature"></span>paginate(pageNumber)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Set the current query page parameter value to the given input for vueJs router</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pageNumber</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>the page to go to</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
-				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-58">line 58</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-</article>
-
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-list>
+    &lt;v-list-item
+      v-for="(item, index) in getFilters()"
+      :key="'sorter_' + index"
+      :class="{'v-list-item--active': activeFilter === item.name + ',' + item.order}"
+      @click="applySortQuery(item.name, item.order)"
+    >
+      &lt;v-list-item-title>
+        {{ item.label }} ({{ item.orderLabel }})
+      &lt;/v-list-item-title>
+    &lt;/v-list-item>
+  &lt;/v-list>
+&lt;/template>
+
+&lt;script>
+    export default {
+        name: "Sorting",
+        data() {
+            return {
+                sortFilters: [
+                    {name: 'name', label: 'name', active: false},
+                    {name: 'abbreviation', label: 'abbreviation', active: false},
+                    {name: '_score', label: 'best-match', active: false},
+                ],
+                activeFilter: null
+            }
+        },
+        mounted(){
+          const _module = this;
+          _module.activeFilter = (_module.$route.query.orderBy) ? _module.$route.query.orderBy : '_score,asc';
+        },
+        methods: {
+          /**
+           * Set the orderBy parameter value to the given input for vueJs router
+           * @param {string} activeSortFilterName - sorting under this name
+           * @param {string} sortMethod - can be either ASC or DESC
+           */
+          applySortQuery: async function (activeSortFilterName, sortMethod) {
+              let _module = this;
+              let inputOrderBy = `${activeSortFilterName},${sortMethod}`;
+              let currentQuery = JSON.parse(JSON.stringify(_module.$route.query));
+              currentQuery["orderBy"] = inputOrderBy;
+              if (inputOrderBy !== _module.activeFilter){
+                await _module.$router.push({
+                  name: _module.$route.name,
+                  query: currentQuery
+                });
+              }
+          },
+          getFilters: function(){
+                  let filters = [];
+                  this.sortFilters.forEach(function(filter){
+                    filters.push({
+                      label: filter.label,
+                      name: filter.name,
+                      order: "asc",
+                      orderLabel: "ascending"
+                    });
+                    if (filter.name !== '_score') {
+                      filters.push({
+                        label: filter.label,
+                        name: filter.name,
+                        order: "desc",
+                        orderLabel: "descending"
+                      })
+                    }
+                  });
+                  return filters;
+                }
+        }
+    }
+&lt;/script>
+
+&lt;style>
+  .highlighted {
+    color: red !important;
+  }
+&lt;/style>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -491,10 +183,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

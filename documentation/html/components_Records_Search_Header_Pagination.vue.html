@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Pagination</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Header/Pagination.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,407 +81,130 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Pagination</h1>
+		<h1 class="page-title">Source: components/Records/Search/Header/Pagination.vue</h1>
+    
 <section>
-
-<header>
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Component to handle the advanced search filters for the searchFairsharingRecords query.</p></div></div></p>
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-props">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Required?</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>totalPages</code></td>
-        <td>Number</td>
-        <td><code>0</code></td>
-        <td>No</td>
-        <td>the total number of pages to display</td>
-    </tr></tbody>
-</table>
-<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
-<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-data">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Default value</th>
-        <th>Description</th>
-    </tr>
-    </thead>
-    <tbody><tr>
-        <td><code>currentQuery</code></td>
-        <td>Number</td>
-        <td><code>null</code></td>
-        <td>the current page number</td>
-    </tr></tbody>
-</table>
-<div class="container-overview"><div><p></div>
-        
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="disableThrottle"><span class="type-signature"></span>disableThrottle(disable)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Set the environment ready for testing or development</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>disable</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>should disable or not the throttle for the next call</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
-				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-87">line 87</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="paginate"><span class="type-signature"></span>paginate(pageNumber)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Set the current query page parameter value to the given input for vueJs router</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>pageNumber</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>the page to go to</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
-				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-58">line 58</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-</article>
-
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-pagination
+    v-model="page"
+    :length="totalPages"
+    :total-visible="7"
+  />
+&lt;/template>
+
+&lt;script>
+    import {throttle} from 'lodash';
+
+    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
+     * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
+     * @vue-data {Number} [currentQuery = null] - the current page number
+     */
+    export default {
+        name: "Pagination",
+        props: {
+            totalPages: {
+                type: Number,
+                default: 0
+            },
+        },
+        data() {
+            return {
+                currentPage: null,
+                allowPaginate: true,
+                disable: false,
+                page: 1
+            }
+        },
+        watch: {
+            '$route.name': function () {
+                this.currentPage = 1;
+            },
+            '$route.query': function (newVal) {
+                let _module = this;
+                if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
+                    _module.currentPage = 1;
+                } else {
+                    _module.currentPage = Number(newVal.page);
+                }
+            },
+            'page': function (newPage) {
+                this.paginate(newPage);
+            }
+        },
+        created() {
+            let currentPage = (this.$route.query.page !== undefined) ? Number(this.$route.query.page ) : 1;
+            this.currentPage = currentPage;
+            this.page = currentPage;
+        },
+        methods: {
+            /**
+             * Set the current query page parameter value to the given input for vueJs router
+             * @param {Number} pageNumber - the page to go to
+             */
+            paginate: async function (pageNumber) {
+                if (this.allowPaginate) {
+                    if (pageNumber !== this.currentPage &amp;&amp; this.allowPaginate) {
+                        let _module = this;
+                        let currentQuery = {};
+                        _module.currentPage = pageNumber;
+                        Object.keys(_module.$route.query).forEach(function (param) {
+                            currentQuery[param] = _module.$route.query[param]
+                        });
+                        currentQuery.page = pageNumber;
+                        this.disableThrottle(this.disable);
+                        await _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentQuery
+                        });
+                    }
+                }
+            },
+            /**
+             * Postpone the pagination buttons to be clickable
+             */
+            PaginatePermission: throttle(function () {
+                this.allowPaginate = true
+            }, 1200),
+
+            /**
+             * Set the environment ready for testing or development
+             * @param {Boolean} disable - should disable or not the throttle for the next call
+             */
+            disableThrottle: function (disable) {
+                if (!disable) {
+                    this.allowPaginate = false;
+                    this.PaginatePermission();
+                } else {
+                    this.allowPaginate = true;
+                }
+            }
+        },
+    }
+&lt;/script>
+
+&lt;style scoped>
+    button {
+        outline: none;
+    }
+
+&lt;/style>
+
+&lt;style>
+  #advancedSearch {
+    top:20px;
+  }
+&lt;/style>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -491,10 +214,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

@@ -34,10 +34,7 @@
                 outlined
               >
                 <template slot="append">
-                  <v-progress-circular
-                    :value="passwordValidity"
-                    :color="passwordColor"
-                  />
+                  <validity-progress :password="password" />
                 </template>
               </v-text-field>
               <v-text-field
@@ -63,30 +60,21 @@
 <script>
   import {mapState, mapActions} from "vuex"
   import MessageHandler from "@/components/Users/MessageHandler";
-  import RESTClient from "@/components/Client/RESTClient.js"
-
-  let restClient = new RESTClient();
+  import ValidityProgress from "../../components/Users/Password/ValidityProgress";
 
   export default {
     name: "ResetPassword",
-    components: {MessageHandler},
+    components: {ValidityProgress, MessageHandler},
     data: () => {
       return {
         message: null,
         error: null,
         formData: {},
         password: null,
-        passwordValidity: 0,
-        passwordColor: "red"
       }
     },
     computed: {
       ...mapState("users", ["user", "messages"])
-    },
-    watch: {
-      password: async function () {
-        await this.verifyPwd();
-      },
     },
     mounted() {
       this.$nextTick(async function () {
@@ -124,22 +112,6 @@
           if (!_module.messages().resetPassword.error) {
             _module.$router.push({path: "/accounts/login", query: {redirect: '/accounts/profile'}})
           }
-        }
-      },
-      async verifyPwd() {
-        const pwd = await restClient.verifyPassword(this.password);
-        this.passwordValidity = pwd.percent;
-        if (this.passwordValidity < 25) {
-          this.passwordColor = "red"
-        }
-        else if (25 <= this.passwordValidity && this.passwordValidity < 50) {
-          this.passwordColor = "orange"
-        }
-        else if (50 <= this.passwordValidity && this.passwordValidity < 74) {
-          this.passwordColor = "yellow"
-        }
-        else {
-          this.passwordColor = "green"
         }
       }
     }

@@ -106,49 +106,4 @@ describe('ResetPassword.vue', () => {
 
 
     });
-
-    it("can react to password change", async () => {
-        stub.restore();
-        stub = sinon.stub(Client.prototype, "executeQuery");
-        stub.returns({
-            data: {percent: 0}
-        });
-        const secondLocalVue = createLocalVue();
-        const anotherWrapper = await shallowMount(ResetPassword, {
-            mocks: {$route, $store},
-            secondLocalVue,
-            router
-        });
-        anotherWrapper.vm.password = "test1";
-        expect(anotherWrapper.vm.passwordColor).toBe("red");
-        expect(anotherWrapper.vm.passwordValidity).toBe(0);
-
-        stub.restore();
-        stub = sinon.stub(Client.prototype, "executeQuery");
-        stub.returns({
-            data: {percent: 25}
-        });
-        await anotherWrapper.vm.verifyPwd();
-        expect(anotherWrapper.vm.passwordColor).toBe("orange");
-        expect(anotherWrapper.vm.passwordValidity).toBe(25);
-
-        stub.restore();
-        stub = sinon.stub(Client.prototype, "executeQuery");
-        stub.returns({
-            data: {percent: 50}
-        });
-        await anotherWrapper.vm.verifyPwd();
-        expect(anotherWrapper.vm.passwordColor).toBe("yellow");
-        expect(anotherWrapper.vm.passwordValidity).toBe(50);
-
-        stub.restore();
-        stub = sinon.stub(Client.prototype, "executeQuery");
-        stub.returns({
-            data: {percent: 80}
-        });
-        await anotherWrapper.vm.verifyPwd();
-        expect(anotherWrapper.vm.passwordColor).toBe("green");
-        expect(anotherWrapper.vm.passwordValidity).toBe(80);
-
-    });
 });

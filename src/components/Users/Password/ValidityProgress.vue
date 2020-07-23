@@ -1,8 +1,10 @@
 <template>
-  <v-progress-circular
-    :value="passwordValidity"
-    :color="passwordColor"
-  />
+  <div>
+    <v-progress-circular
+      :value="passwordValidity"
+      :color="passwordColor"
+    />
+  </div>
 </template>
 
 <script>
@@ -32,21 +34,37 @@
         methods: {
             async verifyPwd() {
                 let _module = this;
+                const colors = [
+                  {
+                    name: "red",
+                    min: 0,
+                    max: 25
+                  },
+                  {
+                    name: "orange",
+                    min: 25,
+                    max: 50
+                  },
+                  {
+                    name: "yellow",
+                    min: 50,
+                    max: 74
+                  },
+                  {
+                    name: "green",
+                    min: 74,
+                    max: 200
+                  }
+                ];
                 const pwd = await restClient.verifyPassword(_module.password);
                 _module.passwordValidity = pwd.percent;
-                if (_module.passwordValidity < 25) {
-                    _module.passwordColor = "red"
-                }
-                else if (25 <= _module.passwordValidity && _module.passwordValidity < 50) {
-                    _module.passwordColor = "orange"
-                }
-                else if (50 <= this.passwordValidity && _module.passwordValidity < 74) {
-                    _module.passwordColor = "yellow"
-                }
-                else {
-                    _module.passwordColor = "green"
-                }
-            }
+                colors.forEach(function(colorObject){
+                  if (colorObject.min <= pwd.percent && pwd.percent < colorObject.max){
+                    _module.passwordColor = colorObject.name;
+                  }
+                });
+
+            },
         }
     }
 </script>

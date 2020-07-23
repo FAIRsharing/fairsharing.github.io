@@ -183,12 +183,12 @@
             this.setChips(this.record);
         },
         methods: {
-            changeActiveItem: function (itemIndex) {
+            changeActiveItem(itemIndex) {
                 this.buttons.map(item => item.active = false);
                 this.buttons[itemIndex].active = true;
                 this.currentActiveChips = this.buttons[itemIndex].title;
             },
-            toggleChipActiveness: function (chip) {
+            toggleChipActiveness(chip) {
                 let selectedItem = this.Chips[this.currentActiveChips].find(item => isEqual(item, chip));
                 this.Chips[this.currentActiveChips].map(item => {
                     if (isEqual(item, selectedItem)) {
@@ -196,7 +196,7 @@
                     }
                 });
             },
-            associatedRecords: function (record) {
+            associatedRecords(record) {
                 let records = {
                     standard: {
                         val: 0,
@@ -223,14 +223,13 @@
                 });
                 return records;
             },
-            setChips: function (record) {
-                let node;
-                for (node in record) {
-                  if (Object.prototype.hasOwnProperty.call(record, node)
-                      && (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags')){
-                    this.organizeChips(record, node);
-                  }
-                }
+            setChips(record) {
+              let _module = this;
+                Object.keys(record).forEach(function(node){
+                    if (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags') {
+                      _module.organizeChips(record, node);
+                    }
+                });
             },
             organizeChips(record, node) {
                 this.organizeButtons(record, node);
@@ -241,7 +240,7 @@
             organizeButtons(record, node) {
                 if (record[node].length > 0 && this.allowLoop) {
                     this.allowLoop = false;
-                    this.currentActiveChips = node
+                    this.currentActiveChips = node;
                     this.buttons.map(item => {
                         if (item.title === node) {
                             item.active = true

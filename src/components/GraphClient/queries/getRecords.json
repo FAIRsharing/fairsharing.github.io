@@ -36,21 +36,35 @@
           ]
         },
         {
-            "queryName": "recordAssociations",
-            "fields": [
-                {
-                    "name": "linkedRecord",
-                    "fields": ["name", "id", "registry"]
-                },
-                "recordAssocLabel"
-            ]
+          "queryName": "userDefinedTags",
+          "fields": [
+            "label"
+          ]
+        },
+        {
+          "queryName": "recordAssociations",
+          "fields": [
+            {
+              "name": "linkedRecord",
+              "fields": [
+                "name",
+                "id",
+                "registry"
+              ]
+            },
+            "recordAssocLabel"
+          ]
         },
         {
           "queryName": "reverseRecordAssociations",
           "fields": [
             {
               "name": "fairsharingRecord",
-              "fields": ["name", "id", "registry"]
+              "fields": [
+                "name",
+                "id",
+                "registry"
+              ]
             },
             "recordAssocLabel"
           ]

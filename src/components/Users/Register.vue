@@ -69,13 +69,26 @@
               <!-- password -->
               <v-text-field
                 v-model="loginData.password"
-                :append-icon="showPwd ? 'fa-eye' : 'fa-eye-slash'"
                 :type="showPwd ? 'text' : 'password'"
                 label="Password"
                 required
-                @click:append="showPwd = !showPwd"
                 outlined
-              />
+              >
+                <template slot="append">
+                  <div
+                    class="pt-1 mr-2"
+                    @click="showPwd = !showPwd"
+                  >
+                    <v-icon v-if="showPwd">
+                      fa-eye
+                    </v-icon>
+                    <v-icon v-else>
+                      fa-eye-slash
+                    </v-icon>
+                  </div>
+                  <validity-progress :password="loginData.password" />
+                </template>
+              </v-text-field>
 
               <!-- repeat password -->
               <v-text-field
@@ -84,8 +97,8 @@
                 :type="showRepeat ? 'text' : 'password'"
                 label="Repeat password"
                 required
-                @click:append="showRepeat = !showRepeat"
                 outlined
+                @click:append="showRepeat = !showRepeat"
               />
 
               <div class="px-5 mb-5">
@@ -110,12 +123,14 @@
 
 <script>
     import RESTClient from "@/components/Client/RESTClient.js";
+    import ValidityProgress from "./Password/ValidityProgress";
 
     const Client = new RESTClient();
 
     export default {
         name: "Register",
-        data: () => {
+      components: {ValidityProgress},
+      data: () => {
             return {
                 showPwd: false,
                 showRepeat: false,

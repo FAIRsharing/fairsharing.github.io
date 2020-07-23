@@ -1,4 +1,4 @@
-import filterMapping from "../components/Records/FiltersLabelMapping.js"
+import filterMapping from "../components/Records/FiltersLabelMapping.json"
 import {isEqual} from 'lodash'
 
 export const mutations = {

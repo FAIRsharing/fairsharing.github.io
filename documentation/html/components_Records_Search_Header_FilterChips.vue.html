@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Users/Login/Login.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Header/FilterChips.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,205 +86,124 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Users/Login/Login.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Header/FilterChips.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-layout
-    id="loginPage"
-    class="login"
-    style="background: white"
-  >
-    &lt;v-container>
-      &lt;!-- forms -->
-      &lt;v-row justify="center">
-        &lt;v-col
-          cols="12"
-          sm="12"
-          :class="{'col-xl-4': !popUp}"
-        >
-          &lt;v-card :flat="popUp">
-            &lt;v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">
-              &lt;!-- card title -->
-              &lt;h2 class="ma-0">
-                {{ currentPanel | capitalize }}
-              &lt;/h2>
-            &lt;/v-card-title>
-            &lt;v-card-text>
-              &lt;!-- message handler -->
-              &lt;MessageHandler field="login" />
-            &lt;/v-card-text>
-            &lt;!-- OAUTH -->
-            &lt;v-card-text>
-              &lt;v-list>
-                &lt;v-list-item
-                  v-for="(provider, providerIndex) in oauthLogin"
-                  :key="'provider_' + providerIndex"
-                  style="justify-content: center"
-                >
-                  &lt;v-btn
-                    width="250px"
-                    :class="provider.color"
-                    class="text-left"
-                    :href="provider.callback"
-                  >
-                    &lt;v-layout width="100%">
-                      &lt;v-icon
-                        left
-                        class="mr-5"
-                      >
-                        {{ provider.icon }}
-                      &lt;/v-icon>
-                      &lt;v-layout>with {{ provider.name }}&lt;/v-layout>
-                    &lt;/v-layout>
-                  &lt;/v-btn>
-                &lt;/v-list-item>
-              &lt;/v-list>
-            &lt;/v-card-text>
-            &lt;!-- card content // Form -->
-            &lt;v-card-text v-if="currentPanel === 'login'">
-              &lt;v-form
-                id="loginForm"
-              >
-                &lt;!-- account -->
-                &lt;v-text-field
-                  v-model="loginData.name"
-                  label="Username or email"
-                  required
-                  outlined
-                />
-
-                &lt;!-- password -->
-                &lt;v-text-field
-                  v-model="loginData.password"
-                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
-                  :type="show1 ? 'text' : 'password'"
-                  label="Password"
-                  counter
-                  required
-                  outlined
-                  @click:append="show1 = !show1"
-                />
-
-                &lt;v-card-text class="text-center">
-                  &lt;router-link to="/accounts/forgotPassword">
-                    Forgot your password ?
-                  &lt;/router-link>
-                &lt;/v-card-text>
-
-                &lt;v-card-actions class="mt-2">
-                  &lt;v-btn
-                    class=" px-4"
-                    light
-                    color="primary"
-                    @click="logUser()"
-                  >
-                    LOGIN
-                  &lt;/v-btn>
-                  &lt;v-btn
-                    text
-                    light
-                    class="px-4"
-                    href="#/accounts/signup"
-                  >
-                    Register
-                  &lt;/v-btn>
-                &lt;/v-card-actions>
-              &lt;/v-form>
-            &lt;/v-card-text>
-          &lt;/v-card>
-        &lt;/v-col>
-      &lt;/v-row>
-    &lt;/v-container>
-  &lt;/v-layout>
+  &lt;v-row class="mr-2 ml-2">
+    &lt;div
+      v-for="(chip, index) in getChips"
+      :key="'Chips_' + index"
+    >
+      &lt;v-chip
+        class="ma-2"
+        close
+        color="white"
+        text-color="teal"
+        @click:close="removeParam(chip.paramName, chip.paramVal)"
+      >
+        {{ chip.paramName }}:&lt;b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}&lt;/b>
+      &lt;/v-chip>
+    &lt;/div>
+    &lt;v-chip
+      v-if="getChips.length"
+      class="ma-2"
+      close
+      color="white"
+      text-color="red"
+      @click:close="removeAllParams"
+    >
+      Clear All
+    &lt;/v-chip>
+  &lt;/v-row>
 &lt;/template>
 
 &lt;script>
-    import {mapActions, mapState} from 'vuex'
-    import MessageHandler from "@/components/Users/MessageHandler";
-    import stringUtils from '@/utils/stringUtils';
+    import {throttle} from "lodash"
 
-    /** This component handles the login page
-     *
-     */
     export default {
-        name: "Login",
-        components: {MessageHandler},
-        mixins: [stringUtils],
-        props: {
-            redirect: {
-                type: Boolean,
-                default: true,
-            },
-            popUp: {
-                type: Boolean,
-                default: false,
-            }
-        },
-        data: () => {
-            return {
-                show1: false,
-                currentPanel: "login",
-                loginData: {},
-                oauthLogin: [
-                    {
-                        name: "ORCID",
-                        icon: "fab fa-orcid",
-                        color: "green white--text",
-                        callback: "https://api.fairsharing.org/users/auth/orcid",
-                    },
-                    {
-                        name: "Twitter",
-                        icon: "fab fa-twitter",
-                        color: "blue white--text",
-                        callback: "https://api.fairsharing.org/users/auth/twitter",
-                    },
-                    {
-                        name: "GitHub",
-                        icon: "fab fa-github",
-                        color: "black white--text",
-                        callback: "https://api.fairsharing.org/users/auth/github",
-                    }
-                ]
-            }
-        },
+        name: "FilterChips",
         computed: {
-            ...mapState("users", ["messages", "user"])
+            getChips: function () {
+                let output = [];
+                const parameters = this.$route.query;
+                Object.keys(parameters).forEach(function (paramName) {
+                    if (paramName !== "page" &amp;&amp; paramName !== "orderBy") {
+                        let param = parameters[paramName];
+                        if (param.indexOf(",") > -1) {
+                            param = param.split(",")
+                        }
+                        else {
+                            param = [param];
+                        }
+                        param.forEach(function (val) {
+                            output.push({
+                                paramName: paramName,
+                                paramVal: val
+                            });
+                        })
+
+                    }
+                });
+                return output;
+            }
         },
         methods: {
-            ...mapActions('users', ['login', 'logout']),
-            logUser: async function () {
-                const _module = this;
-                const user = {
-                    "name": _module.loginData.name,
-                    "password": _module.loginData.password
-                };
-                await _module.login(user);
-                if (!_module.messages().login.error) {
-                    const goTo = _module.$route.query.redirect;
-                    if (goTo) {
-                        _module.$router.push({
-                            path: goTo
-                        })
-                    } else if (_module.redirect) {
-                        _module.$router.go(-1);
+            /**
+             * Removes the parameter value from the router query with a 2000ms throttle
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             */
+            removeParam: throttle(async function (paramName, paramVal) {
+                let _module = this;
+                let query = this.buildNewQuery(paramName, paramVal);
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Removes all the  parameters value from the router query with a 2000ms throttle
+             */
+            removeAllParams: throttle(async function () {
+                let _module = this;
+                let query = {};
+                await _module.$router.push({
+                    name: _module.$route.name,
+                    query: query
+                })
+            }, 2000),
+            /**
+             * Build the new query given a parameter name a value by getting the current query and removing the key/value given
+             * @param {String} paramName - name of the parameter to remove
+             * @param {String} paramVal - value of the parameter to remove
+             * @returns {Object} - the new query to replace in the router
+             */
+            buildNewQuery: function (paramName, paramVal) {
+                let _module = this;
+                let query = {};
+                Object.keys(_module.$route.query).forEach(function (queryParam) {
+                    if (queryParam !== paramName) {
+                        query[queryParam] = _module.$route.query[queryParam]
                     }
-                }
+                    else {
+                        if (_module.$route.query[queryParam].indexOf(',') > -1) {
+                            let currentVals = _module.$route.query[queryParam].split(",");
+                            if (currentVals.indexOf(paramVal) > -1) {
+                                currentVals.splice(paramVal.indexOf(paramVal), 1)
+                            }
+                            query[paramName] = currentVals.join(",");
+                        }
+                    }
+                });
+                query["page"] = 1;
+                return query;
             }
         }
     }
 &lt;/script>
-
-&lt;style scoped>
-    #loginPage a {
-        text-decoration: none !important;
-    }
-    .v-card__actions {
-      justify-content: center;
-    }
-&lt;/style>
 </pre>
     </article>
 </section>

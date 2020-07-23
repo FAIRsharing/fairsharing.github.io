@@ -4,97 +4,104 @@
     class="login"
     style="background: white"
   >
-    <v-container fluid>
+    <v-container>
       <!-- forms -->
-      <v-row>
+      <v-row justify="center">
         <v-col
           cols="12"
           sm="12"
+          :class="{'col-xl-4': !popUp}"
         >
-          <!-- card title -->
-          <h2 class="text-center">{{ currentPanel | capitalize }}</h2>
-          <!-- message handler -->
-          <MessageHandler field="login" />
-
-          <!-- OAUTH -->
-          <v-card-text>
-            <v-list>
-              <v-list-item
-                v-for="(provider, providerIndex) in oauthLogin"
-                :key="'provider_' + providerIndex"
-                style="justify-content: center"
+          <v-card :flat="popUp">
+            <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">
+              <!-- card title -->
+              <h2 class="ma-0">
+                {{ currentPanel | capitalize }}
+              </h2>
+            </v-card-title>
+            <v-card-text>
+              <!-- message handler -->
+              <MessageHandler field="login" />
+            </v-card-text>
+            <!-- OAUTH -->
+            <v-card-text>
+              <v-list>
+                <v-list-item
+                  v-for="(provider, providerIndex) in oauthLogin"
+                  :key="'provider_' + providerIndex"
+                  style="justify-content: center"
+                >
+                  <v-btn
+                    width="250px"
+                    :class="provider.color"
+                    class="text-left"
+                    :href="provider.callback"
+                  >
+                    <v-layout width="100%">
+                      <v-icon
+                        left
+                        class="mr-5"
+                      >
+                        {{ provider.icon }}
+                      </v-icon>
+                      <v-layout>with {{ provider.name }}</v-layout>
+                    </v-layout>
+                  </v-btn>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+            <!-- card content // Form -->
+            <v-card-text v-if="currentPanel === 'login'">
+              <v-form
+                id="loginForm"
               >
-                <v-btn
-                  width="250px"
-                  :class="provider.color"
-                  class="text-left"
-                  :href="provider.callback"
-                >
-                  <v-layout width="100%">
-                    <v-icon
-                      left
-                      class="mr-5"
-                    >
-                      {{ provider.icon }}
-                    </v-icon>
-                    <v-layout>with {{ provider.name }}</v-layout>
-                  </v-layout>
-                </v-btn>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
+                <!-- account -->
+                <v-text-field
+                  v-model="loginData.name"
+                  label="Username or email"
+                  required
+                  outlined
+                />
 
-          <!-- card content // Form -->
-          <v-card-text v-if="currentPanel === 'login'">
-            <v-form
-              id="loginForm"
-            >
-              <!-- account -->
-              <v-text-field
-                v-model="loginData.name"
-                label="Username or email"
-                required
-                outlined
-              />
+                <!-- password -->
+                <v-text-field
+                  v-model="loginData.password"
+                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
+                  :type="show1 ? 'text' : 'password'"
+                  label="Password"
+                  counter
+                  required
+                  outlined
+                  @click:append="show1 = !show1"
+                />
 
-              <!-- password -->
-              <v-text-field
-                v-model="loginData.password"
-                :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
-                :type="show1 ? 'text' : 'password'"
-                label="Password"
-                counter
-                required
-                outlined
-                @click:append="show1 = !show1"
-              />
+                <v-card-text class="text-center">
+                  <router-link to="/accounts/forgotPassword">
+                    Forgot your password ?
+                  </router-link>
+                </v-card-text>
 
-              <v-card-text class="text-center">
-                <router-link to="/accounts/forgotPassword">
-                  Forgot your password ?
-                </router-link>
-              </v-card-text>
-
-              <v-card-actions class="mt-2">
-                <v-btn
-                  class=" px-4"
-                  light
-                  @click="logUser()"
-                  color="primary"
-                >
-                  LOGIN
-                </v-btn>
-                <v-btn
-                  text
-                  light
-                  class="px-4"
-                  href="#/accounts/signup"
-                >
-                  Register
-                </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-card-text>
+                <v-card-actions class="mt-2">
+                  <v-btn
+                    class=" px-4"
+                    light
+                    color="primary"
+                    @click="logUser()"
+                  >
+                    LOGIN
+                  </v-btn>
+                  <v-btn
+                    text
+                    light
+                    class="px-4"
+                    href="#/accounts/signup"
+                  >
+                    Register
+                  </v-btn>
+                </v-card-actions>
+              </v-form>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -103,7 +110,8 @@
 
 <script>
     import {mapActions, mapState} from 'vuex'
-    import MessageHandler from "../../../components/Users/MessageHandler";
+    import MessageHandler from "@/components/Users/MessageHandler";
+    import stringUtils from '@/utils/stringUtils';
 
     /** This component handles the login page
      *
@@ -111,15 +119,15 @@
     export default {
         name: "Login",
         components: {MessageHandler},
-        filters: {
-            capitalize: function (value) {
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            }
-        },
+        mixins: [stringUtils],
         props: {
             redirect: {
                 type: Boolean,
                 default: true,
+            },
+            popUp: {
+                type: Boolean,
+                default: false,
             }
         },
         data: () => {

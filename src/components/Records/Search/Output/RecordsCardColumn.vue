@@ -1,122 +1,122 @@
 <template>
-    <!--Column List-->
-    <v-col
-            class="mt-1"
-            cols="12"
-            sm="12"
-            md="6"
-            lg="4"
-            xl="3"
+  <!--Column List-->
+  <v-col
+    class="mt-1"
+    cols="12"
+    sm="12"
+    md="6"
+    lg="4"
+    xl="3"
+  >
+    <v-card
+      class="pa-2 d-flex  align-center flex-column"
+      outlined
+      tile
+      :hover="allowClicking"
     >
-        <v-card
-                class="pa-2 d-flex  align-center flex-column"
-                outlined
-                tile
-                :hover="allowClicking"
+      <!-- Title and Icon -->
+      <v-row
+        no-gutters
+        class="full-width"
+      >
+        <Ribbon
+          v-if="record.isRecommended"
+          title="RECOMMENDED"
+        />
+        <v-col
+          cols="12"
+          @mouseenter="allowClicking=true"
+          @mouseleave="allowClicking=false"
         >
-            <!-- Title and Icon -->
-            <v-row
-                    no-gutters
-                    class="full-width"
-            >
-                <Ribbon
-                        v-if="record.isRecommended"
-                        title="RECOMMENDED"
-                />
-                <v-col
-                        cols="12"
-                        @mouseenter="allowClicking=true"
-                        @mouseleave="allowClicking=false"
-                >
-                    <router-link :to="'/' +record.id">
-                        <div class=" d-flex flex-column align-center justify-center">
-                            <record-status
-                                    :record="record"
-                                    class="mr-8"
-                            />
-                            <h3 class="title-style">
-                                <u>{{ record.name }}</u>
-                            </h3>
-                        </div>
-                    </router-link>
-                </v-col>
-            </v-row>
-            <!-- Buttons -->
-            <v-row>
-                <v-col>
-                    <section class="ml-2 mb-0 mr-4 d-flex flex-column">
-                        <h4 class="d-none">
-                            select Tag type
-                        </h4>
-                        <v-btn
-                                v-for="(item,index) in buttons"
-                                :key="index"
-                                :outlined="item.active"
-                                text
-                                class="button-text-color"
-                                :color="item.active?'primary':null"
-                                :disabled="Chips[item.title].length === 0"
-                                @click="changeActiveItem(index)"
-                        >
-                            {{ item.title }} ({{ Chips[item.title].length }})
-                        </v-btn>
-                    </section>
-                </v-col>
-            </v-row>
-            <!--Chips-->
-            <v-row
-                    no-gutters
-                    class="chips-container-margin"
-            >
-                <v-col cols="12">
-                    <section class="chips-container">
-                        <h5 class="d-none">
-                            Choose Subject , Domain , Taxonomy
-                        </h5>
-                        <v-chip-group
-                                column
-                        >
-                            <v-chip
-                                    v-for="(chip,index) in Chips[currentActiveChips]"
-                                    :key="chip.label+'_'+index"
-                                    small
-                                    text-color="secondary"
-                                    color="secondary"
-                                    :close="chip.active"
-                                    outlined
-                                    @click="toggleChipActiveness(chip)"
-                            >
-                                {{ chip.label }}
-                            </v-chip>
-                        </v-chip-group>
-                    </section>
-                </v-col>
-            </v-row>
-            <!--       Description -->
-            <div
-                    class="d-flex flex-row"
-                    style="width: 70%"
-            >
-                <v-divider
-                        class="mt-2"
-                />
+          <router-link :to="'/' +record.id">
+            <div class=" d-flex flex-column align-center justify-center">
+              <record-status
+                :record="record"
+                class="mr-8"
+              />
+              <h3 class="title-style">
+                <u>{{ record.name }}</u>
+              </h3>
             </div>
-            <p class="ma-2 card-description text-justify">
-                {{ record.description }}
-            </p>
-            <!--  Associated Records      -->
-            <AssociatedRecordsStack
-                    :associated-records="associatedRecords(record)"
-                    :is-column="true"
-            />
-        </v-card>
-    </v-col>
+          </router-link>
+        </v-col>
+      </v-row>
+      <!-- Buttons -->
+      <v-row>
+        <v-col>
+          <section class="ml-2 mb-0 mr-4 d-flex flex-column">
+            <h4 class="d-none">
+              select Tag type
+            </h4>
+            <v-btn
+              v-for="(item,index) in buttons"
+              :key="index"
+              :outlined="item.active"
+              text
+              class="button-text-color"
+              :color="item.active?'primary':null"
+              :disabled="Chips[item.title].length === 0"
+              @click="changeActiveItem(index)"
+            >
+              {{ item.title }} ({{ Chips[item.title].length }})
+            </v-btn>
+          </section>
+        </v-col>
+      </v-row>
+      <!--Chips-->
+      <v-row
+        no-gutters
+        class="chips-container-margin"
+      >
+        <v-col cols="12">
+          <section class="chips-container">
+            <h5 class="d-none">
+              Choose Subject , Domain , Taxonomy
+            </h5>
+            <v-chip-group
+              column
+            >
+              <v-chip
+                v-for="(chip,index) in Chips[currentActiveChips]"
+                :key="chip.label+'_'+index"
+                small
+                text-color="secondary"
+                color="secondary"
+                :close="chip.active"
+                outlined
+                @click="toggleChipActiveness(chip)"
+              >
+                {{ chip.label }}
+              </v-chip>
+            </v-chip-group>
+          </section>
+        </v-col>
+      </v-row>
+      <!--       Description -->
+      <div
+        class="d-flex flex-row"
+        style="width: 70%"
+      >
+        <v-divider
+          class="mt-2"
+        />
+      </div>
+      <p class="ma-2 card-description text-justify">
+        {{ record.description }}
+      </p>
+      <!--  Associated Records      -->
+      <AssociatedRecordsStack
+        :associated-records="associatedRecords(record)"
+        :is-column="true"
+      />
+    </v-card>
+  </v-col>
 </template>
 
 <script>
-    import Ribbon from "../../Shared/Ribbon";
-    import RecordStatus from "../../Shared/RecordStatus";
+    import Ribbon from "@/components/Records/Shared//Ribbon";
     import AssociatedRecordsStack from "./AssociatedRecordsStack";
+    import RecordStatus from "@/components/Records/Shared/RecordStatus"
     import {isEqual} from "lodash";
 
     export default {
@@ -132,9 +132,9 @@
                 buttons: [{title: 'domains', active: false}, {title: 'subjects', active: false}, {
                     title: 'taxonomies',
                     active: false,
-                }],
+                }, {title: 'userDefinedTags', active: false}],
                 Chips: {
-                    domains: [], subjects: [], taxonomies: [],
+                    domains: [], subjects: [], taxonomies: [], userDefinedTags: []
                 },
                 currentActiveChips: null,
                 vChipActive: 'v-chip--active'
@@ -191,21 +191,21 @@
             setChips: function (record) {
                 let node;
                 for (node in record) {
-                    if (node === 'subjects' || node === 'domains' || node === 'taxonomies') {
+                    if (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags') {
                         this.organizeChips(record, node);
                     }
                 }
             },
             organizeChips(record, node) {
-                this.organizeButtons(record,node);
-                let chips_counter = 0;
-                record[node].forEach(item => {
-                    if(chips_counter>2) return;
-                    chips_counter++;
-                    this.Chips[node].push({label: item.label, active: false});
-                })
+                this.organizeButtons(record, node);
+                for (const [key, value] of Object.entries(record[node])) {
+                    if (key > 2) {
+                        break;
+                    }
+                    this.Chips[node][key] = {label: value.label, active: false};
+                }
             },
-            organizeButtons(record,node){
+            organizeButtons(record, node) {
                 if (record[node].length > 0 && this.allowLoop) {
                     this.allowLoop = false;
                     this.currentActiveChips = node

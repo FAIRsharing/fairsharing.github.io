@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/GraphClient/GraphClient.js</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Header/Sorting.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,124 +86,90 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/GraphClient/GraphClient.js</h1>
+		<h1 class="page-title">Source: components/Records/Search/Header/Sorting.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">const axios = require("axios");
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-list>
+    &lt;v-list-item
+      v-for="(item, index) in getFilters()"
+      :key="'sorter_' + index"
+      :class="{'v-list-item--active': activeFilter === item.name + ',' + item.order}"
+      @click="applySortQuery(item.name, item.order)"
+    >
+      &lt;v-list-item-title>
+        {{ item.label }} ({{ item.orderLabel }})
+      &lt;/v-list-item-title>
+    &lt;/v-list-item>
+  &lt;/v-list>
+&lt;/template>
 
-class GraphQLClient {
-
-    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
-     * Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
-     * also careful, its constructor is async !!
-     * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
-     */
-    constructor(){
-        if (GraphQLClient._instance){
-            return GraphQLClient._instance
-        }
-        GraphQLClient._instance = this;
-        this.url = "https://api.fairsharing.org/graphql";
-        this.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "X-Client-Id": "3154b8ec21a2e46c935d25484378ca0a75ba14dc99b3e047dec46045f052b147701340182ed5cbe1b06abeaf52250a31b5a2a6718bf2c9966405aa236fa1aabf",
-        };
-    }
-
-    /**
-     * Execute the given query (coming from a json file, see /queries/getRecords.json)
-     * @param {Object} query - the query coming from the JSON file
-     * sending to the API.
-     * @returns {Promise}
-     */
-    async executeQuery(query){
-        let client = this;
-        let queryString = {
-            query: `{${client.buildQuery(query)}}`
-        };
-        let resp = await this.getData(queryString);
-        if (resp.data.errors) {
-            return resp.data.errors;
-        }
-        return resp.data.data
-    }
-
-    /**
-     * Takes the query, post it with axios and returns the raw data
-     * @param {Object} request - processed request coming out of buildQuery()
-     * @returns {Promise} - an axios promise representing the server response.
-     */
-    async getData(request){
-        let client = this;
-        const fullQuery = {
-            method: "post",
-            baseURL: client.url,
-            data:  request,
-            headers: client.headers
-        };
-        return await axios(fullQuery);
-    }
-
-    /**
-     * Transform the JSON query into a string for graphQL
-     * @param {Object} query - the query coming from the JSON file
-     * @returns {Object} {query: queryString} - a valid graphQL query string to execute
-     */
-    buildQuery(query){
-        let client = this;
-        let queryString = `${query["queryName"]}`; // query name
-
-        // Handle query parameters
-        if (query.queryParam) {
-            queryString += "(";
-            Object.keys(query.queryParam).forEach(function(key){
-                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
-                    queryString += `${key}:${query.queryParam[key]} `;
-                }
-                else if (typeof query.queryParam[key] === "string") {
-                    queryString += `${key}:"${query.queryParam[key]}" `;
-                }
-                else {
-                    let param = [];
-                    query.queryParam[key].forEach(function(paramVal){
-                        param.push("\"" + paramVal + "\"");
+&lt;script>
+    export default {
+        name: "Sorting",
+        data() {
+            return {
+                sortFilters: [
+                    {name: 'name', label: 'name', active: false},
+                    {name: 'abbreviation', label: 'abbreviation', active: false},
+                    {name: '_score', label: 'best-match', active: false},
+                ],
+                activeFilter: null
+            }
+        },
+        mounted(){
+          const _module = this;
+          _module.activeFilter = (_module.$route.query.orderBy) ? _module.$route.query.orderBy : '_score,asc';
+        },
+        methods: {
+          /**
+           * Set the orderBy parameter value to the given input for vueJs router
+           * @param {string} activeSortFilterName - sorting under this name
+           * @param {string} sortMethod - can be either ASC or DESC
+           */
+          applySortQuery: async function (activeSortFilterName, sortMethod) {
+              let _module = this;
+              let inputOrderBy = `${activeSortFilterName},${sortMethod}`;
+              let currentQuery = JSON.parse(JSON.stringify(_module.$route.query));
+              currentQuery["orderBy"] = inputOrderBy;
+              if (inputOrderBy !== _module.activeFilter){
+                await _module.$router.push({
+                  name: _module.$route.name,
+                  query: currentQuery
+                });
+              }
+          },
+          getFilters: function(){
+                  let filters = [];
+                  this.sortFilters.forEach(function(filter){
+                    filters.push({
+                      label: filter.label,
+                      name: filter.name,
+                      order: "asc",
+                      orderLabel: "ascending"
                     });
-                    queryString += `${key}:[${param.join(",")}]`;
+                    if (filter.name !== '_score') {
+                      filters.push({
+                        label: filter.label,
+                        name: filter.name,
+                        order: "desc",
+                        orderLabel: "descending"
+                      })
+                    }
+                  });
+                  return filters;
                 }
-            });
-            queryString += ")";
         }
-
-        // Handle query fields
-        if (query.fields){
-            queryString += "{";
-            query.fields.forEach(function(field){
-                if (typeof field === "string"){
-                    queryString += ` ${field}`;
-                }
-                if (typeof field === "object"){
-                    queryString += ` ${field.name}{`;
-                    field.fields.forEach(function(subField){
-                        if (typeof subField === "string"){
-                            queryString += `${subField} `;
-                        }
-                        else {
-                            queryString += `${client.buildQuery(subField)}`;
-                        }
-                    });
-                    queryString += "}";
-                }
-            });
-            queryString += "}";
-        }
-        return queryString;
     }
-}
+&lt;/script>
 
-export default GraphQLClient;
+&lt;style>
+  .highlighted {
+    color: red !important;
+  }
+&lt;/style>
 </pre>
     </article>
 </section>

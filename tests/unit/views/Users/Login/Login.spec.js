@@ -41,7 +41,8 @@ describe("Login.vue", ()=> {
             localVue,
             router,
             propsData: {
-                redirect: true
+                redirect: true,
+                closePopup: function(){ return null }
             },
             stubs: ['router-link', 'router-view'],
             mocks: {$store, $route, $router}
@@ -94,7 +95,8 @@ describe("Login.vue", ()=> {
             localVue,
             router,
             propsData: {
-                redirect: false
+                redirect: false,
+                closePopup: function(){ return null }
             },
             stubs: ['router-link', 'router-view'],
             mocks: {$store, $route, $router}
@@ -118,7 +120,8 @@ describe("Login.vue", ()=> {
             localVue,
             router,
             propsData: {
-                redirect: false
+                redirect: false,
+                closePopup: function(){ return null }
             },
             stubs: ['router-link', 'router-view'],
             mocks: {$store, $route, $router}

@@ -133,46 +133,70 @@
             return {
                 allowLoop: true,
                 allowClicking: false,
-                buttons: [{title: 'domains', active: false}, {title: 'subjects', active: false}, {
+                buttons: [
+                  {
+                    title: 'domains',
+                    active: false
+                  },
+                  {
+                    title: 'subjects',
+                    active: false
+                  },
+                  {
                     title: 'taxonomies',
                     active: false,
-                }, {title: 'userDefinedTags', active: false}],
+                  },
+                  {
+                    title: 'userDefinedTags',
+                    active: false
+                  }
+                ],
                 Chips: {
-                    domains: [], subjects: [], taxonomies: [], userDefinedTags: []
+                  domains: [],
+                  subjects: [],
+                  taxonomies: [],
+                  userDefinedTags: []
                 },
                 currentActiveChips: null,
                 vChipActive: 'v-chip--active',
-                associatedRecordsArray: [{title: 'standards', amount: 10}, {title: 'databases', amount: 8}, {
+                associatedRecordsArray: [
+                  {
+                    title: 'standards',
+                    amount: 10
+                  },
+                  {
+                    title: 'databases',
+                    amount: 8
+                  },
+                  {
                     title: 'policies',
                     amount: 2,
-                }, {
-                    title: 'collections',
-                    amount: 6,
-                }],
+                  },
+                  {
+                      title: 'collections',
+                      amount: 6,
+                  }
+                ],
             }
         },
         created() {
             this.setChips(this.record);
         },
         methods: {
-            changeActiveItem: function (itemIndex) {
+            changeActiveItem(itemIndex) {
                 this.buttons.map(item => item.active = false);
                 this.buttons[itemIndex].active = true;
-                // changing currentChips data
                 this.currentActiveChips = this.buttons[itemIndex].title;
             },
-            toggleChipActiveness: function (chip) {
+            toggleChipActiveness(chip) {
                 let selectedItem = this.Chips[this.currentActiveChips].find(item => isEqual(item, chip));
                 this.Chips[this.currentActiveChips].map(item => {
                     if (isEqual(item, selectedItem)) {
                         item.active = !item.active;
-                        //    should call scroll to top after a delay.
-                        // setTimeout(this.scrollToTop, 500);
-                        //    should call Api for the selected chip to be added in chips list.
                     }
                 });
             },
-            associatedRecords: function (record) {
+            associatedRecords(record) {
                 let records = {
                     standard: {
                         val: 0,
@@ -199,13 +223,13 @@
                 });
                 return records;
             },
-            setChips: function (record) {
-                let node;
-                for (node in record) {
+            setChips(record) {
+              let _module = this;
+                Object.keys(record).forEach(function(node){
                     if (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags') {
-                        this.organizeChips(record, node);
+                      _module.organizeChips(record, node);
                     }
-                }
+                });
             },
             organizeChips(record, node) {
                 this.organizeButtons(record, node);
@@ -216,7 +240,7 @@
             organizeButtons(record, node) {
                 if (record[node].length > 0 && this.allowLoop) {
                     this.allowLoop = false;
-                    this.currentActiveChips = node
+                    this.currentActiveChips = node;
                     this.buttons.map(item => {
                         if (item.title === node) {
                             item.active = true
@@ -224,19 +248,13 @@
                     });
                 }
             },
-            /*
-                        scrollToTop: function () {
-                            let myDiv = document.getElementById('scroll-target');
-                            myDiv.scrollTo(0, 0);
-                        }
-            */
         },
     }
 </script>
 
 <style scoped lang="scss">
     .chips-container {
-        height: 90px;
+        height: 130px;
         overflow-x: hidden;
         scroll-behavior: smooth;
         position: relative;

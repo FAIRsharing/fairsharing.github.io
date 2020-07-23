@@ -1,11 +1,5 @@
 <template>
-  <div
-    id="signUp"
-    class="signUp"
-  >
-    <h2>Register a new account</h2>
-    <Register></Register>
-  </div>
+  <Register />
 </template>
 
 <script>

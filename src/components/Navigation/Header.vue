@@ -59,7 +59,7 @@
           </template>
           <Login
             :redirect="false"
-            pop-up="true"
+            :pop-up="true"
           />
         </v-menu>
         <v-btn

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/GraphClient/GraphClient.js</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Header/Pagination.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,124 +86,121 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/GraphClient/GraphClient.js</h1>
+		<h1 class="page-title">Source: components/Records/Search/Header/Pagination.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">const axios = require("axios");
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-pagination
+    v-model="page"
+    :length="totalPages"
+    :total-visible="7"
+  />
+&lt;/template>
 
-class GraphQLClient {
+&lt;script>
+    import {throttle} from 'lodash';
 
-    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
-     * Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
-     * also careful, its constructor is async !!
-     * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
+    /** Component to handle the advanced search filters for the searchFairsharingRecords query.
+     * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
+     * @vue-data {Number} [currentQuery = null] - the current page number
      */
-    constructor(){
-        if (GraphQLClient._instance){
-            return GraphQLClient._instance
-        }
-        GraphQLClient._instance = this;
-        this.url = "https://api.fairsharing.org/graphql";
-        this.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "X-Client-Id": "3154b8ec21a2e46c935d25484378ca0a75ba14dc99b3e047dec46045f052b147701340182ed5cbe1b06abeaf52250a31b5a2a6718bf2c9966405aa236fa1aabf",
-        };
+    export default {
+        name: "Pagination",
+        props: {
+            totalPages: {
+                type: Number,
+                default: 0
+            },
+        },
+        data() {
+            return {
+                currentPage: null,
+                allowPaginate: true,
+                disable: false,
+                page: 1
+            }
+        },
+        watch: {
+            '$route.name': function () {
+                this.currentPage = 1;
+            },
+            '$route.query': function (newVal) {
+                let _module = this;
+                if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
+                    _module.currentPage = 1;
+                } else {
+                    _module.currentPage = Number(newVal.page);
+                }
+            },
+            'page': function (newPage) {
+                this.paginate(newPage);
+            }
+        },
+        created() {
+            let currentPage = (this.$route.query.page !== undefined) ? Number(this.$route.query.page ) : 1;
+            this.currentPage = currentPage;
+            this.page = currentPage;
+        },
+        methods: {
+            /**
+             * Set the current query page parameter value to the given input for vueJs router
+             * @param {Number} pageNumber - the page to go to
+             */
+            paginate: async function (pageNumber) {
+                if (this.allowPaginate) {
+                    if (pageNumber !== this.currentPage &amp;&amp; this.allowPaginate) {
+                        let _module = this;
+                        let currentQuery = {};
+                        _module.currentPage = pageNumber;
+                        Object.keys(_module.$route.query).forEach(function (param) {
+                            currentQuery[param] = _module.$route.query[param]
+                        });
+                        currentQuery.page = pageNumber;
+                        this.disableThrottle(this.disable);
+                        await _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentQuery
+                        });
+                    }
+                }
+            },
+            /**
+             * Postpone the pagination buttons to be clickable
+             */
+            PaginatePermission: throttle(function () {
+                this.allowPaginate = true
+            }, 1200),
+
+            /**
+             * Set the environment ready for testing or development
+             * @param {Boolean} disable - should disable or not the throttle for the next call
+             */
+            disableThrottle: function (disable) {
+                if (!disable) {
+                    this.allowPaginate = false;
+                    this.PaginatePermission();
+                } else {
+                    this.allowPaginate = true;
+                }
+            }
+        },
+    }
+&lt;/script>
+
+&lt;style scoped>
+    button {
+        outline: none;
     }
 
-    /**
-     * Execute the given query (coming from a json file, see /queries/getRecords.json)
-     * @param {Object} query - the query coming from the JSON file
-     * sending to the API.
-     * @returns {Promise}
-     */
-    async executeQuery(query){
-        let client = this;
-        let queryString = {
-            query: `{${client.buildQuery(query)}}`
-        };
-        let resp = await this.getData(queryString);
-        if (resp.data.errors) {
-            return resp.data.errors;
-        }
-        return resp.data.data
-    }
+&lt;/style>
 
-    /**
-     * Takes the query, post it with axios and returns the raw data
-     * @param {Object} request - processed request coming out of buildQuery()
-     * @returns {Promise} - an axios promise representing the server response.
-     */
-    async getData(request){
-        let client = this;
-        const fullQuery = {
-            method: "post",
-            baseURL: client.url,
-            data:  request,
-            headers: client.headers
-        };
-        return await axios(fullQuery);
-    }
-
-    /**
-     * Transform the JSON query into a string for graphQL
-     * @param {Object} query - the query coming from the JSON file
-     * @returns {Object} {query: queryString} - a valid graphQL query string to execute
-     */
-    buildQuery(query){
-        let client = this;
-        let queryString = `${query["queryName"]}`; // query name
-
-        // Handle query parameters
-        if (query.queryParam) {
-            queryString += "(";
-            Object.keys(query.queryParam).forEach(function(key){
-                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
-                    queryString += `${key}:${query.queryParam[key]} `;
-                }
-                else if (typeof query.queryParam[key] === "string") {
-                    queryString += `${key}:"${query.queryParam[key]}" `;
-                }
-                else {
-                    let param = [];
-                    query.queryParam[key].forEach(function(paramVal){
-                        param.push("\"" + paramVal + "\"");
-                    });
-                    queryString += `${key}:[${param.join(",")}]`;
-                }
-            });
-            queryString += ")";
-        }
-
-        // Handle query fields
-        if (query.fields){
-            queryString += "{";
-            query.fields.forEach(function(field){
-                if (typeof field === "string"){
-                    queryString += ` ${field}`;
-                }
-                if (typeof field === "object"){
-                    queryString += ` ${field.name}{`;
-                    field.fields.forEach(function(subField){
-                        if (typeof subField === "string"){
-                            queryString += `${subField} `;
-                        }
-                        else {
-                            queryString += `${client.buildQuery(subField)}`;
-                        }
-                    });
-                    queryString += "}";
-                }
-            });
-            queryString += "}";
-        }
-        return queryString;
-    }
-}
-
-export default GraphQLClient;
+&lt;style>
+  #advancedSearch {
+    top:20px;
+  }
+&lt;/style>
 </pre>
     </article>
 </section>

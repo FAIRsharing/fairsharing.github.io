@@ -57,7 +57,10 @@
               Login
             </v-btn>
           </template>
-          <Login :redirect="false" />
+          <Login
+            :redirect="false"
+            pop-up="true"
+          />
         </v-menu>
         <v-btn
           v-else

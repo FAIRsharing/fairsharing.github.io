@@ -36,4 +36,10 @@ describe("Header.vue", function () {
         wrapper.vm.toggleDrawerLeft();
         expect($store.state.uiController.UIGeneralStatus).toStrictEqual(expectedData);
     });
+
+    it("sets the closePopup value", () => {
+        expect(wrapper.vm.closeMenuStatus).toStrictEqual(false);
+        wrapper.vm.closePopup();
+        expect(wrapper.vm.closeMenuStatus).toStrictEqual(true);
+    })
 });

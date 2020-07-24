@@ -40,11 +40,11 @@
                 const _module = this;
                 let currentQuery = {};
                 let oldQuery = {};
-
-                _module.$route.query.forEach((param)=>{
-                    currentQuery[param] = _module.$route.query[param];
-                    oldQuery[param] = _module.$route.query[param];
+                Object.keys(_module.$route.query).forEach(function (param) {
+                    currentQuery[param] = _module.$route.query[param]
+                    oldQuery[param] = _module.$route.query[param]
                 })
+
                 if (Object.prototype.hasOwnProperty.call(selectedItem, 'value')) {
                     currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
                     if (!isEqual(currentQuery, oldQuery)) {
@@ -53,8 +53,7 @@
                             query: currentQuery
                         });
                     }
-                }
-                else {
+                } else {
                     delete currentQuery[selectedItem.filterName]
                     this.$router.push({
                         name: _module.$route.name,

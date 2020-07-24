@@ -93,79 +93,26 @@
         <pre
             class="sunlight-highlight-javascript linenums">import filterMapping from "../components/Records/FiltersLabelMapping.json"
 import {isEqual} from 'lodash'
+import ButtonOptions from './ButtonOptions.json'
 
 export const mutations = {
     setFilters(state, data) {
-            let rawFilters = data['searchFairsharingRecords']['aggregations'];
-            state.rawFilters = buildFilters(rawFilters);
-            state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' &amp;&amp; item.filterName !== 'status'));
+        let rawFilters = data['searchFairsharingRecords']['aggregations'];
+        state.rawFilters = buildFilters(rawFilters);
+        state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' &amp;&amp; item.filterName !== 'status'));
     },
     setFilterButtons(state) {
         state.rawFilters.forEach(item => {
-            if (item.type === 'Boolean')
-            {
-                //if it is a boolean object then it will go to the Buttons
-                let ObjectModel = null;
-                switch (item.filterName) {
-                    case 'isRecommended':
-                        ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
-                            {title: 'RECOMMENDED', active: false, filterName: item.filterName, value: true}
-                            , {title: 'NOT RECOMMENDED', active: false, filterName: item.filterName, value: false}];
-                        state.filterButtons.push(ObjectModel);
-                        break;
-                    case 'isMaintained':
-                        ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName,},
-                            {title: 'MAINTAINED', active: false, filterName: item.filterName, value: true}
-                            , {title: 'NOT MAINTAINED', active: false, filterName: item.filterName, value: false}];
-                        state.filterButtons.push(ObjectModel);
-                        break;
-                    case 'isApproved':
-                        ObjectModel = [{title: 'ALL', active: true, filterName: item.filterName},
-                            {title: 'APPROVED', active: false, filterName: item.filterName, value: true}
-                            , {title: 'NOT APPROVED', active: false, filterName: item.filterName, value: false}];
-                        state.filterButtons.push(ObjectModel);
-                        break;
-                }
-            }
-            // else if its a unique case like status which is a 4-options Filter Group
-            else if (item.filterName === 'status')
-            {
-                let ObjectModel;
-                ObjectModel = [{
-                    title: 'ALL',
-                    active: true,
-                    filterName: item.filterName,
-                    toolTip: 'Show All Records'
-                },
-                    {
-                        title: 'R',
-                        active: false,
-                        filterName: item.filterName,
-                        value: item.values[0],
-                        toolTip: 'Show Ready Records'
-                    },
-                    {
-                        title: 'D',
-                        active: false,
-                        filterName: item.filterName,
-                        value: item.values[1],
-                        toolTip: 'Show Deprecated Records'
-                    },
-                    {
-                        title: 'U',
-                        active: false,
-                        filterName: item.filterName,
-                        value: item.values[2],
-                        toolTip: 'Show Uncertain Records'
+            if (item.type === 'Boolean') {
+                let ObjectModel = ButtonOptions[item.filterName];
+                state.filterButtons.push(ObjectModel);
+            } else if (item.filterName === 'status') {
+                let ObjectModel = ButtonOptions.status;
+                ObjectModel.forEach(function (button) {
+                    if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
+                        button.value = item.values[button["apiIndex"]];
                     }
-                    , {
-                        title: 'I',
-                        active: false,
-                        filterName: item.filterName,
-                        value: item.values[3],
-                        toolTip: 'Show In Development Records'
-                    }
-                ];
+                });
                 state.filterButtons.push(ObjectModel);
             }
         });
@@ -184,7 +131,7 @@ export const mutations = {
     }
 };
 export const actions = {
-     fetchFilters(_, data) {
+    fetchFilters(_, data) {
         this.commit('searchFilters/setFilters', data);
         this.commit('searchFilters/setFilterButtons');
     },

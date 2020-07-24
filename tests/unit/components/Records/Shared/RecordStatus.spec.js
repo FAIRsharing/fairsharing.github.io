@@ -9,6 +9,9 @@ describe("RecordStatus.vue", function () {
         propsData: {record: {status: 'ready', type: 'collection'}}
     });
 
+    it("can be instantiated", () => {
+        expect(wrapper.name()).toMatch("RecordStatus");
+    });
 
     it("can check either record state as props is passed or not ", () => {
         wrapper.setProps({record: {status: undefined, type: 'collection'}})

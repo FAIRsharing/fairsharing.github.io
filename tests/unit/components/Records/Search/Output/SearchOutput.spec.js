@@ -16,7 +16,7 @@ const $store = new Vuex.Store({
 });
 
 
-describe("ListController.vue", function () {
+describe("SearchOutput.vue", function () {
     let wrapper;
 
     wrapper = shallowMount(SearchOutput, {
@@ -25,10 +25,13 @@ describe("ListController.vue", function () {
         mocks: {$store}
     });
 
+    it("can be instantiated", () => {
+        expect(wrapper.name()).toMatch("SearchOutput");
+    });
+
     it("can check changeListType function", () => {
         wrapper.vm.changeListType(true);
-        // Missing an expect() ???
-        // Missing an instanciation test.
+        expect(wrapper.vm.isColumnList).toBe(true);
     });
 
 });

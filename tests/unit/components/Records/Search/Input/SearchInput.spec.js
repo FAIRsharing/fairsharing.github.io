@@ -1,7 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import FilterPanel from "@/components/Records/Search/Input/SearchInput"
+import SearchInput from "@/components/Records/Search/Input/SearchInput"
 import searchFiltersStore from "@/store/searchFilters.js";
 
 const localVue = createLocalVue();
@@ -26,14 +26,14 @@ const $store = new Vuex.Store({
 describe("FilterPanel.vue", function () {
     let wrapper;
 
-    wrapper = shallowMount(FilterPanel, {
+    wrapper = shallowMount(SearchInput, {
         localVue,
         vuetify,
         mocks: {$store, $router, $route}
     });
 
-    it("can be mounted", () => {
-        expect(wrapper.name()).toBe('SearchInput')
+    it("can be instantiated", () => {
+        expect(wrapper.name()).toMatch("SearchInput");
     });
 
     it("can check setup function", () => {

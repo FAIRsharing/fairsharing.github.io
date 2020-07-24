@@ -22,7 +22,7 @@
         hover
         accordion
       >
-        <ExpansionPanel
+        <filter-autocomplete
           v-for="filter in setup"
           :key="filter.filterLabel"
           :filter="filter"
@@ -34,12 +34,12 @@
 
 <script>
     import {mapGetters} from "vuex"
-    import ExpansionPanel from "./FilterAutocomplete";
+    import FilterAutocomplete from "./FilterAutocomplete";
     import FilterButtons from "./FilterButtons";
 
     export default {
         name: "SearchInput",
-        components: {FilterButtons, ExpansionPanel},
+        components: {FilterButtons, FilterAutocomplete},
         data() {
             return {
                 panel: [],

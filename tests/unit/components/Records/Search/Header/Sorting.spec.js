@@ -27,6 +27,10 @@ describe("Sorting.vue", () => {
         expect(wrapper.name()).toBe("Sorting");
     });
 
+    it("can be instantiated", () => {
+        expect(wrapper.name()).toMatch("Sorting");
+    });
+
     it('can check applySortQuery', async () => {
         let $route = {
             name: "Standards",

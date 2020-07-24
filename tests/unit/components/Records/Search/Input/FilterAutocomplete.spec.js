@@ -1,7 +1,8 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuetify from "vuetify"
+import Vuetify from "vuetify";
 import ExpansionPanel from "@/components/Records/Search/Input/FilterAutocomplete.vue"
 import recordsStore from "@/store/records.js";
+import getGrants from '../../../../../fixtures/getGrants.json'
 import Vuex from "vuex";
 
 const localVue = createLocalVue();
@@ -22,38 +23,14 @@ let $route = {
 };
 
 const $router = {
-    push: jest.fn(),
+    push: jest.fn()
 };
 
 describe("FilterAutocomplete.vue", function () {
 
     // complex fake data needs to be moved to fixtures/
     let wrapper;
-    let fake_GetFilter_Grants_Response = {
-        "filterName": "grants",
-        "filterLabel": "Grant(s)",
-        "type": "String",
-        "values": [
-            "xda08020102",
-            "2014aa021503 and 2015aa020108",
-            "xdb13040500",
-        ],
-        "buckets": [
-            {
-                "key": "xda08020102",
-                "doc_count": 9
-            },
-            {
-                "key": "2014aa021503 and 2015aa020108",
-                "doc_count": 8
-            },
-            {
-                "key": "xdb13040500",
-                "doc_count": 8
-            },
-        ]
-    }
-
+    let fake_GetFilter_Grants_Response = getGrants;
     wrapper = shallowMount(ExpansionPanel, {
         localVue,
         vuetify,
@@ -63,31 +40,31 @@ describe("FilterAutocomplete.vue", function () {
         }
     });
 
-    // Missing instanciation test.
-    // Please close each line with ";"
-    // Please add whitespaces before and after equal sign and comparator signs.
+    it("can be instantiated", () => {
+        expect(wrapper.name()).toMatch("FilterAutocomplete");
+    });
 
     it("check getValues computed", () => {
-        $store.state.records.facets.push(fake_GetFilter_Grants_Response)
-        const filterNameLocal = 'grants'
+        $store.state.records.facets.push(fake_GetFilter_Grants_Response);
+        const filterNameLocal = 'grants';
         wrapper.vm.getFilter(filterNameLocal);
     });
 
     it("can check cleanString returns properly", () => {
-        let term = 'hosein_mirian'
+        let term = 'hosein_mirian';
         let returnedValue;
 
-        returnedValue = wrapper.vm.cleanString(term)
+        returnedValue = wrapper.vm.cleanString(term);
         expect(returnedValue).toBe('hosein mirian');
 
-        term = 'hoseinmirian'
-        returnedValue = wrapper.vm.cleanString(term)
+        term = 'hoseinmirian';
+        returnedValue = wrapper.vm.cleanString(term);
         expect(returnedValue).toBe('hoseinmirian');
     });
 
     it("can reset searchBox ", () => {
         let selectedItem = {filterSelected: {grants: 'a'}};
-        wrapper.vm.reset(selectedItem)
+        wrapper.vm.reset(selectedItem);
         expect(selectedItem.filterSelected).toStrictEqual({});
     });
 
@@ -100,15 +77,15 @@ describe("FilterAutocomplete.vue", function () {
         wrapper.vm.applyFilters();
 
         wrapper.vm.$route.query = {grants: 'agrants'};
-        wrapper.vm.selectedValues = []
+        wrapper.vm.selectedValues = [];
         wrapper.vm.applyFilters();
 
         wrapper.vm.$route.query = {grants: 'agrants,newGrants'};
-        wrapper.vm.selectedValues = ['cGrants', 'agrants']
+        wrapper.vm.selectedValues = ['cGrants', 'agrants'];
         wrapper.vm.applyFilters();
 
         wrapper.vm.$route.query = {grants: 'agrants,newGrants'};
-        wrapper.vm.selectedValues = ['agrants', 'newGrants']
+        wrapper.vm.selectedValues = ['agrants', 'newGrants'];
         wrapper.vm.applyFilters();
 
     });

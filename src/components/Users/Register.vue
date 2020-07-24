@@ -1,96 +1,136 @@
 <template>
-  <v-container fluid>
-    <div
-      v-if="errors.length > 0"
-      class="alert alert-danger"
-    >
-      <b>Please correct the following error(s):</b>
-      <ul>
-        <li
-          v-for="(error, index) in errors"
-          :key="'error_' + index"
-        >
-          {{ error }}
-        </li>
-      </ul>
-    </div>
-
-    <div v-if="message">
-      <div
-        v-if="created"
-        class="alert alert-success"
+  <v-container>
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        xl="5"
       >
-        {{ message }}
-      </div>
-      <div
-        v-else
-        class="alert alert-danger"
-      >
-        {{ message }}
-      </div>
-    </div>
+        <v-card>
+          <!-- TITLE -->
+          <v-card-title class="blue white--text">
+            <h2> Register a new account</h2>
+          </v-card-title>
 
-    <v-form
-      id="loginForm"
-    >
-      <!-- name -->
-      <v-text-field
-        v-model="loginData.name"
-        label="Username"
-        required
-      />
+          <!-- SUCCESS -->
+          <v-card-text v-if="message">
+            <div
+              v-if="created"
+              class="alert alert-success"
+            >
+              {{ message }}
+            </div>
+            <div
+              v-else
+              class="alert alert-danger"
+            >
+              {{ message }}
+            </div>
+          </v-card-text>
 
-      <!-- password -->
-      <v-text-field
-        v-model="loginData.password"
-        :append-icon="showPwd ? 'fa-eye' : 'fa-eye-slash'"
-        :type="showPwd ? 'text' : 'password'"
-        label="Password"
-        required
-        @click:append="showPwd = !showPwd"
-      />
+          <!-- ERRORS -->
+          <v-card-text
+            v-if="errors.length > 0"
+            class="alert alert-danger"
+          >
+            <b>Please correct the following error(s):</b>
+            <ul>
+              <li
+                v-for="(error, index) in errors"
+                :key="'error_' + index"
+              >
+                {{ error }}
+              </li>
+            </ul>
+          </v-card-text>
 
-      <!-- repeat password -->
-      <v-text-field
-        v-model="loginData.repeatPwd"
-        :append-icon="showRepeat ? 'fa-eye' : 'fa-eye-slash'"
-        :type="showRepeat ? 'text' : 'password'"
-        label="Repeat password"
-        required
-        @click:append="showRepeat = !showRepeat"
-      />
 
-      <!-- email -->
-      <v-text-field
-        v-model="loginData.email"
-        label="Email address"
-        required
-      />
+          <!-- CONTENT/FORM -->
+          <v-card-text>
+            <v-form
+              id="loginForm"
+              class="py-3"
+            >
+              <!-- name -->
+              <v-text-field
+                v-model="loginData.name"
+                label="Username"
+                required
+                outlined
+              />
 
-      <v-card-actions>
-        <v-btn
-          @click="register()"
-        >
-          Register a new account
-        </v-btn>
-        <v-btn
-          href="#/accounts/login"
-        >
-          Login
-        </v-btn>
-      </v-card-actions>
-    </v-form>
+              <!-- email -->
+              <v-text-field
+                v-model="loginData.email"
+                label="Email address"
+                required
+                outlined
+              />
+
+              <!-- password -->
+              <v-text-field
+                v-model="loginData.password"
+                :type="showPwd ? 'text' : 'password'"
+                label="Password"
+                required
+                outlined
+              >
+                <template slot="append">
+                  <div
+                    class="pt-1 mr-2"
+                    @click="showPwd = !showPwd"
+                  >
+                    <v-icon v-if="showPwd">
+                      fa-eye
+                    </v-icon>
+                    <v-icon v-else>
+                      fa-eye-slash
+                    </v-icon>
+                  </div>
+                  <validity-progress :password="loginData.password" />
+                </template>
+              </v-text-field>
+
+              <!-- repeat password -->
+              <v-text-field
+                v-model="loginData.repeatPwd"
+                :append-icon="showRepeat ? 'fa-eye' : 'fa-eye-slash'"
+                :type="showRepeat ? 'text' : 'password'"
+                label="Repeat password"
+                required
+                outlined
+                @click:append="showRepeat = !showRepeat"
+              />
+
+              <div class="px-5 mb-5">
+                <a href="#/accounts/login">
+                  - I already have an account -
+                </a>
+              </div>
+
+              <v-btn
+                class="success"
+                @click="register()"
+              >
+                Register my new account
+              </v-btn>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
     import RESTClient from "@/components/Client/RESTClient.js";
+    import ValidityProgress from "./Password/ValidityProgress";
 
     const Client = new RESTClient();
 
     export default {
         name: "Register",
-        data: () => {
+      components: {ValidityProgress},
+      data: () => {
             return {
                 showPwd: false,
                 showRepeat: false,

@@ -59,7 +59,8 @@
           </template>
           <Login
             :redirect="false"
-            pop-up="true"
+            :pop-up="true"
+            :close-popup="closePopup"
           />
         </v-menu>
         <v-btn
@@ -137,6 +138,9 @@
                     headerVisibilityState: true,
                     drawerVisibilityState: this.drawerLeft
                 });
+            },
+            closePopup: function () {
+                this.closeMenuStatus = true;
             }
         },
     }

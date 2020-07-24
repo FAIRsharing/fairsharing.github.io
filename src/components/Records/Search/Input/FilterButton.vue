@@ -1,27 +1,27 @@
 <template>
-    <v-tooltip
-            bottom
-            :disabled="item.toolTip===undefined"
-    >
-        <template v-slot:activator="{ on }">
-            <v-btn
-                    color="primary"
-                    class="mr-1 mr-lg-2"
-                    :outlined="!item.active"
-                    :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens,'buttons-md-style':multipleItems && !isFirstItem}]"
-                    @click="selectFilter(item)"
-                    v-on="on"
-            >
-                {{ item.title }}
-            </v-btn>
-        </template>
-        <span>{{ item.toolTip }}</span>
-    </v-tooltip>
+  <v-tooltip
+    bottom
+    :disabled="item.toolTip===undefined"
+  >
+    <template v-slot:activator="{ on }">
+      <v-btn
+        color="primary"
+        class="mr-1 mr-lg-2"
+        :outlined="!item.active"
+        :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens,'buttons-md-style':multipleItems && !isFirstItem}]"
+        @click="selectFilter(item)"
+        v-on="on"
+      >
+        {{ item.title }}
+      </v-btn>
+    </template>
+    <span>{{ item.toolTip }}</span>
+  </v-tooltip>
 </template>
 
 <script>
-    import {has, isEqual} from "lodash";
-    import {mapActions} from 'vuex'
+    import { isEqual } from "lodash";
+    import { mapActions } from 'vuex'
 
     export default {
         name: "FilterButton",
@@ -40,11 +40,12 @@
                 const _module = this;
                 let currentQuery = {};
                 let oldQuery = {};
-                for (let param in _module.$route.query) {
-                    currentQuery[param] = _module.$route.query[param]
-                    oldQuery[param] = _module.$route.query[param]
-                }
-                if (has(selectedItem, 'value')) {
+
+                _module.$route.query.forEach((param)=>{
+                    currentQuery[param] = _module.$route.query[param];
+                    oldQuery[param] = _module.$route.query[param];
+                })
+                if (Object.prototype.hasOwnProperty.call(selectedItem, 'value')) {
                     currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
                     if (!isEqual(currentQuery, oldQuery)) {
                         _module.$router.push({
@@ -52,12 +53,13 @@
                             query: currentQuery
                         });
                     }
-                } else {
-                        delete currentQuery[selectedItem.filterName]
-                        this.$router.push({
-                            name: _module.$route.name,
-                            query: currentQuery
-                        });
+                }
+                else {
+                    delete currentQuery[selectedItem.filterName]
+                    this.$router.push({
+                        name: _module.$route.name,
+                        query: currentQuery
+                    });
 
                 }
             },

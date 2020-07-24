@@ -27,6 +27,10 @@ describe("Header.vue", function () {
         mocks: {$store}
     });
 
+    it("can be instantiated", () => {
+        expect(wrapper.name()).toMatch('Header');
+    })
+
     it("can update the uiController store's UIGeneralStatus state", () => {
         const expectedData = {
             headerVisibilityState: true,

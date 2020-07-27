@@ -60,9 +60,9 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from "vuex"
+    import { mapState, mapActions } from "vuex"
     import MessageHandler from "@/components/Users/MessageHandler";
-    import ValidityProgress from "../../components/Users/Password/ValidityProgress";
+    import ValidityProgress from "@/components/Users/Password/ValidityProgress";
 
     export default {
         name: "ResetPassword",
@@ -107,8 +107,7 @@
                     if (!_module.messages().resetPassword.error) {
                         _module.$router.push({path: "/accounts/login", query: {redirect: '/accounts/profile'}})
                     }
-                } else
-                    {
+                } else {
                     query.reset_password_token = _module.$route.query['reset_password_token'];
                     await _module.resetPwd(query);
                     if (!_module.messages().resetPassword.error) {

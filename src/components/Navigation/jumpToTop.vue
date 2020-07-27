@@ -7,7 +7,7 @@
       right
       fixed
       class="mr-2 mb-10"
-      @click="scrollToTop(targetObject)"
+      @click="scrollToTop()"
     >
       <v-icon>mdi-arrow-up</v-icon>
     </v-btn>
@@ -23,8 +23,8 @@ export default {
     targetObject: {default: null, type: String},
   },
   methods: {
-    scrollToTop: function (target) {
-      const targetDiv = document.getElementById(target);
+    scrollToTop: function () {
+      const targetDiv = document.getElementById(this.targetObject);
       gotoTop(targetDiv);
     },
   }

@@ -6,7 +6,6 @@ const vuetify = new Vuetify();
 
 describe("jumpToTop.vue", function () {
     let wrapper;
-    const title = "JumpToTop";
 
     wrapper = shallowMount(jumpToTop, {
         vuetify,
@@ -16,7 +15,7 @@ describe("jumpToTop.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.name()).toMatch('JumpToTop');
     });
 
 });

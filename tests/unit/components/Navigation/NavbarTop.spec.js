@@ -29,7 +29,6 @@ describe("NavbarTop.vue", () => {
     });
 
     it("can be instantiated", () => {
-        const title = "NavbarTop";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.name()).toMatch('NavbarTop');
     })
 });

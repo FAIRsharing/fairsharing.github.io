@@ -91,9 +91,14 @@
       ]
     },
     {
-      "name": "organisations",
+      "name": "organisationLinks",
       "fields": [
-        "name"
+        "id",
+        "relation",
+        {
+          "queryName": "organisation",
+          "fields": ["name", "id", "homepage", "types"]
+        }
       ]
     },
     {

@@ -65,6 +65,26 @@
           {{ item.label }}
         </v-chip>
       </div>
+      <!--UserDefinedTags-->
+      <div
+              class="d-flex mt-2 flex-wrap"
+      >
+        <b class="mr-8">User-defined tags:</b>
+        <v-chip
+                v-for="item in getField('userDefinedTags')"
+                :key="item.label"
+                class="mr-2 mb-2"
+                color="orange"
+                label
+                outlined
+                text-color="orange"
+        >
+          <v-icon left>
+            mdi-label
+          </v-icon>
+          {{ item.label }}
+        </v-chip>
+      </div>
     </section>
   </v-card>
 </template>

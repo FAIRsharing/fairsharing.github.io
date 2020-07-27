@@ -6,26 +6,53 @@
     elevation="1"
   >
     <SectionTitle title="Organisations" />
-    <v-card
-      v-for="(organisation, index) in getField('organisations')"
-      :key="organisation.name"
-      class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-      :class="index === 0 ? 'mt-4':'mt-2'"
-      flat
-      outlined
+    <div
+      v-for="(value, key, index) in relations"
+      :key="'relation_' + index"
     >
-      <div class="d-flex mt-2 ">
-        <v-icon
-          color="secondary"
-          class="mr-2"
-        >
-          mdi-factory
-        </v-icon>
-        <p class="ma-0">
-          {{ organisation.name }}
-        </p>
-      </div>
-    </v-card>
+      <h4 class="org-relation-title">{{ value }}</h4>
+      <v-card
+        v-if="!getRelations(key).length"
+        class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+        :class="index === 0 ? 'mt-4':'mt-2'"
+        flat
+        outlined
+      >
+        <div class="d-flex mt-2 ">
+          <p class="ma-0">
+            None found.
+          </p>
+        </div>
+      </v-card>
+      <v-card
+        v-for="(organisationLink, index) in getRelations(key)"
+        :key="'organisationLink_' + index"
+        class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+        :class="index === 0 ? 'mt-4':'mt-2'"
+        flat
+        outlined
+      >
+        <div class="d-flex mt-2 ">
+          <v-icon
+            color="secondary"
+            class="mr-2"
+          >
+            mdi-factory
+          </v-icon>
+          <p class="ma-0">
+            <a
+              :href="organisationLink.organisation.homepage"
+              target="_blank"
+            >
+              {{ organisationLink.organisation.name }}
+            </a>
+            <span v-if="organisationLink.organisation.types.length > 0">
+              ({{ organisationLink.organisation.types.join(', ') }})
+            </span>
+          </p>
+        </div>
+      </v-card>
+    </div>
   </v-card>
 </template>
 
@@ -34,18 +61,35 @@
 
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
+    /* TODO: Replace with query from database */
+    import organisationRelations from './organisationRelations.json';
+
     export default {
         name: "Organisations",
         components: {
             SectionTitle
         },
+        data(){
+          return {
+            /* TODO: Replace with query from database */
+            relations: organisationRelations
+          }
+        },
         computed: {
             ...mapGetters("record", ["getField"])
+        },
+        methods: {
+          getRelations(relName){
+            let _module = this;
+            let fields = _module.getField('organisationLinks');
+            return fields.filter(obj => obj.relation === relName);
+          }
         }
-
     }
 </script>
 
 <style scoped>
-
+  .org-relation-title {
+    padding-top: 20px;
+  }
 </style>

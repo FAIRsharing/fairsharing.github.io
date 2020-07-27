@@ -158,25 +158,6 @@
                   userDefinedTags: []
                 },
                 currentActiveChips: null,
-                vChipActive: 'v-chip--active',
-                associatedRecordsArray: [
-                  {
-                    title: 'standards',
-                    amount: 10
-                  },
-                  {
-                    title: 'databases',
-                    amount: 8
-                  },
-                  {
-                    title: 'policies',
-                    amount: 2,
-                  },
-                  {
-                      title: 'collections',
-                      amount: 6,
-                  }
-                ],
             }
         },
         created() {

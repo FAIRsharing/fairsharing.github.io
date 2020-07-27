@@ -10,8 +10,9 @@
         <v-col
           cols="12"
           sm="12"
-          :md="!popUp?'6':'12'"
+          :md="!popUp?'4':'12'"
           :lg="!popUp?'4':'12'"
+          :xl="!popUp?'4':'12'"
         >
           <v-card :flat="popUp">
             <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">

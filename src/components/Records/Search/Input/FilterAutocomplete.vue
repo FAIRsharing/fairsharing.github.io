@@ -48,7 +48,7 @@
     import {mapGetters} from 'vuex'
 
     export default {
-        name: "ExpansionPanel",
+        name: "FilterAutocomplete",
         props: {
             filter: {default: null, type: Object}
         },

@@ -3,7 +3,10 @@
     <v-row justify="center">
       <v-col
         cols="12"
-        xl="5"
+        sm="12"
+        md="4"
+        lg="4"
+        xl="4"
       >
         <v-card>
           <!-- TITLE -->

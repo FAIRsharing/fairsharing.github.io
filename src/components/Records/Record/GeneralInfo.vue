@@ -88,7 +88,7 @@
       </div>
       <!--Developed Countries -->
       <div class="d-flex flex-wrap">
-        <b class="mr-2">Countries developed this resource:</b>
+        <b class="mr-2">Countries involved with this resource:</b>
         <v-tooltip
           v-for="country in currentRecord['fairsharingRecord'].countries"
           :key="country.id"

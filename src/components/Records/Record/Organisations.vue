@@ -11,19 +11,7 @@
       :key="'relation_' + index"
     >
       <h4 class="org-relation-title">{{ value }}</h4>
-      <v-card
-        v-if="!getRelations(key).length"
-        class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-        :class="index === 0 ? 'mt-4':'mt-2'"
-        flat
-        outlined
-      >
-        <div class="d-flex mt-2 ">
-          <p class="ma-0">
-            None found.
-          </p>
-        </div>
-      </v-card>
+      <NoneFound :data-field="getRelations(key)" />
       <v-card
         v-for="(organisationLink, index) in getRelations(key)"
         :key="'organisationLink_' + index"
@@ -59,6 +47,7 @@
 <script>
     import { mapGetters } from 'vuex';
 
+    import NoneFound from '@/components/Records/Record/NoneFound';
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     /* TODO: Replace with query from database */
@@ -67,6 +56,7 @@
     export default {
         name: "Organisations",
         components: {
+            NoneFound,
             SectionTitle
         },
         data(){

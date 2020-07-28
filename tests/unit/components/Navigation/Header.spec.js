@@ -43,7 +43,11 @@ describe("Header.vue", function () {
 
     it("sets the closePopup value", () => {
         expect(wrapper.vm.closeMenuStatus).toStrictEqual(false);
-        wrapper.vm.closePopup();
-        expect(wrapper.vm.closeMenuStatus).toStrictEqual(true);
+        let status = false;
+        wrapper.vm.closePopup(status);
+        expect(wrapper.vm.closeMenuStatus).toStrictEqual(status);
+        status = true;
+        wrapper.vm.closePopup(status);
+        expect(wrapper.vm.closeMenuStatus).toStrictEqual(status);
     })
 });

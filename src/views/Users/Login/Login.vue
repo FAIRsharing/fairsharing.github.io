@@ -78,7 +78,10 @@
                 />
 
                 <v-card-text class="text-center">
-                  <router-link to="/accounts/forgotPassword">
+                  <router-link
+                    to="/accounts/forgotPassword"
+                    @click.native="closePopup(true)"
+                  >
                     Forgot your password ?
                   </router-link>
                 </v-card-text>
@@ -97,7 +100,7 @@
                     light
                     class="px-4"
                     to="/accounts/signup"
-                    @click="closePopup"
+                    @click="closePopup(true)"
                   >
                     Register
                   </v-btn>
@@ -112,91 +115,92 @@
 </template>
 
 <script>
-    import { mapActions, mapState } from 'vuex'
-    import MessageHandler from "@/components/Users/MessageHandler";
-    import stringUtils from '@/utils/stringUtils';
+import {mapActions, mapState} from 'vuex'
+import MessageHandler from "@/components/Users/MessageHandler";
+import stringUtils from '@/utils/stringUtils';
 
-    /** This component handles the login page
-     *
-     */
-    export default {
-        name: "Login",
-        components: {MessageHandler},
-        mixins: [stringUtils],
-        props: {
-            redirect: {
-                type: Boolean,
-                default: true,
-            },
-            popUp: {
-                type: Boolean,
-                default: false,
-            },
-            closePopup: {
-                type: Function,
-                default: null,
-            },
+/** This component handles the login page
+ *
+ */
+export default {
+  name: "Login",
+  components: {MessageHandler},
+  mixins: [stringUtils],
+  props: {
+    redirect: {
+      type: Boolean,
+      default: true,
+    },
+    popUp: {
+      type: Boolean,
+      default: false,
+    },
+    closePopup: {
+      type: Function,
+      default: null,
+    },
+  },
+  data: () => {
+    return {
+      show1: false,
+      currentPanel: "login",
+      loginData: {},
+      oauthLogin: [
+        {
+          name: "ORCID",
+          icon: "fab fa-orcid",
+          color: "green white--text",
+          callback: "https://api.fairsharing.org/users/auth/orcid",
         },
-        data: () => {
-            return {
-                show1: false,
-                currentPanel: "login",
-                loginData: {},
-                oauthLogin: [
-                    {
-                        name: "ORCID",
-                        icon: "fab fa-orcid",
-                        color: "green white--text",
-                        callback: "https://api.fairsharing.org/users/auth/orcid",
-                    },
-                    {
-                        name: "Twitter",
-                        icon: "fab fa-twitter",
-                        color: "blue white--text",
-                        callback: "https://api.fairsharing.org/users/auth/twitter",
-                    },
-                    {
-                        name: "GitHub",
-                        icon: "fab fa-github",
-                        color: "black white--text",
-                        callback: "https://api.fairsharing.org/users/auth/github",
-                    }
-                ]
-            }
+        {
+          name: "Twitter",
+          icon: "fab fa-twitter",
+          color: "blue white--text",
+          callback: "https://api.fairsharing.org/users/auth/twitter",
         },
-        computed: {
-            ...mapState("users", ["messages", "user"])
-        },
-        methods: {
-            ...mapActions('users', ['login', 'logout']),
-            logUser: async function () {
-                const _module = this;
-                const user = {
-                    "name": _module.loginData.name,
-                    "password": _module.loginData.password
-                };
-                await _module.login(user);
-                if (!_module.messages().login.error) {
-                    const goTo = _module.$route.query.redirect;
-                    if (goTo) {
-                        _module.$router.push({
-                            path: goTo
-                        })
-                    } else if (_module.redirect) {
-                        _module.$router.go(-1);
-                    }
-                }
-            },
+        {
+          name: "GitHub",
+          icon: "fab fa-github",
+          color: "black white--text",
+          callback: "https://api.fairsharing.org/users/auth/github",
         }
+      ]
     }
+  },
+  computed: {
+    ...mapState("users", ["messages", "user"])
+  },
+  methods: {
+    ...mapActions('users', ['login', 'logout']),
+    logUser: async function () {
+      const _module = this;
+      const user = {
+        "name": _module.loginData.name,
+        "password": _module.loginData.password
+      };
+      _module.closePopup(false)
+      await _module.login(user);
+      if (!_module.messages().login.error) {
+        const goTo = _module.$route.query.redirect;
+        if (goTo) {
+          _module.$router.push({
+            path: goTo
+          })
+        } else if (_module.redirect) {
+          _module.$router.go(-1);
+        }
+      }
+    },
+  }
+}
 </script>
 
 <style scoped>
-    #loginPage a {
-        text-decoration: none !important;
-    }
+#loginPage a {
+  text-decoration: none !important;
+}
 
-    .v-card__actions {
-        justify-content: center;
-    }
+.v-card__actions {
+  justify-content: center;
+}
 </style>

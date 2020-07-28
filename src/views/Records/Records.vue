@@ -36,7 +36,7 @@
           solo
           single-line
           clearable
-          :placeholder="`Can't find what you'r looking for?! search through all data`"
+          placeholder="Can't find what you'r looking for?! search through all data"
         />
         <v-btn
           color="primary"
@@ -92,6 +92,7 @@
     import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
     import {mapActions, mapState} from 'vuex'
     import JumpToTop from "@/components/Navigation/jumpToTop";
+    import recordsLabels from "@/data/recordsTypes.json"
 
     export default {
         name: "Records",
@@ -104,33 +105,17 @@
             hideOverflow: 'overflow-hidden',
             showHeader: true,
             showDrawerLeft: false,
-            recordsSubTitles: {
-                Standards: "The standards in FAIRsharing are manually curated from a variety of sources, including BioPortal, " +
-                    "MIBBI and the Equator Network.",
-                Collections: "Collections group together one or more types of resource (standard, database or policy) by " +
-                    "domain, project or organisation. A Recommendation is a core-set of resources that are selected or " +
-                    "endorsed by data policies from journals, funders or other organizations.",
-                Databases: "A catalogue of databases, described according to the BioDBcore guidelines, along with the standards " +
-                    "used within them; partly compiled with the support of Oxford University Press (NAR Database Issue " +
-                    "and DATABASE Journal).",
-                Policies: "FAIRsharing policies: A catalogue of data preservation, management and sharing policies from " +
-                    "international funding agencies, regulators and journals.",
-                Search: "Search the FAIRsharing records using advanced filtering"
-            },
-            recordTypes: {
-                Standards: "Standard",
-                Databases: "Database",
-                Policies: "Policy",
-                Collections: "Collection"
-            },
+            labels: recordsLabels,
+            recordsSubTitles: recordsLabels['recordSubTitles'],
+            recordTypes: recordsLabels['recordTypes']
         }),
         computed: {
             ...mapState('uiController', ['scrollStatus']),
             getTitle: function () {
-                const flipRecordTypes = Object.entries(this.recordTypes).reduce((obj, [key, value]) => ({
-                    ...obj,
-                    [value]: key
-                }), {});
+                const flipRecordTypes = Object.entries(this.recordTypes).reduce(
+                    (obj, [key, value]) => ({...obj, [value]: key}),
+                    {}
+                );
                 let title = "Search";
                 if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
                     if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
@@ -159,13 +144,9 @@
                 });
                 if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
                     title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-                } else {
-                    title = title.charAt(0).toUpperCase() + title.slice(1)
                 }
-                return [
-                    title,
-                    queryParams
-                ];
+                else title = title.charAt(0).toUpperCase() + title.slice(1);
+                return [title, queryParams];
             },
         },
         watch: {
@@ -181,7 +162,6 @@
             });
         },
         created() {
-            // change the overflow to have Records behavior scroll
             this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                 bodyOverflowState: true,
                 drawerVisibilityState: false,
@@ -190,7 +170,6 @@
 
         },
         destroyed() {
-            // change the overflow to have normal behavior of main scroll and having header
             this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                 bodyOverflowState: false,
                 drawerVisibilityState: false,

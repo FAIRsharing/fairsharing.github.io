@@ -10,6 +10,11 @@
       <!--Taxonomies-->
       <div class="d-flex mt-4 flex-wrap">
         <b class="mr-2">Taxonomies:</b>
+        <span
+          v-if="!getField('taxonomies').length"
+        >
+          None.
+        </span>
         <v-chip
           v-for="item in getField('taxonomies')"
           :key="item.label"
@@ -30,6 +35,11 @@
         class="d-flex mt-2 flex-wrap"
       >
         <b class="mr-8">Domains:</b>
+        <span
+          v-if="!getField('domains').length"
+        >
+          None.
+        </span>
         <v-chip
           v-for="item in getField('domains')"
           :key="item.label"
@@ -50,6 +60,11 @@
         class="d-flex mt-2 flex-wrap"
       >
         <b class="mr-8">Subjects:</b>
+        <span
+          v-if="!getField('subjects').length"
+        >
+          None.
+        </span>
         <v-chip
           v-for="item in getField('subjects')"
           :key="item.label"
@@ -67,17 +82,22 @@
       </div>
       <!--UserDefinedTags-->
       <div
-              class="d-flex mt-2 flex-wrap"
+        class="d-flex mt-2 flex-wrap"
       >
-        <b class="mr-8">User-defined tags:</b>
+        <b class="mr-6">User tags:</b>
+        <span
+          v-if="!getField('userDefinedTags').length"
+        >
+          None.
+        </span>
         <v-chip
-                v-for="item in getField('userDefinedTags')"
-                :key="item.label"
-                class="mr-2 mb-2"
-                color="orange"
-                label
-                outlined
-                text-color="orange"
+          v-for="item in getField('userDefinedTags')"
+          :key="item.label"
+          class="mr-2 mb-2"
+          color="orange"
+          label
+          outlined
+          text-color="orange"
         >
           <v-icon left>
             mdi-label

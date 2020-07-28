@@ -10,6 +10,7 @@
     <!-- TODO -->
 
     <!--Contact-->
+    <NoneFound :data-field="getField('metadata')['contacts']" />
     <v-card
       v-for="(contact, index) in getField('metadata')['contacts']"
       :key="contact.contact_name"
@@ -49,11 +50,13 @@
 <script>
     import { mapGetters } from 'vuex';
 
+    import NoneFound from '@/components/Records/Record/NoneFound';
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     export default {
         name: "Support",
         components: {
+            NoneFound,
             SectionTitle
         },
         computed: {

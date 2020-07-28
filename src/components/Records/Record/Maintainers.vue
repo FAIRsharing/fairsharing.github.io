@@ -6,19 +6,8 @@
     elevation="1"
   >
     <SectionTitle title="Maintainers" />
-    <v-card
-      v-if="!getField('maintainers').length"
-      class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-      :class="index === 0 ? 'mt-4':'mt-2'"
-      flat
-      outlined
-    >
-      <div class="d-flex mt-2 ">
-        <p class="ma-0">
-          None found.
-        </p>
-      </div>
-    </v-card>
+    <NoneFound :data-field="getField('maintainers')" />
+
     <!--Contact-->
     <v-card
       v-for="(maintainer, index) in getField('maintainers')"
@@ -48,11 +37,13 @@
     import { mapGetters } from 'vuex';
 
     import SectionTitle from '@/components/Records/Record/SectionTitle';
+    import NoneFound from '@/components/Records/Record/NoneFound';
 
     export default {
         name: "Maintainers",
         components: {
-            SectionTitle
+          NoneFound,
+          SectionTitle
         },
         computed: {
             ...mapGetters("record", ["getField"])

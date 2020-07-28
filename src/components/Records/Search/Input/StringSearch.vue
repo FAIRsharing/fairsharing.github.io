@@ -8,7 +8,7 @@
       solo
       single-line
       clearable
-      placeholder="Can't find what you'r looking for?! search through all data"
+      placeholder="Can't find what you're looking for? Search through all data."
     />
     <v-btn
       color="primary"

@@ -118,9 +118,3 @@
         }
     }
 </script>
-
-<style>
-    .v-input__append-inner {
-        margin-top: 14px !important
-    }
-</style>

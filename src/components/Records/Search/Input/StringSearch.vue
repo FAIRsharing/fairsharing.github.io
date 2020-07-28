@@ -1,7 +1,7 @@
 <template>
   <form
     class="stringSearchBar d-flex flex-row align-center mt-1  mr-2 ml-2"
-    @submit="searchString()"
+    @submit.prevent="searchString()"
   >
     <v-text-field
       v-model="searchTerm"
@@ -24,32 +24,33 @@
 </template>
 
 <script>
-    export default {
-        name: "StringSearch",
-        data() {
-          return {
-            searchTerm: null
-          }
-        },
-        methods: {
-          searchString(){
-            const _module = this;
-            if (_module.searchTerm){
-              _module.$router.push({
-                path: "search",
-                query: {
-                  q: _module.searchTerm
-                }
-              })
-            }
-          }
-        }
+export default {
+  name: "StringSearch",
+  data() {
+    return {
+      searchTerm: null
     }
+  },
+  methods: {
+    searchString() {
+      const _module = this;
+      if (_module.searchTerm) {
+        _module.$router.push({
+          path: "search",
+          query: {
+            q: _module.searchTerm
+          }
+        })
+        _module.searchTerm = null;
+      }
+    }
+  }
+}
 </script>
 
-<style scoped lang="scss">
-  .v-input {
-    height: 42px;
-  }
+<style scoped >
+.v-input {
+  height: 42px;
+}
 </style>
 

@@ -1,5 +1,8 @@
 <template>
-  <form class="stringSearchBar d-flex flex-row align-center mt-1  mr-2 ml-2">
+  <form
+    class="stringSearchBar d-flex flex-row align-center mt-1  mr-2 ml-2"
+    @submit="searchString()"
+  >
     <v-text-field
       v-model="searchTerm"
       solo
@@ -12,7 +15,7 @@
       outlined
       height="52px"
       class="mt-1 ml-2"
-      @click="searchString"
+      @click="searchString()"
     >
       <v-icon>search</v-icon>
       <span>Search</span>

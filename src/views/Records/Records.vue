@@ -30,24 +30,7 @@
       </div>
 
       <!-- Search Box -->
-      <div class="d-flex flex-row align-center mt-1  mr-2 ml-2">
-        <v-text-field
-          v-model="searchTerm"
-          solo
-          single-line
-          clearable
-          placeholder="Can't find what you'r looking for?! search through all data"
-        />
-        <v-btn
-          color="primary"
-          outlined
-          height="52px"
-          class="mt-1 ml-2"
-        >
-          <v-icon>search</v-icon>
-          <span>Search</span>
-        </v-btn>
-      </div>
+      <string-search />
       <!--advanced Search button  -->
       <div class="text-right">
         <v-btn
@@ -93,10 +76,11 @@
     import {mapActions, mapState} from 'vuex'
     import JumpToTop from "@/components/Navigation/jumpToTop";
     import recordsLabels from "@/data/recordsTypes.json"
+    import StringSearch from "../../components/Records/Search/Input/StringSearch";
 
     export default {
         name: "Records",
-        components: {JumpToTop, SearchOutput, SearchInput},
+        components: {StringSearch, JumpToTop, SearchOutput, SearchInput},
         data: () => ({
             searchTerm: '',
             offsetTop: 0,
@@ -290,10 +274,6 @@
         justify-content: center;
         flex-direction: column;
         padding: 1em;
-    }
-
-    .v-input {
-        height: 42px;
     }
 
 </style>

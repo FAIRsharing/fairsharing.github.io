@@ -139,8 +139,8 @@
                     drawerVisibilityState: this.drawerLeft
                 });
             },
-            closePopup: function () {
-                this.closeMenuStatus = true;
+            closePopup: function (status) {
+                this.closeMenuStatus = status;
             }
         },
     }

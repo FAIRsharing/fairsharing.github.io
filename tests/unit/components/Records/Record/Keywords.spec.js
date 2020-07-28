@@ -14,7 +14,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
     ],
     domains: [
         {label: "Deneb"},
-    ]
+    ],
+    userDefinedTags: []
 };
 const $store = new Vuex.Store({
     modules: {
@@ -36,6 +37,7 @@ describe("Keywords.vue", function(){
         expect(wrapper.vm.getField('taxonomies')[0].label).toMatch("Turdus turdus");
         expect(wrapper.vm.getField('subjects')[0].label).toMatch("Javascript Fun");
         expect(wrapper.vm.getField('domains')[0].label).toMatch("Deneb");
+        expect(wrapper.vm.getField('userDefinedTags').length).toEqual(0);
     });
 
 

@@ -77,25 +77,41 @@
                 let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
                 if (Object.keys(currentParams).indexOf(_module.filter.filterName) === -1) {
                     if (_module.selectedValues !== null && _module.selectedValues.length > 0) {
-                        currentParams[_module.filter.filterName] = _module.selectedValues.join(',');
+                        if (_module.selectedValues.length === 1){
+                          currentParams[_module.filter.filterName] = encodeURIComponent(_module.selectedValues.join(','));
+                        }
+                        else {
+                          currentParams[_module.filter.filterName] = [];
+                          _module.selectedValues.forEach(function(val){
+                            currentParams[_module.filter.filterName].push(encodeURIComponent(val));
+                          })
+                        }
+
                         _module.$router.push({
                             name: _module.$route.name,
                             query: currentParams
                         });
                     }
-                } else {
+                }
+                else {
+
+                    // Clear the current filer search values
                     if (_module.selectedValues === null || _module.selectedValues.length === 0) {
                         delete currentParams[_module.filter.filterName];
                         _module.$router.push({
                             name: _module.$route.name,
                             query: currentParams
                         });
-                    } else {
+                    }
+
+                    //
+                    else {
                         let newParams = [];
                         let existingValues = currentParams[_module.filter.filterName].split(",");
                         _module.selectedValues.forEach(function (selectedValue) {
-                            if (existingValues.indexOf(selectedValue) === -1) {
-                                newParams.push(selectedValue);
+                            const filterVal = encodeURI(selectedValue);
+                            if (existingValues.indexOf(filterVal) === -1) {
+                                newParams.push(filterVal);
                             }
                         });
                         currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;

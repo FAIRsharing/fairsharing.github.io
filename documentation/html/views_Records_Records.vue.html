@@ -123,24 +123,7 @@
       &lt;/div>
 
       &lt;!-- Search Box -->
-      &lt;div class="d-flex flex-row align-center mt-1  mr-2 ml-2">
-        &lt;v-text-field
-          v-model="searchTerm"
-          solo
-          single-line
-          clearable
-          :placeholder="`Can't find what you'r looking for?! search through all data`"
-        />
-        &lt;v-btn
-          color="primary"
-          outlined
-          height="52px"
-          class="mt-1 ml-2"
-        >
-          &lt;v-icon>search&lt;/v-icon>
-          &lt;span>Search&lt;/span>
-        &lt;/v-btn>
-      &lt;/div>
+      &lt;string-search />
       &lt;!--advanced Search button  -->
       &lt;div class="text-right">
         &lt;v-btn
@@ -185,10 +168,12 @@
     import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
     import {mapActions, mapState} from 'vuex'
     import JumpToTop from "@/components/Navigation/jumpToTop";
+    import recordsLabels from "@/data/recordsTypes.json"
+    import StringSearch from "../../components/Records/Search/Input/StringSearch";
 
     export default {
         name: "Records",
-        components: {JumpToTop, SearchOutput, SearchInput},
+        components: {StringSearch, JumpToTop, SearchOutput, SearchInput},
         data: () => ({
             searchTerm: '',
             offsetTop: 0,
@@ -197,33 +182,17 @@
             hideOverflow: 'overflow-hidden',
             showHeader: true,
             showDrawerLeft: false,
-            recordsSubTitles: {
-                Standards: "The standards in FAIRsharing are manually curated from a variety of sources, including BioPortal, " +
-                    "MIBBI and the Equator Network.",
-                Collections: "Collections group together one or more types of resource (standard, database or policy) by " +
-                    "domain, project or organisation. A Recommendation is a core-set of resources that are selected or " +
-                    "endorsed by data policies from journals, funders or other organizations.",
-                Databases: "A catalogue of databases, described according to the BioDBcore guidelines, along with the standards " +
-                    "used within them; partly compiled with the support of Oxford University Press (NAR Database Issue " +
-                    "and DATABASE Journal).",
-                Policies: "FAIRsharing policies: A catalogue of data preservation, management and sharing policies from " +
-                    "international funding agencies, regulators and journals.",
-                Search: "Search the FAIRsharing records using advanced filtering"
-            },
-            recordTypes: {
-                Standards: "Standard",
-                Databases: "Database",
-                Policies: "Policy",
-                Collections: "Collection"
-            },
+            labels: recordsLabels,
+            recordsSubTitles: recordsLabels['recordSubTitles'],
+            recordTypes: recordsLabels['recordTypes']
         }),
         computed: {
             ...mapState('uiController', ['scrollStatus']),
             getTitle: function () {
-                const flipRecordTypes = Object.entries(this.recordTypes).reduce((obj, [key, value]) => ({
-                    ...obj,
-                    [value]: key
-                }), {});
+                const flipRecordTypes = Object.entries(this.recordTypes).reduce(
+                    (obj, [key, value]) => ({...obj, [value]: key}),
+                    {}
+                );
                 let title = "Search";
                 if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
                     if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
@@ -252,13 +221,9 @@
                 });
                 if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
                     title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-                } else {
-                    title = title.charAt(0).toUpperCase() + title.slice(1)
                 }
-                return [
-                    title,
-                    queryParams
-                ];
+                else title = title.charAt(0).toUpperCase() + title.slice(1);
+                return [title, queryParams];
             },
         },
         watch: {
@@ -274,7 +239,6 @@
             });
         },
         created() {
-            // change the overflow to have Records behavior scroll
             this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                 bodyOverflowState: true,
                 drawerVisibilityState: false,
@@ -283,7 +247,6 @@
 
         },
         destroyed() {
-            // change the overflow to have normal behavior of main scroll and having header
             this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                 bodyOverflowState: false,
                 drawerVisibilityState: false,
@@ -406,10 +369,6 @@
         padding: 1em;
     }
 
-    .v-input {
-        height: 42px;
-    }
-
 &lt;/style>
 </pre>
     </article>
@@ -456,7 +415,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
 	
-		on Fri Jul 24th 2020
+		on Wed Jul 29th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

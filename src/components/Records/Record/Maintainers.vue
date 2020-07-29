@@ -6,6 +6,8 @@
     elevation="1"
   >
     <SectionTitle title="Maintainers" />
+    <NoneFound :data-field="getField('maintainers')" />
+
     <!--Contact-->
     <v-card
       v-for="(maintainer, index) in getField('maintainers')"
@@ -35,11 +37,13 @@
     import { mapGetters } from 'vuex';
 
     import SectionTitle from '@/components/Records/Record/SectionTitle';
+    import NoneFound from '@/components/Records/Record/NoneFound';
 
     export default {
         name: "Maintainers",
         components: {
-            SectionTitle
+          NoneFound,
+          SectionTitle
         },
         computed: {
             ...mapGetters("record", ["getField"])

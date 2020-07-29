@@ -61,7 +61,7 @@
     import FilterChips from "../Header/FilterChips";
 
     export default {
-        name: "RightContentList",
+        name: "SearchOutput",
         components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack},
         data() {
             return {

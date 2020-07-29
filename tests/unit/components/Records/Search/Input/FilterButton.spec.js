@@ -87,11 +87,11 @@ describe("FilterButton.vue", function () {
             },
             mocks: {$store, $router, $route}
         });
-        anotherWrapper.vm.$route.query = {isMaintained: 'false'}
+        anotherWrapper.vm.$route.query = {isMaintained: 'false'};
         let selectedItem = {active: false, filterName: 'isMaintained', title: 'Maintained', value: true};
         anotherWrapper.vm.applyFilters(selectedItem);
 
-        anotherWrapper.vm.$route.query = {isMaintained: 'true'}
+        anotherWrapper.vm.$route.query = {isMaintained: 'true'};
         selectedItem = {active: false, filterName: 'isMaintained', title: 'Maintained', value: true};
         anotherWrapper.vm.applyFilters(selectedItem);
 

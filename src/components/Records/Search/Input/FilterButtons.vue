@@ -1,5 +1,7 @@
 <template>
   <div>
+    <AnyAllButton />
+
     <div
       v-for="index in filterButtons.length"
       :key="index"
@@ -20,11 +22,15 @@
 
 <script>
     import {mapState} from "vuex";
+    import AnyAllButton from "./AnyAllButton";
     import FilterItem from "./FilterButton";
 
     export default {
         name: "FilterButtons",
-        components: {FilterItem},
+        components: {
+          AnyAllButton,
+          FilterItem
+        },
         computed: {
             ...mapState("searchFilters", ["filterButtons"]),
         }

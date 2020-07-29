@@ -1,5 +1,14 @@
 <template>
   <v-row class="mr-2 ml-2">
+    <v-chip
+      v-if="getChips.length"
+      class="ma-2"
+      color="red"
+      text-color="white"
+      @click="removeAllParams"
+    >
+      Clear All
+    </v-chip>
     <div
       v-for="(chip, index) in getChips"
       :key="'Chips_' + index"
@@ -14,16 +23,6 @@
         {{ chip.paramName }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
       </v-chip>
     </div>
-    <v-chip
-      v-if="getChips.length"
-      class="ma-2"
-      close
-      color="white"
-      text-color="red"
-      @click:close="removeAllParams"
-    >
-      Clear All
-    </v-chip>
   </v-row>
 </template>
 

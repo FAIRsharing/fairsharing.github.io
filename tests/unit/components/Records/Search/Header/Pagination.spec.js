@@ -42,6 +42,9 @@ describe("Pagination.vue", () => {
         expect(anotherWrapper.vm.currentPage).toBe(1);
     });
 
+    it("can be instantiated", () => {
+        expect(wrapper.name()).toMatch("Pagination");
+    });
 
     it('can react to changes in the URL query and/or name', () => {
         wrapper.vm.$route.name = "Search";

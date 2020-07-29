@@ -1,7 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import FilterItem from "@/components/Records/Search/Input/FilterButton.vue"
+import FilterButton from "@/components/Records/Search/Input/FilterButton.vue"
 import searchFiltersStore from "@/store/searchFilters.js";
 
 const localVue = createLocalVue();
@@ -24,11 +24,11 @@ const $store = new Vuex.Store({
 });
 
 
-describe("FilterItem.vue", function () {
+describe("FilterButton.vue", function () {
     let wrapper;
     let anotherWrapper;
 
-    wrapper = shallowMount(FilterItem, {
+    wrapper = shallowMount(FilterButton, {
         localVue,
         vuetify,
         propsData: {
@@ -41,7 +41,9 @@ describe("FilterItem.vue", function () {
         mocks: {$store, $router, $route}
     });
 
-    // Missing instanciation test
+    it("can be instantiated", () => {
+        expect(wrapper.name()).toMatch("FilterButton");
+    });
 
     it("can check selectFilter method", () => {
         let selectedItem = {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true};
@@ -73,7 +75,7 @@ describe("FilterItem.vue", function () {
 
     it('can check applyFilter function', () => {
 
-        anotherWrapper = shallowMount(FilterItem, {
+        anotherWrapper = shallowMount(FilterButton, {
             localVue,
             vuetify,
             propsData: {
@@ -85,11 +87,11 @@ describe("FilterItem.vue", function () {
             },
             mocks: {$store, $router, $route}
         });
-        anotherWrapper.vm.$route.query = {isMaintained: 'false'}
+        anotherWrapper.vm.$route.query = {isMaintained: 'false'};
         let selectedItem = {active: false, filterName: 'isMaintained', title: 'Maintained', value: true};
         anotherWrapper.vm.applyFilters(selectedItem);
 
-        anotherWrapper.vm.$route.query = {isMaintained: 'true'}
+        anotherWrapper.vm.$route.query = {isMaintained: 'true'};
         selectedItem = {active: false, filterName: 'isMaintained', title: 'Maintained', value: true};
         anotherWrapper.vm.applyFilters(selectedItem);
 

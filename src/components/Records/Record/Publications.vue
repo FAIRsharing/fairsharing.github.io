@@ -6,6 +6,7 @@
     elevation="1"
   >
     <SectionTitle title="Publications" />
+    <NoneFound :data-field="getField('publications')" />
     <v-card
       v-for="(publication,index) in getField('publications')"
       :key="publication.title"
@@ -32,11 +33,13 @@
 <script>
     import { mapGetters } from 'vuex';
 
+    import NoneFound from '@/components/Records/Record/NoneFound';
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     export default {
         name: "Publications",
         components: {
+            NoneFound,
             SectionTitle
         },
         computed: {

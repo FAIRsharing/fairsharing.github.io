@@ -9,11 +9,10 @@ const router = new VueRouter();
 
 describe("Footer.vue", () => {
     it("can be instantiated", () => {
-        const title = "Footer";
         const wrapper = shallowMount(Footer, {
             localVue,
             router
         });
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.name()).toMatch("Footer");
     })
 });

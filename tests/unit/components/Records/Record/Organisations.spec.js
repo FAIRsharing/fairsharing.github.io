@@ -6,9 +6,21 @@ import Organisations from "@/components/Records/Record/Organisations.vue"
 const localVue = createLocalVue();
 localVue.use(Vuex);
 Record.state.currentRecord["fairsharingRecord"] = {
-    organisations: [
-        {name: "Organisation One"},
-        {name: "Organisation Two"}
+    organisationLinks: [
+        {
+            relation: 'funds',
+            organisation: {
+                name: "Organisation One",
+                types: ["exciting", "thrilling"]
+            }
+        },
+        {
+            relation: 'maintains',
+            organisation: {
+                name: "Organisation Two",
+                types: []
+            }
+        }
     ]
 };
 const $store = new Vuex.Store({
@@ -19,7 +31,6 @@ const $store = new Vuex.Store({
 describe("Organisations.vue", function(){
     let wrapper;
 
-    // TODO: Mock properties in options {}.
     beforeEach(() => {
         wrapper = shallowMount(Organisations, {
             localVue,
@@ -29,8 +40,12 @@ describe("Organisations.vue", function(){
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("Organisations");
-        expect(wrapper.vm.getField('organisations')[0].name).toMatch("Organisation One");
-        expect(wrapper.vm.getField('organisations')[1].name).toMatch("Organisation Two");
+        expect(wrapper.vm.getField('organisationLinks')[0].organisation.name).toMatch("Organisation One");
+        expect(wrapper.vm.getField('organisationLinks')[1].organisation.name).toMatch("Organisation Two");
+    });
+
+    it("counts relations correctly", () => {
+        expect(wrapper.vm.getRelations('funds').length).toEqual(1);
     });
 
 

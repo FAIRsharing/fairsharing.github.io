@@ -53,21 +53,7 @@
                 this.createIndexForFilters();
                 return this.getFilters;
             },
-            /* currentPath() {
-
-                                 return this.$route.query;
-
-            }, */
-        }
-        /*watch: {
-            currentPath: async function () {
-                // let _module = this;
-                // _module.$route.query.forEach(prop=>{console.log('b',prop)});
-                // Object.keys(_module.$route.query).forEach(function (prop) {console.log(prop);});
-            }
-
-        }*/
-        ,
+        },
         methods: {
             setPanel() {
                 this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i)

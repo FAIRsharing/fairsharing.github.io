@@ -22,15 +22,54 @@
 <script>
     import { isEqual } from "lodash";
     import { mapActions } from 'vuex'
+    import currentParameter from "@/utils/currentParameterMixin.js"
 
     export default {
         name: "FilterButton",
+        mixins: [currentParameter],
         props: {
             item: {default: null, type: Object},
             isFirstItem: {default: false, type: Boolean},
             mdScreens: {default: null, type: Boolean},
             itemParentIndex: {default: 0, type: Number},
             multipleItems: {default: false, type: Boolean},
+        },
+        watch: {
+          currentParameter: {
+            handler(newVal) {
+              const _module = this;
+              const fieldName = _module.item.filterName;
+              if (this.item.value === undefined && newVal[fieldName] === null){
+                this.item.active = true;
+              }
+              else if (newVal[fieldName] === null && this.item.value !== undefined){
+                this.item.active = false;
+              }
+              else if (newVal[fieldName] !== null && this.item.value === JSON.parse(newVal[fieldName])){
+                this.item.active = true;
+              }
+              else if (newVal[fieldName] !== null && this.item.value !== JSON.parse(newVal[fieldName])){
+                this.item.active = false;
+              }
+            },
+            deep: true
+          }
+        },
+        mounted(){
+          this.$nextTick(function () {
+            if (this.item.value === undefined && this.currentParameter[this.item.filterName] === null){
+              this.item.active = true;
+            }
+            else if (this.currentParameter[this.item.filterName] === null && this.item.value !== undefined){
+              this.item.active = false;
+            }
+            else if (this.currentParameter[this.item.filterName] !== null && this.item.value === JSON.parse(this.currentParameter[this.item.filterName])){
+              this.item.active = true;
+            }
+            else if (this.currentParameter[this.item.filterName] !== null && this.item.value !== JSON.parse(this.currentParameter[this.item.filterName])){
+              this.item.active = false;
+            }
+          });
         },
         methods: {
             /**
@@ -41,9 +80,9 @@
                 let currentQuery = {};
                 let oldQuery = {};
                 Object.keys(_module.$route.query).forEach(function (param) {
-                    currentQuery[param] = _module.$route.query[param]
+                    currentQuery[param] = _module.$route.query[param];
                     oldQuery[param] = _module.$route.query[param]
-                })
+                });
 
                 if (Object.prototype.hasOwnProperty.call(selectedItem, 'value')) {
                     currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
@@ -53,8 +92,9 @@
                             query: currentQuery
                         });
                     }
-                } else {
-                    delete currentQuery[selectedItem.filterName]
+                }
+                else {
+                    delete currentQuery[selectedItem.filterName];
                     this.$router.push({
                         name: _module.$route.name,
                         query: currentQuery

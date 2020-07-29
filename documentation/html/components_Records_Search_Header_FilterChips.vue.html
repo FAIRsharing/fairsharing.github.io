@@ -93,6 +93,15 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-row class="mr-2 ml-2">
+    &lt;v-chip
+      v-if="getChips.length"
+      class="ma-2"
+      color="red"
+      text-color="white"
+      @click="removeAllParams"
+    >
+      Clear All
+    &lt;/v-chip>
     &lt;div
       v-for="(chip, index) in getChips"
       :key="'Chips_' + index"
@@ -107,16 +116,6 @@
         {{ chip.paramName }}:&lt;b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}&lt;/b>
       &lt;/v-chip>
     &lt;/div>
-    &lt;v-chip
-      v-if="getChips.length"
-      class="ma-2"
-      close
-      color="white"
-      text-color="red"
-      @click:close="removeAllParams"
-    >
-      Clear All
-    &lt;/v-chip>
   &lt;/v-row>
 &lt;/template>
 

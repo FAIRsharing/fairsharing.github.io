@@ -64,7 +64,7 @@
               :disabled="Chips[item.title].length === 0"
               @click="changeActiveItem(index)"
             >
-              {{ item.title }} ({{ Chips[item.title].length }})
+              {{ item.title==='taxonomies'?'species':item.title }} ({{ Chips[item.title].length }})
             </v-btn>
           </section>
         </v-col>

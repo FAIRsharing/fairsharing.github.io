@@ -36,6 +36,7 @@
         </v-skeleton-loader>
       </article>
     </div>
+    <!-- Alert -->
     <div
       v-else-if="records.length<1 && !loading"
       class="no-data-found"

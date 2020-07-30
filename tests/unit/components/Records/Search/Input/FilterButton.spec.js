@@ -27,7 +27,6 @@ const $store = new Vuex.Store({
 describe("FilterButton.vue", function () {
     let wrapper;
     let anotherWrapper;
-    let yetAnotherWrapper;
 
     wrapper = shallowMount(FilterButton, {
         localVue,

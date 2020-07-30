@@ -35,9 +35,6 @@
             multipleItems: {default: false, type: Boolean},
         },
         watch: {
-          /*
-          pretty sure you can refactor if (this.item.value === undefined && newVal[fieldName] === null) with if (!this.item.value && !newVal{fieldName]) for instance
-          */
           currentParameter: {
             handler(newVal) {
               const _module = this;

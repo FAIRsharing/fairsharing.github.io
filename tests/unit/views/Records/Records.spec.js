@@ -220,7 +220,7 @@ describe("Records.vue", () => {
 
     it("can onScroll function work properly", () => {
 
-        wrapper.vm.$store.state.records.records = ['1', '2'];
+        wrapper.vm.$store.state.records.records = ['1', '2', '3'];
         wrapper.vm.offsetTop = 150;
         let mEvent = {
             target: {scrollTop: 150},

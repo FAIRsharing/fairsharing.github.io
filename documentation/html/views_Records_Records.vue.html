@@ -260,7 +260,6 @@
             onScroll: function (e) {
                 let _module = this;
                 _module.offsetTop = e.target.scrollTop;
-              console.log(_module.records.length)
               if (_module.offsetTop > 125 &amp;&amp; _module.records.length>1) {
                   _module.stickToLeft = true;
                     _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {

@@ -35,43 +35,43 @@
             multipleItems: {default: false, type: Boolean},
         },
         watch: {
+          /*
+          pretty sure you can refactor if (this.item.value === undefined && newVal[fieldName] === null) with if (!this.item.value && !newVal{fieldName]) for instance
+          */
           currentParameter: {
             handler(newVal) {
               const _module = this;
               const fieldName = _module.item.filterName;
-              if (this.item.value === undefined && newVal[fieldName] === null){
-                this.item.active = true;
-              }
-              else if (newVal[fieldName] === null && this.item.value !== undefined){
-                this.item.active = false;
-              }
-              else if (newVal[fieldName] !== null && this.item.value === JSON.parse(newVal[fieldName])){
-                this.item.active = true;
-              }
-              else if (newVal[fieldName] !== null && this.item.value !== JSON.parse(newVal[fieldName])){
-                this.item.active = false;
-              }
+              const fieldValue = newVal[fieldName];
+              const currentValue = _module.item.value;
+              const title = _module.item.title.toLowerCase();
+              _module.checkCurrentParameters(title, fieldValue, currentValue);
             },
             deep: true
           }
         },
         mounted(){
           this.$nextTick(function () {
-            if (this.item.value === undefined && this.currentParameter[this.item.filterName] === null){
-              this.item.active = true;
-            }
-            else if (this.currentParameter[this.item.filterName] === null && this.item.value !== undefined){
-              this.item.active = false;
-            }
-            else if (this.currentParameter[this.item.filterName] !== null && this.item.value === JSON.parse(this.currentParameter[this.item.filterName])){
-              this.item.active = true;
-            }
-            else if (this.currentParameter[this.item.filterName] !== null && this.item.value !== JSON.parse(this.currentParameter[this.item.filterName])){
-              this.item.active = false;
-            }
+            const _module = this;
+            const fieldValue = _module.currentParameter[this.item.filterName];
+            const currentValue = _module.item.value;
+            const title = _module.item.title.toLowerCase();
+            _module.checkCurrentParameters(title, fieldValue, currentValue);
           });
         },
         methods: {
+            checkCurrentParameters: function(title, fieldValue, currentValue) {
+              if (fieldValue === null) {
+                this.item.active = title === 'all';
+              } else {
+                if (currentValue === undefined) {
+                  this.item.active = false;
+                }
+                else {
+                  this.item.active = currentValue.toString() === fieldValue;
+                }
+              }
+            },
             /**
              * Apply the filters by building the new query parameters using the form data.
              */

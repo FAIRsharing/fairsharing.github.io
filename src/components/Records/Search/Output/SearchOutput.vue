@@ -16,7 +16,7 @@
 
     <!--List Row-->
     <div
-      v-if="records.length"
+      v-if="getRecordsLength()"
       :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]"
     >
       <article v-if="!isColumnList">
@@ -38,7 +38,7 @@
     </div>
     <!-- Alert -->
     <div
-      v-else-if="records.length<1 && !loading"
+      v-else-if="getRecordsLength()<1 && !loading"
       class="no-data-found"
     >
       <v-alert
@@ -51,7 +51,7 @@
 
     <!-- Card view -->
     <div
-      v-if="records.length"
+      v-if="getRecordsLength()"
       :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]"
     >
       <v-skeleton-loader
@@ -77,7 +77,7 @@
 import RecordsCardStack from "./RecordsCardStack";
 import ListController from "../Header/ListController";
 import RecordsCardColumn from "./RecordsCardColumn";
-import {mapState} from 'vuex'
+import {mapState, mapGetters} from 'vuex'
 import FilterChips from "../Header/FilterChips";
 
 export default {
@@ -89,7 +89,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('records', ["records", "hits", "loading"])
+    ...mapState('records', ["records", "hits", "loading"]),
+    ...mapGetters('records', ["getRecordsLength"]),
   },
   methods: {
     changeListType: function (listType) {

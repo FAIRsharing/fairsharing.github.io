@@ -167,8 +167,9 @@
             onScroll: function (e) {
                 let _module = this;
                 _module.offsetTop = e.target.scrollTop;
-                if (_module.offsetTop > 125 && _module.records.length>1) {
-                    _module.stickToLeft = true;
+              console.log(_module.records.length)
+              if (_module.offsetTop > 125 && _module.records.length>1) {
+                  _module.stickToLeft = true;
                     _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                         bodyOverflowState: true,
                         headerVisibilityState: false,

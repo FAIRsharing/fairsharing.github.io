@@ -213,29 +213,29 @@ describe("Records.vue", () => {
     })
 
 
-    it("can check responsiveClassObject",  () => {
+    it("can check responsiveClassObject", () => {
         wrapper.vm.stickToLeft = true
         vuetify.framework.breakpoint.xlOnly = true
     })
 
-    it("can onScroll function work properly",  () => {
+    it("can onScroll function work properly", () => {
 
+        wrapper.vm.$store.state.records.records = ['1', '2'];
         wrapper.vm.offsetTop = 150;
         let mEvent = {
-            target: { scrollTop:150},
+            target: {scrollTop: 150},
         };
         wrapper.vm.onScroll(mEvent);
 
         mEvent = {
-            target: { scrollTop:50},
+            target: {scrollTop: 50},
         };
         wrapper.vm.onScroll(mEvent);
 
         mEvent = {
-            target: { scrollTop:501},
+            target: {scrollTop: 501},
         };
         wrapper.vm.onScroll(mEvent);
     })
-
 
 });

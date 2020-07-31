@@ -7,6 +7,7 @@ import Client from "@/components/GraphClient/GraphClient.js";
 import records from "@/store/records.js"
 import introspection from "@/store/introspector.js"
 import uiController from "@/store/uiController.js"
+import {actions} from "@/store/uiController.js"
 
 const sinon = require("sinon");
 const axios = require("axios");
@@ -214,8 +215,14 @@ describe("Records.vue", () => {
 
 
     it("can check responsiveClassObject", () => {
-        wrapper.vm.stickToLeft = true
-        vuetify.framework.breakpoint.xlOnly = true
+        wrapper.vm.stickToLeft = true;
+        vuetify.framework.breakpoint.xlOnly = true;
+        expect(wrapper.vm.responsiveClassObject).toStrictEqual({
+            'left-panel-fixed-lg': true,
+            'left-panel-default-lg': false,
+            'left-panel-default': false,
+            'left-panel-fixed': false
+        });
     })
 
     it("can onScroll function work properly", () => {
@@ -225,16 +232,21 @@ describe("Records.vue", () => {
         let mEvent = {
             target: {scrollTop: 150},
         };
+        actions.commit = jest.fn();
+        actions.setGeneralUIAttributesAction({})
         wrapper.vm.onScroll(mEvent);
+        expect(actions.commit).toHaveBeenCalled();
 
         mEvent = {
             target: {scrollTop: 50},
         };
         wrapper.vm.onScroll(mEvent);
+        expect(actions.commit).toHaveBeenCalled();
 
         mEvent = {
             target: {scrollTop: 501},
         };
+        expect(actions.commit).toHaveBeenCalled();
         wrapper.vm.onScroll(mEvent);
     })
 

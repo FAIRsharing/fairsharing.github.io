@@ -173,7 +173,6 @@
                         bodyOverflowState: true,
                         headerVisibilityState: false,
                     });
-
                 } else {
                     _module.stickToLeft = false;
                     _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {

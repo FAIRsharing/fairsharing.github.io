@@ -235,18 +235,20 @@ describe("Records.vue", () => {
         actions.commit = jest.fn();
         actions.setGeneralUIAttributesAction({})
         wrapper.vm.onScroll(mEvent);
-        expect(actions.commit).toHaveBeenCalled();
+        expect(actions.commit).toHaveBeenCalledTimes(1);
 
         mEvent = {
             target: {scrollTop: 50},
         };
         wrapper.vm.onScroll(mEvent);
-        expect(actions.commit).toHaveBeenCalled();
+        actions.setGeneralUIAttributesAction({})
+        expect(actions.commit).toHaveBeenCalledTimes(2);
 
         mEvent = {
             target: {scrollTop: 501},
         };
-        expect(actions.commit).toHaveBeenCalled();
+        actions.setGeneralUIAttributesAction({})
+        expect(actions.commit).toHaveBeenCalledTimes(3);
         wrapper.vm.onScroll(mEvent);
     });
 

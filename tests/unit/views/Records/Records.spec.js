@@ -248,6 +248,6 @@ describe("Records.vue", () => {
         };
         expect(actions.commit).toHaveBeenCalled();
         wrapper.vm.onScroll(mEvent);
-    })
+    });
 
 });

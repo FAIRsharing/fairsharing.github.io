@@ -97,6 +97,17 @@ describe("FilterButton.vue", function () {
 
         selectedItem = {active: false, filterName: 'isMaintained', title: 'All'};
         anotherWrapper.vm.applyFilters(selectedItem);
+    });
 
-    })
+    it('sets button labels correctly via the checkCurrentParameters function', () => {
+        wrapper.vm.checkCurrentParameters('all', null, undefined);
+        expect(wrapper.vm.item.active).toEqual(true);
+        wrapper.vm.checkCurrentParameters('ismaintained', "true", undefined);
+        expect(wrapper.vm.item.active).toEqual(false);
+        wrapper.vm.checkCurrentParameters('ismaintained', "true", true);
+        expect(wrapper.vm.item.active).toEqual(true);
+        }
+    );
+
+
 });

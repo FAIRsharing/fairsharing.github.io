@@ -22,9 +22,11 @@
 <script>
     import { isEqual } from "lodash";
     import { mapActions } from 'vuex'
+    import currentParameter from "@/utils/currentParameterMixin.js"
 
     export default {
         name: "FilterButton",
+        mixins: [currentParameter],
         props: {
             item: {default: null, type: Object},
             isFirstItem: {default: false, type: Boolean},
@@ -32,7 +34,41 @@
             itemParentIndex: {default: 0, type: Number},
             multipleItems: {default: false, type: Boolean},
         },
+        watch: {
+          currentParameter: {
+            handler(newVal) {
+              const _module = this;
+              const fieldName = _module.item.filterName;
+              const fieldValue = newVal[fieldName];
+              const currentValue = _module.item.value;
+              const title = _module.item.title.toLowerCase();
+              _module.checkCurrentParameters(title, fieldValue, currentValue);
+            },
+            deep: true
+          }
+        },
+        mounted(){
+          this.$nextTick(function () {
+            const _module = this;
+            const fieldValue = _module.currentParameter[this.item.filterName];
+            const currentValue = _module.item.value;
+            const title = _module.item.title.toLowerCase();
+            _module.checkCurrentParameters(title, fieldValue, currentValue);
+          });
+        },
         methods: {
+            checkCurrentParameters: function(title, fieldValue, currentValue) {
+              if (fieldValue === null) {
+                this.item.active = title === 'all';
+              } else {
+                if (currentValue === undefined) {
+                  this.item.active = false;
+                }
+                else {
+                  this.item.active = currentValue.toString() === fieldValue;
+                }
+              }
+            },
             /**
              * Apply the filters by building the new query parameters using the form data.
              */
@@ -41,9 +77,9 @@
                 let currentQuery = {};
                 let oldQuery = {};
                 Object.keys(_module.$route.query).forEach(function (param) {
-                    currentQuery[param] = _module.$route.query[param]
+                    currentQuery[param] = _module.$route.query[param];
                     oldQuery[param] = _module.$route.query[param]
-                })
+                });
 
                 if (Object.prototype.hasOwnProperty.call(selectedItem, 'value')) {
                     currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
@@ -53,8 +89,9 @@
                             query: currentQuery
                         });
                     }
-                } else {
-                    delete currentQuery[selectedItem.filterName]
+                }
+                else {
+                    delete currentQuery[selectedItem.filterName];
                     this.$router.push({
                         name: _module.$route.name,
                         query: currentQuery

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Users/Signup.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/FilterButton.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,27 +86,144 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Users/Signup.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/FilterButton.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;Register />
+  &lt;v-tooltip
+    bottom
+    :disabled="item.toolTip===undefined"
+  >
+    &lt;template v-slot:activator="{ on }">
+      &lt;v-btn
+        color="primary"
+        class="mr-1 mr-lg-2"
+        :outlined="!item.active"
+        :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens,'buttons-md-style':multipleItems &amp;&amp; !isFirstItem}]"
+        @click="selectFilter(item)"
+        v-on="on"
+      >
+        {{ item.title }}
+      &lt;/v-btn>
+    &lt;/template>
+    &lt;span>{{ item.toolTip }}&lt;/span>
+  &lt;/v-tooltip>
 &lt;/template>
 
 &lt;script>
-    import Register from "../../components/Users/Register";
-    /** This component handles the sign-up/register page
-     *
-     */
+    import { isEqual } from "lodash";
+    import { mapActions } from 'vuex'
+    import currentParameter from "@/utils/currentParameterMixin.js"
+
     export default {
-        name: "Signup",
-      components: {Register}
+        name: "FilterButton",
+        mixins: [currentParameter],
+        props: {
+            item: {default: null, type: Object},
+            isFirstItem: {default: false, type: Boolean},
+            mdScreens: {default: null, type: Boolean},
+            itemParentIndex: {default: 0, type: Number},
+            multipleItems: {default: false, type: Boolean},
+        },
+        watch: {
+          currentParameter: {
+            handler(newVal) {
+              const _module = this;
+              const fieldName = _module.item.filterName;
+              const fieldValue = newVal[fieldName];
+              const currentValue = _module.item.value;
+              const title = _module.item.title.toLowerCase();
+              _module.checkCurrentParameters(title, fieldValue, currentValue);
+            },
+            deep: true
+          }
+        },
+        mounted(){
+          this.$nextTick(function () {
+            const _module = this;
+            const fieldValue = _module.currentParameter[this.item.filterName];
+            const currentValue = _module.item.value;
+            const title = _module.item.title.toLowerCase();
+            _module.checkCurrentParameters(title, fieldValue, currentValue);
+          });
+        },
+        methods: {
+            checkCurrentParameters: function(title, fieldValue, currentValue) {
+              if (fieldValue === null) {
+                this.item.active = title === 'all';
+              } else {
+                if (currentValue === undefined) {
+                  this.item.active = false;
+                }
+                else {
+                  this.item.active = currentValue.toString() === fieldValue;
+                }
+              }
+            },
+            /**
+             * Apply the filters by building the new query parameters using the form data.
+             */
+            applyFilters: function (selectedItem) {
+                const _module = this;
+                let currentQuery = {};
+                let oldQuery = {};
+                Object.keys(_module.$route.query).forEach(function (param) {
+                    currentQuery[param] = _module.$route.query[param];
+                    oldQuery[param] = _module.$route.query[param]
+                });
+
+                if (Object.prototype.hasOwnProperty.call(selectedItem, 'value')) {
+                    currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
+                    if (!isEqual(currentQuery, oldQuery)) {
+                        _module.$router.push({
+                            name: _module.$route.name,
+                            query: currentQuery
+                        });
+                    }
+                }
+                else {
+                    delete currentQuery[selectedItem.filterName];
+                    this.$router.push({
+                        name: _module.$route.name,
+                        query: currentQuery
+                    });
+
+                }
+            },
+            selectFilter: function (selectedItem) {
+                let _module = this;
+                _module.resetFilterButtons(_module.itemParentIndex);
+                _module.activateFilterButtonsItem({
+                    'activeItem': selectedItem,
+                    'itemParentIndex': _module.itemParentIndex
+                });
+                this.applyFilters(selectedItem);
+            },
+            ...mapActions("searchFilters", ["resetFilterButtons", "activateFilterButtonsItem"])
+        }
     }
 &lt;/script>
 
 &lt;style scoped>
+    .button-style-md-screens {
+        font-size: 9px !important;
+    }
+
+    .first-child {
+        font-size: 11px;
+        width: 16.5%;
+    }
+
+    .flex-1 {
+        font-size: 11px;
+        flex: 1;
+    }
+
+    .buttons-md-style {
+        min-width: 32px !important;
+    }
 
 &lt;/style>
 </pre>

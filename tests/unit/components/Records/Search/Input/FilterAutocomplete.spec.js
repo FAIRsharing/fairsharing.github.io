@@ -36,7 +36,9 @@ describe("FilterAutocomplete.vue", function () {
         vuetify,
         mocks: {$store, $route, $router},
         propsData: {
-            filter: {filterName: 'grants'}
+            filter: {
+                filterName: 'grants'
+            }
         }
     });
 
@@ -72,21 +74,46 @@ describe("FilterAutocomplete.vue", function () {
         wrapper.vm.$route.name = "search";
         wrapper.vm.$route.query = {};
         wrapper.vm.applyFilters();
+        expect($router.push).toHaveBeenCalledTimes(0);
 
-        wrapper.vm.selectedValues = ['agrants'];
+        wrapper.vm.selectedValues = ['value1'];
         wrapper.vm.applyFilters();
+        expect($router.push).toHaveBeenCalledTimes(1);
+        expect($router.push).toHaveBeenCalledWith({
+            name: "search",
+            query: { grants: "value1"}
+        });
 
-        wrapper.vm.$route.query = {grants: 'agrants'};
+        wrapper.vm.selectedValues.push("value 2");
+        wrapper.vm.applyFilters();
+        expect($router.push).toHaveBeenCalledTimes(2);
+        expect($router.push).toHaveBeenCalledWith({
+            name: "search",
+            query: { grants: "value1,value%202"}
+        });
+
+        wrapper.vm.$route.query = {grants: 'value1'};
         wrapper.vm.selectedValues = [];
         wrapper.vm.applyFilters();
+        expect($router.push).toHaveBeenCalledTimes(3);
+        expect($router.push).toHaveBeenCalledWith({
+            name: "search",
+            query: {}
+        });
 
-        wrapper.vm.$route.query = {grants: 'agrants,newGrants'};
-        wrapper.vm.selectedValues = ['cGrants', 'agrants'];
+        wrapper.vm.$route.query = {grants: 'value1,value%202'};
+        wrapper.vm.selectedValues = ['val3', 'value1'];
         wrapper.vm.applyFilters();
+        expect($router.push).toHaveBeenCalledTimes(4);
+        expect($router.push).toHaveBeenCalledWith({
+            name: "search",
+            query: {grants: 'value1,value%202,val3'}
+        });
 
         wrapper.vm.$route.query = {grants: 'agrants,newGrants'};
         wrapper.vm.selectedValues = ['agrants', 'newGrants'];
         wrapper.vm.applyFilters();
+        expect($router.push).toHaveBeenCalledTimes(4);
 
     });
 

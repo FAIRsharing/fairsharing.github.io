@@ -95,6 +95,7 @@
         }),
         computed: {
             ...mapState('uiController', ['scrollStatus']),
+            ...mapState('records', ['records']),
             getTitle: function () {
                 const flipRecordTypes = Object.entries(this.recordTypes).reduce(
                     (obj, [key, value]) => ({...obj, [value]: key}),
@@ -166,13 +167,12 @@
             onScroll: function (e) {
                 let _module = this;
                 _module.offsetTop = e.target.scrollTop;
-                if (_module.offsetTop > 125) {
-                    _module.stickToLeft = true;
+              if (_module.offsetTop > 125 && _module.records.length>1) {
+                  _module.stickToLeft = true;
                     _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
                         bodyOverflowState: true,
                         headerVisibilityState: false,
                     });
-
                 } else {
                     _module.stickToLeft = false;
                     _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
@@ -195,7 +195,7 @@
                     if (query) {
                         query.fairsharingRegistry = fairsharingRegistry;
                         try {
-                            this.$router.push({
+                            await this.$router.push({
                                 name: "search",
                                 query: query
                             });

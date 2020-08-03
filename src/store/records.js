@@ -46,6 +46,9 @@ export const getters = {
             return currentFacet;
         }
         return [];
+    },
+    getRecordsLength: (state) => {
+        return state.records.length;
     }
 };
 

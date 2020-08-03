@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -91,216 +91,212 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-main>
-    &lt;h1 class="d-none">
-      Content
-    &lt;/h1>
-    &lt;v-container
-      v-if="queryTriggered"
-      fluid
+            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  &lt;div
+    class="standard container-fluid"
+  >
+    &lt;div
+      class="container-fluid"
     >
-      &lt;v-row v-if="error">
-        &lt;v-col cols="12">
-          &lt;v-alert type="error">
-            {{ error }}
-          &lt;/v-alert>
+      &lt;v-row>
+        &lt;v-col cols12>
+          &lt;v-card>
+            &lt;v-list-item class="blue">
+              &lt;v-list-item-content class="pa-0">
+                &lt;v-list-item-title
+                  v-if="currentRecord['fairsharingRecord']"
+                  class="headline text-left white--text"
+                >
+                  {{ currentRecord['fairsharingRecord'].name }} - {{ currentRecord['fairsharingRecord'].doi }}
+                &lt;/v-list-item-title>
+              &lt;/v-list-item-content>
+              &lt;v-list-item-avatar
+                v-if="user().isLoggedIn"
+                style="height:auto !important"
+              >
+                &lt;v-menu
+                  v-if="$store.state.users.user().isLoggedIn"
+                  offset-y
+                >
+                  &lt;template v-slot:activator="{ on }">
+                    &lt;v-btn
+                      dark
+                      icon
+                      v-on="on"
+                    >
+                      &lt;v-icon>
+                        fa-ellipsis-v
+                      &lt;/v-icon>
+                    &lt;/v-btn>
+                  &lt;/template>
+                  &lt;v-list>
+                    &lt;v-list-item
+                      v-for="(item, index) in links"
+                      :key="index"
+                    >
+                      &lt;v-list-item-title class="text-left">
+                        &lt;a :href="item.link">{{ item.name }}&lt;/a>
+                      &lt;/v-list-item-title>
+                    &lt;/v-list-item>
+                  &lt;/v-list>
+                &lt;/v-menu>
+              &lt;/v-list-item-avatar>
+            &lt;/v-list-item>
+
+            &lt;v-card-text class="container-fluid">
+              &lt;v-row v-if="!error &amp;&amp; queryTriggered">
+                &lt;v-col class="col-12">
+                  &lt;div
+                    v-for="(field, label, index) in currentRecord['fairsharingRecord']"
+                    :key="index"
+                    class="text-left"
+                  >
+                    &lt;div v-if="field">
+                      &lt;b class="blue--text">{{ label }}: &lt;/b>
+                      &lt;span v-if="typeof field === 'string'">
+                        {{ field }}
+                      &lt;/span>
+                      &lt;v-list-item v-else>
+                        &lt;v-list-item-content>
+                          &lt;v-list-item-subtitle>{{ field }}&lt;/v-list-item-subtitle>
+                        &lt;/v-list-item-content>
+                      &lt;/v-list-item>
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/v-col>
+
+                &lt;div class="col-12">
+                  &lt;v-btn
+                    type="button"
+                    @click="getHistory()"
+                  >
+                    Get History
+                  &lt;/v-btn>
+                  &lt;hr>
+                  {{ currentRecordHistory }}
+                &lt;/div>
+              &lt;/v-row>
+            &lt;/v-card-text>
+          &lt;/v-card>
         &lt;/v-col>
       &lt;/v-row>
 
-      &lt;v-row
-        v-if="user().isLoggedIn &amp;&amp; !error"
-        class="pr-3"
+      &lt;div
+        v-if="error"
+        class="error"
       >
-        &lt;v-spacer />
-        &lt;v-btn
-          class="success"
-          :href="'#/' + currentRoute + '/edit'"
-        >
-          EDIT
-        &lt;/v-btn>
-      &lt;/v-row>
-
-      &lt;!--  Content  -->
-      &lt;v-row
-        v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error"
-        no-gutters
-      >
-        &lt;v-col
-          cols="12"
-          lg="12"
-          md="12"
-          xl="12"
-        >
-          &lt;v-row
-            no-gutters
-          >
-            &lt;v-col>
-              &lt;GeneralInfo />
-            &lt;/v-col>
-          &lt;/v-row>
-
-          &lt;!-- Single Row -->
-          &lt;v-row>
-            &lt;!--Left Column-->
-            &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-              &lt;!-- KEYWORDS -->
-              &lt;Keywords />
-
-              &lt;!-- SUPPORT -->
-              &lt;Support />
-
-              &lt;!-- ORGANISATION -->
-              &lt;Organisations />
-            &lt;/v-col>
-            &lt;!--Right Column-->
-            &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-              &lt;!-- LICENCES -->
-              &lt;Licences />
-
-              &lt;!-- MAINTAINERS -->
-              &lt;Maintainers />
-
-              &lt;!-- GRANTS -->
-              &lt;Grants />
-
-              &lt;!-- PUBLICATIONS -->
-              &lt;Publications />
-            &lt;/v-col>
-          &lt;/v-row>
-          &lt;!-- Associated Records -->
-          &lt;v-row
-            no-gutters
-          >
-            &lt;v-col>
-              &lt;AssociatedRecords :record-associations="recordAssociations" />
-            &lt;/v-col>
-          &lt;/v-row>
-        &lt;/v-col>
-      &lt;/v-row>
-    &lt;/v-container>
-  &lt;/v-main>
+        {{ error }}
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-    import {mapActions, mapState} from 'vuex'
-    import Client from '@/components/GraphClient/GraphClient.js'
-    import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
-    import GeneralInfo from "@/components/Records/Record/GeneralInfo";
-    import Grants from '@/components/Records/Record/Grants';
-    import Keywords from '@/components/Records/Record/Keywords';
-    import Licences from '@/components/Records/Record/Licences';
-    import Maintainers from '@/components/Records/Record/Maintainers';
-    import Organisations from '@/components/Records/Record/Organisations';
-    import Publications from '@/components/Records/Record/Publications';
-    import Support from '@/components/Records/Record/Support';
+    import Client from '../../components/GraphClient/GraphClient.js'
+    import { mapActions, mapState } from 'vuex'
 
-    import stringUtils from '@/utils/stringUtils';
-
+    /** Component to handle the display of single record.
+     * @vue-data {String | null} [error = null] - either null of an error message to display
+     * @vue-data {Boolean} [queryTriggered = false] - has the API query been triggered yet or not
+     * @vue-computed {String} currentRoute - return the ID parameter value of the current route
+     * @vue-computed {Object} currentRecord - the current record obtained from the store
+     * @vue-computed {Object} currentRecordHistory - the history of the current record obtained from the store
+     * @vue-event {Promise} fetchRecord - Method to get the current record
+     * @vue-event {Promise} fetchRecordHistory - Method to get the current record history
+     */
     export default {
         name: "Record",
-        components: {
-            AssociatedRecords,
-            GeneralInfo,
-            Grants,
-            Keywords,
-            Licences,
-            Maintainers,
-            Organisations,
-            Publications,
-            Support
-        },
-        mixins: [stringUtils],
-        data: () => {
+        data() {
             return {
                 error: null,
                 queryTriggered: false,
-                showScrollToTopButton: false,
-                recordAssociations: []
+                //items: ["Edit", "Admin Edit", "Claim Ownership", "Suggest and edit/Questions?", "Watch Record"],
+                links: [
+                  {
+                    name: "Edit",
+                    link: "#/" + this.$route.params['id'] + '/edit'
+                  }
+                ]
             }
         },
         computed: {
-            currentRoute() {
-                let id = this.$route.params['id'];
-                if (id.includes("FAIRsharing.")) {
-                    return "10.25504/" + id;
-                }
-                return this.$route.params['id'];
+            currentRoute: function () {
+              let id = this.$route.params['id'];
+              if (id.includes("FAIRsharing.")){
+                return "10.25504/" + id;
+              }
+                return this.$route.params['id']
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
-            ...mapState('users', ["user"]),
-            getTitle() {
-                return 'FAIRsharing | ' + this.currentRoute;
-            },
+            ...mapState('users', ["user"])
         },
         watch: {
-            async currentRoute() {
+            currentRoute: async function () {
                 await this.getData();
             }
         },
-        mounted() {
+        mounted: function () {
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
             })
         },
         methods: {
-            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-            /** Combines associations and reserveAssociations into a single array and prepare the data for the earch table */
-            prepareAssociations(associations, reverseAssociations) {
-                let _module = this;
-                let joinedArrays = associations.concat(reverseAssociations);
-                const properties = ['fairsharingRecord', 'linkedRecord'];
-                joinedArrays.forEach(item => {
-                    let object = {
-                        recordAssocLabel: _module.cleanString(item.recordAssocLabel),
-                        subject: _module.currentRecord['fairsharingRecord'].name
-                    };
-                    properties.forEach(prop => {
-                        if (Object.prototype.hasOwnProperty.call(item, prop)) {
-                            object.id = item[prop].id;
-                            object.registry = item[prop].registry;
-                            object.name = item[prop].name;
-                        }
-                    });
-                    _module.recordAssociations.push(object);
-                });
+            /** Method to get the page title
+             *  @returns {String} - the title of the current page
+             */
+            getTitle: function(){
+                return 'FAIRsharing | ' + this.currentRoute
             },
             /**
              * Method to set the current record in the store
              * @returns {Promise} - the current record
              * */
-            async getData() {
-                let _module = this;
+            getData: async function(){
                 this.queryTriggered = false;
                 this.error = null;
                 try {
-                    await _module.fetchRecord(this.currentRoute);
-                    const currentRecord = _module.currentRecord['fairsharingRecord'];
-                    _module.recordAssociations = [];
-                    if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
-                        _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                    }
-                } catch (e) {
+                    await this.fetchRecord(this.currentRoute);
+                }
+                catch(e){
                     this.error = e.message;
                 }
                 this.queryTriggered = true;
             },
+            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
             /**
              * Method to dispatch the current record history into the store
              * @returns {Promise} - the current record history
              * */
-            async getHistory() {
+            getHistory: async function(){
                 await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
             }
         },
+        /**
+         * Setting up the metaInfo of the page
+         * @returns {{title: String}}
+         * */
         metaInfo() {
             return {
-                title: this.getTitle
+                title: this.getTitle()
             }
         },
     }
 &lt;/script>
+
+&lt;style scoped>
+
+  .error {
+    background-color: indianred;
+    border:1px solid red;
+    padding:20px;
+    color:white;
+    margin:20px;
+    text-align: left;
+    font-size: 18px;
+  }
+
+&lt;/style>
 </pre>
     </article>
 </section>
@@ -346,7 +342,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
 	
-		on Mon Aug 3rd 2020
+		on Tue Jul 28th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

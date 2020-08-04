@@ -64,7 +64,7 @@
               :disabled="Chips[item.title].length === 0"
               @click="changeActiveItem(index)"
             >
-              {{ item.title==='taxonomies'?'species':item.title }} ({{ Chips[item.title].length }})
+              {{ getButtonLabel(item.title) }} ({{ Chips[item.title].length }})
             </v-btn>
           </section>
         </v-col>
@@ -118,136 +118,138 @@
 </template>
 
 <script>
-    import Ribbon from "@/components/Records/Shared//Ribbon";
-    import AssociatedRecordsStack from "./AssociatedRecordsStack";
-    import RecordStatus from "@/components/Records/Shared/RecordStatus"
-    import {isEqual} from 'lodash'
+import Ribbon from "@/components/Records/Shared//Ribbon";
+import AssociatedRecordsStack from "./AssociatedRecordsStack";
+import RecordStatus from "@/components/Records/Shared/RecordStatus"
+import {isEqual} from 'lodash'
+import recordsCardUtils from "@/utils/recordsCardUtils";
 
-    export default {
-        name: "RecordsCardStack",
-        components: {RecordStatus, AssociatedRecordsStack, Ribbon},
-        props: {
-            record: {default: null, type: Object},
+export default {
+  name: "RecordsCardStack",
+  components: {RecordStatus, AssociatedRecordsStack, Ribbon},
+  mixins: [recordsCardUtils],
+  props: {
+    record: {default: null, type: Object},
+  },
+  data() {
+    return {
+      allowLoop: true,
+      allowClicking: false,
+      buttons: [
+        {
+          title: 'domains',
+          active: false
         },
-        data() {
-            return {
-                allowLoop: true,
-                allowClicking: false,
-                buttons: [
-                  {
-                    title: 'domains',
-                    active: false
-                  },
-                  {
-                    title: 'subjects',
-                    active: false
-                  },
-                  {
-                    title: 'taxonomies',
-                    active: false,
-                  },
-                  {
-                    title: 'userDefinedTags',
-                    active: false
-                  }
-                ],
-                Chips: {
-                  domains: [],
-                  subjects: [],
-                  taxonomies: [],
-                  userDefinedTags: []
-                },
-                currentActiveChips: null,
-            }
+        {
+          title: 'subjects',
+          active: false
         },
-        created() {
-            this.setChips(this.record);
+        {
+          title: 'taxonomies',
+          active: false,
         },
-        methods: {
-            changeActiveItem(itemIndex) {
-                this.buttons.map(item => item.active = false);
-                this.buttons[itemIndex].active = true;
-                this.currentActiveChips = this.buttons[itemIndex].title;
-            },
-            toggleChipActiveness(chip) {
-                let selectedItem = this.Chips[this.currentActiveChips].find(item => isEqual(item, chip));
-                this.Chips[this.currentActiveChips].map(item => {
-                    if (isEqual(item, selectedItem)) {
-                        item.active = !item.active;
-                    }
-                });
-            },
-            associatedRecords(record) {
-                let records = {
-                    standard: {
-                        val: 0,
-                        label: "standards"
-                    },
-                    database: {
-                        val: 0,
-                        label: "databases"
-                    },
-                    policy: {
-                        val: 0,
-                        label: "policies"
-                    },
-                    collection: {
-                        val: 0,
-                        label: "collections"
-                    },
-                };
-                record['recordAssociations'].forEach(function (association) {
-                    records[association['linkedRecord'].registry].val += 1
-                });
-                record['reverseRecordAssociations'].forEach(function (association) {
-                    records[association['fairsharingRecord'].registry].val += 1
-                });
-                return records;
-            },
-            setChips(record) {
-              let _module = this;
-                Object.keys(record).forEach(function(node){
-                    if (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags') {
-                      _module.organizeChips(record, node);
-                    }
-                });
-            },
-            organizeChips(record, node) {
-                this.organizeButtons(record, node);
-                record[node].forEach(item => {
-                    this.Chips[node].push({label: item.label, active: false});
-                })
-            },
-            organizeButtons(record, node) {
-                if (record[node].length > 0 && this.allowLoop) {
-                    this.allowLoop = false;
-                    this.currentActiveChips = node;
-                    this.buttons.map(item => {
-                        if (item.title === node) {
-                            item.active = true
-                        }
-                    });
-                }
-            },
-        },
+        {
+          title: 'userDefinedTags',
+          active: false
+        }
+      ],
+      Chips: {
+        domains: [],
+        subjects: [],
+        taxonomies: [],
+        userDefinedTags: []
+      },
+      currentActiveChips: null,
     }
+  },
+  created() {
+    this.setChips(this.record);
+  },
+  methods: {
+    changeActiveItem(itemIndex) {
+      this.buttons.map(item => item.active = false);
+      this.buttons[itemIndex].active = true;
+      this.currentActiveChips = this.buttons[itemIndex].title;
+    },
+    toggleChipActiveness(chip) {
+      let selectedItem = this.Chips[this.currentActiveChips].find(item => isEqual(item, chip));
+      this.Chips[this.currentActiveChips].map(item => {
+        if (isEqual(item, selectedItem)) {
+          item.active = !item.active;
+        }
+      });
+    },
+    associatedRecords(record) {
+      let records = {
+        standard: {
+          val: 0,
+          label: "standards"
+        },
+        database: {
+          val: 0,
+          label: "databases"
+        },
+        policy: {
+          val: 0,
+          label: "policies"
+        },
+        collection: {
+          val: 0,
+          label: "collections"
+        },
+      };
+      record['recordAssociations'].forEach(function (association) {
+        records[association['linkedRecord'].registry].val += 1
+      });
+      record['reverseRecordAssociations'].forEach(function (association) {
+        records[association['fairsharingRecord'].registry].val += 1
+      });
+      return records;
+    },
+    setChips(record) {
+      let _module = this;
+      Object.keys(record).forEach(function (node) {
+        if (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags') {
+          _module.organizeChips(record, node);
+        }
+      });
+    },
+    organizeChips(record, node) {
+      this.organizeButtons(record, node);
+      record[node].forEach(item => {
+        this.Chips[node].push({label: item.label, active: false});
+      })
+    },
+    organizeButtons(record, node) {
+      if (record[node].length > 0 && this.allowLoop) {
+        this.allowLoop = false;
+        this.currentActiveChips = node;
+        this.buttons.map(item => {
+          if (item.title === node) {
+            item.active = true
+          }
+        });
+      }
+    },
+  },
+}
 </script>
 
 <style scoped lang="scss">
-    .chips-container {
-        height: 130px;
-        overflow-x: hidden;
-        scroll-behavior: smooth;
-        position: relative;
+.chips-container {
+  height: 130px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  position: relative;
 
-        .no-chips {
-            position: absolute;
-            left: 20%;
-            top: 30%;
-        }
-    }
+  .no-chips {
+    position: absolute;
+    left: 20%;
+    top: 30%;
+  }
+}
 
-    .v-chip.v-chip--outlined.v-chip--active::before {
-        opacity: 0;
-    }
+.v-chip.v-chip--outlined.v-chip--active::before {
+  opacity: 0;
+}
 </style>

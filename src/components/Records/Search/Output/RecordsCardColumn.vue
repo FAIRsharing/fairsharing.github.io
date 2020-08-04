@@ -58,7 +58,7 @@
               :disabled="Chips[item.title].length === 0"
               @click="changeActiveItem(index)"
             >
-              {{ getActualButtonTitle(item.title) }} ({{ Chips[item.title].length }})
+              {{ getButtonLabel(item.title) }} ({{ Chips[item.title].length }})
             </v-btn>
           </section>
         </v-col>
@@ -118,6 +118,7 @@ import Ribbon from "@/components/Records/Shared//Ribbon";
 import AssociatedRecordsStack from "./AssociatedRecordsStack";
 import RecordStatus from "@/components/Records/Shared/RecordStatus"
 import {isEqual} from "lodash";
+import recordsCardUtils from "@/utils/recordsCardUtils";
 
 export default {
   name: "RecordsCardColumn",
@@ -125,6 +126,7 @@ export default {
   props: {
     record: {default: null, type: Object},
   },
+  mixins: [recordsCardUtils],
   data() {
     return {
       allowLoop: true,
@@ -216,22 +218,6 @@ export default {
         });
       }
     },
-    getActualButtonTitle(ItemTitle) {
-      let returnedTitle;
-      returnedTitle = ItemTitle;
-      switch (ItemTitle) {
-        case 'taxonomies':
-          returnedTitle = 'species';
-          break;
-        case 'userDefinedTags':
-          returnedTitle = 'tags';
-          break;
-        default:
-          returnedTitle = ItemTitle;
-          break;
-      }
-      return returnedTitle;
-    }
     /*
                 scrollToTop: function () {
                     let myDiv = document.getElementById('scroll-target');

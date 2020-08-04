@@ -37,10 +37,10 @@ describe("RecordsCardColumn.vue", function () {
         expect(wrapper.vm.Chips[wrapper.vm.currentActiveChips][0].active).toBe(true);
     });
 
-    it("can check getActualButtonTitle function in CardColumn", () => {
-        let returnedValue = wrapper.vm.getActualButtonTitle('taxonomies');
+    it("can check getButtonLabel function in CardColumn", () => {
+        let returnedValue = wrapper.vm.getButtonLabel('taxonomies');
         expect(returnedValue).toBe('species');
-        returnedValue = wrapper.vm.getActualButtonTitle('userDefinedTags');
+        returnedValue = wrapper.vm.getButtonLabel('userDefinedTags');
         expect(returnedValue).toBe('tags');
     });
 

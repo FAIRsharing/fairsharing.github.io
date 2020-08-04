@@ -7,7 +7,7 @@
       :key="index"
       class="d-flex flex-row justify-start mb-1 mb-lg-2"
     >
-      <FilterItem
+      <FilterButton
         v-for="(item,item_index) in filterButtons[index-1]"
         :key="item_index"
         :item="item"
@@ -23,13 +23,13 @@
 <script>
     import {mapState} from "vuex";
     import AnyAllButton from "./AnyAllButton";
-    import FilterItem from "./FilterButton";
+    import FilterButton from "./FilterButton";
 
     export default {
         name: "FilterButtons",
         components: {
           AnyAllButton,
-          FilterItem
+          FilterButton
         },
         computed: {
             ...mapState("searchFilters", ["filterButtons"]),

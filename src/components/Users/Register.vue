@@ -15,43 +15,38 @@
           </v-card-title>
 
           <!-- SUCCESS -->
-          <v-card-text v-if="message">
-            <div
-              v-if="created"
-              class="alert alert-success"
-            >
-              {{ message }}
-            </div>
-            <div
-              v-else
-              class="alert alert-danger"
-            >
-              {{ message }}
-            </div>
-          </v-card-text>
-
-          <!-- ERRORS -->
           <v-card-text
-            v-if="errors.length > 0"
-            class="alert alert-danger"
+            v-if="message || errors.length > 0"
+            class="pt-2 mb-0 pb-0"
           >
-            <b>Please correct the following error(s):</b>
-            <ul>
-              <li
-                v-for="(error, index) in errors"
-                :key="'error_' + index"
-              >
-                {{ error }}
-              </li>
-            </ul>
+            <v-alert
+              v-if="message && created"
+              type="success"
+              class="my-3"
+            >
+              {{ message }}
+            </v-alert>
+            <v-alert
+              v-if="errors.length > 0"
+              type="error"
+            >
+              <b>Please correct the following error(s):</b>
+              <ul>
+                <li
+                  v-for="(error, index) in errors"
+                  :key="'error_' + index"
+                >
+                  {{ error }}
+                </li>
+              </ul>
+            </v-alert>
           </v-card-text>
-
 
           <!-- CONTENT/FORM -->
           <v-card-text>
             <v-form
               id="loginForm"
-              class="py-3"
+              class="my-3"
             >
               <!-- name -->
               <v-text-field
@@ -111,6 +106,7 @@
               </div>
 
               <v-btn
+                :loading="isLoading"
                 class="success"
                 @click="register()"
               >
@@ -140,12 +136,14 @@
                 loginData: {},
                 errors: [],
                 created: false,
-                message: null
+                message: null,
+                isLoading: false,
             }
         },
         methods: {
             register: async function(){
                 const _module = this;
+                _module.isLoading = true;
                 const user_mail = _module.loginData.email;
                 _module.errors = [];
                 const fields = ["name", "email", "password", "repeatPwd"];
@@ -179,6 +177,7 @@
                     }
 
                 }
+                _module.isLoading = false;
 
             }
         }

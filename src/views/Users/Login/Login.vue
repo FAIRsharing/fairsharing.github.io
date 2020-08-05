@@ -80,7 +80,7 @@
                 <v-card-text class="text-center">
                   <router-link
                     to="/accounts/forgotPassword"
-                    @click.native="closePopup(true)"
+                    @click="closePopup(true)"
                   >
                     Forgot your password ?
                   </router-link>
@@ -97,7 +97,6 @@
                   </v-btn>
                   <v-btn
                     text
-                    light
                     class="px-4"
                     to="/accounts/signup"
                     @click="closePopup(true)"

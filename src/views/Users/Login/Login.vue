@@ -80,7 +80,7 @@
                 <v-card-text class="text-center">
                   <router-link
                     to="/accounts/forgotPassword"
-                    @click.native="closePopup(true)"
+                    @click="()=>{this.$emit('ClosePopup',true)}"
                   >
                     Forgot your password ?
                   </router-link>
@@ -100,7 +100,7 @@
                     light
                     class="px-4"
                     to="/accounts/signup"
-                    @click="closePopup(true)"
+                    @click="()=>{this.$emit('ClosePopup',true)}"
                   >
                     Register
                   </v-btn>
@@ -134,10 +134,6 @@ export default {
     popUp: {
       type: Boolean,
       default: false,
-    },
-    closePopup: {
-      type: Function,
-      default: null,
     },
   },
   data: () => {
@@ -178,7 +174,7 @@ export default {
         "name": _module.loginData.name,
         "password": _module.loginData.password
       };
-      _module.closePopup(false)
+      _module.$emit('ClosePopup',false);
       await _module.login(user);
       if (!_module.messages().login.error) {
         const goTo = _module.$route.query.redirect;

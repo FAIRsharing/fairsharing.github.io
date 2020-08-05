@@ -2,10 +2,12 @@ import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueMeta from "vue-meta";
-import Records from "../../../../src/views/Records/Records.vue";
+import Records from "@/views/Records/Records.vue";
 import Client from "@/components/GraphClient/GraphClient.js";
-import records from "../../../../src/store/records.js"
-import introspection from "../../../../src/store/introspector.js"
+import records from "@/store/records.js"
+import introspection from "@/store/introspector.js"
+import uiController from "@/store/uiController.js"
+import {actions} from "@/store/uiController.js"
 
 const sinon = require("sinon");
 const axios = require("axios");
@@ -28,7 +30,8 @@ const $route = {
 const $store = new Vuex.Store({
     modules: {
         records: records,
-        introspection: introspection
+        introspection: introspection,
+        uiController: uiController
     },
 });
 
@@ -83,124 +86,6 @@ describe("Records.vue", () => {
         await expect(wrapper.vm.getData()).rejects;
         axios.post.restore();
 
-    });
-
-    /*
-        it("can get the query parameters types from introspection", async () => {
-            let returnedVal = {
-                data: {
-                    data: {
-                        "__schema": {
-                            "types": [
-                                {
-                                    name: "Query",
-                                    fields: [
-                                        {
-                                            name: "searchFairsharingRecords",
-                                            args: [
-                                                {
-                                                    name: "test",
-                                                    description: "testDescription",
-                                                    type: "String",
-                                                    defaultValue: "1"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }]
-                        }
-                    }
-                }
-            };
-            let returnedValDif = {
-                data: {
-                    data: {
-                        "__schema": {
-                            "types": [
-                                {
-                                    name: "Query",
-                                    fields: [
-                                        {
-                                            name: "searchFairsharingRecords",
-                                            args: [
-                                                {
-                                                    name: "test",
-                                                    description: "testDescription",
-                                                    type: "String",
-                                                    defaultValue: "1"
-                                                },
-                                                {
-                                                    name: "test2",
-                                                    description: "testDescription",
-                                                    type: "String",
-                                                    defaultValue: "1"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }]
-                        }
-                    }
-                }
-            };
-            let errorTest = {
-                data: {
-                    errors: [
-                        {message: "Error"}
-                    ]
-                }
-            };
-            sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(errorTest);
-            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-            expect(wrapper.vm.$store.state.introspection.error).toBe("Can't initialize application");
-            Client.prototype.getData.restore();
-            sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
-            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-            // wrapper.vm.$store.state.introspection.searchQueryParameters={};
-            // // localStorage.searchQueryParameters= undefined;
-            // wrapper.vm.$store.state.introspection.searchQueryParameters = returnedVal;
-            expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
-                name: "test",
-                description: "testDescription",
-                type: "String",
-                defaultValue: "1"
-            }]);
-            Client.prototype.getData.restore();
-    /!*
-            sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedValDif);
-            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-            expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
-                name: "test",
-                description: "testDescription",
-                type: "String",
-                defaultValue: "1"
-            }, {
-                name: "test2",
-                description: "testDescription",
-                type: "String",
-                defaultValue: "1"
-            }
-            ]);
-            Client.prototype.getData.restore();
-            sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
-            wrapper.vm.$store.state.introspection.searchQueryParameters={};
-            // localStorage.searchQueryParameters= undefined;
-            wrapper.vm.$store.state.introspection.searchQueryParameters = returnedVal;
-            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-            expect(wrapper.vm.$store.state.introspection.searchQueryParameters.args).toStrictEqual([{
-                name: "test",
-                description: "testDescription",
-                type: "String",
-                defaultValue: "1"
-            }
-            ]);
-            Client.prototype.getData.restore();*!/
-        });
-    */
-
-    it("can switch between panels", () => {
-        wrapper.vm.setPanel("Facets");
-        expect(wrapper.vm.currentPanel).toBe("Facets");
     });
 
     it("can get the records", async () => {
@@ -327,5 +212,44 @@ describe("Records.vue", () => {
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
     })
+
+
+    it("can check responsiveClassObject", () => {
+        wrapper.vm.stickToLeft = true;
+        vuetify.framework.breakpoint.xlOnly = true;
+        expect(wrapper.vm.responsiveClassObject).toStrictEqual({
+            'left-panel-fixed-lg': true,
+            'left-panel-default-lg': false,
+            'left-panel-default': false,
+            'left-panel-fixed': false
+        });
+    })
+
+    it("can onScroll function work properly", () => {
+
+        wrapper.vm.$store.state.records.records = ['1', '2', '3'];
+        wrapper.vm.offsetTop = 150;
+        let mEvent = {
+            target: {scrollTop: 150},
+        };
+        actions.commit = jest.fn();
+        actions.setGeneralUIAttributesAction({})
+        wrapper.vm.onScroll(mEvent);
+        expect(actions.commit).toHaveBeenCalledTimes(1);
+
+        mEvent = {
+            target: {scrollTop: 50},
+        };
+        wrapper.vm.onScroll(mEvent);
+        actions.setGeneralUIAttributesAction({})
+        expect(actions.commit).toHaveBeenCalledTimes(2);
+
+        mEvent = {
+            target: {scrollTop: 501},
+        };
+        actions.setGeneralUIAttributesAction({})
+        expect(actions.commit).toHaveBeenCalledTimes(3);
+        wrapper.vm.onScroll(mEvent);
+    });
 
 });

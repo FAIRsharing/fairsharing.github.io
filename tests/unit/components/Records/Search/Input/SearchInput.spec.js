@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import Vuetify from "vuetify"
 import SearchInput from "@/components/Records/Search/Input/SearchInput"
 import searchFiltersStore from "@/store/searchFilters.js";
+import uiControllerStore from "@/store/uiController.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -20,6 +21,7 @@ const $router = {
 const $store = new Vuex.Store({
     modules: {
         searchFilters: searchFiltersStore,
+        uiController: uiControllerStore,
     }
 });
 

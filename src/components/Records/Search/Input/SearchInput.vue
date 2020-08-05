@@ -63,7 +63,7 @@ export default {
   methods: {
     onScroll({target: {scrollTop, clientHeight, scrollHeight}}) {
       if (scrollTop + clientHeight >= scrollHeight) {
-        console.log('end');
+        // console.log('end');
       }
     },
     setPanel() {

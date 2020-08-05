@@ -173,7 +173,7 @@
                 &lt;v-card-text class="text-center">
                   &lt;router-link
                     to="/accounts/forgotPassword"
-                    @click.native="closePopup(true)"
+                    @click="closePopup(true)"
                   >
                     Forgot your password ?
                   &lt;/router-link>
@@ -190,7 +190,6 @@
                   &lt;/v-btn>
                   &lt;v-btn
                     text
-                    light
                     class="px-4"
                     to="/accounts/signup"
                     @click="closePopup(true)"

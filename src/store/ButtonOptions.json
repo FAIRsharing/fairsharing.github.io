@@ -1,0 +1,95 @@
+{
+  "isRecommended": [
+    {
+      "title": "ALL",
+      "active": true,
+      "filterName": "isRecommended"
+    },
+    {
+      "title": "RECOMMENDED",
+      "active": false,
+      "filterName": "isRecommended",
+      "value": true
+    },
+    {
+      "title": "NOT RECOMMENDED",
+      "active": false,
+      "filterName": "isRecommended",
+      "value": false
+    }
+  ],
+  "isMaintained": [
+    {
+      "title": "ALL",
+      "active": true,
+      "filterName": "isMaintained"
+    },
+    {
+      "title": "MAINTAINED",
+      "active": false,
+      "filterName": "isMaintained",
+      "value": true
+    },
+    {
+      "title": "NOT MAINTAINED",
+      "active": false,
+      "filterName": "isMaintained",
+      "value": false
+    }
+  ],
+  "isApproved": [
+    {
+      "title": "ALL",
+      "active": true,
+      "filterName": "isApproved"
+    },
+    {
+      "title": "APPROVED",
+      "active": false,
+      "filterName": "isApproved",
+      "value": true
+    },
+    {
+      "title": "NOT APPROVED",
+      "active": false,
+      "filterName": "isApproved",
+      "value": false
+    }
+  ],
+  "status": [
+    {
+      "title": "ALL",
+      "active": true,
+      "filterName": "status",
+      "toolTip": "Show All Records"
+    },
+    {
+      "title": "R",
+      "active": false,
+      "filterName": "status",
+      "apiIndex": 0,
+      "toolTip": "Show Ready Records"
+    },
+    {
+      "title": "D",
+      "active": false,
+      "filterName": "status",
+      "apiIndex": 1,
+      "toolTip": "Show Deprecated Records"
+    },
+    {
+      "title": "U",
+      "active": false,
+      "filterName": "status",
+      "apiIndex": 2,
+      "toolTip": "Show Uncertain Records"
+    },
+    {
+      "title": "I",
+      "active": false,
+      "filterName": "status",
+      "apiIndex": 3,
+      "toolTip": "Show In Development Records"
+    }
+  ]
+}

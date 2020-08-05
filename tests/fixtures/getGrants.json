@@ -1,0 +1,24 @@
+{
+  "filterName": "grants",
+  "filterLabel": "Grant(s)",
+  "type": "String",
+  "values": [
+    "xda08020102",
+    "2014aa021503 and 2015aa020108",
+    "xdb13040500"
+  ],
+  "buckets": [
+    {
+      "key": "xda08020102",
+      "doc_count": 9
+    },
+    {
+      "key": "2014aa021503 and 2015aa020108",
+      "doc_count": 8
+    },
+    {
+      "key": "xdb13040500",
+      "doc_count": 8
+    }
+  ]
+}

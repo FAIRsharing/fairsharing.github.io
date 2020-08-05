@@ -1,8 +1,8 @@
 <template>
   <aside>
     <v-card
-      id="filters-holder"
-      class="pa-2"
+      v-scroll.self="onScroll"
+      :class="['pa-2',responsiveClassObject]"
       outlined
       tile
       elevation="3"
@@ -33,68 +33,80 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
-    import FilterAutocomplete from "./FilterAutocomplete";
-    import FilterButtons from "./FilterButtons";
-
-    export default {
-        name: "SearchInput",
-        components: {FilterButtons, FilterAutocomplete},
-        data() {
-            return {
-                panel: [],
-                filterSelected: {},
-            }
-        },
-        computed: {
-            ...mapGetters("searchFilters", ["getFilters"]),
-            setup() {
-                this.setPanel();
-                this.createIndexForFilters();
-                return this.getFilters;
-            },
-        },
-        methods: {
-            setPanel() {
-                this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i)
-            },
-            resetPanel() {
-                this.panel = []
-            },
-            createIndexForFilters: function () {
-                this.getFilters.forEach(item => {
-                    this.filterSelected[item.filterName] = [];
-                });
-            },
-        },
+import {mapGetters, mapState} from "vuex"
+import FilterAutocomplete from "./FilterAutocomplete";
+import FilterButtons from "./FilterButtons";
+export default {
+  name: "SearchInput",
+  components: {FilterButtons, FilterAutocomplete},
+  data() {
+    return {
+      panel: [],
+      filterSelected: {},
     }
+  },
+  computed: {
+    ...mapState('uiController', ['UIGeneralStatus']),
+    ...mapGetters("searchFilters", ["getFilters"]),
+    setup() {
+      this.setPanel();
+      this.createIndexForFilters();
+      return this.getFilters;
+    },
+    responsiveClassObject: function () {
+      return {
+        'filters-holder-default': this.UIGeneralStatus.headerVisibilityState,
+        'filters-holder-after-scroll': !this.UIGeneralStatus.headerVisibilityState,
+      }
+    }
+  },
+  methods: {
+    onScroll({target: {scrollTop, clientHeight, scrollHeight}}) {
+      if (scrollTop + clientHeight >= scrollHeight) {
+        console.log('end');
+      }
+    },
+    setPanel() {
+      this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i)
+    },
+    resetPanel() {
+      this.panel = []
+    },
+    createIndexForFilters: function () {
+      this.getFilters.forEach(item => {
+        this.filterSelected[item.filterName] = [];
+      });
+    },
+  },
+}
 </script>
 
 <style scoped lang="scss">
-
-    aside {
-      #filters-holder {
-        border-radius: 0;
-        -moz-border-radius: 0;
-        -webkit-border-radius: 0;
-        overflow-x: hidden;
-        height: 100vh;
-      }
-    }
-
-    .buttons-md-style {
-        min-width: 32px !important;
-    }
-
-    .first-child {
-        font-size: 11px;
-        width: 16.5%;
-    }
-
-    .flex-1 {
-        font-size: 11px;
-        flex: 1;
-    }
-
-
+.filters-holder-default {
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  overflow-x: hidden;
+  height: calc(100vh - 320px);
+  transition: height ease-in 500ms;
+}
+.filters-holder-after-scroll {
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  overflow-x: hidden;
+  height: 100vh;
+  transition: height ease-in 500ms;
+}
+.buttons-md-style {
+  min-width: 32px !important;
+}
+.first-child {
+  font-size: 11px;
+  width: 16.5%;
+}
+.flex-1 {
+  font-size: 11px;
+  flex: 1;
+}
 </style>

@@ -164,211 +164,206 @@
 &lt;/template>
 
 &lt;script>
-    import SearchInput from "@/components/Records/Search/Input/SearchInput";
-    import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
-    import {mapActions, mapState} from 'vuex'
-    import JumpToTop from "@/components/Navigation/jumpToTop";
-    import recordsLabels from "@/data/recordsTypes.json"
-    import StringSearch from "../../components/Records/Search/Input/StringSearch";
+import SearchInput from "@/components/Records/Search/Input/SearchInput";
+import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
+import {mapActions, mapState} from 'vuex'
+import JumpToTop from "@/components/Navigation/jumpToTop";
+import recordsLabels from "@/data/recordsTypes.json"
+import StringSearch from "../../components/Records/Search/Input/StringSearch";
 
-    export default {
-        name: "Records",
-        components: {StringSearch, JumpToTop, SearchOutput, SearchInput},
-        data: () => ({
-            searchTerm: '',
-            offsetTop: 0,
-            stickToLeft: false,
-            bodyOverflowActive: true,
-            hideOverflow: 'overflow-hidden',
-            showHeader: true,
-            showDrawerLeft: false,
-            labels: recordsLabels,
-            recordsSubTitles: recordsLabels['recordSubTitles'],
-            recordTypes: recordsLabels['recordTypes']
-        }),
-        computed: {
-            ...mapState('uiController', ['scrollStatus']),
-            ...mapState('records', ['records']),
-            getTitle: function () {
-                const flipRecordTypes = Object.entries(this.recordTypes).reduce(
-                    (obj, [key, value]) => ({...obj, [value]: key}),
-                    {}
-                );
-                let title = "Search";
-                if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
-                    if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
-                        title = flipRecordTypes[this.$route.query.fairsharingRegistry];
-                    }
-                }
-                return title;
-            },
-            responsiveClassObject: function () {
-                return {
-                    'left-panel-fixed-lg': this.stickToLeft &amp;&amp; this.$vuetify.breakpoint.xlOnly,
-                    'left-panel-default-lg': !this.stickToLeft &amp;&amp; this.$vuetify.breakpoint.xlOnly,
-                    'left-panel-default': !this.stickToLeft &amp;&amp; !this.$vuetify.breakpoint.xlOnly,
-                    'left-panel-fixed': this.stickToLeft &amp;&amp; !this.$vuetify.breakpoint.xlOnly
-                }
-            },
-            currentPath: function () {
-                let title = this.$route.path.replace('/', '');
-                const client = this;
-                let queryParams = {};
-                Object.keys(this.$route.query).forEach(function (prop) {
-                    let queryVal = client.$route.query[prop];
-                    if (queryVal) {
-                        queryParams[prop] = decodeURI(queryVal);
-                    }
-                });
-                if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-                    title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-                }
-                else title = title.charAt(0).toUpperCase() + title.slice(1);
-                return [title, queryParams];
-            },
-        },
-        watch: {
-            currentPath: async function () {
-                await this.tryRedirect();
-                await this.getData();
-            }
-        },
-        mounted: function () {
-            this.$nextTick(async function () {
-                await this.tryRedirect();
-                await this.getData();
-            });
-        },
-        created() {
-            this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-                bodyOverflowState: true,
-                drawerVisibilityState: false,
-                headerVisibilityState: true,
-            });
-
-        },
-        destroyed() {
-            this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-                bodyOverflowState: false,
-                drawerVisibilityState: false,
-                headerVisibilityState: true,
-            });
-        },
-        methods: {
-            ...mapActions('records', ['fetchRecords']),
-            ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
-            onScroll: function (e) {
-                let _module = this;
-                _module.offsetTop = e.target.scrollTop;
-              if (_module.offsetTop > 125 &amp;&amp; _module.records.length>1) {
-                  _module.stickToLeft = true;
-                    _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-                        bodyOverflowState: true,
-                        headerVisibilityState: false,
-                    });
-                } else {
-                    _module.stickToLeft = false;
-                    _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-                        bodyOverflowState: true,
-                        drawerVisibilityState: false,
-                        headerVisibilityState: true,
-                    });
-                }
-                _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
-                    _module.setScrollStatusLocal(false);
-            },
-            /**
-             * Try to redirect to search of the page that is hit is /standards /databases
-             * /policies or /collections
-             * */
-            tryRedirect: async function () {
-                if (Object.keys(this.recordTypes).includes(this.$route.name)) {
-                    let fairsharingRegistry = this.recordTypes[this.$route.name];
-                    let query = this.$route.params;
-                    if (query) {
-                        query.fairsharingRegistry = fairsharingRegistry;
-                        try {
-                            await this.$router.push({
-                                name: "search",
-                                query: query
-                            });
-                        } catch (e) {
-                            //
-                        }
-                    }
-                }
-            },
-            /** This methods get the data from the client.
-             * @returns {Promise}
-             */
-            getData: async function () {
-                window.scrollTo(0, 0);
-                this.errors = null;
-                const _module = this;
-                try {
-                    await _module.fetchRecords(this.getParameters());
-                } catch (e) {
-                    this.errors = e.message;
-                }
-            },
-            /**
-             * Get the parameters that are allowed for this query
-             * @returns {Object} parameters - parameters and types allowed for this query
-             */
-            getParameters: function () {
-                return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
-            },
-        },
-        /**
-         * Setting up the metaInfo of the page
-         * @returns {{title: String}}
-         * */
-        metaInfo() {
-            return {
-                title: 'FAIRsharing | ' + this.getTitle
-            }
-        },
+export default {
+  name: "Records",
+  components: {StringSearch, JumpToTop, SearchOutput, SearchInput},
+  data: () => ({
+    searchTerm: '',
+    offsetTop: 0,
+    stickToLeft: false,
+    bodyOverflowActive: true,
+    hideOverflow: 'overflow-hidden',
+    showHeader: true,
+    showDrawerLeft: false,
+    labels: recordsLabels,
+    recordsSubTitles: recordsLabels['recordSubTitles'],
+    recordTypes: recordsLabels['recordTypes']
+  }),
+  computed: {
+    ...mapState('uiController', ['scrollStatus']),
+    ...mapState('records', ['records']),
+    getTitle: function () {
+      const flipRecordTypes = Object.entries(this.recordTypes).reduce(
+          (obj, [key, value]) => ({...obj, [value]: key}),
+          {}
+      );
+      let title = "Search";
+      if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
+        if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
+          title = flipRecordTypes[this.$route.query.fairsharingRegistry];
+        }
+      }
+      return title;
+    },
+    responsiveClassObject: function () {
+      return {
+        'left-panel-fixed-lg': this.stickToLeft &amp;&amp; this.$vuetify.breakpoint.xlOnly,
+        'left-panel-default-lg': !this.stickToLeft &amp;&amp; this.$vuetify.breakpoint.xlOnly,
+        'left-panel-default': !this.stickToLeft &amp;&amp; !this.$vuetify.breakpoint.xlOnly,
+        'left-panel-fixed': this.stickToLeft &amp;&amp; !this.$vuetify.breakpoint.xlOnly
+      }
+    },
+    currentPath: function () {
+      let title = this.$route.path.replace('/', '');
+      const client = this;
+      let queryParams = {};
+      Object.keys(this.$route.query).forEach(function (prop) {
+        let queryVal = client.$route.query[prop];
+        if (queryVal) {
+          queryParams[prop] = decodeURI(queryVal);
+        }
+      });
+      if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
+        title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+      } else title = title.charAt(0).toUpperCase() + title.slice(1);
+      return [title, queryParams];
+    },
+  },
+  watch: {
+    currentPath: async function () {
+      await this.tryRedirect();
+      await this.getData();
     }
+  },
+  mounted: function () {
+    this.$nextTick(async function () {
+      await this.tryRedirect();
+      await this.getData();
+    });
+  },
+  created() {
+    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+      bodyOverflowState: true,
+      drawerVisibilityState: false,
+      headerVisibilityState: true,
+    });
+  },
+  destroyed() {
+    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+      bodyOverflowState: false,
+      drawerVisibilityState: false,
+      headerVisibilityState: true,
+    });
+  },
+  methods: {
+    ...mapActions('records', ['fetchRecords']),
+    ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
+    onScroll: function (e) {
+      let _module = this;
+      _module.offsetTop = e.target.scrollTop;
+      if (_module.offsetTop > 250 &amp;&amp; _module.records.length > 1) {
+        _module.stickToLeft = true;
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          bodyOverflowState: true,
+          headerVisibilityState: false,
+        });
+      } else {
+        _module.stickToLeft = false;
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          bodyOverflowState: true,
+          drawerVisibilityState: false,
+          headerVisibilityState: true,
+        });
+      }
+      _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
+          _module.setScrollStatusLocal(false);
+    },
+    /**
+     * Try to redirect to search of the page that is hit is /standards /databases
+     * /policies or /collections
+     * */
+    tryRedirect: async function () {
+      if (Object.keys(this.recordTypes).includes(this.$route.name)) {
+        let fairsharingRegistry = this.recordTypes[this.$route.name];
+        let query = this.$route.params;
+        if (query) {
+          query.fairsharingRegistry = fairsharingRegistry;
+          try {
+            await this.$router.push({
+              name: "search",
+              query: query
+            });
+          } catch (e) {
+            //
+          }
+        }
+      }
+    },
+    /** This methods get the data from the client.
+     * @returns {Promise}
+     */
+    getData: async function () {
+      window.scrollTo(0, 0);
+      this.errors = null;
+      const _module = this;
+      try {
+        await _module.fetchRecords(this.getParameters());
+      } catch (e) {
+        this.errors = e.message;
+      }
+    },
+    /**
+     * Get the parameters that are allowed for this query
+     * @returns {Object} parameters - parameters and types allowed for this query
+     */
+    getParameters: function () {
+      return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
+    },
+  },
+  /**
+   * Setting up the metaInfo of the page
+   * @returns {{title: String}}
+   * */
+  metaInfo() {
+    return {
+      title: 'FAIRsharing | ' + this.getTitle
+    }
+  },
+}
 &lt;/script>
 
 &lt;style scoped lang="scss">
-    .left-panel-fixed {
-        position: fixed;
-        top: 0;
-        width: 32vw;
-    }
+.left-panel-fixed {
+  position: fixed;
+  top: 0;
+  width: 32vw;
+}
 
-    .left-panel-default {
-        position: relative;
-        width: 32vw;
-        height: 100%;
-    }
+.left-panel-default {
+  position: relative;
+  width: 32vw;
+}
 
-    .left-panel-fixed-lg {
-        position: fixed;
-        top: 0;
-        width: 24vw;
-    }
+.left-panel-fixed-lg {
+  position: fixed;
+  top: 0;
+  width: 24vw;
+}
 
-    .left-panel-default-lg {
-        position: relative;
-        width: 24vw;
-        height: 100%;
-    }
+.left-panel-default-lg {
+  position: relative;
+  width: 24vw;
+}
 
-    .content-custom {
-        max-height: 100vh;
-        scroll-behavior: smooth;
-        padding: 0;
-    }
+.content-custom {
+  max-height: 100vh;
+  scroll-behavior: smooth;
+  padding: 0;
+}
 
-    #banner {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        padding: 1em;
-    }
-
+#banner {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1em;
+}
 &lt;/style>
 </pre>
     </article>

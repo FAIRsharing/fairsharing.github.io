@@ -1,3 +1,4 @@
+
 <template>
   <v-main>
     <h1 class="d-none">
@@ -9,6 +10,13 @@
         target-object="scroll-target"
       />
     </transition>
+    <div
+      style="margin: 5px 22px 5px 33.5%;"
+      class="d-flex align-content-center justify-content-center chips-holder"
+    >
+      <filter-chips />
+    </div>
+    <!--Filtered Chips-->
     <v-container
       id="scroll-target"
       fluid
@@ -42,6 +50,7 @@
           Advanced
         </v-btn>
       </div>
+
 
       <!--  Content  -->
       <v-row
@@ -77,14 +86,15 @@ import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import StringSearch from "../../components/Records/Search/Input/StringSearch";
+import FilterChips from "@/components/Records/Search/Header/FilterChips";
 
 export default {
   name: "Records",
-  components: {StringSearch, JumpToTop, SearchOutput, SearchInput},
+  components: {StringSearch, JumpToTop, SearchOutput, SearchInput,FilterChips},
   data: () => ({
     searchTerm: '',
     offsetTop: 0,
-    stickToLeft: false,
+    stickToTop: false,
     bodyOverflowActive: true,
     hideOverflow: 'overflow-hidden',
     showHeader: true,
@@ -111,10 +121,10 @@ export default {
     },
     responsiveClassObject: function () {
       return {
-        'left-panel-fixed-lg': this.stickToLeft && this.$vuetify.breakpoint.xlOnly,
-        'left-panel-default-lg': !this.stickToLeft && this.$vuetify.breakpoint.xlOnly,
-        'left-panel-default': !this.stickToLeft && !this.$vuetify.breakpoint.xlOnly,
-        'left-panel-fixed': this.stickToLeft && !this.$vuetify.breakpoint.xlOnly
+        'left-panel-fixed-lg': this.stickToTop && this.$vuetify.breakpoint.xlOnly,
+        'left-panel-default-lg': !this.stickToTop && this.$vuetify.breakpoint.xlOnly,
+        'left-panel-default': !this.stickToTop && !this.$vuetify.breakpoint.xlOnly,
+        'left-panel-fixed': this.stickToTop && !this.$vuetify.breakpoint.xlOnly
       }
     },
     currentPath: function () {
@@ -166,13 +176,13 @@ export default {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
       if (_module.offsetTop > 250 && _module.records.length > 1) {
-        _module.stickToLeft = true;
+        _module.stickToTop = true;
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           bodyOverflowState: true,
           headerVisibilityState: false,
         });
       } else {
-        _module.stickToLeft = false;
+        _module.stickToTop = false;
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           bodyOverflowState: true,
           drawerVisibilityState: false,
@@ -271,4 +281,16 @@ export default {
   flex-direction: column;
   padding: 1em;
 }
+
+.chips-holder {
+  position: sticky;
+  z-index: 5;
+  background: #f5f5f5;
+  min-height: 50px;
+  border: #dbdbdb dotted 2px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+
 </style>

@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -95,35 +95,32 @@
   &lt;v-layout
     id="loginPage"
     class="login"
-    width="100%"
+    style="background: white"
   >
-    &lt;v-container fluid>
+    &lt;v-container>
       &lt;!-- forms -->
-      &lt;v-row>
+      &lt;v-row justify="center">
         &lt;v-col
           cols="12"
           sm="12"
+          :md="!popUp ? '4' : '12' "
+          :lg="!popUp ? '4' : '12' "
+          :xl="!popUp ? '4' : '12' "
         >
-          &lt;v-card
-            flat
-            dark
-            color="#253442"
-          >
-            &lt;!-- card title -->
-            &lt;v-list-item>
-              &lt;v-list-item-content>
-                &lt;v-list-item-title class="headline">
-                  {{ currentPanel | capitalize }}:
-                &lt;/v-list-item-title>
-              &lt;/v-list-item-content>
-            &lt;/v-list-item>
-
-            &lt;!-- message handler -->
-            &lt;MessageHandler field="login" />
-
+          &lt;v-card :flat="popUp">
+            &lt;v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">
+              &lt;!-- card title -->
+              &lt;h2 class="ma-0">
+                {{ currentPanel | capitalize }}
+              &lt;/h2>
+            &lt;/v-card-title>
+            &lt;v-card-text>
+              &lt;!-- message handler -->
+              &lt;MessageHandler field="login" />
+            &lt;/v-card-text>
             &lt;!-- OAUTH -->
             &lt;v-card-text>
-              &lt;v-list color="#253442">
+              &lt;v-list>
                 &lt;v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
                   :key="'provider_' + providerIndex"
@@ -148,7 +145,6 @@
                 &lt;/v-list-item>
               &lt;/v-list>
             &lt;/v-card-text>
-
             &lt;!-- card content // Form -->
             &lt;v-card-text v-if="currentPanel === 'login'">
               &lt;v-form
@@ -170,28 +166,34 @@
                   label="Password"
                   counter
                   required
-                  @click:append="show1 = !show1"
                   outlined
+                  @click:append="show1 = !show1"
                 />
 
-                &lt;v-card-text class="text-left">
-                  &lt;router-link to="/accounts/forgotPassword">
+                &lt;v-card-text class="text-center">
+                  &lt;router-link
+                    to="/accounts/forgotPassword"
+                    @click.native="closePopup(true)"
+                  >
                     Forgot your password ?
                   &lt;/router-link>
                 &lt;/v-card-text>
 
-                &lt;v-card-actions class="mt-3">
+                &lt;v-card-actions class="mt-2">
                   &lt;v-btn
-                    class="mr-5 px-4"
+                    class=" px-4"
                     light
+                    color="primary"
                     @click="logUser()"
                   >
                     LOGIN
                   &lt;/v-btn>
                   &lt;v-btn
+                    text
                     light
                     class="px-4"
-                    href="#/accounts/signup"
+                    to="/accounts/signup"
+                    @click="closePopup(true)"
                   >
                     Register
                   &lt;/v-btn>
@@ -206,84 +208,94 @@
 &lt;/template>
 
 &lt;script>
-    import { mapActions, mapState } from 'vuex'
-    import MessageHandler from "../../../components/Users/MessageHandler";
-    /** This component handles the login page
-     *
-     */
-    export default {
-        name: "Login",
-        components: {MessageHandler},
-        filters: {
-            capitalize: function(value){
-                return value.charAt(0).toUpperCase() + value.slice(1)
-            }
+import {mapActions, mapState} from 'vuex'
+import MessageHandler from "@/components/Users/MessageHandler";
+import stringUtils from '@/utils/stringUtils';
+
+/** This component handles the login page
+ *
+ */
+export default {
+  name: "Login",
+  components: {MessageHandler},
+  mixins: [stringUtils],
+  props: {
+    redirect: {
+      type: Boolean,
+      default: true,
+    },
+    popUp: {
+      type: Boolean,
+      default: false,
+    },
+    closePopup: {
+      type: Function,
+      default: null,
+    },
+  },
+  data: () => {
+    return {
+      show1: false,
+      currentPanel: "login",
+      loginData: {},
+      oauthLogin: [
+        {
+          name: "ORCID",
+          icon: "fab fa-orcid",
+          color: "green white--text",
+          callback: "https://api.fairsharing.org/users/auth/orcid",
         },
-        props: {
-          redirect: {
-            type: Boolean,
-            default: true,
-          }
+        {
+          name: "Twitter",
+          icon: "fab fa-twitter",
+          color: "blue white--text",
+          callback: "https://api.fairsharing.org/users/auth/twitter",
         },
-        data: () => {
-            return {
-                show1: false,
-                currentPanel: "login",
-                loginData: {},
-                oauthLogin: [
-                  {
-                    name: "ORCID",
-                    icon: "fab fa-orcid",
-                    color: "green white--text",
-                    callback: "https://api.fairsharing.org/users/auth/orcid",
-                  },
-                  {
-                    name: "Twitter",
-                    icon: "fab fa-twitter",
-                    color: "blue white--text",
-                    callback: "https://api.fairsharing.org/users/auth/twitter",
-                  },
-                  {
-                    name: "GitHub",
-                    icon: "fab fa-github",
-                    color: "black white--text",
-                    callback: "https://api.fairsharing.org/users/auth/github",
-                  }
-                ]
-            }
-        },
-        computed: {
-            ...mapState("users", ["messages", "user"])
-        },
-        methods: {
-            ...mapActions('users', ['login', 'logout']),
-            logUser: async function(){
-                const _module = this;
-                const user = {
-                    "name": _module.loginData.name,
-                    "password":  _module.loginData.password
-                };
-                await _module.login(user);
-                if (!_module.messages().login.error) {
-                  const goTo = _module.$route.query.redirect;
-                  if (goTo){
-                    _module.$router.push({
-                      path: goTo
-                    })
-                  }
-                  else if (_module.redirect) {
-                    _module.$router.go(-1);
-                  }
-                }
-            }
+        {
+          name: "GitHub",
+          icon: "fab fa-github",
+          color: "black white--text",
+          callback: "https://api.fairsharing.org/users/auth/github",
         }
+      ]
     }
+  },
+  computed: {
+    ...mapState("users", ["messages", "user"])
+  },
+  methods: {
+    ...mapActions('users', ['login', 'logout']),
+    logUser: async function () {
+      const _module = this;
+      const user = {
+        "name": _module.loginData.name,
+        "password": _module.loginData.password
+      };
+      _module.closePopup(false)
+      await _module.login(user);
+      if (!_module.messages().login.error) {
+        const goTo = _module.$route.query.redirect;
+        if (goTo) {
+          _module.$router.push({
+            path: goTo
+          })
+        } else if (_module.redirect) {
+          _module.$router.go(-1);
+        }
+      }
+    },
+  }
+}
 &lt;/script>
 
-&lt;style>
-  #loginPage a {
-    text-decoration: none !important;
-  }
+&lt;style scoped>
+#loginPage a {
+  text-decoration: none !important;
+}
+
+.v-card__actions {
+  justify-content: center;
+}
 &lt;/style>
 </pre>
     </article>
@@ -328,9 +340,9 @@
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
 	
-		on Mon Jul 6th 2020
+		on Wed Aug 5th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

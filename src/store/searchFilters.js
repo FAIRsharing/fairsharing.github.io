@@ -1,5 +1,64 @@
-import query from "../components/GraphClient/queries/getFilters.json"
-import filterMapping from "../components/Records/FiltersLabelMapping.js"
+import filterMapping from "../components/Records/FiltersLabelMapping.json"
+import {isEqual} from 'lodash'
+import ButtonOptions from './ButtonOptions.json'
+
+export const mutations = {
+    setFilters(state, data) {
+        let rawFilters = data['searchFairsharingRecords']['aggregations'];
+        state.rawFilters = buildFilters(rawFilters);
+        state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName !== 'status'));
+    },
+    setFilterButtons(state) {
+        state.rawFilters.forEach(item => {
+            if (item.type === 'Boolean') {
+                let ObjectModel = ButtonOptions[item.filterName];
+                state.filterButtons.push(ObjectModel);
+            } else if (item.filterName === 'status') {
+                let ObjectModel = ButtonOptions.status;
+                ObjectModel.forEach(function (button) {
+                    if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
+                        button.value = item.values[button["apiIndex"]];
+                    }
+                });
+                state.filterButtons.push(ObjectModel);
+            }
+        });
+    },
+    resetFilterButtons(state, itemParentIndex) {
+        state.filterButtons[itemParentIndex].map((item) => {
+            item.active = false;
+        });
+    },
+    activateFilterButtonsItem(state, {activeItem, itemParentIndex}) {
+        state.filterButtons[itemParentIndex].map((item) => {
+            if (isEqual(item, activeItem)) {
+                item.active = true;
+            }
+        });
+    }
+};
+export const actions = {
+    fetchFilters(_, data) {
+        this.commit('searchFilters/setFilters', data);
+        this.commit('searchFilters/setFilterButtons');
+    },
+    resetFilterButtons: function (_, itemParentIndex) {
+        this.commit('searchFilters/resetFilterButtons', itemParentIndex)
+    },
+    activateFilterButtonsItem: ({commit}, activeItem, itemParentIndexValue) => commit('activateFilterButtonsItem', activeItem, itemParentIndexValue)
+};
+export const getters = {
+    getFilters: (state) => {
+        let output = [];
+        state.filters.forEach(function (filter) {
+            output.push({
+                filterName: filter.filterName,
+                filterLabel: filter.filterLabel
+            })
+        });
+        return output
+    }
+};
 
 /**
  * The searchFilters store trigger a single field query to searchFairsharingRecords, gets the aggregation array and
@@ -9,24 +68,13 @@ import filterMapping from "../components/Records/FiltersLabelMapping.js"
 let filtersStore = {
     namespaced: true,
     state: {
+        rawFilters: [],
         filters: [],
+        filterButtons: [],
     },
-    mutations: {
-        setFilters(state, val){
-            if (state.filters.length === 0){
-                let rawFilters = val['searchFairsharingRecords']['aggregations'];
-                state.filters = buildFilters(rawFilters);
-            }
-        }
-    },
-    actions: {
-        async fetchFilters(_, client){
-            this.commit('searchFilters/setFilters', await client.executeQuery(query));
-        }
-    },
-    modules: {
-    },
-    getters: {}
+    mutations: mutations,
+    actions: actions,
+    getters: getters
 };
 export default filtersStore;
 
@@ -35,32 +83,23 @@ export default filtersStore;
  * @param {Array} val - an array of raw filters coming from the api as data['searchFairsharingRecords']['aggregations']
  * @returns {Array} filters - ready to use filters for the advanced search components
  */
-let buildFilters = function(val){
-    // Need to return filter values, filter label and filter name
+
+export const buildFilters = function (val) {
     let filters = [];
-
-    // start with simple input
-    filterMapping.input.forEach(function(filter){
-        filter.values = null;
-        filters.push(filter)
-    });
-
     let filtersLabels = filterMapping['autocomplete'];
-    // now deal with incoming data
-    Object.keys(val).forEach(function(key){
-        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)){
+    Object.keys(val).forEach(function (key) {
+        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
             let filter = filtersLabels[key];
             filter.values = null;
             let filterValues = [];
 
             let buckets = val[key]['buckets'];
-            buckets.forEach(function(bucket){
+            buckets.forEach(function (bucket) {
                 if (Object.prototype.hasOwnProperty.call(
                     bucket,
-                    "key_as_string")){
+                    "key_as_string")) {
                     filterValues.push(bucket["key_as_string"]);
-                }
-                else {
+                } else {
                     filterValues.push(bucket['key']);
                 }
             });

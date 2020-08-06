@@ -20,7 +20,7 @@
             class="pt-2 mb-0 pb-0"
           >
             <v-alert
-              v-if="message && created"
+              v-if="message"
               type="success"
               class="my-3"
             >
@@ -46,12 +46,15 @@
           <v-card-text>
             <v-form
               id="loginForm"
+              ref="registerForm"
+              v-model="formValid"
               class="my-3"
             >
               <!-- name -->
               <v-text-field
                 v-model="loginData.name"
                 label="Username"
+                :rules="[rules.isRequired()]"
                 required
                 outlined
               />
@@ -60,6 +63,7 @@
               <v-text-field
                 v-model="loginData.email"
                 label="Email address"
+                :rules="[rules.isEmail(), rules.isRequired()]"
                 required
                 outlined
               />
@@ -68,6 +72,7 @@
               <v-text-field
                 v-model="loginData.password"
                 :type="showPwd ? 'text' : 'password'"
+                :rules="[rules.isRequired()]"
                 label="Password"
                 required
                 outlined
@@ -96,6 +101,7 @@
                 label="Repeat password"
                 required
                 outlined
+                :rules="[rules.hasValue(loginData.password), rules.isRequired()]"
                 @click:append="showRepeat = !showRepeat"
               />
 
@@ -108,6 +114,7 @@
               <v-btn
                 :loading="isLoading"
                 class="success"
+                :disabled="!formValid"
                 @click="register()"
               >
                 Register my new account
@@ -124,10 +131,12 @@
     import RESTClient from "@/components/Client/RESTClient.js";
     import ValidityProgress from "./Password/ValidityProgress";
 
+    import { hasValue, isEmail, isRequired } from "@/utils/rules.js"
+
     const Client = new RESTClient();
 
     export default {
-        name: "Register",
+      name: "Register",
       components: {ValidityProgress},
       data: () => {
             return {
@@ -135,50 +144,42 @@
                 showRepeat: false,
                 loginData: {},
                 errors: [],
-                created: false,
                 message: null,
                 isLoading: false,
+                rules: {
+                    hasValue: function(val){return hasValue(val)},
+                    isEmail: function(){return isEmail()},
+                    isRequired: function(){return isRequired()},
+                },
+                formValid: false,
             }
         },
         methods: {
             register: async function(){
                 const _module = this;
+                _module.errors = [];
+                _module.message = false;
                 _module.isLoading = true;
                 const user_mail = _module.loginData.email;
-                _module.errors = [];
-                const fields = ["name", "email", "password", "repeatPwd"];
-                let valid = true;
-                fields.forEach(function(field){
-                    if (!_module.loginData[field]){
-                        _module.errors.push(field + ' is missing.');
-                        valid = false;
-                    }
-                });
-                if (valid){
-                   if (_module.loginData.password !== _module.loginData.repeatPwd){
-                       _module.errors.push("Passwords need to be the same");
-                       valid = false;
-                   }
+                let user = {
+                    username: _module.loginData.name,
+                    email: _module.loginData.email,
+                    password: _module.loginData.password,
+                    password_confirmation: _module.loginData['repeatPwd']
+                };
+                let response = await Client.createAccount(user);
+                if (!response.error){
+                    _module.message = "Account created, please verify your email address " + user_mail;
+                    _module.$refs['registerForm'].reset();
                 }
-                if (valid){
-                    let user = {
-                        username: _module.loginData.name,
-                        email: _module.loginData.email,
-                        password: _module.loginData.password,
-                        password_confirmation: _module.loginData['repeatPwd']
-                    };
-                    let response = await Client.createAccount(user);
-                    if (!response.error){
-                        _module.created = true;
-                        _module.message = "Account created, please verify your email address " + user_mail;
-                    }
-                    else {
-                        _module.message = response.error;
-                    }
-
+                else {
+                  Object.keys(response.error.response.data.errors).forEach(function(errorField){
+                    response.error.response.data.errors[errorField].forEach(function(error){
+                      _module.errors.push(errorField + ' ' + error);
+                    })
+                  });
                 }
                 _module.isLoading = false;
-
             }
         }
     }

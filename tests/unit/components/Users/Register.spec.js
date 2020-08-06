@@ -9,42 +9,19 @@ localVue.use(VueRouter);
 const router = new VueRouter();
 
 
-describe("Footer.vue", () => {
+describe("Register.vue", () => {
     let wrapper;
 
     beforeEach( () => {
         wrapper = shallowMount(Register, {
             localVue,
-            router
+            router,
         });
     });
 
     it("can be instantiated", () => {
         const title = "Register";
         expect(wrapper.name()).toMatch(title);
-    });
-
-    it("will raise errors in case of missing fields", async () => {
-        wrapper.vm.loginData = {
-            name: "test"
-        };
-        await wrapper.vm.register();
-        expect(wrapper.vm.errors).toStrictEqual([
-            'email is missing.',
-            'password is missing.',
-            'repeatPwd is missing.'
-        ]);
-    });
-
-    it("will raise errors in case of unmatched passwords", async () => {
-        wrapper.vm.loginData = {
-            name: "Terazus",
-            email: "test@test.com",
-            password: "test",
-            repeatPwd: "ttest"
-        };
-        await wrapper.vm.register();
-        expect(wrapper.vm.errors).toStrictEqual([ 'Passwords need to be the same' ]);
     });
 
     it("can create new accounts", async () => {
@@ -58,8 +35,12 @@ describe("Footer.vue", () => {
             password: "test",
             repeatPwd: "test"
         };
+        wrapper.vm.$refs['registerForm'] = {
+            reset: jest.fn()
+        };
         await wrapper.vm.register();
         expect(wrapper.vm.message).toBe("Account created, please verify your email address test@test.com");
+        expect(wrapper.vm.$refs['registerForm'].reset).toHaveBeenCalledTimes(1);
         stub.restore();
     });
 
@@ -67,7 +48,15 @@ describe("Footer.vue", () => {
         let stub = sinon.stub(Client.prototype, "executeQuery");
         stub.withArgs(sinon.match.any).returns({
             data: {
-                error: "Something went wrong"
+                error: {
+                    response: {
+                        data : {
+                            errors : {
+                                "email": ["missing"]
+                            }
+                        }
+                    }
+                }
             }
         });
         wrapper.vm.loginData = {
@@ -77,7 +66,7 @@ describe("Footer.vue", () => {
             repeatPwd: "test"
         };
         await wrapper.vm.register();
-        expect(wrapper.vm.message).toBe("Something went wrong");
+        expect(wrapper.vm.errors).toStrictEqual(["email missing"]);
         stub.restore();
     })
 

@@ -1,0 +1,12 @@
+{
+  "propsData": {
+      "recordAssociations": [
+          {
+              "name": "Linking Record",
+              "registry": "Databases",
+              "recordAssocLabel": "fiddles with",
+              "subject": "Linked Record"
+          }
+      ]
+  }
+}

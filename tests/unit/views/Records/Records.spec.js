@@ -215,7 +215,7 @@ describe("Records.vue", () => {
 
 
     it("can check responsiveClassObject", () => {
-        wrapper.vm.stickToLeft = true;
+        wrapper.vm.stickToTop = true;
         vuetify.framework.breakpoint.xlOnly = true;
         expect(wrapper.vm.responsiveClassObject).toStrictEqual({
             'left-panel-fixed-lg': true,

@@ -19,7 +19,6 @@
 
     <!--List Row-->
     <div
-      v-if="getRecordsLength"
       :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]"
     >
       <article v-if="!isColumnList">
@@ -31,6 +30,7 @@
           <h2 class="d-none">
             Result
           </h2>
+          <!-- StackCard view -->
           <RecordsCardStack
             v-for="record in records"
             :key="'record_'+record.id"
@@ -41,7 +41,7 @@
     </div>
     <!-- Alert -->
     <div
-      v-else-if="getRecordsLength<1 && !loading"
+      v-if="getRecordsLength<1 && !loading"
       class="no-data-found"
     >
       <v-alert
@@ -52,9 +52,8 @@
       </v-alert>
     </div>
 
-    <!-- Card view -->
+    <!-- ColumnCard view -->
     <div
-      v-if="getRecordsLength"
       :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]"
     >
       <v-skeleton-loader

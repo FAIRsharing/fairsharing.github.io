@@ -4,7 +4,10 @@
       Records
     </h1>
     <!--Filtered Chips-->
-    <div class="d-flex align-content-center justify-content-center chips-holder">
+    <div
+      v-if="getChips.length"
+      class="d-flex align-content-center justify-content-center chips-holder"
+    >
       <filter-chips />
     </div>
 
@@ -77,12 +80,14 @@
 import RecordsCardStack from "./RecordsCardStack";
 import ListController from "../Header/ListController";
 import RecordsCardColumn from "./RecordsCardColumn";
-import {mapState,mapGetters} from 'vuex'
+import {mapState, mapGetters} from 'vuex'
 import FilterChips from "../Header/FilterChips";
+import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "SearchOutput",
   components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack},
+  mixins: [filterChipsUtils],
   data() {
     return {
       isColumnList: false

@@ -1,4 +1,3 @@
-
 <template>
   <v-main>
     <h1 class="d-none">
@@ -11,6 +10,7 @@
       />
     </transition>
     <div
+      v-if="getChips.length && stickToTop"
       style="margin: 5px 22px 5px 33.5%;"
       class="d-flex align-content-center justify-content-center chips-holder"
     >
@@ -86,10 +86,12 @@ import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import StringSearch from "../../components/Records/Search/Input/StringSearch";
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
+import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "Records",
-  components: {StringSearch, JumpToTop, SearchOutput, SearchInput,FilterChips},
+  mixins: [filterChipsUtils],
+  components: {StringSearch, JumpToTop, SearchOutput, SearchInput, FilterChips},
   data: () => ({
     searchTerm: '',
     offsetTop: 0,

@@ -8,10 +8,20 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
+let $route = {
+    path: "standards",
+    query: {
+        publications: "[123, 456]"
+    },
+    params: [
+        "test"
+    ]
+};
+
 
 const $store = new Vuex.Store({
     modules: {
-        records: recordsStore,
+        records: recordsStore
     }
 });
 
@@ -22,7 +32,7 @@ describe("SearchOutput.vue", function () {
     wrapper = shallowMount(SearchOutput, {
         localVue,
         vuetify,
-        mocks: {$store}
+        mocks: {$store, $route}
     });
 
     it("can be instantiated", () => {

@@ -17,7 +17,7 @@ localVue.use(VueMeta);
 
 const $route = {
     name: "Standards",
-    path: "/search",
+    path: "standard",
     query: {
         fairsharingRegistry: "Standard",
         grants: "string",
@@ -70,7 +70,7 @@ describe("Records.vue", () => {
     });
 
     it("has a currentPath computed attribute", () => {
-        expect(wrapper.vm.currentPath[0]).toBe("Search");
+        expect(wrapper.vm.currentPath[0]).toBe("Standard");
     });
 
     it("can correctly raise an error", async () => {
@@ -170,6 +170,7 @@ describe("Records.vue", () => {
         const path = wrapper.vm.currentPath;
         const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
         expect(queryParameters).toStrictEqual({
+            fairsharingRegistry: "Standard",
             test: 'abc',
             test2: 'abcdef',
             test3: ['abc', ' def'],

@@ -40,20 +40,22 @@ Vue.use(VueMeta, {
 const graphQLClient = new GraphQLClient();
 router.beforeEach((to, from, next) => beforeEach(to, from, next));
 
-store.dispatch('users/login').then(function () {
-    store.dispatch("introspection/fetchParameters").then(async function () {
-        new Vue({
-            mounted: async function () {
-                const data = await graphQLClient.executeQuery(query);
-                await store.dispatch('searchFilters/fetchFilters', data);
-            },
-            render: (h) => h(App),
-            router,
-            store,
-            vuetify
-        }).$mount("#app")
-    });
+async function bootstrapApplication() {
+    await store.dispatch('users/login');
+    await store.dispatch("introspection/fetchParameters")
+    const data = await graphQLClient.executeQuery(query);
+    await store.dispatch('searchFilters/fetchFilters', data);
+}
+
+bootstrapApplication().then(() => {
+    new Vue({
+        render: (h) => h(App),
+        router,
+        store,
+        vuetify
+    }).$mount("#app")
 });
+
 
 
 

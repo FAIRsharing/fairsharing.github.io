@@ -45,7 +45,6 @@
           text
           small
           class="button-text-color"
-          to="/advanced-search"
         >
           Advanced
         </v-btn>

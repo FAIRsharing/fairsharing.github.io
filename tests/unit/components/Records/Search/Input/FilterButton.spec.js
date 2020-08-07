@@ -48,26 +48,24 @@ describe("FilterButton.vue", function () {
     it("can check selectFilter method", () => {
         let selectedItem = {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true};
 
-        $store.state.searchFilters.filterButtons =
+        $store.state.searchFilters.filterButtons = [
             [
-                [
-                    {active: true, filterName: 'isMaintained', title: 'All'},
-                    {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
-                    {active: false, filterName: 'isMaintained', title: 'NOT MAINTAINED', value: false}
-                ],
-                [
-                    {active: true, filterName: 'isApproved', title: 'All'},
-                    {active: false, filterName: 'isApproved', title: 'APPROVED', value: true},
-                    {active: false, filterName: 'isApproved', title: 'NOT APPROVED', value: false}
-                ]
-            ];
-
-        const expectedData =
-            [
-                {active: false, filterName: 'isMaintained', title: 'All'},
-                {active: true, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
+                {active: true, filterName: 'isMaintained', title: 'All'},
+                {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
                 {active: false, filterName: 'isMaintained', title: 'NOT MAINTAINED', value: false}
+            ],
+            [
+                {active: true, filterName: 'isApproved', title: 'All'},
+                {active: false, filterName: 'isApproved', title: 'APPROVED', value: true},
+                {active: false, filterName: 'isApproved', title: 'NOT APPROVED', value: false}
             ]
+        ];
+
+        const expectedData = [
+            {active: false, filterName: 'isMaintained', title: 'All'},
+            {active: true, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
+            {active: false, filterName: 'isMaintained', title: 'NOT MAINTAINED', value: false}
+        ];
 
         wrapper.vm.selectFilter(selectedItem);
         expect($store.state.searchFilters.filterButtons[wrapper.vm.itemParentIndex]).toStrictEqual(expectedData);

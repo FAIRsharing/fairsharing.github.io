@@ -4,7 +4,10 @@
       Records
     </h1>
     <!--Filtered Chips-->
-    <div class="d-flex align-content-center justify-content-center chips-holder">
+    <div
+      v-if="getChips.length"
+      class="d-flex align-content-center justify-content-center chips-holder"
+    >
       <filter-chips />
     </div>
 
@@ -16,7 +19,6 @@
 
     <!--List Row-->
     <div
-      v-if="getRecordsLength"
       :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]"
     >
       <article v-if="!isColumnList">
@@ -28,6 +30,7 @@
           <h2 class="d-none">
             Result
           </h2>
+          <!-- StackCard view -->
           <RecordsCardStack
             v-for="record in records"
             :key="'record_'+record.id"
@@ -38,7 +41,7 @@
     </div>
     <!-- Alert -->
     <div
-      v-else-if="getRecordsLength<1 && !loading"
+      v-if="getRecordsLength<1 && !loading"
       class="no-data-found"
     >
       <v-alert
@@ -49,9 +52,8 @@
       </v-alert>
     </div>
 
-    <!-- Card view -->
+    <!-- ColumnCard view -->
     <div
-      v-if="getRecordsLength"
       :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]"
     >
       <v-skeleton-loader
@@ -77,12 +79,14 @@
 import RecordsCardStack from "./RecordsCardStack";
 import ListController from "../Header/ListController";
 import RecordsCardColumn from "./RecordsCardColumn";
-import {mapState,mapGetters} from 'vuex'
+import {mapState, mapGetters} from 'vuex'
 import FilterChips from "../Header/FilterChips";
+import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "SearchOutput",
   components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack},
+  mixins: [filterChipsUtils],
   data() {
     return {
       isColumnList: false

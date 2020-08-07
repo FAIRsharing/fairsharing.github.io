@@ -8,13 +8,14 @@ import records from "@/store/records.js"
 import introspection from "@/store/introspector.js"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
-
+import filterChipsUtils from "@/utils/filterChipsUtils";
 const sinon = require("sinon");
 const axios = require("axios");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
+localVue.mixin(filterChipsUtils);
 
 const $route = {
     name: "Standards",
@@ -59,7 +60,8 @@ describe("Records.vue", () => {
         wrapper = await shallowMount(Records, {
             mocks: {$route, $store},
             localVue,
-            vuetify
+            vuetify,
+            mixins:[filterChipsUtils]
         });
     });
     afterEach(() => {

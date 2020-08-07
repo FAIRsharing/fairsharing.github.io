@@ -9,9 +9,9 @@ const filterChipsUtils = {
                 "searchAnd"
             ];
             Object.keys(parameters).forEach(function (paramName) {
-                if (ignoredFields.indexOf(paramName) === -1) {
+                if (!ignoredFields.includes(paramName)) {
                     let param = parameters[paramName];
-                    if (param && typeof param !== "number" && typeof param !== "boolean" && param.indexOf(",") > -1) {
+                    if (typeof param === "string") {
                         param = param.split(",")
                     }
                     else {

@@ -11,9 +11,10 @@ const filterChipsUtils = {
             Object.keys(parameters).forEach(function (paramName) {
                 if (ignoredFields.indexOf(paramName) === -1) {
                     let param = parameters[paramName];
-                    if (param.indexOf(",") > -1) {
+                    if (param && typeof param !== "number" && typeof param !== "boolean" && param.indexOf(",") > -1) {
                         param = param.split(",")
-                    } else {
+                    }
+                    else {
                         param = [param];
                     }
                     param.forEach(function (val) {
@@ -22,12 +23,11 @@ const filterChipsUtils = {
                             paramVal: val
                         });
                     })
-
                 }
             });
             return output;
         }
     },
-}
+};
 
 export default filterChipsUtils;

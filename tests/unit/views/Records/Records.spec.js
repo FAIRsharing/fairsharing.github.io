@@ -8,19 +8,18 @@ import records from "@/store/records.js"
 import introspection from "@/store/introspector.js"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
-import filterChipsUtils from "@/utils/filterChipsUtils";
 const sinon = require("sinon");
 const axios = require("axios");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-localVue.mixin(filterChipsUtils);
 
 const $route = {
     name: "Standards",
-    path: "/standards",
+    path: "/search",
     query: {
+        fairsharingRegistry: "Standard",
         grants: "string",
         publications: null,
         isRecommended: "false",
@@ -55,13 +54,11 @@ describe("Records.vue", () => {
     let wrapper;
     beforeEach(async () => {
         vuetify = new Vuetify();
-        window.scrollTo = () => {
-        };
+        window.scrollTo = () => {};
         wrapper = await shallowMount(Records, {
             mocks: {$route, $store},
             localVue,
             vuetify,
-            mixins:[filterChipsUtils]
         });
     });
     afterEach(() => {
@@ -73,7 +70,7 @@ describe("Records.vue", () => {
     });
 
     it("has a currentPath computed attribute", () => {
-        expect(wrapper.vm.currentPath[0]).toBe("Standard");
+        expect(wrapper.vm.currentPath[0]).toBe("Search");
     });
 
     it("can correctly raise an error", async () => {
@@ -173,7 +170,6 @@ describe("Records.vue", () => {
         const path = wrapper.vm.currentPath;
         const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
         expect(queryParameters).toStrictEqual({
-            fairsharingRegistry: "Standard",
             test: 'abc',
             test2: 'abcdef',
             test3: ['abc', ' def'],
@@ -213,8 +209,7 @@ describe("Records.vue", () => {
         $route.query = {fairsharingRegistry: "123"};
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
-    })
-
+    });
 
     it("can check responsiveClassObject", () => {
         wrapper.vm.stickToTop = true;
@@ -225,7 +220,7 @@ describe("Records.vue", () => {
             'left-panel-default': false,
             'left-panel-fixed': false
         });
-    })
+    });
 
     it("can onScroll function work properly", () => {
 
@@ -235,7 +230,7 @@ describe("Records.vue", () => {
             target: {scrollTop: 150},
         };
         actions.commit = jest.fn();
-        actions.setGeneralUIAttributesAction({})
+        actions.setGeneralUIAttributesAction({});
         wrapper.vm.onScroll(mEvent);
         expect(actions.commit).toHaveBeenCalledTimes(1);
 
@@ -243,7 +238,7 @@ describe("Records.vue", () => {
             target: {scrollTop: 50},
         };
         wrapper.vm.onScroll(mEvent);
-        actions.setGeneralUIAttributesAction({})
+        actions.setGeneralUIAttributesAction({});
         expect(actions.commit).toHaveBeenCalledTimes(2);
 
         mEvent = {

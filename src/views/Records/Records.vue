@@ -90,8 +90,8 @@ import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "Records",
-  mixins: [filterChipsUtils],
   components: {StringSearch, JumpToTop, SearchOutput, SearchInput, FilterChips},
+  mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
     offsetTop: 0,

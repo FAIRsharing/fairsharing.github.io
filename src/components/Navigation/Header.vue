@@ -60,7 +60,7 @@
           <Login
             :redirect="false"
             :pop-up="true"
-            :close-popup="closePopup"
+            @ClosePopup="closePopup"
           />
         </v-menu>
         <v-btn

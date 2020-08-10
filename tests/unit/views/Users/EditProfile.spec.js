@@ -7,6 +7,18 @@ import userStore from "@/store/users";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+userStore.state.user = function() {
+    return {
+        metadata: {
+            preferences: {
+                hide_email: true,
+            }
+        },
+        credentials: {
+            username: "username"
+        }
+    }
+};
 
 const $store = new Vuex.Store({
     modules: {
@@ -23,7 +35,11 @@ describe("UserProfileMenu.vue", () => {
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {
                 user: {
-                    error: {response: {data: { errors: true }}},
+                    error: {
+                        response: {
+                            data: { errors: true }
+                        }
+                    },
                     message: "Success !"
                 }
             }

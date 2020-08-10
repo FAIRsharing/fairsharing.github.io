@@ -1,14 +1,37 @@
 <template>
-  <v-container class="container--fluid">
-    <h2>
-      Confirm your account:
-    </h2>
-    <div
-      class="alert"
-      :class="{'alert-success': !error, 'alert-danger': error}"
-    >
-      {{ message }}
-    </div>
+  <v-container>
+    <v-row justify="center">
+      <v-col
+        cols="12"
+        sm="12"
+        md="4"
+        lg="4"
+        xl="4"
+      >
+        <v-card>
+          <v-card-title class="primary white--text">
+            <h2> Confirm your account </h2>
+          </v-card-title>
+
+          <v-card-text class="pt-5">
+            <v-alert
+              type="error"
+              :class="{'alert-success': !error, 'alert-danger': error}"
+            >
+              <b>Something went wrong:</b>
+              <ul>
+                <li
+                  v-for="(errorMessage, errorField, errorIndex) in message"
+                  :key="'error_' + errorIndex"
+                >
+                  {{ errorField }}: {{ errorMessage }}
+                </li>
+              </ul>
+            </v-alert>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -34,7 +57,7 @@
             }
             else {
                 this.error = true;
-                this.message = "No token"
+                this.message = {Confirmation_token: "missing"}
             }
         }
     }

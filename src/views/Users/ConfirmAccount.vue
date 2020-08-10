@@ -13,8 +13,12 @@
             <h2> Confirm your account </h2>
           </v-card-title>
 
-          <v-card-text class="pt-5">
+          <v-card-text
+            v-if="message"
+            class="pt-5"
+          >
             <v-alert
+              v-if="error"
               type="error"
               :class="{'alert-success': !error, 'alert-danger': error}"
             >
@@ -27,6 +31,12 @@
                   {{ errorField }}: {{ errorMessage }}
                 </li>
               </ul>
+            </v-alert>
+            <v-alert
+              v-else
+              type="success"
+            >
+              {{ message }}
             </v-alert>
           </v-card-text>
         </v-card>
@@ -44,21 +54,30 @@
         data: () => {
             return {
                 message: null,
-                error: false
+                error: true,
             }
         },
         async created(){
-            this.error = false;
-            const token = (this.$route.query.confirmation_token) ? this.$route.query.confirmation_token : false;
+            await this.validateToken();
+        },
+        methods: {
+          async validateToken(){
+            const _module = this;
+            _module.error = false;
+            const token = (_module.$route.query.confirmation_token) ? _module.$route.query.confirmation_token : false;
             if (token){
               let response = await client.confirmAccount(token);
-              this.message = response;
-              this.error = !response.success
+              _module.error = !response.success;
+              _module.message = response;
+              if (!_module.error){
+                _module.message = "you can now login using your credentials."
+              }
             }
             else {
-                this.error = true;
-                this.message = {Confirmation_token: "missing"}
+              _module.error = true;
+              _module.message = {Confirmation_token: "missing"}
             }
+          }
         }
     }
 </script>

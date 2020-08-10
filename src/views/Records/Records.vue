@@ -11,7 +11,7 @@
     </transition>
     <div
       v-if="getChips.length && stickToTop"
-      style="margin: 5px 5px 5px 33.8%;"
+      :class="[responsiveClassSticky]"
       class="d-flex align-content-center justify-content-center chips-holder"
     >
       <filter-chips />
@@ -127,6 +127,13 @@ export default {
         'left-panel-default-lg': !this.stickToTop && this.$vuetify.breakpoint.xlOnly,
         'left-panel-default': !this.stickToTop && !this.$vuetify.breakpoint.xlOnly,
         'left-panel-fixed': this.stickToTop && !this.$vuetify.breakpoint.xlOnly
+      }
+    },
+    responsiveClassSticky: function () {
+      return {
+        'sticky-style-sm-xs': this.$vuetify.breakpoint.smAndDown,
+        'sticky-style-md-lg': this.$vuetify.breakpoint.lgAndDown,
+        'sticky-style-xl': this.$vuetify.breakpoint.xlOnly,
       }
     },
     currentPath: function () {
@@ -302,4 +309,15 @@ export default {
   -webkit-border-radius: 10px;
 }
 
+.sticky-style-xl {
+  margin: 5px 5px 5px 25%;
+}
+
+.sticky-style-md-lg {
+  margin: 5px 5px 5px 33.3%;
+}
+
+.sticky-style-sm-xs {
+  margin: 0 0 0 0;
+}
 </style>

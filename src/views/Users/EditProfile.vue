@@ -145,7 +145,7 @@
                   type: "password"
                 },
                 {
-                  name: "hide_email",
+                  name: "preferences",
                   label: "Hide your email address on public pages.",
                   hint: null,
                   type: "checkbox"
@@ -160,7 +160,7 @@
               return {
                 username: this.user().credentials.username,
                 email: this.user().metadata.email,
-                hide_email: this.user().metadata.hide_email,
+                preferences: this.user().metadata['preferences']['hide_email'],
                 first_name: this.user().metadata.first_name,
                 last_name: this.user().metadata.last_name,
                 homepage: this.user().metadata.homepage
@@ -174,7 +174,9 @@
           ...mapActions('users', ['getUserMeta', "updateUser"]),
           updateProfile: async function(){
             this.loading = true;
-            await this.updateUser(this.formData);
+            let data = JSON.parse(JSON.stringify(this.formData));
+            data.preferences = {hide_email: this.formData.preferences};
+            await this.updateUser(data);
             this.loading = false;
           }
         },

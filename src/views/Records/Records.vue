@@ -310,7 +310,7 @@ export default {
 }
 
 .sticky-style-xl {
-  margin: 5px 5px 5px 25%;
+  margin: 5px 5px 5px 25.4%;
 }
 
 .sticky-style-md-lg {

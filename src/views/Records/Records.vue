@@ -11,7 +11,7 @@
     </transition>
     <div
       v-if="getChips.length && stickToTop"
-      style="margin: 5px 22px 5px 33.5%;"
+      style="margin: 5px 5px 5px 33.8%;"
       class="d-flex align-content-center justify-content-center chips-holder"
     >
       <filter-chips />
@@ -20,7 +20,8 @@
     <v-container
       id="scroll-target"
       fluid
-      class="overflow-y-auto overflow-x-hidden content-custom "
+      class="overflow-y-auto overflow-x-hidden"
+      :class="getChips.length && stickToTop?'content-custom-new-height':'content-custom'"
     >
       <!-- Title banner -->
       <div>
@@ -270,8 +271,15 @@ export default {
   width: 24vw;
 }
 
+
+.content-custom-new-height {
+  height: calc(100vh - 40px);
+  scroll-behavior: smooth;
+  padding: 0;
+}
+
 .content-custom {
-  max-height: 100vh;
+  height: 100vh;
   scroll-behavior: smooth;
   padding: 0;
 }

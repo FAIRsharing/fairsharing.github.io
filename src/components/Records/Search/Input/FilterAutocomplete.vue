@@ -103,7 +103,6 @@ export default {
             name: _module.$route.name,
             query: currentParams
           });
-          _module.selectedValues = [];
         }
         else
         {
@@ -122,9 +121,9 @@ export default {
               query: currentParams
             });
           }
-          _module.selectedValues = [];
         }
       }
+      _module.selectedValues = [];
     },
     /**
      * Reset the form/filters/parameters to default (go so /search?page=1)

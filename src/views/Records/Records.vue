@@ -11,7 +11,7 @@
     </transition>
     <div
       v-if="getChips.length && stickToTop"
-      style="margin: 5px 22px 5px 33.5%;"
+      :class="[responsiveClassSticky]"
       class="d-flex align-content-center justify-content-center chips-holder"
     >
       <filter-chips />
@@ -20,7 +20,8 @@
     <v-container
       id="scroll-target"
       fluid
-      class="overflow-y-auto overflow-x-hidden content-custom "
+      class="overflow-y-auto overflow-x-hidden"
+      :class="getChips.length && stickToTop?'content-custom-new-height':'content-custom'"
     >
       <!-- Title banner -->
       <div>
@@ -126,6 +127,13 @@ export default {
         'left-panel-default-lg': !this.stickToTop && this.$vuetify.breakpoint.xlOnly,
         'left-panel-default': !this.stickToTop && !this.$vuetify.breakpoint.xlOnly,
         'left-panel-fixed': this.stickToTop && !this.$vuetify.breakpoint.xlOnly
+      }
+    },
+    responsiveClassSticky: function () {
+      return {
+        'sticky-style-sm-xs': this.$vuetify.breakpoint.smAndDown,
+        'sticky-style-md-lg': this.$vuetify.breakpoint.lgAndDown,
+        'sticky-style-xl': this.$vuetify.breakpoint.xlOnly,
       }
     },
     currentPath: function () {
@@ -270,8 +278,15 @@ export default {
   width: 24vw;
 }
 
+
+.content-custom-new-height {
+  height: calc(100vh - 40px);
+  scroll-behavior: smooth;
+  padding: 0;
+}
+
 .content-custom {
-  max-height: 100vh;
+  height: 100vh;
   scroll-behavior: smooth;
   padding: 0;
 }
@@ -294,4 +309,15 @@ export default {
   -webkit-border-radius: 10px;
 }
 
+.sticky-style-xl {
+  margin: 5px 5px 5px 25.4%;
+}
+
+.sticky-style-md-lg {
+  margin: 5px 5px 5px 33.3%;
+}
+
+.sticky-style-sm-xs {
+  margin: 0 0 0 0;
+}
 </style>

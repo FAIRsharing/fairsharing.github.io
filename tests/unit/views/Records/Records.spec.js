@@ -223,6 +223,16 @@ describe("Records.vue", () => {
         });
     });
 
+    it("can check responsiveClassSticky", () => {
+        wrapper.vm.stickToTop = true;
+        vuetify.framework.breakpoint.lgAndDown = true;
+        expect(wrapper.vm.responsiveClassSticky).toStrictEqual({
+            'sticky-style-sm-xs': false,
+            'sticky-style-md-lg': true,
+            'sticky-style-xl': false,
+        });
+    });
+
     it("can onScroll function work properly", () => {
 
         wrapper.vm.$store.state.records.records = ['1', '2', '3'];

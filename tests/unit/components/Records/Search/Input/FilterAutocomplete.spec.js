@@ -84,13 +84,14 @@ describe("FilterAutocomplete.vue", function () {
             query: { grants: "value1"}
         });
 
-        wrapper.vm.selectedValues.push("value 2");
+        wrapper.vm.selectedValues=["value 2","value 3"];
         wrapper.vm.applyFilters();
         expect($router.push).toHaveBeenCalledTimes(2);
         expect($router.push).toHaveBeenCalledWith({
             name: "search",
-            query: { grants: "value1,value%202"}
+            query: { grants: "value%202,value%203"}
         });
+
 
         wrapper.vm.$route.query = {grants: 'value1'};
         wrapper.vm.selectedValues = [];

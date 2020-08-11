@@ -94,7 +94,8 @@ export default {
             query: currentParams
           });
         }
-      } else {
+      } else
+        {
         if (_module.selectedValues === null || _module.selectedValues.length === 0)
         {
           delete currentParams[_module.filter.filterName];
@@ -102,6 +103,7 @@ export default {
             name: _module.$route.name,
             query: currentParams
           });
+          _module.selectedValues = [];
         }
         else
         {
@@ -120,8 +122,8 @@ export default {
               query: currentParams
             });
           }
+          _module.selectedValues = [];
         }
-        _module.selectedValues = [];
       }
     },
     /**

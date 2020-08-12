@@ -2,6 +2,9 @@ export const mutations = {
     setScrollStatus(state, status) {
         state.scrollStatus = status;
     },
+    setStickToTop(state, status) {
+        state.stickToTop = status;
+    },
     setUIStatus: function (state, statusObject) {
         if (Object.prototype.hasOwnProperty.call(statusObject, 'bodyOverflowState')) {
             state.UIGeneralStatus.bodyOverflowState = statusObject.bodyOverflowState;
@@ -20,12 +23,16 @@ export const actions = {
     },
     setScrollStatus: function (state, status) {
         this.commit('uiController/setScrollStatus', status);
+    },
+    setStickToTop: function (state, status) {
+        this.commit('uiController/setStickToTop', status);
     }
 };
 let uiController = {
     namespaced: true,
     state: {
         scrollStatus: false,
+        stickToTop:false,
         UIGeneralStatus: {
             bodyOverflowState: false,
             drawerVisibilityState: false,

@@ -96,7 +96,6 @@ export default {
   data: () => ({
     searchTerm: '',
     offsetTop: 0,
-    stickToTop: false,
     bodyOverflowActive: true,
     hideOverflow: 'overflow-hidden',
     showHeader: true,
@@ -106,7 +105,7 @@ export default {
     recordTypes: recordsLabels['recordTypes']
   }),
   computed: {
-    ...mapState('uiController', ['scrollStatus']),
+    ...mapState('uiController', ['scrollStatus','stickToTop']),
     ...mapState('records', ['records']),
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
@@ -177,21 +176,23 @@ export default {
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
+    this.setStickToTopLocal(false);
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),
     ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
+    ...mapActions({setStickToTopLocal: 'uiController/setStickToTop'}),
     onScroll: function (e) {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
-      if (_module.offsetTop > 250 && _module.records.length > 1) {
-        _module.stickToTop = true;
+      if (_module.offsetTop > 100 && _module.records.length > 1) {
+        _module.setStickToTopLocal(true);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           bodyOverflowState: true,
           headerVisibilityState: false,
         });
       } else {
-        _module.stickToTop = false;
+        _module.setStickToTopLocal(false);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           bodyOverflowState: true,
           drawerVisibilityState: false,

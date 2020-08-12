@@ -73,6 +73,10 @@
                         icon: require("@/assets/records/policy.png"),
                         toolTip: 'Journal',
                     },
+                    identifier_schema:{
+                      icon: require("@/assets/records/policy.png"),
+                      toolTip: 'Identifier Schema',
+                    },
                     society: {
                         icon: require("@/assets/records/policy.png"),
                         toolTip: 'Society',

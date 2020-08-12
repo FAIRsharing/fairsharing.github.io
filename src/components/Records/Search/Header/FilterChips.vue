@@ -70,13 +70,14 @@ export default {
       Object.keys(_module.$route.query).forEach(function (queryParam) {
         if (queryParam !== paramName) {
           query[queryParam] = _module.$route.query[queryParam]
-        } else {
-          if (_module.$route.query[queryParam].indexOf(',') > -1) {
-            let currentVals = _module.$route.query[queryParam].split(",");
-            if (currentVals.indexOf(paramVal) > -1) {
-              currentVals.splice(paramVal.indexOf(paramVal), 1)
+        } else
+          {
+          if (_module.$route.query[queryParam].includes(',')) {
+            let currentValues = _module.$route.query[queryParam].split(",");
+            if (currentValues.includes(paramVal)) {
+              currentValues.splice(currentValues.indexOf(paramVal), 1)
             }
-            query[paramName] = currentVals.join(",");
+            query[paramName] = currentValues.join(",");
           }
         }
       });

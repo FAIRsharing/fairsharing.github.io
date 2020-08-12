@@ -213,7 +213,7 @@ describe("Records.vue", () => {
     });
 
     it("can check responsiveClassObject", () => {
-        wrapper.vm.stickToTop = true;
+        $store.dispatch("uiController/setStickToTop",true);
         vuetify.framework.breakpoint.xlOnly = true;
         expect(wrapper.vm.responsiveClassObject).toStrictEqual({
             'left-panel-fixed-lg': true,
@@ -224,7 +224,7 @@ describe("Records.vue", () => {
     });
 
     it("can check responsiveClassSticky", () => {
-        wrapper.vm.stickToTop = true;
+        $store.dispatch("uiController/setStickToTop",true);
         vuetify.framework.breakpoint.lgAndDown = true;
         expect(wrapper.vm.responsiveClassSticky).toStrictEqual({
             'sticky-style-sm-xs': false,

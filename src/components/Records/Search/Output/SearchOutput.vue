@@ -5,7 +5,7 @@
     </h1>
     <!--Filtered Chips-->
     <div
-      v-if="getChips.length"
+      v-if="getChips.length && !stickToTop"
       class="d-flex align-content-center justify-content-center chips-holder"
     >
       <filter-chips />
@@ -95,6 +95,7 @@ export default {
   computed: {
     ...mapState('records', ["records", "hits", "loading"]),
     ...mapGetters('records', ["getRecordsLength"]),
+    ...mapState('uiController', ['stickToTop']),
   },
   methods: {
     changeListType: function (listType) {

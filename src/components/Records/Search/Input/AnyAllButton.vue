@@ -44,9 +44,8 @@
       },
       mounted() {
         this.$nextTick(function () {
-          const _module = this;
-          let param = (_module.$route.query.searchAnd) ? JSON.parse(_module.$route.query.searchAnd) : true;
-          _module.searchAnd = param;
+          let param = (this.$route.query.searchAnd) ? JSON.parse(this.$route.query.searchAnd) : true;
+          this.searchAnd = param;
         });
       },
     }

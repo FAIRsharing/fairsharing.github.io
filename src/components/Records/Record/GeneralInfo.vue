@@ -38,16 +38,30 @@
         <div class="d-flex flex-column mt-2  ml-sm-6 ml-lg-8">
           <div class="d-flex flex-row mb-2 align-center">
             <h3>{{ currentRecord['fairsharingRecord'].name }}</h3>
-            <b class="ml-2">({{ currentRecord['fairsharingRecord'].abbreviation
-            }})</b>
+            <h3
+              v-if="!currentRecord['fairsharingRecord'].name"
+            >
+              None.
+            </h3>
+            <b class="ml-2">({{ currentRecord['fairsharingRecord'].abbreviation}})</b>
+            <span
+              v-if="!currentRecord['fairsharingRecord'].abbreviation"
+              class="ml-2"
+            >None.</span>
           </div>
           <div class="d-flex align-center">
             <h3 class="mr-1">
               doi:
             </h3>
-            <a :href="currentRecord['fairsharingRecord'].doi">
+            <a
+              :href="currentRecord['fairsharingRecord'].doi"
+            >
               {{ currentRecord['fairsharingRecord'].doi }}
             </a>
+            <span
+              v-if="!currentRecord['fairsharingRecord'].doi"
+              class="ml-2"
+            >None.</span>
           </div>
         </div>
       </v-col>

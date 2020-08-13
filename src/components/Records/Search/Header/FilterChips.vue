@@ -29,10 +29,11 @@
 <script>
 import {throttle} from "lodash"
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import routerUtils from "@/utils/routerUtils";
 
 export default {
   name: "FilterChips",
-  mixins: [filterChipsUtils],
+  mixins: [filterChipsUtils,routerUtils],
   methods: {
     /**
      * Removes the parameter value from the router query with a 2000ms throttle
@@ -42,10 +43,7 @@ export default {
     removeParam: throttle(async function (paramName, paramVal) {
       let _module = this;
       let query = this.buildNewQuery(paramName, paramVal);
-      await _module.$router.push({
-        name: _module.$route.name,
-        query: query
-      })
+      await _module.gotoAsync({Name:_module.$route.name,Query:query});
     }, 2000),
     /**
      * Removes all the  parameters value from the router query with a 2000ms throttle
@@ -53,10 +51,7 @@ export default {
     removeAllParams: throttle(async function () {
       let _module = this;
       let query = {};
-      await _module.$router.push({
-        name: _module.$route.name,
-        query: query
-      })
+      await _module.gotoAsync({Name: _module.$route.name, Query: query});
     }, 2000),
     /**
      * Build the new query given a parameter name a value by getting the current query and removing the key/value given

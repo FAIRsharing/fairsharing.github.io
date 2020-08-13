@@ -8,14 +8,16 @@
 
 <script>
     import {throttle} from 'lodash';
+    import routerUtils from "@/utils/routerUtils";
 
     /** Component to handle the advanced search filters for the searchFairsharingRecords query.
      * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
      * @vue-data {Number} [currentQuery = null] - the current page number
      */
     export default {
-        name: "Pagination",
-        props: {
+      name: "Pagination",
+      mixins: [routerUtils],
+      props: {
             totalPages: {
                 type: Number,
                 default: 0
@@ -66,10 +68,7 @@
                         });
                         currentQuery.page = pageNumber;
                         this.disableThrottle(this.disable);
-                        await _module.$router.push({
-                            name: _module.$route.name,
-                            query: currentQuery
-                        });
+                        await _module.gotoAsync({Name: _module.$route.name,Query: currentQuery});
                     }
                 }
             },

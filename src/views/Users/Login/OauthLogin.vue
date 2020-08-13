@@ -33,9 +33,7 @@
           jwt: paramsArray.jwt,
           expiry: paramsArray.expiry
         });
-        this.$router.push({
-          path: "accounts/profile"
-        })
+        await this.gotoAsync({Path:"accounts/profile"});
       }
     }
   }

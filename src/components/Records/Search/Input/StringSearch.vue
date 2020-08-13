@@ -24,8 +24,11 @@
 </template>
 
 <script>
+import routerUtils from "@/utils/routerUtils";
+
 export default {
   name: "StringSearch",
+  mixins: [routerUtils],
   data() {
     return {
       searchTerm: null
@@ -35,12 +38,7 @@ export default {
     searchString() {
       const _module = this;
       if (_module.searchTerm) {
-        _module.$router.push({
-          path: "search",
-          query: {
-            q: _module.searchTerm
-          }
-        })
+        _module.goto({Path: "search",Query: {q: _module.searchTerm}});
         _module.searchTerm = null;
       }
     }

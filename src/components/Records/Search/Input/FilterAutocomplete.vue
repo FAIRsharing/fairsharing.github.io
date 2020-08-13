@@ -47,10 +47,11 @@
 <script>
 import {mapGetters} from 'vuex'
 import clearString from '@/utils/stringUtils'
+import routerUtils from "@/utils/routerUtils";
 
 export default {
   name: "FilterAutocomplete",
-  mixins: [clearString],
+  mixins: [clearString,routerUtils],
   props: {
     filter: {default: null, type: Object}
   },
@@ -91,20 +92,14 @@ export default {
             });
             currentParams[filterName] = newParam.join(",");
           }
-          _module.$router.push({
-            name: _module.$route.name,
-            query: currentParams
-          });
+          _module.goto({Name: _module.$route.name, Query: currentParams});
         }
       } else
         {
         if (_module.selectedValues === null || _module.selectedValues.length === 0)
         {
           delete currentParams[_module.filter.filterName];
-          _module.$router.push({
-            name: _module.$route.name,
-            query: currentParams
-          });
+          _module.goto({Name: _module.$route.name, Query: currentParams});
         }
         else
         {
@@ -118,10 +113,7 @@ export default {
           });
           currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
           if (newParams.length > 0) {
-            _module.$router.push({
-              name: _module.$route.name,
-              query: currentParams
-            });
+            _module.goto({Name: _module.$route.name, Query: currentParams});
           }
         }
       }

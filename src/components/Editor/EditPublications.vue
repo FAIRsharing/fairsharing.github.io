@@ -278,6 +278,7 @@
     import GraphClient from "@/components/GraphClient/GraphClient.js"
     import RestClient from "@/components/Client/RESTClient.js"
     import publicationsQuery from "@/components/GraphClient/queries/getPublications.json"
+    import routerUtils from "@/utils/routerUtils";
 
     const graphClient = new GraphClient();
     const pubClient = new PublicationClient();
@@ -285,7 +286,8 @@
 
     export default {
         name: "EditPublications",
-        data(){
+        mixins: [routerUtils],
+      data(){
           return {
             publications: [],
             availablePublications: [],
@@ -519,9 +521,7 @@
               await _module.updateRecord(record);
               if (!_module.recordUpdate.error){
                 let ID = _module.$route.params.id;
-                _module.$router.push({
-                  path: "/" + ID
-                })
+                _module.goto({Path:"/" + ID});
               }
               else {
                 _module.errors.general = _module.recordUpdate.message;

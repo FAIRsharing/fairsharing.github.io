@@ -157,6 +157,7 @@
     import GraphClient from "@/components/GraphClient/GraphClient.js"
     import RESTClient from "@/components/Client/RESTClient.js"
     import { asyncForEach } from "@/utils/utils.js"
+    import routerUtils from "@/utils/routerUtils";
 
     const diff = require("deep-object-diff").diff;
     const graphClient = new GraphClient();
@@ -165,7 +166,8 @@
 
     export default {
         name: "EditLicences",
-        data(){
+        mixins: [routerUtils],
+      data(){
             return {
               licences: [],
               initialLicences: [],
@@ -224,9 +226,7 @@
             await _module.deleteLicences();
             await _module.updateLicences();
             if (_module.errors.length === 0){
-              _module.$router.push({
-                path: "/" + _module.$route.params.id
-              })
+              _module.goto({Path:"/" + _module.$route.params.id});
             }
           },
           createLicences: async function () {

@@ -23,10 +23,11 @@
     import { isEqual } from "lodash";
     import { mapActions } from 'vuex'
     import currentParameter from "@/utils/currentParameterMixin.js"
+    import routerUtils from "@/utils/routerUtils";
 
     export default {
         name: "FilterButton",
-        mixins: [currentParameter],
+        mixins: [currentParameter,routerUtils],
         props: {
             item: {default: null, type: Object},
             isFirstItem: {default: false, type: Boolean},
@@ -84,19 +85,12 @@
                 if (Object.prototype.hasOwnProperty.call(selectedItem, 'value')) {
                     currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
                     if (!isEqual(currentQuery, oldQuery)) {
-                        _module.$router.push({
-                            name: _module.$route.name,
-                            query: currentQuery
-                        });
+                      _module.goto({Name: _module.$route.name, Query: currentQuery});
                     }
                 }
                 else {
                     delete currentQuery[selectedItem.filterName];
-                    this.$router.push({
-                        name: _module.$route.name,
-                        query: currentQuery
-                    });
-
+                    _module.goto({Name: _module.$route.name, Query: currentQuery});
                 }
             },
             selectFilter: function (selectedItem) {

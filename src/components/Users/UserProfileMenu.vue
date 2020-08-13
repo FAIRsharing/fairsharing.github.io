@@ -35,10 +35,12 @@
 
 <script>
     import { mapActions } from "vuex"
+    import routerUtils from "@/utils/routerUtils";
 
     export default {
         name: "UserProfileMenu",
-        data: () => {
+      mixins: [routerUtils],
+      data: () => {
             return {
                 dialog: false
             }
@@ -50,17 +52,13 @@
                     {
                         name: "Edit profile",
                         action: function(){
-                            _module.$router.push({
-                              path: "/profiles/edit"
-                            })
+                          _module.goto({Path: "/profiles/edit"});
                         }
                     },
                     {
                         name: "Reset Password",
                         action: async function(){
-                          _module.$router.push({
-                            path: "/users/password/edit"
-                          })
+                          _module.goto({Path: "/users/password/edit"});
                         }
                     },
                     {
@@ -76,7 +74,7 @@
             ...mapActions('users', ['logout']),
             logoutUser: async function(){
                 await this.logout();
-                this.$router.push({name: "Login"})
+                this.goto({Name: "Login"});
             },
         }
     }

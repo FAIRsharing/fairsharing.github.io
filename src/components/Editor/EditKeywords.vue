@@ -225,10 +225,13 @@
   import subjectsQuery from "@/components/GraphClient/queries/getSubjects.json"
   import userTagQuery from "@/components/GraphClient/queries/getUserDefinedTags.json"
   import desc from './data/fieldsDescription.json'
+  import routerUtils from "@/utils/routerUtils";
+
   let graphClient = new GraphClient();
   let restClient = new RestClient();
   export default {
     name: "EditKeywords",
+    mixins: [routerUtils],
     data(){
       return {
         fields: [
@@ -432,9 +435,7 @@
         await _module.updateRecord(data);
         if (!_module.recordUpdate.error){
           let ID = _module.recordUpdate.id.data.id;
-          _module.$router.push({
-            path: "/" + ID
-          })
+          _module.goto({Path:"/" + ID});
         }
         else {
           _module.error = _module.recordUpdate;

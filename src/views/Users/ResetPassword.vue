@@ -63,10 +63,12 @@
     import { mapState, mapActions } from "vuex"
     import MessageHandler from "@/components/Users/MessageHandler";
     import ValidityProgress from "@/components/Users/Password/ValidityProgress";
+    import routerUtils from "@/utils/routerUtils";
 
     export default {
-        name: "ResetPassword",
-        components: {ValidityProgress, MessageHandler},
+      name: "ResetPassword",
+      components: {ValidityProgress, MessageHandler},
+      mixins: [routerUtils],
         data: () => {
             return {
                 message: null,
@@ -105,13 +107,13 @@
                     query.current_password = _module.formData['oldPwd'];
                     await _module.resetPwdWithoutToken(query);
                     if (!_module.messages().resetPassword.error) {
-                        _module.$router.push({path: "/accounts/login", query: {redirect: '/accounts/profile'}})
+                      _module.goto({Path:"/accounts/login",Query: {redirect: '/accounts/profile'}});
                     }
                 } else {
                     query.reset_password_token = _module.$route.query['reset_password_token'];
                     await _module.resetPwd(query);
                     if (!_module.messages().resetPassword.error) {
-                        _module.$router.push({path: "/accounts/login", query: {redirect: '/accounts/profile'}})
+                      _module.goto({Path:"/accounts/login",Query: {redirect: '/accounts/profile'}});
                     }
                 }
             }

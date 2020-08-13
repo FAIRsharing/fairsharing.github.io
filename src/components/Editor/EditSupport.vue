@@ -104,10 +104,12 @@
 
 <script>
     import { mapState, mapActions } from "vuex"
+    import routerUtils from "@/utils/routerUtils";
 
     export default {
         name: "EditSupport",
-        data(){
+        mixins: [routerUtils],
+      data(){
           return {
             contacts: [],
             error: false
@@ -147,9 +149,7 @@
                 await this.updateRecord(record);
                 if (!this.recordUpdate.error){
                     let ID = this.recordUpdate.id.data.id;
-                    this.$router.push({
-                        path: "/" + ID
-                    })
+                    this.goto({Path: "/" + ID});
                 }
                 else {
                   this.error = this.recordUpdate.message;

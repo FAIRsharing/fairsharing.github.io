@@ -88,11 +88,12 @@ import recordsLabels from "@/data/recordsTypes.json"
 import StringSearch from "../../components/Records/Search/Input/StringSearch";
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import routerUtils from "@/utils/routerUtils";
 
 export default {
   name: "Records",
   components: {StringSearch, JumpToTop, SearchOutput, SearchInput, FilterChips},
-  mixins: [filterChipsUtils],
+  mixins: [filterChipsUtils,routerUtils],
   data: () => ({
     searchTerm: '',
     offsetTop: 0,
@@ -164,14 +165,14 @@ export default {
     });
   },
   created() {
-    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+    this.setUiControllerLocal({
       bodyOverflowState: true,
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
   },
   destroyed() {
-    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+    this.setUiControllerLocal({
       bodyOverflowState: false,
       drawerVisibilityState: false,
       headerVisibilityState: true,
@@ -180,20 +181,19 @@ export default {
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),
-    ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
-    ...mapActions({setStickToTopLocal: 'uiController/setStickToTop'}),
+    ...mapActions({setUiControllerLocal: 'uiController/setGeneralUIAttributesAction',setScrollStatusLocal: 'uiController/setScrollStatus',setStickToTopLocal: 'uiController/setStickToTop'}),
     onScroll: function (e) {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
       if (_module.offsetTop > 100 && _module.records.length > 1) {
         _module.setStickToTopLocal(true);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+        _module.setUiControllerLocal({
           bodyOverflowState: true,
           headerVisibilityState: false,
         });
       } else {
         _module.setStickToTopLocal(false);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+        _module.setUiControllerLocal({
           bodyOverflowState: true,
           drawerVisibilityState: false,
           headerVisibilityState: true,
@@ -213,11 +213,8 @@ export default {
         if (query) {
           query.fairsharingRegistry = fairsharingRegistry;
           try {
-            await this.$router.push({
-              name: "search",
-              query: query
-            });
-          } catch (e) {
+            await this.gotoAsync({Name:"search",Query:query});
+            } catch (e) {
             //
           }
         }

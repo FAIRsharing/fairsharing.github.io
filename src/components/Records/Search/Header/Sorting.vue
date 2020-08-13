@@ -14,8 +14,10 @@
 </template>
 
 <script>
+import routerUtils from "@/utils/routerUtils";
     export default {
         name: "Sorting",
+        mixins: [routerUtils],
         data() {
             return {
                 sortFilters: [
@@ -42,10 +44,9 @@
               let currentQuery = JSON.parse(JSON.stringify(_module.$route.query));
               currentQuery["orderBy"] = inputOrderBy;
               if (inputOrderBy !== _module.activeFilter){
-                await _module.$router.push({
-                  name: _module.$route.name,
-                  query: currentQuery
-                });
+                await _module.gotoAsync({
+                  Name: _module.$route.name,
+                  Query: currentQuery});
               }
           },
           getFilters: function(){

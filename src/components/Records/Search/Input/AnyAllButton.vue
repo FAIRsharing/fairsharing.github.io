@@ -21,8 +21,10 @@
 </template>
 
 <script>
+import routerUtils from "@/utils/routerUtils";
     export default {
       name: "AnyAllButton",
+      mixins: [routerUtils],
       data() {
         return {
           searchAnd: true
@@ -35,10 +37,7 @@
             _module.searchAnd = value;
             let currentQuery = JSON.parse(JSON.stringify(_module.$route.query));
             currentQuery.searchAnd = `${value}`;
-            await _module.$router.push({
-              path: 'search',
-              query: currentQuery
-            })
+            await _module.gotoAsync({Path:"accounts/login"});
           }
         }
       },

@@ -49,7 +49,7 @@ describe("NoneFound.vue", function(){
 
     it("shown when no string data are not present", () => {
         // TODO: This should somehow be able to call the displayString function.
-        expect(otherWrapper.vm.displayString).toEqual(false);
+        expect(otherWrapper.vm.displayString).toEqual("one doi");
     });
 
 });

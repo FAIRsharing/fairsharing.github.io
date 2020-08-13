@@ -30,7 +30,8 @@ describe("NoneFound.vue", function(){
     beforeEach(() => {
         otherWrapper = shallowMount(NoneFound, {
             propsData: {
-                dataField: [ ]
+                dataField: [ ],
+                stringField:'one doi',
             }
         });
     });
@@ -42,9 +43,13 @@ describe("NoneFound.vue", function(){
     });
 
     it("shown when data are not present", () => {
-        // TODO: This should somehow be able to call the displaymessage function.
+        // TODO: This should somehow be able to call the display function.
         expect(otherWrapper.vm.display).toEqual(true);
     });
 
+    it("shown when no string data are not present", () => {
+        // TODO: This should somehow be able to call the displayString function.
+        expect(otherWrapper.vm.displayString).toEqual(false);
+    });
 
 });

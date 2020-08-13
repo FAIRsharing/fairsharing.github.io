@@ -211,6 +211,7 @@
 import {mapActions, mapState} from 'vuex'
 import MessageHandler from "@/components/Users/MessageHandler";
 import stringUtils from '@/utils/stringUtils';
+import routerUtils from "@/utils/routerUtils";
 
 /** This component handles the login page
  *
@@ -218,7 +219,7 @@ import stringUtils from '@/utils/stringUtils';
 export default {
   name: "Login",
   components: {MessageHandler},
-  mixins: [stringUtils],
+  mixins: [stringUtils,routerUtils],
   props: {
     redirect: {
       type: Boolean,
@@ -272,11 +273,9 @@ export default {
       if (!_module.messages().login.error) {
         const goTo = _module.$route.query.redirect;
         if (goTo) {
-          _module.$router.push({
-            path: goTo
-          })
+          _module.goto({Path:goTo});
         } else if (_module.redirect) {
-          _module.$router.go(-1);
+          _module.goBack();
         }
       }
     },

@@ -199,6 +199,7 @@
     import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
     import RESTClient from "@/components/Client/RESTClient.js"
     import status from "@/components/Editor/status.json"
+    import routerUtils from "@/utils/routerUtils";
 
     let client = new GraphClient();
     let restClient = new RESTClient();
@@ -208,7 +209,8 @@
      */
     export default {
         name: "NewRecordPage",
-        data(){
+        mixins: [routerUtils],
+      data(){
           return {
             record: {},
             recordsTypes: [],
@@ -314,9 +316,7 @@
             record.record_type_id = _module.models.recordType.id;
             let new_record = await restClient.createRecord(record, _module.user().credentials.token);
             if (Object.prototype.hasOwnProperty.call(new_record.data, "id")) {
-              _module.$router.push({
-                path: new_record.data.id
-              });
+              this.goto({Path: new_record.data.id});
             }
           }
         },

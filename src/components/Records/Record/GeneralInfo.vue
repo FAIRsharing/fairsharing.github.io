@@ -74,7 +74,7 @@
       <div class="d-flex">
         <b class="mr-2">Year of Creation:</b>
         <p>{{ currentRecord['fairsharingRecord'].metadata.year_creation }}</p>
-        <NoneFound :string-field="currentRecord['fairsharingRecord'].metadata.year_creation.toString()" />
+        <NoneFound :string-field="String(currentRecord['fairsharingRecord'].metadata.year_creation)" />
       </div>
       <!--Registry-->
       <div class="d-flex">
@@ -98,7 +98,7 @@
       <!--Developed Countries -->
       <div class="d-flex flex-wrap">
         <b class="mr-2">Countries involved with this resource:</b>
-        <NoneFound :string-field="currentRecord['fairsharingRecord'].countries.toString()" />
+        <NoneFound :string-field="String(currentRecord['fairsharingRecord'].countries)" />
         <v-tooltip
           v-for="country in currentRecord['fairsharingRecord'].countries"
           :key="country.id"

@@ -29,6 +29,7 @@ describe("GeneralInfo.vue", function(){
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("GeneralInfo");
+        console.log(wrapper.vm.currentRecord['fairsharingRecord'].metadata.year_creation)
         expect(wrapper.vm.currentRecord['fairsharingRecord'].metadata.year_creation).toEqual(1912);
         expect(wrapper.vm.currentRecord['fairsharingRecord'].abbreviation).toMatch("MGY");
     });

@@ -38,12 +38,8 @@
         <div class="d-flex flex-column mt-2  ml-sm-6 ml-lg-8">
           <div class="d-flex flex-row mb-2 align-center">
             <h3>{{ currentRecord['fairsharingRecord'].name }}</h3>
-            <h3
-              v-if="!currentRecord['fairsharingRecord'].name"
-            >
-              None.
-            </h3>
-            <b class="ml-2">({{ currentRecord['fairsharingRecord'].abbreviation}})</b>
+            <b class="ml-2">({{ currentRecord['fairsharingRecord'].abbreviation }})</b>
+            <NoneFound :string-field="currentRecord['fairsharingRecord'].abbreviation" />
             <span
               v-if="!currentRecord['fairsharingRecord'].abbreviation"
               class="ml-2"
@@ -58,10 +54,7 @@
             >
               {{ currentRecord['fairsharingRecord'].doi }}
             </a>
-            <span
-              v-if="!currentRecord['fairsharingRecord'].doi"
-              class="ml-2"
-            >None.</span>
+            <NoneFound :string-field="currentRecord['fairsharingRecord'].doi" />
           </div>
         </div>
       </v-col>
@@ -81,6 +74,7 @@
       <div class="d-flex">
         <b class="mr-2">Year of Creation:</b>
         <p>{{ currentRecord['fairsharingRecord'].metadata.year_creation }}</p>
+        <NoneFound :string-field="currentRecord['fairsharingRecord'].metadata.year_creation.toString()" />
       </div>
       <!--Registry-->
       <div class="d-flex">
@@ -99,10 +93,12 @@
           :href="currentRecord['fairsharingRecord'].homepage"
           target="_blank"
         >{{ currentRecord['fairsharingRecord'].homepage }}</a>
+        <NoneFound :string-field="currentRecord['fairsharingRecord'].homepage" />
       </div>
       <!--Developed Countries -->
       <div class="d-flex flex-wrap">
         <b class="mr-2">Countries involved with this resource:</b>
+        <NoneFound :string-field="currentRecord['fairsharingRecord'].countries.toString()" />
         <v-tooltip
           v-for="country in currentRecord['fairsharingRecord'].countries"
           :key="country.id"
@@ -137,11 +133,13 @@
     import RecordStatus from "@/components/Records/Shared/RecordStatus";
 
     import stringUtils from '@/utils/stringUtils';
+    import NoneFound from "@/components/Records/Record/NoneFound";
 
 
     export default {
         name: "GeneralInfo",
         components: {
+          NoneFound,
             CountryFlag,
             RecordStatus,
             Ribbon,

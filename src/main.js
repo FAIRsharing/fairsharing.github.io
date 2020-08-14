@@ -13,12 +13,17 @@ import store from './store'
 import "./styles/css/normalize.css"
 import "./styles/css/main.css"
 
-/* import clients */
-import GraphQLClient from "./components/GraphClient/GraphClient.js"
-
 import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
+
+import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
+import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
+
+// This is a global sass file, it is applied to every vue instance
+/* import Global Sass */
+import "./styles/main.scss"
+
 
 Vue.config.productionTip = false;
 
@@ -26,22 +31,23 @@ Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });
 
-const graphQLClient = new GraphQLClient();
 router.beforeEach((to, from, next) => beforeEach(to, from, next));
 
-store.dispatch('users/login').then(function(){
-    store.dispatch("introspection/fetchParameters").then(async function(){
+async function bootstrapApp() {
+    await store.dispatch('users/login');
+    await store.dispatch("introspection/fetchParameters");
+    await store.dispatch("searchFilters/assembleFilters");
+}
+
+bootstrapApp().then(() => {
     new Vue({
-            mounted: async function(){
-                await store.dispatch('searchFilters/fetchFilters', graphQLClient);
-            },
-            render: (h) => h(App),
-            router,
-            store,
-            vuetify
-        }).$mount("#app")
-    });
+        render: (h) => h(App),
+        router,
+        store,
+        vuetify
+    }).$mount("#app")
 });
+
 
 
 

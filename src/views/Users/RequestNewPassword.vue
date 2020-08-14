@@ -1,10 +1,12 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row justify="center">
       <v-col
         cols="12"
         sm="12"
-        xl="12"
+        md="4"
+        lg="4"
+        xl="4"
       >
         <v-card>
           <v-card-title class="blue white--text mb-5">

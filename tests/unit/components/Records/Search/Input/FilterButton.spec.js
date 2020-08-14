@@ -24,6 +24,7 @@ const $store = new Vuex.Store({
 });
 
 
+
 describe("FilterButton.vue", function () {
     let wrapper;
     let anotherWrapper;
@@ -33,6 +34,14 @@ describe("FilterButton.vue", function () {
         vuetify,
         propsData: {
             item: {active: false, filterName: 'isMaintained', title: 'Maintained', value: true},
+            test: {
+                isMaintained: {
+                    Maintained: [true, false],
+                    'Not Maintained': [0, 0],
+                    All: [0, 0]
+                }
+            },
+
             isFirstItem: false,
             mdScreens: false,
             itemParentIndex: 0,
@@ -47,28 +56,15 @@ describe("FilterButton.vue", function () {
 
     it("can check selectFilter method", () => {
         let selectedItem = {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true};
-
-        $store.state.searchFilters.filterButtons = [
-            [
-                {active: true, filterName: 'isMaintained', title: 'All'},
-                {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
-                {active: false, filterName: 'isMaintained', title: 'NOT MAINTAINED', value: false}
-            ],
-            [
-                {active: true, filterName: 'isApproved', title: 'All'},
-                {active: false, filterName: 'isApproved', title: 'APPROVED', value: true},
-                {active: false, filterName: 'isApproved', title: 'NOT APPROVED', value: false}
-            ]
-        ];
-
-        const expectedData = [
-            {active: false, filterName: 'isMaintained', title: 'All'},
-            {active: true, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
-            {active: false, filterName: 'isMaintained', title: 'NOT MAINTAINED', value: false}
-        ];
-
+        $store.state.searchFilters.filterButtons = [[
+            {active: true, filterName: 'isMaintained', title: 'All'},
+            {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
+        ]];
         wrapper.vm.selectFilter(selectedItem);
-        expect($store.state.searchFilters.filterButtons[wrapper.vm.itemParentIndex]).toStrictEqual(expectedData);
+        expect($router.push).toHaveBeenCalledTimes(1);
+        expect($router.push).toHaveBeenCalledWith({"name": "search", "query": {"isMaintained": "true"}});
+        expect($store.state.searchFilters.filterButtons[0][1].active).toBe(true);
+        console.log(wrapper.vm.item)
     });
 
     it('can check applyFilter function', () => {

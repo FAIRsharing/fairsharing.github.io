@@ -1,6 +1,10 @@
-import filterMapping from "../components/Records/FiltersLabelMapping.json"
+import filterMapping from "@/components/Records/FiltersLabelMapping.json"
+import GraphQLClient from "@/components/GraphClient/GraphClient.js"
+import query from "@/components/GraphClient/queries/getFilters.json";
 import {isEqual} from 'lodash'
-import ButtonOptions from './ButtonOptions.json'
+import buttonOptions from './ButtonOptions.json'
+
+const graphClient = new GraphQLClient();
 
 export const mutations = {
     setFilters(state, data) {
@@ -9,12 +13,27 @@ export const mutations = {
         state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName !== 'status'));
     },
     setFilterButtons(state) {
+        state.filterButtons.push([
+            {
+                "title": "Match all terms",
+                "active": true,
+                "filterName": "searchAnd",
+                "value": true
+            },
+            {
+                "title": "Match any terms",
+                "active": false,
+                "filterName": "searchAnd",
+                "value": false
+            }
+        ]);
         state.rawFilters.forEach(item => {
             if (item.type === 'Boolean') {
-                let ObjectModel = ButtonOptions[item.filterName];
+                let ObjectModel = buttonOptions[item.filterName];
                 state.filterButtons.push(ObjectModel);
-            } else if (item.filterName === 'status') {
-                let ObjectModel = ButtonOptions.status;
+            }
+            else if (item.filterName === 'status') {
+                let ObjectModel = buttonOptions.status;
                 ObjectModel.forEach(function (button) {
                     if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
                         button.value = item.values[button["apiIndex"]];
@@ -24,28 +43,36 @@ export const mutations = {
             }
         });
     },
+    setLoadingStatus(state, status){
+        state.isLoadingFilters = status;
+    },
     resetFilterButtons(state, itemParentIndex) {
         state.filterButtons[itemParentIndex].map((item) => {
             item.active = false;
         });
     },
-    activateFilterButtonsItem(state, {activeItem, itemParentIndex}) {
-        state.filterButtons[itemParentIndex].map((item) => {
-            if (isEqual(item, activeItem)) {
-                item.active = true;
+    activateButton(state, item) {
+        state.filterButtons[item.itemParentIndex].map((filterItem) => {
+            if (isEqual(filterItem, item.activeItem)) {
+                filterItem.active = true;
             }
         });
     }
 };
 export const actions = {
-    fetchFilters(_, data) {
-        this.commit('searchFilters/setFilters', data);
-        this.commit('searchFilters/setFilterButtons');
-    },
-    resetFilterButtons: function (_, itemParentIndex) {
+    resetFilterButtons(state, itemParentIndex) {
         this.commit('searchFilters/resetFilterButtons', itemParentIndex)
     },
-    activateFilterButtonsItem: ({commit}, activeItem, itemParentIndexValue) => commit('activateFilterButtonsItem', activeItem, itemParentIndexValue)
+    activateButton(state, item) {
+        this.commit('searchFilters/activateButton', item)
+    },
+    async assembleFilters(){
+        this.commit("searchFilters/setLoadingStatus", true);
+        let data = await graphClient.executeQuery(query);
+        this.commit('searchFilters/setFilters', data);
+        this.commit('searchFilters/setFilterButtons');
+        this.commit("searchFilters/setLoadingStatus", false);
+    }
 };
 export const getters = {
     getFilters: (state) => {
@@ -71,6 +98,7 @@ let filtersStore = {
         rawFilters: [],
         filters: [],
         filterButtons: [],
+        isLoadingFilters: false
     },
     mutations: mutations,
     actions: actions,

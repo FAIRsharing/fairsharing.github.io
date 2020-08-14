@@ -102,13 +102,13 @@
             selectFilter: function (selectedItem) {
                 let _module = this;
                 _module.resetFilterButtons(_module.itemParentIndex);
-                _module.activateFilterButtonsItem({
+                _module.activateButton({
                     'activeItem': selectedItem,
                     'itemParentIndex': _module.itemParentIndex
                 });
                 this.applyFilters(selectedItem);
             },
-            ...mapActions("searchFilters", ["resetFilterButtons", "activateFilterButtonsItem"])
+            ...mapActions("searchFilters", ["resetFilterButtons", "activateButton"])
         }
     }
 </script>

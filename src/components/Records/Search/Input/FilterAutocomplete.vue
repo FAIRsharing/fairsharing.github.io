@@ -46,9 +46,11 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import clearString from '@/utils/stringUtils'
 
 export default {
   name: "FilterAutocomplete",
+  mixins: [clearString],
   props: {
     filter: {default: null, type: Object}
   },
@@ -131,18 +133,6 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
-    /**
-     * Clean up the given string by removing underscores and fills the stringsReplacement mapper variable.
-     * @param {String} string - the raw string to clean
-     * @returns {String} cleanedString - the string stripped of underscores.
-     */
-    cleanString: function (string) {
-      let cleanedString = string;
-      if (string.includes('_')) {
-        cleanedString = string.replace(/_/g, " ");
-      }
-      return cleanedString;
-    }
   }
 }
 </script>

@@ -41,3 +41,11 @@
     },
   }
 </script>
+
+<style lang='scss'>
+
+table th {
+    min-width: 200px;
+}
+
+</style>

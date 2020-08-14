@@ -1,14 +1,16 @@
 const stringUtils = {
     methods: {
-        cleanString (string) {
+        cleanString(string) {
             if (typeof string === "string") {
-                return string.replace(/_/g, " ");
+                if (string.includes('_')) {
+                    return string.replace(/_/g, " ");
+                }
             }
             return string;
         }
     },
     filters: {
-        capitalize (str){
+        capitalize(str) {
             if (!str) return "";
             return str.charAt(0).toUpperCase() + str.slice(1)
         }

@@ -7,6 +7,7 @@ describe('Mutations & Actions', () => {
     beforeEach(() => {
         state = {
             scrollStatus: false,
+            stickToTop: false,
             UIGeneralStatus: {
                 bodyOverflowState: false,
                 drawerVisibilityState: false,
@@ -58,6 +59,14 @@ describe('Mutations & Actions', () => {
         const fakeUIStateObject_caseB = {}
         mutations.setUIStatus(state, fakeUIStateObject_caseB);
         expect(state.UIGeneralStatus).toStrictEqual(fakeUIStateObject_caseA);
+
+    });
+
+    it("can check the setStickToTop Mutations", () => {
+
+        let fakeState = true;
+        mutations.setStickToTop(state, fakeState);
+        expect(state.stickToTop).toBe(true);
 
     });
 

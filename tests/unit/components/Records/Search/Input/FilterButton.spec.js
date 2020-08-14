@@ -34,14 +34,6 @@ describe("FilterButton.vue", function () {
         vuetify,
         propsData: {
             item: {active: false, filterName: 'isMaintained', title: 'Maintained', value: true},
-            test: {
-                isMaintained: {
-                    Maintained: [true, false],
-                    'Not Maintained': [0, 0],
-                    All: [0, 0]
-                }
-            },
-
             isFirstItem: false,
             mdScreens: false,
             itemParentIndex: 0,

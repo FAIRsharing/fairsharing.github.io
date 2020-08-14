@@ -90,8 +90,6 @@ describe("FilterButton.vue", function () {
         expect(wrapper.vm.item.active).toEqual(false);
         wrapper.vm.checkCurrentParameters('ismaintained', "true", true);
         expect(wrapper.vm.item.active).toEqual(true);
-        }
-    );
-
+        });
 
 });

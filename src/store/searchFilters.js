@@ -44,7 +44,7 @@ export const mutations = {
         });
     },
     setLoadingStatus(state, status){
-        state.isLoadingData = status;
+        state.isLoadingFilters = status;
     },
     resetFilterButtons(state, itemParentIndex) {
         state.filterButtons[itemParentIndex].map((item) => {
@@ -98,7 +98,7 @@ let filtersStore = {
         rawFilters: [],
         filters: [],
         filterButtons: [],
-        isLoadingData: false
+        isLoadingFilters: false
     },
     mutations: mutations,
     actions: actions,

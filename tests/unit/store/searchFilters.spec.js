@@ -1,5 +1,8 @@
 import {actions, mutations, getters, buildFilters} from "@/store/searchFilters.js"
 import RecordsData from '../../../tests/fixtures/getRecords.json'
+import GraphClient from "@/components/GraphClient/GraphClient.js"
+
+let sinon = require("sinon");
 
 describe('searchFilters store methods', () => {
 
@@ -14,6 +17,7 @@ describe('searchFilters store methods', () => {
         filterButtons: [
             [{ active: true }]
         ],
+        isLoadingFilters: false
     };
     actions.commit = jest.fn();
 
@@ -75,6 +79,29 @@ describe('searchFilters store methods', () => {
         const builtData = getters.getFilters(state);
         expect(builtData[0]).toHaveProperty('filterName');
         expect(builtData.length).toBe(11)
+    });
+
+    it("can change the state of loading status", () => {
+        mutations.setLoadingStatus(state, true);
+        expect(state.isLoadingFilters).toBe(true);
+    });
+
+    it("can fetch the data and assemble the filters", async () => {
+        let stub = sinon.stub(GraphClient.prototype, "executeQuery");
+        stub.returns({
+            searchFairsharingRecords: {
+                aggregations: {
+                    is_maintained: {}
+                }
+            }
+        });
+        await actions.assembleFilters();
+        expect(actions.commit).toHaveBeenCalledWith("searchFilters/setLoadingStatus", true);
+        expect(actions.commit).toHaveBeenCalledWith("searchFilters/setLoadingStatus", true);
+        expect(actions.commit).toHaveBeenCalledWith("searchFilters/setFilterButtons");
+        expect(actions.commit).toHaveBeenCalledWith("searchFilters/setLoadingStatus", false);
+        expect(actions.commit).toHaveBeenCalledTimes(6);
+        stub.restore();
     });
 
 });

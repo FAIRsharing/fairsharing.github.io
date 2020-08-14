@@ -41,7 +41,7 @@ describe("Login.vue", ()=> {
             localVue,
             router,
             propsData: {
-                redirect: true
+                redirect: true,
             },
             stubs: ['router-link', 'router-view'],
             mocks: {$store, $route, $router}
@@ -94,7 +94,7 @@ describe("Login.vue", ()=> {
             localVue,
             router,
             propsData: {
-                redirect: false
+                redirect: false,
             },
             stubs: ['router-link', 'router-view'],
             mocks: {$store, $route, $router}
@@ -114,11 +114,11 @@ describe("Login.vue", ()=> {
 
     it('can process special redirection', async () => {
         $route.query.redirect = true;
-        const anotherWrapper = shallowMount(Login, {
+        let anotherWrapper = shallowMount(Login, {
             localVue,
             router,
             propsData: {
-                redirect: false
+                redirect: false,
             },
             stubs: ['router-link', 'router-view'],
             mocks: {$store, $route, $router}

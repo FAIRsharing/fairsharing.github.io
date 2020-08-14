@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Facets.html">Facets</a></li><li><a href="module-FiltersChip.html">FiltersChip</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Record.html">Record</a></li><li><a href="module-Records.html">Records</a></li><li><a href="module-SearchFilters.html">SearchFilters</a></li><li><a href="module-SearchOutputTable.html">SearchOutputTable</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -91,8 +91,94 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import query from "../components/GraphClient/queries/getFilters.json"
-import filterMapping from "../components/Records/FiltersLabelMapping.js"
+            class="sunlight-highlight-javascript linenums">import filterMapping from "@/components/Records/FiltersLabelMapping.json"
+import GraphQLClient from "@/components/GraphClient/GraphClient.js"
+import query from "@/components/GraphClient/queries/getFilters.json";
+import {isEqual} from 'lodash'
+import buttonOptions from './ButtonOptions.json'
+
+const graphClient = new GraphQLClient();
+
+export const mutations = {
+    setFilters(state, data) {
+        let rawFilters = data['searchFairsharingRecords']['aggregations'];
+        state.rawFilters = buildFilters(rawFilters);
+        state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' &amp;&amp; item.filterName !== 'status'));
+    },
+    setFilterButtons(state) {
+        state.filterButtons.push([
+            {
+                "title": "Match all terms",
+                "active": true,
+                "filterName": "searchAnd",
+                "value": true
+            },
+            {
+                "title": "Match any terms",
+                "active": false,
+                "filterName": "searchAnd",
+                "value": false
+            }
+        ]);
+        state.rawFilters.forEach(item => {
+            if (item.type === 'Boolean') {
+                let ObjectModel = buttonOptions[item.filterName];
+                state.filterButtons.push(ObjectModel);
+            }
+            else if (item.filterName === 'status') {
+                let ObjectModel = buttonOptions.status;
+                ObjectModel.forEach(function (button) {
+                    if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
+                        button.value = item.values[button["apiIndex"]];
+                    }
+                });
+                state.filterButtons.push(ObjectModel);
+            }
+        });
+    },
+    setLoadingStatus(state, status){
+        state.isLoadingFilters = status;
+    },
+    resetFilterButtons(state, itemParentIndex) {
+        state.filterButtons[itemParentIndex].map((item) => {
+            item.active = false;
+        });
+    },
+    activateButton(state, item) {
+        state.filterButtons[item.itemParentIndex].map((filterItem) => {
+            if (isEqual(filterItem, item.activeItem)) {
+                filterItem.active = true;
+            }
+        });
+    }
+};
+export const actions = {
+    resetFilterButtons(state, itemParentIndex) {
+        this.commit('searchFilters/resetFilterButtons', itemParentIndex)
+    },
+    activateButton(state, item) {
+        this.commit('searchFilters/activateButton', item)
+    },
+    async assembleFilters(){
+        this.commit("searchFilters/setLoadingStatus", true);
+        let data = await graphClient.executeQuery(query);
+        this.commit('searchFilters/setFilters', data);
+        this.commit('searchFilters/setFilterButtons');
+        this.commit("searchFilters/setLoadingStatus", false);
+    }
+};
+export const getters = {
+    getFilters: (state) => {
+        let output = [];
+        state.filters.forEach(function (filter) {
+            output.push({
+                filterName: filter.filterName,
+                filterLabel: filter.filterLabel
+            })
+        });
+        return output
+    }
+};
 
 /**
  * The searchFilters store trigger a single field query to searchFairsharingRecords, gets the aggregation array and
@@ -102,24 +188,14 @@ import filterMapping from "../components/Records/FiltersLabelMapping.js"
 let filtersStore = {
     namespaced: true,
     state: {
+        rawFilters: [],
         filters: [],
+        filterButtons: [],
+        isLoadingFilters: false
     },
-    mutations: {
-        setFilters(state, val){
-            if (state.filters.length === 0){
-                let rawFilters = val['searchFairsharingRecords']['aggregations'];
-                state.filters = buildFilters(rawFilters);
-            }
-        }
-    },
-    actions: {
-        async fetchFilters(_, client){
-            this.commit('searchFilters/setFilters', await client.executeQuery(query));
-        }
-    },
-    modules: {
-    },
-    getters: {}
+    mutations: mutations,
+    actions: actions,
+    getters: getters
 };
 export default filtersStore;
 
@@ -128,32 +204,23 @@ export default filtersStore;
  * @param {Array} val - an array of raw filters coming from the api as data['searchFairsharingRecords']['aggregations']
  * @returns {Array} filters - ready to use filters for the advanced search components
  */
-let buildFilters = function(val){
-    // Need to return filter values, filter label and filter name
+
+export const buildFilters = function (val) {
     let filters = [];
-
-    // start with simple input
-    filterMapping.input.forEach(function(filter){
-        filter.values = null;
-        filters.push(filter)
-    });
-
     let filtersLabels = filterMapping['autocomplete'];
-    // now deal with incoming data
-    Object.keys(val).forEach(function(key){
-        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)){
+    Object.keys(val).forEach(function (key) {
+        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
             let filter = filtersLabels[key];
             filter.values = null;
             let filterValues = [];
 
             let buckets = val[key]['buckets'];
-            buckets.forEach(function(bucket){
+            buckets.forEach(function (bucket) {
                 if (Object.prototype.hasOwnProperty.call(
                     bucket,
-                    "key_as_string")){
+                    "key_as_string")) {
                     filterValues.push(bucket["key_as_string"]);
-                }
-                else {
+                } else {
                     filterValues.push(bucket['key']);
                 }
             });
@@ -206,9 +273,9 @@ let buildFilters = function(val){
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
 	
-		on Mon Jul 6th 2020
+		on Fri Aug 14th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

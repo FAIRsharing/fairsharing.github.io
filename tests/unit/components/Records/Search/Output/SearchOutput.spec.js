@@ -2,6 +2,7 @@ import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput.vue"
+import UIController from "@/store/uiController.js"
 import recordsStore from "@/store/records.js";
 
 const localVue = createLocalVue();
@@ -21,7 +22,8 @@ let $route = {
 
 const $store = new Vuex.Store({
     modules: {
-        records: recordsStore
+        records: recordsStore,
+        uiController: UIController
     }
 });
 

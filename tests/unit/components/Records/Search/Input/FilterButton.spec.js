@@ -24,7 +24,6 @@ const $store = new Vuex.Store({
 });
 
 
-
 describe("FilterButton.vue", function () {
     let wrapper;
     let anotherWrapper;
@@ -56,7 +55,6 @@ describe("FilterButton.vue", function () {
         expect($router.push).toHaveBeenCalledTimes(1);
         expect($router.push).toHaveBeenCalledWith({"name": "search", "query": {"isMaintained": "true"}});
         expect($store.state.searchFilters.filterButtons[0][1].active).toBe(true);
-        console.log(wrapper.vm.item)
     });
 
     it('can check applyFilter function', () => {

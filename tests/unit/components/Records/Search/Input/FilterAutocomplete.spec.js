@@ -89,9 +89,8 @@ describe("FilterAutocomplete.vue", function () {
         expect($router.push).toHaveBeenCalledTimes(2);
         expect($router.push).toHaveBeenCalledWith({
             name: "search",
-            query: { grants: "value%202,value%203"}
+            query: {grants: "value%202,value%203"}
         });
-
 
         wrapper.vm.$route.query = {grants: 'value1'};
         wrapper.vm.selectedValues = [];

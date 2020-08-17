@@ -13,12 +13,6 @@ import store from './store'
 import "./styles/css/normalize.css"
 import "./styles/css/main.css"
 
-/* import GraphQLClient */
-import GraphQLClient from "./components/GraphClient/GraphClient.js"
-
-/*import query*/
-import query from "@/components/GraphClient/queries/getFilters.json";
-
 import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
@@ -37,17 +31,15 @@ Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });
 
-const graphQLClient = new GraphQLClient();
 router.beforeEach((to, from, next) => beforeEach(to, from, next));
 
-async function bootstrapApplication() {
+async function bootstrapApp() {
     await store.dispatch('users/login');
-    await store.dispatch("introspection/fetchParameters")
-    const data = await graphQLClient.executeQuery(query);
-    await store.dispatch('searchFilters/fetchFilters', data);
+    await store.dispatch("introspection/fetchParameters");
+    await store.dispatch("searchFilters/assembleFilters");
 }
 
-bootstrapApplication().then(() => {
+bootstrapApp().then(() => {
     new Vue({
         render: (h) => h(App),
         router,

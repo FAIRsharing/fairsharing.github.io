@@ -47,28 +47,14 @@ describe("FilterButton.vue", function () {
 
     it("can check selectFilter method", () => {
         let selectedItem = {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true};
-
-        $store.state.searchFilters.filterButtons = [
-            [
-                {active: true, filterName: 'isMaintained', title: 'All'},
-                {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
-                {active: false, filterName: 'isMaintained', title: 'NOT MAINTAINED', value: false}
-            ],
-            [
-                {active: true, filterName: 'isApproved', title: 'All'},
-                {active: false, filterName: 'isApproved', title: 'APPROVED', value: true},
-                {active: false, filterName: 'isApproved', title: 'NOT APPROVED', value: false}
-            ]
-        ];
-
-        const expectedData = [
-            {active: false, filterName: 'isMaintained', title: 'All'},
-            {active: true, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
-            {active: false, filterName: 'isMaintained', title: 'NOT MAINTAINED', value: false}
-        ];
-
+        $store.state.searchFilters.filterButtons = [[
+            {active: true, filterName: 'isMaintained', title: 'All'},
+            {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
+        ]];
         wrapper.vm.selectFilter(selectedItem);
-        expect($store.state.searchFilters.filterButtons[wrapper.vm.itemParentIndex]).toStrictEqual(expectedData);
+        expect($router.push).toHaveBeenCalledTimes(1);
+        expect($router.push).toHaveBeenCalledWith({"name": "search", "query": {"isMaintained": "true"}});
+        expect($store.state.searchFilters.filterButtons[0][1].active).toBe(true);
     });
 
     it('can check applyFilter function', () => {
@@ -104,8 +90,6 @@ describe("FilterButton.vue", function () {
         expect(wrapper.vm.item.active).toEqual(false);
         wrapper.vm.checkCurrentParameters('ismaintained', "true", true);
         expect(wrapper.vm.item.active).toEqual(true);
-        }
-    );
-
+        });
 
 });

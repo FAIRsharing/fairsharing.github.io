@@ -42,10 +42,6 @@
               v-if="currentRecord['fairsharingRecord'].abbreviation"
               class="ml-2"
             >({{ currentRecord['fairsharingRecord'].abbreviation }})</b>
-            <none-found
-              v-else
-              :string-field="currentRecord['fairsharingRecord'].abbreviation"
-            />
           </div>
           <div class="d-flex align-center">
             <h3 class="mr-1">

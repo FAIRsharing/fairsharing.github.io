@@ -1,8 +1,8 @@
-import { shallowMount } from "@vue/test-utils";
+import {shallowMount} from "@vue/test-utils";
 import NoneFound from "@/components/Records/Record/NoneFound.vue"
 
 
-describe("NoneFound.vue", function(){
+describe("NoneFound.vue", function () {
     let wrapper;
     let otherWrapper;
 
@@ -30,8 +30,9 @@ describe("NoneFound.vue", function(){
     beforeEach(() => {
         otherWrapper = shallowMount(NoneFound, {
             propsData: {
-                dataField: [ ],
-                stringField:'one doi',
+                dataField: [],
+                objectField: {},
+                stringField: 'one doi',
             }
         });
     });
@@ -48,6 +49,11 @@ describe("NoneFound.vue", function(){
     });
 
     it("shown when no string data are not present", () => {
+        // TODO: This should somehow be able to call the displayString function.
+        expect(otherWrapper.vm.displayString).toEqual("one doi");
+    });
+
+    it("shown when no object data are not present", () => {
         // TODO: This should somehow be able to call the displayString function.
         expect(otherWrapper.vm.displayString).toEqual("one doi");
     });

@@ -34,6 +34,9 @@ describe("SearchLinkChips.vue", function () {
         expect(wrapper.vm.chips[0].active).toBe(false);
         wrapper.vm.toggleChipActiveness(wrapper.vm.chips[0]);
         expect(wrapper.vm.chips[0].active).toBe(true);
+        let fakeChip = {label: 'fake', active: 'false'}
+        wrapper.vm.toggleChipActiveness(fakeChip);
+        expect(wrapper.vm.chips[0].active).toBe(true);
     });
 
     it("generates correct search link", () => {

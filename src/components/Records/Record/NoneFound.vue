@@ -29,18 +29,21 @@ export default {
     dataField: {
       type: Array,
       default: null
+    }, objectField: {
+      type: Object,
+      default: null
     },
     stringField: {
-      type: String ,
+      type: String,
       default: null
     },
   },
   computed: {
     display: function () {
-      return this.dataField && this.dataField.length === 0 ;
+      return this.dataField && this.dataField.length === 0;
     },
     displayString: function () {
-      return this.stringField ;
+      return this.stringField;
     }
   }
 }

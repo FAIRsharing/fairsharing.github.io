@@ -110,9 +110,15 @@
       <div class="d-flex flex-wrap">
         <b class="mr-2">Countries involved with this resource:</b>
         <NoneFound
-          v-if="!currentRecord['fairsharingRecord'].countries || currentRecord['fairsharingRecord'].countries[0].name==='All'"
-          :data-field="currentRecord['fairsharingRecord'].countries"
+          v-if="!currentRecord['fairsharingRecord'].countries"
+          :object-field="currentRecord['fairsharingRecord'].countries"
         />
+        <p
+          class="my-0"
+          v-else-if="currentRecord['fairsharingRecord'].countries[0].name==='All'"
+        >
+          All Countries
+        </p>
         <v-tooltip
           v-for="country in currentRecord['fairsharingRecord'].countries"
           :key="country.id"

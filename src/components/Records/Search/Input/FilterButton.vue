@@ -54,7 +54,9 @@
             const fieldValue = _module.currentParameter[this.item.filterName];
             const currentValue = _module.item.value;
             const title = _module.item.title.toLowerCase();
-            _module.checkCurrentParameters(title, fieldValue, currentValue);
+            if(!_module.doubleItems){
+              _module.checkCurrentParameters(title, fieldValue, currentValue);
+            }
           });
         },
         methods: {

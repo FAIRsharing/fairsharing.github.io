@@ -1,6 +1,6 @@
 <template>
   <form
-    class="stringSearchBar d-flex flex-row align-center mt-1  mr-2 ml-2"
+    class="stringSearchBar d-flex flex-row align-center align-content-center  mr-1 mr-lg-2 ml-1"
     @submit.prevent="searchString()"
   >
     <v-text-field
@@ -8,17 +8,18 @@
       solo
       single-line
       clearable
-      placeholder="Can't find what you're looking for? Search through all data."
+      dense
+      placeholder="Search through all data."
     />
     <v-btn
       color="primary"
       outlined
-      height="52px"
+      height="36px"
       class="mt-1 ml-2"
       @click="searchString()"
     >
       <v-icon>search</v-icon>
-      <span>Search</span>
+      <span class="button-text-size">Search</span>
     </v-btn>
   </form>
 </template>
@@ -50,7 +51,13 @@ export default {
 
 <style scoped >
 .v-input {
-  height: 42px;
+  height: 38px;
+  box-shadow: 0 0 0 0;
+}
+.button-text-size
+{
+
+  font-size: 11px;
 }
 </style>
 

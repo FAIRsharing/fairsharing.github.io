@@ -13,6 +13,15 @@
       <h2 class="d-none">
         Filter List
       </h2>
+
+      <!-- Search Box -->
+      <string-search class="mb-2" />
+
+      <hr
+        class="mb-3 mr-2 ml-2"
+        style="opacity: .5!important;"
+      >
+
       <!-- Filter Buttons     -->
       <FilterButtons />
 
@@ -39,10 +48,11 @@
 import {mapGetters, mapState} from "vuex"
 import FilterAutocomplete from "./FilterAutocomplete";
 import FilterButtons from "./FilterButtons";
+import StringSearch from "@/components/Records/Search/Input/StringSearch";
 
 export default {
   name: "SearchInput",
-  components: {FilterButtons, FilterAutocomplete},
+  components: {StringSearch, FilterButtons, FilterAutocomplete},
   data() {
     return {
       panel: [],
@@ -91,7 +101,7 @@ export default {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   overflow-x: hidden;
-  height: calc(100vh - 320px);
+  height: calc(100vh - 230px);
   transition: height ease-in 500ms;
 }
 

@@ -16,7 +16,8 @@
         methods: {
             ...mapActions("users", ["setError"]),
             parseParams: function(){
-                let error = JSON.parse(this.$route.query.errors);
+                let _module = this;
+                let error = JSON.parse(_module.$route.query.errors);
                 this.setError({
                     field: "login",
                     message: error

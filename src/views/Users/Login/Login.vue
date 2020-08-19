@@ -77,7 +77,7 @@
                   @click:append="show1 = !show1"
                 />
 
-                <v-card-text class="text-center">
+                <v-card-text class="text-center py-1">
                   <router-link
                     to="/accounts/forgotPassword"
                     @click="()=>{this.$emit('ClosePopup',true)}"
@@ -86,7 +86,8 @@
                   </router-link>
                 </v-card-text>
 
-                <v-card-actions class="mt-2">
+
+                <v-card-actions class="mt-2 justify-center">
                   <v-btn
                     class=" px-4"
                     light
@@ -95,15 +96,14 @@
                   >
                     LOGIN
                   </v-btn>
-                  <v-btn
-                    text
-                    light
-                    class="px-4"
-                    to="/accounts/signup"
-                    @click="()=>{this.$emit('ClosePopup',true)}"
-                  >
-                    Register
-                  </v-btn>
+                  <v-card-text class="py-1">
+                    <router-link
+                      to="/accounts/signup"
+                      @click.prevent="()=>this.$emit('ClosePopup',true)"
+                    >
+                      Register
+                    </router-link>
+                  </v-card-text>
                 </v-card-actions>
               </v-form>
             </v-card-text>
@@ -196,7 +196,9 @@ export default {
   text-decoration: none !important;
 }
 
-.v-card__actions {
-  justify-content: center;
+.v-card__text
+{
+  width: auto;
 }
+
 </style>

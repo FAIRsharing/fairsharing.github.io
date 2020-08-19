@@ -56,14 +56,6 @@
         v-if="publication.journal"
         class="d-flex mt-2 "
       >
-<<<<<<< HEAD
-        <v-icon
-          color="secondary"
-          class="mr-2"
-        >
-          mdi-book-open-page-variant
-        </v-icon>
-=======
         <v-tooltip left>
           <template v-slot:activator="{ on }">
             <v-sheet
@@ -74,13 +66,12 @@
                 color="secondary"
                 class="mr-2"
               >
-                mdi-book
+                mdi-book-open-page-variant
               </v-icon>
             </v-sheet>
           </template>
           <span>Journal</span>
         </v-tooltip>
->>>>>>> a0304e3756a87a4c6f0af3dc52f182783d7b0948
         <p class="ma-0">
           {{ publication.journal }}<span v-if="publication.year">, {{ publication.year }}</span>
         </p>

@@ -17,12 +17,23 @@
     >
       <!-- title, url -->
       <div class="d-flex mt-2 ">
-        <v-icon
-          color="secondary"
-          class="mr-2"
-        >
-          mdi-format-title
-        </v-icon>
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-sheet
+              class="mb-2 flag-mr"
+              v-on="on"
+            >
+              <v-icon
+                color="secondary"
+                class="mr-2"
+              >
+                mdi-format-title
+              </v-icon>
+            </v-sheet>
+          </template>
+
+          <span>Title</span>
+        </v-tooltip>
         <p
           v-if="publication.url"
           class="ma-0"
@@ -45,12 +56,22 @@
         v-if="publication.journal"
         class="d-flex mt-2 "
       >
-        <v-icon
-          color="secondary"
-          class="mr-2"
-        >
-          mdi-book
-        </v-icon>
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-sheet
+              class="mb-2 flag-mr"
+              v-on="on"
+            >
+              <v-icon
+                color="secondary"
+                class="mr-2"
+              >
+                mdi-book
+              </v-icon>
+            </v-sheet>
+          </template>
+          <span>Journal</span>
+        </v-tooltip>
         <p class="ma-0">
           {{ publication.journal }}<span v-if="publication.year">, {{ publication.year }}</span>
         </p>
@@ -61,12 +82,22 @@
         v-if="publication.authors"
         class="d-flex mt-2 "
       >
-        <v-icon
-          color="secondary"
-          class="mr-2"
-        >
-          mdi-human-male-female
-        </v-icon>
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-sheet
+              class="mb-2 flag-mr"
+              v-on="on"
+            >
+              <v-icon
+                color="secondary"
+                class="mr-2"
+              >
+                mdi-human-male-female
+              </v-icon>
+            </v-sheet>
+          </template>
+          <span>Authors</span>
+        </v-tooltip>
         <p class="ma-0">
           {{ prettifyList(publication.authors) }}
         </p>
@@ -77,12 +108,22 @@
         v-if="publication.doi"
         class="d-flex mt-2 "
       >
-        <v-icon
-          color="secondary"
-          class="mr-2"
-        >
-          mdi-file-cabinet
-        </v-icon>
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-sheet
+              class="mb-2 flag-mr"
+              v-on="on"
+            >
+              <v-icon
+                color="secondary"
+                class="mr-2"
+              >
+                mdi-file-cabinet
+              </v-icon>
+            </v-sheet>
+          </template>
+          <span>DOI</span>
+        </v-tooltip>
         <p class="ma-0">
           <a
             :href="'https://doi.org/' + publication.doi"
@@ -95,17 +136,32 @@
 
       <!-- pubmed -->
       <div
-        v-if="publication.pubmed_id"
+        v-if="publication.pubmedId"
         class="d-flex mt-2 "
       >
-        <v-icon
-          color="secondary"
-          class="mr-2"
-        >
-          mdi-medical-bag
-        </v-icon>
+        <v-tooltip left>
+          <template v-slot:activator="{ on }">
+            <v-sheet
+              class="mb-2 flag-mr"
+              v-on="on"
+            >
+              <v-icon
+                color="secondary"
+                class="mr-2"
+              >
+                mdi-medical-bag
+              </v-icon>
+            </v-sheet>
+          </template>
+          <span>PubMed ID</span>
+        </v-tooltip>
         <p class="ma-0">
-          {{ publication.pubmed_id }}
+          <a
+            :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"
+            target="_blank"
+          >
+            {{ publication.pubmedId }}
+          </a>
         </p>
       </div>
     </v-card>

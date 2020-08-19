@@ -7,6 +7,9 @@ const stringUtils = {
                 }
             }
             return string;
+        },
+        prettifyList(string) {
+            return string.replace(/,/g, ", ");
         }
     },
     filters: {

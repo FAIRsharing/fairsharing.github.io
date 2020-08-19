@@ -89,9 +89,9 @@
         <p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}</p>
       </div>
       <!--Description-->
-      <div class="d-flex align-center">
+      <div class="d-flex align-center mb-4">
         <b class="mr-2">Description:</b>
-        <p>{{ currentRecord['fairsharingRecord'].description | capitalize }}</p>
+        <p class="mb-0">{{ currentRecord['fairsharingRecord'].description | capitalize }}</p>
       </div>
       <!--HomePage-->
       <div class="d-flex">

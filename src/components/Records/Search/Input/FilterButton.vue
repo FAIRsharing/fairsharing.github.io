@@ -54,15 +54,13 @@
             const fieldValue = _module.currentParameter[this.item.filterName];
             const currentValue = _module.item.value;
             const title = _module.item.title.toLowerCase();
-            if(!_module.doubleItems){
               _module.checkCurrentParameters(title, fieldValue, currentValue);
-            }
           });
         },
         methods: {
             checkCurrentParameters: function(title, fieldValue, currentValue) {
               if (fieldValue === null) {
-                this.item.active = title === 'all';
+                this.item.active = title === 'all' || title === 'match all term';
               } else {
                 if (currentValue === undefined) {
                   this.item.active = false;

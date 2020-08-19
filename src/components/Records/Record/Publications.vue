@@ -49,7 +49,7 @@
           color="secondary"
           class="mr-2"
         >
-          mdi-book
+          mdi-book-open-page-variant
         </v-icon>
         <p class="ma-0">
           {{ publication.journal }}<span v-if="publication.year">, {{ publication.year }}</span>

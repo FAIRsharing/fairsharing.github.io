@@ -12,6 +12,10 @@ Record.state.currentRecord["fairsharingRecord"] = {
             organisation: {
                 name: "Organisation One",
                 types: ["exciting", "thrilling"]
+            },
+            grant: {
+                name: "generous grant",
+                id: 1
             }
         },
         {
@@ -41,7 +45,9 @@ describe("Organisations.vue", function(){
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("Organisations");
         expect(wrapper.vm.getField('organisationLinks')[0].organisation.name).toMatch("Organisation One");
+        expect(wrapper.vm.getField('organisationLinks')[0].grant.name).toMatch("generous grant");
         expect(wrapper.vm.getField('organisationLinks')[1].organisation.name).toMatch("Organisation Two");
+        expect(wrapper.vm.getField('organisationLinks')[1].grant).toBe(undefined);
     });
 
     it("counts relations correctly", () => {

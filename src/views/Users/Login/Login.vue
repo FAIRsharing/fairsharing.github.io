@@ -14,6 +14,7 @@
           :lg="!popUp ? '4' : '12' "
           :xl="!popUp ? '4' : '12' "
         >
+
           <v-card :flat="popUp">
             <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">
               <!-- card title -->
@@ -24,6 +25,12 @@
             <v-card-text>
               <!-- message handler -->
               <MessageHandler field="login" />
+
+              <!-- button to re-send confirmation if login failed -->
+              <span v-show="resendButton">
+                <ResendConfirmation />
+              </span>
+
             </v-card-text>
             <!-- OAUTH -->
             <v-card-text>
@@ -52,6 +59,8 @@
                 </v-list-item>
               </v-list>
             </v-card-text>
+
+
             <!-- card content // Form -->
             <v-card-text v-if="currentPanel === 'login'">
               <v-form
@@ -117,6 +126,7 @@
 <script>
 import {mapActions, mapState} from 'vuex'
 import MessageHandler from "@/components/Users/MessageHandler";
+import ResendConfirmation from "@/views/Users/Login/ResendConfirmation";
 import stringUtils from '@/utils/stringUtils';
 
 /** This component handles the login page
@@ -124,7 +134,7 @@ import stringUtils from '@/utils/stringUtils';
  */
 export default {
   name: "Login",
-  components: {MessageHandler},
+  components: {MessageHandler, ResendConfirmation},
   mixins: [stringUtils],
   props: {
     redirect: {
@@ -139,6 +149,7 @@ export default {
   data: () => {
     return {
       show1: false,
+      resendButton: false,
       currentPanel: "login",
       loginData: {},
       oauthLogin: [
@@ -176,7 +187,13 @@ export default {
       };
       _module.$emit('ClosePopup',false);
       await _module.login(user);
-      if (!_module.messages().login.error) {
+      if (_module.messages().login.error) {
+        const confirmationError = "You have to confirm your email address before continuing.";
+        if (_module.messages().login.message === confirmationError) {
+          // display resend confirmation link
+          _module.resendButton = true;
+        }
+      } else {
         const goTo = _module.$route.query.redirect;
         if (goTo) {
           _module.$router.push({

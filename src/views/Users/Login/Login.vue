@@ -14,7 +14,6 @@
           :lg="!popUp ? '4' : '12' "
           :xl="!popUp ? '4' : '12' "
         >
-
           <v-card :flat="popUp">
             <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">
               <!-- card title -->
@@ -30,7 +29,6 @@
               <span v-show="resendButton">
                 <ResendConfirmation />
               </span>
-
             </v-card-text>
             <!-- OAUTH -->
             <v-card-text>

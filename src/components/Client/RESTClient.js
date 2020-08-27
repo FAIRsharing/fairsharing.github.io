@@ -11,8 +11,7 @@ class RESTClient {
             return RESTClient._instance
         }
         RESTClient._instance = this;
-        //this.baseURL = "https://api.fairsharing.org";
-        this.baseURL = "http://localhost:3000";
+        this.baseURL = "https://api.fairsharing.org";
         this.headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",

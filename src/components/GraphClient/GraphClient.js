@@ -12,8 +12,7 @@ class GraphQLClient {
             return GraphQLClient._instance
         }
         GraphQLClient._instance = this;
-        //this.url = "https://api.fairsharing.org/graphql";
-        this.url = "http://localhost:3000/graphql";
+        this.url = "https://api.fairsharing.org/graphql";
         this.headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",

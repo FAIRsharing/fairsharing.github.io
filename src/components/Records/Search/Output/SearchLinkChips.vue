@@ -13,9 +13,7 @@
         text-color="secondary"
         color="secondary"
         outlined
-        link
-        :to="chipUrl(chip.label)"
-        @click="toggleChipActiveness(chip)"
+        @click="updateSearchQuery(chip)"
       >
         {{ chip.label }}
       </v-chip>
@@ -39,17 +37,30 @@
       }
     },
     methods: {
-      chipUrl(label) {
-        let _module = this;
-        return ("/search?" + _module.type + "=" + encodeURI(label));
-      },
-      toggleChipActiveness(chip) {
+      /*
+       * TODO: Contains some code similar to that in FilterButton.vue
+       * Could this be refactored somehow?
+       */
+      updateSearchQuery(chip) {
+        const _module = this;
+        let currentQuery = {};
+        let oldQuery = {};
+        Object.keys(_module.$route.query).forEach(function (param) {
+          currentQuery[param] = _module.$route.query[param];
+          oldQuery[param] = _module.$route.query[param]
+        });
+        currentQuery[_module.type] = encodeURIComponent(chip.label);
+        _module.$router.push({
+          name: _module.$route.name,
+          query: currentQuery
+        });
         let selectedItem = this.chips.find(item => isEqual(item, chip));
         this.chips.map(item => {
           if (isEqual(item, selectedItem)) {
             item.active = !item.active;
           }
         });
+
       }
     },
   }

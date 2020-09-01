@@ -8,16 +8,19 @@ class GraphQLClient {
      * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
      */
     constructor(){
+        this.headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        };
+        if (process.env.VUE_APP_CLIENT_ID){
+            this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID
+        }
         if (GraphQLClient._instance){
             return GraphQLClient._instance
         }
         GraphQLClient._instance = this;
         this.url = process.env.VUE_APP_API_ENDPOINT + "/graphql";
-        this.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "X-Client-Id": process.env.VUE_APP_CLIENT_ID,
-        };
+
     }
 
     /**

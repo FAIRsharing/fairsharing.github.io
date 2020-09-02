@@ -96,6 +96,10 @@
         "id",
         "relation",
         {
+          "queryName": "grant",
+          "fields": ["name", "id"]
+        },
+        {
           "queryName": "organisation",
           "fields": ["name", "id", "homepage", "types"]
         }

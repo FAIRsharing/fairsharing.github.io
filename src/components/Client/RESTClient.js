@@ -11,7 +11,7 @@ class RESTClient {
             return RESTClient._instance
         }
         RESTClient._instance = this;
-        this.baseURL = "https://api.fairsharing.org";
+        this.baseURL = process.env.VUE_APP_API_ENDPOINT;
         this.headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",

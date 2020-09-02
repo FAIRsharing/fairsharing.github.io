@@ -31,6 +31,7 @@ describe("GraphQL Client", function () {
     });
 
     it("can be instantiated as a singleton", function () {
+        process.env.VUE_APP_CLIENT_ID = 123;
         const instance2 = new Client();
         expect(client).toBe(instance2.constructor["_instance"]);
     });

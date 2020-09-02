@@ -52,7 +52,14 @@ describe("SearchLinkChips.vue", function () {
         let chip = {label: 'orange', active: 'false'};
         wrapper.vm.updateSearchQuery(chip);
         expect($router.push).toHaveBeenCalledTimes(3);
+        expect($router.push).toHaveBeenCalledWith({
+            "name": "search",
+            "query": {
+                "domains": "orange",
+                "subjects": "banana"
+            },
 
+        });
 
     });
 
@@ -61,6 +68,12 @@ describe("SearchLinkChips.vue", function () {
         let chip = {label: 'orange', active: 'false', type: 'domains'};
         wrapper.vm.updateSearchQuery(chip);
         expect($router.push).toHaveBeenCalledTimes(4);
+        expect($router.push).toHaveBeenCalledWith({
+            "name": "search",
+            "query": {
+                "domains": "banana,orange",
+            },
+        });
     });
 
     it("doesn't change the query if the same field is sent", () => {

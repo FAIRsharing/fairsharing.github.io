@@ -4,8 +4,8 @@
       <h4>
         {{ title.toUpperCase() }}
       </h4>
-      <span class="triangle-bottomLeft"></span>
-      <span class="triangle-bottomRight"></span>
+      <span class="triangle-bottomLeft" />
+      <span class="triangle-bottomRight" />
     </div>
   </div>
 </template>

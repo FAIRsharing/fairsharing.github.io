@@ -10,10 +10,12 @@
       v-for="(value, key, index) in relations"
       :key="'relation_' + index"
     >
-      <h4 class="org-relation-title">
+      <h4
+        v-if="getRelations(key).length"
+        class="org-relation-title"
+      >
         {{ value }}
       </h4>
-      <NoneFound :data-field="getRelations(key)" />
       <v-card
         v-for="(organisationLink, nindex) in getRelations(key)"
         :key="'organisationLink_' + nindex"
@@ -23,12 +25,23 @@
         outlined
       >
         <div class="d-flex mt-2 ">
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <v-sheet
+                      class="mb-2 flag-mr"
+                      v-on="on"
+              >
           <v-icon
             color="secondary"
             class="mr-2"
           >
             mdi-factory
           </v-icon>
+              </v-sheet>
+            </template>
+
+            <span>Organisation name and type</span>
+          </v-tooltip>
           <p class="ma-0">
             <a
               :href="organisationLink.organisation.homepage"
@@ -41,6 +54,32 @@
             </span>
           </p>
         </div>
+
+        <div
+          v-if="organisationLink.grant"
+          class="d-flex mt-2 "
+        >
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <v-sheet
+                      class="mb-2 flag-mr"
+                      v-on="on"
+              >
+          <v-icon
+            color="secondary"
+            class="mr-2"
+          >
+            mdi-cash-multiple
+          </v-icon>
+              </v-sheet>
+            </template>
+
+            <span>Grant funding this resource</span>
+          </v-tooltip>
+          <p class="ma-0">
+              {{ organisationLink.grant.name }}
+          </p>
+        </div>
       </v-card>
     </div>
   </v-card>
@@ -49,7 +88,6 @@
 <script>
     import { mapGetters } from 'vuex';
 
-    import NoneFound from '@/components/Records/Record/NoneFound';
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     /* TODO: Replace with query from database */
@@ -58,7 +96,6 @@
     export default {
         name: "Organisations",
         components: {
-            NoneFound,
             SectionTitle
         },
         data(){

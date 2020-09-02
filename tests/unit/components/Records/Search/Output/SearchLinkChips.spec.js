@@ -52,7 +52,22 @@ describe("SearchLinkChips.vue", function () {
         let chip = {label: 'orange', active: 'false'};
         wrapper.vm.updateSearchQuery(chip);
         expect($router.push).toHaveBeenCalledTimes(3);
+
+
     });
 
+    it("allows multiple fields of same tag type", () => {
+        wrapper.vm.$route.query = {domains: 'banana'};
+        let chip = {label: 'orange', active: 'false', type: 'domains'};
+        wrapper.vm.updateSearchQuery(chip);
+        expect($router.push).toHaveBeenCalledTimes(4);
+    });
+
+    it("doesn't change the query if the same field is sent", () => {
+        wrapper.vm.$route.query = {domains: 'banana'};
+        let chip = {label: 'banana', active: 'false', type: 'domains'};
+        wrapper.vm.updateSearchQuery(chip);
+        expect($router.push).toHaveBeenCalledTimes(4);
+    });
 
 });

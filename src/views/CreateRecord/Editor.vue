@@ -1,22 +1,22 @@
 <template>
   <v-container
-          id="recordEditor"
-          fluid
+    id="recordEditor"
+    fluid
   >
     <v-row>
       <v-col>
         <v-toolbar
-                flat
-                color="primary"
-                dark
+          flat
+          color="primary"
+          dark
         >
           <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
         </v-toolbar>
         <v-tabs dark>
           <v-tab
-                  v-for="tab in tabs"
-                  :key="'tab_' + tab.name"
-                  :disabled="tab.disabled"
+            v-for="tab in tabs"
+            :key="'tab_' + tab.name"
+            :disabled="tab.disabled"
           >
             {{ tab.name }}
           </v-tab>

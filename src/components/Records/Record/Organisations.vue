@@ -17,10 +17,10 @@
         {{ value }}
       </h4>
       <v-card
-        v-for="(organisationLink, index) in getRelations(key)"
-        :key="'organisationLink_' + index"
+        v-for="(organisationLink, nindex) in getRelations(key)"
+        :key="'organisationLink_' + nindex"
         class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-        :class="index === 0 ? 'mt-4':'mt-2'"
+        :class="nindex === 0 ? 'mt-4':'mt-2'"
         flat
         outlined
       >

@@ -123,10 +123,10 @@ import recordsCardUtils from "@/utils/recordsCardUtils";
 export default {
   name: "RecordsCardColumn",
   components: {AssociatedRecordsStack, RecordStatus, Ribbon},
+  mixins: [recordsCardUtils],
   props: {
     record: {default: null, type: Object},
   },
-  mixins: [recordsCardUtils],
   data() {
     return {
       allowLoop: true,

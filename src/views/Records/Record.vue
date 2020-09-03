@@ -68,9 +68,6 @@
               <!-- MAINTAINERS -->
               <Maintainers />
 
-              <!-- GRANTS -->
-              <Grants />
-
               <!-- PUBLICATIONS -->
               <Publications />
             </v-col>
@@ -94,7 +91,6 @@
     import Client from '@/components/GraphClient/GraphClient.js'
     import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
-    import Grants from '@/components/Records/Record/Grants';
     import Keywords from '@/components/Records/Record/Keywords';
     import Licences from '@/components/Records/Record/Licences';
     import Maintainers from '@/components/Records/Record/Maintainers';
@@ -109,7 +105,6 @@
         components: {
             AssociatedRecords,
             GeneralInfo,
-            Grants,
             Keywords,
             Licences,
             Maintainers,

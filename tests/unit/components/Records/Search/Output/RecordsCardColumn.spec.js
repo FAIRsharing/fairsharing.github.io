@@ -30,13 +30,6 @@ describe("RecordsCardColumn.vue", function () {
         expect(wrapper.vm.buttons[itemIndex].active).toBe(true);
     });
 
-    it("can check toggleChipActiveness function", () => {
-        wrapper.vm.currentActiveChips = 'domains'
-        const chip = {label: 'domains1', active: false}
-        wrapper.vm.toggleChipActiveness(chip);
-        expect(wrapper.vm.Chips[wrapper.vm.currentActiveChips][0].active).toBe(true);
-    });
-
     it("can check getButtonLabel function in CardColumn", () => {
         let returnedValue = wrapper.vm.getButtonLabel('taxonomies');
         expect(returnedValue).toBe('species');

@@ -50,9 +50,9 @@ describe("FilterPanel.vue", function () {
     })
 
     it("sorts filterbuttons into the correct order", () => {
-        $store.state.searchFilters.filters.push({filterName: 'grants', filterLabel: 'grantLabel'});
-        $store.state.searchFilters.filters.push({filterName: 'domains', filterLabel: 'domainLabel'});
-        $store.state.searchFilters.filters.push({filterName: 'subjects', filterLabel: 'subjectLabel'});
+        $store.state.searchFilters.filters.push({filterName: 'grants', filterLabel: 'grantLabel', 'sortOrder': 2});
+        $store.state.searchFilters.filters.push({filterName: 'domains', filterLabel: 'domainLabel', 'sortOrder': 1});
+        $store.state.searchFilters.filters.push({filterName: 'subjects', filterLabel: 'subjectLabel', 'sortOrder': 0});
         expect($store.state.searchFilters.filters.length).toEqual(4);
         let sorted = wrapper.vm.getFilters.sort(wrapper.vm.compareLabels);
         expect(sorted[0]['filterName']).toEqual('subjects');

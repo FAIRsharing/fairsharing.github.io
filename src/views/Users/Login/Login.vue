@@ -155,19 +155,19 @@ export default {
           name: "ORCID",
           icon: "fab fa-orcid",
           color: "green white--text",
-          callback: "https://api.fairsharing.org/users/auth/orcid",
+          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/orcid",
         },
         {
           name: "Twitter",
           icon: "fab fa-twitter",
           color: "blue white--text",
-          callback: "https://api.fairsharing.org/users/auth/twitter",
+          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/twitter",
         },
         {
           name: "GitHub",
           icon: "fab fa-github",
           color: "black white--text",
-          callback: "https://api.fairsharing.org/users/auth/github",
+          callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/github",
         }
       ]
     }

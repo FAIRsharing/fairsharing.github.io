@@ -9,17 +9,20 @@
 
     <v-card-text>
       <v-tabs left>
-        <v-tab> Table </v-tab>
-        <v-tab disabled> Graph </v-tab>
+        <v-tab>
+          Table
+        </v-tab>
+        <v-tab disabled>
+          Graph
+        </v-tab>
 
         <v-tab-item>
-          <AssociatedRecordsTable :recordAssociations="recordAssociations" />
+          <AssociatedRecordsTable :record-associations="recordAssociations" />
         </v-tab-item>
 
         <v-tab-item>
-          <AssociatedRecordsGraph :recordAssociations="recordAssociations" />
+          <AssociatedRecordsGraph :record-associations="recordAssociations" />
         </v-tab-item>
-
       </v-tabs>
     </v-card-text>
   </v-card>

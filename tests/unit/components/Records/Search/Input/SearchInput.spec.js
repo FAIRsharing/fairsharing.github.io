@@ -48,4 +48,16 @@ describe("FilterPanel.vue", function () {
         wrapper.vm.resetPanel();
         expect(wrapper.vm.panel).toStrictEqual([])
     })
+
+    it("sorts filterbuttons into the correct order", () => {
+        $store.state.searchFilters.filters.push({filterName: 'grants', filterLabel: 'grantLabel'});
+        $store.state.searchFilters.filters.push({filterName: 'domains', filterLabel: 'domainLabel'});
+        $store.state.searchFilters.filters.push({filterName: 'subjects', filterLabel: 'subjectLabel'});
+        expect($store.state.searchFilters.filters.length).toEqual(4);
+        let sorted = wrapper.vm.getFilters.sort(wrapper.vm.compareLabels);
+        expect(sorted[0]['filterName']).toEqual('subjects');
+        expect(sorted[1]['filterName']).toEqual('domains');
+        expect(sorted[2]['filterName']).toEqual('grants');
+        expect(sorted[3]['filterName']).toEqual('filterNameTest');
+    })
 });

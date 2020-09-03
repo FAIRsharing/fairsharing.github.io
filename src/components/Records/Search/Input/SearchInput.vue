@@ -94,7 +94,6 @@ export default {
       if (aName > bName) {
         comparison = 1;
       }
-      console.log("COMP: " + comparison);
       return comparison;
     }
   },

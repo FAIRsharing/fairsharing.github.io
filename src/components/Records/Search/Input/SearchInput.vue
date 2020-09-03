@@ -47,15 +47,28 @@ export default {
     return {
       panel: [],
       filterSelected: {},
+      // Order of filters in left panel - see compareLabels below.
+      nameOrder: [
+        'subjects',
+        'domains',
+        'fairsharingRegistry',
+        'recordType',
+        'taxonomies',
+        'countries',
+        'organisations',
+        'journals',
+        'grants'
+      ]
     }
   },
   computed: {
     ...mapState('uiController', ['UIGeneralStatus']),
     ...mapGetters("searchFilters", ["getFilters"]),
     setup() {
-      this.setPanel();
-      this.createIndexForFilters();
-      return this.getFilters;
+      let _module = this;
+      _module.setPanel();
+      _module.createIndexForFilters();
+      return _module.getFilters.sort(_module.compareLabels);
     },
     responsiveClassObject: function () {
       return {
@@ -81,6 +94,23 @@ export default {
         this.filterSelected[item.filterName] = [];
       });
     },
+    compareLabels: function(a, b) {
+      let _module = this;
+      /*
+       * This gets the index of the name of the filter from the list above, so that the fields can be sorted on the
+       * users' preferences. But, some terms will not be in the list, so they are given the index of 100 to force
+       * them to appear later in the list.
+       */
+      const aName = _module.nameOrder.indexOf(a['filterName']) === -1 ? 100 : _module.nameOrder.indexOf(a['filterName']);
+      const bName = _module.nameOrder.indexOf(b['filterName'])=== -1 ? 100 : _module.nameOrder.indexOf(b['filterName']);
+      let comparison = 0;
+      if (aName > bName) {
+        comparison = 1;
+      } else if (aName < bName) {
+        comparison = -1;
+      }
+      return comparison;
+    }
   },
 }
 </script>

@@ -183,8 +183,6 @@ export default {
     compareLabels: function(a, b) {
       const aName = a['sortOrder'] ?? 100;
       const bName = b['sortOrder'] ?? 100;
-      console.log("A:" + a['filterName'] + " --- " + a['sortOrder']);
-      console.log("B:" + b['filterName'] + " --- " + b['sortOrder']);
       let comparison = -1;
       if (aName > bName) {
         comparison = 1;

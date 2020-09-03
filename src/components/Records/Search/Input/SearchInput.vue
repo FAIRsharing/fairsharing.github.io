@@ -102,11 +102,11 @@ export default {
        * them to appear later in the list.
        */
       const aName = _module.nameOrder.indexOf(a['filterName']) === -1 ? 100 : _module.nameOrder.indexOf(a['filterName']);
-      const bName = _module.nameOrder.indexOf(b['filterName'])=== -1 ? 100 : _module.nameOrder.indexOf(b['filterName']);
+      const bName = _module.nameOrder.indexOf(b['filterName']) === -1 ? 100 : _module.nameOrder.indexOf(b['filterName']);
       let comparison = 0;
       if (aName > bName) {
         comparison = 1;
-      } else if (aName < bName) {
+      } else if (aName <= bName) {
         comparison = -1;
       }
       return comparison;

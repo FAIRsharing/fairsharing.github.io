@@ -12,11 +12,11 @@
           ...mapState("records", ["hits", "perPage", "currentPage"]),
           x: function () {
             let _module = this;
-            return _module.perPage * (_module.currentPage -1)
+            return _module.perPage * (_module.currentPage -1);
           },
           y: function () {
             let _module = this;
-            return (_module.perPage * _module.currentPage) -1
+            return (_module.perPage * _module.currentPage) -1;
           }
         }
     }

@@ -15,11 +15,30 @@
       :headers="headers"
       :items="recordAssociations"
       :search="search"
-    />
+    >
+    <template v-slot:item="props">
+      <tr>
+        <td>
+          <a :href="'#/' + props.item.id"> {{ props.item.name }}</a>
+        </td>
+        <td>
+          {{ props.item.registry }} <span v-if="props.item.type">({{ cleanString(props.item.type) }})</span>
+        </td>
+        <td>
+          {{ props.item.recordAssocLabel }}
+        </td>
+        <td>
+          {{ props.item.subject }}
+        </td>
+      </tr>
+    </template>
+    </v-data-table>
   </section>
 </template>
 
 <script>
+  import stringUtils from '@/utils/stringUtils';
+
   export default {
     name: "AssociatedRecordsTable",
     props: {
@@ -28,6 +47,7 @@
             default: null
         }
     },
+    mixins: [stringUtils],
     data: () => {
         return {
             headers: [

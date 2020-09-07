@@ -177,6 +177,13 @@
                   >
                     Forgot your password ?
                   &lt;/router-link>
+                  &lt;v-divider />
+                  &lt;router-link
+                    to="/accounts/signup"
+                    @click.prevent="()=>this.$emit('ClosePopup',true)"
+                  >
+                    Create a new account
+                  &lt;/router-link>
                 &lt;/v-card-text>
 
 
@@ -189,14 +196,6 @@
                   >
                     LOGIN
                   &lt;/v-btn>
-                  &lt;v-card-text class="py-1">
-                    &lt;router-link
-                      to="/accounts/signup"
-                      @click.prevent="()=>this.$emit('ClosePopup',true)"
-                    >
-                      Register
-                    &lt;/router-link>
-                  &lt;/v-card-text>
                 &lt;/v-card-actions>
               &lt;/v-form>
             &lt;/v-card-text>

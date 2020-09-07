@@ -171,21 +171,20 @@
                 />
 
                 &lt;v-card-text class="text-center py-1">
-                  &lt;router-link
-                    to="/accounts/forgotPassword"
+                  &lt;a
+                    href="#/accounts/forgotPassword"
                     @click="()=>{this.$emit('ClosePopup',true)}"
                   >
                     Forgot your password ?
-                  &lt;/router-link>
+                  &lt;/a>
                   &lt;v-divider />
-                  &lt;router-link
-                    to="/accounts/signup"
-                    @click.prevent="()=>this.$emit('ClosePopup',true)"
+                  &lt;a
+                    href="#/accounts/signup"
+                    @click="()=>this.$emit('ClosePopup',true)"
                   >
                     Create a new account
-                  &lt;/router-link>
+                  &lt;/a>
                 &lt;/v-card-text>
-
 
                 &lt;v-card-actions class="mt-2 justify-center">
                   &lt;v-btn
@@ -274,7 +273,8 @@ export default {
           _module.$router.push({
             path: goTo
           })
-        } else if (_module.redirect) {
+        }
+        else if (_module.redirect) {
           _module.$router.go(-1);
         }
       }

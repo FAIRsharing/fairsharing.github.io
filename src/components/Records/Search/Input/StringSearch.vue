@@ -1,6 +1,6 @@
 <template>
   <form
-    class="stringSearchBar d-flex flex-row align-center align-content-center  mr-1 mr-lg-2 ml-1"
+    class=" d-flex flex-row align-center align-content-center  mr-1 mr-lg-2 ml-1"
     @submit.prevent="searchString()"
   >
     <v-text-field
@@ -9,13 +9,14 @@
       single-line
       clearable
       dense
+      full-width
       placeholder="Search through all data."
     />
     <v-btn
       color="primary"
       outlined
-      height="36px"
-      class="mt-1 ml-2"
+      :class="responsiveHeight"
+      class="mt-0 mt-lg-1 ml-2"
       @click="searchString()"
     >
       <v-icon>search</v-icon>
@@ -27,6 +28,18 @@
 <script>
 export default {
   name: "StringSearch",
+  props:{
+  },
+  computed:{
+    responsiveHeight: function () {
+      return {
+        'style-sm-xs': this.$vuetify.breakpoint.smAndDown,
+        'style-md': this.$vuetify.breakpoint.mdOnly,
+        'style-lg': this.$vuetify.breakpoint.lgOnly,
+        'style-xl': this.$vuetify.breakpoint.xlOnly,
+      }
+    }
+  },
   data() {
     return {
       searchTerm: null
@@ -44,7 +57,7 @@ export default {
         })
         _module.searchTerm = null;
       }
-    }
+    },
   }
 }
 </script>
@@ -56,8 +69,19 @@ export default {
 }
 .button-text-size
 {
-
   font-size: 11px;
+}
+.style-xl {
+  height: 56px!important;
+}
+.style-lg {
+  height: 40px!important;
+}
+.style-md {
+  height: 32px!important;
+}
+.style-sm-xs {
+  height: 32px!important;
 }
 </style>
 

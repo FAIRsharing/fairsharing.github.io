@@ -5,22 +5,21 @@
     max-height="100"
   >
     <v-app-bar-nav-icon
-      v-if="$vuetify.breakpoint.smAndDown"
+      v-if="$vuetify.breakpoint.mdAndDown"
       @click="toggleDrawerLeft"
     />
     <router-link to="/">
       <v-img
         src="@/assets/fairsharing-logo.svg"
         height="70"
-        class="d-flex flex-grow-0"
         contain
       />
     </router-link>
-    <v-spacer />
+    <string-search class="flex-grow-1"/>
     <nav>
       <ul
-        v-if="!$vuetify.breakpoint.sm && !$vuetify.breakpoint.xs"
-        class="d-flex flex-row align-center flex-wrap"
+        v-if="!$vuetify.breakpoint.md && !$vuetify.breakpoint.sm"
+        class="d-flex flex-row align-center flex-wrap px-0"
       >
         <li
           v-for="(item, itemIndex) in links"
@@ -80,10 +79,11 @@
 <script>
     import {mapState} from 'vuex'
     import Login from "@/views/Users/Login/Login";
+    import StringSearch from "@/components/Records/Search/Input/StringSearch";
 
     export default {
         name: "Header",
-        components: {Login},
+        components: {StringSearch, Login},
         computed: {
             ...mapState('uiController', ["UIGeneralStatus"]),
             ...mapState('users', ["user"])
@@ -93,11 +93,6 @@
                 closeMenuStatus: false,
                 drawerLeft: false,
                 links: [
-                    {
-                        label: "Search",
-                        link: "/search",
-                        color: "blue"
-                    },
                     {
                         label: "Standards",
                         link: "/standards",

@@ -69,27 +69,11 @@
         class="chips-container-margin"
       >
         <v-col cols="12">
-          <section class="chips-container">
-            <h5 class="d-none">
-              Choose Subject , Domain , Taxonomy
-            </h5>
-            <v-chip-group
-              column
-            >
-              <v-chip
-                v-for="(chip,index) in Chips[currentActiveChips]"
-                :key="chip.label+'_'+index"
-                small
-                text-color="secondary"
-                color="secondary"
-                :close="chip.active"
-                outlined
-                @click="toggleChipActiveness(chip)"
-              >
-                {{ chip.label }}
-              </v-chip>
-            </v-chip-group>
-          </section>
+          <!-- chips container -->
+          <SearchLinkChips
+            :type="currentActiveChips"
+            :chips="Chips[currentActiveChips]"
+          />
         </v-col>
       </v-row>
       <!--       Description -->
@@ -117,16 +101,16 @@
 import Ribbon from "@/components/Records/Shared//Ribbon";
 import AssociatedRecordsStack from "./AssociatedRecordsStack";
 import RecordStatus from "@/components/Records/Shared/RecordStatus"
-import {isEqual} from "lodash";
+import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 
 export default {
   name: "RecordsCardColumn",
-  components: {AssociatedRecordsStack, RecordStatus, Ribbon},
+  components: {AssociatedRecordsStack, RecordStatus, Ribbon, SearchLinkChips},
+  mixins: [recordsCardUtils],
   props: {
     record: {default: null, type: Object},
   },
-  mixins: [recordsCardUtils],
   data() {
     return {
       allowLoop: true,
@@ -151,17 +135,6 @@ export default {
       this.buttons[itemIndex].active = true;
       // changing currentChips data
       this.currentActiveChips = this.buttons[itemIndex].title;
-    },
-    toggleChipActiveness: function (chip) {
-      let selectedItem = this.Chips[this.currentActiveChips].find(item => isEqual(item, chip));
-      this.Chips[this.currentActiveChips].map(item => {
-        if (isEqual(item, selectedItem)) {
-          item.active = !item.active;
-          //    should call scroll to top after a delay.
-          // setTimeout(this.scrollToTop, 500);
-          //    should call Api for the selected chip to be added in chips list.
-        }
-      });
     },
     associatedRecords: function (record) {
       let records = {

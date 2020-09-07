@@ -56,16 +56,17 @@ export default {
   data() {
     return {
       panel: [],
-      filterSelected: {},
+      filterSelected: {}
     }
   },
   computed: {
     ...mapState('uiController', ['UIGeneralStatus']),
     ...mapGetters("searchFilters", ["getFilters"]),
     setup() {
-      this.setPanel();
-      this.createIndexForFilters();
-      return this.getFilters;
+      let _module = this;
+      _module.setPanel();
+      _module.createIndexForFilters();
+      return _module.getFilters.sort(_module.compareLabels);
     },
     responsiveClassObject: function () {
       return {
@@ -91,6 +92,20 @@ export default {
         this.filterSelected[item.filterName] = [];
       });
     },
+    /**
+     * This gets the index of the name of the filter from the list above, so that the fields can be sorted on the
+     * users' preferences. But, some terms will not be in the list, so they are given the index of 100 to force
+     * them to appear later in the list.
+     */
+    compareLabels: function(a, b) {
+      const aName = a['sortOrder'] ?? 100;
+      const bName = b['sortOrder'] ?? 100;
+      let comparison = -1;
+      if (aName > bName) {
+        comparison = 1;
+      }
+      return comparison;
+    }
   },
 }
 </script>

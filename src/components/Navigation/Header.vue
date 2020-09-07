@@ -5,7 +5,7 @@
     max-height="100"
   >
     <v-app-bar-nav-icon
-      v-if="$vuetify.breakpoint.mdAndDown"
+      v-if="$vuetify.breakpoint.smAndDown"
       @click="toggleDrawerLeft"
     />
     <router-link to="/">
@@ -15,64 +15,69 @@
         contain
       />
     </router-link>
-    <string-search class="flex-grow-1"/>
-    <nav>
-      <ul
-        v-if="!$vuetify.breakpoint.md && !$vuetify.breakpoint.sm"
-        class="d-flex flex-row align-center flex-wrap px-0"
-      >
-        <li
-          v-for="(item, itemIndex) in links"
-          :key="'navBarTopMenuItem_' + itemIndex"
+    <div
+      id="custom-width"
+      class="d-flex justify-end align-center"
+    >
+      <string-search :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'" />
+      <nav>
+        <ul
+          v-if="!$vuetify.breakpoint.md && !$vuetify.breakpoint.sm"
+          class="d-flex flex-row align-center flex-wrap px-0"
         >
-          <v-btn
-            :small="$vuetify.breakpoint.mdAndDown"
-            :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1"
-            :class="item.color"
-            :to="item.link"
+          <li
+            v-for="(item, itemIndex) in links"
+            :key="'navBarTopMenuItem_' + itemIndex"
           >
-            <span class="white--text">{{ item.label }}</span>
-          </v-btn>
-        </li>
-        <!-- LOGIN -->
-        <v-menu
-          v-if="!user().isLoggedIn"
-          offset-y
-          transition="slide-y-transition"
-          :close-on-content-click="closeMenuStatus"
-          class="mt-5"
-          max-height="90vh"
-        >
-          <template v-slot:activator="{ on }">
             <v-btn
               :small="$vuetify.breakpoint.mdAndDown"
               :x-large="$vuetify.breakpoint.xlOnly"
-              color="teal darken-2 white--text"
               class="mr-1 mt-sm-1"
-              dark
-              v-on="on"
+              :class="item.color"
+              :to="item.link"
             >
-              Login
+              <span class="white--text">{{ item.label }}</span>
             </v-btn>
-          </template>
-          <Login
-            :redirect="false"
-            :pop-up="true"
-            @ClosePopup="closePopup"
-          />
-        </v-menu>
-        <v-btn
-          v-else
-          :small="$vuetify.breakpoint.mdAndDown"
-          :x-large="$vuetify.breakpoint.xlOnly"
-          class="mr-1 mt-sm-1 teal darken-2"
-          to="/accounts/profile"
-        >
-          <span class="white--text">Welcome, {{ user().credentials.username }}</span>
-        </v-btn>
-      </ul>
-    </nav>
+          </li>
+          <!-- LOGIN -->
+          <v-menu
+            v-if="!user().isLoggedIn"
+            offset-y
+            transition="slide-y-transition"
+            :close-on-content-click="closeMenuStatus"
+            class="mt-5"
+            max-height="90vh"
+          >
+            <template v-slot:activator="{ on }">
+              <v-btn
+                :small="$vuetify.breakpoint.mdAndDown"
+                :x-large="$vuetify.breakpoint.xlOnly"
+                color="teal darken-2 white--text"
+                class="mr-1 mt-sm-1"
+                dark
+                v-on="on"
+              >
+                Login
+              </v-btn>
+            </template>
+            <Login
+              :redirect="false"
+              :pop-up="true"
+              @ClosePopup="closePopup"
+            />
+          </v-menu>
+          <v-btn
+            v-else
+            :small="$vuetify.breakpoint.mdAndDown"
+            :x-large="$vuetify.breakpoint.xlOnly"
+            class="mr-1 mt-sm-1 teal darken-2"
+            to="/accounts/profile"
+          >
+            <span class="white--text">Welcome, {{ user().credentials.username }}</span>
+          </v-btn>
+        </ul>
+      </nav>
+    </div>
   </v-app-bar>
 </template>
 
@@ -158,6 +163,13 @@
 
     header {
         padding-right: .5rem;
+    }
+    .flex-grow-custom
+    {
+      width: 30%;
+    }
+    #custom-width{
+      width: 94%;
     }
 </style>
 

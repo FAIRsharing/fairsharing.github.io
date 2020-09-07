@@ -72,6 +72,12 @@
         </v-row>
       </v-skeleton-loader>
     </div>
+
+    <!--List Controller-->
+    <ListController
+      class="mt-2"
+      @ChangeListType="changeListType"
+    />
   </section>
 </template>
 

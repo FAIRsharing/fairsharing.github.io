@@ -78,21 +78,20 @@
                 />
 
                 <v-card-text class="text-center py-1">
-                  <router-link
-                    to="/accounts/forgotPassword"
+                  <a
+                    href="#/accounts/forgotPassword"
                     @click="()=>{this.$emit('ClosePopup',true)}"
                   >
                     Forgot your password ?
-                  </router-link>
+                  </a>
                   <v-divider />
-                  <router-link
-                    to="/accounts/signup"
-                    @click.prevent="()=>this.$emit('ClosePopup',true)"
+                  <a
+                    href="#/accounts/signup"
+                    @click="()=>this.$emit('ClosePopup',true)"
                   >
                     Create a new account
-                  </router-link>
+                  </a>
                 </v-card-text>
-
 
                 <v-card-actions class="mt-2 justify-center">
                   <v-btn
@@ -181,7 +180,8 @@ export default {
           _module.$router.push({
             path: goTo
           })
-        } else if (_module.redirect) {
+        }
+        else if (_module.redirect) {
           _module.$router.go(-1);
         }
       }

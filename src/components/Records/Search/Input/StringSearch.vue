@@ -10,13 +10,15 @@
       clearable
       dense
       full-width
-      placeholder="Search through all data."
+      :class="$vuetify.breakpoint.lgAndDown?'v-input':'v-input-lg-up'"
+      :height="responsiveHeightTextBox"
+      :placeholder="placeHolder"
     />
     <v-btn
       color="primary"
       outlined
       :class="responsiveHeight"
-      class="mt-0 mt-lg-1 ml-2"
+      class="mt-1 mt-lg-1 ml-2"
       @click="searchString()"
     >
       <v-icon>search</v-icon>
@@ -28,21 +30,29 @@
 <script>
 export default {
   name: "StringSearch",
-  props:{
-  },
-  computed:{
-    responsiveHeight: function () {
-      return {
-        'style-sm-xs': this.$vuetify.breakpoint.smAndDown,
-        'style-md': this.$vuetify.breakpoint.mdOnly,
-        'style-lg': this.$vuetify.breakpoint.lgOnly,
-        'style-xl': this.$vuetify.breakpoint.xlOnly,
-      }
-    }
+  props: {
+    placeHolder: {default: "", type: String}
   },
   data() {
     return {
       searchTerm: null
+    }
+  },
+  computed: {
+    responsiveHeight: function () {
+      return {
+        'style-sm-xs': this.$vuetify.breakpoint.mdAndDown,
+        'style-md': this.$vuetify.breakpoint.mdOnly,
+        'style-lg': this.$vuetify.breakpoint.lgOnly,
+        'style-xl': this.$vuetify.breakpoint.xlOnly,
+      }
+    },
+    responsiveHeightTextBox: function () {
+      let boxHeight=38;
+      if(this.$vuetify.breakpoint.xlOnly){
+        boxHeight = 54;
+      }
+        return boxHeight;
     }
   },
   methods: {
@@ -62,26 +72,34 @@ export default {
 }
 </script>
 
-<style scoped >
+<style scoped>
 .v-input {
-  height: 38px;
   box-shadow: 0 0 0 0;
+  height: 38px;
 }
-.button-text-size
-{
+.v-input-lg-up{
+  box-shadow: 0 0 0 0;
+  height: 50px;
+}
+
+.button-text-size {
   font-size: 11px;
 }
+
 .style-xl {
-  height: 56px!important;
+  height: 56px !important;
 }
+
 .style-lg {
-  height: 40px!important;
+  height: 40px !important;
 }
+
 .style-md {
-  height: 32px!important;
+  height: 32px !important;
 }
+
 .style-sm-xs {
-  height: 32px!important;
+  height: 40px !important;
 }
 </style>
 

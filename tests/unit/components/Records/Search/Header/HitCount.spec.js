@@ -27,4 +27,12 @@ describe("HitCount.vue", function () {
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("HitCount");
     });
+
+    it("sets maximum number of hits correctly", () => {
+        let records = {hits: 90, perPage: 20, currentPage: 1};
+        $store.state.records = records;
+        expect(wrapper.vm.y).toBe(20);
+        $store.state.records.currentPage = 5;
+        expect(wrapper.vm.y).toBe(90);
+    });
 });

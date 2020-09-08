@@ -37,6 +37,7 @@
                 style="width: 60%"
               >
                 <u>{{ record.name }}</u>
+                <span class="ml-2"> ({{ record.abbreviation }}) </span>
               </h3>
             </div>
           </router-link>
@@ -102,7 +103,7 @@
 </template>
 
 <script>
-import Ribbon from "@/components/Records/Shared//Ribbon";
+import Ribbon from "@/components/Records/Shared/Ribbon";
 import AssociatedRecordsStack from "./AssociatedRecordsStack";
 import RecordStatus from "@/components/Records/Shared/RecordStatus"
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";

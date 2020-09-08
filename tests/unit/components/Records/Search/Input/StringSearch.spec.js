@@ -41,7 +41,7 @@ describe("StringSearch.vue", () => {
 
     it("can check responsiveHeightTextBox", () => {
         vuetify.framework.breakpoint.xlOnly = true;
-        expect(wrapper.vm.responsiveHeightTextBox).toBe(54);
+        expect(wrapper.vm.responsiveHeightTextBox).toBe(50);
     });
 
 });

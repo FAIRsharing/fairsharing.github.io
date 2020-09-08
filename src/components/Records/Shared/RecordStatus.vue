@@ -1,10 +1,10 @@
 <template>
-  <div class="circle">
+  <div class="circle" v-if="recordType">
     <v-tooltip top>
       <template v-slot:activator="{ on }">
-        <v-img
+        <img
           v-if="Object.keys(recordType).includes(record.type)"
-          :src="recordType[record.type].icon"
+          :src="require('@/' + recordType[record.type].icon)"
           class="iconClass"
           v-on="on"
         />
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+    import recordTypes from "@/components/Records/recordsTypeData.json"
     export default {
         name: "RecordStatus",
         props: {
@@ -64,50 +65,10 @@
                         backColor: 'background: linear-gradient(red, red)'
                     },
                 },
-                recordType: {
-                    collection: {
-                        icon: require("@/assets/records/collection-icon.svg"),
-                        toolTip: 'Collection'
-                    },
-                    journal: {
-                        icon: require("@/assets/records/policy.png"),
-                        toolTip: 'Journal',
-                    },
-                    identifier_schema:{
-                      icon: require("@/assets/records/policy.png"),
-                      toolTip: 'Identifier Schema',
-                    },
-                    society: {
-                        icon: require("@/assets/records/policy.png"),
-                        toolTip: 'Society',
-                    },
-                    funder: {
-                        icon: require("@/assets/records/policy.png"),
-                        toolTip: 'Founder',
-                    },
-                    terminology_artefact: {
-                        icon: require("@/assets/records/terminology_artifact.png"),
-                        toolTip: 'Terminology Artefact'
-                    },
-                    model_and_format: {
-                        icon: require("@/assets/records/model_and_format.png"),
-                        toolTip: 'Model and Format'
-                    },
-                    reporting_guideline: {
-                        icon: require("@/assets/records/reporting_guidelines.png"),
-                        toolTip: 'Reporting Guideline',
-                    },
-                    metric: {
-                        icon: require("@/assets/records/std-metric.png"),
-                        toolTip: 'Metric'
-                    },
-                    repository: {
-                        icon: require("@/assets/records/db-icon.png"),
-                        toolTip: 'Repository',
-                    },
-                },
+                recordType: null,
             }
-        }, computed: {
+        },
+        computed: {
             getRecordStatus: function () {
                 let _module = this;
                 if (this.statusStyles[_module.record.status] !== undefined && _module.record.status !== undefined)
@@ -116,6 +77,11 @@
                     return this.statusStyles[undefined]
                 }
             }
+        },
+        created() {
+          this.$nextTick(function () {
+            this.recordType = recordTypes;
+          });
         }
     }
 </script>

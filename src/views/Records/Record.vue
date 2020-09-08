@@ -155,21 +155,15 @@
                 const properties = ['fairsharingRecord', 'linkedRecord'];
 
                 joinedArrays.forEach(item => {
-                    let object = {
-                        recordAssocLabel: _module.cleanString(item.recordAssocLabel),
-                    };
+                    let object = {};
                     properties.forEach(prop => {
                         if (Object.prototype.hasOwnProperty.call(item, prop)) {
+                            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel),
                             object.id = item[prop].id;
                             object.registry = item[prop].registry;
-                            if (prop === "linkedRecord") {
-                              object.name = item[prop].name;
-                              object.subject = _module.currentRecord['fairsharingRecord'].name
-                            }
-                            else {
-                              object.name = _module.currentRecord['fairsharingRecord'].name
-                              object.subject = item[prop].name;
-                            }
+                            object.name = item[prop].name;
+                            object.subject = _module.currentRecord['fairsharingRecord'].name
+                            object.type = item[prop].type;
                         }
                     });
                     _module.recordAssociations.push(object);

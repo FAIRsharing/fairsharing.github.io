@@ -19,7 +19,16 @@
     <template v-slot:item="props">
       <tr>
         <td>
-          <a :href="'#/' + props.item.id"> {{ props.item.name }}</a>
+          <a :href="'#/' + props.item.id">
+            <span v-if="props.item.type" class="mr-2">
+                <img
+                  v-if="Object.keys(recordType).includes(props.item.type)"
+                  :src="require('@/' + recordType[props.item.type].icon)"
+                  class="miniIcon"
+                />
+            </span>
+            {{ props.item.name }}
+         </a>
         </td>
         <td>
           {{ props.item.registry }} <span v-if="props.item.type">({{ cleanString(props.item.type) }})</span>
@@ -38,6 +47,8 @@
 
 <script>
   import stringUtils from '@/utils/stringUtils';
+  import recordTypes from "@/components/Records/recordsTypeData.json"
+
 
   export default {
     name: "AssociatedRecordsTable",
@@ -57,8 +68,14 @@
                 {text: 'Subject', value: 'subject'},
             ],
             search: '',
+            recordType: null
         }
     },
+    created() {
+      this.$nextTick(function () {
+        this.recordType = recordTypes;
+      });
+    }
   }
 </script>
 
@@ -66,6 +83,11 @@
 
 table th {
     min-width: 200px;
+}
+
+.miniIcon {
+  width: 25px;
+  height: auto;
 }
 
 </style>

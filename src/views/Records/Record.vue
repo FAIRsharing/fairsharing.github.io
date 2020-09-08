@@ -156,7 +156,6 @@
 
                 joinedArrays.forEach(item => {
                     let object = {};
-                    console.log(item);
                     properties.forEach(prop => {
                         if (Object.prototype.hasOwnProperty.call(item, prop)) {
                             object.recordAssocLabel = _module.cleanString(item.recordAssocLabel),

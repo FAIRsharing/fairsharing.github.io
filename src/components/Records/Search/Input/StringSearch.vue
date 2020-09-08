@@ -31,7 +31,7 @@
 export default {
   name: "StringSearch",
   props: {
-    placeHolder: {default: "", type: String}
+    placeholder: {default: "", type: String}
   },
   data() {
     return {

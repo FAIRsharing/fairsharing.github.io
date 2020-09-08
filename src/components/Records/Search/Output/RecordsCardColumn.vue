@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import Ribbon from "@/components/Records/Shared//Ribbon";
+import Ribbon from "@/components/Records/Shared/Ribbon";
 import AssociatedRecordsStack from "./AssociatedRecordsStack";
 import RecordStatus from "@/components/Records/Shared/RecordStatus"
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";

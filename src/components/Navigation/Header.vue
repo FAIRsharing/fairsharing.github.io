@@ -16,8 +16,7 @@
       />
     </router-link>
     <div
-      id="custom-width"
-      class="d-flex justify-end align-center"
+      class="d-flex justify-end align-center custom-width"
     >
       <string-search :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'" />
       <nav>
@@ -82,95 +81,96 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
-    import Login from "@/views/Users/Login/Login";
-    import StringSearch from "@/components/Records/Search/Input/StringSearch";
+import {mapState} from 'vuex'
+import Login from "@/views/Users/Login/Login";
+import StringSearch from "@/components/Records/Search/Input/StringSearch";
 
-    export default {
-        name: "Header",
-        components: {StringSearch, Login},
-        computed: {
-            ...mapState('uiController', ["UIGeneralStatus"]),
-            ...mapState('users', ["user"])
+export default {
+  name: "Header",
+  components: {StringSearch, Login},
+  computed: {
+    ...mapState('uiController', ["UIGeneralStatus"]),
+    ...mapState('users', ["user"])
+  },
+  data() {
+    return {
+      closeMenuStatus: false,
+      drawerLeft: false,
+      links: [
+        {
+          label: "Standards",
+          link: "/standards",
+          color: "blue"
         },
-        data() {
-            return {
-                closeMenuStatus: false,
-                drawerLeft: false,
-                links: [
-                    {
-                        label: "Standards",
-                        link: "/standards",
-                        color: "blue"
-                    },
-                    {
-                        label: "Databases",
-                        link: "/databases",
-                        color: "blue"
-                    },
-                    {
-                        label: "Policies",
-                        link: "/policies",
-                        color: "blue"
-                    },
-                    {
-                        label: "Collections",
-                        link: "/collections",
-                        color: "blue"
-                    },
-                    {
-                        label: "Add/Claim content",
-                        link: "/new",
-                        color: "grey"
-                    },
-                    {
-                        label: "Stats",
-                        link: "/summary-statistics",
-                        color: "teal darken-2"
-                    }
-                ]
-            }
+        {
+          label: "Databases",
+          link: "/databases",
+          color: "blue"
         },
-        methods: {
-            toggleDrawerLeft: function () {
-                this.drawerLeft = !this.UIGeneralStatus.drawerVisibilityState;
-                this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-                    headerVisibilityState: true,
-                    drawerVisibilityState: this.drawerLeft
-                });
-            },
-            closePopup: function (status) {
-                this.closeMenuStatus = status;
-            }
+        {
+          label: "Policies",
+          link: "/policies",
+          color: "blue"
         },
+        {
+          label: "Collections",
+          link: "/collections",
+          color: "blue"
+        },
+        {
+          label: "Add/Claim content",
+          link: "/new",
+          color: "grey"
+        },
+        {
+          label: "Stats",
+          link: "/summary-statistics",
+          color: "teal darken-2"
+        }
+      ]
     }
+  },
+  methods: {
+    toggleDrawerLeft: function () {
+      this.drawerLeft = !this.UIGeneralStatus.drawerVisibilityState;
+      this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+        headerVisibilityState: true,
+        drawerVisibilityState: this.drawerLeft
+      });
+    },
+    closePopup: function (status) {
+      this.closeMenuStatus = status;
+    }
+  },
+}
 
 </script>
 
 <style scoped lang="scss">
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .1s;
-    }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .1s;
+}
 
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-    {
-        opacity: 0;
-    }
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+  opacity: 0;
+}
 
-    ul {
-        list-style: none;
-    }
+ul {
+  list-style: none;
+}
 
-    header {
-        padding-right: .5rem;
-    }
-    .flex-grow-custom
-    {
-      width: 30%;
-    }
-    #custom-width{
-      width: 94%;
-    }
+header {
+  padding-right: .5rem;
+}
+
+.flex-grow-custom {
+  width: 30%;
+}
+
+.custom-width {
+  width: 94%;
+}
 </style>
 
 

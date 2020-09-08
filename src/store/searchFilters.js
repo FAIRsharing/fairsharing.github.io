@@ -15,7 +15,7 @@ export const mutations = {
     setFilterButtons(state) {
         state.filterButtons.push([
             {
-                "title": "Match all term",
+                "title": "Match all terms",
                 "active": true,
                 "filterName": "searchAnd",
                 "value": true

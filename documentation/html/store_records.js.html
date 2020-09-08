@@ -102,6 +102,8 @@ export const mutations = {
         state.records = data['records'];
         state.facets = buildFacets(data["aggregations"]);
         state.totalPages = data["totalPages"];
+        state.perPage = data["perPage"];
+        state.currentPage = data["currentPage"];
         state.hits = data["totalCount"];
     },
     resetRecords(state) {

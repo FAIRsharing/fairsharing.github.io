@@ -1,6 +1,6 @@
 <template>
   <form
-    class=" d-flex flex-row align-center align-content-center  mr-1 mr-lg-2 ml-1"
+    class=" d-flex flex-row align-center align-content-center pt-1 mr-1 mr-lg-1 ml-1"
     @submit.prevent="searchString()"
   >
     <v-text-field
@@ -48,9 +48,9 @@ export default {
       }
     },
     responsiveHeightTextBox: function () {
-      let boxHeight=38;
+      let boxHeight = 35;
       if(this.$vuetify.breakpoint.xlOnly){
-        boxHeight = 54;
+        boxHeight = 50;
       }
         return boxHeight;
     }
@@ -75,11 +75,13 @@ export default {
 <style scoped>
 .v-input {
   box-shadow: 0 0 0 0;
-  height: 38px;
+  height: 35px!important;
+  margin-bottom: 3px;
 }
 .v-input-lg-up{
   box-shadow: 0 0 0 0;
-  height: 50px;
+  height: 48px;
+  margin-bottom: 12px;
 }
 
 .button-text-size {
@@ -87,11 +89,13 @@ export default {
 }
 
 .style-xl {
-  height: 56px !important;
+  height: 54px !important;
+  margin-bottom: 2px;
 }
 
 .style-lg {
-  height: 40px !important;
+  height: 38px !important;
+  margin-bottom: 2px;
 }
 
 .style-md {

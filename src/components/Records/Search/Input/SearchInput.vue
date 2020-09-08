@@ -16,7 +16,7 @@
 
       <!-- Search Box -->
       <string-search
-        place-holder="Search through all data."
+        placeholder="Search through all data."
       />
 
       <hr

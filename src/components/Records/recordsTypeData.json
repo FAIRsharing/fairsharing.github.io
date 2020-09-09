@@ -1,0 +1,42 @@
+{
+    "collection": {
+        "icon": "assets/records/collection-icon.svg",
+        "toolTip": "Collection"
+    },
+    "journal": {
+        "icon": "assets/records/policy.png",
+        "toolTip": "Journal"
+    },
+    "identifier_schema":{
+      "icon": "assets/records/policy.png",
+      "toolTip": "Identifier Schema"
+    },
+    "society": {
+        "icon": "assets/records/policy.png",
+        "toolTip": "Society"
+    },
+    "funder": {
+        "icon": "assets/records/policy.png",
+        "toolTip": "Founder"
+    },
+    "terminology_artefact": {
+        "icon": "assets/records/terminology_artifact.png",
+        "toolTip": "Terminology Artefact"
+    },
+    "model_and_format": {
+        "icon": "assets/records/model_and_format.png",
+        "toolTip": "Model and Format"
+    },
+    "reporting_guideline": {
+        "icon": "assets/records/reporting_guidelines.png",
+        "toolTip": "Reporting Guideline"
+    },
+    "metric": {
+        "icon": "assets/records/std-metric.png",
+        "toolTip": "Metric"
+    },
+    "repository": {
+        "icon": "assets/records/db-icon.png",
+        "toolTip": "Repository"
+    }
+}

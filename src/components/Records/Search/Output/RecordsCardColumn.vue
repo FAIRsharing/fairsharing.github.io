@@ -36,6 +36,7 @@
               />
               <h3 class="title-style">
                 <u>{{ record.name }}</u>
+                <span class="ml-2" v-if="record.abbreviation"> ({{ truncate(record.abbreviation,15) }}) </span>
               </h3>
             </div>
           </router-link>
@@ -98,16 +99,17 @@
 </template>
 
 <script>
-import Ribbon from "@/components/Records/Shared//Ribbon";
+import Ribbon from "@/components/Records/Shared/Ribbon";
 import AssociatedRecordsStack from "./AssociatedRecordsStack";
 import RecordStatus from "@/components/Records/Shared/RecordStatus"
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
+import truncate from "@/utils/stringUtils";
 
 export default {
   name: "RecordsCardColumn",
   components: {AssociatedRecordsStack, RecordStatus, Ribbon, SearchLinkChips},
-  mixins: [recordsCardUtils],
+  mixins: [recordsCardUtils, truncate],
   props: {
     record: {default: null, type: Object},
   },

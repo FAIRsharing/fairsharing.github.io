@@ -36,7 +36,7 @@
               />
               <h3 class="title-style">
                 <u>{{ record.name }}</u>
-                <span class="ml-2" v-if="record.abbreviation"> ({{ truncate(record.abbreviation,15) }}) </span>
+                <span class="ml-2" v-if="record.abbreviation"> ({{ truncate(record.abbreviation, 15) }}) </span>
               </h3>
             </div>
           </router-link>
@@ -104,7 +104,7 @@ import AssociatedRecordsStack from "./AssociatedRecordsStack";
 import RecordStatus from "@/components/Records/Shared/RecordStatus"
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
-import truncate from "@/utils/stringUtils";
+import { truncate } from "@/utils/stringUtils";
 
 export default {
   name: "RecordsCardColumn",

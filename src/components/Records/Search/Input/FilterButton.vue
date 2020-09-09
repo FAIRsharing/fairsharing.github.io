@@ -61,7 +61,8 @@
             checkCurrentParameters: function(title, fieldValue, currentValue) {
               if (fieldValue === null) {
                 this.item.active = title === 'all' || title === 'match all terms';
-              } else {
+              }
+              else {
                 if (currentValue === undefined) {
                   this.item.active = false;
                 }

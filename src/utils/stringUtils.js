@@ -10,6 +10,9 @@ const stringUtils = {
         },
         prettifyList(string) {
             return string.replace(/,/g, ", ");
+        },
+        truncate(str,n){
+          return (str.length > n) ? str.substr(0, n-1) + '...' : str;
         }
     },
     filters: {

@@ -23,6 +23,19 @@ class GraphQLClient {
 
     }
 
+    /** Methods that adds the user JWT to the graphQL query header.
+      @param {String} jwt_token - the user token
+     */
+    login(jwt_token){
+      this.headers['Authorization'] = `Bearer ${jwt_token}`;
+    }
+
+    /** Methods that adds the user JWT to the graphQL query header.
+     */
+    logout(){
+      delete this.headers['Authorization'];
+    }
+
     /**
      * Execute the given query (coming from a json file, see /queries/getRecords.json)
      * @param {Object} query - the query coming from the JSON file

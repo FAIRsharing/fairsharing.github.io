@@ -36,6 +36,11 @@
             :key="'record_'+record.id"
             :record="record"
           />
+          <!--List Controller-->
+          <ListController
+            class="mt-2"
+            @ChangeListType="changeListType"
+          />
         </v-skeleton-loader>
       </article>
     </div>
@@ -70,14 +75,13 @@
             :record="record"
           />
         </v-row>
+        <!--List Controller-->
+        <ListController
+          class="mt-2"
+          @ChangeListType="changeListType"
+        />
       </v-skeleton-loader>
     </div>
-
-    <!--List Controller-->
-    <ListController
-      class="mt-2"
-      @ChangeListType="changeListType"
-    />
   </section>
 </template>
 

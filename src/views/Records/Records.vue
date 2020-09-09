@@ -38,20 +38,6 @@
         </section>
       </div>
 
-      <!-- Search Box -->
-      <string-search />
-      <!--advanced Search button  -->
-      <div class="text-right">
-        <v-btn
-          text
-          small
-          class="button-text-color"
-        >
-          Advanced
-        </v-btn>
-      </div>
-
-
       <!--  Content  -->
       <v-row
         no-gutters
@@ -85,13 +71,12 @@ import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
 import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
-import StringSearch from "../../components/Records/Search/Input/StringSearch";
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "Records",
-  components: {StringSearch, JumpToTop, SearchOutput, SearchInput, FilterChips},
+  components: { JumpToTop, SearchOutput, SearchInput, FilterChips},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',

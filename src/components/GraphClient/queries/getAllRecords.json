@@ -1,0 +1,14 @@
+{
+  "queryName": "allFairsharingRecords",
+  "queryParam": null,
+  "fields": [
+    "name",
+    "abbreviation",
+    "registry",
+    "type",
+    "doi",
+    "isRecommended",
+    "isApproved",
+    "isMaintained"
+  ]
+}

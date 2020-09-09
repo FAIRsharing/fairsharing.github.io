@@ -1,13 +1,17 @@
-import { shallowMount } from "@vue/test-utils";
+import {shallowMount} from "@vue/test-utils";
 import StringSearch from "@/components/Records/Search/Input/StringSearch"
+import Vuetify from "vuetify"
 
 const $router = {
     push: jest.fn()
 };
 
+let vuetify = new Vuetify();
+
 describe("StringSearch.vue", () => {
     let wrapper = shallowMount(StringSearch, {
-        mocks: {$router}
+        mocks: {$router},
+        vuetify,
     });
     it("can mount", () => {
         expect(wrapper.name()).toBe('StringSearch')
@@ -23,5 +27,21 @@ describe("StringSearch.vue", () => {
             path: "search",
             query: {q: "testString"}
         })
-    })
+    });
+
+    it("can check responsiveHeight", () => {
+        vuetify.framework.breakpoint.mdAndDown = true;
+        expect(wrapper.vm.responsiveHeight).toStrictEqual({
+            'style-sm-xs': true,
+            'style-md': true,
+            'style-lg': false,
+            'style-xl': false,
+        });
+    });
+
+    it("can check responsiveHeightTextBox", () => {
+        vuetify.framework.breakpoint.xlOnly = true;
+        expect(wrapper.vm.responsiveHeightTextBox).toBe(50);
+    });
+
 });

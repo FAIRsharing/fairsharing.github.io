@@ -21,7 +21,7 @@ export const mutations = {
                 "value": true
             },
             {
-                "title": "Match any terms",
+                "title": "Match any term",
                 "active": false,
                 "filterName": "searchAnd",
                 "value": false

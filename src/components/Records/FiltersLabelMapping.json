@@ -17,7 +17,7 @@
             "filterName": "taxonomies",
             "filterLabel": "Species",
             "type": "String",
-            "sortOrder": 4
+            "sortOrder": 3
         },
         "organisations": {
             "filterName": "organisations",
@@ -29,7 +29,7 @@
             "filterName": "countries",
             "filterLabel": "Countries",
             "type": "String",
-            "sortOrder": 5
+            "sortOrder": 12
         },
         "domains": {
             "filterName": "domains",
@@ -47,13 +47,13 @@
             "filterName": "userDefinedTags",
             "filterLabel": "User defined tags",
             "type": "String",
-            "sortOrder": 12
+            "sortOrder": 2
         },
         "fairsharing_registry": {
             "filterName": "fairsharingRegistry",
             "filterLabel": "Registry",
             "type": "String",
-            "sortOrder": 2
+            "sortOrder": 4
         },
         "is_recommended": {
             "filterName": "isRecommended",
@@ -65,7 +65,7 @@
             "filterName": "recordType",
             "filterLabel": "Type of records",
             "type": "String",
-            "sortOrder": 3
+            "sortOrder": 5
         },
         "journals": {
             "filterName": "journals",

@@ -77,16 +77,23 @@
                   @click:append="show1 = !show1"
                 />
 
-                <v-card-text class="text-center">
-                  <router-link
-                    to="/accounts/forgotPassword"
+                <v-card-text class="text-center py-1">
+                  <a
+                    href="#/accounts/forgotPassword"
                     @click="()=>{this.$emit('ClosePopup',true)}"
                   >
                     Forgot your password ?
-                  </router-link>
+                  </a>
+                  <v-divider />
+                  <a
+                    href="#/accounts/signup"
+                    @click="()=>this.$emit('ClosePopup',true)"
+                  >
+                    Create a new account
+                  </a>
                 </v-card-text>
 
-                <v-card-actions class="mt-2">
+                <v-card-actions class="mt-2 justify-center">
                   <v-btn
                     class=" px-4"
                     light
@@ -94,15 +101,6 @@
                     @click="logUser()"
                   >
                     LOGIN
-                  </v-btn>
-                  <v-btn
-                    text
-                    light
-                    class="px-4"
-                    to="/accounts/signup"
-                    @click="()=>{this.$emit('ClosePopup',true)}"
-                  >
-                    Register
                   </v-btn>
                 </v-card-actions>
               </v-form>
@@ -182,7 +180,8 @@ export default {
           _module.$router.push({
             path: goTo
           })
-        } else if (_module.redirect) {
+        }
+        else if (_module.redirect) {
           _module.$router.go(-1);
         }
       }
@@ -196,7 +195,9 @@ export default {
   text-decoration: none !important;
 }
 
-.v-card__actions {
-  justify-content: center;
+.v-card__text
+{
+  width: auto;
 }
+
 </style>

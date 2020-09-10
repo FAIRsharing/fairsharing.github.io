@@ -48,6 +48,7 @@
 
 <script>
 import {mapGetters, mapState} from "vuex"
+import filterMapping from "@/components/Records/FiltersLabelMapping.json";
 import FilterAutocomplete from "./FilterAutocomplete";
 import FilterButtons from "./FilterButtons";
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
@@ -58,7 +59,8 @@ export default {
   data() {
     return {
       panel: [],
-      filterSelected: {}
+      filterSelected: {},
+      sortOrder: filterMapping['sort_order']
     }
   },
   computed: {
@@ -78,11 +80,6 @@ export default {
     }
   },
   methods: {
-    /*    onScroll({target: {scrollTop, clientHeight, scrollHeight}}) {
-          if (scrollTop + clientHeight >= scrollHeight) {
-            // console.log('end');
-          }
-        },*/
     setPanel() {
       this.panel = [...Array(this.getFilters.length).keys()].map((k, i) => i)
     },
@@ -96,14 +93,17 @@ export default {
     },
     /**
      * This gets the index of the name of the filter from the list above, so that the fields can be sorted on the
-     * users' preferences. But, some terms will not be in the list, so they are given the index of 100 to force
-     * them to appear later in the list.
+     * users' preferences. But, some terms may not be in the list, so they are given the index of 100 to force
+     * them to appear later.
      */
     compareLabels: function(a, b) {
-      const aName = a['sortOrder'] ?? 100;
-      const bName = b['sortOrder'] ?? 100;
+      let _module = this;
+      const aIndex = _module.sortOrder.indexOf(a['filterName']);
+      const bIndex = _module.sortOrder.indexOf(b['filterName']);
+      const aOrder = aIndex === -1 ? 100 : aIndex;
+      const bOrder = bIndex === -1 ? 100 : bIndex;
       let comparison = -1;
-      if (aName > bName) {
+      if (aOrder > bOrder) {
         comparison = 1;
       }
       return comparison;

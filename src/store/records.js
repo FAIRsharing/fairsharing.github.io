@@ -17,8 +17,11 @@ export const mutations = {
         recordsQuery.queryParam = null;
         state.records = [];
     },
-    resetHits(state) {
+    resetPages(state) {
         state.hits = null;
+        state.perPage = null;
+        state.currentPage = null;
+        state.totalPages = null;
     },
     setLoadingStatus(state, status) {
         state.loading = status;
@@ -28,7 +31,7 @@ export const actions = {
     async fetchRecords(state, params) {
         this.commit("records/setLoadingStatus", true);
         this.commit("records/resetRecords");
-        this.commit("records/resetHits");
+        this.commit("records/resetPages");
         if (Object.keys(params).length > 0) {
             recordsQuery.queryParam = params;
         }
@@ -63,9 +66,11 @@ let recordsStore = {
     state: {
         records: [],
         facets: [],
-        totalPages: null,
         hits: null,
         loading: false,
+        totalPages: null,
+        perPage: null,
+        currentPage: null
     },
     mutations: mutations,
     actions: actions,

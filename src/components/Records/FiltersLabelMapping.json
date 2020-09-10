@@ -3,93 +3,94 @@
         "licences": {
             "filterName": "licences",
             "filterLabel": "Licence(s)",
-            "type": "String",
-            "sortOrder": 9
+            "type": "String"
         },
         "grants": {
             "filterName": "grants",
             "filterLabel": "Grant(s)",
-            "type": "String",
-            "sortOrder": 8
-
+            "type": "String"
         },
         "taxonomies": {
             "filterName": "taxonomies",
             "filterLabel": "Species",
-            "type": "String",
-            "sortOrder": 3
+            "type": "String"
         },
         "organisations": {
             "filterName": "organisations",
             "filterLabel": "Organisation(s)",
-            "type": "String",
-            "sortOrder": 6
+            "type": "String"
         },
         "countries": {
             "filterName": "countries",
             "filterLabel": "Countries",
-            "type": "String",
-            "sortOrder": 12
+            "type": "String"
         },
         "domains": {
             "filterName": "domains",
             "filterLabel": "Ontology Domains",
-            "type": "String",
-            "sortOrder": 1
+            "type": "String"
         },
         "subjects": {
             "filterName": "subjects",
             "filterLabel": "Ontology Subjects",
-            "type": "String",
-            "sortOrder": 0
+            "type": "String"
         },
         "user_defined_tags": {
             "filterName": "userDefinedTags",
             "filterLabel": "User defined tags",
-            "type": "String",
-            "sortOrder": 2
+            "type": "String"
         },
         "fairsharing_registry": {
             "filterName": "fairsharingRegistry",
             "filterLabel": "Registry",
-            "type": "String",
-            "sortOrder": 4
+            "type": "String"
         },
         "is_recommended": {
             "filterName": "isRecommended",
             "filterLabel": "Recommended",
-            "type": "Boolean",
-            "sortOrder": 10
+            "type": "Boolean"
         },
         "record_type": {
             "filterName": "recordType",
             "filterLabel": "Type of records",
-            "type": "String",
-            "sortOrder": 5
+            "type": "String"
         },
         "journals": {
             "filterName": "journals",
             "filterLabel": "Journals(s)",
-            "type": "String",
-            "sortOrder": 7
+            "type": "String"
         },
         "status": {
             "filterName": "status",
             "filterLabel": "Output status",
-            "type": "String",
-            "sortOrder": 11
+            "type": "String"
         },
         "is_approved": {
             "filterName": "isApproved",
             "filterLabel": "Approved",
-            "type": "Boolean",
-            "sortOrder": 13
+            "type": "Boolean"
         },
         "is_maintained": {
             "filterName": "isMaintained",
             "filterLabel": "Maintained",
-            "type": "Boolean",
-            "sortOrder": 14
+            "type": "Boolean"
         }
-    }
+    },
+    "sort_order": [
+        "subjects",
+        "domains",
+        "userDefinedTags",
+        "taxonomies",
+        "fairsharingRegistry",
+        "recordType",
+        "organisations",
+        "journals",
+        "grants",
+        "licences",
+        "isRecommended",
+        "status",
+        "countries",
+        "isApproved",
+        "isMaintained"
+    ]
 }

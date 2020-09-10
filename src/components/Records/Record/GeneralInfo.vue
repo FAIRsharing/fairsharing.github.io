@@ -50,6 +50,7 @@
             <a
               v-if="currentRecord['fairsharingRecord'].doi"
               :href="currentRecord['fairsharingRecord'].doi"
+              target="_blank"
             >
               {{ currentRecord['fairsharingRecord'].doi }}
             </a>

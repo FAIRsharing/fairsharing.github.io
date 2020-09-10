@@ -10,9 +10,9 @@ describe("stringUtils.js", function(){
         expect(stringUtils.methods.cleanString(123)).toBe(123);
     })
 
-    it("truncates work properly", function () {
-        expect(stringUtils.methods.truncate("snake case",3)).toBe("sn...");
-        expect(stringUtils.methods.truncate("snake case",15)).toBe("snake case");
+    it("replace a given number of characters with an ellipsis", function () {
+        expect(stringUtils.methods.truncate("snake case", 3)).toBe("sn...");
+        expect(stringUtils.methods.truncate("snake case", 15)).toBe("snake case");
     })
 
     it("prettifies a csv list", () => {

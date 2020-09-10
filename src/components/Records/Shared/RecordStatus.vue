@@ -9,7 +9,7 @@
           v-on="on"
         />
       </template>
-      <span>{{ recordType[record.type].toolTip }}</span>
+      <span>{{ recordType[record.type].tooltip }}</span>
     </v-tooltip>
     <span
       id="innerCircle"
@@ -23,7 +23,7 @@
             v-on="on"
           >{{ getRecordStatus.title }}</b>
         </template>
-        <span>{{ getRecordStatus.toolTip }}</span>
+        <span>{{ getRecordStatus.tooltip }}</span>
       </v-tooltip>
     </span>
   </div>
@@ -41,27 +41,27 @@
                 statusStyles: {
                     ready: {
                         title: 'R',
-                        toolTip: 'Ready',
+                        tooltip: 'Ready',
                         backColor: 'background: linear-gradient(green, lightgreen)'
                     },
                     deprecated: {
                         title: 'D',
-                        toolTip: 'Deprecated',
+                        tooltip: 'Deprecated',
                         backColor: 'background: linear-gradient(#8F4309, #a57202)'
                     },
                     uncertain: {
                         title: 'U',
-                        toolTip: 'Uncertain',
+                        tooltip: 'Uncertain',
                         backColor: 'background: linear-gradient(#2d2b2b, #757575)'
                     },
                     in_development: {
                         title: 'I',
-                        toolTip: 'In Development',
+                        tooltip: 'In Development',
                         backColor: 'background: linear-gradient(#35baef, #02364b)'
                     },
                     undefined: {
                         title: '?',
-                        toolTip: 'Undefined',
+                        tooltip: 'Undefined',
                         backColor: 'background: linear-gradient(red, red)'
                     },
                 },

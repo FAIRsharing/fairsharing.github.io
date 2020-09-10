@@ -38,7 +38,8 @@
           />
           <!--List Controller-->
           <ListController
-            v-if="!isColumnList"
+            v-if="!isColumnList && records.length"
+            :options="{hasPagination:true,hasSorting:false,hasListType:false}"
             class="mt-2"
             @ChangeListType="changeListType"
           />
@@ -78,7 +79,8 @@
         </v-row>
         <!--List Controller-->
         <ListController
-          v-if="isColumnList"
+          v-if="isColumnList && records.length"
+          :options="{hasPagination:true,hasSorting:false,hasListType:false}"
           class="mt-2"
           @ChangeListType="changeListType"
         />

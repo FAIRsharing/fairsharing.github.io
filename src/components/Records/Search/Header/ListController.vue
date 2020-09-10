@@ -2,6 +2,7 @@
   <div class="d-flex justify-space-between justify-center">
     <!--Sorting-->
     <v-skeleton-loader
+      v-if="options.hasListType"
       :loading="loading"
       width="60px"
       type="avatar"
@@ -26,18 +27,27 @@
         <sorting />
       </v-menu>
     </v-skeleton-loader>
+    <div
+      v-else
+      style="width: 60px"
+      type="avatar"
+    />
     <!--Pagination-->
     <v-skeleton-loader
       :loading="loading"
       width="100%"
       type="list-item"
     >
-      <Pagination :total-pages="totalPages" />
+      <Pagination
+        v-show="options.hasPagination"
+        :total-pages="totalPages"
+      />
     </v-skeleton-loader>
 
     <!--Stack or Column list toggle buttons-->
     <div class="d-flex flex-row align-center">
       <v-skeleton-loader
+        v-show="options.hasSorting"
         :loading="loading"
         type="avatar"
       >
@@ -50,6 +60,7 @@
         </v-icon>
       </v-skeleton-loader>
       <v-skeleton-loader
+        v-show="options.hasSorting"
         :loading="loading"
         type="avatar"
       >
@@ -75,6 +86,9 @@
     export default {
         name: "ListController",
         components: {Pagination, Sorting},
+        props:{
+          options:{ default:()=>({ hasPagination:true,hasSorting:true,hasListType:true }),type:Object }
+        },
         data() {
             return {
                 isSortHovered: false,

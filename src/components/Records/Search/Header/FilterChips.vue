@@ -20,7 +20,7 @@
         text-color="teal"
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
-        {{ chip.paramName }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
+        {{ getFilteredLabel(chip.paramName) }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
       </v-chip>
     </div>
   </v-row>
@@ -29,6 +29,8 @@
 <script>
 import {throttle} from "lodash"
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import filterMapping from "@/components/Records/FiltersLabelMapping.json"
+
 
 export default {
   name: "FilterChips",
@@ -83,6 +85,17 @@ export default {
       });
       query["page"] = 1;
       return query;
+    },
+    /**
+     * get the Filtered label that correponds to the name using the map FilterLabel
+     * @param {String} name - name of ther label without filtering
+     * @returns {String} - name of the label
+     */
+    getFilteredLabel: function (name) {
+      console.log(name);
+      const mapper = filterMapping["autocomplete"];
+      mapper//LOOP TO SEE FIELD filteredName and get FilteredLabel
+      return mapper[name];
     }
   }
 }

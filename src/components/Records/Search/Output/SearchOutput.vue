@@ -38,6 +38,7 @@
           />
           <!--List Controller-->
           <ListController
+            v-if="!isColumnList"
             class="mt-2"
             @ChangeListType="changeListType"
           />
@@ -77,6 +78,7 @@
         </v-row>
         <!--List Controller-->
         <ListController
+          v-if="isColumnList"
           class="mt-2"
           @ChangeListType="changeListType"
         />

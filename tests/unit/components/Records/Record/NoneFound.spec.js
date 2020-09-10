@@ -1,4 +1,4 @@
-import {shallowMount} from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import NoneFound from "@/components/Records/Record/NoneFound.vue"
 
 
@@ -19,7 +19,6 @@ describe("NoneFound.vue", function () {
     it("can be instantiated with data", () => {
         expect(wrapper.name()).toMatch("NoneFound");
         expect(wrapper.vm.dataField[0].name).toMatch("some sort of object");
-
     });
 
     it("hidden when data are present", () => {
@@ -40,7 +39,6 @@ describe("NoneFound.vue", function () {
     it("can be instantiated without data", () => {
         expect(otherWrapper.name()).toMatch("NoneFound");
         expect(otherWrapper.vm.dataField.length).toEqual(0);
-
     });
 
     it("shown when data are not present", () => {
@@ -48,12 +46,7 @@ describe("NoneFound.vue", function () {
         expect(otherWrapper.vm.display).toEqual(true);
     });
 
-    it("shown when no string data are not present", () => {
-        // TODO: This should somehow be able to call the displayString function.
-        expect(otherWrapper.vm.displayString).toEqual("one doi");
-    });
-
-    it("shown when no object data are not present", () => {
+    it("shown when no string data present", () => {
         // TODO: This should somehow be able to call the displayString function.
         expect(otherWrapper.vm.displayString).toEqual("one doi");
     });

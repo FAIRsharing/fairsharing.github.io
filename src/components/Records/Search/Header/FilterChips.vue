@@ -20,7 +20,7 @@
         text-color="teal"
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
-        {{ getFilteredLabel(chip.paramName) }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
+        {{ getFilteredLabel[chip.paramName] }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
       </v-chip>
     </div>
   </v-row>
@@ -35,6 +35,22 @@ import filterMapping from "@/components/Records/FiltersLabelMapping.json"
 export default {
   name: "FilterChips",
   mixins: [filterChipsUtils],
+  computed: {
+    /**
+     * get the Filtered label that correponds to the name using the map FilterLabel
+     * @returns {Object} - object with the mapping names and labels
+     */
+    getFilteredLabel: function () {
+      let filterLabels = {
+        q: "Query string"
+      };
+      Object.keys(filterMapping["autocomplete"]).forEach((filterName) => {
+        let field = filterMapping["autocomplete"][filterName];
+        filterLabels[field.filterName] = field.filterLabel;
+      });
+      return filterLabels;
+    }
+  },
   methods: {
     /**
      * Removes the parameter value from the router query with a 2000ms throttle
@@ -85,17 +101,6 @@ export default {
       });
       query["page"] = 1;
       return query;
-    },
-    /**
-     * get the Filtered label that correponds to the name using the map FilterLabel
-     * @param {String} name - name of ther label without filtering
-     * @returns {String} - name of the label
-     */
-    getFilteredLabel: function (name) {
-      console.log(name);
-      const mapper = filterMapping["autocomplete"];
-      mapper//LOOP TO SEE FIELD filteredName and get FilteredLabel
-      return mapper[name];
     }
   }
 }

@@ -33,6 +33,7 @@
       type="list-item"
     >
       <Pagination :total-pages="totalPages" />
+      <HitCount />
     </v-skeleton-loader>
 
     <!--Stack or Column list toggle buttons-->
@@ -67,6 +68,7 @@
 </template>
 
 <script>
+    import HitCount from "./HitCount";
     import Pagination from "./Pagination";
     import Sorting from "./Sorting";
 
@@ -74,7 +76,7 @@
 
     export default {
         name: "ListController",
-        components: {Pagination, Sorting},
+        components: {HitCount, Pagination, Sorting},
         data() {
             return {
                 isSortHovered: false,
@@ -82,7 +84,7 @@
             }
         },
         computed: {
-            ...mapState('records', ["totalPages", "loading"])
+            ...mapState('records', ["totalPages", "loading"]),
         },
         methods: {
             changeListType: function (listType) {

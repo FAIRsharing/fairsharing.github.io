@@ -6,7 +6,8 @@ const filterChipsUtils = {
             const ignoredFields = [
                 "page",
                 "orderBy",
-                "searchAnd"
+                "searchAnd",
+                "perPage"
             ];
             Object.keys(parameters).forEach(function (paramName) {
                 if (!ignoredFields.includes(paramName)) {

@@ -1,7 +1,7 @@
 <template>
   <v-tooltip
     bottom
-    :disabled="item.toolTip===undefined"
+    :disabled="item.tooltip===undefined"
   >
     <template v-slot:activator="{ on }">
       <v-btn
@@ -15,7 +15,7 @@
         {{ item.title }}
       </v-btn>
     </template>
-    <span>{{ item.toolTip }}</span>
+    <span>{{ item.tooltip }}</span>
   </v-tooltip>
 </template>
 

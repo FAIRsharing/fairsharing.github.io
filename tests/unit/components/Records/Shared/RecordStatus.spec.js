@@ -17,7 +17,7 @@ describe("RecordStatus.vue", function () {
         wrapper.setProps({record: {status: undefined, type: 'collection'}})
         expect(wrapper.vm.statusStyles[wrapper.vm.record.status]).toStrictEqual({
             title: '?',
-            toolTip: 'Undefined',
+            tooltip: 'Undefined',
             backColor: 'background: linear-gradient(red, red)'
         });
 

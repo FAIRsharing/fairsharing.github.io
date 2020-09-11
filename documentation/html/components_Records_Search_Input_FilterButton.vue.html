@@ -94,7 +94,7 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-tooltip
     bottom
-    :disabled="item.toolTip===undefined"
+    :disabled="item.tooltip===undefined"
   >
     &lt;template v-slot:activator="{ on }">
       &lt;v-btn
@@ -108,7 +108,7 @@
         {{ item.title }}
       &lt;/v-btn>
     &lt;/template>
-    &lt;span>{{ item.toolTip }}&lt;/span>
+    &lt;span>{{ item.tooltip }}&lt;/span>
   &lt;/v-tooltip>
 &lt;/template>
 

@@ -2,7 +2,7 @@
   <div>
     <!--  dataField  -->
     <v-card
-      v-if="display"
+      v-if="displayData"
       class="mt-2 pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
       flat
       outlined
@@ -29,7 +29,8 @@ export default {
     dataField: {
       type: Array,
       default: null
-    }, objectField: {
+    },
+    objectField: {
       type: Object,
       default: null
     },
@@ -39,7 +40,7 @@ export default {
     },
   },
   computed: {
-    display: function () {
+    displayData: function () {
       return this.dataField && this.dataField.length === 0;
     },
     displayString: function () {

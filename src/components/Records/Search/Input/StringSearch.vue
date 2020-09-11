@@ -12,7 +12,7 @@
       full-width
       :class="$vuetify.breakpoint.lgAndDown?'v-input':'v-input-lg-up'"
       :height="responsiveHeightTextBox"
-      :placeholder="placeHolder"
+      :placeholder="placeholder"
     />
     <v-btn
       color="primary"
@@ -31,7 +31,7 @@
 export default {
   name: "StringSearch",
   props: {
-    placeholder: {default: "", type: String}
+    placeholder: {default: null, type: String}
   },
   data() {
     return {

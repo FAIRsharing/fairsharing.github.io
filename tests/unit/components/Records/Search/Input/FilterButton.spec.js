@@ -68,6 +68,7 @@ describe("FilterButton.vue", function () {
                 mdScreens: false,
                 itemParentIndex: 0,
                 multipleItems: false,
+                doubleItems: true,
             },
             mocks: {$store, $router, $route}
         });

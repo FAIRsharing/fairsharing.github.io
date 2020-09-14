@@ -91,6 +91,12 @@
       ]
     },
     {
+      "name": "organisations",
+      "fields": [
+        "id"
+      ]
+    },
+    {
       "name": "organisationLinks",
       "fields": [
         "id",
@@ -133,7 +139,7 @@
       "fields": [
         {
           "queryName": "fairsharingRecord",
-          "fields": ["name", "id", "registry"]
+          "fields": ["name", "id", "registry", "type"]
         },
         "recordAssocLabel"
       ]

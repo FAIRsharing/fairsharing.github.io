@@ -3,57 +3,66 @@
     {
       "title": "ALL",
       "active": true,
-      "filterName": "isRecommended"
+      "filterName": "isRecommended",
+      "tooltip": null
     },
     {
       "title": "RECOMMENDED",
       "active": false,
       "filterName": "isRecommended",
-      "value": true
+      "value": true,
+      "tooltip": null
     },
     {
       "title": "NOT RECOMMENDED",
       "active": false,
       "filterName": "isRecommended",
-      "value": false
+      "value": false,
+      "tooltip": null
     }
   ],
   "isMaintained": [
     {
       "title": "ALL",
       "active": true,
-      "filterName": "isMaintained"
+      "filterName": "isMaintained",
+      "tooltip": null
     },
     {
       "title": "MAINTAINED",
       "active": false,
       "filterName": "isMaintained",
-      "value": true
+      "value": true,
+      "tooltip": null
     },
     {
       "title": "NOT MAINTAINED",
       "active": false,
       "filterName": "isMaintained",
-      "value": false
+      "value": false,
+      "tooltip": null
     }
   ],
   "isApproved": [
     {
       "title": "ALL",
       "active": true,
-      "filterName": "isApproved"
+      "filterName": "isApproved",
+      "tooltip": null
     },
     {
       "title": "APPROVED",
       "active": false,
       "filterName": "isApproved",
-      "value": true
+      "value": true,
+      "tooltip": null
     },
     {
       "title": "NOT APPROVED",
       "active": false,
       "filterName": "isApproved",
-      "value": false
+      "value": false,
+      "tooltip": null
     }
   ],
   "status": [
@@ -61,35 +70,35 @@
       "title": "ALL",
       "active": true,
       "filterName": "status",
-      "toolTip": "Show All Records"
+      "tooltip": "Show All Records"
     },
     {
-      "title": "R",
+      "title": "Ready",
       "active": false,
       "filterName": "status",
       "apiIndex": 0,
-      "toolTip": "Show Ready Records"
+      "tooltip": "Show Ready Records"
     },
     {
-      "title": "D",
+      "title": "Deprecated",
       "active": false,
       "filterName": "status",
       "apiIndex": 1,
-      "toolTip": "Show Deprecated Records"
+      "tooltip": "Show Deprecated Records"
     },
     {
-      "title": "U",
+      "title": "Uncertain",
       "active": false,
       "filterName": "status",
       "apiIndex": 2,
-      "toolTip": "Show Uncertain Records"
+      "tooltip": "Show Uncertain Records"
     },
     {
-      "title": "I",
+      "title": "In Dev.",
       "active": false,
       "filterName": "status",
       "apiIndex": 3,
-      "toolTip": "Show In Development Records"
+      "tooltip": "Show In Development Records"
     }
   ]
 }

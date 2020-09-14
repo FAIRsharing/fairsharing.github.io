@@ -21,7 +21,7 @@ export const mutations = {
                 "value": true
             },
             {
-                "title": "Match any terms",
+                "title": "Match any term",
                 "active": false,
                 "filterName": "searchAnd",
                 "value": false
@@ -80,7 +80,8 @@ export const getters = {
         state.filters.forEach(function (filter) {
             output.push({
                 filterName: filter.filterName,
-                filterLabel: filter.filterLabel
+                filterLabel: filter.filterLabel,
+                sortOrder: filter.sortOrder
             })
         });
         return output

@@ -12,5 +12,12 @@
     "subjects": "accent",
     "userDefinedTags": "#ff9800",
     "records": "primary"
+  },
+  "teal": {
+    "taxonomies": "teal",
+    "domains": "teal",
+    "subjects": "teal",
+    "userDefinedTags": "teal",
+    "records": "#27aae1"
   }
 }

@@ -55,6 +55,7 @@
                 class="mr-1 mt-sm-1"
                 dark
                 v-on="on"
+                @click="closePopup(false)"
               >
                 Login
               </v-btn>

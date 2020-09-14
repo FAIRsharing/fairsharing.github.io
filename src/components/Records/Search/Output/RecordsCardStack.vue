@@ -58,14 +58,14 @@
             <v-btn
               v-for="(item,index) in buttons"
               :key="index"
-              :outlined="item.active"
-              text
-              class="button-text-color"
-              :color="item.active?'primary':null"
+              :text="!item.active"
+              :color="item.active ? colors[item.title] : 'grey lighten-1'"
               :disabled="Chips[item.title].length === 0"
               @click="changeActiveItem(index)"
             >
-              {{ getButtonLabel(item.title) }} ({{ Chips[item.title].length }})
+              <span :class="{'white--text': item.active}">
+                {{ getButtonLabel(item.title) }} ({{ Chips[item.title].length }})
+              </span>
             </v-btn>
           </section>
         </v-col>
@@ -109,6 +109,7 @@ import RecordStatus from "@/components/Records/Shared/RecordStatus"
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";
+import colorObject from "@/data/colorOptions.json"
 
 
 export default {
@@ -122,6 +123,7 @@ export default {
     return {
       allowLoop: true,
       allowClicking: false,
+      colors: colorObject.colors,
       buttons: [
         {
           title: 'domains',

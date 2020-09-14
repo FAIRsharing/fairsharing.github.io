@@ -10,8 +10,8 @@
         v-for="(chip,index) in chips"
         :key="chip.label+'_'+index"
         small
-        text-color="secondary"
-        color="secondary"
+        :text-color="colors[type]"
+        :color="colors[type]"
         outlined
         @click="updateSearchQuery(chip)"
       >
@@ -23,6 +23,7 @@
 
 <script>
   import {isEqual} from "lodash";
+  import colorObject from "@/data/colorOptions.json"
 
   export default {
     name: "SearchLinkChips",
@@ -34,6 +35,11 @@
       chips: {
         default: null,
         type: Array
+      }
+    },
+    data(){
+      return {
+        colors: colorObject.colors
       }
     },
     methods: {

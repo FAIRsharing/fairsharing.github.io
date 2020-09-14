@@ -1,0 +1,16 @@
+{
+  "colors": {
+    "taxonomies": "#6c80d0",
+    "domains": "#8a67b9",
+    "subjects": "#9e4b98",
+    "userDefinedTags": "#a62e70",
+    "records": "#27aae1"
+  },
+  "secondary": {
+    "taxonomies": "primary",
+    "domains": "secondary",
+    "subjects": "accent",
+    "userDefinedTags": "#ff9800",
+    "records": "primary"
+  }
+}

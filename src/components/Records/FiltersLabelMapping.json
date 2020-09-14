@@ -37,7 +37,7 @@
         },
         "user_defined_tags": {
             "filterName": "userDefinedTags",
-            "filterLabel": "User defined tags",
+            "filterLabel": "User tags",
             "type": "String"
         },
         "fairsharing_registry": {

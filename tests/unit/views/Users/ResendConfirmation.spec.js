@@ -30,7 +30,7 @@ describe("ResendConfirmation.vue", function(){
         expect(wrapper.vm.buttonMessage).toEqual(button);
         wrapper.vm.email = "example@fairsharing.org";
         await wrapper.vm.makeResendRequest();
-        expect(wrapper.vm.buttonDisabled).toBe(true);
+        expect(wrapper.vm.buttonDisabled).toBe(false);
         expect(wrapper.vm.buttonMessage).toEqual(message);
         restStub.returns({
             message: "no luck this time"
@@ -42,11 +42,12 @@ describe("ResendConfirmation.vue", function(){
     it("hasn't sent the email correctly", async () => {
         wrapper.vm.email = "example@fairsharing.org";
         restStub.returns({
-            message: "no luck this time"
+            message: "Confirmation message not sent!"
         });
         await wrapper.vm.makeResendRequest();
         expect(wrapper.vm.buttonDisabled).toBe(false);
         expect(wrapper.vm.buttonMessage).toEqual(button);
+        expect(wrapper.vm.error).toBe("Confirmation message not sent!");
 
     });
 

@@ -27,7 +27,15 @@
 
               <!-- button to re-send confirmation if login failed -->
               <span v-show="resendButton">
-                <ResendConfirmation />
+                <v-btn
+                  width="250px"
+                  class="text-center"
+                  href="#/users/resendConfirmation"
+                >
+                  <v-layout width="100%">
+                    <v-layout>Confirm your email address</v-layout>
+                  </v-layout>
+                </v-btn>
               </span>
             </v-card-text>
             <!-- OAUTH -->
@@ -122,7 +130,6 @@
 <script>
 import {mapActions, mapState} from 'vuex'
 import MessageHandler from "@/components/Users/MessageHandler";
-import ResendConfirmation from "@/views/Users/Login/ResendConfirmation";
 import stringUtils from '@/utils/stringUtils';
 
 /** This component handles the login page
@@ -130,7 +137,7 @@ import stringUtils from '@/utils/stringUtils';
  */
 export default {
   name: "Login",
-  components: {MessageHandler, ResendConfirmation},
+  components: {MessageHandler},
   mixins: [stringUtils],
   props: {
     redirect: {

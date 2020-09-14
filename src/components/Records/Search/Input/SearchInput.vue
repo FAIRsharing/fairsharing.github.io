@@ -1,7 +1,8 @@
 <template>
   <aside>
     <v-card
-      :class="['pa-2',responsiveClassObject]"
+      v-scroll.self="onScroll"
+      :class="[componentOverflow?'overflow-y-hidden':null,'pa-2',responsiveClassObject]"
       outlined
       tile
       elevation="3"
@@ -64,7 +65,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('uiController', ['UIGeneralStatus']),
+    ...mapState('uiController', ['UIGeneralStatus','componentOverflow']),
     ...mapGetters("searchFilters", ["getFilters"]),
     setup() {
       let _module = this;
@@ -107,8 +108,13 @@ export default {
         comparison = 1;
       }
       return comparison;
+    },
+    onScroll({target: {scrollTop, clientHeight, scrollHeight}}) {
+      if (scrollTop + clientHeight >= scrollHeight) {
+         // console.log('end');
+      }
     }
-  },
+  }
 }
 </script>
 

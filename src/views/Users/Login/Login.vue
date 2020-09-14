@@ -15,7 +15,7 @@
           :xl="!popUp ? '4' : '12' "
         >
           <v-card :flat="popUp">
-            <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">
+            <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp}">
               <!-- card title -->
               <h2 class="ma-0">
                 {{ currentPanel | capitalize }}
@@ -26,20 +26,22 @@
               <MessageHandler field="login" />
 
               <!-- button to re-send confirmation if login failed -->
-              <span v-show="resendButton">
+              <div
+                v-if="resendButton"
+                class="d-flex flex-row justify-center"
+              >
                 <v-btn
-                  width="250px"
-                  class="text-center"
+                  class="text-center teal white--text px-2"
                   href="#/users/resendConfirmation"
+                  @click="()=>{this.$emit('ClosePopup', true)}"
                 >
-                  <v-layout width="100%">
-                    <v-layout>Confirm your email address</v-layout>
-                  </v-layout>
+                  Resend me the confirmation email
                 </v-btn>
-              </span>
-            </v-card-text>
-            <!-- OAUTH -->
-            <v-card-text>
+              </div>
+              <v-divider
+                v-if="resendButton"
+                class="pb-0 mb-0"
+              />
               <v-list>
                 <v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
@@ -95,14 +97,14 @@
                 <v-card-text class="text-center py-1">
                   <a
                     href="#/accounts/forgotPassword"
-                    @click="()=>{this.$emit('ClosePopup',true)}"
+                    @click="()=>{this.$emit('ClosePopup', true)}"
                   >
                     Forgot your password ?
                   </a>
                   <v-divider />
                   <a
                     href="#/accounts/signup"
-                    @click="()=>this.$emit('ClosePopup',true)"
+                    @click="()=>this.$emit('ClosePopup', true)"
                   >
                     Create a new account
                   </a>

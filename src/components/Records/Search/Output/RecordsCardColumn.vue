@@ -36,7 +36,10 @@
               />
               <h3 class="title-style">
                 <u>{{ record.name }}</u>
-                <span class="ml-2" v-if="record.abbreviation"> ({{ truncate(record.abbreviation, 15) }}) </span>
+                <span
+                  v-if="record.abbreviation"
+                  class="ml-2"
+                > ({{ truncate(record.abbreviation, 15) }}) </span>
               </h3>
             </div>
           </router-link>
@@ -44,7 +47,13 @@
       </v-row>
       <!-- Buttons -->
       <v-row>
-        <v-col>
+        <v-col
+          cols="12"
+          class="d-flex flex-row pb-0"
+        >
+          <v-divider />
+        </v-col>
+        <v-col cols="12">
           <section class="ml-2 mb-0 mr-4 d-flex flex-column">
             <h4 class="d-none">
               select Tag type
@@ -52,14 +61,14 @@
             <v-btn
               v-for="(item,index) in buttons"
               :key="index"
-              :outlined="item.active"
-              text
-              class="button-text-color"
-              :color="item.active?'primary':null"
+              :text="!item.active"
+              :color="item.active ? colors[item.title] : 'grey lighten-1'"
               :disabled="Chips[item.title].length === 0"
               @click="changeActiveItem(index)"
             >
-              {{ getButtonLabel(item.title) }} ({{ Chips[item.title].length }})
+              <span :class="{'white--text': item.active}">
+                {{ getButtonLabel(item.title) }} ({{ Chips[item.title].length }})
+              </span>
             </v-btn>
           </section>
         </v-col>
@@ -105,6 +114,8 @@ import RecordStatus from "@/components/Records/Shared/RecordStatus"
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";
+import colorObject from "@/data/colorOptions.json"
+
 
 export default {
   name: "RecordsCardColumn",
@@ -117,6 +128,7 @@ export default {
     return {
       allowLoop: true,
       allowClicking: false,
+      colors: colorObject.colors,
       buttons: [{title: 'domains', active: false}, {title: 'subjects', active: false}, {
         title: 'taxonomies',
         active: false,

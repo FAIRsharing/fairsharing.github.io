@@ -1,6 +1,6 @@
 <template>
   <form
-    class="stringSearchBar d-flex flex-row align-center mt-1  mr-2 ml-2"
+    class=" d-flex flex-row align-center align-content-center pt-1 mr-1 mr-lg-1 ml-1"
     @submit.prevent="searchString()"
   >
     <v-text-field
@@ -8,17 +8,21 @@
       solo
       single-line
       clearable
-      placeholder="Can't find what you're looking for? Search through all data."
+      dense
+      full-width
+      :class="$vuetify.breakpoint.lgAndDown?'v-input':'v-input-lg-up'"
+      :height="responsiveHeightTextBox"
+      :placeholder="placeholder"
     />
     <v-btn
       color="primary"
       outlined
-      height="52px"
-      class="mt-1 ml-2"
+      :class="responsiveHeight"
+      class="mt-1 mt-lg-1 ml-2"
       @click="searchString()"
     >
       <v-icon>search</v-icon>
-      <span>Search</span>
+      <span class="button-text-size">Search</span>
     </v-btn>
   </form>
 </template>
@@ -26,9 +30,29 @@
 <script>
 export default {
   name: "StringSearch",
+  props: {
+    placeholder: {default: null, type: String}
+  },
   data() {
     return {
       searchTerm: null
+    }
+  },
+  computed: {
+    responsiveHeight: function () {
+      return {
+        'style-sm-xs': this.$vuetify.breakpoint.mdAndDown,
+        'style-md': this.$vuetify.breakpoint.mdOnly,
+        'style-lg': this.$vuetify.breakpoint.lgOnly,
+        'style-xl': this.$vuetify.breakpoint.xlOnly,
+      }
+    },
+    responsiveHeightTextBox: function () {
+      let boxHeight = 35;
+      if(this.$vuetify.breakpoint.xlOnly){
+        boxHeight = 50;
+      }
+        return boxHeight;
     }
   },
   methods: {
@@ -43,14 +67,43 @@ export default {
         })
         _module.searchTerm = null;
       }
-    }
+    },
   }
 }
 </script>
 
-<style scoped >
+<style scoped>
 .v-input {
-  height: 42px;
+  box-shadow: 0 0 0 0;
+  height: 35px!important;
+  margin-bottom: 3px;
+}
+.v-input-lg-up{
+  box-shadow: 0 0 0 0;
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+.button-text-size {
+  font-size: 11px;
+}
+
+.style-xl {
+  height: 54px !important;
+  margin-bottom: 2px;
+}
+
+.style-lg {
+  height: 38px !important;
+  margin-bottom: 2px;
+}
+
+.style-md {
+  height: 32px !important;
+}
+
+.style-sm-xs {
+  height: 40px !important;
 }
 </style>
 

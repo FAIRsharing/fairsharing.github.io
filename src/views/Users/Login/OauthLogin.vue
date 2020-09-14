@@ -20,6 +20,7 @@
     methods: {
       ...mapActions("users", ["loginFromOauth", "setError", "oauthLogin"]),
       login: async function(){
+        let _module = this;
         const parseError = {
           field: "login",
           message: "Missing token or expiry"
@@ -33,7 +34,7 @@
           jwt: paramsArray.jwt,
           expiry: paramsArray.expiry
         });
-        this.$router.push({
+        _module.$router.push({
           path: "accounts/profile"
         })
       }

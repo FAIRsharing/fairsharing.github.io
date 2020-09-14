@@ -6,6 +6,7 @@
     elevation="1"
   >
     <SectionTitle title="Organisations" />
+    <NoneFound :data-field="getField('organisations')" />
     <div
       v-for="(value, key, index) in relations"
       :key="'relation_' + index"
@@ -88,6 +89,7 @@
 <script>
     import { mapGetters } from 'vuex';
 
+    import NoneFound from '@/components/Records/Record/NoneFound';
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     /* TODO: Replace with query from database */
@@ -96,6 +98,7 @@
     export default {
         name: "Organisations",
         components: {
+            NoneFound,
             SectionTitle
         },
         data(){

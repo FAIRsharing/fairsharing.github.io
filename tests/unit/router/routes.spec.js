@@ -46,7 +46,7 @@ describe("Routes", () => {
                 }}
         };
         const next = jest.fn();
-        const restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.returns({
             data: {id: 123}
         });
@@ -56,6 +56,7 @@ describe("Routes", () => {
         expect(next).toHaveBeenCalledWith();
 
         restStub.restore();
+        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.returns({
             data: {error: "Error!"}
         });
@@ -71,6 +72,7 @@ describe("Routes", () => {
             next, store);
         expect(next).toHaveBeenCalledWith({path: "/"});
 
+        restStub.restore();
         Vue.config.productionTip = true;
         Vue.config.devtools = true;
     });

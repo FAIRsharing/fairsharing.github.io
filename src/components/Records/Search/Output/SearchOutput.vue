@@ -14,6 +14,7 @@
     <!--List Controller-->
     <ListController
       class="mt-2"
+      :options="{hasPagination:true,hasSorting:true,hasListType:true}"
       @ChangeListType="changeListType"
     />
 

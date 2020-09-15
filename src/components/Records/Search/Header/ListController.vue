@@ -30,7 +30,6 @@
     <div
       v-else
       style="width: 60px"
-      type="avatar"
     />
     <!--Pagination-->
     <v-skeleton-loader
@@ -43,7 +42,7 @@
     </v-skeleton-loader>
 
     <!--Stack or Column list toggle buttons-->
-    <div class="d-flex flex-row align-center">
+    <div class="d-flex flex-row align-start">
       <v-skeleton-loader
         v-show="options.hasSorting"
         :loading="loading"
@@ -64,7 +63,7 @@
       >
         <v-icon
           x-large
-          style="font-size: 2.8rem"
+          style="font-size: 2.7rem"
           :class="{'active':!isColumnList}"
           @click="changeListType('columnList')"
         >
@@ -85,6 +84,12 @@
     export default {
         name: "ListController",
         components: {HitCount, Pagination, Sorting},
+        props:{
+          options:{
+            type:Object,
+            default:null
+          }
+        },
         data() {
             return {
                 isSortHovered: false,

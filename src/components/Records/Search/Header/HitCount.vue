@@ -1,6 +1,9 @@
 <template>
-  <div class="mt-2" style="text-align: center;">
-    <p>Displaying {{x}}  to {{y}} of {{ hits }}.</p>
+  <div
+    v-if="hits"
+    class="mt-2 text-center"
+  >
+    <p>Displaying {{ x }}  to {{ y }} of {{ hits }}.</p>
   </div>
 </template>
 

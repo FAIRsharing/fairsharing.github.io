@@ -28,7 +28,7 @@
           @mouseenter="allowClicking=true"
           @mouseleave="allowClicking=false"
         >
-          <router-link :to="'/' +record.id">
+          <router-link :to="'/' + getRecordLink(record)">
             <div class=" d-flex flex-column align-center justify-center">
               <record-status
                 :record="record"

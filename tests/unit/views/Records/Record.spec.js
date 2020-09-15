@@ -1,6 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
+import VueRouter from "vue-router"
 import Record from "@/views/Records/Record.vue";
 import VueMeta from "vue-meta";
 import Client from "@/components/GraphClient/GraphClient.js";
@@ -8,24 +9,26 @@ import record from "@/store/record.js";
 import users from "@/store/users.js";
 const sinon = require("sinon");
 
-const $route = {
-    path: "/",
-    params: {
-        id: "980190962"
-    }
-};
-
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-let queryStub;
-
 const $store = new Vuex.Store({
     modules: {
         record: record,
         users: users,
     }
 });
+
+const $route = {
+    path: "/",
+    params: {
+        id: "980190962"
+    }
+};
+const router = new VueRouter();
+const $router = { push: jest.fn() };
+
+let queryStub;
 
 describe("Record.vue", function() {
     let wrapper;
@@ -50,9 +53,10 @@ describe("Record.vue", function() {
         });
         vuetify = new Vuetify();
         wrapper = await shallowMount(Record, {
-            mocks: {$route, $store},
+            mocks: {$route, $store, $router},
             localVue,
-            vuetify
+            vuetify,
+            router
         });
     });
     afterEach( () => {
@@ -80,7 +84,7 @@ describe("Record.vue", function() {
             localVue,
             vuetify
         });
-        expect(anotherWrapper.vm.currentRoute).toMatch("FAIRsharing.p9xm4v");
+        expect(anotherWrapper.vm['currentRoute']).toMatch("FAIRsharing.p9xm4v");
 
     });
 
@@ -214,7 +218,6 @@ describe("Record.vue", function() {
                 "recordAssocLabel": "collects"
             }
         ];
-
         wrapper.vm.currentRecord['fairsharingRecord'] = {
             name: "test",
             metadata: {
@@ -264,5 +267,13 @@ describe("Record.vue", function() {
         expect(anotherWrapper.vm.recordAssociations.length).toBe(0);
     });
 
-
+    it("can go to the edit page", () => {
+        wrapper.vm.goToEdit();
+        expect($router.push).toHaveBeenCalledWith({
+            path: "123/edit",
+            params: {
+                fromRecordPage: true
+            }
+        });
+    });
 });

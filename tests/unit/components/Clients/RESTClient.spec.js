@@ -49,6 +49,11 @@ describe("RESTClient", () =>{
         expect(resp).toBe("testData");
     });
 
+    it("can let users re-send confirmation", async () => {
+        let resp = await client.resendConfirmation({email: 'example@fairsharing.org'});
+        expect(resp).toBe("testData");
+    });
+
     it("can get info about the user", async () => {
         let resp = await client.getUser("userToken");
         expect(resp).toBe("testData");

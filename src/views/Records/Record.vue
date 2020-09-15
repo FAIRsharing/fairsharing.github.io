@@ -16,7 +16,7 @@
       </v-row>
 
       <v-row
-        v-if="user().isLoggedIn && !error"
+        v-if="user().isLoggedIn && !error && canEdit"
         class="pr-3"
       >
         <v-spacer />
@@ -99,6 +99,9 @@
     import Support from '@/components/Records/Record/Support';
 
     import stringUtils from '@/utils/stringUtils';
+    import RestClient from "@/components/Client/RESTClient.js"
+
+    const client = new RestClient();
 
     export default {
         name: "Record",
@@ -118,7 +121,8 @@
                 error: null,
                 queryTriggered: false,
                 showScrollToTopButton: false,
-                recordAssociations: []
+                recordAssociations: [],
+                canEdit: false
             }
         },
         computed: {
@@ -144,6 +148,7 @@
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
+                await this.canEditRecord()
             })
         },
         methods: {
@@ -158,17 +163,27 @@
                     let object = {};
                     properties.forEach(prop => {
                         if (Object.prototype.hasOwnProperty.call(item, prop)) {
-                            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel),
+                            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
                             object.id = item[prop].id;
                             object.registry = item[prop].registry;
                             object.name = item[prop].name;
-                            object.subject = _module.currentRecord['fairsharingRecord'].name
+                            object.subject = _module.currentRecord['fairsharingRecord'].name;
                             object.type = item[prop].type;
                         }
                     });
                     _module.recordAssociations.push(object);
                 });
             },
+            goToEdit(){
+        let recordID = this.$route.params.id;
+        this.$router.push({
+          path: recordID + '/edit',
+          params: {
+            fromRecordPage: true
+          }
+        })
+      },
+
             /**
              * Method to set the current record in the store
              * @returns {Promise} - the current record
@@ -196,14 +211,14 @@
             async getHistory() {
                 await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
             },
-            goToEdit(){
-              let recordID = this.$route.params.id;
-              this.$router.push({
-                path: recordID + '/edit',
-                params: {
-                  fromRecordPage: true
-                }
-              })
+            async canEditRecord(){
+              const _module = this;
+              _module.canEdit = false;
+              if (_module.user().isLoggedIn) {
+                const recordID = _module.$route.params.id;
+                const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
+                _module.canEdit = !canEdit.error;
+              }
             }
         },
         metaInfo() {

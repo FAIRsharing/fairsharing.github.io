@@ -5,6 +5,7 @@ import VueRouter from "vue-router"
 import Record from "@/views/Records/Record.vue";
 import VueMeta from "vue-meta";
 import Client from "@/components/GraphClient/GraphClient.js";
+import RESTClient from "@/components/Client/RESTClient.js";
 import record from "@/store/record.js";
 import users from "@/store/users.js";
 const sinon = require("sinon");
@@ -12,6 +13,13 @@ const sinon = require("sinon");
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
+users.state.user = function(){
+    return {
+        isLoggedIn: true,
+        credentials: {token: 123}
+    }
+};
+
 const $store = new Vuex.Store({
     modules: {
         record: record,
@@ -27,7 +35,6 @@ const $route = {
 };
 const router = new VueRouter();
 const $router = { push: jest.fn() };
-
 let queryStub;
 
 describe("Record.vue", function() {
@@ -99,7 +106,7 @@ describe("Record.vue", function() {
         expect(wrapper.vm.currentRoute).toMatch("123");
     });
 
-    it ("can properly fetch a record history", async () => {
+    it("can properly fetch a record history", async () => {
         await wrapper.vm.getHistory();
     });
 
@@ -275,5 +282,30 @@ describe("Record.vue", function() {
                 fromRecordPage: true
             }
         });
+    });
+
+    it("can check if a logged in user can edit the record", async() => {
+        const restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({data: {id: 123}});
+        await wrapper.vm.canEditRecord();
+        expect(wrapper.vm.canEdit).toBe(true);
+        restStub.restore();
+        restStub.withArgs(sinon.match.any).returns({
+            data: {error: "Error"}
+        });
+        await wrapper.vm.canEditRecord();
+        expect(wrapper.vm.canEdit).toBe(false);
+        restStub.restore();
+        users.state.user = function(){
+            return { isLoggedIn: false }
+        };
+        const anotherWrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        await anotherWrapper.vm.canEditRecord();
+        expect(anotherWrapper.vm.canEdit).toBe(false);
     });
 });

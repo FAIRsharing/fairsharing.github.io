@@ -5,6 +5,7 @@
     tile
     elevation="1"
   >
+    <a id="associated_records"></a>
     <SectionTitle title="Associated Records" />
 
     <v-card-text>

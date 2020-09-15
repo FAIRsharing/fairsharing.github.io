@@ -22,7 +22,7 @@
         <v-spacer />
         <v-btn
           class="success"
-          :href="'#/' + currentRoute + '/edit'"
+          @click="goToEdit()"
         >
           EDIT
         </v-btn>
@@ -182,7 +182,7 @@
                     const currentRecord = _module.currentRecord['fairsharingRecord'];
                     _module.recordAssociations = [];
                     if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
-                        _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
+                        _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
                     }
                 } catch (e) {
                     this.error = e.message;
@@ -195,6 +195,15 @@
              * */
             async getHistory() {
                 await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
+            },
+            goToEdit(){
+              let recordID = this.$route.params.id;
+              this.$router.push({
+                path: recordID + '/edit',
+                params: {
+                  fromRecordPage: true
+                }
+              })
             }
         },
         metaInfo() {

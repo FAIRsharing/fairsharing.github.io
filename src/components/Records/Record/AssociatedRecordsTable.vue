@@ -16,31 +16,34 @@
       :items="recordAssociations"
       :search="search"
     >
-    <template v-slot:item="props">
-      <tr>
-        <td>
-          <a :href="'#/' + props.item.id">
-            <span v-if="props.item.type" class="mr-2">
+      <template v-slot:item="props">
+        <tr>
+          <td>
+            <a :href="'#/' + props.item.id">
+              <span
+                v-if="props.item.type"
+                class="mr-2"
+              >
                 <img
                   v-if="Object.keys(recordType).includes(props.item.type)"
-                  :src="require('@/' + recordType[props.item.type].icon)"
+                  :src="'./' + recordType[props.item.type].icon"
                   class="miniIcon"
-                />
-            </span>
-            {{ props.item.name }}
-         </a>
-        </td>
-        <td>
-          {{ props.item.registry }} <span v-if="props.item.type">({{ cleanString(props.item.type) }})</span>
-        </td>
-        <td>
-          {{ props.item.recordAssocLabel }}
-        </td>
-        <td>
-          {{ props.item.subject }}
-        </td>
-      </tr>
-    </template>
+                >
+              </span>
+              {{ props.item.name }}
+            </a>
+          </td>
+          <td>
+            {{ props.item.registry }} <span v-if="props.item.type">({{ cleanString(props.item.type) }})</span>
+          </td>
+          <td>
+            {{ props.item.recordAssocLabel }}
+          </td>
+          <td>
+            {{ props.item.subject }}
+          </td>
+        </tr>
+      </template>
     </v-data-table>
   </section>
 </template>
@@ -52,13 +55,13 @@
 
   export default {
     name: "AssociatedRecordsTable",
+    mixins: [stringUtils],
     props: {
         recordAssociations: {
             type: Array,
             default: null
         }
     },
-    mixins: [stringUtils],
     data: () => {
         return {
             headers: [

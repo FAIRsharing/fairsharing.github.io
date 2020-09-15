@@ -285,11 +285,13 @@ describe("Record.vue", function() {
     });
 
     it("can check if a logged in user can edit the record", async() => {
-        const restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {id: 123}});
         await wrapper.vm.canEditRecord();
         expect(wrapper.vm.canEdit).toBe(true);
         restStub.restore();
+
+        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({
             data: {error: "Error"}
         });

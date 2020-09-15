@@ -252,8 +252,10 @@ export async function canEdit(to, from, next, store){
         let recordID = to.params.id;
         let canEdit = await client.canEdit(recordID, store.state.users.user().credentials.token);
         if (canEdit.error){
-            console.log(canEdit.error);
-            // we need a redirection to a 403 here!
+            if(from.params.id){
+                next({path: from.params.id})
+            }
+            next({path: "/"}); // replace with unauthorized page 403
         }
         else {
             next();

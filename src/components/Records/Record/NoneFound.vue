@@ -30,10 +30,6 @@ export default {
       type: Array,
       default: null
     },
-    objectField: {
-      type: Object,
-      default: null
-    },
     stringField: {
       type: String,
       default: null

@@ -37,7 +37,10 @@
                 style="width: 60%"
               >
                 <u>{{ record.name }}</u>
-                <span class="ml-2" v-if="record.abbreviation"> ({{ truncate(record.abbreviation, 15) }}) </span>
+                <span
+                  v-if="record.abbreviation"
+                  class="ml-2"
+                > ({{ truncate(record.abbreviation, 15) }}) </span>
               </h3>
             </div>
           </router-link>

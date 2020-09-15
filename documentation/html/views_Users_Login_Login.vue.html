@@ -108,7 +108,7 @@
           :xl="!popUp ? '4' : '12' "
         >
           &lt;v-card :flat="popUp">
-            &lt;v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">
+            &lt;v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp}">
               &lt;!-- card title -->
               &lt;h2 class="ma-0">
                 {{ currentPanel | capitalize }}
@@ -117,9 +117,24 @@
             &lt;v-card-text>
               &lt;!-- message handler -->
               &lt;MessageHandler field="login" />
-            &lt;/v-card-text>
-            &lt;!-- OAUTH -->
-            &lt;v-card-text>
+
+              &lt;!-- button to re-send confirmation if login failed -->
+              &lt;div
+                v-if="resendButton"
+                class="d-flex flex-row justify-center"
+              >
+                &lt;v-btn
+                  class="text-center teal white--text px-2"
+                  href="#/users/resendConfirmation"
+                  @click="()=>{this.$emit('ClosePopup', true)}"
+                >
+                  Resend me the confirmation email
+                &lt;/v-btn>
+              &lt;/div>
+              &lt;v-divider
+                v-if="resendButton"
+                class="pb-0 mb-0"
+              />
               &lt;v-list>
                 &lt;v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
@@ -145,6 +160,8 @@
                 &lt;/v-list-item>
               &lt;/v-list>
             &lt;/v-card-text>
+
+
             &lt;!-- card content // Form -->
             &lt;v-card-text v-if="currentPanel === 'login'">
               &lt;v-form
@@ -173,14 +190,14 @@
                 &lt;v-card-text class="text-center py-1">
                   &lt;a
                     href="#/accounts/forgotPassword"
-                    @click="()=>{this.$emit('ClosePopup',true)}"
+                    @click="()=>{this.$emit('ClosePopup', true)}"
                   >
                     Forgot your password ?
                   &lt;/a>
                   &lt;v-divider />
                   &lt;a
                     href="#/accounts/signup"
-                    @click="()=>this.$emit('ClosePopup',true)"
+                    @click="()=>this.$emit('ClosePopup', true)"
                   >
                     Create a new account
                   &lt;/a>
@@ -230,6 +247,7 @@ export default {
   data: () => {
     return {
       show1: false,
+      resendButton: false,
       currentPanel: "login",
       loginData: {},
       oauthLogin: [
@@ -267,7 +285,13 @@ export default {
       };
       _module.$emit('ClosePopup',false);
       await _module.login(user);
-      if (!_module.messages().login.error) {
+      if (_module.messages().login.error) {
+        const confirmationError = "You have to confirm your email address before continuing.";
+        if (_module.messages().login.message === confirmationError) {
+          // display resend confirmation link
+          _module.resendButton = true;
+        }
+      } else {
         const goTo = _module.$route.query.redirect;
         if (goTo) {
           _module.$router.push({

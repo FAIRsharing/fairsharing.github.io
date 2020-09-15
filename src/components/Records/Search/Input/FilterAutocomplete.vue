@@ -15,8 +15,8 @@
           item-text="key"
           item-value="key"
           class="autocomplete-max-width"
-          @blur="clickInside"
-          @click="clickOutside"
+          @blur="clickOutside"
+          @click="clickInside"
           @click:clear="reset(filter)"
         >
           <template v-slot:selection="data">
@@ -133,10 +133,10 @@ export default {
       selectedItem.filterSelected = {};
     },
     clickInside: function () {
-      this.setComponentOverflowLocal(false);
+      this.setComponentOverflowLocal(true);
     },
     clickOutside: function () {
-      this.setComponentOverflowLocal(true);
+      this.setComponentOverflowLocal(false);
     }
   }
 }

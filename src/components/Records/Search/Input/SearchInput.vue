@@ -1,7 +1,6 @@
 <template>
   <aside>
     <v-card
-      v-scroll.self="onScroll"
       :class="[componentOverflow?'overflow-y-hidden':null,'pa-2',responsiveClassObject]"
       outlined
       tile
@@ -109,11 +108,11 @@ export default {
       }
       return comparison;
     },
-    onScroll({target: {scrollTop, clientHeight, scrollHeight}}) {
+/*    onScroll({target: {scrollTop, clientHeight, scrollHeight}}) {
       if (scrollTop + clientHeight >= scrollHeight) {
          // console.log('end');
       }
-    }
+    }*/
   }
 }
 </script>

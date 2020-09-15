@@ -2,6 +2,7 @@ import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify";
 import ExpansionPanel from "@/components/Records/Search/Input/FilterAutocomplete.vue"
 import recordsStore from "@/store/records.js";
+import uiController from "@/store/uiController.js";
 import getGrants from '../../../../../fixtures/getGrants.json'
 import Vuex from "vuex";
 
@@ -12,6 +13,7 @@ const vuetify = new Vuetify();
 const $store = new Vuex.Store({
     modules: {
         records: recordsStore,
+        uiController: uiController,
     }
 });
 
@@ -117,5 +119,14 @@ describe("FilterAutocomplete.vue", function () {
 
     });
 
+    it("can check clickInside function", () => {
+        wrapper.vm.clickInside();
+        expect($store.state.uiController.componentOverflow).toBe(true);
+    });
+
+    it("can check clickOutside function", () => {
+        wrapper.vm.clickOutside();
+        expect($store.state.uiController.componentOverflow).toBe(false);
+    });
 
 });

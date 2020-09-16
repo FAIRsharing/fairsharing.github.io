@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    import recordTypes from "@/components/Records/recordsTypeData.json"
+    import recordTypes from "@/data/recordsTypeData.json"
     export default {
         name: "RecordStatus",
         props: {

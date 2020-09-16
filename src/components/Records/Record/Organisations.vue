@@ -93,7 +93,7 @@
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     /* TODO: Replace with query from database */
-    import organisationRelations from './organisationRelations.json';
+    import organisationRelations from '@/data/organisationRelations.json';
 
     export default {
         name: "Organisations",

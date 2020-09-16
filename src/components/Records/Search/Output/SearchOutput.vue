@@ -41,7 +41,7 @@
           <ListController
             v-if="!isColumnList && records.length"
             :options="{hasPagination:true,hasSorting:false,hasListType:false}"
-            class="mt-2"
+            class="mt-4"
             @ChangeListType="changeListType"
           />
         </v-skeleton-loader>

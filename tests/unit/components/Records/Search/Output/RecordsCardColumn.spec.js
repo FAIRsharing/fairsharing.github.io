@@ -37,4 +37,11 @@ describe("RecordsCardColumn.vue", function () {
         expect(returnedValue).toBe('tags');
     });
 
+    it("can generate correct link depending on doi presence", () => {
+        expect(wrapper.vm.getRecordLink(wrapper.vm.record)).toEqual(wrapper.vm.record.id);
+        let doi = 'FAIRsharing.wibble';
+        wrapper.vm.record.doi = doi;
+        expect(wrapper.vm.getRecordLink(wrapper.vm.record)).toEqual(doi);
+    });
+
 });

@@ -112,11 +112,11 @@
         <b class="mr-2">Countries involved with this resource:</b>
         <NoneFound
           v-if="!currentRecord['fairsharingRecord'].countries"
-          :object-field="currentRecord['fairsharingRecord'].countries"
+          :data-field="currentRecord['fairsharingRecord'].countries"
         />
         <p
+          v-else-if="!currentRecord['fairsharingRecord'].countries.length"
           class="my-0"
-          v-else-if="currentRecord['fairsharingRecord'].countries[0].name==='All'"
         >
           All Countries
         </p>
@@ -131,9 +131,13 @@
               v-on="on"
             >
               <country-flag
+                v-if="country.code"
                 :country="country.code"
                 size="big"
               />
+              <div class="warning" v-else>
+                country code undefined!
+              </div>
             </v-sheet>
           </template>
           <span class="white--text">{{ country.name }}</span>

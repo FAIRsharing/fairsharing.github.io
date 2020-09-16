@@ -6,7 +6,7 @@
     elevation="1"
   >
     <SectionTitle
-      :id="'associated_records'"
+      id="associated_records"
       title="Associated Records"
     />
 

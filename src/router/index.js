@@ -220,15 +220,19 @@ const router = new VueRouter({
     routes,
     mode: "history",
     scrollBehavior(to, from, savedPosition) {
-        if (savedPosition) {
-            return savedPosition;
-        }
-        if (to.hash) {
-            return { selector: to.hash };
-        }
-        return { x: 0, y: 0 };
+        _scrollBehaviour(to, from, savedPosition)
     }
 });
+
+export function _scrollBehaviour(to, from, savedPosition) {
+    if (savedPosition) {
+        return savedPosition;
+    }
+    if (to.hash) {
+        return { selector: to.hash };
+    }
+    return { x: 0, y: 0 };
+}
 
 export function beforeEach(to, from, next) {
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";

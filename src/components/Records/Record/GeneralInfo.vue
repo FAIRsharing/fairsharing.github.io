@@ -6,7 +6,10 @@
     elevation="1"
   >
     <!-- General Info -->
-    <SectionTitle title="General Info" />
+    <SectionTitle
+      id="general_info"
+      title="General Info"
+    />
     <!-- Ribbon -->
     <Ribbon
       v-if="currentRecord['fairsharingRecord'].isRecommended"

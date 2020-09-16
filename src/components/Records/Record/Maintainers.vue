@@ -5,7 +5,10 @@
     tile
     elevation="1"
   >
-    <SectionTitle title="Maintainers" />
+    <SectionTitle
+      id="maintainers"
+      title="Maintainers"
+    />
     <NoneFound :data-field="getField('maintainers')" />
 
     <!--Contact-->

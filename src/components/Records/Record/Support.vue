@@ -5,7 +5,10 @@
     tile
     elevation="1"
   >
-    <SectionTitle title="Support" />
+    <SectionTitle
+      id="support"
+      title="Support"
+    />
     <!-- SupportLinks -->
     <!-- TODO -->
 

@@ -5,7 +5,10 @@
     tile
     elevation="1"
   >
-    <SectionTitle title="Organisations" />
+    <SectionTitle
+      id="organisations"
+      title="Organisations"
+    />
     <NoneFound :data-field="getField('organisations')" />
     <div
       v-for="(value, key, index) in relations"

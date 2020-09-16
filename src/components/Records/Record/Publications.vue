@@ -5,7 +5,10 @@
     tile
     elevation="1"
   >
-    <SectionTitle title="Publications" />
+    <SectionTitle
+      id="publications"
+      title="Publications"
+    />
     <NoneFound :data-field="getField('publications')" />
     <v-card
       v-for="(publication,index) in getField('publications')"

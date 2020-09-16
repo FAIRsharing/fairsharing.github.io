@@ -5,7 +5,10 @@
     tile
     elevation="1"
   >
-    <SectionTitle title="keywords" />
+    <SectionTitle
+      id="keywords"
+      title="keywords"
+    />
     <section>
       <!--Taxonomies-->
       <div class="d-flex mt-4 flex-wrap">

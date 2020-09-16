@@ -1,6 +1,6 @@
 import router from "../../../src/router"
 import { beforeEach } from "../../../src/router"
-import { isLoggedIn } from "@/router/index.js"
+import { isLoggedIn, _scrollBehaviour } from "@/router/index.js"
 
 describe("Routes", () => {
     it("routing variables are correctly set", () => {
@@ -29,6 +29,11 @@ describe("Routes", () => {
         };
         const next = jest.fn();
         isLoggedIn(undefined, undefined, next, store)
+    });
+
+    it("correctly detects page anchors", () => {
+        _scrollBehaviour({hash: 'banana'}, undefined, undefined);
+
     });
 });
 

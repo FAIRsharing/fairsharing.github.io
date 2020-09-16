@@ -135,6 +135,9 @@
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
             ...mapState('users', ["user"]),
+            userIsLoggedIn(){
+              return this.user().isLoggedIn;
+            },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
             },
@@ -142,6 +145,9 @@
         watch: {
             async currentRoute() {
                 await this.getData();
+            },
+            async userIsLoggedIn() {
+              await this.canEditRecord();
             }
         },
         mounted() {

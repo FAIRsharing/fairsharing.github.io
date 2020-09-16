@@ -105,15 +105,15 @@ class GraphQLClient {
             "Accept": "application/json",
             "Content-Type": "application/json",
         };
-        if (process.env.VUE_APP_CLIENT_ID){
-            this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID
+        this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
+        if (this.headers['X-Client-Id'] === undefined){
+            delete this.headers['X-Client-Id']
         }
         if (GraphQLClient._instance){
             return GraphQLClient._instance
         }
         GraphQLClient._instance = this;
         this.url = process.env.VUE_APP_API_ENDPOINT + "/graphql";
-
     }
 
     /**

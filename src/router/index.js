@@ -35,6 +35,10 @@ import Editor from "@/views/CreateRecord/Editor";
 import Records from "@/views/Records/Records";
 import Record from "@/views/Records/Record";
 
+/* CLIENTS */
+import RestClient from "@/components/Client/RESTClient.js"
+const client = new RestClient();
+
 Vue.use(VueRouter);
 
 let routes = [
@@ -193,8 +197,8 @@ let routes = [
         name: "Edit Content",
         path: "/:id/edit",
         component: Editor,
-        beforeEnter(to, from, next) {
-            isLoggedIn(to, from, next, store);
+        async beforeEnter(to, from, next) {
+            await canEdit(to, from, next, store);
         }
     },
     {
@@ -237,18 +241,26 @@ export function isLoggedIn(to, from, next, store) {
     }
 }
 
-/*
-export function canEdit(to, from, next, store){
-    if (!store.state.users.user().isLoggedIn) {
-        next({
-            name: "Login" // back to safety route //
-        });
+export async function canEdit(to, from, next, store){
+    if (!store.state.users.user().isLoggedIn){
+        next({name: "Login"})
     }
     else {
-        // implement canEdit here. If can edit go next() else create a cant edit page/error message.
-        next();
+        if (to.params['fromRecordPage']){
+            next();
+        }
+        let recordID = to.params.id;
+        let canEdit = await client.canEdit(recordID, store.state.users.user().credentials.token);
+        if (canEdit.error){
+            if(from.params.id){
+                next({path: from.params.id})
+            }
+            next({path: "/"}); // replace with unauthorized page 403
+        }
+        else {
+            next();
+        }
     }
 }
-*/
 
 export default router;

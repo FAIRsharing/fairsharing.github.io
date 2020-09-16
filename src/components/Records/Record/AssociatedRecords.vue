@@ -5,8 +5,10 @@
     tile
     elevation="1"
   >
-    <a id="associated_records"></a>
-    <SectionTitle title="Associated Records" />
+    <SectionTitle
+      :id="'associated_records'"
+      title="Associated Records"
+    />
 
     <v-card-text>
       <v-tabs left>

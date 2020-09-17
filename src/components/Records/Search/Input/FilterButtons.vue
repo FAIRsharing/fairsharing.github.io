@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoadingData">
+  <div>
     <div
       v-for="(buttonVal, buttonIndex) in allowedFilterButtons"
       :key="'button_' + buttonIndex"
@@ -13,7 +13,7 @@
         :item-parent-index="buttonIndex"
         :md-screens="$vuetify.breakpoint.mdAndDown"
         :multiple-items="buttonVal.length > 2"
-        :double-items="buttonVal.length === 2"
+        :double-items="buttonVal.data.length === 2"
       />
     </div>
   </div>

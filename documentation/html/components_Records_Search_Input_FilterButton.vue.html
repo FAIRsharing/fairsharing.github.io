@@ -101,7 +101,7 @@
         color="primary"
         class="mr-1 mr-lg-2"
         :outlined="!item.active"
-        :class="[isFirstItem &amp;&amp; !doubleItems?'first-child':'flex-1',{'button-style-md-screens':mdScreens,'buttons-md-style':multipleItems &amp;&amp; !isFirstItem}]"
+        :class="[isFirstItem &amp;&amp; !doubleItems ? 'first-child' : 'flex-1', {'button-style-md-screens' : mdScreens, 'buttons-md-style' : multipleItems &amp;&amp; !isFirstItem}]"
         @click="selectFilter(item)"
         v-on="on"
       >

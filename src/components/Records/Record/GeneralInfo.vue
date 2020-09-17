@@ -49,7 +49,7 @@
             </h3>
             <a
               v-if="currentRecord['fairsharingRecord'].doi"
-              :href="currentRecord['fairsharingRecord'].doi"
+              :href="generateDoiLink(currentRecord['fairsharingRecord'].doi)"
               target="_blank"
             >
               {{ currentRecord['fairsharingRecord'].doi }}
@@ -173,6 +173,11 @@ export default {
   mixins: [stringUtils],
   computed: {
     ...mapState("record", ["currentRecord"])
+  },
+  methods: {
+    generateDoiLink(doi) {
+      return `https://doi.org/${doi}`
+    }
   }
 }
 </script>

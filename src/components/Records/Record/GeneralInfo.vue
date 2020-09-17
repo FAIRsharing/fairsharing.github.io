@@ -118,7 +118,7 @@
           v-else-if="!currentRecord['fairsharingRecord'].countries.length"
           class="my-0"
         >
-          All Countries
+          None found.
         </p>
         <v-tooltip
           v-for="country in currentRecord['fairsharingRecord'].countries"

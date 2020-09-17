@@ -28,6 +28,13 @@
           searchAnd: true
         }
       },
+      mounted() {
+        this.$nextTick(function () {
+          const _module = this;
+          let param = (_module.$route.query.searchAnd) ? JSON.parse(_module.$route.query.searchAnd) : true;
+          _module.searchAnd = param;
+        });
+      },
       methods: {
         async applyFilter(value) {
           const _module = this;
@@ -41,14 +48,7 @@
             })
           }
         }
-      },
-      mounted() {
-        this.$nextTick(function () {
-          const _module = this;
-          let param = (_module.$route.query.searchAnd) ? JSON.parse(_module.$route.query.searchAnd) : true;
-          _module.searchAnd = param;
-        });
-      },
+      }
     }
 </script>
 

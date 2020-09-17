@@ -6,8 +6,8 @@ import editPublications from "@/components/Editor/EditPublications.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
 import GraphClient from "@/components/GraphClient/GraphClient.js";
-import RestClient from "../../../../src/components/Client/RESTClient.js"
-import ExternalClient from "../../../../src/components/Client/ExternalClients.js"
+import RestClient from "@/components/Client/RESTClient.js"
+import ExternalClient from "@/components/Client/ExternalClients.js"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

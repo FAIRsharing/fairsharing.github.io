@@ -47,14 +47,20 @@ describe("FilterButton.vue", function () {
 
     it("can check selectFilter method", () => {
         let selectedItem = {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true};
-        $store.state.searchFilters.filterButtons = [[
-            {active: true, filterName: 'isMaintained', title: 'All'},
-            {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
-        ]];
+        $store.state.searchFilters.filterButtons = [
+            {
+                data:
+                    [
+                        {active: true, filterName: 'isMaintained', title: 'All'},
+                        {active: false, filterName: 'isMaintained', title: 'MAINTAINED', value: true},
+                    ],
+                curator_only: true
+            }
+        ];
         wrapper.vm.selectFilter(selectedItem);
         expect($router.push).toHaveBeenCalledTimes(1);
         expect($router.push).toHaveBeenCalledWith({"name": "search", "query": {"isMaintained": "true"}});
-        expect($store.state.searchFilters.filterButtons[0][1].active).toBe(true);
+        expect($store.state.searchFilters.filterButtons[0].data[1].active).toBe(true);
     });
 
     it('can check applyFilter function', () => {
@@ -68,6 +74,7 @@ describe("FilterButton.vue", function () {
                 mdScreens: false,
                 itemParentIndex: 0,
                 multipleItems: false,
+                doubleItems: true,
             },
             mocks: {$store, $router, $route}
         });
@@ -91,5 +98,6 @@ describe("FilterButton.vue", function () {
         wrapper.vm.checkCurrentParameters('ismaintained', "true", true);
         expect(wrapper.vm.item.active).toEqual(true);
         });
+
 
 });

@@ -3,6 +3,7 @@
     <h1 class="d-none">
       Records
     </h1>
+
     <!--Filtered Chips-->
     <div
       v-if="getChips.length && !stickToTop"
@@ -14,9 +15,21 @@
     <!--List Controller-->
     <ListController
       class="mt-2"
+      :options="{hasPagination:true,hasSorting:true,hasListType:true}"
       @ChangeListType="changeListType"
     />
-
+    <!-- Alert -->
+    <div
+      v-if="getRecordsLength<1 && !loading"
+      class="no-data-found"
+    >
+      <v-alert
+        color="gray"
+        icon="info"
+      >
+        No records match your search!
+      </v-alert>
+    </div>
     <!--List Row-->
     <div
       :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]"
@@ -36,24 +49,20 @@
             :key="'record_'+record.id"
             :record="record"
           />
+          <!--List Controller-->
+          <Pagination
+            :total-pages="totalPages"
+            class="my-5"
+          />
         </v-skeleton-loader>
       </article>
     </div>
-    <!-- Alert -->
-    <div
-      v-if="getRecordsLength<1 && !loading"
-      class="no-data-found"
-    >
-      <v-alert
-        color="gray"
-        icon="info"
-      >
-        No records match your search!
-      </v-alert>
-    </div>
+
+
 
     <!-- ColumnCard view -->
     <div
+      v-if="isColumnList"
       :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]"
     >
       <v-skeleton-loader
@@ -61,15 +70,18 @@
         :loading="loading"
         type="image"
       >
-        <v-row
-          v-show="isColumnList"
-        >
+        <v-row>
           <RecordsCardColumn
             v-for="record in records"
             :key="'record_'+record.id"
             :record="record"
           />
         </v-row>
+        <!--List Controller-->
+        <Pagination
+          :total-pages="totalPages"
+          class="my-5"
+        />
       </v-skeleton-loader>
     </div>
   </section>
@@ -82,10 +94,12 @@ import RecordsCardColumn from "./RecordsCardColumn";
 import {mapState, mapGetters} from 'vuex'
 import FilterChips from "../Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import Pagination from "../Header/Pagination";
+
 
 export default {
   name: "SearchOutput",
-  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack},
+  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination},
   mixins: [filterChipsUtils],
   data() {
     return {
@@ -93,7 +107,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('records', ["records", "hits", "loading"]),
+    ...mapState('records', ["records", "hits", "loading", "totalPages"]),
     ...mapGetters('records', ["getRecordsLength"]),
     ...mapState('uiController', ['stickToTop']),
   },

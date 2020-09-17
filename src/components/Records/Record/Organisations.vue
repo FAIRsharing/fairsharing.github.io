@@ -6,27 +6,43 @@
     elevation="1"
   >
     <SectionTitle title="Organisations" />
+    <NoneFound :data-field="getField('organisations')" />
     <div
       v-for="(value, key, index) in relations"
       :key="'relation_' + index"
     >
-      <h4 class="org-relation-title">{{ value }}</h4>
-      <NoneFound :data-field="getRelations(key)" />
+      <h4
+        v-if="getRelations(key).length"
+        class="org-relation-title"
+      >
+        {{ value }}
+      </h4>
       <v-card
-        v-for="(organisationLink, index) in getRelations(key)"
-        :key="'organisationLink_' + index"
+        v-for="(organisationLink, nindex) in getRelations(key)"
+        :key="'organisationLink_' + nindex"
         class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-        :class="index === 0 ? 'mt-4':'mt-2'"
+        :class="nindex === 0 ? 'mt-4':'mt-2'"
         flat
         outlined
       >
         <div class="d-flex mt-2 ">
-          <v-icon
-            color="secondary"
-            class="mr-2"
-          >
-            mdi-factory
-          </v-icon>
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <v-sheet
+                class="mb-2 flag-mr"
+                v-on="on"
+              >
+                <v-icon
+                  color="secondary"
+                  class="mr-2"
+                >
+                  mdi-factory
+                </v-icon>
+              </v-sheet>
+            </template>
+
+            <span>Organisation name and type</span>
+          </v-tooltip>
           <p class="ma-0">
             <a
               :href="organisationLink.organisation.homepage"
@@ -37,6 +53,32 @@
             <span v-if="organisationLink.organisation.types.length > 0">
               ({{ organisationLink.organisation.types.join(', ') }})
             </span>
+          </p>
+        </div>
+
+        <div
+          v-if="organisationLink.grant"
+          class="d-flex mt-2 "
+        >
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <v-sheet
+                class="mb-2 flag-mr"
+                v-on="on"
+              >
+                <v-icon
+                  color="secondary"
+                  class="mr-2"
+                >
+                  mdi-cash-multiple
+                </v-icon>
+              </v-sheet>
+            </template>
+
+            <span>Grant funding this resource</span>
+          </v-tooltip>
+          <p class="ma-0">
+            {{ organisationLink.grant.name }}
           </p>
         </div>
       </v-card>

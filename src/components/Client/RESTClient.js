@@ -11,7 +11,7 @@ class RESTClient {
             return RESTClient._instance
         }
         RESTClient._instance = this;
-        this.baseURL = "https://api.fairsharing.org";
+        this.baseURL = process.env.VUE_APP_API_ENDPOINT;
         this.headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -107,6 +107,22 @@ class RESTClient {
             data: {
                 user: {email: email}
             }
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Resend the validation link for a given user
+     * @param {Object} user - contains the email of the user.
+     * @returns {Promise}
+     */
+    async resendConfirmation(user) {
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/users/confirmation",
+            headers: this.headers,
+            data: {user: user}
         };
         let response = await this.executeQuery(request);
         return response.data;
@@ -241,6 +257,17 @@ class RESTClient {
         return response.data;
     }
 
+    async canEdit(recordID, userToken){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + userToken;
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/fairsharing_records/can_edit/" + recordID,
+            headers: headers,
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
     /* USER DEFINED TAGS */
 

@@ -31,13 +31,14 @@ describe("GraphQL Client", function () {
     });
 
     it("can be instantiated as a singleton", function () {
+        process.env.VUE_APP_CLIENT_ID = undefined;
         const instance2 = new Client();
         expect(client).toBe(instance2.constructor["_instance"]);
     });
 
     it("can execute a query", async function () {
 
-        let stub = sinon.stub(Client.prototype, "getData")
+        let stub = sinon.stub(Client.prototype, "getData");
         stub.withArgs(sinon.match.any).returns({
             data: {
                 data: {
@@ -98,10 +99,9 @@ describe("GraphQL Client", function () {
         Client.prototype.getData.restore();
     });
 
-
     it("can correctly build a query string from a JSON", function () {
         const expectedOutput = "searchFairsharingRecords(field1:true field2:\"true\" field3:[\"true\",\"false\"]){ " +
-            "aggregations currentPage perPage totalCount totalPages firstPage records{id type name abbreviation " +
+            "aggregations currentPage perPage totalCount totalPages firstPage records{id type name abbreviation doi " +
             "registry description domains{ label}subjects{ label}taxonomies{ label}userDefinedTags{ label}recordAssociations{ linkedRecord{name " +
             "id registry } recordAssocLabel}reverseRecordAssociations{ fairsharingRecord{name id registry } " +
             "recordAssocLabel}status isRecommended }}";

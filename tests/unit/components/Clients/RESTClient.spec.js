@@ -1,4 +1,5 @@
 import Client from "@/components/Client/RESTClient.js";
+import Vue from "vue";
 const sinon = require("sinon");
 
 
@@ -12,9 +13,8 @@ describe("RESTClient", () =>{
         stub.withArgs(sinon.match.any).returns(dataStub);
         client = new Client();
     });
-
     afterAll(() => {
-        if(stub){
+        if (stub){
             stub.restore();
         }
     });
@@ -49,6 +49,11 @@ describe("RESTClient", () =>{
         expect(resp).toBe("testData");
     });
 
+    it("can let users re-send confirmation", async () => {
+        let resp = await client.resendConfirmation({email: 'example@fairsharing.org'});
+        expect(resp).toBe("testData");
+    });
+
     it("can get info about the user", async () => {
         let resp = await client.getUser("userToken");
         expect(resp).toBe("testData");
@@ -56,9 +61,16 @@ describe("RESTClient", () =>{
 
     it("can process network errors", async () => {
         stub.restore();
+        jest.spyOn(console, 'error');
+        console.error.mockImplementation(() => {});
+        Vue.config.productionTip = false;
+        Vue.config.devtools = false;
         let resp = await client.executeQuery({
             url: "http://google.com"
         });
         expect(resp.data.error.message).toBe("Network Error");
+        console.error.mockRestore();
+        Vue.config.productionTip = true;
+        Vue.config.devtools = true;
     })
 });

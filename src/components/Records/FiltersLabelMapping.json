@@ -75,5 +75,22 @@
             "filterLabel": "Maintained",
             "type": "Boolean"
         }
-    }
+    },
+    "sort_order": [
+        "subjects",
+        "domains",
+        "userDefinedTags",
+        "taxonomies",
+        "fairsharingRegistry",
+        "recordType",
+        "organisations",
+        "journals",
+        "grants",
+        "licences",
+        "isRecommended",
+        "status",
+        "countries",
+        "isApproved",
+        "isMaintained"
+    ]
 }

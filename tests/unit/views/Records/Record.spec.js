@@ -1,24 +1,24 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
+import VueRouter from "vue-router"
 import Record from "@/views/Records/Record.vue";
 import VueMeta from "vue-meta";
 import Client from "@/components/GraphClient/GraphClient.js";
+import RESTClient from "@/components/Client/RESTClient.js";
 import record from "@/store/record.js";
 import users from "@/store/users.js";
 const sinon = require("sinon");
 
-const $route = {
-    path: "/",
-    params: {
-        id: "980190962"
-    }
-};
-
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-let queryStub;
+users.state.user = function(){
+    return {
+        isLoggedIn: true,
+        credentials: {token: 123}
+    }
+};
 
 const $store = new Vuex.Store({
     modules: {
@@ -26,6 +26,16 @@ const $store = new Vuex.Store({
         users: users,
     }
 });
+
+const $route = {
+    path: "/",
+    params: {
+        id: "980190962"
+    }
+};
+const router = new VueRouter();
+const $router = { push: jest.fn() };
+let queryStub;
 
 describe("Record.vue", function() {
     let wrapper;
@@ -50,9 +60,10 @@ describe("Record.vue", function() {
         });
         vuetify = new Vuetify();
         wrapper = await shallowMount(Record, {
-            mocks: {$route, $store},
+            mocks: {$route, $store, $router},
             localVue,
-            vuetify
+            vuetify,
+            router
         });
     });
     afterEach( () => {
@@ -80,7 +91,7 @@ describe("Record.vue", function() {
             localVue,
             vuetify
         });
-        expect(anotherWrapper.vm.currentRoute).toMatch("FAIRsharing.p9xm4v");
+        expect(anotherWrapper.vm['currentRoute']).toMatch("FAIRsharing.p9xm4v");
 
     });
 
@@ -95,7 +106,7 @@ describe("Record.vue", function() {
         expect(wrapper.vm.currentRoute).toMatch("123");
     });
 
-    it ("can properly fetch a record history", async () => {
+    it("can properly fetch a record history", async () => {
         await wrapper.vm.getHistory();
     });
 
@@ -214,7 +225,6 @@ describe("Record.vue", function() {
                 "recordAssocLabel": "collects"
             }
         ];
-
         wrapper.vm.currentRecord['fairsharingRecord'] = {
             name: "test",
             metadata: {
@@ -264,5 +274,40 @@ describe("Record.vue", function() {
         expect(anotherWrapper.vm.recordAssociations.length).toBe(0);
     });
 
+    it("can go to the edit page", () => {
+        wrapper.vm.goToEdit();
+        expect($router.push).toHaveBeenCalledWith({
+            path: "123/edit",
+            params: {
+                fromRecordPage: true
+            }
+        });
+    });
 
+    it("can check if a logged in user can edit the record", async() => {
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({data: {id: 123}});
+        await wrapper.vm.canEditRecord();
+        expect(wrapper.vm.canEdit).toBe(true);
+        restStub.restore();
+
+        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({
+            data: {error: "Error"}
+        });
+        await wrapper.vm.canEditRecord();
+        expect(wrapper.vm.canEdit).toBe(false);
+        restStub.restore();
+        users.state.user = function(){
+            return { isLoggedIn: false }
+        };
+        const anotherWrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        await anotherWrapper.vm.canEditRecord();
+        expect(anotherWrapper.vm.canEdit).toBe(false);
+    });
 });

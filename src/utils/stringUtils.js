@@ -7,6 +7,12 @@ const stringUtils = {
                 }
             }
             return string;
+        },
+        prettifyList(string) {
+            return string.replace(/,/g, ", ");
+        },
+        truncate(str, n){
+          return (str.length > n) ? str.substr(0, n-1) + '...' : str;
         }
     },
     filters: {
@@ -15,6 +21,14 @@ const stringUtils = {
             return str.charAt(0).toUpperCase() + str.slice(1)
         }
     }
-}
+};
 
 export default stringUtils;
+
+export const truncate = {
+    methods: {
+        truncate(str, n){
+            return stringUtils.methods.truncate(str, n);
+        }
+    }
+};

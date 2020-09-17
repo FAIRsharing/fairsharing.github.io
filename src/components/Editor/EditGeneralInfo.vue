@@ -1,17 +1,17 @@
 <template>
   <v-card
-          v-if="metaTemplate.metadata"
-          id="editGeneralInfo"
+    v-if="metaTemplate.metadata"
+    id="editGeneralInfo"
   >
     <v-card-title class="grey lighten-4 blue--text">
       <v-btn
-              class="blue mr-4"
-              fab
-              x-small
+        class="blue mr-4"
+        fab
+        x-small
       >
         <v-icon
-                class="white--text"
-                small
+          class="white--text"
+          small
         >
           fa fa-info
         </v-icon>
@@ -19,8 +19,8 @@
       <b> EDIT GENERAL INFORMATION </b>
     </v-card-title>
     <v-alert
-            v-if="error.message && error.message.data"
-            type="error"
+      v-if="error.message && error.message.data"
+      type="error"
     >
       {{ error.message.data }}
     </v-alert>
@@ -30,10 +30,10 @@
           <!-- name -->
           <v-col class="col-3">
             <v-text-field
-                    v-model="metaTemplate.metadata.name"
-                    hint="Name of the record"
-                    label="Record Name"
-                    outlined
+              v-model="metaTemplate.metadata.name"
+              hint="Name of the record"
+              label="Record Name"
+              outlined
             >
               <template v-slot:prepend>
                 <v-tooltip bottom>
@@ -51,16 +51,16 @@
           <!-- abbreviation -->
           <v-col class="col-3">
             <v-text-field
-                    v-model="metaTemplate.metadata.abbreviation"
-                    label="Abbreviation"
-                    :hint="descriptions['abbreviation']"
-                    outlined
+              v-model="metaTemplate.metadata.abbreviation"
+              label="Abbreviation"
+              :hint="descriptions['abbreviation']"
+              outlined
             >
               <template v-slot:prepend>
                 <v-tooltip
-                        bottom
-                        max-width="300px"
-                        class="text-justify"
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
                 >
                   <template v-slot:activator="{ on }">
                     <v-icon v-on="on">
@@ -76,16 +76,16 @@
           <!-- homepage -->
           <v-col class="col-3">
             <v-text-field
-                    v-model="metaTemplate.metadata.homepage"
-                    label="Homepage"
-                    :hint="descriptions['homepage']"
-                    outlined
+              v-model="metaTemplate.metadata.homepage"
+              label="Homepage"
+              :hint="descriptions['homepage']"
+              outlined
             >
               <template v-slot:prepend>
                 <v-tooltip
-                        bottom
-                        max-width="300px"
-                        class="text-justify"
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
                 >
                   <template v-slot:activator="{ on }">
                     <v-icon v-on="on">
@@ -101,17 +101,17 @@
           <!-- year of creation -->
           <v-col class="col-3">
             <v-autocomplete
-                    v-model="metaTemplate.metadata.year_creation"
-                    label="Year of creation"
-                    :hint="descriptions['year']"
-                    :items="years"
-                    outlined
+              v-model="metaTemplate.metadata.year_creation"
+              label="Year of creation"
+              :hint="descriptions['year']"
+              :items="years"
+              outlined
             >
               <template v-slot:prepend>
                 <v-tooltip
-                        bottom
-                        max-width="300px"
-                        class="text-justify"
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
                 >
                   <template v-slot:activator="{ on }">
                     <v-icon v-on="on">
@@ -127,21 +127,21 @@
           <!-- countries -->
           <v-col class="col-4">
             <v-autocomplete
-                    v-model="metaTemplate.countries"
-                    label="Countries"
-                    :items="countries"
-                    :hint="descriptions['countries']"
-                    item-text="name"
-                    item-value="name"
-                    outlined
-                    multiple
-                    return-object
+              v-model="metaTemplate.countries"
+              label="Countries"
+              :items="countries"
+              :hint="descriptions['countries']"
+              item-text="name"
+              item-value="name"
+              outlined
+              multiple
+              return-object
             >
               <template v-slot:prepend>
                 <v-tooltip
-                        bottom
-                        max-width="300px"
-                        class="text-justify"
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
                 >
                   <template v-slot:activator="{ on }">
                     <v-icon v-on="on">
@@ -162,14 +162,14 @@
               <!-- autocomplete data -->
               <template v-slot:item="data">
                 <country-flag
-                        v-if="data.item.code !== null"
-                        :country="data.item.code"
-                        size="normal"
+                  v-if="data.item.code !== null"
+                  :country="data.item.code"
+                  size="normal"
                 />
                 <img
-                        v-else
-                        src="@/assets/placeholders/country.png"
-                        class="ml-4 mr-3"
+                  v-else
+                  src="@/assets/placeholders/country.png"
+                  class="ml-4 mr-3"
                 >
                 <div> {{ data.item.name }} </div>
               </template>
@@ -179,14 +179,14 @@
           <!-- registry -->
           <v-col class="col-4">
             <v-autocomplete
-                    v-model="metaTemplate.type"
-                    label="Registry type"
-                    hint="Select between given elements"
-                    :items="recordsTypes"
-                    item-text="name"
-                    item-value="name"
-                    outlined
-                    return-object
+              v-model="metaTemplate.type"
+              label="Registry type"
+              hint="Select between given elements"
+              :items="recordsTypes"
+              item-text="name"
+              item-value="name"
+              outlined
+              return-object
             >
               <!-- autocomplete selected -->
               <template v-slot:selection="data">
@@ -196,9 +196,9 @@
               <!-- autocomplete data -->
               <template v-slot:item="data">
                 <v-list
-                        id="autocompleteSelect"
-                        max-width="565px"
-                        three-line
+                  id="autocompleteSelect"
+                  max-width="565px"
+                  three-line
                 >
                   <v-list-item min-height="0px">
                     <v-list-item-content class="py-0">
@@ -214,13 +214,13 @@
           <!-- status -->
           <v-col class="col-4">
             <v-autocomplete
-                    v-model="metaTemplate.status"
-                    label="Status"
-                    :items="status"
-                    item-text="name"
-                    item-value="name"
-                    outlined
-                    :disabled="metaTemplate.type === 'collection' || metaTemplate.type.name === 'collection'"
+              v-model="metaTemplate.status"
+              label="Status"
+              :items="status"
+              item-text="name"
+              item-value="name"
+              outlined
+              :disabled="metaTemplate.type === 'collection' || metaTemplate.type.name === 'collection'"
             >
               <!-- autocomplete selected -->
               <template v-slot:selection="data">
@@ -230,9 +230,9 @@
               <!-- autocomplete data -->
               <template v-slot:item="data">
                 <v-list
-                        max-width="745px"
-                        two-line
-                        class="py-0 my-0"
+                  max-width="745px"
+                  two-line
+                  class="py-0 my-0"
                 >
                   <v-list-item min-height="0px">
                     <v-list-item-content class="py-0 my-0">
@@ -248,17 +248,17 @@
           <!-- deprecation reasons -->
           <v-col class="col-12">
             <v-textarea
-                    v-if="metaTemplate.status === 'deprecated'"
-                    v-model="metaTemplate['deprecation_reason']"
-                    label="Reason for deprecation"
-                    :hint="descriptions['deprecation_reason']"
-                    outlined
+              v-if="metaTemplate.status === 'deprecated'"
+              v-model="metaTemplate['deprecation_reason']"
+              label="Reason for deprecation"
+              :hint="descriptions['deprecation_reason']"
+              outlined
             >
               <template v-slot:prepend>
                 <v-tooltip
-                        bottom
-                        max-width="300px"
-                        class="text-justify"
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
                 >
                   <template v-slot:activator="{ on }">
                     <v-icon v-on="on">
@@ -274,17 +274,17 @@
           <!-- description -->
           <v-col class="col-12">
             <v-textarea
-                    v-model="metaTemplate.metadata.description"
-                    label="Description"
-                    :hint="descriptions['description']"
-                    outlined
-                    prepend-icon="fa-question-circle"
+              v-model="metaTemplate.metadata.description"
+              label="Description"
+              :hint="descriptions['description']"
+              outlined
+              prepend-icon="fa-question-circle"
             >
               <template v-slot:prepend>
                 <v-tooltip
-                        bottom
-                        max-width="300px"
-                        class="text-justify"
+                  bottom
+                  max-width="300px"
+                  class="text-justify"
                 >
                   <template v-slot:activator="{ on }">
                     <v-icon v-on="on">
@@ -301,8 +301,8 @@
     </v-card-text>
     <v-card-actions>
       <v-btn
-              class="primary"
-              @click="editRecord()"
+        class="primary"
+        @click="editRecord()"
       >
         Submit
       </v-btn>

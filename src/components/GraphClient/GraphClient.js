@@ -8,16 +8,19 @@ class GraphQLClient {
      * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
      */
     constructor(){
+        this.headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        };
+        this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
+        if (this.headers['X-Client-Id'] === undefined){
+            delete this.headers['X-Client-Id']
+        }
         if (GraphQLClient._instance){
             return GraphQLClient._instance
         }
         GraphQLClient._instance = this;
-        this.url = "https://api.fairsharing.org/graphql";
-        this.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "X-Client-Id": "3154b8ec21a2e46c935d25484378ca0a75ba14dc99b3e047dec46045f052b147701340182ed5cbe1b06abeaf52250a31b5a2a6718bf2c9966405aa236fa1aabf",
-        };
+        this.url = process.env.VUE_APP_API_ENDPOINT + "/graphql";
     }
 
     /**

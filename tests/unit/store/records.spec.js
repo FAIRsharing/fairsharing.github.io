@@ -58,9 +58,12 @@ describe('Mutation & Actions & Getters', () => {
         expect(state.records.length).toBe(0);
     });
 
-    it("can check resetHits mutations", () => {
-        mutations.resetHits(state);
+    it("can check resetPages mutations", () => {
+        mutations.resetPages(state);
         expect(state.hits).toBe(null);
+        expect(state.perPage).toBe(null);
+        expect(state.currentPage).toBe(null);
+        expect(state.totalPages).toBe(null);
     });
 
     it("can check setLoadingStatus mutations", () => {

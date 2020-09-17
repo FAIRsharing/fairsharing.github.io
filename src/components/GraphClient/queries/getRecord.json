@@ -91,10 +91,20 @@
       ]
     },
     {
+      "name": "organisations",
+      "fields": [
+        "id"
+      ]
+    },
+    {
       "name": "organisationLinks",
       "fields": [
         "id",
         "relation",
+        {
+          "queryName": "grant",
+          "fields": ["name", "id"]
+        },
         {
           "queryName": "organisation",
           "fields": ["name", "id", "homepage", "types"]
@@ -110,7 +120,8 @@
         "id",
         "journal",
         "url",
-        "year"
+        "year",
+        "pubmedId"
       ]
     },
     {
@@ -128,7 +139,7 @@
       "fields": [
         {
           "queryName": "fairsharingRecord",
-          "fields": ["name", "id", "registry"]
+          "fields": ["name", "id", "registry", "type"]
         },
         "recordAssocLabel"
       ]

@@ -20,6 +20,12 @@ describe("ListController.vue", function () {
     wrapper = shallowMount(ListController, {
         localVue,
         vuetify,
+        propsData: {
+            options: {
+                type: Object,
+                default: null
+            }
+        },
         mocks: {$store}
     });
 

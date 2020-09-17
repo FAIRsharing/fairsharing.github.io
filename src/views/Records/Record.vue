@@ -16,13 +16,13 @@
       </v-row>
 
       <v-row
-        v-if="user().isLoggedIn && !error"
+        v-if="user().isLoggedIn && !error && canEdit"
         class="pr-3"
       >
         <v-spacer />
         <v-btn
           class="success"
-          :href="'#/' + currentRoute + '/edit'"
+          @click="goToEdit()"
         >
           EDIT
         </v-btn>
@@ -68,9 +68,6 @@
               <!-- MAINTAINERS -->
               <Maintainers />
 
-              <!-- GRANTS -->
-              <Grants />
-
               <!-- PUBLICATIONS -->
               <Publications />
             </v-col>
@@ -90,11 +87,10 @@
 </template>
 
 <script>
-    import {mapActions, mapState} from 'vuex'
+    import {mapActions, mapState, mapGetters} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
     import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
-    import Grants from '@/components/Records/Record/Grants';
     import Keywords from '@/components/Records/Record/Keywords';
     import Licences from '@/components/Records/Record/Licences';
     import Maintainers from '@/components/Records/Record/Maintainers';
@@ -103,13 +99,15 @@
     import Support from '@/components/Records/Record/Support';
 
     import stringUtils from '@/utils/stringUtils';
+    import RestClient from "@/components/Client/RESTClient.js"
+
+    const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
             AssociatedRecords,
             GeneralInfo,
-            Grants,
             Keywords,
             Licences,
             Maintainers,
@@ -123,7 +121,8 @@
                 error: null,
                 queryTriggered: false,
                 showScrollToTopButton: false,
-                recordAssociations: []
+                recordAssociations: [],
+                canEdit: false
             }
         },
         computed: {
@@ -136,19 +135,27 @@
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
             ...mapState('users', ["user"]),
+            userIsLoggedIn(){
+              return this.user().isLoggedIn;
+            },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
             },
+            ...mapGetters('record', ['getRecordId']),
         },
         watch: {
             async currentRoute() {
                 await this.getData();
+            },
+            async userIsLoggedIn() {
+              await this.canEditRecord();
             }
         },
         mounted() {
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
+                await this.canEditRecord()
             })
         },
         methods: {
@@ -160,25 +167,28 @@
                 const properties = ['fairsharingRecord', 'linkedRecord'];
 
                 joinedArrays.forEach(item => {
-                    let object = {
-                        recordAssocLabel: _module.cleanString(item.recordAssocLabel),
-                    };
+                    let object = {};
                     properties.forEach(prop => {
                         if (Object.prototype.hasOwnProperty.call(item, prop)) {
+                            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
                             object.id = item[prop].id;
                             object.registry = item[prop].registry;
-                            if (prop === "linkedRecord") {
-                              object.name = item[prop].name;
-                              object.subject = _module.currentRecord['fairsharingRecord'].name
-                            }
-                            else {
-                              object.name = _module.currentRecord['fairsharingRecord'].name
-                              object.subject = item[prop].name;
-                            }
+                            object.name = item[prop].name;
+                            object.subject = _module.currentRecord['fairsharingRecord'].name;
+                            object.type = item[prop].type;
                         }
                     });
                     _module.recordAssociations.push(object);
                 });
+            },
+            goToEdit(){
+              let recordID = this.$route.params.id;
+              this.$router.push({
+                path: recordID + '/edit',
+                params: {
+                  fromRecordPage: true
+                }
+              })
             },
             /**
              * Method to set the current record in the store
@@ -193,7 +203,7 @@
                     const currentRecord = _module.currentRecord['fairsharingRecord'];
                     _module.recordAssociations = [];
                     if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
-                        _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
+                        _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
                     }
                 } catch (e) {
                     this.error = e.message;
@@ -206,6 +216,15 @@
              * */
             async getHistory() {
                 await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
+            },
+            async canEditRecord(){
+              const _module = this;
+              _module.canEdit = false;
+              if (_module.user().isLoggedIn) {
+                const recordID = _module.getRecordId;
+                const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
+                _module.canEdit = !canEdit.error;
+              }
             }
         },
         metaInfo() {

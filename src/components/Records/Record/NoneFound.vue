@@ -1,33 +1,49 @@
 <template>
-  <v-card
-    v-if="display"
-    class="mt-2 pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-    flat
-    outlined
-  >
-    <div class="d-flex mt-2 ">
-      <p class="ma-0">
-        None found.
-      </p>
+  <div>
+    <!--  dataField  -->
+    <v-card
+      v-if="displayData"
+      class="mt-2 pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+      flat
+      outlined
+    >
+      <div class="d-flex mt-2 ">
+        <p class="ma-0">
+          None found.
+        </p>
+      </div>
+    </v-card>
+    <!--  SingleField  -->
+    <div v-else-if="!displayString && !dataField">
+      <span
+        class="ml-2"
+      >None found.</span>
     </div>
-  </v-card>
+  </div>
 </template>
 
 <script>
-    export default {
-      name: "NoneFound",
-      props: {
-        dataField: {
-          type: Array,
-          default: null
-        }
-      },
-      computed: {
-        display: function() {
-          return this.dataField.length === 0;
-        }
-      }
+export default {
+  name: "NoneFound",
+  props: {
+    dataField: {
+      type: Array,
+      default: null
+    },
+    stringField: {
+      type: String,
+      default: null
+    },
+  },
+  computed: {
+    displayData: function () {
+      return this.dataField && this.dataField.length === 0;
+    },
+    displayString: function () {
+      return this.stringField;
     }
+  }
+}
 </script>
 
 <style scoped>

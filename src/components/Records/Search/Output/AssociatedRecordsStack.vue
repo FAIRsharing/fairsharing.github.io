@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h4 class="text-center">Associated Records</h4>
+    <h4 class="text-center">
+      Associated Records
+    </h4>
     <!--   row style     -->
     <div
       v-if="!isColumn"

@@ -12,7 +12,7 @@
         :is-first-item="item_index === 0"
         :item-parent-index="buttonIndex"
         :md-screens="$vuetify.breakpoint.mdAndDown"
-        :multiple-items="buttonVal.length > 2"
+        :multiple-items="buttonVal.data.length > 2"
         :double-items="buttonVal.data.length === 2"
       />
     </div>

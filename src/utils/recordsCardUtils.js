@@ -15,8 +15,17 @@ const recordsCardUtils = {
                     break;
             }
             return returnedTitle;
+        },
+        getRecordLink(record) {
+            if (record.doi) {
+                // Only the last part of the DOI is needed for local links.
+                return record.doi.split('/').pop();
+            } else {
+                return record.id;
+            }
         }
     },
 }
 
 export default recordsCardUtils;
+

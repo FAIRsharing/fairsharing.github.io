@@ -93,8 +93,7 @@ let recordStore = {
             }
         },
     },
-    modules: {
-    },
+    modules: {},
     getters: {
         getField: (state) => (fieldName) => {
             return state.currentRecord['fairsharingRecord'][fieldName];
@@ -105,10 +104,12 @@ let recordStore = {
                 citations.push(citation['publication_id']);
             });
             return citations;
-        }
+        },
+        getRecordId: (state) => {
+            return state.currentRecord['fairsharingRecord'].metadata.identifier;
+        },
     }
 };
 
 
 export default recordStore;
-

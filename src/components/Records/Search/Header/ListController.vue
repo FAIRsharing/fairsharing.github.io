@@ -1,76 +1,74 @@
 <template>
-  <div class="d-flex justify-space-between justify-center">
-    <!--Sorting-->
-    <v-skeleton-loader
-      v-if="options.hasListType"
-      :loading="loading"
-      width="60px"
-      type="avatar"
-    >
-      <v-menu
-        offset-y
-        bottom
-        fixed
+  <div>
+    <div class="d-flex justify-space-between justify-center">
+      <!--Sorting-->
+      <v-skeleton-loader
+        v-if="options.hasListType"
+        :loading="loading"
+        width="60px"
+        type="avatar"
       >
-        <template v-slot:activator="{ on }">
-          <v-icon
-            x-large
-            class="mouse-cursor"
-            :class="{'active':!isSortHovered}"
-            v-on="on"
-            @mouseenter="isSortHovered=true"
-            @mouseleave="isSortHovered=false"
+        <v-menu
+          offset-y
+          bottom
+          fixed
+        >
+          <template v-slot:activator="{ on }">
+            <v-icon
+              x-large
+              class="mouse-cursor"
+              :class="{'active':!isSortHovered}"
+              v-on="on"
+              @mouseenter="isSortHovered=true"
+              @mouseleave="isSortHovered=false"
+            >
+              sort
+            </v-icon>
+          </template>
+          <sorting />
+        </v-menu>
+      </v-skeleton-loader>
+      <!--Pagination-->
+      <v-skeleton-loader
+        :loading="loading"
+        width="100%"
+        type="list-item"
+      >
+        <Pagination :total-pages="totalPages" />
+      </v-skeleton-loader>
+      <!--Stack or Column list toggle buttons-->
+      <div class="d-flex flex-row align-start">
+        <!--Stack or Column list toggle buttons-->
+        <div class="d-flex flex-row align-center">
+          <v-skeleton-loader
+            :loading="loading"
+            type="avatar"
           >
-            sort
-          </v-icon>
-        </template>
-        <sorting />
-      </v-menu>
-    </v-skeleton-loader>
-    <div
-      v-else
-      style="width: 60px"
-    />
-    <!--Pagination-->
-    <v-skeleton-loader
-      :loading="loading"
-      width="100%"
-      type="list-item"
-    >
-      <Pagination :total-pages="totalPages" />
-      <HitCount />
-    </v-skeleton-loader>
-
-    <!--Stack or Column list toggle buttons-->
-    <div class="d-flex flex-row align-start">
-      <v-skeleton-loader
-        v-show="options.hasSorting"
-        :loading="loading"
-        type="avatar"
-      >
-        <v-icon
-          x-large
-          :class="{'active':isColumnList}"
-          @click="changeListType('stackList')"
-        >
-          view_headline
-        </v-icon>
-      </v-skeleton-loader>
-      <v-skeleton-loader
-        v-show="options.hasSorting"
-        :loading="loading"
-        type="avatar"
-      >
-        <v-icon
-          x-large
-          style="font-size: 2.7rem"
-          :class="{'active':!isColumnList}"
-          @click="changeListType('columnList')"
-        >
-          view_column
-        </v-icon>
-      </v-skeleton-loader>
+            <v-icon
+              x-large
+              :class="{'active':isColumnList}"
+              @click="changeListType('stackList')"
+            >
+              view_headline
+            </v-icon>
+          </v-skeleton-loader>
+          <v-skeleton-loader
+            :loading="loading"
+            type="avatar"
+          >
+            <v-icon
+              x-large
+              style="font-size: 2.8rem"
+              :class="{'active':!isColumnList}"
+              @click="changeListType('columnList')"
+            >
+              view_column
+            </v-icon>
+          </v-skeleton-loader>
+        </div>
+      </div>
     </div>
+    <HitCount />
   </div>
 </template>
 

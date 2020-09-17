@@ -15,6 +15,7 @@
         "type",
         "name",
         "abbreviation",
+        "doi",
         "registry",
         "description",
         {

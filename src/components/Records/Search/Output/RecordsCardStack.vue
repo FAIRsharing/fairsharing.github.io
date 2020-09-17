@@ -26,7 +26,7 @@
           @mouseenter="allowClicking=true"
           @mouseleave="allowClicking=false"
         >
-          <router-link :to="'/' +record.id">
+          <router-link :to="'/' + getRecordLink(record)">
             <div class="mt-1 ml-2 pr-6 d-flex flex-row align-center justify-start">
               <record-status
                 :record="record"
@@ -37,7 +37,10 @@
                 style="width: 60%"
               >
                 <u>{{ record.name }}</u>
-                <span class="ml-2" v-if="record.abbreviation"> ({{ truncate(record.abbreviation, 15) }}) </span>
+                <span
+                  v-if="record.abbreviation"
+                  class="ml-2"
+                > ({{ truncate(record.abbreviation, 15) }}) </span>
               </h3>
             </div>
           </router-link>

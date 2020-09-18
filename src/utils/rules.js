@@ -12,3 +12,16 @@ export function isEmail(){
 export function isRequired(){
     return value => !!value || 'Required.'
 }
+
+export function isUrl() {
+    return value => {
+        const pattern = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
+        return pattern.test(value) || 'Invalid URL.'
+    }
+}
+
+export function isLongEnough() {
+    return value => {
+        return value.length >= 10 || 'Keep typing!'
+    }
+}

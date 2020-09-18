@@ -30,7 +30,6 @@
       v-model="formValid"
       class="my-3"
     >
-        <p>VALID: {{formValid}}</p>
       <v-card-text>
         <v-container fluid>
           <v-row>
@@ -40,6 +39,7 @@
                 v-model="metaTemplate.metadata.name"
                 hint="Name of the record"
                 label="Record Name"
+                :rules="[rules.isRequired()]"
                 outlined
               >
                 <template v-slot:prepend>
@@ -60,6 +60,7 @@
               <v-text-field
                 v-model="metaTemplate.metadata.abbreviation"
                 label="Abbreviation"
+                :rules="[rules.isRequired()]"
                 :hint="descriptions['abbreviation']"
                 outlined
               >
@@ -85,6 +86,7 @@
               <v-text-field
                 v-model="metaTemplate.metadata.homepage"
                 label="Homepage"
+                :rules="[rules.isRequired(), rules.isUrl()]"
                 :hint="descriptions['homepage']"
                 outlined
               >
@@ -188,6 +190,7 @@
               <v-autocomplete
                 v-model="metaTemplate.type"
                 label="Registry type"
+                :rules="[rules.isRequired()]"
                 hint="Select between given elements"
                 :items="recordsTypes"
                 item-text="name"
@@ -283,6 +286,7 @@
               <v-textarea
                 v-model="metaTemplate.metadata.description"
                 label="Description"
+                :rules="[rules.isRequired(), rules.isLongEnough()]"
                 :hint="descriptions['description']"
                 outlined
                 prepend-icon="fa-question-circle"
@@ -327,7 +331,7 @@
   import status from "@/components/Editor/status.json"
   import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
   import des from "./data/fieldsDescription.json"
-  import { hasValue, isEmail, isRequired } from "@/utils/rules.js"
+  import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
   const graphClient = new GraphClient();
 
   export default {
@@ -341,9 +345,9 @@
         error: false,
         error_message: null,
         rules: {
-          hasValue: function(val){return hasValue(val)},
-          isEmail: function(){return isEmail()},
           isRequired: function(){return isRequired()},
+          isUrl: function(){return isUrl()},
+          isLongEnough: function(){return isLongEnough()},
         },
         formValid: false
       }

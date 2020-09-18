@@ -27,6 +27,8 @@
       <!-- Filter Buttons     -->
       <FilterButtons />
 
+      <v-divider />
+
       <!-- expansion Panels    -->
       <v-expansion-panels
         v-if="getFilters.length>0"

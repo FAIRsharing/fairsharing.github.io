@@ -1,46 +1,44 @@
 <template>
   <v-expansion-panel v-if="filter.filterName">
-    <v-expansion-panel-header> {{ filter.filterLabel }}</v-expansion-panel-header>
-    <v-expansion-panel-content class="pl-5 pr-5">
-      <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
-        <v-autocomplete
-          v-model="selectedValues"
-          :items="getValues"
-          solo
-          dense
-          clearable
-          multiple
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="`Search through ${filter.filterLabel}`"
-          item-text="key"
-          item-value="key"
-          class="autocomplete-max-width"
-          @click:clear="reset(filter)"
-        >
-          <template v-slot:selection="data">
-            <v-chip class="blue white--text  mb-1 ">
-              <span class="chipsValueName">
-                {{ cleanString(data.item.key) }}
-              </span>
-            </v-chip>
-          </template>
-          <template v-slot:item="data">
-            <div class="d-flex align-content-around">
-              <span class="filterValueName"> {{ cleanString(data.item.key) }}</span>
-              <span class="filterValueCount"> {{ data.item['doc_count'] }}</span>
-            </div>
-          </template>
-        </v-autocomplete>
-        <v-btn
-          color="primary"
-          class="ml-lg-2"
-          style="height: 38px"
-          @click="applyFilters(filter)"
-        >
-          Apply
-        </v-btn>
-      </div>
-    </v-expansion-panel-content>
+    <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]" class="px-3">
+      <v-autocomplete
+        v-model="selectedValues"
+        :items="getValues"
+        outlined
+        dense
+        clearable
+        multiple
+        prepend-inner-icon="mdi-magnify"
+        :placeholder="`Search through ${filter.filterLabel}`"
+        :label="filter.filterLabel"
+        item-text="key"
+        item-value="key"
+        class="autocomplete-max-width pt-2"
+        @click:clear="reset(filter)"
+      >
+        <template v-slot:selection="data">
+          <v-chip class="blue white--text  mb-1 ">
+            <span class="chipsValueName">
+              {{ cleanString(data.item.key) }}
+            </span>
+          </v-chip>
+        </template>
+        <template v-slot:item="data">
+          <div class="d-flex align-content-around">
+            <span class="filterValueName"> {{ cleanString(data.item.key) }}</span>
+            <span class="filterValueCount"> {{ data.item['doc_count'] }}</span>
+          </div>
+        </template>
+      </v-autocomplete>
+      <v-btn
+        color="primary"
+        class="ml-lg-2 mt-2"
+        style="height: 38px"
+        @click="applyFilters(filter)"
+      >
+        Apply
+      </v-btn>
+    </div>
   </v-expansion-panel>
 </template>
 

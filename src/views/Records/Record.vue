@@ -205,8 +205,10 @@
                     if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
                         _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
                     }
-                } catch (e) {
+                }
+                catch (e) {
                     this.error = e.message;
+                    this.$router.push({name: "Error 404", path: "/error/404", query: {source: JSON.stringify(location.href)}})
                 }
                 this.queryTriggered = true;
             },

@@ -19,6 +19,12 @@ describe("Routes", () => {
                 const next = jest.fn();
                 route.beforeEnter(undefined, undefined, next);
             }
+            if (route.name === "*"){
+                expect(route.redirect()).toStrictEqual({
+                    name: "Error 404",
+                    query: {source: "\"http://localhost/#/\""}
+                })
+            }
         });
     });
 
@@ -89,7 +95,5 @@ describe("Routes", () => {
         beforeEach(to, undefined, next);
         expect(document.title).toMatch("FAIRsharing");
     });
-
-
 
 });

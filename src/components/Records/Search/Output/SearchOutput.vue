@@ -1,90 +1,92 @@
 <template>
-  <section>
-    <h1 class="d-none">
-      Records
-    </h1>
+  <div>
+    <section style="min-height:65vh">
+      <h1 class="d-none">
+        Records
+      </h1>
 
-    <!--Filtered Chips-->
-    <div
-      v-if="getChips.length && !stickToTop"
-      class="d-flex align-content-center justify-content-center chips-holder"
-    >
-      <filter-chips />
-    </div>
-
-    <!--List Controller-->
-    <ListController
-      class="mt-2"
-      :options="{hasPagination:true,hasSorting:true,hasListType:true}"
-      @ChangeListType="changeListType"
-    />
-    <!-- Alert -->
-    <div
-      v-if="getRecordsLength<1 && !loading"
-      class="no-data-found"
-    >
-      <v-alert
-        color="gray"
-        icon="info"
+      <!--Filtered Chips-->
+      <div
+        v-if="getChips.length && !stickToTop"
+        class="d-flex align-content-center justify-content-center chips-holder"
       >
-        No records match your search!
-      </v-alert>
-    </div>
-    <!--List Row-->
-    <div
-      :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]"
-    >
-      <article v-if="!isColumnList">
+        <filter-chips />
+      </div>
+
+      <!--List Controller-->
+      <ListController
+        class="mt-2"
+        :options="{hasPagination:true,hasSorting:true,hasListType:true}"
+        @ChangeListType="changeListType"
+      />
+      <!-- Alert -->
+      <div
+        v-if="getRecordsLength<1 && !loading"
+        class="no-data-found"
+      >
+        <v-alert
+          color="gray"
+          icon="info"
+        >
+          No records match your search!
+        </v-alert>
+      </div>
+      <!--List Row-->
+      <div
+        :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]"
+      >
+        <article v-if="!isColumnList">
+          <v-skeleton-loader
+            class="mt-5"
+            :loading="loading"
+            type="image"
+          >
+            <h2 class="d-none">
+              Result
+            </h2>
+            <!-- StackCard view -->
+            <RecordsCardStack
+              v-for="record in records"
+              :key="'record_'+record.id"
+              :record="record"
+            />
+            <!--List Controller-->
+            <Pagination
+              :total-pages="totalPages"
+              class="my-5"
+            />
+          </v-skeleton-loader>
+        </article>
+      </div>
+      <!-- ColumnCard view -->
+      <div
+        v-if="isColumnList"
+        :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]"
+      >
         <v-skeleton-loader
           class="mt-5"
           :loading="loading"
           type="image"
         >
-          <h2 class="d-none">
-            Result
-          </h2>
-          <!-- StackCard view -->
-          <RecordsCardStack
-            v-for="record in records"
-            :key="'record_'+record.id"
-            :record="record"
-          />
+          <v-row>
+            <RecordsCardColumn
+              v-for="record in records"
+              :key="'record_'+record.id"
+              :record="record"
+            />
+          </v-row>
           <!--List Controller-->
           <Pagination
             :total-pages="totalPages"
             class="my-5"
           />
         </v-skeleton-loader>
-      </article>
-    </div>
-
-
-
-    <!-- ColumnCard view -->
-    <div
-      v-if="isColumnList"
-      :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]"
-    >
-      <v-skeleton-loader
-        class="mt-5"
-        :loading="loading"
-        type="image"
-      >
-        <v-row>
-          <RecordsCardColumn
-            v-for="record in records"
-            :key="'record_'+record.id"
-            :record="record"
-          />
-        </v-row>
-        <!--List Controller-->
-        <Pagination
-          :total-pages="totalPages"
-          class="my-5"
-        />
-      </v-skeleton-loader>
-    </div>
-  </section>
+      </div>
+    </section>
+    <section class="my-10 border-top">
+      <Footer />
+    </section>
+  </div>
 </template>
 
 <script>
@@ -95,11 +97,12 @@ import {mapState, mapGetters} from 'vuex'
 import FilterChips from "../Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 import Pagination from "../Header/Pagination";
+import Footer from "@/components/Navigation/Footer.vue"
 
 
 export default {
   name: "SearchOutput",
-  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination},
+  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination, Footer},
   mixins: [filterChipsUtils],
   data() {
     return {
@@ -135,4 +138,10 @@ export default {
   width: 100%;
   height: 200px;
 }
+</style>
+
+<style scoped lang="scss">
+  .border-top {
+    border-top: 1px solid #ccc;
+  }
 </style>

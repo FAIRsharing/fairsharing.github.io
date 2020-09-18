@@ -214,9 +214,9 @@ let routes = [
     {
         name: "*",
         path: "*/*",
-        redirect: (to) => ({
+        redirect: () => ({
             name: "Error 404",
-            query: {source: JSON.stringify(to.path)}
+            query: {source: JSON.stringify(location.href)}
         })
     }
 ];

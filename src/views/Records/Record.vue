@@ -87,7 +87,7 @@
 </template>
 
 <script>
-    import {mapActions, mapState} from 'vuex'
+    import {mapActions, mapState, mapGetters} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
     import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
@@ -141,6 +141,7 @@
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
             },
+            ...mapGetters('record', ['getRecordId']),
         },
         watch: {
             async currentRoute() {
@@ -181,15 +182,14 @@
                 });
             },
             goToEdit(){
-        let recordID = this.$route.params.id;
-        this.$router.push({
-          path: recordID + '/edit',
-          params: {
-            fromRecordPage: true
-          }
-        })
-      },
-
+              let recordID = this.$route.params.id;
+              this.$router.push({
+                path: recordID + '/edit',
+                params: {
+                  fromRecordPage: true
+                }
+              })
+            },
             /**
              * Method to set the current record in the store
              * @returns {Promise} - the current record
@@ -221,7 +221,7 @@
               const _module = this;
               _module.canEdit = false;
               if (_module.user().isLoggedIn) {
-                const recordID = _module.$route.params.id;
+                const recordID = _module.getRecordId;
                 const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
                 _module.canEdit = !canEdit.error;
               }

@@ -8,7 +8,7 @@
         color="primary"
         class="mr-1 mr-lg-2"
         :outlined="!item.active"
-        :class="[isFirstItem && !doubleItems?'first-child':'flex-1',{'button-style-md-screens':mdScreens,'buttons-md-style':multipleItems && !isFirstItem}]"
+        :class="[isFirstItem && !doubleItems ? 'first-child' : 'flex-1', {'button-style-md-screens' : mdScreens, 'buttons-md-style' : multipleItems && !isFirstItem}]"
         @click="selectFilter(item)"
         v-on="on"
       >

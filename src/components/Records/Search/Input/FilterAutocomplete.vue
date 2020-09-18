@@ -1,6 +1,9 @@
 <template>
   <v-expansion-panel v-if="filter.filterName">
-    <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]" class="px-3">
+    <div
+      :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
+      class="px-3"
+    >
       <v-autocomplete
         v-model="selectedValues"
         :items="getValues"
@@ -191,7 +194,7 @@ export default {
 }
 
 .filterValueName {
-  width: 315px;
+  width: 378px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

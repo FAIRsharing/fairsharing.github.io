@@ -118,7 +118,11 @@ describe("Record.vue", function() {
             data: {errors: [{message: "Im an error"}]}
         });
         await wrapper.vm.getData();
-        expect(wrapper.vm.error).toBe("Cannot read property 'metadata' of undefined")
+        expect($router.push).toHaveBeenCalledWith({
+            name: "Error 404",
+            path: "/error/404",
+            query: {"source": "\"http://localhost/#/\""}
+        });
     });
 
     it("can check cleanString returns properly",  () =>{
@@ -172,7 +176,7 @@ describe("Record.vue", function() {
             }
         });
         let anotherWrapper = await shallowMount(Record, {
-            mocks: {$route, $store},
+            mocks: {$route, $store, $router},
             localVue,
             vuetify
         });

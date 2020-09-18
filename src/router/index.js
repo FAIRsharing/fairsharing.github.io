@@ -214,10 +214,9 @@ let routes = [
     {
         name: "*",
         path: "*/*",
-        redirect: () => ({
-            name: "Error 404",
-            query: {source: JSON.stringify(location.href)}
-        })
+        redirect: () => {
+            return redirect()
+        }
     }
 ];
 routes.forEach(function (route) {
@@ -268,6 +267,13 @@ export async function canEdit(to, from, next, store){
         else {
             next();
         }
+    }
+}
+
+export function redirect(){
+    return {
+        name: "Error 404",
+        query: {source: JSON.stringify(location.href)}
     }
 }
 

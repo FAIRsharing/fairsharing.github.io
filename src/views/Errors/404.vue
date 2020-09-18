@@ -1,8 +1,9 @@
 <template>
   <div>
-    <h1 class="text-center my-5 blue--text">
-      404: {{ getSource }} couldn't be found !
+    <h1 class="text-center mt-5 blue--text">
+      Error 404: <br>
     </h1>
+    <h3 class="text-center mb-5 blue--text"> {{ getSource }} couldn't be found ! </h3>
   </div>
 </template>
 
@@ -11,7 +12,7 @@
         name: "Error404",
         computed: {
             getSource(){
-              return this.$route.query.source
+              return JSON.parse(this.$route.query.source)
             }
         }
     }

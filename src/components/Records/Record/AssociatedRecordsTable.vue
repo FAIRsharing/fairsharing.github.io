@@ -16,7 +16,10 @@
       :items="recordAssociations"
       :search="search"
     >
-      <template v-slot:item="props">
+      <template
+        v-if="recordType"
+        v-slot:item="props"
+      >
         <tr>
           <td>
             <a :href="'#/' + props.item.id">

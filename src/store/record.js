@@ -104,10 +104,7 @@ let recordStore = {
                 citations.push(citation['publication_id']);
             });
             return citations;
-        },
-        getRecordId: (state) => {
-            return state.currentRecord['fairsharingRecord'].metadata.identifier;
-        },
+        }
     }
 };
 

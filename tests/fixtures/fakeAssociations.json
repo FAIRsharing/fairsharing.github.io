@@ -1,0 +1,101 @@
+{
+  "fakeAssociatedRecords": [
+    {
+      "linkedRecord": {
+        "name": "Apollo XSD 4.0.1",
+        "id": 343,
+        "registry": "standard",
+        "type": "model_and_format"
+      },
+      "recordAssocLabel": "related_to"
+    },
+    {
+      "linkedRecord": {
+        "name": "Observational Medical Outcomes Partnership Standardized Vocabularies",
+        "id": 1247,
+        "registry": "standard",
+        "type": "terminology_artefact"
+      },
+      "recordAssocLabel": "related_to"
+    },
+    {
+      "linkedRecord": {
+        "name": "Fast Healthcare Interoperability Resources",
+        "id": 294,
+        "registry": "standard",
+        "type": "model_and_format"
+      },
+      "recordAssocLabel": "related_to"
+    },
+    {
+      "linkedRecord": {
+        "name": "The Unified Code for Units of Measure",
+        "id": 1280,
+        "registry": "standard",
+        "type": "terminology_artefact"
+      },
+      "recordAssocLabel": "related_to"
+    },
+    {
+      "linkedRecord": {
+        "name": "Digital Imaging and COmmunications in Medicine",
+        "id": 83,
+        "registry": "standard",
+        "type": "model_and_format"
+      },
+      "recordAssocLabel": "related_to"
+    },
+    {
+      "linkedRecord": {
+        "name": "CDISC Laboratory Data Model",
+        "id": 91,
+        "registry": "standard",
+        "type": "model_and_format"
+      },
+      "recordAssocLabel": "related_to"
+    },
+    {
+      "linkedRecord": {
+        "name": "Health Level Seven Reference Implementation Model",
+        "id": 1345,
+        "registry": "standard",
+        "type": "terminology_artefact"
+      },
+      "recordAssocLabel": "related_to"
+    }
+  ],
+  "fakeReverseAssociatedRecords": [
+    {
+      "fairsharingRecord": {
+        "name": "RDA Covid-19 WG Resources",
+        "id": 3012,
+        "registry": "collection"
+      },
+      "recordAssocLabel": "collects"
+    },
+    {
+      "fairsharingRecord": {
+        "name": "H2020 Phenome and Metabolome aNalysis (PhenoMenal) Project",
+        "id": 3024,
+        "registry": "collection"
+      },
+      "recordAssocLabel": "collects"
+    },
+    {
+      "fairsharingRecord": {
+        "name": "eTRIKS Standards Starter Pack",
+        "id": 3031,
+        "registry": "collection"
+      },
+      "recordAssocLabel": "collects"
+    },
+    {
+      "fairsharingRecord": {
+        "name": "Systems Medicine",
+        "id": 3055,
+        "registry": "collection"
+      },
+      "recordAssocLabel": "collects"
+    }
+  ]
+}

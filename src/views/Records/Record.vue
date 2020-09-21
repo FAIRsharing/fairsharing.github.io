@@ -16,15 +16,25 @@
       </v-row>
 
       <v-row
-        v-if="user().isLoggedIn && !error && canEdit"
+        v-if="user().isLoggedIn && !error"
         class="pr-3"
       >
         <v-spacer />
         <v-btn
+          v-if="canEdit"
           class="success"
           @click="goToEdit()"
         >
           EDIT
+        </v-btn>
+        <v-btn
+          v-else
+          id="requestOwnershipButton"
+          class="warning"
+          :disabled="!canClaim"
+          @click="requestOwnership()"
+        >
+          REQUEST OWNERSHIP
         </v-btn>
       </v-row>
 
@@ -122,7 +132,8 @@
                 queryTriggered: false,
                 showScrollToTopButton: false,
                 recordAssociations: [],
-                canEdit: false
+                canEdit: false,
+                canClaim: true
             }
         },
         computed: {
@@ -154,7 +165,8 @@
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
-                await this.canEditRecord()
+                await this.canEditRecord();
+                await this.checkClaimStatus();
             })
         },
         methods: {
@@ -189,6 +201,22 @@
                   fromRecordPage: true
                 }
               })
+            },
+            async requestOwnership() {
+              let _module = this;
+              const recordID =  _module.currentRecord['fairsharingRecord'].id;
+              const claim = await client.claimRecord(recordID, _module.user().credentials.token);
+              if (claim.error) {
+                _module.error = "Sorry, your request to claim this record failed. Please contact us.";
+                _module.canClaim = false;
+              } else {
+                console.log("success!");
+                // show modal here
+                _module.canClaim = false;
+              }
+            },
+            async checkClaimStatus() {
+              console.log("checking claim status");
             },
             /**
              * Method to set the current record in the store

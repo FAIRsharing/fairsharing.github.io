@@ -185,21 +185,20 @@ export default {
       };
       _module.$emit('ClosePopup',false);
       await _module.login(user);
+
       if (_module.messages().login.error) {
         const confirmationError = "You have to confirm your email address before continuing.";
         if (_module.messages().login.message === confirmationError) {
-          // display resend confirmation link
           _module.resendButton = true;
         }
-      } else {
-        const goTo = _module.$route.query.redirect;
-        if (goTo) {
+      }
+
+      else {
+        const goTo = _module.$route.query.goTo;
+        if (goTo && _module.redirect) {
           _module.$router.push({
             path: goTo
           })
-        }
-        else if (_module.redirect) {
-          _module.$router.go(-1);
         }
       }
     },

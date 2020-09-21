@@ -16,11 +16,11 @@
         >
           <v-card :flat="popUp">
             <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp}">
-              <!-- card title -->
               <h2 class="ma-0">
                 {{ currentPanel | capitalize }}
               </h2>
             </v-card-title>
+
             <v-card-text>
               <!-- message handler -->
               <MessageHandler field="login" />
@@ -42,6 +42,8 @@
                 v-if="resendButton"
                 class="pb-0 mb-0"
               />
+
+              <!-- OAUTH -->
               <v-list>
                 <v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
@@ -59,7 +61,7 @@
                         left
                         class="mr-5"
                       >
-                        {{ provider.icon }}
+                        {{ 'fab fa-' + provider.name.toLowerCase() }}
                       </v-icon>
                       <v-layout>with {{ provider.name }}</v-layout>
                     </v-layout>
@@ -154,19 +156,16 @@ export default {
       oauthLogin: [
         {
           name: "ORCID",
-          icon: "fab fa-orcid",
           color: "green white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/orcid",
         },
         {
           name: "Twitter",
-          icon: "fab fa-twitter",
           color: "blue white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/twitter",
         },
         {
           name: "GitHub",
-          icon: "fab fa-github",
           color: "black white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/github",
         }

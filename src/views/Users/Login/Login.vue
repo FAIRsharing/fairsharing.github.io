@@ -10,9 +10,9 @@
         <v-col
           cols="12"
           sm="12"
-          :md="!popUp ? '4' : '12' "
-          :lg="!popUp ? '4' : '12' "
-          :xl="!popUp ? '4' : '12' "
+          :md="!popUp ? '8' : '12' "
+          :lg="!popUp ? '8' : '12' "
+          :xl="!popUp ? '5' : '12' "
         >
           <v-card :flat="popUp">
             <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp}">
@@ -95,19 +95,13 @@
                 />
 
                 <v-card-text class="text-center py-1">
-                  <a
-                    href="#/accounts/forgotPassword"
-                    @click="()=>{this.$emit('ClosePopup', true)}"
-                  >
-                    Forgot your password ?
-                  </a>
+                  <router-link to="/accounts/forgotPassword">
+                    <span @click="()=>{this.$emit('ClosePopup', true)}">Forgot your password ?</span>
+                  </router-link>
                   <v-divider />
-                  <a
-                    href="#/accounts/signup"
-                    @click="()=>this.$emit('ClosePopup', true)"
-                  >
-                    Create a new account
-                  </a>
+                  <router-link to="/accounts/signup">
+                    <span @click="()=>{this.$emit('ClosePopup', true)}">Create a new account</span>
+                  </router-link>
                 </v-card-text>
 
                 <v-card-actions class="mt-2 justify-center">

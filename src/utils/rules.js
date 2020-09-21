@@ -20,8 +20,20 @@ export function isUrl() {
     }
 }
 
-export function isLongEnough() {
+export function isLongEnough(length) {
     return value => {
-        return value.length >= 10 || 'Keep typing!'
+        return value.length >= length || 'Keep typing!'
+    }
+}
+
+/*
+ * An ORCID ID may be optional; if it is then an empty input field will also be accepted.
+ * Pass a boolean to isOrcid to determine if it's required.
+ */
+export function isOrcid(required) {
+    return value => {
+        if (!value && !required) return true; // because this is an optional Orcid ID
+        const pattern = /^\d{4}-\d{4}-\d{4}-\d{4}$/gi;
+        return pattern.test(value) || "Doesn't look like a valid ORCID ID."
     }
 }

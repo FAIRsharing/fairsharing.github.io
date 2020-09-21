@@ -286,7 +286,7 @@
               <v-textarea
                 v-model="metaTemplate.metadata.description"
                 label="Description"
-                :rules="[rules.isRequired(), rules.isLongEnough()]"
+                :rules="[rules.isRequired(), rules.isLongEnough(10)]"
                 :hint="descriptions['description']"
                 outlined
                 prepend-icon="fa-question-circle"
@@ -347,7 +347,7 @@
         rules: {
           isRequired: function(){return isRequired()},
           isUrl: function(){return isUrl()},
-          isLongEnough: function(){return isLongEnough()},
+          isLongEnough: function(val){return isLongEnough(val)},
         },
         formValid: false
       }

@@ -17,7 +17,7 @@ describe("Routes", () => {
             }
             if (beforeEachTester.indexOf(route.name) > -1){
                 const next = jest.fn();
-                route.beforeEnter(undefined, undefined, next);
+                route.beforeEnter({path: {}}, undefined, next);
             }
             if (route.name === "*"){
                 expect(route.redirect()).toStrictEqual({

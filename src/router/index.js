@@ -248,15 +248,21 @@ export function isLoggedIn(to, from, next, store) {
         next()
     }
     else {
+        const target = to.path;
         next({
-            name: "Login" // back to safety route //
+            name: "Login", // back to safety route //
+            query: {goTo: target}
         });
     }
 }
 
 export async function canEdit(to, from, next, store){
+    const target = to.path;
     if (!store.state.users.user().isLoggedIn){
-        next({name: "Login"})
+        next({
+            name: "Login",
+            query: {goTo: target}
+        })
     }
     else {
         if (to.params['fromRecordPage']){
@@ -282,7 +288,9 @@ export async function canEdit(to, from, next, store){
 export function redirect(){
     return {
         name: "Error 404",
-        query: {source: JSON.stringify(location.href)}
+        query: {
+            source: JSON.stringify(location.href)
+        }
     }
 }
 

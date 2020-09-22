@@ -8,6 +8,7 @@ import Client from "@/components/GraphClient/GraphClient.js";
 import RESTClient from "@/components/Client/RESTClient.js";
 import record from "@/store/record.js";
 import users from "@/store/users.js";
+import fakeAssociations from "@/../tests/fixtures/fakeAssociations.json";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
@@ -37,6 +38,7 @@ const router = new VueRouter();
 const $router = { push: jest.fn() };
 let queryStub;
 
+
 describe("Record.vue", function() {
     let wrapper;
     let vuetify;
@@ -45,7 +47,7 @@ describe("Record.vue", function() {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
         queryStub.withArgs(sinon.match.any).returns({
             fairsharingRecord:{
-                id: 1,
+                id: 123,
                 name: "test",
                 licences: [
                     {
@@ -116,7 +118,11 @@ describe("Record.vue", function() {
             data: {errors: [{message: "Im an error"}]}
         });
         await wrapper.vm.getData();
-        expect(wrapper.vm.error).toBe("Cannot read property 'metadata' of undefined")
+        expect($router.push).toHaveBeenCalledWith({
+            name: "Error 404",
+            path: "/error/404",
+            query: {"source": "\"http://localhost/#/\""}
+        });
     });
 
     it("can check cleanString returns properly",  () =>{
@@ -126,105 +132,8 @@ describe("Record.vue", function() {
     });
 
     it("can check prepareAssociations returns a flat joined array ",()=>{
-        let fakeAssociatedRecords = [
-            {
-                "linkedRecord": {
-                    "name": "Apollo XSD 4.0.1",
-                    "id": 343,
-                    "registry": "standard",
-                    "type": "model_and_format"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "Observational Medical Outcomes Partnership Standardized Vocabularies",
-                    "id": 1247,
-                    "registry": "standard",
-                    "type": "terminology_artefact"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "Fast Healthcare Interoperability Resources",
-                    "id": 294,
-                    "registry": "standard",
-                    "type": "model_and_format"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "The Unified Code for Units of Measure",
-                    "id": 1280,
-                    "registry": "standard",
-                    "type": "terminology_artefact"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "Digital Imaging and COmmunications in Medicine",
-                    "id": 83,
-                    "registry": "standard",
-                    "type": "model_and_format"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "CDISC Laboratory Data Model",
-                    "id": 91,
-                    "registry": "standard",
-                    "type": "model_and_format"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "Health Level Seven Reference Implementation Model",
-                    "id": 1345,
-                    "registry": "standard",
-                    "type": "terminology_artefact"
-                },
-                "recordAssocLabel": "related_to"
-            }
-        ];
-        let fakeReverseAssociatedRecords = [
-            {
-                "fairsharingRecord": {
-                    "name": "RDA Covid-19 WG Resources",
-                    "id": 3012,
-                    "registry": "collection"
-                },
-                "recordAssocLabel": "collects"
-            },
-            {
-                "fairsharingRecord": {
-                    "name": "H2020 Phenome and Metabolome aNalysis (PhenoMenal) Project",
-                    "id": 3024,
-                    "registry": "collection"
-                },
-                "recordAssocLabel": "collects"
-            },
-            {
-                "fairsharingRecord": {
-                    "name": "eTRIKS Standards Starter Pack",
-                    "id": 3031,
-                    "registry": "collection"
-                },
-                "recordAssocLabel": "collects"
-            },
-            {
-                "fairsharingRecord": {
-                    "name": "Systems Medicine",
-                    "id": 3055,
-                    "registry": "collection"
-                },
-                "recordAssocLabel": "collects"
-            }
-        ];
+        let fakeAssociatedRecords = fakeAssociations['fakeAssociatedRecords'];
+        let fakeReverseAssociatedRecords = fakeAssociations['fakeReverseAssociatedRecords'];
         wrapper.vm.currentRecord['fairsharingRecord'] = {
             name: "test",
             metadata: {
@@ -251,7 +160,7 @@ describe("Record.vue", function() {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
         queryStub.withArgs(sinon.match.any).returns({
             fairsharingRecord:{
-                id: 1,
+                id: 123,
                 type: "testType",
                 name: "test",
                 licences: [
@@ -267,7 +176,7 @@ describe("Record.vue", function() {
             }
         });
         let anotherWrapper = await shallowMount(Record, {
-            mocks: {$route, $store},
+            mocks: {$route, $store, $router},
             localVue,
             vuetify
         });

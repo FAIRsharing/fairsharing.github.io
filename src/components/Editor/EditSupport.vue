@@ -20,97 +20,117 @@
         {{ error.data }}
       </v-alert>
     </v-card-text>
-    <v-card-text>
-      <v-container fluid>
-        <v-row>
-          <v-col class="col-12 pt-0">
-            <v-btn
-              class="primary"
-              style="display:inline-block"
-              fab
-              x-small
-              dark
-              @click="addContact()"
+    <v-form
+      id="editGeneralInfoForm"
+      ref="editGeneralInfoForm"
+      v-model="formValid"
+      class="my-3"
+    >
+      <v-card-text>
+        <v-container fluid>
+          <v-row>
+            <v-col class="col-12 pt-0">
+              <v-btn
+                class="primary"
+                style="display:inline-block"
+                fab
+                x-small
+                dark
+                @click="addContact()"
+              >
+                <v-icon>fa-plus</v-icon>
+              </v-btn>
+              <div
+                class="ml-3"
+                style="display:inline-block"
+              >
+                ADD A NEW CONTACT
+              </div>
+              <v-divider />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              v-for="(contact, contactIndex) in contacts"
+              :key="'contact_' + contactIndex"
+              class="col-3"
+              :class="{'leftBorder': contactIndex > 0}"
             >
-              <v-icon>fa-plus</v-icon>
-            </v-btn>
-            <div
-              class="ml-3"
-              style="display:inline-block"
-            >
-              ADD A NEW CONTACT
-            </div>
-            <v-divider />
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col
-            v-for="(contact, contactIndex) in contacts"
-            :key="'contact_' + contactIndex"
-            class="col-3"
-            :class="{'leftBorder': contactIndex > 0}"
-          >
-            <v-card>
-              <v-card-text>
-                <v-text-field
-                  v-model="contact['contact_name']"
-                  label="Contact Name"
-                  outlined
-                />
-                <v-text-field
-                  v-model="contact['contact_email']"
-                  label="Contact Email"
-                  outlined
-                />
-                <v-text-field
-                  v-model="contact['contact_orcid']"
-                  label="Contact ORCID"
-                  outlined
-                />
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                  style="display:inline-block"
-                  fab
-                  x-small
-                  dark
-                  class="red"
-                  @click="removeContact(contact)"
-                >
-                  <v-icon> fa-minus </v-icon>
-                </v-btn>
-                <div
-                  class="ml-3 pt-1"
-                  style="display:inline-block"
-                >
-                  REMOVE CONTACT
-                </div>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn
-        class="primary"
-        @click="editRecord()"
-      >
-        Submit new contact(s)
-      </v-btn>
-    </v-card-actions>
+              <v-card>
+                <v-card-text>
+                  <v-text-field
+                    v-model="contact['contact_name']"
+                    label="Contact Name"
+                    :rules="[rules.isRequired()]"
+                    outlined
+                  />
+                  <v-text-field
+                    v-model="contact['contact_email']"
+                    label="Contact Email"
+                    :rules="[rules.isRequired(), rules.isEmail()]"
+                    outlined
+                  />
+                  <v-text-field
+                    v-model="contact['contact_orcid']"
+                    label="Contact ORCID"
+                    :rules="[rules.isOrcid(false)]"
+                    placeholder="0000-0000-0000-0000"
+                    outlined
+                  />
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn
+                    style="display:inline-block"
+                    fab
+                    x-small
+                    dark
+                    class="red"
+                    @click="removeContact(contact)"
+                  >
+                    <v-icon> fa-minus </v-icon>
+                  </v-btn>
+                  <div
+                    class="ml-3 pt-1"
+                    style="display:inline-block"
+                  >
+                    REMOVE CONTACT
+                  </div>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
+          class="primary"
+          :disabled="!formValid"
+          @click="editRecord()"
+        >
+          Submit new contact(s)
+        </v-btn>
+      </v-card-actions>
+    </v-form>
   </v-card>
 </template>
 
 <script>
     import { mapState, mapActions } from "vuex"
 
+    import { isRequired, isEmail, isOrcid } from "@/utils/rules.js"
+
     export default {
         name: "EditSupport",
         data(){
           return {
             contacts: [],
-            error: false
+            error: false,
+            rules: {
+              isRequired: function(){return isRequired()},
+              isEmail: function(){return isEmail()},
+              isOrcid: function(val){return isOrcid(val)},
+            },
+            formValid: false
           }
         },
         computed: {

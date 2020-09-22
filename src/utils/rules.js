@@ -12,3 +12,28 @@ export function isEmail(){
 export function isRequired(){
     return value => !!value || 'Required.'
 }
+
+export function isUrl() {
+    return value => {
+        const pattern = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
+        return pattern.test(value) || 'Invalid URL.'
+    }
+}
+
+export function isLongEnough(length) {
+    return value => {
+        return value.length >= length || 'Keep typing!'
+    }
+}
+
+/*
+ * An ORCID ID may be optional; if it is then an empty input field will also be accepted.
+ * Pass a boolean to isOrcid to determine if it's required.
+ */
+export function isOrcid(required) {
+    return value => {
+        if (!value && !required) return true; // because this is an optional Orcid ID
+        const pattern = /^\d{4}-\d{4}-\d{4}-\d{4}$/gi;
+        return pattern.test(value) || "Doesn't look like a valid ORCID ID."
+    }
+}

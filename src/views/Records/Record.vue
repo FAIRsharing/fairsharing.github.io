@@ -208,7 +208,8 @@
               if (claim.error) {
                 _module.error = "Sorry, your request to claim this record failed. Please contact us.";
                 _module.canClaim = false;
-              } else {
+              }
+              else {
                 // show modal here
                 _module.canClaim = false;
               }
@@ -220,7 +221,8 @@
                 const claim = await client.canClaim(recordID, _module.user().credentials.token);
                 if (claim.error) {
                   _module.canClaim = false;
-                } else {
+                }
+                else {
                   // show modal here
                   _module.canClaim = !claim.existing;
                 }

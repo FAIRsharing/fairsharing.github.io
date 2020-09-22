@@ -1,8 +1,8 @@
-import filterMapping from "@/components/Records/FiltersLabelMapping.json"
+import filterMapping from "@/data/FiltersLabelMapping.json"
 import GraphQLClient from "@/components/GraphClient/GraphClient.js"
 import query from "@/components/GraphClient/queries/getFilters.json";
 import {isEqual} from 'lodash'
-import buttonOptions from './ButtonOptions.json'
+import buttonOptions from '@/data/ButtonOptions.json'
 
 const graphClient = new GraphQLClient();
 

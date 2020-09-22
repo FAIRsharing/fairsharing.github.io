@@ -105,7 +105,7 @@
     import GraphClient from "@/components/GraphClient/GraphClient.js"
     import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
     import RESTClient from "@/components/Client/RESTClient.js"
-    import status from "@/components/Editor/status.json"
+    import status from "@/data/status.json"
 
     let client = new GraphClient();
     let restClient = new RESTClient();

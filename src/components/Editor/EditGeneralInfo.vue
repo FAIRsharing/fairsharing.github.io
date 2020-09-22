@@ -328,10 +328,11 @@
   import CountryFlag from 'vue-country-flag'
   import GraphClient from "@/components/GraphClient/GraphClient.js"
   import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
-  import status from "@/components/Editor/status.json"
+  import status from "@/data/status.json"
   import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
-  import des from "./data/fieldsDescription.json"
+  import des from "@/data/fieldsDescription.json"
   import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
+  
   const graphClient = new GraphClient();
 
   export default {
@@ -443,4 +444,3 @@
     },
   }
 </script>
-

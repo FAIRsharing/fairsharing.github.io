@@ -87,7 +87,7 @@
 </template>
 
 <script>
-    import {mapActions, mapState, mapGetters} from 'vuex'
+    import {mapActions, mapState} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
     import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
@@ -141,7 +141,6 @@
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
             },
-            ...mapGetters('record', ['getRecordId']),
         },
         watch: {
             async currentRoute() {
@@ -182,7 +181,8 @@
                 });
             },
             goToEdit(){
-              let recordID = this.$route.params.id;
+              let _module = this;
+              const recordID =  _module.currentRecord['fairsharingRecord'].id;
               this.$router.push({
                 path: recordID + '/edit',
                 params: {
@@ -205,8 +205,10 @@
                     if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
                         _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
                     }
-                } catch (e) {
+                }
+                catch (e) {
                     this.error = e.message;
+                    this.$router.push({name: "Error 404", path: "/error/404", query: {source: JSON.stringify(location.href)}})
                 }
                 this.queryTriggered = true;
             },
@@ -221,7 +223,7 @@
               const _module = this;
               _module.canEdit = false;
               if (_module.user().isLoggedIn) {
-                const recordID = _module.getRecordId;
+                const recordID = _module.currentRecord['fairsharingRecord'].id;
                 const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
                 _module.canEdit = !canEdit.error;
               }

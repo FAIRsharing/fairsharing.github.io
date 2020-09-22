@@ -19,294 +19,307 @@
       <b> EDIT GENERAL INFORMATION </b>
     </v-card-title>
     <v-alert
-      v-if="error.message && error.message.data"
+      v-if="error && error_message"
       type="error"
     >
-      {{ error.message.data }}
+      {{ error_message }}
     </v-alert>
-    <v-card-text>
-      <v-container fluid>
-        <v-row>
-          <!-- name -->
-          <v-col class="col-3">
-            <v-text-field
-              v-model="metaTemplate.metadata.name"
-              hint="Name of the record"
-              label="Record Name"
-              outlined
-            >
-              <template v-slot:prepend>
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                    <v-icon v-on="on">
-                      fa-question-circle
-                    </v-icon>
-                  </template>
-                  Name of the record
-                </v-tooltip>
-              </template>
-            </v-text-field>
-          </v-col>
+    <v-form
+      id="editGeneralInfoForm"
+      ref="editGeneralInfoForm"
+      v-model="formValid"
+      class="my-3"
+    >
+      <v-card-text>
+        <v-container fluid>
+          <v-row>
+            <!-- name -->
+            <v-col class="col-3">
+              <v-text-field
+                v-model="metaTemplate.metadata.name"
+                hint="Name of the record"
+                label="Record Name"
+                :rules="[rules.isRequired()]"
+                outlined
+              >
+                <template v-slot:prepend>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">
+                        fa-question-circle
+                      </v-icon>
+                    </template>
+                    Name of the record
+                  </v-tooltip>
+                </template>
+              </v-text-field>
+            </v-col>
 
-          <!-- abbreviation -->
-          <v-col class="col-3">
-            <v-text-field
-              v-model="metaTemplate.metadata.abbreviation"
-              label="Abbreviation"
-              :hint="descriptions['abbreviation']"
-              outlined
-            >
-              <template v-slot:prepend>
-                <v-tooltip
-                  bottom
-                  max-width="300px"
-                  class="text-justify"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-icon v-on="on">
-                      fa-question-circle
-                    </v-icon>
-                  </template>
-                  {{ descriptions['abbreviation'] }}
-                </v-tooltip>
-              </template>
-            </v-text-field>
-          </v-col>
+            <!-- abbreviation -->
+            <v-col class="col-3">
+              <v-text-field
+                v-model="metaTemplate.metadata.abbreviation"
+                label="Abbreviation"
+                :rules="[rules.isRequired()]"
+                :hint="descriptions['abbreviation']"
+                outlined
+              >
+                <template v-slot:prepend>
+                  <v-tooltip
+                    bottom
+                    max-width="300px"
+                    class="text-justify"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">
+                        fa-question-circle
+                      </v-icon>
+                    </template>
+                    {{ descriptions['abbreviation'] }}
+                  </v-tooltip>
+                </template>
+              </v-text-field>
+            </v-col>
 
-          <!-- homepage -->
-          <v-col class="col-3">
-            <v-text-field
-              v-model="metaTemplate.metadata.homepage"
-              label="Homepage"
-              :hint="descriptions['homepage']"
-              outlined
-            >
-              <template v-slot:prepend>
-                <v-tooltip
-                  bottom
-                  max-width="300px"
-                  class="text-justify"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-icon v-on="on">
-                      fa-question-circle
-                    </v-icon>
-                  </template>
-                  {{ descriptions['homepage'] }}
-                </v-tooltip>
-              </template>
-            </v-text-field>
-          </v-col>
+            <!-- homepage -->
+            <v-col class="col-3">
+              <v-text-field
+                v-model="metaTemplate.metadata.homepage"
+                label="Homepage"
+                :rules="[rules.isRequired(), rules.isUrl()]"
+                :hint="descriptions['homepage']"
+                outlined
+              >
+                <template v-slot:prepend>
+                  <v-tooltip
+                    bottom
+                    max-width="300px"
+                    class="text-justify"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">
+                        fa-question-circle
+                      </v-icon>
+                    </template>
+                    {{ descriptions['homepage'] }}
+                  </v-tooltip>
+                </template>
+              </v-text-field>
+            </v-col>
 
-          <!-- year of creation -->
-          <v-col class="col-3">
-            <v-autocomplete
-              v-model="metaTemplate.metadata.year_creation"
-              label="Year of creation"
-              :hint="descriptions['year']"
-              :items="years"
-              outlined
-            >
-              <template v-slot:prepend>
-                <v-tooltip
-                  bottom
-                  max-width="300px"
-                  class="text-justify"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-icon v-on="on">
-                      fa-question-circle
-                    </v-icon>
-                  </template>
-                  {{ descriptions['year'] }}
-                </v-tooltip>
-              </template>
-            </v-autocomplete>
-          </v-col>
+            <!-- year of creation -->
+            <v-col class="col-3">
+              <v-autocomplete
+                v-model="metaTemplate.metadata.year_creation"
+                label="Year of creation"
+                :hint="descriptions['year']"
+                :items="years"
+                outlined
+              >
+                <template v-slot:prepend>
+                  <v-tooltip
+                    bottom
+                    max-width="300px"
+                    class="text-justify"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">
+                        fa-question-circle
+                      </v-icon>
+                    </template>
+                    {{ descriptions['year'] }}
+                  </v-tooltip>
+                </template>
+              </v-autocomplete>
+            </v-col>
 
-          <!-- countries -->
-          <v-col class="col-4">
-            <v-autocomplete
-              v-model="metaTemplate.countries"
-              label="Countries"
-              :items="countries"
-              :hint="descriptions['countries']"
-              item-text="name"
-              item-value="name"
-              outlined
-              multiple
-              return-object
-            >
-              <template v-slot:prepend>
-                <v-tooltip
-                  bottom
-                  max-width="300px"
-                  class="text-justify"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-icon v-on="on">
-                      fa-question-circle
-                    </v-icon>
-                  </template>
-                  {{ descriptions['countries'] }}
-                </v-tooltip>
-              </template>
+            <!-- countries -->
+            <v-col class="col-4">
+              <v-autocomplete
+                v-model="metaTemplate.countries"
+                label="Countries"
+                :items="countries"
+                :hint="descriptions['countries']"
+                item-text="name"
+                item-value="name"
+                outlined
+                multiple
+                return-object
+              >
+                <template v-slot:prepend>
+                  <v-tooltip
+                    bottom
+                    max-width="300px"
+                    class="text-justify"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">
+                        fa-question-circle
+                      </v-icon>
+                    </template>
+                    {{ descriptions['countries'] }}
+                  </v-tooltip>
+                </template>
 
-              <!-- autocomplete selected -->
-              <template v-slot:selection="data">
-                <v-chip class="blue white--text">
-                  {{ data.item.name }}
-                </v-chip>
-              </template>
+                <!-- autocomplete selected -->
+                <template v-slot:selection="data">
+                  <v-chip class="blue white--text">
+                    {{ data.item.name }}
+                  </v-chip>
+                </template>
 
-              <!-- autocomplete data -->
-              <template v-slot:item="data">
-                <country-flag
-                  v-if="data.item.code !== null"
-                  :country="data.item.code"
-                  size="normal"
-                />
-                <img
-                  v-else
-                  src="@/assets/placeholders/country.png"
-                  class="ml-4 mr-3"
-                >
-                <div> {{ data.item.name }} </div>
-              </template>
-            </v-autocomplete>
-          </v-col>
+                <!-- autocomplete data -->
+                <template v-slot:item="data">
+                  <country-flag
+                    v-if="data.item.code !== null"
+                    :country="data.item.code"
+                    size="normal"
+                  />
+                  <img
+                    v-else
+                    src="@/assets/placeholders/country.png"
+                    class="ml-4 mr-3"
+                  >
+                  <div> {{ data.item.name }} </div>
+                </template>
+              </v-autocomplete>
+            </v-col>
 
-          <!-- registry -->
-          <v-col class="col-4">
-            <v-autocomplete
-              v-model="metaTemplate.type"
-              label="Registry type"
-              hint="Select between given elements"
-              :items="recordsTypes"
-              item-text="name"
-              item-value="name"
-              outlined
-              return-object
-            >
-              <!-- autocomplete selected -->
-              <template v-slot:selection="data">
-                {{ data.item.name.replace(/_/g, ' ') }}
-              </template>
+            <!-- registry -->
+            <v-col class="col-4">
+              <v-autocomplete
+                v-model="metaTemplate.type"
+                label="Registry type"
+                :rules="[rules.isRequired()]"
+                hint="Select between given elements"
+                :items="recordsTypes"
+                item-text="name"
+                item-value="name"
+                outlined
+                return-object
+              >
+                <!-- autocomplete selected -->
+                <template v-slot:selection="data">
+                  {{ data.item.name.replace(/_/g, ' ') }}
+                </template>
 
-              <!-- autocomplete data -->
-              <template v-slot:item="data">
-                <v-list
-                  id="autocompleteSelect"
-                  max-width="565px"
-                  three-line
-                >
-                  <v-list-item min-height="0px">
-                    <v-list-item-content class="py-0">
-                      <v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} </v-list-item-title>
-                      <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </template>
-            </v-autocomplete>
-          </v-col>
+                <!-- autocomplete data -->
+                <template v-slot:item="data">
+                  <v-list
+                    id="autocompleteSelect"
+                    max-width="565px"
+                    three-line
+                  >
+                    <v-list-item min-height="0px">
+                      <v-list-item-content class="py-0">
+                        <v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} </v-list-item-title>
+                        <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </template>
+              </v-autocomplete>
+            </v-col>
 
-          <!-- status -->
-          <v-col class="col-4">
-            <v-autocomplete
-              v-model="metaTemplate.status"
-              label="Status"
-              :items="status"
-              item-text="name"
-              item-value="name"
-              outlined
-              :disabled="metaTemplate.type === 'collection' || metaTemplate.type.name === 'collection'"
-            >
-              <!-- autocomplete selected -->
-              <template v-slot:selection="data">
-                {{ data.item.name.replace(/_/g, ' ') }}
-              </template>
+            <!-- status -->
+            <v-col class="col-4">
+              <v-autocomplete
+                v-model="metaTemplate.status"
+                label="Status"
+                :items="status"
+                item-text="name"
+                item-value="name"
+                outlined
+                :disabled="metaTemplate.type === 'collection' || metaTemplate.type.name === 'collection'"
+              >
+                <!-- autocomplete selected -->
+                <template v-slot:selection="data">
+                  {{ data.item.name.replace(/_/g, ' ') }}
+                </template>
 
-              <!-- autocomplete data -->
-              <template v-slot:item="data">
-                <v-list
-                  max-width="745px"
-                  two-line
-                  class="py-0 my-0"
-                >
-                  <v-list-item min-height="0px">
-                    <v-list-item-content class="py-0 my-0">
-                      <v-list-item-title> <b>{{ data.item.name.replace(/_/g, ' ').toUpperCase() }} </b></v-list-item-title>
-                      <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </template>
-            </v-autocomplete>
-          </v-col>
+                <!-- autocomplete data -->
+                <template v-slot:item="data">
+                  <v-list
+                    max-width="745px"
+                    two-line
+                    class="py-0 my-0"
+                  >
+                    <v-list-item min-height="0px">
+                      <v-list-item-content class="py-0 my-0">
+                        <v-list-item-title> <b>{{ data.item.name.replace(/_/g, ' ').toUpperCase() }} </b></v-list-item-title>
+                        <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </template>
+              </v-autocomplete>
+            </v-col>
 
-          <!-- deprecation reasons -->
-          <v-col class="col-12">
-            <v-textarea
-              v-if="metaTemplate.status === 'deprecated'"
-              v-model="metaTemplate['deprecation_reason']"
-              label="Reason for deprecation"
-              :hint="descriptions['deprecation_reason']"
-              outlined
-            >
-              <template v-slot:prepend>
-                <v-tooltip
-                  bottom
-                  max-width="300px"
-                  class="text-justify"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-icon v-on="on">
-                      fa-question-circle
-                    </v-icon>
-                  </template>
-                  {{ descriptions['deprecation_reason'] }}
-                </v-tooltip>
-              </template>
-            </v-textarea>
-          </v-col>
+            <!-- deprecation reasons -->
+            <v-col class="col-12">
+              <v-textarea
+                v-if="metaTemplate.status === 'deprecated'"
+                v-model="metaTemplate['deprecation_reason']"
+                label="Reason for deprecation"
+                :hint="descriptions['deprecation_reason']"
+                outlined
+              >
+                <template v-slot:prepend>
+                  <v-tooltip
+                    bottom
+                    max-width="300px"
+                    class="text-justify"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">
+                        fa-question-circle
+                      </v-icon>
+                    </template>
+                    {{ descriptions['deprecation_reason'] }}
+                  </v-tooltip>
+                </template>
+              </v-textarea>
+            </v-col>
 
-          <!-- description -->
-          <v-col class="col-12">
-            <v-textarea
-              v-model="metaTemplate.metadata.description"
-              label="Description"
-              :hint="descriptions['description']"
-              outlined
-              prepend-icon="fa-question-circle"
-            >
-              <template v-slot:prepend>
-                <v-tooltip
-                  bottom
-                  max-width="300px"
-                  class="text-justify"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-icon v-on="on">
-                      fa-question-circle
-                    </v-icon>
-                  </template>
-                  {{ descriptions['description'] }}
-                </v-tooltip>
-              </template>
-            </v-textarea>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn
-        class="primary"
-        @click="editRecord()"
-      >
-        Submit
-      </v-btn>
-    </v-card-actions>
+            <!-- description -->
+            <v-col class="col-12">
+              <v-textarea
+                v-model="metaTemplate.metadata.description"
+                label="Description"
+                :rules="[rules.isRequired(), rules.isLongEnough(10)]"
+                :hint="descriptions['description']"
+                outlined
+                prepend-icon="fa-question-circle"
+              >
+                <template v-slot:prepend>
+                  <v-tooltip
+                    bottom
+                    max-width="300px"
+                    class="text-justify"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-icon v-on="on">
+                        fa-question-circle
+                      </v-icon>
+                    </template>
+                    {{ descriptions['description'] }}
+                  </v-tooltip>
+                </template>
+              </v-textarea>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
+          class="primary"
+          :disabled="!formValid"
+          @click="editRecord()"
+        >
+          Submit
+        </v-btn>
+      </v-card-actions>
+    </v-form>
   </v-card>
 </template>
 
@@ -318,6 +331,8 @@
   import status from "@/data/status.json"
   import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
   import des from "@/data/fieldsDescription.json"
+  import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
+  
   const graphClient = new GraphClient();
 
   export default {
@@ -328,7 +343,14 @@
         recordsTypes: [],
         countries: [],
         yearRange: 100,
-        error: false
+        error: false,
+        error_message: null,
+        rules: {
+          isRequired: function(){return isRequired()},
+          isUrl: function(){return isUrl()},
+          isLongEnough: function(val){return isLongEnough(val)},
+        },
+        formValid: false
       }
     },
     computed: {
@@ -416,6 +438,7 @@
         }
         else {
           this.error = this.recordUpdate.error;
+          this.error_message = this.recordUpdate.message.data;
         }
       }
     },

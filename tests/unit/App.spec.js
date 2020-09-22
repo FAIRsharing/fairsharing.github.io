@@ -4,12 +4,12 @@ import App from "@/App.vue";
 import Vuetify from "vuetify"
 import uiControllerStore from "@/store/uiController.js";
 import Vuex from "vuex";
-import Vue from 'vue'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-Vue.use(VueRouter)
-
+localVue.use(VueRouter);
+let routes = [{ path: "/" }];
+const router = new VueRouter({routes});
 const $store = new Vuex.Store({
     modules: {
         uiController: uiControllerStore,
@@ -30,7 +30,8 @@ describe("App.vue", () => {
         wrapper = shallowMount(App, {
             localVue,
             vuetify,
-            mocks: {$store}
+            router,
+            mocks: {$store},
         });
         expect(wrapper.name()).toMatch(title);
     });

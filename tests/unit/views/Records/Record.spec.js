@@ -152,7 +152,25 @@ describe("Record.vue", function() {
                 "recordAssocLabel": "collects"
             },
         ];
-        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords)
+        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
+        fakeReverseAssociatedRecords = fakeAssociations['fakeReverseAssociatedRecords'];
+        wrapper.vm.currentRecord['fairsharingRecord'] = {
+            name: "test",
+            registry: "collection",
+            metadata: {
+                year_creation: 2018
+            }
+        };
+        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
+        wrapper.vm.currentRecord['fairsharingRecord'] = {
+            name: "test",
+            registry: "policy",
+            metadata: {
+                year_creation: 2018
+            }
+        };
+        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
+
     });
 
     it("can properly fetch record associations", async() => {

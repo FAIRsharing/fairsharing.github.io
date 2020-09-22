@@ -14,7 +14,7 @@
         name: "Error403",
         computed: {
           getSource(){
-            return window.location.host + ((this.$route.query.source) ? JSON.parse(this.$route.query.source) : '' + " this page");
+            return (this.$route.query.source) ? window.location.host + JSON.parse(this.$route.query.source) : '' + " this page";
           }
         }
       }

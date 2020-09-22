@@ -26,7 +26,14 @@ describe("403 unauthorized page", () => {
             mocks: {$route},
             localVue
         });
-        expect(wrapper.vm.getSource).toBe('localhost/#/random/test')
+        expect(wrapper.vm.getSource).toBe('localhost/#/random/test');
+
+        $route = {path: "/error/403", query: {}};
+        const anotherWrapper = shallowMount(Error, {
+            mocks: {$route},
+            localVue
+        });
+        expect(anotherWrapper.vm.getSource).toBe(' this page');
     });
 
 });

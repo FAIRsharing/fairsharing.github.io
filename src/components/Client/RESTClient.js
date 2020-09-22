@@ -257,6 +257,12 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Determine if a user has permission to edit this record.
+     * @param {Integer} recordID - ID for the relevant FairsharingRecord.
+     * @param {String} token - JWT of the logged in user
+     * @returns {Promise}
+     */
     async canEdit(recordID, userToken){
         let headers = JSON.parse(JSON.stringify(this.headers));
         headers['Authorization'] = 'Bearer ' + userToken;
@@ -269,6 +275,12 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Attempt to create a MaintenanceRequest for a user for a FairsharingRecord.
+     * @param {Integer} recordID - ID for the relevant FairsharingRecord.
+     * @param {String} token - JWT of the logged in user
+     * @returns {Promise}
+     */
     async claimRecord(recordID, userToken) {
         let headers = JSON.parse(JSON.stringify(this.headers));
         headers['Authorization'] = 'Bearer ' + userToken;
@@ -282,6 +294,12 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Determine if a user has permission to create a MaintenanceRequest for a FairsharingRecord.
+     * @param {Integer} recordID - ID for the relevant FairsharingRecord.
+     * @param {String} token - JWT of the logged in user
+     * @returns {Promise}
+     */
     async canClaim(recordID, userToken) {
         let headers = JSON.parse(JSON.stringify(this.headers));
         headers['Authorization'] = 'Bearer ' + userToken;

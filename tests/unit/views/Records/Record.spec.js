@@ -217,6 +217,43 @@ describe("Record.vue", function() {
         });
     });
 
+    it("can check if the user can claim a record", async() => {
+        wrapper.vm.canClaim = false;
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({data: {existing: false}});
+        await wrapper.vm.checkClaimStatus();
+        expect(wrapper.vm.canClaim).toBe(true);
+        restStub.restore();
+    });
+
+    it("allows a logged in user to request to own/maintain the record", async() => {
+        wrapper.vm.canClaim = true;
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({data: {created: true}});
+        await wrapper.vm.requestOwnership();
+        expect(wrapper.vm.canClaim).toBe(false);
+        restStub.restore();
+        wrapper.vm.canClaim = true;
+        restStub.withArgs(sinon.match.any).returns(
+            {
+                data: {
+                    error: {
+                        response: {
+                            data: {
+                                error: "Request failed."
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        await wrapper.vm.requestOwnership();
+        expect(wrapper.vm.canClaim).toBe(false);
+        restStub.restore();
+    });
+
+
+
     it("can check if a logged in user can edit the record", async() => {
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {id: 123}});
@@ -243,4 +280,8 @@ describe("Record.vue", function() {
         await anotherWrapper.vm.canEditRecord();
         expect(anotherWrapper.vm.canEdit).toBe(false);
     });
+
+
+
+
 });

@@ -69,14 +69,25 @@ describe("Routes", () => {
         await canEdit(
             {params: {fromRecordPage: false}},
             {params: {id: 123}},
-            next, store);
+            next,
+            store);
         expect(next).toHaveBeenCalledWith({path: 123});
-
+        store.state.record = {
+            currentRecord: {
+                fairsharingRecord: {
+                    id: 123
+                }
+            }
+        };
         await canEdit(
-            {params: {fromRecordPage: false}},
+            {params: {fromRecordPage: false}, path: "123/edit"},
             {params: {id: null}},
-            next, store);
-        expect(next).toHaveBeenCalledWith({path: "/"});
+            next,
+            store);
+        expect(next).toHaveBeenCalledWith({
+            path: '/error/403',
+            query: {source: '"123/edit"'}
+        });
 
         restStub.restore();
         Vue.config.productionTip = true;

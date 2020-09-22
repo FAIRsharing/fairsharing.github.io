@@ -105,7 +105,7 @@
 
       <!-- doi -->
       <div
-        v-if="publication.doi"
+        v-if="checkLinkValue(publication.doi)"
         class="d-flex mt-2 "
       >
         <v-tooltip left>
@@ -136,7 +136,7 @@
 
       <!-- pubmed -->
       <div
-        v-if="publication.pubmedId"
+        v-if="checkLinkValue(publication.pubmedId)"
         class="d-flex mt-2 "
       >
         <v-tooltip left>
@@ -184,6 +184,16 @@
         mixins: [stringUtils],
         computed: {
             ...mapGetters("record", ["getField"])
+        },
+        methods: {
+          checkLinkValue: (link) => {
+            if (!link) {
+              return false;
+            } else if ((link.toLowerCase() === 'missing') || link === 0 || link === "0") {
+              return false;
+            }
+            return true;
+          }
         }
     }
 </script>

@@ -15,7 +15,7 @@
           :xl="!popUp ? '4' : '12' "
         >
           <v-card :flat="popUp">
-            <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0': popUp}">
+            <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp}">
               <!-- card title -->
               <h2 class="ma-0">
                 {{ currentPanel | capitalize }}
@@ -24,9 +24,24 @@
             <v-card-text>
               <!-- message handler -->
               <MessageHandler field="login" />
-            </v-card-text>
-            <!-- OAUTH -->
-            <v-card-text>
+
+              <!-- button to re-send confirmation if login failed -->
+              <div
+                v-if="resendButton"
+                class="d-flex flex-row justify-center"
+              >
+                <v-btn
+                  class="text-center teal white--text px-2"
+                  href="#/users/resendConfirmation"
+                  @click="()=>{this.$emit('ClosePopup', true)}"
+                >
+                  Resend me the confirmation email
+                </v-btn>
+              </div>
+              <v-divider
+                v-if="resendButton"
+                class="pb-0 mb-0"
+              />
               <v-list>
                 <v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
@@ -52,6 +67,8 @@
                 </v-list-item>
               </v-list>
             </v-card-text>
+
+
             <!-- card content // Form -->
             <v-card-text v-if="currentPanel === 'login'">
               <v-form
@@ -77,16 +94,23 @@
                   @click:append="show1 = !show1"
                 />
 
-                <v-card-text class="text-center">
-                  <router-link
-                    to="/accounts/forgotPassword"
-                    @click="()=>{this.$emit('ClosePopup',true)}"
+                <v-card-text class="text-center py-1">
+                  <a
+                    href="#/accounts/forgotPassword"
+                    @click="()=>{this.$emit('ClosePopup', true)}"
                   >
                     Forgot your password ?
-                  </router-link>
+                  </a>
+                  <v-divider />
+                  <a
+                    href="#/accounts/signup"
+                    @click="()=>this.$emit('ClosePopup', true)"
+                  >
+                    Create a new account
+                  </a>
                 </v-card-text>
 
-                <v-card-actions class="mt-2">
+                <v-card-actions class="mt-2 justify-center">
                   <v-btn
                     class=" px-4"
                     light
@@ -94,15 +118,6 @@
                     @click="logUser()"
                   >
                     LOGIN
-                  </v-btn>
-                  <v-btn
-                    text
-                    light
-                    class="px-4"
-                    to="/accounts/signup"
-                    @click="()=>{this.$emit('ClosePopup',true)}"
-                  >
-                    Register
                   </v-btn>
                 </v-card-actions>
               </v-form>
@@ -139,6 +154,7 @@ export default {
   data: () => {
     return {
       show1: false,
+      resendButton: false,
       currentPanel: "login",
       loginData: {},
       oauthLogin: [
@@ -176,13 +192,20 @@ export default {
       };
       _module.$emit('ClosePopup',false);
       await _module.login(user);
-      if (!_module.messages().login.error) {
+      if (_module.messages().login.error) {
+        const confirmationError = "You have to confirm your email address before continuing.";
+        if (_module.messages().login.message === confirmationError) {
+          // display resend confirmation link
+          _module.resendButton = true;
+        }
+      } else {
         const goTo = _module.$route.query.redirect;
         if (goTo) {
           _module.$router.push({
             path: goTo
           })
-        } else if (_module.redirect) {
+        }
+        else if (_module.redirect) {
           _module.$router.go(-1);
         }
       }
@@ -196,7 +219,9 @@ export default {
   text-decoration: none !important;
 }
 
-.v-card__actions {
-  justify-content: center;
+.v-card__text
+{
+  width: auto;
 }
+
 </style>

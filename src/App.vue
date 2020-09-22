@@ -7,12 +7,11 @@
       left
       width="70%"
     />
-
     <transition name="fade">
       <Header v-if="UIGeneralStatus.headerVisibilityState" />
     </transition>
-    <router-view />
-    <Footer />
+    <router-view style="min-height: 70vh" />
+    <Footer v-if="$route.path !== '/search'" />
   </v-app>
 </template>
 
@@ -42,7 +41,7 @@
         },
         methods: {
             toggleOverFlow: function (status) {
-                this._status = status
+                this._status = status;
                 this.root = document.getElementsByTagName('html')[0]; // '0' to assign the first (and only `HTML` tag)
                 this._status ? this.root.setAttribute('class', this.hideOverflow) : this.root.removeAttribute('class');
             },
@@ -59,9 +58,6 @@
 
     html, body {
         height: 100%;
-    }
-
-    .footer-content {
     }
 
     .overflow-hidden {

@@ -1,21 +1,21 @@
 <template>
   <v-tooltip
     bottom
-    :disabled="item.toolTip===undefined"
+    :disabled="item.tooltip===undefined"
   >
     <template v-slot:activator="{ on }">
       <v-btn
         color="primary"
         class="mr-1 mr-lg-2"
         :outlined="!item.active"
-        :class="[isFirstItem?'first-child':'flex-1',{'button-style-md-screens':mdScreens,'buttons-md-style':multipleItems && !isFirstItem}]"
+        :class="[isFirstItem && !doubleItems ? 'first-child' : 'flex-1', {'button-style-md-screens' : mdScreens, 'buttons-md-style' : multipleItems && !isFirstItem}]"
         @click="selectFilter(item)"
         v-on="on"
       >
         {{ item.title }}
       </v-btn>
     </template>
-    <span>{{ item.toolTip }}</span>
+    <span>{{ item.tooltip }}</span>
   </v-tooltip>
 </template>
 
@@ -33,6 +33,7 @@
             mdScreens: {default: null, type: Boolean},
             itemParentIndex: {default: 0, type: Number},
             multipleItems: {default: false, type: Boolean},
+            doubleItems: {default: false, type: Boolean},
         },
         watch: {
           currentParameter: {
@@ -53,14 +54,15 @@
             const fieldValue = _module.currentParameter[this.item.filterName];
             const currentValue = _module.item.value;
             const title = _module.item.title.toLowerCase();
-            _module.checkCurrentParameters(title, fieldValue, currentValue);
+              _module.checkCurrentParameters(title, fieldValue, currentValue);
           });
         },
         methods: {
             checkCurrentParameters: function(title, fieldValue, currentValue) {
               if (fieldValue === null) {
-                this.item.active = title === 'all';
-              } else {
+                this.item.active = title === 'all' || title === 'match all terms';
+              }
+              else {
                 if (currentValue === undefined) {
                   this.item.active = false;
                 }

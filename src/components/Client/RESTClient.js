@@ -113,6 +113,22 @@ class RESTClient {
     }
 
     /**
+     * Resend the validation link for a given user
+     * @param {Object} user - contains the email of the user.
+     * @returns {Promise}
+     */
+    async resendConfirmation(user) {
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/users/confirmation",
+            headers: this.headers,
+            data: {user: user}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Reset the password of the given user
      * @param {Object} user - contains the new pwd, repeated pwd and token.
      * @returns {Promise}
@@ -241,6 +257,17 @@ class RESTClient {
         return response.data;
     }
 
+    async canEdit(recordID, userToken){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + userToken;
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/fairsharing_records/can_edit/" + recordID,
+            headers: headers,
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
     /* USER DEFINED TAGS */
 

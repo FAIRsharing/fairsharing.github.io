@@ -2,6 +2,7 @@
   "queryName": "fairsharingRecord",
   "queryParam": null,
   "fields": [
+    "id",
     "registry",
     "type",
     "doi",
@@ -87,6 +88,12 @@
       "name": "maintainers",
       "fields": [
         "username",
+        "id"
+      ]
+    },
+    {
+      "name": "organisations",
+      "fields": [
         "id"
       ]
     },

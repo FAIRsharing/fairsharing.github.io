@@ -13,33 +13,37 @@ export const mutations = {
         state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName !== 'status'));
     },
     setFilterButtons(state) {
-        state.filterButtons.push([
-            {
-                "title": "Match all terms",
-                "active": true,
-                "filterName": "searchAnd",
-                "value": true
-            },
-            {
-                "title": "Match any terms",
-                "active": false,
-                "filterName": "searchAnd",
-                "value": false
-            }
-        ]);
+        state.filterButtons.push({
+            "data": [
+                {
+                    "title": "Match all terms",
+                    "active": true,
+                    "filterName": "searchAnd",
+                    "value": true
+                },
+                {
+                    "title": "Match any term",
+                    "active": false,
+                    "filterName": "searchAnd",
+                    "value": false
+                }
+            ],
+            "curator_only": false
+        });
         state.rawFilters.forEach(item => {
+            // TODO: Return here if the button is marked as curator-only and the user isn't logged in as a curator.
             if (item.type === 'Boolean') {
                 let ObjectModel = buttonOptions[item.filterName];
                 state.filterButtons.push(ObjectModel);
             }
             else if (item.filterName === 'status') {
-                let ObjectModel = buttonOptions.status;
+                let ObjectModel = buttonOptions.status.data;
                 ObjectModel.forEach(function (button) {
                     if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
                         button.value = item.values[button["apiIndex"]];
                     }
                 });
-                state.filterButtons.push(ObjectModel);
+                state.filterButtons.push({data: ObjectModel, curator_only: false});
             }
         });
     },
@@ -47,12 +51,12 @@ export const mutations = {
         state.isLoadingFilters = status;
     },
     resetFilterButtons(state, itemParentIndex) {
-        state.filterButtons[itemParentIndex].map((item) => {
+        state.filterButtons[itemParentIndex].data.map((item) => {
             item.active = false;
         });
     },
     activateButton(state, item) {
-        state.filterButtons[item.itemParentIndex].map((filterItem) => {
+        state.filterButtons[item.itemParentIndex].data.map((filterItem) => {
             if (isEqual(filterItem, item.activeItem)) {
                 filterItem.active = true;
             }
@@ -80,8 +84,7 @@ export const getters = {
         state.filters.forEach(function (filter) {
             output.push({
                 filterName: filter.filterName,
-                filterLabel: filter.filterLabel,
-                sortOrder: filter.sortOrder
+                filterLabel: filter.filterLabel
             })
         });
         return output

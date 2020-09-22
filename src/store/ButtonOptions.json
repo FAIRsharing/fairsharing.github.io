@@ -1,95 +1,116 @@
 {
-  "isRecommended": [
-    {
-      "title": "ALL",
-      "active": true,
-      "filterName": "isRecommended"
-    },
-    {
-      "title": "RECOMMENDED",
-      "active": false,
-      "filterName": "isRecommended",
-      "value": true
-    },
-    {
-      "title": "NOT RECOMMENDED",
-      "active": false,
-      "filterName": "isRecommended",
-      "value": false
-    }
-  ],
-  "isMaintained": [
-    {
-      "title": "ALL",
-      "active": true,
-      "filterName": "isMaintained"
-    },
-    {
-      "title": "MAINTAINED",
-      "active": false,
-      "filterName": "isMaintained",
-      "value": true
-    },
-    {
-      "title": "NOT MAINTAINED",
-      "active": false,
-      "filterName": "isMaintained",
-      "value": false
-    }
-  ],
-  "isApproved": [
-    {
-      "title": "ALL",
-      "active": true,
-      "filterName": "isApproved"
-    },
-    {
-      "title": "APPROVED",
-      "active": false,
-      "filterName": "isApproved",
-      "value": true
-    },
-    {
-      "title": "NOT APPROVED",
-      "active": false,
-      "filterName": "isApproved",
-      "value": false
-    }
-  ],
-  "status": [
-    {
-      "title": "ALL",
-      "active": true,
-      "filterName": "status",
-      "toolTip": "Show All Records"
-    },
-    {
-      "title": "Ready",
-      "active": false,
-      "filterName": "status",
-      "apiIndex": 0,
-      "toolTip": "Show Ready Records"
-    },
-    {
-      "title": "Deprecated",
-      "active": false,
-      "filterName": "status",
-      "apiIndex": 1,
-      "toolTip": "Show Deprecated Records"
-    },
-    {
-      "title": "Uncertain",
-      "active": false,
-      "filterName": "status",
-      "apiIndex": 2,
-      "toolTip": "Show Uncertain Records"
-    },
-    {
-      "title": "In Dev.",
-      "active": false,
-      "filterName": "status",
-      "apiIndex": 3,
-      "toolTip": "Show In Development Records"
-    }
-  ]
+  "isRecommended": {
+    "data": [
+      {
+        "title": "ALL",
+        "active": true,
+        "filterName": "isRecommended",
+        "tooltip": "A resource can be recommended by a data policy from a journal, journal publisher or funder"
+      },
+      {
+        "title": "RECOMMENDED",
+        "active": false,
+        "filterName": "isRecommended",
+        "value": true,
+        "tooltip": "Select all the resources that have been recommended by a data policy from a journal, journal publisher or funder"
+      },
+      {
+        "title": "NOT RECOMMENDED",
+        "active": false,
+        "filterName": "isRecommended",
+        "value": false,
+        "tooltip": "Select all the resources that have not been recommended by a data policy from a journal, journal publisher or funder"
+      }
+    ],
+    "curator_only": false
+  },
+  "isMaintained": {
+    "data": [
+      {
+        "title": "ALL",
+        "active": true,
+        "filterName": "isMaintained",
+        "tooltip": "FAIRsharing metadata records can be maintained directly by representatives of the resources themselves"
+      },
+      {
+        "title": "MAINTAINED",
+        "active": false,
+        "filterName": "isMaintained",
+        "value": true,
+        "tooltip": "Select all resources where the metadata for that resource is actively maintained by a representative of the resource"
+      },
+      {
+        "title": "NOT MAINTAINED",
+        "active": false,
+        "filterName": "isMaintained",
+        "value": false,
+        "tooltip": "Select all resources where the metadata for that resource is maintained by FAIRsharing curators"
+      }
+    ],
+    "curator_only": false
+  },
+  "isApproved": {
+    "data": [
+      {
+        "title": "ALL",
+        "active": true,
+        "filterName": "isApproved",
+        "tooltip": null
+      },
+      {
+        "title": "APPROVED",
+        "active": false,
+        "filterName": "isApproved",
+        "value": true,
+        "tooltip": null
+      },
+      {
+        "title": "NOT APPROVED",
+        "active": false,
+        "filterName": "isApproved",
+        "value": false,
+        "tooltip": null
+      }
+    ],
+    "curator_only": true
+  },
+  "status": {
+    "data": [
+      {
+        "title": "ALL",
+        "active": true,
+        "filterName": "status",
+        "tooltip": "Show all records regardless of their status"
+      },
+      {
+        "title": "Ready",
+        "active": false,
+        "filterName": "status",
+        "apiIndex": 0,
+        "tooltip": "Show only those resources that are active and ready for use"
+      },
+      {
+        "title": "Deprecated",
+        "active": false,
+        "filterName": "status",
+        "apiIndex": 1,
+        "tooltip": "Show only those resources that have been deprecated"
+      },
+      {
+        "title": "Uncertain",
+        "active": false,
+        "filterName": "status",
+        "apiIndex": 2,
+        "tooltip": "Show only those resources where we are unsure of their status"
+      },
+      {
+        "title": "In Dev.",
+        "active": false,
+        "filterName": "status",
+        "apiIndex": 3,
+        "tooltip": "Show only those resources that are currently in development and not yet ready for use"
+      }
+    ],
+    "curator_only": false
+  }
 }

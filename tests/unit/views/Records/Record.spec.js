@@ -1,24 +1,25 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
+import VueRouter from "vue-router"
 import Record from "@/views/Records/Record.vue";
 import VueMeta from "vue-meta";
 import Client from "@/components/GraphClient/GraphClient.js";
+import RESTClient from "@/components/Client/RESTClient.js";
 import record from "@/store/record.js";
 import users from "@/store/users.js";
+import fakeAssociations from "@/../tests/fixtures/fakeAssociations.json";
 const sinon = require("sinon");
-
-const $route = {
-    path: "/",
-    params: {
-        id: "980190962"
-    }
-};
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-let queryStub;
+users.state.user = function(){
+    return {
+        isLoggedIn: true,
+        credentials: {token: 123}
+    }
+};
 
 const $store = new Vuex.Store({
     modules: {
@@ -26,6 +27,17 @@ const $store = new Vuex.Store({
         users: users,
     }
 });
+
+const $route = {
+    path: "/",
+    params: {
+        id: "980190962"
+    }
+};
+const router = new VueRouter();
+const $router = { push: jest.fn() };
+let queryStub;
+
 
 describe("Record.vue", function() {
     let wrapper;
@@ -35,7 +47,7 @@ describe("Record.vue", function() {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
         queryStub.withArgs(sinon.match.any).returns({
             fairsharingRecord:{
-                id: 1,
+                id: 123,
                 name: "test",
                 licences: [
                     {
@@ -50,9 +62,10 @@ describe("Record.vue", function() {
         });
         vuetify = new Vuetify();
         wrapper = await shallowMount(Record, {
-            mocks: {$route, $store},
+            mocks: {$route, $store, $router},
             localVue,
-            vuetify
+            vuetify,
+            router
         });
     });
     afterEach( () => {
@@ -80,7 +93,7 @@ describe("Record.vue", function() {
             localVue,
             vuetify
         });
-        expect(anotherWrapper.vm.currentRoute).toMatch("FAIRsharing.p9xm4v");
+        expect(anotherWrapper.vm['currentRoute']).toMatch("FAIRsharing.p9xm4v");
 
     });
 
@@ -95,7 +108,7 @@ describe("Record.vue", function() {
         expect(wrapper.vm.currentRoute).toMatch("123");
     });
 
-    it ("can properly fetch a record history", async () => {
+    it("can properly fetch a record history", async () => {
         await wrapper.vm.getHistory();
     });
 
@@ -105,7 +118,11 @@ describe("Record.vue", function() {
             data: {errors: [{message: "Im an error"}]}
         });
         await wrapper.vm.getData();
-        expect(wrapper.vm.error).toBe("Cannot read property 'metadata' of undefined")
+        expect($router.push).toHaveBeenCalledWith({
+            name: "Error 404",
+            path: "/error/404",
+            query: {"source": "\"http://localhost/#/\""}
+        });
     });
 
     it("can check cleanString returns properly",  () =>{
@@ -115,106 +132,8 @@ describe("Record.vue", function() {
     });
 
     it("can check prepareAssociations returns a flat joined array ",()=>{
-        let fakeAssociatedRecords = [
-            {
-                "linkedRecord": {
-                    "name": "Apollo XSD 4.0.1",
-                    "id": 343,
-                    "registry": "standard",
-                    "type": "model_and_format"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "Observational Medical Outcomes Partnership Standardized Vocabularies",
-                    "id": 1247,
-                    "registry": "standard",
-                    "type": "terminology_artefact"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "Fast Healthcare Interoperability Resources",
-                    "id": 294,
-                    "registry": "standard",
-                    "type": "model_and_format"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "The Unified Code for Units of Measure",
-                    "id": 1280,
-                    "registry": "standard",
-                    "type": "terminology_artefact"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "Digital Imaging and COmmunications in Medicine",
-                    "id": 83,
-                    "registry": "standard",
-                    "type": "model_and_format"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "CDISC Laboratory Data Model",
-                    "id": 91,
-                    "registry": "standard",
-                    "type": "model_and_format"
-                },
-                "recordAssocLabel": "related_to"
-            },
-            {
-                "linkedRecord": {
-                    "name": "Health Level Seven Reference Implementation Model",
-                    "id": 1345,
-                    "registry": "standard",
-                    "type": "terminology_artefact"
-                },
-                "recordAssocLabel": "related_to"
-            }
-        ];
-        let fakeReverseAssociatedRecords = [
-            {
-                "fairsharingRecord": {
-                    "name": "RDA Covid-19 WG Resources",
-                    "id": 3012,
-                    "registry": "collection"
-                },
-                "recordAssocLabel": "collects"
-            },
-            {
-                "fairsharingRecord": {
-                    "name": "H2020 Phenome and Metabolome aNalysis (PhenoMenal) Project",
-                    "id": 3024,
-                    "registry": "collection"
-                },
-                "recordAssocLabel": "collects"
-            },
-            {
-                "fairsharingRecord": {
-                    "name": "eTRIKS Standards Starter Pack",
-                    "id": 3031,
-                    "registry": "collection"
-                },
-                "recordAssocLabel": "collects"
-            },
-            {
-                "fairsharingRecord": {
-                    "name": "Systems Medicine",
-                    "id": 3055,
-                    "registry": "collection"
-                },
-                "recordAssocLabel": "collects"
-            }
-        ];
-
+        let fakeAssociatedRecords = fakeAssociations['fakeAssociatedRecords'];
+        let fakeReverseAssociatedRecords = fakeAssociations['fakeReverseAssociatedRecords'];
         wrapper.vm.currentRecord['fairsharingRecord'] = {
             name: "test",
             metadata: {
@@ -241,7 +160,7 @@ describe("Record.vue", function() {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
         queryStub.withArgs(sinon.match.any).returns({
             fairsharingRecord:{
-                id: 1,
+                id: 123,
                 type: "testType",
                 name: "test",
                 licences: [
@@ -257,12 +176,47 @@ describe("Record.vue", function() {
             }
         });
         let anotherWrapper = await shallowMount(Record, {
-            mocks: {$route, $store},
+            mocks: {$route, $store, $router},
             localVue,
             vuetify
         });
         expect(anotherWrapper.vm.recordAssociations.length).toBe(0);
     });
 
+    it("can go to the edit page", () => {
+        wrapper.vm.goToEdit();
+        expect($router.push).toHaveBeenCalledWith({
+            path: "123/edit",
+            params: {
+                fromRecordPage: true
+            }
+        });
+    });
 
+    it("can check if a logged in user can edit the record", async() => {
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({data: {id: 123}});
+        await wrapper.vm.canEditRecord();
+        expect(wrapper.vm.canEdit).toBe(true);
+        restStub.restore();
+
+        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({
+            data: {error: "Error"}
+        });
+        await wrapper.vm.canEditRecord();
+        expect(wrapper.vm.canEdit).toBe(false);
+        restStub.restore();
+        users.state.user = function(){
+            return { isLoggedIn: false }
+        };
+        const anotherWrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        await anotherWrapper.vm.canEditRecord();
+        expect(anotherWrapper.vm.canEdit).toBe(false);
+    });
 });

@@ -26,6 +26,7 @@
           message: "Missing token or expiry"
         };
         let paramsArray = this.$route.query;
+        console.log("PARAMS: " + JSON.stringify(paramsArray));
         if (Object.keys(paramsArray).length === 0 || !Object.keys(paramsArray).includes("jwt") || !Object.keys(paramsArray).includes("expiry")){
           this.setError(parseError);
           return null

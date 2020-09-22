@@ -1,4 +1,4 @@
-import { hasValue, isEmail, isRequired } from "@/utils/rules.js"
+import { hasValue, isEmail, isRequired, isUrl, isLongEnough, isOrcid } from "@/utils/rules.js"
 
 describe('Form validation rules', () => {
 
@@ -18,6 +18,26 @@ describe('Form validation rules', () => {
         let tester = isRequired();
         expect(tester(1)).toBe(true);
         expect(tester()).toBe("Required.")
-    })
+    });
+
+    it("can check if it's a URL", () => {
+        let tester = isUrl();
+        expect(tester('a string')).toEqual("Invalid URL.");
+        expect(tester('wibble.com')).toBe(true);
+    });
+
+    it("can check if a user has typed enough", () => {
+        let tester = isLongEnough(10);
+        expect(tester('012345678')).toEqual("Keep typing!");
+        expect(tester('0123456789')).toBe(true);
+    });
+
+    it("can identify ORCID ids", () => {
+        let tester = isOrcid(true);
+        expect(tester('')).toEqual("Doesn't look like a valid ORCID ID.");
+        expect(tester('0000-0000-0000-0000')).toBe(true);
+        tester = isOrcid(false);
+        expect(tester('')).toBe(true);
+    });
 
 });

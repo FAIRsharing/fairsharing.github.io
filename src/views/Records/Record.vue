@@ -181,6 +181,12 @@
                     properties.forEach(prop => {
                         if (Object.prototype.hasOwnProperty.call(item, prop)) {
                             object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+                            if (_module.currentRecord['fairsharingRecord'].registry === 'collection' && item.recordAssocLabel === 'collects'){
+                                object.recordAssocLabel = 'is collected by';
+                            }
+                            if (_module.currentRecord['fairsharingRecord'].registry === 'policy' && item.recordAssocLabel === 'recommends'){
+                                object.recordAssocLabel = 'is recommended by';
+                            }
                             object.id = item[prop].id;
                             object.registry = item[prop].registry;
                             object.name = item[prop].name;

@@ -282,7 +282,17 @@ class RESTClient {
         return response.data;
     }
 
-    // TODO: Add a canClaim method, so we know whether to show the claim button.
+    async canClaim(recordID, userToken) {
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + userToken;
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/maintenance_requests/existing/" + recordID,
+            headers: headers,
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
     /* USER DEFINED TAGS */
 

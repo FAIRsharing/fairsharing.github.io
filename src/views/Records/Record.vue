@@ -28,10 +28,9 @@
           EDIT
         </v-btn>
         <v-btn
-          v-else
           id="requestOwnershipButton"
           class="warning"
-          :disabled="!canClaim"
+          v-if="canClaim"
           @click="requestOwnership()"
         >
           REQUEST OWNERSHIP
@@ -133,7 +132,7 @@
                 showScrollToTopButton: false,
                 recordAssociations: [],
                 canEdit: false,
-                canClaim: true
+                canClaim: false
             }
         },
         computed: {
@@ -210,13 +209,22 @@
                 _module.error = "Sorry, your request to claim this record failed. Please contact us.";
                 _module.canClaim = false;
               } else {
-                console.log("success!");
                 // show modal here
                 _module.canClaim = false;
               }
             },
             async checkClaimStatus() {
-              console.log("checking claim status");
+              let _module = this;
+              if (_module.user().isLoggedIn) {
+                const recordID = _module.currentRecord['fairsharingRecord'].id;
+                const claim = await client.canClaim(recordID, _module.user().credentials.token);
+                if (claim.error) {
+                  _module.canClaim = false;
+                } else {
+                  // show modal here
+                  _module.canClaim = !claim.existing;
+                }
+              }
             },
             /**
              * Method to set the current record in the store

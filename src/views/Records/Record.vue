@@ -170,7 +170,7 @@
         },
         methods: {
             ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-            /** Combines associations and reserveAssociations into a single array and prepare the data for the earch table */
+            /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
             prepareAssociations(associations, reverseAssociations) {
                 let _module = this;
                 let joinedArrays = associations.concat(reverseAssociations);
@@ -191,6 +191,10 @@
                     _module.recordAssociations.push(object);
                 });
             },
+            /**
+            * Goes to the edit page for this record.
+            * @returns {undefined}
+            * */
             goToEdit(){
               let _module = this;
               const recordID =  _module.currentRecord['fairsharingRecord'].id;
@@ -201,6 +205,10 @@
                 }
               })
             },
+            /**
+            * Method to create a maintenance_request; sets canClaim and (on fail) error.
+            * @returns {undefined}
+            * */
             async requestOwnership() {
               let _module = this;
               const recordID =  _module.currentRecord['fairsharingRecord'].id;
@@ -214,6 +222,10 @@
                 _module.canClaim = false;
               }
             },
+            /**
+            * Method to set the canClaim status for this record.
+            * @returns {undefined}
+            * */
             async checkClaimStatus() {
               let _module = this;
               if (_module.user().isLoggedIn) {

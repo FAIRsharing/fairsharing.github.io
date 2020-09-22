@@ -53,7 +53,7 @@
 
 <script>
   import stringUtils from '@/utils/stringUtils';
-  import recordTypes from "@/data/recordsTypeData.json"
+  import recordTypes from "@/data/recordsRegistries.json"
 
 
   export default {

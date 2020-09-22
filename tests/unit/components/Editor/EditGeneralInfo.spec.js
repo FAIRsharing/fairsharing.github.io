@@ -5,7 +5,7 @@ import VueRouter from "vue-router"
 import editMeta from "@/components/Editor/EditGeneralInfo.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
-import status from "@/components/Editor/status.json"
+import status from "@/data/status.json"
 import GraphClient from "@/components/GraphClient/GraphClient.js";
 import RestClient from "@/components/Client/RESTClient.js";
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"

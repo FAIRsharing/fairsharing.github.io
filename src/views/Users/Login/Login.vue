@@ -54,7 +54,7 @@
                     width="250px"
                     :class="provider.color"
                     class="text-left"
-                    :href="provider.callback"
+                    :href="provider.callback + returnTo()"
                   >
                     <v-layout width="100%">
                       <v-icon
@@ -173,7 +173,7 @@ export default {
     }
   },
   computed: {
-    ...mapState("users", ["messages", "user"])
+    ...mapState("users", ["messages", "user"]),
   },
   methods: {
     ...mapActions('users', ['login', 'logout']),
@@ -202,6 +202,14 @@ export default {
         }
       }
     },
+    returnTo: function() {
+      const _module = this;
+      const goTo = _module.$route.query.goTo;
+      if (goTo) {
+        return `?return_to=#${goTo}`;
+      }
+      return '';
+    }
   }
 }
 </script>

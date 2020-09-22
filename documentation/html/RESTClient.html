@@ -212,6 +212,552 @@ REST API.</p>
             
 <hr>
 <dt>
+    <h4 class="name" id="canClaim"><span class="type-signature">&lt;async> </span>canClaim(recordID, token)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Determine if a user has permission to create a MaintenanceRequest for a FairsharingRecord.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>recordID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Integer</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>ID for the relevant FairsharingRecord.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>token</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>JWT of the logged in user</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-303">line 303</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="canEdit"><span class="type-signature">&lt;async> </span>canEdit(recordID, token)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Determine if a user has permission to edit this record.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>recordID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Integer</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>ID for the relevant FairsharingRecord.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>token</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>JWT of the logged in user</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-266">line 266</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="claimRecord"><span class="type-signature">&lt;async> </span>claimRecord(recordID, token)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Attempt to create a MaintenanceRequest for a user for a FairsharingRecord.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>recordID</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Integer</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>ID for the relevant FairsharingRecord.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>token</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>JWT of the logged in user</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-284">line 284</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id="confirmAccount"><span class="type-signature">&lt;async> </span>confirmAccount(token)</h4>
     
     
@@ -661,7 +1207,7 @@ REST API.</p>
 		<ul class="dummy">
 			<li>
 				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
-				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-302">line 302</a>
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-345">line 345</a>
 			</li>
 		</ul>
 	</dd>
@@ -843,7 +1389,7 @@ REST API.</p>
 		<ul class="dummy">
 			<li>
 				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
-				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-280">line 280</a>
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-323">line 323</a>
 			</li>
 		</ul>
 	</dd>
@@ -1201,7 +1747,7 @@ REST API.</p>
 		<ul class="dummy">
 			<li>
 				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
-				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-322">line 322</a>
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-365">line 365</a>
 			</li>
 		</ul>
 	</dd>
@@ -1535,7 +2081,7 @@ REST API.</p>
 		<ul class="dummy">
 			<li>
 				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
-				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-394">line 394</a>
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-437">line 437</a>
 			</li>
 		</ul>
 	</dd>
@@ -2859,7 +3405,7 @@ REST API.</p>
 		<ul class="dummy">
 			<li>
 				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
-				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-341">line 341</a>
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-384">line 384</a>
 			</li>
 		</ul>
 	</dd>

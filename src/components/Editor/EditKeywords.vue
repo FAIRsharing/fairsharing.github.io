@@ -224,7 +224,7 @@
   import taxonomiesQuery from "@/components/GraphClient/queries/getTaxonomies.json"
   import subjectsQuery from "@/components/GraphClient/queries/getSubjects.json"
   import userTagQuery from "@/components/GraphClient/queries/getUserDefinedTags.json"
-  import desc from './data/fieldsDescription.json'
+  import desc from '@/data/fieldsDescription.json'
   let graphClient = new GraphClient();
   let restClient = new RestClient();
   export default {

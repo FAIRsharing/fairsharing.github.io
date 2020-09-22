@@ -152,8 +152,12 @@ describe("Record.vue", function() {
                 "recordAssocLabel": "collects"
             },
         ];
-        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
-        fakeReverseAssociatedRecords = fakeAssociations['fakeReverseAssociatedRecords'];
+        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords)
+    });
+
+    it("can check prepareAssociations returns for specific cases collected/recommended by",()=>{
+        let fakeAssociatedRecords = fakeAssociations['fakeAssociatedRecords'];
+        let fakeReverseAssociatedRecords = fakeAssociations['fakeReverseAssociatedRecords'];
         wrapper.vm.currentRecord['fairsharingRecord'] = {
             name: "test",
             registry: "collection",
@@ -162,6 +166,8 @@ describe("Record.vue", function() {
             }
         };
         wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
+        expect(wrapper.vm.recordAssociations[9].recordAssocLabel).toBe("is collected by");
+        wrapper.vm.recordAssociations = []
         wrapper.vm.currentRecord['fairsharingRecord'] = {
             name: "test",
             registry: "policy",
@@ -170,7 +176,7 @@ describe("Record.vue", function() {
             }
         };
         wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
-
+        expect(wrapper.vm.recordAssociations[10].recordAssocLabel).toBe("is recommended by");
     });
 
     it("can properly fetch record associations", async() => {

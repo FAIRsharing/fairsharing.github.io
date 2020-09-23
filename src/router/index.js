@@ -234,8 +234,10 @@ export function isLoggedIn(to, from, next, store) {
         next()
     }
     else {
+        const target = to.path;
         next({
-            name: "Login" // back to safety route //
+            name: "Login", // back to safety route //
+            query: {goTo: target}
         });
     }
 }

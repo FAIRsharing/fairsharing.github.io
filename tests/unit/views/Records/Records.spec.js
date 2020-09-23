@@ -126,6 +126,9 @@ describe("Records.vue", () => {
         $route.path = "/search";
         $route.query = {};
         expect(wrapper.vm.currentPath[0]).toBe("Search");
+        $route.path = "/standard";
+        expect(wrapper.vm.currentPath[0]).toBe("Standard");
+
     });
 
     it("can correctly redirect", async () => {

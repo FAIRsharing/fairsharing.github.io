@@ -139,8 +139,7 @@ export default {
   },
   watch: {
     currentPath: async function () {
-      let redirect = await this.tryRedirect();
-      if (redirect === null) await this.getData();
+      await this.tryRedirect();
     }
   },
   mounted: function () {
@@ -204,14 +203,14 @@ export default {
               name: "search",
               query: query
             });
+            return true;
           }
           catch (e) {
             //
           }
         }
-        return null;
       }
-      return null;
+      await this.getData()
     },
     /** This methods get the data from the client.
      * @returns {Promise}

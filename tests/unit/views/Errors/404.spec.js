@@ -15,28 +15,16 @@ let $route = {
 describe("404 error page", () => {
     let wrapper;
 
+    beforeEach(() => {
+        wrapper = shallowMount(Error, {
+            mocks: {$route},
+            localVue
+        });
+    });
+
     it("can mount", () => {
-        wrapper = shallowMount(Error, {
-            mocks: {$route},
-            localVue
-        });
         expect(wrapper.name()).toBe("Error404");
-        expect(wrapper.vm.getSource).toBe('http://localhost:8080/#/random/test')
-    });
-
-    it("has it meta title dynamically set", () => {
         expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Not Found");
-    });
-
-    it("can process no source", () => {
-        $route.query = {};
-        wrapper = shallowMount(Error, {
-            mocks: {$route},
-            localVue
-        });
-        expect(wrapper.name()).toBe("Error404");
-        expect(wrapper.vm.getSource).toBe('Your page ');
-
     });
 
 });

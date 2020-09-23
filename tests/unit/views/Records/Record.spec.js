@@ -142,6 +142,30 @@ describe("Record.vue", function() {
         wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords)
     });
 
+    it("can check prepareAssociations returns for specific cases collected/recommended by",()=>{
+        let fakeAssociatedRecords = fakeAssociations['fakeAssociatedRecords'];
+        let fakeReverseAssociatedRecords = fakeAssociations['fakeReverseAssociatedRecords'];
+        wrapper.vm.currentRecord['fairsharingRecord'] = {
+            name: "test",
+            registry: "collection",
+            metadata: {
+                year_creation: 2018
+            }
+        };
+        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
+        expect(wrapper.vm.recordAssociations[9].recordAssocLabel).toBe("is collected by");
+        wrapper.vm.recordAssociations = []
+        wrapper.vm.currentRecord['fairsharingRecord'] = {
+            name: "test",
+            registry: "policy",
+            metadata: {
+                year_creation: 2018
+            }
+        };
+        wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
+        expect(wrapper.vm.recordAssociations[10].recordAssocLabel).toBe("is recommended by");
+    });
+
     it("can properly fetch record associations", async() => {
         queryStub.restore();
         queryStub = sinon.stub(Client.prototype, "executeQuery");
@@ -178,6 +202,43 @@ describe("Record.vue", function() {
         });
     });
 
+    it("can check if the user can claim a record", async() => {
+        wrapper.vm.canClaim = false;
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({data: {existing: false}});
+        await wrapper.vm.checkClaimStatus();
+        expect(wrapper.vm.canClaim).toBe(true);
+        restStub.restore();
+    });
+
+    it("allows a logged in user to request to own/maintain the record", async() => {
+        wrapper.vm.canClaim = true;
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({data: {created: true}});
+        await wrapper.vm.requestOwnership();
+        expect(wrapper.vm.canClaim).toBe(false);
+        restStub.restore();
+        wrapper.vm.canClaim = true;
+        restStub.withArgs(sinon.match.any).returns(
+            {
+                data: {
+                    error: {
+                        response: {
+                            data: {
+                                error: "Request failed."
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        await wrapper.vm.requestOwnership();
+        expect(wrapper.vm.canClaim).toBe(false);
+        restStub.restore();
+    });
+
+
+
     it("can check if a logged in user can edit the record", async() => {
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {id: 123}});
@@ -204,4 +265,8 @@ describe("Record.vue", function() {
         await anotherWrapper.vm.canEditRecord();
         expect(anotherWrapper.vm.canEdit).toBe(false);
     });
+
+
+
+
 });

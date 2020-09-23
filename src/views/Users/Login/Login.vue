@@ -10,17 +10,17 @@
         <v-col
           cols="12"
           sm="12"
-          :md="!popUp ? '4' : '12' "
-          :lg="!popUp ? '4' : '12' "
-          :xl="!popUp ? '4' : '12' "
+          :md="!popUp ? '8' : '12' "
+          :lg="!popUp ? '8' : '12' "
+          :xl="!popUp ? '5' : '12' "
         >
           <v-card :flat="popUp">
             <v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp}">
-              <!-- card title -->
               <h2 class="ma-0">
                 {{ currentPanel | capitalize }}
               </h2>
             </v-card-title>
+
             <v-card-text>
               <!-- message handler -->
               <MessageHandler field="login" />
@@ -42,6 +42,8 @@
                 v-if="resendButton"
                 class="pb-0 mb-0"
               />
+
+              <!-- OAUTH -->
               <v-list>
                 <v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
@@ -59,7 +61,7 @@
                         left
                         class="mr-5"
                       >
-                        {{ provider.icon }}
+                        {{ 'fab fa-' + provider.name.toLowerCase() }}
                       </v-icon>
                       <v-layout>with {{ provider.name }}</v-layout>
                     </v-layout>
@@ -95,19 +97,13 @@
                 />
 
                 <v-card-text class="text-center py-1">
-                  <a
-                    href="#/accounts/forgotPassword"
-                    @click="()=>{this.$emit('ClosePopup', true)}"
-                  >
-                    Forgot your password ?
-                  </a>
+                  <router-link to="/accounts/forgotPassword">
+                    <span @click="()=>{this.$emit('ClosePopup', true)}">Forgot your password ?</span>
+                  </router-link>
                   <v-divider />
-                  <a
-                    href="#/accounts/signup"
-                    @click="()=>this.$emit('ClosePopup', true)"
-                  >
-                    Create a new account
-                  </a>
+                  <router-link to="/accounts/signup">
+                    <span @click="()=>{this.$emit('ClosePopup', true)}">Create a new account</span>
+                  </router-link>
                 </v-card-text>
 
                 <v-card-actions class="mt-2 justify-center">
@@ -160,19 +156,16 @@ export default {
       oauthLogin: [
         {
           name: "ORCID",
-          icon: "fab fa-orcid",
           color: "green white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/orcid",
         },
         {
           name: "Twitter",
-          icon: "fab fa-twitter",
           color: "blue white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/twitter",
         },
         {
           name: "GitHub",
-          icon: "fab fa-github",
           color: "black white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/github",
         }
@@ -192,21 +185,20 @@ export default {
       };
       _module.$emit('ClosePopup',false);
       await _module.login(user);
+
       if (_module.messages().login.error) {
         const confirmationError = "You have to confirm your email address before continuing.";
         if (_module.messages().login.message === confirmationError) {
-          // display resend confirmation link
           _module.resendButton = true;
         }
-      } else {
-        const goTo = _module.$route.query.redirect;
-        if (goTo) {
+      }
+
+      else {
+        const goTo = _module.$route.query.goTo;
+        if (goTo && _module.redirect) {
           _module.$router.push({
             path: goTo
           })
-        }
-        else if (_module.redirect) {
-          _module.$router.go(-1);
         }
       }
     },

@@ -13,15 +13,24 @@
         </v-col>
       </v-row>
       <v-row
-        v-if="user().isLoggedIn && !error && canEdit"
+        v-if="user().isLoggedIn && !error"
         class="pr-3"
       >
         <v-spacer />
         <v-btn
+          v-if="canEdit"
           class="success"
           @click="goToEdit()"
         >
           EDIT
+        </v-btn>
+        <v-btn
+          id="requestOwnershipButton"
+          class="warning"
+          v-if="canClaim"
+          @click="requestOwnership()"
+        >
+          REQUEST OWNERSHIP
         </v-btn>
       </v-row>
       <!--  Content  -->
@@ -119,7 +128,8 @@
                 queryTriggered: false,
                 showScrollToTopButton: false,
                 recordAssociations: [],
-                canEdit: false
+                canEdit: false,
+                canClaim: false
             }
         },
         computed: {
@@ -151,12 +161,13 @@
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
-                await this.canEditRecord()
+                await this.canEditRecord();
+                await this.checkClaimStatus();
             })
         },
         methods: {
             ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-            /** Combines associations and reserveAssociations into a single array and prepare the data for the earch table */
+            /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
             prepareAssociations(associations, reverseAssociations) {
                 let _module = this;
                 let joinedArrays = associations.concat(reverseAssociations);
@@ -167,6 +178,12 @@
                     properties.forEach(prop => {
                         if (Object.prototype.hasOwnProperty.call(item, prop)) {
                             object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+                            if (_module.currentRecord['fairsharingRecord'].registry === 'collection' && item.recordAssocLabel === 'collects'){
+                                object.recordAssocLabel = 'is collected by';
+                            }
+                            if (_module.currentRecord['fairsharingRecord'].registry === 'policy' && item.recordAssocLabel === 'recommends'){
+                                object.recordAssocLabel = 'is recommended by';
+                            }
                             object.id = item[prop].id;
                             object.registry = item[prop].registry;
                             object.name = item[prop].name;
@@ -177,6 +194,10 @@
                     _module.recordAssociations.push(object);
                 });
             },
+            /**
+            * Goes to the edit page for this record.
+            * @returns {undefined}
+            * */
             goToEdit(){
               let _module = this;
               const recordID =  _module.currentRecord['fairsharingRecord'].id;
@@ -186,6 +207,41 @@
                   fromRecordPage: true
                 }
               })
+            },
+            /**
+            * Method to create a maintenance_request; sets canClaim and (on fail) error.
+            * @returns {undefined}
+            * */
+            async requestOwnership() {
+              let _module = this;
+              const recordID =  _module.currentRecord['fairsharingRecord'].id;
+              const claim = await client.claimRecord(recordID, _module.user().credentials.token);
+              if (claim.error) {
+                _module.error = "Sorry, your request to claim this record failed. Please contact us.";
+                _module.canClaim = false;
+              }
+              else {
+                // show modal here
+                _module.canClaim = false;
+              }
+            },
+            /**
+            * Method to set the canClaim status for this record.
+            * @returns {undefined}
+            * */
+            async checkClaimStatus() {
+              let _module = this;
+              if (_module.user().isLoggedIn) {
+                const recordID = _module.currentRecord['fairsharingRecord'].id;
+                const claim = await client.canClaim(recordID, _module.user().credentials.token);
+                if (claim.error) {
+                  _module.canClaim = false;
+                }
+                else {
+                  // show modal here
+                  _module.canClaim = !claim.existing;
+                }
+              }
             },
             /**
              * Method to set the current record in the store

@@ -127,19 +127,20 @@ export default {
       Object.keys(this.$route.query).forEach(function (prop) {
         let queryVal = client.$route.query[prop];
         if (queryVal) {
-          queryParams[prop] = decodeURI(queryVal);
+            queryParams[prop] = decodeURI(queryVal);
         }
       });
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-        title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-      } else title = title.charAt(0).toUpperCase() + title.slice(1);
+          title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+      }
+      else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
   watch: {
     currentPath: async function () {
-      await this.tryRedirect();
-      await this.getData();
+      let redirect = await this.tryRedirect();
+      if (redirect === null) await this.getData();
     }
   },
   mounted: function () {
@@ -171,18 +172,19 @@ export default {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
       if (_module.offsetTop > 100 && _module.records.length > 1) {
-        _module.setStickToTopLocal(true);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          bodyOverflowState: true,
-          headerVisibilityState: false,
+          _module.setStickToTopLocal(true);
+          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+            bodyOverflowState: true,
+            headerVisibilityState: false,
         });
-      } else {
-        _module.setStickToTopLocal(false);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          bodyOverflowState: true,
-          drawerVisibilityState: false,
-          headerVisibilityState: true,
-        });
+      }
+      else {
+          _module.setStickToTopLocal(false);
+          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+            bodyOverflowState: true,
+            drawerVisibilityState: false,
+            headerVisibilityState: true,
+          });
       }
       _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
           _module.setScrollStatusLocal(false);
@@ -202,10 +204,12 @@ export default {
               name: "search",
               query: query
             });
-          } catch (e) {
+          }
+          catch (e) {
             //
           }
         }
+        return null;
       }
     },
     /** This methods get the data from the client.
@@ -217,7 +221,8 @@ export default {
       const _module = this;
       try {
         await _module.fetchRecords(this.getParameters());
-      } catch (e) {
+      }
+      catch (e) {
         this.errors = e.message;
       }
     },

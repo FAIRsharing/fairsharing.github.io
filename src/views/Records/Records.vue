@@ -140,7 +140,6 @@ export default {
   watch: {
     currentPath: async function () {
       let redirect = await this.tryRedirect();
-      console.log(redirect);
       if (redirect === null) await this.getData();
     }
   },

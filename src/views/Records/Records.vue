@@ -140,6 +140,7 @@ export default {
   watch: {
     currentPath: async function () {
       let redirect = await this.tryRedirect();
+      console.log(redirect);
       if (redirect === null) await this.getData();
     }
   },
@@ -197,7 +198,7 @@ export default {
       if (Object.keys(this.recordTypes).includes(this.$route.name)) {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
         let query = this.$route.params;
-        if (query) {
+        if (query && query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
           try {
             await this.$router.push({
@@ -211,6 +212,7 @@ export default {
         }
         return null;
       }
+      return null;
     },
     /** This methods get the data from the client.
      * @returns {Promise}

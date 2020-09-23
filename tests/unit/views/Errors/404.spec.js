@@ -5,19 +5,11 @@ import Error from "@/views/Errors/404.vue";
 const localVue = createLocalVue();
 localVue.use(VueMeta);
 
-let $route = {
-    path: "/error/404",
-    query: {
-        source: '"http://localhost:8080/#/random/test"'
-    }
-};
-
 describe("404 error page", () => {
     let wrapper;
 
     beforeEach(() => {
         wrapper = shallowMount(Error, {
-            mocks: {$route},
             localVue
         });
     });

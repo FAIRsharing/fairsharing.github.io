@@ -30,11 +30,6 @@ import Editor from "@/views/CreateRecord/Editor";
 import Records from "@/views/Records/Records";
 import Record from "@/views/Records/Record";
 import NotFound from "@/views/Errors/404"
-import Unauthorized from "@/views/Errors/403"
-
-/* CLIENTS */
-import RestClient from "@/components/Client/RESTClient.js"
-const client = new RestClient();
 
 Vue.use(VueRouter);
 
@@ -194,8 +189,8 @@ let routes = [
         name: "Edit Content",
         path: "/:id/edit",
         component: Editor,
-        async beforeEnter(to, from, next) {
-            await canEdit(to, from, next, store);
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
         }
     },
     {
@@ -203,18 +198,11 @@ let routes = [
         path: "/:id",
         component: Record
     },
-
-
     /* ERROR HANDLING */
     {
         name: "Error 404",
         path: "/error/404",
         component: NotFound
-    },
-    {
-        name: "Error 403",
-        path: "/error/403/:source?",
-        component: Unauthorized
     },
     /* REDIRECTION */
     {
@@ -249,32 +237,6 @@ export function isLoggedIn(to, from, next, store) {
         next({
             name: "Login" // back to safety route //
         });
-    }
-}
-
-export async function canEdit(to, from, next, store){
-    if (!store.state.users.user().isLoggedIn){
-        next({name: "Login"})
-    }
-    else {
-        if (to.params['fromRecordPage']){
-            next();
-        }
-        let recordID = (store.state.record.currentRecord['fairsharingRecord'].id) ? store.state.record.currentRecord['fairsharingRecord'].id : to.params.id;
-        let canEdit = await client.canEdit(recordID, store.state.users.user().credentials.token);
-
-        if (canEdit.error){
-            if (from.params.id){
-                next({path: from.params.id})
-            }
-            next({
-                path: "/error/403",
-                query: {source: JSON.stringify(to.path)}
-            });
-        }
-        else {
-            next();
-        }
     }
 }
 

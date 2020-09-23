@@ -278,11 +278,4 @@ export async function canEdit(to, from, next, store){
     }
 }
 
-export function redirect(){
-    return {
-        name: "Error 404",
-        query: {source: JSON.stringify(location.href)}
-    }
-}
-
 export default router;

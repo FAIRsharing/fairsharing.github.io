@@ -26,7 +26,6 @@
           message: "Missing token or expiry"
         };
         let paramsArray = this.$route.query;
-        console.log("PARAMS: " + JSON.stringify(paramsArray));
         if (Object.keys(paramsArray).length === 0 || !Object.keys(paramsArray).includes("jwt") || !Object.keys(paramsArray).includes("expiry")){
           this.setError(parseError);
           return null
@@ -35,8 +34,15 @@
           jwt: paramsArray.jwt,
           expiry: paramsArray.expiry
         });
+        let path;
+        if (paramsArray.return_to) {
+          path = paramsArray.return_to
+        }
+        else {
+          path = "accounts/profile"
+        }
         _module.$router.push({
-          path: "accounts/profile"
+          path: path
         })
       }
     }

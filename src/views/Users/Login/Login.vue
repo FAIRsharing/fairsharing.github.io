@@ -206,7 +206,7 @@ export default {
       const _module = this;
       const goTo = _module.$route.query.goTo;
       if (goTo) {
-        return `?return_to=#${goTo}`;
+        return `?return_to=${goTo}`;
       }
       return '';
     }

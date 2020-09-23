@@ -72,9 +72,9 @@
                                         <v-list-item-content>
                                           <v-list-item-title>
                                             <span>
-                                              <router-link :to="'/' + record.id">
+                                              <a :href="'/#/' + record.id">
                                                 {{ record.name }}
-                                              </router-link>
+                                              </a>
 
                                             </span>
                                           </v-list-item-title>

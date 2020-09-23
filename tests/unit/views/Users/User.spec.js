@@ -8,7 +8,6 @@ import GraphClient from "@/components/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 
 const localVue = createLocalVue();
-localVue.use(VueRouter);
 localVue.use(Vuex);
 const $store = new Vuex.Store({
     modules: {
@@ -16,6 +15,7 @@ const $store = new Vuex.Store({
     },
 });
 const router = new VueRouter();
+const $router = { push: jest.fn() };
 
 describe("User.vue", () => {
 
@@ -54,7 +54,7 @@ describe("User.vue", () => {
         wrapper = shallowMount(User, {
             localVue,
             router,
-            mocks: {$store}
+            mocks: {$store,$router}
         });
         const title = "User";
         expect(wrapper.name()).toMatch(title);
@@ -64,7 +64,7 @@ describe("User.vue", () => {
         wrapper = shallowMount(User, {
             localVue,
             router,
-            mocks: {$store}
+            mocks: {$store, $router}
         });
         let records = wrapper.vm.getRecords('maintenanceRequests');
         expect(records).toStrictEqual([{name: "recordTest"}])
@@ -78,9 +78,8 @@ describe("User.vue", () => {
         wrapper = shallowMount(User, {
             localVue,
             router,
-            mocks: {$store}
+            mocks: {$store, $router}
         });
-        console.log($store.state.users.messages().login);
     })
 
 });

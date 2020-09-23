@@ -48,7 +48,7 @@
 
 <script>
 import {mapGetters, mapState} from "vuex"
-import filterMapping from "@/components/Records/FiltersLabelMapping.json";
+import filterMapping from "@/data/FiltersLabelMapping.json";
 import FilterAutocomplete from "./FilterAutocomplete";
 import FilterButtons from "./FilterButtons";
 import StringSearch from "@/components/Records/Search/Input/StringSearch";

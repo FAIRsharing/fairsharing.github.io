@@ -95,7 +95,7 @@
         "id": 3055,
         "registry": "collection"
       },
-      "recordAssocLabel": "collects"
+      "recordAssocLabel": "recommends"
     }
   ]
 }

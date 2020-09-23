@@ -30,6 +30,7 @@ import Editor from "@/views/CreateRecord/Editor";
 import Records from "@/views/Records/Records";
 import Record from "@/views/Records/Record";
 import NotFound from "@/views/Errors/404"
+import Unauthorized from "@/views/Errors/403"
 
 /* CLIENTS */
 import RestClient from "@/components/Client/RESTClient.js"
@@ -210,6 +211,11 @@ let routes = [
         path: "/error/404/:source?",
         component: NotFound
     },
+    {
+        name: "Error 403",
+        path: "/error/403/:source?",
+        component: Unauthorized
+    },
     /* REDIRECTION */
     {
         name: "*",
@@ -262,13 +268,16 @@ export async function canEdit(to, from, next, store){
         if (to.params['fromRecordPage']){
             next();
         }
-        let recordID = to.params.id;
+        let recordID = (store.state.record) ? store.state.record.currentRecord['fairsharingRecord'].id : to.params.id;
         let canEdit = await client.canEdit(recordID, store.state.users.user().credentials.token);
         if (canEdit.error){
             if(from.params.id){
                 next({path: from.params.id})
             }
-            next({path: "/"}); // replace with unauthorized page 403
+            next({
+                path: "/error/403",
+                query: {source: JSON.stringify(to.path)}
+            });
         }
         else {
             next();

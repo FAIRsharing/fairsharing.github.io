@@ -19,12 +19,6 @@ describe("Routes", () => {
                 const next = jest.fn();
                 route.beforeEnter(undefined, undefined, next);
             }
-            if (route.name === "*"){
-                expect(route.redirect()).toStrictEqual({
-                    name: "Error 404",
-                    query: {source: "\"http://localhost/#/\""}
-                })
-            }
         });
     });
 
@@ -45,17 +39,26 @@ describe("Routes", () => {
         const store = {
             state: {
                 users: {
-                    user: function(){return {
-                        isLoggedIn: true,
-                        credentials: { token: 123 }
-                    }}
-                }}
+                    user: function () {
+                        return {
+                            isLoggedIn: true,
+                            credentials: {token: 123}
+                        }
+                    }
+                },
+                record: {
+                    currentRecord: {
+                        fairsharingRecord: {
+                            id: null
+                        }
+                    }
+
+                }
+            }
         };
         const next = jest.fn();
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
-        restStub.returns({
-            data: {id: 123}
-        });
+        restStub.returns({data: {id: 123}});
         await canEdit({params: {fromRecordPage: false}}, undefined, next, store);
         expect(next).toHaveBeenCalledWith();
         await canEdit({params: {fromRecordPage: true}}, undefined, next, store);
@@ -66,19 +69,13 @@ describe("Routes", () => {
         restStub.returns({
             data: {error: "Error!"}
         });
+        store.state.record.currentRecord.fairsharingRecord.id = 123;
         await canEdit(
             {params: {fromRecordPage: false}},
             {params: {id: 123}},
             next,
             store);
         expect(next).toHaveBeenCalledWith({path: 123});
-        store.state.record = {
-            currentRecord: {
-                fairsharingRecord: {
-                    id: 123
-                }
-            }
-        };
         await canEdit(
             {params: {fromRecordPage: false}, path: "123/edit"},
             {params: {id: null}},

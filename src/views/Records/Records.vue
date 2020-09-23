@@ -145,7 +145,6 @@ export default {
   mounted: function () {
     this.$nextTick(async function () {
       await this.tryRedirect();
-      await this.getData();
     });
   },
   created() {

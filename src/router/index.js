@@ -208,7 +208,7 @@ let routes = [
     /* ERROR HANDLING */
     {
         name: "Error 404",
-        path: "/error/404/:source?",
+        path: "/error/404",
         component: NotFound
     },
     {

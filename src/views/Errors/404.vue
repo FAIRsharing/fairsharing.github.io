@@ -16,6 +16,11 @@
             getSource(){
               return (this.$route.query.source) ? JSON.parse(this.$route.query.source) : '' + "Your page ";
             }
+        },
+        metaInfo() {
+          return {
+            title: "FAIRsharing | Not Found"
+          }
         }
     }
 </script>

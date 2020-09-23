@@ -9,12 +9,9 @@
     >
       <v-row v-if="error">
         <v-col cols="12">
-          <v-alert type="error">
-            {{ error }}
-          </v-alert>
+          <NotFound />
         </v-col>
       </v-row>
-
       <v-row
         v-if="user().isLoggedIn && !error && canEdit"
         class="pr-3"
@@ -27,7 +24,6 @@
           EDIT
         </v-btn>
       </v-row>
-
       <!--  Content  -->
       <v-row
         v-if="currentRecord['fairsharingRecord'] && !error"
@@ -97,9 +93,9 @@
     import Organisations from '@/components/Records/Record/Organisations';
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
-
-    import stringUtils from '@/utils/stringUtils';
+    import NotFound from "@/views/Errors/404"
     import RestClient from "@/components/Client/RESTClient.js"
+    import stringUtils from '@/utils/stringUtils';
 
     const client = new RestClient();
 
@@ -113,7 +109,8 @@
             Maintainers,
             Organisations,
             Publications,
-            Support
+            Support,
+            NotFound
         },
         mixins: [stringUtils],
         data: () => {
@@ -208,7 +205,6 @@
                 }
                 catch (e) {
                     this.error = e.message;
-                    this.$router.push({name: "Error 404", path: "/error/404", query: {source: JSON.stringify(location.href)}})
                 }
                 this.queryTriggered = true;
             },

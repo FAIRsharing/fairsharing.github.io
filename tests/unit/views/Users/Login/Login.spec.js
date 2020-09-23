@@ -159,4 +159,10 @@ describe("Login.vue", ()=> {
         expect($router.push).toHaveBeenCalledWith({path: "/123"})
     })
 
+    it("generates correct oauth links", () => {
+        expect(wrapper.vm.returnTo()).toEqual('?return_to=/123');
+        wrapper.vm.$route.query = {};
+        expect(wrapper.vm.returnTo()).toEqual('');
+    });
+
 });

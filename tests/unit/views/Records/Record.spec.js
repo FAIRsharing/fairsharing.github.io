@@ -112,19 +112,6 @@ describe("Record.vue", function() {
         await wrapper.vm.getHistory();
     });
 
-    it("can correctly raise an error", async () =>{
-        Client.prototype.executeQuery.restore();
-        sinon.stub(Client.prototype, "executeQuery").withArgs(sinon.match.any).returns({
-            data: {errors: [{message: "Im an error"}]}
-        });
-        await wrapper.vm.getData();
-        expect($router.push).toHaveBeenCalledWith({
-            name: "Error 404",
-            path: "/error/404",
-            query: {"source": "\"http://localhost/#/\""}
-        });
-    });
-
     it("can check cleanString returns properly",  () =>{
         const term = 'hosein_mirian';
         let returnedValue = wrapper.vm.cleanString(term);
@@ -193,9 +180,7 @@ describe("Record.vue", function() {
                         url: "https://example.com"
                     }
                 ],
-                metadata: {
-                    contacts: []
-                },
+                metadata: {},
                 recordAssociations: [{}]
             }
         });

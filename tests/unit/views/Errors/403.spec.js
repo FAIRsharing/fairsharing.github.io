@@ -1,39 +1,20 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
+import VueMeta from "vue-meta";
 import Error from "@/views/Errors/403.vue";
 
 const localVue = createLocalVue();
+localVue.use(VueMeta);
 
-let $route = {
-    path: "/error/403",
-    query: {
-        source: '"/#/random/test"'
-    }
-};
 
 describe("403 unauthorized page", () => {
     let wrapper;
 
     it("can mount", () => {
         wrapper = shallowMount(Error, {
-            mocks: {$route},
             localVue
         });
         expect(wrapper.name()).toBe("Error403");
-    });
-
-    it('can get the source of the error', () => {
-        wrapper = shallowMount(Error, {
-            mocks: {$route},
-            localVue
-        });
-        expect(wrapper.vm.getSource).toBe('localhost/#/random/test');
-
-        $route = {path: "/error/403", query: {}};
-        const anotherWrapper = shallowMount(Error, {
-            mocks: {$route},
-            localVue
-        });
-        expect(anotherWrapper.vm.getSource).toBe(' this page');
+        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Not Authorized");
     });
 
 });

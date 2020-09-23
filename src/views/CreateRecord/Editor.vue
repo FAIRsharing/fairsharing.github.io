@@ -3,8 +3,12 @@
     id="recordEditor"
     fluid
   >
-    <v-row>
-      <v-col>
+    <v-row v-if="hasLoaded">
+      <v-col v-if="error">
+        <Unauthorized />
+      </v-col>
+
+      <v-col v-else>
         <v-toolbar
           flat
           color="primary"
@@ -75,13 +79,17 @@
   import { mapActions, mapState } from "vuex"
   import EditGeneralInfo from "@/components/Editor/EditGeneralInfo";
   import EditKeywords from "@/components/Editor/EditKeywords";
-  import EditSupport from "../../components/Editor/EditSupport";
-  import EditRelationships from "../../components/Editor/EditRelationships";
-  import EditLicences from "../../components/Editor/EditLicences";
-  import EditMaintainers from "../../components/Editor/EditMaintainers";
-  import EditOrganisations from "../../components/Editor/EditOrganisations";
-  import EditGrants from "../../components/Editor/EditGrants";
-  import EditPublications from "../../components/Editor/EditPublications";
+  import EditSupport from "@/components/Editor/EditSupport";
+  import EditRelationships from "@/components/Editor/EditRelationships";
+  import EditLicences from "@/components/Editor/EditLicences";
+  import EditMaintainers from "@/components/Editor/EditMaintainers";
+  import EditOrganisations from "@/components/Editor/EditOrganisations";
+  import EditGrants from "@/components/Editor/EditGrants";
+  import EditPublications from "@/components/Editor/EditPublications";
+  import Unauthorized from "@/views/Errors/403"
+  import RESTClient from "@/components/Client/RESTClient.js"
+
+  const client = new RESTClient();
 
   export default {
     name: "Editor",
@@ -94,10 +102,13 @@
       EditRelationships,
       EditSupport,
       EditKeywords,
-      EditGeneralInfo
+      EditGeneralInfo,
+      Unauthorized
     },
     data(){
       return {
+        error: false,
+        hasLoaded: false,
         tabs: [
           {
             name: "Edit General Information",
@@ -139,16 +150,43 @@
       }
     },
     computed: {
-      ...mapState('record', ['currentRecord'])
+      ...mapState('record', ['currentRecord']),
+      ...mapState('users', ['user']),
+      userToken(){
+        const _module = this;
+        return (_module.user().credentials) ? _module.user().credentials.token : null ;
+      }
     },
-    async mounted(){
-      let id = this.$route.params.id;
-      await this.fetchRecord(id)
+    watch: {
+      async userToken(){
+        await this.getData();
+      }
+    },
+    async mounted() {
+      this.$nextTick(async () => {
+        await this.getData();
+      })
     },
     methods: {
-      ...mapActions("record", ["fetchRecord"])
-    },
+      ...mapActions("record", ["fetchRecord"]),
+      async getData(){
+        const _module = this;
+        _module.hasLoaded = false;
+        _module.error = false;
 
+        let userToken = _module.userToken;
+        let id = _module.$route.params.id;
+        if (id.includes('FAIRsharing.')){
+          id = "10.25504/" + id;
+        }
+        await _module.fetchRecord(id);
+        let canEdit = await client.canEdit(_module.currentRecord['fairsharingRecord'].id, userToken);
+        if (canEdit.error) {
+          _module.error = true;
+        }
+        _module.hasLoaded = true;
+      }
+    },
   }
 </script>
 

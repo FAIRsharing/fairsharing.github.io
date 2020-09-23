@@ -1,0 +1,67 @@
+{
+  "data": {
+    "__schema": {
+      "types": [
+        {
+          "name": "Query",
+          "fields": [
+            {
+              "name": "searchFairsharingRecords",
+              "args": [
+                {
+                  "name": "test",
+                  "description": "testDescription",
+                  "type": "String",
+                  "defaultValue": "1"
+                },
+                {
+                  "name": "test2",
+                  "description": "testDescription2",
+                  "type": {
+                    "kind": "LIST",
+                    "ofType": {
+                      "ofType": {
+                        "name": "String"
+                      }
+                    }
+                  },
+                  "defaultValue": "1"
+
+                },
+                {
+                  "name": "test3",
+                  "description": "testDescription2",
+                  "type": {
+                    "kind": "LIST",
+                    "ofType": {
+                      "ofType": {
+                        "name": "String"
+                      }
+                    }
+                  },
+                  "defaultValue": "1"
+
+                },
+                {
+                  "name": "test4",
+                  "description": "testDescription",
+                  "type": {
+                    "name": "Int"
+                  },
+                  "defaultValue": "1"
+                },
+                {
+                  "name": "test5",
+                  "description": "testDescription",
+                  "type": {
+                    "name": "Boolean"
+                  },
+                  "defaultValue": "1"
+                }
+              ]
+            }
+          ]
+        }]
+    }
+  }
+}

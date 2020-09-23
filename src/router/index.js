@@ -220,9 +220,7 @@ let routes = [
     {
         name: "*",
         path: "*/*",
-        redirect: () => {
-            return redirect()
-        }
+        component: NotFound
     }
 ];
 routes.forEach(function (route) {
@@ -262,10 +260,11 @@ export async function canEdit(to, from, next, store){
         if (to.params['fromRecordPage']){
             next();
         }
-        let recordID = (store.state.record) ? store.state.record.currentRecord['fairsharingRecord'].id : to.params.id;
+        let recordID = (store.state.record.currentRecord['fairsharingRecord'].id) ? store.state.record.currentRecord['fairsharingRecord'].id : to.params.id;
         let canEdit = await client.canEdit(recordID, store.state.users.user().credentials.token);
+
         if (canEdit.error){
-            if(from.params.id){
+            if (from.params.id){
                 next({path: from.params.id})
             }
             next({

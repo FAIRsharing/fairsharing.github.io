@@ -15,9 +15,7 @@ const $store = new Vuex.Store({
         users: usersStore
     },
 });
-let routes = [{name: "Login", path: "/accounts/login"}];
-const router = new VueRouter({routes});
-
+const router = new VueRouter();
 
 describe("User.vue", () => {
 
@@ -52,22 +50,37 @@ describe("User.vue", () => {
         graphStub.restore();
     });
 
-    beforeEach( () => {
+    it("can be instantiated", () => {
         wrapper = shallowMount(User, {
             localVue,
             router,
             mocks: {$store}
         });
-    });
-
-    it("can be instantiated", () => {
         const title = "User";
         expect(wrapper.name()).toMatch(title);
     });
 
     it("has a getRecords methods that sorts the records for easy use", () => {
+        wrapper = shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store}
+        });
         let records = wrapper.vm.getRecords('maintenanceRequests');
         expect(records).toStrictEqual([{name: "recordTest"}])
+    });
+
+    it("can process errors", () => {
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {error: "error"}
+        });
+        wrapper = shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store}
+        });
+        console.log($store.state.users.messages().login);
     })
 
 });

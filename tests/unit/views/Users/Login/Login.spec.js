@@ -14,7 +14,7 @@ const $store = new Vuex.Store({
         users: usersStore
     },
 });
-let $route = {name: "Login", path: "/accounts/login", query: {}};
+let $route = {name: "Login", path: "/accounts/login", query: {goTo: "/123"}};
 let routes = [
     $route
 ];
@@ -156,6 +156,13 @@ describe("Login.vue", ()=> {
         };
         await anotherWrapper.vm.logUser();
         expect(anotherWrapper.vm.$route.path).toBe("/accounts/login");
+        expect($router.push).toHaveBeenCalledWith({path: "/123"})
     })
+
+    it("generates correct oauth links", () => {
+        expect(wrapper.vm.returnTo()).toEqual('?return_to=/123');
+        wrapper.vm.$route.query = {};
+        expect(wrapper.vm.returnTo()).toEqual('');
+    });
 
 });

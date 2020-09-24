@@ -2,6 +2,7 @@
   "queryName": "fairsharingRecord",
   "queryParam": null,
   "fields": [
+    "id",
     "registry",
     "type",
     "doi",

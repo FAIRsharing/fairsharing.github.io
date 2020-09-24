@@ -188,6 +188,7 @@ export const actions = {
                     field: "getUser",
                     message: userMetadata.error.response.data.error
                 });
+                this.commit("users/clearUserData");
             }
             else {
                 getUserQuery.queryParam.id = userMetadata.id;
@@ -197,6 +198,7 @@ export const actions = {
                         field: "getUser",
                         message: userRecords.error.response.data.error
                     });
+                    this.commit("users/clearUserData");
                 }
                 else {
                     this.commit('users/setUser', {
@@ -211,6 +213,7 @@ export const actions = {
                 field: "getUser",
                 message: e.message
             });
+            this.commit("users/clearUserData");
         }
     },
     async getUserMeta(state){

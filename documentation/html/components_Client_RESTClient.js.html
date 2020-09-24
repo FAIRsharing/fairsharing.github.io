@@ -309,6 +309,23 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Verify that the given JWT is still valid
+     * @param {String} token - the token to validate
+     * @returns {Promise}
+     */
+    async validateToken(token){
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + token;
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/users/valid",
+            headers: headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
 
     /* EDITORS METHODS */
 

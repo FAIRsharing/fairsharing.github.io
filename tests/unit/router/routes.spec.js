@@ -1,7 +1,33 @@
 import router from "@/router"
 import { beforeEach, isLoggedIn } from "@/router"
+import RestClient from "@/components/Client/RESTClient.js"
+const sinon = require("sinon");
+
+let store = {
+    state: {
+        users: {
+            user: function(){return {isLoggedIn: true}}
+        }
+    },
+    dispatch: jest.fn()
+};
+
+let restStub;
 
 describe("Routes", () => {
+
+    beforeAll(() => {
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({
+            data: {
+                success: true
+            }
+        })
+    });
+    afterAll(() => {
+        restStub.restore();
+    });
+
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [
@@ -18,28 +44,30 @@ describe("Routes", () => {
             }
         });
     });
-
-    it ("- NAVGUARD - redirect if the user is not logged in", () => {
-        const store = {
-          state: {
-              users: {
-                  user: function(){return {isLoggedIn: true}}
-              }}
-        };
+    it ("- NAVGUARD - redirect if the user is not logged in", async () => {
         const next = jest.fn();
-        isLoggedIn(undefined, undefined, next, store)
+        await isLoggedIn(undefined, undefined, next, store);
+        expect(next).toHaveBeenCalled();
     });
 
-    it("Can set a correct title", () => {
+    it("Can set a correct title", async () => {
         let to = {
             meta: { title: "ABC" }
         };
         const next = jest.fn();
-        beforeEach(to, undefined, next);
+        await beforeEach(to, undefined, next, store);
         expect(document.title).toMatch("FAIRsharing | ABC");
 
         to.meta = {};
-        beforeEach(to, undefined, next);
+        store = {
+            state: {
+                users: {
+                    user: function(){return {isLoggedIn: false}}
+                }
+            },
+            dispatch: jest.fn()
+        };
+        await beforeEach(to, undefined, next, store);
         expect(document.title).toMatch("FAIRsharing");
     });
 

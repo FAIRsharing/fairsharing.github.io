@@ -227,7 +227,7 @@ const router = new VueRouter({
 export async function beforeEach(to, from, next, store) {
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
     if (store.state.users.user().isLoggedIn){
-        console.log(store.state.users.user().isLoggedIn)
+        await store.dispatch('users/validateUserToken');
     }
     next();
 

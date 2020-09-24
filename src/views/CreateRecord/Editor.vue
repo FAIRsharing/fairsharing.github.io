@@ -15,6 +15,21 @@
           dark
         >
           <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
+          <v-spacer />
+          <v-btn
+            id="reloadDataButton"
+            class="default ml-2"
+            @click="reloadData()"
+          >
+            Reload Data
+          </v-btn>
+          <v-btn
+            id="exitEditButton"
+            class="default ml-2"
+            @click="returnToRecord()"
+          >
+            Stop Editing
+          </v-btn>
         </v-toolbar>
         <v-tabs dark>
           <v-tab
@@ -185,6 +200,17 @@
           _module.error = true;
         }
         _module.hasLoaded = true;
+      },
+      returnToRecord() {
+        const _module = this;
+        let recordID = _module.currentRecord['fairsharingRecord'].id;
+        console.log('On the way to ' + recordID);
+        _module.$router.push({ path: `/${recordID}` });
+      },
+      async reloadData() {
+        const _module = this;
+        let recordID = _module.currentRecord['fairsharingRecord'].id;
+        await _module.fetchRecord(recordID);
       }
     },
   }

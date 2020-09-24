@@ -5,7 +5,9 @@ let store = {
     state: {
         users: {
             user: function(){return {isLoggedIn: true}}
-        }}
+        }
+    },
+    dispatch: jest.fn()
 };
 
 describe("Routes", () => {
@@ -44,7 +46,9 @@ describe("Routes", () => {
             state: {
                 users: {
                     user: function(){return {isLoggedIn: false}}
-                }}
+                }
+            },
+            dispatch: jest.fn()
         };
         await beforeEach(to, undefined, next, store);
         expect(document.title).toMatch("FAIRsharing");

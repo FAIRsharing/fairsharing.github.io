@@ -18,19 +18,19 @@
       >
         <v-spacer />
         <v-btn
-          v-if="canEdit"
-          class="success"
-          @click="goToEdit()"
-        >
-          EDIT
-        </v-btn>
-        <v-btn
-          id="requestOwnershipButton"
-          class="warning ml-1"
           v-if="canClaim"
+          id="requestOwnershipButton"
+          class="warning"
           @click="requestOwnership()"
         >
           REQUEST OWNERSHIP
+        </v-btn>
+        <v-btn
+          v-if="canEdit"
+          class="success ml-1"
+          @click="goToEdit()"
+        >
+          EDIT
         </v-btn>
       </v-row>
       <!--  Content  -->

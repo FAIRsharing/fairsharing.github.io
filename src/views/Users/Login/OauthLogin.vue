@@ -34,8 +34,15 @@
           jwt: paramsArray.jwt,
           expiry: paramsArray.expiry
         });
+        let path;
+        if (paramsArray.return_to) {
+          path = paramsArray.return_to
+        }
+        else {
+          path = "accounts/profile"
+        }
         _module.$router.push({
-          path: "accounts/profile"
+          path: path
         })
       }
     }

@@ -257,12 +257,55 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Determine if a user has permission to edit this record.
+     * @param {Integer} recordID - ID for the relevant FairsharingRecord.
+     * @param {String} token - JWT of the logged in user
+     * @returns {Promise}
+     */
     async canEdit(recordID, userToken){
         let headers = JSON.parse(JSON.stringify(this.headers));
         headers['Authorization'] = 'Bearer ' + userToken;
         const request = {
             method: "get",
             baseURL: this.baseURL + "/fairsharing_records/can_edit/" + recordID,
+            headers: headers,
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Attempt to create a MaintenanceRequest for a user for a FairsharingRecord.
+     * @param {Integer} recordID - ID for the relevant FairsharingRecord.
+     * @param {String} token - JWT of the logged in user
+     * @returns {Promise}
+     */
+    async claimRecord(recordID, userToken) {
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + userToken;
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/maintenance_requests",
+            headers: headers,
+            data: {maintenance_request: {fairsharing_record_id: recordID}}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Determine if a user has permission to create a MaintenanceRequest for a FairsharingRecord.
+     * @param {Integer} recordID - ID for the relevant FairsharingRecord.
+     * @param {String} token - JWT of the logged in user
+     * @returns {Promise}
+     */
+    async canClaim(recordID, userToken) {
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + userToken;
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/maintenance_requests/existing/" + recordID,
             headers: headers,
         };
         let response = await this.executeQuery(request);

@@ -9,10 +9,6 @@ import store from '@/store'
 import Home from "@/views/Home/Home";
 import Login from "@/views/Users/Login/Login";
 import Signup from "@/views/Users/Signup";
-/*
-import Records from "@/views/Records/Records";
-import Record from "@/views/Records/Record";
-*/
 import Statistics from "@/views/Stats/Statistics";
 import New from "@/views/CreateRecord/NewRecord";
 import Community from "@/views/Static/Community/Community";
@@ -31,13 +27,9 @@ import EditProfile from "@/views/Users/EditProfile";
 import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
 import LoginFailure from "@/views/Users/Login/LoginFailure";
 import Editor from "@/views/CreateRecord/Editor";
-/*new routes*/
 import Records from "@/views/Records/Records";
 import Record from "@/views/Records/Record";
-
-/* CLIENTS */
-import RestClient from "@/components/Client/RESTClient.js"
-const client = new RestClient();
+import NotFound from "@/views/Errors/404"
 
 Vue.use(VueRouter);
 
@@ -197,8 +189,8 @@ let routes = [
         name: "Edit Content",
         path: "/:id/edit",
         component: Editor,
-        async beforeEnter(to, from, next) {
-            await canEdit(to, from, next, store);
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
         }
     },
     {
@@ -206,10 +198,17 @@ let routes = [
         path: "/:id",
         component: Record
     },
+    /* ERROR HANDLING */
+    {
+        name: "Error 404",
+        path: "/error/404",
+        component: NotFound
+    },
+    /* REDIRECTION */
     {
         name: "*",
         path: "*/*",
-        redirect: "/"
+        component: NotFound
     }
 ];
 routes.forEach(function (route) {
@@ -235,31 +234,11 @@ export function isLoggedIn(to, from, next, store) {
         next()
     }
     else {
+        const target = to.path;
         next({
-            name: "Login" // back to safety route //
+            name: "Login", // back to safety route //
+            query: {goTo: target}
         });
-    }
-}
-
-export async function canEdit(to, from, next, store){
-    if (!store.state.users.user().isLoggedIn){
-        next({name: "Login"})
-    }
-    else {
-        if (to.params['fromRecordPage']){
-            next();
-        }
-        let recordID = to.params.id;
-        let canEdit = await client.canEdit(recordID, store.state.users.user().credentials.token);
-        if (canEdit.error){
-            if(from.params.id){
-                next({path: from.params.id})
-            }
-            next({path: "/"}); // replace with unauthorized page 403
-        }
-        else {
-            next();
-        }
     }
 }
 

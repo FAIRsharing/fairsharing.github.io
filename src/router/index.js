@@ -224,9 +224,13 @@ const router = new VueRouter({
     //mode: "history"
 });
 
-export function beforeEach(to, from, next) {
+export async function beforeEach(to, from, next, store) {
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
-    next()
+    if (store.state.users.user().isLoggedIn){
+        console.log(store.state.users.user().isLoggedIn)
+    }
+    next();
+
 }
 
 export function isLoggedIn(to, from, next, store) {

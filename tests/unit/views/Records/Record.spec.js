@@ -211,6 +211,7 @@ describe("Record.vue", function() {
         restStub.restore();
     });
 
+
     it("allows a logged in user to request to own/maintain the record", async() => {
         wrapper.vm.canClaim = true;
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");

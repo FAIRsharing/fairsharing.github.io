@@ -3,6 +3,69 @@
     id="recordEditor"
     fluid
   >
+    <!-- popup to confirm exit from editing -->
+    <v-dialog
+      v-model="exitPageCheck"
+      max-width="600px"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Exit editing
+        </v-card-title>
+        <v-card-text>This will return to the record page without saving. Are you sure you'd like to do this?</v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="green darken-1"
+            text
+            @click="confirmReturnToRecord()"
+          >
+            Yes.
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="exitPageCheck = false"
+          >
+            No, keep editing.
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- popup to confirm reloading data -->
+    <v-dialog
+      v-model="reloadDataCheck"
+      max-width="600px"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Reload data
+        </v-card-title>
+        <v-card-text>
+          This will reload your record from the database, discarding any unsaved changes.
+          Are you sure you'd like to do this?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="green darken-1"
+            text
+            @click="confirmReloadData()"
+          >
+            Yes.
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="reloadDataCheck = false"
+          >
+            No, keep editing.
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-row v-if="hasLoaded">
       <v-col v-if="error">
         <Unauthorized />
@@ -124,6 +187,9 @@
       return {
         error: false,
         hasLoaded: false,
+        dataChanged: false,
+        exitPageCheck: false,
+        reloadDataCheck: false,
         tabs: [
           {
             name: "Edit General Information",
@@ -202,12 +268,19 @@
         _module.hasLoaded = true;
       },
       returnToRecord() {
+        this.exitPageCheck = true;
+      },
+      confirmReturnToRecord() {
         const _module = this;
         let recordID = _module.currentRecord['fairsharingRecord'].id;
-        console.log('On the way to ' + recordID);
+        _module.exitPageCheck = true;
         _module.$router.push({ path: `/${recordID}` });
       },
-      async reloadData() {
+      reloadData() {
+        this.reloadDataCheck = true;
+      },
+      async confirmReloadData() {
+        this.reloadDataCheck = false;
         const _module = this;
         let recordID = _module.currentRecord['fairsharingRecord'].id;
         await _module.fetchRecord(recordID);

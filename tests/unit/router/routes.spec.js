@@ -1,5 +1,7 @@
 import router from "@/router"
 import { beforeEach, isLoggedIn } from "@/router"
+import RestClient from "@/components/Client/RESTClient.js"
+const sinon = require("sinon");
 
 let store = {
     state: {
@@ -10,7 +12,22 @@ let store = {
     dispatch: jest.fn()
 };
 
+let restStub;
+
 describe("Routes", () => {
+
+    beforeAll(() => {
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({
+            data: {
+                success: true
+            }
+        })
+    });
+    afterAll(() => {
+        restStub.restore();
+    });
+
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [

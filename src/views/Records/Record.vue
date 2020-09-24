@@ -26,7 +26,7 @@
         </v-btn>
         <v-btn
           id="requestOwnershipButton"
-          class="warning"
+          class="warning ml-1"
           v-if="canClaim"
           @click="requestOwnership()"
         >

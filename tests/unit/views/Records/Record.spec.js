@@ -218,7 +218,12 @@ describe("Record.vue", function() {
         await wrapper.vm.requestOwnership();
         expect(wrapper.vm.canClaim).toBe(false);
         restStub.restore();
+    });
+
+
+    it("prevents re-requesting to maintain when a request fails", async() => {
         wrapper.vm.canClaim = true;
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns(
             {
                 data: {

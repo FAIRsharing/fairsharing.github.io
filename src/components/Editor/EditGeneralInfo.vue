@@ -316,7 +316,7 @@
           :disabled="!formValid"
           @click="editRecord()"
         >
-          Submit
+          Submit General Info.
         </v-btn>
       </v-card-actions>
     </v-form>

@@ -31,7 +31,7 @@ Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });
 
-router.beforeEach((to, from, next) => beforeEach(to, from, next));
+router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 
 async function bootstrapApp() {
     await store.dispatch('users/login');

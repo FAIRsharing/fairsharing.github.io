@@ -155,6 +155,7 @@
             },
             async userIsLoggedIn() {
               await this.canEditRecord();
+              await this.checkClaimStatus();
             }
         },
         mounted() {

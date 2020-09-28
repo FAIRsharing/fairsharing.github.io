@@ -82,14 +82,14 @@
           <v-btn
             id="reloadDataButton"
             class="default ml-2"
-            @click="reloadData()"
+            @click="reloadDataCheck = true"
           >
             Reload Data
           </v-btn>
           <v-btn
             id="exitEditButton"
             class="default ml-2"
-            @click="returnToRecord()"
+            @click="exitPageCheck = true"
           >
             Stop Editing
           </v-btn>
@@ -267,17 +267,11 @@
         }
         _module.hasLoaded = true;
       },
-      returnToRecord() {
-        this.exitPageCheck = true;
-      },
       confirmReturnToRecord() {
         const _module = this;
         let recordID = _module.currentRecord['fairsharingRecord'].id;
         _module.exitPageCheck = true;
         _module.$router.push({ path: `/${recordID}` });
-      },
-      reloadData() {
-        this.reloadDataCheck = true;
       },
       async confirmReloadData() {
         this.reloadDataCheck = false;

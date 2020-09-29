@@ -3,68 +3,44 @@
     id="recordEditor"
     fluid
   >
+    <!-- TODO: Loop through the buttons -->
     <!-- popup to confirm exit from editing -->
-    <v-dialog
-      v-model="exitPageCheck"
-      max-width="600px"
-    >
-      <v-card>
-        <v-card-title class="headline">
-          Exit editing
-        </v-card-title>
-        <v-card-text>This will return to the record page without saving. Are you sure you'd like to do this?</v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="green darken-1"
-            text
-            @click="confirmReturnToRecord()"
-          >
-            Yes.
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="exitPageCheck = false"
-          >
-            No, keep editing.
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <v-list>
+      <v-list-item
+        v-for="(panelData) in confirmPanels"
+        :key="panelData.name"
+      >
+        <v-dialog
+          v-model="panelData.show"
+          max-width="600px"
+        >
+          <v-card>
+            <v-card-title class="headline">
+              {{ panelData.name }}
+            </v-card-title>
+            <v-card-text>{{ panelData.description }}</v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                color="green darken-1"
+                text
+                @click="panelData.method()"
+              >
+                Yes.
+              </v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="panelData.show = false"
+              >
+                No, keep editing.
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-list-item>
+    </v-list>
 
-    <!-- popup to confirm reloading data -->
-    <v-dialog
-      v-model="reloadDataCheck"
-      max-width="600px"
-    >
-      <v-card>
-        <v-card-title class="headline">
-          Reload data
-        </v-card-title>
-        <v-card-text>
-          This will reload your record from the database, discarding any unsaved changes.
-          Are you sure you'd like to do this?
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="green darken-1"
-            text
-            @click="confirmReloadData()"
-          >
-            Yes.
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="reloadDataCheck = false"
-          >
-            No, keep editing.
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <v-row v-if="hasLoaded">
       <v-col v-if="error">
@@ -79,19 +55,15 @@
         >
           <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
           <v-spacer />
+
           <v-btn
-            id="reloadDataButton"
+            v-for="(panelData) in confirmPanels"
+            :id="panelData.name + '_button'"
+            :key="panelData.name"
             class="default ml-2"
-            @click="reloadDataCheck = true"
+            @click="panelData.show = true"
           >
-            Reload Data
-          </v-btn>
-          <v-btn
-            id="exitEditButton"
-            class="default ml-2"
-            @click="exitPageCheck = true"
-          >
-            Stop Editing
+            {{ panelData.name }}
           </v-btn>
         </v-toolbar>
         <v-tabs dark>
@@ -184,12 +156,29 @@
       Unauthorized
     },
     data(){
+      let _module = this;
       return {
         error: false,
         hasLoaded: false,
         dataChanged: false,
-        exitPageCheck: false,
-        reloadDataCheck: false,
+        confirmPanels: [
+          {
+            name: "Reload data",
+            description: "This will reload your record from the database, discarding any unsaved changes.\n" +
+                    "Are you sure you'd like to do this?",
+            method: function() {
+              this.show = false;
+              return _module.confirmReloadData()
+            },
+            show: false
+          },
+          {
+            name: "Exit editing",
+            description: "This will return to the record page without saving. Are you sure you'd like to do this?",
+            method: function() { return _module.confirmReturnToRecord() },
+            show: false
+          }
+        ],
         tabs: [
           {
             name: "Edit General Information",
@@ -274,7 +263,6 @@
         _module.$router.push({ path: `/${recordID}` });
       },
       async confirmReloadData() {
-        this.reloadDataCheck = false;
         const _module = this;
         let recordID = _module.currentRecord['fairsharingRecord'].id;
         await _module.fetchRecord(recordID);

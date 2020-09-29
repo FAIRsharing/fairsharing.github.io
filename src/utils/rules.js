@@ -1,7 +1,17 @@
+/**
+ * Assess if the string is of a certain value (useful to compare passwords)
+ * @param {String} val - the value to evaluate the string against
+ * @returns {function(*): (boolean|string)}
+ */
 export function hasValue(val){
     return value => value === val || "Invalid repeated password"
 }
 
+
+ /**
+ * Assess email patterns.
+ * @returns {function(*): (boolean|string)}
+ */
 export function isEmail(){
     return value => {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -9,10 +19,18 @@ export function isEmail(){
     }
 }
 
+/**
+ * Assess the presence of the field
+ * @returns {function(*=): (boolean|string)}
+ */
 export function isRequired(){
     return value => !!value || 'Required.'
 }
 
+/**
+ * Assess URL patterns.
+ * @returns {function(*): (boolean|string)}
+ */
 export function isUrl() {
     return value => {
         const pattern = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
@@ -20,15 +38,21 @@ export function isUrl() {
     }
 }
 
+/**
+ * Assess if the string is long enough.
+ * @param {Number} length - the length to evaluate the string against.
+ * @returns {function(*): (boolean|string)}
+ */
 export function isLongEnough(length) {
     return value => {
         return value.length >= length || 'Keep typing!'
     }
 }
 
-/*
- * An ORCID ID may be optional; if it is then an empty input field will also be accepted.
- * Pass a boolean to isOrcid to determine if it's required.
+/**
+ * Assess ORCID patterns. Can be empty if required is false.
+ * @params {Boolean} required - is the field required or not.
+ * @returns {function(*): (boolean|string)}
  */
 export function isOrcid(required) {
     return value => {

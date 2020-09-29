@@ -14,10 +14,14 @@
           </v-card-title>
 
           <v-card-text
-            v-if="user()"
+            v-if="formData"
             class="pt-3"
           >
-            <v-form v-model="valid">
+            <v-form
+              id="editProfileForm"
+              ref="editProfileForm"
+              v-model="valid"
+            >
               <v-container>
                 <!-- message -->
                 <v-row
@@ -53,17 +57,16 @@
                     v-for="(field, fieldKey) in fields"
                     :id="'edit_' + field.name"
                     :key="'edit_field_' + fieldKey"
-                    cols="12 py-0"
+                    cols="12 py-0 mb-3"
                   >
-                    <div
-                      v-if="field.type !== 'checkbox'"
-                    >
+                    <div v-if="field.type !== 'checkbox'">
                       <v-text-field
                         v-model="formData[field.name]"
                         :label="field.label"
                         outlined
                         :type="field.type"
                         :disabled="field.disabled"
+                        :rules="field.rules"
                       />
                     </div>
                     <div v-if="field.type === 'checkbox'">
@@ -99,6 +102,7 @@
 
 <script>
     import { mapState, mapActions } from "vuex"
+    import { isEmail, isRequired, isUrl } from "@/utils/rules.js"
 
     export default {
         name: "EditProfile",
@@ -113,36 +117,52 @@
                   label: "Username",
                   hint: null,
                   type: "input",
-                  disabled: true
+                  disabled: true,
                 },
                 {
                   name: "email",
                   label: "Email address",
                   hint: null,
-                  type: "input"
+                  type: "input",
+                  rules: [
+                    isEmail(),
+                    isRequired()
+                  ]
                 },
                 {
                   name: "first_name",
                   label: "First Name",
                   hint: null,
-                  type: "input"
+                  type: "input",
+                  rules: [
+                    isRequired()
+                  ]
                 },
                 {
                   name: "last_name",
                   label: "Last Name",
                   hint: null,
-                  type: "input"
+                  type: "input",
+                  rules: [
+                    isRequired()
+                  ]
                 },
                 {
                   name: "homepage",
                   label: "Homepage",
                   hint: null,
-                  type: "input"
+                  type: "input",
+                  rules: [
+                    isUrl()
+                  ]
                 },
                 {
                   name: "current_password",
                   label: "Current Password",
-                  type: "password"
+                  type: "password",
+                  rules: [
+                    isRequired()
+                  ]
                 },
                 {
                   name: "preferences",
@@ -151,12 +171,13 @@
                   type: "checkbox"
                 },
               ],
-              loading: false
+              loading: false,
             }
         },
         computed: {
           ...mapState("users", ["user", "messages"]),
           formData: function(){
+            if (this.user().metadata.preferences) {
               return {
                 username: this.user().credentials.username,
                 email: this.user().metadata.email,
@@ -165,19 +186,25 @@
                 last_name: this.user().metadata.last_name,
                 homepage: this.user().metadata.homepage
               }
+            }
+            return null;
           }
         },
         async created(){
             await this.getUserMeta();
         },
         methods: {
-          ...mapActions('users', ['getUserMeta', "updateUser"]),
+          ...mapActions('users', ['getUserMeta', "updateUser", "setMessage"]),
           updateProfile: async function(){
             this.loading = true;
             let data = JSON.parse(JSON.stringify(this.formData));
             data.preferences = {hide_email: this.formData.preferences};
             await this.updateUser(data);
             this.loading = false;
+            if (!this.messages().updateProfile.error){
+              this.setMessage({field: 'getUser', message: "Your profile was updated successfully."});
+              this.$router.push({path: "/accounts/profile"})
+            }
           }
         },
 

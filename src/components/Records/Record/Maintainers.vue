@@ -6,7 +6,36 @@
     elevation="1"
   >
     <SectionTitle title="Maintainers" />
-    <NoneFound :data-field="getField('maintainers')" />
+
+    <v-card
+      v-if="getField('maintainers').length === 0"
+      class="mt-2 pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+      flat
+      outlined
+    >
+      <div class="d-flex mt-2 ">
+        <p class="ma-0">
+          This record is in need of a maintainer.
+        </p>
+        <p
+          v-if="canClaim"
+          class="ma-0"
+        >
+          If you are affiliated with this project,
+        </p>
+        <v-btn
+          v-if="canClaim"
+          id="requestOwnershipButton"
+          class="warning"
+          @click="requestOwnership()"
+        >
+          Claim it now!
+        </v-btn>
+      </div>
+    </v-card>
+
+
+    <!--<NoneFound :data-field="getField('maintainers')" />-->
 
     <!--Contact-->
     <v-card
@@ -34,19 +63,54 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapState } from 'vuex';
 
     import SectionTitle from '@/components/Records/Record/SectionTitle';
-    import NoneFound from '@/components/Records/Record/NoneFound';
+    import Client from '@/components/GraphClient/GraphClient.js';
+    import RestClient from "@/components/Client/RESTClient.js";
+    //import NoneFound from '@/components/Records/Record/NoneFound';
+
+    const client = new RestClient();
 
     export default {
         name: "Maintainers",
         components: {
-          NoneFound,
+          //NoneFound,
           SectionTitle
         },
+        data: () => {
+            return {
+                canClaim: true
+            }
+        },
         computed: {
-            ...mapGetters("record", ["getField"])
+            ...mapGetters("record", ["getField"]),
+            ...mapState("record", ["currentRecord"]),
+            ...mapState('users', ["user"]),
+        },
+        mounted() {
+            this.$nextTick(async function () {
+                this.client = new Client();
+            })
+        },
+        methods: {
+          /**
+          * Method to create a maintenance_request; sets canClaim and (on fail) error.
+          * @returns {undefined}
+          * */
+          async requestOwnership() {
+            let _module = this;
+            const recordID =  _module.currentRecord['fairsharingRecord'].id;
+            const claim = await client.claimRecord(recordID, _module.user().credentials.token);
+            if (claim.error) {
+              _module.error = "Sorry, your request to claim this record failed. Please contact us.";
+              _module.canClaim = false;
+            }
+            else {
+              // show modal here
+              _module.canClaim = false;
+            }
+          }
         }
 
     }

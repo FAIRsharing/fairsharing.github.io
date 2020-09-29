@@ -5,8 +5,8 @@
   >
     <!-- TODO: Loop through the buttons -->
     <!-- popup to confirm exit from editing -->
-    <v-list>
-      <v-list-item
+    <v-row>
+      <v-col
         v-for="(panelData) in confirmPanels"
         :key="panelData.name"
       >
@@ -38,8 +38,8 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-list-item>
-    </v-list>
+      </v-col>
+    </v-row>
 
 
     <v-row v-if="hasLoaded">

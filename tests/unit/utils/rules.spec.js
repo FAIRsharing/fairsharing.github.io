@@ -29,7 +29,8 @@ describe('Form validation rules', () => {
 
     it("can check if a user has typed enough", () => {
         let tester = isLongEnough(10);
-        expect(tester('012345678')).toEqual("Keep typing!");
+        expect(tester('')).toEqual(`Value is not long enough (0/10)`);
+        expect(tester('12')).toEqual(`Value is not long enough (2/10)`);
         expect(tester('0123456789')).toBe(true);
     });
 

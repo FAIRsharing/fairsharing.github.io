@@ -7,7 +7,6 @@ export function hasValue(val){
     return value => value === val || "Invalid repeated password"
 }
 
-
  /**
  * Assess email patterns.
  * @returns {function(*): (boolean|string)}
@@ -46,10 +45,11 @@ export function isUrl() {
  */
 export function isLongEnough(length) {
     return value => {
-        return value.length >= length || 'Keep typing!'
+        let error = (value) ? `Value is not long enough (${value.length}/${length})` : `Value is not long enough (0/${length})`;
+        if (!value) return error;
+        return value.length >= length || error;
     }
 }
-
 /**
  * Assess ORCID patterns. Can be empty if required is false.
  * @params {Boolean} required - is the field required or not.

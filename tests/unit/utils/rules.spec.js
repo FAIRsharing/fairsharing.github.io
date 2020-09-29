@@ -24,6 +24,7 @@ describe('Form validation rules', () => {
         let tester = isUrl();
         expect(tester('a string')).toEqual("Invalid URL.");
         expect(tester('wibble.com')).toBe(true);
+        expect(tester('')).toBe(true);
     });
 
     it("can check if a user has typed enough", () => {

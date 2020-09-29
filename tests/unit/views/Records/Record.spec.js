@@ -211,6 +211,7 @@ describe("Record.vue", function() {
         restStub.restore();
     });
 
+
     it("allows a logged in user to request to own/maintain the record", async() => {
         wrapper.vm.canClaim = true;
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
@@ -242,7 +243,27 @@ describe("Record.vue", function() {
         restStub.restore();
     });
 
+    it("handles errors when checking claim status", async() => {
+        wrapper.vm.canClaim = true;
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns(
+            {
+                data: {
+                    error: {
+                        response: {
+                            data: {
+                                error: "Request failed."
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        await wrapper.vm.checkClaimStatus();
+        expect(wrapper.vm.canClaim).toBe(false);
+        restStub.restore();
 
+    });
 
     it("can check if a logged in user can edit the record", async() => {
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");

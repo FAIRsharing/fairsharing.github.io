@@ -3,6 +3,45 @@
     id="recordEditor"
     fluid
   >
+    <!-- TODO: Loop through the buttons -->
+    <!-- popup to confirm exit from editing -->
+    <v-row>
+      <v-col
+        v-for="(panelData) in confirmPanels"
+        :key="panelData.name"
+      >
+        <v-dialog
+          v-model="panelData.show"
+          max-width="600px"
+        >
+          <v-card>
+            <v-card-title class="headline">
+              {{ panelData.name }}
+            </v-card-title>
+            <v-card-text>{{ panelData.description }}</v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                color="green darken-1"
+                text
+                @click="panelData.method()"
+              >
+                Yes.
+              </v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="panelData.show = false"
+              >
+                No, keep editing.
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
+    </v-row>
+
+
     <v-row v-if="hasLoaded">
       <v-col v-if="error">
         <Unauthorized />
@@ -15,6 +54,17 @@
           dark
         >
           <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
+          <v-spacer />
+
+          <v-btn
+            v-for="(panelData) in confirmPanels"
+            :id="panelData.name + '_button'"
+            :key="panelData.name"
+            class="default ml-2"
+            @click="panelData.show = true"
+          >
+            {{ panelData.name }}
+          </v-btn>
         </v-toolbar>
         <v-tabs dark>
           <v-tab
@@ -106,9 +156,29 @@
       Unauthorized
     },
     data(){
+      let _module = this;
       return {
         error: false,
         hasLoaded: false,
+        dataChanged: false,
+        confirmPanels: [
+          {
+            name: "Reload data",
+            description: "This will reload your record from the database, discarding any unsaved changes.\n" +
+                    "Are you sure you'd like to do this?",
+            method: function() {
+              this.show = false;
+              return _module.confirmReloadData()
+            },
+            show: false
+          },
+          {
+            name: "Exit editing",
+            description: "This will return to the record page without saving. Are you sure you'd like to do this?",
+            method: function() { return _module.confirmReturnToRecord() },
+            show: false
+          }
+        ],
         tabs: [
           {
             name: "Edit General Information",
@@ -185,6 +255,17 @@
           _module.error = true;
         }
         _module.hasLoaded = true;
+      },
+      confirmReturnToRecord() {
+        const _module = this;
+        let recordID = _module.currentRecord['fairsharingRecord'].id;
+        _module.exitPageCheck = true;
+        _module.$router.push({ path: `/${recordID}` });
+      },
+      async confirmReloadData() {
+        const _module = this;
+        let recordID = _module.currentRecord['fairsharingRecord'].id;
+        await _module.fetchRecord(recordID);
       }
     },
   }

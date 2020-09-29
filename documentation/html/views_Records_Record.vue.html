@@ -111,19 +111,19 @@
       >
         &lt;v-spacer />
         &lt;v-btn
-          v-if="canEdit"
-          class="success"
-          @click="goToEdit()"
-        >
-          EDIT
-        &lt;/v-btn>
-        &lt;v-btn
+          v-if="canClaim"
           id="requestOwnershipButton"
           class="warning"
-          v-if="canClaim"
           @click="requestOwnership()"
         >
           REQUEST OWNERSHIP
+        &lt;/v-btn>
+        &lt;v-btn
+          v-if="canEdit"
+          class="success ml-1"
+          @click="goToEdit()"
+        >
+          EDIT
         &lt;/v-btn>
       &lt;/v-row>
       &lt;!--  Content  -->

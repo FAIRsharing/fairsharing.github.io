@@ -6,6 +6,7 @@ import userStore from "@/store/users.js";
 import GraphClient from "@/components/GraphClient/GraphClient.js";
 import RESTClient from "@/components/Client/RESTClient.js"
 import metaTemplate from "../../../fixtures/metaTemplate.json"
+import VueRouter from "vue-router";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
@@ -16,6 +17,8 @@ const $store = new Vuex.Store({modules: {
 }});
 $store.state.users.user = function(){return {credentials: {token: "123"}}};
 let $route = {params: {id: "123"}};
+const router = new VueRouter();
+const $router = { push: jest.fn() };
 let graphStub;
 let restStub;
 
@@ -61,6 +64,27 @@ describe("Editor.vue", function() {
         });
         await wrapper.vm.getData();
         expect(wrapper.vm.error).toBe(true);
+    });
+
+    it("shows exit dialog", async () => {
+        let wrapper = await shallowMount(CreateRecord, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router}
+        });
+        let recordID = wrapper.vm.currentRecord['fairsharingRecord'].id;
+        wrapper.vm.confirmPanels[1].method();
+        expect(wrapper.vm.$router.push).toHaveBeenCalledWith({ path: `/${recordID}` });
+    });
+
+    it("reloads data correctly", async () => {
+        let wrapper = await shallowMount(CreateRecord, {
+            localVue,
+            mocks: {$store, $route}
+        });
+        wrapper.vm.confirmPanels[0].show = true;
+        await wrapper.vm.confirmPanels[0].method();
+        expect(wrapper.vm.confirmPanels[0].show).toBe(false);
     });
 
 

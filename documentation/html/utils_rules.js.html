@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: store/introspector.js</title>
+	<title>FAIRsharing.org Source: utils/rules.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,157 +86,75 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: store/introspector.js</h1>
+		<h1 class="page-title">Source: utils/rules.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import Client from "../components/GraphClient/GraphClient.js"
-import introspectionQuery from "../components/GraphClient/queries/introspection.json"
-import {isEqual} from 'lodash'
-
-let client = new Client();
-export const mutations = {
-    setParameters(state, data) {
-        try {
-            if (Object.keys(data).includes("errors")) {
-                state.error = data.errors[0].message
-            }
-            else {
-                localStorage.introspectionQuery = JSON.stringify(data);
-                let queryParams = data.data["__schema"]["types"].filter(param => param.name === "Query")[0];
-                state.searchQueryParameters = queryParams.fields.filter(param => param.name === "searchFairsharingRecords")[0];
-                if (!localStorage.searchQueryParameters) {
-                    localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                }
-                else {
-                    if (!isEqual(JSON.parse(localStorage.searchQueryParameters), JSON.parse(JSON.stringify(state.searchQueryParameters)))) {
-                        localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                    } else {
-                        state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
-                    }
-                }
-            }
-        }
-        catch (e) {
-            state.error = "Can't initialize application"
-        }
-    },
-    setLocalStorageExpiryTime: function () {
-        let now = new Date();
-        localStorage.expiryDate = now;
-        return now;
-    }
-};
-
-export const actions = {
-    async fetchParameters(state, timer) {
-        let expirationTimer = (timer) ? timer : 24;
-        if (localStorage.expiryDate) {
-            const expiration = paramsAreExpired(localStorage.expiryDate, expirationTimer);
-            if (expiration) {
-                let data = await client.getData(introspectionQuery);
-                this.commit("introspection/setLocalStorageExpiryTime");
-                this.commit("introspection/setParameters", data.data);
-            }
-            else {
-                this.commit("introspection/setParameters", JSON.parse(localStorage.introspectionQuery));
-            }
-        }
-        if (!localStorage.introspectionQuery) {
-            let data = await client.getData(introspectionQuery);
-            this.commit("introspection/setLocalStorageExpiryTime");
-            this.commit("introspection/setParameters", data.data);
-        }
-    }
-};
-export const getters = {
-    buildQueryParameters: (state) => (params) => {
-        let queryParameters = {};
-        Object.keys(params[1]).forEach(function (param) {
-            let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
-            const expectedTypeObject = currentParam.type;
-
-            if (expectedTypeObject.kind !== "LIST") {
-                queryParameters[param] = parseParam(expectedTypeObject, params[1][param]);
-            }
-            else {
-                const currentVal = params[1][param];
-                const expectedType = expectedTypeObject["ofType"]["ofType"].name;
-                queryParameters[param] = [];
-                if (currentVal.indexOf(",") > 0) {
-                    currentVal.split(",").forEach(function (val) {
-                        queryParameters[param].push(decodeURIComponent(parseParam(expectedType, val)))
-                    });
-
-                }
-                else {
-                    queryParameters[param] = decodeURIComponent(parseParam(expectedType, currentVal))
-                }
-            }
-        });
-        if (params[0] !== "Search") {
-            queryParameters["fairsharingRegistry"] = params[0];
-        }
-        return queryParameters;
-    }
-};
-
-/**
- * The introspection store is related to the introspection query that let us know which fields/types are allowed by the searchFairsharingRecords query
- * @type {Object}
- * */
-let introspectionStore = {
-    namespaced: true,
-    /**
-     * @name states
-     * @type {Object}
-     * @property {String} errors - collects errors while introspecting.
-     * @property {object} searchQueryParameters -  filters query parameters object coming from API.
-     */
-    state: {
-        errors: String,
-        searchQueryParameters: {},
-    },
-    modules: {},
-    mutations: mutations,
-    actions: actions,
-    getters: getters
-};
-export default introspectionStore;
-
-/**
- * Given a type and a value, parse the value with the expected type.
- * @param {Object} param - the parameter types allowed
- * @param {String} paramVal -  the value to be parsed
- * @returns {String | Number | Boolean} paramVal - the parse value
- * @example &lt;caption> Example usage of parseParam &lt;/caption>
- *  parseParam({name: "Boolean"}, "true");
- *  // return True
+            class="sunlight-highlight-javascript linenums">/**
+ * Assess if the string is of a certain value (useful to compare passwords)
+ * @param {String} val - the value to evaluate the string against
+ * @returns {function(*): (boolean|string)}
  */
-const parseParam = function (param, paramVal) {
-    if (param.name === "Int") {
-        return parseFloat(paramVal)
+export function hasValue(val){
+    return value => value === val || "Invalid repeated password"
+}
 
+ /**
+ * Assess email patterns.
+ * @returns {function(*): (boolean|string)}
+ */
+export function isEmail(){
+    return value => {
+        const pattern = /^(([^&lt;>()[\]\\.,;:\s@"]+(\.[^&lt;>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return pattern.test(value) || 'Invalid e-mail.'
     }
-    else if (param.name === "Boolean") {
-        return JSON.parse(paramVal)
-    }
-    return paramVal
-};
+}
 
 /**
- * Compares the given date with now and returns true if it greater than the given timer
- * @param {Date} expiryDate - the date to compare
- * @param {Number} expirationTimer - the timer to determine if the date has been expired or not
- * @returns {boolean} - is the data expired or not
+ * Assess the presence of the field
+ * @returns {function(*=): (boolean|string)}
  */
-export const paramsAreExpired = function (expiryDate, expirationTimer) {
-    const limit = expirationTimer * 3600;
-    const expiration = new Date(expiryDate);
-    const now = new Date();
-    return ((now - expiration) - limit) >= 0
-};
+export function isRequired(){
+    return value => !!value || 'Required.'
+}
+
+/**
+ * Assess URL patterns.
+ * @returns {function(*): (boolean|string)}
+ */
+export function isUrl() {
+    return value => {
+        if (!value) return true;
+        const pattern = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&amp;//=]*)?/gi;
+        return pattern.test(value) || 'Invalid URL.'
+    }
+}
+
+/**
+ * Assess if the string is long enough.
+ * @param {Number} length - the length to evaluate the string against.
+ * @returns {function(*): (boolean|string)}
+ */
+export function isLongEnough(length) {
+    return value => {
+        let error = (value) ? `Value is not long enough (${value.length}/${length})` : `Value is not long enough (0/${length})`;
+        if (!value) return error;
+        return value.length >= length || error;
+    }
+}
+/**
+ * Assess ORCID patterns. Can be empty if required is false.
+ * @params {Boolean} required - is the field required or not.
+ * @returns {function(*): (boolean|string)}
+ */
+export function isOrcid(required) {
+    return value => {
+        if (!value &amp;&amp; !required) return true; // because this is an optional Orcid ID
+        const pattern = /^\d{4}-\d{4}-\d{4}-\d{4}$/gi;
+        return pattern.test(value) || "Doesn't look like a valid ORCID ID."
+    }
+}
 </pre>
     </article>
 </section>

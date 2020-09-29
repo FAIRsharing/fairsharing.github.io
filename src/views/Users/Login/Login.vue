@@ -75,6 +75,8 @@
             <v-card-text v-if="currentPanel === 'login'">
               <v-form
                 id="loginForm"
+                ref="loginForm"
+                v-model="formValid"
               >
                 <!-- account -->
                 <v-text-field
@@ -82,6 +84,7 @@
                   label="Username or email"
                   required
                   outlined
+                  :rules="[rules.isRequired()]"
                 />
 
                 <!-- password -->
@@ -93,6 +96,7 @@
                   counter
                   required
                   outlined
+                  :rules="[rules.isRequired()]"
                   @click:append="show1 = !show1"
                 />
 
@@ -111,6 +115,7 @@
                     class=" px-4"
                     light
                     color="primary"
+                    :disabled="!formValid"
                     @click="logUser()"
                   >
                     LOGIN
@@ -129,6 +134,7 @@
 import {mapActions, mapState} from 'vuex'
 import MessageHandler from "@/components/Users/MessageHandler";
 import stringUtils from '@/utils/stringUtils';
+import { isRequired } from "@/utils/rules.js"
 
 /** This component handles the login page
  *
@@ -169,7 +175,11 @@ export default {
           color: "black white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/github",
         }
-      ]
+      ],
+      rules: {
+        isRequired: function(){return isRequired()},
+      },
+      formValid: false
     }
   },
   computed: {

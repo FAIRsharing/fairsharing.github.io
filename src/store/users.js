@@ -321,6 +321,9 @@ export const actions = {
             field: error.field,
             message: error.message
         })
+    },
+    setMessage(state, message){
+        this.commit("users/setMessage", message);
     }
 };
 

@@ -18,7 +18,18 @@
             </v-list-item-content>
             <user-profile-menu />
           </v-list-item>
-          <v-card-text class="container-fluid">
+          <v-card-text
+            v-if="messages()['getUser'].message"
+            class="mb-0"
+          >
+            <v-alert
+              type="success"
+              class="mb-0"
+            >
+              {{ messages()['getUser'].message }}
+            </v-alert>
+          </v-card-text>
+          <v-card-text class="mt-0 pt-0 container-fluid">
             <v-list-item>
               <v-list-item-content v-if="user().metadata">
                 <!-- META -->

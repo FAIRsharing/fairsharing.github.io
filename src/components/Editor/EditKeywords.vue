@@ -210,7 +210,7 @@
         class="primary"
         @click="submitRecord()"
       >
-        Submit
+        Submit Keywords
       </v-btn>
     </v-card-actions>
   </v-card>

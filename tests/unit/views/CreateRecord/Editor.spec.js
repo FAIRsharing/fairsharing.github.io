@@ -73,7 +73,7 @@ describe("Editor.vue", function() {
             mocks: {$store, $route, $router}
         });
         let recordID = wrapper.vm.currentRecord['fairsharingRecord'].id;
-        wrapper.vm.confirmReturnToRecord();
+        wrapper.vm.confirmPanels[1].method();
         expect(wrapper.vm.$router.push).toHaveBeenCalledWith({ path: `/${recordID}` });
     });
 
@@ -82,8 +82,9 @@ describe("Editor.vue", function() {
             localVue,
             mocks: {$store, $route}
         });
-        await wrapper.vm.confirmReloadData();
-        expect(wrapper.vm.reloadDataCheck).toBe(false);
+        wrapper.vm.confirmPanels[0].show = true;
+        await wrapper.vm.confirmPanels[0].method();
+        expect(wrapper.vm.confirmPanels[0].show).toBe(false);
     });
 
 

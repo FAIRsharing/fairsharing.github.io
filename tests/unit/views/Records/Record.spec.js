@@ -9,8 +9,10 @@ import RESTClient from "@/components/Client/RESTClient.js";
 import record from "@/store/record.js";
 import users from "@/store/users.js";
 import fakeAssociations from "@/../tests/fixtures/fakeAssociations.json";
-const sinon = require("sinon");
+import Vue from "vue"
 
+Vue.config.silent = true;
+const sinon = require("sinon");
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
@@ -25,7 +27,7 @@ record.state.currentRecord.fairsharingRecord.maintainers = [
     {username:123}
 ];
 record.getters = {
-    getField: (state) => (fieldName) => {
+    getField: () => () => {
         return [
             {username: "test"}
         ]
@@ -298,7 +300,7 @@ describe("Record.vue", function() {
         expect(anotherWrapper.vm.alreadyClaimed).toBe(true);
 
         record.getters = {
-            getField: (state) => (fieldName) => {
+            getField: () => () => {
                 return [
                     {username: 123}
                 ]
@@ -394,5 +396,5 @@ describe("Record.vue", function() {
         expect(anotherWrapper.vm.canClaim).toBe(false);
 
         restStub.restore();
-    })
+    });
 });

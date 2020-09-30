@@ -2,7 +2,10 @@ import { mutations, actions } from "@/store/users.js"
 import Client from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import { initUserDataState } from "@/store/utils.js"
+import Vue from "vue"
 import sinon from "sinon"
+
+Vue.config.silent = true;
 
 describe('Actions/Mutations', () => {
     let getStub;
@@ -357,8 +360,6 @@ describe('Actions/Mutations', () => {
     });
 
     it("Can correctly validate a user token", async() => {
-        restClientStub.restore();
-        restClientStub = sinon.stub(Client.prototype, 'executeQuery');
         restClientStub.returns({data: {success: true}});
         let state = {
             state: {user: () => {
@@ -380,7 +381,7 @@ describe('Actions/Mutations', () => {
             field: "getUser",
             message: {success: false}
         });
-
+        restClientStub.restore();
     });
 
 

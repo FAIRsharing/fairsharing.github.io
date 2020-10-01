@@ -9,8 +9,10 @@ import RESTClient from "@/components/Client/RESTClient.js";
 import record from "@/store/record.js";
 import users from "@/store/users.js";
 import fakeAssociations from "@/../tests/fixtures/fakeAssociations.json";
-const sinon = require("sinon");
+import Vue from "vue"
 
+Vue.config.silent = true;
+const sinon = require("sinon");
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
@@ -21,7 +23,18 @@ users.state.user = function(){
     }
 };
 
-const $store = new Vuex.Store({
+record.state.currentRecord.fairsharingRecord.maintainers = [
+    {username:123}
+];
+record.getters = {
+    getField: () => () => {
+        return [
+            {username: "test"}
+        ]
+    }
+};
+
+let $store = new Vuex.Store({
     modules: {
         record: record,
         users: users,
@@ -154,7 +167,7 @@ describe("Record.vue", function() {
         };
         wrapper.vm.prepareAssociations(fakeAssociatedRecords,fakeReverseAssociatedRecords);
         expect(wrapper.vm.recordAssociations[9].recordAssocLabel).toBe("is collected by");
-        wrapper.vm.recordAssociations = []
+        wrapper.vm.recordAssociations = [];
         wrapper.vm.currentRecord['fairsharingRecord'] = {
             name: "test",
             registry: "policy",
@@ -166,7 +179,7 @@ describe("Record.vue", function() {
         expect(wrapper.vm.recordAssociations[10].recordAssocLabel).toBe("is recommended by");
     });
 
-    it("can properly fetch record associations", async() => {
+    it("can properly fetch record associations", async () => {
         queryStub.restore();
         queryStub = sinon.stub(Client.prototype, "executeQuery");
         queryStub.withArgs(sinon.match.any).returns({
@@ -202,7 +215,7 @@ describe("Record.vue", function() {
         });
     });
 
-    it("can check if the user can claim a record", async() => {
+    it("can check if the user can claim a record", async () => {
         wrapper.vm.canClaim = false;
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {existing: false}});
@@ -211,8 +224,7 @@ describe("Record.vue", function() {
         restStub.restore();
     });
 
-
-    it("allows a logged in user to request to own/maintain the record", async() => {
+    it("allows a logged in user to request to own/maintain the record", async () => {
         wrapper.vm.canClaim = true;
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {created: true}});
@@ -221,8 +233,7 @@ describe("Record.vue", function() {
         restStub.restore();
     });
 
-
-    it("prevents re-requesting to maintain when a request fails", async() => {
+    it("prevents re-requesting to maintain when a request fails", async () => {
         wrapper.vm.canClaim = true;
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns(
@@ -263,9 +274,66 @@ describe("Record.vue", function() {
         expect(wrapper.vm.canClaim).toBe(false);
         restStub.restore();
 
+        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns(
+            {
+                data: {
+                    error: {
+                        response: {
+                            data: {
+                                error: "Request failed.",
+                                existing: true
+                            }
+                        }
+                    }
+                }
+            }
+        );
+        $store.state.users.user = function (){return {isLoggedIn: true, credentials: {token: 123}}};
+        let anotherWrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        await anotherWrapper.vm.checkClaimStatus();
+        expect(anotherWrapper.vm.alreadyClaimed).toBe(true);
+
+        record.getters = {
+            getField: () => () => {
+                return [
+                    {username: 123}
+                ]
+            }
+        };
+        users.state.user = function(){
+            return {
+                isLoggedIn: true,
+                credentials: {username: 123}
+            }
+        };
+        $store = new Vuex.Store({
+            modules: {
+                record: record,
+                users: users,
+            }
+        });
+
+        let againAnotherWrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        await againAnotherWrapper.vm.checkClaimStatus();
+        expect(againAnotherWrapper.vm.alreadyClaimed).toBe(false);
+        expect(againAnotherWrapper.vm.canClaim ).toBe(false);
+
+        restStub.restore();
+
     });
 
-    it("can check if a logged in user can edit the record", async() => {
+    it("can check if a logged in user can edit the record", async () => {
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {id: 123}});
         await wrapper.vm.canEditRecord();
@@ -274,7 +342,7 @@ describe("Record.vue", function() {
 
         restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({
-            data: {error: "Error"}
+            data: {error: {response: {data: "error"}}}
         });
         await wrapper.vm.canEditRecord();
         expect(wrapper.vm.canEdit).toBe(false);
@@ -292,7 +360,41 @@ describe("Record.vue", function() {
         expect(anotherWrapper.vm.canEdit).toBe(false);
     });
 
+    it("testing the action buttons methods", async () => {
+        $router.push = jest.fn();
+        let newWrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({data: {created: true}});
+        let buttons = newWrapper.vm.getMenuButtons;
 
+        buttons[0].method();
+        expect($router.push).toHaveBeenCalledWith({path: "123/edit", params: {fromRecordPage: true}});
+        expect($router.push).toHaveBeenCalledTimes(1);
 
+        buttons[1].method();
+        expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/123"}});
+        expect($router.push).toHaveBeenCalledTimes(2);
 
+        expect(buttons[2].method()).toBe(null);
+        expect(buttons[3].method()).toBe(null);
+
+        $store.state.users.user = function (){return {isLoggedIn: true, credentials: {token: 123}}};
+        let anotherWrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        buttons = anotherWrapper.vm.getMenuButtons;
+        buttons[1].method();
+        expect($router.push).toHaveBeenCalledTimes(2);
+        expect(anotherWrapper.vm.canClaim).toBe(false);
+
+        restStub.restore();
+    });
 });

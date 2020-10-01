@@ -18,19 +18,19 @@
       >
         <v-spacer />
         <v-btn
+          v-if="canEdit"
+          class="success"
+          @click="goToEdit()"
+        >
+          EDIT
+        </v-btn>
+        <v-btn
           v-if="canClaim"
           id="requestOwnershipButton"
           class="warning"
           @click="requestOwnership()"
         >
           REQUEST OWNERSHIP
-        </v-btn>
-        <v-btn
-          v-if="canEdit"
-          class="success ml-1"
-          @click="goToEdit()"
-        >
-          EDIT
         </v-btn>
       </v-row>
       <!--  Content  -->
@@ -71,7 +71,10 @@
               <Licences />
 
               <!-- MAINTAINERS -->
-              <Maintainers />
+              <Maintainers
+                :can-claim="canClaim"
+                @requestOwnership="requestOwnership"
+              />
 
               <!-- PUBLICATIONS -->
               <Publications />

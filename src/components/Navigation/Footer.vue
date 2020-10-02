@@ -112,22 +112,16 @@
       </ul>
     </v-col>
     <div
-      class="d-flex flex-row justify-center align-center"
-      style="width: 100%"
+      class="d-flex flex-row justify-center align-center mb-1 full-width"
     >
       © FAIRsharing 2009-Present | Licensed under <a
         href="http://creativecommons.org/licenses/by-sa/4.0/"
         alt="View License"
         target="_blank"
+        class="mr-2"
       >Creative Commons
         by
-        Share Alike 4.0 International</a> |
-      Designed by <a
-        href="http://www.antarctic-design.co.uk"
-        target="_blank"
-      >Antarctic
-        Design</a>
-      <br>
+        Share Alike 4.0 International</a>
       <a href="/licence"><img
         src="https://fairsharing.org/static/img/home/FAIRsharingCC-BY-SA.png"
       ></a>

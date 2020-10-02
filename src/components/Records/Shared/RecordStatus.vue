@@ -1,13 +1,16 @@
-<template>
-  <div class="circle" v-if="recordType">
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  <div
+    v-if="recordType"
+    class="circle"
+  >
     <v-tooltip top>
       <template v-slot:activator="{ on }">
         <img
           v-if="Object.keys(recordType).includes(record.type)"
-          :src="require('@/' + recordType[record.type].icon)"
+          :src="('./' + recordType[record.type].icon)"
           class="iconClass"
           v-on="on"
-        />
+        >
       </template>
       <span>{{ recordType[record.type].tooltip }}</span>
     </v-tooltip>
@@ -30,7 +33,7 @@
 </template>
 
 <script>
-    import recordTypes from "@/components/Records/recordsTypeData.json"
+    import recordTypes from "@/data/recordsRegistries.json"
     export default {
         name: "RecordStatus",
         props: {

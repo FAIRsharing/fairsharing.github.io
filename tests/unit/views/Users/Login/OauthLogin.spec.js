@@ -71,4 +71,24 @@ describe("Login.vue", ()=> {
         expect(wrapper.vm.messages().login.error).toBe(true);
 
     });
+
+    it("handles redirects after successful oauth authentication", async () => {
+        $route = {
+            fullPath: "/login_success?jwt=123&expiry=456",
+            name: "OAuth Login",
+            path: "/login_success",
+            query: {
+                jwt: 123,
+                expiry: 456,
+                return_to: '/exciting/page'
+            }
+        };
+        wrapper = await shallowMount(OauthLogin, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router}
+        });
+        await wrapper.vm.login();
+        expect($router.push).toHaveBeenCalledWith({path: "/exciting/page"});
+    });
 });

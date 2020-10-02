@@ -93,8 +93,7 @@ let recordStore = {
             }
         },
     },
-    modules: {
-    },
+    modules: {},
     getters: {
         getField: (state) => (fieldName) => {
             return state.currentRecord['fairsharingRecord'][fieldName];
@@ -111,4 +110,3 @@ let recordStore = {
 
 
 export default recordStore;
-

@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -91,11 +91,11 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import filterMapping from "@/components/Records/FiltersLabelMapping.json"
+            class="sunlight-highlight-javascript linenums">import filterMapping from "@/data/FiltersLabelMapping.json"
 import GraphQLClient from "@/components/GraphClient/GraphClient.js"
 import query from "@/components/GraphClient/queries/getFilters.json";
 import {isEqual} from 'lodash'
-import buttonOptions from './ButtonOptions.json'
+import buttonOptions from '@/data/ButtonOptions.json'
 
 const graphClient = new GraphQLClient();
 
@@ -106,33 +106,37 @@ export const mutations = {
         state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' &amp;&amp; item.filterName !== 'status'));
     },
     setFilterButtons(state) {
-        state.filterButtons.push([
-            {
-                "title": "Match all terms",
-                "active": true,
-                "filterName": "searchAnd",
-                "value": true
-            },
-            {
-                "title": "Match any term",
-                "active": false,
-                "filterName": "searchAnd",
-                "value": false
-            }
-        ]);
+        state.filterButtons.push({
+            "data": [
+                {
+                    "title": "Match all terms",
+                    "active": true,
+                    "filterName": "searchAnd",
+                    "value": true
+                },
+                {
+                    "title": "Match any term",
+                    "active": false,
+                    "filterName": "searchAnd",
+                    "value": false
+                }
+            ],
+            "curator_only": false
+        });
         state.rawFilters.forEach(item => {
+            // TODO: Return here if the button is marked as curator-only and the user isn't logged in as a curator.
             if (item.type === 'Boolean') {
                 let ObjectModel = buttonOptions[item.filterName];
                 state.filterButtons.push(ObjectModel);
             }
             else if (item.filterName === 'status') {
-                let ObjectModel = buttonOptions.status;
+                let ObjectModel = buttonOptions.status.data;
                 ObjectModel.forEach(function (button) {
                     if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
                         button.value = item.values[button["apiIndex"]];
                     }
                 });
-                state.filterButtons.push(ObjectModel);
+                state.filterButtons.push({data: ObjectModel, curator_only: false});
             }
         });
     },
@@ -140,12 +144,12 @@ export const mutations = {
         state.isLoadingFilters = status;
     },
     resetFilterButtons(state, itemParentIndex) {
-        state.filterButtons[itemParentIndex].map((item) => {
+        state.filterButtons[itemParentIndex].data.map((item) => {
             item.active = false;
         });
     },
     activateButton(state, item) {
-        state.filterButtons[item.itemParentIndex].map((filterItem) => {
+        state.filterButtons[item.itemParentIndex].data.map((filterItem) => {
             if (isEqual(filterItem, item.activeItem)) {
                 filterItem.active = true;
             }
@@ -173,8 +177,7 @@ export const getters = {
         state.filters.forEach(function (filter) {
             output.push({
                 filterName: filter.filterName,
-                filterLabel: filter.filterLabel,
-                sortOrder: filter.sortOrder
+                filterLabel: filter.filterLabel
             })
         });
         return output
@@ -274,9 +277,9 @@ export const buildFilters = function (val) {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Mon Sep 14th 2020
+		on Tue Sep 29th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

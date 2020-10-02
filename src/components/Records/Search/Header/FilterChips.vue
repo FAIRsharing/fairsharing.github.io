@@ -29,7 +29,7 @@
 <script>
 import {throttle} from "lodash"
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import filterMapping from "@/components/Records/FiltersLabelMapping.json"
+import filterMapping from "@/data/FiltersLabelMapping.json"
 
 
 export default {

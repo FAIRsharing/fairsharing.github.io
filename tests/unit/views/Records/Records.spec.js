@@ -6,6 +6,7 @@ import Records from "@/views/Records/Records.vue";
 import Client from "@/components/GraphClient/GraphClient.js";
 import records from "@/store/records.js"
 import introspection from "@/store/introspector.js"
+import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
 const sinon = require("sinon");
@@ -97,71 +98,7 @@ describe("Records.vue", () => {
         };
         let returnedVal = {
             data: {
-                data: {
-                    "__schema": {
-                        "types": [
-                            {
-                                name: "Query",
-                                fields: [
-                                    {
-                                        name: "searchFairsharingRecords",
-                                        args: [
-                                            {
-                                                name: "test",
-                                                description: "testDescription",
-                                                type: "String",
-                                                defaultValue: "1"
-                                            },
-                                            {
-                                                name: "test2",
-                                                description: "testDescription2",
-                                                type: {
-                                                    kind: "LIST",
-                                                    ofType: {
-                                                        ofType: {
-                                                            name: "String"
-                                                        }
-                                                    }
-                                                },
-                                                defaultValue: "1",
-
-                                            },
-                                            {
-                                                name: "test3",
-                                                description: "testDescription2",
-                                                type: {
-                                                    kind: "LIST",
-                                                    ofType: {
-                                                        ofType: {
-                                                            name: "String"
-                                                        }
-                                                    }
-                                                },
-                                                defaultValue: "1",
-
-                                            },
-                                            {
-                                                name: "test4",
-                                                description: "testDescription",
-                                                type: {
-                                                    name: "Int"
-                                                },
-                                                defaultValue: "1"
-                                            },
-                                            {
-                                                name: "test5",
-                                                description: "testDescription",
-                                                type: {
-                                                    name: "Boolean"
-                                                },
-                                                defaultValue: "1"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }]
-                    }
-                }
+                data: fakeIntrospection.data
             }
         };
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
@@ -189,6 +126,9 @@ describe("Records.vue", () => {
         $route.path = "/search";
         $route.query = {};
         expect(wrapper.vm.currentPath[0]).toBe("Search");
+        $route.path = "/standard";
+        expect(wrapper.vm.currentPath[0]).toBe("Standard");
+
     });
 
     it("can correctly redirect", async () => {

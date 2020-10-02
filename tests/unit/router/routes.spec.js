@@ -1,8 +1,33 @@
-import router from "../../../src/router"
-import { beforeEach } from "../../../src/router"
-import { isLoggedIn } from "@/router/index.js"
+import router from "@/router"
+import { beforeEach, isLoggedIn } from "@/router"
+import RestClient from "@/components/Client/RESTClient.js"
+const sinon = require("sinon");
+
+let store = {
+    state: {
+        users: {
+            user: function(){return {isLoggedIn: true}}
+        }
+    },
+    dispatch: jest.fn()
+};
+
+let restStub;
 
 describe("Routes", () => {
+
+    beforeAll(() => {
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({
+            data: {
+                success: true
+            }
+        })
+    });
+    afterAll(() => {
+        restStub.restore();
+    });
+
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [
@@ -15,34 +40,35 @@ describe("Routes", () => {
             }
             if (beforeEachTester.indexOf(route.name) > -1){
                 const next = jest.fn();
-                route.beforeEnter(undefined, undefined, next);
+                route.beforeEnter({path: {}}, undefined, next);
             }
         });
     });
+    it ("- NAVGUARD - redirect if the user is not logged in", async () => {
+        const next = jest.fn();
+        await isLoggedIn(undefined, undefined, next, store);
+        expect(next).toHaveBeenCalled();
+    });
 
-    it ("- NAVGUARD - redirect if the user is not logged in", () => {
-        const store = {
-          state: {
-              users: {
-                  user: function(){return {isLoggedIn: true}}
-              }}
+    it("Can set a correct title", async () => {
+        let to = {
+            meta: { title: "ABC" }
         };
         const next = jest.fn();
-        isLoggedIn(undefined, undefined, next, store)
+        await beforeEach(to, undefined, next, store);
+        expect(document.title).toMatch("FAIRsharing | ABC");
+
+        to.meta = {};
+        store = {
+            state: {
+                users: {
+                    user: function(){return {isLoggedIn: false}}
+                }
+            },
+            dispatch: jest.fn()
+        };
+        await beforeEach(to, undefined, next, store);
+        expect(document.title).toMatch("FAIRsharing");
     });
-});
 
-describe("BeforeEach", () => {
-   it("Can set a correct title", () =>{
-       let to = {
-           meta: { title: "ABC" }
-       };
-       const next = jest.fn();
-       beforeEach(to, undefined, next);
-       expect(document.title).toMatch("FAIRsharing | ABC");
-
-       to.meta = {};
-       beforeEach(to, undefined, next);
-       expect(document.title).toMatch("FAIRsharing");
-   });
 });

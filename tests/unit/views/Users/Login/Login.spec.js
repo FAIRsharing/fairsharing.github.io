@@ -14,7 +14,7 @@ const $store = new Vuex.Store({
         users: usersStore
     },
 });
-let $route = {name: "Login", path: "/accounts/login", query: {}};
+let $route = {name: "Login", path: "/accounts/login", query: {goTo: "/123"}};
 let routes = [
     $route
 ];
@@ -78,15 +78,37 @@ describe("Login.vue", ()=> {
                 error: {
                     response: {
                         data: {
-                            error: "Error !"
+                            error: "You have to confirm your email address before continuing."
                         }
                     }
                 }
             }
         });
         wrapper.vm.loginData = {};
+        expect(wrapper.vm.resendButton).toBe(false);
         await wrapper.vm.logUser();
-        expect(wrapper.vm.messages().login).toStrictEqual({"error": true, "message": "Error !"})
+        expect(wrapper.vm.messages().login).toStrictEqual({"error": true, "message": "You have to confirm your email address before continuing."});
+        expect(wrapper.vm.resendButton).toBe(true);
+    });
+
+    it("doesn't show resend button if the error isn't a confirmation error", async () => {
+        restStub.returns({
+            data: {
+                error: {
+                    response: {
+                        data: {
+                            error: "sorry, you're out of luck this time"
+                        }
+                    }
+                }
+            }
+        });
+        wrapper.vm.loginData = {};
+        expect(wrapper.vm.resendButton).toBe(false);
+        await wrapper.vm.logUser();
+        expect(wrapper.vm.messages().login).toStrictEqual({"error": true, "message": "sorry, you're out of luck this time"});
+        expect(wrapper.vm.resendButton).toBe(false);
+
     });
 
     it('can process redirection', async () => {
@@ -134,6 +156,13 @@ describe("Login.vue", ()=> {
         };
         await anotherWrapper.vm.logUser();
         expect(anotherWrapper.vm.$route.path).toBe("/accounts/login");
+        expect($router.push).toHaveBeenCalledWith({path: "/123"})
     })
+
+    it("generates correct oauth links", () => {
+        expect(wrapper.vm.returnTo()).toEqual('?return_to=/123');
+        wrapper.vm.$route.query = {};
+        expect(wrapper.vm.returnTo()).toEqual('');
+    });
 
 });

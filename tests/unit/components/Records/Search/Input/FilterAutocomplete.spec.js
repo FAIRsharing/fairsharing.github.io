@@ -119,14 +119,4 @@ describe("FilterAutocomplete.vue", function () {
 
     });
 
-    it("can check clickInside function", () => {
-        wrapper.vm.clickInside();
-        expect($store.state.uiController.componentOverflow).toBe(true);
-    });
-
-    it("can check clickOutside function", () => {
-        wrapper.vm.clickOutside();
-        expect($store.state.uiController.componentOverflow).toBe(false);
-    });
-
 });

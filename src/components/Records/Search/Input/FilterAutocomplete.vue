@@ -5,6 +5,7 @@
       <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
         <v-autocomplete
           v-model="selectedValues"
+          :attach="true"
           :items="getValues"
           solo
           dense
@@ -14,9 +15,6 @@
           :placeholder="`Search through ${filter.filterLabel}`"
           item-text="key"
           item-value="key"
-          class="autocomplete-max-width"
-          @blur="clickOutside"
-          @click="clickInside"
           @click:clear="reset(filter)"
         >
           <template v-slot:selection="data">
@@ -132,12 +130,6 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
-    clickInside: function () {
-      this.setComponentOverflowLocal(true);
-    },
-    clickOutside: function () {
-      this.setComponentOverflowLocal(false);
-    }
   }
 }
 </script>
@@ -206,12 +198,6 @@ export default {
 
 .chipsValueName {
   width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.autocomplete-max-width {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

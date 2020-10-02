@@ -1,7 +1,7 @@
 <template>
   <aside>
     <v-card
-      :class="[componentOverflow?'overflow-y-hidden':null,'pa-2',responsiveClassObject]"
+      :class="['pa-2',responsiveClassObject]"
       outlined
       tile
       elevation="3"
@@ -64,7 +64,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('uiController', ['UIGeneralStatus','componentOverflow']),
+    ...mapState('uiController', ['UIGeneralStatus']),
     ...mapGetters("searchFilters", ["getFilters"]),
     setup() {
       let _module = this;

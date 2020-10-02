@@ -9,10 +9,6 @@ import store from '@/store'
 import Home from "@/views/Home/Home";
 import Login from "@/views/Users/Login/Login";
 import Signup from "@/views/Users/Signup";
-/*
-import Records from "@/views/Records/Records";
-import Record from "@/views/Records/Record";
-*/
 import Statistics from "@/views/Stats/Statistics";
 import New from "@/views/CreateRecord/NewRecord";
 import Community from "@/views/Static/Community/Community";
@@ -23,6 +19,7 @@ import Terms from "@/views/Static/TermOfUse/TermsOfUse";
 import Educational from "@/views/Static/Educational/Educational";
 import Privacy from "@/views/Static/Privacy/Privacy";
 import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
+import ResendConfirmation from "@/views/Users/ResendConfirmation.vue"
 import User from "@/views/Users/User.vue"
 import RequestNewPassword from "@/views/Users/RequestNewPassword";
 import ResetPassword from "@/views/Users/ResetPassword";
@@ -30,9 +27,9 @@ import EditProfile from "@/views/Users/EditProfile";
 import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
 import LoginFailure from "@/views/Users/Login/LoginFailure";
 import Editor from "@/views/CreateRecord/Editor";
-/*new routes*/
 import Records from "@/views/Records/Records";
 import Record from "@/views/Records/Record";
+import NotFound from "@/views/Errors/404"
 
 Vue.use(VueRouter);
 
@@ -153,6 +150,11 @@ let routes = [
         component: ConfirmAccount,
     },
     {
+        name: "Resend confirmation email",
+        path: "/users/resendConfirmation",
+        component: ResendConfirmation,
+    },
+    {
         name: "Request a new password",
         path: "/accounts/forgotPassword",
         component: RequestNewPassword,
@@ -196,10 +198,17 @@ let routes = [
         path: "/:id",
         component: Record
     },
+    /* ERROR HANDLING */
+    {
+        name: "Error 404",
+        path: "/error/404",
+        component: NotFound
+    },
+    /* REDIRECTION */
     {
         name: "*",
         path: "*/*",
-        redirect: "/"
+        component: NotFound
     }
 ];
 routes.forEach(function (route) {
@@ -215,9 +224,13 @@ const router = new VueRouter({
     //mode: "history"
 });
 
-export function beforeEach(to, from, next) {
+export async function beforeEach(to, from, next, store) {
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
-    next()
+    if (store.state.users.user().isLoggedIn){
+        await store.dispatch('users/validateUserToken');
+    }
+    next();
+
 }
 
 export function isLoggedIn(to, from, next, store) {
@@ -225,24 +238,12 @@ export function isLoggedIn(to, from, next, store) {
         next()
     }
     else {
+        const target = to.path;
         next({
-            name: "Login" // back to safety route //
+            name: "Login", // back to safety route //
+            query: {goTo: target}
         });
     }
 }
-
-/*
-export function canEdit(to, from, next, store){
-    if (!store.state.users.user().isLoggedIn) {
-        next({
-            name: "Login" // back to safety route //
-        });
-    }
-    else {
-        // implement canEdit here. If can edit go next() else create a cant edit page/error message.
-        next();
-    }
-}
-*/
 
 export default router;

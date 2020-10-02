@@ -15,7 +15,7 @@ describe('searchFilters store methods', () => {
         rawFilters: [],
         filters: [],
         filterButtons: [
-            [{ active: true }]
+            {data: [ { active: true }]}
         ],
         isLoadingFilters: false
     };
@@ -51,7 +51,7 @@ describe('searchFilters store methods', () => {
 
     it("can deactivate a filter status", () => {
         mutations.resetFilterButtons(state, 0);
-        expect(state.filterButtons[0]).toStrictEqual([{ active: false }]);
+        expect(state.filterButtons[0]).toStrictEqual({data: [{ active: false }]});
     });
 
     it("can check the activateFilterButtonsItem mutations", () => {
@@ -65,7 +65,7 @@ describe('searchFilters store methods', () => {
             'activeItem': fakeSelectedItem,
             'itemParentIndex': 0
         });
-        expect(state.filterButtons[0]).toStrictEqual([{ active: false }]);
+        expect(state.filterButtons[0]).toStrictEqual({data: [{ active: false }]});
     });
 
     it("can check buildFilters function", () => {

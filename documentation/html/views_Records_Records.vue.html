@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -220,25 +220,24 @@ export default {
       Object.keys(this.$route.query).forEach(function (prop) {
         let queryVal = client.$route.query[prop];
         if (queryVal) {
-          queryParams[prop] = decodeURI(queryVal);
+            queryParams[prop] = decodeURI(queryVal);
         }
       });
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-        title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-      } else title = title.charAt(0).toUpperCase() + title.slice(1);
+          title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+      }
+      else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
   watch: {
     currentPath: async function () {
       await this.tryRedirect();
-      await this.getData();
     }
   },
   mounted: function () {
     this.$nextTick(async function () {
       await this.tryRedirect();
-      await this.getData();
     });
   },
   created() {
@@ -264,18 +263,19 @@ export default {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
       if (_module.offsetTop > 100 &amp;&amp; _module.records.length > 1) {
-        _module.setStickToTopLocal(true);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          bodyOverflowState: true,
-          headerVisibilityState: false,
+          _module.setStickToTopLocal(true);
+          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+            bodyOverflowState: true,
+            headerVisibilityState: false,
         });
-      } else {
-        _module.setStickToTopLocal(false);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          bodyOverflowState: true,
-          drawerVisibilityState: false,
-          headerVisibilityState: true,
-        });
+      }
+      else {
+          _module.setStickToTopLocal(false);
+          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+            bodyOverflowState: true,
+            drawerVisibilityState: false,
+            headerVisibilityState: true,
+          });
       }
       _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
           _module.setScrollStatusLocal(false);
@@ -288,18 +288,21 @@ export default {
       if (Object.keys(this.recordTypes).includes(this.$route.name)) {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
         let query = this.$route.params;
-        if (query) {
+        if (query &amp;&amp; query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
           try {
             await this.$router.push({
               name: "search",
               query: query
             });
-          } catch (e) {
+            return true;
+          }
+          catch (e) {
             //
           }
         }
       }
+      await this.getData()
     },
     /** This methods get the data from the client.
      * @returns {Promise}
@@ -310,7 +313,8 @@ export default {
       const _module = this;
       try {
         await _module.fetchRecords(this.getParameters());
-      } catch (e) {
+      }
+      catch (e) {
         this.errors = e.message;
       }
     },
@@ -443,9 +447,9 @@ export default {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Mon Sep 14th 2020
+		on Tue Sep 29th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -3,14 +3,68 @@
     id="recordEditor"
     fluid
   >
+    <!-- TODO: Loop through the buttons -->
+    <!-- popup to confirm exit from editing -->
     <v-row>
-      <v-col>
+      <v-col
+        v-for="(panelData) in confirmPanels"
+        :key="panelData.name"
+      >
+        <v-dialog
+          v-model="panelData.show"
+          max-width="600px"
+        >
+          <v-card>
+            <v-card-title class="headline">
+              {{ panelData.name }}
+            </v-card-title>
+            <v-card-text>{{ panelData.description }}</v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <v-btn
+                color="green darken-1"
+                text
+                @click="panelData.method()"
+              >
+                Yes.
+              </v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="panelData.show = false"
+              >
+                No, keep editing.
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
+    </v-row>
+
+
+    <v-row v-if="hasLoaded">
+      <v-col v-if="error">
+        <Unauthorized />
+      </v-col>
+
+      <v-col v-else>
         <v-toolbar
           flat
           color="primary"
           dark
         >
           <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
+          <v-spacer />
+
+          <v-btn
+            v-for="(panelData) in confirmPanels"
+            :id="panelData.name + '_button'"
+            :key="panelData.name"
+            class="default ml-2"
+            @click="panelData.show = true"
+          >
+            {{ panelData.name }}
+          </v-btn>
         </v-toolbar>
         <v-tabs dark>
           <v-tab
@@ -75,13 +129,17 @@
   import { mapActions, mapState } from "vuex"
   import EditGeneralInfo from "@/components/Editor/EditGeneralInfo";
   import EditKeywords from "@/components/Editor/EditKeywords";
-  import EditSupport from "../../components/Editor/EditSupport";
-  import EditRelationships from "../../components/Editor/EditRelationships";
-  import EditLicences from "../../components/Editor/EditLicences";
-  import EditMaintainers from "../../components/Editor/EditMaintainers";
-  import EditOrganisations from "../../components/Editor/EditOrganisations";
-  import EditGrants from "../../components/Editor/EditGrants";
-  import EditPublications from "../../components/Editor/EditPublications";
+  import EditSupport from "@/components/Editor/EditSupport";
+  import EditRelationships from "@/components/Editor/EditRelationships";
+  import EditLicences from "@/components/Editor/EditLicences";
+  import EditMaintainers from "@/components/Editor/EditMaintainers";
+  import EditOrganisations from "@/components/Editor/EditOrganisations";
+  import EditGrants from "@/components/Editor/EditGrants";
+  import EditPublications from "@/components/Editor/EditPublications";
+  import Unauthorized from "@/views/Errors/403"
+  import RESTClient from "@/components/Client/RESTClient.js"
+
+  const client = new RESTClient();
 
   export default {
     name: "Editor",
@@ -94,10 +152,33 @@
       EditRelationships,
       EditSupport,
       EditKeywords,
-      EditGeneralInfo
+      EditGeneralInfo,
+      Unauthorized
     },
     data(){
+      let _module = this;
       return {
+        error: false,
+        hasLoaded: false,
+        dataChanged: false,
+        confirmPanels: [
+          {
+            name: "Reload data",
+            description: "This will reload your record from the database, discarding any unsaved changes.\n" +
+                    "Are you sure you'd like to do this?",
+            method: function() {
+              this.show = false;
+              return _module.confirmReloadData()
+            },
+            show: false
+          },
+          {
+            name: "Exit editing",
+            description: "This will return to the record page without saving. Are you sure you'd like to do this?",
+            method: function() { return _module.confirmReturnToRecord() },
+            show: false
+          }
+        ],
         tabs: [
           {
             name: "Edit General Information",
@@ -139,16 +220,54 @@
       }
     },
     computed: {
-      ...mapState('record', ['currentRecord'])
+      ...mapState('record', ['currentRecord']),
+      ...mapState('users', ['user']),
+      userToken(){
+        const _module = this;
+        return (_module.user().credentials) ? _module.user().credentials.token : null ;
+      }
     },
-    async mounted(){
-      let id = this.$route.params.id;
-      await this.fetchRecord(id)
+    watch: {
+      async userToken(){
+        await this.getData();
+      }
+    },
+    async mounted() {
+      this.$nextTick(async () => {
+        await this.getData();
+      })
     },
     methods: {
-      ...mapActions("record", ["fetchRecord"])
-    },
+      ...mapActions("record", ["fetchRecord"]),
+      async getData(){
+        const _module = this;
+        _module.hasLoaded = false;
+        _module.error = false;
 
+        let userToken = _module.userToken;
+        let id = _module.$route.params.id;
+        if (id.includes('FAIRsharing.')){
+          id = "10.25504/" + id;
+        }
+        await _module.fetchRecord(id);
+        let canEdit = await client.canEdit(_module.currentRecord['fairsharingRecord'].id, userToken);
+        if (canEdit.error) {
+          _module.error = true;
+        }
+        _module.hasLoaded = true;
+      },
+      confirmReturnToRecord() {
+        const _module = this;
+        let recordID = _module.currentRecord['fairsharingRecord'].id;
+        _module.exitPageCheck = true;
+        _module.$router.push({ path: `/${recordID}` });
+      },
+      async confirmReloadData() {
+        const _module = this;
+        let recordID = _module.currentRecord['fairsharingRecord'].id;
+        await _module.fetchRecord(recordID);
+      }
+    },
   }
 </script>
 

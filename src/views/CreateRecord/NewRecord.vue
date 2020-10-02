@@ -7,10 +7,16 @@
       <v-col cols="12">
         <v-card>
           <v-card-title class="primary white--text">
-            <h3>Creating a new FAIRsharing record</h3>
+            <h3 class="white--text">
+              Creating a new FAIRsharing record
+            </h3>
           </v-card-title>
           <v-card-text class="pt-3">
-            <form>
+            <v-form
+              id="createRecord"
+              ref="createRecord"
+              v-model="formValid"
+            >
               <v-container
                 id="recordMetadata"
                 fluid
@@ -29,6 +35,7 @@
                         :hint="fieldVal.description"
                         outlined
                         :required="fieldVal.required"
+                        :rules="fieldVal.rules"
                       />
                     </div>
 
@@ -41,6 +48,7 @@
                         :hint="fieldVal.description"
                         outlined
                         :required="fieldVal.required"
+                        :rules="fieldVal.rules"
                       />
                     </div>
 
@@ -57,6 +65,7 @@
                         return-object
                         :required="fieldVal.required"
                         :disabled="fieldName !== 'Record Type' && models.recordType !== null && models.recordType.name === 'collection'"
+                        :rules="fieldVal.rules"
                       >
                         <!-- autocomplete selected -->
                         <template v-slot:selection="data">
@@ -86,13 +95,14 @@
                   <v-btn
                     type="submit"
                     class="primary"
+                    :disabled="!formValid"
                     @click="createRecord()"
                   >
                     Create Record
                   </v-btn>
                 </v-row>
               </v-container>
-            </form>
+            </v-form>
           </v-card-text>
         </v-card>
       </v-col>
@@ -105,7 +115,9 @@
     import GraphClient from "@/components/GraphClient/GraphClient.js"
     import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
     import RESTClient from "@/components/Client/RESTClient.js"
-    import status from "@/components/Editor/status.json"
+    import status from "@/data/status.json"
+    import { isLongEnough, isRequired, isUrl } from "@/utils/rules.js"
+
 
     let client = new GraphClient();
     let restClient = new RESTClient();
@@ -123,6 +135,7 @@
                 recordType: null,
                 recordStatus: null,
             },
+            formValid: false
           }
         },
         computed: {
@@ -170,30 +183,35 @@
                 name: {
                     type: "string",
                     description: "The name of the record",
-                    required: true
+                    required: true,
+                    rules: [isLongEnough(5), isRequired()]
                 },
                 abbreviation: {
                     type: "string",
                     description: "Abbreviation or short name for the record",
-                    required: false
+                    required: false,
+                    rules: [isRequired()]
                 },
                 homepage: {
                     type: "string",
                     description: "The homepage of the record",
                     format: "uri",
-                    required: false
+                    required: false,
+                    rules: [isUrl(), isRequired()]
                 },
                 "Record Type": {
                     type: "autocomplete",
                     source: "recordsTypes",
                     required: true,
-                    target: "recordType"
+                    target: "recordType",
+                  rules: [isRequired()]
                 },
                 status: {
                     type: "autocomplete",
                     source: "status",
                     required: false,
-                    target: "recordStatus"
+                    target: "recordStatus",
+                    rules: [isRequired()]
                 },
                 "deprecation_reason": {
                     type: "longtext",
@@ -205,7 +223,8 @@
                     type: "longtext",
                     description: "The description of the record",
                     required: false,
-                    label: "description"
+                    label: "description",
+                    rules: [isRequired()]
                 }
             }
           },

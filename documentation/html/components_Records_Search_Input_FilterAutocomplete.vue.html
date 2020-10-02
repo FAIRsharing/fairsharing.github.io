@@ -118,7 +118,7 @@
             &lt;/v-chip>
           &lt;/template>
           &lt;template v-slot:item="data">
-            &lt;div class="d-flex align-content-around">
+            &lt;div class="d-flex full-width">
               &lt;span class="filterValueName"> {{ cleanString(data.item.key) }}&lt;/span>
               &lt;span class="filterValueCount"> {{ data.item['doc_count'] }}&lt;/span>
             &lt;/div>
@@ -283,10 +283,10 @@ export default {
 }
 
 .filterValueName {
-  width: 315px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  flex: 1;
 }
 
 .chipsValueName {

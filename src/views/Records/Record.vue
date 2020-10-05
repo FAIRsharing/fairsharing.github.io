@@ -106,7 +106,10 @@
               <Licences />
 
               <!-- MAINTAINERS -->
-              <Maintainers />
+              <Maintainers
+                :can-claim="canClaim"
+                @requestOwnership="requestOwnership"
+              />
 
               <!-- PUBLICATIONS -->
               <Publications />

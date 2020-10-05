@@ -200,8 +200,15 @@ export default {
         comparison = 1;
       }
       return comparison;
-    }
-  },
+    },
+/*
+  /please do not remove this function/
+  onScroll({target: {scrollTop, clientHeight, scrollHeight}}) {
+      if (scrollTop + clientHeight >= scrollHeight) {
+         // console.log('end');
+      }
+    }*/
+  }
 }
 &lt;/script>
 

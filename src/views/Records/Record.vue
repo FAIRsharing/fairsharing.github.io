@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-main>
     <h1 class="d-none">
       Content
@@ -12,27 +12,62 @@
           <NotFound />
         </v-col>
       </v-row>
+
       <v-row
-        v-if="user().isLoggedIn && !error"
+        v-else
         class="pr-3"
       >
-        <v-spacer />
-        <v-btn
-          v-if="canClaim"
-          id="requestOwnershipButton"
-          class="warning"
-          @click="requestOwnership()"
+        <v-col
+          cols="12"
+          class="d-flex"
         >
-          REQUEST OWNERSHIP
-        </v-btn>
-        <v-btn
-          v-if="canEdit"
-          class="success ml-1"
-          @click="goToEdit()"
-        >
-          EDIT
-        </v-btn>
+          <v-alert
+            v-if="alreadyClaimed || claimedTriggered"
+            :type="claimedTriggered ? 'success' : 'warning'"
+            style="flex:1"
+            class="mr-3"
+          >
+            <span v-if="alreadyClaimed"> You have already requested to maintain this record. </span>
+            <span v-if="claimedTriggered"> Thank you for claiming this record. </span>
+            <span> We will be getting back to you between 48 and 72h.</span>
+          </v-alert>
+          <v-spacer v-else />
+          <v-menu
+            cmass="mt-3"
+            offset-y
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="mt-2"
+                color="primary"
+                v-bind="attrs"
+                v-on="on"
+              >
+                Actions
+                <v-icon
+                  small
+                  right
+                >
+                  fa-chevron-down
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(button, index) in getMenuButtons"
+                :key="'button_' + index"
+                :disabled="button.isDisabled()"
+                @click="button.method()"
+              >
+                <v-list-item-title>
+                  {{ button.name }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-col>
       </v-row>
+
       <!--  Content  -->
       <v-row
         v-if="currentRecord['fairsharingRecord'] && !error"
@@ -71,7 +106,10 @@
               <Licences />
 
               <!-- MAINTAINERS -->
-              <Maintainers />
+              <Maintainers
+                :can-claim="canClaim"
+                @requestOwnership="requestOwnership"
+              />
 
               <!-- PUBLICATIONS -->
               <Publications />
@@ -92,7 +130,7 @@
 </template>
 
 <script>
-    import {mapActions, mapState} from 'vuex'
+    import {mapActions, mapState, mapGetters} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
     import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
@@ -129,7 +167,9 @@
                 showScrollToTopButton: false,
                 recordAssociations: [],
                 canEdit: false,
-                canClaim: false
+                canClaim: false,
+                alreadyClaimed: false,
+                claimedTriggered: false,
             }
         },
         computed: {
@@ -142,17 +182,64 @@
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
             ...mapState('users', ["user"]),
+            ...mapGetters("record", ["getField"]),
             userIsLoggedIn(){
               return this.user().isLoggedIn;
             },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
             },
+            getMenuButtons(){
+              let _module = this;
+              return [
+                {
+                  name: "Edit record",
+                  isDisabled: function(){
+                    if (!_module.userIsLoggedIn){
+                      return false
+                    }
+                    return !_module.canEdit
+                  },
+                  method: function(){return _module.goToEdit()}
+                },
+                {
+                  name: "Request ownership",
+                  isDisabled: function(){
+                    if (!_module.userIsLoggedIn){
+                      return false
+                    }
+                    return !_module.canClaim
+                  },
+                  method: function(){
+                    if (!_module.userIsLoggedIn){
+                        _module.$router.push({
+                        path: "/accounts/login",
+                        query: {
+                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                        }
+                      })
+                    }
+                    else {
+                      return _module.requestOwnership()
+                    }
+                  }
+                },
+                {
+                  name: "Watch record",
+                  disable: true,
+                  isDisabled: function(){ return true},
+                  method: function(){return null}
+                },
+                {
+                  name: "Have a suggestion/question ?",
+                  isDisabled: function(){ return true},
+                  method: function(){return null}
+                }
+              ];
+            }
         },
         watch: {
-            async currentRoute() {
-                await this.getData();
-            },
+            async currentRoute() {await this.getData()},
             async userIsLoggedIn() {
               await this.canEditRecord();
               await this.checkClaimStatus();
@@ -224,6 +311,7 @@
               else {
                 // show modal here
                 _module.canClaim = false;
+                _module.claimedTriggered = true;
               }
             },
             /**
@@ -236,6 +324,12 @@
                 const recordID = _module.currentRecord['fairsharingRecord'].id;
                 const claim = await client.canClaim(recordID, _module.user().credentials.token);
                 if (claim.error) {
+                  if (claim.error.response.data.existing){
+                    let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
+                    if (maintainer.length === 0){
+                      _module.alreadyClaimed = true;
+                    }
+                  }
                   _module.canClaim = false;
                 }
                 else {
@@ -252,6 +346,8 @@
                 let _module = this;
                 this.queryTriggered = false;
                 this.error = null;
+                this.alreadyClaimed = false;
+                this.claimedTriggered = false;
                 try {
                     await _module.fetchRecord(this.currentRoute);
                     const currentRecord = _module.currentRecord['fairsharingRecord'];

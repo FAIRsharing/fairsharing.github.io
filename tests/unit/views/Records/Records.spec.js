@@ -19,6 +19,7 @@ localVue.use(VueMeta);
 const $route = {
     name: "Standards",
     path: "standard",
+    fullPath:"standard",
     query: {
         fairsharingRegistry: "Standard",
         grants: "string",
@@ -128,7 +129,6 @@ describe("Records.vue", () => {
         expect(wrapper.vm.currentPath[0]).toBe("Search");
         $route.path = "/standard";
         expect(wrapper.vm.currentPath[0]).toBe("Standard");
-
     });
 
     it("can correctly redirect", async () => {
@@ -198,6 +198,12 @@ describe("Records.vue", () => {
         actions.setGeneralUIAttributesAction({})
         expect(actions.commit).toHaveBeenCalledTimes(3);
         wrapper.vm.onScroll(mEvent);
+    });
+
+    it("react to fullPath changes", async () => {
+        $route.fullPath = 'somePath';
+        expect(wrapper.vm.currentFullPath).toBe('somePath');
+        //wrapper.vm.scrollToTopTimer('target-scroll');
     });
 
 });

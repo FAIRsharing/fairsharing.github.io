@@ -34,6 +34,7 @@
               class="mr-1 mt-sm-1"
               :class="item.color"
               :to="item.link"
+              @click.native="scrollToTop('scroll-target')"
             >
               <span class="white--text">{{ item.label }}</span>
             </v-btn>
@@ -85,9 +86,11 @@
 import {mapState} from 'vuex'
 import Login from "@/views/Users/Login/Login";
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
+import scrollUtils from "@/utils/scrollUtils";
 
 export default {
   name: "Header",
+  mixins: [scrollUtils],
   components: {StringSearch, Login},
   computed: {
     ...mapState('uiController', ["UIGeneralStatus"]),

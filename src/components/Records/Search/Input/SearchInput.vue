@@ -6,10 +6,6 @@
       tile
       elevation="3"
     >
-      <!--
-      this code is related to v-card. will be used later..
-            v-scroll.self="onScroll"
-      -->
       <h2 class="d-none">
         Filter List
       </h2>
@@ -108,13 +104,6 @@ export default {
       }
       return comparison;
     },
-/*
-  /please do not remove this function/
-  onScroll({target: {scrollTop, clientHeight, scrollHeight}}) {
-      if (scrollTop + clientHeight >= scrollHeight) {
-         // console.log('end');
-      }
-    }*/
   }
 }
 </script>

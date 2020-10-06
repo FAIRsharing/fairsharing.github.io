@@ -147,12 +147,7 @@ export default {
     },
     currentFullPath:async function () {
       const _module = this;
-      let currentFullPathLocal = _module.currentFullPath;
-      let oldFullPath = null;
-      if (currentFullPathLocal !== oldFullPath) {
-        oldFullPath = currentFullPathLocal;
-        setTimeout(_module.scrollToTopTimer,200);
-      }
+      setTimeout(_module.scrollToTopTimer,200);
     }
   },
   mounted: function () {
@@ -180,7 +175,7 @@ export default {
     ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
     ...mapActions({setStickToTopLocal: 'uiController/setStickToTop'}),
     scrollToTopTimer:function (){
-      this.scrollToTop('scroll-target')
+      this.scrollToTop('scroll-target');
     },
     onScroll: function (e) {
       let _module = this;

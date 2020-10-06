@@ -203,7 +203,7 @@ describe("Records.vue", () => {
     it("react to fullPath changes", async () => {
         $route.fullPath = 'somePath';
         expect(wrapper.vm.currentFullPath).toBe('somePath');
-        //wrapper.vm.scrollToTopTimer('target-scroll');
+        wrapper.vm.scrollToTopTimer();
     });
 
 });

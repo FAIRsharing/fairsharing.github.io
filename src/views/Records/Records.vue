@@ -52,7 +52,6 @@
           <SearchInput
             :class="[responsiveClassObject]"
           />
-          <!--                    <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">-->
         </v-col>
         <v-col class="mt-2">
           <SearchOutput

@@ -21,6 +21,7 @@ import Privacy from "@/views/Static/Privacy/Privacy";
 import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
 import ResendConfirmation from "@/views/Users/ResendConfirmation.vue"
 import User from "@/views/Users/User.vue"
+import Curator from "@/views/Curators/Curator.vue"
 import RequestNewPassword from "@/views/Users/RequestNewPassword";
 import ResetPassword from "@/views/Users/ResetPassword";
 import EditProfile from "@/views/Users/EditProfile";
@@ -181,6 +182,15 @@ let routes = [
         }
     },
 
+    // CURATORS
+    {
+        name: "Curator",
+        path: "/curator",
+        component: Curator,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+        }
+    },
     /*
     Careful, this has to be the very last base path  !!!!
     This component"s page title is handled in the component itself as it needs the :id param

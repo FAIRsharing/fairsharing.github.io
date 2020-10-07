@@ -25,28 +25,28 @@ describe('Mutations & Actions', () => {
         }
         actions.commit = jest.fn();
         actions.setGeneralUIAttributesAction(state, fakeObject);
-        expect(actions.commit).toHaveBeenCalledTimes(1);
+        expect(actions.commit).toHaveBeenCalledWith("uiController/setUIStatus",fakeObject);
     });
 
     it("can check the setScrollStatus action", () => {
         let fakeState = true;
         actions.commit = jest.fn();
         actions.setScrollStatus(state, fakeState);
-        expect(actions.commit).toHaveBeenCalledTimes(1);
+        expect(actions.commit).toHaveBeenCalledWith("uiController/setScrollStatus",fakeState);
     });
 
     it("can check the setStickToTop action", () => {
         let fakeState = true;
         actions.commit = jest.fn();
         actions.setStickToTop(state, fakeState);
-        expect(actions.commit).toHaveBeenCalledTimes(1);
+        expect(actions.commit).toHaveBeenCalledWith("uiController/setStickToTop",fakeState);
     });
 
     it("can check the setComponentOverflow action", () => {
         let fakeState = true;
         actions.commit = jest.fn();
         actions.setComponentOverflow(state, fakeState);
-        expect(actions.commit).toHaveBeenCalledTimes(1);
+        expect(actions.commit).toHaveBeenCalledWith("uiController/setComponentOverflow",fakeState);
     });
 
     it("can check the setScrollStatus Mutations", () => {

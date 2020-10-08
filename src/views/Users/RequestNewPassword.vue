@@ -38,8 +38,8 @@
                 outlined
               />
               <v-btn
-                @click="sendEmail()"
                 :loading="loading"
+                @click="sendEmail()"
               >
                 Request new password
               </v-btn>

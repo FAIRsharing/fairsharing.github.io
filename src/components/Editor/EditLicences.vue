@@ -8,9 +8,9 @@
       >
         <v-icon
           class="white--text"
-          small
+          large
         >
-          fa fa-info
+          help_outline
         </v-icon>
       </v-btn>
       <b> EDIT LICENCES </b>
@@ -50,7 +50,7 @@
               dark
               @click="addLicence()"
             >
-              <v-icon>fa-plus</v-icon>
+              <v-icon large>add</v-icon>
             </v-btn>
             <div
               class="ml-3"

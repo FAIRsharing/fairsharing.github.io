@@ -8,9 +8,9 @@
       >
         <v-icon
           class="white--text"
-          small
+          large
         >
-          fa fa-info
+          help_outline
         </v-icon>
       </v-btn>
       <b> EDIT PUBLICATIONS </b>

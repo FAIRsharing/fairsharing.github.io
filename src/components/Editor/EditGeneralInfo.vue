@@ -7,7 +7,7 @@
       <v-btn
         class="blue mr-4"
         fab
-        small
+        x-small
       >
         <v-icon
           class="white--text"
@@ -15,8 +15,7 @@
         >
           help_outline
         </v-icon>
-      </v-btn>
-      <b> EDIT GENERAL INFORMATION </b>
+      </v-btn>      <b> EDIT GENERAL INFORMATION </b>
     </v-card-title>
     <v-alert
       v-if="error && error_message"

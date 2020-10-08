@@ -8,9 +8,9 @@
       >
         <v-icon
           class="white--text"
-          small
+          large
         >
-          fa fa-info
+          help_outline
         </v-icon>
       </v-btn>
       <b> EDIT KEYWORDS </b>
@@ -49,7 +49,7 @@
                       class="white--text mr-3"
                       v-on="on"
                     >
-                      fa-question-circle
+                      help_outline
                     </v-icon>
                   </template>
                   {{ descriptions[itemName] }}

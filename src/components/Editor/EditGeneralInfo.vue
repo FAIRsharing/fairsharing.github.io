@@ -7,13 +7,13 @@
       <v-btn
         class="blue mr-4"
         fab
-        x-small
+        small
       >
         <v-icon
           class="white--text"
-          small
+          large
         >
-          fa fa-info
+          help_outline
         </v-icon>
       </v-btn>
       <b> EDIT GENERAL INFORMATION </b>
@@ -46,7 +46,7 @@
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
                       <v-icon v-on="on">
-                        fa-question-circle
+                        help_outline
                       </v-icon>
                     </template>
                     Name of the record
@@ -72,7 +72,7 @@
                   >
                     <template v-slot:activator="{ on }">
                       <v-icon v-on="on">
-                        fa-question-circle
+                        help_outline
                       </v-icon>
                     </template>
                     {{ descriptions['abbreviation'] }}
@@ -98,7 +98,7 @@
                   >
                     <template v-slot:activator="{ on }">
                       <v-icon v-on="on">
-                        fa-question-circle
+                        help_outline
                       </v-icon>
                     </template>
                     {{ descriptions['homepage'] }}
@@ -124,7 +124,7 @@
                   >
                     <template v-slot:activator="{ on }">
                       <v-icon v-on="on">
-                        fa-question-circle
+                        help_outline
                       </v-icon>
                     </template>
                     {{ descriptions['year'] }}
@@ -154,7 +154,7 @@
                   >
                     <template v-slot:activator="{ on }">
                       <v-icon v-on="on">
-                        fa-question-circle
+                        help_outline
                       </v-icon>
                     </template>
                     {{ descriptions['countries'] }}
@@ -272,7 +272,7 @@
                   >
                     <template v-slot:activator="{ on }">
                       <v-icon v-on="on">
-                        fa-question-circle
+                        help_outline
                       </v-icon>
                     </template>
                     {{ descriptions['deprecation_reason'] }}
@@ -299,7 +299,7 @@
                   >
                     <template v-slot:activator="{ on }">
                       <v-icon v-on="on">
-                        fa-question-circle
+                        help_outline
                       </v-icon>
                     </template>
                     {{ descriptions['description'] }}

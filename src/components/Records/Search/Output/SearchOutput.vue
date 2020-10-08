@@ -60,7 +60,6 @@
       </div>
       <!-- ColumnCard view -->
       <div
-        v-if="isColumnList"
         :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]"
       >
         <v-skeleton-loader

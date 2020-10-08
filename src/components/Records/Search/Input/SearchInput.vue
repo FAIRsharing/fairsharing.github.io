@@ -6,10 +6,6 @@
       tile
       elevation="3"
     >
-      <!--
-      this code is related to v-card. will be used later..
-            v-scroll.self="onScroll"
-      -->
       <h2 class="d-none">
         Filter List
       </h2>
@@ -107,8 +103,8 @@ export default {
         comparison = 1;
       }
       return comparison;
-    }
-  },
+    },
+  }
 }
 </script>
 

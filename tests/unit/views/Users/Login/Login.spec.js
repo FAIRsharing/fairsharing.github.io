@@ -70,6 +70,20 @@ describe("Login.vue", ()=> {
         };
         await wrapper.vm.logUser();
         expect(wrapper.vm.$route.path).toBe("/accounts/login");
+
+        $route.query = {};
+        let anotherWrapper = shallowMount(Login, {
+            localVue,
+            router,
+            propsData: {
+                redirect: true,
+            },
+            stubs: ['router-link', 'router-view'],
+            mocks: {$store, $route, $router}
+        });
+        await anotherWrapper.vm.logUser();
+        expect($router.push).toHaveBeenCalledWith({path: "/accounts/profile"});
+        $route.query = {goTo: "/123"};
     });
 
     it("can prevent users from logging in", async () => {

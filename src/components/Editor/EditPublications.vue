@@ -80,7 +80,7 @@
                       @click="editPublication(publication, pubIndex)"
                     >
                       <v-icon small>
-                        fas fa-pen
+                        edit
                       </v-icon>
                     </v-btn>
                   </template>
@@ -96,7 +96,7 @@
                       @click="removePublication(pubIndex)"
                     >
                       <v-icon small>
-                        fa-trash
+                        delete
                       </v-icon>
                     </v-btn>
                   </template>

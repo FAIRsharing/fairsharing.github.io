@@ -14,7 +14,7 @@
           v-on="on"
         >
           <v-icon>
-            fa-bars
+            reorder
           </v-icon>
         </v-btn>
       </template>

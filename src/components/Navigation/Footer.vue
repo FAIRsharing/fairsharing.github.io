@@ -30,9 +30,8 @@
           Contact Us
         </h4>
         <li>
-          <a href="mailto:contact@fairsharing.org?subject=FAIRsharing Issue"><i
-            class="fa fa-envelope-o"
-          />
+          <a href="mailto:contact@fairsharing.org?subject=FAIRsharing Issue">
+            <v-icon>email</v-icon>
             Email us for
             all
             enquiries</a>
@@ -41,16 +40,16 @@
           <a
             href="https://www.facebook.com/fairsharing"
             target="_blank"
-          ><i
-            class="fa fa-facebook-official"
-          />
+          >
+            <v-icon>mdi-facebook</v-icon>
             Facebook</a>
         </li>
         <li>
           <a
             href="https://www.twitter.com/fairsharing_org"
             target="_blank"
-          ><i class="fa fa-twitter" />
+          >
+            <v-icon>mdi-twitter</v-icon>
             Twitter</a>
         </li>
       </ul>
@@ -64,16 +63,16 @@
           <a
             href="https://www.facebook.com/fairsharing"
             target="_blank"
-          ><i
-            class="fa fa-facebook-official"
-          />
+          >
+            <v-icon>mdi-facebook</v-icon>
             Facebook</a>
         </li>
         <li>
           <a
             href="https://www.twitter.com/fairsharing_org"
             target="_blank"
-          ><i class="fa fa-twitter" />
+          >
+            <v-icon>mdi-twitter</v-icon>
             Twitter</a>
         </li>
       </ul>

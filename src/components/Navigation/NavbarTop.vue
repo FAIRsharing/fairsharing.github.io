@@ -75,7 +75,7 @@
      *
      */
     export default {
-        name: "NavbarTop",
+    name: "NavbarTop",
     components: {Login},
     computed: {
           ...mapState('users', ["user"])

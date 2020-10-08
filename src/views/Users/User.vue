@@ -60,7 +60,6 @@
                     >
                       <v-expansion-panel-header
                         class="headline blue--text"
-                        expand-icon="fa-arrow-down blue--text"
                       >
                         {{ sectionName | cleanString }}
                       </v-expansion-panel-header>

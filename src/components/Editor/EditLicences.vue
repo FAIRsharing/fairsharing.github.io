@@ -50,7 +50,9 @@
               dark
               @click="addLicence()"
             >
-              <v-icon large>add</v-icon>
+              <v-icon large>
+                add
+              </v-icon>
             </v-btn>
             <div
               class="ml-3"
@@ -126,7 +128,9 @@
                   class="red"
                   @click="removeLicence(licenceIndex)"
                 >
-                  <v-icon> fa-minus </v-icon>
+                  <v-icon large>
+                    mdi-minus
+                  </v-icon>
                 </v-btn>
                 <div
                   class="ml-3 pt-1"

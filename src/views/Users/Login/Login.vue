@@ -90,7 +90,7 @@
                 <!-- password -->
                 <v-text-field
                   v-model="loginData.password"
-                  :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
+                  :append-icon="show1 ? 'visibility' : 'visibility_off'"
                   :type="show1 ? 'text' : 'password'"
                   label="Password"
                   counter

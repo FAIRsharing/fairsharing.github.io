@@ -48,7 +48,7 @@
                   small
                   right
                 >
-                  fa-chevron-down
+                  expand_more
                 </v-icon>
               </v-btn>
             </template>

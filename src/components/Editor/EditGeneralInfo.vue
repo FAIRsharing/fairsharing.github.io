@@ -288,7 +288,7 @@
                 :rules="[rules.isRequired(), rules.isLongEnough(10)]"
                 :hint="descriptions['description']"
                 outlined
-                prepend-icon="fa-question-circle"
+                prepend-icon="help_outline"
               >
                 <template v-slot:prepend>
                   <v-tooltip

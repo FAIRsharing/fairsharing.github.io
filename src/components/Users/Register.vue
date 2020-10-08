@@ -83,10 +83,10 @@
                     @click="showPwd = !showPwd"
                   >
                     <v-icon v-if="showPwd">
-                      fa-eye
+                      visibility
                     </v-icon>
                     <v-icon v-else>
-                      fa-eye-slash
+                      visibility_off
                     </v-icon>
                   </div>
                   <validity-progress :password="loginData.password" />
@@ -96,7 +96,7 @@
               <!-- repeat password -->
               <v-text-field
                 v-model="loginData.repeatPwd"
-                :append-icon="showRepeat ? 'fa-eye' : 'fa-eye-slash'"
+                :append-icon="showRepeat ? 'visibility' : 'visibility_off'"
                 :type="showRepeat ? 'text' : 'password'"
                 label="Repeat password"
                 required

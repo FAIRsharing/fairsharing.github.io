@@ -21,7 +21,7 @@
       class="mt-1 mt-lg-1 ml-2"
       @click="searchString()"
     >
-      <v-icon>search</v-icon>
+      <v-icon x-small class="mr-1">fas fa-search</v-icon>
       <span class="button-text-size">Search</span>
     </v-btn>
   </form>

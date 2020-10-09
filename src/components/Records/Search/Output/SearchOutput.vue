@@ -32,9 +32,7 @@
         </v-alert>
       </div>
       <!--List Row-->
-      <div
-        :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]"
-      >
+      <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
         <article v-if="!isColumnList">
           <v-skeleton-loader
             class="mt-5"
@@ -59,27 +57,27 @@
         </article>
       </div>
       <!-- ColumnCard view -->
-      <div
-        :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]"
-      >
-        <v-skeleton-loader
-          class="mt-5"
-          :loading="loading"
-          type="image"
-        >
-          <v-row>
-            <RecordsCardColumn
-              v-for="record in records"
-              :key="'record_'+record.id"
-              :record="record"
+      <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
+        <article v-if="isColumnList">
+          <v-skeleton-loader
+            class="mt-5"
+            :loading="loading"
+            type="image"
+          >
+            <v-row>
+              <RecordsCardColumn
+                v-for="record in records"
+                :key="'record_'+record.id"
+                :record="record"
+              />
+            </v-row>
+            <!--List Controller-->
+            <Pagination
+              :total-pages="totalPages"
+              class="my-5"
             />
-          </v-row>
-          <!--List Controller-->
-          <Pagination
-            :total-pages="totalPages"
-            class="my-5"
-          />
-        </v-skeleton-loader>
+          </v-skeleton-loader>
+        </article>
       </div>
     </section>
     <section class="my-10 border-top">

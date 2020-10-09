@@ -20,7 +20,11 @@ userStore.state.user = function() {
     }
 };
 
-const $store = new Vuex.Store({
+let $router = {
+    push: jest.fn()
+};
+
+let $store = new Vuex.Store({
     modules: {
         users: userStore
     }
@@ -52,7 +56,7 @@ describe("UserProfileMenu.vue", () => {
     beforeEach(async() => {
         wrapper = await shallowMount(EditProfile, {
             localVue,
-            mocks: {$store}
+            mocks: {$store, $router}
         });
     });
 
@@ -63,6 +67,29 @@ describe("UserProfileMenu.vue", () => {
 
     it('can post the new user', async () => {
         await wrapper.vm.updateProfile();
-        expect(wrapper.vm.messages().updateProfile).toStrictEqual( {"error": false, "message": "Update successful !"});
+        expect($router.push).toHaveBeenCalledWith( {"path": "/accounts/profile"});
+        expect(wrapper.vm.messages().getUser.message).toBe("Your profile was updated successfully.");
+
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({data: {error:
+            {response: {data: {errors: {
+                field: 'test', message: 'error'
+            }}}}
+        }});
+        await wrapper.vm.updateProfile();
+        expect(wrapper.vm.messages().updateProfile).toStrictEqual({
+            message: { field: 'test', message: 'error' },
+            error: true
+        });
+    });
+
+    it("can process errors", async () => {
+        userStore.state.user = function() {return {metadata: {}}};
+        $store = new Vuex.Store({modules: {users: userStore}});
+        let anotherWrapper = await shallowMount(EditProfile, {
+            localVue,
+            mocks: {$store, $router}
+        });
+        expect(anotherWrapper.vm.formData).toBe(null);
     });
 });

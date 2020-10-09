@@ -15,14 +15,14 @@
         >
           <template v-slot:activator="{ on }">
             <v-icon
-              x-large
+              large
               class="mouse-cursor"
               :class="{'active':!isSortHovered}"
               v-on="on"
               @mouseenter="isSortHovered=true"
               @mouseleave="isSortHovered=false"
             >
-              sort
+              fa-sort-amount-up-alt
             </v-icon>
           </template>
           <sorting />
@@ -45,11 +45,11 @@
             type="avatar"
           >
             <v-icon
-              x-large
-              :class="{'active':isColumnList}"
+              large
+              :class="[{'active':isColumnList},'mr-2']"
               @click="changeListType('stackList')"
             >
-              view_headline
+              fa-list
             </v-icon>
           </v-skeleton-loader>
           <v-skeleton-loader
@@ -57,12 +57,11 @@
             type="avatar"
           >
             <v-icon
-              x-large
-              style="font-size: 2.8rem"
+              large
               :class="{'active':!isColumnList}"
               @click="changeListType('columnList')"
             >
-              view_column
+              fa-th-list
             </v-icon>
           </v-skeleton-loader>
         </div>

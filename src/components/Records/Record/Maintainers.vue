@@ -47,7 +47,7 @@
           color="secondary"
           class="mr-2"
         >
-          mdi-account-circle
+          fa fa-user-circle
         </v-icon>
         <b class="mr-2">User Name:</b>
         <a :href="maintainer.username + '/' + maintainer.id">

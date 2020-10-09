@@ -24,7 +24,7 @@
           color="secondary"
           class="mr-2"
         >
-          mdi-account
+          fas fa-user
         </v-icon>
         <b class="mr-2">Contact Name:</b>
         <p class="ma-0">
@@ -36,7 +36,7 @@
           color="secondary"
           class="mr-2"
         >
-          mdi-email
+          fas fa-envelope
         </v-icon>
         <b class="mr-2">Contact Email:</b>
         <p class="ma-0">

@@ -6,7 +6,7 @@
   >
     <v-row>
       <v-col cols12>
-        <v-card v-if="!messages()['getUser'].error">
+        <v-card v-if="!messages()['getUser'].error && user().is_curator">
           <v-list-item class="blue">
             <v-list-item-content class="pa-0">
               <v-list-item-title
@@ -132,7 +132,7 @@
 
 <script>
     import { mapActions, mapState } from "vuex"
-    import UserProfileMenu from "../../components/Users/UserProfileMenu";
+    import UserProfileMenu from "../../components/Users/UserProfileMenu"; 
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -162,6 +162,7 @@
                 userMeta[field] = _module.user().metadata[field]
               }
             });
+
             return userMeta;
           }
         },
@@ -171,6 +172,11 @@
               this.setError({field:"login", message:"You've been logged out automatically"});
               this.$router.push({path: "/accounts/login"})
             }
+            if (!this.user().is_curator){
+              this.setError({field:"login", message:"You've been logged out automatically as you are not a curator"});
+              this.$router.push({path: "/accounts/login"})
+            }
+
         },
         methods: {
             ...mapActions('users', ['getUser', 'resetPwd', 'setError']),

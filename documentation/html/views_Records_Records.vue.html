@@ -114,7 +114,7 @@
       id="scroll-target"
       fluid
       class="overflow-y-auto overflow-x-hidden"
-      :class="getChips.length &amp;&amp; stickToTop?'content-custom-new-height':'content-custom'"
+      :class="getChips.length &amp;&amp; stickToTop ? 'content-custom-new-height' : 'content-custom'"
     >
       &lt;!-- Title banner -->
       &lt;div>
@@ -132,9 +132,7 @@
       &lt;/div>
 
       &lt;!--  Content  -->
-      &lt;v-row
-        no-gutters
-      >
+      &lt;v-row no-gutters>
         &lt;v-col
           cols="12"
           lg="4"
@@ -142,10 +140,7 @@
           xl="3"
           class="d-none d-md-flex mt-2 ml-2"
         >
-          &lt;SearchInput
-            :class="[responsiveClassObject]"
-          />
-          &lt;!--                    &lt;div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">-->
+          &lt;SearchInput :class="[responsiveClassObject]" />
         &lt;/v-col>
         &lt;v-col class="mt-2">
           &lt;SearchOutput
@@ -166,12 +161,12 @@ import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import scrollUtils from "@/utils/scrollUtils";
+import {gotoTop} from "@/utils/navigationUtils";
 
 export default {
   name: "Records",
-  components: { JumpToTop, SearchOutput, SearchInput, FilterChips},
-  mixins: [filterChipsUtils,scrollUtils],
+  components: {JumpToTop, SearchOutput, SearchInput, FilterChips},
+  mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
     offsetTop: 0,
@@ -230,17 +225,10 @@ export default {
       else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
-    currentFullPath:function (){
-      return this.$route.fullPath;
-    }
   },
   watch: {
     currentPath: async function () {
       await this.tryRedirect();
-    },
-    currentFullPath:async function () {
-      const _module = this;
-      setTimeout(_module.scrollToTopTimer,200);
     }
   },
   mounted: function () {
@@ -261,35 +249,31 @@ export default {
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
-    this.setStickToTopLocal(false);
+    this.setStickToTop(false);
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),
-    ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
-    ...mapActions({setStickToTopLocal: 'uiController/setStickToTop'}),
-    scrollToTopTimer:function (){
-      this.scrollToTop('scroll-target');
-    },
+    ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
     onScroll: function (e) {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
       if (_module.offsetTop > 100 &amp;&amp; _module.records.length > 1) {
-          _module.setStickToTopLocal(true);
+          _module.setStickToTop(true);
           _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
             bodyOverflowState: true,
             headerVisibilityState: false,
         });
       }
       else {
-          _module.setStickToTopLocal(false);
+          _module.setStickToTop(false);
           _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
             bodyOverflowState: true,
             drawerVisibilityState: false,
             headerVisibilityState: true,
           });
       }
-      _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
-          _module.setScrollStatusLocal(false);
+      _module.offsetTop > 500 ? _module.setScrollStatus(true) :
+          _module.setScrollStatus(false);
     },
     /**
      * Try to redirect to search of the page that is hit is /standards /databases
@@ -301,29 +285,25 @@ export default {
         let query = this.$route.params;
         if (query &amp;&amp; query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
-          try {
-            await this.$router.push({
-              name: "search",
-              query: query
-            });
-            return true;
-          }
-          catch (e) {
-            //
-          }
+          this.$router.push({
+            name: "search",
+            query: query
+          });
+          return true;
         }
       }
-      await this.getData()
+      await this.getData();
     },
     /** This methods get the data from the client.
      * @returns {Promise}
      */
     getData: async function () {
-      window.scrollTo(0, 0);
       this.errors = null;
       const _module = this;
       try {
         await _module.fetchRecords(this.getParameters());
+        const targetDiv = document.getElementById("scroll-target");
+        gotoTop(targetDiv);
       }
       catch (e) {
         this.errors = e.message;
@@ -335,7 +315,7 @@ export default {
      */
     getParameters: function () {
       return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
-    },
+    }
   },
   /**
    * Setting up the metaInfo of the page
@@ -460,7 +440,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Tue Oct 6th 2020
+		on Fri Oct 9th 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

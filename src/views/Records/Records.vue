@@ -21,7 +21,7 @@
       id="scroll-target"
       fluid
       class="overflow-y-auto overflow-x-hidden"
-      :class="getChips.length && stickToTop?'content-custom-new-height':'content-custom'"
+      :class="getChips.length && stickToTop ? 'content-custom-new-height' : 'content-custom'"
     >
       <!-- Title banner -->
       <div>
@@ -39,9 +39,7 @@
       </div>
 
       <!--  Content  -->
-      <v-row
-        no-gutters
-      >
+      <v-row no-gutters>
         <v-col
           cols="12"
           lg="4"
@@ -49,10 +47,7 @@
           xl="3"
           class="d-none d-md-flex mt-2 ml-2"
         >
-          <SearchInput
-            :class="[responsiveClassObject]"
-          />
-          <!--                    <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">-->
+          <SearchInput :class="[responsiveClassObject]" />
         </v-col>
         <v-col class="mt-2">
           <SearchOutput
@@ -77,7 +72,7 @@ import {gotoTop} from "@/utils/navigationUtils";
 
 export default {
   name: "Records",
-  components: { JumpToTop, SearchOutput, SearchInput, FilterChips},
+  components: {JumpToTop, SearchOutput, SearchInput, FilterChips},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -161,32 +156,31 @@ export default {
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
-    this.setStickToTopLocal(false);
+    this.setStickToTop(false);
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),
-    ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
-    ...mapActions({setStickToTopLocal: 'uiController/setStickToTop'}),
+    ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
     onScroll: function (e) {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
       if (_module.offsetTop > 100 && _module.records.length > 1) {
-          _module.setStickToTopLocal(true);
+          _module.setStickToTop(true);
           _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
             bodyOverflowState: true,
             headerVisibilityState: false,
         });
       }
       else {
-          _module.setStickToTopLocal(false);
+          _module.setStickToTop(false);
           _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
             bodyOverflowState: true,
             drawerVisibilityState: false,
             headerVisibilityState: true,
           });
       }
-      _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
-          _module.setScrollStatusLocal(false);
+      _module.offsetTop > 500 ? _module.setScrollStatus(true) :
+          _module.setScrollStatus(false);
     },
     /**
      * Try to redirect to search of the page that is hit is /standards /databases
@@ -211,7 +205,6 @@ export default {
      * @returns {Promise}
      */
     getData: async function () {
-      window.scrollTo(0, 0);
       this.errors = null;
       const _module = this;
       try {

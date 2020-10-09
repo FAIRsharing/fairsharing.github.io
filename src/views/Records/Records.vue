@@ -73,12 +73,12 @@ import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import scrollUtils from "@/utils/scrollUtils";
+import {gotoTop} from "@/utils/navigationUtils";
 
 export default {
   name: "Records",
   components: { JumpToTop, SearchOutput, SearchInput, FilterChips},
-  mixins: [filterChipsUtils,scrollUtils],
+  mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
     offsetTop: 0,
@@ -137,17 +137,10 @@ export default {
       else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
-    currentFullPath:function (){
-      return this.$route.fullPath;
-    }
   },
   watch: {
     currentPath: async function () {
       await this.tryRedirect();
-    },
-    currentFullPath:async function () {
-      const _module = this;
-      setTimeout(_module.scrollToTopTimer,200);
     }
   },
   mounted: function () {
@@ -174,9 +167,6 @@ export default {
     ...mapActions('records', ['fetchRecords']),
     ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
     ...mapActions({setStickToTopLocal: 'uiController/setStickToTop'}),
-    scrollToTopTimer:function (){
-      this.scrollToTop('scroll-target');
-    },
     onScroll: function (e) {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
@@ -208,19 +198,14 @@ export default {
         let query = this.$route.params;
         if (query && query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
-          try {
-            await this.$router.push({
-              name: "search",
-              query: query
-            });
-            return true;
-          }
-          catch (e) {
-            //
-          }
+          this.$router.push({
+            name: "search",
+            query: query
+          });
+          return true;
         }
       }
-      await this.getData()
+      await this.getData();
     },
     /** This methods get the data from the client.
      * @returns {Promise}
@@ -231,6 +216,8 @@ export default {
       const _module = this;
       try {
         await _module.fetchRecords(this.getParameters());
+        const targetDiv = document.getElementById("scroll-target");
+        gotoTop(targetDiv);
       }
       catch (e) {
         this.errors = e.message;
@@ -242,7 +229,7 @@ export default {
      */
     getParameters: function () {
       return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
-    },
+    }
   },
   /**
    * Setting up the metaInfo of the page

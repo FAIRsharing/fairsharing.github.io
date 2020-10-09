@@ -23,11 +23,9 @@
 
 <script>
   import {isEqual} from "lodash";
-  import scrollUtils from "@/utils/scrollUtils";
 
   export default {
     name: "SearchLinkChips",
-    mixins: [scrollUtils],
     props: {
       type: {
         default: null,

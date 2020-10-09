@@ -81,7 +81,7 @@
     <v-card-text>
       <v-text-field
         v-model="search"
-        append-icon="mdi-magnify"
+        append-icon="fa-search"
         label="Search names and alternative names"
         outlined
         hide-details

@@ -4,7 +4,7 @@
       <v-spacer />
       <v-text-field
         v-model="search"
-        append-icon="mdi-magnify"
+        append-icon="fa-search"
         class="flex-shrink-1"
         label="Search"
         single-line

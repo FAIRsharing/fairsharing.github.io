@@ -24,8 +24,8 @@
           outlined
           text-color="primary"
         >
-          <v-icon left>
-            mdi-label
+          <v-icon left small>
+            fas fa-tags
           </v-icon>
           {{ item.label }}
         </v-chip>
@@ -49,8 +49,8 @@
           outlined
           text-color="secondary"
         >
-          <v-icon left>
-            mdi-label
+          <v-icon small left>
+            fas fa-tags
           </v-icon>
           {{ item.label }}
         </v-chip>
@@ -74,8 +74,8 @@
           outlined
           text-color="accent"
         >
-          <v-icon left>
-            mdi-label
+          <v-icon small left>
+            fas fa-tags
           </v-icon>
           {{ item.label }}
         </v-chip>
@@ -100,7 +100,7 @@
           text-color="orange"
         >
           <v-icon left>
-            mdi-label
+            fas fa-tags
           </v-icon>
           {{ item.label }}
         </v-chip>

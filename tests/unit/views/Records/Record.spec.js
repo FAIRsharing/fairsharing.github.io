@@ -61,6 +61,7 @@ describe("Record.vue", function() {
         queryStub.withArgs(sinon.match.any).returns({
             fairsharingRecord:{
                 id: 123,
+                abbreviation: "abc",
                 name: "test",
                 licences: [
                     {
@@ -111,7 +112,7 @@ describe("Record.vue", function() {
     });
 
     it("has it meta title dynamically set", () => {
-        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe(title);
+        expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | abc");
     });
 
     it("react to path change", async () => {

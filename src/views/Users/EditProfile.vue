@@ -157,14 +157,6 @@
                   ]
                 },
                 {
-                  name: "current_password",
-                  label: "Current Password",
-                  type: "password",
-                  rules: [
-                    isRequired()
-                  ]
-                },
-                {
                   name: "preferences",
                   label: "Hide your email address on public pages.",
                   hint: null,

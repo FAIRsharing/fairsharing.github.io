@@ -9,6 +9,7 @@ import introspection from "@/store/introspector.js"
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
+const gotoTop = require('@/utils/navigationUtils');
 const sinon = require("sinon");
 const axios = require("axios");
 
@@ -200,10 +201,12 @@ describe("Records.vue", () => {
         wrapper.vm.onScroll(mEvent);
     });
 
-    it("react to fullPath changes", async () => {
-        $route.fullPath = 'somePath';
-        expect(wrapper.vm.currentFullPath).toBe('somePath');
-        wrapper.vm.scrollToTopTimer();
+    it("can check if page scrolls to top", async () => {
+                const stub = sinon.stub(gotoTop, 'gotoTop');
+                stub.returns({});
+                wrapper.vm.goTop();
+                sinon.assert.calledWith(gotoTop.gotoTop,null);
+                stub.restore();
     });
 
 });

@@ -47,7 +47,9 @@
           xl="3"
           class="d-none d-md-flex mt-2 ml-2"
         >
-          <SearchInput :class="[responsiveClassObject]" />
+          <SearchInput
+            :class="[responsiveClassObject]"
+          />
         </v-col>
         <v-col class="mt-2">
           <SearchOutput

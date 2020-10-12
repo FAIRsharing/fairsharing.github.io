@@ -205,10 +205,17 @@ export default {
 
       else {
         const goTo = _module.$route.query.goTo;
-        if (goTo && _module.redirect) {
-          _module.$router.push({
-            path: goTo
-          })
+        if (_module.redirect) {
+          if (goTo) {
+            _module.$router.push({
+              path: goTo
+            })
+          }
+          else {
+            _module.$router.push({
+              path: "/accounts/profile"
+            })
+          }
         }
       }
     },

@@ -1,6 +1,6 @@
 const customIcons  = {
         values: {
-            search: 'fa-searcha',
+            search: 'fa-search',
         }
 };
 

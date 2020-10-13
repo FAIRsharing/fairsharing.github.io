@@ -6,18 +6,12 @@
       tile
       elevation="3"
     >
-      <!--
-      this code is related to v-card. will be used later..
-            v-scroll.self="onScroll"
-      -->
       <h2 class="d-none">
         Filter List
       </h2>
 
       <!-- Search Box -->
-      <string-search
-        placeholder="Search through all data."
-      />
+      <string-search placeholder="Search through all data."/>
 
       <hr
         class="mb-3 mr-2 ml-2"
@@ -107,8 +101,8 @@ export default {
         comparison = 1;
       }
       return comparison;
-    }
-  },
+    },
+  }
 }
 </script>
 

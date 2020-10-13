@@ -20,7 +20,7 @@
           color="secondary"
           class="mr-2"
         >
-          mdi-certificate
+          fas fa-certificate
         </v-icon>
         <p class="ma-0">
           {{ licence.name }}

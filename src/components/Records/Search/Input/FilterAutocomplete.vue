@@ -5,16 +5,16 @@
       <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
         <v-autocomplete
           v-model="selectedValues"
+          :attach="true"
           :items="getValues"
           solo
           dense
           clearable
           multiple
-          prepend-inner-icon="mdi-magnify"
+          prepend-inner-icon="fa-search"
           :placeholder="`Search through ${filter.filterLabel}`"
           item-text="key"
           item-value="key"
-          class="autocomplete-max-width"
           @click:clear="reset(filter)"
         >
           <template v-slot:selection="data">
@@ -25,7 +25,7 @@
             </v-chip>
           </template>
           <template v-slot:item="data">
-            <div class="d-flex align-content-around">
+            <div class="d-flex full-width">
               <span class="filterValueName"> {{ cleanString(data.item.key) }}</span>
               <span class="filterValueCount"> {{ data.item['doc_count'] }}</span>
             </div>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapActions, mapGetters, mapState} from 'vuex'
 import clearString from '@/utils/stringUtils'
 
 export default {
@@ -61,6 +61,7 @@ export default {
   },
   computed: {
     ...mapGetters('records', ['getFilter']),
+    ...mapState('uiController', ['stickToTop']),
     getValues: function () {
       let _module = this;
       let output = _module.getFilter(this.filter.filterName);
@@ -71,6 +72,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions({setComponentOverflowLocal: 'uiController/setComponentOverflow'}),
     /**
      * Apply the filters by building the new query parameters using the form data.
      */
@@ -83,8 +85,8 @@ export default {
         if (_module.selectedValues !== null && _module.selectedValues.length > 0) {
           if (_module.selectedValues.length === 1) {
             currentParams[filterName] = encodeURIComponent(_module.selectedValues.join(','));
-          } else
-            {
+          }
+          else {
             let newParam = [];
             _module.selectedValues.forEach(function (val) {
               newParam.push(encodeURIComponent(val));
@@ -96,18 +98,16 @@ export default {
             query: currentParams
           });
         }
-      } else
-        {
-        if (_module.selectedValues === null || _module.selectedValues.length === 0)
-        {
+      }
+      else {
+        if (_module.selectedValues === null || _module.selectedValues.length === 0) {
           delete currentParams[_module.filter.filterName];
           _module.$router.push({
             name: _module.$route.name,
             query: currentParams
           });
         }
-        else
-        {
+        else {
           let newParams = [];
           let existingValues = currentParams[_module.filter.filterName].split(",");
           _module.selectedValues.forEach(function (selectedValue) {
@@ -193,20 +193,14 @@ export default {
 }
 
 .filterValueName {
-  width: 315px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  flex: 1;
 }
 
 .chipsValueName {
   width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.autocomplete-max-width {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

@@ -1,6 +1,8 @@
 <template>
   <v-pagination
     v-model="page"
+    prev-icon="fa-chevron-left"
+    next-icon="fa-chevron-right"
     :length="totalPages"
     :total-visible="7"
   />

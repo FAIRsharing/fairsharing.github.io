@@ -110,7 +110,7 @@
       <v-divider />
       <v-text-field
         v-model="search"
-        append-icon="mdi-magnify"
+        append-icon="fa-search"
         label="Search through publications"
         outlined
         hide-details

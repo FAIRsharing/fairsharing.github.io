@@ -11,9 +11,7 @@
       </h2>
 
       <!-- Search Box -->
-      <string-search
-        placeholder="Search through all data."
-      />
+      <string-search placeholder="Search through all data."/>
 
       <hr
         class="mb-3 mr-2 ml-2"

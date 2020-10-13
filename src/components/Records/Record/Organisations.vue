@@ -36,7 +36,7 @@
                   color="secondary"
                   class="mr-2"
                 >
-                  mdi-factory
+                  fas fa-sitemap
                 </v-icon>
               </v-sheet>
             </template>
@@ -70,7 +70,7 @@
                   color="secondary"
                   class="mr-2"
                 >
-                  mdi-cash-multiple
+                  fas fa-funnel-dollar
                 </v-icon>
               </v-sheet>
             </template>

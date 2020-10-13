@@ -11,7 +11,7 @@
           dense
           clearable
           multiple
-          prepend-inner-icon="mdi-magnify"
+          prepend-inner-icon="fa-search"
           :placeholder="`Search through ${filter.filterLabel}`"
           item-text="key"
           item-value="key"

@@ -9,7 +9,7 @@
       class="mr-2 mb-10"
       @click="scrollToTop()"
     >
-      <v-icon>mdi-arrow-up</v-icon>
+      <v-icon>fa-arrow-up</v-icon>
     </v-btn>
   </transition>
 </template>

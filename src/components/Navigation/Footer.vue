@@ -31,7 +31,7 @@
         </h4>
         <li>
           <a href="mailto:contact@fairsharing.org?subject=FAIRsharing Issue"><i
-            class="fa fa-envelope-o"
+            class="fa fa-envelope"
           />
             Email us for
             all
@@ -42,7 +42,7 @@
             href="https://www.facebook.com/fairsharing"
             target="_blank"
           ><i
-            class="fa fa-facebook-official"
+            class="fab fa-facebook"
           />
             Facebook</a>
         </li>
@@ -50,7 +50,7 @@
           <a
             href="https://www.twitter.com/fairsharing_org"
             target="_blank"
-          ><i class="fa fa-twitter" />
+          ><i class="fab fa-twitter" />
             Twitter</a>
         </li>
       </ul>
@@ -64,16 +64,15 @@
           <a
             href="https://www.facebook.com/fairsharing"
             target="_blank"
-          ><i
-            class="fa fa-facebook-official"
-          />
-            Facebook</a>
+          ><i class="fab fa-facebook" />
+            Facebook
+          </a>
         </li>
         <li>
           <a
             href="https://www.twitter.com/fairsharing_org"
             target="_blank"
-          ><i class="fa fa-twitter" />
+          ><i class="fab fa-twitter" />
             Twitter</a>
         </li>
       </ul>

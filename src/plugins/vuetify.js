@@ -17,7 +17,6 @@ export default new Vuetify({
             customProperties: true,
         },
     },
-    iconfont: 'fa',
     icons: customIcons,
     breakpoint: customBreakPoints,
 });

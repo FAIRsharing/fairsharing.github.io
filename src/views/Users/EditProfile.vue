@@ -32,7 +32,6 @@
                     <v-alert
                       v-if="messages().updateProfile.error"
                       type="error"
-                      icon="fa-exclamation-circle"
                     >
                       <ul>
                         <li
@@ -46,7 +45,6 @@
                     <v-alert
                       v-else
                       type="success"
-                      icon="fa-check-circle"
                     >
                       {{ messages().updateProfile.message }}
                     </v-alert>

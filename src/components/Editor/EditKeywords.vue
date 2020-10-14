@@ -18,7 +18,6 @@
     <v-alert
       v-if="error"
       type="error"
-      icon="fa-exclamation-circle"
     >
       {{ error.message }}
     </v-alert>

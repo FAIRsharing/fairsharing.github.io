@@ -29,6 +29,7 @@
                 <v-alert
                   v-if="error"
                   type="error"
+                  icon="fa-exclamation-circle"
                 >
                   <b>Something went wrong: {{ error }}</b>
                 </v-alert>
@@ -36,6 +37,7 @@
                 <v-alert
                   v-if="success"
                   type="success"
+                  icon="fa-check-circle"
                 >
                   Confirmation message sent successfully, please check your email {{ email }}.
                 </v-alert>

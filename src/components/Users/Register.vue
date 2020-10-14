@@ -22,6 +22,7 @@
             <v-alert
               v-if="message"
               type="success"
+              icon="fa-check-circle"
               class="my-3"
             >
               {{ message }}
@@ -29,6 +30,7 @@
             <v-alert
               v-if="errors.length > 0"
               type="error"
+              icon="fa-exclamation-circle"
             >
               <b>Please correct the following error(s):</b>
               <ul>

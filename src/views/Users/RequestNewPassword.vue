@@ -16,12 +16,14 @@
             <v-alert
               v-if="success"
               type="success"
+              icon="fa-check-circle"
             >
               {{ message }}
             </v-alert>
             <v-alert
               v-if="!success"
               type="error"
+              icon="fa-exclamation-circle"
             >
               {{ message }}
             </v-alert>

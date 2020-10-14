@@ -16,7 +16,10 @@
       <b> EDIT SUPPORT INFORMATION </b>
     </v-card-title>
     <v-card-text v-if="error">
-      <v-alert type="error">
+      <v-alert
+        icon="fa-exclamation-circle"
+        type="error"
+      >
         {{ error.data }}
       </v-alert>
     </v-card-text>

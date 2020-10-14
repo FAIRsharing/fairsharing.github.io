@@ -17,7 +17,10 @@
     </v-card-title>
 
     <v-card-text v-if="errors.length > 0">
-      <v-alert type="error">
+      <v-alert
+        type="error"
+        icon="fa-exclamation-circle"
+      >
         <v-list color="transparent">
           <v-list-item
             v-for="(error, errorIndex) in errors"
@@ -34,7 +37,9 @@
           <v-alert
             width="100%"
             type="info"
+            icon="fa-info-circle"
             dismissible
+            close-icon="fa-times-circle"
           >
             <b>Note:</b> To create a new licence name and URL, type a new name in the search box. If it doesn't already exist, you will
             be asked if you want to create a new licence.

@@ -3,7 +3,6 @@
     <v-alert
       v-if="messages()[field].message && messages()[field].error"
       type="error"
-      icon="fa-exclamation-circle"
     >
       {{ messages()[field].message }}
     </v-alert>
@@ -11,7 +10,6 @@
     <v-alert
       v-if="messages()[field].message && !messages()[field].error"
       type="success"
-      icon="fa-check-circle"
     >
       {{ messages()[field].message }}
     </v-alert>

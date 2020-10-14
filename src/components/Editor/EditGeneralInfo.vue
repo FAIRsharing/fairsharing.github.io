@@ -21,7 +21,6 @@
     <v-alert
       v-if="error && error_message"
       type="error"
-      icon="fa-exclamation-circle"
     >
       {{ error_message }}
     </v-alert>

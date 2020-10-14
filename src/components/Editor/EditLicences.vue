@@ -17,9 +17,7 @@
     </v-card-title>
 
     <v-card-text v-if="errors.length > 0">
-      <v-alert
-        type="error"
-      >
+      <v-alert type="error">
         <v-list color="transparent">
           <v-list-item
             v-for="(error, errorIndex) in errors"

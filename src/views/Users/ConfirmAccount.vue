@@ -20,6 +20,7 @@
             <v-alert
               v-if="error"
               type="error"
+              icon="fa-exclamation-circle"
               :class="{'alert-success': !error, 'alert-danger': error}"
             >
               <b>Something went wrong:</b>
@@ -35,6 +36,7 @@
             <v-alert
               v-else
               type="success"
+              icon="fa-check-circle"
             >
               {{ message }}
             </v-alert>

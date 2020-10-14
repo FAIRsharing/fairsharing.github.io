@@ -16,7 +16,10 @@
       <b> EDIT PUBLICATIONS </b>
     </v-card-title>
     <v-card-text v-if="errors.general">
-      <v-alert type="error">
+      <v-alert
+        type="error"
+        icon="fa-exclamation-circle"
+      >
         {{ errors.general.data }}
       </v-alert>
     </v-card-text>
@@ -29,6 +32,7 @@
           <v-alert
             width="100%"
             type="info"
+            icon="fa-info-circle"
             dismissible
           >
             <b>Note:</b> Only curators can edit saved publications. Please contact us if you have an issue.
@@ -152,12 +156,14 @@
           <v-alert
             v-if="errors.doi"
             type="error"
+            icon="fa-exclamation-circle"
           >
             DOI not found !
           </v-alert>
           <v-alert
             v-if="errors.pmid"
             type="error"
+            icon="fa-exclamation-circle"
           >
             PubMed ID not found !
           </v-alert>

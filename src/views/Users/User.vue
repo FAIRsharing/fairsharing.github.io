@@ -24,6 +24,7 @@
           >
             <v-alert
               type="success"
+              icon="fa-check-circle"
               class="mb-0"
             >
               {{ messages()['getUser'].message }}

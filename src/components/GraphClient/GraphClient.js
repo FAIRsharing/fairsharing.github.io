@@ -1,4 +1,5 @@
 const axios = require("axios");
+import Fragments from "./queries/fragments/fragments.json"
 
 class GraphQLClient {
 
@@ -43,15 +44,15 @@ class GraphQLClient {
 
     /**
      * Takes the query, post it with axios and returns the raw data
-     * @param {Object} request - processed request coming out of buildQuery()
+     * @param {Object} queryString - processed request coming out of buildQuery() or a GraphQL query string
      * @returns {Promise} - an axios promise representing the server response.
      */
-    async getData(request){
+    async getData(queryString){
         let client = this;
         const fullQuery = {
             method: "post",
             baseURL: client.url,
-            data:  request,
+            data:  queryString,
             headers: client.headers
         };
         return await axios(fullQuery);
@@ -95,16 +96,29 @@ class GraphQLClient {
                     queryString += ` ${field}`;
                 }
                 if (typeof field === "object"){
-                    queryString += ` ${field.name}{`;
-                    field.fields.forEach(function(subField){
-                        if (typeof subField === "string"){
-                            queryString += `${subField} `;
+                    if ("$ref" in field){
+                        let myRef = Fragments[field["$ref"]];
+                        for (let subField of myRef){
+                            if (typeof subField === "string"){
+                                queryString += ` ${subField}`;
+                            }
+                            else {
+                                queryString += ` ${client.buildQuery(subField)}`;
+                            }
                         }
-                        else {
-                            queryString += `${client.buildQuery(subField)}`;
-                        }
-                    });
-                    queryString += "}";
+                    }
+                    else {
+                        queryString += ` ${field.name}{`;
+                        field.fields.forEach(function(subField){
+                              if (typeof subField === "string"){
+                                  queryString += `${subField} `;
+                              }
+                              else {
+                                  queryString += `${client.buildQuery(subField)}`;
+                              }
+                        });
+                        queryString += "}";
+                    }
                 }
             });
             queryString += "}";

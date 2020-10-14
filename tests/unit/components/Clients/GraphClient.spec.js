@@ -110,7 +110,7 @@ describe("GraphQL Client", function () {
             "field2": "true",
             "field3": ["true", "false"]
         };
-        const queryString = client.buildQuery(query);
+        let queryString = client.buildQuery(query);
         expect(queryString).toBe(expectedOutput);
 
         const smallQuery = {
@@ -118,6 +118,15 @@ describe("GraphQL Client", function () {
         };
         const miniResponse = client.buildQuery(smallQuery);
         expect(miniResponse).toBe("test");
+
+        smallQuery.fields = [
+            "inFairsharing",
+            {"$ref": "keywords"},
+            {$ref: "domains"}
+        ];
+        let queryFragment = client.buildQuery(smallQuery);
+        expect(queryFragment).toBe('test{ inFairsharing definitions expandedNames id label synonyms domains{ label}}');
+
 
     });
 

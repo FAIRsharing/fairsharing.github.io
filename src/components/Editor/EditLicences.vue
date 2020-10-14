@@ -36,6 +36,7 @@
           <v-alert
             width="100%"
             type="info"
+            dismissible
           >
             <b>Note:</b> To create a new licence name and URL, type a new name in the search box. If it doesn't already exist, you will
             be asked if you want to create a new licence.

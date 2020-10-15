@@ -1,0 +1,20 @@
+{
+  "keywords": [
+    "definitions",
+    "expandedNames",
+    "id",
+    "label",
+    "synonyms"
+  ],
+  "domains": [
+    {
+      "queryName": "domains",
+      "fields": [
+        {"$ref": "keywordsSimple"}
+      ]
+    }
+  ],
+  "keywordsSimple": [
+    "label"
+  ]
+}

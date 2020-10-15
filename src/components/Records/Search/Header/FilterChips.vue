@@ -18,7 +18,6 @@
         close
         color="white"
         text-color="teal"
-        close-icon="fa-times-circle"
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
         {{ getFilteredLabel[chip.paramName] }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>

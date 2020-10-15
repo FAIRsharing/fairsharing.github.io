@@ -143,7 +143,7 @@ describe("Records.vue", () => {
             localVue,
             vuetify
         });
-        localWrapper.vm.disable=true;
+        localWrapper.vm.disable = true;
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
         $route.name = "test";

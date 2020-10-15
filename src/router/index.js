@@ -269,5 +269,5 @@ export function isCurator(to, from, next, store) {
             query: {goTo: target}
         });
     }
-
+}
 export default router;

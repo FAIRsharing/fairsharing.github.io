@@ -84,6 +84,7 @@ export default {
     labels: recordsLabels,
     recordsSubTitles: recordsLabels['recordSubTitles'],
     recordTypes: recordsLabels['recordTypes'],
+    disable: false,
   }),
   computed: {
     ...mapState('uiController', ['scrollStatus','stickToTop']),
@@ -217,12 +218,12 @@ export default {
         this.errors = e.message;
       }
       finally {
-        _module.goTop();
+        if (!this.disable)
+        {
+          const targetDiv = document.getElementById("scroll-target");
+          gotoTop(targetDiv);
+        }
       }
-    },
-    goTop(){
-      const targetDiv = document.getElementById("scroll-target");
-      gotoTop(targetDiv);
     },
     /**
      * Get the parameters that are allowed for this query

@@ -9,7 +9,6 @@ import introspection from "@/store/introspector.js"
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
-const gotoTop = require('@/utils/navigationUtils');
 const sinon = require("sinon");
 const axios = require("axios");
 
@@ -144,6 +143,7 @@ describe("Records.vue", () => {
             localVue,
             vuetify
         });
+        localWrapper.vm.disable=true;
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
         $route.name = "test";
@@ -199,14 +199,6 @@ describe("Records.vue", () => {
         actions.setGeneralUIAttributesAction({})
         expect(actions.commit).toHaveBeenCalledTimes(3);
         wrapper.vm.onScroll(mEvent);
-    });
-
-    it("can check if page scrolls to top", async () => {
-                const stub = sinon.stub(gotoTop, 'gotoTop');
-                stub.returns({});
-                wrapper.vm.goTop();
-                sinon.assert.calledWith(gotoTop.gotoTop,null);
-                stub.restore();
     });
 
 });

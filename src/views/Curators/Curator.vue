@@ -132,7 +132,7 @@
 
 <script>
     import { mapActions, mapState } from "vuex"
-    import UserProfileMenu from "../../components/Users/UserProfileMenu"; 
+    import UserProfileMenu from "../../components/Users/UserProfileMenu";
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -175,6 +175,7 @@
             if (!this.user().is_curator){
               this.setError({field:"login", message:"You've been logged out automatically as you are not a curator"});
               this.$router.push({path: "/accounts/login"})
+              //Put page 404 instead
             }
 
         },

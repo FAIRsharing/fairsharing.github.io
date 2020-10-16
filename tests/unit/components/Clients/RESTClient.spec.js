@@ -72,5 +72,9 @@ describe("RESTClient", () =>{
         console.error.mockRestore();
         Vue.config.productionTip = true;
         Vue.config.devtools = true;
-    })
+    });
+
+    it("can set authentication headers correctly", () => {
+        expect(client.auth_headers('fun_token')['Authorization']).toEqual('Bearer fun_token');
+    });
 });

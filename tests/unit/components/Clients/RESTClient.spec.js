@@ -73,4 +73,9 @@ describe("RESTClient", () =>{
         Vue.config.productionTip = true;
         Vue.config.devtools = true;
     })
+
+    it("can get the list of available profile types", async () => {
+        let resp = await client.getProfileTypes();
+        expect(resp).toBe("testData");
+    });
 });

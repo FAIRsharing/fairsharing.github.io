@@ -443,6 +443,22 @@ class RESTClient {
         return response.data;
     }
 
+    /* Misc. Editing Methods */
+    /**
+     * Get the list of available profile types for a user.
+     * @param {String} token - the account token to validate
+     * @returns {Promise}
+     */
+    async getProfileTypes(){
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/users/profile_types",
+            headers: this.headers,
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
 
     /* EXTRA METHODS */
 

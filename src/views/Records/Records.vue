@@ -227,10 +227,14 @@ export default {
       }
     },
     scrollToTop(){
-      try {
+      try
+      {
         this.targetDiv = document.getElementById("scroll-target");
-        gotoTop(this.targetDiv);
-      }catch (e)
+        console.log('rec',this.targetDiv);
+        this.targetDiv.scrollTo(0, 0);
+        // gotoTop(this.targetDiv);
+      }
+      catch (e)
       {
         console.log(e);
       }

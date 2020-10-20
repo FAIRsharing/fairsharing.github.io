@@ -141,29 +141,32 @@ describe("Records.vue", () => {
         const $router = {
             push: jest.fn(),
         };
+
+        const elem = document.createElement('div');
+        // window.scrollTo = jest.fn();
+        elem.id = 'scroll-target';
+        if (document.body) {
+            document.body.appendChild(elem)
+            console.log('aa',elem.getAttribute('id'))
+        }
+        Element.prototype.scrollTo = () => {}
+
         let localWrapper = await mount(Records, {
             mocks: {$route, $store, $router},
             localVue,
             vuetify,
+            attachTo:elem,
             attachToDocument:true
         });
         localWrapper.vm.disable = true;
-        const byId = localWrapper.find('#scroll-target')
 
-        localWrapper.vm.targetDiv = byId.element;
-        console.log(localWrapper.vm.targetDiv)
 
-/*
-        const document = window.document
-        Object.defineProperty(global, 'document', {
-            value: {
-                scrollTo: jest.fn(),
-            }
-        });
+        // const byId = localWrapper.find('#scroll-target')
+        localWrapper.vm.targetDiv = elem;
+        console.log('test',localWrapper.vm.targetDiv)
 
-        console.log(global.document.scrollTo) // printss correctly [Function: mockConstructor]
-        Object.defineProperty(window, 'document', { value: document })
-*/
+
+
 
         // expect(byId.element.id).toBe('scroll-target')
 /*

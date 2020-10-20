@@ -59,6 +59,11 @@ describe("RESTClient", () =>{
         expect(resp).toBe("testData");
     });
 
+    it("can get the list of available profile types", async () => {
+        let resp = await client.getProfileTypes();
+        expect(resp).toBe("testData");
+    });
+
     it("can process network errors", async () => {
         stub.restore();
         jest.spyOn(console, 'error');
@@ -74,8 +79,4 @@ describe("RESTClient", () =>{
         Vue.config.devtools = true;
     })
 
-    it("can get the list of available profile types", async () => {
-        let resp = await client.getProfileTypes();
-        expect(resp).toBe("testData");
-    });
 });

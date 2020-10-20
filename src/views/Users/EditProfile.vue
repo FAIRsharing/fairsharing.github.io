@@ -52,6 +52,7 @@
                 </v-row>
 
                 <!-- FIELDS -->
+
                 <v-row>
                   <v-col
                     v-for="(field, fieldKey) in fields"
@@ -59,7 +60,15 @@
                     :key="'edit_field_' + fieldKey"
                     cols="12 py-0 mb-3"
                   >
-                    <div v-if="field.type !== 'checkbox'">
+                    <div v-if="field.type === 'select'">
+                      <v-select
+                        v-model="formData[field.model]"
+                        :label="field.label"
+                        :items="formData[field.items]"
+                        :rules="field.rules"
+                      />
+                    </div>
+                    <div v-else-if="field.type !== 'checkbox'">
                       <v-text-field
                         v-model="formData[field.name]"
                         :label="field.label"
@@ -103,11 +112,16 @@
 <script>
     import { mapState, mapActions } from "vuex"
     import { isEmail, isRequired, isUrl } from "@/utils/rules.js"
+    import RESTClient from "@/components/Client/RESTClient.js"
+
+    const restClient = new RESTClient();
 
     export default {
         name: "EditProfile",
         data: () => {
             return {
+              profileTypes: [],
+              selectedProfileType: null,
               message: null,
               error: null,
               valid: false,
@@ -157,6 +171,16 @@
                   ]
                 },
                 {
+                  name: "profile_type",
+                  label: "Profile Type",
+                  hint: null,
+                  type: "input",
+                  rules: [
+                    isRequired()
+                  ],
+                  //model: "['one', 'two']"
+                },
+                {
                   name: "preferences",
                   label: "Hide your email address on public pages.",
                   hint: null,
@@ -176,7 +200,8 @@
                 preferences: this.user().metadata['preferences']['hide_email'],
                 first_name: this.user().metadata.first_name,
                 last_name: this.user().metadata.last_name,
-                homepage: this.user().metadata.homepage
+                homepage: this.user().metadata.homepage,
+                profile_type: this.user().metadata.profile_type
               }
             }
             return null;
@@ -184,6 +209,9 @@
         },
         async created(){
             await this.getUserMeta();
+        },
+        async mounted() {
+          this.profileTypes = await restClient.getProfileTypes();
         },
         methods: {
           ...mapActions('users', ['getUserMeta', "updateUser", "setMessage"]),

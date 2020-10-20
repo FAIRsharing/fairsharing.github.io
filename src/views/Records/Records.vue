@@ -47,7 +47,7 @@
           xl="3"
           class="d-none d-md-flex mt-2 ml-2"
         >
-          <SearchInput :class="[responsiveClassObject]" />
+<!--          <SearchInput :class="[responsiveClassObject]" />-->
         </v-col>
         <v-col class="mt-2">
           <SearchOutput
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import SearchInput from "@/components/Records/Search/Input/SearchInput";
+// import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
 import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
@@ -72,7 +72,7 @@ import {gotoTop} from "@/utils/navigationUtils";
 
 export default {
   name: "Records",
-  components: {JumpToTop, SearchOutput, SearchInput, FilterChips},
+  components: {JumpToTop, SearchOutput,  FilterChips},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -85,6 +85,7 @@ export default {
     recordsSubTitles: recordsLabels['recordSubTitles'],
     recordTypes: recordsLabels['recordTypes'],
     disable: false,
+    targetDiv:null
   }),
   computed: {
     ...mapState('uiController', ['scrollStatus','stickToTop']),
@@ -220,9 +221,18 @@ export default {
       finally {
         if (!this.disable)
         {
-          const targetDiv = document.getElementById("scroll-target");
-          gotoTop(targetDiv);
+          _module.scrollToTop();
+          // console.log('rec',this.targetDiv)
         }
+      }
+    },
+    scrollToTop(){
+      try {
+        this.targetDiv = document.getElementById("scroll-target");
+        gotoTop(this.targetDiv);
+      }catch (e)
+      {
+        console.log(e);
       }
     },
     /**

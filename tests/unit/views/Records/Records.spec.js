@@ -1,4 +1,4 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils";
+import {shallowMount,mount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueMeta from "vue-meta";
@@ -9,6 +9,8 @@ import introspection from "@/store/introspector.js"
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
+const gotoTop = require('@/utils/navigationUtils');
+import filterChipsUtils from "@/utils/filterChipsUtils";
 const sinon = require("sinon");
 const axios = require("axios");
 
@@ -33,7 +35,8 @@ const $store = new Vuex.Store({
     modules: {
         records: records,
         introspection: introspection,
-        uiController: uiController
+        uiController: uiController,
+        filterChipsUtils: filterChipsUtils,
     },
 });
 
@@ -138,12 +141,39 @@ describe("Records.vue", () => {
         const $router = {
             push: jest.fn(),
         };
-        let localWrapper = await shallowMount(Records, {
+        let localWrapper = await mount(Records, {
             mocks: {$route, $store, $router},
             localVue,
-            vuetify
+            vuetify,
+            attachToDocument:true
         });
         localWrapper.vm.disable = true;
+        const byId = localWrapper.find('#scroll-target')
+
+        localWrapper.vm.targetDiv = byId.element;
+        console.log(localWrapper.vm.targetDiv)
+
+/*
+        const document = window.document
+        Object.defineProperty(global, 'document', {
+            value: {
+                scrollTo: jest.fn(),
+            }
+        });
+
+        console.log(global.document.scrollTo) // printss correctly [Function: mockConstructor]
+        Object.defineProperty(window, 'document', { value: document })
+*/
+
+        // expect(byId.element.id).toBe('scroll-target')
+/*
+        const stub = sinon.stub(gotoTop, 'gotoTop');
+        stub.returns({});
+        localWrapper.vm.scrollToTop();
+        sinon.assert.calledWith(gotoTop.gotoTop,null);
+        stub.restore();
+*/
+
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
         $route.name = "test";
@@ -151,6 +181,7 @@ describe("Records.vue", () => {
         $route.query = {fairsharingRegistry: "123"};
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
+
     });
 
     it("can check responsiveClassObject", () => {

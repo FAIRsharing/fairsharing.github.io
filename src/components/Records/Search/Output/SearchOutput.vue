@@ -80,9 +80,6 @@
         </article>
       </div>
     </section>
-    <section class="my-10 border-top">
-      <Footer />
-    </section>
   </div>
 </template>
 
@@ -94,12 +91,9 @@ import {mapState, mapGetters} from 'vuex'
 import FilterChips from "../Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 import Pagination from "../Header/Pagination";
-import Footer from "@/components/Navigation/Footer.vue"
-
-
 export default {
   name: "SearchOutput",
-  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination, Footer},
+  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination},
   mixins: [filterChipsUtils],
   data() {
     return {
@@ -127,7 +121,6 @@ export default {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
-
 .no-data-found {
   display: flex;
   justify-content: center;
@@ -138,7 +131,7 @@ export default {
 </style>
 
 <style scoped lang="scss">
-  .border-top {
-    border-top: 1px solid #ccc;
-  }
+.border-top {
+  border-top: 1px solid #ccc;
+}
 </style>

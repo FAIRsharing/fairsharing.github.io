@@ -20,7 +20,7 @@
     <v-container
       id="scroll-target"
       fluid
-      class="overflow-y-auto overflow-x-hidden"
+      class=""
       :class="getChips.length && stickToTop?'content-custom-new-height':'content-custom'"
     >
       <!-- Title banner -->
@@ -60,6 +60,7 @@
           />
         </v-col>
       </v-row>
+      <Footer class="mb-2" />
     </v-container>
   </v-main>
 </template>
@@ -72,10 +73,10 @@ import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
-
+import Footer from "@/components/Navigation/Footer";
 export default {
   name: "Records",
-  components: { JumpToTop, SearchOutput, SearchInput, FilterChips},
+  components: {Footer, JumpToTop, SearchOutput, SearchInput, FilterChips},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -126,11 +127,11 @@ export default {
       Object.keys(this.$route.query).forEach(function (prop) {
         let queryVal = client.$route.query[prop];
         if (queryVal) {
-            queryParams[prop] = decodeURI(queryVal);
+          queryParams[prop] = decodeURI(queryVal);
         }
       });
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-          title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+        title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
       }
       else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
@@ -148,7 +149,7 @@ export default {
   },
   created() {
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-      bodyOverflowState: true,
+      bodyOverflowState: false,
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
@@ -169,19 +170,19 @@ export default {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
       if (_module.offsetTop > 100 && _module.records.length > 1) {
-          _module.setStickToTopLocal(true);
-          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            bodyOverflowState: true,
-            headerVisibilityState: false,
+        _module.setStickToTopLocal(true);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          bodyOverflowState: false,
+          headerVisibilityState: false,
         });
       }
       else {
-          _module.setStickToTopLocal(false);
-          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            bodyOverflowState: true,
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-          });
+        _module.setStickToTopLocal(false);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          bodyOverflowState: false,
+          drawerVisibilityState: false,
+          headerVisibilityState: true,
+        });
       }
       _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
           _module.setScrollStatusLocal(false);
@@ -250,43 +251,35 @@ export default {
   top: 0;
   width: 32vw;
 }
-
 .left-panel-default {
   position: relative;
   width: 32vw;
 }
-
 .left-panel-fixed-lg {
   position: fixed;
   top: 0;
   width: 24vw;
 }
-
 .left-panel-default-lg {
   position: relative;
   width: 24vw;
 }
-
-
 .content-custom-new-height {
   height: calc(100vh - 40px);
   scroll-behavior: smooth;
   padding: 0;
 }
-
 .content-custom {
   height: 100vh;
   scroll-behavior: smooth;
   padding: 0;
 }
-
 #banner {
   display: flex;
   justify-content: center;
   flex-direction: column;
   padding: 1em;
 }
-
 .chips-holder {
   position: sticky;
   z-index: 5;
@@ -297,15 +290,12 @@ export default {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
-
 .sticky-style-xl {
   margin: 5px 5px 5px 25.4%;
 }
-
 .sticky-style-md-lg {
   margin: 5px 5px 5px 33.3%;
 }
-
 .sticky-style-sm-xs {
   margin: 0 0 0 0;
 }

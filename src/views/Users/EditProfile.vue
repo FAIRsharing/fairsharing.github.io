@@ -62,9 +62,9 @@
                   >
                     <div v-if="field.type === 'select'">
                       <v-select
-                        v-model="formData[field.model]"
+                        v-model="formData[field.name]"
                         :label="field.label"
-                        :items="formData[field.items]"
+                        :items="data[field.data]"
                         :rules="field.rules"
                       />
                     </div>
@@ -120,7 +120,9 @@
         name: "EditProfile",
         data: () => {
             return {
-              profileTypes: [],
+              data: {
+                profileTypes: []
+              },
               selectedProfileType: null,
               message: null,
               error: null,
@@ -174,11 +176,11 @@
                   name: "profile_type",
                   label: "Profile Type",
                   hint: null,
-                  type: "input",
+                  type: "select",
                   rules: [
                     isRequired()
                   ],
-                  //model: "['one', 'two']"
+                  data: "profileTypes"
                 },
                 {
                   name: "preferences",
@@ -211,7 +213,7 @@
             await this.getUserMeta();
         },
         async mounted() {
-          this.profileTypes = await restClient.getProfileTypes();
+          this.data.profileTypes = await restClient.getProfileTypes();
         },
         methods: {
           ...mapActions('users', ['getUserMeta', "updateUser", "setMessage"]),

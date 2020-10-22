@@ -117,7 +117,7 @@ export default {
 .chips-holder {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 2;
   background: #f5f5f5;
   min-height: 50px;
   border: #dbdbdb dotted 2px;

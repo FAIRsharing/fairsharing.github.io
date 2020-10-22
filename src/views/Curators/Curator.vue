@@ -17,10 +17,32 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-card-text v-if="records">
+          <v-card-text v-if="maintenanceRequests">
+            <v-card-title>
+              Pending Maintenance Requests
+            </v-card-title>
+            <v-data-table
+              :headers="headersMaintenanceRequests"
+              :items="maintenanceRequests"
+              :items-per-page="5"
+              class="elevation-1"
+            />
+          </v-card-text>
+          <v-card-text v-if="allDataCuration">
+            <v-card-title>
+              Records in curation
+            </v-card-title>
+            <v-data-table
+              :headers="headersRecordsInCuration"
+              :items="recordsInCuration"
+              :items-per-page="5"
+              class="elevation-1"
+            />
+          </v-card-text>
+          <v-card-text v-if="allDataCuration">
             <v-row
-              v-for="(recordTypeValue, recordTypeName, recordTypeIndex) in records"
-              :key='"recordType_" + recordTypeIndex'
+              v-for="(recordTypeValue, recordTypeName, recordTypeIndex) in allDataCuration"
+              :key="'recordType_' + recordTypeIndex"
             >
               {{ recordTypeName }}
               <v-col
@@ -34,18 +56,9 @@
               <v-divider />
             </v-row>
           </v-card-text>
-          <v-card v-if="records">
-            <v-data-table
-              :headers="headers"
-              :items="desserts"
-              :items-per-page="5"
-              class="elevation-1"
-            ></v-data-table>
-          /v-card>
         </v-card>
       </v-col>
     </v-row>
-
     <v-row v-else>
       <v-col cols12>
         <Unauthorized />
@@ -76,21 +89,37 @@
       },
       data: () => {
         return {
-          records: null,
-          headers: [
+          allDataCuration: null,
+          maintenanceRequests: [],
+          recordsInCuration: [],
+          headersMaintenanceRequests: [
             {
-              text: "id",
+              text: "Request Id",
               value: "id"
             },
             {
-              text: "name",
-              value: "name"
+              text: "Record name (id)",
+              value: "recordNameID"
             },
             {
-              text: "user",
-              value: "username"
+              text: "User login (id)",
+              value: "usernameID"
             }
           ],
+          headersRecordsInCuration: [
+            {
+              text: "Curator",
+              value: "username"
+            },
+            {
+              text: "Record name (id)",
+              value: "recordNameID"
+            },
+            {
+              text: "Status",
+              value: "recordStatus"
+            }
+          ]
         }
       },
       computed: {
@@ -104,11 +133,39 @@
           }
           client.setHeader(this.user().credentials.token);
           let data = await client.executeQuery(getCurationRecords);
-          this.records = data["curationSummary"];
+          this.allDataCuration = data["curationSummary"];
           client.initalizeHeader();
+          this.prepareMaintenanceRequests(this.allDataCuration);
+          this.prepareRecordsInCuration(this.allDataCuration);
       },
       methods: {
           ...mapActions('users', ['getUser', 'setError']),
+          prepareMaintenanceRequests(dataCuration){
+            let _module = this;
+            let requests = dataCuration['pendingMaintenanceRequests'];
+            requests.forEach(item => {
+              let object = {};
+              object.id = item.id;
+              object.recordNameID = item['fairsharingRecord'].name+' ('+item['fairsharingRecord'].id+')';
+              object.usernameID = item['user'].username+' ('+item['user'].id+')';
+              _module.maintenanceRequests.push(object);
+            });
+          },
+          prepareRecordsInCuration(dataCuration){
+            let _module = this;
+            let userRecords = dataCuration['recordsInCuration'];
+            userRecords.forEach(item => {
+              item['fairsharingRecords'].forEach(rec => {
+                let object = {};
+                object.username = item['username'];
+                object.recordNameID = rec.name+' ('+rec.id+')';
+                object.recordStatus = rec.status;
+                _module.recordsInCuration.push(object);
+              });
+            });
+
+
+          }
       }
     }
 </script>

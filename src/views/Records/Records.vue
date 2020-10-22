@@ -6,7 +6,6 @@
     <transition name="fade">
       <jump-to-top
         v-if="scrollStatus"
-        target-object="scroll-target"
       />
     </transition>
     <div
@@ -55,7 +54,6 @@
         </v-col>
         <v-col class="mt-2">
           <SearchOutput
-            v-scroll:#scroll-target="onScroll"
             class="pb-5 mr-0 mr-md-2"
           />
         </v-col>
@@ -143,6 +141,7 @@ export default {
     }
   },
   mounted: function () {
+    window.addEventListener("scroll", this.onScroll)
     this.$nextTick(async function () {
       await this.tryRedirect();
     });
@@ -155,6 +154,7 @@ export default {
     });
   },
   destroyed() {
+    window.removeEventListener("scroll", this.onScroll)
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
       bodyOverflowState: false,
       drawerVisibilityState: false,
@@ -166,9 +166,9 @@ export default {
     ...mapActions('records', ['fetchRecords']),
     ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
     ...mapActions({setStickToTopLocal: 'uiController/setStickToTop'}),
-    onScroll: function (e) {
+    onScroll: function () {
       let _module = this;
-      _module.offsetTop = e.target.scrollTop;
+      _module.offsetTop = window.top.scrollY;
       if (_module.offsetTop > 100 && _module.records.length > 1) {
         _module.setStickToTopLocal(true);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
@@ -247,7 +247,7 @@ export default {
 
 <style scoped lang="scss">
 .left-panel-fixed {
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 32vw;
 }
@@ -256,7 +256,7 @@ export default {
   width: 32vw;
 }
 .left-panel-fixed-lg {
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 24vw;
 }

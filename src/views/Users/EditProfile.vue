@@ -62,8 +62,8 @@
                   >
                     <div v-if="field.type === 'select'">
                       <v-select
-                        outlined
                         v-model="formData[field.name]"
+                        outlined
                         :label="field.label"
                         :items="data[field.data]"
                         :rules="field.rules"
@@ -212,9 +212,7 @@
         },
         async created(){
             await this.getUserMeta();
-        },
-        async mounted() {
-          this.data.profileTypes = await restClient.getProfileTypes();
+            this.data.profileTypes = await restClient.getProfileTypes();
         },
         methods: {
           ...mapActions('users', ['getUserMeta', "updateUser", "setMessage"]),

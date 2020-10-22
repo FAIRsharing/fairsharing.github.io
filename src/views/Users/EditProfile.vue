@@ -62,6 +62,7 @@
                   >
                     <div v-if="field.type === 'select'">
                       <v-select
+                        outlined
                         v-model="formData[field.name]"
                         :label="field.label"
                         :items="data[field.data]"

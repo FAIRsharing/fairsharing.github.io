@@ -9,32 +9,24 @@ let graphClient = new GraphClient();
 
 export const actions = {
     async fetchRecords(state, params) {
-        //this.commit("records/setLoadingStatus", true);
-        //this.commit("records/resetRecords");
-        //this.commit("records/resetPages");
-        if (Object.keys(params).length > 0) {
-            recordsQuery.queryParam = params;
-        }
-        const data = await client.executeQuery(recordsQuery);
-        //this.commit('records/setRecords', data["searchFairsharingRecords"]);
-        //this.commit("records/setLoadingStatus", false);
-    },
-    resetRecords() {
-        this.commit("records/resetRecords");
-    },
+        await client.getUser();
+        client.setHeader(client.user().credentials.token);
+        let data = await client.executeQuery(getCurationRecords);
+        state.records = data["curationSummary"];
+        client.initalizeHeader();
+    }
 };
 
 
-let currentCuratorInfo = {
+let curationSummary = {
     namespaced: true,
     state: {
-        records_pending_maint_req: [],
-        records_in_curation: []
+        records
     },
     mutations: mutations,
     actions: actions,
-    getters: {},
+    getters: getters,
     modules: {}
 };
 
-export default currentCuratorInfo;
+export default curationSummary ;

@@ -9,14 +9,7 @@ class GraphQLClient {
      * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
      */
     constructor(){
-        this.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        };
-        this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
-        if (this.headers['X-Client-Id'] === undefined){
-            delete this.headers['X-Client-Id']
-        }
+        this.initalizeHeader();
         if (GraphQLClient._instance){
             return GraphQLClient._instance
         }
@@ -98,6 +91,7 @@ class GraphQLClient {
                 if (typeof field === "object"){
                     if ("$ref" in field){
                         let myRef = Fragments[field["$ref"]];
+                        console.log(myRef);
                         for (let subField of myRef){
                             if (typeof subField === "string"){
                                 queryString += ` ${subField}`;
@@ -125,6 +119,27 @@ class GraphQLClient {
         }
         return queryString;
     }
+
+    /**
+    * Add the authorization token to the headers
+    * @param {String} jwt - the user json web token
+    */
+    setHeader(jwt){
+      this.headers['Authorization'] = `Bearer ${jwt}`;
+    }
+
+    initalizeHeader(){
+      this.headers = {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+      };
+      this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
+      if (this.headers['X-Client-Id'] === undefined){
+          delete this.headers['X-Client-Id']
+      }
+    }
+
+
 }
 
 export default GraphQLClient;

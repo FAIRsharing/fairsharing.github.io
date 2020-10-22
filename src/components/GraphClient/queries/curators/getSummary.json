@@ -1,0 +1,87 @@
+{
+  "queryName": "curationSummary",
+  "queryParam": null,
+  "fields": [
+    {
+      "name": "approvalsRequired",
+      "fields": [
+        "username",
+        "id",
+        {
+          "queryName": "fairsharingRecords",
+          "fields": [
+            "id",
+            "name"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "pendingMaintenanceRequests",
+      "fields": [
+        "id",
+        {
+          "queryName": "fairsharingRecord",
+          "fields": [
+            "id",
+            "name"
+          ]
+        },
+        {
+          "queryName": "user",
+          "fields": [
+            "username",
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recentCuratorCreations",
+      "fields": [
+            "id",
+            "name",
+            "createdAt",
+            "isApproved"
+      ]
+    },
+    {
+      "name": "recentlyUpdatedContent",
+      "fields": [
+        "modifiedAt",
+        "modifiedBy",
+        "type",
+        {
+          "queryName": "fairsharingRecord",
+          "fields": [
+            "id",
+            "name"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recordsInCuration",
+      "fields": [
+        "username",
+        {
+          "queryName": "fairsharingRecords",
+          "fields": [
+            "id",
+            "name",
+            "status"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recordsWithoutDois",
+      "fields": [
+        "id",
+        "name",
+        "createdAt",
+        "status"
+      ]
+    }
+  ]
+}

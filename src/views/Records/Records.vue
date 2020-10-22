@@ -8,13 +8,6 @@
         v-if="scrollStatus"
       />
     </transition>
-    <div
-      v-if="getChips.length && stickToTop"
-      :class="[responsiveClassSticky]"
-      class="d-flex align-content-center justify-content-center chips-holder"
-    >
-      <filter-chips />
-    </div>
     <!--Filtered Chips-->
     <v-container
       id="scroll-target"
@@ -69,12 +62,11 @@ import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
 import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
-import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 import Footer from "@/components/Navigation/Footer";
 export default {
   name: "Records",
-  components: {Footer, JumpToTop, SearchOutput, SearchInput, FilterChips},
+  components: {Footer, JumpToTop, SearchOutput, SearchInput},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -109,13 +101,6 @@ export default {
         'left-panel-default-lg': !this.stickToTop && this.$vuetify.breakpoint.xlOnly,
         'left-panel-default': !this.stickToTop && !this.$vuetify.breakpoint.xlOnly,
         'left-panel-fixed': this.stickToTop && !this.$vuetify.breakpoint.xlOnly
-      }
-    },
-    responsiveClassSticky: function () {
-      return {
-        'sticky-style-sm-xs': this.$vuetify.breakpoint.smAndDown,
-        'sticky-style-md-lg': this.$vuetify.breakpoint.lgAndDown,
-        'sticky-style-xl': this.$vuetify.breakpoint.xlOnly,
       }
     },
     currentPath: function () {
@@ -279,24 +264,5 @@ export default {
   justify-content: center;
   flex-direction: column;
   padding: 1em;
-}
-.chips-holder {
-  position: sticky;
-  z-index: 5;
-  background: #f5f5f5;
-  min-height: 50px;
-  border: #dbdbdb dotted 2px;
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-}
-.sticky-style-xl {
-  margin: 5px 5px 5px 25.4%;
-}
-.sticky-style-md-lg {
-  margin: 5px 5px 5px 33.3%;
-}
-.sticky-style-sm-xs {
-  margin: 0 0 0 0;
 }
 </style>

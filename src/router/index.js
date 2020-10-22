@@ -189,7 +189,7 @@ let routes = [
         component: Curator,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
-            isCurator(to, from, next, store);
+            // isCurator(to, from, next, store);
         }
     },
     /*
@@ -258,6 +258,7 @@ export function isLoggedIn(to, from, next, store) {
 
 }
 
+/*
 export function isCurator(to, from, next, store) {
     if (store.state.users.user().is_curator) {
         next()
@@ -270,4 +271,5 @@ export function isCurator(to, from, next, store) {
         });
     }
 }
+*/
 export default router;

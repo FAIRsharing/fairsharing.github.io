@@ -41,7 +41,8 @@ let $store = new Vuex.Store({
 }),
     queryStub,
     canEditStub,
-    canClaimStub;
+    canClaimStub; //,
+    //getProfileTypesStub;
 const $route = {
     path: "/",
     params: {
@@ -77,6 +78,10 @@ describe("Record.vue", function() {
         canEditStub.returns(true);
         canClaimStub = sinon.stub(RESTClient.prototype, "canClaim");
         canClaimStub.returns(true);
+        /*
+        getProfileTypesStub = sinon.stub(RESTClient.prototype, "getProfileTypes");
+        getProfileTypesStub.returns(true);
+         */
         vuetify = new Vuetify();
         wrapper = await shallowMount(Record, {
             mocks: {$route, $store, $router},

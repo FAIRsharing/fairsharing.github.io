@@ -324,9 +324,9 @@
                 const recordID = _module.currentRecord['fairsharingRecord'].id;
                 const claim = await client.canClaim(recordID, _module.user().credentials.token);
                 if (claim.error) {
-                  if (claim.error.response.data.existing){
+                  if (claim.error.response.data.existing) {
                     let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
-                    if (maintainer.length === 0){
+                    if (maintainer.length === 0) {
                       _module.alreadyClaimed = true;
                     }
                   }

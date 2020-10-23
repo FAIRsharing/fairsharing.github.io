@@ -39,6 +39,7 @@ let $store = new Vuex.Store({
         users: users,
     }
 }),
+    restStub,
     queryStub,
     canEditStub,
     canClaimStub;
@@ -57,6 +58,7 @@ describe("Record.vue", function() {
 
     beforeEach( async () => {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
+        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         queryStub.withArgs(sinon.match.any).returns({
             fairsharingRecord:{
                 id: 123,
@@ -87,6 +89,7 @@ describe("Record.vue", function() {
     });
     afterEach( () => {
         Client.prototype.executeQuery.restore();
+        restStub.restore();
         canEditStub.restore();
         canClaimStub.restore();
     });
@@ -223,27 +226,24 @@ describe("Record.vue", function() {
 
     it("can check if the user can claim a record", async () => {
         wrapper.vm.canClaim = false;
-        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {existing: false}});
         await wrapper.vm.checkClaimStatus();
         expect(wrapper.vm.canClaim).toBe(true);
         restStub.restore();
+        canClaimStub.restore();
     });
 
     it("allows a logged in user to request to own/maintain the record", async () => {
-        canClaimStub.restore();
         wrapper.vm.canClaim = true;
-        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
-        restStub.withArgs(sinon.match.any).returns({data: {created: true}});
+        restStub.withArgs(sinon.match.any).returns({data: {existing: false}});
         await wrapper.vm.requestOwnership();
         expect(wrapper.vm.canClaim).toBe(false);
         restStub.restore();
+        canClaimStub.restore();
     });
 
     it("prevents re-requesting to maintain when a request fails", async () => {
-        canClaimStub.restore();
         wrapper.vm.canClaim = true;
-        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns(
             {
                 data: {
@@ -265,7 +265,6 @@ describe("Record.vue", function() {
     it("handles errors when checking claim status", async() => {
         canClaimStub.restore();
         wrapper.vm.canClaim = true;
-        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns(
             {
                 data: {
@@ -283,7 +282,6 @@ describe("Record.vue", function() {
         expect(wrapper.vm.canClaim).toBe(false);
         restStub.restore();
 
-        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns(
             {
                 data: {
@@ -346,13 +344,11 @@ describe("Record.vue", function() {
         canClaimStub.restore();
         canEditStub.restore();
 
-        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {id: 123}});
         await wrapper.vm.canEditRecord();
         expect(wrapper.vm.canEdit).toBe(true);
         restStub.restore();
 
-        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({
             data: {error: {response: {data: "error"}}}
         });
@@ -383,7 +379,6 @@ describe("Record.vue", function() {
             vuetify,
             router
         });
-        let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {created: true}});
         let buttons = newWrapper.vm.getMenuButtons;
 

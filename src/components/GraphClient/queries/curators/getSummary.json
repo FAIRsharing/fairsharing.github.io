@@ -48,6 +48,7 @@
     {
       "name": "recentlyUpdatedContent",
       "fields": [
+        "changes",
         "modifiedAt",
         "modifiedBy",
         "type",

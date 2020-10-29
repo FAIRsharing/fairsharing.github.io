@@ -7,98 +7,149 @@
     <v-row v-if="user().is_curator">
       <v-col cols12>
         <v-card v-if="!messages()['getUser'].error">
-          <v-list-item class="blue">
-            <v-list-item-content class="pa-0">
-              <v-list-item-title
-                v-if="user().credentials"
-                class="headline text-left white--text"
-              >
-                Welcome, curator {{ user().credentials.username }}
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <v-list>
+            <v-list-item class="blue">
+              <v-list-item-content class="pa-0">
+                <v-list-item-title
+                  v-if="user().credentials"
+                  class="headline text-left white--text"
+                >
+                  Welcome, curator {{ user().credentials.username }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+        <v-card>
           <v-card-text v-if="approvalRequired">
-            <v-card-title class="green">
+            <v-card-title class="green white--text">
               Records awaiting approval
+              <v-spacer />
+              <v-text-field
+                v-model="search1"
+                label="Search"
+                color="white--text"
+                single-line
+                hide-details
+              />
             </v-card-title>
             <v-data-table
-              :headers="headersApprovalRequired"
+              :headers="headers.approvalRequired"
               :items="approvalRequired"
-              :items-per-page="5"
+              :search="search1"
               class="elevation-1"
+              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
             />
           </v-card-text>
+        </v-card>
+        <v-card>
           <v-card-text v-if="maintenanceRequests">
-            <v-card-title class="green">
+            <v-card-title class="green white--text">
               Pending Maintenance Requests
+              <v-spacer />
+              <v-text-field
+                v-model="search2"
+                label="Search"
+                color="white--text"
+                single-line
+                hide-details
+              />
             </v-card-title>
             <v-data-table
-              :headers="headersMaintenanceRequests"
+              :headers="headers.maintenanceRequests"
               :items="maintenanceRequests"
-              :items-per-page="5"
+              :search="search2"
               class="elevation-1"
+              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
             />
           </v-card-text>
+        </v-card>
+        <v-card>
           <v-card-text v-if="recordsCreatedCuratorsLastWeek">
-            <v-card-title class="green">
+            <v-card-title class="green white--text">
               Records created by curators in the past week
+              <v-spacer />
+              <v-text-field
+                v-model="search3"
+                label="Search"
+                color="white--text"
+                single-line
+                hide-details
+              />
             </v-card-title>
             <v-data-table
-              :headers="headersRecordsCreatedCuratorsLastWeek"
+              :headers="headers.recordsCreatedCuratorsLastWeek"
               :items="recordsCreatedCuratorsLastWeek"
-              :items-per-page="5"
+              :search="search3"
               class="elevation-1"
+              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
             />
           </v-card-text>
+        </v-card>
+        <v-card>
           <v-card-text v-if="recentlyUpdatedContent">
-            <v-card-title class="green">
+            <v-card-title class="green white--text">
               All content added/modified recently
+              <v-spacer />
+              <v-text-field
+                v-model="search4"
+                label="Search"
+                color="white--text"
+                single-line
+                hide-details
+              />
             </v-card-title>
             <v-data-table
-              :headers="headersRecentlyUpdatedContent"
+              :headers="headers.recentlyUpdatedContent"
               :items="recentlyUpdatedContent"
-              :items-per-page="5"
+              :search="search4"
               class="elevation-1"
+              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
             />
           </v-card-text>
+        </v-card>
+        <v-card>
           <v-card-text v-if="recordsInCuration">
-            <v-card-title class="green">
+            <v-card-title class="green white--text">
               Records in curation
+              <v-spacer />
+              <v-text-field
+                v-model="search5"
+                label="Search"
+                color="white--text"
+                single-line
+                hide-details
+              />
             </v-card-title>
             <v-data-table
-              :headers="headersRecordsInCuration"
+              :headers="headers.recordsInCuration"
               :items="recordsInCuration"
-              :items-per-page="5"
+              :search="search5"
               class="elevation-1"
+              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
             />
           </v-card-text>
+        </v-card>
+        <v-card>
           <v-card-text v-if="recordsWithoutDois">
-            <v-card-title class="green">
+            <v-card-title class="green white--text">
               Records without dois
+              <v-spacer />
+              <v-text-field
+                v-model="search6"
+                label="Search"
+                color="white--text"
+                single-line
+                hide-details
+              />
             </v-card-title>
             <v-data-table
-              :headers="headersRecordsWithoutDois"
+              :headers="headers.recordsWithoutDois"
               :items="recordsWithoutDois"
-              :items-per-page="5"
+              :search="search6"
               class="elevation-1"
+              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
             />
-          </v-card-text>
-          <v-card-text v-if="allDataCuration">
-            <v-row
-              v-for="(recordTypeValue, recordTypeName, recordTypeIndex) in allDataCuration"
-              :key="'recordType_' + recordTypeIndex"
-            >
-              {{ recordTypeName }}
-              <v-col
-                v-for="(recordVal, recordName, recordIndex) in recordTypeValue"
-                :key="'record_' + recordIndex"
-                col-xl="3"
-                cols6
-              >
-                {{ recordName }} : {{ recordVal }}
-              </v-col>
-              <v-divider />
-            </v-row>
           </v-card-text>
         </v-card>
       </v-col>
@@ -135,100 +186,108 @@
           recentlyUpdatedContent: [],
           recordsInCuration: [],
           recordsWithoutDois: [],
-          headersApprovalRequired: [
-            {
-              text: "Curator",
-              value: "curator"
-            },
-            {
-              text: "Record name (id)",
-              value: "recordNameID"
-            }
-          ],
-          headersMaintenanceRequests: [
-            {
-              text: "Request Id",
-              value: "id"
-            },
-            {
-              text: "Record name (id)",
-              value: "recordNameID"
-            },
-            {
-              text: "User login (id)",
-              value: "userNameID"
-            }
-          ],
-          headersRecordsCreatedCuratorsLastWeek: [
-            {
-              text: "Record name (id)",
-              value: "recordNameID"
-            },
-            {
-              text: "Date created",
-              value: "createdAt"
-            },
-            {
-              text: "Aproved",
-              value: "isApproved"
-            }
-          ],
-          headersRecentlyUpdatedContent: [
-            {
-              text: "Record name (id)",
-              value: "recordNameID"
-            },
-            {
-              text: "The change set",
-              value: "change"
-            },
-            {
-              text: "Modified by",
-              value: "modifiedBy"
-            },
-            {
-              text: "Date modified",
-              value: "modifiedAt"
-            },
-            {
-              text: "Event",
-              value: "event"
-            }
-          ],
-          headersRecordsInCuration: [
-            {
-              text: "Curator",
-              value: "curator"
-            },
-            {
-              text: "Record name (id)",
-              value: "recordNameID"
-            },
-            {
-              text: "Status",
-              value: "recordStatus"
-            }
-          ],
-          headersRecordsWithoutDois: [
-            {
-              text: "Record name (id)",
-              value: "recordNameID"
-            },
-            {
-              text: "Status",
-              value: "recordStatus"
-            },
-            {
-              text: "Date created",
-              value: "createdAt"
-            }
-          ]
+          headers: {
+            approvalRequired: [
+              {
+                text: "Curator",
+                value: "curator"
+              },
+              {
+                text: "Record name (id)",
+                value: "recordNameID"
+              }
+            ],
+            maintenanceRequests: [
+              {
+                text: "Request Id",
+                value: "id"
+              },
+              {
+                text: "Record name (id)",
+                value: "recordNameID"
+              },
+              {
+                text: "User login (id)",
+                value: "userNameID"
+              }
+            ],
+            recordsCreatedCuratorsLastWeek: [
+              {
+                text: "Record name (id)",
+                value: "recordNameID"
+              },
+              {
+                text: "Date created",
+                value: "createdAt"
+              },
+              {
+                text: "Aproved",
+                value: "isApproved"
+              }
+            ],
+            recentlyUpdatedContent: [
+              {
+                text: "Record name (id)",
+                value: "recordNameID"
+              },
+              {
+                text: "The change set",
+                value: "change"
+              },
+              {
+                text: "Modified by",
+                value: "modifiedBy"
+              },
+              {
+                text: "Date modified",
+                value: "modifiedAt"
+              },
+              {
+                text: "Event",
+                value: "event"
+              }
+            ],
+            recordsInCuration: [
+              {
+                text: "Curator",
+                value: "curator"
+              },
+              {
+                text: "Record name (id)",
+                value: "recordNameID"
+              },
+              {
+                text: "Status",
+                value: "recordStatus"
+              }
+            ],
+            recordsWithoutDois: [
+              {
+                text: "Record name (id)",
+                value: "recordNameID"
+              },
+              {
+                text: "Status",
+                value: "recordStatus"
+              },
+              {
+                text: "Date created",
+                value: "createdAt"
+              }
+            ],
+          },
+          search1: "",
+          search2: "",
+          search3: "",
+          search4: "",
+          search5: "",
+          search6: ""
         }
       },
       computed: {
         ...mapState('users', ['user', "messages"]),
       },
-      async created(){
+      async mounted() {
           await this.getUser();
           if (this.messages()["getUser"].error){
             this.setError({field:"login", message:"You've been logged out automatically"});
@@ -238,15 +297,19 @@
           let data = await client.executeQuery(getCurationRecords);
           this.allDataCuration = data["curationSummary"];
           client.initalizeHeader();
-          this.prepareApprovalRequired(this.allDataCuration);
-          this.prepareMaintenanceRequests(this.allDataCuration);
-          this.prepareRecordsCuratorCreationsLastWeek(this.allDataCuration);
-          this.prepareecentlyUpdatedContent(this.allDataCuration);
-          this.prepareRecordsInCuration(this.allDataCuration);
-          this.prepareRecordsWithoutDois(this.allDataCuration);
+          this.prepareData();
       },
       methods: {
           ...mapActions('users', ['getUser', 'setError']),
+          prepareData(){
+            let _module = this;
+            _module.prepareApprovalRequired(_module.allDataCuration);
+            _module.prepareMaintenanceRequests(_module.allDataCuration);
+            _module.prepareRecordsCuratorCreationsLastWeek(_module.allDataCuration);
+            _module.prepareRecentlyUpdatedContent(_module.allDataCuration);
+            _module.prepareRecordsInCuration(_module.allDataCuration);
+            _module.prepareRecordsWithoutDois(_module.allDataCuration);
+          },
           prepareApprovalRequired(dataCuration){
             let _module = this;
             let userRecords = dataCuration['approvalsRequired'];
@@ -281,12 +344,12 @@
               _module.recordsCreatedCuratorsLastWeek.push(object);
             });
           },
-          prepareecentlyUpdatedContent(dataCuration){
+          prepareRecentlyUpdatedContent(dataCuration){
             let _module = this;
             let content = dataCuration['recentlyUpdatedContent'];
             content.forEach(item => {
               let object = {};
-              object.changes = item.changes;
+              object.change = JSON.stringify(item.changes);
               object.recordNameID = item['fairsharingRecord'].name+' ('+item['fairsharingRecord'].id+')';
               object.modifiedAt = item.modifiedAt;
               object.modifiedBy = item.modifiedBy;
@@ -325,5 +388,8 @@
 <style>
   #userPage div.v-expansion-panel-content__wrap{
     border-top:1px solid rgba(0,0,0,0.11);
+  }
+  .theme--light.v-input:not(.v-input--is-disabled) input{
+    color:#fff;
   }
 </style>

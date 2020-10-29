@@ -9,6 +9,10 @@ import Curator from "@/views/Curators/Curator.vue"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+usersStore.state.user = function(){ return {
+    isLoggedIn: true,
+    credentials: {token: 123, username: 123}
+}};
 const $store = new Vuex.Store({
     modules: {
         users: usersStore
@@ -23,9 +27,9 @@ describe("Curator.vue", () => {
   let restStub;
   let graphStub;
 
-  beforeAll( () => {
+  beforeEach( async () => {
      restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-         data: {id: "12345", name: "Terazus", role: "1"}
+         data: {id: "12345", name: 123, token: 123}
      });
      graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
          curationSummary: {
@@ -62,6 +66,12 @@ describe("Curator.vue", () => {
                      name: "ewewrr",
                      createdAt: "2020-10-27T09:34:54Z",
                      isApproved: "false"
+                 },
+                 {
+                     id: "44",
+                     name: "Second",
+                     createdAt: "2020-10-27T09:34:54Z",
+                     isApproved: "false"
                  }
              ],
              recentlyUpdatedContent: [
@@ -78,11 +88,16 @@ describe("Curator.vue", () => {
              ],
              recordsInCuration: [
                 {
-                     username: "Terazus",
+                     username: "PRS",
                      fairsharingRecords: [
                          {
                              id: "11",
                              name: "Amphibian Anatomy Ontology",
+                             status: "deprecated"
+                         },
+                         {
+                             id: "12",
+                             name: "Frog French databases",
                              status: "deprecated"
                          }
                      ]
@@ -97,44 +112,51 @@ describe("Curator.vue", () => {
                 }
              ]
          }
-     })
+    });
+    wrapper = await shallowMount(Curator, {
+        localVue,
+        router,
+        mocks: {$store, $router}
+    });
   });
 
-  afterAll(() => {
+
+  afterEach(() => {
       restStub.restore();
       graphStub.restore();
   });
 
-  it("can be instantiated", () => {
-      wrapper = shallowMount(Curator, {
-          localVue,
-          router,
-          mocks: {$store,$router}
-      });
+  it("can be mounted", async () => {
       const title = "Curator";
       expect(wrapper.name()).toMatch(title);
   });
 
-  it("can process errors", () => {
+  /*it("can process errors", async () => {
       restStub.restore();
       restStub = sinon.stub(Client.prototype, "executeQuery").returns({
           curationSummary: {error: "error"}
       });
-      wrapper = shallowMount(Curator, {
+      wrapper = await shallowMount(Curator, {
           localVue,
           router,
           mocks: {$store, $router}
       });
-  });
+      //
+  });*/
 
-  it("can check prepareApprovalRequired returns for specific fields",()=>{
-      wrapper = shallowMount(Curator, {
-          localVue,
-          router,
-          mocks: {$store,$router}
-      });
+  it("can check prepareData returns data elements correctly", async () => {
       expect(wrapper.vm.approvalRequired.length).toBe(1);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazus");
+      expect(wrapper.vm.maintenanceRequests.length).toBe(1);
+      expect(wrapper.vm.maintenanceRequests[0].recordNameID).toBe("OrthoOntology Deontology (373)");
+      expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(2);
+      expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe("Second (44)");
+      expect(wrapper.vm.recentlyUpdatedContent.length).toBe(1);
+      expect(wrapper.vm.recentlyUpdatedContent[0].modifiedAt).toBe("2020-10-27T09:34:57Z");
+      expect(wrapper.vm.recordsInCuration.length).toBe(2);
+      expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12)");
+      expect(wrapper.vm.recordsWithoutDois.length).toBe(1);
+      expect(wrapper.vm.recordsWithoutDois[0].createdAt).toBe("2020-10-12T13:31:25Z");
   });
 
 });

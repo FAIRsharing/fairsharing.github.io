@@ -12,8 +12,8 @@ import fakeAssociations from "@/../tests/fixtures/fakeAssociations.json";
 import Vue from "vue"
 
 Vue.config.silent = true;
-const sinon = require("sinon");
-const localVue = createLocalVue();
+const sinon = require("sinon"),
+    localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
 users.state.user = function(){
@@ -22,7 +22,6 @@ users.state.user = function(){
         credentials: {token: 123}
     }
 };
-
 record.state.currentRecord.fairsharingRecord.maintainers = [
     {username:123}
 ];
@@ -39,22 +38,23 @@ let $store = new Vuex.Store({
         record: record,
         users: users,
     }
-});
-
+}),
+    queryStub,
+    canEditStub,
+    canClaimStub; //,
+    //getProfileTypesStub;
 const $route = {
     path: "/",
     params: {
         id: "980190962"
     }
-};
-const router = new VueRouter();
-const $router = { push: jest.fn() };
-let queryStub;
-
+},
+    router = new VueRouter(),
+    $router = { push: jest.fn() };
 
 describe("Record.vue", function() {
-    let wrapper;
-    let vuetify;
+    let wrapper,
+        vuetify;
 
     beforeEach( async () => {
         queryStub = sinon.stub(Client.prototype, "executeQuery");
@@ -74,6 +74,14 @@ describe("Record.vue", function() {
                 }
             }
         });
+        canEditStub = sinon.stub(RESTClient.prototype, "canEdit");
+        canEditStub.returns(true);
+        canClaimStub = sinon.stub(RESTClient.prototype, "canClaim");
+        canClaimStub.returns(true);
+        /*
+        getProfileTypesStub = sinon.stub(RESTClient.prototype, "getProfileTypes");
+        getProfileTypesStub.returns(true);
+         */
         vuetify = new Vuetify();
         wrapper = await shallowMount(Record, {
             mocks: {$route, $store, $router},
@@ -84,6 +92,8 @@ describe("Record.vue", function() {
     });
     afterEach( () => {
         Client.prototype.executeQuery.restore();
+        canEditStub.restore();
+        canClaimStub.restore();
     });
 
     const path = "980190962";
@@ -226,6 +236,7 @@ describe("Record.vue", function() {
     });
 
     it("allows a logged in user to request to own/maintain the record", async () => {
+        canClaimStub.restore();
         wrapper.vm.canClaim = true;
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {created: true}});
@@ -235,6 +246,7 @@ describe("Record.vue", function() {
     });
 
     it("prevents re-requesting to maintain when a request fails", async () => {
+        canClaimStub.restore();
         wrapper.vm.canClaim = true;
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns(
@@ -256,6 +268,7 @@ describe("Record.vue", function() {
     });
 
     it("handles errors when checking claim status", async() => {
+        canClaimStub.restore();
         wrapper.vm.canClaim = true;
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns(
@@ -335,6 +348,9 @@ describe("Record.vue", function() {
     });
 
     it("can check if a logged in user can edit the record", async () => {
+        canClaimStub.restore();
+        canEditStub.restore();
+
         let restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({data: {id: 123}});
         await wrapper.vm.canEditRecord();
@@ -363,6 +379,9 @@ describe("Record.vue", function() {
 
     it("testing the action buttons methods", async () => {
         $router.push = jest.fn();
+        users.state.user = function(){
+            return { isLoggedIn: false }
+        };
         let newWrapper = await shallowMount(Record, {
             mocks: {$route, $store, $router},
             localVue,
@@ -384,6 +403,7 @@ describe("Record.vue", function() {
         expect(buttons[2].method()).toBe(null);
         expect(buttons[3].method()).toBe(null);
 
+
         $store.state.users.user = function (){return {isLoggedIn: true, credentials: {token: 123}}};
         let anotherWrapper = await shallowMount(Record, {
             mocks: {$route, $store, $router},
@@ -395,7 +415,5 @@ describe("Record.vue", function() {
         buttons[1].method();
         expect($router.push).toHaveBeenCalledTimes(2);
         expect(anotherWrapper.vm.canClaim).toBe(false);
-
-        restStub.restore();
     });
 });

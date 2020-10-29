@@ -8,7 +8,6 @@ import GraphClient from "@/components/GraphClient/GraphClient.js";
 import RESTClient from "@/components/Client/RESTClient.js";
 import record from "@/store/record.js";
 import users from "@/store/users.js";
-import fakeAssociations from "@/../tests/fixtures/fakeAssociations.json";
 import sinon from "sinon";
 
 // Initializing context for mounting
@@ -195,7 +194,20 @@ describe("Record.vue", function() {
             credentials: {token: 123, username: 123}
         }};
 
-
+        mocks.restore("canClaimStub");
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {data: true}
+        );
+        await wrapper.vm.checkClaimStatus();
+        expect(wrapper.vm.alreadyClaimed).toBe(true);
+        mocks.restore("restMock");
+        mocks.setMock("canClaimStub",
+            RESTClient.prototype,
+            "canClaim",
+            {}
+        );
     });
 
     it("can process request ownership errors", async () => {

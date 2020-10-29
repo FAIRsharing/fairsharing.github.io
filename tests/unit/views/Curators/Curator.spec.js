@@ -131,7 +131,7 @@ describe("Curator.vue", () => {
       expect(wrapper.name()).toMatch(title);
   });
 
-  /*it("can process errors", async () => {
+  it("can process errors", async () => {
       restStub.restore();
       restStub = sinon.stub(Client.prototype, "executeQuery").returns({
           curationSummary: {error: "error"}
@@ -142,7 +142,7 @@ describe("Curator.vue", () => {
           mocks: {$store, $router}
       });
       //
-  });*/
+  });
 
   it("can check prepareData returns data elements correctly", async () => {
       expect(wrapper.vm.approvalRequired.length).toBe(1);

@@ -131,18 +131,6 @@ describe("Curator.vue", () => {
       expect(wrapper.name()).toMatch(title);
   });
 
-  it("can process errors", async () => {
-      restStub.restore();
-      restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-          curationSummary: {error: "error"}
-      });
-      wrapper = await shallowMount(Curator, {
-          localVue,
-          router,
-          mocks: {$store, $router}
-      });
-      //
-  });
 
   it("can check prepareData returns data elements correctly", async () => {
       expect(wrapper.vm.approvalRequired.length).toBe(1);
@@ -159,4 +147,16 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.recordsWithoutDois[0].createdAt).toBe("2020-10-12T13:31:25Z");
   });
 
+  it("can process errors", async () => {
+      restStub.restore();
+      restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+          curationSummary: {error: "error"}
+      });
+      wrapper = await shallowMount(Curator, {
+          localVue,
+          router,
+          mocks: {$store, $router}
+      });
+      //
+  });
 });

@@ -22,7 +22,10 @@
         </v-card>
         <v-card>
           <v-card-text v-if="approvalRequired">
-            <v-card-title class="green white--text">
+            <v-card-title
+              id="text-curator-search-0"
+              class="green white--text"
+            >
               Records awaiting approval
               <v-spacer />
               <v-text-field
@@ -44,7 +47,10 @@
         </v-card>
         <v-card>
           <v-card-text v-if="maintenanceRequests">
-            <v-card-title class="green white--text">
+            <v-card-title
+              id="text-curator-search-1"
+              class="green white--text"
+            >
               Pending Maintenance Requests
               <v-spacer />
               <v-text-field
@@ -66,7 +72,10 @@
         </v-card>
         <v-card>
           <v-card-text v-if="recordsCreatedCuratorsLastWeek">
-            <v-card-title class="green white--text">
+            <v-card-title
+              id="text-curator-search-2"
+              class="green white--text"
+            >
               Records created by curators in the past week
               <v-spacer />
               <v-text-field
@@ -88,7 +97,10 @@
         </v-card>
         <v-card>
           <v-card-text v-if="recentlyUpdatedContent">
-            <v-card-title class="green white--text">
+            <v-card-title
+              id="text-curator-search-3"
+              class="green white--text"
+            >
               All content added/modified recently
               <v-spacer />
               <v-text-field
@@ -110,7 +122,10 @@
         </v-card>
         <v-card>
           <v-card-text v-if="recordsInCuration">
-            <v-card-title class="green white--text">
+            <v-card-title
+              id="text-curator-search-4"
+              class="green white--text"
+            >
               Records in curation
               <v-spacer />
               <v-text-field
@@ -132,7 +147,10 @@
         </v-card>
         <v-card>
           <v-card-text v-if="recordsWithoutDois">
-            <v-card-title class="green white--text">
+            <v-card-title
+              id="text-curator-search-5"
+              class="green white--text"
+            >
               Records without dois
               <v-spacer />
               <v-text-field
@@ -386,10 +404,22 @@
 </script>
 
 <style>
-  #userPage div.v-expansion-panel-content__wrap{
-    border-top:1px solid rgba(0,0,0,0.11);
+  #text-curator-search-0 div.theme--light.v-input:not(.v-input--is-disabled) input{
+    color:#fff;
   }
-  .theme--light.v-input:not(.v-input--is-disabled) input{
+  #text-curator-search-1 div.theme--light.v-input:not(.v-input--is-disabled) input{
+    color:#fff;
+  }
+  #text-curator-search-2 div.theme--light.v-input:not(.v-input--is-disabled) input{
+    color:#fff;
+  }
+  #text-curator-search-3 div.theme--light.v-input:not(.v-input--is-disabled) input{
+    color:#fff;
+  }
+  #text-curator-search-4 div.theme--light.v-input:not(.v-input--is-disabled) input{
+    color:#fff;
+  }
+  #text-curator-search-5 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }
 </style>

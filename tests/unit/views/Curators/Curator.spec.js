@@ -27,11 +27,11 @@ describe("Curator.vue", () => {
   let restStub;
   let graphStub;
 
-  beforeEach( async () => {
-     restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+  beforeAll( async (done) => {
+     restStub = await sinon.stub(Client.prototype, "executeQuery").returns({
          data: {id: "12345", name: 123, token: 123}
      });
-     graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
+     graphStub = await sinon.stub(GraphClient.prototype, "executeQuery").returns({
          curationSummary: {
              approvalsRequired: [
                 {
@@ -118,6 +118,7 @@ describe("Curator.vue", () => {
         router,
         mocks: {$store, $router}
     });
+    done();
   });
 
 

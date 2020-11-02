@@ -91,7 +91,6 @@ class GraphQLClient {
                 if (typeof field === "object"){
                     if ("$ref" in field){
                         let myRef = Fragments[field["$ref"]];
-                        console.log(myRef);
                         for (let subField of myRef){
                             if (typeof subField === "string"){
                                 queryString += ` ${subField}`;

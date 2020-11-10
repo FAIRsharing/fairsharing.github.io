@@ -11,7 +11,14 @@
           "queryName": "fairsharingRecords",
           "fields": [
             "id",
-            "name"
+            "name",
+            {
+              "queryName": "modifiedBy",
+              "fields": [
+                "id",
+                "username"
+              ]
+            }
           ]
         }
       ]

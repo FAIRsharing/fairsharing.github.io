@@ -1,9 +1,10 @@
 {
   "keywords": [
+    "label",
+    "id",
     "definitions",
     "expandedNames",
-    "id",
-    "label",
+    "iri",
     "synonyms"
   ],
   "domains": [

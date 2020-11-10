@@ -13,7 +13,6 @@
         <div><b class="mr-1">Name:</b> {{ keyword.label }}</div>
         <div><b class="mr-1">URL:</b> {{ keyword['iri'] }}</div>
         <div><b class="mr-1">Definition:</b> <i> {{ keyword.definitions[0] }} </i></div>
-        <div><b class="mr-1">Expanded names:</b> {{ processArray(keyword['expandedNames']) }}</div>
         <div><b class="mr-1">Synonyms:</b> {{ processArray(keyword['synonyms']) }}</div>
       </div>
     </v-tooltip>

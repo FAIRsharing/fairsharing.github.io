@@ -52,7 +52,7 @@
           <v-icon small left>
             fas fa-tags
           </v-icon>
-          {{ item.label }}
+          <KeywordTooltip :keyword="item" />
         </v-chip>
       </div>
       <!--Subjects-->
@@ -77,7 +77,7 @@
           <v-icon small left>
             fas fa-tags
           </v-icon>
-          {{ item.label }}
+          <KeywordTooltip :keyword="item" />
         </v-chip>
       </div>
       <!--UserDefinedTags-->
@@ -114,10 +114,12 @@
     import { mapGetters } from 'vuex';
 
     import SectionTitle from '@/components/Records/Record/SectionTitle';
+    import KeywordTooltip from "../Shared/KeywordTooltip";
 
     export default {
         name: "Keywords",
         components: {
+            KeywordTooltip,
             SectionTitle
         },
         computed: {

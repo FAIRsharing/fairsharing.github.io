@@ -182,7 +182,8 @@ export default {
         if (key > 2) {
           break;
         }
-        this.Chips[node][key] = {label: value.label, active: false};
+        value.ative = false;
+        this.Chips[node][key] = value;
       }
     },
     organizeButtons(record, node) {

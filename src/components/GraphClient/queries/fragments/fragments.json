@@ -11,11 +11,17 @@
     {
       "queryName": "domains",
       "fields": [
-        {"$ref": "keywordsSimple"}
+        {"$ref": "keywords"},
+        "inFairsharing"
       ]
     }
   ],
-  "keywordsSimple": [
-    "label"
+  "subjects": [
+    {
+      "queryName": "subjects",
+      "fields": [
+        {"$ref": "keywords"}
+      ]
+    }
   ]
 }

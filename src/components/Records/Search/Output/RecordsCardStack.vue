@@ -200,7 +200,8 @@ export default {
     organizeChips(record, node) {
       this.organizeButtons(record, node);
       record[node].forEach(item => {
-        this.Chips[node].push({label: item.label, active: false});
+        item.active = false;
+        this.Chips[node].push(item);
       })
     },
     organizeButtons(record, node) {

@@ -21,13 +21,14 @@
         {
           "queryName": "domains",
           "fields": [
-            "label"
+            {"$ref": "keywords"},
+            "inFairsharing"
           ]
         },
         {
           "queryName": "subjects",
           "fields": [
-            "label"
+            {"$ref": "keywords"}
           ]
         },
         {

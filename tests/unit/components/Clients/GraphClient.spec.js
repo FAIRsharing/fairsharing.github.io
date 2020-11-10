@@ -121,7 +121,7 @@ describe("GraphQL Client", function () {
             {$ref: "domains"}
         ];
         let queryFragment = client.buildQuery(smallQuery);
-        expect(queryFragment).toBe('test{ inFairsharing label id definitions expandedNames iri synonyms domains{ label}}');
+        expect(queryFragment).toBe('test{ inFairsharing label id definitions expandedNames iri synonyms domains{ label id definitions expandedNames iri synonyms inFairsharing}}');
 
 
     });

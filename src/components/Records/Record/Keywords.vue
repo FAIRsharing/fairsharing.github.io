@@ -24,7 +24,8 @@
           outlined
           text-color="primary"
         >
-          <v-icon left small>
+          <v-icon left
+                  small>
             fas fa-tags
           </v-icon>
           {{ item.label }}
@@ -49,7 +50,8 @@
           outlined
           text-color="secondary"
         >
-          <v-icon small left>
+          <v-icon small
+                  left>
             fas fa-tags
           </v-icon>
           {{ item.label }}
@@ -74,7 +76,8 @@
           outlined
           text-color="accent"
         >
-          <v-icon small left>
+          <v-icon small
+                  left>
             fas fa-tags
           </v-icon>
           {{ item.label }}

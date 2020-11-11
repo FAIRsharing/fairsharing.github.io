@@ -58,7 +58,13 @@
             "id",
             "name",
             "createdAt",
-            "isApproved"
+            {
+              "queryName": "creator",
+              "fields": [
+                "id",
+                "username"
+              ]
+            }
       ]
     },
     {
@@ -104,7 +110,14 @@
         "id",
         "name",
         "createdAt",
-        "status",
+        "updatedAt",
+        {
+          "queryName": "creator",
+          "fields": [
+            "id",
+            "username"
+          ]
+        },
         {
           "queryName": "lastEditor",
           "fields": [

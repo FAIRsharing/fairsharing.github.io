@@ -207,12 +207,20 @@
           headers: {
             approvalRequired: [
               {
+                text: "Date",
+                value: "updatedAt"
+              },
+              {
                 text: "Curator",
                 value: "curator"
               },
               {
                 text: "Record name (id)",
                 value: "recordNameID"
+              },
+              {
+                text: "Last editor",
+                value: "lastEditor"
               }
             ],
             maintenanceRequests: [
@@ -334,8 +342,13 @@
             userRecords.forEach(item => {
               item['fairsharingRecords'].forEach(rec => {
                 let object = {};
+                object.updatedAt = rec.updatedAt;
                 object.curator = item['username'];
                 object.recordNameID = rec.name+' ('+rec.id+')';
+                if (rec.lastEditor != null){
+                  object.lastEditor = rec.lastEditor.name
+                }
+
                 _module.approvalRequired.push(object);
               });
             });

@@ -12,6 +12,7 @@
           "fields": [
             "id",
             "name",
+            "updatedAt",
             {
               "name": "lastEditor",
               "fields": [

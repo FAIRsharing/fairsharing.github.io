@@ -11,7 +11,14 @@
           "queryName": "fairsharingRecords",
           "fields": [
             "id",
-            "name"
+            "name",
+            {
+              "name": "lastEditor",
+              "fields": [
+                "id",
+                "username"
+              ]
+            }
           ]
         }
       ]
@@ -20,11 +27,19 @@
       "name": "pendingMaintenanceRequests",
       "fields": [
         "id",
+        "createdAt",
         {
           "queryName": "fairsharingRecord",
           "fields": [
             "id",
-            "name"
+            "name",
+            {
+              "name": "lastEditor",
+              "fields": [
+                "id",
+                "username"
+              ]
+            }
           ]
         },
         {
@@ -70,7 +85,14 @@
           "fields": [
             "id",
             "name",
-            "status"
+            "status",
+            {
+              "name": "maintainers",
+              "fields": [
+                "id",
+                "username"
+              ]
+            }
           ]
         }
       ]
@@ -81,7 +103,36 @@
         "id",
         "name",
         "createdAt",
-        "status"
+        "status",
+        {
+          "queryName": "lastEditor",
+          "fields": [
+            "id",
+            "username"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hiddenRecords",
+      "fields": [
+        "id",
+        "name",
+        "createdAt",
+        {
+          "queryName": "creator",
+          "fields": [
+            "id",
+            "username"
+          ]
+        },
+        {
+          "queryName": "curator",
+          "fields": [
+            "id",
+            "username"
+          ]
+        }
       ]
     }
   ]

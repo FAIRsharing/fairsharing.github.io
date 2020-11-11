@@ -1,5 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card id="editPublications">
+    {{user().is_curator}}
     <v-card-title class="grey lighten-4 blue--text">
       <v-btn
         class="blue mr-4"
@@ -295,8 +296,12 @@
                 value: "title"
               },
               {
-                text: "doi",
+                text: "DOI",
                 value: "doi"
+              },
+              {
+                text: "Pubmed ID",
+                value: "pubmedId"
               },
               {
                 text: "authors",

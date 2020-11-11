@@ -71,56 +71,6 @@
           </v-card-text>
         </v-card>
         <v-card>
-          <v-card-text v-if="recordsCreatedCuratorsLastWeek">
-            <v-card-title
-              id="text-curator-search-2"
-              class="green white--text"
-            >
-              Records created by curators in the past week
-              <v-spacer />
-              <v-text-field
-                v-model="search3"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :headers="headers.recordsCreatedCuratorsLastWeek"
-              :items="recordsCreatedCuratorsLastWeek"
-              :search="search3"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
-          </v-card-text>
-        </v-card>
-        <v-card>
-          <v-card-text v-if="recentlyUpdatedContent">
-            <v-card-title
-              id="text-curator-search-3"
-              class="green white--text"
-            >
-              All content added/modified recently
-              <v-spacer />
-              <v-text-field
-                v-model="search4"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :headers="headers.recentlyUpdatedContent"
-              :items="recentlyUpdatedContent"
-              :search="search4"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
-          </v-card-text>
-        </v-card>
-        <v-card>
           <v-card-text v-if="recordsInCuration">
             <v-card-title
               id="text-curator-search-4"
@@ -170,6 +120,83 @@
             />
           </v-card-text>
         </v-card>
+        <v-card>
+          <v-card-text v-if="hiddenRecords">
+            <v-card-title
+              id="text-curator-search-7"
+              class="green white--text"
+            >
+              Hidden records
+              <v-spacer />
+              <v-text-field
+                v-model="search7"
+                label="Search"
+                color="white--text"
+                single-line
+                hide-details
+              />
+            </v-card-title>
+            <v-data-table
+              :headers="headers.hiddenRecords"
+              :items="hiddenRecords"
+              :search="search7"
+              class="elevation-1"
+              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+            />
+          </v-card-text>
+        </v-card>
+
+
+        <v-card>
+          <v-card-text v-if="recordsCreatedCuratorsLastWeek">
+            <v-card-title
+              id="text-curator-search-2"
+              class="green white--text"
+            >
+              Records created by curators in the past week
+              <v-spacer />
+              <v-text-field
+                v-model="search3"
+                label="Search"
+                color="white--text"
+                single-line
+                hide-details
+              />
+            </v-card-title>
+            <v-data-table
+              :headers="headers.recordsCreatedCuratorsLastWeek"
+              :items="recordsCreatedCuratorsLastWeek"
+              :search="search3"
+              class="elevation-1"
+              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+            />
+          </v-card-text>
+        </v-card>
+        <v-card>
+          <v-card-text v-if="recentlyUpdatedContent">
+            <v-card-title
+              id="text-curator-search-3"
+              class="green white--text"
+            >
+              All content added/modified recently
+              <v-spacer />
+              <v-text-field
+                v-model="search4"
+                label="Search"
+                color="white--text"
+                single-line
+                hide-details
+              />
+            </v-card-title>
+            <v-data-table
+              :headers="headers.recentlyUpdatedContent"
+              :items="recentlyUpdatedContent"
+              :search="search4"
+              class="elevation-1"
+              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+            />
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
     <v-row v-else>
@@ -204,10 +231,11 @@
           recentlyUpdatedContent: [],
           recordsInCuration: [],
           recordsWithoutDois: [],
+          hiddenRecords: [],
           headers: {
             approvalRequired: [
               {
-                text: "Date",
+                text: "Date last modification",
                 value: "updatedAt"
               },
               {
@@ -225,8 +253,8 @@
             ],
             maintenanceRequests: [
               {
-                text: "Request Id",
-                value: "id"
+                text: "Date",
+                value: "createdAt"
               },
               {
                 text: "Record name (id)",
@@ -247,8 +275,8 @@
                 value: "createdAt"
               },
               {
-                text: "Aproved",
-                value: "isApproved"
+                text: "Creator",
+                value: "creator"
               }
             ],
             recentlyUpdatedContent: [
@@ -275,16 +303,16 @@
             ],
             recordsInCuration: [
               {
-                text: "Curator",
-                value: "curator"
-              },
-              {
                 text: "Record name (id)",
                 value: "recordNameID"
               },
               {
-                text: "Status",
-                value: "recordStatus"
+                text: "Record maintainer(s)",
+                value: "recordMaintainers"
+              },
+              {
+                text: "Under curation by",
+                value: "curator"
               }
             ],
             recordsWithoutDois: [
@@ -293,21 +321,48 @@
                 value: "recordNameID"
               },
               {
-                text: "Status",
-                value: "recordStatus"
+                text: "Date created",
+                value: "createdAt"
+              },
+              {
+                text: "Date last edit",
+                value: "updatedAt"
+              },
+              {
+                text: "Created by",
+                value: "creator"
+              },
+              {
+                text: "Last edited by",
+                value: "lastEditor"
+              }
+            ],
+            hiddenRecords: [
+              {
+                text: "Record name (id)",
+                value: "recordNameID"
               },
               {
                 text: "Date created",
                 value: "createdAt"
+              },
+              {
+                text: "Under curation by",
+                value: "curator"
+              },
+              {
+                text: "Created by",
+                value: "creator"
               }
-            ],
+            ]
           },
           search1: "",
           search2: "",
           search3: "",
           search4: "",
           search5: "",
-          search6: ""
+          search6: "",
+          search7: ""
         }
       },
       computed: {
@@ -331,10 +386,12 @@
             let _module = this;
             _module.prepareApprovalRequired(_module.allDataCuration);
             _module.prepareMaintenanceRequests(_module.allDataCuration);
-            _module.prepareRecordsCuratorCreationsLastWeek(_module.allDataCuration);
-            _module.prepareRecentlyUpdatedContent(_module.allDataCuration);
             _module.prepareRecordsInCuration(_module.allDataCuration);
             _module.prepareRecordsWithoutDois(_module.allDataCuration);
+            _module.prepareHiddenRecords(_module.allDataCuration);
+
+            _module.prepareRecordsCuratorCreationsLastWeek(_module.allDataCuration);
+            _module.prepareRecentlyUpdatedContent(_module.allDataCuration);
           },
           prepareApprovalRequired(dataCuration){
             let _module = this;
@@ -345,8 +402,10 @@
                 object.updatedAt = rec.updatedAt;
                 object.curator = item['username'];
                 object.recordNameID = rec.name+' ('+rec.id+')';
-                if (rec.lastEditor != null){
-                  object.lastEditor = rec.lastEditor.name
+                if (rec['lastEditor'] != null){
+                  object.lastEditor = rec['lastEditor'].username+' ('+rec['lastEditor'].id+')';
+                }else{
+                  object.lastEditor = "unknown"
                 }
 
                 _module.approvalRequired.push(object);
@@ -358,7 +417,7 @@
             let requests = dataCuration['pendingMaintenanceRequests'];
             requests.forEach(item => {
               let object = {};
-              object.id = item.id;
+              object.createdAt = item.createdAt;
               object.recordNameID = item['fairsharingRecord'].name+' ('+item['fairsharingRecord'].id+')';
               object.userNameID = item['user'].username+' ('+item['user'].id+')';
               _module.maintenanceRequests.push(object);
@@ -371,7 +430,11 @@
               let object = {};
               object.recordNameID = item.name+' ('+item.id+')';
               object.createdAt = item.createdAt;
-              object.isApproved = item.isApproved;
+              if (item['creator'] != null){
+                object.creator = item['creator'].username +' ('+item['creator'].id+')';
+              }else{
+                object.creator = "unknown"
+              }
               _module.recordsCreatedCuratorsLastWeek.push(object);
             });
           },
@@ -396,7 +459,16 @@
                 let object = {};
                 object.curator = item['username'];
                 object.recordNameID = rec.name+' ('+rec.id+')';
-                object.recordStatus = rec.status;
+                let numMaint = 0;
+                object.recordMaintainers = "none"
+                rec['maintainers'].forEach(main => {
+                  if (numMaint > 0){
+                    object.recordMaintainers += ', ' + main.username+' ('+main.id+')';
+                  }else{
+                    object.recordMaintainers = main.username+' ('+main.id+')';
+                  }
+                  numMaint += 1;
+                });
                 _module.recordsInCuration.push(object);
               });
             });
@@ -408,8 +480,38 @@
               let object = {};
               object.recordNameID = item.name+' ('+item.id+')';
               object.createdAt = item.createdAt;
-              object.recordStatus = item.status;
+              object.updatedAt = item.updatedAt;
+              if (item['creator'] != null){
+                object.creator = item['creator'].username +' ('+item['creator'].id+')';
+              }else{
+                object.creator = "unknown"
+              }
+              if (item['lastEditor'] != null){
+                object.lastEditor = item['lastEditor'].username +' ('+item['lastEditor'].id+')';
+              }else{
+                object.lastEditor = "unknown"
+              }
               _module.recordsWithoutDois.push(object);
+            });
+          },
+          prepareHiddenRecords(dataCuration){
+            let _module = this;
+            let records = dataCuration['hiddenRecords'];
+            records.forEach(item => {
+              let object = {};
+              object.recordNameID = item.name+' ('+item.id+')';
+              object.createdAt = item.createdAt;
+              if (item.curator != null){
+                object.curator = item['curator'].username
+              }else{
+                object.curator = 'none'
+              }
+              if (item['creator'] != null){
+                object.creator = item.creator.username +' ('+item.creator.id+')';
+              }else{
+                object.creator = "unknown"
+              }
+              _module.hiddenRecords.push(object);
             });
           }
       }

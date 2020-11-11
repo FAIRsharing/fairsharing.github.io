@@ -31,6 +31,7 @@ describe("Curator.vue", () => {
      restStub = await sinon.stub(Client.prototype, "executeQuery").returns({
          data: {id: "12345", name: 123, token: 123}
      });
+
      graphStub = await sinon.stub(GraphClient.prototype, "executeQuery").returns({
          curationSummary: {
              approvalsRequired: [
@@ -64,14 +65,12 @@ describe("Curator.vue", () => {
                  {
                      id: "32",
                      name: "ewewrr",
-                     createdAt: "2020-10-27T09:34:54Z",
-                     isApproved: "false"
+                     createdAt: "2020-10-27T09:34:54Z"
                  },
                  {
                      id: "44",
                      name: "Second",
-                     createdAt: "2020-10-27T09:34:54Z",
-                     isApproved: "false"
+                     createdAt: "2020-10-27T09:34:54Z"
                  }
              ],
              recentlyUpdatedContent: [
@@ -93,12 +92,24 @@ describe("Curator.vue", () => {
                          {
                              id: "11",
                              name: "Amphibian Anatomy Ontology",
-                             status: "deprecated"
+                             status: "aproved",
+                             maintainers: [
+                                {
+                                    id: "23",
+                                    username: "Juan"
+                                }
+                             ]
                          },
                          {
                              id: "12",
                              name: "Frog French databases",
-                             status: "deprecated"
+                             status: "aproved",
+                             maintainers: [
+                                {
+                                    id: "23",
+                                    username: "Juan"
+                                }
+                             ]
                          }
                      ]
                 }
@@ -108,11 +119,33 @@ describe("Curator.vue", () => {
                      id: "266995",
                      name: "ShareShare",
                      createdAt: "2020-10-12T13:31:25Z",
-                     status: "ready"
+                     creator:
+                        {
+                            id: "23",
+                            username: "Juan"
+                        }
+
                 }
+             ],
+             hiddenRecords:[
+               {
+                     id: "2669f95",
+                     name: "ShareSfhare",
+                     createdAt: "2020-10-12T13:31:25Z",
+                     creator:
+                        {
+                            id: "234",
+                            username: "Juancho"
+                        }
+
+               },
+               {
+
+               }
              ]
          }
     });
+
     wrapper = await shallowMount(Curator, {
         localVue,
         router,
@@ -134,6 +167,7 @@ describe("Curator.vue", () => {
 
 
   it("can check prepareData returns data elements correctly", async () => {
+
       expect(wrapper.vm.approvalRequired.length).toBe(1);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazus");
       expect(wrapper.vm.maintenanceRequests.length).toBe(1);

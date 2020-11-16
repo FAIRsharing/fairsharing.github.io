@@ -69,22 +69,6 @@
       ]
     },
     {
-      "name": "recentlyUpdatedContent",
-      "fields": [
-        "changes",
-        "modifiedAt",
-        "modifiedBy",
-        "type",
-        {
-          "queryName": "fairsharingRecord",
-          "fields": [
-            "id",
-            "name"
-          ]
-        }
-      ]
-    },
-    {
       "name": "recordsInCuration",
       "fields": [
         "username",

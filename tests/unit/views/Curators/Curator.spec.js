@@ -91,18 +91,6 @@ describe("Curator.vue", () => {
                      createdAt: "2020-10-27T09:34:54Z"
                  }
              ],
-             recentlyUpdatedContent: [
-                {
-                     modifiedAt: "2020-10-27T09:34:57Z",
-                     modifiedBy: "david",
-                     type: "Fairsharing record",
-                     fairsharingRecord:
-                     {
-                         id: "3271",
-                         name: "erewrfsd"
-                     }
-                }
-             ],
              recordsInCuration: [
                 {
                      username: "PRS",
@@ -214,8 +202,6 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.maintenanceRequests[0].recordNameID).toBe("OrthoOntology Deontology (373)");
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(2);
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe("Second (44)");
-      expect(wrapper.vm.recentlyUpdatedContent.length).toBe(1);
-      expect(wrapper.vm.recentlyUpdatedContent[0].modifiedAt).toBe("2020-10-27T09:34:57Z");
       expect(wrapper.vm.recordsInCuration.length).toBe(2);
       expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12)");
       expect(wrapper.vm.recordsWithoutDois.length).toBe(2);
@@ -233,6 +219,11 @@ describe("Curator.vue", () => {
           router,
           mocks: {$store, $router}
       });
-      //
+      expect(wrapper.vm.approvalRequired.length).toBe(0);
+      expect(wrapper.vm.hiddenRecords.length).toBe(0);
+      //expect(wrapper.vm.messages()).toStrictEqual({
+      //      message: { field: 'login', message: "You've been logged out automatically" },
+      //      error: true
+      //  });
   });
 });

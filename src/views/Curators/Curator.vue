@@ -221,31 +221,6 @@
             />
           </v-card-text>
         </v-card>
-        <v-card>
-          <v-card-text v-if="recentlyUpdatedContent">
-            <v-card-title
-              id="text-curator-search-3"
-              class="green white--text"
-            >
-              All content added/modified recently
-              <v-spacer />
-              <v-text-field
-                v-model="search4"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :headers="headers.recentlyUpdatedContent"
-              :items="recentlyUpdatedContent"
-              :search="search4"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
-          </v-card-text>
-        </v-card>
       </v-col>
     </v-row>
     <v-row v-else>
@@ -278,7 +253,6 @@
           approvalRequired: [],
           maintenanceRequests: [],
           recordsCreatedCuratorsLastWeek: [],
-          recentlyUpdatedContent: [],
           recordsInCuration: [],
           recordsWithoutDois: [],
           hiddenRecords: [],
@@ -328,28 +302,6 @@
               {
                 text: "Creator",
                 value: "creator"
-              }
-            ],
-            recentlyUpdatedContent: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "The change set",
-                value: "change"
-              },
-              {
-                text: "Modified by",
-                value: "modifiedBy"
-              },
-              {
-                text: "Date modified",
-                value: "modifiedAt"
-              },
-              {
-                text: "Event",
-                value: "event"
               }
             ],
             recordsInCuration: [
@@ -410,7 +362,6 @@
           search1: "",
           search2: "",
           search3: "",
-          search4: "",
           search5: "",
           search6: "",
           search7: ""
@@ -445,9 +396,7 @@
             _module.prepareRecordsInCuration(_module.allDataCuration);
             _module.prepareRecordsWithoutDois(_module.allDataCuration);
             _module.prepareHiddenRecords(_module.allDataCuration);
-
             _module.prepareRecordsCuratorCreationsLastWeek(_module.allDataCuration);
-            _module.prepareRecentlyUpdatedContent(_module.allDataCuration);
           },
           prepareApprovalRequired(dataCuration){
             let _module = this;
@@ -494,19 +443,6 @@
                 object.creator = "unknown"
               }
               _module.recordsCreatedCuratorsLastWeek.push(object);
-            });
-          },
-          prepareRecentlyUpdatedContent(dataCuration){
-            let _module = this;
-            let content = dataCuration['recentlyUpdatedContent'];
-            content.forEach(item => {
-              let object = {};
-              object.change = JSON.stringify(item.changes);
-              object.recordNameID = item['fairsharingRecord'].name+' ('+item['fairsharingRecord'].id+')';
-              object.modifiedAt = item.modifiedAt;
-              object.modifiedBy = item.modifiedBy;
-              object.event = item.type;
-              _module.recentlyUpdatedContent.push(object);
             });
           },
           prepareRecordsInCuration(dataCuration){

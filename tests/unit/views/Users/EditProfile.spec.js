@@ -31,6 +31,7 @@ let $store = new Vuex.Store({
     }
 });
 
+
 describe("UserProfileMenu.vue", () => {
 
     let wrapper,
@@ -89,6 +90,15 @@ describe("UserProfileMenu.vue", () => {
         expect(wrapper.vm.messages().updateProfile).toStrictEqual({
             message: { field: 'test', message: 'error' },
             error: true
+        });
+
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery");
+        restStub.returns({
+            data: [
+                "profile 1",
+                "profile 2"
+            ]
         });
     });
 

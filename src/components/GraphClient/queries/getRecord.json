@@ -27,20 +27,8 @@
         "id"
       ]
     },
-    {
-      "name": "domains",
-      "fields": [
-        "label",
-        "id"
-      ]
-    },
-    {
-      "name": "subjects",
-      "fields": [
-        "label",
-        "id"
-      ]
-    },
+    {"$ref": "domains"},
+    {"$ref": "subjects"},
     {
       "name": "userDefinedTags",
       "fields": [

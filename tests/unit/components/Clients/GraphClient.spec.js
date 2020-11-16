@@ -100,11 +100,8 @@ describe("GraphQL Client", function () {
     });
 
     it("can correctly build a query string from a JSON", function () {
-        const expectedOutput = "searchFairsharingRecords(field1:true field2:\"true\" field3:[\"true\",\"false\"]){ " +
-            "aggregations currentPage perPage totalCount totalPages firstPage records{id type name abbreviation doi " +
-            "registry description domains{ label}subjects{ label}taxonomies{ label}userDefinedTags{ label}recordAssociations{ linkedRecord{name " +
-            "id registry } recordAssocLabel}reverseRecordAssociations{ fairsharingRecord{name id registry } " +
-            "recordAssocLabel}status isRecommended }}";
+        const expectedOutput =
+            'searchFairsharingRecords(field1:true field2:"true" field3:["true","false"]){ aggregations currentPage perPage totalCount totalPages firstPage records{id type name abbreviation doi registry description domains{ label id definitions iri synonyms inFairsharing}subjects{ label id definitions iri synonyms}taxonomies{ label}userDefinedTags{ label}recordAssociations{ linkedRecord{name id registry } recordAssocLabel}reverseRecordAssociations{ fairsharingRecord{name id registry } recordAssocLabel}status isRecommended }}';
         query.queryParam = {
             "field1": true,
             "field2": "true",
@@ -125,10 +122,6 @@ describe("GraphQL Client", function () {
             {$ref: "domains"}
         ];
         let queryFragment = client.buildQuery(smallQuery);
-        expect(queryFragment).toBe('test{ inFairsharing definitions expandedNames id label synonyms domains{ label}}');
-
-
+        expect(queryFragment).toBe('test{ inFairsharing label id definitions iri synonyms domains{ label id definitions iri synonyms inFairsharing}}');
     });
-
-
 });

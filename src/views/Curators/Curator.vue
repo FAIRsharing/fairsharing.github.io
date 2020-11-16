@@ -42,7 +42,54 @@
               :search="search1"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
+              :sort-by="curator"
+              :sort-desc="false"
+            >
+              <template
+                v-if="recordType"
+                v-slot:item="props"
+              >
+                <tr>
+                  <td>
+                    {{ props.item.updatedAt }}
+                  </td>
+                  <td>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{on}">
+                        <v-icon
+                          class="clickable"
+                          small
+                          color="nordnetBlue"
+                          @click="openCustomer(item.Id)"
+                          v-on="on"
+                        >
+                          {{ props.item.curator }}
+                        </v-icon>
+                      </template>
+                      Assign to myself
+                    </v-tooltip>
+                  </td>
+                  <td>
+                    <a :href="'#/' + props.item.id">
+                      <span
+                        v-if="props.item.type"
+                        class="mr-2"
+                      >
+                        <img
+                          v-if="Object.keys(recordType).includes(props.item.type)"
+                          :src="'./' + recordType[props.item.type].icon"
+                          class="miniIcon"
+                        >
+                      </span>
+                      {{ props.item.recordName + ' (' + props.item.id + ')' }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ props.item.lastEditor }}
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
           </v-card-text>
         </v-card>
         <v-card>
@@ -92,6 +139,8 @@
               :search="search5"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+              :sort-by="curator"
+              :sort-desc="true"
             />
           </v-card-text>
         </v-card>
@@ -212,6 +261,7 @@
     import getCurationRecords from "@/components/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
+    import recordTypes from "@/data/recordsRegistries.json"
 
     const client = new GraphClient();
 
@@ -232,6 +282,7 @@
           recordsInCuration: [],
           recordsWithoutDois: [],
           hiddenRecords: [],
+          recordType: null,
           headers: {
             approvalRequired: [
               {
@@ -244,7 +295,7 @@
               },
               {
                 text: "Record name (id)",
-                value: "recordNameID"
+                value: "recordName"
               },
               {
                 text: "Last editor",
@@ -368,6 +419,11 @@
       computed: {
         ...mapState('users', ['user', "messages"]),
       },
+      created() {
+        this.$nextTick(function () {
+          this.recordType = recordTypes;
+        });
+      },
       async mounted() {
           await this.getUser();
           if (this.messages()["getUser"].error){
@@ -401,7 +457,9 @@
                 let object = {};
                 object.updatedAt = rec.updatedAt;
                 object.curator = item['username'];
-                object.recordNameID = rec.name+' ('+rec.id+')';
+                object.recordName = rec.name;
+                object.id = rec.id;
+                object.type = rec.type;
                 if (rec['lastEditor'] != null){
                   object.lastEditor = rec['lastEditor'].username+' ('+rec['lastEditor'].id+')';
                 }else{

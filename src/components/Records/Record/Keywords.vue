@@ -24,8 +24,8 @@
           outlined
           text-color="primary"
         >
-          <v-icon left>
-            mdi-label
+          <v-icon left small>
+            fas fa-tags
           </v-icon>
           {{ item.label }}
         </v-chip>
@@ -49,10 +49,10 @@
           outlined
           text-color="secondary"
         >
-          <v-icon left>
-            mdi-label
+          <v-icon small left>
+            fas fa-tags
           </v-icon>
-          {{ item.label }}
+          <KeywordTooltip :keyword="item" />
         </v-chip>
       </div>
       <!--Subjects-->
@@ -74,10 +74,10 @@
           outlined
           text-color="accent"
         >
-          <v-icon left>
-            mdi-label
+          <v-icon small left>
+            fas fa-tags
           </v-icon>
-          {{ item.label }}
+          <KeywordTooltip :keyword="item" />
         </v-chip>
       </div>
       <!--UserDefinedTags-->
@@ -100,7 +100,7 @@
           text-color="orange"
         >
           <v-icon left>
-            mdi-label
+            fas fa-tags
           </v-icon>
           {{ item.label }}
         </v-chip>
@@ -114,10 +114,12 @@
     import { mapGetters } from 'vuex';
 
     import SectionTitle from '@/components/Records/Record/SectionTitle';
+    import KeywordTooltip from "../Shared/KeywordTooltip";
 
     export default {
         name: "Keywords",
         components: {
+            KeywordTooltip,
             SectionTitle
         },
         computed: {

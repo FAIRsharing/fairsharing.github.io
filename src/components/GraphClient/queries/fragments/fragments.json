@@ -1,0 +1,26 @@
+{
+  "keywords": [
+    "label",
+    "id",
+    "definitions",
+    "iri",
+    "synonyms"
+  ],
+  "domains": [
+    {
+      "queryName": "domains",
+      "fields": [
+        {"$ref": "keywords"},
+        "inFairsharing"
+      ]
+    }
+  ],
+  "subjects": [
+    {
+      "queryName": "subjects",
+      "fields": [
+        {"$ref": "keywords"}
+      ]
+    }
+  ]
+}

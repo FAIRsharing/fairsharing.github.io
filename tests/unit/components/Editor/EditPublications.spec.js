@@ -116,7 +116,7 @@ describe("EditPublications.vue", function() {
         let returnedData = {
             title: "title",
             fulljournalname: "journal",
-            pubdate: "year",
+            sortpubdate: "2002/10/10 00:00",
             authors: [
                 {
                     name: "authorName"
@@ -126,14 +126,14 @@ describe("EditPublications.vue", function() {
                 }
             ],
             uid: "pmid",
-            elocationid: "pii: S0092-8674(20)30740-6. doi: 10.1016/j.cell.2020.06.009"
+            elocationid: "pii: S0092-8674(20)30740-6. doi: 10.1016/j.cell.2020.06.009",
         };
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data: {result: {test: returnedData}}});
         let expectedOutput = {
             title: "title",
             journal: "journal",
-            year: "year",
+            year: 2002,
             authors: "authorName, otherAuthor",
             pubmed_id: "pmid",
             doi: '10.1016/j.cell.2020.06.009',
@@ -149,6 +149,7 @@ describe("EditPublications.vue", function() {
         returnedData.elocationid = null;
         delete expectedOutput.doi;
         delete expectedOutput.url;
+        expectedOutput.url = "https://pubmed.ncbi.nlm.nih.gov/test";
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data: {result: {test: returnedData}}});
         wrapper.vm.search = "test";

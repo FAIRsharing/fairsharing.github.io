@@ -2,10 +2,8 @@
   "queryName": "searchTaxonomies",
   "queryParam": null,
   "fields": [
-    "definitions",
-    "expandedNames",
-    "id",
-    "label",
-    "synonyms"
+    {
+      "$ref": "keywords"
+    }
   ]
 }

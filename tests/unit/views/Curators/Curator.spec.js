@@ -41,8 +41,20 @@ describe("Curator.vue", () => {
                      fairsharingRecords: [
                          {
                              id: "1451",
-                             name: "Radiotherapy"
+                             name: "Radiotherapy",
+                             type: "database",
+                             lastEditor: [
+                                 {
+                                     id: "553",
+                                     username: "Paolo Maldini"
+                                 }
+                             ]
+                         },
+                         {
+                             id: "145f1",
+                             name: "Radiotgherapy"
                          }
+
                      ]
                  }
              ],
@@ -65,7 +77,13 @@ describe("Curator.vue", () => {
                  {
                      id: "32",
                      name: "ewewrr",
-                     createdAt: "2020-10-27T09:34:54Z"
+                     createdAt: "2020-10-27T09:34:54Z",
+                     creator:
+                       {
+                         id: "44",
+                         username: "Donal J. Trump"
+                       }
+
                  },
                  {
                      id: "44",
@@ -97,6 +115,10 @@ describe("Curator.vue", () => {
                                 {
                                     id: "23",
                                     username: "Juan"
+                                },
+                                {
+                                    id: "13",
+                                    username: "Manuel"
                                 }
                              ]
                          },
@@ -125,6 +147,18 @@ describe("Curator.vue", () => {
                             username: "Juan"
                         }
 
+                },
+                {
+                     id: "266d995",
+                     name: "MilkShare",
+                     createdAt: "2020-10-12T13:31:25Z",
+                     lastEditor: [
+                        {
+                            id: "2d3",
+                            username: "Juan Carlos I"
+                        }
+                     ]
+
                 }
              ],
              hiddenRecords:[
@@ -136,11 +170,17 @@ describe("Curator.vue", () => {
                         {
                             id: "234",
                             username: "Juancho"
+                        },
+                     curator:
+                        {
+                            id: "2384",
+                            username: "Manolo"
                         }
-
                },
                {
-
+                    id: "2669f95",
+                    name: "ShareSfhare",
+                    createdAt: "2020-10-12T13:31:25Z"
                }
              ]
          }
@@ -168,7 +208,7 @@ describe("Curator.vue", () => {
 
   it("can check prepareData returns data elements correctly", async () => {
 
-      expect(wrapper.vm.approvalRequired.length).toBe(1);
+      expect(wrapper.vm.approvalRequired.length).toBe(2);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazus");
       expect(wrapper.vm.maintenanceRequests.length).toBe(1);
       expect(wrapper.vm.maintenanceRequests[0].recordNameID).toBe("OrthoOntology Deontology (373)");
@@ -178,8 +218,9 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.recentlyUpdatedContent[0].modifiedAt).toBe("2020-10-27T09:34:57Z");
       expect(wrapper.vm.recordsInCuration.length).toBe(2);
       expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12)");
-      expect(wrapper.vm.recordsWithoutDois.length).toBe(1);
+      expect(wrapper.vm.recordsWithoutDois.length).toBe(2);
       expect(wrapper.vm.recordsWithoutDois[0].createdAt).toBe("2020-10-12T13:31:25Z");
+      expect(wrapper.vm.hiddenRecords.length).toBe(2);
   });
 
   it("can process errors", async () => {

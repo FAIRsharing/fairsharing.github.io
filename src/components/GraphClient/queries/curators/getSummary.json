@@ -13,6 +13,7 @@
             "id",
             "name",
             "updatedAt",
+            "type",
             {
               "name": "lastEditor",
               "fields": [

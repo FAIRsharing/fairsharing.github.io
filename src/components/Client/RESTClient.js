@@ -439,6 +439,19 @@ class RESTClient {
     }
 
 
+    /* ORGANISATIONS AND GRANTS */
+    async createOrganisation(organisation, token){
+        let _client = this;
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/organisations",
+            headers: this.auth_headers(token),
+            data: { organisation: organisation }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
     /* EXTRA METHODS */
 
     /**

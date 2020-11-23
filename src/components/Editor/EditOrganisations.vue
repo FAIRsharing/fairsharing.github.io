@@ -641,7 +641,6 @@
         async createNewGrant(){
           this.menus.loading.newGrant = true;
           this.menus.errors.newGrant = false;
-          console.log(this.menus.data);
           let data = await restClient.createGrant(this.menus.data, this.user().credentials.token);
           if (data.error){
             this.menus.errors.newGrant = data.error;

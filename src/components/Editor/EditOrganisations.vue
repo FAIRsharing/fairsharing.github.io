@@ -648,7 +648,8 @@
           else {
             let grant = {
               name: data.name,
-              description: data.description
+              description: data.description,
+              id: data.id
             };
             this.currentOrganisations[this.menus.target].grant = grant;
             Vue.set(this.grants, this.grants.length, grant);

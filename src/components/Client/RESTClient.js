@@ -439,13 +439,37 @@ class RESTClient {
 
 
     /* ORGANISATIONS AND GRANTS */
-    async createOrganisation(organisation, token){
+    /**
+     * Create a given organisation
+     * @param {Object} organisation
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async createOrganisation(organisation, userToken){
         let _client = this;
         const request = {
             method: "post",
             baseURL: _client.baseURL + "/organisations",
-            headers: this.auth_headers(token),
+            headers: this.auth_headers(userToken),
             data: { organisation: organisation }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Create a given grant
+     * @param {Object} grant
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async createGrant(grant, userToken){
+        let _client = this;
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/grants",
+            headers: this.auth_headers(userToken),
+            data: { grant: grant }
         };
         let response = await _client.executeQuery(request);
         return response.data;

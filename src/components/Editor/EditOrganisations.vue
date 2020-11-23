@@ -145,6 +145,7 @@
                         return-object
                         label="Select an optional grant for funding organisations"
                         :disabled="orga.relation !== 'funds'"
+                        :search-input.sync="searches.grants[orgaIndex]"
                       >
                         <template slot="no-data">
                           <v-container>
@@ -156,7 +157,7 @@
                             <v-row justify="center">
                               <v-btn
                                 class="green white--text my-3"
-                                @click="menus.visibility.newGrant = true"
+                                @click="openGrantMenu(orgaIndex, searches.grants[orgaIndex])"
                               >
                                 Create a new grant
                               </v-btn>
@@ -168,7 +169,6 @@
                             {{ data.item.name }}
                           </v-chip>
                         </template>
-
                         <template v-slot:item="data">
                           <div>
                             <v-list-item class="px-0 py-3">
@@ -384,7 +384,64 @@
     <!-- CREATE A NEW GRANT -->
     <v-dialog
       v-model="menus.visibility.newGrant"
-    />
+      max-width="1000px"
+      class="pa-0"
+      persistent
+      no-click-animation
+    >
+      <v-card width="100%">
+        <v-form
+          v-if="menus.data"
+          ref="newGrant"
+          v-model="menus.validity.newGrant"
+        >
+          <v-card-title class="green white--text">
+            Create a new grant
+          </v-card-title>
+          <v-card-text
+            v-if="menus.errors.newGrant"
+            class="pt-4"
+          >
+            <v-alert
+              type="error"
+              class="mb-8"
+            >
+              {{ menus.errors.newGrant.response.data }}
+            </v-alert>
+          </v-card-text>
+          <v-card-text class="pt-4">
+            <v-text-field
+              v-model="menus.data.name"
+              label="Grant Name"
+              outlined
+              :rules="[rules.isRequired()]"
+            />
+            <v-text-field
+              v-model="menus.data.description"
+              label="Grant Description"
+              outlined
+              :rules="[rules.isRequired()]"
+            />
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              class="green white--text"
+              :disabled="!menus.validity.newGrant"
+              :loading="menus.loading.newGrant"
+              @click="createNewGrant()"
+            >
+              Save grant
+            </v-btn>
+            <v-btn
+              class="red white--text"
+              @click="menus.visibility.newGrant = false"
+            >
+              Cancel
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -538,6 +595,15 @@
           };
           this.menus.target = relationIndex
         },
+        openGrantMenu(relationIndex, searchTerm){
+          this.menus.errors.newGrant = false;
+          this.menus.visibility.newGrant = true;
+          this.menus.data = {
+            name: searchTerm,
+            description: null
+          };
+          this.menus.target = relationIndex;
+        },
         async createNewOrganisation(){
           this.menus.loading.newOrganisation = true;
           this.menus.errors.newOrganisation = false;
@@ -572,8 +638,25 @@
           }
           this.menus.loading.newOrganisation = false;
         },
-        async createNewGrant(){},
-        async saveNewGrant(){},
+        async createNewGrant(){
+          this.menus.loading.newGrant = true;
+          this.menus.errors.newGrant = false;
+          console.log(this.menus.data);
+          let data = await restClient.createGrant(this.menus.data, this.user().credentials.token);
+          if (data.error){
+            this.menus.errors.newGrant = data.error;
+          }
+          else {
+            let grant = {
+              name: data.name,
+              description: data.description
+            };
+            this.currentOrganisations[this.menus.target].grant = grant;
+            Vue.set(this.grants, this.grants.length, grant);
+            this.menus.visibility.newGrant = false;
+          }
+          this.menus.loading.newGrant = false;
+        },
         async saveRelations(){
           let _module = this;
           this.saving.success = false;

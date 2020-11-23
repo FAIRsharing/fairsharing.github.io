@@ -425,7 +425,6 @@ class RESTClient {
     /* Misc. Editing Methods */
     /**
      * Get the list of available profile types for a user.
-     * @param {String} token - the account token to validate
      * @returns {Promise}
      */
     async getProfileTypes(){
@@ -447,6 +446,60 @@ class RESTClient {
             baseURL: _client.baseURL + "/organisations",
             headers: this.auth_headers(token),
             data: { organisation: organisation }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Create a new link between an organisation, a record and an optional grant.
+     * @param {Object} organisationLink - the organisation link to create
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async createOrganisationLink(organisationLink, userToken){
+        let _client = this;
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/organisation_links",
+            headers: this.auth_headers(userToken),
+            data: { organisation_link: organisationLink }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Update the organisationLink given from linkID input with the given organisationLink
+     * @param {Object} organisationLink - the new organisation link value
+     * @param {Number} linkID - ID of the organisationLink to update
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async updateOrganisationLink(organisationLink, linkID, userToken){
+        let _client = this;
+        const request = {
+            method: "put",
+            baseURL: _client.baseURL + "/organisation_links/" + linkID,
+            headers: this.auth_headers(userToken),
+            data: { organisation_link: organisationLink }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Delete the given organisation link
+     * @param {Number} linkID - the id of the link to remove
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async deleteOrganisationLink(linkID, userToken){
+        let _client = this;
+        const request = {
+            method: "delete",
+            baseURL: _client.baseURL + "/organisation_links/" + linkID,
+            headers: this.auth_headers(userToken),
         };
         let response = await _client.executeQuery(request);
         return response.data;

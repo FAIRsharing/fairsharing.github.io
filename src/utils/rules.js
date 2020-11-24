@@ -73,15 +73,3 @@ export function isImage(){
         return (!value || accept.indexOf(value.type) > -1) || "File type should be PNG or JPEG"
     }
 }
-
-/**
- * Assess if the given relation is "funds" when there's a grant
- * @param {String} val - the value to evaluate the string against
- * @returns {function(*): (boolean|string)}
- */
-export function isFund(val){
-    return value => {
-        if (!value) return true;
-        return val === 'funds' || "Relationship should be 'funds' if you want to add a grant";
-    }
-}

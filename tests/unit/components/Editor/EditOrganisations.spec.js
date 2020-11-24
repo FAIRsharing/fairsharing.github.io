@@ -19,11 +19,15 @@ recordStore.state.currentRecord = {
     fairsharingRecord: {
         organisationLinks: [
             {
-                organisation: null,
+                organisation: {
+                    id: 123
+                },
                 grant: null,
-                relation: null
+                relation: null,
+                id: 1
             }
-        ]
+        ],
+        id: 123
     }
 };
 userStore.state.user().credentials.token = "thisisatoken";
@@ -37,10 +41,14 @@ const $store = new Vuex.Store({
 let graphStub;
 let restStub;
 
+const jsdomScrollTo = window.scrollTo;
+
+
 describe("EditOrganisations.vue", function() {
 
     let wrapper;
-    beforeEach(async() => {
+    beforeEach(async () => {
+        window.scrollTo = () => {};
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         graphStub.withArgs(getTypesQuery).returns({
             "searchOrganisationTypes": [
@@ -73,22 +81,27 @@ describe("EditOrganisations.vue", function() {
         });
     });
 
-    afterEach(() => { graphStub.restore() });
+    afterEach(() => {
+        window.scrollTo = jsdomScrollTo;
+        graphStub.restore();
+    });
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("EditOrganisations");
         expect(wrapper.vm.currentOrganisations).toStrictEqual([
             {
-                organisation: null,
+                organisation: {id: 123},
                 grant: null,
-                relation: null
+                relation: null,
+                id: 1
             }
         ]);
         expect(wrapper.vm.initialOrganisations).toStrictEqual([
             {
-                organisation: null,
+                organisation: {id: 123},
                 grant: null,
-                relation: null
+                relation: null,
+                id: 1
             }
         ]);
         expect(wrapper.vm.existingOrganisations).toStrictEqual([
@@ -115,9 +128,10 @@ describe("EditOrganisations.vue", function() {
         wrapper.vm.addRelationship();
         expect(wrapper.vm.currentOrganisations).toStrictEqual([
             {
-                organisation: null,
+                organisation: {id: 123},
                 grant: null,
-                relation: null
+                relation: null,
+                id: 1
             },
             {
                 organisation: {},
@@ -128,11 +142,20 @@ describe("EditOrganisations.vue", function() {
         wrapper.vm.removeRelationship(wrapper.vm.currentOrganisations.length - 1);
         expect(wrapper.vm.currentOrganisations).toStrictEqual([
             {
-                organisation: null,
+                organisation: {id: 123},
                 grant: null,
-                relation: null
+                relation: null,
+                id: 1
             }
         ]);
+    });
+
+    it("can clear grants", () => {
+        wrapper.vm.currentOrganisations[0].grant = "test";
+        wrapper.vm.clearGrant(0, "funds");
+        expect(wrapper.vm.currentOrganisations[0].grant).toBe("test");
+        wrapper.vm.clearGrant(0, "not_funds");
+        expect(wrapper.vm.currentOrganisations[0].grant).toBe(null);
     });
 
     it("can open the new organisation menu", () => {
@@ -164,7 +187,7 @@ describe("EditOrganisations.vue", function() {
         });
     });
 
-    it("can create a new organisation", async() => {
+    it("can create a new organisation", async () => {
         // Without a logo & without alternativeNames
         let organisation = {
             id: "123",
@@ -224,7 +247,7 @@ describe("EditOrganisations.vue", function() {
         restStub.restore();
     });
 
-    it("can create a new grant", async() => {
+    it("can create a new grant", async () => {
         let grant = {
             name: "abc",
             description: "description",
@@ -268,22 +291,88 @@ describe("EditOrganisations.vue", function() {
         wrapper.vm.currentRecord.fairsharingRecord = {
             organisationLinks: [
                 {
-                    organisation: null,
+                    organisation: {id: 999},
                     grant: null,
-                    relation: "funds"
+                    relation: "funds",
+                    id: 499
                 }
             ]
         };
         expect(wrapper.vm.currentOrganisations).toStrictEqual([
             {
-                organisation: null,
+                organisation: {id: 999},
                 grant: null,
-                relation: "funds"
+                relation: "funds",
+                id: 499
             }
         ])
     });
 
-    it("can create a new organisation link", async () => {});
+    it("can create a new organisation link", async () => {
+        wrapper.vm.currentOrganisations.push({
+            organisation: {id: 1234},
+            grant: {id: 456},
+            relation: null,
+            id: 2
+        });
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {}});
+        await wrapper.vm.saveRelations();
+        expect(wrapper.vm.saving.errors).toBe(false);
+        restStub.restore();
+
+        // Error handling
+        wrapper.vm.currentOrganisations.push({
+            organisation: {id: 456},
+            grant: null,
+            relation: null,
+            id: 3
+        });
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {error: {response: {data: "error"}}}});
+        await wrapper.vm.saveRelations();
+        expect(wrapper.vm.saving.errors).toStrictEqual({response: {data:"error"}});
+        restStub.restore();
+
+    });
+
+    it("can update an existing organisation link", async () => {
+        wrapper.vm.currentOrganisations[0].relation = "maintains";
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {}});
+        await wrapper.vm.saveRelations();
+        expect(wrapper.vm.saving.errors).toBe(false);
+        expect(wrapper.vm.saving.success).toBe(true);
+        restStub.restore();
+
+        // ERROR HANDLING
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {error: {response: {data: "error"}}}});
+        await wrapper.vm.saveRelations();
+        expect(wrapper.vm.saving.errors).toStrictEqual({response: {data:"error"}});
+        restStub.restore();
+
+
+    });
+
+    it("can delete an existing organisation link", async () => {
+        wrapper.vm.currentOrganisations.splice(0, 1);
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {}});
+        await wrapper.vm.saveRelations();
+        expect(wrapper.vm.saving.errors).toBe(false);
+        expect(wrapper.vm.saving.success).toBe(true);
+        restStub.restore();
+    });
+
+    it("can handle errors when deleting an existing organisation link", async () => {
+        wrapper.vm.currentOrganisations.splice(0, 1);
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {error: {response: {data: "error"}}}});
+        await wrapper.vm.saveRelations();
+        expect(wrapper.vm.saving.errors).toStrictEqual({response: {data:"error"}});
+        restStub.restore();
+    });
 
 });
 

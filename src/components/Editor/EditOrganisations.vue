@@ -126,7 +126,7 @@
                         <template v-slot:item="data">
                           <v-list-item-content
                             style="width:100%;height:100%"
-                            @click="cleanGrant(orgaIndex, data.item)"
+                            @click="clearGrant(orgaIndex, data.item)"
                           >
                             {{ data.item }}
                           </v-list-item-content>
@@ -564,7 +564,7 @@
         },
         async getExistingOrganisations(){
           this.loading.organisations = true;
-          getOrganisationsQuery.queryParam = {load: true};
+          // getOrganisationsQuery.queryParam = {load: true};
           let data = await client.executeQuery(getOrganisationsQuery);
           this.existingOrganisations = data["searchOrganisations"];
           this.loading.organisations = false;
@@ -708,7 +708,7 @@
           _module.loading.saving = false;
           window.scrollTo(0, 0);
         },
-        cleanGrant(organisationIndex, relation){
+        clearGrant(organisationIndex, relation){
           if (relation !== 'funds'){
             this.currentOrganisations[organisationIndex].grant = null;
           }

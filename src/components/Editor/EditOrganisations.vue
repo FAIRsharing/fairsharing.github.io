@@ -662,7 +662,9 @@
           this.saving.success = false;
           _module.loading.saving = true;
           _module.saving.errors = false;
-          _module.currentOrganisations.forEach(async relation => {
+
+          //await _module.currentOrganisations.forEach(async relation => {
+          for (let relation of _module.currentOrganisations){
             let query = {
               fairsharing_record_id: _module.currentRecord['fairsharingRecord'].id,
               organisation_id: relation.organisation.id,
@@ -687,23 +689,26 @@
                 _module.saving.errors = data.error;
               }
             }
-          });
-          _module.initialOrganisations.forEach(async initialRelations => {
+          }
+
+          // await _module.initialOrganisations.forEach(async initialRelations => {
+          for (let initialRelations of _module.initialOrganisations){
             let found = false;
             _module.currentOrganisations.forEach(relation => {
-              if (initialRelations.id === relation.id) {
-                found = true;
-              }
+              if (initialRelations.id === relation.id) found = true
             });
             if (!found){
               let data = await restClient.deleteOrganisationLink(initialRelations.id, this.user().credentials.token);
               if (data.error){
-                _module.saving.errors = data.error;
+                  _module.saving.errors = data.error;
               }
             }
-          });
-          if (!this.saving.errors){
-            this.saving.success = true;
+          }
+          if (!_module.saving.errors){
+              _module.saving.success = true;
+          }
+          if (!_module.saving.errors){
+              _module.saving.success = true;
           }
           _module.loading.saving = false;
           window.scrollTo(0, 0);

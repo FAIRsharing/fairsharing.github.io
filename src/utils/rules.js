@@ -62,3 +62,14 @@ export function isOrcid(required) {
         return pattern.test(value) || "Doesn't look like a valid ORCID ID."
     }
 }
+
+/**
+ * Assess if the given file has the correct extension
+ * @returns {function(*): (boolean|string)}
+ */
+export function isImage(){
+    const accept = ["image/png", "image/jpeg"];
+    return value => {
+        return (!value || accept.indexOf(value.type) > -1) || "File type should be PNG or JPEG"
+    }
+}

@@ -1,4 +1,12 @@
-import { hasValue, isEmail, isRequired, isUrl, isLongEnough, isOrcid } from "@/utils/rules.js"
+import {
+    hasValue,
+    isEmail,
+    isRequired,
+    isUrl,
+    isLongEnough,
+    isOrcid,
+    isImage
+} from "@/utils/rules.js"
 
 describe('Form validation rules', () => {
 
@@ -42,4 +50,13 @@ describe('Form validation rules', () => {
         expect(tester('')).toBe(true);
     });
 
+    it("can test if file is an image", () => {
+        let test = isImage();
+        expect(test({
+            type: "image/png"
+        })).toBe(true);
+        expect(test({
+            type: "notImage"
+        })).toBe("File type should be PNG or JPEG");
+    });
 });

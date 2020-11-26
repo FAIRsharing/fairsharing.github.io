@@ -508,7 +508,7 @@
               }else{
                 object.curator = 'none'
               }
-              if (item['creator'] != null){
+              if (!item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
               }else{
                 object.creator = "unknown"

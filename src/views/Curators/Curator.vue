@@ -37,6 +37,7 @@
               />
             </v-card-title>
             <v-data-table
+              :loading="loading"
               :headers="headers.approvalRequired"
               :items="approvalRequired"
               :search="search1"
@@ -109,6 +110,7 @@
               />
             </v-card-title>
             <v-data-table
+              :loading="loading"
               :headers="headers.maintenanceRequests"
               :items="maintenanceRequests"
               :search="search2"
@@ -134,6 +136,7 @@
               />
             </v-card-title>
             <v-data-table
+              :loading="loading"
               :headers="headers.recordsInCuration"
               :items="recordsInCuration"
               :search="search5"
@@ -161,6 +164,7 @@
               />
             </v-card-title>
             <v-data-table
+              :loading="loading"
               :headers="headers.recordsWithoutDois"
               :items="recordsWithoutDois"
               :search="search6"
@@ -186,6 +190,7 @@
               />
             </v-card-title>
             <v-data-table
+              :loading="loading"
               :headers="headers.hiddenRecords"
               :items="hiddenRecords"
               :search="search7"
@@ -194,8 +199,6 @@
             />
           </v-card-text>
         </v-card>
-
-
         <v-card>
           <v-card-text v-if="recordsCreatedCuratorsLastWeek">
             <v-card-title
@@ -213,6 +216,7 @@
               />
             </v-card-title>
             <v-data-table
+              :loading="loading"
               :headers="headers.recordsCreatedCuratorsLastWeek"
               :items="recordsCreatedCuratorsLastWeek"
               :search="search3"
@@ -364,7 +368,8 @@
           search3: "",
           search5: "",
           search6: "",
-          search7: ""
+          search7: "",
+          loading: false
         }
       },
       computed: {
@@ -376,6 +381,7 @@
         });
       },
       async mounted() {
+          this.loading = true;
           await this.getUser();
           if (this.messages()["getUser"].error){
             this.setError({field:"login", message:"You've been logged out automatically"});
@@ -386,6 +392,8 @@
           this.allDataCuration = data["curationSummary"];
           client.initalizeHeader();
           this.prepareData();
+          this.loading = false;
+
       },
       methods: {
           ...mapActions('users', ['getUser', 'setError']),

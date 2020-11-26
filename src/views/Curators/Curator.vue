@@ -363,7 +363,11 @@
               }
             ]
           },
-          search1: "",
+          searches: {
+        recordsAwaitingApproval: "",
+        pendingMaintenanceRequests: ""
+        ...
+    },,
           search2: "",
           search3: "",
           search5: "",

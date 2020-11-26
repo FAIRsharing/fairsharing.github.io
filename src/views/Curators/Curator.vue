@@ -428,14 +428,13 @@
             });
           },
           prepareMaintenanceRequests(dataCuration){
-            let _module = this;
             let requests = dataCuration['pendingMaintenanceRequests'];
             requests.forEach(item => {
               let object = {};
               object.createdAt = item.createdAt;
               object.recordNameID = item['fairsharingRecord'].name+' ('+item['fairsharingRecord'].id+')';
               object.userNameID = item['user'].username+' ('+item['user'].id+')';
-              _module.maintenanceRequests.push(object);
+              this.maintenanceRequests.push(object);
             });
           },
           prepareRecordsCuratorCreationsLastWeek(dataCuration){

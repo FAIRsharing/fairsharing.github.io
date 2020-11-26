@@ -399,13 +399,12 @@
       methods: {
           ...mapActions('users', ['getUser', 'setError']),
           prepareData(){
-            let _module = this;
-            _module.prepareApprovalRequired(_module.allDataCuration);
-            _module.prepareMaintenanceRequests(_module.allDataCuration);
-            _module.prepareRecordsInCuration(_module.allDataCuration);
-            _module.prepareRecordsWithoutDois(_module.allDataCuration);
-            _module.prepareHiddenRecords(_module.allDataCuration);
-            _module.prepareRecordsCuratorCreationsLastWeek(_module.allDataCuration);
+            this.prepareApprovalRequired(_module.allDataCuration);
+            this.prepareMaintenanceRequests(_module.allDataCuration);
+            this.prepareRecordsInCuration(_module.allDataCuration);
+            this.prepareRecordsWithoutDois(_module.allDataCuration);
+            this.prepareHiddenRecords(_module.allDataCuration);
+            this.prepareRecordsCuratorCreationsLastWeek(_module.allDataCuration);
           },
           prepareApprovalRequired(dataCuration){
             let _module = this;

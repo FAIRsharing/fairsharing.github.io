@@ -28,11 +28,11 @@ describe("Curator.vue", () => {
   let graphStub;
 
   beforeAll( async (done) => {
-     restStub = await sinon.stub(Client.prototype, "executeQuery").returns({
+     restStub = sinon.stub(Client.prototype, "executeQuery").returns({
          data: {id: "12345", name: 123, token: 123}
      });
 
-     graphStub = await sinon.stub(GraphClient.prototype, "executeQuery").returns({
+     graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
          curationSummary: {
              approvalsRequired: [
                 {
@@ -191,11 +191,6 @@ describe("Curator.vue", () => {
   it("can be mounted", async () => {
       const title = "Curator";
       expect(wrapper.name()).toMatch(title);
-  });
-
-
-  it("can check prepareData returns data elements correctly", async () => {
-
       expect(wrapper.vm.approvalRequired.length).toBe(2);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazus");
       expect(wrapper.vm.maintenanceRequests.length).toBe(1);
@@ -221,9 +216,5 @@ describe("Curator.vue", () => {
       });
       expect(wrapper.vm.approvalRequired.length).toBe(0);
       expect(wrapper.vm.hiddenRecords.length).toBe(0);
-      //expect(wrapper.vm.messages()).toStrictEqual({
-      //      message: { field: 'login', message: "You've been logged out automatically" },
-      //      error: true
-      //  });
   });
 });

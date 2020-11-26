@@ -219,7 +219,7 @@
               :loading="loading"
               :headers="headers.recordsCreatedCuratorsLastWeek"
               :items="recordsCreatedCuratorsLastWeek"
-              :search="search3"
+              :search="search"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
             />
@@ -381,10 +381,11 @@
         });
       },
       async mounted() {
+        this.$nextTick(async function () {
           this.loading = true;
           await this.getUser();
-          if (this.messages()["getUser"].error){
-            this.setError({field:"login", message:"You've been logged out automatically"});
+          if (this.messages()["getUser"].error) {
+            this.setError({field: "login", message: "You've been logged out automatically"});
             this.$router.push({path: "/accounts/login"})
           }
           client.setHeader(this.user().credentials.token);
@@ -393,7 +394,7 @@
           client.initalizeHeader();
           this.prepareData();
           this.loading = false;
-
+        })
       },
       methods: {
           ...mapActions('users', ['getUser', 'setError']),

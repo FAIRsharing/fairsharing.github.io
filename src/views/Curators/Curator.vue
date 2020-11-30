@@ -48,7 +48,7 @@
             >
               <template
                 v-if="recordType"
-                v-slot:item="props"
+                #item="props"
               >
                 <tr>
                   <td>

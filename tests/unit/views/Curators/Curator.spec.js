@@ -6,6 +6,7 @@ import Client from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import Curator from "@/views/Curators/Curator.vue"
+import dataDahboard from "../../../fixtures/curationDashboardData.json"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -22,6 +23,8 @@ const $store = new Vuex.Store({
 const router = new VueRouter();
 const $router = { push: jest.fn() };
 
+let fakeDataDashboard =  dataDahboard;
+
 describe("Curator.vue", () => {
   let wrapper;
   let restStub;
@@ -32,147 +35,7 @@ describe("Curator.vue", () => {
          data: {id: "12345", name: 123, token: 123}
      });
 
-     graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-         curationSummary: {
-             approvalsRequired: [
-                {
-                     username: "Terazus",
-                     id: "12345",
-                     fairsharingRecords: [
-                         {
-                             id: "1451",
-                             name: "Radiotherapy",
-                             type: "database",
-                             lastEditor: [
-                                 {
-                                     id: "553",
-                                     username: "Paolo Maldini"
-                                 }
-                             ]
-                         },
-                         {
-                             id: "145f1",
-                             name: "Radiotgherapy"
-                         }
-
-                     ]
-                 }
-             ],
-             pendingMaintenanceRequests: [
-                 {
-                     id: "3",
-                     fairsharingRecord:
-                         {
-                             id: "373",
-                             name: "OrthoOntology Deontology"
-                         },
-                     user:
-                         {
-                             username: "Rotedia",
-                             id: "2218"
-                         }
-                 }
-             ],
-             recentCuratorCreations: [
-                 {
-                     id: "32",
-                     name: "ewewrr",
-                     createdAt: "2020-10-27T09:34:54Z",
-                     creator:
-                       {
-                         id: "44",
-                         username: "Donal J. Trump"
-                       }
-
-                 },
-                 {
-                     id: "44",
-                     name: "Second",
-                     createdAt: "2020-10-27T09:34:54Z"
-                 }
-             ],
-             recordsInCuration: [
-                {
-                     username: "PRS",
-                     fairsharingRecords: [
-                         {
-                             id: "11",
-                             name: "Amphibian Anatomy Ontology",
-                             status: "aproved",
-                             maintainers: [
-                                {
-                                    id: "23",
-                                    username: "Juan"
-                                },
-                                {
-                                    id: "13",
-                                    username: "Manuel"
-                                }
-                             ]
-                         },
-                         {
-                             id: "12",
-                             name: "Frog French databases",
-                             status: "aproved",
-                             maintainers: [
-                                {
-                                    id: "23",
-                                    username: "Juan"
-                                }
-                             ]
-                         }
-                     ]
-                }
-             ],
-             recordsWithoutDois: [
-                {
-                     id: "266995",
-                     name: "ShareShare",
-                     createdAt: "2020-10-12T13:31:25Z",
-                     creator:
-                        {
-                            id: "23",
-                            username: "Juan"
-                        }
-
-                },
-                {
-                     id: "266d995",
-                     name: "MilkShare",
-                     createdAt: "2020-10-12T13:31:25Z",
-                     lastEditor: [
-                        {
-                            id: "2d3",
-                            username: "Juan Carlos I"
-                        }
-                     ]
-
-                }
-             ],
-             hiddenRecords:[
-               {
-                     id: "2669f95",
-                     name: "ShareSfhare",
-                     createdAt: "2020-10-12T13:31:25Z",
-                     creator:
-                        {
-                            id: "234",
-                            username: "Juancho"
-                        },
-                     curator:
-                        {
-                            id: "2384",
-                            username: "Manolo"
-                        }
-               },
-               {
-                    id: "2669f95",
-                    name: "ShareSfhare",
-                    createdAt: "2020-10-12T13:31:25Z"
-               }
-             ]
-         }
-    });
+     graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns(fakeDataDashboard);
 
     wrapper = await shallowMount(Curator, {
         localVue,

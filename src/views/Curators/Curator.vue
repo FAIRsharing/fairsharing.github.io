@@ -56,7 +56,7 @@
                   </td>
                   <td>
                     <v-tooltip bottom>
-                      <template v-slot:activator="{on}">
+                      <template #activator="{on}">
                         <v-icon
                           class="clickable"
                           small

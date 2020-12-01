@@ -1,4 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
+import Vue from "vue";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import recordStore from "@/store/record.js";
@@ -243,6 +244,7 @@ describe("EditOrganisations.vue", function() {
             }
         });
         await wrapper.vm.createNewOrganisation();
+        await Vue.nextTick();
         expect(wrapper.vm.menus.errors.newOrganisation).toStrictEqual({response: {data: "error message"}});
         restStub.restore();
     });
@@ -349,6 +351,7 @@ describe("EditOrganisations.vue", function() {
         restStub = sinon.stub(RestClient.prototype, "executeQuery");
         restStub.returns({data: {error: {response: {data: "error"}}}});
         await wrapper.vm.saveRelations();
+        await Vue.nextTick();
         expect(wrapper.vm.saving.errors).toStrictEqual({response: {data:"error"}});
         restStub.restore();
 

@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
 
+
 const Home = () => import(/* webpackChunkName: "home-chunk" */ '@/views/Home/Home.vue');
 const NotFound = () => import(/* webpackChunkName: "home-chunk" */  "@/views/Errors/404");
 
@@ -15,6 +16,7 @@ const Signup =  () => import(/* webpackChunkName: "signUp-chunk" */ "@/views/Use
 const ConfirmAccount =  () => import(/* webpackChunkName: "confirmAccount-chunk" */ "@/views/Users/ConfirmAccount.vue");
 const ResendConfirmation = () => import(/* webpackChunkName: "resentEmail-chunk" */ "@/views/Users/ResendConfirmation.vue");
 const User =  () => import(/* webpackChunkName: "user-chunk" */ "@/views/Users/User.vue");
+const Curator = () => import(/* webpackChunkName: "curator-chunk" */ "@/views/Curators/Curator.vue");
 const RequestNewPassword = () =>  import(/* webpackChunkName: "newPwd-chunk" */ "@/views/Users/RequestNewPassword");
 const ResetPassword = () =>  import(/* webpackChunkName: "resetPwd-chunk" */ "@/views/Users/ResetPassword");
 const EditProfile = () =>  import(/* webpackChunkName: "editProfile-chunk" */ "@/views/Users/EditProfile");
@@ -29,7 +31,6 @@ const License =  () => import(/* webpackChunkName: "licence-chunk" */ '@/views/S
 const Terms =  () => import(/* webpackChunkName: "tos-chunk" */ '@/views/Static/TermOfUse/TermsOfUse');
 const Educational =  () => import(/* webpackChunkName: "edu-chunk" */ '@/views/Static/Educational/Educational');
 const Privacy =  () => import(/* webpackChunkName: "privacy-chunk" */ '@/views/Static/Privacy/Privacy');
-
 Vue.use(VueRouter);
 
 let routes = [
@@ -178,6 +179,16 @@ let routes = [
         }
     },
 
+    // CURATORS
+    {
+        name: "Curator",
+        path: "/curator",
+        component: Curator,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+            // isCurator(to, from, next, store);
+        }
+    },
     /*
     Careful, this has to be the very last base path  !!!!
     This component"s page title is handled in the component itself as it needs the :id param
@@ -241,6 +252,7 @@ export function isLoggedIn(to, from, next, store) {
             query: {goTo: target}
         });
     }
+
 }
 
 export default router;

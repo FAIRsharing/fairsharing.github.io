@@ -100,25 +100,16 @@
             <edit-publications />
           </v-tab-item>
 
-          <!-- EDIT RELATIONS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-relationships />
-          </v-tab-item>
-
-          <!-- EDIT MAINTAINERS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-maintainers />
-          </v-tab-item>
-
           <!-- EDIT ORGANIZATIONS -->
           <v-tab-item class="px-10 py-3">
             <edit-organisations />
           </v-tab-item>
 
-          <!-- EDIT GRANTS -->
+          <!-- EDIT RELATIONS -->
           <v-tab-item class="px-10 py-3">
-            <edit-grants />
+            <edit-relationships />
           </v-tab-item>
+
         </v-tabs>
       </v-col>
     </v-row>
@@ -132,9 +123,7 @@
   import EditSupport from "@/components/Editor/EditSupport";
   import EditRelationships from "@/components/Editor/EditRelationships";
   import EditLicences from "@/components/Editor/EditLicences";
-  import EditMaintainers from "@/components/Editor/EditMaintainers";
   import EditOrganisations from "@/components/Editor/EditOrganisations";
-  import EditGrants from "@/components/Editor/EditGrants";
   import EditPublications from "@/components/Editor/EditPublications";
   import Unauthorized from "@/views/Errors/403"
   import RESTClient from "@/components/Client/RESTClient.js"
@@ -145,9 +134,7 @@
     name: "Editor",
     components: {
       EditPublications,
-      EditGrants,
       EditOrganisations,
-      EditMaintainers,
       EditLicences,
       EditRelationships,
       EditSupport,
@@ -201,19 +188,11 @@
             disabled: false
           },
           {
+            name: "Edit Organisations & Grants",
+            disabled: false
+          },
+          {
             name: "Edit Relations to other records",
-            disabled: true
-          },
-          {
-            name: "Edit Maintainers",
-            disabled: true
-          },
-          {
-            name: "Edit Organisations",
-            disabled: true
-          },
-          {
-            name: "Edit Grants",
             disabled: true
           }
         ]

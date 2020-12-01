@@ -425,7 +425,6 @@ class RESTClient {
     /* Misc. Editing Methods */
     /**
      * Get the list of available profile types for a user.
-     * @param {String} token - the account token to validate
      * @returns {Promise}
      */
     async getProfileTypes(){
@@ -438,6 +437,97 @@ class RESTClient {
         return response.data;
     }
 
+
+    /* ORGANISATIONS AND GRANTS */
+    /**
+     * Create a given organisation
+     * @param {Object} organisation
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async createOrganisation(organisation, userToken){
+        let _client = this;
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/organisations",
+            headers: this.auth_headers(userToken),
+            data: { organisation: organisation }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Create a given grant
+     * @param {Object} grant
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async createGrant(grant, userToken){
+        let _client = this;
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/grants",
+            headers: this.auth_headers(userToken),
+            data: { grant: grant }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Create a new link between an organisation, a record and an optional grant.
+     * @param {Object} organisationLink - the organisation link to create
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async createOrganisationLink(organisationLink, userToken){
+        let _client = this;
+        const request = {
+            method: "post",
+            baseURL: _client.baseURL + "/organisation_links",
+            headers: this.auth_headers(userToken),
+            data: { organisation_link: organisationLink }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Update the organisationLink given from linkID input with the given organisationLink
+     * @param {Object} organisationLink - the new organisation link value
+     * @param {Number} linkID - ID of the organisationLink to update
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async updateOrganisationLink(organisationLink, linkID, userToken){
+        let _client = this;
+        const request = {
+            method: "put",
+            baseURL: _client.baseURL + "/organisation_links/" + linkID,
+            headers: this.auth_headers(userToken),
+            data: { organisation_link: organisationLink }
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Delete the given organisation link
+     * @param {Number} linkID - the id of the link to remove
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async deleteOrganisationLink(linkID, userToken){
+        let _client = this;
+        const request = {
+            method: "delete",
+            baseURL: _client.baseURL + "/organisation_links/" + linkID,
+            headers: this.auth_headers(userToken),
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
 
     /* EXTRA METHODS */
 

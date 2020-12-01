@@ -255,18 +255,4 @@ export function isLoggedIn(to, from, next, store) {
 
 }
 
-/*
-export function isCurator(to, from, next, store) {
-    if (store.state.users.user().is_curator) {
-        next()
-    }
-    else {
-        const target = to.path;
-        next({
-            name: "Login", // back to safety route //
-            query: {goTo: target}
-        });
-    }
-}
-*/
 export default router;

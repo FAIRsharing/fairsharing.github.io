@@ -2,10 +2,12 @@
   <v-row>
     <v-col
       cols="3"
-      class="justify-center d-flex"
+      class="flex-column align-center d-flex"
     >
+      <h4>
+        Developed by
+      </h4>
       <ul>
-        <h4>Developed by</h4>
         <li>
           <a
             href="/communities#team"
@@ -29,12 +31,12 @@
     </v-col>
     <v-col
       cols="3"
-      class="justify-center d-flex"
+      class="flex-column align-center d-flex"
     >
+      <h4 id="contact-info">
+        Contact Us
+      </h4>
       <ul>
-        <h4 id="contact-info">
-          Contact Us
-        </h4>
         <li>
           <a href="mailto:contact@fairsharing.org?subject=FAIRsharing Issue"><i
             class="fa fa-envelope"
@@ -63,12 +65,12 @@
     </v-col>
     <v-col
       cols="3"
-      style="justify-content: center;display: flex"
+      class="flex-column align-center d-flex"
     >
+      <h4 id="contact-info2">
+        Support Us
+      </h4>
       <ul>
-        <h4 id="contact-info2">
-          Support Us
-        </h4>
         <li>
           <a
             href="https://www.facebook.com/fairsharing"
@@ -88,13 +90,12 @@
     </v-col>
     <v-col
       cols="3"
-      class="justify-center d-flex"
+      class="flex-column align-center d-flex"
     >
+      <h4 id="about-info">
+        About FAIRsharing
+      </h4>
       <ul>
-        <h4 id="about-info">
-          About FAIRsharing
-        </h4>
-
         <li>
           <a
             id="tour-link"
@@ -131,7 +132,6 @@
       <a
         class="mr-2"
         href="http://creativecommons.org/licenses/by-sa/4.0/"
-        alt="View License"
         target="_blank"
       >Creative Commons
         by

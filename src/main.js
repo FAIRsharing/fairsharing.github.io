@@ -21,6 +21,9 @@ import '@fortawesome/fontawesome-free/css/all.css'
 /* import Global Sass */
 import "./styles/main.scss"
 
+// This is a package for stopping propagation in scroll
+import VueScrollStop from 'vue-scroll-stop';
+Vue.use(VueScrollStop);
 
 Vue.config.productionTip = false;
 

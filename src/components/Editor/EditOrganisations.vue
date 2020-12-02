@@ -46,6 +46,7 @@
                 height="100%"
                 :loading="loading.organisations"
                 type="image"
+                class="setHeight"
               >
                 <v-card
                   height="100%"
@@ -727,7 +728,7 @@
     max-width: 300px;
   }
 
-  .v-skeleton-loader__image, .v-skeleton-loader {
+  .setHeight .v-skeleton-loader__image, .setHeight {
     min-height: 383px !important;
     height:100%;
   }

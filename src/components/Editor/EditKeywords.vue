@@ -55,7 +55,9 @@
                   {{ descriptions[itemName] }}
                 </v-tooltip>
 
-                <h4>Selected {{ itemName }}</h4>
+                <h4 class="white--text">
+                  Selected {{ itemName }}
+                </h4>
               </v-card-title>
               <v-card-text
                 :class="colors[itemName] + ' lighten-3'"

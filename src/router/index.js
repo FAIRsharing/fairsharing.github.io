@@ -1,36 +1,36 @@
-/*
-Separate routing handle to avoid a big main.js
-*/
-
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
 
-import Home from "@/views/Home/Home";
-import Login from "@/views/Users/Login/Login";
-import Signup from "@/views/Users/Signup";
-import Statistics from "@/views/Stats/Statistics";
-import New from "@/views/CreateRecord/NewRecord";
-import Community from "@/views/Static/Community/Community";
-import Stakeholders from "@/views/Static/Stakeholders/Stakeholders";
-import Timeline from "@/views/Static/Timeline/Timeline";
-import License from "@/views/Static/License/License";
-import Terms from "@/views/Static/TermOfUse/TermsOfUse";
-import Educational from "@/views/Static/Educational/Educational";
-import Privacy from "@/views/Static/Privacy/Privacy";
-import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
-import ResendConfirmation from "@/views/Users/ResendConfirmation.vue"
-import User from "@/views/Users/User.vue"
-import RequestNewPassword from "@/views/Users/RequestNewPassword";
-import ResetPassword from "@/views/Users/ResetPassword";
-import EditProfile from "@/views/Users/EditProfile";
-import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
-import LoginFailure from "@/views/Users/Login/LoginFailure";
-import Editor from "@/views/CreateRecord/Editor";
-import Records from "@/views/Records/Records";
-import Record from "@/views/Records/Record";
-import NotFound from "@/views/Errors/404"
 
+const Home = () => import(/* webpackChunkName: "home-chunk" */ '@/views/Home/Home.vue');
+const NotFound = () => import(/* webpackChunkName: "home-chunk" */  "@/views/Errors/404");
+
+const Record =  () => import(/* webpackChunkName: "record-chunk" */ '@/views/Records/Record');
+const Records =  () => import(/* webpackChunkName: "records-chunk" */ '@/views/Records/Records');
+const NewRecord = () => import(/* webpackChunkName: "newRecord-chunk" */ '@/views/CreateRecord/NewRecord');
+const Editor = () => import(/* webpackChunkName: "editRecord-chunk" */ "@/views/CreateRecord/Editor");
+
+const Login = () => import(/* webpackChunkName: "login-chunk" */ '@/views/Users/Login/Login');
+const Signup =  () => import(/* webpackChunkName: "signUp-chunk" */ "@/views/Users/Signup");
+const ConfirmAccount =  () => import(/* webpackChunkName: "confirmAccount-chunk" */ "@/views/Users/ConfirmAccount.vue");
+const ResendConfirmation = () => import(/* webpackChunkName: "resentEmail-chunk" */ "@/views/Users/ResendConfirmation.vue");
+const User =  () => import(/* webpackChunkName: "user-chunk" */ "@/views/Users/User.vue");
+const Curator = () => import(/* webpackChunkName: "curator-chunk" */ "@/views/Curators/Curator.vue");
+const RequestNewPassword = () =>  import(/* webpackChunkName: "newPwd-chunk" */ "@/views/Users/RequestNewPassword");
+const ResetPassword = () =>  import(/* webpackChunkName: "resetPwd-chunk" */ "@/views/Users/ResetPassword");
+const EditProfile = () =>  import(/* webpackChunkName: "editProfile-chunk" */ "@/views/Users/EditProfile");
+const OauthLogin = () =>  import(/* webpackChunkName: "Oauth-chunk" */ "@/views/Users/Login/OauthLogin.vue");
+const LoginFailure = () =>  import(/* webpackChunkName: "failedLogin-chunk" */ "@/views/Users/Login/LoginFailure");
+
+const Stat =  () => import(/* webpackChunkName: "stat-chunk" */ '@/views/Stats/Statistics.vue');
+const Community =  () => import(/* webpackChunkName: "community-chunk" */ '@/views/Static/Community/Community');
+const Stakeholders =  () => import(/* webpackChunkName: "stakeholders-chunk" */ '@/views/Static/Stakeholders/Stakeholders');
+const Timeline =  () => import(/* webpackChunkName: "timeline-chunk" */ '@/views/Static/Timeline/Timeline');
+const License =  () => import(/* webpackChunkName: "licence-chunk" */ '@/views/Static/License/License');
+const Terms =  () => import(/* webpackChunkName: "tos-chunk" */ '@/views/Static/TermOfUse/TermsOfUse');
+const Educational =  () => import(/* webpackChunkName: "edu-chunk" */ '@/views/Static/Educational/Educational');
+const Privacy =  () => import(/* webpackChunkName: "privacy-chunk" */ '@/views/Static/Privacy/Privacy');
 Vue.use(VueRouter);
 
 let routes = [
@@ -44,7 +44,6 @@ let routes = [
         name: "Standards",
         path: "/standards",
         component: Records,
-
     },
     {
         name: "Databases",
@@ -70,12 +69,11 @@ let routes = [
         component: Records,
 
     },
-
     /* CREATION */
     {
         name: "New_content",
         path: "/new",
-        component: New,
+        component: NewRecord,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
         }
@@ -85,7 +83,7 @@ let routes = [
     {
         name: "Statistics",
         path: "/summary-statistics",
-        component: Statistics,
+        component: Stat,
     },
     {
         name: "Community",
@@ -181,6 +179,16 @@ let routes = [
         }
     },
 
+    // CURATORS
+    {
+        name: "Curator",
+        path: "/curator",
+        component: Curator,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+            // isCurator(to, from, next, store);
+        }
+    },
     /*
     Careful, this has to be the very last base path  !!!!
     This component"s page title is handled in the component itself as it needs the :id param
@@ -221,7 +229,7 @@ routes.forEach(function (route) {
 
 const router = new VueRouter({
     routes,
-    //mode: "history"
+    // mode: "history"
 });
 
 export async function beforeEach(to, from, next, store) {
@@ -244,6 +252,7 @@ export function isLoggedIn(to, from, next, store) {
             query: {goTo: target}
         });
     }
+
 }
 
 export default router;

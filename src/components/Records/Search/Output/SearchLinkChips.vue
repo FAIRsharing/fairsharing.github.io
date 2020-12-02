@@ -15,7 +15,13 @@
         outlined
         @click="updateSearchQuery(chip)"
       >
-        {{ chip.label }}
+        <KeywordTooltip
+          v-if="type === 'subjects' || type === 'domains' "
+          :keyword="chip"
+        />
+        <div v-else>
+          {{ chip.label }}
+        </div>
       </v-chip>
     </v-chip-group>
   </section>
@@ -23,9 +29,11 @@
 
 <script>
   import {isEqual} from "lodash";
+  import KeywordTooltip from "../../Shared/KeywordTooltip";
 
   export default {
     name: "SearchLinkChips",
+    components: {KeywordTooltip},
     props: {
       type: {
         default: null,

@@ -181,10 +181,10 @@ export default {
         },
       };
       record['recordAssociations'].forEach(function (association) {
-        records[association['linkedRecord'].registry].val += 1
+        records[association['linkedRecord'].registry.toLowerCase()].val += 1
       });
       record['reverseRecordAssociations'].forEach(function (association) {
-        records[association['fairsharingRecord'].registry].val += 1
+        records[association['fairsharingRecord'].registry.toLowerCase()].val += 1
       });
       return records;
     },
@@ -200,7 +200,8 @@ export default {
     organizeChips(record, node) {
       this.organizeButtons(record, node);
       record[node].forEach(item => {
-        this.Chips[node].push({label: item.label, active: false});
+        item.active = false;
+        this.Chips[node].push(item);
       })
     },
     organizeButtons(record, node) {

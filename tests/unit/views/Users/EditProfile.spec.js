@@ -12,7 +12,8 @@ userStore.state.user = function() {
         metadata: {
             preferences: {
                 hide_email: true,
-            }
+            },
+            profile_type: "profile 1"
         },
         credentials: {
             username: "username"
@@ -30,24 +31,20 @@ let $store = new Vuex.Store({
     }
 });
 
+
 describe("UserProfileMenu.vue", () => {
 
-    let wrapper;
-    let restStub;
+    let wrapper,
+        restStub;
 
     beforeAll(() => {
-        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-            data: {
-                user: {
-                    error: {
-                        response: {
-                            data: { errors: true }
-                        }
-                    },
-                    message: "Success !"
-                }
-            }
-        });
+        restStub = sinon.stub(Client.prototype, "executeQuery");
+        restStub.returns({
+            data: [
+                "profile 1",
+                "profile 2"
+            ]
+        })
     });
     afterAll(() => {
         restStub.restore();
@@ -66,6 +63,19 @@ describe("UserProfileMenu.vue", () => {
     });
 
     it('can post the new user', async () => {
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {
+                user: {
+                    error: {
+                        response: {
+                            data: { errors: true }
+                        }
+                    },
+                    message: "Success !"
+                }
+            }
+        });
         await wrapper.vm.updateProfile();
         expect($router.push).toHaveBeenCalledWith( {"path": "/accounts/profile"});
         expect(wrapper.vm.messages().getUser.message).toBe("Your profile was updated successfully.");
@@ -80,6 +90,15 @@ describe("UserProfileMenu.vue", () => {
         expect(wrapper.vm.messages().updateProfile).toStrictEqual({
             message: { field: 'test', message: 'error' },
             error: true
+        });
+
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery");
+        restStub.returns({
+            data: [
+                "profile 1",
+                "profile 2"
+            ]
         });
     });
 

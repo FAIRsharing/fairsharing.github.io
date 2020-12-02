@@ -295,8 +295,12 @@
                 value: "title"
               },
               {
-                text: "doi",
+                text: "DOI",
                 value: "doi"
+              },
+              {
+                text: "Pubmed ID",
+                value: "pubmedId"
               },
               {
                 text: "authors",
@@ -416,13 +420,15 @@
               }
               else {
                 const pub = data.result[id];
+                let pubDate = new Date(pub['sortpubdate']);
                 let doi = this.processIDs(pub['elocationid']);
                 this.newPublication = {
                   title: pub.title,
                   journal: pub['fulljournalname'],
-                  year: pub['pubdate'],
+                  year: pubDate.getFullYear(),
                   authors: pub['authors'].map(function(elem){return elem.name;}).join(", "),
-                  pubmed_id: pub['uid']
+                  pubmed_id: pub['uid'],
+                  url: "https://pubmed.ncbi.nlm.nih.gov/" + id
                 };
                 if (doi) {
                   this.newPublication.doi = doi;

@@ -1,6 +1,9 @@
 <template>
   <v-row>
-    <v-col cols="3">
+    <v-col
+      cols="3"
+      class="justify-center d-flex"
+    >
       <ul>
         <h4>Developed by</h4>
         <li>
@@ -24,7 +27,10 @@
         </li>
       </ul>
     </v-col>
-    <v-col cols="3">
+    <v-col
+      cols="3"
+      class="justify-center d-flex"
+    >
       <ul>
         <h4 id="contact-info">
           Contact Us
@@ -55,7 +61,10 @@
         </li>
       </ul>
     </v-col>
-    <v-col cols="3">
+    <v-col
+      cols="3"
+      style="justify-content: center;display: flex"
+    >
       <ul>
         <h4 id="contact-info2">
           Support Us
@@ -77,7 +86,10 @@
         </li>
       </ul>
     </v-col>
-    <v-col cols="3">
+    <v-col
+      cols="3"
+      class="justify-center d-flex"
+    >
       <ul>
         <h4 id="about-info">
           About FAIRsharing
@@ -135,11 +147,10 @@
 </template>
 
 <script>
-    export default {
-        name: "Footer"
-    }
+export default {
+  name: "Footer"
+}
 </script>
 
 <style scoped>
-
 </style>

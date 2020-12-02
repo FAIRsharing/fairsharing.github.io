@@ -1,5 +1,6 @@
 /*  import base */
 import Vue from "vue";
+import VueScrollStop from 'vue-scroll-stop';
 import App from "./App.vue";
 import VueMeta from "vue-meta";
 import vuetify from './plugins/vuetify'
@@ -21,12 +22,12 @@ import '@fortawesome/fontawesome-free/css/all.css'
 /* import Global Sass */
 import "./styles/main.scss"
 
-// This is a package for stopping propagation in scroll
-import VueScrollStop from 'vue-scroll-stop';
-Vue.use(VueScrollStop);
-
 Vue.config.productionTip = false;
 
+// This is a package for stopping propagation in scroll
+Vue.use(VueScrollStop);
+
+// using meta package to inject meta data dynamically.
 Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });

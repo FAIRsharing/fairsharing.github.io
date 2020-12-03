@@ -252,32 +252,31 @@ export default {
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
-    this.setStickToTopLocal(false);
+    this.setStickToTop(false);
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),
-    ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
-    ...mapActions({setStickToTopLocal: 'uiController/setStickToTop'}),
+    ...mapActions('uiController', ['setScrollStatus','setStickToTop']),
     onScroll: function (e) {
       let _module = this;
       _module.offsetTop = e.target.scrollTop;
       if (_module.offsetTop > 100 &amp;&amp; _module.records.length > 1) {
-          _module.setStickToTopLocal(true);
+          _module.setStickToTop(true);
           _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
             bodyOverflowState: true,
             headerVisibilityState: false,
         });
       }
       else {
-          _module.setStickToTopLocal(false);
+          _module.setStickToTop(false);
           _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
             bodyOverflowState: true,
             drawerVisibilityState: false,
             headerVisibilityState: true,
           });
       }
-      _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
-          _module.setScrollStatusLocal(false);
+      _module.offsetTop > 500 ? _module.setScrollStatus(true) :
+          _module.setScrollStatus(false);
     },
     /**
      * Try to redirect to search of the page that is hit is /standards /databases

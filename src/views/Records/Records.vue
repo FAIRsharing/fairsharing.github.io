@@ -131,20 +131,22 @@ export default {
       await this.tryRedirect();
     });
   },
-  created() {
+/*  created() {
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
       bodyOverflowState: false,
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
-  },
+  },*/
   destroyed() {
     window.removeEventListener("scroll", this.onScroll)
+/*
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
       bodyOverflowState: false,
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
+*/
     this.setStickToTopLocal(false);
   },
   methods: {
@@ -157,14 +159,14 @@ export default {
       if (_module.offsetTop > 100 && _module.records.length > 1) {
         _module.setStickToTopLocal(true);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          bodyOverflowState: false,
+          // bodyOverflowState: false,
           headerVisibilityState: false,
         });
       }
       else {
         _module.setStickToTopLocal(false);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          bodyOverflowState: false,
+          // bodyOverflowState: false,
           drawerVisibilityState: false,
           headerVisibilityState: true,
         });

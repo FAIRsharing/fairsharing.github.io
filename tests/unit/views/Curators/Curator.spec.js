@@ -62,8 +62,6 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe("Second (44)");
       expect(wrapper.vm.recordsInCuration.length).toBe(2);
       expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12)");
-      expect(wrapper.vm.recordsWithoutDois.length).toBe(2);
-      expect(wrapper.vm.recordsWithoutDois[0].createdAt).toBe("2020-10-12T13:31:25Z");
       expect(wrapper.vm.hiddenRecords.length).toBe(2);
   });
 

@@ -148,29 +148,27 @@
           </v-card-text>
         </v-card>
         <v-card>
-          <v-card-text v-if="recordsWithoutDois">
+          <v-card-text>
             <v-card-title
-              id="text-curator-search-5"
               class="green white--text"
             >
               Records without dois
-              <v-spacer />
-              <v-text-field
-                v-model="searches.recordsWithoutDois"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
+              <v-btn
+                color="white"
+                outlined
+                :class="responsiveHeight"
+                class="mt-1 mt-lg-1 ml-2"
+                @click="prepareData()"
+              >
+                <v-icon
+                  x-small
+                  class="mr-1"
+                >
+                  fa fa-download
+                </v-icon>
+                <span class="button-text-size">Obtain file</span>
+              </v-btn>
             </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.recordsWithoutDois"
-              :items="recordsWithoutDois"
-              :search="searches.recordsWithoutDois"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
           </v-card-text>
         </v-card>
         <v-card>
@@ -258,7 +256,6 @@
           maintenanceRequests: [],
           recordsCreatedCuratorsLastWeek: [],
           recordsInCuration: [],
-          recordsWithoutDois: [],
           hiddenRecords: [],
           recordType: null,
           headers: {
@@ -322,28 +319,6 @@
                 value: "curator"
               }
             ],
-            recordsWithoutDois: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "Date created",
-                value: "createdAt"
-              },
-              {
-                text: "Date last edit",
-                value: "updatedAt"
-              },
-              {
-                text: "Created by",
-                value: "creator"
-              },
-              {
-                text: "Last edited by",
-                value: "lastEditor"
-              }
-            ],
             hiddenRecords: [
               {
                 text: "Record name (id)",
@@ -368,7 +343,6 @@
             pendingMaintenanceRequests: "",
             recentCuratorCreations: "",
             recordsInCuration: "",
-            recordsWithoutDois: "",
             hiddenRecords: ""
           },
           loading: false
@@ -404,7 +378,6 @@
             this.prepareApprovalRequired(this.allDataCuration);
             this.prepareMaintenanceRequests(this.allDataCuration);
             this.prepareRecordsInCuration(this.allDataCuration);
-            this.prepareRecordsWithoutDois(this.allDataCuration);
             this.prepareHiddenRecords(this.allDataCuration);
             this.prepareRecordsCuratorCreationsLastWeek(this.allDataCuration);
           },
@@ -470,26 +443,6 @@
                 });
                 this.recordsInCuration.push(object);
               });
-            });
-          },
-          prepareRecordsWithoutDois(dataCuration){
-            let records = dataCuration.recordsWithoutDois;
-            records.forEach(item => {
-              let object = {};
-              object.recordNameID = item.name+' ('+item.id+')';
-              object.createdAt = item.createdAt;
-              object.updatedAt = item.updatedAt;
-              if (item.creator){
-                object.creator = item.creator.username +' ('+item.creator.id+')';
-              }else{
-                object.creator = "unknown"
-              }
-              if (item.lastEditor){
-                object.lastEditor = item.lastEditor.username +' ('+item.lastEditor.id+')';
-              }else{
-                object.lastEditor = "unknown"
-              }
-              this.recordsWithoutDois.push(object);
             });
           },
           prepareHiddenRecords(dataCuration){

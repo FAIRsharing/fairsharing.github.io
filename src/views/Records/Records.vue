@@ -49,9 +49,7 @@
           xl="3"
           class="d-none d-md-flex mt-2 ml-2"
         >
-          <SearchInput
-            :class="[responsiveClassObject]"
-          />
+          <SearchInput :class="[responsiveClassObject]" />
         </v-col>
         <v-col class="mt-2">
           <SearchOutput
@@ -60,6 +58,7 @@
           />
         </v-col>
       </v-row>
+      <Footer class="mb-2" />
     </v-container>
   </v-main>
 </template>
@@ -72,10 +71,11 @@ import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import Footer from "@/components/Navigation/Footer";
 
 export default {
   name: "Records",
-  components: { JumpToTop, SearchOutput, SearchInput, FilterChips},
+  components: {Footer, JumpToTop, SearchOutput, SearchInput, FilterChips},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',

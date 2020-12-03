@@ -20,8 +20,6 @@
     <v-container
       id="scroll-target"
       fluid
-      class="overflow-y-auto overflow-x-hidden"
-      :class="getChips.length && stickToTop?'content-custom-new-height':'content-custom'"
     >
       <!-- Title banner -->
       <div>
@@ -146,21 +144,6 @@ export default {
       await this.tryRedirect();
     });
   },
-  created() {
-    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-      bodyOverflowState: true,
-      drawerVisibilityState: false,
-      headerVisibilityState: true,
-    });
-  },
-  destroyed() {
-    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-      bodyOverflowState: false,
-      drawerVisibilityState: false,
-      headerVisibilityState: true,
-    });
-    this.setStickToTop(false);
-  },
   methods: {
     ...mapActions('records', ['fetchRecords']),
     ...mapActions('uiController', ['setScrollStatus','setStickToTop']),
@@ -170,14 +153,12 @@ export default {
       if (_module.offsetTop > 100 && _module.records.length > 1) {
           _module.setStickToTop(true);
           _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            bodyOverflowState: true,
             headerVisibilityState: false,
         });
       }
       else {
           _module.setStickToTop(false);
           _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            bodyOverflowState: true,
             drawerVisibilityState: false,
             headerVisibilityState: true,
           });

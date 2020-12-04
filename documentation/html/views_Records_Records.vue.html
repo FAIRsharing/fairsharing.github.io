@@ -91,7 +91,7 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">77&lt;template>
+            class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-main>
     &lt;h1 class="d-none">
       Content
@@ -139,7 +139,6 @@
           />
         &lt;/v-col>
       &lt;/v-row>
-      &lt;Footer class="mb-2 mt-md-10 mt-lg-10" />
     &lt;/v-container>
   &lt;/v-main>
 &lt;/template>
@@ -151,11 +150,10 @@ import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import Footer from "@/components/Navigation/Footer";
 
 export default {
   name: "Records",
-  components: {Footer, JumpToTop, SearchOutput, SearchInput},
+  components: {JumpToTop, SearchOutput, SearchInput},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',

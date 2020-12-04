@@ -104,7 +104,6 @@ export default {
   computed: {
     ...mapState('records', ["records", "hits", "loading", "totalPages"]),
     ...mapGetters('records', ["getRecordsLength"]),
-    ...mapState('uiController', ['stickToTop']),
   },
   methods: {
     changeListType: function (listType) {

@@ -29,27 +29,6 @@
       <v-card-text>
         <v-container fluid>
           <v-row>
-            <v-col class="col-12 pt-0">
-              <v-btn
-                class="primary"
-                style="display:inline-block"
-                fab
-                x-small
-                dark
-                @click="addContact()"
-              >
-                <v-icon>fa-plus</v-icon>
-              </v-btn>
-              <div
-                class="ml-3"
-                style="display:inline-block"
-              >
-                ADD A NEW CONTACT
-              </div>
-              <v-divider />
-            </v-col>
-          </v-row>
-          <v-row>
             <v-col
               v-for="(contact, contactIndex) in contacts"
               :key="'contact_' + contactIndex"
@@ -80,22 +59,36 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-btn
-                    style="display:inline-block"
-                    fab
-                    x-small
-                    dark
-                    class="red"
+                    class="error mb-3 ml-2"
                     @click="removeContact(contact)"
                   >
-                    <v-icon> fa-minus </v-icon>
+                    <v-icon left>
+                      fa-minus-circle
+                    </v-icon>
+                    Remove Contact
                   </v-btn>
-                  <div
-                    class="ml-3 pt-1"
-                    style="display:inline-block"
-                  >
-                    REMOVE CONTACT
-                  </div>
                 </v-card-actions>
+              </v-card>
+            </v-col>
+            <!-- ADDING NEW ITEMS -->
+            <v-col class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+              <v-card
+                height="100%"
+                class="newRel green--text"
+                style="cursor: pointer"
+                @click="addContact()"
+              >
+                <div class="mb-4">
+                  <v-icon
+                    x-large
+                    class="green--text icon--xxl"
+                  >
+                    fa-plus-circle
+                  </v-icon>
+                </div>
+                <div class="text-h4 text-center">
+                  Add a new contact
+                </div>
               </v-card>
             </v-col>
           </v-row>

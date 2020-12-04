@@ -266,13 +266,23 @@ export default {
      * @returns {Promise}
      */
     getData: async function () {
-      window.scrollTo(0, 0);
       this.errors = null;
       const _module = this;
-      try {
+      try
+      {
         await _module.fetchRecords(this.getParameters());
-      } catch (e) {
+      }
+      catch (e)
+      {
         this.errors = e.message;
+      }
+      finally
+      {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
       }
     },
     /**

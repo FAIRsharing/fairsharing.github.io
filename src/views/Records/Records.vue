@@ -1,4 +1,4 @@
-77<template>
+<template>
   <v-main>
     <h1 class="d-none">
       Content
@@ -46,7 +46,6 @@
           />
         </v-col>
       </v-row>
-      <Footer class="mb-2 mt-md-10 mt-lg-10" />
     </v-container>
   </v-main>
 </template>
@@ -58,11 +57,10 @@ import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import Footer from "@/components/Navigation/Footer";
 
 export default {
   name: "Records",
-  components: {Footer, JumpToTop, SearchOutput, SearchInput},
+  components: {JumpToTop, SearchOutput, SearchInput},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',

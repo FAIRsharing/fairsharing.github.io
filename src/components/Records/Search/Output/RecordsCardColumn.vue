@@ -161,10 +161,10 @@ export default {
         },
       };
       record['recordAssociations'].forEach(function (association) {
-        records[association['linkedRecord'].registry].val += 1
+        records[association['linkedRecord'].registry.toLowerCase()].val += 1
       });
       record['reverseRecordAssociations'].forEach(function (association) {
-        records[association['fairsharingRecord'].registry].val += 1
+        records[association['fairsharingRecord'].registry.toLowerCase()].val += 1
       });
       return records;
     },

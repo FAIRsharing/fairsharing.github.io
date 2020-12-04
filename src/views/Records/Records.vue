@@ -71,11 +71,10 @@ import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import Footer from "@/components/Navigation/Footer";
 
 export default {
   name: "Records",
-  components: {Footer, JumpToTop, SearchOutput, SearchInput, FilterChips},
+  components: {JumpToTop, SearchOutput, SearchInput, FilterChips},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',

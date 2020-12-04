@@ -92,7 +92,6 @@ import FilterChips from "../Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 import Pagination from "../Header/Pagination";
 
-
 export default {
   name: "SearchOutput",
   components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination},

@@ -470,7 +470,7 @@
             let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data).replace(/^\[(.+)\]$/,'$1').split(',').join('\r\n').replace(/['"]+/g, ''));
             let downloadAnchorNode = document.createElement('a');
             downloadAnchorNode.setAttribute("href",     dataStr);
-            downloadAnchorNode.setAttribute("download", "recordsWithoutDOIs.csv");
+            downloadAnchorNode.setAttribute("download", "recordsWithoutDOIs.txt");
             document.body.appendChild(downloadAnchorNode); // required for firefox
             downloadAnchorNode.click();
             downloadAnchorNode.remove();

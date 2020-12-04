@@ -2,32 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
 
-let Home;
-let NotFound;
-let Record;
-let Records
-let NewRecord;
-let Editor;
-let Login;
-let Signup;
-let ConfirmAccount;
-let ResendConfirmation;
-let User;
-let Curator;
-let RequestNewPassword;
-let ResetPassword;
-let EditProfile;
-let OauthLogin;
-let LoginFailure;
-let Stat;
-let Community;
-let Stakeholders;
-let Timeline;
-let License;
-let Terms;
-let Educational;
-let Privacy;
-
+let Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
+    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, LoginFailure, Stat, Community, Stakeholders,
+    Timeline, License, Terms, Educational, Privacy;
 /*
  * This block is ignored because, though coverage shows at 100% in CI, it does not do so locally.
  * Assigning things here and freezing them rather than creating consts above allows this entire function

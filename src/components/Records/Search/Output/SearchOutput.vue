@@ -7,7 +7,7 @@
 
       <!--Filtered Chips-->
       <div
-        v-if="getChips.length"
+        v-if="getChips.length && !stickToTop"
         class="d-flex align-content-center justify-content-center chips-holder"
       >
         <filter-chips />
@@ -92,6 +92,7 @@ import FilterChips from "../Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 import Pagination from "../Header/Pagination";
 
+
 export default {
   name: "SearchOutput",
   components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination},
@@ -104,6 +105,7 @@ export default {
   computed: {
     ...mapState('records', ["records", "hits", "loading", "totalPages"]),
     ...mapGetters('records', ["getRecordsLength"]),
+    ...mapState('uiController', ['stickToTop']),
   },
   methods: {
     changeListType: function (listType) {
@@ -114,9 +116,6 @@ export default {
 </script>
 <style lang="scss">
 .chips-holder {
-  position: sticky;
-  top: 0;
-  z-index: 2;
   background: #f5f5f5;
   min-height: 50px;
   border: #dbdbdb dotted 2px;
@@ -124,6 +123,7 @@ export default {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
+
 .no-data-found {
   display: flex;
   justify-content: center;
@@ -133,3 +133,8 @@ export default {
 }
 </style>
 
+<style scoped lang="scss">
+  .border-top {
+    border-top: 1px solid #ccc;
+  }
+</style>

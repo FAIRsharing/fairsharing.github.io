@@ -156,9 +156,8 @@
               <v-btn
                 color="white"
                 outlined
-                :class="responsiveHeight"
                 class="mt-1 mt-lg-1 ml-2"
-                @click="prepareData()"
+                @click="obtainFileRecordsWODois()"
               >
                 <v-icon
                   x-small
@@ -239,8 +238,10 @@
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
     import recordTypes from "@/data/recordsRegistries.json"
+    import RestClient from "@/components/Client/RESTClient.js"
 
     const client = new GraphClient();
+    const restClient = new RestClient();
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -463,6 +464,16 @@
               }
               this.hiddenRecords.push(object);
             });
+          },
+          async obtainFileRecordsWODois(){
+            let data = await restClient.getRecordsWoDOIs(this.user().credentials.token);
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data).replace(/^\[(.+)\]$/,'$1').split(',').join('\r\n').replace(/['"]+/g, ''));
+            let downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href",     dataStr);
+            downloadAnchorNode.setAttribute("download", "recordsWithoutDOIs.csv");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
           }
       }
     }
@@ -482,9 +493,6 @@
     color:#fff;
   }
   #text-curator-search-4 div.theme--light.v-input:not(.v-input--is-disabled) input{
-    color:#fff;
-  }
-  #text-curator-search-5 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }
 </style>

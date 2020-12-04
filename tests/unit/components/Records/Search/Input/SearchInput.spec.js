@@ -4,9 +4,11 @@ import Vuetify from "vuetify"
 import SearchInput from "@/components/Records/Search/Input/SearchInput"
 import searchFiltersStore from "@/store/searchFilters.js";
 import uiControllerStore from "@/store/uiController.js";
+import VueScrollStop from 'vue-scroll-stop';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueScrollStop);
 const vuetify = new Vuetify();
 
 let $route = {

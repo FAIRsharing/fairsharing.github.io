@@ -103,7 +103,8 @@ export default {
       });
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
         title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-      } else title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
+      else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
@@ -113,13 +114,13 @@ export default {
     }
   },
   mounted: function () {
-    window.addEventListener("scroll", this.onScroll)
+    window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
       await this.tryRedirect();
     });
   },
   destroyed() {
-    window.removeEventListener("scroll", this.onScroll)
+    window.removeEventListener("scroll", this.onScroll);
     this.setStickToTop(false);
   },
   methods: {
@@ -133,7 +134,8 @@ export default {
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           headerVisibilityState: false,
         });
-      } else {
+      }
+      else {
         _module.setStickToTop(false);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           drawerVisibilityState: false,
@@ -159,7 +161,8 @@ export default {
               query: query
             });
             return true;
-          } catch (e) {
+          }
+          catch (e) {
             //
           }
         }

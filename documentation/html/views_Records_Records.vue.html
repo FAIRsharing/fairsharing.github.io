@@ -97,13 +97,7 @@
       Content
     &lt;/h1>
     &lt;transition name="fade">
-<<<<<<< HEAD
-      &lt;jump-to-top
-        v-if="scrollStatus"
-      />
-=======
       &lt;jump-to-top v-if="scrollStatus" />
->>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
     &lt;/transition>
     &lt;v-container
       fluid
@@ -135,18 +129,9 @@
           &lt;SearchInput :class="[responsiveClassObject]" />
         &lt;/v-col>
         &lt;v-col class="mt-2">
-<<<<<<< HEAD
-          &lt;SearchOutput
-            class="pb-5 mr-0 mr-md-2"
-          />
-        &lt;/v-col>
-      &lt;/v-row>
-      &lt;Footer class="mb-2 mt-md-10 mt-lg-10" />
-=======
           &lt;SearchOutput class="pb-5 mr-0 mr-md-2" />
         &lt;/v-col>
       &lt;/v-row>
->>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
     &lt;/v-container>
   &lt;/v-main>
 &lt;/template>
@@ -161,11 +146,7 @@ import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "Records",
-<<<<<<< HEAD
-  components: {Footer, JumpToTop, SearchOutput, SearchInput},
-=======
   components: {JumpToTop, SearchOutput, SearchInput},
->>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -232,35 +213,17 @@ export default {
     }
   },
   mounted: function () {
-<<<<<<< HEAD
-    window.addEventListener("scroll", this.onScroll)
-=======
     window.addEventListener("scroll", this.onScroll);
->>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
     this.$nextTick(async function () {
       await this.tryRedirect();
     });
   },
   destroyed() {
-<<<<<<< HEAD
-    window.removeEventListener("scroll", this.onScroll)
-=======
     window.removeEventListener("scroll", this.onScroll);
->>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
     this.setStickToTop(false);
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),
-<<<<<<< HEAD
-    ...mapActions('uiController', ['setScrollStatus','setStickToTop']),
-    onScroll: function () {
-      let _module = this;
-      _module.offsetTop = window.top.scrollY;
-      if (_module.offsetTop > 100 &amp;&amp; _module.records.length > 1) {
-          _module.setStickToTop(true);
-          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            headerVisibilityState: false,
-=======
     ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
     onScroll: function () {
       let _module = this;
@@ -270,7 +233,6 @@ export default {
         _module.setStickToTop(true);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           headerVisibilityState: false,
->>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
         });
       }
       else
@@ -357,33 +319,35 @@ export default {
   top: 0;
   width: 32vw;
 }
+
 .left-panel-default {
   position: relative;
   width: 32vw;
 }
+
 .left-panel-fixed-lg {
   position: sticky;
   top: 0;
   width: 24vw;
 }
+
 .left-panel-default-lg {
   position: relative;
   width: 24vw;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
 .content-custom-new-height {
   height: calc(100vh - 40px);
   scroll-behavior: smooth;
   padding: 0;
 }
+
 .content-custom {
   height: 100vh;
   scroll-behavior: smooth;
   padding: 0;
 }
+
 #banner {
   display: flex;
   justify-content: center;

@@ -11,7 +11,6 @@ module.exports = {
         "!src/documentation/process_doc.js",
         "!src/store/index.js",
         "!src/plugins/**",
-        "!src/utils/navigationUtils.js"
     ],
     testMatch: [
         "**/**.spec.js", "**/**/**.spec.js", "tests/**/**.spec.js", "tests/**/**/**.spec.js"

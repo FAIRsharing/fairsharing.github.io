@@ -148,11 +148,13 @@ describe("Records.vue", () => {
             localVue,
             vuetify
         });
+        wrapper.vm.onScroll();
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
         $route.name = "test";
         $route.params = {fairsharingRegistry: "123"};
         $route.query = {fairsharingRegistry: "123"};
+        wrapper.vm.onScroll();
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
     });

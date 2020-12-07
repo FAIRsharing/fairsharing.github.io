@@ -37,7 +37,7 @@ const $store = new Vuex.Store({
     },
 });
 
-const jsdomScrollTo = window.scrollTo;
+// const jsdomScrollTo = window.scrollTo;
 
 describe("Records.vue", () => {
 
@@ -68,7 +68,7 @@ describe("Records.vue", () => {
         };
     });
     afterEach(() => {
-        window.scrollTo = jsdomScrollTo;
+        // window.scrollTo = jsdomScrollTo;
     });
 
     it("can be instantiated", () => {
@@ -148,13 +148,11 @@ describe("Records.vue", () => {
             localVue,
             vuetify
         });
-        wrapper.vm.onScroll();
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
         $route.name = "test";
         $route.params = {fairsharingRegistry: "123"};
         $route.query = {fairsharingRegistry: "123"};
-        wrapper.vm.onScroll();
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
     });

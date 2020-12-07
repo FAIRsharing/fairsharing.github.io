@@ -18,18 +18,13 @@
 
 export default {
   name: "JumpToTop",
-  data:()=>{
-      return{
-        options:{
-          top: 0,
-          left: 0,
-          behavior: 'smooth'
-        }
-      }
-  },
   methods: {
     scrollToTop: function () {
-      window.scrollTo(this.options);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     },
   }
 }

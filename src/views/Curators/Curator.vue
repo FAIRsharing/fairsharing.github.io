@@ -99,7 +99,7 @@
               id="text-curator-search-1"
               class="green white--text"
             >
-              Pending Maintenance Requests
+              Ownership Requests
               <v-spacer />
               <v-text-field
                 v-model="searches.pendingMaintenanceRequests"
@@ -431,7 +431,7 @@
             let requests = dataCuration.pendingMaintenanceRequests;
             requests.forEach(item => {
               let object = {};
-              object.createdAt = item.createdAt;
+              object.createdAt = item.createdAt.toLocaleString('default', { month: 'short' })+ ' '+item.createdAt.getUTCDate()+ ', '+item.createdAt.getUTCFullYear();
               object.recordNameID = item.fairsharingRecord.name+' ('+item.fairsharingRecord.id+')';
               object.userNameID = item.user.username+' ('+item.user.id+')';
               this.maintenanceRequests.push(object);

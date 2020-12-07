@@ -1,15 +1,12 @@
-77<template>
+<template>
   <v-main>
     <h1 class="d-none">
       Content
     </h1>
     <transition name="fade">
-      <jump-to-top
-        v-if="scrollStatus"
-      />
+      <jump-to-top v-if="scrollStatus" />
     </transition>
     <v-container
-      id="scroll-target"
       fluid
     >
       <!-- Title banner -->
@@ -28,9 +25,7 @@
       </div>
 
       <!--  Content  -->
-      <v-row
-        no-gutters
-      >
+      <v-row no-gutters>
         <v-col
           cols="12"
           lg="4"
@@ -41,12 +36,9 @@
           <SearchInput :class="[responsiveClassObject]" />
         </v-col>
         <v-col class="mt-2">
-          <SearchOutput
-            class="pb-5 mr-0 mr-md-2"
-          />
+          <SearchOutput class="pb-5 mr-0 mr-md-2" />
         </v-col>
       </v-row>
-      <Footer class="mb-2 mt-md-10 mt-lg-10" />
     </v-container>
   </v-main>
 </template>
@@ -58,11 +50,10 @@ import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import Footer from "@/components/Navigation/Footer";
 
 export default {
   name: "Records",
-  components: {Footer, JumpToTop, SearchOutput, SearchInput},
+  components: {JumpToTop, SearchOutput, SearchInput},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -76,7 +67,7 @@ export default {
     recordTypes: recordsLabels['recordTypes']
   }),
   computed: {
-    ...mapState('uiController', ['scrollStatus','stickToTop']),
+    ...mapState('uiController', ['scrollStatus', 'stickToTop']),
     ...mapState('records', ['records']),
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
@@ -84,8 +75,10 @@ export default {
           {}
       );
       let title = "Search";
-      if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
-        if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
+      if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry'))
+      {
+        if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry))
+        {
           title = flipRecordTypes[this.$route.query.fairsharingRegistry];
         }
       }
@@ -105,14 +98,19 @@ export default {
       let queryParams = {};
       Object.keys(this.$route.query).forEach(function (prop) {
         let queryVal = client.$route.query[prop];
-        if (queryVal) {
-            queryParams[prop] = decodeURI(queryVal);
+        if (queryVal)
+        {
+          queryParams[prop] = decodeURI(queryVal);
         }
       });
-      if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-          title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+      if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)])
+      {
+        title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
       }
-      else title = title.charAt(0).toUpperCase() + title.slice(1);
+      else
+      {
+        title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
       return [title, queryParams];
     },
   },
@@ -122,33 +120,35 @@ export default {
     }
   },
   mounted: function () {
-    window.addEventListener("scroll", this.onScroll)
+    window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
       await this.tryRedirect();
     });
   },
   destroyed() {
-    window.removeEventListener("scroll", this.onScroll)
+    window.removeEventListener("scroll", this.onScroll);
     this.setStickToTop(false);
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),
-    ...mapActions('uiController', ['setScrollStatus','setStickToTop']),
+    ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
     onScroll: function () {
       let _module = this;
       _module.offsetTop = window.top.scrollY;
-      if (_module.offsetTop > 100 && _module.records.length > 1) {
-          _module.setStickToTop(true);
-          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            headerVisibilityState: false,
+      if (_module.offsetTop > 100 && _module.records.length > 1)
+      {
+        _module.setStickToTop(true);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          headerVisibilityState: false,
         });
       }
-      else {
-          _module.setStickToTop(false);
-          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-          });
+      else
+      {
+        _module.setStickToTop(false);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          drawerVisibilityState: false,
+          headerVisibilityState: true,
+        });
       }
       _module.offsetTop > 500 ? _module.setScrollStatus(true) :
           _module.setScrollStatus(false);
@@ -158,36 +158,45 @@ export default {
      * /policies or /collections
      * */
     tryRedirect: async function () {
-      if (Object.keys(this.recordTypes).includes(this.$route.name)) {
+      if (Object.keys(this.recordTypes).includes(this.$route.name))
+      {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
         let query = this.$route.params;
         if (query && query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
-          try {
+          try
+          {
             await this.$router.push({
               name: "search",
               query: query
             });
             return true;
           }
-          catch (e) {
+          catch (e)
+          {
             //
           }
         }
       }
-      await this.getData()
+      await this.getData();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     },
     /** This methods get the data from the client.
      * @returns {Promise}
      */
     getData: async function () {
-      window.scrollTo(0, 0);
       this.errors = null;
       const _module = this;
-      try {
+      try
+      {
         await _module.fetchRecords(this.getParameters());
       }
-      catch (e) {
+      catch (e)
+      {
         this.errors = e.message;
       }
     },
@@ -217,29 +226,35 @@ export default {
   top: 0;
   width: 32vw;
 }
+
 .left-panel-default {
   position: relative;
   width: 32vw;
 }
+
 .left-panel-fixed-lg {
   position: sticky;
   top: 0;
   width: 24vw;
 }
+
 .left-panel-default-lg {
   position: relative;
   width: 24vw;
 }
+
 .content-custom-new-height {
   height: calc(100vh - 40px);
   scroll-behavior: smooth;
   padding: 0;
 }
+
 .content-custom {
   height: 100vh;
   scroll-behavior: smooth;
   padding: 0;
 }
+
 #banner {
   display: flex;
   justify-content: center;

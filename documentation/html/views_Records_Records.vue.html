@@ -91,18 +91,21 @@
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">77&lt;template>
+            class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-main>
     &lt;h1 class="d-none">
       Content
     &lt;/h1>
     &lt;transition name="fade">
+<<<<<<< HEAD
       &lt;jump-to-top
         v-if="scrollStatus"
       />
+=======
+      &lt;jump-to-top v-if="scrollStatus" />
+>>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
     &lt;/transition>
     &lt;v-container
-      id="scroll-target"
       fluid
     >
       &lt;!-- Title banner -->
@@ -121,9 +124,7 @@
       &lt;/div>
 
       &lt;!--  Content  -->
-      &lt;v-row
-        no-gutters
-      >
+      &lt;v-row no-gutters>
         &lt;v-col
           cols="12"
           lg="4"
@@ -134,12 +135,18 @@
           &lt;SearchInput :class="[responsiveClassObject]" />
         &lt;/v-col>
         &lt;v-col class="mt-2">
+<<<<<<< HEAD
           &lt;SearchOutput
             class="pb-5 mr-0 mr-md-2"
           />
         &lt;/v-col>
       &lt;/v-row>
       &lt;Footer class="mb-2 mt-md-10 mt-lg-10" />
+=======
+          &lt;SearchOutput class="pb-5 mr-0 mr-md-2" />
+        &lt;/v-col>
+      &lt;/v-row>
+>>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
     &lt;/v-container>
   &lt;/v-main>
 &lt;/template>
@@ -151,11 +158,14 @@ import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import Footer from "@/components/Navigation/Footer";
 
 export default {
   name: "Records",
+<<<<<<< HEAD
   components: {Footer, JumpToTop, SearchOutput, SearchInput},
+=======
+  components: {JumpToTop, SearchOutput, SearchInput},
+>>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -169,7 +179,7 @@ export default {
     recordTypes: recordsLabels['recordTypes']
   }),
   computed: {
-    ...mapState('uiController', ['scrollStatus','stickToTop']),
+    ...mapState('uiController', ['scrollStatus', 'stickToTop']),
     ...mapState('records', ['records']),
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
@@ -177,8 +187,10 @@ export default {
           {}
       );
       let title = "Search";
-      if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
-        if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
+      if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry'))
+      {
+        if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry))
+        {
           title = flipRecordTypes[this.$route.query.fairsharingRegistry];
         }
       }
@@ -198,14 +210,19 @@ export default {
       let queryParams = {};
       Object.keys(this.$route.query).forEach(function (prop) {
         let queryVal = client.$route.query[prop];
-        if (queryVal) {
-            queryParams[prop] = decodeURI(queryVal);
+        if (queryVal)
+        {
+          queryParams[prop] = decodeURI(queryVal);
         }
       });
-      if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-          title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+      if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)])
+      {
+        title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
       }
-      else title = title.charAt(0).toUpperCase() + title.slice(1);
+      else
+      {
+        title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
       return [title, queryParams];
     },
   },
@@ -215,17 +232,26 @@ export default {
     }
   },
   mounted: function () {
+<<<<<<< HEAD
     window.addEventListener("scroll", this.onScroll)
+=======
+    window.addEventListener("scroll", this.onScroll);
+>>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
     this.$nextTick(async function () {
       await this.tryRedirect();
     });
   },
   destroyed() {
+<<<<<<< HEAD
     window.removeEventListener("scroll", this.onScroll)
+=======
+    window.removeEventListener("scroll", this.onScroll);
+>>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
     this.setStickToTop(false);
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),
+<<<<<<< HEAD
     ...mapActions('uiController', ['setScrollStatus','setStickToTop']),
     onScroll: function () {
       let _module = this;
@@ -234,14 +260,26 @@ export default {
           _module.setStickToTop(true);
           _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
             headerVisibilityState: false,
+=======
+    ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
+    onScroll: function () {
+      let _module = this;
+      _module.offsetTop = window.top.scrollY;
+      if (_module.offsetTop > 100 &amp;&amp; _module.records.length > 1)
+      {
+        _module.setStickToTop(true);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          headerVisibilityState: false,
+>>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
         });
       }
-      else {
-          _module.setStickToTop(false);
-          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-          });
+      else
+      {
+        _module.setStickToTop(false);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          drawerVisibilityState: false,
+          headerVisibilityState: true,
+        });
       }
       _module.offsetTop > 500 ? _module.setScrollStatus(true) :
           _module.setScrollStatus(false);
@@ -251,36 +289,45 @@ export default {
      * /policies or /collections
      * */
     tryRedirect: async function () {
-      if (Object.keys(this.recordTypes).includes(this.$route.name)) {
+      if (Object.keys(this.recordTypes).includes(this.$route.name))
+      {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
         let query = this.$route.params;
         if (query &amp;&amp; query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
-          try {
+          try
+          {
             await this.$router.push({
               name: "search",
               query: query
             });
             return true;
           }
-          catch (e) {
+          catch (e)
+          {
             //
           }
         }
       }
-      await this.getData()
+      await this.getData();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     },
     /** This methods get the data from the client.
      * @returns {Promise}
      */
     getData: async function () {
-      window.scrollTo(0, 0);
       this.errors = null;
       const _module = this;
-      try {
+      try
+      {
         await _module.fetchRecords(this.getParameters());
       }
-      catch (e) {
+      catch (e)
+      {
         this.errors = e.message;
       }
     },
@@ -323,6 +370,10 @@ export default {
   position: relative;
   width: 24vw;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 43282b5826ace4d5549f38f314da1558b2f5bc09
 .content-custom-new-height {
   height: calc(100vh - 40px);
   scroll-behavior: smooth;

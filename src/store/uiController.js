@@ -5,9 +5,6 @@ export const mutations = {
     setStickToTop(state, status) {
         state.stickToTop = status;
     },
-    setComponentOverflow(state, status) {
-        state.componentOverflow = status;
-    },
     setUIStatus: function (state, statusObject) {
         if (Object.prototype.hasOwnProperty.call(statusObject, 'bodyOverflowState')) {
             state.UIGeneralStatus.bodyOverflowState = statusObject.bodyOverflowState;
@@ -30,9 +27,6 @@ export const actions = {
     setStickToTop: function (state, status) {
         this.commit('uiController/setStickToTop', status);
     },
-    setComponentOverflow: function (state, status) {
-        this.commit('uiController/setComponentOverflow', status);
-    }
 };
 let uiController = {
     namespaced: true,
@@ -41,7 +35,6 @@ let uiController = {
         stickToTop:false,
         componentOverflow:false,
         UIGeneralStatus: {
-            bodyOverflowState: false,
             drawerVisibilityState: false,
             headerVisibilityState: true,
         },

@@ -37,8 +37,6 @@ const $store = new Vuex.Store({
     },
 });
 
-// const jsdomScrollTo = window.scrollTo;
-
 describe("Records.vue", () => {
 
     let vuetify;
@@ -66,9 +64,6 @@ describe("Records.vue", () => {
         global.window = Object.create(window);
         window.scrollTo = () => {
         };
-    });
-    afterEach(() => {
-        // window.scrollTo = jsdomScrollTo;
     });
 
     it("can be instantiated", () => {

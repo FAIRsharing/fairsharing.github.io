@@ -1,5 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app-bar
+    app
+    hide-on-scroll
     short
     height="100"
     max-height="100"
@@ -149,7 +151,7 @@ export default {
 
 <style scoped lang="scss">
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .1s;
+  transition: opacity .8s;
 }
 
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */

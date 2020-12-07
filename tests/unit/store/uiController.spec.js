@@ -8,7 +8,6 @@ describe('Mutations & Actions', () => {
         state = {
             scrollStatus: false,
             stickToTop: false,
-            componentOverflow:false,
             UIGeneralStatus: {
                 drawerVisibilityState: false,
                 headerVisibilityState: false,

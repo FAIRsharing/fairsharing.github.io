@@ -178,7 +178,12 @@ export default {
           }
         }
       }
-      await this.getData()
+      await this.getData();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     },
     /** This methods get the data from the client.
      * @returns {Promise}
@@ -193,14 +198,6 @@ export default {
       catch (e)
       {
         this.errors = e.message;
-      }
-      finally
-      {
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: 'smooth'
-        });
       }
     },
     /**

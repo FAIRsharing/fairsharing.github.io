@@ -56,7 +56,8 @@ describe("Records.vue", () => {
     let wrapper;
     beforeEach(async () => {
         vuetify = new Vuetify();
-        window.scrollTo = jest.fn();
+        window.scrollTo = () => {
+        };
         wrapper = await shallowMount(Records, {
             mocks: {$route, $store},
             localVue,

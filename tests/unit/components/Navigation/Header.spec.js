@@ -35,7 +35,6 @@ describe("Header.vue", function () {
         const expectedData = {
             headerVisibilityState: true,
             drawerVisibilityState: true,
-            bodyOverflowState: false,
         };
         wrapper.vm.toggleDrawerLeft();
         expect($store.state.uiController.UIGeneralStatus).toStrictEqual(expectedData);

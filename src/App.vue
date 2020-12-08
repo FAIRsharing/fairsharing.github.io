@@ -21,9 +21,6 @@
     export default {
         name: "App2",
         components: {Footer, Header},
-        data: () => ({
-            _status: false
-        }),
         computed: {
             ...mapState('uiController', ["UIGeneralStatus"]),
         },

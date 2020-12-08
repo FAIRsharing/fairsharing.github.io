@@ -11,7 +11,7 @@
       <Header v-if="UIGeneralStatus.headerVisibilityState" />
     </transition>
     <router-view style="min-height: 70vh" />
-    <Footer v-if="$route.path !== '/search'" />
+    <Footer />
   </v-app>
 </template>
 

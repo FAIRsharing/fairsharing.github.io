@@ -138,10 +138,6 @@ export default {
     onScroll: function () {
       let _module = this;
       _module.offsetTop = window.top.scrollY;
-/*      let bottomOfWindow = (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight-500);
-      if (bottomOfWindow) {
-        console.log('reached the bottom') // replace it with your code
-      }*/
       if (_module.offsetTop > 100 && _module.records.length > 1)
       {
         _module.setStickToTop(true);

@@ -142,8 +142,8 @@
                 :hint="descriptions['countries']"
                 item-text="name"
                 item-value="name"
-                outlined
                 multiple
+                outlined
                 return-object
               >
                 <template v-slot:prepend>
@@ -163,7 +163,11 @@
 
                 <!-- autocomplete selected -->
                 <template v-slot:selection="data">
-                  <v-chip class="blue white--text">
+                  <v-chip
+                    class="blue white--text"
+                    close
+                    @click:close="removeCountry(data.item)"
+                  >
                     {{ data.item.name }}
                   </v-chip>
                 </template>
@@ -440,7 +444,11 @@
           this.error = this.recordUpdate.error;
           this.error_message = this.recordUpdate.message.data;
         }
-      }
+      },
+      removeCountry: function(country){
+        const _module = this;
+        _module.countries = _module.countries.filter(obj => obj.label !== country.name && obj.id !== country.id);
+      },
     },
   }
 </script>

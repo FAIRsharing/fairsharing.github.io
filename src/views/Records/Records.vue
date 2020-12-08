@@ -33,7 +33,10 @@
           xl="3"
           class="d-none d-md-flex mt-2 ml-2"
         >
-          <SearchInput :class="[responsiveClassObject]" />
+          <SearchInput
+            id="search-input-mb"
+            :class="[responsiveClassObject]"
+          />
         </v-col>
         <v-col class="mt-2">
           <SearchOutput class="pb-5 mr-0 mr-md-2" />
@@ -264,5 +267,9 @@ export default {
   justify-content: center;
   flex-direction: column;
   padding: 1em;
+}
+
+#search-input-mb{
+  margin-bottom: 105px;
 }
 </style>

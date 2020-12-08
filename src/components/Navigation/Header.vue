@@ -91,10 +91,6 @@ import StringSearch from "@/components/Records/Search/Input/StringSearch";
 export default {
   name: "Header",
   components: {StringSearch, Login},
-  computed: {
-    ...mapState('uiController', ["UIGeneralStatus"]),
-    ...mapState('users', ["user"])
-  },
   data() {
     return {
       closeMenuStatus: false,
@@ -132,6 +128,10 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    ...mapState('uiController', ["UIGeneralStatus"]),
+    ...mapState('users', ["user"])
   },
   methods: {
     toggleDrawerLeft: function () {

@@ -113,28 +113,28 @@ export default {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   overflow-x: hidden;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 240px);
+  position: sticky;
+  top: 0;
   transition: height ease-in 500ms;
 }
-
 .filters-holder-after-scroll {
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   overflow-x: hidden;
   height: 100vh;
+  position: sticky;
+  top: 0;
   transition: height ease-in 500ms;
 }
-
 .buttons-md-style {
   min-width: 32px !important;
 }
-
 .first-child {
   font-size: 11px;
   width: 16.5%;
 }
-
 .flex-1 {
   font-size: 11px;
   flex: 1;

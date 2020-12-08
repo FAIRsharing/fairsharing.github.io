@@ -15,17 +15,16 @@
 </template>
 
 <script>
-import {gotoTop} from '@/utils/navigationUtils';
 
 export default {
   name: "JumpToTop",
-  props: {
-    targetObject: {default: null, type: String},
-  },
   methods: {
     scrollToTop: function () {
-      const targetDiv = document.getElementById(this.targetObject);
-      gotoTop(targetDiv);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     },
   }
 }

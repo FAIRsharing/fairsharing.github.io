@@ -35,6 +35,7 @@
           "fields": [
             "id",
             "name",
+            "type",
             {
               "name": "lastEditor",
               "fields": [

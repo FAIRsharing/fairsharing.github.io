@@ -26,7 +26,7 @@
               id="text-curator-search-0"
               class="green white--text"
             >
-              Records awaiting approval
+              <b> RECORDS AWAITING APPROVAL </b>
               <v-spacer />
               <v-text-field
                 v-model="searches.recordsAwaitingApproval"
@@ -99,7 +99,7 @@
               id="text-curator-search-1"
               class="green white--text"
             >
-              Ownership Requests
+              <b> OWNERSHIP REQUESTS </b>
               <v-spacer />
               <v-text-field
                 v-model="searches.pendingMaintenanceRequests"
@@ -116,7 +116,80 @@
               :search="searches.pendingMaintenanceRequests"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
+            >
+              <template
+                v-if="recordType"
+                #item="props"
+              >
+                <tr>
+                  <td>
+                    {{ props.item.createdAt }}
+                  </td>
+                  <td>
+                    <a :href="'#/' + props.item.id">
+                      <span
+                        v-if="props.item.type"
+                        class="mr-2"
+                      >
+                        <img
+                          v-if="Object.keys(recordType).includes(props.item.type)"
+                          :src="'./' + recordType[props.item.type].icon"
+                          class="miniIcon"
+                        >
+                      </span>
+                      {{ props.item.recordName + ' (' + props.item.id + ')' }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ props.item.userNameID }}
+                  </td>
+                  <td>
+                    <v-btn
+                      color="blue"
+                      dark
+                      class="mt-1 mt-lg-1 ml-2"
+                      @click="prepareData()"
+                    >
+                      <span class="button-text-size">Approve</span>
+                      <v-icon
+                        x-small
+                        dark
+                        right
+                      >
+                        far fa-check-circle
+                      </v-icon>
+                    </v-btn>
+                  </td>
+                  <td>
+                    <v-btn
+                      color="red"
+                      dark
+                      class="mt-1 mt-lg-1 ml-2"
+                      @click="rejectOwnership(props.item.id)"
+                    >
+                      <span class="button-text-size">Reject</span>
+                      <v-icon
+                        x-small
+                        dark
+                        right
+                      >
+                        fas fa-ban
+                      </v-icon>
+                    </v-btn>
+                  </td>
+                  <td>
+                    <v-btn
+                      color="orange"
+                      dark
+                      class="mt-1 mt-lg-1 ml-2"
+                      @click="prepareData()"
+                    >
+                      <span class="button-text-size">Curator</span>
+                    </v-btn>
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
           </v-card-text>
         </v-card>
         <v-card>
@@ -125,7 +198,7 @@
               id="text-curator-search-4"
               class="green white--text"
             >
-              Records in curation
+              <b> RECORDS IN CURATION </b>
               <v-spacer />
               <v-text-field
                 v-model="searches.recordsInCuration"
@@ -179,7 +252,7 @@
               id="text-curator-search-7"
               class="green white--text"
             >
-              Hidden records
+              <b> HIDDEN RECORDS </b>
               <v-spacer />
               <v-text-field
                 v-model="searches.hiddenRecords"
@@ -205,7 +278,7 @@
               id="text-curator-search-2"
               class="green white--text"
             >
-              Records created by curators in the past week
+              <b> RECORDS CREATED BY CURATORS IN THE PAST WEEK </b>
               <v-spacer />
               <v-text-field
                 v-model="searches.recentCuratorCreations"
@@ -287,7 +360,7 @@
               },
               {
                 text: "Record name (id)",
-                value: "recordNameID"
+                value: "recordName"
               },
               {
                 text: "User login (id)",
@@ -431,8 +504,11 @@
             let requests = dataCuration.pendingMaintenanceRequests;
             requests.forEach(item => {
               let object = {};
-              object.createdAt = item.createdAt.toLocaleString('default', { month: 'short' })+ ' '+item.createdAt.getUTCDate()+ ', '+item.createdAt.getUTCFullYear();
-              object.recordNameID = item.fairsharingRecord.name+' ('+item.fairsharingRecord.id+')';
+              let date = new Date(item.createdAt);
+              object.createdAt = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+              object.recordName = item.fairsharingRecord.name;
+              object.id = item.fairsharingRecord.id;
+              object.type = item.fairsharingRecord.type;
               object.userNameID = item.user.username+' ('+item.user.id+')';
               this.maintenanceRequests.push(object);
             });
@@ -510,6 +586,10 @@
               }
               this.hiddenRecords.push(object);
             });
+          },
+          rejectOwnership: async function(id){
+            //deleteRecord(id, jwt)//RESTC:OEMT
+            console.log(id);
           }
       }
     }

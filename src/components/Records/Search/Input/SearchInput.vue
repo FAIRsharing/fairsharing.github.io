@@ -1,44 +1,49 @@
 <template>
-  <aside>
-    <v-card
-      v-scroll-stop
-      :class="['pa-2',responsiveClassObject]"
-      outlined
-      tile
-      elevation="3"
-    >
-      <h2 class="d-none">
-        Filter List
-      </h2>
-
-      <!-- Search Box -->
-      <string-search placeholder="Search through all data." />
-
-      <hr
-        class="mb-3 mr-2 ml-2"
-        style="opacity: .5!important;"
+  <perfect-scrollbar
+    :options="{wheelPropagation: false,watchOptions :true}"
+    :class="[responsiveClassObject]"
+  >
+    <aside>
+      <v-card
+        style="z-index: 0"
+        :class="['pa-2']"
+        outlined
+        tile
+        elevation="3"
       >
+        <h2 class="d-none">
+          Filter List
+        </h2>
 
-      <!-- Filter Buttons     -->
-      <FilterButtons />
+        <!-- Search Box -->
+        <string-search placeholder="Search through all data." />
 
-      <!-- expansion Panels    -->
-      <v-expansion-panels
-        v-if="getFilters.length>0"
-        v-model="panel"
-        multiple
-        flat
-        hover
-        accordion
-      >
-        <filter-autocomplete
-          v-for="filter in setup"
-          :key="filter.filterLabel"
-          :filter="filter"
-        />
-      </v-expansion-panels>
-    </v-card>
-  </aside>
+        <hr
+          class="mb-3 mr-2 ml-2"
+          style="opacity: .5!important;"
+        >
+
+        <!-- Filter Buttons     -->
+        <FilterButtons />
+
+        <!-- expansion Panels    -->
+        <v-expansion-panels
+          v-if="getFilters.length>0"
+          v-model="panel"
+          multiple
+          flat
+          hover
+          accordion
+        >
+          <filter-autocomplete
+            v-for="filter in setup"
+            :key="filter.filterLabel"
+            :filter="filter"
+          />
+        </v-expansion-panels>
+      </v-card>
+    </aside>
+  </perfect-scrollbar>
 </template>
 
 <script>
@@ -47,10 +52,11 @@ import filterMapping from "@/data/FiltersLabelMapping.json";
 import FilterAutocomplete from "./FilterAutocomplete";
 import FilterButtons from "./FilterButtons";
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
+import { PerfectScrollbar } from "vue2-perfect-scrollbar";
 
 export default {
   name: "SearchInput",
-  components: {StringSearch, FilterButtons, FilterAutocomplete},
+  components: {StringSearch, FilterButtons, FilterAutocomplete, PerfectScrollbar},
   data() {
     return {
       panel: [],
@@ -112,20 +118,16 @@ export default {
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
-  overflow-x: hidden;
   height: calc(100vh - 240px);
   position: sticky;
-  top: 0;
   transition: height ease-in 500ms;
 }
 .filters-holder-after-scroll {
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
-  overflow-x: hidden;
   height: 100vh;
   position: sticky;
-  top: 0;
   transition: height ease-in 500ms;
 }
 .buttons-md-style {

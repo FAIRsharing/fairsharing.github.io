@@ -4,6 +4,8 @@ import VueScrollStop from 'vue-scroll-stop';
 import App from "./App.vue";
 import VueMeta from "vue-meta";
 import vuetify from './plugins/vuetify'
+import PerfectScrollbar from 'vue2-perfect-scrollbar'
+import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
 
 /* import router & store */
 import router from './router'
@@ -24,13 +26,16 @@ import "./styles/main.scss"
 
 Vue.config.productionTip = false;
 
-// This is a package for stopping propagation in scroll
+// This is a package for stopping propagation in scroll.
 Vue.use(VueScrollStop);
 
 // using meta package to inject meta data dynamically.
 Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });
+
+// This is a package for making scroll bar narrower.
+Vue.use(PerfectScrollbar);
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 

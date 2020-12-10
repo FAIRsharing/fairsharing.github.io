@@ -131,6 +131,11 @@ export default {
   destroyed() {
     window.removeEventListener("scroll", this.onScroll);
     this.setStickToTop(false);
+    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+      drawerVisibilityState: false,
+      headerVisibilityState: true,
+    });
+    window.scrollTo(0, 0);
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),

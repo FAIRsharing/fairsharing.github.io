@@ -144,53 +144,152 @@
                     {{ props.item.userNameID }}
                   </td>
                   <td>
-                    <v-btn
+                    <v-edit-dialog
+                      :return-value="props.item.processingNotes"
+                      large
+                      persistent
+                      @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
+                    >
+                      <!--
+                      <v-if props.item.saveProcessingNotes>
+                        <some sort of text box element>
+                        -->
+                      {{ props.item.processingNotes }}
+                      <!--
+                    </element>
+                  </v-if>
+                -->
+                      <template v-slot:input>
+                        <div class="mt-4 title">
+                          Update Processing Notes
+                        </div>
+                        <v-textarea
+                          v-model="props.item.processingNotes"
+                          label="Edit"
+                          filled
+                        />
+                      </template>
+                    </v-edit-dialog>
+                  </td>
+                  <td>
+                    <v-icon
                       color="blue"
                       dark
-                      class="mt-1 mt-lg-1 ml-2"
-                      @click="prepareData()"
+                      left
+                      @click.stop="assignMaintenanceOwner(props.item.recordName,props.item.id,props.item.userNameID,props.item.requestID)"
                     >
-                      <span class="button-text-size">Approve</span>
-                      <v-icon
-                        x-small
-                        dark
-                        right
-                      >
-                        far fa-check-circle
-                      </v-icon>
-                    </v-btn>
-                  </td>
-                  <td>
-                    <v-btn
+                      far fa-check-circle
+                    </v-icon>
+                    {{ props.item.actions }}
+                    <v-icon
                       color="red"
                       dark
-                      class="mt-1 mt-lg-1 ml-2"
-                      @click="rejectOwnership(props.item.id)"
+                      right
+                      @click="rejectMaintenanceOwner(props.item.recordName,props.item.id,props.item.userNameID,props.item.requestID)"
                     >
-                      <span class="button-text-size">Reject</span>
-                      <v-icon
-                        x-small
-                        dark
-                        right
-                      >
-                        fas fa-ban
-                      </v-icon>
-                    </v-btn>
-                  </td>
-                  <td>
-                    <v-btn
-                      color="orange"
-                      dark
-                      class="mt-1 mt-lg-1 ml-2"
-                      @click="prepareData()"
-                    >
-                      <span class="button-text-size">Curator</span>
-                    </v-btn>
+                      fas fa-ban
+                    </v-icon>
                   </td>
                 </tr>
               </template>
             </v-data-table>
           </v-card-text>
+          <v-layout
+            row
+            justify-center
+          >
+            <v-dialog
+              v-model="dialogs.maintenanceRequests.confirmAssignment"
+              max-width="700px"
+            >
+              <v-card>
+                <v-card-title
+                  class="headline"
+                >
+                  Are you sure you want to
+                  <font style="color:blue; padding-left: 5px; padding-right: 5px;">
+                    ACCEPT
+                  </font>
+                  this ownership?
+                  <ul style="list-style-type:none;">
+                    <li>
+                      Record: {{ dialogs.maintenanceRequests.recordName }}
+                    </li>
+                    <li>
+                      User: {{ dialogs.maintenanceRequests.userName }}
+                    </li>
+                  </ul>
+                </v-card-title>
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="closeMaintenanceAssign()"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="assignMaintenanceOwnConfirm()"
+                  >
+                    OK
+                  </v-btn>
+                  <v-spacer />
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-layout>
+          <v-layout
+            row
+            justify-center
+          >
+            <v-dialog
+              v-model="dialogs.maintenanceRequests.rejectAssignment"
+              max-width="700px"
+            >
+              <v-card>
+                <v-card-title
+                  class="headline"
+                >
+                  Are you sure you want to
+                  <font
+                    style="color:red; padding-left: 5px; padding-right: 5px;"
+                  >
+                    REJECT
+                  </font>
+                  this ownership?
+                  <ul style="list-style-type:none;">
+                    <li>
+                      Record: {{ dialogs.maintenanceRequests.recordName }}
+                    </li>
+                    <li>
+                      User: {{ dialogs.maintenanceRequests.userName }}
+                    </li>
+                  </ul>
+                </v-card-title>
+                <v-card-actions>
+                  <v-spacer />
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="closeMaintenanceReject()"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    color="blue darken-1"
+                    text
+                    @click="rejectMaintenanceOwnConfirm()"
+                  >
+                    OK
+                  </v-btn>
+                  <v-spacer />
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-layout>
         </v-card>
         <v-card>
           <v-card-text v-if="recordsInCuration">
@@ -310,12 +409,15 @@
 
 <script>
     import GraphClient from "@/components/GraphClient/GraphClient.js"
+    import RestClient from "@/components/Client/RESTClient.js"
     import getCurationRecords from "@/components/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
     import recordTypes from "@/data/recordsRegistries.json"
 
     const client = new GraphClient();
+    const restClient = new RestClient();
+
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -334,6 +436,16 @@
           recordsWithoutDois: [],
           hiddenRecords: [],
           recordType: null,
+          dialogs: {
+            maintenanceRequests: {
+              confirmAssignment: false,
+              recordName: "",
+              recordID: "",
+              userName: "",
+              requestId: "",
+              rejectAssignment: false
+            }
+          },
           headers: {
             approvalRequired: [
               {
@@ -365,6 +477,16 @@
               {
                 text: "User login (id)",
                 value: "userNameID"
+              },
+              {
+                text: "Proc. Notes",
+                value: "processingNotes",
+                sortable: false,
+                width: 70
+              },
+              { text: "Accept request?",
+                value: "actions",
+                sortable: false
               }
             ],
             recordsCreatedCuratorsLastWeek: [
@@ -444,11 +566,22 @@
             recordsWithoutDois: "",
             hiddenRecords: ""
           },
-          loading: false
+          loading: false,
+          error: null
         }
       },
       computed: {
         ...mapState('users', ['user', "messages"]),
+        ...mapState("record", ["recordUpdate"]),
+      },
+      watch: {
+        'dialogs.maintenanceRequests.confirmAssignment' (val) {
+          val || this.closeMaintenanceAssign()
+        },
+        'dialogs.maintenanceRequests.rejectAssignment' (val) {
+          val || this.closeMaintenanceReject()
+        }
+
       },
       created() {
         this.$nextTick(function () {
@@ -473,6 +606,7 @@
       },
       methods: {
           ...mapActions('users', ['getUser', 'setError']),
+          ...mapActions("record", ["updateRecord"]),
           prepareData(){
             this.prepareApprovalRequired(this.allDataCuration);
             this.prepareMaintenanceRequests(this.allDataCuration);
@@ -510,6 +644,8 @@
               object.id = item.fairsharingRecord.id;
               object.type = item.fairsharingRecord.type;
               object.userNameID = item.user.username+' ('+item.user.id+')';
+              object.processingNotes = item.fairsharingRecord.processingNotes;
+              object.requestID = item.id;
               this.maintenanceRequests.push(object);
             });
           },
@@ -587,9 +723,67 @@
               this.hiddenRecords.push(object);
             });
           },
-          rejectOwnership: async function(id){
-            //deleteRecord(id, jwt)//RESTC:OEMT
-            console.log(id);
+          async saveProcessingNotes(idRecord,notesText){
+            const _module = this;
+            let preparedRecord = {
+              processing_notes: ""
+            };
+            preparedRecord.processing_notes = notesText;
+            let data = {
+              record: preparedRecord,
+              id: idRecord,
+              token: _module.user().credentials.token
+            };
+            await _module.updateRecord(data);
+            if (_module.recordUpdate.error){
+              _module.error = _module.recordUpdate;
+            }
+          },
+          assignMaintenanceOwner(recordName, recordID, userNameID, requestID){
+            const _module = this;
+            _module.dialogs.maintenanceRequests.recordName = recordName +' ('+recordID+')';
+            _module.dialogs.maintenanceRequests.recordID = recordID;
+            _module.dialogs.maintenanceRequests.userName = userNameID;
+            _module.dialogs.maintenanceRequests.requestId = requestID;
+            _module.dialogs.maintenanceRequests.confirmAssignment = true;
+          },
+          closeMaintenanceAssign () {
+            this.dialogs.maintenanceRequests.confirmAssignment = false;
+          },
+          async assignMaintenanceOwnConfirm () {
+            const _module = this;
+            await restClient.updateStatusMaintenanceRequest(_module.dialogs.maintenanceRequests.requestId, "approved", this.user().credentials.token);
+            if (!restClient.error){
+              const index = this.maintenanceRequests.findIndex((element) => element.requestID === _module.dialogs.maintenanceRequests.requestId);
+              _module.maintenanceRequests.splice(index, 1);
+            }
+            if (this.approvalRequired.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
+              await _module.saveProcessingNotes(_module.dialogs.maintenanceRequests.recordID,"");
+            }
+            _module.dialogs.maintenanceRequests.confirmAssignment = false;
+          },
+          rejectMaintenanceOwner(recordName, recordID, userNameID, requestID){
+            const _module = this;
+            _module.dialogs.maintenanceRequests.recordName = recordName +' ('+recordID+')';
+            _module.dialogs.maintenanceRequests.recordID = recordID;
+            _module.dialogs.maintenanceRequests.userName = userNameID;
+            _module.dialogs.maintenanceRequests.requestId = requestID;
+            _module.dialogs.maintenanceRequests.rejectAssignment = true;
+          },
+          closeMaintenanceReject () {
+            this.dialogs.maintenanceRequests.rejectAssignment = false;
+          },
+          async rejectMaintenanceOwnConfirm () {
+            const _module = this;
+            await restClient.updateStatusMaintenanceRequest(_module.dialogs.maintenanceRequests.requestId, "rejected", this.user().credentials.token);
+            if (!restClient.error){
+              const index = this.maintenanceRequests.findIndex((element) => element.requestID === _module.dialogs.maintenanceRequests.requestId);
+              _module.maintenanceRequests.splice(index, 1);
+            }
+            if (this.approvalRequired.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
+              await _module.saveProcessingNotes(_module.dialogs.maintenanceRequests.recordID,"");
+            }
+            _module.dialogs.maintenanceRequests.rejectAssignment = false;
           }
       }
     }
@@ -614,4 +808,7 @@
   #text-curator-search-5 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }
+</style>
+<style>
+  table.v-table thead th {font-size: 25px !important;}
 </style>

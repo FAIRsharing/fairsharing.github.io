@@ -36,6 +36,7 @@
             "id",
             "name",
             "type",
+            "processingNotes",
             {
               "name": "lastEditor",
               "fields": [

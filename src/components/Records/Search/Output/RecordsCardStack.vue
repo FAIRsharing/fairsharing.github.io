@@ -108,7 +108,7 @@
 <script>
 import Ribbon from "@/components/Records/Shared/Ribbon";
 import AssociatedRecordsStack from "./AssociatedRecordsStack";
-import RecordStatus from "@/components/Records/Shared/RecordStatus"
+import RecordStatus from "@/components/Records/Shared/RecordInfo"
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";

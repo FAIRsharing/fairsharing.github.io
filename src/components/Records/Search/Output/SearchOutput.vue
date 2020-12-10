@@ -25,8 +25,8 @@
         class="no-data-found"
       >
         <v-alert
-          color="gray"
-          icon="info"
+          colored-border="gray"
+          type="info"
         >
           No records match your search!
         </v-alert>

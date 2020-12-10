@@ -15,14 +15,13 @@
       <span>{{ recordType[record.type].tooltip }}</span>
     </v-tooltip>
     <span
-      id="innerCircle"
+      class="innerCircle"
       :style="getRecordStatus.backColor"
     >
-
       <v-tooltip right>
         <template v-slot:activator="{ on }">
           <b
-            id="status-style"
+            class="status-style"
             v-on="on"
           >{{ getRecordStatus.title }}</b>
         </template>
@@ -100,7 +99,7 @@
         -moz-border-radius: 150px;
         -webkit-border-radius: 150px;
 
-        #innerCircle {
+        .innerCircle {
             position: absolute;
             right: -25%;
             top: 30%;
@@ -112,7 +111,7 @@
             opacity: .9;
             background: linear-gradient(gray, lightgray);
 
-            #status-style {
+            .status-style {
                 color: white;
                 position: absolute;
                 top: 20%;

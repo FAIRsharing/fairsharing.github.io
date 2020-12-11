@@ -14,10 +14,7 @@
       <!-- Search Box -->
       <string-search placeholder="Search through all data." />
 
-      <hr
-        class="mb-3 mr-2 ml-2"
-        style="opacity: .5!important;"
-      >
+      <hr class="mb-3 mr-2 ml-2 custom-hr">
 
       <!-- Filter Buttons     -->
       <FilterButtons />
@@ -138,5 +135,8 @@ export default {
 .flex-1 {
   font-size: 11px;
   flex: 1;
+}
+.custom-hr{
+  opacity: .5;
 }
 </style>

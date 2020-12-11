@@ -57,7 +57,7 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.approvalRequired.length).toBe(2);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazus");
       expect(wrapper.vm.maintenanceRequests.length).toBe(1);
-      expect(wrapper.vm.maintenanceRequests[0].recordNameID).toBe("OrthoOntology Deontology (373)");
+      expect(wrapper.vm.maintenanceRequests[0].recordName).toBe("OrthoOntology Deontology");
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(2);
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe("Second (44)");
       expect(wrapper.vm.recordsInCuration.length).toBe(2);

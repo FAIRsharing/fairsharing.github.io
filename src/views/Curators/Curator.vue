@@ -145,7 +145,7 @@
                   </td>
                   <td>
                     <v-edit-dialog
-                      :return-value="props.item.processingNotes"
+                      :return-value.sync="props.item.processingNotes"
                       large
                       persistent
                       @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
@@ -165,7 +165,7 @@
                         </div>
                         <v-textarea
                           v-model="props.item.processingNotes"
-                          label="Edit"
+                          label="Edit (not long words)"
                           filled
                         />
                       </template>
@@ -482,7 +482,8 @@
                 text: "Proc. Notes",
                 value: "processingNotes",
                 sortable: false,
-                width: 70
+                width: 250,
+                fixed: true
               },
               { text: "Accept request?",
                 value: "actions",

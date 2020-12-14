@@ -6,7 +6,7 @@
       class="pl-8 pr-8 pt-8 pb-8 d-flex flex-column"
       outlined
       tile
-      height="300px"
+      height="350px"
       :elevation="allowClicking?'4':'1'"
       @mouseenter="allowClicking=true"
       @mouseleave="allowClicking=false"
@@ -14,6 +14,12 @@
       <h2 class="text-body-2 text-md-body-1 text-lg-h5 text-xl-h3">
         {{ record.abbreviation }}
       </h2>
+      <v-row class="ma-0">
+        <RecordStatus
+          :record="record"
+          class="mt-4"
+        />
+      </v-row>
     </v-card>
   </section>
 </template>
@@ -21,10 +27,12 @@
 <script>
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
 
 
 export default {
   name: "RecordsCardStack",
+  components: {RecordStatus},
   mixins: [recordsCardUtils, truncate],
   props: {
     record: {default: null, type: Object},

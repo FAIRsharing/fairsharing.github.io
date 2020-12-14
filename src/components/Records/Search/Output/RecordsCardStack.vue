@@ -125,24 +125,6 @@ export default {
     return {
       allowLoop: true,
       allowClicking: false,
-      buttons: [
-        {
-          title: 'domains',
-          active: false
-        },
-        {
-          title: 'subjects',
-          active: false
-        },
-        {
-          title: 'taxonomies',
-          active: false,
-        },
-        {
-          title: 'userDefinedTags',
-          active: false
-        }
-      ],
       Chips: {
         domains: [],
         subjects: [],
@@ -156,11 +138,6 @@ export default {
     this.setChips(this.record);
   },
   methods: {
-    changeActiveItem(itemIndex) {
-      this.buttons.map(item => item.active = false);
-      this.buttons[itemIndex].active = true;
-      this.currentActiveChips = this.buttons[itemIndex].title;
-    },
     associatedRecords(record) {
       let records = {
         standard: {
@@ -188,7 +165,6 @@ export default {
       });
       return records;
     },
-
     setChips(record) {
       let _module = this;
       Object.keys(record).forEach(function (node) {
@@ -198,22 +174,10 @@ export default {
       });
     },
     organizeChips(record, node) {
-      this.organizeButtons(record, node);
+      this.currentActiveChips = node;
       record[node].forEach(item => {
-        item.active = false;
         this.Chips[node].push(item);
       })
-    },
-    organizeButtons(record, node) {
-      if (record[node].length > 0 && this.allowLoop) {
-        this.allowLoop = false;
-        this.currentActiveChips = node;
-        this.buttons.map(item => {
-          if (item.title === node) {
-            item.active = true
-          }
-        });
-      }
     },
   },
 }

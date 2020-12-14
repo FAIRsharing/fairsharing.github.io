@@ -15,15 +15,32 @@
         <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5">
           {{ record.abbreviation }}
         </h2>
-        <div class="ma-0 d-flex flex-row">
-          <RecordStatus
-            :record="record"
-            class="mt-4"
-          />
-          <h3 class="mt-5 ml-10 text-body-2 text-md-body-1 text-lg-h5 text-xl-h4 text-primary">
-            {{ record.name }}
-          </h3>
-        </div>
+        <v-row class="d-flex">
+          <v-col
+            sm="2"
+            md="2"
+            lg="2"
+            xl="1"
+          >
+            <RecordStatus
+              :record="record"
+              class="mt-4"
+            />
+          </v-col>
+          <v-col
+            sm="10"
+            md="10"
+            lg="10"
+            xl="11"
+          >
+            <h3 class="mt-5 ml-10 text-body-2 text-md-body-1 text-lg-h5 text-xl-h4 text-primary">
+              {{ record.name }}
+            </h3>
+            <p class="mt-5 ml-10 text-body-1 text-justify">
+              {{ record.description }}
+            </p>
+          </v-col>
+        </v-row>
       </v-card>
     </section>
   </router-link>

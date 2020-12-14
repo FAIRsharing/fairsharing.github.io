@@ -23,13 +23,7 @@ describe("RecordsCardStack.vue", function () {
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("RecordsCardStack");
     });
-
-    it("can check changeActiveItem function in stack list ", () => {
-        const itemIndex = 0
-        wrapper.vm.changeActiveItem(itemIndex);
-        expect(wrapper.vm.buttons[itemIndex].active).toBe(true);
-    });
-
+    
     it("can check getButtonLabel function in CardStack", () => {
         let returnedValue = wrapper.vm.getButtonLabel('taxonomies');
         expect(returnedValue).toBe('species');

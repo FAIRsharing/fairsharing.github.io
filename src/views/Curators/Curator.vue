@@ -116,6 +116,7 @@
               :search="searches.pendingMaintenanceRequests"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+              disable-initial-sort
             >
               <template
                 v-if="recordType"
@@ -123,7 +124,7 @@
               >
                 <tr>
                   <td>
-                    {{ props.item.createdAt }}
+                    {{ props.item.createdAt | formattingDate }}
                   </td>
                   <td>
                     <a :href="'#/' + props.item.id">
@@ -137,7 +138,7 @@
                           class="miniIcon"
                         >
                       </span>
-                      {{ props.item.recordName + ' (' + props.item.id + ')' }}
+                      {{ props.item.recordName }}
                     </a>
                   </td>
                   <td>
@@ -148,6 +149,7 @@
                       :return-value.sync="props.item.processingNotes"
                       large
                       persistent
+                      width="1200px"
                       @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
                     >
                       <!--
@@ -165,6 +167,7 @@
                         </div>
                         <v-textarea
                           v-model="props.item.processingNotes"
+                          width="1200px"
                           label="Edit (not long words)"
                           filled
                         />
@@ -418,6 +421,15 @@
     const client = new GraphClient();
     const restClient = new RestClient();
 
+    function compareRecordDesc(a, b) {
+      if (a.createdAt > b.createdAt) {
+        return -1;
+      }
+      if (a.createdAt < b.createdAt) {
+        return 1;
+      }
+      return 0;
+    }
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -426,6 +438,12 @@
     export default {
       name: "Curator",
       components: {Unauthorized},
+      filters: {
+        formattingDate: function(d){
+          let date = new Date(d);
+          return date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+        }
+      },
       data: () => {
         return {
           allDataCuration: null,
@@ -479,11 +497,10 @@
                 value: "userNameID"
               },
               {
-                text: "Proc. Notes",
+                text: "Processing Notes",
                 value: "processingNotes",
                 sortable: false,
-                width: 250,
-                fixed: true
+                width: 250
               },
               { text: "Accept request?",
                 value: "actions",
@@ -608,6 +625,7 @@
       methods: {
           ...mapActions('users', ['getUser', 'setError']),
           ...mapActions("record", ["updateRecord"]),
+
           prepareData(){
             this.prepareApprovalRequired(this.allDataCuration);
             this.prepareMaintenanceRequests(this.allDataCuration);
@@ -639,16 +657,19 @@
             let requests = dataCuration.pendingMaintenanceRequests;
             requests.forEach(item => {
               let object = {};
-              let date = new Date(item.createdAt);
-              object.createdAt = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
-              object.recordName = item.fairsharingRecord.name;
+              //let date = new Date(item.createdAt);
+              object.createdAt = item.createdAt;
+              //date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+              //object.date = Math.round(date.getTime() / 1000);
+              object.recordName = item.fairsharingRecord.name + ' ('+ item.fairsharingRecord.id +')';
               object.id = item.fairsharingRecord.id;
-              object.type = item.fairsharingRecord.type;
-              object.userNameID = item.user.username+' ('+item.user.id+')';
+              object.type = item.fairsharingRecord.type ;
+              object.userNameID = item.user.username + ' ('+item.user.id+')';
               object.processingNotes = item.fairsharingRecord.processingNotes;
               object.requestID = item.id;
               this.maintenanceRequests.push(object);
             });
+            this.maintenanceRequests.sort(compareRecordDesc);
           },
           prepareRecordsCuratorCreationsLastWeek(dataCuration){
             let records = dataCuration.recentCuratorCreations;
@@ -742,7 +763,7 @@
           },
           assignMaintenanceOwner(recordName, recordID, userNameID, requestID){
             const _module = this;
-            _module.dialogs.maintenanceRequests.recordName = recordName +' ('+recordID+')';
+            _module.dialogs.maintenanceRequests.recordName = recordName;
             _module.dialogs.maintenanceRequests.recordID = recordID;
             _module.dialogs.maintenanceRequests.userName = userNameID;
             _module.dialogs.maintenanceRequests.requestId = requestID;
@@ -759,13 +780,15 @@
               _module.maintenanceRequests.splice(index, 1);
             }
             if (this.approvalRequired.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
-              await _module.saveProcessingNotes(_module.dialogs.maintenanceRequests.recordID,"");
+              if (this.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
+                await _module.saveProcessingNotes(_module.dialogs.maintenanceRequests.recordID,"");
+              }
             }
             _module.dialogs.maintenanceRequests.confirmAssignment = false;
           },
           rejectMaintenanceOwner(recordName, recordID, userNameID, requestID){
             const _module = this;
-            _module.dialogs.maintenanceRequests.recordName = recordName +' ('+recordID+')';
+            _module.dialogs.maintenanceRequests.recordName = recordName;
             _module.dialogs.maintenanceRequests.recordID = recordID;
             _module.dialogs.maintenanceRequests.userName = userNameID;
             _module.dialogs.maintenanceRequests.requestId = requestID;
@@ -782,7 +805,9 @@
               _module.maintenanceRequests.splice(index, 1);
             }
             if (this.approvalRequired.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
-              await _module.saveProcessingNotes(_module.dialogs.maintenanceRequests.recordID,"");
+              if (this.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
+                await _module.saveProcessingNotes(_module.dialogs.maintenanceRequests.recordID,"");
+              }
             }
             _module.dialogs.maintenanceRequests.rejectAssignment = false;
           }

@@ -1,129 +1,36 @@
 <template>
   <!--Stack List-->
-
-  <section class="pt-3 pt-lg-4">
+  <section class="ma-1 pt-lg-4 cursor-pointer">
     <v-card
-      class="pl-2 pr-2 pt-2 d-flex  align-center flex-column"
+      v-ripple
+      class="pl-8 pr-8 pt-8 pb-8 d-flex flex-column"
       outlined
       tile
-      :hover="allowClicking"
+      height="300px"
+      :elevation="allowClicking?'4':'1'"
+      @mouseenter="allowClicking=true"
+      @mouseleave="allowClicking=false"
     >
-      <v-row
-        no-gutters
-        class="full-width"
-      >
-        <Ribbon
-          v-if="record.isRecommended"
-          title="RECOMMENDED"
-        />
-        <v-col
-          cols="12"
-          xs="12"
-          sm="12"
-          lg="12"
-          md="12"
-          xl="3"
-          @mouseenter="allowClicking=true"
-          @mouseleave="allowClicking=false"
-        >
-          <router-link :to="'/' + getRecordLink(record)">
-            <div class="mt-1 ml-2 pr-6 d-flex flex-row align-center justify-start">
-              <record-status
-                :record="record"
-                class="mr-8"
-              />
-              <h3
-                class="max-height "
-                style="width: 60%"
-              >
-                <u>{{ record.name }}</u>
-                <span
-                  v-if="record.abbreviation"
-                  class="ml-2"
-                > ({{ truncate(record.abbreviation, 15) }}) </span>
-              </h3>
-            </div>
-          </router-link>
-        </v-col>
-        <v-col
-          cols="12"
-          sm="4"
-          md="3"
-          lg="3"
-          xs="12"
-          xl="2"
-          class="mt-2"
-        >
-          <section class="ml-2 mb-0 mr-4 d-flex flex-column">
-            <h4 class="d-none">
-              select Tag type
-            </h4>
-            <v-btn
-              v-for="(item,index) in buttons"
-              :key="index"
-              :outlined="item.active"
-              text
-              class="button-text-color"
-              :color="item.active?'primary':null"
-              :disabled="Chips[item.title].length === 0"
-              @click="changeActiveItem(index)"
-            >
-              {{ getButtonLabel(item.title) }} ({{ Chips[item.title].length }})
-            </v-btn>
-          </section>
-        </v-col>
-        <v-col
-          sm="8"
-          md="9"
-          lg="9"
-          xs="12"
-          xl="7"
-        >
-          <!-- chips container -->
-          <SearchLinkChips
-            :type="currentActiveChips"
-            :chips="Chips[currentActiveChips]"
-          />
-        </v-col>
-      </v-row>
-      <!--       Description -->
-      <div
-        class="d-flex flex-row"
-        style="width: 70%"
-      >
-        <v-divider
-          class="mt-2"
-        />
-      </div>
-      <p class="mt-2 card-description">
-        {{ record.description }}
-      </p>
-
-      <!--  Associated Records      -->
-      <AssociatedRecordsStack :associated-records="associatedRecords(record)" />
+      <h2 class="text-body-2 text-md-body-1 text-lg-h5 text-xl-h3">
+        {{ record.abbreviation }}
+      </h2>
     </v-card>
   </section>
 </template>
 
 <script>
-import Ribbon from "@/components/Records/Shared/Ribbon";
-import AssociatedRecordsStack from "./AssociatedRecordsStack";
-import RecordStatus from "@/components/Records/Shared/RecordStatus"
-import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";
 
 
 export default {
   name: "RecordsCardStack",
-  components: {RecordStatus, AssociatedRecordsStack, Ribbon, SearchLinkChips},
   mixins: [recordsCardUtils, truncate],
   props: {
     record: {default: null, type: Object},
   },
   data() {
     return {
-      allowLoop: true,
       allowClicking: false,
       Chips: {
         domains: [],

@@ -36,7 +36,7 @@
             <h3 class="mt-5 ml-10 text-body-2 text-md-body-1 text-lg-h5 text-xl-h4 text-primary">
               {{ record.name }}
             </h3>
-            <p class="mt-5 ml-10 text-body-1 text-justify">
+            <p class="mt-2 ml-10 text-body-1 text-justify text-ellipses-height">
               {{ record.description }}
             </p>
           </v-col>

@@ -1,27 +1,32 @@
 <template>
   <!--Stack List-->
-  <section class="ma-1 pt-lg-4 cursor-pointer">
-    <v-card
-      v-ripple
-      class="pl-8 pr-8 pt-8 pb-8 d-flex flex-column"
-      outlined
-      tile
-      height="350px"
-      :elevation="allowClicking?'4':'1'"
-      @mouseenter="allowClicking=true"
-      @mouseleave="allowClicking=false"
-    >
-      <h2 class="text-body-2 text-md-body-1 text-lg-h5 text-xl-h3">
-        {{ record.abbreviation }}
-      </h2>
-      <v-row class="ma-0">
-        <RecordStatus
-          :record="record"
-          class="mt-4"
-        />
-      </v-row>
-    </v-card>
-  </section>
+  <router-link :to="'/' + getRecordLink(record)">
+    <section class="ma-1 pt-lg-4 cursor-pointer">
+      <v-card
+        v-ripple
+        class="pl-8 pr-8 pt-8 pb-8 d-flex flex-column"
+        outlined
+        tile
+        height="350px"
+        :elevation="allowClicking?'4':'0'"
+        @mouseenter="allowClicking=true"
+        @mouseleave="allowClicking=false"
+      >
+        <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5">
+          {{ record.abbreviation }}
+        </h2>
+        <div class="ma-0 d-flex flex-row">
+          <RecordStatus
+            :record="record"
+            class="mt-4"
+          />
+          <h3 class="mt-5 ml-10 text-body-2 text-md-body-1 text-lg-h5 text-xl-h4 text-primary">
+            {{ record.name }}
+          </h3>
+        </div>
+      </v-card>
+    </section>
+  </router-link>
 </template>
 
 <script>

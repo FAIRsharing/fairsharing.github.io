@@ -96,6 +96,7 @@
         background: linear-gradient(#a7a7a7, white);
         height: 100px;
         width: 100px;
+        min-width: 100px;
         border-radius: 150px;
         -moz-border-radius: 150px;
         -webkit-border-radius: 150px;

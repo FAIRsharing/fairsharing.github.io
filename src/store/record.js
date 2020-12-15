@@ -2,6 +2,7 @@ import Client from "../components/GraphClient/GraphClient.js"
 import RESTClient from "@/components/Client/RESTClient.js"
 import recordQuery from "../components/GraphClient/queries/getRecord.json"
 import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
+import { initEditorSections } from "./utils.js"
 
 let client = new Client();
 let restClient = new RESTClient();
@@ -27,7 +28,7 @@ let recordStore = {
             message: null,
             id: null
         },
-        keywordsTemplate: {}
+        sections: {}
     },
     mutations: {
         setCurrentRecord(state, data){
@@ -67,6 +68,21 @@ let recordStore = {
                 message: error,
                 id: null
             }
+        },
+        setSections(state, data){
+            state.sections = initEditorSections(data['fairsharingRecord']);
+        },
+        setChanges(state, diff){
+            state.sections[diff.section].changes = diff.value;
+        },
+        setContacts(state, contacts){
+            state.sections.generalInformation.data.metadata.contacts = contacts;
+        },
+        setTags(state, field){
+            state.sections.generalInformation.data[field.target] = field.value;
+        },
+        resetRegistry(state){
+            state.sections.generalInformation.data.type = "";
         }
     },
     actions: {
@@ -77,6 +93,7 @@ let recordStore = {
             };
             let data = await client.executeQuery(recordQuery);
             state.commit('setCurrentRecord', data);
+            state.commit('setSections', data);
         },
         async fetchRecordHistory(state, id){
             recordHistory.queryParam = {id: id};
@@ -104,9 +121,18 @@ let recordStore = {
                 citations.push(citation['publication_id']);
             });
             return citations;
+        },
+        getSection: (state) => (sectionName) => {
+            return state.sections[sectionName];
+        },
+        getChanges: (state) => {
+            let changes = {};
+            Object.keys(state.sections).forEach(section => {
+                changes[section] = state.sections[section].changes
+            });
+            return changes;
         }
     }
 };
-
 
 export default recordStore;

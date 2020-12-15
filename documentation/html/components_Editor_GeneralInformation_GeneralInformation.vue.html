@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: store/record.js</title>
+	<title>FAIRsharing.org Source: components/Editor/GeneralInformation/GeneralInformation.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,135 +86,220 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: store/record.js</h1>
+		<h1 class="page-title">Source: components/Editor/GeneralInformation/GeneralInformation.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import Client from "../components/GraphClient/GraphClient.js"
-import RESTClient from "@/components/Client/RESTClient.js"
-import recordQuery from "../components/GraphClient/queries/getRecord.json"
-import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
-import { initEditorSections } from "./utils.js"
+            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  &lt;v-form
+    id="editGeneralInformation"
+    ref="editGeneralInformation"
+    v-model="formValid"
+  >
+    &lt;v-card v-if="initialized">
+      &lt;v-card-title class="grey lighten-4 blue--text">
+        Edit General Information
+        &lt;span
+          v-if="getChanges['generalInformation']"
+          class="orange--text ml-2"
+        >({{ getChanges['generalInformation'] }})&lt;/span>
+      &lt;/v-card-title>
+      &lt;v-card-text>
+        &lt;v-container fluid>
+          &lt;base-fields />
+          &lt;v-row>
+            &lt;!-- contact points -->
+            &lt;v-col cols="12">
+              &lt;Contact />
+            &lt;/v-col>
 
-let client = new Client();
-let restClient = new RESTClient();
+            &lt;!-- divider -->
+            &lt;v-col
+              cols="12"
+              class="py-0 my-0"
+            >
+              &lt;v-divider />
+            &lt;/v-col>
 
-/**
- * The record store handles the requests related to record (fairsharingRecord).
- * @type {Object}
- */
-let recordStore = {
-    namespaced: true,
-    state: {
-        currentRecord: {
-            fairsharingRecord: {
-                metadata: {
-                    citations: []
+            &lt;!-- keywords-->
+            &lt;v-col cols="12">
+              &lt;edit-tags />
+            &lt;/v-col>
+          &lt;/v-row>
+        &lt;/v-container>
+      &lt;/v-card-text>
+      &lt;v-card-actions>
+        &lt;v-btn
+          class="primary"
+          :disabled="!formValid"
+          @click="saveRecord(true)"
+        >
+          Save and continue
+        &lt;/v-btn>
+        &lt;v-btn
+          :disabled="!formValid"
+          class="primary"
+          @click="saveRecord(false)"
+        >
+          Save and exit
+        &lt;/v-btn>
+      &lt;/v-card-actions>
+    &lt;/v-card>
+    &lt;v-fade-transition>
+      &lt;v-overlay
+        v-if="!initialized"
+        :absolute="false"
+        opacity="0.8"
+      >
+        &lt;v-progress-circular
+          indeterminate
+          size="64"
+        />
+      &lt;/v-overlay>
+    &lt;/v-fade-transition>
+  &lt;/v-form>
+&lt;/template>
+
+&lt;script>
+    import { mapGetters, mapActions } from "vuex"
+    import Contact from "./Contact";
+    import EditTags from "./EditTags";
+    import BaseFields from "./BaseFields";
+
+    const diff = require("deep-object-diff").diff;
+
+    export default {
+        name: "GeneralInformation",
+        components: { BaseFields, EditTags, Contact },
+        data(){
+            return {
+                loaders: {
+                    get: false,
+                    post: false
+                },
+                initialized: false,
+                formValid: false,
+                fields: {
+                    initial: null,
+                    current: null
+                },
+                databaseWarning: false,
+            }
+        },
+        computed: {
+            ...mapGetters("record", ["getSection", "getChanges"]),
+        },
+        watch: {
+            'fields.current': {
+                deep: true,
+                handler(newVal){
+                    let changes = 0;
+                    if (this.initialized){
+                        if (newVal.type === "collection" || newVal.type.name === "collection"){
+                            this.fields.current.status = null;
+                        }
+                        else if (newVal.type.name === "repository" || newVal.type.name === "knowledge_base"){
+                          this.databaseWarning = true;
+                        }
+                        if (newVal.status !== "deprecated"){
+                          this.fields.current.deprecation_reason = "";
+                        }
+                        const differences = diff(newVal, this.fields.initial);
+                        Object.keys(differences).forEach(difference => {
+                            if (differences[difference] || differences[difference] === "") {
+                              if (difference === "type") {
+                                if (newVal.type.name !== this.fields.initial.type) changes += 1;
+                              }
+                              else if (difference !== "metadata") {
+                                const exceptions = ["domains", "subjects", "taxonomies", "userDefinedTags"];
+                                if (exceptions.indexOf(difference) === -1) changes += 1;
+                                else {
+                                    const initArray = this.fields.initial[difference].map(obj => obj.id);
+                                    const currentArray = newVal[difference].map(obj => obj.id);
+                                    let localDiff = diff(initArray, currentArray);
+                                    if (Object.keys(localDiff).length > 0) changes += 1;
+                                }
+                              }
+                              else {
+                                Object.keys(differences[difference]).forEach(() => {
+                                  changes += 1;
+                                });
+                              }
+                            }
+                        });
+                        this.$store.commit("record/setChanges", {
+                            section: "generalInformation",
+                            value: changes
+                        })
+                    }
                 }
             }
         },
-        currentRecordHistory: {},
-        recordUpdate: {
-            error: false,
-            message: null,
-            id: null
-        },
-        sections: {}
-    },
-    mutations: {
-        setCurrentRecord(state, data){
-            state.currentRecord = data;
-            if (!data["fairsharingRecord"]['metadata']['contacts']) state.currentRecord["fairsharingRecord"]['metadata']['contacts'] = [];
-            if (!data["fairsharingRecord"]['metadata']['citations']) state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
-        },
-        setRecordHistory(state, data){
-            state.currentRecordHistory = data;
-        },
-        resetCurrentRecordHistory(state){
-            state.currentRecordHistory = {};
-        },
-        setNewRecord(state, id){
-            state.recordUpdate = {
-                error: false,
-                message: "success",
-                id: id
-            }
-        },
-        setError(state, error){
-            state.recordUpdate = {
-                error: true,
-                message: error,
-                id: null
-            }
-        },
-        setSections(state, data){
-            state.sections = initEditorSections(data['fairsharingRecord']);
-        },
-        setChanges(state, diff){
-            state.sections[diff.section].changes = diff.value;
-        },
-        setContacts(state, contacts){
-            state.sections.generalInformation.data.metadata.contacts = contacts;
-        },
-        setTags(state, field){
-            state.sections.generalInformation.data[field.target] = field.value;
-        },
-        resetRegistry(state){
-            state.sections.generalInformation.data.type = "";
-        }
-    },
-    actions: {
-        async fetchRecord(state, id){
-            state.commit("resetCurrentRecordHistory");
-            recordQuery.queryParam = {
-                id: id
-            };
-            let data = await client.executeQuery(recordQuery);
-            state.commit('setCurrentRecord', data);
-            state.commit('setSections', data);
-        },
-        async fetchRecordHistory(state, id){
-            recordHistory.queryParam = {id: id};
-            let data = await client.executeQuery(recordHistory);
-            state.commit('setRecordHistory', data["fairsharingRecord"]);
-        },
-        async updateRecord(state, newRecord){
-            let response = await restClient.updateRecord(newRecord);
-            if (response.error){
-                state.commit("setError", response.error.response)
-            }
-            else {
-                state.commit("setNewRecord", response)
-            }
-        },
-    },
-    modules: {},
-    getters: {
-        getField: (state) => (fieldName) => {
-            return state.currentRecord['fairsharingRecord'][fieldName];
-        },
-        citations: (state) => {
-            let citations = [];
-            state.currentRecord['fairsharingRecord'].metadata.citations.forEach(function (citation) {
-                citations.push(citation['publication_id']);
+        mounted() {
+            this.$nextTick(async function () {
+                this.initialized = false;
+                await this.getData();
+                this.initialized = true;
             });
-            return citations;
         },
-        getSection: (state) => (sectionName) => {
-            return state.sections[sectionName];
-        },
-        getChanges: (state) => {
-            let changes = {};
-            Object.keys(state.sections).forEach(section => {
-                changes[section] = state.sections[section].changes
-            });
-            return changes;
+        methods: {
+            ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
+            ...mapActions("record", ["fetchRecord"]),
+            async getData(){
+                this.loaders.get = true;
+                await this.fetchRecord(this.$route.params.id);
+                await this.getCountries();
+                await this.getRecordTypes();
+                await this.getTags();
+                this.fields = {
+                    initial: JSON.parse(JSON.stringify(this.getSection("generalInformation").data)),
+                    current: this.getSection("generalInformation").data
+                };
+                this.loaders.get = false;
+            },
+            /** TODO: build this method to save and redirect**/
+            async saveRecord(redirect){
+              return redirect;
+            }
         }
     }
-};
+&lt;/script>
 
-export default recordStore;
+&lt;style>
+    #editGeneralInformation .v-chip.white--text .v-icon {
+        color: white;
+        margin-left: 10px;
+    }
+    .registryList {
+        max-width: 780px;
+    }
+
+    .tooltips {
+        max-width: 500px;
+        display: block;
+    }
+
+    .v-tooltip__content {
+        background: rgba(0, 0, 0, 1);
+    }
+
+    .v-subheader {
+        text-transform: uppercase;
+        font-size: 24px;
+        font-weight: bolder;
+    }
+
+    .shadowChip {
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    #editGeneralInformation .expand-transition-enter-active,
+    #editGeneralInformation .expand-transition-leave-active {
+      transition-duration: 0.7s !important;
+    }
+
+&lt;/style>
 </pre>
     </article>
 </section>

@@ -60,11 +60,13 @@ export function initEditorSections(data){
     };
     let sections = {};
     sectionsName.forEach(name => {
+        let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null
         sections[name] = {
             message: null,
             error: false,
             data: schema[name],
-            changes: 0
+            changes: 0,
+            initialData: copy
         }
     });
     return sections;

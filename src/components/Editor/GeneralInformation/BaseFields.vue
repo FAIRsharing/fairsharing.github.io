@@ -351,8 +351,7 @@
                     isRequired: function(){return isRequired()},
                     isUrl: function(){return isUrl()},
                     isLongEnough: function(val){return isLongEnough(val)},
-                },
-                fields: null
+                }
             }
         },
         computed: {
@@ -364,12 +363,10 @@
                 "recordTypes",
                 "icons",
                 "status"
-            ])
-        },
-        mounted(){
-            this.$nextTick(function () {
-                this.fields = this.getSection("generalInformation").data;
-            });
+            ]),
+            fields(){
+              return this.getSection("generalInformation").data
+            }
         },
         methods: {
             removeCountry(country){

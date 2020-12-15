@@ -12,11 +12,10 @@ import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
 import tagsQuery from "@/components/GraphClient/queries/geTags.json"
 const sinon = require("sinon");
+
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
-
-// mock store ??
 
 const $store = new Vuex.Store({
     modules: {

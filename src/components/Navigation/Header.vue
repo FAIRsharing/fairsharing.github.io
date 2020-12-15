@@ -21,7 +21,7 @@
       <string-search :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'" />
       <nav>
         <ul
-          v-if="!$vuetify.breakpoint.md && !$vuetify.breakpoint.sm"
+          v-if="!$vuetify.breakpoint.mdAndDown"
           class="d-flex flex-row align-center flex-wrap px-0"
         >
           <li
@@ -32,10 +32,11 @@
               :small="$vuetify.breakpoint.mdAndDown"
               :x-large="$vuetify.breakpoint.xlOnly"
               class="mr-1 mt-sm-1"
-              :class="item.color"
+              color="primary"
+              outlined
               :to="item.link"
             >
-              <span class="white--text">{{ item.label }}</span>
+              <span class="primary--text">{{ item.label }}</span>
             </v-btn>
           </li>
           <!-- LOGIN -->
@@ -51,7 +52,7 @@
               <v-btn
                 :small="$vuetify.breakpoint.mdAndDown"
                 :x-large="$vuetify.breakpoint.xlOnly"
-                color="teal darken-2 white--text"
+                color="accent3 white--text"
                 class="mr-1 mt-sm-1"
                 dark
                 v-on="on"
@@ -70,7 +71,7 @@
             v-else
             :small="$vuetify.breakpoint.mdAndDown"
             :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1 teal darken-2"
+            class="mr-1 mt-sm-1 accent3"
             to="/accounts/profile"
           >
             <span class="white--text">Welcome, {{ user().credentials.username }}</span>
@@ -101,32 +102,26 @@ export default {
         {
           label: "Standards",
           link: "/standards",
-          color: "blue"
         },
         {
           label: "Databases",
           link: "/databases",
-          color: "blue"
         },
         {
           label: "Policies",
           link: "/policies",
-          color: "blue"
         },
         {
           label: "Collections",
           link: "/collections",
-          color: "blue"
         },
         {
           label: "Add/Claim content",
           link: "/new",
-          color: "grey"
         },
         {
           label: "Stats",
           link: "/summary-statistics",
-          color: "teal darken-2"
         }
       ]
     }

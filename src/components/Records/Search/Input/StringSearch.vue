@@ -109,6 +109,7 @@ export default {
 
 .style-sm-xs {
   height: 40px !important;
+  margin-bottom: 5px;
 }
 </style>
 

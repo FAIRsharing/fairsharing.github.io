@@ -1,4 +1,4 @@
-//custom colors
+//custom colors-----------------------------
 $color-gray-light1: #bebebe;
 $color-gray-light2: #757575;
 $color-gray-light3: #5a5a5a;
@@ -9,41 +9,18 @@ $max-height-val: 100px;
 $color-primary: #27aae1;
 $color-secondary: #004d40;
 
-a:link {
-  text-decoration: none ;
-}
-
-.max-width {
-  max-width: $max-width-val;
-}
-
-.max-height {
-  max-height: $max-height-val;
-}
-
 .button-text-color {
   color: $color-gray-light1 !important;
 }
+//End of Custom Colors----------------------
 
-.card-description {
-  margin: 0 .6rem 0 .6rem;
-  max-height: 40px;
-  overflow: hidden;
-  font-size: .9em;
-  text-align: justify;
-  color: $color-gray-light3;
+//Global Setting----------------------------
+a:link {
+  text-decoration: none ;
 }
+//End of Global Setting---------------------
 
-.full-width {
-  width: 100%;
-}
-
-.text-primary {
-  color: $color-primary;
-}
-
-//Animations
-
+//Animations--------------------------------
 .fade-enter-active, .fade-leave-active {
   transition: opacity .7s;
 }
@@ -61,20 +38,35 @@ a:link {
 .opacity-1-transition {
   opacity: 1;
 }
+//End of Animations-------------------------
 
-//End of Animations
+//Utilities---------------------------------
+.full-width {
+  width: 100%;
+}
 
-//Utilities
 .cursor-pointer {
   cursor: pointer;
 }
 
 .text-ellipses-height {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-//End of Utilities
+.dashed-line{
+  border:none;
+  border-top:5px dotted gray;
+  color:#fff;
+  background-color:#fff;
+  height:1px;
+}
+
+.mx-25-percent{
+  margin-right: 25%;
+  margin-left: 25%;
+}
+//End of Utilities--------------------------

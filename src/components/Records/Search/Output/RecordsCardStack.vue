@@ -1,7 +1,7 @@
 <template>
   <!--Stack List-->
   <router-link :to="'/' + getRecordLink(record)">
-    <section class="ma-1 pt-lg-4 cursor-pointer">
+    <section class="ma-2 ma-md-2 ma-lg-1 pt-lg-4 cursor-pointer">
       <v-card
         v-ripple
         class="pl-8 pr-8 pt-8 pb-8 d-flex flex-column"
@@ -15,8 +15,10 @@
         <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5">
           {{ record.abbreviation }}
         </h2>
-        <v-row class="d-flex">
+        <v-row no-gutters class="flex-grow-0">
           <v-col
+            cols="12"
+            xs="12"
             sm="2"
             md="2"
             lg="2"
@@ -28,18 +30,21 @@
             />
           </v-col>
           <v-col
+            cols="12"
+            xs="12"
             sm="10"
             md="10"
             lg="10"
             xl="11"
           >
-            <h3 class="mt-5 ml-10 text-body-2 text-md-body-1 text-lg-h5 text-xl-h4 text-primary">
+            <h3 class="mt-5 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text">
               {{ record.name }}
             </h3>
-            <p class="mt-2 ml-10 text-body-1 text-justify text-ellipses-height">
+            <p class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height" style="">
               {{ record.description }}
             </p>
           </v-col>
+          <v-divider class="mx-25-percent dashed-line" />
         </v-row>
       </v-card>
     </section>

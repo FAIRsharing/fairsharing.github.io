@@ -192,16 +192,13 @@
                     this.newTags.splice(index, index+1)
                 }
             },
-            async createTerms(){
+            createTerms(){
                 this.loading = true;
                 for (let term of this.newTags){
                     Vue.set(this.sections.generalInformation.data.userDefinedTags,
                         this.sections.generalInformation.data.userDefinedTags.length,
                         {label: term});
                 }
-                // post the terms
-                // add the new terms to tags -> might not be needed !
-                // process the errors
                 this.newTags = [];
                 this.loading = false;
                 this.showOverlay = false;

@@ -375,7 +375,7 @@
           this.$nextTick(async function () {
             this.loading = true;
             this.initialized = false;
-            await this.getTags();
+            // await this.getTags();
             this.partialTags();
             this.loading = false;
             this.initialized = true;

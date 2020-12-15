@@ -57,14 +57,24 @@ describe("Edit -> GeneralInformation.vue", function() {
         });
         graphStub.withArgs(typesQuery).returns({
             fairsharingRegistries: {
-                records: [{
-                    name: "Standard",
-                    recordTypes: [{
-                        name: "terminology",
-                        id: 1,
-                        description: "abc"
-                    }]
-                }],
+                records: [
+                    {
+                        name: "Standard",
+                        recordTypes: [{
+                            name: "terminology",
+                            id: 1,
+                            description: "abc"
+                        }]
+                    },
+                    {
+                        name: "Collection",
+                        recordTypes: [{
+                            name: "collection",
+                            id: 3,
+                            description: "abc"
+                        }]
+                    }
+                ],
             }
         });
         graphStub.withArgs(tagsQuery).returns({

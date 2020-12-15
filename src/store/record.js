@@ -22,7 +22,6 @@ let recordStore = {
             }
         },
         currentRecordHistory: {},
-        metaTemplate: {},
         recordUpdate: {
             error: false,
             message: null,
@@ -35,19 +34,6 @@ let recordStore = {
             state.currentRecord = data;
             if (!data["fairsharingRecord"]['metadata']['contacts']) state.currentRecord["fairsharingRecord"]['metadata']['contacts'] = [];
             if (!data["fairsharingRecord"]['metadata']['citations']) state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
-
-            state.metaTemplate = {
-                type: data["fairsharingRecord"].type,
-                status: data["fairsharingRecord"].status,
-                countries: data["fairsharingRecord"].countries,
-                metadata: data["fairsharingRecord"].metadata,
-                deprecation_reason: data["fairsharingRecord"].metadata.deprecation_reason
-            };
-            state.recordUpdate = {
-                error: false,
-                message: null,
-                id: null
-            }
         },
         setRecordHistory(state, data){
             state.currentRecordHistory = data;

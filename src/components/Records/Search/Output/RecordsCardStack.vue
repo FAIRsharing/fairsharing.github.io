@@ -46,6 +46,7 @@
           </v-col>
           <v-divider class="mx-25-percent dashed-line" />
         </v-row>
+        <associated-records-summary />
       </v-card>
     </section>
   </router-link>
@@ -55,11 +56,12 @@
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
 
 
 export default {
   name: "RecordsCardStack",
-  components: {RecordStatus},
+  components: {AssociatedRecordsSummary, RecordStatus},
   mixins: [recordsCardUtils, truncate],
   props: {
     record: {default: null, type: Object},

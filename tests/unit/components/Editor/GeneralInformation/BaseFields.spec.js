@@ -4,6 +4,7 @@ import Vuetify from "vuetify"
 import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
 import recordStore from "@/store/record.js"
 import editorStore from "@/store/editor.js"
+import icons from "@/../tests/fixtures/icons.json"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -42,6 +43,7 @@ describe('Editor -> BaseFields.vue', () => {
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("BaseFields");
+        expect(wrapper.vm.icons()).toStrictEqual(icons);
     });
 
     it("can remove a country", () => {

@@ -4,7 +4,7 @@
     ref="editGeneralInformation"
     v-model="formValid"
   >
-    <v-card>
+    <v-card v-if="initialized">
       <v-card-title class="grey lighten-4 blue--text">
         Edit General Information
         <span
@@ -13,11 +13,8 @@
         >({{ getChanges['generalInformation'] }})</span>
       </v-card-title>
       <v-card-text>
-        <v-container
-          v-if="initialized"
-          fluid
-        >
-          <base-fields v-if="initialized" />
+        <v-container fluid>
+          <base-fields />
           <v-row>
             <!-- contact points -->
             <v-col cols="12">
@@ -56,6 +53,18 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <v-fade-transition>
+      <v-overlay
+        v-if="!initialized"
+        :absolute="false"
+        opacity="0.8"
+      >
+        <v-progress-circular
+          indeterminate
+          size="64"
+        />
+      </v-overlay>
+    </v-fade-transition>
   </v-form>
 </template>
 
@@ -143,13 +152,14 @@
             });
         },
         methods: {
-            ...mapActions("editor", ["getCountries", "getRecordTypes"]),
+            ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
             ...mapActions("record", ["fetchRecord"]),
             async getData(){
                 this.loaders.get = true;
-                await this.getCountries();
                 await this.fetchRecord(this.$route.params.id);
+                await this.getCountries();
                 await this.getRecordTypes();
+                await this.getTags();
                 this.fields = {
                     initial: JSON.parse(JSON.stringify(this.getSection("generalInformation").data)),
                     current: this.getSection("generalInformation").data

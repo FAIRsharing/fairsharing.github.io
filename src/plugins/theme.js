@@ -3,10 +3,7 @@
 import colors from 'vuetify/lib/util/colors'
 
 export default {
-    primary: {
-        base: '#27aae1',
-        // darken1: colors.purple.darken2,
-    },
+    primary: '#27aae1',
     secondary: '#004d40',
     accent:'#800D10',
     // All keys will generate theme styles,

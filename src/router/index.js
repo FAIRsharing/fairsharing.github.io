@@ -4,7 +4,7 @@ import store from '@/store'
 
 import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
     Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, LoginFailure, Stat, Community, Stakeholders,
-    Timeline, License, Terms, Educational, Privacy, EditGeneralInformation }
+    Timeline, License, Terms, Educational, Privacy }
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -163,14 +163,6 @@ let routes = [
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
             // isCurator(to, from, next, store);
-        }
-    },
-    {
-        name: "Edit General Information",
-        path: "/:id/edit/general",
-        component: EditGeneralInformation,
-        beforeEnter(to, from, next) {
-            isLoggedIn(to, from, next, store);
         }
     },
     /*

@@ -23,4 +23,3 @@ export const License =  () => import(/* webpackChunkName: "licence-chunk" */ '@/
 export const Terms =  () => import(/* webpackChunkName: "tos-chunk" */ '@/views/Static/TermOfUse/TermsOfUse');
 export const Educational =  () => import(/* webpackChunkName: "edu-chunk" */ '@/views/Static/Educational/Educational');
 export const Privacy =  () => import(/* webpackChunkName: "privacy-chunk" */ '@/views/Static/Privacy/Privacy');
-export const EditGeneralInformation =  () => import(/* webpackChunkName: "editor-general-info-chunk" */ '@/components/Editor/GeneralInformation');

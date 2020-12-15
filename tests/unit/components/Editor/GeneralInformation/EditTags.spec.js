@@ -107,12 +107,12 @@ describe('Editor -> EditTags.vue', () => {
 
     it("can search the endpoint based on user input", async () => {
         let graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
-        graphStub.returns({
-            searchTags: [
-                {id: 1, label: 'test124', model: "subject"}
-            ]
-        });
+        const newTag = {id: 1, label: 'test124', model: "subject"};
+        graphStub.returns({searchTags: [newTag]});
         wrapper.vm.searchString = "test";
+        expect(wrapper.vm.tags).toStrictEqual([]);
+        await wrapper.vm.getTags('test');
+        expect(wrapper.vm.tags).toStrictEqual([newTag]);
         graphStub.restore();
     })
 

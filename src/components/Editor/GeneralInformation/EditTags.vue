@@ -358,7 +358,7 @@
             val = val.trim();
             this.lastQuery = val;
             await this.getTags(val);
-            /* istanbul ignore next */
+            /* istanbul ignore else */
             if (val === this.lastQuery) {
               this.partialTags();
               this.loading = false;

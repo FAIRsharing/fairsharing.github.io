@@ -53,9 +53,6 @@ let editorStore = {
             if (tags.firstTime){
                 state.allTags = tags.data;
             }
-        },
-        resetField(state, field){
-            state[field] = null;
         }
     },
     actions: {
@@ -91,8 +88,7 @@ let editorStore = {
             let data = await graphClient.executeQuery(tagQueryCopy);
             let first = (!state.state.allTags);
             state.commit("setTags", {data: data['searchTags'], firstTime: first});
-        },
-        async createNewTags(){}
+        }
     },
     modules: {},
     getters: {

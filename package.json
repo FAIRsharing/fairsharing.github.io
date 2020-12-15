@@ -34,7 +34,8 @@
     "vue-router": "^3.4.3",
     "vuetify": "2.3.4",
     "vuex": "^3.5.1",
-    "vue-scroll-stop": "^0.1.5"
+    "vue-scroll-stop": "^0.1.5",
+    "vue-scrollto": "^2.20.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.4.4",

@@ -8,7 +8,7 @@
         "tooltip": "Journal"
     },
     "identifier_schema":{
-      "icon": "assets/records/policy.png",
+      "icon": "assets/records/identifier_schema.png",
       "tooltip": "Identifier Schema"
     },
     "society": {
@@ -38,5 +38,11 @@
     "repository": {
         "icon": "assets/records/db-icon.png",
         "tooltip": "Repository"
+    },
+    "journal_publisher": {
+        "icon": "assets/records/policy.png"
+    },
+    "knowledge_base": {
+        "icon": "assets/records/db-icon.png"
     }
 }

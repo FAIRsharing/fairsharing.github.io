@@ -24,7 +24,7 @@ describe("StringSearch.vue", () => {
         wrapper.vm.searchString();
         expect($router.push).toHaveBeenCalledTimes(1);
         expect($router.push).toHaveBeenCalledWith({
-            path: "search",
+            path: "/search",
             query: {q: "testString"}
         })
     });

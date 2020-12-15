@@ -104,10 +104,9 @@
                     let changes = 0;
                     if (this.initialized){
                         if (newVal.type === "collection" || newVal.type.name === "collection"){
-                            this.fields.current.status = "uncertain";
+                            this.fields.current.status = null;
                         }
                         else if (newVal.type.name === "repository" || newVal.type.name === "knowledge_base"){
-                          console.log(123);
                           this.databaseWarning = true;
                         }
                         if (newVal.status !== "deprecated"){
@@ -168,18 +167,7 @@
             },
             /** TODO: build this method to save and redirect**/
             async saveRecord(redirect){
-              this.loaders.post = true;
-
-              // post data
-              // process error
-
-              this.loaders.post = false;
-              if (redirect){
-                console.log("We will redirect you")
-              }
-              else {
-                console.log("We will not redirect")
-              }
+              return redirect;
             }
         }
     }

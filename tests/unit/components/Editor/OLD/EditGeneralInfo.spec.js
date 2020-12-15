@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import editMeta from "@/components/Editor/EditGeneralInfo.vue"
+import editMeta from "@/components/Editor/OLD/EditGeneralInfo.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
 import status from "@/data/status.json"
@@ -10,7 +10,7 @@ import GraphClient from "@/components/GraphClient/GraphClient.js";
 import RestClient from "@/components/Client/RESTClient.js";
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
 import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
-import metaTemplate from "../../../fixtures/metaTemplate.json"
+import metaTemplate from "@/../tests/fixtures/metaTemplate.json"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

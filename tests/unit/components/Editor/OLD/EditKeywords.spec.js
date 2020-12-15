@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import editKeywords from "@/components/Editor/EditKeywords.vue"
+import editKeywords from "@/components/Editor/OLD/EditKeywords.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
 
@@ -13,7 +13,7 @@ import subjectsQuery from "@/components/GraphClient/queries/getSubjects.json"
 import taxonomiesQuery from "@/components/GraphClient/queries/getTaxonomies.json"
 import userTagsQuery from "@/components/GraphClient/queries/getUserDefinedTags.json"
 
-import keywordsFixture from "../../../fixtures/getKeywords.json"
+import keywordsFixture from "@/../tests/fixtures/getKeywords.json"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

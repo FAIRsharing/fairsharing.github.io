@@ -13,344 +13,18 @@
         >({{ getChanges['generalInformation'] }})</span>
       </v-card-title>
       <v-card-text>
-        <v-container fluid>
-          <v-row v-if="initialized">
-            <!-- name -->
-            <v-col
-              xl="3"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-text-field
-                v-model="fields.current.metadata.name"
-                label="Record Name"
-                :rules="[rules.isRequired()]"
-                outlined
-              >
-                <template v-slot:prepend>
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">
-                        fa-question-circle
-                      </v-icon>
-                    </template>
-                    Name of the record
-                  </v-tooltip>
-                </template>
-              </v-text-field>
-            </v-col>
-
-            <!-- abbreviation -->
-            <v-col
-              xl="3"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-text-field
-                v-model="fields.current.metadata.abbreviation"
-                label="Abbreviation"
-                :rules="[rules.isRequired()]"
-                outlined
-              >
-                <template v-slot:prepend>
-                  <v-tooltip
-                    bottom
-                    max-width="300px"
-                    class="text-justify"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">
-                        fa-question-circle
-                      </v-icon>
-                    </template>
-                    {{ tooltips['abbreviation'] }}
-                  </v-tooltip>
-                </template>
-              </v-text-field>
-            </v-col>
-
-            <!-- homepage -->
-            <v-col
-              xl="3"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-text-field
-                v-model="fields.current.metadata.homepage"
-                label="Homepage"
-                :rules="[rules.isRequired(), rules.isUrl()]"
-                outlined
-              >
-                <template v-slot:prepend>
-                  <v-tooltip
-                    bottom
-                    max-width="300px"
-                    class="text-justify"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">
-                        fa-question-circle
-                      </v-icon>
-                    </template>
-                    {{ tooltips['homepage'] }}
-                  </v-tooltip>
-                </template>
-              </v-text-field>
-            </v-col>
-
-            <!-- creation year -->
-            <v-col
-              xl="3"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-autocomplete
-                v-model="fields.current.metadata.year_creation"
-                label="Year of creation"
-                :items="years()"
-                outlined
-              >
-                <template v-slot:prepend>
-                  <v-tooltip
-                    bottom
-                    max-width="300px"
-                    class="text-justify"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">
-                        fa-question-circle
-                      </v-icon>
-                    </template>
-                    {{ tooltips['year'] }}
-                  </v-tooltip>
-                </template>
-              </v-autocomplete>
-            </v-col>
-
-            <!-- countries -->
-            <v-col
-              xl="4"
-              lg="12"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-autocomplete
-                v-model="fields.current.countries"
-                label="Countries"
-                :items="countries"
-                item-text="name"
-                item-value="name"
-                multiple
-                outlined
-                return-object
-              >
-                <template v-slot:prepend>
-                  <v-tooltip
-                    bottom
-                    max-width="300px"
-                    class="text-justify"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">
-                        fa-question-circle
-                      </v-icon>
-                    </template>
-                    {{ tooltips['countries'] }}
-                  </v-tooltip>
-                </template>
-
-                <!-- autocomplete selected -->
-                <template v-slot:selection="data">
-                  <v-chip
-                    class="blue white--text"
-                    close
-                    @click:close="removeCountry(data.item)"
-                  >
-                    {{ data.item.name }}
-                  </v-chip>
-                </template>
-
-                <!-- autocomplete data -->
-                <template v-slot:item="data">
-                  <country-flag
-                    v-if="data.item.code !== null"
-                    :country="data.item.code"
-                    size="normal"
-                  />
-                  <img
-                    v-else
-                    src="@/assets/placeholders/country.png"
-                    class="ml-4 mr-3"
-                  >
-                  <div> {{ data.item.name }} </div>
-                </template>
-              </v-autocomplete>
-            </v-col>
-
-            <!-- registry -->
-            <v-col
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-autocomplete
-                ref="editRecordType"
-                v-model="fields.current.type"
-                label="Registry type"
-                :rules="[rules.isRequired()]"
-                :items="recordTypes"
-                item-text="name"
-                item-value="name"
-                outlined
-                return-object
-              >
-                <!-- autocomplete selected -->
-                <template v-slot:selection="data">
-                  {{ data.item.name.replace(/_/g, ' ') }}
-                </template>
-
-                <!-- autocomplete data -->
-                <template v-slot:item="data">
-                  <v-tooltip left>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-list-item
-                        class="registryList"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-list-item-avatar>
-                          <v-img :src="icons()[data.item.name]" />
-                        </v-list-item-avatar>
-                        <v-list-item-content class="py-0">
-                          <v-list-item-title>
-                            <b>{{ data.item.name.replace(/_/g, ' ').toUpperCase() }}</b>
-                          </v-list-item-title>
-                          <v-list-item-subtitle>
-                            {{ data.item.description }}
-                          </v-list-item-subtitle>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </template>
-                    <span class="tooltips">{{ data.item.description }}</span>
-                  </v-tooltip>
-                </template>
-              </v-autocomplete>
-            </v-col>
-
-            <!-- status -->
-            <v-col
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-autocomplete
-                v-model="fields.current.status"
-                label="Status"
-                :items="status"
-                item-text="name"
-                item-value="name"
-                outlined
-                :disabled="fields.current.type === 'collection' || fields.current.type.name === 'collection'"
-              >
-                <!-- autocomplete selected -->
-                <template v-slot:selection="data">
-                  {{ data.item.name.replace(/_/g, ' ') }}
-                </template>
-
-                <!-- autocomplete data -->
-                <template v-slot:item="data">
-                  <v-tooltip left>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-list-item
-                        class="registryList"
-                        v-bind="attrs"
-                        v-on="on"
-                      >
-                        <v-list-item-avatar>
-                          <status-pills :status="data.item.name" />
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                          <v-list-item-title> <b>{{ data.item.name.replace(/_/g, ' ').toUpperCase() }} </b></v-list-item-title>
-                          <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </template>
-                    <span class="tooltips"> {{ data.item.description }} </span>
-                  </v-tooltip>
-                </template>
-              </v-autocomplete>
-            </v-col>
-
-            <!-- deprecation reasons -->
-            <v-col cols="12">
-              <v-expand-transition>
-                <v-textarea
-                  v-if="fields.current.status === 'deprecated'"
-                  v-model="fields.current['deprecation_reason']"
-                  label="Reason for deprecation"
-                  outlined
-                >
-                  <template v-slot:prepend>
-                    <v-tooltip
-                      bottom
-                      max-width="300px"
-                      class="text-justify"
-                    >
-                      <template v-slot:activator="{ on }">
-                        <v-icon v-on="on">
-                          fa-question-circle
-                        </v-icon>
-                      </template>
-                      {{ tooltips['deprecation_reason'] }}
-                    </v-tooltip>
-                  </template>
-                </v-textarea>
-              </v-expand-transition>
-            </v-col>
-
-            <!-- description -->
-            <v-col cols="12">
-              <v-textarea
-                v-model="fields.current.metadata.description"
-                label="Description"
-                :rules="[rules.isRequired(), rules.isLongEnough(40)]"
-                outlined
-              >
-                <template v-slot:prepend>
-                  <v-tooltip
-                    bottom
-                    max-width="300px"
-                    class="text-justify"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon v-on="on">
-                        fa-question-circle
-                      </v-icon>
-                    </template>
-                    {{ tooltips['description'] }}
-                  </v-tooltip>
-                </template>
-              </v-textarea>
-            </v-col>
-
+        <v-container
+          v-if="initialized"
+          fluid
+        >
+          <base-fields v-if="initialized" />
+          <v-row>
             <!-- contact points -->
             <v-col cols="12">
               <Contact />
             </v-col>
 
+            <!-- divider -->
             <v-col
               cols="12"
               class="py-0 my-0"
@@ -368,11 +42,13 @@
       <v-card-actions>
         <v-btn
           class="primary"
+          :disabled="!formValid"
           @click="saveRecord(true)"
         >
           Save and continue
         </v-btn>
         <v-btn
+          :disabled="!formValid"
           class="primary"
           @click="saveRecord(false)"
         >
@@ -380,24 +56,20 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-    <database-warning />
   </v-form>
 </template>
 
 <script>
-    import { mapState, mapGetters, mapActions } from "vuex"
-    import CountryFlag from 'vue-country-flag'
-    import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
-    import StatusPills from "@/components/Records/Shared/StatusPills";
+    import { mapGetters, mapActions } from "vuex"
     import Contact from "./Contact";
     import EditTags from "./EditTags";
-    import DatabaseWarning from "./databaseWarning";
+    import BaseFields from "./BaseFields";
 
     const diff = require("deep-object-diff").diff;
 
     export default {
         name: "GeneralInformation",
-        components: {DatabaseWarning, EditTags, Contact, StatusPills, CountryFlag},
+        components: { BaseFields, EditTags, Contact },
         data(){
             return {
                 loaders: {
@@ -405,11 +77,6 @@
                     post: false
                 },
                 initialized: false,
-                rules: {
-                    isRequired: function(){return isRequired()},
-                    isUrl: function(){return isUrl()},
-                    isLongEnough: function(val){return isLongEnough(val)},
-                },
                 formValid: false,
                 fields: {
                     initial: null,
@@ -419,14 +86,6 @@
             }
         },
         computed: {
-            ...mapState("editor", [
-                "countries",
-                "years",
-                "tooltips",
-                "recordTypes",
-                "icons",
-                "status"
-            ]),
             ...mapGetters("record", ["getSection", "getChanges"]),
         },
         watch: {
@@ -486,11 +145,6 @@
         methods: {
             ...mapActions("editor", ["getCountries", "getRecordTypes"]),
             ...mapActions("record", ["fetchRecord"]),
-            removeCountry(country){
-                this.fields.current.countries = this.fields.current.countries.filter(obj =>
-                    obj.label !== country.name && obj.id !== country.id
-                );
-            },
             async getData(){
                 this.loaders.get = true;
                 await this.getCountries();
@@ -502,6 +156,7 @@
                 };
                 this.loaders.get = false;
             },
+            /** TODO: build this method to save and redirect**/
             async saveRecord(redirect){
               this.loaders.post = true;
 

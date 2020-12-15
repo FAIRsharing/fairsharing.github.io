@@ -358,6 +358,7 @@
             val = val.trim();
             this.lastQuery = val;
             await this.getTags(val);
+            /* istanbul ignore next */
             if (val === this.lastQuery) {
               this.partialTags();
               this.loading = false;
@@ -375,7 +376,6 @@
           this.$nextTick(async function () {
             this.loading = true;
             this.initialized = false;
-            // await this.getTags();
             this.partialTags();
             this.loading = false;
             this.initialized = true;
@@ -388,7 +388,7 @@
             this.menu.show = !this.menu.show;
           },
           removeTag(sectionItems, termIndex){
-            sectionItems.splice(termIndex, termIndex+1)
+            sectionItems.splice(termIndex, 1)
           },
           partialTags(){
             let sections = [];

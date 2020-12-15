@@ -81,48 +81,49 @@
         components: { BaseFields, EditTags, Contact },
         data(){
             return {
-                loaders: {
-                    get: false,
-                    post: false
-                },
                 initialized: false,
                 formValid: false,
-                fields: {
-                    initial: null,
-                    current: null
-                },
                 databaseWarning: false,
             }
         },
         computed: {
             ...mapGetters("record", ["getSection", "getChanges"]),
+            section(){
+              return this.getSection('generalInformation');
+            },
+            initialFields(){
+              return this.getSection("generalInformation").initialData
+            },
+            currentFields(){
+              return this.getSection("generalInformation").data
+            }
         },
         watch: {
-            'fields.current': {
+            currentFields: {
                 deep: true,
                 handler(newVal){
                     let changes = 0;
                     if (this.initialized){
                         if (newVal.type === "collection" || newVal.type.name === "collection"){
-                            this.fields.current.status = null;
+                            this.currentFields.status = null;
                         }
                         else if (newVal.type.name === "repository" || newVal.type.name === "knowledge_base"){
                           this.databaseWarning = true;
                         }
                         if (newVal.status !== "deprecated"){
-                          this.fields.current.deprecation_reason = "";
+                          this.currentFields.deprecation_reason = "";
                         }
-                        const differences = diff(newVal, this.fields.initial);
+                        const differences = diff(newVal, this.initialFields);
                         Object.keys(differences).forEach(difference => {
                             if (differences[difference] || differences[difference] === "") {
                               if (difference === "type") {
-                                if (newVal.type.name !== this.fields.initial.type) changes += 1;
+                                if (newVal.type.name !== this.initialFields.type) changes += 1;
                               }
                               else if (difference !== "metadata") {
                                 const exceptions = ["domains", "subjects", "taxonomies", "userDefinedTags"];
                                 if (exceptions.indexOf(difference) === -1) changes += 1;
                                 else {
-                                    const initArray = this.fields.initial[difference].map(obj => obj.id);
+                                    const initArray = this.initialFields[difference].map(obj => obj.id);
                                     const currentArray = newVal[difference].map(obj => obj.id);
                                     let localDiff = diff(initArray, currentArray);
                                     if (Object.keys(localDiff).length > 0) changes += 1;
@@ -152,21 +153,14 @@
         },
         methods: {
             ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
-            ...mapActions("record", ["fetchRecord"]),
             async getData(){
-                this.loaders.get = true;
-                await this.fetchRecord(this.$route.params.id);
                 await this.getCountries();
                 await this.getRecordTypes();
                 await this.getTags();
-                this.fields = {
-                    initial: JSON.parse(JSON.stringify(this.getSection("generalInformation").data)),
-                    current: this.getSection("generalInformation").data
-                };
-                this.loaders.get = false;
             },
             /** TODO: build this method to save and redirect**/
             async saveRecord(redirect){
+              console.log(this.getSection("generalInformation").data);
               return redirect;
             }
         }

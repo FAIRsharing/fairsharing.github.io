@@ -108,7 +108,7 @@
 
 <script>
   import { mapActions, mapState } from "vuex"
-  import EditGeneralInfo from "@/components/Editor/GeneralInformation";
+  import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
   import EditRelationships from "@/components/Editor/EditRelationships";
   import EditLicences from "@/components/Editor/EditLicences";
   import EditOrganisations from "@/components/Editor/EditOrganisations";

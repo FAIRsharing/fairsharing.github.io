@@ -153,8 +153,8 @@
                 get(){
                     return this.getSection("generalInformation").data.metadata.contacts
                 },
-                set(){
-                    this.$store.commit("record/setContacts", this.contacts)
+                set(val){
+                    this.$store.commit("record/setContacts", val);
                 }
             }
         },

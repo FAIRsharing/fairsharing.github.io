@@ -84,7 +84,7 @@ describe("Edit -> GeneralInformation.vue", function() {
         graphStub.restore();
     });
 
-    it("can be instantiated", async () => {
+    it("can be mounted", async () => {
         expect(wrapper.name()).toMatch("GeneralInformation");
         expect(wrapper.vm.fields.current).toStrictEqual(wrapper.vm.fields.initial);
         await Vue.nextTick();

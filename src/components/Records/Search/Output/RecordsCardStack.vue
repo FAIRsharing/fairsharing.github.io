@@ -55,9 +55,6 @@
           class="mt-2"
         >
           <section class="ml-2 mb-0 mr-4 d-flex flex-column">
-            <h4 class="d-none">
-              select Tag type
-            </h4>
             <v-btn
               v-for="(item,index) in buttons"
               :key="index"

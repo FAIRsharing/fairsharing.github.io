@@ -164,7 +164,13 @@
         },
         computed: {
             ...mapState("editor", ["allTags"]),
-            ...mapState("record", ["sections"])
+            ...mapState("record", ["sections"]),
+            email(){
+              let target = "mailto:contact@fairsharing.org";
+
+
+              return target;
+            }
         },
         methods: {
             addTerm(){

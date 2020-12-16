@@ -120,7 +120,8 @@ let recordStore = {
         async updateGeneralInformation({ state, commit }, options) {
             commit("resetMessage", "generalInformation");
             let {
-                type, countries, userDefinedTags, domains, subjects, taxonomies,
+                type, countries, userDefinedTags, domains,
+                subjects, taxonomies, status, deprecation_reason,
                 ...record
             } = JSON.parse(JSON.stringify(state.sections.generalInformation.data)),
                 newTags = [],
@@ -149,11 +150,13 @@ let recordStore = {
             });
             record.country_ids  = countries.map(obj => obj.id);
             if (type.id) record.record_type_id = type.id;
-            record.metadata.deprecation_reason = record.deprecation_reason;
+            record.metadata.deprecation_reason = deprecation_reason;
+            record.metadata.status = status;
             record.domain_ids = domains.map(obj => obj.id);
             record.subject_ids = subjects.map(obj => obj.id);
             record.taxonomy_ids = taxonomies.map(obj => obj.id);
             record.user_defined_tag_ids = tags.concat(oldTags.filter(function (el) {return el != null;}));
+            console.log(record);
             let response = await restClient.updateRecord({
                   record: record,
                   token: options.token,

@@ -1,8 +1,5 @@
 <template>
   <v-main>
-    <h1 class="d-none">
-      Content
-    </h1>
     <transition name="fade">
       <jump-to-top v-if="scrollStatus" />
     </transition>

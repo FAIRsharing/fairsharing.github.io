@@ -41,6 +41,11 @@ a:link {
 //End of Animations-------------------------
 
 //Utilities---------------------------------
+.opacity-low {
+ opacity: 0.3;
+ -moz-opacity: 0.3;
+}
+
 .full-width {
   width: 100%;
 }
@@ -69,4 +74,9 @@ a:link {
   margin-right: 25%;
   margin-left: 25%;
 }
+
+.ml-25-percent{
+  margin-left: 25%;
+}
+
 //End of Utilities--------------------------

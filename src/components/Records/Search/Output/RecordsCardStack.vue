@@ -7,7 +7,7 @@
         class="pl-8 pr-8 pt-8 pb-8 d-flex flex-column"
         outlined
         tile
-        height="350px"
+        height="380px"
         :elevation="allowClicking?'4':'0'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"
@@ -46,7 +46,7 @@
           </v-col>
           <v-divider class="mx-25-percent dashed-line" />
         </v-row>
-        <associated-records-summary />
+        <associated-records-summary :associated-records="associatedRecords(record)" />
       </v-card>
     </section>
   </router-link>
@@ -96,16 +96,20 @@ export default {
           val: 0,
           label: "policies"
         },
-        collection: {
-          val: 0,
-          label: "collections"
-        },
+        registry: null
       };
+      records['registry'] = record.registry.toLowerCase()
       record['recordAssociations'].forEach(function (association) {
-        records[association['linkedRecord'].registry.toLowerCase()].val += 1
+        if (association['linkedRecord'].registry.toLowerCase() !== 'collection' )
+        {
+          records[association['linkedRecord'].registry.toLowerCase()].val += 1
+        }
       });
       record['reverseRecordAssociations'].forEach(function (association) {
-        records[association['fairsharingRecord'].registry.toLowerCase()].val += 1
+        if (association['fairsharingRecord'].registry.toLowerCase() !== 'collection' )
+        {
+          records[association['fairsharingRecord'].registry.toLowerCase()].val += 1
+        }
       });
       return records;
     },

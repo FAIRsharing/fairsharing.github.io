@@ -3,7 +3,6 @@
     id="recordEditor"
     fluid
   >
-    {{getChanges}}
     <!-- TODO: Loop through the buttons -->
     <!-- popup to confirm exit from editing -->
     <v-row>
@@ -73,6 +72,10 @@
             :disabled="tab.disabled"
           >
             {{ tab.name }}
+            <span
+              v-if="tab.target && getChanges[tab.target] > 0"
+              class="orange--text ml-2 font-weight-bold"
+            > ({{ getChanges[tab.target] }})</span>
           </v-tab>
 
           <!-- EDIT GENERAL INFO -->
@@ -99,12 +102,10 @@
           <v-tab-item class="px-10 py-3">
             <edit-relationships />
           </v-tab-item>
-
         </v-tabs>
       </v-col>
     </v-row>
   </v-container>
-
 </template>
 
 <script>
@@ -156,7 +157,8 @@
         tabs: [
           {
             name: "Edit General Information",
-            disabled: false
+            disabled: false,
+            target: "generalInformation"
           },
           {
             name: "Edit Data Access",

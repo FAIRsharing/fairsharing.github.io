@@ -116,7 +116,7 @@ export default {
           link: "/collections",
         },
         {
-          label: "Add/Claim content",
+          label: "Add content",
           link: "/new",
         },
         {

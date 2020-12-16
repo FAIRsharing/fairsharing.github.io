@@ -21,14 +21,18 @@
       <v-spacer />
       <v-chip
         color="green white--text pr-5 shadowChip"
-        disabled
       >
-        <v-icon
-          small
-          class="mr-3"
+        <a
+          :href="email"
+          class="white--text"
         >
-          fas fa-envelope
-        </v-icon> Request new species (email)
+          <v-icon
+            small
+            class="mr-3"
+          >
+            fas fa-envelope
+          </v-icon> Request new species (email)
+        </a>
       </v-chip>
     </v-row>
 
@@ -166,10 +170,14 @@
             ...mapState("editor", ["allTags"]),
             ...mapState("record", ["sections"]),
             email(){
-              let target = "mailto:contact@fairsharing.org";
-
-
-              return target;
+              let target = "mailto:contact@fairsharing.org",
+                title = "?subject=Request for a new species",
+                text = "I would like to make a request for a new species in the FAIRsharing.org database. \n"
+                  + `Record id: ${this.$route.params.id} \n`
+                  + 'New species name: "ADD_YOUR_SPECIES_HERE" \n \n'
+                  + "The FAIRsharing Team";
+              let body = encodeURIComponent(text);
+              return target + title + "&body=" + body;
             }
         },
         methods: {

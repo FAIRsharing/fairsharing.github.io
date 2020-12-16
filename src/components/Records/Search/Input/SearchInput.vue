@@ -1,7 +1,7 @@
 <template>
   <perfect-scrollbar
     :options="{wheelPropagation: false,watchOptions :true}"
-    :class="[responsiveClassObject]"
+    :class="[responsiveClassObject,{'bottom-border':isScreen4k}]"
   >
     <aside>
       <v-card
@@ -14,10 +14,8 @@
         <h2 class="d-none">
           Filter List
         </h2>
-
         <!-- Search Box -->
         <string-search placeholder="Search through all data." />
-
         <hr
           class="mb-3 mr-2 ml-2"
           style="opacity: .5!important;"
@@ -67,6 +65,9 @@ export default {
   computed: {
     ...mapState('uiController', ['UIGeneralStatus']),
     ...mapGetters("searchFilters", ["getFilters"]),
+    isScreen4k() {
+      return window.screen.height < 1870;
+    },
     setup() {
       let _module = this;
       _module.setPanel();
@@ -140,5 +141,8 @@ export default {
 .flex-1 {
   font-size: 11px;
   flex: 1;
+}
+.bottom-border {
+  border-bottom: 2px #e8e8e8 solid;
 }
 </style>

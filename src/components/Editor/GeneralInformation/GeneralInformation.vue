@@ -102,7 +102,7 @@
             }
         },
         computed: {
-            ...mapGetters("record", ["getSection"]),
+            ...mapGetters("record", ["getSection", "getChanges"]),
             ...mapState("users", ["user"]),
             section(){
               return this.getSection('generalInformation');

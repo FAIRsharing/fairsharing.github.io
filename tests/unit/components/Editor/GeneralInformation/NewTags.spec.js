@@ -1,6 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
+import VueRouter from "vue-router"
 import NewTags from "@/components/Editor/GeneralInformation/NewTags.vue"
 import recordStore from "@/store/record.js"
 import editorStore from "@/store/editor.js"
@@ -24,15 +25,19 @@ const $store = new Vuex.Store({
     }
 });
 
+let $route = { path: "/123/edit", params: {id: 123} };
+const router = new VueRouter();
+
 let wrapper;
 
-describe('Editor -> BaseFields.vue', () => {
+describe('Editor -> NewTags.vue', () => {
 
     beforeAll(() => {
         wrapper = shallowMount(NewTags, {
             localVue,
             vuetify,
-            mocks: {$store}
+            router,
+            mocks: {$store, $route}
         });
     });
 

@@ -7,15 +7,39 @@ import GeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformati
 import recordStore from "@/store/record.js"
 import editorStore from "@/store/editor.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
-import recordQuery from "@/components/GraphClient/queries/getRecord.json"
 import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
 import tagsQuery from "@/components/GraphClient/queries/geTags.json"
 const sinon = require("sinon");
+const VueScrollTo = require('vue-scrollto');
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueScrollTo);
 const vuetify = new Vuetify();
+
+let record = {
+    id: 123,
+    metadata: {
+        contacts: []
+    },
+    type: 'abc',
+    status: "ready",
+    domains: [{
+        label: 'tester',
+        id: 2
+    }],
+    name: "ok"
+};
+recordStore.state.sections = {
+    generalInformation: {
+        error: false,
+        data: record,
+        initialData: JSON.parse(JSON.stringify(record)),
+        changes: 0,
+        message: null
+    }
+};
 
 const $store = new Vuex.Store({
     modules: {
@@ -34,22 +58,8 @@ describe("Edit -> GeneralInformation.vue", function() {
     let graphStub;
 
     beforeAll( async () => {
-        recordQuery.queryParam = {id: 123};
+        Vue.config.silent = true;
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
-        graphStub.withArgs(recordQuery).returns({
-            fairsharingRecord: {
-                id: 123,
-                metadata: {
-                    contacts: []
-                },
-                type: 'abc',
-                status: "ready",
-                domains: [{
-                    label: 'tester',
-                    id: 2
-                }]
-            }
-        });
         graphStub.withArgs(countriesQuery).returns({
             searchCountries: [
                 {label: "france", id: 33}
@@ -92,51 +102,63 @@ describe("Edit -> GeneralInformation.vue", function() {
 
     afterAll(() => {
         graphStub.restore();
+        Vue.config.silent = false;
     });
 
     it("can be mounted", async () => {
         expect(wrapper.name()).toMatch("GeneralInformation");
-        expect(wrapper.vm.fields.current).toStrictEqual(wrapper.vm.fields.initial);
-        await Vue.nextTick();
+        expect(wrapper.vm.currentFields).toStrictEqual(wrapper.vm.initialFields);
         await wrapper.vm.getData();
-        expect(wrapper.vm.fields.current.type).toBe("abc");
+        expect(wrapper.vm.currentFields.type).toBe("abc");
+        expect(wrapper.vm.message.type()).toBe("success");
+        recordStore.state.sections.generalInformation.error = true;
+        expect(wrapper.vm.message.type()).toBe("error");
+        recordStore.state.sections.generalInformation.error = false;
+        expect(wrapper.vm.section).toStrictEqual(recordStore.state.sections.generalInformation);
     });
 
-    it("can react to changes to fields.current", () => {
-        wrapper.vm.fields.current.type = {name: "abc"};
-        expect(wrapper.vm.fields.current.status).toBe("ready");
-        wrapper.vm.fields.current.type.name = "collection";
-        expect(wrapper.vm.fields.current.status).toBe(null);
-        wrapper.vm.fields.current.status = "ready";
-        wrapper.vm.fields.current.type.name = "repository";
+    it("can react to changes to currentFields", async () => {
+        wrapper.vm.currentFields.type = {name: "abc"};
+        expect(wrapper.vm.currentFields.status).toBe("ready");
+        wrapper.vm.currentFields.type.name = "collection";
+        expect(wrapper.vm.currentFields.status).toBe(null);
+        wrapper.vm.currentFields.status = "ready";
+        wrapper.vm.currentFields.type.name = "repository";
         expect(wrapper.vm.databaseWarning).toBe(true);
-        wrapper.vm.fields.current.deprecation_reason = "abc";
-        wrapper.vm.fields.current.status = "deprecated";
-        expect(wrapper.vm.fields.current.deprecation_reason).toBe("");
-        wrapper.vm.fields.current.deprecation_reason = "abc";
-        expect(wrapper.vm.fields.current.deprecation_reason).toBe("abc");
+        wrapper.vm.currentFields.deprecation_reason = "abc";
+        wrapper.vm.currentFields.status = "deprecated";
+        expect(wrapper.vm.currentFields.deprecation_reason).toBe("abc");
+        wrapper.vm.currentFields.status = "ready";
+        expect(wrapper.vm.currentFields.deprecation_reason).toBe("");
 
-        wrapper.vm.fields.current.type.name = "abc";
-        wrapper.vm.fields.current.metadata.contacts.push({name: 'test'});
-        expect(wrapper.vm.getChanges['generalInformation']).toBe(3);
-        wrapper.vm.fields.current.domains.push({
+        wrapper.vm.currentFields.type.name = "abc";
+        wrapper.vm.currentFields.metadata.contacts.push({name: 'test'});
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(1);
+        wrapper.vm.currentFields.domains.push({
             label: 'test',
             id: 1
         });
-        expect(wrapper.vm.getChanges['generalInformation']).toBe(4);
-        wrapper.vm.fields.current.domains.splice(1,1);
-        expect(wrapper.vm.getChanges['generalInformation']).toBe(3);
-        wrapper.vm.fields.current.domains = [{
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
+        wrapper.vm.currentFields.domains.splice(1,1);
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(1);
+        wrapper.vm.currentFields.domains = [{
             label: 'tester',
             id: 2,
             model: "wtf"
         }];
-        expect(wrapper.vm.getChanges['generalInformation']).toBe(3);
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(1);
+
+        wrapper.vm.initialized = false;
+        await Vue.nextTick();
+        wrapper.vm.currentFields.name = "???";
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(1);
     });
 
+    /*
     it("can save record", async () => {
         let data = await wrapper.vm.saveRecord(true);
         expect(data).toBe(true);
     });
+    */
 
 });

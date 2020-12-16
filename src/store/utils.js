@@ -48,9 +48,9 @@ export function initEditorSections(data, sectionsNames){
             subjects: data.subjects,
             taxonomies: data.taxonomies,
             userDefinedTags: data.userDefinedTags,
-            deprecation_reason: data.metadata.deprecation_reason || ""
         }
     };
+    schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
     let sections = {};
     sectionsNames.forEach(name => {
         let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null;

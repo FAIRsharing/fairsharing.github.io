@@ -4,14 +4,28 @@
     ref="editGeneralInformation"
     v-model="formValid"
   >
-    <v-card v-if="initialized">
+    <v-card
+      v-if="initialized"
+      class="delayed-transition"
+    >
       <v-card-title class="grey lighten-4 blue--text">
         Edit General Information
-        <span
-          v-if="getChanges['generalInformation']"
-          class="orange--text ml-2"
-        >({{ getChanges['generalInformation'] }})</span>
       </v-card-title>
+
+      <v-scroll-x-transition>
+        <v-card-text
+          v-if="message.value"
+          class="pt-3 mb-0 pb-0"
+        >
+          <v-alert
+            :type="message.type()"
+            class="mb-0"
+          >
+            {{ message.value }}<span v-if="message.error"> <v-icon class="ml-4 mr-3">fa-arrow-right</v-icon> {{ message.value.response.data }}</span>
+          </v-alert>
+        </v-card-text>
+      </v-scroll-x-transition>
+
       <v-card-text>
         <v-container fluid>
           <base-fields />
@@ -40,12 +54,14 @@
         <v-btn
           class="primary"
           :disabled="!formValid"
+          :loading="loading"
           @click="saveRecord(true)"
         >
           Save and continue
         </v-btn>
         <v-btn
           :disabled="!formValid"
+          :loading="loading"
           class="primary"
           @click="saveRecord(false)"
         >
@@ -59,35 +75,35 @@
         :absolute="false"
         opacity="0.8"
       >
-        <v-progress-circular
-          indeterminate
-          size="64"
-        />
+        <loaders />
       </v-overlay>
     </v-fade-transition>
   </v-form>
 </template>
 
 <script>
-    import { mapGetters, mapActions } from "vuex"
+    import { mapGetters, mapActions, mapState } from "vuex"
     import Contact from "./Contact";
     import EditTags from "./EditTags";
     import BaseFields from "./BaseFields";
+    import Loaders from "@/components/Navigation/Loaders";
 
     const diff = require("deep-object-diff").diff;
 
     export default {
         name: "GeneralInformation",
-        components: { BaseFields, EditTags, Contact },
+        components: {Loaders, BaseFields, EditTags, Contact },
         data(){
             return {
                 initialized: false,
                 formValid: false,
                 databaseWarning: false,
+                loading: false
             }
         },
         computed: {
-            ...mapGetters("record", ["getSection", "getChanges"]),
+            ...mapGetters("record", ["getSection"]),
+            ...mapState("users", ["user"]),
             section(){
               return this.getSection('generalInformation');
             },
@@ -96,6 +112,14 @@
             },
             currentFields(){
               return this.getSection("generalInformation").data
+            },
+            message(){
+              let error = this.getSection("generalInformation").error;
+              return {
+                error: error,
+                value: this.getSection("generalInformation").message,
+                type: function(){if (error){return "error"} else {return "success"}}
+              };
             }
         },
         watch: {
@@ -153,6 +177,7 @@
         },
         methods: {
             ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
+            ...mapActions("record", ["updateGeneralInformation"]),
             async getData(){
                 await this.getCountries();
                 await this.getRecordTypes();
@@ -160,7 +185,13 @@
             },
             /** TODO: build this method to save and redirect**/
             async saveRecord(redirect){
-              console.log(this.getSection("generalInformation").data);
+              this.$scrollTo("#mainHeader");
+              this.loading = true;
+              await this.updateGeneralInformation({
+                token: this.user().credentials.token,
+                id: this.$route.params.id
+              });
+              this.loading = false;
               return redirect;
             }
         }
@@ -196,8 +227,21 @@
     }
 
     #editGeneralInformation .expand-transition-enter-active,
-    #editGeneralInformation .expand-transition-leave-active {
+    #editGeneralInformation .expand-transition-leave-active
+    {
       transition-duration: 0.7s !important;
+    }
+
+    #editGeneralInformation .delayed-transition .scroll-x-transition-enter-active,
+    #editGeneralInformation .delayed-transition .scroll-x-transition-leave-active{
+      transition-duration: 1s !important;
+    }
+
+    #editGeneralInformation .delayed-transition .scroll-x-transition-enter-active {
+      transition-delay: 0.1s !important;
+    }
+    #editGeneralInformation .delayed-transition .scroll-x-transition-leave-active {
+      transition-delay: 0.6s !important;
     }
 
 </style>

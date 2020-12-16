@@ -37,30 +37,23 @@ export const validateToken = function(tokenExpiry){
     return now.getTime() - tokenExpiry*1000 < 0;
 };
 
-export function initEditorSections(data){
-    const sectionsName = [
-        "generalInformation",
-        "support",
-        "licences",
-        "publications",
-        "organisations"
-    ];
+export function initEditorSections(data, sectionsNames){
     const schema = {
         generalInformation: {
             type: data.type,
             status: data.status,
             countries: data.countries,
             metadata: data.metadata,
-            deprecation_reason: data.metadata.deprecation_reason || "",
             domains: data.domains,
             subjects: data.subjects,
             taxonomies: data.taxonomies,
-            userDefinedTags: data.userDefinedTags
+            userDefinedTags: data.userDefinedTags,
+            deprecation_reason: data.metadata.deprecation_reason || ""
         }
     };
     let sections = {};
-    sectionsName.forEach(name => {
-        let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null
+    sectionsNames.forEach(name => {
+        let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null;
         sections[name] = {
             message: null,
             error: false,

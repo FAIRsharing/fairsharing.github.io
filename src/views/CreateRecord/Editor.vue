@@ -3,6 +3,7 @@
     id="recordEditor"
     fluid
   >
+    {{getChanges}}
     <!-- TODO: Loop through the buttons -->
     <!-- popup to confirm exit from editing -->
     <v-row>
@@ -40,7 +41,6 @@
         </v-dialog>
       </v-col>
     </v-row>
-
 
     <v-row v-if="hasLoaded">
       <v-col v-if="error">
@@ -104,10 +104,11 @@
       </v-col>
     </v-row>
   </v-container>
+
 </template>
 
 <script>
-  import { mapActions, mapState } from "vuex"
+  import { mapActions, mapState, mapGetters } from "vuex"
   import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
   import EditRelationships from "@/components/Editor/EditRelationships";
   import EditLicences from "@/components/Editor/EditLicences";
@@ -178,6 +179,7 @@
     },
     computed: {
       ...mapState('record', ['currentRecord']),
+      ...mapGetters('record', ['getChanges']),
       ...mapState('users', ['user']),
       userToken(){
         const _module = this;

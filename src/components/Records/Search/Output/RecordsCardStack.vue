@@ -84,17 +84,19 @@ export default {
   methods: {
     associatedRecords(record) {
       let records = {
-        standard: {
-          val: 0,
-          label: "standards"
-        },
-        database: {
-          val: 0,
-          label: "databases"
-        },
-        policy: {
-          val: 0,
-          label: "policies"
+        registryNumber: {
+          standard: {
+            val: 0,
+            label: "standards"
+          },
+          database: {
+            val: 0,
+            label: "databases"
+          },
+          policy: {
+            val: 0,
+            label: "policies"
+          },
         },
         registry: null
       };
@@ -102,13 +104,13 @@ export default {
       record['recordAssociations'].forEach(function (association) {
         if (association['linkedRecord'].registry.toLowerCase() !== 'collection' )
         {
-          records[association['linkedRecord'].registry.toLowerCase()].val += 1
+          records['registryNumber'][association['linkedRecord'].registry.toLowerCase()].val += 1
         }
       });
       record['reverseRecordAssociations'].forEach(function (association) {
         if (association['fairsharingRecord'].registry.toLowerCase() !== 'collection' )
         {
-          records[association['fairsharingRecord'].registry.toLowerCase()].val += 1
+          records['registryNumber'][association['fairsharingRecord'].registry.toLowerCase()].val += 1
         }
       });
       return records;

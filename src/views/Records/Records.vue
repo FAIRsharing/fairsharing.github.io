@@ -8,6 +8,7 @@
     </transition>
     <v-container
       fluid
+      class="pa-0"
     >
       <!-- Title banner -->
       <div>

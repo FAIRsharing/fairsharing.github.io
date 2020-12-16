@@ -156,7 +156,6 @@ let recordStore = {
             record.subject_ids = subjects.map(obj => obj.id);
             record.taxonomy_ids = taxonomies.map(obj => obj.id);
             record.user_defined_tag_ids = tags.concat(oldTags.filter(function (el) {return el != null;}));
-            console.log(record);
             let response = await restClient.updateRecord({
                   record: record,
                   token: options.token,

@@ -1,18 +1,16 @@
 <template>
   <div class="d-flex flex-column ml-25-percent">
     <div
-      v-for="(associatedRecord, associationName) in associatedRecords"
+      v-for="(associatedRecord, associationName) in associatedRecords.registryNumber"
       :key="associationName+'_'+associatedRecord.val"
       class="d-flex flex-row"
     >
       <h4
-        v-if="associatedRecord.label!==undefined"
         :class="['my-0 font-weight-light mr-15',{'opacity-low':associatedRecord.val===0}]"
       >
         {{ setRecordLabels(associatedRecord.label) }}
       </h4>
       <span
-        v-if="associatedRecord.val!==undefined"
         :class="['counter-style',{'opacity-low':associatedRecord.val===0}]"
       >{{ associatedRecord.val }}</span>
     </div>

@@ -284,7 +284,7 @@
       <v-expand-transition>
         <v-textarea
           v-if="fields.status === 'deprecated'"
-          v-model="fields['deprecation_reason']"
+          v-model="fields.metadata['deprecation_reason']"
           label="Reason for deprecation"
           outlined
         >

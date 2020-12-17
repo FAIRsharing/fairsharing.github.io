@@ -40,7 +40,7 @@ export const validateToken = function(tokenExpiry){
 export function initEditorSections(data, sectionsNames){
     let emptyData = {
         type: {},
-        status: null,
+        status: {},
         countries: [],
         metadata: {
             name: null,
@@ -48,7 +48,7 @@ export function initEditorSections(data, sectionsNames){
             homepage: null,
             year_creation: null,
             description: null,
-            deprecation_reason: null
+            deprecation_reason: ""
         },
     };
     let sections = {};
@@ -86,6 +86,5 @@ export function initEditorSections(data, sectionsNames){
             initialData: emptyData
         };
     }
-    console.log(sections);
     return sections;
 }

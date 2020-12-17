@@ -3,53 +3,68 @@
     id="createRecord"
     fluid
   >
-    <v-row>
-      <v-col cols="12">
-        <v-card v-if="loaded">
-          <v-card-title class="primary white--text">
-            <h3 class="white--text">
-              Creating a new FAIRsharing record
-            </h3>
-          </v-card-title>
-          <v-card-text class="pt-3">
-            <v-form
-              id="createRecord"
-              ref="createRecord"
-              v-model="formValid"
+    <v-form
+      id="createRecord"
+      ref="createRecord"
+      v-model="formValid"
+    >
+      <v-row>
+        <v-col cols="12">
+          <v-card v-if="loaded">
+            <v-card-title class="primary white--text">
+              <h3 class="white--text">
+                Creating a new FAIRsharing record
+              </h3>
+            </v-card-title>
+            <v-card-text
+              v-if="message.error"
+              class="pt-4"
             >
+              <v-alert type="error">
+                {{ message.value }}<v-icon class="px-3">
+                  fa-arrow-right
+                </v-icon> {{ message.value.response.data }}
+              </v-alert>
+            </v-card-text>
+            <v-card-text class="pt-3">
               <v-container fluid>
                 <v-row>
                   <base-fields />
                 </v-row>
               </v-container>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn class="primary">Create Record</v-btn>
-          </v-card-actions>
-        </v-card>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                class="primary"
+                :disabled="!formValid"
+                @click="createRecord()"
+              >
+                Create Record
+              </v-btn>
+            </v-card-actions>
+          </v-card>
 
-        <v-fade-transition>
-          <v-overlay
-            v-if="!loaded"
-            :absolute="false"
-            opacity="0.8"
-          >
-            <loaders />
-          </v-overlay>
-        </v-fade-transition>
-      </v-col>
-    </v-row>
+          <v-fade-transition>
+            <v-overlay
+              v-if="!loaded"
+              :absolute="false"
+              opacity="0.8"
+            >
+              <loaders />
+            </v-overlay>
+          </v-fade-transition>
+        </v-col>
+      </v-row>
+    </v-form>
   </v-container>
 </template>
 
 <script>
-    import { mapState, mapActions } from "vuex"
+    import { mapState, mapActions, mapGetters } from "vuex"
     import RESTClient from "@/components/Client/RESTClient.js"
     import status from "@/data/status.json"
     import BaseFields from "../../components/Editor/GeneralInformation/BaseFields";
     import Loaders from "../../components/Navigation/Loaders";
-
 
     let restClient = new RESTClient();
 
@@ -65,10 +80,15 @@
             recordsTypes: [],
             formValid: false,
             loaded: false,
+            message: {
+              error: false,
+              value: null
+            }
           }
         },
         computed: {
             ...mapState('users', ["user"]),
+            ...mapGetters('record', ['getSection']),
             status: function(){ return status.status; }
         },
         async mounted(){
@@ -87,19 +107,33 @@
             await this.getRecordTypes();
             await this.getTags();
           },
-          createRecord: async function(){
-            const _module = this;
-            let record = {
-              metadata: _module.record
+          async createRecord(){
+            this.message = {
+              error: false,
+              value: null
             };
-            record.metadata.status = _module.models.recordStatus.name;
-            record.record_type_id = _module.models.recordType.id;
-            let new_record = await restClient.createRecord(record, _module.user().credentials.token);
-            if (Object.prototype.hasOwnProperty.call(new_record.data, "id")) {
-              _module.$router.push({
-                path: new_record.data.id
+            let record = JSON.parse(JSON.stringify(this.getSection("generalInformation").data));
+            console.log(record);
+            record.record_type_id = record.type.id;
+            record.metadata.status = status;
+            record.country_ids = record.countries.map(obj => obj.id);
+            record.metadata.status = record.status;
+
+            delete record.status;
+            delete record.countries;
+            delete record.type;
+            let new_record = await restClient.createRecord(record, this.user().credentials.token);
+            if (!new_record.error) {
+              this.$router.push({
+                path: new_record.data.id + "/edit"
               });
+            } else {
+              this.message = {
+                error: true,
+                value: new_record.error
+              }
             }
+
           }
         },
     }

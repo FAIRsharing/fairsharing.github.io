@@ -55,7 +55,7 @@
           class="primary"
           :disabled="!formValid"
           :loading="loading"
-          @click="saveRecord(true)"
+          @click="saveRecord(false)"
         >
           Save and continue
         </v-btn>
@@ -63,7 +63,7 @@
           :disabled="!formValid"
           :loading="loading"
           class="primary"
-          @click="saveRecord(false)"
+          @click="saveRecord(true)"
         >
           Save and exit
         </v-btn>
@@ -185,14 +185,16 @@
             },
             /** TODO: build this method to save and redirect**/
             async saveRecord(redirect){
-              this.$scrollTo("#mainHeader");
               this.loading = true;
               await this.updateGeneralInformation({
                 token: this.user().credentials.token,
                 id: this.$route.params.id
               });
               this.loading = false;
-              return redirect;
+              if (!redirect) this.$scrollTo("#mainHeader");
+              if (redirect && !this.message.error){
+                this.$router.push({path: '/' + this.$route.params.id})
+              }
             }
         }
     }

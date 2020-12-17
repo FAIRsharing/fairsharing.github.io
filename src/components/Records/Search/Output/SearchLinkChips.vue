@@ -1,8 +1,5 @@
 <template>
-  <section class="chips-container ">
-    <h5 class="d-none">
-      Choose Subject , Domain , Taxonomy
-    </h5>
+  <section class="chips-container">
     <v-chip-group
       column
     >

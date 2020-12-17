@@ -7,10 +7,6 @@
       tile
       elevation="3"
     >
-      <h2 class="d-none">
-        Filter List
-      </h2>
-
       <!-- Search Box -->
       <string-search placeholder="Search through all data." />
 

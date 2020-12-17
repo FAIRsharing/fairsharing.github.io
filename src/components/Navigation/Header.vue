@@ -76,7 +76,8 @@
             v-else
             :small="$vuetify.breakpoint.mdAndDown"
             :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1 teal darken-2"
+            class="mr-1 mt-sm-1 teal darken-2 pl-2"
+            to="/accounts/profile"
           >
             <v-avatar>
               <v-icon dark color="white">
@@ -99,10 +100,6 @@ import StringSearch from "@/components/Records/Search/Input/StringSearch";
 export default {
   name: "Header",
   components: {StringSearch, Login},
-  computed: {
-    ...mapState('uiController', ["UIGeneralStatus"]),
-    ...mapState('users', ["user"])
-  },
   data() {
     return {
       closeMenuStatus: false,
@@ -140,6 +137,10 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    ...mapState('uiController', ["UIGeneralStatus"]),
+    ...mapState('users', ["user"])
   },
   methods: {
     toggleDrawerLeft: function () {
@@ -183,12 +184,6 @@ header {
   width: 94%;
 }
 
-.ellipse {
-  max-width: 200px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
 </style>
 
 

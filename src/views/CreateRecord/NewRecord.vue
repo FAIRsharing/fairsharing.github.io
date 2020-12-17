@@ -88,8 +88,7 @@
         },
         computed: {
             ...mapState('users', ["user"]),
-            ...mapGetters('record', ['getSection']),
-            status: function(){ return status.status; }
+            ...mapGetters('record', ['getSection'])
         },
         async mounted(){
           this.$nextTick(async function () {
@@ -113,7 +112,6 @@
               value: null
             };
             let record = JSON.parse(JSON.stringify(this.getSection("generalInformation").data));
-            console.log(record);
             record.record_type_id = record.type.id;
             record.metadata.status = status;
             record.country_ids = record.countries.map(obj => obj.id);

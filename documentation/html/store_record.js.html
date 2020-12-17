@@ -120,7 +120,9 @@ let recordStore = {
             message: null,
             id: null
         },
-        sections: {}
+        sections: {
+            generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation
+        }
     },
     mutations: {
         setCurrentRecord(state, data){
@@ -163,7 +165,7 @@ let recordStore = {
                 data['fairsharingRecord'],
                 ["generalInformation"]
             ).generalInformation;
-            state.sections.generalInformation.message = "Record successfully updated!";
+            if(data['fairsharingRecord']) state.sections.generalInformation.message = "Record successfully updated!";
         },
         resetMessage(state, sectionName){
             state.sections[sectionName].message = null;
@@ -184,7 +186,7 @@ let recordStore = {
         },
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
-        }
+        },
     },
     actions: {
         async fetchRecord(state, id){
@@ -272,6 +274,9 @@ let recordStore = {
                   newRecord.userDefinedTags = userDefinedTags;
                   commit('setGeneralInformation', {fairsharingRecord: newRecord});
               }
+        },
+        resetRecord(state){
+            state.commit('setGeneralInformation', {fairsharingRecord: false});
         }
     },
     modules: {},

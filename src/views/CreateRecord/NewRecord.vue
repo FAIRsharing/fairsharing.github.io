@@ -5,7 +5,7 @@
   >
     <v-row>
       <v-col cols="12">
-        <v-card>
+        <v-card v-if="loaded">
           <v-card-title class="primary white--text">
             <h3 class="white--text">
               Creating a new FAIRsharing record
@@ -17,6 +17,8 @@
               ref="createRecord"
               v-model="formValid"
             >
+              <base-fields />
+              <!--
               <v-container
                 id="recordMetadata"
                 fluid
@@ -27,7 +29,6 @@
                     :key="'edit_' + fieldKey"
                     :class="{'col-2': fieldVal.type !== 'longtext', 'col-12': fieldVal.type === 'longtext', 'col-3': fieldVal.type === 'autocomplete'}"
                   >
-                    <!-- simple input -->
                     <div v-if="fieldVal.type === 'string'">
                       <v-text-field
                         v-model="record[fieldName]"
@@ -39,7 +40,6 @@
                       />
                     </div>
 
-                    <!-- long text -->
                     <div v-if="fieldVal.type === 'longtext'">
                       <v-textarea
                         v-if="fieldName !== 'deprecation_reason' || (models.recordStatus !== null && models.recordStatus.name === 'deprecated')"
@@ -52,7 +52,6 @@
                       />
                     </div>
 
-                    <!-- autocomplete -->
                     <div v-if="fieldVal.type === 'autocomplete'">
                       <v-autocomplete
                         :id="fieldName + '_autocomplete'"
@@ -67,12 +66,10 @@
                         :disabled="fieldName !== 'Record Type' && models.recordType !== null && models.recordType.name === 'collection'"
                         :rules="fieldVal.rules"
                       >
-                        <!-- autocomplete selected -->
                         <template v-slot:selection="data">
                           {{ data.item.name.replace(/_/g, ' ') }}
                         </template>
 
-                        <!-- autocomplete data -->
                         <template v-slot:item="data">
                           <v-list
                             id="autocompleteSelect"
@@ -102,32 +99,42 @@
                   </v-btn>
                 </v-row>
               </v-container>
+              -->
             </v-form>
           </v-card-text>
         </v-card>
+
+        <v-fade-transition>
+          <v-overlay
+            v-if="!loaded"
+            :absolute="false"
+            opacity="0.8"
+          >
+            <loaders />
+          </v-overlay>
+        </v-fade-transition>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-    import { mapState } from "vuex"
-    import GraphClient from "@/components/GraphClient/GraphClient.js"
-    import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
+    import { mapState, mapActions } from "vuex"
     import RESTClient from "@/components/Client/RESTClient.js"
     import status from "@/data/status.json"
-    import { isLongEnough, isRequired, isUrl } from "@/utils/rules.js"
+    import BaseFields from "../../components/Editor/GeneralInformation/BaseFields";
+    import Loaders from "../../components/Navigation/Loaders";
 
 
-    let client = new GraphClient();
     let restClient = new RESTClient();
 
     /** Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database
      *
      */
     export default {
-        name: "NewRecordPage",
-        data(){
+      name: "NewRecordPage",
+      components: {Loaders, BaseFields},
+      data(){
           return {
             record: {},
             recordsTypes: [],
@@ -135,7 +142,8 @@
                 recordType: null,
                 recordStatus: null,
             },
-            formValid: false
+            formValid: false,
+            loaded: false,
           }
         },
         computed: {
@@ -155,82 +163,15 @@
             }
         },
         async mounted(){
-          const _module = this;
-          let data = await client.executeQuery(typesQuery);
-          const size = data['fairsharingRegistries'].records.length;
-          let currentItem = 0;
-          data['fairsharingRegistries'].records.forEach(function(type){
-            currentItem += 1;
-            _module.recordsTypes.push({
-              header: type.name
-            });
-            type.recordTypes.forEach(function(subType){
-              _module.recordsTypes.push({
-                name: subType.name,
-                group: type.name,
-                id: subType.id,
-                description: subType.description
-              })
-            });
-            if (currentItem < size) _module.recordsTypes.push({ divider: true });
-          });
-
-
+          this.resetRecord();
+          await this.getCountries();
+          await this.getRecordTypes();
+          await this.getTags();
+          this.loaded = true;
         },
         methods: {
-          getFields: function () {
-            return {
-                name: {
-                    type: "string",
-                    description: "The name of the record",
-                    required: true,
-                    rules: [isLongEnough(5), isRequired()]
-                },
-                abbreviation: {
-                    type: "string",
-                    description: "Abbreviation or short name for the record",
-                    required: false,
-                    rules: [isRequired()]
-                },
-                homepage: {
-                    type: "string",
-                    description: "The homepage of the record",
-                    format: "uri",
-                    required: false,
-                    rules: [isUrl(), isRequired()]
-                },
-                "Record Type": {
-                    type: "autocomplete",
-                    source: "recordsTypes",
-                    required: true,
-                    target: "recordType",
-                  rules: [isRequired()]
-                },
-                status: {
-                    type: "autocomplete",
-                    source: "status",
-                    required: false,
-                    target: "recordStatus",
-                    rules: [isRequired()]
-                },
-                "deprecation_reason": {
-                    type: "longtext",
-                    description: "A short description of why the resource is no longer actively maintained.",
-                    required: false,
-                    label: "Deprecation reason"
-                },
-                description: {
-                    type: "longtext",
-                    description: "The description of the record",
-                    required: false,
-                    label: "description",
-                    rules: [isRequired()]
-                }
-            }
-          },
-          getItems: function(fieldName){
-              return this[fieldName]
-          },
+          ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
+          ...mapActions("record", ["resetRecord"]),
           createRecord: async function(){
             const _module = this;
             let record = {

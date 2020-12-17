@@ -6,7 +6,9 @@ import VueRouter from "vue-router"
 import GeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue"
 import recordStore from "@/store/record.js"
 import editorStore from "@/store/editor.js"
+import userStore from "@/store/users.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
+import RestClient from "@/components/Client/RESTClient.js"
 import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
 import tagsQuery from "@/components/GraphClient/queries/geTags.json"
@@ -23,6 +25,9 @@ let record = {
     metadata: {
         contacts: []
     },
+    countries: [{id: 1}],
+    subjects: [{id: 2}],
+    taxonomies: [{id: 3}],
     type: 'abc',
     status: "ready",
     domains: [{
@@ -40,11 +45,13 @@ recordStore.state.sections = {
         message: null
     }
 };
+userStore.state.user().credentials.token = 123;
 
 const $store = new Vuex.Store({
     modules: {
         editor: editorStore,
-        record: recordStore
+        record: recordStore,
+        users: userStore
     }
 });
 
@@ -154,11 +161,37 @@ describe("Edit -> GeneralInformation.vue", function() {
         expect(wrapper.vm.getChanges['generalInformation']).toBe(1);
     });
 
-    /*
+
     it("can save record", async () => {
-        let data = await wrapper.vm.saveRecord(true);
-        expect(data).toBe(true);
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        wrapper.vm.currentFields.userDefinedTags = [
+            {label: "newUserDefinedTag"},
+            {label: "existingUserDefinedTag", id:555}
+        ];
+        let tagStub = sinon.stub(RestClient.prototype, "createNewUserDefinedTag");
+        tagStub.returns({
+            id: 666,
+            label: "newUserDefinedTag"
+        });
+        let postStub = sinon.stub(RestClient.prototype, "updateRecord");
+        postStub.returns({attributes: {}});
+        await wrapper.vm.saveRecord(true);
+        expect($router.push).toHaveBeenCalledWith({path: "/123"});
+        expect($router.push).toHaveBeenCalledTimes(1);
+        wrapper.vm.currentFields.type = {id: 789};
+        await wrapper.vm.saveRecord(false);
+        expect($router.push).toHaveBeenCalledTimes(1);
+        tagStub.restore();
+        postStub.restore();
+        jest.clearAllMocks();
+        tagStub = sinon.stub(RestClient.prototype, "createNewUserDefinedTag");
+        tagStub.returns({
+            error: {response: {data: "error"}}
+        });
+        await wrapper.vm.saveRecord(false);
+        expect(wrapper.vm.message.error).toBe(true);
+        tagStub.restore();
     });
-    */
+
 
 });

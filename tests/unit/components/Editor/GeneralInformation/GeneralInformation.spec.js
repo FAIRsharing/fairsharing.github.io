@@ -127,40 +127,36 @@ describe("Edit -> GeneralInformation.vue", function() {
     it("can react to changes to currentFields", async () => {
         wrapper.vm.currentFields.type = {name: "abc"};
         expect(wrapper.vm.currentFields.status).toBe("ready");
-        wrapper.vm.currentFields.type.name = "collection";
-        expect(wrapper.vm.currentFields.status).toBe(null);
-        wrapper.vm.currentFields.status = "ready";
-        wrapper.vm.currentFields.type.name = "repository";
-        expect(wrapper.vm.databaseWarning).toBe(true);
         wrapper.vm.currentFields.deprecation_reason = "abc";
         wrapper.vm.currentFields.status = "deprecated";
         expect(wrapper.vm.currentFields.deprecation_reason).toBe("abc");
-        wrapper.vm.currentFields.status = "ready";
+        wrapper.vm.currentFields.status = "uncertain";
         expect(wrapper.vm.currentFields.deprecation_reason).toBe("");
+        wrapper.vm.currentFields.type.name = "collection";
+        expect(wrapper.vm.currentFields.status).toBe(null);
 
         wrapper.vm.currentFields.type.name = "abc";
         wrapper.vm.currentFields.metadata.contacts.push({name: 'test'});
-        expect(wrapper.vm.getChanges['generalInformation']).toBe(1);
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
         wrapper.vm.currentFields.domains.push({
             label: 'test',
             id: 1
         });
-        expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(3);
         wrapper.vm.currentFields.domains.splice(1,1);
-        expect(wrapper.vm.getChanges['generalInformation']).toBe(1);
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
         wrapper.vm.currentFields.domains = [{
             label: 'tester',
             id: 2,
             model: "wtf"
         }];
-        expect(wrapper.vm.getChanges['generalInformation']).toBe(1);
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
 
         wrapper.vm.initialized = false;
         await Vue.nextTick();
         wrapper.vm.currentFields.name = "???";
-        expect(wrapper.vm.getChanges['generalInformation']).toBe(1);
+        expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
     });
-
 
     it("can save record", async () => {
         jest.spyOn(console, 'warn').mockImplementation(() => {});

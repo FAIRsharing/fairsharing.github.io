@@ -69,6 +69,11 @@ describe("RESTClient", () =>{
         expect(data).toBe("testData")
     });
 
+    it("can create a new record", async() => {
+        let data = await client.createRecord({}, 'def');
+        expect(data).toBe("testData")
+    });
+
     it("can process network errors", async () => {
         stub.restore();
         jest.spyOn(console, 'error');

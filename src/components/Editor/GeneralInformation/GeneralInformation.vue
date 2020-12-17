@@ -205,9 +205,6 @@
         color: white;
         margin-left: 10px;
     }
-    .registryList {
-        max-width: 780px;
-    }
 
     .tooltips {
         max-width: 500px;

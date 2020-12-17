@@ -365,7 +365,7 @@
                 "status"
             ]),
             fields(){
-              return this.getSection("generalInformation").data
+              return this.getSection("generalInformation").data;
             }
         },
         methods: {
@@ -379,5 +379,7 @@
 </script>
 
 <style scoped>
-
+  .registryList {
+    max-width: 780px;
+  }
 </style>

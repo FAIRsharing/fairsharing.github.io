@@ -91,6 +91,18 @@ let recordStore = {
         },
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
+        },
+        resetGeneralInformation(state){
+            state.sections.generalInformation = {
+                changes: 0,
+                error: false,
+                message: null,
+                data: {
+                    type: {},
+                    metadata: {}
+                },
+                initialData: null
+            }
         }
     },
     actions: {
@@ -179,6 +191,9 @@ let recordStore = {
                   newRecord.userDefinedTags = userDefinedTags;
                   commit('setGeneralInformation', {fairsharingRecord: newRecord});
               }
+        },
+        resetRecord(state){
+            state.commit('resetGeneralInformation');
         }
     },
     modules: {},

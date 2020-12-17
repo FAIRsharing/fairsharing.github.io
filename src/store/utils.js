@@ -38,29 +38,54 @@ export const validateToken = function(tokenExpiry){
 };
 
 export function initEditorSections(data, sectionsNames){
-    const schema = {
-        generalInformation: {
-            type: data.type,
-            status: data.status,
-            countries: data.countries,
-            metadata: data.metadata,
-            domains: data.domains,
-            subjects: data.subjects,
-            taxonomies: data.taxonomies,
-            userDefinedTags: data.userDefinedTags,
-        }
+    let emptyData = {
+        type: {},
+        status: null,
+        countries: [],
+        metadata: {
+            name: null,
+            abbreviation: null,
+            homepage: null,
+            year_creation: null,
+            description: null,
+            deprecation_reason: null
+        },
     };
-    schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
     let sections = {};
-    sectionsNames.forEach(name => {
-        let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null;
-        sections[name] = {
+    if (data) {
+        const schema = {
+            generalInformation: {
+                type: data.type,
+                status: data.status,
+                countries: data.countries,
+                metadata: data.metadata,
+                domains: data.domains,
+                subjects: data.subjects,
+                taxonomies: data.taxonomies,
+                userDefinedTags: data.userDefinedTags,
+            }
+        };
+        schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
+        sectionsNames.forEach(name => {
+            let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null;
+            sections[name] = {
+                message: null,
+                error: false,
+                data: schema[name],
+                changes: 0,
+                initialData: copy
+            }
+        });
+    }
+    else {
+        sections.generalInformation = {
+            changes: 0,
             message: null,
             error: false,
-            data: schema[name],
-            changes: 0,
-            initialData: copy
-        }
-    });
+            data: emptyData,
+            initialData: emptyData
+        };
+    }
+    console.log(sections);
     return sections;
 }

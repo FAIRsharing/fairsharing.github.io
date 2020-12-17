@@ -17,91 +17,16 @@
               ref="createRecord"
               v-model="formValid"
             >
-              <base-fields />
-              <!--
-              <v-container
-                id="recordMetadata"
-                fluid
-              >
+              <v-container fluid>
                 <v-row>
-                  <v-col
-                    v-for="(fieldVal, fieldName, fieldKey) in getFields()"
-                    :key="'edit_' + fieldKey"
-                    :class="{'col-2': fieldVal.type !== 'longtext', 'col-12': fieldVal.type === 'longtext', 'col-3': fieldVal.type === 'autocomplete'}"
-                  >
-                    <div v-if="fieldVal.type === 'string'">
-                      <v-text-field
-                        v-model="record[fieldName]"
-                        :label="fieldName"
-                        :hint="fieldVal.description"
-                        outlined
-                        :required="fieldVal.required"
-                        :rules="fieldVal.rules"
-                      />
-                    </div>
-
-                    <div v-if="fieldVal.type === 'longtext'">
-                      <v-textarea
-                        v-if="fieldName !== 'deprecation_reason' || (models.recordStatus !== null && models.recordStatus.name === 'deprecated')"
-                        v-model="record[fieldName]"
-                        :label="fieldVal.label"
-                        :hint="fieldVal.description"
-                        outlined
-                        :required="fieldVal.required"
-                        :rules="fieldVal.rules"
-                      />
-                    </div>
-
-                    <div v-if="fieldVal.type === 'autocomplete'">
-                      <v-autocomplete
-                        :id="fieldName + '_autocomplete'"
-                        v-model="models[fieldVal.target]"
-                        :items="getItems(fieldVal.source)"
-                        item-text="name"
-                        item-value="name"
-                        :label="fieldName"
-                        outlined
-                        return-object
-                        :required="fieldVal.required"
-                        :disabled="fieldName !== 'Record Type' && models.recordType !== null && models.recordType.name === 'collection'"
-                        :rules="fieldVal.rules"
-                      >
-                        <template v-slot:selection="data">
-                          {{ data.item.name.replace(/_/g, ' ') }}
-                        </template>
-
-                        <template v-slot:item="data">
-                          <v-list
-                            id="autocompleteSelect"
-                            max-width="565px"
-                            three-line
-                          >
-                            <v-list-item min-height="0px">
-                              <v-list-item-content class="py-0">
-                                <v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} </v-list-item-title>
-                                <v-list-item-subtitle> {{ data.item.description }} </v-list-item-subtitle>
-                              </v-list-item-content>
-                            </v-list-item>
-                          </v-list>
-                        </template>
-                      </v-autocomplete>
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-btn
-                    type="submit"
-                    class="primary"
-                    :disabled="!formValid"
-                    @click="createRecord()"
-                  >
-                    Create Record
-                  </v-btn>
+                  <base-fields />
                 </v-row>
               </v-container>
-              -->
             </v-form>
           </v-card-text>
+          <v-card-actions>
+            <v-btn class="primary">Create Record</v-btn>
+          </v-card-actions>
         </v-card>
 
         <v-fade-transition>
@@ -138,10 +63,6 @@
           return {
             record: {},
             recordsTypes: [],
-            models: {
-                recordType: null,
-                recordStatus: null,
-            },
             formValid: false,
             loaded: false,
           }
@@ -150,28 +71,22 @@
             ...mapState('users', ["user"]),
             status: function(){ return status.status; }
         },
-        watch: {
-            models: {
-              deep: true,
-              handler(oldVal, newVal){
-                const _module = this;
-                if (newVal.recordType !== null && newVal.recordType.name === "collection"){
-                  _module.models.recordStatus = "uncertain";
-                  delete _module.record["deprecation_reason"];
-                }
-              }
-            }
-        },
         async mounted(){
-          this.resetRecord();
-          await this.getCountries();
-          await this.getRecordTypes();
-          await this.getTags();
-          this.loaded = true;
+          this.$nextTick(async function () {
+            this.loaded = false;
+            this.resetRecord();
+            await this.getData();
+            this.loaded = true;
+          });
         },
         methods: {
           ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
           ...mapActions("record", ["resetRecord"]),
+          async getData(){
+            await this.getCountries();
+            await this.getRecordTypes();
+            await this.getTags();
+          },
           createRecord: async function(){
             const _module = this;
             let record = {

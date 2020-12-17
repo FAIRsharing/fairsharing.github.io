@@ -97,7 +97,6 @@
             return {
                 initialized: false,
                 formValid: false,
-                databaseWarning: false,
                 loading: false
             }
         },
@@ -130,9 +129,6 @@
                     if (this.initialized){
                         if (newVal.type === "collection" || newVal.type.name === "collection"){
                             this.currentFields.status = null;
-                        }
-                        else if (newVal.type.name === "repository" || newVal.type.name === "knowledge_base"){
-                          this.databaseWarning = true;
                         }
                         if (newVal.status !== "deprecated"){
                           this.currentFields.deprecation_reason = "";

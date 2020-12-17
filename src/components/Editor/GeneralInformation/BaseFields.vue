@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="fields">
+  <v-row>
     <!-- name -->
     <v-col
       xl="3"
@@ -381,5 +381,14 @@
 <style scoped>
   .registryList {
     max-width: 780px;
+  }
+
+  .tooltips {
+    max-width: 500px;
+    display: block;
+  }
+
+  .v-tooltip__content {
+    background: rgba(0, 0, 0, 1);
   }
 </style>

@@ -1,6 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app-bar
-    app
     :hide-on-scroll="UIGeneralStatus.headerVisibilityState"
     short
     height="100"
@@ -117,7 +116,7 @@ export default {
           color: "blue"
         },
         {
-          label: "Add/Claim content",
+          label: "Add content",
           link: "/new",
           color: "grey"
         },

@@ -44,7 +44,7 @@ export default {
             return 'Endorsing Policies';
         }
       }
-      else
+      else if(this.associatedRecords.registry === 'database')
       {
         switch (label)
         {
@@ -54,6 +54,17 @@ export default {
             return 'Related Databases';
           case 'policies':
             return 'Endorsing Policies';
+        }
+      }else
+      {
+        switch (label)
+        {
+          case 'standards':
+            return 'Related Standards';
+          case 'databases':
+            return 'Related Databases';
+          case 'policies':
+            return 'Related Policies';
         }
       }
     }

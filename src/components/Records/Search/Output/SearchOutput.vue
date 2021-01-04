@@ -25,7 +25,7 @@
         class="no-data-found"
       >
         <v-alert
-          colored-border="gray"
+          colored-border
           type="info"
         >
           No records match your search!

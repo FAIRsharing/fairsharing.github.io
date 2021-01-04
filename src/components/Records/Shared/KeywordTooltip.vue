@@ -10,6 +10,9 @@
         </div>
       </template>
       <div class="tooltip">
+        <div :class="getChipColor(keyword)">
+          <b class="mr-1">Type:</b> {{ keyword.type }}
+        </div>
         <div><b class="mr-1">Name:</b> {{ keyword.label }}</div>
         <div><b class="mr-1">URL:</b> {{ keyword['iri'] }}</div>
         <div><b class="mr-1">Definition:</b> <i> {{ keyword.definitions[0] }} </i></div>
@@ -25,8 +28,10 @@
 </template>
 
 <script>
+    import recordsCardUtils from "@/utils/recordsCardUtils";
     export default {
         name: "KeywordTooltip",
+        mixins: [recordsCardUtils],
         props: {
             keyword: {default: null, type: Object}
         },
@@ -45,8 +50,8 @@
                   .replace("]", "")
                   .replace(/:/g, ": ")
                   + "."
-          }
-        }
+          },
+        },
     }
 </script>
 

@@ -7,7 +7,7 @@
         class="pl-8 pr-8 pt-8 pb-8 d-flex flex-column"
         outlined
         tile
-        height="380px"
+        height="420px"
         :elevation="allowClicking?'4':'0'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"
@@ -15,7 +15,10 @@
         <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5">
           {{ record.abbreviation }}
         </h2>
-        <v-row no-gutters class="flex-grow-0">
+        <v-row
+          no-gutters
+          class="flex-grow-0"
+        >
           <v-col
             cols="12"
             xs="12"
@@ -46,6 +49,12 @@
           </v-col>
           <v-divider class="mx-25-percent dashed-line" />
         </v-row>
+        <!-- chips container -->
+        <div class="ml-25-percent">
+          <SearchLinkChips
+            :chips="Chips"
+          />
+        </div>
         <associated-records-summary :associated-records="associatedRecords(record)" />
       </v-card>
     </section>
@@ -57,11 +66,12 @@ import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
+import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 
 
 export default {
   name: "RecordsCardStack",
-  components: {AssociatedRecordsSummary, RecordStatus},
+  components: {SearchLinkChips, AssociatedRecordsSummary, RecordStatus},
   mixins: [recordsCardUtils, truncate],
   props: {
     record: {default: null, type: Object},
@@ -69,12 +79,7 @@ export default {
   data() {
     return {
       allowClicking: false,
-      Chips: {
-        domains: [],
-        subjects: [],
-        taxonomies: [],
-        userDefinedTags: []
-      },
+      Chips: [],
       currentActiveChips: null,
     }
   },
@@ -102,14 +107,12 @@ export default {
       };
       records['registry'] = record.registry.toLowerCase()
       record['recordAssociations'].forEach(function (association) {
-        if (association['linkedRecord'].registry.toLowerCase() !== 'collection' )
-        {
+        if (association['linkedRecord'].registry.toLowerCase() !== 'collection' ) {
           records['registryNumber'][association['linkedRecord'].registry.toLowerCase()].val += 1
         }
       });
       record['reverseRecordAssociations'].forEach(function (association) {
-        if (association['fairsharingRecord'].registry.toLowerCase() !== 'collection' )
-        {
+        if (association['fairsharingRecord'].registry.toLowerCase() !== 'collection' ) {
           records['registryNumber'][association['fairsharingRecord'].registry.toLowerCase()].val += 1
         }
       });
@@ -118,15 +121,15 @@ export default {
     setChips(record) {
       let _module = this;
       Object.keys(record).forEach(function (node) {
-        if (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags') {
+        if (node === 'subjects' || node === 'domains' || node === 'taxonomies') {
           _module.organizeChips(record, node);
         }
       });
     },
     organizeChips(record, node) {
-      this.currentActiveChips = node;
       record[node].forEach(item => {
-        this.Chips[node].push(item);
+        item.type = node;
+        this.Chips.push(item);
       })
     },
   },
@@ -134,19 +137,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.chips-container {
-  height: 130px;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  position: relative;
-
-  .no-chips {
-    position: absolute;
-    left: 20%;
-    top: 30%;
-  }
-}
-
 .v-chip.v-chip--outlined.v-chip--active::before {
   opacity: 0;
 }

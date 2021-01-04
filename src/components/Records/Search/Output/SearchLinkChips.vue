@@ -25,10 +25,12 @@
 <script>
   import {isEqual} from "lodash";
   import KeywordTooltip from "../../Shared/KeywordTooltip";
+  import recordsCardUtils from "@/utils/recordsCardUtils";
 
   export default {
     name: "SearchLinkChips",
     components: {KeywordTooltip},
+    mixins: [recordsCardUtils],
     props: {
       chips: {
         default: null,
@@ -69,19 +71,6 @@
         });
 
       },
-      getChipColor(chip){
-        if(chip.type==='subjects'){
-          return 'subject_color';
-        }
-        else if(chip.type==='domains')
-        {
-          return 'domain_color';
-        }
-        else if(chip.type==='taxonomies')
-        {
-          return 'taxonomic_color';
-        }
-      }
     },
   }
 

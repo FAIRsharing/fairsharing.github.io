@@ -153,20 +153,19 @@
               class="green white--text"
             >
               Records without dois
-              <v-btn
-                color="white"
-                outlined
-                class="mt-1 mt-lg-1 ml-2"
-                @click="obtainFileRecordsWODois()"
+              <a
+                class="ml-5"
+                :href="obtainFileRecordsWODois()"
+                download="recordWithoutDOIs.txt"
               >
                 <v-icon
-                  x-small
+                  color="white"
                   class="mr-1"
                 >
                   fa fa-download
                 </v-icon>
-                <span class="button-text-size">Obtain file</span>
-              </v-btn>
+                <span class="white">Obtain file</span>
+              </a>
             </v-card-title>
           </v-card-text>
         </v-card>
@@ -468,12 +467,15 @@
           async obtainFileRecordsWODois(){
             let data = await restClient.getRecordsWoDOIs(this.user().credentials.token);
             let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data).replace(/^\[(.+)\]$/,'$1').split(',').join('\r\n').replace(/['"]+/g, ''));
-            let downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href",     dataStr);
-            downloadAnchorNode.setAttribute("download", "recordsWithoutDOIs.txt");
-            document.body.appendChild(downloadAnchorNode); // required for firefox
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
+            //let downloadAnchorNode = document.createElement('a');
+            //downloadAnchorNode.setAttribute("href",     dataStr);
+            //downloadAnchorNode.setAttribute("download", "recordsWithoutDOIs.txt");
+            //document.body.appendChild(downloadAnchorNode); // required for firefox
+            //console.log(downloadAnchorNode);
+            //downloadAnchorNode.click();
+            //downloadAnchorNode.remove();
+            //console.log(dataStr);
+            return dataStr;
           }
       }
     }

@@ -104,7 +104,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .filters-holder-default {
   border-radius: 0;
   -moz-border-radius: 0;
@@ -125,7 +125,7 @@ export default {
   top: 0;
   transition: height ease-in 500ms;
 }
-.custom-hr{
+.custom-hr {
   opacity: .5;
 }
 </style>

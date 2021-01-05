@@ -9,6 +9,7 @@ import introspection from "@/store/introspector.js"
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
+import VueScrollTo from "vue-scrollto";
 
 const sinon = require("sinon");
 const axios = require("axios");
@@ -16,7 +17,7 @@ const axios = require("axios");
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-
+localVue.use(VueScrollTo,{})
 const $route = {
     name: "Standards",
     path: "standard",

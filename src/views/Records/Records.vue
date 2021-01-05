@@ -181,7 +181,7 @@ export default {
      * @returns {Promise}
      */
     getData: async function () {
-      window.scrollTo(0,0);
+      this.$scrollTo('body',50,{})
       this.errors = null;
       const _module = this;
       try {

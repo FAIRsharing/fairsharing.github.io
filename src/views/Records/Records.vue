@@ -79,10 +79,8 @@ export default {
           {}
       );
       let title = "Search";
-      if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry'))
-      {
-        if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry))
-        {
+      if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
+        if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
           title = flipRecordTypes[this.$route.query.fairsharingRegistry];
         }
       }
@@ -102,19 +100,14 @@ export default {
       let queryParams = {};
       Object.keys(this.$route.query).forEach(function (prop) {
         let queryVal = client.$route.query[prop];
-        if (queryVal)
-        {
-          queryParams[prop] = decodeURI(queryVal);
+        if (queryVal) {
+            queryParams[prop] = decodeURI(queryVal);
         }
       });
-      if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)])
-      {
-        title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+      if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
+          title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
       }
-      else
-      {
-        title = title.charAt(0).toUpperCase() + title.slice(1);
-      }
+      else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
@@ -144,15 +137,13 @@ export default {
     onScroll: function () {
       let _module = this;
       _module.offsetTop = window.top.scrollY;
-      if (_module.offsetTop > 100 && _module.records.length > 1)
-      {
+      if (_module.offsetTop > 100 && _module.records.length > 1) {
         _module.setStickToTop(true);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           headerVisibilityState: false,
         });
       }
-      else
-      {
+      else {
         _module.setStickToTop(false);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           drawerVisibilityState: false,
@@ -167,22 +158,19 @@ export default {
      * /policies or /collections
      * */
     tryRedirect: async function () {
-      if (Object.keys(this.recordTypes).includes(this.$route.name))
-      {
+      if (Object.keys(this.recordTypes).includes(this.$route.name)) {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
         let query = this.$route.params;
         if (query && query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
-          try
-          {
+          try {
             await this.$router.push({
               name: "search",
               query: query
             });
             return true;
           }
-          catch (e)
-          {
+          catch (e) {
             //
           }
         }
@@ -200,12 +188,10 @@ export default {
     getData: async function () {
       this.errors = null;
       const _module = this;
-      try
-      {
+      try {
         await _module.fetchRecords(this.getParameters());
       }
-      catch (e)
-      {
+      catch (e) {
         this.errors = e.message;
       }
     },

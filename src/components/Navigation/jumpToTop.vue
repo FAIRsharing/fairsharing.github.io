@@ -1,13 +1,13 @@
 <template>
   <transition name="fade">
     <v-btn
+      v-scroll-to="'body'"
       fab
       color="primary"
       bottom
       right
       fixed
       class="mr-2 mb-10"
-      @click="scrollToTop()"
     >
       <v-icon>fa-arrow-up</v-icon>
     </v-btn>
@@ -18,15 +18,6 @@
 
 export default {
   name: "JumpToTop",
-  methods: {
-    scrollToTop: function () {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
-    },
-  }
 }
 </script>
 

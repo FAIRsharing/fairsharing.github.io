@@ -8,7 +8,7 @@
         :key="chip.label+'_'+index"
         text-color="white"
         :color="getChipColor(chip)"
-        @click.native.prevent="updateSearchQuery(chip)"
+        @click.prevent="updateSearchQuery(chip)"
       >
         <KeywordTooltip
           v-if="chip.type === 'subjects' || chip.type === 'domains' "

@@ -112,7 +112,7 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style scoped>
 .chips-holder {
   position: sticky;
   top: 0;

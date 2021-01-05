@@ -104,7 +104,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style>
 .filters-holder-default {
   border-radius: 0;
   -moz-border-radius: 0;
@@ -124,17 +124,6 @@ export default {
   position: sticky;
   top: 0;
   transition: height ease-in 500ms;
-}
-.buttons-md-style {
-  min-width: 32px !important;
-}
-.first-child {
-  font-size: 11px;
-  width: 16.5%;
-}
-.flex-1 {
-  font-size: 11px;
-  flex: 1;
 }
 .custom-hr{
   opacity: .5;

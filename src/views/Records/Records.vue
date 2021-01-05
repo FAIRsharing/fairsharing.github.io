@@ -176,16 +176,12 @@ export default {
         }
       }
       await this.getData();
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
     },
     /** This methods get the data from the client.
      * @returns {Promise}
      */
     getData: async function () {
+      window.scrollTo(0,0);
       this.errors = null;
       const _module = this;
       try {

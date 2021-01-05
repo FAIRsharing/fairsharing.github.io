@@ -1,10 +1,6 @@
 <template>
   <div>
     <section style="min-height:65vh">
-      <h1 class="d-none">
-        Records
-      </h1>
-
       <!--Filtered Chips-->
       <div
         v-if="getChips.length && !stickToTop"
@@ -39,9 +35,6 @@
             :loading="loading"
             type="image"
           >
-            <h2 class="d-none">
-              Result
-            </h2>
             <!-- StackCard view -->
             <RecordsCardStack
               v-for="record in records"

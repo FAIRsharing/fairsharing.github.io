@@ -126,4 +126,12 @@ describe("CreateRecord.vue", function() {
         await wrapper.vm.editRecord();
         expect($router.push).toHaveBeenCalledTimes(1);
     });
+
+    it("removes countries on click", () => {
+        expect(wrapper.vm.countries.length).toEqual(2);
+        let preserved = wrapper.vm.countries[1]
+        wrapper.vm.removeCountry(wrapper.vm.countries[0]);
+        expect(wrapper.vm.countries.length).toEqual(1);
+        expect(wrapper.vm.countries[0]).toBe(preserved);
+    });
 });

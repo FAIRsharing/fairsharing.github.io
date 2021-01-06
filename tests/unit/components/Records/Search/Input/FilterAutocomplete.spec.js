@@ -6,6 +6,8 @@ import uiController from "@/store/uiController.js";
 import getGrants from '../../../../../fixtures/getGrants.json'
 import Vuex from "vuex";
 
+jest.useFakeTimers();
+
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
@@ -39,8 +41,9 @@ describe("FilterAutocomplete.vue", function () {
         mocks: {$store, $route, $router},
         propsData: {
             filter: {
-                filterName: 'grants'
-            }
+                filterName: 'grants',
+            },
+            lastItem: true
         }
     });
 
@@ -83,10 +86,10 @@ describe("FilterAutocomplete.vue", function () {
         expect($router.push).toHaveBeenCalledTimes(1);
         expect($router.push).toHaveBeenCalledWith({
             name: "search",
-            query: { grants: "value1"}
+            query: {grants: "value1"}
         });
 
-        wrapper.vm.selectedValues=["value 2","value 3"];
+        wrapper.vm.selectedValues = ["value 2", "value 3"];
         wrapper.vm.applyFilters();
         expect($router.push).toHaveBeenCalledTimes(2);
         expect($router.push).toHaveBeenCalledWith({
@@ -117,6 +120,20 @@ describe("FilterAutocomplete.vue", function () {
         wrapper.vm.applyFilters();
         expect($router.push).toHaveBeenCalledTimes(4);
 
+    });
+
+    it("can check onInput", () => {
+        wrapper.setProps({lastItem: true});
+        wrapper.vm.onInput();
+        expect(setTimeout).toHaveBeenLastCalledWith(wrapper.vm.callOut, 100);
+        wrapper.setProps({lastItem: false});
+        wrapper.vm.onInput();
+        expect(setTimeout).toHaveBeenLastCalledWith(wrapper.vm.callOut, 100);
+    });
+
+    it("can check callOut", () => {
+        wrapper.vm.callOut();
+        expect(wrapper.emitted('lastItemClick')).toBeTruthy()
     });
 
 });

@@ -15,6 +15,7 @@
           :placeholder="`Search through ${filter.filterLabel}`"
           item-text="key"
           item-value="key"
+          @focus="onInput"
           @click:clear="reset(filter)"
         >
           <template v-slot:selection="data">
@@ -45,14 +46,15 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import clearString from '@/utils/stringUtils'
 
 export default {
   name: "FilterAutocomplete",
   mixins: [clearString],
   props: {
-    filter: {default: null, type: Object}
+    filter: {default: null, type: Object},
+    lastItem:{default:false, type:Boolean}
   },
   data: () => {
     return {
@@ -72,7 +74,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({setComponentOverflowLocal: 'uiController/setComponentOverflow'}),
     /**
      * Apply the filters by building the new query parameters using the form data.
      */
@@ -133,6 +134,14 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
+    onInput () {
+      if (this.lastItem) {
+        setTimeout(this.callOut, 100)
+      }
+    },
+    callOut ()  {
+      this.$emit('lastItemClick')
+    }
   }
 }
 </script>

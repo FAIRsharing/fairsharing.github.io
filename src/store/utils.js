@@ -59,10 +59,22 @@ export function initEditorSections(data, sectionsNames){
                 status: data.status,
                 countries: data.countries,
                 metadata: data.metadata,
-                domains: data.domains,
-                subjects: data.subjects,
-                taxonomies: data.taxonomies,
-                userDefinedTags: data.userDefinedTags,
+                domains: data.domains.map((obj) => {
+                    obj.label = obj.label.toLowerCase();
+                    return obj;
+                }),
+                subjects: data.subjects.map((obj) => {
+                    obj.label = obj.label.toLowerCase();
+                    return obj;
+                }),
+                taxonomies: data.taxonomies.map((obj) => {
+                    obj.label = obj.label.toLowerCase();
+                    return obj;
+                }),
+                userDefinedTags: data.userDefinedTags.map((obj) => {
+                    obj.label = obj.label.toLowerCase();
+                    return obj;
+                }),
             }
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";

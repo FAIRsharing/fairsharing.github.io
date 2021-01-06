@@ -59,6 +59,12 @@
                 @click="closePopup(false)"
               >
                 Login
+                <v-icon
+                  class="ml-1"
+                  small
+                >
+                  fa fa-sign-in-alt
+                </v-icon>
               </v-btn>
             </template>
             <Login
@@ -71,10 +77,15 @@
             v-else
             :small="$vuetify.breakpoint.mdAndDown"
             :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1 teal darken-2"
+            class="mr-1 mt-sm-1 teal darken-2 pl-2"
             to="/accounts/profile"
           >
-            <span class="white--text">Welcome, {{ user().credentials.username }}</span>
+            <v-avatar>
+              <v-icon dark color="white">
+                fa-user-circle
+              </v-icon>
+            </v-avatar>
+            <span class="white--text ellipse">{{ user().credentials.username }}</span>
           </v-btn>
         </ul>
       </nav>
@@ -90,10 +101,6 @@ import StringSearch from "@/components/Records/Search/Input/StringSearch";
 export default {
   name: "Header",
   components: {StringSearch, Login},
-  computed: {
-    ...mapState('uiController', ["UIGeneralStatus"]),
-    ...mapState('users', ["user"])
-  },
   data() {
     return {
       closeMenuStatus: false,
@@ -131,6 +138,10 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    ...mapState('uiController', ["UIGeneralStatus"]),
+    ...mapState('users', ["user"])
   },
   methods: {
     toggleDrawerLeft: function () {
@@ -173,6 +184,7 @@ header {
 .custom-width {
   width: 94%;
 }
+
 </style>
 
 

@@ -181,7 +181,7 @@
               loading-text="Please wait, tags are loading"
               :search-input.sync="searchString"
             >
-              <template #item.model="{ item }">
+              <template #[`item.model`]="{ item }">
                 <div
                   :class="colors[item.model] + '--text'"
                   class="noBreak"
@@ -189,7 +189,7 @@
                   {{ item.model.toUpperCase().replace(/_/g, " ") }}
                 </div>
               </template>
-              <template #item.label="{ item }">
+              <template #[`item.label`]="{ item }">
                 <v-chip
                   :class="colors[item.model]"
                   class="white--text noBreak"
@@ -197,7 +197,7 @@
                   {{ item.label }}
                 </v-chip>
               </template>
-              <template #item.synonyms="{ item }">
+              <template #[`item.synonyms`]="{ item }">
                 <div
                   v-if="item.synonyms"
                   class="font-italic limitWidth"

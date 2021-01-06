@@ -153,19 +153,23 @@
               class="green white--text"
             >
               Records without dois
-              <a
-                class="ml-5"
-                :href="obtainFileRecordsWODois()"
-                download="recordWithoutDOIs.txt"
+              <v-btn
+                v-if="downloadContent"
+                class="info ml-5"
               >
-                <v-icon
-                  color="white"
-                  class="mr-1"
+                <a
+                  :href="downloadContent"
+                  download="recordWithoutDOIs.txt"
                 >
-                  fa fa-download
-                </v-icon>
-                <span class="white">Obtain file</span>
-              </a>
+                  <v-icon
+                    color="white"
+                    class="mr-1"
+                  >
+                    fa fa-download
+                  </v-icon>
+                  <span class="white--text">Obtain file</span>
+                </a>
+              </v-btn>
             </v-card-title>
           </v-card-text>
         </v-card>
@@ -345,7 +349,8 @@
             recordsInCuration: "",
             hiddenRecords: ""
           },
-          loading: false
+          loading: false,
+          downloadContent: null
         }
       },
       computed: {
@@ -369,6 +374,7 @@
           this.allDataCuration = data.curationSummary;
           client.initalizeHeader();
           this.prepareData();
+          await this.obtainFileRecordsWODois();
           this.loading = false;
         })
       },
@@ -393,7 +399,8 @@
                 object.type = rec.type;
                 if (rec.lastEditor){
                   object.lastEditor = rec.lastEditor.username+' ('+rec.lastEditor.id+')';
-                }else{
+                }
+                else{
                   object.lastEditor = "unknown"
                 }
                 this.approvalRequired.push(object);
@@ -418,7 +425,8 @@
               object.createdAt = item.createdAt;
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
-              }else{
+              }
+              else{
                 object.creator = "unknown"
               }
               this.recordsCreatedCuratorsLastWeek.push(object);
@@ -436,7 +444,8 @@
                 rec.maintainers.forEach(main => {
                   if (numMaint > 0){
                     object.recordMaintainers += ', ' + main.username+' ('+main.id+')';
-                  }else{
+                  }
+                  else{
                     object.recordMaintainers = main.username+' ('+main.id+')';
                   }
                   numMaint += 1;
@@ -453,12 +462,14 @@
               object.createdAt = item.createdAt;
               if (item.curator){
                 object.curator = item.curator.username
-              }else{
+              }
+              else{
                 object.curator = 'none'
               }
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
-              }else{
+              }
+              else{
                 object.creator = "unknown"
               }
               this.hiddenRecords.push(object);
@@ -466,16 +477,11 @@
           },
           async obtainFileRecordsWODois(){
             let data = await restClient.getRecordsWoDOIs(this.user().credentials.token);
-            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data).replace(/^\[(.+)\]$/,'$1').split(',').join('\r\n').replace(/['"]+/g, ''));
-            //let downloadAnchorNode = document.createElement('a');
-            //downloadAnchorNode.setAttribute("href",     dataStr);
-            //downloadAnchorNode.setAttribute("download", "recordsWithoutDOIs.txt");
-            //document.body.appendChild(downloadAnchorNode); // required for firefox
-            //console.log(downloadAnchorNode);
-            //downloadAnchorNode.click();
-            //downloadAnchorNode.remove();
-            //console.log(dataStr);
-            return dataStr;
+            this.downloadContent = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data)
+                .replace(/^\[(.+)\]$/,'$1')
+                .split(',')
+                .join('\r\n')
+                .replace(/['"]+/g, ''));
           }
       }
     }

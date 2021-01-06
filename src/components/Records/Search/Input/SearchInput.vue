@@ -103,6 +103,9 @@ export default {
       }
       return comparison;
     },
+    /**
+     * Scroll to the bottom of the element
+     */
     scrollToBottom() {
       let element = document.getElementById("scrollable-holder");
       element.scrollTop = element.scrollHeight;

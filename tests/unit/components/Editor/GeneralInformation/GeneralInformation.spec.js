@@ -26,14 +26,12 @@ let record = {
         contacts: []
     },
     countries: [{id: 1}],
-    subjects: [{id: 2}],
-    taxonomies: [{id: 3}],
+    subjects: [{id: 2, label: "Abc"}],
+    taxonomies: [{id: 2, label: "Nope"}],
+    domains: [{label: 'tester', id: 2}],
+    userDefinedTags: [],
     type: 'abc',
     status: "ready",
-    domains: [{
-        label: 'tester',
-        id: 2
-    }],
     name: "ok"
 };
 recordStore.state.sections = {

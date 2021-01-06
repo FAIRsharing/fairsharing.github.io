@@ -227,12 +227,18 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
-    onInput () {
+    /**
+     * Call callOut method (an emit function to call scrollToBottom method from parent component) after a few seconds if last autocomplete item is focused
+     */
+    onInput() {
       if (this.lastItem) {
         setTimeout(this.callOut, 100)
       }
     },
-    callOut ()  {
+    /**
+     * Call an emit function name LastItemClick which trigger parent method name scrollToBottom
+     */
+    callOut() {
       this.$emit('lastItemClick')
     }
   }

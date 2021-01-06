@@ -148,7 +148,6 @@
                     <v-edit-dialog
                       :return-value.sync="props.item.processingNotes"
                       large
-                      persistent
                       width="1200px"
                       @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
                     >
@@ -162,15 +161,17 @@
                   </v-if>
                 -->
                       <template v-slot:input>
-                        <div class="mt-4 title">
-                          Update Processing Notes
+                        <div class="testDialog">
+                          <div class="mt-4 title">
+                            Update Processing Notes
+                          </div>
+                          <v-textarea
+                            v-model="props.item.processingNotes"
+                            width="1200px"
+                            label="Edit (not long words)"
+                            filled
+                          />
                         </div>
-                        <v-textarea
-                          v-model="props.item.processingNotes"
-                          width="1200px"
-                          label="Edit (not long words)"
-                          filled
-                        />
                       </template>
                     </v-edit-dialog>
                   </td>
@@ -679,7 +680,8 @@
               object.createdAt = item.createdAt;
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
-              }else{
+              }
+              else{
                 object.creator = "unknown"
               }
               this.recordsCreatedCuratorsLastWeek.push(object);
@@ -734,12 +736,14 @@
               object.createdAt = item.createdAt;
               if (item.curator){
                 object.curator = item.curator.username
-              }else{
+              }
+              else{
                 object.curator = 'none'
               }
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
-              }else{
+              }
+              else{
                 object.creator = "unknown"
               }
               this.hiddenRecords.push(object);
@@ -834,7 +838,10 @@
   #text-curator-search-5 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }
-</style>
-<style>
   table.v-table thead th {font-size: 25px !important;}
+
+  .testDialog {
+    width: 600px !important;
+  }
+
 </style>

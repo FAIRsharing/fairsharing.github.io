@@ -17,7 +17,7 @@
       >
         <div>
           <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-icon
                 v-bind="attrs"
                 small
@@ -34,7 +34,7 @@
             {{ contact['contact_name'] }} ({{ contact['contact_email'] }})<span v-if="contact['contact_orcid']">: {{ contact['contact_orcid'] }}</span>
           </span>
           <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-icon
                 v-bind="attrs"
                 small

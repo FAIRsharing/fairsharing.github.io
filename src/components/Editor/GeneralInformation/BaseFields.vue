@@ -14,9 +14,9 @@
         :rules="[rules.isRequired()]"
         outlined
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-icon v-on="on">
                 fa-question-circle
               </v-icon>
@@ -41,13 +41,13 @@
         :rules="[rules.isRequired()]"
         outlined
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <v-tooltip
             bottom
             max-width="300px"
             class="text-justify"
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-icon v-on="on">
                 fa-question-circle
               </v-icon>
@@ -72,13 +72,13 @@
         :rules="[rules.isRequired(), rules.isUrl()]"
         outlined
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <v-tooltip
             bottom
             max-width="300px"
             class="text-justify"
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-icon v-on="on">
                 fa-question-circle
               </v-icon>
@@ -103,13 +103,13 @@
         :items="years()"
         outlined
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <v-tooltip
             bottom
             max-width="300px"
             class="text-justify"
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-icon v-on="on">
                 fa-question-circle
               </v-icon>
@@ -138,13 +138,13 @@
         outlined
         return-object
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <v-tooltip
             bottom
             max-width="300px"
             class="text-justify"
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-icon v-on="on">
                 fa-question-circle
               </v-icon>
@@ -154,7 +154,7 @@
         </template>
 
         <!-- autocomplete selected -->
-        <template v-slot:selection="data">
+        <template #selection="data">
           <v-chip
             class="blue white--text"
             close
@@ -165,7 +165,7 @@
         </template>
 
         <!-- autocomplete data -->
-        <template v-slot:item="data">
+        <template #item="data">
           <country-flag
             v-if="data.item.code !== null"
             :country="data.item.code"
@@ -201,14 +201,14 @@
         return-object
       >
         <!-- autocomplete selected -->
-        <template v-slot:selection="data">
+        <template #selection="data">
           {{ data.item.name.replace(/_/g, ' ') }}
         </template>
 
         <!-- autocomplete data -->
-        <template v-slot:item="data">
+        <template #item="data">
           <v-tooltip left>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-list-item
                 class="registryList"
                 v-bind="attrs"
@@ -251,14 +251,14 @@
         :disabled="fields.type === 'collection' || fields.type.name === 'collection'"
       >
         <!-- autocomplete selected -->
-        <template v-slot:selection="data">
+        <template #selection="data">
           {{ data.item.name.replace(/_/g, ' ') }}
         </template>
 
         <!-- autocomplete data -->
-        <template v-slot:item="data">
+        <template #item="data">
           <v-tooltip left>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-list-item
                 class="registryList"
                 v-bind="attrs"
@@ -288,13 +288,13 @@
           label="Reason for deprecation"
           outlined
         >
-          <template v-slot:prepend>
+          <template #prepend>
             <v-tooltip
               bottom
               max-width="300px"
               class="text-justify"
             >
-              <template v-slot:activator="{ on }">
+              <template #activator="{ on }">
                 <v-icon v-on="on">
                   fa-question-circle
                 </v-icon>
@@ -314,13 +314,13 @@
         :rules="[rules.isRequired(), rules.isLongEnough(40)]"
         outlined
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <v-tooltip
             bottom
             max-width="300px"
             class="text-justify"
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-icon v-on="on">
                 fa-question-circle
               </v-icon>

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <v-tooltip bottom v-if="keyword.definitions">
+    <v-tooltip
+      v-if="keyword.definitions"
+      bottom
+    >
       <template #activator="{ on, attrs }">
         <div
           v-bind="attrs"
@@ -11,8 +14,12 @@
       </template>
       <div class="tooltip">
         <div><b class="mr-1">Name:</b> {{ keyword.label }}</div>
-        <div v-if="keyword['model']"><b class="mr-1">Type:</b> {{ keyword['model'] }}</div>
-        <div v-if="keyword['iri']"><b class="mr-1">URL:</b> {{ keyword['iri'] }}</div>
+        <div v-if="keyword['model']">
+          <b class="mr-1">Type:</b> {{ keyword['model'] }}
+        </div>
+        <div v-if="keyword['iri']">
+          <b class="mr-1">URL:</b> {{ keyword['iri'] }}
+        </div>
         <div v-if="keyword.definitions">
           <b class="mr-1">Definition:</b> <i> {{ keyword.definitions[0] }} </i>
         </div>

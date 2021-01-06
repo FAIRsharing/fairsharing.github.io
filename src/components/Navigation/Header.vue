@@ -81,7 +81,10 @@
             to="/accounts/profile"
           >
             <v-avatar>
-              <v-icon dark color="white">
+              <v-icon
+                dark
+                color="white"
+              >
                 fa-user-circle
               </v-icon>
             </v-avatar>

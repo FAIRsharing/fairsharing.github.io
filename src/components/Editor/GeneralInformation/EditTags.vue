@@ -19,7 +19,7 @@
                 style="text-align: center; font-size: 16px; font-weight: bolder"
               >
                 <v-tooltip right>
-                  <template v-slot:activator="{ on, attrs }">
+                  <template #activator="{ on, attrs }">
                     <v-icon
                       v-bind="attrs"
                       small
@@ -46,7 +46,7 @@
                   >
                     <KeywordTooltip :keyword="tag" />
                     <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
+                      <template #activator="{ on, attrs }">
                         <v-icon
                           v-bind="attrs"
                           small
@@ -104,12 +104,12 @@
               outlined
               hide-details
             >
-              <template v-slot:prepend>
+              <template #prepend>
                 <v-menu
                   offset-y
                   :close-on-content-click="false"
                 >
-                  <template v-slot:activator="{ on, attrs }">
+                  <template #activator="{ on, attrs }">
                     <v-icon
                       v-bind="attrs"
                       class="blue--text ml-3 mr-1"
@@ -181,7 +181,7 @@
               loading-text="Please wait, tags are loading"
               :search-input.sync="searchString"
             >
-              <template v-slot:item.model="{ item }">
+              <template #item.model="{ item }">
                 <div
                   :class="colors[item.model] + '--text'"
                   class="noBreak"
@@ -189,7 +189,7 @@
                   {{ item.model.toUpperCase().replace(/_/g, " ") }}
                 </div>
               </template>
-              <template v-slot:item.label="{ item }">
+              <template #item.label="{ item }">
                 <v-chip
                   :class="colors[item.model]"
                   class="white--text noBreak"
@@ -197,7 +197,7 @@
                   {{ item.label }}
                 </v-chip>
               </template>
-              <template v-slot:item.synonyms="{ item }">
+              <template #item.synonyms="{ item }">
                 <div
                   v-if="item.synonyms"
                   class="font-italic limitWidth"

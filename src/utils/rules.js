@@ -58,7 +58,7 @@ export function isLongEnough(length) {
 export function isOrcid(required) {
     return value => {
         if (!value && !required) return true; // because this is an optional Orcid ID
-        const pattern = /^\d{4}-\d{4}-\d{4}-\d{4}$/gi;
+        const pattern = /^(\d|X){4}-(\d|X){4}-(\d|X){4}-(\d|X){4}$/gi;
         return pattern.test(value) || "Doesn't look like a valid ORCID ID."
     }
 }

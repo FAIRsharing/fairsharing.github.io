@@ -148,7 +148,6 @@
                     <v-edit-dialog
                       :return-value.sync="props.item.processingNotes"
                       large
-                      width="1200px"
                       @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
                     >
                       <!--

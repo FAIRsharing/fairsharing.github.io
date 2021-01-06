@@ -146,61 +146,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.badge {
-  width: 35px;
-  height: 25px;
-  background: white;
-  border: #27aae1 solid 1px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  position: relative;
-
-  #inventory {
-    font-size: small;
-    position: absolute;
-    top: 6%;
-    left: 20%;
-  }
-}
-
-.badge-active {
-  width: 35px;
-  height: 24px;
-  background: #27aae1;
-  border: #27aae1 solid 1px;
-  border-radius: 5px 5px 5px 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  position: relative;
-
-  #inventory {
-    color: white;
-    font-size: small;
-    position: absolute;
-    top: 6%;
-    left: 20%;
-  }
-}
-
-.triangle-left {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 12px solid transparent;
-  border-right: 15px solid #27aae1;
-  border-bottom: 11px solid transparent;
-  left: -30%;
-}
-
-.fixed-scrollable-height {
-  max-height: 300px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
+<style scoped>
 .filterValueName {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -220,5 +166,4 @@ export default {
   color: white;
   padding: 0 7px;
 }
-
 </style>

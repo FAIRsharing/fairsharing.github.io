@@ -184,9 +184,10 @@
             addTerm(){
                 this.error = false;
                 if (this.newTerm) {
-                    this.newTerm = this.newTerm.trim();
-                    if (this.newTags.indexOf(this.newTerm) === -1) {
-                        let found = this.allTags.filter(obj => obj.label.toLowerCase() === this.newTerm.toLowerCase());
+                    let newTags = this.newTags.map(obj => obj.toLowerCase());
+                    this.newTerm = this.newTerm.trim().toLowerCase();
+                    if (newTags.indexOf(this.newTerm) === -1) {
+                        let found = this.allTags.filter(obj => obj.label.toLowerCase() === this.newTerm);
                         if (found.length > 0){
                             this.error = `Term ${this.newTerm} already declared as a ${found[0].model}`
                         }

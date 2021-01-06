@@ -79,7 +79,11 @@ describe("Record.vue", function() {
                 ],
                 metadata: {
                     contacts: []
-                }
+                },
+                domains: [],
+                subjects: [],
+                taxonomies: [],
+                userDefinedTags: []
             }
         };
 

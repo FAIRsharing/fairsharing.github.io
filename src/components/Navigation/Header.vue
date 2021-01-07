@@ -1,5 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app-bar
+    id="mainHeader"
     short
     height="100"
     max-height="100"
@@ -21,7 +22,7 @@
       <string-search :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'" />
       <nav>
         <ul
-          v-if="!$vuetify.breakpoint.mdAndDown"
+          v-if="!$vuetify.breakpoint.md && !$vuetify.breakpoint.sm"
           class="d-flex flex-row align-center flex-wrap px-0"
         >
           <li
@@ -32,11 +33,10 @@
               :small="$vuetify.breakpoint.mdAndDown"
               :x-large="$vuetify.breakpoint.xlOnly"
               class="mr-1 mt-sm-1"
-              color="primary"
-              outlined
+              :class="item.color"
               :to="item.link"
             >
-              <span class="primary--text">{{ item.label }}</span>
+              <span class="white--text">{{ item.label }}</span>
             </v-btn>
           </li>
           <!-- LOGIN -->
@@ -52,13 +52,19 @@
               <v-btn
                 :small="$vuetify.breakpoint.mdAndDown"
                 :x-large="$vuetify.breakpoint.xlOnly"
-                color="accent3 white--text"
+                color="teal darken-2 white--text"
                 class="mr-1 mt-sm-1"
                 dark
                 v-on="on"
                 @click="closePopup(false)"
               >
                 Login
+                <v-icon
+                  class="ml-1"
+                  small
+                >
+                  fa fa-sign-in-alt
+                </v-icon>
               </v-btn>
             </template>
             <Login
@@ -71,10 +77,18 @@
             v-else
             :small="$vuetify.breakpoint.mdAndDown"
             :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1 accent3"
+            class="mr-1 mt-sm-1 teal darken-2 pl-2"
             to="/accounts/profile"
           >
-            <span class="white--text">Welcome, {{ user().credentials.username }}</span>
+            <v-avatar>
+              <v-icon
+                dark
+                color="white"
+              >
+                fa-user-circle
+              </v-icon>
+            </v-avatar>
+            <span class="white--text ellipse">{{ user().credentials.username }}</span>
           </v-btn>
         </ul>
       </nav>
@@ -90,10 +104,6 @@ import StringSearch from "@/components/Records/Search/Input/StringSearch";
 export default {
   name: "Header",
   components: {StringSearch, Login},
-  computed: {
-    ...mapState('uiController', ["UIGeneralStatus"]),
-    ...mapState('users', ["user"])
-  },
   data() {
     return {
       closeMenuStatus: false,
@@ -102,29 +112,39 @@ export default {
         {
           label: "Standards",
           link: "/standards",
+          color: "blue"
         },
         {
           label: "Databases",
           link: "/databases",
+          color: "blue"
         },
         {
           label: "Policies",
           link: "/policies",
+          color: "blue"
         },
         {
           label: "Collections",
           link: "/collections",
+          color: "blue"
         },
         {
-          label: "Add content",
+          label: "Add/Claim content",
           link: "/new",
+          color: "grey"
         },
         {
           label: "Stats",
           link: "/summary-statistics",
+          color: "teal darken-2"
         }
       ]
     }
+  },
+  computed: {
+    ...mapState('uiController', ["UIGeneralStatus"]),
+    ...mapState('users', ["user"])
   },
   methods: {
     toggleDrawerLeft: function () {
@@ -167,6 +187,7 @@ header {
 .custom-width {
   width: 94%;
 }
+
 </style>
 
 

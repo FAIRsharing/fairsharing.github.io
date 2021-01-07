@@ -1,17 +1,19 @@
 <template>
-  <section class="chips-container mb-3">
+  <section class="chips-container">
     <v-chip-group
       column
     >
       <v-chip
         v-for="(chip,index) in chips"
         :key="chip.label+'_'+index"
-        text-color="white"
-        :color="getChipColor(chip)"
-        @click.prevent="updateSearchQuery(chip)"
+        small
+        text-color="secondary"
+        color="secondary"
+        outlined
+        @click="updateSearchQuery(chip)"
       >
         <KeywordTooltip
-          v-if="chip.type === 'subjects' || chip.type === 'domains' "
+          v-if="type === 'subjects' || type === 'domains' "
           :keyword="chip"
         />
         <div v-else>
@@ -25,13 +27,15 @@
 <script>
   import {isEqual} from "lodash";
   import KeywordTooltip from "../../Shared/KeywordTooltip";
-  import recordsCardUtils from "@/utils/recordsCardUtils";
 
   export default {
     name: "SearchLinkChips",
     components: {KeywordTooltip},
-    mixins: [recordsCardUtils],
     props: {
+      type: {
+        default: null,
+        type: String
+      },
       chips: {
         default: null,
         type: Array
@@ -50,12 +54,12 @@
           currentQuery[param] = _module.$route.query[param];
           oldQuery[param] = _module.$route.query[param];
         });
-        if (!currentQuery[chip.type]) {
-          currentQuery[chip.type] = encodeURIComponent(chip.label);
+        if (!currentQuery[_module.type]) {
+          currentQuery[_module.type] = encodeURIComponent(chip.label);
         } else {
-          let terms = currentQuery[chip.type].split(',');
+          let terms = currentQuery[_module.type].split(',');
           terms.push(encodeURIComponent(chip.label));
-          currentQuery[chip.type] = terms.filter((v, i, a) => a.indexOf(v) === i).join();
+          currentQuery[_module.type] = terms.filter((v, i, a) => a.indexOf(v) === i).join();
         }
         if (!isEqual(currentQuery, oldQuery)) {
           _module.$router.push({
@@ -70,15 +74,12 @@
           }
         });
 
-      },
+      }
     },
   }
 
 </script>
 
-<style>
-.chips-container {
-  height: 40px;
-  overflow: hidden;
-}
+<style scoped>
+
 </style>

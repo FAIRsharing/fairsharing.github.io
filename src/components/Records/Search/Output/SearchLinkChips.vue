@@ -1,19 +1,17 @@
 <template>
-  <section class="chips-container">
+  <section class="chips-container mb-3">
     <v-chip-group
       column
     >
       <v-chip
         v-for="(chip,index) in chips"
         :key="chip.label+'_'+index"
-        small
-        text-color="secondary"
-        color="secondary"
-        outlined
-        @click="updateSearchQuery(chip)"
+        text-color="white"
+        :color="getChipColor(chip)"
+        @click.prevent="updateSearchQuery(chip)"
       >
         <KeywordTooltip
-          v-if="type === 'subjects' || type === 'domains' "
+          v-if="chip.type === 'subjects' || chip.type === 'domains' "
           :keyword="chip"
         />
         <div v-else>
@@ -25,61 +23,59 @@
 </template>
 
 <script>
-  import {isEqual} from "lodash";
-  import KeywordTooltip from "../../Shared/KeywordTooltip";
-
-  export default {
-    name: "SearchLinkChips",
-    components: {KeywordTooltip},
-    props: {
-      type: {
-        default: null,
-        type: String
-      },
-      chips: {
-        default: null,
-        type: Array
+import {isEqual} from "lodash";
+import KeywordTooltip from "../../Shared/KeywordTooltip";
+import recordsCardUtils from "@/utils/recordsCardUtils";
+export default {
+  name: "SearchLinkChips",
+  components: {KeywordTooltip},
+  mixins: [recordsCardUtils],
+  props: {
+    chips: {
+      default: null,
+      type: Array
+    }
+  },
+  methods: {
+    /*
+     * TODO: Contains some code similar to that in FilterButton.vue
+     * Could this be refactored somehow?
+     */
+    updateSearchQuery(chip) {
+      const _module = this;
+      let currentQuery = {};
+      let oldQuery = {};
+      Object.keys(_module.$route.query).forEach(function (param) {
+        currentQuery[param] = _module.$route.query[param];
+        oldQuery[param] = _module.$route.query[param];
+      });
+      if (!currentQuery[chip.type]) {
+        currentQuery[chip.type] = encodeURIComponent(chip.label);
+      } else {
+        let terms = currentQuery[chip.type].split(',');
+        terms.push(encodeURIComponent(chip.label));
+        currentQuery[chip.type] = terms.filter((v, i, a) => a.indexOf(v) === i).join();
       }
-    },
-    methods: {
-      /*
-       * TODO: Contains some code similar to that in FilterButton.vue
-       * Could this be refactored somehow?
-       */
-      updateSearchQuery(chip) {
-        const _module = this;
-        let currentQuery = {};
-        let oldQuery = {};
-        Object.keys(_module.$route.query).forEach(function (param) {
-          currentQuery[param] = _module.$route.query[param];
-          oldQuery[param] = _module.$route.query[param];
+      if (!isEqual(currentQuery, oldQuery)) {
+        _module.$router.push({
+          name: _module.$route.name,
+          query: currentQuery
         });
-        if (!currentQuery[_module.type]) {
-          currentQuery[_module.type] = encodeURIComponent(chip.label);
-        } else {
-          let terms = currentQuery[_module.type].split(',');
-          terms.push(encodeURIComponent(chip.label));
-          currentQuery[_module.type] = terms.filter((v, i, a) => a.indexOf(v) === i).join();
-        }
-        if (!isEqual(currentQuery, oldQuery)) {
-          _module.$router.push({
-            name: _module.$route.name,
-            query: currentQuery
-          });
-        }
-        let selectedItem = this.chips.find(item => isEqual(item, chip));
-        this.chips.map(item => {
-          if (isEqual(item, selectedItem)) {
-            item.active = !item.active;
-          }
-        });
-
       }
-    },
+      let selectedItem = this.chips.find(item => isEqual(item, chip));
+      this.chips.map(item => {
+        if (isEqual(item, selectedItem)) {
+          item.active = !item.active;
+        }
+      });
+    }
   }
-
+}
 </script>
 
-<style scoped>
-
+<style>
+.chips-container {
+  height: 40px;
+  overflow: hidden;
+}
 </style>

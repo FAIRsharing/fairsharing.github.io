@@ -4,11 +4,11 @@
     <section class="ma-2 ma-md-2 ma-lg-1 pt-lg-4 cursor-pointer">
       <v-card
         v-ripple
-        class="pl-8 pr-8 pt-8 pb-8 d-flex flex-column"
+        class="pa-6 d-flex flex-column"
         outlined
         tile
-        height="420px"
-        :elevation="allowClicking?'4':'0'"
+        height="400px"
+        :elevation="allowClicking?'4':'1'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"
       >
@@ -40,10 +40,10 @@
             lg="10"
             xl="11"
           >
-            <h3 class="mt-5 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text">
+            <h3 class="mt-5 mb-4 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text height-50">
               {{ record.name }}
             </h3>
-            <p class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height">
+            <p class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height height-50">
               {{ record.description }}
             </p>
           </v-col>

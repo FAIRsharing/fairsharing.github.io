@@ -2,35 +2,11 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
 
+import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
+    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, LoginFailure, Stat, Community, Stakeholders,
+    Timeline, License, Terms, Educational, Privacy }
+    from "./routes.js"
 
-const Home = () => import(/* webpackChunkName: "home-chunk" */ '@/views/Home/Home.vue');
-const NotFound = () => import(/* webpackChunkName: "home-chunk" */  "@/views/Errors/404");
-
-const Record =  () => import(/* webpackChunkName: "record-chunk" */ '@/views/Records/Record');
-const Records =  () => import(/* webpackChunkName: "records-chunk" */ '@/views/Records/Records');
-const NewRecord = () => import(/* webpackChunkName: "newRecord-chunk" */ '@/views/CreateRecord/NewRecord');
-const Editor = () => import(/* webpackChunkName: "editRecord-chunk" */ "@/views/CreateRecord/Editor");
-
-const Login = () => import(/* webpackChunkName: "login-chunk" */ '@/views/Users/Login/Login');
-const Signup =  () => import(/* webpackChunkName: "signUp-chunk" */ "@/views/Users/Signup");
-const ConfirmAccount =  () => import(/* webpackChunkName: "confirmAccount-chunk" */ "@/views/Users/ConfirmAccount.vue");
-const ResendConfirmation = () => import(/* webpackChunkName: "resentEmail-chunk" */ "@/views/Users/ResendConfirmation.vue");
-const User =  () => import(/* webpackChunkName: "user-chunk" */ "@/views/Users/User.vue");
-const Curator = () => import(/* webpackChunkName: "curator-chunk" */ "@/views/Curators/Curator.vue");
-const RequestNewPassword = () =>  import(/* webpackChunkName: "newPwd-chunk" */ "@/views/Users/RequestNewPassword");
-const ResetPassword = () =>  import(/* webpackChunkName: "resetPwd-chunk" */ "@/views/Users/ResetPassword");
-const EditProfile = () =>  import(/* webpackChunkName: "editProfile-chunk" */ "@/views/Users/EditProfile");
-const OauthLogin = () =>  import(/* webpackChunkName: "Oauth-chunk" */ "@/views/Users/Login/OauthLogin.vue");
-const LoginFailure = () =>  import(/* webpackChunkName: "failedLogin-chunk" */ "@/views/Users/Login/LoginFailure");
-
-const Stat =  () => import(/* webpackChunkName: "stat-chunk" */ '@/views/Stats/Statistics.vue');
-const Community =  () => import(/* webpackChunkName: "community-chunk" */ '@/views/Static/Community/Community');
-const Stakeholders =  () => import(/* webpackChunkName: "stakeholders-chunk" */ '@/views/Static/Stakeholders/Stakeholders');
-const Timeline =  () => import(/* webpackChunkName: "timeline-chunk" */ '@/views/Static/Timeline/Timeline');
-const License =  () => import(/* webpackChunkName: "licence-chunk" */ '@/views/Static/License/License');
-const Terms =  () => import(/* webpackChunkName: "tos-chunk" */ '@/views/Static/TermOfUse/TermsOfUse');
-const Educational =  () => import(/* webpackChunkName: "edu-chunk" */ '@/views/Static/Educational/Educational');
-const Privacy =  () => import(/* webpackChunkName: "privacy-chunk" */ '@/views/Static/Privacy/Privacy');
 Vue.use(VueRouter);
 
 let routes = [

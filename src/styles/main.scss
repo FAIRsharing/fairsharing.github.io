@@ -85,3 +85,14 @@ h4 {
 }
 
 //End of Animations
+
+//Utilities
+
+.ellipse {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+//End of Utilities

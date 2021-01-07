@@ -49,9 +49,6 @@
       <v-row>
         <v-col>
           <section class="ml-2 mb-0 mr-4 d-flex flex-column">
-            <h4 class="d-none">
-              select Tag type
-            </h4>
             <v-btn
               v-for="(item,index) in buttons"
               :key="index"
@@ -161,10 +158,10 @@ export default {
         },
       };
       record['recordAssociations'].forEach(function (association) {
-        records[association['linkedRecord'].registry].val += 1
+        records[association['linkedRecord'].registry.toLowerCase()].val += 1
       });
       record['reverseRecordAssociations'].forEach(function (association) {
-        records[association['fairsharingRecord'].registry].val += 1
+        records[association['fairsharingRecord'].registry.toLowerCase()].val += 1
       });
       return records;
     },

@@ -41,7 +41,6 @@
       </v-col>
     </v-row>
 
-
     <v-row v-if="hasLoaded">
       <v-col v-if="error">
         <Unauthorized />
@@ -73,21 +72,15 @@
             :disabled="tab.disabled"
           >
             {{ tab.name }}
+            <span
+              v-if="tab.target && getChanges[tab.target] > 0"
+              class="orange--text ml-2 font-weight-bold"
+            > ({{ getChanges[tab.target] }})</span>
           </v-tab>
 
           <!-- EDIT GENERAL INFO -->
           <v-tab-item class="px-10 py-3">
             <edit-general-info />
-          </v-tab-item>
-
-          <!-- EDIT KEYWORDS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-keywords />
-          </v-tab-item>
-
-          <!-- EDIT SUPPORT -->
-          <v-tab-item class="px-10 py-3">
-            <edit-support />
           </v-tab-item>
 
           <!-- EDIT LICENSES -->
@@ -109,7 +102,6 @@
           <v-tab-item class="px-10 py-3">
             <edit-relationships />
           </v-tab-item>
-
         </v-tabs>
       </v-col>
     </v-row>
@@ -117,10 +109,8 @@
 </template>
 
 <script>
-  import { mapActions, mapState } from "vuex"
-  import EditGeneralInfo from "@/components/Editor/EditGeneralInfo";
-  import EditKeywords from "@/components/Editor/EditKeywords";
-  import EditSupport from "@/components/Editor/EditSupport";
+  import { mapActions, mapState, mapGetters } from "vuex"
+  import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
   import EditRelationships from "@/components/Editor/EditRelationships";
   import EditLicences from "@/components/Editor/EditLicences";
   import EditOrganisations from "@/components/Editor/EditOrganisations";
@@ -137,8 +127,6 @@
       EditOrganisations,
       EditLicences,
       EditRelationships,
-      EditSupport,
-      EditKeywords,
       EditGeneralInfo,
       Unauthorized
     },
@@ -169,18 +157,11 @@
         tabs: [
           {
             name: "Edit General Information",
-            disabled: false
+            disabled: false,
+            target: "generalInformation"
           },
           {
-            name: "Edit Keywords",
-            disabled: false
-          },
-          {
-            name: "Edit Support Information",
-            disabled: false
-          },
-          {
-            name: "Edit Licenses",
+            name: "Edit Data Access",
             disabled: false
           },
           {
@@ -200,6 +181,7 @@
     },
     computed: {
       ...mapState('record', ['currentRecord']),
+      ...mapGetters('record', ['getChanges']),
       ...mapState('users', ['user']),
       userToken(){
         const _module = this;
@@ -222,17 +204,12 @@
         const _module = this;
         _module.hasLoaded = false;
         _module.error = false;
-
         let userToken = _module.userToken;
         let id = _module.$route.params.id;
-        if (id.includes('FAIRsharing.')){
-          id = "10.25504/" + id;
-        }
+        if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
         await _module.fetchRecord(id);
         let canEdit = await client.canEdit(_module.currentRecord['fairsharingRecord'].id, userToken);
-        if (canEdit.error) {
-          _module.error = true;
-        }
+        if (canEdit.error) _module.error = true;
         _module.hasLoaded = true;
       },
       confirmReturnToRecord() {
@@ -250,6 +227,5 @@
   }
 </script>
 
-<style scoped>
-
+<style>
 </style>

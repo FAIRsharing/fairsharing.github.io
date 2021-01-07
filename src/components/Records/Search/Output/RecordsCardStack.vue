@@ -1,85 +1,151 @@
 <template>
   <!--Stack List-->
-  <router-link :to="'/' + getRecordLink(record)">
-    <section class="ma-2 ma-md-2 ma-lg-1 pt-lg-4 cursor-pointer">
-      <v-card
-        v-ripple
-        class="pl-8 pr-8 pt-8 pb-8 d-flex flex-column"
-        outlined
-        tile
-        height="420px"
-        :elevation="allowClicking?'4':'0'"
-        @mouseenter="allowClicking=true"
-        @mouseleave="allowClicking=false"
+
+  <section class="pt-3 pt-lg-4">
+    <v-card
+      class="pl-2 pr-2 pt-2 d-flex  align-center flex-column"
+      outlined
+      tile
+      :hover="allowClicking"
+    >
+      <v-row
+        no-gutters
+        class="full-width"
       >
-        <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5">
-          {{ record.abbreviation }}
-        </h2>
-        <v-row
-          no-gutters
-          class="flex-grow-0"
+        <Ribbon
+          v-if="record.isRecommended"
+          title="RECOMMENDED"
+        />
+        <v-col
+          cols="12"
+          xs="12"
+          sm="12"
+          lg="12"
+          md="12"
+          xl="3"
+          @mouseenter="allowClicking=true"
+          @mouseleave="allowClicking=false"
         >
-          <v-col
-            cols="12"
-            xs="12"
-            sm="2"
-            md="2"
-            lg="2"
-            xl="1"
-          >
-            <RecordStatus
-              :record="record"
-              class="mt-4"
-            />
-          </v-col>
-          <v-col
-            cols="12"
-            xs="12"
-            sm="10"
-            md="10"
-            lg="10"
-            xl="11"
-          >
-            <h3 class="mt-5 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text">
-              {{ record.name }}
-            </h3>
-            <p class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height">
-              {{ record.description }}
-            </p>
-          </v-col>
-          <v-divider class="mx-25-percent dashed-line" />
-        </v-row>
-        <!-- chips container -->
-        <div class="ml-25-percent">
+          <router-link :to="'/' + getRecordLink(record)">
+            <div class="mt-1 ml-2 pr-6 d-flex flex-row align-center justify-start">
+              <record-status
+                :record="record"
+                class="mr-8"
+              />
+              <h3
+                class="max-height "
+                style="width: 60%"
+              >
+                <u>{{ record.name }}</u>
+                <span
+                  v-if="record.abbreviation"
+                  class="ml-2"
+                > ({{ truncate(record.abbreviation, 15) }}) </span>
+              </h3>
+            </div>
+          </router-link>
+        </v-col>
+        <v-col
+          cols="12"
+          sm="4"
+          md="3"
+          lg="3"
+          xs="12"
+          xl="2"
+          class="mt-2"
+        >
+          <section class="ml-2 mb-0 mr-4 d-flex flex-column">
+            <v-btn
+              v-for="(item,index) in buttons"
+              :key="index"
+              :outlined="item.active"
+              text
+              class="button-text-color"
+              :color="item.active?'primary':null"
+              :disabled="Chips[item.title].length === 0"
+              @click="changeActiveItem(index)"
+            >
+              {{ getButtonLabel(item.title) }} ({{ Chips[item.title].length }})
+            </v-btn>
+          </section>
+        </v-col>
+        <v-col
+          sm="8"
+          md="9"
+          lg="9"
+          xs="12"
+          xl="7"
+        >
+          <!-- chips container -->
           <SearchLinkChips
-            :chips="Chips"
+            :type="currentActiveChips"
+            :chips="Chips[currentActiveChips]"
           />
-        </div>
-        <associated-records-summary :associated-records="associatedRecords(record)" />
-      </v-card>
-    </section>
-  </router-link>
+        </v-col>
+      </v-row>
+      <!--       Description -->
+      <div
+        class="d-flex flex-row"
+        style="width: 70%"
+      >
+        <v-divider
+          class="mt-2"
+        />
+      </div>
+      <p class="mt-2 card-description">
+        {{ record.description }}
+      </p>
+
+      <!--  Associated Records      -->
+      <AssociatedRecordsStack :associated-records="associatedRecords(record)" />
+    </v-card>
+  </section>
 </template>
 
 <script>
+import Ribbon from "@/components/Records/Shared/Ribbon";
+import AssociatedRecordsStack from "./AssociatedRecordsStack";
+import RecordStatus from "@/components/Records/Shared/RecordStatus"
+import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";
-import RecordStatus from "@/components/Records/Shared/RecordStatus";
-import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
-import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 
 
 export default {
   name: "RecordsCardStack",
-  components: {SearchLinkChips, AssociatedRecordsSummary, RecordStatus},
+  components: {RecordStatus, AssociatedRecordsStack, Ribbon, SearchLinkChips},
   mixins: [recordsCardUtils, truncate],
   props: {
     record: {default: null, type: Object},
   },
   data() {
     return {
+      allowLoop: true,
       allowClicking: false,
-      Chips: [],
+      buttons: [
+        {
+          title: 'domains',
+          active: false
+        },
+        {
+          title: 'subjects',
+          active: false
+        },
+        {
+          title: 'taxonomies',
+          active: false,
+        },
+        {
+          title: 'userDefinedTags',
+          active: false
+        }
+      ],
+      Chips: {
+        domains: [],
+        subjects: [],
+        taxonomies: [],
+        userDefinedTags: []
+      },
       currentActiveChips: null,
     }
   },
@@ -87,56 +153,83 @@ export default {
     this.setChips(this.record);
   },
   methods: {
+    changeActiveItem(itemIndex) {
+      this.buttons.map(item => item.active = false);
+      this.buttons[itemIndex].active = true;
+      this.currentActiveChips = this.buttons[itemIndex].title;
+    },
     associatedRecords(record) {
       let records = {
-        registryNumber: {
-          standard: {
-            val: 0,
-            label: "standards"
-          },
-          database: {
-            val: 0,
-            label: "databases"
-          },
-          policy: {
-            val: 0,
-            label: "policies"
-          },
+        standard: {
+          val: 0,
+          label: "standards"
         },
-        registry: null
+        database: {
+          val: 0,
+          label: "databases"
+        },
+        policy: {
+          val: 0,
+          label: "policies"
+        },
+        collection: {
+          val: 0,
+          label: "collections"
+        },
       };
-      records['registry'] = record.registry.toLowerCase()
       record['recordAssociations'].forEach(function (association) {
-        if (association['linkedRecord'].registry.toLowerCase() !== 'collection' ) {
-          records['registryNumber'][association['linkedRecord'].registry.toLowerCase()].val += 1
-        }
+        records[association['linkedRecord'].registry.toLowerCase()].val += 1
       });
       record['reverseRecordAssociations'].forEach(function (association) {
-        if (association['fairsharingRecord'].registry.toLowerCase() !== 'collection' ) {
-          records['registryNumber'][association['fairsharingRecord'].registry.toLowerCase()].val += 1
-        }
+        records[association['fairsharingRecord'].registry.toLowerCase()].val += 1
       });
       return records;
     },
+
     setChips(record) {
       let _module = this;
       Object.keys(record).forEach(function (node) {
-        if (node === 'subjects' || node === 'domains' || node === 'taxonomies') {
+        if (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags') {
           _module.organizeChips(record, node);
         }
       });
     },
     organizeChips(record, node) {
+      this.organizeButtons(record, node);
       record[node].forEach(item => {
-        item.type = node;
-        this.Chips.push(item);
+        item.active = false;
+        this.Chips[node].push(item);
       })
+    },
+    organizeButtons(record, node) {
+      if (record[node].length > 0 && this.allowLoop) {
+        this.allowLoop = false;
+        this.currentActiveChips = node;
+        this.buttons.map(item => {
+          if (item.title === node) {
+            item.active = true
+          }
+        });
+      }
     },
   },
 }
 </script>
 
 <style scoped lang="scss">
+.chips-container {
+  height: 130px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  position: relative;
+
+  .no-chips {
+    position: absolute;
+    left: 20%;
+    top: 30%;
+  }
+}
+
 .v-chip.v-chip--outlined.v-chip--active::before {
   opacity: 0;
 }

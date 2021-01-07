@@ -65,11 +65,11 @@ export default {
       const _module = this;
       if (_module.searchTerm) {
         _module.$router.push({
-          path: "search",
+          path: "/search",
           query: {
             q: _module.searchTerm
           }
-        })
+        });
         _module.searchTerm = null;
       }
     },

@@ -93,7 +93,7 @@ let recordStore = {
         },
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
-        },
+        }
     },
     actions: {
         async fetchRecord(state, id){

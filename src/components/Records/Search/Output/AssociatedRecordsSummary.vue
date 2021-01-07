@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column ml-25-percent">
+  <div class="d-flex flex-column">
     <div
       v-for="(associatedRecord, associationName) in associatedRecords.registryNumber"
       :key="associationName+'_'+associatedRecord.val"

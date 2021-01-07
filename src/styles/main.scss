@@ -74,7 +74,7 @@ a:link {
 
 .dashed-line {
   border: none;
-  border-top: 5px dotted gray;
+  border-top: 4px dotted gray;
   color: #fff;
   background-color: #fff;
   height: 1px;
@@ -83,6 +83,11 @@ a:link {
 .mx-25-percent {
   margin-right: 25%;
   margin-left: 25%;
+}
+
+.mx-50-percent {
+  margin-right: 15%;
+  margin-left: 15%;
 }
 
 .ml-25-percent {

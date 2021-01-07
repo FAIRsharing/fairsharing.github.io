@@ -15,7 +15,7 @@
           :placeholder="`Search through ${filter.filterLabel}`"
           item-text="key"
           item-value="key"
-          @focus="onInput"
+          menu-props="top"
           @click:clear="reset(filter)"
         >
           <template v-slot:selection="data">
@@ -34,8 +34,7 @@
         </v-autocomplete>
         <v-btn
           color="primary"
-          class="ml-lg-2"
-          style="height: 38px"
+          class="ml-lg-2 custom-btn"
           @click="applyFilters(filter)"
         >
           Apply
@@ -54,7 +53,6 @@ export default {
   mixins: [clearString],
   props: {
     filter: {default: null, type: Object},
-    lastItem:{default:false, type:Boolean}
   },
   data: () => {
     return {
@@ -134,20 +132,6 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
-    /**
-     * Call callOut method (an emit function to call scrollToBottom method from parent component) after a few seconds if last autocomplete item is focused
-     */
-    onInput() {
-      if (this.lastItem) {
-        setTimeout(this.callOut, 100)
-      }
-    },
-    /**
-     * Call an emit function name LastItemClick which trigger parent method name scrollToBottom
-     */
-    callOut() {
-      this.$emit('lastItemClick')
-    }
   }
 }
 </script>
@@ -171,5 +155,9 @@ export default {
   background: #2196F3;
   color: white;
   padding: 0 7px;
+}
+
+.custom-btn {
+  height: 38px;
 }
 </style>

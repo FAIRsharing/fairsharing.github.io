@@ -50,7 +50,7 @@
             </div>
             <!-- chips container -->
             <SearchLinkChips
-              :chips="Chips"
+              :chips="chips"
               class="ml-10"
             />
           </v-col>
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       allowClicking: false,
-      Chips: [],
+      chips: [],
       currentActiveChips: null,
     }
   },
@@ -124,17 +124,20 @@ export default {
       let _module = this;
       Object.keys(record).forEach(function (node) {
         if (node === 'subjects' || node === 'domains' || node === 'taxonomies') {
-          _module.organizeChips(record, node);
+          _module.organizeChips(record, node, 2);
         }
       });
     },
-    organizeChips(record, node) {
-      record[node].forEach(item => {
-        item.type = node;
-        this.Chips.push(item);
-      })
-    },
-  },
+    organizeChips(record, node, max_item_shown) {
+      const _module = this;
+      record[node].forEach(function (item, index) {
+        if (index < max_item_shown) {
+          item.type = node;
+          _module.chips.push(item);
+        }
+      });
+    }
+  }
 }
 </script>
 

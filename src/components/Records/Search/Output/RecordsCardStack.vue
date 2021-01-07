@@ -8,7 +8,7 @@
         outlined
         tile
         height="400px"
-        :elevation="allowClicking?'4':'1'"
+        :elevation="allowClicking?'5':'1'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"
       >
@@ -40,12 +40,14 @@
             lg="10"
             xl="11"
           >
-            <h3 class="mt-5 mb-4 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text height-50">
+            <h3 :class="['mt-5 mb-4 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text height-60',{'overflow-hidden':$vuetify.breakpoint.mdAndDown}]">
               {{ record.name }}
             </h3>
-            <p class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height height-50">
-              {{ record.description }}
-            </p>
+            <div class="height-50">
+              <p class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height">
+                {{ record.description }}
+              </p>
+            </div>
           </v-col>
           <v-divider class="mx-25-percent dashed-line" />
         </v-row>

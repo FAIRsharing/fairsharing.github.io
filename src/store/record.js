@@ -29,7 +29,8 @@ let recordStore = {
         },
         sections: {
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation
-        }
+        },
+        newRecord: false
     },
     mutations: {
         setCurrentRecord(state, data){
@@ -94,6 +95,9 @@ let recordStore = {
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
         },
+        setCreatingNewRecord(state){
+            state.newRecord = true;
+        }
     },
     actions: {
         async fetchRecord(state, id){
@@ -207,6 +211,9 @@ let recordStore = {
                 changes[section] = state.sections[section].changes
             });
             return changes;
+        },
+        getCreatingNewRecord: (state) => {
+            return state.newRecord;
         }
     }
 };

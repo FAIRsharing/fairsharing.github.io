@@ -35,7 +35,8 @@
     "vuetify": "2.3.4",
     "vuex": "^3.5.1",
     "vue-scroll-stop": "^0.1.5",
-    "vue-scrollto": "^2.20.0"
+    "vue-scrollto": "^2.20.0",
+    "axios": ">=0.21.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.4.4",
@@ -44,7 +45,6 @@
     "@vue/cli-service": "~4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "@vuese/cli": "^2.14.0",
-    "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "codacy-coverage": "^3.4.0",
     "compression-webpack-plugin": "^3.1.0",

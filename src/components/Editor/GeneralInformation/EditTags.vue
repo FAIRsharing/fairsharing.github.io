@@ -16,7 +16,6 @@
               <td
                 class="white--text py-2 px-4 titleCell"
                 :class="section.color"
-                style="text-align: center; font-size: 16px; font-weight: bolder"
               >
                 <v-tooltip right>
                   <template #activator="{ on, attrs }">
@@ -410,6 +409,9 @@
     table#tagsTable td.titleCell {
       width: 100px;
       white-space: nowrap;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bolder
     }
 
     table#tagsTable tr {
@@ -425,7 +427,4 @@
       max-width: 800px;
     }
 
-</style>
-
-<style>
 </style>

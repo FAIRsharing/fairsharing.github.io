@@ -189,7 +189,7 @@
               this.loading = false;
               if (!redirect) this.$scrollTo("#mainHeader");
               if (redirect && !this.message.error){
-                this.$router.push({path: '/' + this.$route.params.id})
+                await this.$router.push({path: '/' + this.$route.params.id})
               }
             }
         }

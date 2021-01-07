@@ -41,31 +41,10 @@
           </v-alert>
         </v-row>
         <v-row>
-          <v-col class="col-12 pt-0">
-            <v-btn
-              class="primary"
-              style="display:inline-block"
-              fab
-              x-small
-              dark
-              @click="addLicence()"
-            >
-              <v-icon>fa-plus</v-icon>
-            </v-btn>
-            <div
-              class="ml-3"
-              style="display:inline-block"
-            >
-              ADD A NEW LICENCE
-            </div>
-            <v-divider />
-          </v-col>
-        </v-row>
-        <v-row>
           <v-col
             v-for="(licence, licenceIndex) in currentLicences"
             :key="'licence_' + licenceIndex"
-            class="col-4"
+            class="col-3"
           >
             <v-card height="100%">
               <v-card-text style="height:80%">
@@ -89,7 +68,7 @@
                       </v-row>
                       <v-row justify="center">
                         <v-btn
-                          class="green white--text my-3"
+                          elass="green white--text my-3"
                           @click="createNewLicence(licence, licenceIndex)"
                         >
                           Create a new licence
@@ -119,22 +98,38 @@
               </v-card-text>
               <v-card-actions>
                 <v-btn
-                  style="display:inline-block"
-                  fab
-                  x-small
-                  dark
-                  class="red"
+                  class="error mb-3 ml-2"
                   @click="removeLicence(licenceIndex)"
                 >
-                  <v-icon> fa-minus </v-icon>
+                  <v-icon left>
+                    fa-minus-circle
+                  </v-icon>
+                  Remove Licence
                 </v-btn>
-                <div
-                  class="ml-3 pt-1"
-                  style="display:inline-block"
-                >
-                  REMOVE LICENCE
-                </div>
               </v-card-actions>
+            </v-card>
+          </v-col>
+
+          <!-- ADDING NEW ITEMS -->
+          <v-col class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+            <v-card
+              height="100%"
+              class="newRel green--text"
+              style="cursor: pointer"
+              min-height="383px"
+              @click="addLicence()"
+            >
+              <div class="mb-4">
+                <v-icon
+                  x-large
+                  class="green--text icon--xxl"
+                >
+                  fa-plus-circle
+                </v-icon>
+              </div>
+              <div class="text-h4 text-center">
+                Add a new licence
+              </div>
             </v-card>
           </v-col>
         </v-row>

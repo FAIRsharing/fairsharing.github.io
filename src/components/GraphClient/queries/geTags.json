@@ -1,0 +1,10 @@
+{
+  "queryName": "searchTags",
+  "queryParam": null,
+  "fields": [
+    {
+      "$ref": "keywords"
+    },
+    "model"
+  ]
+}

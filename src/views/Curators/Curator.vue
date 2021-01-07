@@ -116,7 +116,7 @@
               :search="searches.pendingMaintenanceRequests"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-              disable-initial-sort
+              sort-by=""
             >
               <template
                 v-if="recordType"
@@ -150,15 +150,7 @@
                       large
                       @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
                     >
-                      <!--
-                      <v-if props.item.saveProcessingNotes>
-                        <some sort of text box element>
-                        -->
                       {{ props.item.processingNotes }}
-                      <!--
-                    </element>
-                  </v-if>
-                -->
                       <template v-slot:input>
                         <div class="testDialog">
                           <div class="mt-4 title">
@@ -216,10 +208,16 @@
                   this ownership?
                   <ul style="list-style-type:none;">
                     <li>
-                      Record: {{ dialogs.maintenanceRequests.recordName }}
+                      <font style="color:gray">
+                        Record:
+                      </font>
+                      {{ dialogs.maintenanceRequests.recordName }}
                     </li>
                     <li>
-                      User: {{ dialogs.maintenanceRequests.userName }}
+                      <font style="color:gray">
+                        User:
+                      </font>
+                      {{ dialogs.maintenanceRequests.userName }}
                     </li>
                   </ul>
                 </v-card-title>
@@ -265,10 +263,16 @@
                   this ownership?
                   <ul style="list-style-type:none;">
                     <li>
-                      Record: {{ dialogs.maintenanceRequests.recordName }}
+                      <font style="color:gray">
+                        Record:
+                      </font>
+                      {{ dialogs.maintenanceRequests.recordName }}
                     </li>
                     <li>
-                      User: {{ dialogs.maintenanceRequests.userName }}
+                      <font style="color:gray">
+                        User:
+                      </font>
+                      {{ dialogs.maintenanceRequests.userName }}
                     </li>
                   </ul>
                 </v-card-title>
@@ -417,6 +421,8 @@
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
     import recordTypes from "@/data/recordsRegistries.json"
+    import headersTables from "@/data/headersCuratorDashboard.json"
+
 
     const client = new GraphClient();
     const restClient = new RestClient();
@@ -464,118 +470,7 @@
               rejectAssignment: false
             }
           },
-          headers: {
-            approvalRequired: [
-              {
-                text: "Date last modification",
-                value: "updatedAt"
-              },
-              {
-                text: "Curator",
-                value: "curator"
-              },
-              {
-                text: "Record name (id)",
-                value: "recordName"
-              },
-              {
-                text: "Last editor",
-                value: "lastEditor"
-              }
-            ],
-            maintenanceRequests: [
-              {
-                text: "Date",
-                value: "createdAt"
-              },
-              {
-                text: "Record name (id)",
-                value: "recordName"
-              },
-              {
-                text: "User login (id)",
-                value: "userNameID"
-              },
-              {
-                text: "Processing Notes",
-                value: "processingNotes",
-                sortable: false,
-                width: 250
-              },
-              { text: "Accept request?",
-                value: "actions",
-                sortable: false
-              }
-            ],
-            recordsCreatedCuratorsLastWeek: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "Date created",
-                value: "createdAt"
-              },
-              {
-                text: "Creator",
-                value: "creator"
-              }
-            ],
-            recordsInCuration: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "Record maintainer(s)",
-                value: "recordMaintainers"
-              },
-              {
-                text: "Under curation by",
-                value: "curator"
-              }
-            ],
-            recordsWithoutDois: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "Date created",
-                value: "createdAt"
-              },
-              {
-                text: "Date last edit",
-                value: "updatedAt"
-              },
-              {
-                text: "Created by",
-                value: "creator"
-              },
-              {
-                text: "Last edited by",
-                value: "lastEditor"
-              }
-            ],
-            hiddenRecords: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "Date created",
-                value: "createdAt"
-              },
-              {
-                text: "Under curation by",
-                value: "curator"
-              },
-              {
-                text: "Created by",
-                value: "creator"
-              }
-            ]
-          },
+          headers: headersTables,
           searches: {
             recordsAwaitingApproval: "",
             pendingMaintenanceRequests: "",
@@ -834,9 +729,7 @@
   #text-curator-search-4 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }
-  #text-curator-search-5 div.theme--light.v-input:not(.v-input--is-disabled) input{
-    color:#fff;
-  }
+
   table.v-table thead th {font-size: 25px !important;}
 
   .testDialog {

@@ -48,14 +48,18 @@
                 {{ record.description }}
               </p>
             </div>
+            <!-- chips container -->
+            <SearchLinkChips
+              :chips="Chips"
+              class="ml-10"
+            />
           </v-col>
-          <v-divider class="mx-25-percent dashed-line" />
         </v-row>
-        <!-- chips container -->
-        <div class="ml-25-percent">
-          <SearchLinkChips :chips="Chips" />
-        </div>
-        <associated-records-summary :associated-records="associatedRecords(record)" />
+        <v-divider class="dashed-line" />
+        <associated-records-summary
+          :associated-records="associatedRecords(record)"
+          class="ml-5"
+        />
       </v-card>
     </section>
   </router-link>

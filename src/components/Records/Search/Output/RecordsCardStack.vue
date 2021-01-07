@@ -122,20 +122,21 @@ export default {
     },
     setChips(record) {
       let _module = this;
-      Object.keys(record).forEach(function (node) {
-        if (node === 'subjects' || node === 'domains' || node === 'taxonomies') {
-          _module.organizeChips(record, node, 2);
-        }
-      });
+      const order = ['subjects', 'domains', 'taxonomies']
+      order.forEach(node => {
+        _module.organizeChips(record, node, 2);
+      })
     },
     organizeChips(record, node, max_item_shown) {
       const _module = this;
-      record[node].forEach(function (item, index) {
-        if (index < max_item_shown) {
-          item.type = node;
-          _module.chips.push(item);
-        }
-      });
+      if (record[node]) {
+        record[node].forEach(function (item, index) {
+          if (index < max_item_shown) {
+            item.type = node;
+            _module.chips.push(item);
+          }
+        });
+      }
     }
   }
 }

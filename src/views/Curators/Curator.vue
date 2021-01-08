@@ -93,243 +93,17 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-        <v-card>
-          <v-card-text v-if="maintenanceRequests">
-            <v-card-title
-              id="text-curator-search-1"
-              class="green white--text"
-            >
-              <b> OWNERSHIP REQUESTS </b>
-              <v-spacer />
-              <v-text-field
-                v-model="searches.pendingMaintenanceRequests"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.maintenanceRequests"
-              :items="maintenanceRequests"
-              :search="searches.pendingMaintenanceRequests"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-              sort-by=""
-            >
-              <template
-                v-if="recordType"
-                #item="props"
-              >
-                <tr>
-                  <td>
-                    {{ props.item.createdAt | formattingDate }}
-                  </td>
-                  <td>
-                    <a :href="'#/' + props.item.id">
-                      <span
-                        v-if="props.item.type"
-                        class="mr-2"
-                      >
-                        <img
-                          v-if="Object.keys(recordType).includes(props.item.type)"
-                          :src="'./' + recordType[props.item.type].icon"
-                          class="miniIcon"
-                        >
-                      </span>
-                      {{ props.item.recordName }}
-                    </a>
-                  </td>
-                  <td>
-                    {{ props.item.userNameID }}
-                  </td>
-                  <td>
-                    <v-edit-dialog
-                      :return-value.sync="props.item.processingNotes"
-                      large
-                      @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
-                    >
-                      {{ props.item.processingNotes }}
-                      <template v-slot:input>
-                        <div class="testDialog">
-                          <div class="mt-4 title">
-                            Update Processing Notes
-                          </div>
-                          <v-textarea
-                            v-model="props.item.processingNotes"
-                            width="1200px"
-                            label="Edit (not long words)"
-                            filled
-                          />
-                        </div>
-                      </template>
-                    </v-edit-dialog>
-                  </td>
-                  <td>
-                    <v-icon
-                      color="blue"
-                      dark
-                      left
-                      @click.stop="assignMaintenanceOwner(props.item.recordName,props.item.id,props.item.userNameID,props.item.requestID)"
-                    >
-                      far fa-check-circle
-                    </v-icon>
-                    {{ props.item.actions }}
-                    <v-icon
-                      color="red"
-                      dark
-                      right
-                      @click="rejectMaintenanceOwner(props.item.recordName,props.item.id,props.item.userNameID,props.item.requestID)"
-                    >
-                      fas fa-ban
-                    </v-icon>
-                  </td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-card-text>
-          <v-layout
-            row
-            justify-center
-          >
-            <v-dialog
-              v-model="dialogs.maintenanceRequests.confirmAssignment"
-              max-width="700px"
-            >
-              <v-card>
-                <v-card-title
-                  class="headline"
-                >
-                  Are you sure you want to
-                  <font style="color:blue; padding-left: 5px; padding-right: 5px;">
-                    ACCEPT
-                  </font>
-                  this ownership?
-                  <ul style="list-style-type:none;">
-                    <li>
-                      <font style="color:gray">
-                        Record:
-                      </font>
-                      {{ dialogs.maintenanceRequests.recordName }}
-                    </li>
-                    <li>
-                      <font style="color:gray">
-                        User:
-                      </font>
-                      {{ dialogs.maintenanceRequests.userName }}
-                    </li>
-                  </ul>
-                </v-card-title>
-                <v-card-actions>
-                  <v-spacer />
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="closeMaintenanceAssign()"
-                  >
-                    Cancel
-                  </v-btn>
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="assignMaintenanceOwnConfirm()"
-                  >
-                    OK
-                  </v-btn>
-                  <v-spacer />
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-layout>
-          <v-layout
-            row
-            justify-center
-          >
-            <v-dialog
-              v-model="dialogs.maintenanceRequests.rejectAssignment"
-              max-width="700px"
-            >
-              <v-card>
-                <v-card-title
-                  class="headline"
-                >
-                  Are you sure you want to
-                  <font
-                    style="color:red; padding-left: 5px; padding-right: 5px;"
-                  >
-                    REJECT
-                  </font>
-                  this ownership?
-                  <ul style="list-style-type:none;">
-                    <li>
-                      <font style="color:gray">
-                        Record:
-                      </font>
-                      {{ dialogs.maintenanceRequests.recordName }}
-                    </li>
-                    <li>
-                      <font style="color:gray">
-                        User:
-                      </font>
-                      {{ dialogs.maintenanceRequests.userName }}
-                    </li>
-                  </ul>
-                </v-card-title>
-                <v-card-actions>
-                  <v-spacer />
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="closeMaintenanceReject()"
-                  >
-                    Cancel
-                  </v-btn>
-                  <v-btn
-                    color="blue darken-1"
-                    text
-                    @click="rejectMaintenanceOwnConfirm()"
-                  >
-                    OK
-                  </v-btn>
-                  <v-spacer />
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-layout>
-        </v-card>
-        <v-card>
-          <v-card-text v-if="recordsInCuration">
-            <v-card-title
-              id="text-curator-search-4"
-              class="green white--text"
-            >
-              <b> RECORDS IN CURATION </b>
-              <v-spacer />
-              <v-text-field
-                v-model="searches.recordsInCuration"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.recordsInCuration"
-              :items="recordsInCuration"
-              :search="searches.recordsInCuration"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-              :sort-by="recordsInCuration.curator"
-              :sort-desc="true"
-            />
-          </v-card-text>
-        </v-card>
+        <MaintenanceRequest
+          :loading="loading"
+          :headers="headers.maintenanceRequests"
+          :maintenance-requests="maintenanceRequests"
+          :record-type="recordType"
+          :approval-required="approvalRequired"
+        />
         <v-card>
           <v-card-text v-if="recordsWithoutDois">
             <v-card-title
-              id="text-curator-search-5"
+              id="text-curator-search-1"
               class="green white--text"
             >
               Records without dois
@@ -355,7 +129,7 @@
         <v-card>
           <v-card-text v-if="hiddenRecords">
             <v-card-title
-              id="text-curator-search-7"
+              id="text-curator-search-2"
               class="green white--text"
             >
               <b> HIDDEN RECORDS </b>
@@ -381,7 +155,7 @@
         <v-card>
           <v-card-text v-if="recordsCreatedCuratorsLastWeek">
             <v-card-title
-              id="text-curator-search-2"
+              id="text-curator-search-3"
               class="green white--text"
             >
               <b> RECORDS CREATED BY CURATORS IN THE PAST WEEK </b>
@@ -416,16 +190,15 @@
 
 <script>
     import GraphClient from "@/components/GraphClient/GraphClient.js"
-    import RestClient from "@/components/Client/RESTClient.js"
     import getCurationRecords from "@/components/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
     import recordTypes from "@/data/recordsRegistries.json"
     import headersTables from "@/data/headersCuratorDashboard.json"
+    import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
 
 
     const client = new GraphClient();
-    const restClient = new RestClient();
 
     function compareRecordDesc(a, b) {
       if (a.createdAt > b.createdAt) {
@@ -437,18 +210,20 @@
       return 0;
     }
 
+    function formatDate(d){
+      let date = new Date(d);
+      return date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+    }
+
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
      * */
 
     export default {
       name: "Curator",
-      components: {Unauthorized},
-      filters: {
-        formattingDate: function(d){
-          let date = new Date(d);
-          return date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
-        }
+      components: {
+        Unauthorized,
+        MaintenanceRequest
       },
       data: () => {
         return {
@@ -460,20 +235,9 @@
           recordsWithoutDois: [],
           hiddenRecords: [],
           recordType: null,
-          dialogs: {
-            maintenanceRequests: {
-              confirmAssignment: false,
-              recordName: "",
-              recordID: "",
-              userName: "",
-              requestId: "",
-              rejectAssignment: false
-            }
-          },
           headers: headersTables,
           searches: {
             recordsAwaitingApproval: "",
-            pendingMaintenanceRequests: "",
             recentCuratorCreations: "",
             recordsInCuration: "",
             recordsWithoutDois: "",
@@ -485,16 +249,7 @@
       },
       computed: {
         ...mapState('users', ['user', "messages"]),
-        ...mapState("record", ["recordUpdate"]),
-      },
-      watch: {
-        'dialogs.maintenanceRequests.confirmAssignment' (val) {
-          val || this.closeMaintenanceAssign()
-        },
-        'dialogs.maintenanceRequests.rejectAssignment' (val) {
-          val || this.closeMaintenanceReject()
-        }
-
+        ...mapState("record", ["recordUpdate"])
       },
       created() {
         this.$nextTick(function () {
@@ -552,10 +307,7 @@
             let requests = dataCuration.pendingMaintenanceRequests;
             requests.forEach(item => {
               let object = {};
-              //let date = new Date(item.createdAt);
               object.createdAt = item.createdAt;
-              //date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
-              //object.date = Math.round(date.getTime() / 1000);
               object.recordName = item.fairsharingRecord.name + ' ('+ item.fairsharingRecord.id +')';
               object.id = item.fairsharingRecord.id;
               object.type = item.fairsharingRecord.type ;
@@ -565,7 +317,11 @@
               this.maintenanceRequests.push(object);
             });
             this.maintenanceRequests.sort(compareRecordDesc);
+            for (let i = 0; i < this.maintenanceRequests.length; i++) {
+              this.maintenanceRequests[i].createdAt = formatDate(this.maintenanceRequests[i].createdAt) ;
+            }
           },
+
           prepareRecordsCuratorCreationsLastWeek(dataCuration){
             let records = dataCuration.recentCuratorCreations;
             records.forEach(item => {
@@ -627,7 +383,7 @@
             records.forEach(item => {
               let object = {};
               object.recordNameID = item.name+' ('+item.id+')';
-              object.createdAt = item.createdAt;
+              object.createdAt = formatDate(item.createdAt);
               if (item.curator){
                 object.curator = item.curator.username
               }
@@ -642,72 +398,6 @@
               }
               this.hiddenRecords.push(object);
             });
-          },
-          async saveProcessingNotes(idRecord,notesText){
-            const _module = this;
-            let preparedRecord = {
-              processing_notes: ""
-            };
-            preparedRecord.processing_notes = notesText;
-            let data = {
-              record: preparedRecord,
-              id: idRecord,
-              token: _module.user().credentials.token
-            };
-            await _module.updateRecord(data);
-            if (_module.recordUpdate.error){
-              _module.error = _module.recordUpdate;
-            }
-          },
-          assignMaintenanceOwner(recordName, recordID, userNameID, requestID){
-            const _module = this;
-            _module.dialogs.maintenanceRequests.recordName = recordName;
-            _module.dialogs.maintenanceRequests.recordID = recordID;
-            _module.dialogs.maintenanceRequests.userName = userNameID;
-            _module.dialogs.maintenanceRequests.requestId = requestID;
-            _module.dialogs.maintenanceRequests.confirmAssignment = true;
-          },
-          closeMaintenanceAssign () {
-            this.dialogs.maintenanceRequests.confirmAssignment = false;
-          },
-          async assignMaintenanceOwnConfirm () {
-            const _module = this;
-            await restClient.updateStatusMaintenanceRequest(_module.dialogs.maintenanceRequests.requestId, "approved", this.user().credentials.token);
-            if (!restClient.error){
-              const index = this.maintenanceRequests.findIndex((element) => element.requestID === _module.dialogs.maintenanceRequests.requestId);
-              _module.maintenanceRequests.splice(index, 1);
-            }
-            if (this.approvalRequired.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
-              if (this.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
-                await _module.saveProcessingNotes(_module.dialogs.maintenanceRequests.recordID,"");
-              }
-            }
-            _module.dialogs.maintenanceRequests.confirmAssignment = false;
-          },
-          rejectMaintenanceOwner(recordName, recordID, userNameID, requestID){
-            const _module = this;
-            _module.dialogs.maintenanceRequests.recordName = recordName;
-            _module.dialogs.maintenanceRequests.recordID = recordID;
-            _module.dialogs.maintenanceRequests.userName = userNameID;
-            _module.dialogs.maintenanceRequests.requestId = requestID;
-            _module.dialogs.maintenanceRequests.rejectAssignment = true;
-          },
-          closeMaintenanceReject () {
-            this.dialogs.maintenanceRequests.rejectAssignment = false;
-          },
-          async rejectMaintenanceOwnConfirm () {
-            const _module = this;
-            await restClient.updateStatusMaintenanceRequest(_module.dialogs.maintenanceRequests.requestId, "rejected", this.user().credentials.token);
-            if (!restClient.error){
-              const index = this.maintenanceRequests.findIndex((element) => element.requestID === _module.dialogs.maintenanceRequests.requestId);
-              _module.maintenanceRequests.splice(index, 1);
-            }
-            if (this.approvalRequired.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
-              if (this.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.maintenanceRequests.recordID) < 0){
-                await _module.saveProcessingNotes(_module.dialogs.maintenanceRequests.recordID,"");
-              }
-            }
-            _module.dialogs.maintenanceRequests.rejectAssignment = false;
           }
       }
     }
@@ -726,14 +416,4 @@
   #text-curator-search-3 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }
-  #text-curator-search-4 div.theme--light.v-input:not(.v-input--is-disabled) input{
-    color:#fff;
-  }
-
-  table.v-table thead th {font-size: 25px !important;}
-
-  .testDialog {
-    width: 600px !important;
-  }
-
 </style>

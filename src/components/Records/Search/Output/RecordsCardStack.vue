@@ -83,7 +83,7 @@ export default {
       allowClicking: false,
       chips: [],
       currentActiveChips: null,
-      maxItemShown : 2
+      remainTag:[]
     }
   },
   computed:{
@@ -143,10 +143,11 @@ export default {
     },
     setChips(record) {
       const _module = this;
-      this.chips = [];
       const order = ['subjects', 'domains', 'taxonomies']
+      _module.chips = [];
+      _module.getTagNumber(record, order, _module.getMaxItemShown);
       order.forEach(node => {
-        _module.organizeChips(record, node, this.getMaxItemShown);
+        _module.organizeChips(record, node, _module.getMaxItemShown);
       })
     },
     organizeChips(record, node, max_item_shown) {
@@ -158,6 +159,21 @@ export default {
             _module.chips.push(item);
           }
         });
+      }
+    },
+    getTagNumber(record, order, max_item_shown) {
+      const _module = this;
+      let tagCount = 0;
+      order.forEach((item) => {
+        record[item].forEach(() => {
+          tagCount++;
+        });
+      });
+      if (tagCount > max_item_shown * order.length) {
+        _module.remainTag.push(tagCount - max_item_shown * order.length)
+      }else
+      {
+        _module.remainTag.push(0)
       }
     }
   }

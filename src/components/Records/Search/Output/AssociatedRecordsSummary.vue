@@ -6,7 +6,7 @@
       class="d-flex flex-row"
     >
       <h4
-        :class="['my-0 font-weight-light mr-15',{'opacity-low':associatedRecord.val===0}]"
+        :class="['my-0 font-weight-light',{'opacity-low':associatedRecord.val===0}]"
       >
         {{ setRecordLabels(associatedRecord.label) }}
       </h4>

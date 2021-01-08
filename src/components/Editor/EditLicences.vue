@@ -98,8 +98,8 @@
               </v-card-text>
               <v-card-actions>
                 <v-btn
-                    class="error mb-3 ml-2"
-                    @click="removeLicence(licenceIndex)"
+                  class="error mb-3 ml-2"
+                  @click="removeLicence(licenceIndex)"
                 >
                   <v-icon left>
                     fa-minus-circle
@@ -113,16 +113,16 @@
           <!-- ADDING NEW ITEMS -->
           <v-col class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
             <v-card
-                height="100%"
-                class="newRel green--text"
-                style="cursor: pointer"
-                min-height="383px"
-                @click="addLicence()"
+              height="100%"
+              class="newRel green--text"
+              style="cursor: pointer"
+              min-height="383px"
+              @click="addLicence()"
             >
               <div class="mb-4">
                 <v-icon
-                    x-large
-                    class="green--text icon--xxl"
+                  x-large
+                  class="green--text icon--xxl"
                 >
                   fa-plus-circle
                 </v-icon>

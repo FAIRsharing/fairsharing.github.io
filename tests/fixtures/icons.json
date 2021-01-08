@@ -1,0 +1,14 @@
+{
+  "collection": "assets/records/collection-icon.svg",
+  "journal": "assets/records/policy.png",
+  "identifier_schema": "assets/records/identifier_schema.png",
+  "society": "assets/records/policy.png",
+  "funder": "assets/records/policy.png",
+  "terminology_artefact": "assets/records/terminology_artifact.png",
+  "model_and_format": "assets/records/model_and_format.png",
+  "reporting_guideline": "assets/records/reporting_guidelines.png",
+  "metric": "assets/records/std-metric.png",
+  "repository": "assets/records/db-icon.png",
+  "journal_publisher": "assets/records/policy.png",
+  "knowledge_base": "assets/records/db-icon.png"
+}

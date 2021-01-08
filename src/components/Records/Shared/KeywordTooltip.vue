@@ -7,6 +7,7 @@
       <template #activator="{ on, attrs }">
         <div
           v-bind="attrs"
+          class="ellipse-width-80 text-center"
           v-on="on"
         >
           {{ keyword.label }}

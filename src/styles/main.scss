@@ -72,6 +72,13 @@ a:link {
   white-space: nowrap;
 }
 
+.ellipse-width-80 {
+  width: 80px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .dashed-line {
   border: none;
   border-top: 4px dotted gray;

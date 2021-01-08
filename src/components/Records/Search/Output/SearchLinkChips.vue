@@ -1,5 +1,5 @@
 <template>
-  <section class="chips-container mb-3">
+  <section class="chips-container mb-1">
     <v-chip-group
       column
     >
@@ -14,7 +14,10 @@
           v-if="chip.type === 'subjects' || chip.type === 'domains' "
           :keyword="chip"
         />
-        <div v-else>
+        <div
+          v-else
+          class="ellipse-width-80 text-center"
+        >
           {{ chip.label }}
         </div>
       </v-chip>

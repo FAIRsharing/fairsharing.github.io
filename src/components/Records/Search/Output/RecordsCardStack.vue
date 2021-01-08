@@ -83,6 +83,27 @@ export default {
       allowClicking: false,
       chips: [],
       currentActiveChips: null,
+      maxItemShown : 2
+    }
+  },
+  computed:{
+    getMaxItemShown() {
+      let maxItemShown;
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        maxItemShown = 1;
+      } else if (this.$vuetify.breakpoint.lgOnly)
+      {
+        maxItemShown = 2;
+      } else if (this.$vuetify.breakpoint.xlOnly)
+      {
+        maxItemShown = 3;
+      }
+      return maxItemShown
+    }
+  },
+  watch: {
+    getMaxItemShown: function () {
+      this.setChips(this.record);
     }
   },
   created() {
@@ -121,10 +142,11 @@ export default {
       return records;
     },
     setChips(record) {
-      let _module = this;
+      const _module = this;
+      this.chips = [];
       const order = ['subjects', 'domains', 'taxonomies']
       order.forEach(node => {
-        _module.organizeChips(record, node, 2);
+        _module.organizeChips(record, node, this.getMaxItemShown);
       })
     },
     organizeChips(record, node, max_item_shown) {

@@ -116,7 +116,7 @@
           },
           pressNo(){
             this.showOverlay = false;
-            if (this.submitted === 1) {
+            if (this.submitted >= 1) {
               // Instead of this log, access the store and add the relevant field to the record.
               this.sections.generalInformation.data.is_dataset = true;
             }

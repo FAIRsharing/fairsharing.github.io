@@ -6,6 +6,7 @@ import record from "./record.js"
 import introspection from "./introspector.js"
 import users from './users.js'
 import uiController from "./uiController";
+import editor from "./editor"
 
 
 Vue.use(Vuex);
@@ -19,6 +20,7 @@ export default new Vuex.Store({
         introspection: introspection,
         users: users,
         uiController: uiController,
+        editor: editor
     }
 })
 

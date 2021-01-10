@@ -56,15 +56,22 @@ describe("Curator.vue", () => {
       expect(wrapper.name()).toMatch(title);
       expect(wrapper.vm.approvalRequired.length).toBe(2);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazus");
-      expect(wrapper.vm.maintenanceRequests.length).toBe(1);
-      expect(wrapper.vm.maintenanceRequests[0].recordName).toBe("OrthoOntology Deontology (373)");
-      expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(2);
+      //MaintanceRequest are properly created, elements sorted by date, values edited and formatted properly
+      expect(wrapper.vm.maintenanceRequests.length).toBe(4);
+      expect(wrapper.vm.maintenanceRequests[0].userNameID).toBe("Mariano (22)");
+      expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe("Aug 27, 2020");
+      //Records created last week, recordNameID is created and date is formatted
+      expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(3);
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe("Second (44)");
+      expect(wrapper.vm.recordsCreatedCuratorsLastWeek[2].createdAt).toBe("Nov 11, 2017");
+
       expect(wrapper.vm.recordsInCuration.length).toBe(2);
       expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12)");
       expect(wrapper.vm.recordsWithoutDois.length).toBe(2);
       expect(wrapper.vm.recordsWithoutDois[0].createdAt).toBe("2020-10-12T13:31:25Z");
+      //Hidden records, date is formatted
       expect(wrapper.vm.hiddenRecords.length).toBe(2);
+      expect(wrapper.vm.hiddenRecords[1].createdAt).toBe("Jan 1, 1425");
   });
 
   it("can process errors", async () => {
@@ -80,4 +87,5 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.approvalRequired.length).toBe(0);
       expect(wrapper.vm.hiddenRecords.length).toBe(0);
   });
+
 });

@@ -327,7 +327,7 @@
             records.forEach(item => {
               let object = {};
               object.recordNameID = item.name+' ('+item.id+')';
-              object.createdAt = item.createdAt;
+              object.createdAt = formatDate(item.createdAt);
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
               }

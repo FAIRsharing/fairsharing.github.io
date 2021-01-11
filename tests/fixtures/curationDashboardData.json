@@ -138,31 +138,6 @@
               ]
          }
       ],
-      "recordsWithoutDois": [
-         {
-              "id": "266995",
-              "name": "ShareShare",
-              "createdAt": "2020-10-12T13:31:25Z",
-              "creator":
-                 {
-                     "id": "23",
-                     "username": "Juan"
-                 }
-
-         },
-         {
-              "id": "266d995",
-              "name": "MilkShare",
-              "createdAt": "2020-10-12T13:31:25Z",
-              "lastEditor": [
-                 {
-                     "id": "2d3",
-                     "username": "Juan Carlos I"
-                 }
-              ]
-
-         }
-      ],
       "hiddenRecords":[
         {
               "id": "2669f95",

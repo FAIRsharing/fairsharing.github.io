@@ -380,9 +380,8 @@
             let _module = this;
             if (_module.getCreatingNewRecord) {
               return false;
-            } else {
-              return !_module.user().is_curator;
-            }
+            } 
+            return !_module.user().is_curator;
           }
         }
     }

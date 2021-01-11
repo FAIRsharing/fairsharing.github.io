@@ -23,7 +23,7 @@ describe("RecordsCardStack.vue", function () {
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("RecordsCardStack");
     });
-    
+
     it("can check getButtonLabel function in CardStack", () => {
         let returnedValue = wrapper.vm.getButtonLabel('taxonomies');
         expect(returnedValue).toBe('species');
@@ -36,6 +36,20 @@ describe("RecordsCardStack.vue", function () {
         let doi = 'FAIRsharing.wibble';
         wrapper.vm.record.doi = doi;
         expect(wrapper.vm.getRecordLink(wrapper.vm.record)).toEqual(doi);
+    });
+
+    it("can check getMaxItemShow computed property", () => {
+        vuetify.framework.breakpoint.lgOnly = true;
+        vuetify.framework.breakpoint.mdAndDown = false;
+        expect(wrapper.vm.getMaxItemShown).toBe(2);
+        vuetify.framework.breakpoint.lgOnly = false;
+        vuetify.framework.breakpoint.xlOnly = true;
+        expect(wrapper.vm.getMaxItemShown).toBe(3);
+    });
+
+    it("can check organizeChips method", () => {
+        record['subjects'] = undefined
+        expect(wrapper.vm.organizeChips(record, 'subjects', 3)).toBe(false);
     });
 
 });

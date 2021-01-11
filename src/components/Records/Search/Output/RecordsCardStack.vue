@@ -40,7 +40,7 @@
             lg="10"
             xl="11"
           >
-            <h3 :class="['mt-5 mb-4 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text height-60',{'overflow-hidden':$vuetify.breakpoint.mdAndDown}]">
+            <h3 :class="['mt-5 mb-4 ml-10 text-sm-h6 text-body-2 text-md-h6 text-lg-h5 text-xl-h4 primary--text height-90',{'overflow-hidden':$vuetify.breakpoint.mdAndDown}]">
               {{ record.name }}
             </h3>
             <div class="height-50">

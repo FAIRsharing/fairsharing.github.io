@@ -12,7 +12,7 @@
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"
       >
-        <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5">
+        <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25">
           {{ record.abbreviation }}
         </h2>
         <v-row

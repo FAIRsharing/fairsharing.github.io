@@ -52,6 +52,7 @@
             <SearchLinkChips
               :chips="chips"
               class="ml-10"
+              :remain-tag-count="remainTagCount"
             />
           </v-col>
         </v-row>
@@ -83,7 +84,7 @@ export default {
       allowClicking: false,
       chips: [],
       currentActiveChips: null,
-      remainTag:[]
+      remainTagCount: 0
     }
   },
   computed:{
@@ -145,10 +146,11 @@ export default {
       const _module = this;
       const order = ['subjects', 'domains', 'taxonomies']
       _module.chips = [];
-      _module.getTagNumber(record, order, _module.getMaxItemShown);
       order.forEach(node => {
+        record[node].remainTagCount = 0
         _module.organizeChips(record, node, _module.getMaxItemShown);
-      })
+      });
+      _module.remainTagCount = record['subjects'].remainTagCount + record['domains'].remainTagCount + record['taxonomies'].remainTagCount;
     },
     organizeChips(record, node, max_item_shown) {
       const _module = this;
@@ -157,23 +159,10 @@ export default {
           if (index < max_item_shown) {
             item.type = node;
             _module.chips.push(item);
+          } else {
+            record[node].remainTagCount++;
           }
         });
-      }
-    },
-    getTagNumber(record, order, max_item_shown) {
-      const _module = this;
-      let tagCount = 0;
-      order.forEach((item) => {
-        record[item].forEach(() => {
-          tagCount++;
-        });
-      });
-      if (tagCount > max_item_shown * order.length) {
-        _module.remainTag.push(tagCount - max_item_shown * order.length)
-      }else
-      {
-        _module.remainTag.push(0)
       }
     }
   }

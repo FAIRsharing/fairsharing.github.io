@@ -21,6 +21,9 @@
           {{ chip.label }}
         </div>
       </v-chip>
+      <v-chip disabled outlined label v-if="remainTagCount!==0">
+        {{ `+${remainTagCount} more tags`}}
+      </v-chip>
     </v-chip-group>
   </section>
 </template>
@@ -37,6 +40,10 @@ export default {
     chips: {
       default: null,
       type: Array
+    },
+    remainTagCount: {
+      default: null,
+      type: Number
     }
   },
   methods: {

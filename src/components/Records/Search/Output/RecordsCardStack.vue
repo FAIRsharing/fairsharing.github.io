@@ -145,12 +145,15 @@ export default {
     setChips(record) {
       const _module = this;
       const order = ['subjects', 'domains', 'taxonomies']
+      _module.remainTagCount = 0
       _module.chips = [];
       order.forEach(node => {
         record[node].remainTagCount = 0
         _module.organizeChips(record, node, _module.getMaxItemShown);
       });
-      _module.remainTagCount = record['subjects'].remainTagCount + record['domains'].remainTagCount + record['taxonomies'].remainTagCount;
+      for (let i = 0; i < order.length; i++) {
+        _module.remainTagCount += record[order[i]].remainTagCount
+      }
     },
     organizeChips(record, node, max_item_shown) {
       const _module = this;

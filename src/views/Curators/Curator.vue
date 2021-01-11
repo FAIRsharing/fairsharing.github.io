@@ -196,7 +196,6 @@
     import Unauthorized from "@/views/Errors/403.vue"
     import recordTypes from "@/data/recordsRegistries.json"
     import headersTables from "@/data/headersCuratorDashboard.json"
-    import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
     import RestClient from "@/components/Client/RESTClient.js"
 
 

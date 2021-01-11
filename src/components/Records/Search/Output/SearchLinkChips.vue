@@ -21,8 +21,11 @@
           {{ chip.label }}
         </div>
       </v-chip>
-      <v-chip disabled outlined label v-if="remainTagCount!==0">
+      <v-chip disabled outlined label v-if="remainTagCount!==0 && remainTagCount!==1">
         {{ `+${remainTagCount} more tags`}}
+      </v-chip>
+      <v-chip disabled outlined label v-else-if="remainTagCount===1">
+        {{ `one more tags`}}
       </v-chip>
     </v-chip-group>
   </section>

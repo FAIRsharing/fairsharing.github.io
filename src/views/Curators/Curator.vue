@@ -20,79 +20,13 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-card>
-          <v-card-text v-if="approvalRequired">
-            <v-card-title
-              id="text-curator-search-0"
-              class="green white--text"
-            >
-              <b> RECORDS AWAITING APPROVAL </b>
-              <v-spacer />
-              <v-text-field
-                v-model="searches.recordsAwaitingApproval"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.approvalRequired"
-              :items="approvalRequired"
-              :search="searches.recordsAwaitingApproval"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-              :sort-by="approvalRequired.curator"
-              :sort-desc="false"
-            >
-              <template
-                v-if="recordType"
-                #item="props"
-              >
-                <tr>
-                  <td>
-                    {{ props.item.updatedAt }}
-                  </td>
-                  <td>
-                    <v-tooltip bottom>
-                      <template #activator="{on}">
-                        <v-icon
-                          class="clickable"
-                          small
-                          color="nordnetBlue"
-                          @click="openCustomer(item.Id)"
-                          v-on="on"
-                        >
-                          {{ props.item.curator }}
-                        </v-icon>
-                      </template>
-                      Assign to myself
-                    </v-tooltip>
-                  </td>
-                  <td>
-                    <a :href="'#/' + props.item.id">
-                      <span
-                        v-if="props.item.type"
-                        class="mr-2"
-                      >
-                        <img
-                          v-if="Object.keys(recordType).includes(props.item.type)"
-                          :src="'./' + recordType[props.item.type].icon"
-                          class="miniIcon"
-                        >
-                      </span>
-                      {{ props.item.recordName + ' (' + props.item.id + ')' }}
-                    </a>
-                  </td>
-                  <td>
-                    {{ props.item.lastEditor }}
-                  </td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
+        <RecordsAwaitingApproval
+          :loading="loading"
+          :headers="headers.approvalRequired"
+          :maintenance-requests="maintenanceRequests"
+          :record-type="recordType"
+          :approval-required="approvalRequired"
+        />
         <MaintenanceRequest
           :loading="loading"
           :headers="headers.maintenanceRequests"
@@ -196,6 +130,8 @@
     import recordTypes from "@/data/recordsRegistries.json"
     import headersTables from "@/data/headersCuratorDashboard.json"
     import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
+    import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
+
 
 
     const client = new GraphClient();
@@ -205,6 +141,16 @@
         return -1;
       }
       if (a.createdAt < b.createdAt) {
+        return 1;
+      }
+      return 0;
+    }
+
+    function compareRecordDescUpdate(a, b) {
+      if (a.updatedAt > b.updatedAt) {
+        return -1;
+      }
+      if (a.updatedAt < b.updatedAt) {
         return 1;
       }
       return 0;
@@ -223,6 +169,7 @@
       name: "Curator",
       components: {
         Unauthorized,
+        RecordsAwaitingApproval,
         MaintenanceRequest
       },
       data: () => {
@@ -237,7 +184,6 @@
           recordType: null,
           headers: headersTables,
           searches: {
-            recordsAwaitingApproval: "",
             recentCuratorCreations: "",
             recordsInCuration: "",
             recordsWithoutDois: "",
@@ -291,9 +237,10 @@
                 let object = {};
                 object.updatedAt = rec.updatedAt;
                 object.curator = item.username;
-                object.recordName = rec.name;
+                object.recordName = rec.name + ' ('+rec.id +')';
                 object.id = rec.id;
                 object.type = rec.type;
+                object.processingNotes = rec.processingNotes;
                 if (rec.lastEditor){
                   object.lastEditor = rec.lastEditor.username+' ('+rec.lastEditor.id+')';
                 }else{
@@ -302,6 +249,10 @@
                 this.approvalRequired.push(object);
               });
             });
+            this.approvalRequired.sort(compareRecordDescUpdate);
+            for (let i = 0; i < this.approvalRequired.length; i++) {
+              this.approvalRequired[i].updatedAt = formatDate(this.approvalRequired[i].updatedAt) ;
+            }
           },
           prepareMaintenanceRequests(dataCuration){
             let requests = dataCuration.pendingMaintenanceRequests;
@@ -404,9 +355,6 @@
 </script>
 
 <style>
-  #text-curator-search-0 div.theme--light.v-input:not(.v-input--is-disabled) input{
-    color:#fff;
-  }
   #text-curator-search-1 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }

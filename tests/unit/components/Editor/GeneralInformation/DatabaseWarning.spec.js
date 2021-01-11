@@ -13,7 +13,8 @@ recordStore.state.sections = {
             type: {
                 name: "test"
             },
-            registry: "unknown"
+            registry: "unknown",
+            is_dataset: false
         }
     }
 };
@@ -48,9 +49,17 @@ describe('Editor -> DatabaseWarning.vue', () => {
         expect(wrapper.vm.showOverlay).toBe(false);
     });
 
-    it('has some stupid methods', () => {
+    it('will set the submitted value', () => {
         wrapper.vm.closeMenu();
         wrapper.vm.pressYes();
         expect(wrapper.vm.submitted).toBe(1);
+    })
+
+    it('will pass the naughty flag to the api', () => {
+        wrapper.vm.pressNo();
+        expect(wrapper.vm.submitted).toBe(0);
+        wrapper.vm.pressYes();
+        wrapper.vm.pressNo();
+        expect(recordStore.state.sections.generalInformation.data.is_dataset).toBe(true);
     })
 });

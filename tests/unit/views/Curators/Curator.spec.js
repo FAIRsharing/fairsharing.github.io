@@ -7,6 +7,8 @@ import GraphClient from "@/components/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import Curator from "@/views/Curators/Curator.vue"
 import dataDahboard from "../../../fixtures/curationDashboardData.json"
+import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
+
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

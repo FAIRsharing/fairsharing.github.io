@@ -50,6 +50,7 @@ export function initEditorSections(data, sectionsNames){
             description: null,
             deprecation_reason: ""
         },
+        is_dataset: false
     };
     let sections = {};
     if (data) {
@@ -75,6 +76,7 @@ export function initEditorSections(data, sectionsNames){
                     obj.label = obj.label.toLowerCase();
                     return obj;
                 }),
+                is_dataset: false
             }
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";

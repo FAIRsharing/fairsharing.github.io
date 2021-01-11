@@ -39,7 +39,6 @@ let editorStore = {
             user_defined_tag: "grey"
         },
         allTags: false
-
     },
     mutations: {
         setCountries(state, countries){

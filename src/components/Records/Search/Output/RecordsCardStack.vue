@@ -44,7 +44,7 @@
               {{ record.name }}
             </h3>
             <div class="height-50">
-              <p class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height">
+              <p class="mt-2 ml-10 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines">
                 {{ record.description }}
               </p>
             </div>

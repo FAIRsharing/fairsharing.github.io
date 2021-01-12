@@ -5,80 +5,58 @@
     cols="12"
     sm="12"
     md="6"
-    lg="4"
-    xl="3"
+    lg="6"
+    xl="4"
   >
-    <v-card
-      class="pa-2 d-flex  align-center flex-column"
-      outlined
-      tile
-      :hover="allowClicking"
-    >
-      <!-- Title and Icon -->
-      <v-row
-        no-gutters
-        class="full-width"
+    <router-link :to="'/' + getRecordLink(record)">
+      <v-card
+        v-ripple
+        class="pa-6 d-flex flex-column"
+        outlined
+        tile
+        height="480px"
+        :elevation="allowClicking?'5':'1'"
+        @mouseenter="allowClicking=true"
+        @mouseleave="allowClicking=false"
       >
-        <v-col
-          cols="12"
-          @mouseenter="allowClicking=true"
-          @mouseleave="allowClicking=false"
-        >
-          <router-link :to="'/' + getRecordLink(record)">
-            <div class=" d-flex flex-column align-center justify-center">
-              <record-status
-                :record="record"
-                class="mr-8"
-              />
-              <h3 class="title-style">
-                <u>{{ record.name }}</u>
-                <span
-                  v-if="record.abbreviation"
-                  class="ml-2"
-                > ({{ truncate(record.abbreviation, 15) }}) </span>
-              </h3>
-            </div>
-          </router-link>
-        </v-col>
-      </v-row>
-      <!--Chips-->
-      <v-row
-        no-gutters
-        class="chips-container-margin"
-      >
-        <v-col cols="12">
+        <!-- Title and Icon -->
+        <div>
+          <record-status
+            :record="record"
+            class="mr-8"
+          />
+          <h3 :class="['mt-2 mb-4 text-sm-h5 text-md-h6 text-body-2 text-h6 text-lg-h6 text-xl-h5 primary--text height-90 text-ellipses-height-3lines',{'overflow-hidden':$vuetify.breakpoint.mdAndDown}]">
+            {{ record.name }}
+          </h3>
+          <!--       Description -->
+          <div class="height-75">
+            <p class="mt-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-3lines">
+              {{ record.description }}
+            </p>
+          </div>
           <!-- chips container -->
           <SearchLinkChips
             :chips="chips"
-            class="ml-10"
             :remain-tag-count="remainTagCount"
           />
-        </v-col>
-      </v-row>
-      <!--       Description -->
-      <div
-        class="d-flex flex-row"
-        style="width: 70%"
-      >
-        <v-divider
-          class="mt-2"
-        />
-      </div>
-      <p class="ma-2 card-description text-justify">
-        {{ record.description }}
-      </p>
-      <!--  Associated Records Summary  -->
-      <associated-records-summary :associated-records="associatedRecords(record)" />
-    </v-card>
+          <v-divider class="dashed-line" />
+          <!--  Associated Records Summary  -->
+          <associated-records-summary
+            :associated-records="associatedRecords(record)"
+            class="ml-5"
+          />
+        </div>
+      </v-card>
+    </router-link>
   </v-col>
 </template>
 
 <script>
 import RecordStatus from "@/components/Records/Shared/RecordStatus"
-import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
+import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 
 export default {
   name: "RecordsCardColumn",
@@ -102,10 +80,10 @@ export default {
         maxItemShown = 1;
       }
       else if (this.$vuetify.breakpoint.lgOnly) {
-        maxItemShown = 2;
+        maxItemShown = 1;
       }
       else if (this.$vuetify.breakpoint.xlOnly) {
-        maxItemShown = 3;
+        maxItemShown = 1;
       }
       return maxItemShown
     }
@@ -182,26 +160,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.title-style {
-  height: 55px;
-  text-align: center;
-}
-
-.chips-container-margin {
-  margin-right: 10%;
-  margin-left: 10%;
-}
-
-.chips-container {
-  height: 110px;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  position: relative;
-}
-
-.v-chip.v-chip--outlined.v-chip--active::before {
-  opacity: 0;
-}
-</style>

@@ -69,14 +69,13 @@
 
 <script>
 import recordsCardUtils from "@/utils/recordsCardUtils";
-import { truncate } from "@/utils/stringUtils";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 export default {
   name: "RecordsCardStack",
   components: {SearchLinkChips, AssociatedRecordsSummary, RecordStatus},
-  mixins: [recordsCardUtils, truncate],
+  mixins: [recordsCardUtils],
   props: {
     record: {default: null, type: Object},
   },

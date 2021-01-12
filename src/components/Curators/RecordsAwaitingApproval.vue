@@ -39,6 +39,9 @@
               {{ props.item.updatedAt }}
             </td>
             <td>
+              {{ props.item.priority }}
+            </td>
+            <td>
               {{ props.item.curator }}
             </td>
             <td>
@@ -92,6 +95,7 @@
               </v-icon>
               {{ props.item.actions }}
               <v-icon
+                v-if="role==='senior_curator' || role==='super_curator'"
                 color="red"
                 dark
                 right
@@ -99,6 +103,9 @@
               >
                 fas fa-ban
               </v-icon>
+              <v-btn href="'#/' + props.item.id + '/edit'">
+                Ed
+              </v-btn>
             </td>
           </tr>
         </template>
@@ -243,7 +250,11 @@
             },
             loading: {
                 type: Boolean,
-                defaul: false
+                default: false
+            },
+            role :{
+                type: String,
+                default: "user"
             }
         },
         data: () => {

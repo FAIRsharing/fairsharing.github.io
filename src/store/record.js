@@ -97,6 +97,9 @@ let recordStore = {
         },
         setCreatingNewRecord(state){
             state.newRecord = true;
+        },
+        setEditingRecord(state){
+            state.newRecord = false;
         }
     },
     actions: {

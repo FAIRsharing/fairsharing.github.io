@@ -103,9 +103,9 @@
               >
                 fas fa-ban
               </v-icon>
-              <v-btn href="'#/' + props.item.id + '/edit'">
+              <a :href="'#/' + props.item.id+ '/edit'">
                 Ed
-              </v-btn>
+              </a>
             </td>
           </tr>
         </template>

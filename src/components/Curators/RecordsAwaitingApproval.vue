@@ -44,20 +44,33 @@
               </div>
             </td>
             <td>
-              <v-tooltip bottom>
-                <template #activator="{on}">
-                  <v-icon
-                    class="clickable"
-                    small
-                    color="nordnetBlue"
-                    @click="openCustomer(item.Id)"
-                    v-on="on"
+              <v-menu>
+                <template v-slot:activator="{ on: menu, attrs }">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-icon
+                        class="clickable"
+                        small
+                        color="nordnetBlue"
+                        v-bind="attrs"
+                        v-on="{ ...tooltip, ...menu }"
+                      >
+                        {{ props.item.curator }}
+                      </v-icon>
+                    </template>
+                    <span>Assign a new curator</span>
+                  </v-tooltip>
+                </template>
+                <v-list>
+                  <v-list-item
+                    v-for="(item, index) in listCurators"
+                    :key="index"
+                    @click="assignCurator(props.item.id,item.id)"
                   >
-                  {{ props.item.curator }}
-                </v-icon>
-              </template>
-                Assign to curator
-              </v-tooltip>
+                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </td>
             <td>
               <a :href="'#/' + props.item.id">
@@ -273,6 +286,7 @@
                 type: String,
                 default: "user"
             }
+
         },
         data: () => {
             return {
@@ -288,7 +302,21 @@
                 recordID: null,
                 general: null
               },
-              searches: ''
+              searches: '',
+              listCurators: [
+                { id: 1,
+                  name: 'Curator 1'
+                },
+                { id: 2,
+                  name: 'Curator 2'
+                },
+                { id: 3,
+                  name: 'Curator 3'
+                },
+                { id: 4,
+                  name: 'Curator 4'
+                }
+              ]
             }
         },
         computed: {
@@ -327,6 +355,24 @@
                 _module.error.recordID = idRecord;
               }
             },
+
+            async assignCurator(idRecord, idUser){
+              const _module = this;
+              let preparedRecord = {
+                curator: idUser
+              };
+              let data = {
+                record: preparedRecord,
+                id: idRecord,
+                token: _module.user().credentials.token
+              };
+              await _module.updateRecord(data);
+              if (_module.recordUpdate.error){
+                _module.error.general = _module.recordUpdate.message;
+                _module.error.recordID = idRecord;
+              }
+            },
+
             assignMaintenanceOwner(recordName, recordID, userNameID, requestID){
               const _module = this;
               _module.dialogs.recordName = recordName;

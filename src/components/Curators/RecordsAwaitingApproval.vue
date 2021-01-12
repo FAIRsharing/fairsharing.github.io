@@ -5,7 +5,7 @@
         id="text-curator-search-0"
         class="green white--text"
       >
-        <b> RECORDS AWAITING APPROVAL </b>
+        <b> RECORDS/EDITS AWAITING APPROVAL </b>
         <v-spacer />
         <v-text-field
           v-model="searches"
@@ -39,10 +39,25 @@
               {{ props.item.updatedAt }}
             </td>
             <td>
-              {{ props.item.priority }}
+              <div class="priorityTag">
+                {{ props.item.priority }}
+              </div>
             </td>
             <td>
-              {{ props.item.curator }}
+              <v-tooltip bottom>
+                <template #activator="{on}">
+                  <v-icon
+                    class="clickable"
+                    small
+                    color="nordnetBlue"
+                    @click="openCustomer(item.Id)"
+                    v-on="on"
+                  >
+                  {{ props.item.curator }}
+                </v-icon>
+              </template>
+                Assign to curator
+              </v-tooltip>
             </td>
             <td>
               <a :href="'#/' + props.item.id">
@@ -96,15 +111,17 @@
               {{ props.item.actions }}
               <v-icon
                 v-if="role==='senior_curator' || role==='super_curator'"
+                padding-right="5px"
                 color="red"
                 dark
                 right
+                small
                 @click="rejectMaintenanceOwner(props.item.recordName,props.item.id,props.item.userNameID,props.item.requestID)"
               >
-                fas fa-ban
+                fas fa-trash
               </v-icon>
               <a :href="'#/' + props.item.id+ '/edit'">
-                Ed
+                Edit
               </a>
             </td>
           </tr>
@@ -370,5 +387,9 @@
 
   .dialogProcNotesEdit {
     width: 600px !important;
+  }
+
+  .priorityTag {
+    background-color: orange;
   }
 </style>

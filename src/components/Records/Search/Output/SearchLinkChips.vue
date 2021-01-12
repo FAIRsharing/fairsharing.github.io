@@ -1,5 +1,5 @@
 <template>
-  <section class="chips-container mb-1">
+  <section :class="['mb-1 overflow-hidden',{'chips-container-fixed-height':!isColumn}]">
     <v-chip-group
       column
     >
@@ -47,6 +47,10 @@ export default {
     remainTagCount: {
       default: null,
       type: Number
+    },
+    isColumn: {
+      default: false,
+      type: Boolean
     }
   },
   methods: {
@@ -87,8 +91,7 @@ export default {
 </script>
 
 <style>
-.chips-container {
+.chips-container-fixed-height {
   height: 40px;
-  overflow: hidden;
 }
 </style>

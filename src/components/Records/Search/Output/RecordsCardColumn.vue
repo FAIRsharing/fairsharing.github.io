@@ -14,7 +14,7 @@
         class="pa-6 d-flex flex-column"
         outlined
         tile
-        height="480px"
+        height="525px"
         :elevation="allowClicking?'5':'1'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"
@@ -35,10 +35,13 @@
             </p>
           </div>
           <!-- chips container -->
-          <SearchLinkChips
-            :chips="chips"
-            :remain-tag-count="remainTagCount"
-          />
+          <div class="height-75">
+            <SearchLinkChips
+              :is-column="true"
+              :chips="chips"
+              :remain-tag-count="remainTagCount"
+            />
+          </div>
           <v-divider class="dashed-line" />
           <!--  Associated Records Summary  -->
           <associated-records-summary

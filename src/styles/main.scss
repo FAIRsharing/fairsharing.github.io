@@ -57,12 +57,17 @@ a:link {
   cursor: pointer;
 }
 
-.text-ellipses-height {
+.text-ellipses-height-2lines {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.text-ellipses-height-3lines {
+  @extend .text-ellipses-height-2lines;
+  -webkit-line-clamp: 3;
 }
 
 .ellipse {
@@ -107,6 +112,10 @@ a:link {
 
 .height-50 {
   height: 50px;
+}
+
+.height-75 {
+  height: 75px;
 }
 
 .height-90 {

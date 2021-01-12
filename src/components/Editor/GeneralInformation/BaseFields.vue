@@ -380,7 +380,7 @@
             let _module = this;
             if (_module.getCreatingNewRecord) {
               return false;
-            } 
+            }
             return !_module.user().is_curator;
           }
         }

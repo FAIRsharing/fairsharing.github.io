@@ -19,10 +19,6 @@
         no-gutters
         class="full-width"
       >
-        <Ribbon
-          v-if="record.isRecommended"
-          title="RECOMMENDED"
-        />
         <v-col
           cols="12"
           @mouseenter="allowClicking=true"
@@ -45,25 +41,6 @@
           </router-link>
         </v-col>
       </v-row>
-      <!-- Buttons -->
-      <v-row>
-        <v-col>
-          <section class="ml-2 mb-0 mr-4 d-flex flex-column">
-            <v-btn
-              v-for="(item,index) in buttons"
-              :key="index"
-              :outlined="item.active"
-              text
-              class="button-text-color"
-              :color="item.active?'primary':null"
-              :disabled="Chips[item.title].length === 0"
-              @click="changeActiveItem(index)"
-            >
-              {{ getButtonLabel(item.title) }} ({{ Chips[item.title].length }})
-            </v-btn>
-          </section>
-        </v-col>
-      </v-row>
       <!--Chips-->
       <v-row
         no-gutters
@@ -72,8 +49,9 @@
         <v-col cols="12">
           <!-- chips container -->
           <SearchLinkChips
-            :type="currentActiveChips"
-            :chips="Chips[currentActiveChips]"
+            :chips="chips"
+            class="ml-10"
+            :remain-tag-count="remainTagCount"
           />
         </v-col>
       </v-row>
@@ -89,118 +67,119 @@
       <p class="ma-2 card-description text-justify">
         {{ record.description }}
       </p>
-      <!--  Associated Records      -->
-      <AssociatedRecordsStack
-        :associated-records="associatedRecords(record)"
-        :is-column="true"
-      />
+      <!--  Associated Records Summary  -->
+      <associated-records-summary :associated-records="associatedRecords(record)" />
     </v-card>
   </v-col>
 </template>
 
 <script>
-import Ribbon from "@/components/Records/Shared/Ribbon";
-import AssociatedRecordsStack from "./AssociatedRecordsStack";
 import RecordStatus from "@/components/Records/Shared/RecordStatus"
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import { truncate } from "@/utils/stringUtils";
+import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
 
 export default {
   name: "RecordsCardColumn",
-  components: {AssociatedRecordsStack, RecordStatus, Ribbon, SearchLinkChips},
+  components: {SearchLinkChips, AssociatedRecordsSummary, RecordStatus},
   mixins: [recordsCardUtils, truncate],
   props: {
     record: {default: null, type: Object},
   },
   data() {
     return {
-      allowLoop: true,
       allowClicking: false,
-      buttons: [{title: 'domains', active: false}, {title: 'subjects', active: false}, {
-        title: 'taxonomies',
-        active: false,
-      }, {title: 'userDefinedTags', active: false}],
-      Chips: {
-        domains: [], subjects: [], taxonomies: [], userDefinedTags: []
-      },
+      chips: [],
       currentActiveChips: null,
-      vChipActive: 'v-chip--active'
+      remainTagCount: 0
+    }
+  },
+  computed:{
+    getMaxItemShown() {
+      let maxItemShown;
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        maxItemShown = 1;
+      }
+      else if (this.$vuetify.breakpoint.lgOnly) {
+        maxItemShown = 2;
+      }
+      else if (this.$vuetify.breakpoint.xlOnly) {
+        maxItemShown = 3;
+      }
+      return maxItemShown
+    }
+  },
+  watch: {
+    getMaxItemShown: function () {
+      this.setChips(this.record);
     }
   },
   created() {
     this.setChips(this.record);
   },
   methods: {
-    changeActiveItem: function (itemIndex) {
-      this.buttons.map(item => item.active = false);
-      this.buttons[itemIndex].active = true;
-      // changing currentChips data
-      this.currentActiveChips = this.buttons[itemIndex].title;
-    },
-    associatedRecords: function (record) {
+    associatedRecords(record) {
       let records = {
-        standard: {
-          val: 0,
-          label: "standards"
+        registryNumber: {
+          standard: {
+            val: 0,
+            label: "standards"
+          },
+          database: {
+            val: 0,
+            label: "databases"
+          },
+          policy: {
+            val: 0,
+            label: "policies"
+          },
         },
-        database: {
-          val: 0,
-          label: "databases"
-        },
-        policy: {
-          val: 0,
-          label: "policies"
-        },
-        collection: {
-          val: 0,
-          label: "collections"
-        },
+        registry: null
       };
+      records['registry'] = record.registry.toLowerCase()
       record['recordAssociations'].forEach(function (association) {
-        records[association['linkedRecord'].registry.toLowerCase()].val += 1
+        if (association['linkedRecord'].registry.toLowerCase() !== 'collection' ) {
+          records['registryNumber'][association['linkedRecord'].registry.toLowerCase()].val += 1
+        }
       });
       record['reverseRecordAssociations'].forEach(function (association) {
-        records[association['fairsharingRecord'].registry.toLowerCase()].val += 1
+        if (association['fairsharingRecord'].registry.toLowerCase() !== 'collection' ) {
+          records['registryNumber'][association['fairsharingRecord'].registry.toLowerCase()].val += 1
+        }
       });
       return records;
     },
-    setChips: function (record) {
-      let node;
-      for (node in record) {
-        if (node === 'subjects' || node === 'domains' || node === 'taxonomies' || node === 'userDefinedTags') {
-          this.organizeChips(record, node);
-        }
+    setChips(record) {
+      const _module = this;
+      const order = ['subjects', 'domains', 'taxonomies']
+      _module.remainTagCount = 0
+      _module.chips = [];
+      order.forEach(node => {
+        record[node].remainTagCount = 0
+        _module.organizeChips(record, node, _module.getMaxItemShown);
+      });
+      for (let i = 0; i < order.length; i++) {
+        _module.remainTagCount += record[order[i]].remainTagCount
       }
     },
-    organizeChips(record, node) {
-      this.organizeButtons(record, node);
-      for (const [key, value] of Object.entries(record[node])) {
-        if (key > 2) {
-          break;
-        }
-        value.ative = false;
-        this.Chips[node][key] = value;
-      }
-    },
-    organizeButtons(record, node) {
-      if (record[node].length > 0 && this.allowLoop) {
-        this.allowLoop = false;
-        this.currentActiveChips = node
-        this.buttons.map(item => {
-          if (item.title === node) {
-            item.active = true
+    organizeChips(record, node, max_item_shown) {
+      const _module = this;
+      if (record[node]) {
+        record[node].forEach(function (item, index) {
+          if (index < max_item_shown) {
+            item.type = node;
+            _module.chips.push(item);
+          } else {
+            record[node].remainTagCount++;
           }
         });
       }
-    },
-    /*
-                scrollToTop: function () {
-                    let myDiv = document.getElementById('scroll-target');
-                    myDiv.scrollTo(0, 0);
-                }
-    */
-  },
+      else {
+        return false;
+      }
+    }
+  }
 }
 </script>
 

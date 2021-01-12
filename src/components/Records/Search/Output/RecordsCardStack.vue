@@ -57,6 +57,7 @@
           </v-col>
         </v-row>
         <v-divider class="dashed-line" />
+        <!--  Associated Records Summary  -->
         <associated-records-summary
           :associated-records="associatedRecords(record)"
           class="ml-5"
@@ -92,11 +93,11 @@ export default {
       let maxItemShown;
       if (this.$vuetify.breakpoint.mdAndDown) {
         maxItemShown = 1;
-      } else if (this.$vuetify.breakpoint.lgOnly)
-      {
+      }
+      else if (this.$vuetify.breakpoint.lgOnly) {
         maxItemShown = 2;
-      } else if (this.$vuetify.breakpoint.xlOnly)
-      {
+      }
+      else if (this.$vuetify.breakpoint.xlOnly) {
         maxItemShown = 3;
       }
       return maxItemShown

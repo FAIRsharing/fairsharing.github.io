@@ -5,6 +5,10 @@
       "value": "updatedAt"
     },
     {
+      "text": "Prior",
+      "value": "prority"
+    },
+    {
       "text": "Curator",
       "value": "curator"
     },
@@ -24,7 +28,8 @@
     },
     { "text": "Accept record/edit?",
       "value": "actions",
-      "sortable": false
+      "sortable": false,
+      "width": 150
     }
   ],
   "maintenanceRequests": [

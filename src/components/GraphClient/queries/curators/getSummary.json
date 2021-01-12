@@ -15,6 +15,7 @@
             "updatedAt",
             "type",
             "processingNotes",
+            "priority",
             {
               "name": "lastEditor",
               "fields": [

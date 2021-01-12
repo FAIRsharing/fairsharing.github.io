@@ -26,6 +26,7 @@
           :maintenance-requests="maintenanceRequests"
           :record-type="recordType"
           :approval-required="approvalRequired"
+          :role="role"
         />
         <MaintenanceRequest
           :loading="loading"
@@ -190,7 +191,8 @@
             hiddenRecords: ""
           },
           loading: false,
-          error: null
+          error: null,
+          role: null
         }
       },
       computed: {
@@ -216,6 +218,7 @@
           client.initalizeHeader();
           this.prepareData();
           this.loading = false;
+          this.role = this.user().role;
         })
       },
       methods: {
@@ -241,6 +244,11 @@
                 object.id = rec.id;
                 object.type = rec.type;
                 object.processingNotes = rec.processingNotes;
+                if (rec.priority){
+                  object.priority = "Prior";
+                }else{
+                  object.priority = "";
+                }
                 if (rec.lastEditor){
                   object.lastEditor = rec.lastEditor.username+' ('+rec.lastEditor.id+')';
                 }else{

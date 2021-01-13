@@ -75,7 +75,9 @@ export function initEditorSections(data, sectionsNames){
                     obj.label = obj.label.toLowerCase();
                     return obj;
                 }),
-            }
+            },
+            organisations: data.organisationLinks
+
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
         sectionsNames.forEach(name => {

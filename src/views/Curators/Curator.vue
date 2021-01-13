@@ -158,6 +158,16 @@
       return 0;
     }
 
+    function compareRecordAlphaNames(a, b) {
+      if (a.userName.toLowerCase() < b.userName.toLowerCase()) {
+        return -1;
+      }
+      if (a.userName.toLowerCase() > b.userName.toLowerCase()) {
+        return 1;
+      }
+      return 0;
+    }
+
     function formatDate(d){
       let date = new Date(d);
       return date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
@@ -265,10 +275,10 @@
             curators.forEach(item => {
               let object = {};
               object.id = item.id;
-              object.username = item.username;
+              object.userName = item.username;
               this.curatorList.push(object);
             });
-
+            this.curatorList.sort(compareRecordAlphaNames);
           },
           prepareMaintenanceRequests(dataCuration){
             let requests = dataCuration.pendingMaintenanceRequests;

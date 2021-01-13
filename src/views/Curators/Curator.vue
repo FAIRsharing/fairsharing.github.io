@@ -26,7 +26,7 @@
           :maintenance-requests="maintenanceRequests"
           :record-type="recordType"
           :approval-required="approvalRequired"
-          :role="role"
+          :curator-list="curatorList"
         />
         <MaintenanceRequest
           :loading="loading"
@@ -124,6 +124,7 @@
 </template>
 
 <script>
+  // && (user().role==='super_curator' || user().role==='senior_curator')"
     import GraphClient from "@/components/GraphClient/GraphClient.js"
     import getCurationRecords from "@/components/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
@@ -182,6 +183,7 @@
           recordsInCuration: [],
           recordsWithoutDois: [],
           hiddenRecords: [],
+          curatorList: [],
           recordType: null,
           headers: headersTables,
           searches: {
@@ -191,8 +193,7 @@
             hiddenRecords: ""
           },
           loading: false,
-          error: null,
-          role: null
+          error: null
         }
       },
       computed: {
@@ -218,7 +219,6 @@
           client.initalizeHeader();
           this.prepareData();
           this.loading = false;
-          this.role = this.user().role;
         })
       },
       methods: {
@@ -261,6 +261,14 @@
             for (let i = 0; i < this.approvalRequired.length; i++) {
               this.approvalRequired[i].updatedAt = formatDate(this.approvalRequired[i].updatedAt) ;
             }
+            let curators = dataCuration.curatorList;
+            curators.forEach(item => {
+              let object = {};
+              object.id = item.id;
+              object.username = item.username;
+              this.curatorList.push(object);
+            });
+
           },
           prepareMaintenanceRequests(dataCuration){
             let requests = dataCuration.pendingMaintenanceRequests;

@@ -260,13 +260,14 @@ class RESTClient {
      * and the user token
      * @returns {Promise}
      */
-    async updateRecord(record){
+    async updateRecord(record){    
         const request = {
             method: "put",
             baseURL: this.baseURL + "/fairsharing_records/" + record.id,
             headers: this.auth_headers(record.token),
             data: {fairsharing_record: record.record}
         };
+        console.log(request);
         let response = await this.executeQuery(request);
         return response.data;
     }

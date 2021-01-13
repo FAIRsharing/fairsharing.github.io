@@ -3,6 +3,13 @@
   "queryParam": null,
   "fields": [
     {
+      "name": "curatorList",
+      "fields": [
+        "username",
+        "id"
+      ]
+    },
+    {
       "name": "approvalsRequired",
       "fields": [
         "username",

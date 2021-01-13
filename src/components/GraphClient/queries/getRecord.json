@@ -96,7 +96,7 @@
         },
         {
           "queryName": "organisation",
-          "fields": ["name", "id", "homepage", "types"]
+          "fields": ["name", "id", "homepage", "types", "urlForLogo"]
         }
       ]
     },

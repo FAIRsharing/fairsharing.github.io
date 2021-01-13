@@ -28,7 +28,8 @@ let recordStore = {
             id: null
         },
         sections: {
-            generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation
+            generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
+            organisations: {}
         }
     },
     mutations: {

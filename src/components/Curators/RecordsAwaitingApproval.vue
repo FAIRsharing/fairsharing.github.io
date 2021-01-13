@@ -65,9 +65,10 @@
                   <v-list-item
                     v-for="(item, index) in curatorList"
                     :key="index"
-                    @click="assignCurator(props.item.id,item.id,item.username)"
+                    class="thelistCurators"
+                    @click="assignCurator(props.item.id,item.id,item.userName)"
                   >
-                    <v-list-item-title>{{ item.username }}</v-list-item-title>
+                    <v-list-item-title>{{ item.userName }}</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -440,5 +441,9 @@
 
   .priorityTag {
     background-color: orange;
+  }
+  .thelistCurators{
+    max-height: 100px;
+    overflow-y: auto;
   }
 </style>

@@ -14,13 +14,16 @@
         class="pa-6 d-flex flex-column"
         outlined
         tile
-        height="525px"
+        height="545px"
         :elevation="allowClicking?'5':'1'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"
       >
         <!-- Title and Icon -->
         <div>
+          <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25">
+            {{ record.abbreviation }}
+          </h2>
           <record-status
             :record="record"
             class="mr-8"

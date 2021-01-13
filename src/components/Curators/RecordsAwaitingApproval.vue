@@ -63,11 +63,11 @@
                 </template>
                 <v-list>
                   <v-list-item
-                    v-for="(item, index) in listCurators"
+                    v-for="(item, index) in curatorList"
                     :key="index"
-                    @click="assignCurator(props.item.id,item.id)"
+                    @click="assignCurator(props.item.id,item.id,item.username)"
                   >
-                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                    <v-list-item-title>{{ item.username }}</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -123,7 +123,6 @@
               </v-icon>
               {{ props.item.actions }}
               <v-icon
-                v-if="role==='senior_curator' || role==='super_curator'"
                 padding-right="5px"
                 color="red"
                 dark
@@ -282,11 +281,10 @@
                 type: Boolean,
                 default: false
             },
-            role :{
-                type: String,
-                default: "user"
+            curatorList: {
+              type: Array,
+              default: null
             }
-
         },
         data: () => {
             return {
@@ -341,7 +339,8 @@
                 general: null
               };
               let preparedRecord = {
-                processing_notes: ""
+                processing_notes: "",
+                skip_approval: true
               };
               preparedRecord.processing_notes = notesText;
               let data = {
@@ -356,11 +355,13 @@
               }
             },
 
-            async assignCurator(idRecord, idUser){
+            async assignCurator(idRecord, idUser, nameUser){
               const _module = this;
               let preparedRecord = {
-                curator: idUser
+                curator_id: null,
+                skip_approval: true
               };
+              preparedRecord.curator_id = idUser;
               let data = {
                 record: preparedRecord,
                 id: idRecord,
@@ -371,6 +372,8 @@
                 _module.error.general = _module.recordUpdate.message;
                 _module.error.recordID = idRecord;
               }
+              const index = _module.approvalRequired.findIndex((element) => element.id === idRecord);
+              _module.approvalRequired[index].curator=nameUser;
             },
 
             assignMaintenanceOwner(recordName, recordID, userNameID, requestID){

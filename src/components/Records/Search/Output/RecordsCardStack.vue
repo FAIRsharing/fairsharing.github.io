@@ -83,7 +83,6 @@ export default {
     return {
       allowClicking: false,
       chips: [],
-      currentActiveChips: null,
       remainTagCount: 0
     }
   },

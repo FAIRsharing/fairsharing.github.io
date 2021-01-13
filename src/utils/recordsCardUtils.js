@@ -41,12 +41,12 @@ const recordsCardUtils = {
             };
             records['registry'] = record.registry.toLowerCase()
             record['recordAssociations'].forEach(function (association) {
-                if (association['linkedRecord'].registry.toLowerCase() !== 'collection' ) {
+                if (association['linkedRecord'].registry.toLowerCase() !== 'collection') {
                     records['registryNumber'][association['linkedRecord'].registry.toLowerCase()].val += 1
                 }
             });
             record['reverseRecordAssociations'].forEach(function (association) {
-                if (association['fairsharingRecord'].registry.toLowerCase() !== 'collection' ) {
+                if (association['fairsharingRecord'].registry.toLowerCase() !== 'collection') {
                     records['registryNumber'][association['fairsharingRecord'].registry.toLowerCase()].val += 1
                 }
             });

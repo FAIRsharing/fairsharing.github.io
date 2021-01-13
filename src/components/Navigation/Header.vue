@@ -32,11 +32,10 @@
               :small="$vuetify.breakpoint.mdAndDown"
               :x-large="$vuetify.breakpoint.xlOnly"
               class="mr-1 mt-sm-1"
-              color="primary"
-              outlined
+              :class="item.color"
               :to="item.link"
             >
-              <span class="primary--text">{{ item.label }}</span>
+              <span class="white--text">{{ item.label }}</span>
             </v-btn>
           </li>
           <!-- LOGIN -->
@@ -52,7 +51,7 @@
               <v-btn
                 :small="$vuetify.breakpoint.mdAndDown"
                 :x-large="$vuetify.breakpoint.xlOnly"
-                color="accent3 white--text"
+                color="teal darken-2 white--text"
                 class="mr-1 mt-sm-1"
                 dark
                 v-on="on"
@@ -77,7 +76,7 @@
             v-else
             :small="$vuetify.breakpoint.mdAndDown"
             :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1 accent3 pl-2"
+            class="mr-1 mt-sm-1 teal darken-2 pl-2"
             to="/accounts/profile"
           >
             <v-avatar>
@@ -112,26 +111,32 @@ export default {
         {
           label: "Standards",
           link: "/standards",
+          color: "blue"
         },
         {
           label: "Databases",
           link: "/databases",
+          color: "blue"
         },
         {
           label: "Policies",
           link: "/policies",
+          color: "blue"
         },
         {
           label: "Collections",
           link: "/collections",
+          color: "blue"
         },
         {
-          label: "Add content",
+          label: "Add/Claim content",
           link: "/new",
+          color: "grey"
         },
         {
           label: "Stats",
           link: "/summary-statistics",
+          color: "teal darken-2"
         }
       ]
     }
@@ -183,3 +188,9 @@ header {
 }
 
 </style>
+
+
+
+
+
+

@@ -301,21 +301,7 @@
                 recordID: null,
                 general: null
               },
-              searches: '',
-              listCurators: [
-                { id: 1,
-                  name: 'Curator 1'
-                },
-                { id: 2,
-                  name: 'Curator 2'
-                },
-                { id: 3,
-                  name: 'Curator 3'
-                },
-                { id: 4,
-                  name: 'Curator 4'
-                }
-              ]
+              searches: ''
             }
         },
         computed: {

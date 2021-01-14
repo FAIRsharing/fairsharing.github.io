@@ -50,8 +50,7 @@ let editorStore = {
             "collaborates_on",
             "undefined"
         ],
-        grants: null
-
+        grants: null,
     },
     mutations: {
         setCountries(state, countries){

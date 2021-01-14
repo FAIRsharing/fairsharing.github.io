@@ -22,7 +22,6 @@
                     :key="'orgaLink_' + linkIndex"
                     cols="12"
                     class="col-lg-6 col-xl-3"
-                    transition="scroll-x"
                   >
                     <v-card
                       v-if="link.organisation.name"
@@ -75,7 +74,15 @@
                       </v-card-text>
                       <v-card-actions style="border-top: 1px solid #ccc">
                         <v-spacer />
-                        <link-overlay :id="linkIndex" />
+                        <v-btn
+                          icon
+                          class="green white--text"
+                          @click="showEditOverlay(linkIndex)"
+                        >
+                          <v-icon small>
+                            fa-pen
+                          </v-icon>
+                        </v-btn>
                         <v-btn
                           icon
                           class="red white--text"
@@ -87,68 +94,132 @@
                         </v-btn>
                       </v-card-actions>
                     </v-card>
-                    <link-overlay
-                      v-else
-                      :id="linkIndex"
-                      :show-button="false"
-                    />
                   </v-col>
                   <v-col
                     cols="12"
                     class="col-lg-6 col-xl-3"
                   >
                     <v-card
-                      class="flexCard"
                       height="100%"
-                      @click="createNewRelation()"
+                      class="newRel green--text"
+                      style="cursor: pointer"
+                      min-height="190px"
+                      @click="showEditOverlay(null)"
                     >
-                      Create a new organisation link
+                      <div class="mb-4">
+                        <v-icon
+                          x-large
+                          class="green--text icon--xxl"
+                        >
+                          fa-plus-circle
+                        </v-icon>
+                      </div>
+                      <div class="text-h4 text-center">
+                        Add a new relationship
+                      </div>
                     </v-card>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
+            <v-card-actions>
+              <v-btn
+                class="info"
+                @click="saveRecord(false)"
+              >
+                Save and continue
+              </v-btn>
+              <v-btn
+                class="info"
+                @click="saveRecord(true)"
+              >
+                Save and exit
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
     </v-container>
+    <LinkOverlay />
+    <v-fade-transition>
+      <v-overlay
+        v-if="loading"
+        :absolute="false"
+        opacity="0.8"
+      >
+        <loaders />
+      </v-overlay>
+    </v-fade-transition>
   </v-form>
 </template>
 
 <script>
-    import Vue from "vue"
-    import { mapState, mapGetters } from "vuex"
+    import { mapState, mapActions } from "vuex"
+    import Loaders from "../../Navigation/Loaders";
     import LinkOverlay from "./LinkOverlay";
+    const diff = require("deep-object-diff").diff;
 
     export default {
         name: "EditOrganisations",
-        components: {LinkOverlay},
-        filters: {
-          cleanArray(array){
-            return array.map(obj => obj.organisation.name);
-          }
-        },
+        components: {LinkOverlay, Loaders},
         data(){
             return {
-                editID: null,
-                formValid: false
+                formValid: false,
+                showOverlay: false,
+                initialized: false,
+                loading: false,
+                saving: false
             }
         },
         computed: {
-            ...mapGetters("record", ["getSection"]),
-            ...mapState("users", ["user"]),
-            organisationLinks(){
-                return this.getSection("organisations").data;
+          ...mapState("record", ["sections"]),
+          organisationLinks() {
+            return this.sections["organisations"].data;
+          }
+        },
+        watch: {
+          organisationLinks: {
+            deep: true,
+            handler(newVal) {
+              let changes = 0;
+              let differences = diff(newVal, this.sections["organisations"].initialData);
+              Object.keys(differences).forEach( () => { changes += 1});
+              this.$store.commit("record/setChanges", {
+                section: "organisations",
+                value: changes
+              })
             }
+          }
         },
         methods: {
-          createNewRelation(){
-            Vue.set(this.organisationLinks, this.organisationLinks.length, {organisation: {}})
-          },
+          ...mapActions("editor", ["getOrganisations", "getOrganisationsTypes", "getGrants"]),
+          ...mapActions("record", ["updateOrganisations"]),
           removeRelation(id){
             this.organisationLinks.splice(id, 1);
+          },
+          async showEditOverlay(id){
+            if (!this.initialized){
+              this.loading = true;
+              await Promise.all([
+                this.getOrganisationsTypes(),
+                this.getOrganisations(),
+                this.getGrants()
+              ]);
+              this.loading = false;
+              this.initialized = true;
+            }
+            let editObject = {
+              showOverlay: true,
+              data: (this.organisationLinks[id]) ? JSON.parse(JSON.stringify(this.organisationLinks[id])) : {}
+            };
+            if (id !== null) editObject.id = id;
+            this.$store.commit("record/setEditOrganisationLink", editObject);
+          },
+          async saveRecord(redirect){
+            await this.updateOrganisations();
+            if (!redirect) this.$scrollTo("#mainHeader");
           }
-        }
+        },
     }
 </script>
 
@@ -158,10 +229,15 @@
         flex-direction: column;
     }
 
-    #editOrganisations .scroll-x-transition-enter-active,
-    #editOrganisations .scroll-x-transition-leave-active {
+    #editOrganisations .expand-transition-enter-active,
+    #editOrganisations .expand-transition-leave-active {
       transition-duration: 0.7s !important;
     }
 
-
+    .newRel {
+      justify-content: center;
+      align-items: center;
+      display:flex;
+      flex-direction: column;
+    }
 </style>

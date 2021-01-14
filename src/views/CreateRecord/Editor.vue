@@ -65,17 +65,25 @@
             {{ panelData.name }}
           </v-btn>
         </v-toolbar>
-        <v-tabs dark>
+        <v-tabs
+          dark
+          slider-color="primary"
+          slider-size="5"
+        >
           <v-tab
             v-for="tab in tabs"
             :key="'tab_' + tab.name"
             :disabled="tab.disabled"
           >
-            {{ tab.name }}
-            <span
-              v-if="tab.target && getChanges[tab.target] > 0"
-              class="orange--text ml-2 font-weight-bold"
-            > ({{ getChanges[tab.target] }})</span>
+            <div>
+              <div>{{ tab.name }}</div>
+              <div
+                v-if="tab.target && getChanges[tab.target] > 0"
+                class="orange--text ml-2 font-weight-bold"
+              >
+                ({{ getChanges[tab.target] }})
+              </div>
+            </div>
           </v-tab>
 
           <!-- EDIT GENERAL INFO -->
@@ -156,24 +164,26 @@
         ],
         tabs: [
           {
-            name: "Edit General Information",
+            name: "General Information",
             disabled: false,
-            target: "generalInformation"
+            target: "generalInformation",
+            icon: "fa-info"
           },
           {
-            name: "Edit Data Access",
+            name: "Data Access",
             disabled: false
           },
           {
-            name: "Edit Publications",
+            name: "Publications",
             disabled: false
           },
           {
-            name: "Edit Organisations & Grants",
-            disabled: false
+            name: "Organisations & Grants",
+            disabled: false,
+            target: "organisations"
           },
           {
-            name: "Edit Relations to other records",
+            name: "Relations to other records",
             disabled: true
           }
         ]
@@ -227,5 +237,12 @@
   }
 </script>
 
-<style>
+<style scoped>
+
+  .tabSquare {
+      width: 140px;
+      height: 140px !important;
+      white-space: initial !important;
+  }
+
 </style>

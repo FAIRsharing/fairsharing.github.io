@@ -21,9 +21,7 @@
       >
         <!-- Title and Icon -->
         <div>
-          <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25 ellipse-width-600">
-            {{ record.abbreviation }}
-          </h2>
+          <abbreviation-tooltip :abbreviation="record.abbreviation" />
           <record-status
             :record="record"
             class="mr-8"
@@ -62,10 +60,11 @@ import RecordStatus from "@/components/Records/Shared/RecordStatus"
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
+import AbbreviationTooltip from "@/components/Records/Shared/AbbreviationTooltip";
 
 export default {
   name: "RecordsCardColumn",
-  components: {SearchLinkChips, AssociatedRecordsSummary, RecordStatus},
+  components: {AbbreviationTooltip, SearchLinkChips, AssociatedRecordsSummary, RecordStatus},
   mixins: [recordsCardUtils],
   props: {
     record: {default: null, type: Object},

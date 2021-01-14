@@ -21,7 +21,7 @@
       >
         <!-- Title and Icon -->
         <div>
-          <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25">
+          <h2 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25 ellipse-width-600">
             {{ record.abbreviation }}
           </h2>
           <record-status

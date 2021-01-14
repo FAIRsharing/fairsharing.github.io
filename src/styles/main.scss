@@ -84,6 +84,11 @@ a:link {
   white-space: nowrap;
 }
 
+.ellipse-width-600 {
+  @extend .ellipse;
+  max-width: 600px;
+}
+
 .dashed-line {
   border: none;
   border-top: 4px dotted gray;

@@ -1,24 +1,15 @@
 import {shallowMount} from "@vue/test-utils";
-import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip.vue"
+import AbbreviationTooltip from "@/components/Records/Shared/AbbreviationTooltip.vue"
 
-describe('KeywordTooltip.vue', () => {
+describe('AbbreviationTooltip.vue', () => {
     let wrapper;
-    let keyword = {
-            label: 'ABC',
-            synonyms: ["abc", "def:test"],
-            definitions: ["first def"],
-            expandedNames: []
-    };
-
-    it("can be mounted", () => {
-        wrapper = shallowMount(KeywordTooltip, { propsData: { keyword: keyword } });
-        expect(wrapper.name()).toMatch("KeywordTooltip");
-        expect(wrapper.vm.processArray(wrapper.vm.keyword.synonyms)).toBe("abc, def: test.")
+    const abbreviation = "Inist Periodic Table of the Elements Trilingual Thesaurus"
+    it("can be instantiated", () => {
+        wrapper = shallowMount(AbbreviationTooltip,
+            {
+                propsData: {abbreviation: abbreviation}
+            }
+        );
+        expect(wrapper.name()).toMatch("AbbreviationTooltip");
     });
-
-    it ("can process empty synonyms", () => {
-        keyword.synonyms = [];
-        wrapper = shallowMount(KeywordTooltip, { propsData: { keyword: keyword  } });
-        expect(wrapper.vm.processArray(wrapper.vm.keyword.synonyms)).toBe(null);
-    })
 });

@@ -42,6 +42,7 @@ export function initEditorSections(data, sectionsNames){
         type: {},
         status: {},
         countries: [],
+        //publications: [],
         metadata: {
             name: null,
             abbreviation: null,
@@ -77,7 +78,8 @@ export function initEditorSections(data, sectionsNames){
                     return obj;
                 }),
                 is_dataset: false
-            }
+            },
+            publications: data.publications
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
         sectionsNames.forEach(name => {

@@ -166,10 +166,18 @@
     </v-card-text>
     <v-card-actions>
       <v-btn
-        class="primary"
-        @click="updateRecordPub()"
+          class="primary"
+          :loading="loading"
+          @click="saveRecord(false)"
       >
-        Submit Publications
+        Save and continue
+      </v-btn>
+      <v-btn
+          :loading="loading"
+          class="primary"
+          @click="saveRecord(true)"
+      >
+        Save and exit
       </v-btn>
     </v-card-actions>
     <v-dialog
@@ -283,11 +291,12 @@
     const pubClient = new PublicationClient();
     const restClient = new RestClient();
 
+    const diff = require("deep-object-diff").diff;
+
     export default {
         name: "EditPublications",
         data(){
           return {
-            publications: [],
             availablePublications: [],
             headers: [
               {
@@ -320,7 +329,7 @@
               }
             ],
             search: null,
-            loading: true,
+            loading: false,
             newPublication: {},
             errors: {
               doi: null,
@@ -329,24 +338,70 @@
             },
             openEditor: false,
             currentPublicationIndex: false,
-            citations_ids: []
+            citations_ids: [],
+            initialized: false
           }
         },
         computed: {
-          ...mapState('record', ['currentRecord', 'recordUpdate']),
+          // TODO: Remove
+          //...mapState('record', ['currentRecord', 'recordUpdate']),
           ...mapState('users', ['user']),
-          ...mapGetters("record", ["citations"]),
+          ...mapGetters("record", ["citations", "getSection", "getChanges"]),
+          section(){
+            return this.getSection('publications');
+          },
+          initialFields(){
+            return this.getSection("publications").initialData
+          },
+          message(){
+            let error = this.getSection("publications").error;
+            return {
+              error: error,
+              value: this.getSection("publications").message,
+              type: function(){if (error){return "error"} else {return "success"}}
+            };
+          },
+          publications: {
+            get() { return this.getSection("publications").data; },
+            set(newValue) { this.$store.commit('record/setPublications', newValue); }
+          },
+
+        },
+        watch: {
+          currentFields: {
+            deep: true,
+            handler(newVal){
+              let changes = 0;
+              if (this.initialized){
+                const differences = diff(newVal, this.initialFields);
+                Object.keys(differences).forEach(difference => {
+                  if (differences[difference] || differences[difference] === "") {
+                      Object.keys(differences[difference]).forEach(() => {
+                        changes += 1;
+                      });
+                    }
+                });
+                this.$store.commit("record/setChanges", {
+                  section: "publications",
+                  value: changes
+                })
+              }
+            }
+          }
         },
         mounted(){
           this.$nextTick(async function () {
             const _module = this;
+            _module.initialized = false;
 
             // get selected publications.
+            /*
             _module.currentRecord["fairsharingRecord"].publications.forEach(function(pub){
                 let pubCopy = JSON.parse(JSON.stringify(pub));
                 pubCopy.isCitation = _module.citations.indexOf(pubCopy.id) > -1;
                 _module.publications.push(pubCopy);
             });
+            */
 
             // get available publications from the DB.
             let pub = await graphClient.executeQuery(publicationsQuery);
@@ -365,10 +420,11 @@
 
             // neutralize loading.
             _module.loading = false;
+            _module.initialized = true;
           });
         },
         methods: {
-          ...mapActions("record", ["updateRecord"]),
+          ...mapActions("record", ["updatePublications"]),
           async getDOI(){
               this.currentPublicationIndex = false;
               this.errors = {
@@ -502,37 +558,19 @@
             this.openEditor = true;
             this.newPublication = JSON.parse(JSON.stringify(publication));
           },
-          async updateRecordPub(){
-              const _module = this;
-              _module.openEditor = false;
-              let publications = {
-                publication_ids: [],
-                citation_ids: []
-              };
-              _module.publications.forEach(function(publication){
-                publications.publication_ids.push(publication.id);
-                if (publication.isCitation) {
-                    publications.citation_ids.push(publication.id);
-                }
-                // delete the isCitation field
-                delete publication.isCitation;
-              });
-              const record = {
-                record: publications,
-                token: _module.user().credentials.token,
-                id: _module.$route.params.id
-              };
-              await _module.updateRecord(record);
-              if (!_module.recordUpdate.error){
-                let ID = _module.$route.params.id;
-                _module.$router.push({
-                  path: "/" + ID
-                })
-              }
-              else {
-                _module.errors.general = _module.recordUpdate.message;
-              }
-            },
+          async saveRecord(redirect){
+            this.openEditor = false; // what's this for?
+            this.loading = true;
+            await this.updatePublications({
+              token: this.user().credentials.token,
+              id: this.$route.params.id
+            });
+            this.loading = false;
+            if (!redirect) this.$scrollTo("#mainHeader");
+            if (redirect && !this.message.error){
+              await this.$router.push({path: '/' + this.$route.params.id})
+            }
+          },
           createNewPublication(){
             this.errors = {
               doi: null,

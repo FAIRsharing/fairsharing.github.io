@@ -28,7 +28,8 @@ let recordStore = {
             id: null
         },
         sections: {
-            generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation
+            generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
+            publications: initEditorSections(false, ["publications"]).publications,
         }
     },
     mutations: {
@@ -93,6 +94,9 @@ let recordStore = {
         },
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
+        },
+        setPublications(state, publications) {
+            state.sections.publications.data = publications;
         }
     },
     actions: {
@@ -181,6 +185,35 @@ let recordStore = {
                   newRecord.userDefinedTags = userDefinedTags;
                   commit('setGeneralInformation', {fairsharingRecord: newRecord});
               }
+        },
+        async updatePublications({ state, commit }, options) {
+            commit("resetMessage", "publications");
+            let publications = JSON.parse(JSON.stringify(state.sections.publications.data));
+            let record_data = {
+                publication_ids: [],
+                citation_ids: []
+            };
+            publications.forEach(function(publication){
+                record_data.publication_ids.push(publication.id);
+                if (publication.isCitation) {
+                    record_data.citation_ids.push(publication.id);
+                }
+                // delete the isCitation field
+                delete publication.isCitation;
+            });
+            const record = {
+                record: record_data,
+                token: options.token,
+                id:options.id
+            };
+            let response = await restClient.updateRecord(record);
+            if (response.error){
+                commit("setSectionError", {
+                    section: "publications",
+                    value: response.error
+                });
+                return response.error;
+            }
         },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});

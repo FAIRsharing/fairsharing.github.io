@@ -118,24 +118,36 @@
                 color="blue"
                 dark
                 left
-                @click.stop="assignMaintenanceOwner(props.item.recordName,props.item.id,props.item.userNameID,props.item.requestID)"
+                @click.stop="approveChangesMenu(props.item.recordName,props.item.id)"
               >
                 far fa-check-circle
               </v-icon>
               {{ props.item.actions }}
               <v-icon
-                padding-right="5px"
                 color="red"
                 dark
                 right
                 small
-                @click="rejectMaintenanceOwner(props.item.recordName,props.item.id,props.item.userNameID,props.item.requestID)"
+                @click="deleteRecordMenu(props.item.recordName,props.item.id)"
               >
                 fas fa-trash
               </v-icon>
-              <a :href="'#/' + props.item.id+ '/edit'">
-                Edit
-              </a>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <span
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <a
+                      :href="'#/' + props.item.id+ '/edit'"
+                      style="padding-left: 8px;"
+                    >
+                      Edit
+                    </a>
+                  </span>
+                </template>
+                <span>If edits are saved, record is approved.</span>
+              </v-tooltip>
             </td>
           </tr>
         </template>
@@ -146,7 +158,7 @@
       justify-center
     >
       <v-dialog
-        v-model="dialogs.confirmAssignment"
+        v-model="dialogs.approveChanges"
         max-width="700px"
       >
         <v-card>
@@ -154,22 +166,13 @@
             class="headline"
           >
             Are you sure you want to
-            <font style="color:blue; padding-left: 5px; padding-right: 5px;">
-              ACCEPT
+            <font style="color:blue; padding-left: 5px; padding-right: 1px;">
+              ACCEPT/APPROVE CHANGES
             </font>
-            this ownership?
+            record?
             <ul style="list-style-type:none;">
               <li>
-                <font style="color:gray">
-                  Record:
-                </font>
                 {{ dialogs.recordName }}
-              </li>
-              <li>
-                <font style="color:gray">
-                  User:
-                </font>
-                {{ dialogs.userName }}
               </li>
             </ul>
           </v-card-title>
@@ -178,14 +181,14 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="closeMaintenanceAssign()"
+              @click="closeApproveChangesMenu()"
             >
               Cancel
             </v-btn>
             <v-btn
               color="blue darken-1"
               text
-              @click="assignMaintenanceOwnConfirm('approved')"
+              @click="confirmAcceptance()"
             >
               OK
             </v-btn>
@@ -199,7 +202,7 @@
       justify-center
     >
       <v-dialog
-        v-model="dialogs.rejectAssignment"
+        v-model="dialogs.deleteRecord"
         max-width="700px"
       >
         <v-card>
@@ -210,21 +213,12 @@
             <font
               style="color:red; padding-left: 5px; padding-right: 5px;"
             >
-              REJECT
+              DELETE
             </font>
-            this ownership?
+            this record?
             <ul style="list-style-type:none;">
               <li>
-                <font style="color:gray">
-                  Record:
-                </font>
                 {{ dialogs.recordName }}
-              </li>
-              <li>
-                <font style="color:gray">
-                  User:
-                </font>
-                {{ dialogs.userName }}
               </li>
             </ul>
           </v-card-title>
@@ -233,14 +227,15 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="closeMaintenanceReject()"
+              @click="closeDeleteMenu()"
             >
               Cancel
             </v-btn>
             <v-btn
+              :disabled="dialogs.disableDelButton==true"
               color="blue darken-1"
               text
-              @click="assignMaintenanceOwnConfirm('rejected')"
+              @click="confirmDelete()"
             >
               OK
             </v-btn>
@@ -290,12 +285,11 @@
         data: () => {
             return {
               dialogs: {
-                confirmAssignment: false,
+                approveChanges: false,
                 recordName: "",
                 recordID: "",
-                userName: "",
-                requestId: "",
-                rejectAssignment: false
+                deleteRecord: false,
+                disableDelButton: true,
               },
               error: {
                 recordID: null,
@@ -309,11 +303,11 @@
           ...mapState("record", ["recordUpdate"])
         },
         watch: {
-          'dialogs.confirmAssignment' (val) {
-            val || this.closeMaintenanceAssign()
+          'dialogs.approveChanges' (val) {
+            val || this.closeApproveChangesMenu()
           },
-          'dialogs.rejectAssignment' (val) {
-            val || this.closeMaintenanceReject()
+          'dialogs.deleteRecord' (val) {
+            val || this.closeDeleteMenu()
           }
         },
         methods: {
@@ -363,52 +357,67 @@
               _module.approvalRequired[index].curator=nameUser;
             },
 
-            assignMaintenanceOwner(recordName, recordID, userNameID, requestID){
+            approveChangesMenu(recordName, recordID){
               const _module = this;
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
-              _module.dialogs.userName = userNameID;
-              _module.dialogs.requestId = requestID;
-              _module.dialogs.confirmAssignment = true;
+              _module.dialogs.approveChanges = true;
             },
-            closeMaintenanceAssign () {
-              this.dialogs.confirmAssignment = false;
+            closeApproveChangesMenu () {
+              this.dialogs.approveChanges = false;
             },
-            async assignMaintenanceOwnConfirm (newStatus) {
+            async confirmAcceptance () {
               const _module = this;
-              _module.error = {
-                recordID: null,
-                general: null
+              let preparedRecord = {
+                approved: null
               };
-              let data = await restClient.updateStatusMaintenanceRequest(_module.dialogs.requestId, newStatus, this.user().credentials.token);
-              if (!data.error){
-                const index = _module.maintenanceRequests.findIndex((element) => element.requestID === _module.dialogs.requestId);
-                _module.maintenanceRequests.splice(index, 1);
-                if (_module.approvalRequired.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
-                  if (_module.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
-                    await _module.saveProcessingNotes(_module.dialogs.recordID,null);
+              preparedRecord.approved = true;
+              let data = {
+                record: preparedRecord,
+                id: _module.dialogs.recordID,
+                token: _module.user().credentials.token
+              };
+              await _module.updateRecord(data);
+              if (_module.recordUpdate.error){
+                _module.error.general = _module.recordUpdate.message;
+                _module.error.recordID = _module.dialogs.recordID;
+              }else{
+                const index = _module.approvalRequired.findIndex((element) => element.id === _module.dialogs.recordID);
+                _module.approvalRequired.splice(index, 1);
+                if (_module.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
+                  if (_module.approvalRequired.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
+                    await _module.saveProcessingNotes(_module.dialogs.recordID,"");
                   }
                 }
-              }else{
-                _module.error.general = "error assigning "+newStatus;
-                _module.error.recordID = _module.dialogs.recordID;
               }
-              if (newStatus === "approved"){
-                _module.dialogs.confirmAssignment = false;
-              }else{
-                _module.dialogs.rejectAssignment = false;
-              }
+              _module.dialogs.approveChanges = false;
             },
-            rejectMaintenanceOwner(recordName, recordID, userNameID, requestID){
+
+            async confirmDelete(){
               const _module = this;
+              let data = await restClient.deleteRecord(_module.dialogs.recordID,this.user().credentials.token);
+              if (!data.error){
+                _module.error.general = "error deleting record";
+                _module.error.recordID = _module.dialogs.recordID;
+              }else{
+                const index = _module.approvalRequired.findIndex((element) => element.id === _module.dialogs.recordID);
+                _module.approvalRequired.splice(index, 1);
+              }
+              _module.dialogs.deleteRecord = false;
+            },
+
+            deleteRecordMenu(recordName, recordID){
+              const _module = this;
+              _module.dialogs.disableDelButton = true
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
-              _module.dialogs.userName = userNameID;
-              _module.dialogs.requestId = requestID;
-              _module.dialogs.rejectAssignment = true;
+              _module.dialogs.deleteRecord = true;
+              setTimeout(function () {
+                _module.dialogs.disableDelButton = false;
+              }, 5000);
             },
-            closeMaintenanceReject () {
-              this.dialogs.rejectAssignment = false;
+            closeDeleteMenu () {
+              this.dialogs.deleteRecord = false;
             }
 
         }

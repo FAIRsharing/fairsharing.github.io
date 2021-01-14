@@ -166,7 +166,8 @@
           },
           {
             name: "Edit Publications",
-            disabled: false
+            disabled: false,
+            target: "publications"
           },
           {
             name: "Edit Organisations & Grants",

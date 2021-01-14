@@ -30,6 +30,11 @@ let recordStore = {
         sections: {
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
             organisations: {}
+        },
+        editOrganisationLink: {
+            showOverlay: false,
+            data: {},
+            id: null
         }
     },
     mutations: {
@@ -95,6 +100,19 @@ let recordStore = {
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
         },
+        setOrganisationsLinks(state, links){
+            console.log(links);
+            state.sections['organisations'].data = links;
+        },
+        setEditOrganisationLink(state, newLink){
+            state.editOrganisationLink = newLink;
+        },
+        setEditOrganisationLinkOrganisation(state, organisation){
+            state.editOrganisationLink.data.organisation = organisation;
+        },
+        setEditOrganisationLinkGrant(state, grant){
+            state.editOrganisationLink.data.grant = grant;
+        }
     },
     actions: {
         async fetchRecord(state, id){
@@ -183,11 +201,33 @@ let recordStore = {
                   commit('setGeneralInformation', {fairsharingRecord: newRecord});
               }
         },
+        async updateOrganisations({state}){
+            let deleteItems = [],
+                updateItems = [],
+                createItems = [];
+
+            // DELETE
+            state.sections.organisations.initialData.forEach((obj) => {
+                let found = state.sections.organisations.data.filter(org => org.id === obj.id)[0];
+                if (!found) {
+                    deleteItems.push(obj);
+                }
+            });
+            state.sections.organisations.data.forEach(obj => {
+                // UPDATE
+                if (Object.prototype.hasOwnProperty.call(obj, 'id')) {
+                   updateItems.push(obj);
+                }
+
+                // CREATE
+                else createItems.push(obj)
+            });
+            console.log(deleteItems, updateItems, createItems);
+        },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});
         }
     },
-    modules: {},
     getters: {
         getField: (state) => (fieldName) => {
             return state.currentRecord['fairsharingRecord'][fieldName];

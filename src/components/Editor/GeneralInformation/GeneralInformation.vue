@@ -179,7 +179,6 @@
                 await this.getRecordTypes();
                 await this.getTags();
             },
-            /** TODO: build this method to save and redirect**/
             async saveRecord(redirect){
               this.loading = true;
               await this.updateGeneralInformation({

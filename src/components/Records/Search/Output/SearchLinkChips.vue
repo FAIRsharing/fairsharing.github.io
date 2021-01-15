@@ -25,7 +25,7 @@
         {{ `+${remainTagCount} more tags`}}
       </v-chip>
       <v-chip disabled outlined label v-else-if="remainTagCount===1">
-        {{ `one more tags`}}
+        {{ `one more tag`}}
       </v-chip>
     </v-chip-group>
   </section>

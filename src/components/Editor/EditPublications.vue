@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template xmlns:v-sl ot="http://www.w3.org/1999/XSL/Transform">
   <v-card id="editPublications">
     <v-card-title class="grey lighten-4 blue--text">
       <v-btn
@@ -52,6 +52,7 @@
                   v-if="publication.doi"
                   class="ml-2"
                 > - {{ publication.doi }}</span>
+                <b>{{ publication }}</b>
               </v-card-title>
               <v-card-text
                 :class="{'grey lighten-3': !publication.isCitation, 'green lighten-3': publication.isCitation}"
@@ -291,7 +292,7 @@
     const pubClient = new PublicationClient();
     const restClient = new RestClient();
 
-    const diff = require("deep-object-diff").diff;
+    const detailedDiff = require("deep-object-diff").detailedDiff;
 
     export default {
         name: "EditPublications",
@@ -339,7 +340,8 @@
             openEditor: false,
             currentPublicationIndex: false,
             citations_ids: [],
-            initialized: false
+            initialized: false,
+            initialFields: []
           }
         },
         computed: {
@@ -349,9 +351,6 @@
           ...mapGetters("record", ["citations", "getSection", "getChanges"]),
           section(){
             return this.getSection('publications');
-          },
-          initialFields(){
-            return this.getSection("publications").initialData
           },
           message(){
             let error = this.getSection("publications").error;
@@ -365,14 +364,25 @@
             get() { return this.getSection("publications").data; },
             set(newValue) { this.$store.commit('record/setPublications', newValue); }
           },
+          metadata() {
+            return this.getSection("generalInformation").data.metadata
+          }
 
         },
         watch: {
-          currentFields: {
+          publications: {
             deep: true,
             handler(newVal){
+              let _module = this;
               let changes = 0;
-              if (this.initialized){
+              if (_module.initialized){
+                /*
+                const firstDiff = diff(newVal, this.initialFields);
+                changes = Object.keys(firstDiff).length;
+                */
+                const edits = detailedDiff(this.initialFields, newVal);
+                console.log("EDITS: " + JSON.stringify(edits));
+                /*
                 const differences = diff(newVal, this.initialFields);
                 Object.keys(differences).forEach(difference => {
                   if (differences[difference] || differences[difference] === "") {
@@ -381,6 +391,7 @@
                       });
                     }
                 });
+                */
                 this.$store.commit("record/setChanges", {
                   section: "publications",
                   value: changes
@@ -393,15 +404,7 @@
           this.$nextTick(async function () {
             const _module = this;
             _module.initialized = false;
-
-            // get selected publications.
-            /*
-            _module.currentRecord["fairsharingRecord"].publications.forEach(function(pub){
-                let pubCopy = JSON.parse(JSON.stringify(pub));
-                pubCopy.isCitation = _module.citations.indexOf(pubCopy.id) > -1;
-                _module.publications.push(pubCopy);
-            });
-            */
+            _module.initialFields = this.getSection("publications").data;
 
             // get available publications from the DB.
             let pub = await graphClient.executeQuery(publicationsQuery);

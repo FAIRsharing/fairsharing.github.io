@@ -63,4 +63,13 @@ describe("FilterPanel.vue", function () {
         expect(sorted[3]['filterName']).toEqual('filterNameTest');
     })
 
+    it("can check scrollToBottom", () => {
+        let testId = "scrollable-holder";
+        let scrollableLeftPanel = document.createElement("div");
+        scrollableLeftPanel.setAttribute("id", testId);
+        document.body.appendChild(scrollableLeftPanel);
+        wrapper.vm.scrollToBottom();
+        expect(scrollableLeftPanel.scrollTop).toBe(scrollableLeftPanel.scrollHeight)
+    })
+
 });

@@ -188,7 +188,7 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="confirmAcceptance()"
+              @click="confirmApproval()"
             >
               OK
             </v-btn>
@@ -363,10 +363,12 @@
               _module.dialogs.recordID = recordID;
               _module.dialogs.approveChanges = true;
             },
+
             closeApproveChangesMenu () {
               this.dialogs.approveChanges = false;
             },
-            async confirmAcceptance () {
+
+            async confirmApproval () {
               const _module = this;
               let preparedRecord = {
                 approved: null
@@ -385,9 +387,7 @@
                 const index = _module.approvalRequired.findIndex((element) => element.id === _module.dialogs.recordID);
                 _module.approvalRequired.splice(index, 1);
                 if (_module.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
-                  if (_module.approvalRequired.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
                     await _module.saveProcessingNotes(_module.dialogs.recordID,"");
-                  }
                 }
               }
               _module.dialogs.approveChanges = false;
@@ -396,7 +396,7 @@
             async confirmDelete(){
               const _module = this;
               let data = await restClient.deleteRecord(_module.dialogs.recordID,this.user().credentials.token);
-              if (!data.error){
+              if (data.error){
                 _module.error.general = "error deleting record";
                 _module.error.recordID = _module.dialogs.recordID;
               }else{
@@ -416,6 +416,7 @@
                 _module.dialogs.disableDelButton = false;
               }, 5000);
             },
+
             closeDeleteMenu () {
               this.dialogs.deleteRecord = false;
             }

@@ -1,6 +1,7 @@
 <template>
   <aside>
     <v-card
+      id="scrollable-holder"
       v-scroll-stop
       :class="['pa-2',responsiveClassObject]"
       outlined
@@ -25,9 +26,11 @@
         accordion
       >
         <filter-autocomplete
-          v-for="filter in setup"
+          v-for="(filter,index) in setup"
           :key="filter.filterLabel"
           :filter="filter"
+          :last-item="index===setup.length-1"
+          @lastItemClick="scrollToBottom"
         />
       </v-expansion-panels>
     </v-card>
@@ -95,6 +98,13 @@ export default {
         comparison = 1;
       }
       return comparison;
+    },
+    /**
+     * Scroll to the bottom of the element
+     */
+    scrollToBottom() {
+      let element = document.getElementById("scrollable-holder");
+      element.scrollTop = element.scrollHeight;
     }
   }
 }

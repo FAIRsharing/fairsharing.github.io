@@ -36,7 +36,23 @@ let recordStore = {
         setCurrentRecord(state, data){
             state.currentRecord = data;
             if (!data["fairsharingRecord"]['metadata']['contacts']) state.currentRecord["fairsharingRecord"]['metadata']['contacts'] = [];
-            if (!data["fairsharingRecord"]['metadata']['citations']) state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
+            // Citations should be created if empty.
+            // If not empty the isCitation must be set on any existing publications referenced there.
+            if (data["fairsharingRecord"]['metadata']['citations']) {
+                state.currentRecord["fairsharingRecord"]['metadata']['citations'].forEach((citation) => {
+                    let citation_id = citation.publication_id;
+                    state.currentRecord["fairsharingRecord"]['publications'].forEach((pub, index) => {
+                        if (pub.id === citation_id) {
+                            state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = true;
+                        } else {
+                            state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = false;
+                        }
+                    })
+                })
+            }
+            else {
+                state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
+            }
         },
         setRecordHistory(state, data){
             state.currentRecordHistory = data;

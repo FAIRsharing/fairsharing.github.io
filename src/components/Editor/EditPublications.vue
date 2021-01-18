@@ -292,7 +292,7 @@
     const pubClient = new PublicationClient();
     const restClient = new RestClient();
 
-    const detailedDiff = require("deep-object-diff").detailedDiff;
+    const diff = require("deep-object-diff").detailedDiff;
 
     export default {
         name: "EditPublications",
@@ -348,7 +348,7 @@
           // TODO: Remove
           //...mapState('record', ['currentRecord', 'recordUpdate']),
           ...mapState('users', ['user']),
-          ...mapGetters("record", ["citations", "getSection", "getChanges"]),
+          ...mapGetters("record", ["citations", "getSection", "getChanges", "currentRecord"]),
           section(){
             return this.getSection('publications');
           },
@@ -376,22 +376,10 @@
               let _module = this;
               let changes = 0;
               if (_module.initialized){
-                /*
-                const firstDiff = diff(newVal, this.initialFields);
-                changes = Object.keys(firstDiff).length;
-                */
-                const edits = detailedDiff(this.initialFields, newVal);
-                console.log("EDITS: " + JSON.stringify(edits));
-                /*
-                const differences = diff(newVal, this.initialFields);
-                Object.keys(differences).forEach(difference => {
-                  if (differences[difference] || differences[difference] === "") {
-                      Object.keys(differences[difference]).forEach(() => {
-                        changes += 1;
-                      });
-                    }
-                });
-                */
+                const edits = diff(_module.initialFields, _module.checkChanges(newVal));
+                changes = Object.keys(edits['added']).length +
+                    Object.keys(edits['deleted']).length +
+                    Object.keys(edits['updated']).length
                 this.$store.commit("record/setChanges", {
                   section: "publications",
                   value: changes
@@ -404,7 +392,6 @@
           this.$nextTick(async function () {
             const _module = this;
             _module.initialized = false;
-            _module.initialFields = this.getSection("publications").data;
 
             // get available publications from the DB.
             let pub = await graphClient.executeQuery(publicationsQuery);
@@ -421,6 +408,7 @@
               position += 1;
             });
 
+            _module.initialFields = _module.checkChanges(JSON.parse(JSON.stringify(_module.publications)));
             // neutralize loading.
             _module.loading = false;
             _module.initialized = true;
@@ -428,6 +416,13 @@
         },
         methods: {
           ...mapActions("record", ["updatePublications"]),
+          checkChanges(data) {
+            let summary = [];
+            data.forEach((d) => {
+              summary.push([d['id'], d['isCitation']]);
+            });
+            return summary;
+          },
           async getDOI(){
               this.currentPublicationIndex = false;
               this.errors = {

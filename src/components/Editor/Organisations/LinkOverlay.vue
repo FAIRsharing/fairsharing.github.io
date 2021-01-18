@@ -445,7 +445,7 @@
         },
         confirmModifications(){
           let data = JSON.parse(JSON.stringify(this.editOrganisationLink.data));
-          if (this.editOrganisationLink.id){
+          if (this.editOrganisationLink.id > -1){
             Vue.set(this.organisationLinks, this.editOrganisationLink.id, data);
           }
           else Vue.set(this.organisationLinks, this.organisationLinks.length, data);

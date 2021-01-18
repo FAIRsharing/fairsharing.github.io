@@ -69,7 +69,6 @@
       <v-text-field
         v-model="fields.metadata.homepage"
         label="Homepage"
-        :rules="[rules.isRequired(), rules.isUrl()]"
         outlined
       >
         <template #prepend>

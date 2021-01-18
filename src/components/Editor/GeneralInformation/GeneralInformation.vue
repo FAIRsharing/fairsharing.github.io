@@ -12,19 +12,7 @@
         Edit General Information
       </v-card-title>
 
-      <v-scroll-x-transition>
-        <v-card-text
-          v-if="message.value"
-          class="pt-3 mb-0 pb-0"
-        >
-          <v-alert
-            :type="message.type()"
-            class="mb-0"
-          >
-            {{ message.value }}<span v-if="message.error"> <v-icon class="ml-4 mr-3">fa-arrow-right</v-icon> {{ message.value.response.data }}</span>
-          </v-alert>
-        </v-card-text>
-      </v-scroll-x-transition>
+      <Alerts target="generalInformation" />
 
       <v-card-text>
         <v-container fluid>
@@ -87,12 +75,13 @@
     import EditTags from "./EditTags";
     import BaseFields from "./BaseFields";
     import Loaders from "@/components/Navigation/Loaders";
+    import Alerts from "../Alerts";
 
     const diff = require("deep-object-diff").diff;
 
     export default {
         name: "GeneralInformation",
-        components: {Loaders, BaseFields, EditTags, Contact },
+        components: {Alerts, Loaders, BaseFields, EditTags, Contact },
         data(){
             return {
                 initialized: false,

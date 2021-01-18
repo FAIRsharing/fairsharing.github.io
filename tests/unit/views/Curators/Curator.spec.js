@@ -57,6 +57,8 @@ describe("Curator.vue", () => {
       expect(wrapper.name()).toMatch(title);
       expect(wrapper.vm.approvalRequired.length).toBe(2);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazus");
+      expect(wrapper.vm.curatorList.length).toBe(3);
+
       //MaintanceRequest are properly created, elements sorted by date, values edited and formatted properly
       expect(wrapper.vm.maintenanceRequests.length).toBe(4);
       expect(wrapper.vm.maintenanceRequests[0].userNameID).toBe("Mariano (22)");

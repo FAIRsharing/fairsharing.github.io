@@ -159,6 +159,20 @@
              "name": "ShareSfhare",
              "createdAt": "1425-01-01T13:31:25Z"
         }
+      ],
+      "curatorList":[
+        {
+              "id": "22",
+              "username": "Pepa"
+        },
+        {
+              "id": "2001",
+              "username": "Michael the curator"
+        },
+        {
+              "id": "11",
+              "username": "Mary the Great Curator"
+        }
       ]
   }
 }

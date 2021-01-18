@@ -121,7 +121,7 @@
   import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
   import EditRelationships from "@/components/Editor/EditRelationships";
   import EditLicences from "@/components/Editor/EditLicences";
-  import EditOrganisations from "@/components/Editor/Organisations/EditOrganisations";
+  import EditOrganisations from "@/components/Editor/Organisations/Organisations";
   import EditPublications from "@/components/Editor/EditPublications";
   import Unauthorized from "@/views/Errors/403"
   import RESTClient from "@/components/Client/RESTClient.js"

@@ -2,6 +2,7 @@ import Client from "../components/GraphClient/GraphClient.js"
 import RESTClient from "@/components/Client/RESTClient.js"
 import recordQuery from "../components/GraphClient/queries/getRecord.json"
 import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
+import recordOrganisationsQuery from "../components/GraphClient/queries/getRecordOrganisations.json"
 import { initEditorSections } from "./utils.js"
 
 let client = new Client();
@@ -101,8 +102,13 @@ let recordStore = {
             state.sections.generalInformation.data.type = "";
         },
         setOrganisationsLinks(state, links){
-            console.log(links);
             state.sections['organisations'].data = links;
+        },
+        updateOrganisationsLinks(state, links){
+            state.sections.organisations.data = links;
+            state.sections.organisations.initialData = JSON.parse(JSON.stringify(links));
+            state.sections.organisations.changes = 0;
+            state.sections.organisations.message = "Record successfully updated!";
         },
         setEditOrganisationLink(state, newLink){
             state.editOrganisationLink = newLink;
@@ -201,28 +207,47 @@ let recordStore = {
                   commit('setGeneralInformation', {fairsharingRecord: newRecord});
               }
         },
-        async updateOrganisations({state}){
+        async updateOrganisations({state, commit}, userToken){
+            commit("resetMessage", "organisations");
             let deleteItems = [],
                 updateItems = [],
                 createItems = [];
-
-            // DELETE
             state.sections.organisations.initialData.forEach((obj) => {
                 let found = state.sections.organisations.data.filter(org => org.id === obj.id)[0];
-                if (!found) {
-                    deleteItems.push(obj);
+                if (!found) { deleteItems.push(obj); }
+            });
+            state.sections.organisations.data.forEach(function(obj) {
+                let query = {
+                    fairsharing_record_id: state.currentRecord['fairsharingRecord'].id,
+                    organisation_id: obj.organisation.id,
+                    relation: obj.relation,
+                    grant_id: (obj.grant) ? obj.grant.id : null
+                };
+                if (Object.prototype.hasOwnProperty.call(obj, 'id')) updateItems.push({query: query, id: obj.id});
+                else createItems.push(query);
+            });
+            let queries = await Promise.all([
+                Promise.all(deleteItems.map(organisation =>
+                    restClient.deleteOrganisationLink(organisation.id, userToken)
+                )),
+                Promise.all(createItems.map(organisation =>
+                    restClient.createOrganisationLink(organisation, userToken)
+                )),
+                Promise.all(updateItems.map(organisation =>
+                    restClient.updateOrganisationLink(organisation.query, organisation.id, userToken)
+                ))
+            ]);
+            queries.forEach((org) => {
+                if (org.error) {
+                    commit("setSectionError", {
+                        section: "organisations",
+                        value: org.error
+                    });
                 }
             });
-            state.sections.organisations.data.forEach(obj => {
-                // UPDATE
-                if (Object.prototype.hasOwnProperty.call(obj, 'id')) {
-                   updateItems.push(obj);
-                }
-
-                // CREATE
-                else createItems.push(obj)
-            });
-            console.log(deleteItems, updateItems, createItems);
+            recordOrganisationsQuery.queryParam = {id: state.currentRecord.fairsharingRecord.id};
+            let organisations = await client.executeQuery(recordOrganisationsQuery);
+            commit('updateOrganisationsLinks', organisations.fairsharingRecord.organisationLinks);
         },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});

@@ -581,6 +581,23 @@ class RESTClient {
             return({data: {error: e}});
         }
     }
+
+    /**
+     * Get records without DOIS
+     * @param {String} token - the user token that needs to be a curator
+     * @returns {Promise}
+     */
+     async getRecordsWoDOIs(userToken){
+         let _client = this;
+         const request = {
+             method: "get",
+             baseURL: _client.baseURL + "/files/no_dois",
+             headers: this.auth_headers(userToken),
+         };
+         let response = await _client.executeQuery(request);
+         return response.data;
+     }
+
 }
 
 export default RESTClient;

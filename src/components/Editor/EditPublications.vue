@@ -292,8 +292,6 @@
     const pubClient = new PublicationClient();
     const restClient = new RestClient();
 
-    const diff = require("deep-object-diff").detailedDiff;
-
     export default {
         name: "EditPublications",
         data(){
@@ -374,12 +372,29 @@
             deep: true,
             handler(newVal){
               let _module = this;
-              let changes = 0;
               if (_module.initialized){
-                const edits = diff(_module.initialFields, _module.checkChanges(newVal));
-                changes = Object.keys(edits['added']).length +
-                    Object.keys(edits['deleted']).length +
-                    Object.keys(edits['updated']).length
+                let updated = _module.checkChanges(newVal);
+                /*
+                 *  This function deals with seeing what elelemts have been added.
+                 */
+                let then = _module.initialFields.map(e => e[0])
+                let now = updated.map(e => e[0])
+                let changes = then
+                    .filter(x => !now.includes(x))
+                    .concat(now.filter(x => !then.includes(x))).length;
+
+                /*
+                 * This function compares to see which have changed, i.e. isCitation has been
+                 * toggled.
+                 */
+                updated.forEach((obj) => {
+                  let orig = _module.initialFields.find(e => e[0] === obj[0]);
+                  if (orig) {
+                    if (orig[1] !== obj[1]) {
+                      changes += 1;
+                    }
+                  }
+                });
                 this.$store.commit("record/setChanges", {
                   section: "publications",
                   value: changes
@@ -407,7 +422,6 @@
               _module.availablePublications.push(pub);
               position += 1;
             });
-
             _module.initialFields = _module.checkChanges(JSON.parse(JSON.stringify(_module.publications)));
             // neutralize loading.
             _module.loading = false;

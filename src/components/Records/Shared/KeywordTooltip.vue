@@ -15,7 +15,10 @@
       </template>
       <div class="tooltip">
         <div :class="getChipColor(keyword)">
-          <b class="mr-1">Type:</b> {{ keyword.type }}
+          <b
+            v-if="keyword.type"
+            class="mr-1"
+          >Type:</b> {{ keyword.type }}
         </div>
         <div><b class="mr-1">Name:</b> {{ keyword.label }}</div>
         <div v-if="keyword['model']">

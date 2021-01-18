@@ -12,12 +12,10 @@ const recordsCardUtils = {
             if(chip.type==='subjects'){
                 return 'subject_color';
             }
-            else if(chip.type==='domains')
-            {
+            else if(chip.type==='domains') {
                 return 'domain_color';
             }
-            else if(chip.type==='taxonomies')
-            {
+            else if(chip.type==='taxonomies') {
                 return 'taxonomic_color';
             }
         },

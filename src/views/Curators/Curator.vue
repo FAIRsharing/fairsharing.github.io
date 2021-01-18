@@ -36,29 +36,30 @@
           :approval-required="approvalRequired"
         />
         <v-card>
-          <v-card-text v-if="recordsWithoutDois">
+          <v-card-text>
             <v-card-title
               id="text-curator-search-1"
               class="green white--text"
             >
               Records without dois
-              <v-spacer />
-              <v-text-field
-                v-model="searches.recordsWithoutDois"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
+              <v-btn
+                v-if="downloadContent"
+                class="info ml-5"
+              >
+                <a
+                  :href="downloadContent"
+                  download="recordWithoutDOIs.txt"
+                >
+                  <v-icon
+                    color="white"
+                    class="mr-1"
+                  >
+                    fa fa-download
+                  </v-icon>
+                  <span class="white--text">Obtain file</span>
+                </a>
+              </v-btn>
             </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.recordsWithoutDois"
-              :items="recordsWithoutDois"
-              :search="searches.recordsWithoutDois"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
           </v-card-text>
         </v-card>
         <v-card>
@@ -133,10 +134,12 @@
     import headersTables from "@/data/headersCuratorDashboard.json"
     import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
     import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
+    import RestClient from "@/components/Client/RESTClient.js"
 
 
 
     const client = new GraphClient();
+    const restClient = new RestClient();
 
     function compareRecordDesc(a, b) {
       if (a.createdAt > b.createdAt) {
@@ -191,7 +194,6 @@
           maintenanceRequests: [],
           recordsCreatedCuratorsLastWeek: [],
           recordsInCuration: [],
-          recordsWithoutDois: [],
           hiddenRecords: [],
           curatorList: [],
           recordType: null,
@@ -199,11 +201,10 @@
           searches: {
             recentCuratorCreations: "",
             recordsInCuration: "",
-            recordsWithoutDois: "",
             hiddenRecords: ""
           },
           loading: false,
-          error: null
+          downloadContent: null
         }
       },
       computed: {
@@ -228,6 +229,7 @@
           this.allDataCuration = data.curationSummary;
           client.initalizeHeader();
           this.prepareData();
+          await this.obtainFileRecordsWODois();
           this.loading = false;
         })
       },
@@ -239,7 +241,6 @@
             this.prepareApprovalRequired(this.allDataCuration);
             this.prepareMaintenanceRequests(this.allDataCuration);
             this.prepareRecordsInCuration(this.allDataCuration);
-            this.prepareRecordsWithoutDois(this.allDataCuration);
             this.prepareHiddenRecords(this.allDataCuration);
             this.prepareRecordsCuratorCreationsLastWeek(this.allDataCuration);
           },
@@ -261,7 +262,8 @@
                 }
                 if (rec.lastEditor){
                   object.lastEditor = rec.lastEditor.username+' ('+rec.lastEditor.id+')';
-                }else{
+                }
+                else{
                   object.lastEditor = "unknown"
                 }
                 this.approvalRequired.push(object);
@@ -326,33 +328,14 @@
                 rec.maintainers.forEach(main => {
                   if (numMaint > 0){
                     object.recordMaintainers += ', ' + main.username+' ('+main.id+')';
-                  }else{
+                  }
+                  else{
                     object.recordMaintainers = main.username+' ('+main.id+')';
                   }
                   numMaint += 1;
                 });
                 this.recordsInCuration.push(object);
               });
-            });
-          },
-          prepareRecordsWithoutDois(dataCuration){
-            let records = dataCuration.recordsWithoutDois;
-            records.forEach(item => {
-              let object = {};
-              object.recordNameID = item.name+' ('+item.id+')';
-              object.createdAt = item.createdAt;
-              object.updatedAt = item.updatedAt;
-              if (item.creator){
-                object.creator = item.creator.username +' ('+item.creator.id+')';
-              }else{
-                object.creator = "unknown"
-              }
-              if (item.lastEditor){
-                object.lastEditor = item.lastEditor.username +' ('+item.lastEditor.id+')';
-              }else{
-                object.lastEditor = "unknown"
-              }
-              this.recordsWithoutDois.push(object);
             });
           },
           prepareHiddenRecords(dataCuration){
@@ -375,6 +358,14 @@
               }
               this.hiddenRecords.push(object);
             });
+          },
+          async obtainFileRecordsWODois(){
+            let data = await restClient.getRecordsWoDOIs(this.user().credentials.token);
+            this.downloadContent = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data)
+                .replace(/^\[(.+)\]$/,'$1')
+                .split(',')
+                .join('\r\n')
+                .replace(/['"]+/g, ''));
           }
       }
     }

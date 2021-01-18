@@ -183,16 +183,18 @@
             deep: true,
             handler() {
               let changes = 0;
-              // TODO: REDO THE DIFF
               this.sections["organisations"].initialData.forEach((link) => {
                 let found = this.organisationLinks.filter(obj => obj.id === link.id)[0];
                 if (!found){
                   changes += 1;
                 }
-                else {
-                  if (!isEqual(link, found)){
+                else if (!isEqual(link, found)){
                     changes += 1;
-                  }
+                }
+              });
+              this.organisationLinks.forEach((link) => {
+                if (!link.id){
+                  changes += 1;
                 }
               });
               this.$store.commit("record/setChanges", {

@@ -11,6 +11,7 @@
             <v-card-title class="grey lighten-4 blue--text">
               Edit Organisations and Grants
             </v-card-title>
+            <Alerts target="organisations" />
             <v-card-text class="pt-3 mb-0">
               <v-container fluid>
                 <v-row>
@@ -125,12 +126,14 @@
             <v-card-actions>
               <v-btn
                 class="info"
+                :loading="saving"
                 @click="saveRecord(false)"
               >
                 Save and continue
               </v-btn>
               <v-btn
                 class="info"
+                :loading="saving"
                 @click="saveRecord(true)"
               >
                 Save and exit
@@ -154,14 +157,15 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from "vuex"
+    import { mapState, mapActions, mapGetters } from "vuex"
     import Loaders from "../../Navigation/Loaders";
     import LinkOverlay from "./LinkOverlay";
     import { isEqual } from "lodash"
+    import Alerts from "../Alerts";
 
     export default {
         name: "EditOrganisations",
-        components: {LinkOverlay, Loaders},
+        components: {Alerts, LinkOverlay, Loaders},
         data(){
             return {
                 formValid: false,
@@ -174,6 +178,7 @@
         },
         computed: {
           ...mapState("record", ["sections"]),
+          ...mapState("users", ["user"]),
           organisationLinks() {
             return this.sections["organisations"].data;
           }
@@ -207,6 +212,7 @@
         methods: {
           ...mapActions("editor", ["getOrganisations", "getOrganisationsTypes", "getGrants"]),
           ...mapActions("record", ["updateOrganisations"]),
+          ...mapGetters("record", ["getSection"]),
           removeRelation(id){
             this.organisationLinks.splice(id, 1);
           },
@@ -229,8 +235,13 @@
             this.$store.commit("record/setEditOrganisationLink", editObject);
           },
           async saveRecord(redirect){
-            await this.updateOrganisations();
+            this.saving = true;
+            await this.updateOrganisations(this.user().credentials.token);
+            this.saving = false;
             if (!redirect) this.$scrollTo("#mainHeader");
+            else if (redirect && !this.getSection("organisations").error){
+              await this.$router.push({path: '/' + this.$route.params.id})
+            }
           }
         },
     }

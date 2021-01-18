@@ -157,7 +157,7 @@
     import { mapState, mapActions } from "vuex"
     import Loaders from "../../Navigation/Loaders";
     import LinkOverlay from "./LinkOverlay";
-    const diff = require("deep-object-diff").diff;
+    import { isEqual } from "lodash"
 
     export default {
         name: "EditOrganisations",
@@ -168,7 +168,8 @@
                 showOverlay: false,
                 initialized: false,
                 loading: false,
-                saving: false
+                saving: false,
+                data: {}
             }
         },
         computed: {
@@ -180,10 +181,20 @@
         watch: {
           organisationLinks: {
             deep: true,
-            handler(newVal) {
+            handler() {
               let changes = 0;
-              let differences = diff(newVal, this.sections["organisations"].initialData);
-              Object.keys(differences).forEach( () => { changes += 1});
+              // TODO: REDO THE DIFF
+              this.sections["organisations"].initialData.forEach((link) => {
+                let found = this.organisationLinks.filter(obj => obj.id === link.id)[0];
+                if (!found){
+                  changes += 1;
+                }
+                else {
+                  if (!isEqual(link, found)){
+                    changes += 1;
+                  }
+                }
+              });
               this.$store.commit("record/setChanges", {
                 section: "organisations",
                 value: changes

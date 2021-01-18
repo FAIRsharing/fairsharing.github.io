@@ -282,12 +282,8 @@
                 general: null
               };
               let preparedRecord = {
-<<<<<<< HEAD
-                processing_notes: ""
-=======
                 processing_notes: "",
                 skip_approval: true
->>>>>>> RG-curator-PendingRequestTable#615
               };
               preparedRecord.processing_notes = notesText;
               let data = {

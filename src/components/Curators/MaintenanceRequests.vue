@@ -44,11 +44,14 @@
                   v-if="props.item.type"
                   class="mr-2"
                 >
-                  <img
+                  <v-avatar
                     v-if="Object.keys(recordType).includes(props.item.type)"
-                    :src="'./' + recordType[props.item.type].icon"
-                    class="miniIcon"
+                    size="38"
                   >
+                    <img
+                      :src="'./' + recordType[props.item.type].icon"
+                    >
+                  </v-avatar>
                 </span>
                 {{ props.item.recordName }}
               </a>
@@ -108,6 +111,7 @@
       <v-dialog
         v-model="dialogs.confirmAssignment"
         max-width="700px"
+        persistant
       >
         <v-card>
           <v-card-title
@@ -161,6 +165,7 @@
       <v-dialog
         v-model="dialogs.rejectAssignment"
         max-width="700px"
+        persistant
       >
         <v-card>
           <v-card-title

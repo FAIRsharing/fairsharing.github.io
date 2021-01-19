@@ -34,6 +34,7 @@ recordStore.state.sections = {
         message: null
     }
 };
+recordStore.state.currentRecord = {fairsharingRecord: { id: 123 }};
 userStore.state.user().credentials.token = 123;
 const $store = new Vuex.Store({
     modules: {
@@ -51,6 +52,23 @@ describe("Edit -> GeneralInformation.vue", function() {
     let graphStub;
     let restStub;
 
+    beforeAll(async () => {
+        graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
+        graphStub.returns({
+            fairsharingRecord: {
+                organisationLinks: []
+            }
+        });
+        graphStub.withArgs(getOrganisationsTypesQuery).returns({
+            searchOrganisationTypes: [{id: 1, name: "Government body"}]
+        });
+        graphStub.withArgs(getOrganisationsQuery).returns({
+            searchOrganisations: [{homepage: "test", id: 1, name: "anOrganisation", types: ["Government body"], urlForLogo: null}]});
+        graphStub.withArgs(getGrantsQuery).returns({
+            searchGrants: [{id: 1, name: "aGrant", description: null}]
+        });
+    });
+
     beforeEach(async () => {
         wrapper = await shallowMount(Organisations, {
             localVue,
@@ -58,6 +76,10 @@ describe("Edit -> GeneralInformation.vue", function() {
             router,
             mocks: {$store, $route, $router}
         });
+    });
+
+    afterAll(async() => {
+        graphStub.restore();
     });
 
     it("can be mounted", async () => {
@@ -78,19 +100,9 @@ describe("Edit -> GeneralInformation.vue", function() {
     });
 
     it("can open the overlay", async () => {
-        graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
-        graphStub.withArgs(getOrganisationsTypesQuery).returns({
-            searchOrganisationTypes: [{id: 1, name: "Government body"}]
-        });
-        graphStub.withArgs(getOrganisationsQuery).returns({
-            searchOrganisations: [{homepage: "test", id: 1, name: "anOrganisation", types: ["Government body"], urlForLogo: null}]});
-        graphStub.withArgs(getGrantsQuery).returns({
-            searchGrants: [{id: 1, name: "aGrant", description: null}]
-        });
         await wrapper.vm.showEditOverlay(null);
         expect(recordStore.state.editOrganisationLink.showOverlay).toBe(true);
         expect(recordStore.state.editOrganisationLink.data).toStrictEqual({});
-        graphStub.restore();
         expect(editorStore.state.organisationsTypes).toStrictEqual([{id: 1, name: "Government body"}]);
         expect(editorStore.state.organisations).toStrictEqual([{homepage: "test", id: 1, name: "anOrganisation", types: ["Government body"], urlForLogo: null}]);
         expect(editorStore.state.grants).toStrictEqual([{id: 1, name: "aGrant", description: null}]);
@@ -104,12 +116,15 @@ describe("Edit -> GeneralInformation.vue", function() {
 
     it("can save the current data", async () => {
         jest.spyOn(console, 'warn').mockImplementation(() => {});
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {}});
         recordStore.state.sections.organisations = {
             error: false,
             data: [organisation, {
                 organisation: {
                     name: "another name"
                 },
+                grant: {id: 123},
                 id: 2
             }],
             initialData: [JSON.parse(JSON.stringify(organisation)), {
@@ -121,11 +136,6 @@ describe("Edit -> GeneralInformation.vue", function() {
             changes: 0,
             message: null
         };
-        recordStore.state.currentRecord = {
-            fairsharingRecord: { id: 123 }
-        };
-        restStub = sinon.stub(RestClient.prototype, "executeQuery");
-        restStub.returns({data: {}});
         wrapper.vm.removeRelation(0);
         wrapper.vm.organisationLinks[0].organisation.name = "changing name";
         wrapper.vm.organisationLinks.push({organisation: {name: "a third organisation"}});
@@ -134,6 +144,27 @@ describe("Edit -> GeneralInformation.vue", function() {
         await wrapper.vm.saveRecord(true);
         expect($router.push).toHaveBeenCalledTimes(1);
         expect($router.push).toHaveBeenCalledWith({path: "/123"});
+        recordStore.state.sections = {
+            organisations: {
+                error: false,
+                data: [organisation],
+                initialData: [JSON.parse(JSON.stringify(organisation))],
+                changes: 0,
+                message: null
+            }
+        };
+        restStub.restore();
+        jest.clearAllMocks();
+
+    });
+
+    it("can handle error upon saving the data", async () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        wrapper.vm.removeRelation(0);
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {error: "I am an error"}});
+        await wrapper.vm.saveRecord(false);
+        expect(recordStore.state.sections.organisations.error).toBe(true);
         restStub.restore();
         jest.clearAllMocks();
     });

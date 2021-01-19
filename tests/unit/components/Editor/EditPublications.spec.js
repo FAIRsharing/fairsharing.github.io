@@ -14,9 +14,12 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
-recordStore.state.currentRecord = {
-    fairsharingRecord: {
-        publications: [
+const VueScrollTo = require('vue-scrollto');
+localVue.use(VueScrollTo);
+
+recordStore.state.sections = {
+    publications: {
+        data: [
             {
                 title: "Hello",
                 id: 1
@@ -26,10 +29,16 @@ recordStore.state.currentRecord = {
                 id: 2
             }
         ],
-        metadata: {
-            citations: [
-                {id:2}
-            ]
+        error: false,
+        changes: 0
+    },
+    generalInformation: {
+        data: {
+            metadata: {
+                citations: [
+                    {id: 2}
+                ]
+            },
         }
     }
 };
@@ -86,7 +95,14 @@ describe("EditPublications.vue", function() {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("EditPublications");
+        expect(wrapper.name()).toMatch("EditPublications")
+        expect(wrapper.vm.section.data).toStrictEqual(recordStore.state.sections.publications.data);
+        expect(wrapper.vm.metadata).toStrictEqual(recordStore.state.sections.generalInformation.data.metadata);
+        expect(wrapper.vm.message.type()).toBe("success");
+        //recordStore.state.sections.generalInformation.error = true;
+        //expect(wrapper.vm.message.type()).toBe("error");
+        //recordStore.state.sections.publications.error = false;
+        //expect(wrapper.vm.section).toStrictEqual(recordStore.state.sections.publications);
     });
 
     it("can get a DOI and process related errors", async () => {
@@ -222,8 +238,6 @@ describe("EditPublications.vue", function() {
         await wrapper.vm.addPublication();
         expect(wrapper.vm.errors.general).toBe("Im an error");
         restStub.restore();
-
-
     });
 
     it("can edit an added publication", () => {
@@ -233,6 +247,7 @@ describe("EditPublications.vue", function() {
     });
 
     it("can update a record", async () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
         restStub = sinon.stub(RestClient.prototype, 'executeQuery');
         restStub.returns({data: {id: 123}});
         wrapper.vm.publications = [
@@ -244,14 +259,20 @@ describe("EditPublications.vue", function() {
                 doi: 123
             }
         ];
-        await wrapper.vm.updateRecordPub();
+        expect(recordStore.state.sections.publications.changes).toEqual(3);
+        await wrapper.vm.saveRecord(true);
+        expect($router.push).toHaveBeenCalledWith({path: "/123"});
+        expect($router.push).toHaveBeenCalledTimes(1);
+        await wrapper.vm.saveRecord(false);
+        expect(recordStore.state.sections.publications.changes).toEqual(0);
         restStub.restore();
-
-        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-        restStub.returns({data: {error: { response: "Im an error"}}});
-        await wrapper.vm.updateRecordPub();
-        expect(wrapper.vm.errors.general).toBe("Im an error");
-        restStub.restore();
+        jest.clearAllMocks();
     })
+
+    it("can toggle a citation", () => {
+        expect(wrapper.vm.publications[0].isCitation).toBe(true);
+        wrapper.vm.toggleCitation(0);
+        expect(wrapper.vm.publications[0].isCitation).toBe(false);
+    });
 
 });

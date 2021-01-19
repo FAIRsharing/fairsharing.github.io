@@ -52,7 +52,6 @@
                   v-if="publication.doi"
                   class="ml-2"
                 > - {{ publication.doi }}</span>
-                <b>{{ publication }}</b>
               </v-card-title>
               <v-card-text
                 :class="{'grey lighten-3': !publication.isCitation, 'green lighten-3': publication.isCitation}"
@@ -63,7 +62,8 @@
                 <div> <b>PUBLISHED IN:</b> {{ publication.journal }}, {{ publication.year }}</div>
                 <div> <b>AUTHORS:</b> {{ publication.authors }}</div>
                 <v-switch
-                  v-model="publication.isCitation"
+                  :input-value="publication.isCitation"
+                  @change="toggleCitation(pubIndex)"
                   color="green"
                   label="Cite record using this publication?"
                 />
@@ -360,7 +360,9 @@
           },
           publications: {
             get() { return this.getSection("publications").data; },
-            set(newValue) { this.$store.commit('record/setPublications', newValue); }
+            set(newValue) {
+              this.$store.commit('record/setPublications', newValue);
+            }
           },
           metadata() {
             return this.getSection("generalInformation").data.metadata
@@ -436,6 +438,11 @@
               summary.push([d['id'], d['isCitation']]);
             });
             return summary;
+          },
+          toggleCitation(index) {
+            let pub = this.publications[index];
+            pub.isCitation = !pub.isCitation;
+            this.$set(this.publications, index, pub);
           },
           async getDOI(){
               this.currentPublicationIndex = false;
@@ -578,7 +585,15 @@
               id: this.$route.params.id
             });
             this.loading = false;
-            if (!redirect) this.$scrollTo("#mainHeader");
+            if (!redirect) {
+              this.$scrollTo("#mainHeader");
+              // Clear the changes tracking in case a user edits further before saving again.
+              this.initialFields = this.checkChanges(JSON.parse(JSON.stringify(this.publications)));
+              this.$store.commit("record/setChanges", {
+                section: "publications",
+                value: 0
+              })
+            }
             if (redirect && !this.message.error){
               await this.$router.push({path: '/' + this.$route.params.id})
             }

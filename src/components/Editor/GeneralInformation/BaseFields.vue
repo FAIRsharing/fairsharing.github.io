@@ -199,6 +199,7 @@
         item-value="name"
         outlined
         return-object
+        :disabled="typeChangeDisabled()"
       >
         <!-- autocomplete selected -->
         <template #selection="data">
@@ -355,7 +356,7 @@
             }
         },
         computed: {
-            ...mapGetters("record", ["getSection"]),
+            ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
             ...mapState("editor", [
                 "countries",
                 "years",
@@ -364,16 +365,24 @@
                 "icons",
                 "status"
             ]),
+            ...mapState('users', ['user']),
             fields(){
               return this.getSection("generalInformation").data;
             }
         },
         methods: {
-            removeCountry(country){
-                this.fields.countries = this.fields.countries.filter(obj =>
-                    obj.label !== country.name && obj.id !== country.id
-                );
+          removeCountry(country){
+              this.fields.countries = this.fields.countries.filter(obj =>
+                  obj.label !== country.name && obj.id !== country.id
+              );
+          },
+          typeChangeDisabled(){
+            let _module = this;
+            if (_module.getCreatingNewRecord) {
+              return false;
             }
+            return !_module.user().is_curator;
+          }
         }
     }
 </script>

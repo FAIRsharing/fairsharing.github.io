@@ -4,6 +4,7 @@ import Vuetify from "vuetify"
 import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
 import recordStore from "@/store/record.js"
 import editorStore from "@/store/editor.js"
+import userStore from "@/store/users.js"
 import icons from "@/../tests/fixtures/icons.json"
 
 const localVue = createLocalVue();
@@ -22,10 +23,15 @@ recordStore.state.sections = {
         }
     }
 };
+
+recordStore.state.newRecord = false;
+userStore.state.user().is_curator = false;
+
 const $store = new Vuex.Store({
     modules: {
         editor: editorStore,
-        record: recordStore
+        record: recordStore,
+        users: userStore
     }
 });
 
@@ -50,5 +56,20 @@ describe('Editor -> BaseFields.vue', () => {
         wrapper.vm.removeCountry({id: 1, label: 'France'});
         expect(wrapper.vm.fields.countries.length).toBe(1);
     })
+
+    it("disables type field except for new records and curators", () => {
+        userStore.state.user = function(){
+            return { is_curator: false }
+        };
+        expect(wrapper.vm.typeChangeDisabled()).toBe(true);
+        recordStore.state.newRecord = true;
+        expect(wrapper.vm.typeChangeDisabled()).toBe(false);
+
+        userStore.state.user = function(){
+            return { is_curator: true }
+        };
+        recordStore.state.newRecord = false;
+        expect(wrapper.vm.typeChangeDisabled()).toBe(false);
+    });
 
 });

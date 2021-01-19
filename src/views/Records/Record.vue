@@ -4,12 +4,12 @@
       v-if="queryTriggered"
       fluid
     >
-      <v-row v-if="error">
-        <v-col cols="12">
-          <NotFound />
-        </v-col>
-      </v-row>
+      <!--   error   -->
+      <div v-if="error">
+        <NotFound />
+      </div>
 
+      <!--   Action Menu & Alet   -->
       <v-row
         v-else
         class="pr-3"
@@ -66,62 +66,41 @@
       </v-row>
 
       <!--  Content  -->
-      <v-row
-        v-if="currentRecord['fairsharingRecord'] && !error"
-        no-gutters
-      >
-        <v-col
-          cols="12"
-          lg="12"
-          md="12"
-          xl="12"
-        >
-          <v-row
-            no-gutters
-          >
-            <v-col>
-              <GeneralInfo />
-            </v-col>
-          </v-row>
+      <div v-if="currentRecord['fairsharingRecord'] && !error">
 
-          <!-- Single Row -->
-          <v-row>
-            <!--Left Column-->
-            <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-              <!-- KEYWORDS -->
-              <Keywords />
+        <!-- Fixed Block 1 -->
+        <GeneralInfo />
 
-              <!-- SUPPORT -->
-              <Support />
-
-              <!-- ORGANISATION -->
-              <Organisations />
-            </v-col>
-            <!--Right Column-->
-            <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-              <!-- LICENCES -->
-              <Licences />
-
-              <!-- MAINTAINERS -->
-              <Maintainers
-                :can-claim="canClaim"
-                @requestOwnership="requestOwnership"
-              />
-
-              <!-- PUBLICATIONS -->
-              <Publications />
-            </v-col>
-          </v-row>
-          <!-- Associated Records -->
-          <v-row
-            no-gutters
-          >
-            <v-col>
-              <AssociatedRecords :record-associations="recordAssociations" />
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+        <v-row no-gutters>
+          <!--Left Block-->
+          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            <!-- KEYWORDS -->
+            <Keywords class="mt-5" />
+            <!-- SUPPORT -->
+            <Support class="mt-5" />
+            <!-- ORGANISATION -->
+            <Organisations class="mt-5" />
+          </v-col>
+          <!--Right Block-->
+          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            <!-- LICENCES -->
+            <Licences class="mt-5 ml-5" />
+            <!-- MAINTAINERS -->
+            <Maintainers
+              :can-claim="canClaim"
+              class="mt-5 ml-5"
+              @requestOwnership="requestOwnership"
+            />
+            <!-- PUBLICATIONS -->
+            <Publications class="mt-5 ml-5" />
+          </v-col>
+        </v-row>
+        <!-- Fixed Block 2-->
+        <AssociatedRecords
+          class="mt-5"
+          :record-associations="recordAssociations"
+        />
+      </div>
     </v-container>
   </v-main>
 </template>

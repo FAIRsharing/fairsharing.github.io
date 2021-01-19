@@ -164,7 +164,7 @@
     import Alerts from "../Alerts";
 
     export default {
-        name: "EditOrganisations",
+        name: "Organisations",
         components: {Alerts, LinkOverlay, Loaders},
         data(){
             return {

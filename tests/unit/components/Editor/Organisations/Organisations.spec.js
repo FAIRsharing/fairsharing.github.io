@@ -4,13 +4,13 @@ import Vuetify from "vuetify"
 import VueRouter from "vue-router"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import RestClient from "@/components/Client/RESTClient.js"
+import getOrganisationsTypesQuery from "@/components/GraphClient/queries/Organisations/getOrganisationTypes.json"
+import getOrganisationsQuery from "@/components/GraphClient/queries/Organisations/getOrganisations.json"
+import getGrantsQuery from "@/components/GraphClient/queries/Organisations/getGrants.json"
 import Organisations from "@/components/Editor/Organisations/Organisations.vue"
 import recordStore from "@/store/record.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
-import getOrganisationsTypesQuery from "@/components/GraphClient/queries/Organisations/getOrganisationTypes.json"
-import getOrganisationsQuery from "@/components/GraphClient/queries/Organisations/getOrganisations.json"
-import getGrantsQuery from "@/components/GraphClient/queries/Organisations/getGrants.json"
 const sinon = require("sinon");
 const VueScrollTo = require('vue-scrollto');
 
@@ -47,7 +47,7 @@ let $route = { path: "/123/edit", params: {id: 123} };
 const router = new VueRouter();
 const $router = { push: jest.fn() };
 
-describe("Edit -> GeneralInformation.vue", function() {
+describe("Edit -> Organisations.vue", function() {
     let wrapper;
     let graphStub;
     let restStub;

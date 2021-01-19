@@ -206,6 +206,7 @@
     async mounted() {
       this.$nextTick(async () => {
         await this.getData();
+        this.$store.commit("record/setEditingRecord");
       })
     },
     methods: {

@@ -36,7 +36,8 @@ let recordStore = {
             showOverlay: false,
             data: {},
             id: null
-        }
+        },
+        newRecord: false
     },
     mutations: {
         setCurrentRecord(state, data){
@@ -116,8 +117,14 @@ let recordStore = {
         setEditOrganisationLinkOrganisation(state, organisation){
             state.editOrganisationLink.data.organisation = organisation;
         },
-        setEditOrganisationLinkGrant(state, grant){
+        setEditOrganisationLinkGrant(state, grant) {
             state.editOrganisationLink.data.grant = grant;
+        },
+        setCreatingNewRecord(state){
+            state.newRecord = true;
+        },
+        setEditingRecord(state){
+            state.newRecord = false;
         }
     },
     actions: {
@@ -267,6 +274,9 @@ let recordStore = {
                 changes[section] = state.sections[section].changes
             });
             return changes;
+        },
+        getCreatingNewRecord: (state) => {
+            return state.newRecord;
         }
     }
 };

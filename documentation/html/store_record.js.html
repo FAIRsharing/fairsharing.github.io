@@ -122,6 +122,7 @@ let recordStore = {
             id: null
         },
         sections: {
+<<<<<<< HEAD
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
             organisations: {}
         },
@@ -130,6 +131,11 @@ let recordStore = {
             data: {},
             id: null
         }
+=======
+            generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation
+        },
+        newRecord: false
+>>>>>>> c6adca5c7b2d9a1e4544bc58fe844dc95642c3dd
     },
     mutations: {
         setCurrentRecord(state, data){
@@ -194,6 +200,7 @@ let recordStore = {
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
         },
+<<<<<<< HEAD
         setOrganisationsLinks(state, links){
             state.sections['organisations'].data = links;
         },
@@ -211,6 +218,13 @@ let recordStore = {
         },
         setEditOrganisationLinkGrant(state, grant){
             state.editOrganisationLink.data.grant = grant;
+=======
+        setCreatingNewRecord(state){
+            state.newRecord = true;
+        },
+        setEditingRecord(state){
+            state.newRecord = false;
+>>>>>>> c6adca5c7b2d9a1e4544bc58fe844dc95642c3dd
         }
     },
     actions: {
@@ -360,6 +374,9 @@ let recordStore = {
                 changes[section] = state.sections[section].changes
             });
             return changes;
+        },
+        getCreatingNewRecord: (state) => {
+            return state.newRecord;
         }
     }
 };

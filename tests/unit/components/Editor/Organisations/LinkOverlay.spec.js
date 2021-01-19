@@ -20,6 +20,7 @@ recordStore.state.editOrganisationLink = {
     id: 0
 };
 editorStore.state.organisations = [];
+editorStore.state.grants = [];
 const $store = new Vuex.Store({
     modules: {
         editor: editorStore,
@@ -124,14 +125,25 @@ describe("Edit -> LinkOverlay.vue", function() {
     it("can create a new grant", async () => {
         restStub = sinon.stub(RestClient.prototype, "executeQuery");
         restStub.returns({data:{
-                error: "I am an error"
-            }});
+            error: "I am an error"
+        }});
         wrapper.vm.menus.newGrant.data = {
             name: "grant",
             description: "http://example.com/grant"
         };
         await wrapper.vm.createNewGrant();
         expect(wrapper.vm.menus.newGrant.error).toBe("I am an error");
+        restStub.returns({data:{
+            name: "grant",
+            description: "another description",
+            id: 123
+        }});
+        await wrapper.vm.createNewGrant();
+        expect(wrapper.vm.grants).toStrictEqual([{
+            name: "grant",
+            description: "another description",
+            id: 123
+        }]);
         restStub.restore();
     });
 

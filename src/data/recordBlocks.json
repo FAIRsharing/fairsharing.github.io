@@ -1,0 +1,32 @@
+{
+  "fixedBlocks": [
+    {
+      "componentName": "GeneralInfo"
+    },
+    {
+      "componentName": "Publications"
+    }
+  ],
+  "leftBlocks": [
+    {
+      "componentName": "Keywords"
+    },
+    {
+      "componentName": "Support"
+    },
+    {
+      "componentName": "Organisations"
+    }
+  ],
+  "rightBlocks": [
+    {
+      "componentName": "Licences"
+    },
+    {
+      "componentName": "Maintainers"
+    },
+    {
+      "componentName": "Publications"
+    }
+  ]
+}

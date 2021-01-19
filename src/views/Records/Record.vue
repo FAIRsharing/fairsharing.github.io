@@ -68,31 +68,31 @@
       <!--  Content  -->
       <div v-if="currentRecord['fairsharingRecord'] && !error">
         <!-- Fixed Block 1 -->
-        <component :is="blocks.fixedBlocks[0].componentName" />
+        <component :is="blocks.fixedBlocks[0]['componentName']" />
 
         <v-row no-gutters>
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <component
-              :is="item.componentName"
+              :is="item['componentName']"
               v-for="(item,index) in blocks.leftBlocks"
-              :key="item.componentName+'_'+index"
+              :key="item['componentName']+'_'+index"
               class="mt-5"
             />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <component
-              :is="item.componentName"
+              :is="item['componentName']"
               v-for="(item,index) in blocks.rightBlocks"
-              :key="item.componentName+'_'+index"
+              :key="item['componentName']+'_'+index"
               class="mt-5 ml-lg-5"
             />
           </v-col>
         </v-row>
         <!-- Fixed Block 2-->
         <component
-          :is="blocks.fixedBlocks[1].componentName"
+          :is="blocks.fixedBlocks[1]['componentName']"
           class="mt-5"
         />
       </div>
@@ -113,7 +113,7 @@
     import NotFound from "@/views/Errors/404"
     import RestClient from "@/components/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
-
+    import recordBlocks from '@/data/recordBlocks.json'
     const client = new RestClient();
 
     export default {
@@ -131,11 +131,7 @@
         mixins: [stringUtils],
         data: () => {
             return {
-                blocks: {
-                  fixedBlocks: [{componentName: 'GeneralInfo'}, {componentName: 'Publications'}],
-                  leftBlocks: [{componentName: 'Keywords'}, {componentName: 'Support'}, {componentName: 'Organisations'}],
-                  rightBlocks: [{componentName: 'Licences'}, {componentName: 'Maintainers'}, {componentName: 'Publications'}]
-                },
+                blocks: recordBlocks,
                 error: null,
                 queryTriggered: false,
                 showScrollToTopButton: false,

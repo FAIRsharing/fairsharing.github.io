@@ -226,6 +226,7 @@ class GraphQLClient {
           "Content-Type": "application/json",
       };
       this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
+      /* istanbul ignore if */
       if (this.headers['X-Client-Id'] === undefined){
           delete this.headers['X-Client-Id']
       }

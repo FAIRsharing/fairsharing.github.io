@@ -5,7 +5,6 @@ import tagsQuery from "@/components/GraphClient/queries/geTags.json"
 import descriptionData from "@/data/fieldsDescription.json"
 import registryIcons from "@/data/recordsRegistries.json"
 import status from "@/data/status.json"
-
 const graphClient = new GraphClient();
 
 let editorStore = {
@@ -33,10 +32,10 @@ let editorStore = {
             return years;
         },
         colors: {
-            domain: "blue",
-            taxonomy: "green",
-            subject: "orange",
-            user_defined_tag: "grey"
+            domain: "domain_color",
+            taxonomy: "taxonomic_color",
+            subject: "subject_color",
+            user_defined_tag: "tags_color"
         },
         allTags: false
     },

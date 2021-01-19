@@ -4,6 +4,7 @@
     <v-expansion-panel-content class="pl-5 pr-5">
       <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
         <v-autocomplete
+          :id="filter.filterName + 'AutocompleteList' "
           v-model="selectedValues"
           :attach="true"
           :items="getValues"
@@ -15,7 +16,7 @@
           :placeholder="`Search through ${filter.filterLabel}`"
           item-text="key"
           item-value="key"
-          @focus="onInput"
+          @focus="scrollTo(filter.filterName)"
           @click:clear="reset(filter)"
         >
           <template v-slot:selection="data">
@@ -133,19 +134,12 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
-    /**
-     * Call callOut method (an emit function to call scrollToBottom method from parent component) after a few seconds if last autocomplete item is focused
-     */
-    onInput() {
-      if (this.lastItem) {
-        setTimeout(this.callOut, 100)
-      }
-    },
-    /**
-     * Call an emit function name LastItemClick which trigger parent method name scrollToBottom
-     */
-    callOut() {
-      this.$emit('lastItemClick')
+    scrollTo(name) {
+      let _module = this;
+      _module.$scrollTo("#" + name + 'AutocompleteList', 450, {
+        container: '#scrollable-holder',
+        easing: 'ease-in',
+      })
     }
   }
 }

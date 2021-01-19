@@ -140,6 +140,7 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
+              :disabled="dialogs.disableDelButton === true"
               color="blue darken-1"
               text
               persistent
@@ -148,6 +149,7 @@
               Cancel
             </v-btn>
             <v-btn
+              :disabled="dialogs.disableDelButton === true"
               color="blue darken-1"
               text
               persistent
@@ -198,6 +200,7 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
+              :disabled="dialogs.disableDelButton === true"
               color="blue darken-1"
               text
               persistent
@@ -206,6 +209,7 @@
               Cancel
             </v-btn>
             <v-btn
+              :disabled="dialogs.disableDelButton === true"
               color="blue darken-1"
               text
               persistent
@@ -260,7 +264,8 @@
                 recordID: "",
                 userName: "",
                 requestId: "",
-                rejectAssignment: false
+                rejectAssignment: false,
+                disableDelButton: false
               },
               error: {
                 recordID: null,
@@ -308,6 +313,7 @@
             },
             assignMaintenanceOwner(recordName, recordID, userNameID, requestID){
               const _module = this;
+              _module.dialogs.disableDelButton = false;
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
               _module.dialogs.userName = userNameID;
@@ -315,10 +321,12 @@
               _module.dialogs.confirmAssignment = true;
             },
             closeMaintenanceAssign () {
+              this.dialogs.disableDelButton = true;
               this.dialogs.confirmAssignment = false;
             },
             async assignMaintenanceOwnConfirm (newStatus) {
               const _module = this;
+              _module.dialogs.disableDelButton = true;
               _module.error = {
                 recordID: null,
                 general: null
@@ -341,9 +349,11 @@
               }else{
                 _module.dialogs.rejectAssignment = false;
               }
+
             },
             rejectMaintenanceOwner(recordName, recordID, userNameID, requestID){
               const _module = this;
+              _module.dialogs.disableDelButton = false;
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
               _module.dialogs.userName = userNameID;
@@ -351,6 +361,7 @@
               _module.dialogs.rejectAssignment = true;
             },
             closeMaintenanceReject () {
+              this.dialogs.disableDelButton = true;
               this.dialogs.rejectAssignment = false;
             }
 

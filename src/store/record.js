@@ -227,15 +227,9 @@ let recordStore = {
                 else createItems.push(query);
             });
             let queries = await Promise.all([
-                Promise.all(deleteItems.map(organisation =>
-                    restClient.deleteOrganisationLink(organisation.id, userToken)
-                )),
-                Promise.all(createItems.map(organisation =>
-                    restClient.createOrganisationLink(organisation, userToken)
-                )),
-                Promise.all(updateItems.map(organisation =>
-                    restClient.updateOrganisationLink(organisation.query, organisation.id, userToken)
-                ))
+                ...deleteItems.map(organisation => restClient.deleteOrganisationLink(organisation.id, userToken)),
+                ...createItems.map(organisation => restClient.createOrganisationLink(organisation, userToken)),
+                ...updateItems.map(organisation => restClient.updateOrganisationLink(organisation.query, organisation.id, userToken))
             ]);
             queries.forEach((org) => {
                 if (org.error) {

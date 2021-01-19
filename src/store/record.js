@@ -46,7 +46,7 @@ let recordStore = {
                     state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = false;
                     if (data["fairsharingRecord"]['metadata']['citations']) {
                         state.currentRecord["fairsharingRecord"]['metadata']['citations'].forEach((cit) => {
-                            if (pub.id === cit.id) {
+                            if (pub.id === cit.publication_id) {
                                 state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = true;
                             }
                         })

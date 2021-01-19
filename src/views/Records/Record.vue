@@ -67,38 +67,33 @@
 
       <!--  Content  -->
       <div v-if="currentRecord['fairsharingRecord'] && !error">
-
         <!-- Fixed Block 1 -->
-        <GeneralInfo />
+        <component :is="blocks.fixedBlocks[0].componentName" />
 
         <v-row no-gutters>
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!-- KEYWORDS -->
-            <Keywords class="mt-5" />
-            <!-- SUPPORT -->
-            <Support class="mt-5" />
-            <!-- ORGANISATION -->
-            <Organisations class="mt-5" />
+            <component
+              :is="item.componentName"
+              v-for="(item,index) in blocks.leftBlocks"
+              :key="item.componentName+'_'+index"
+              class="mt-5"
+            />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!-- LICENCES -->
-            <Licences class="mt-5 ml-5" />
-            <!-- MAINTAINERS -->
-            <Maintainers
-              :can-claim="canClaim"
-              class="mt-5 ml-5"
-              @requestOwnership="requestOwnership"
+            <component
+              :is="item.componentName"
+              v-for="(item,index) in blocks.rightBlocks"
+              :key="item.componentName+'_'+index"
+              class="mt-5 ml-lg-5"
             />
-            <!-- PUBLICATIONS -->
-            <Publications class="mt-5 ml-5" />
           </v-col>
         </v-row>
         <!-- Fixed Block 2-->
-        <AssociatedRecords
+        <component
+          :is="blocks.fixedBlocks[1].componentName"
           class="mt-5"
-          :record-associations="recordAssociations"
         />
       </div>
     </v-container>
@@ -138,6 +133,11 @@
         mixins: [stringUtils],
         data: () => {
             return {
+                blocks: {
+                  fixedBlocks: [{componentName: 'GeneralInfo'}, {componentName: 'Publications'}],
+                  leftBlocks: [{componentName: 'Keywords'}, {componentName: 'Support'}, {componentName: 'Organisations'}],
+                  rightBlocks: [{componentName: 'Licences'}, {componentName: 'Maintainers'}, {componentName: 'Publications'}]
+                },
                 error: null,
                 queryTriggered: false,
                 showScrollToTopButton: false,

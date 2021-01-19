@@ -43,12 +43,12 @@
                   label="Select an organisation"
                   :rules="[rules.isRequired()]"
                 >
-                  <template v-slot:selection="data">
+                  <template #selection="data">
                     <v-chip class="blue white--text px-3 py-1">
                       {{ data.item.name }}
                     </v-chip>
                   </template>
-                  <template v-slot:item="data">
+                  <template #item="data">
                     <v-list-item-avatar>
                       <img
                         v-if="data.item['urlForLogo']"

@@ -178,12 +178,15 @@ describe("Edit -> GeneralInformation.vue", function() {
         tagStub.restore();
         postStub.restore();
         jest.clearAllMocks();
+        postStub = sinon.stub(RestClient.prototype, "updateRecord");
+        postStub.returns({error: {response: {data: "error"}}});
         tagStub = sinon.stub(RestClient.prototype, "createNewUserDefinedTag");
         tagStub.returns({
             error: {response: {data: "error"}}
         });
         await wrapper.vm.saveRecord(false);
         expect(wrapper.vm.message.error).toBe(true);
+        postStub.restore();
         tagStub.restore();
     });
 

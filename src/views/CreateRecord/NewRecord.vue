@@ -96,6 +96,7 @@
             this.resetRecord();
             await this.getData();
             this.loaded = true;
+            this.$store.commit("record/setCreatingNewRecord");
           });
         },
         methods: {

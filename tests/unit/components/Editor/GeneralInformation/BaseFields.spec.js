@@ -55,7 +55,7 @@ describe('Editor -> BaseFields.vue', () => {
     it("can remove a country", () => {
         wrapper.vm.removeCountry({id: 1, label: 'France'});
         expect(wrapper.vm.fields.countries.length).toBe(1);
-    })
+    });
 
     it("disables type field except for new records and curators", () => {
         userStore.state.user = function(){

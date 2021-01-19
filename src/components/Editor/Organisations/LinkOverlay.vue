@@ -363,13 +363,8 @@
         ...mapState("users", ["user"]),
         ...mapState("record", ["editOrganisationLink", "sections"]),
         ...mapState("editor", ["organisations", "organisationsTypes", "grants", "organisationsRelations"]),
-        organisationLinks: {
-          get(){
-            return this.sections["organisations"].data;
-          },
-          set(){
-            this.$store.commit("record/setOrganisationsLinks", this.organisationLinks);
-          }
+        organisationLinks() {
+          return this.sections["organisations"].data;
         }
       },
       watch: {

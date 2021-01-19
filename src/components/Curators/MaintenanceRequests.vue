@@ -44,11 +44,14 @@
                   v-if="props.item.type"
                   class="mr-2"
                 >
-                  <img
+                  <v-avatar
                     v-if="Object.keys(recordType).includes(props.item.type)"
-                    :src="'./' + recordType[props.item.type].icon"
-                    class="miniIcon"
+                    size="38"
                   >
+                    <img
+                      :src="'./' + recordType[props.item.type].icon"
+                    >
+                  </v-avatar>
                 </span>
                 {{ props.item.recordName }}
               </a>
@@ -108,6 +111,7 @@
       <v-dialog
         v-model="dialogs.confirmAssignment"
         max-width="700px"
+        persistent
       >
         <v-card>
           <v-card-title
@@ -136,15 +140,19 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
+              :disabled="dialogs.disableDelButton === true"
               color="blue darken-1"
               text
+              persistent
               @click="closeMaintenanceAssign()"
             >
               Cancel
             </v-btn>
             <v-btn
+              :disabled="dialogs.disableDelButton === true"
               color="blue darken-1"
               text
+              persistent
               @click="assignMaintenanceOwnConfirm('approved')"
             >
               OK
@@ -161,6 +169,7 @@
       <v-dialog
         v-model="dialogs.rejectAssignment"
         max-width="700px"
+        persistent
       >
         <v-card>
           <v-card-title
@@ -191,15 +200,19 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
+              :disabled="dialogs.disableDelButton === true"
               color="blue darken-1"
               text
+              persistent
               @click="closeMaintenanceReject()"
             >
               Cancel
             </v-btn>
             <v-btn
+              :disabled="dialogs.disableDelButton === true"
               color="blue darken-1"
               text
+              persistent
               @click="assignMaintenanceOwnConfirm('rejected')"
             >
               OK
@@ -251,7 +264,8 @@
                 recordID: "",
                 userName: "",
                 requestId: "",
-                rejectAssignment: false
+                rejectAssignment: false,
+                disableDelButton: false
               },
               error: {
                 recordID: null,
@@ -299,6 +313,7 @@
             },
             assignMaintenanceOwner(recordName, recordID, userNameID, requestID){
               const _module = this;
+              _module.dialogs.disableDelButton = false;
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
               _module.dialogs.userName = userNameID;
@@ -306,10 +321,12 @@
               _module.dialogs.confirmAssignment = true;
             },
             closeMaintenanceAssign () {
+              this.dialogs.disableDelButton = true;
               this.dialogs.confirmAssignment = false;
             },
             async assignMaintenanceOwnConfirm (newStatus) {
               const _module = this;
+              _module.dialogs.disableDelButton = true;
               _module.error = {
                 recordID: null,
                 general: null
@@ -332,9 +349,11 @@
               }else{
                 _module.dialogs.rejectAssignment = false;
               }
+
             },
             rejectMaintenanceOwner(recordName, recordID, userNameID, requestID){
               const _module = this;
+              _module.dialogs.disableDelButton = false;
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
               _module.dialogs.userName = userNameID;
@@ -342,6 +361,7 @@
               _module.dialogs.rejectAssignment = true;
             },
             closeMaintenanceReject () {
+              this.dialogs.disableDelButton = true;
               this.dialogs.rejectAssignment = false;
             }
 

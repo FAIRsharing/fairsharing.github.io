@@ -79,11 +79,14 @@
                   v-if="props.item.type"
                   class="mr-2"
                 >
-                  <img
+                  <v-avatar
                     v-if="Object.keys(recordType).includes(props.item.type)"
-                    :src="'./' + recordType[props.item.type].icon"
-                    class="miniIcon"
+                    size="38"
                   >
+                    <img
+                      :src="'./' + recordType[props.item.type].icon"
+                    >
+                  </v-avatar>
                 </span>
                 {{ props.item.recordName }}
               </a>
@@ -179,6 +182,7 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
+              :disabled="dialogs.disableButton === true"
               color="blue darken-1"
               text
               @click="closeApproveChangesMenu()"
@@ -186,6 +190,7 @@
               Cancel
             </v-btn>
             <v-btn
+              :disabled="dialogs.disableButton === true"
               color="blue darken-1"
               text
               @click="confirmApproval()"
@@ -225,6 +230,7 @@
           <v-card-actions>
             <v-spacer />
             <v-btn
+              :disabled="dialogs.disableButton === true"
               color="blue darken-1"
               text
               @click="closeDeleteMenu()"
@@ -232,7 +238,7 @@
               Cancel
             </v-btn>
             <v-btn
-              :disabled="dialogs.disableDelButton==true"
+              :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
               color="blue darken-1"
               text
               @click="confirmDelete()"
@@ -290,6 +296,7 @@
                 recordID: "",
                 deleteRecord: false,
                 disableDelButton: true,
+                disableButton: false
               },
               error: {
                 recordID: null,
@@ -359,17 +366,20 @@
 
             approveChangesMenu(recordName, recordID){
               const _module = this;
+              _module.dialogs.disableButton = false;
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
               _module.dialogs.approveChanges = true;
             },
 
             closeApproveChangesMenu () {
+              this.dialogs.disableButton = true;
               this.dialogs.approveChanges = false;
             },
 
             async confirmApproval () {
               const _module = this;
+              _module.dialogs.disableButton = true;
               let preparedRecord = {
                 approved: null
               };
@@ -395,6 +405,7 @@
 
             async confirmDelete(){
               const _module = this;
+              _module.dialogs.disableButton = true;
               let data = await restClient.deleteRecord(_module.dialogs.recordID,this.user().credentials.token);
               if (data.error){
                 _module.error.general = "error deleting record";
@@ -408,6 +419,7 @@
 
             deleteRecordMenu(recordName, recordID){
               const _module = this;
+              _module.dialogs.disableButton = false;
               _module.dialogs.disableDelButton = true
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
@@ -418,6 +430,7 @@
             },
 
             closeDeleteMenu () {
+              this.dialogs.disableButton = true;
               this.dialogs.deleteRecord = false;
             }
 

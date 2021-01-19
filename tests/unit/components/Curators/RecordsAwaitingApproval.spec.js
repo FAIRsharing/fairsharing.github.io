@@ -68,6 +68,11 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
         wrapper.vm.closeApproveChangesMenu ();
         expect(wrapper.vm.dialogs.approveChanges).toBe(false);
         wrapper.vm.deleteRecordMenu("Record4 (100)", 100);
+        setTimeout(function() {
+          expect(wrapper.vm.dialogs.disableDelButton).toBe(true);
+          done();
+        }, 6500);
+
         expect(wrapper.vm.dialogs.recordName).toMatch("Record4 (100)");
         expect(wrapper.vm.dialogs.recordID).toBe(100);
         expect(wrapper.vm.dialogs.deleteRecord).toBe(true);

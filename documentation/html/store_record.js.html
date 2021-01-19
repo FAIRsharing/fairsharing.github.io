@@ -130,21 +130,21 @@ let recordStore = {
             state.currentRecord = data;
             if (!data["fairsharingRecord"]['metadata']['contacts']) state.currentRecord["fairsharingRecord"]['metadata']['contacts'] = [];
             // Citations should be created if empty.
+            if (!data["fairsharingRecord"]['metadata']['citations']) {
+                state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
+            }
             // If not empty the isCitation must be set on any existing publications referenced there.
             if (state.currentRecord["fairsharingRecord"]['publications']) {
                 state.currentRecord["fairsharingRecord"]['publications'].forEach((pub, index) => {
                     state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = false;
                     if (data["fairsharingRecord"]['metadata']['citations']) {
-                        state.currentRecord["fairsharingRecord"]['citations'].forEach((cit) => {
+                        state.currentRecord["fairsharingRecord"]['metadata']['citations'].forEach((cit) => {
                             if (pub.id === cit.id) {
                                 state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = true;
                             }
                         })
                     }
                 })
-            }
-            if (!data["fairsharingRecord"]['metadata']['citations']) {
-                state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
             }
         },
         setRecordHistory(state, data){

@@ -111,7 +111,7 @@
       <v-dialog
         v-model="dialogs.confirmAssignment"
         max-width="700px"
-        persistant
+        persistent
       >
         <v-card>
           <v-card-title
@@ -142,6 +142,7 @@
             <v-btn
               color="blue darken-1"
               text
+              persistent
               @click="closeMaintenanceAssign()"
             >
               Cancel
@@ -149,6 +150,7 @@
             <v-btn
               color="blue darken-1"
               text
+              persistent
               @click="assignMaintenanceOwnConfirm('approved')"
             >
               OK
@@ -165,7 +167,7 @@
       <v-dialog
         v-model="dialogs.rejectAssignment"
         max-width="700px"
-        persistant
+        persistent
       >
         <v-card>
           <v-card-title
@@ -198,6 +200,7 @@
             <v-btn
               color="blue darken-1"
               text
+              persistent
               @click="closeMaintenanceReject()"
             >
               Cancel
@@ -205,6 +208,7 @@
             <v-btn
               color="blue darken-1"
               text
+              persistent
               @click="assignMaintenanceOwnConfirm('rejected')"
             >
               OK

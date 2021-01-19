@@ -187,12 +187,12 @@
                   class="mt-4"
                   :rules="[rules.isRequired()]"
                 >
-                  <template v-slot:selection="data">
+                  <template #selection="data">
                     <v-chip class="blue white--text px-3 py-1">
                       {{ data.item }}
                     </v-chip>
                   </template>
-                  <template v-slot:item="data">
+                  <template #item="data">
                     <v-list-item-content style="width:100%;height:100%">
                       {{ data.item }}
                     </v-list-item-content>
@@ -216,12 +216,12 @@
                   return-object
                   label="Select an optional grant for funding organisations"
                 >
-                  <template v-slot:selection="data">
+                  <template #selection="data">
                     <v-chip class="blue white--text px-3 py-1">
                       {{ data.item.name }}
                     </v-chip>
                   </template>
-                  <template v-slot:item="data">
+                  <template #item="data">
                     <v-list-item-avatar>
                       <v-icon>fas fa-funnel-dollar</v-icon>
                     </v-list-item-avatar>

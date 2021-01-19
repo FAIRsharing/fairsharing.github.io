@@ -102,9 +102,6 @@ let recordStore = {
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
         },
-        setOrganisationsLinks(state, links){
-            state.sections['organisations'].data = links;
-        },
         updateOrganisationsLinks(state, links){
             state.sections.organisations.data = links;
             state.sections.organisations.initialData = JSON.parse(JSON.stringify(links));

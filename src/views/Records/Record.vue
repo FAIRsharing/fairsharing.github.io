@@ -103,7 +103,6 @@
 <script>
     import {mapActions, mapState, mapGetters} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
-    import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Keywords from '@/components/Records/Record/Keywords';
     import Licences from '@/components/Records/Record/Licences';
@@ -120,7 +119,6 @@
     export default {
         name: "Record",
         components: {
-            AssociatedRecords,
             GeneralInfo,
             Keywords,
             Licences,
@@ -141,7 +139,6 @@
                 error: null,
                 queryTriggered: false,
                 showScrollToTopButton: false,
-                recordAssociations: [],
                 canEdit: false,
                 canClaim: false,
                 alreadyClaimed: false,
@@ -231,37 +228,6 @@
         },
         methods: {
             ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-            /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
-            prepareAssociations(associations, reverseAssociations) {
-                let _module = this;
-                let joinedArrays = associations.concat(reverseAssociations);
-                const properties = ['fairsharingRecord', 'linkedRecord'];
-
-                joinedArrays.forEach(item => {
-                    let object = {};
-                    properties.forEach(prop => {
-                        if (Object.prototype.hasOwnProperty.call(item, prop)) {
-                            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
-                            if (_module.currentRecord['fairsharingRecord'].registry === 'collection' && item.recordAssocLabel === 'collects'){
-                                object.recordAssocLabel = 'is collected by';
-                            }
-                            if (_module.currentRecord['fairsharingRecord'].registry === 'policy' && item.recordAssocLabel === 'recommends'){
-                                object.recordAssocLabel = 'is recommended by';
-                            }
-                            object.id = item[prop].id;
-                            object.registry = item[prop].registry;
-                            object.name = item[prop].name;
-                            object.subject = _module.currentRecord['fairsharingRecord'].name;
-                            object.type = item[prop].type;
-                        }
-                    });
-                    _module.recordAssociations.push(object);
-                });
-            },
-            /**
-            * Goes to the edit page for this record.
-            * @returns {undefined}
-            * */
             goToEdit(){
               let _module = this;
               const recordID =  _module.currentRecord['fairsharingRecord'].id;
@@ -326,11 +292,6 @@
                 this.claimedTriggered = false;
                 try {
                     await _module.fetchRecord(this.currentRoute);
-                    const currentRecord = _module.currentRecord['fairsharingRecord'];
-                    _module.recordAssociations = [];
-                    if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
-                        _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-                    }
                 }
                 catch (e) {
                     this.error = e.message;

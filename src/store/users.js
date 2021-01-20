@@ -344,5 +344,3 @@ let currentUser = {
 };
 
 export default currentUser;
-
-

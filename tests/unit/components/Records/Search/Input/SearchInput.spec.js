@@ -49,7 +49,7 @@ describe("FilterPanel.vue", function () {
     it("can check resetPanel", () => {
         wrapper.vm.resetPanel();
         expect(wrapper.vm.panel).toStrictEqual([])
-    })
+    });
 
     it("sorts filterbuttons into the correct order", () => {
         $store.state.searchFilters.filters.push({filterName: 'grants', filterLabel: 'grantLabel', 'sortOrder': 2});
@@ -61,15 +61,6 @@ describe("FilterPanel.vue", function () {
         expect(sorted[1]['filterName']).toEqual('domains');
         expect(sorted[2]['filterName']).toEqual('grants');
         expect(sorted[3]['filterName']).toEqual('filterNameTest');
-    })
-
-    it("can check scrollToBottom", () => {
-        let testId = "scrollable-holder";
-        let scrollableLeftPanel = document.createElement("div");
-        scrollableLeftPanel.setAttribute("id", testId);
-        document.body.appendChild(scrollableLeftPanel);
-        wrapper.vm.scrollToBottom();
-        expect(scrollableLeftPanel.scrollTop).toBe(scrollableLeftPanel.scrollHeight)
-    })
+    });
 
 });

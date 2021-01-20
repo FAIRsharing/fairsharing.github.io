@@ -145,8 +145,10 @@ let recordStore = {
             if (state.currentRecord["fairsharingRecord"]['publications']) {
                 state.currentRecord["fairsharingRecord"]['publications'].forEach((pub, index) => {
                     state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = false;
+                    /* istanbul ignore else */
                     if (data["fairsharingRecord"]['metadata']['citations']) {
                         state.currentRecord["fairsharingRecord"]['metadata']['citations'].forEach((cit) => {
+                            /* istanbul ignore else */
                             if (pub.id === cit.publication_id) {
                                 state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = true;
                             }
@@ -160,20 +162,6 @@ let recordStore = {
         },
         resetCurrentRecordHistory(state){
             state.currentRecordHistory = {};
-        },
-        setNewRecord(state, id){
-            state.recordUpdate = {
-                error: false,
-                message: "success",
-                id: id
-            }
-        },
-        setError(state, error){
-            state.recordUpdate = {
-                error: true,
-                message: error,
-                id: null
-            }
         },
         setSections(state, data){
             let sectionsNames = [
@@ -253,15 +241,6 @@ let recordStore = {
             recordHistory.queryParam = {id: id};
             let data = await client.executeQuery(recordHistory);
             state.commit('setRecordHistory', data["fairsharingRecord"]);
-        },
-        async updateRecord(state, newRecord){
-            let response = await restClient.updateRecord(newRecord);
-            if (response.error){
-                state.commit("setError", response.error.response)
-            }
-            else {
-                state.commit("setNewRecord", response)
-            }
         },
         async updateGeneralInformation({ state, commit }, options) {
             commit("resetMessage", "generalInformation");
@@ -400,13 +379,6 @@ let recordStore = {
     getters: {
         getField: (state) => (fieldName) => {
             return state.currentRecord['fairsharingRecord'][fieldName];
-        },
-        citations: (state) => {
-            let citations = [];
-            state.currentRecord['fairsharingRecord'].metadata.citations.forEach(function (citation) {
-                citations.push(citation['publication_id']);
-            });
-            return citations;
         },
         getSection: (state) => (sectionName) => {
             return state.sections[sectionName];

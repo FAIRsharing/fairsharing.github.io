@@ -134,6 +134,7 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
+    /* istanbul ignore next */
     scrollTo(name) {
       let _module = this;
       _module.$scrollTo("#" + name + 'AutocompleteList', 450, {

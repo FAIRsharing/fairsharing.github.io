@@ -6,12 +6,7 @@
     elevation="1"
   >
     <!-- General Info -->
-    <SectionTitle title="General Info" />
-    <!-- Ribbon -->
-    <Ribbon
-      v-if="currentRecord['fairsharingRecord'].isRecommended"
-      title="RECOMMENDED"
-    />
+    <SectionTitle title="General Information" />
     <!-- Title and DOI -->
     <v-row
       no-gutters
@@ -37,26 +32,26 @@
       >
         <div class="d-flex flex-column mt-2  ml-sm-6 ml-lg-8">
           <div class="d-flex flex-row mb-2 align-center">
-            <h3>{{ currentRecord['fairsharingRecord'].name }}</h3>
+            <h3>{{ getField('name') }}</h3>
             <b
-              v-if="currentRecord['fairsharingRecord'].abbreviation"
+              v-if="getField('abbreviation')"
               class="ml-2"
-            >({{ currentRecord['fairsharingRecord'].abbreviation }})</b>
+            >({{ getField('abbreviation') }})</b>
           </div>
           <div class="d-flex align-center">
             <h3 class="mr-1">
               doi:
             </h3>
             <a
-              v-if="currentRecord['fairsharingRecord'].doi"
-              :href="generateDoiLink(currentRecord['fairsharingRecord'].doi)"
+              v-if="getField('doi')"
+              :href="generateDoiLink(getField('doi'))"
               target="_blank"
             >
-              {{ currentRecord['fairsharingRecord'].doi }}
+              {{ getField('doi') }}
             </a>
             <NoneFound
               v-else
-              :string-field="currentRecord['fairsharingRecord'].doi"
+              :string-field="getField('doi')"
             />
           </div>
         </div>
@@ -68,7 +63,7 @@
       <div class="d-flex">
         <b class="mr-2">Type:</b>
         <p>
-          {{ cleanString(currentRecord['fairsharingRecord'].type) | capitalize }}
+          {{ cleanString(getField('type')) | capitalize }}
         </p>
       </div>
       <!--Year of Creation-->
@@ -76,54 +71,54 @@
       <!--fairsharingRecord.year_creation-->
       <div class="d-flex">
         <b class="mr-2">Year of Creation:</b>
-        <p v-if="currentRecord['fairsharingRecord'].metadata.year_creation">
-          {{ currentRecord['fairsharingRecord'].metadata.year_creation }}
+        <p v-if="getField('metadata').year_creation">
+          {{ getField('metadata').year_creation }}
         </p>
         <NoneFound
           v-else
-          :string-field="currentRecord['fairsharingRecord'].metadata.year_creation"
+          :string-field="getField('metadata').year_creation"
         />
       </div>
       <!--Registry-->
       <div class="d-flex">
         <b class="mr-2">Registry:</b>
-        <p>{{ currentRecord['fairsharingRecord'].registry | capitalize }}</p>
+        <p>{{ getField('registry') | capitalize }}</p>
       </div>
       <!--Description-->
       <div class="d-flex align-center mb-4">
         <b class="mr-2">Description:</b>
         <p class="mb-0">
-          {{ currentRecord['fairsharingRecord'].description | capitalize }}
+          {{ getField('description') | capitalize }}
         </p>
       </div>
       <!--HomePage-->
       <div class="d-flex">
         <b class="mr-2 mb-4">Home Page:</b>
         <a
-          v-if="currentRecord['fairsharingRecord'].homepage"
-          :href="currentRecord['fairsharingRecord'].homepage"
+          v-if="getField('homepage')"
+          :href="getField('homepage')"
           target="_blank"
-        >{{ currentRecord['fairsharingRecord'].homepage }}</a>
+        >{{ getField('homepage') }}</a>
         <NoneFound
           v-else
-          :string-field="currentRecord['fairsharingRecord'].homepage"
+          :string-field="getField('homepage')"
         />
       </div>
       <!--Developed Countries -->
       <div class="d-flex flex-wrap">
         <b class="mr-2">Countries involved with this resource:</b>
         <NoneFound
-          v-if="!currentRecord['fairsharingRecord'].countries"
-          :data-field="currentRecord['fairsharingRecord'].countries"
+          v-if="!getField('countries')"
+          :data-field="getField('countries')"
         />
         <p
-          v-else-if="!currentRecord['fairsharingRecord'].countries.length"
+          v-else-if="!getField('countries').length"
           class="my-0"
         >
           None found.
         </p>
         <v-tooltip
-          v-for="country in currentRecord['fairsharingRecord'].countries"
+          v-for="country in getField('countries')"
           :key="country.id"
           top
         >
@@ -154,14 +149,9 @@
 
 <script>
 import CountryFlag from 'vue-country-flag';
-import {mapState} from 'vuex';
-// TODO:
-//import { mapState, mapGetters } from 'vuex';
-
-import Ribbon from "@/components/Records/Shared/Ribbon";
+import {mapGetters, mapState} from 'vuex';
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
-
 import stringUtils from '@/utils/stringUtils';
 import NoneFound from "@/components/Records/Record/NoneFound";
 
@@ -172,12 +162,12 @@ export default {
     NoneFound,
     CountryFlag,
     RecordStatus,
-    Ribbon,
     SectionTitle
   },
   mixins: [stringUtils],
-  computed: {
-    ...mapState("record", ["currentRecord"])
+  computed:{
+  ...mapGetters("record", ["getField"]),
+  ...mapState("record", ["currentRecord"])
   },
   methods: {
     generateDoiLink(doi) {

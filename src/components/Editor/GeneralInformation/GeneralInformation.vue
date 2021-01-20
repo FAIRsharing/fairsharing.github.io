@@ -202,15 +202,6 @@
         margin-left: 10px;
     }
 
-    .tooltips {
-        max-width: 500px;
-        display: block;
-    }
-
-    .v-tooltip__content {
-        background: rgba(0, 0, 0, 1);
-    }
-
     .v-subheader {
         text-transform: uppercase;
         font-size: 24px;

@@ -3,7 +3,7 @@
     :style="statusStyles[status].background"
     size="48"
   >
-    <span class="white--text headline">
+    <span class="white--text">
       {{ statusStyles[status].label }}
     </span>
   </v-avatar>
@@ -20,19 +20,19 @@
                 statusStyles: {
                     ready: {
                         label: 'R',
-                        background: 'background: linear-gradient(green, lightgreen)'
+                        background: 'background: linear-gradient(#599C0F, lightgreen)'
                     },
                     deprecated: {
                         label: 'D',
-                        background: 'background: linear-gradient(#8F4309, #a57202)'
+                        background: 'background: linear-gradient(#707070, #C6C6C6)'
                     },
                     uncertain: {
                         label: 'U',
-                        background: 'background: linear-gradient(#2d2b2b, #757575)'
+                        background: 'background: linear-gradient(#ADA3A3, #D6CCCC)'
                     },
                     in_development: {
-                        label: 'I',
-                        background: 'background: linear-gradient(#02364b, #35baef)'
+                        label: 'Dev',
+                        background: 'background: linear-gradient(#CB9221, #F5CE80)'
                     },
                     undefined: {
                         label: '?',

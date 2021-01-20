@@ -99,9 +99,9 @@ describe("EditPublications.vue", function() {
         expect(wrapper.vm.section.data).toStrictEqual(recordStore.state.sections.publications.data);
         expect(wrapper.vm.metadata).toStrictEqual(recordStore.state.sections.generalInformation.data.metadata);
         expect(wrapper.vm.message.type()).toBe("success");
-        //recordStore.state.sections.generalInformation.error = true;
-        //expect(wrapper.vm.message.type()).toBe("error");
-        //recordStore.state.sections.publications.error = false;
+        recordStore.state.sections.publications.error = true;
+        expect(wrapper.vm.message.type()).toBe("error");
+        recordStore.state.sections.publications.error = false;
         //expect(wrapper.vm.section).toStrictEqual(recordStore.state.sections.publications);
     });
 

@@ -374,34 +374,35 @@
             deep: true,
             handler(newVal){
               let _module = this;
-              if (_module.initialized){
-                let updated = _module.checkChanges(newVal);
-                /*
-                 *  This function deals with seeing what elelemts have been added.
-                 */
-                let then = _module.initialFields.map(e => e[0])
-                let now = updated.map(e => e[0])
-                let changes = then
-                    .filter(x => !now.includes(x))
-                    .concat(now.filter(x => !then.includes(x))).length;
+              /* istanbul ignore next */
+              if (!_module.initialized) return;
 
-                /*
-                 * This function compares to see which have changed, i.e. isCitation has been
-                 * toggled.
-                 */
-                updated.forEach((obj) => {
-                  let orig = _module.initialFields.find(e => e[0] === obj[0]);
-                  if (orig) {
-                    if (orig[1] !== obj[1]) {
-                      changes += 1;
-                    }
+              let updated = _module.checkChanges(newVal);
+              /*
+               *  This function deals with seeing what elelemts have been added.
+               */
+              let then = _module.initialFields.map(e => e[0])
+              let now = updated.map(e => e[0])
+              let changes = then
+                  .filter(x => !now.includes(x))
+                  .concat(now.filter(x => !then.includes(x))).length;
+
+              /*
+               * This function compares to see which have changed, i.e. isCitation has been
+               * toggled.
+               */
+              updated.forEach((obj) => {
+                let orig = _module.initialFields.find(e => e[0] === obj[0]);
+                if (orig) {
+                  if (orig[1] !== obj[1]) {
+                    changes += 1;
                   }
-                });
-                this.$store.commit("record/setChanges", {
-                  section: "publications",
-                  value: changes
-                })
-              }
+                }
+              });
+              this.$store.commit("record/setChanges", {
+                section: "publications",
+                value: changes
+              })
             }
           }
         },

@@ -22,5 +22,22 @@
         {"$ref": "keywords"}
       ]
     }
+  ],
+  "organisationLinks": [
+    {
+      "queryName": "organisationLinks",
+      "fields": [
+        "id",
+        "relation",
+        {
+          "name": "grant",
+          "fields": ["name", "id"]
+        },
+        {
+          "name": "organisation",
+          "fields": ["name", "id", "homepage", "types", "urlForLogo"]
+        }
+      ]
+    }
   ]
 }

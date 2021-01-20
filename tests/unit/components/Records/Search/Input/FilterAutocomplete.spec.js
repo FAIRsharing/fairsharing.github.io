@@ -121,19 +121,4 @@ describe("FilterAutocomplete.vue", function () {
 
     });
 
-    it("can check onInput", () => {
-        wrapper.setProps({lastItem: true});
-        wrapper.vm.onInput();
-        expect(setTimeout).toHaveBeenLastCalledWith(wrapper.vm.callOut, 100);
-        wrapper.setProps({lastItem: false});
-        wrapper.vm.onInput();
-        expect(setTimeout).toHaveBeenLastCalledWith(wrapper.vm.callOut, 100);
-    });
-
-    it("can check callOut", () => {
-        wrapper.vm.callOut();
-        expect(wrapper.emitted('lastItemClick')).toBeTruthy()
-    });
-
-
 });

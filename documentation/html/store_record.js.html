@@ -200,10 +200,11 @@ let recordStore = {
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
         },
-<<<<<<< HEAD
         setPublications(state, publications) {
             state.sections.publications.data = publications;
-=======
+            state.sections.publications.changes = 0;
+            state.sections.publications.message = "Record successfully updated!";
+        },
         updateOrganisationsLinks(state, links){
             state.sections.organisations.data = links;
             state.sections.organisations.initialData = JSON.parse(JSON.stringify(links));
@@ -224,7 +225,6 @@ let recordStore = {
         },
         setEditingRecord(state){
             state.newRecord = false;
->>>>>>> dev
         }
     },
     actions: {
@@ -305,7 +305,6 @@ let recordStore = {
                   commit('setGeneralInformation', {fairsharingRecord: newRecord});
               }
         },
-<<<<<<< HEAD
         async updatePublications({ state, commit }, options) {
             commit("resetMessage", "publications");
             let publications = JSON.parse(JSON.stringify(state.sections.publications.data));
@@ -313,7 +312,7 @@ let recordStore = {
                 publication_ids: [],
                 citation_ids: []
             };
-            publications.forEach(function(publication){
+            publications.forEach(function (publication) {
                 record_data.publication_ids.push(publication.id);
                 if (publication.isCitation) {
                     record_data.citation_ids.push(publication.id);
@@ -324,17 +323,17 @@ let recordStore = {
             const record = {
                 record: record_data,
                 token: options.token,
-                id:options.id
+                id: options.id
             };
             let response = await restClient.updateRecord(record);
-            if (response.error){
+            if (response.error) {
                 commit("setSectionError", {
                     section: "publications",
                     value: response.error
                 });
                 return response.error;
             }
-=======
+        },
         async updateOrganisations({state, commit}, userToken){
             commit("resetMessage", "organisations");
             let deleteItems = [],
@@ -370,7 +369,6 @@ let recordStore = {
             recordOrganisationsQuery.queryParam = {id: state.currentRecord.fairsharingRecord.id};
             let organisations = await client.executeQuery(recordOrganisationsQuery);
             commit('updateOrganisationsLinks', organisations.fairsharingRecord.organisationLinks);
->>>>>>> dev
         },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});

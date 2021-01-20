@@ -22,7 +22,7 @@
       <string-search :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'" />
       <nav>
         <ul
-          v-if="!$vuetify.breakpoint.md && !$vuetify.breakpoint.sm"
+          v-if="!$vuetify.breakpoint.mdAndDown"
           class="d-flex flex-row align-center flex-wrap px-0"
         >
           <li

@@ -11,8 +11,8 @@ const stringUtils = {
         prettifyList(string) {
             return string.replace(/,/g, ", ");
         },
-        truncate(str, n){
-          return (str.length > n) ? str.substr(0, n-1) + '...' : str;
+        truncate(str, n) {
+            return (str.length > n) ? str.substr(0, n - 1) + '...' : str;
         }
     },
     filters: {
@@ -27,7 +27,7 @@ export default stringUtils;
 
 export const truncate = {
     methods: {
-        truncate(str, n){
+        truncate(str, n) {
             return stringUtils.methods.truncate(str, n);
         }
     }

@@ -2,6 +2,7 @@ import Client from "../components/GraphClient/GraphClient.js"
 import RESTClient from "@/components/Client/RESTClient.js"
 import recordQuery from "../components/GraphClient/queries/getRecord.json"
 import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
+import recordOrganisationsQuery from "../components/GraphClient/queries/getRecordOrganisations.json"
 import { initEditorSections } from "./utils.js"
 
 let client = new Client();
@@ -30,7 +31,14 @@ let recordStore = {
         sections: {
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
             publications: initEditorSections(false, ["publications"]).publications,
-        }
+            organisations: {}
+        },
+        editOrganisationLink: {
+            showOverlay: false,
+            data: {},
+            id: null
+        },
+        newRecord: false
     },
     mutations: {
         setCurrentRecord(state, data){
@@ -101,6 +109,29 @@ let recordStore = {
         },
         setPublications(state, publications) {
             state.sections.publications.data = publications;
+            state.sections.publications.changes = 0;
+            state.sections.publications.message = "Record successfully updated!";
+        },
+        updateOrganisationsLinks(state, links){
+            state.sections.organisations.data = links;
+            state.sections.organisations.initialData = JSON.parse(JSON.stringify(links));
+            state.sections.organisations.changes = 0;
+            state.sections.organisations.message = "Record successfully updated!";
+        },
+        setEditOrganisationLink(state, newLink){
+            state.editOrganisationLink = newLink;
+        },
+        setEditOrganisationLinkOrganisation(state, organisation){
+            state.editOrganisationLink.data.organisation = organisation;
+        },
+        setEditOrganisationLinkGrant(state, grant) {
+            state.editOrganisationLink.data.grant = grant;
+        },
+        setCreatingNewRecord(state){
+            state.newRecord = true;
+        },
+        setEditingRecord(state){
+            state.newRecord = false;
         }
     },
     actions: {
@@ -188,7 +219,7 @@ let recordStore = {
                 publication_ids: [],
                 citation_ids: []
             };
-            publications.forEach(function(publication){
+            publications.forEach(function (publication) {
                 record_data.publication_ids.push(publication.id);
                 if (publication.isCitation) {
                     record_data.citation_ids.push(publication.id);
@@ -199,10 +230,10 @@ let recordStore = {
             const record = {
                 record: record_data,
                 token: options.token,
-                id:options.id
+                id: options.id
             };
             let response = await restClient.updateRecord(record);
-            if (response.error){
+            if (response.error) {
                 commit("setSectionError", {
                     section: "publications",
                     value: response.error
@@ -210,11 +241,46 @@ let recordStore = {
                 return response.error;
             }
         },
+        async updateOrganisations({state, commit}, userToken){
+            commit("resetMessage", "organisations");
+            let deleteItems = [],
+                updateItems = [],
+                createItems = [];
+            state.sections.organisations.initialData.forEach((obj) => {
+                let found = state.sections.organisations.data.filter(org => org.id === obj.id)[0];
+                if (!found) { deleteItems.push(obj); }
+            });
+            state.sections.organisations.data.forEach(function(obj) {
+                let query = {
+                    fairsharing_record_id: state.currentRecord['fairsharingRecord'].id,
+                    organisation_id: obj.organisation.id,
+                    relation: obj.relation,
+                    grant_id: (obj.grant) ? obj.grant.id : null
+                };
+                if (Object.prototype.hasOwnProperty.call(obj, 'id')) updateItems.push({query: query, id: obj.id});
+                else createItems.push(query);
+            });
+            let queries = await Promise.all([
+                ...deleteItems.map(organisation => restClient.deleteOrganisationLink(organisation.id, userToken)),
+                ...createItems.map(organisation => restClient.createOrganisationLink(organisation, userToken)),
+                ...updateItems.map(organisation => restClient.updateOrganisationLink(organisation.query, organisation.id, userToken))
+            ]);
+            queries.forEach((org) => {
+                if (org.error) {
+                    commit("setSectionError", {
+                        section: "organisations",
+                        value: org.error
+                    });
+                }
+            });
+            recordOrganisationsQuery.queryParam = {id: state.currentRecord.fairsharingRecord.id};
+            let organisations = await client.executeQuery(recordOrganisationsQuery);
+            commit('updateOrganisationsLinks', organisations.fairsharingRecord.organisationLinks);
+        },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});
         }
     },
-    modules: {},
     getters: {
         getField: (state) => (fieldName) => {
             return state.currentRecord['fairsharingRecord'][fieldName];
@@ -228,6 +294,9 @@ let recordStore = {
                 changes[section] = state.sections[section].changes
             });
             return changes;
+        },
+        getCreatingNewRecord: (state) => {
+            return state.newRecord;
         }
     }
 };

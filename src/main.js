@@ -4,8 +4,7 @@ import VueScrollStop from 'vue-scroll-stop';
 import App from "./App.vue";
 import VueMeta from "vue-meta";
 import vuetify from './plugins/vuetify'
-
-const VueScrollTo = require('vue-scrollto');
+import VueScrollTo from 'vue-scrollto';
 
 /* import router & store */
 import router from './router'
@@ -28,6 +27,8 @@ Vue.config.productionTip = false;
 
 // This is a package for stopping propagation in scroll
 Vue.use(VueScrollStop);
+
+// This is a package for having more flexibility over default scroll
 Vue.use(VueScrollTo);
 
 // using meta package to inject meta data dynamically.

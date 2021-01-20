@@ -44,6 +44,15 @@ a:link {
 //End of Animations-------------------------
 
 //Utilities---------------------------------
+.tooltips {
+  max-width: 500px;
+  display: block;
+}
+
+.v-tooltip__content {
+  background: rgba(0, 0, 0, 1);
+}
+
 .opacity-low {
   opacity: 0.3;
   -moz-opacity: 0.3;

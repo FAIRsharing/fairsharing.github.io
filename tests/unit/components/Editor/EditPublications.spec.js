@@ -250,16 +250,10 @@ describe("EditPublications.vue", function() {
         jest.spyOn(console, 'warn').mockImplementation(() => {});
         restStub = sinon.stub(RestClient.prototype, 'executeQuery');
         restStub.returns({data: {id: 123}});
-        wrapper.vm.publications = [
-            {
-                id: 1,
-                isCitation: true
-            },
-            {
-                doi: 123
-            }
-        ];
-        expect(recordStore.state.sections.publications.changes).toEqual(3);
+        wrapper.vm.publications = [];
+        wrapper.vm.publications.push({ id: 1, isCitation: true });
+        wrapper.vm.publications.push({ id: 2, isCitation: false });
+        expect(recordStore.state.sections.publications.changes).toEqual(2);
         await wrapper.vm.saveRecord(true);
         expect($router.push).toHaveBeenCalledWith({path: "/123"});
         expect($router.push).toHaveBeenCalledTimes(1);

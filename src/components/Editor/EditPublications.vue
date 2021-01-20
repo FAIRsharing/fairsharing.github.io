@@ -15,11 +15,7 @@
       </v-btn>
       <b> EDIT PUBLICATIONS </b>
     </v-card-title>
-    <v-card-text v-if="errors.general">
-      <v-alert type="error">
-        {{ errors.general.data }}
-      </v-alert>
-    </v-card-text>
+    <Alerts target="publications" />
     <v-card-text>
       <v-container
         fluid
@@ -287,6 +283,7 @@
     import GraphClient from "@/components/GraphClient/GraphClient.js"
     import RestClient from "@/components/Client/RESTClient.js"
     import publicationsQuery from "@/components/GraphClient/queries/getPublications.json"
+    import Alerts from "@/components/Editor/Alerts";
 
     const graphClient = new GraphClient();
     const pubClient = new PublicationClient();
@@ -294,6 +291,7 @@
 
     export default {
         name: "EditPublications",
+        components: {Alerts},
         data(){
           return {
             availablePublications: [],
@@ -402,7 +400,7 @@
               this.$store.commit("record/setChanges", {
                 section: "publications",
                 value: changes
-              })
+              });
             }
           }
         },

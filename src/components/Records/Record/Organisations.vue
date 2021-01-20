@@ -4,7 +4,7 @@
     outlined
     tile
     color="bg_record_card"
-    elevation="1"
+    elevation="3"
   >
     <SectionTitle title="Organisations" />
     <NoneFound :data-field="getField('organisations')" />

@@ -68,31 +68,31 @@
       <!--  Content  -->
       <div v-if="currentRecord['fairsharingRecord'] && !error">
         <!-- Fixed Block 1 -->
-        <component :is="blocks.fixedBlocks[0]['componentName']" />
+        <component :is="blocks.fixedBlocks[0]" />
 
         <v-row no-gutters>
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <component
-              :is="item['componentName']"
+              :is="item"
               v-for="(item,index) in blocks.leftBlocks"
-              :key="item['componentName']+'_'+index"
+              :key="item+'_'+index"
               class="mt-5"
             />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <component
-              :is="item['componentName']"
+              :is="item"
               v-for="(item,index) in blocks.rightBlocks"
-              :key="item['componentName']+'_'+index"
+              :key="item+'_'+index"
               class="mt-5 ml-lg-5"
             />
           </v-col>
         </v-row>
         <!-- Fixed Block 2-->
         <component
-          :is="blocks.fixedBlocks[1]['componentName']"
+          :is="blocks.fixedBlocks[1]"
           class="mt-5"
         />
       </div>
@@ -103,31 +103,16 @@
 <script>
     import {mapActions, mapState, mapGetters} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
-    import GeneralInfo from "@/components/Records/Record/GeneralInfo";
-    import Keywords from '@/components/Records/Record/Keywords';
-    import Licences from '@/components/Records/Record/Licences';
-    import Maintainers from '@/components/Records/Record/Maintainers';
-    import Organisations from '@/components/Records/Record/Organisations';
-    import Publications from '@/components/Records/Record/Publications';
-    import Support from '@/components/Records/Record/Support';
-    import NotFound from "@/views/Errors/404"
     import RestClient from "@/components/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
     import recordBlocks from '@/data/recordBlocks.json'
+    import NoneFound from "@/components/Records/Record/NoneFound";
+    import {flattenObject, loadWidgets} from "@/utils/utils";
     const client = new RestClient();
 
     export default {
         name: "Record",
-        components: {
-            GeneralInfo,
-            Keywords,
-            Licences,
-            Maintainers,
-            Organisations,
-            Publications,
-            Support,
-            NotFound
-        },
+        components:  {...loadWidgets(flattenObject(recordBlocks),'components/Records/Record/'),NoneFound},
         mixins: [stringUtils],
         data: () => {
             return {

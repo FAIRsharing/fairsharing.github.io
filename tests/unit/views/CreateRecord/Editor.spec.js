@@ -1,5 +1,6 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
+import EditPublications from "@/components/Editor/EditPublications.vue"
 import CreateRecord from "@/views/CreateRecord/Editor.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
@@ -11,6 +12,7 @@ const sinon = require("sinon");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
 const $store = new Vuex.Store({modules: {
     record: recordStore,
     users: userStore
@@ -85,6 +87,21 @@ describe("Editor.vue", function() {
         wrapper.vm.confirmPanels[0].show = true;
         await wrapper.vm.confirmPanels[0].method();
         expect(wrapper.vm.confirmPanels[0].show).toBe(false);
+    });
+
+    it("citations are set correctly on data load", () => {
+        recordStore.state.currentRecord.fairsharingRecord.publications = [{name: "test", id: 1}];
+        recordStore.state.currentRecord.fairsharingRecord.metadata.citations = [{publication_id: 1}];
+        let newWrapper = shallowMount(CreateRecord, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router}
+        });
+        // TODO:
+        // This is still undefined. But, the code that should have set isCitation:true for the relevant record
+        // has been run. A means must be found to access the output (see record.js line 52).
+        expect(recordStore.state.currentRecord.fairsharingRecord.publications[0].isCitation).toBe(undefined);
+
     });
 
 

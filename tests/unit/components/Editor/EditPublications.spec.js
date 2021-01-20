@@ -265,14 +265,19 @@ describe("EditPublications.vue", function() {
         expect($router.push).toHaveBeenCalledTimes(1);
         await wrapper.vm.saveRecord(false);
         expect(recordStore.state.sections.publications.changes).toEqual(0);
+        restStub.returns({data: {error: {response: {data: "error"}}}});
+        await wrapper.vm.saveRecord(true);
+        expect(recordStore.state.sections.publications.error).toBe(true);
+        expect(recordStore.state.sections.publications.message).toStrictEqual({"response": {"data": "error"}});
         restStub.restore();
         jest.clearAllMocks();
-    })
+    });
 
     it("can toggle a citation", () => {
         expect(wrapper.vm.publications[0].isCitation).toBe(true);
         wrapper.vm.toggleCitation(0);
         expect(wrapper.vm.publications[0].isCitation).toBe(false);
     });
+
 
 });

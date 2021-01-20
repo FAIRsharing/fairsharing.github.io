@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Static/License/License.vue</title>
+	<title>FAIRsharing.org Source: utils/utils.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,30 +86,42 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Static/License/License.vue</h1>
+		<h1 class="page-title">Source: utils/utils.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;h2>This will be the API/License page&lt;/h2>
-&lt;/template>
-
-&lt;script>
-    /** This component handles the sign-up/register page
-     * @memberOf Static
-     * @name License
-     * @type module
-     * @instance
-     * */
-    export default {
-        name: "License"
+            class="sunlight-highlight-javascript linenums">export async function asyncForEach(array, callback) {
+    for (let index = 0; index &lt; array.length; index++) {
+        await callback(array[index], index, array);
     }
-&lt;/script>
+}
 
-&lt;style scoped>
+/**
+ * Function to load components dynamically. It receives a flat array as list of components and base address to load components from
+ * @returns component's list as object
+ * */
+export function loadWidgets(widgets,basePath) {
+    return widgets.reduce((current, widget) => ({
+        ...current,
+        [widget]: () => import(`@/${basePath}${widget}`)
+    }), {})
+}
 
-&lt;/style></pre>
+/**
+ * Function to flatten an object.
+ * @returns a flat array
+ * */
+export function flattenObject(object) {
+    let flatArray = [];
+    Object.keys(object).forEach(item => {
+        object[item].forEach(item => {
+            flatArray.push(item);
+        })
+    })
+    return flatArray
+}
+</pre>
     </article>
 </section>
 

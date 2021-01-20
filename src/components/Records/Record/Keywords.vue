@@ -3,7 +3,8 @@
     class="pa-4 d-flex flex-column"
     outlined
     tile
-    elevation="1"
+    color="bg_record_card"
+    elevation="3"
   >
     <SectionTitle title="keywords" />
     <section>

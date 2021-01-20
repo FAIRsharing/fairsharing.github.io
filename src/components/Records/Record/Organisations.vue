@@ -3,6 +3,7 @@
     class="pa-4 d-flex flex-column"
     outlined
     tile
+    color="bg_record_card"
     elevation="1"
   >
     <SectionTitle title="Organisations" />

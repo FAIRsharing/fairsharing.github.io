@@ -14,4 +14,5 @@ export default {
     // Here we add a custom `tertiary` color
     tertiary: colors.orange.base,
     customColor: colors.pink.base,
+    bg_record_card: '#f9f9f9'
 }

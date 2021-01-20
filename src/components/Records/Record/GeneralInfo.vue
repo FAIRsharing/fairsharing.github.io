@@ -2,8 +2,9 @@
   <v-card
     class="pa-4 d-flex flex-column"
     outlined
+    color="bg_record_card"
     tile
-    elevation="1"
+    elevation="3"
   >
     <!-- General Info -->
     <SectionTitle title="General Information" />

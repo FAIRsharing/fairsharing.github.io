@@ -7,12 +7,19 @@
       <template #activator="{ on, attrs }">
         <div
           v-bind="attrs"
+          class="ellipse-width-80 text-center"
           v-on="on"
         >
           {{ keyword.label }}
         </div>
       </template>
       <div class="tooltip">
+        <div :class="getChipColor(keyword)">
+          <b
+            v-if="keyword.type"
+            class="mr-1"
+          >Type:</b> {{ keyword.type }}
+        </div>
         <div><b class="mr-1">Name:</b> {{ keyword.label }}</div>
         <div v-if="keyword['model']">
           <b class="mr-1">Type:</b> {{ keyword['model'] }}
@@ -38,8 +45,10 @@
 </template>
 
 <script>
+    import recordsCardUtils from "@/utils/recordsCardUtils";
     export default {
         name: "KeywordTooltip",
+        mixins: [recordsCardUtils],
         props: {
             keyword: {default: null, type: Object}
         },
@@ -58,8 +67,8 @@
                   .replace("]", "")
                   .replace(/:/g, ": ")
                   + "."
-          }
-        }
+          },
+        },
     }
 </script>
 

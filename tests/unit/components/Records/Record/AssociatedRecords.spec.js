@@ -18,5 +18,4 @@ describe("AssociatedRecords.vue", function () {
         expect(wrapper.vm.recordAssociations[0].name).toMatch("Linking Record");
     });
 
-
 });

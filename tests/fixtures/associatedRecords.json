@@ -1,0 +1,21 @@
+{
+  "propsData": {
+    "associatedRecords": {
+      "registry": "standard",
+      "registryNumber": {
+        "standard": {
+          "val": 0,
+          "label": "standards"
+        },
+        "database": {
+          "val": 0,
+          "label": "databases"
+        },
+        "policy": {
+          "val": 0,
+          "label": "policies"
+        }
+      }
+    }
+  }
+}

@@ -3,7 +3,10 @@
     v-if="recordType"
     class="circle-container"
   >
-    <v-tooltip top>
+    <v-tooltip
+      right
+      nudge-right="15"
+    >
       <template v-slot:activator="{ on }">
         <v-avatar
           v-if="Object.keys(recordType).includes(record.type)"

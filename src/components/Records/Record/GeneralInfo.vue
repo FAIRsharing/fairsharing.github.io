@@ -54,7 +54,7 @@
 
     <div class="d-flex flex-column ml-2">
       <!--Type-->
-      <div class="d-flex flex-row mt-2 align-center">
+      <div class="d-flex flex-row mt-4 align-center">
         <b class="width-200">type</b>
         <p class="ma-0 full-width ml-md-12 ml-13">
           {{ cleanString(getField('type')) | capitalize }}
@@ -63,7 +63,7 @@
       <!--Year of Creation-->
       <!--!! Attention need data model to be changed. must be sent by fairsharing Object like below!! -->
       <!--fairsharingRecord.year_creation-->
-      <div class="d-flex flex-row mt-2 align-center">
+      <div class="d-flex flex-row mt-4 align-center">
         <b class="width-200">Year of Creation</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <p
@@ -79,21 +79,21 @@
         </div>
       </div>
       <!--Registry-->
-      <div class="d-flex flex-row mt-2 align-center">
+      <div class="d-flex flex-row mt-4 align-center">
         <b class="width-200">Registry</b>
         <p class="ma-0 full-width ml-md-12 ml-13">
           {{ getField('registry') | capitalize }}
         </p>
       </div>
       <!--Description-->
-      <div class="d-flex flex-row mt-2">
+      <div class="d-flex flex-row mt-4">
         <b class="width-200">Description</b>
         <p class="ma-0 full-width ml-md-12 ml-13 text-justify">
           {{ getField('description') | capitalize }}
         </p>
       </div>
       <!--Home Page-->
-      <div class="d-flex flex-row mt-2 align-center">
+      <div class="d-flex flex-row mt-4 align-center">
         <b class="width-200">Home Page</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
@@ -108,7 +108,7 @@
         </div>
       </div>
       <!--Developed Countries-->
-      <div class="d-flex flex-row mt-2">
+      <div class="d-flex flex-row mt-4">
         <b class="width-200">Countries developing this resource</b>
         <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
           <NoneFound
@@ -121,31 +121,23 @@
           >
             None found.
           </p>
-          <v-tooltip
-            v-for="country in getField('countries')"
+          <div
+            v-for="(country,index) in getField('countries')"
             :key="country.id"
-            top
           >
-            <template v-slot:activator="{ on }">
-              <v-sheet
-                class="mb-2 flag-mr"
-                v-on="on"
-              >
-                <country-flag
-                  v-if="country.code"
-                  :country="country.code"
-                  size="big"
-                />
-                <div
-                  v-else
-                  class="warning"
-                >
-                  country code undefined!
-                </div>
-              </v-sheet>
-            </template>
-            <span class="white--text">{{ country.name }}</span>
-          </v-tooltip>
+            <p
+              v-if="country.name"
+              class="ma-0 mr-2"
+            >
+              {{ ` ${country.name}${index!==getField('countries').length-1?',':''}` }}
+            </p>
+            <span
+              v-else
+              class="warning"
+            >
+              country code undefined!
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -154,7 +146,6 @@
 </template>
 
 <script>
-import CountryFlag from 'vue-country-flag';
 import {mapGetters, mapState} from 'vuex';
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
@@ -166,7 +157,6 @@ export default {
   name: "GeneralInfo",
   components: {
     NoneFound,
-    CountryFlag,
     RecordStatus,
     SectionTitle
   },
@@ -191,10 +181,6 @@ a {
     text-decoration: underline;
     outline: 0;
   }
-}
-
-.flag-mr {
-  margin-right: .29em;
 }
 
 .width-200 {

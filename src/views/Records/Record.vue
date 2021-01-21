@@ -303,9 +303,13 @@
             }
         },
         metaInfo() {
+          try {
             return {
-                title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
+              title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
             }
+          } catch (e) {
+            //error
+          }
         },
     }
 </script>

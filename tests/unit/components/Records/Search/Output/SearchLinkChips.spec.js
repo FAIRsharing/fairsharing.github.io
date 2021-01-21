@@ -49,7 +49,7 @@ describe("SearchLinkChips.vue", function () {
     it("updates the route properly", () => {
         expect($router.push).toHaveBeenCalledTimes(2);
         wrapper.vm.$route.query = {subjects: 'banana'};
-        let chip = {label: 'orange', active: 'false'};
+        let chip = {label: 'orange', active: 'false', type: 'domains'};
         wrapper.vm.updateSearchQuery(chip);
         expect($router.push).toHaveBeenCalledTimes(3);
         expect($router.push).toHaveBeenCalledWith({
@@ -81,6 +81,15 @@ describe("SearchLinkChips.vue", function () {
         let chip = {label: 'banana', active: 'false', type: 'domains'};
         wrapper.vm.updateSearchQuery(chip);
         expect($router.push).toHaveBeenCalledTimes(4);
+    });
+
+    it("getChipColor", () => {
+        let chip = {type: 'subjects'};
+        expect(wrapper.vm.getChipColor(chip)).toEqual('subject_color');
+        chip = {type: 'domains'};
+        expect(wrapper.vm.getChipColor(chip)).toEqual('domain_color');
+        chip = {type: 'taxonomies'};
+        expect(wrapper.vm.getChipColor(chip)).toEqual('taxonomic_color');
     });
 
 });

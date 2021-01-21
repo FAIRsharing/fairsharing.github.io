@@ -15,9 +15,7 @@
     </v-card>
     <!--  SingleField  -->
     <div v-else-if="!displayString && !dataField">
-      <span
-        class="ml-2"
-      >None found.</span>
+      <span>None found.</span>
     </div>
   </div>
 </template>

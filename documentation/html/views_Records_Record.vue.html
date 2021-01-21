@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#flattenObject">flattenObject</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#loadWidgets">loadWidgets</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -159,6 +159,7 @@
       &lt;/v-row>
 
       &lt;!--  Content  -->
+<<<<<<< HEAD
       &lt;v-row
         v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error"
         no-gutters
@@ -215,6 +216,38 @@
           &lt;/v-row>
         &lt;/v-col>
       &lt;/v-row>
+=======
+      &lt;div v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error">
+        &lt;!-- Fixed Block 1 -->
+        &lt;component :is="blocks.fixedBlocks[0]" />
+
+        &lt;v-row no-gutters>
+          &lt;!--Left Block-->
+          &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            &lt;component
+              :is="item"
+              v-for="(item,index) in blocks.leftBlocks"
+              :key="item+'_'+index"
+              class="mt-5"
+            />
+          &lt;/v-col>
+          &lt;!--Right Block-->
+          &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            &lt;component
+              :is="item"
+              v-for="(item,index) in blocks.rightBlocks"
+              :key="item+'_'+index"
+              class="mt-5 ml-lg-5"
+            />
+          &lt;/v-col>
+        &lt;/v-row>
+        &lt;!-- Fixed Block 2-->
+        &lt;component
+          :is="blocks.fixedBlocks[1]"
+          class="mt-5"
+        />
+      &lt;/div>
+>>>>>>> 4ecd31e55f1213607bd10e144a54fd6de4729e4a
     &lt;/v-container>
   &lt;/v-main>
 &lt;/template>
@@ -222,6 +255,7 @@
 &lt;script>
     import {mapActions, mapState, mapGetters} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
+<<<<<<< HEAD
     import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Keywords from '@/components/Records/Record/Keywords';
@@ -234,10 +268,18 @@
     import RestClient from "@/components/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
 
+=======
+    import RestClient from "@/components/Client/RESTClient.js"
+    import stringUtils from '@/utils/stringUtils';
+    import recordBlocks from '@/data/recordBlocks.json'
+    import NoneFound from "@/components/Records/Record/NoneFound";
+    import {flattenObject, loadWidgets} from "@/utils/utils";
+>>>>>>> 4ecd31e55f1213607bd10e144a54fd6de4729e4a
     const client = new RestClient();
 
     export default {
         name: "Record",
+<<<<<<< HEAD
         components: {
             AssociatedRecords,
             GeneralInfo,
@@ -249,6 +291,9 @@
             Support,
             NotFound
         },
+=======
+        components:  {...loadWidgets(flattenObject(recordBlocks),'components/Records/Record/'),NoneFound},
+>>>>>>> 4ecd31e55f1213607bd10e144a54fd6de4729e4a
         mixins: [stringUtils],
         data: () => {
             return {

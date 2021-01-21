@@ -107,12 +107,18 @@
     import stringUtils from '@/utils/stringUtils';
     import recordBlocks from '@/data/recordBlocks.json'
     import NoneFound from "@/components/Records/Record/NoneFound";
-    import {flattenObject, loadWidgets} from "@/utils/utils";
+    import GeneralInfo from "@/components/Records/Record/GeneralInfo";
+    import Keywords from '@/components/Records/Record/Keywords';
+    import Licences from '@/components/Records/Record/Licences';
+    import Maintainers from '@/components/Records/Record/Maintainers';
+    import Organisations from '@/components/Records/Record/Organisations';
+    import Publications from '@/components/Records/Record/Publications';
+    import Support from '@/components/Records/Record/Support';
     const client = new RestClient();
 
     export default {
         name: "Record",
-        components:  {...loadWidgets(flattenObject(recordBlocks),'components/Records/Record/'),NoneFound},
+        components:  {GeneralInfo,Keywords,Licences,Maintainers,Organisations,Publications,Support,NoneFound},
         mixins: [stringUtils],
         data: () => {
             return {

@@ -39,4 +39,10 @@ describe("GeneralInfo.vue", function(){
         expect(wrapper.vm.generateDoiLink(wrapper.vm.currentRecord['fairsharingRecord'].doi)).toEqual(doiLink);
     });
 
+    it("can copy url correctly", () => {
+        wrapper.vm.copyURL()
+        expect(wrapper.vm.copyButtonStatus).toBe(true);
+    });
+
+
 });

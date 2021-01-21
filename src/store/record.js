@@ -48,21 +48,6 @@ let recordStore = {
             if (!data["fairsharingRecord"]['metadata']['citations']) {
                 state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
             }
-            // If not empty the isCitation must be set on any existing publications referenced there.
-            if (state.currentRecord["fairsharingRecord"]['publications']) {
-                state.currentRecord["fairsharingRecord"]['publications'].forEach((pub, index) => {
-                    state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = false;
-                    /* istanbul ignore else */
-                    if (data["fairsharingRecord"]['metadata']['citations']) {
-                        state.currentRecord["fairsharingRecord"]['metadata']['citations'].forEach((cit) => {
-                            /* istanbul ignore else */
-                            if (pub.id === cit.publication_id) {
-                                state.currentRecord["fairsharingRecord"]['publications'][index].isCitation = true;
-                            }
-                        })
-                    }
-                })
-            }
         },
         setRecordHistory(state, data){
             state.currentRecordHistory = data;
@@ -221,6 +206,7 @@ let recordStore = {
             };
             publications.forEach(function (publication) {
                 record_data.publication_ids.push(publication.id);
+                /* istanbul ignore else */
                 if (publication.isCitation) {
                     record_data.citation_ids.push(publication.id);
                 }

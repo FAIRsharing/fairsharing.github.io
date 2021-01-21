@@ -36,7 +36,7 @@ recordStore.state.sections = {
         data: {
             metadata: {
                 citations: [
-                    {id: 2}
+                    {publication_id: 2}
                 ]
             },
         }
@@ -248,12 +248,12 @@ describe("EditPublications.vue", function() {
 
     it("can update a record", async () => {
         jest.spyOn(console, 'warn').mockImplementation(() => {});
+        recordStore.state.sections.publications.changes = 0;
         restStub = sinon.stub(RestClient.prototype, 'executeQuery');
         restStub.returns({data: {id: 123}});
         wrapper.vm.publications = [];
-        wrapper.vm.publications.push({ id: 1, isCitation: true });
-        wrapper.vm.publications.push({ id: 2, isCitation: false });
-        expect(recordStore.state.sections.publications.changes).toEqual(2);
+        wrapper.vm.publications.push({ id: 3, isCitation: true });
+        expect(recordStore.state.sections.publications.changes).toEqual(3); // two removed, one added...
         await wrapper.vm.saveRecord(true);
         expect($router.push).toHaveBeenCalledWith({path: "/123"});
         expect($router.push).toHaveBeenCalledTimes(1);
@@ -268,9 +268,11 @@ describe("EditPublications.vue", function() {
     });
 
     it("can toggle a citation", () => {
-        expect(wrapper.vm.publications[0].isCitation).toBe(true);
+        wrapper.vm.publications[0].isCitation = true;
         wrapper.vm.toggleCitation(0);
         expect(wrapper.vm.publications[0].isCitation).toBe(false);
+        wrapper.vm.toggleCitation(0);
+        expect(wrapper.vm.publications[0].isCitation).toBe(true);
     });
 
 

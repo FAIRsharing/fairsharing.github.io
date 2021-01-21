@@ -89,20 +89,4 @@ describe("Editor.vue", function() {
         expect(wrapper.vm.confirmPanels[0].show).toBe(false);
     });
 
-    it("citations are set correctly on data load", () => {
-        recordStore.state.currentRecord.fairsharingRecord.publications = [{name: "test", id: 1}];
-        recordStore.state.currentRecord.fairsharingRecord.metadata.citations = [{publication_id: 1}];
-        let newWrapper = shallowMount(CreateRecord, {
-            localVue,
-            router,
-            mocks: {$store, $route, $router}
-        });
-        // TODO:
-        // This is still undefined. But, the code that should have set isCitation:true for the relevant record
-        // has been run. A means must be found to access the output (see record.js line 52).
-        expect(recordStore.state.currentRecord.fairsharingRecord.publications[0].isCitation).toBe(undefined);
-
-    });
-
-
 });

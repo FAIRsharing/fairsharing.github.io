@@ -423,7 +423,25 @@
               _module.availablePublications.push(pub);
               position += 1;
             });
+
+            // Setting up isCitation on each publication so that it can be toggled in the UI.
+            _module.publications.forEach((pub, index) => {
+              _module.publications[index].isCitation = false;
+              /* istanbul ignore else */
+              if (_module.metadata.citations) {
+                _module.metadata.citations.forEach((cit) => {
+                  /* istanbul ignore else */
+                  if (pub.id === cit.publication_id) {
+                    _module.publications[index].isCitation = true;
+                  }
+                })
+              }
+            })
+
+            // This is being used to compare just the number of publications added/removed and whether isCitation
+            // has been changed (see the publications watcher).
             _module.initialFields = _module.checkChanges(JSON.parse(JSON.stringify(_module.publications)));
+
             // neutralize loading.
             _module.loading = false;
             _module.initialized = true;

@@ -529,6 +529,23 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Get the extra metadata fields for a RecordType
+     * @param {String} type - name of the record type.
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async extraMetadataFields(type, userToken) {
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/fairsharing_records/metadata_fields",
+            headers: this.auth_headers(userToken),
+            data: {type: type}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
     /* EXTRA METHODS */
 
     /**

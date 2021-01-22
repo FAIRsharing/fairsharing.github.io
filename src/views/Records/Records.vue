@@ -1,4 +1,4 @@
-77<template>
+<template>
   <v-main>
     <transition name="fade">
       <jump-to-top

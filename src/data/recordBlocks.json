@@ -1,5 +1,0 @@
-{
-  "fixedBlocks": ["GeneralInfo","Publications"],
-  "leftBlocks": ["Keywords","Support","Organisations"],
-  "rightBlocks": ["Licences","Maintainers","Publications"]
-}

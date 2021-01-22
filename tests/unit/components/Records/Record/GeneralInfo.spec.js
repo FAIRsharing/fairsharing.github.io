@@ -10,7 +10,13 @@ Record.state.currentRecord["fairsharingRecord"] = {
         year_creation: 1912,
     },
     abbreviation:  "MGY",
-    doi: 'FAIRsharing.wibble'
+    doi: 'FAIRsharing.wibble',
+    maintainers: [
+        {
+            contact_name: "Maintainer One",
+            id: 100
+        }
+    ]
 };
 const $store = new Vuex.Store({
     modules: {
@@ -32,6 +38,8 @@ describe("GeneralInfo.vue", function(){
         expect(wrapper.name()).toMatch("GeneralInfo");
         expect(wrapper.vm.currentRecord['fairsharingRecord'].metadata.year_creation).toEqual(1912);
         expect(wrapper.vm.currentRecord['fairsharingRecord'].abbreviation).toMatch("MGY");
+        expect(wrapper.vm.getField('maintainers')[0].contact_name).toMatch("Maintainer One");
+        expect(wrapper.vm.getField('maintainers')[0].id).toEqual(100);
     });
 
     it("generates correct doi link", () => {

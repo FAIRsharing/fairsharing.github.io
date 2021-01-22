@@ -67,36 +67,38 @@
 
       <!--  Content  -->
       <div v-if="currentRecord['fairsharingRecord'] && !error">
-        <!-- Fixed Block 1 -->
-        <component :is="blocks.fixedBlocks[0]" />
+        <!-- Top Block -->
+        <GeneralInfo
+          :can-claim="canClaim"
+          @requestOwnership="requestOwnership"
+        />
 
         <v-row no-gutters>
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <component
-              :is="item"
-              v-for="(item,index) in blocks.leftBlocks"
-              :key="item+'_'+index"
-              class="mt-5"
-            />
+            <!-- KEYWORDS -->
+            <Keywords class="mt-5" />
+            <!-- SUPPORT -->
+            <Support class="mt-5" />
+            <!-- ORGANISATION -->
+            <Organisations class="mt-5" />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <component
-              :is="item"
-              v-for="(item,index) in blocks.rightBlocks"
-              :key="item+'_'+index"
+            <!-- LICENCES -->
+            <Licences class="mt-5 ml-lg-5" />
+            <!-- MAINTAINERS -->
+            <Maintainers
               class="mt-5 ml-lg-5"
               :can-claim="canClaim"
               @requestOwnership="requestOwnership"
             />
+            <!-- PUBLICATIONS -->
+            <Publications class="mt-5 ml-lg-5" />
           </v-col>
         </v-row>
-        <!-- Fixed Block 2-->
-        <component
-          :is="blocks.fixedBlocks[1]"
-          class="mt-5"
-        />
+        <!-- Top Block -->
+        <Publications class="mt-5" />
       </div>
     </v-container>
   </v-main>
@@ -107,7 +109,6 @@
     import Client from '@/components/GraphClient/GraphClient.js'
     import RestClient from "@/components/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
-    import recordBlocks from '@/data/recordBlocks.json'
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Keywords from '@/components/Records/Record/Keywords';
     import Licences from '@/components/Records/Record/Licences';
@@ -124,7 +125,6 @@
         mixins: [stringUtils],
         data: () => {
             return {
-                blocks: recordBlocks,
                 error: null,
                 queryTriggered: false,
                 showScrollToTopButton: false,

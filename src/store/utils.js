@@ -78,7 +78,8 @@ export function initEditorSections(data, sectionsNames){
                 }),
                 is_dataset: false
             },
-            organisations: data.organisationLinks
+            organisations: data.organisationLinks,
+            additionalInformation: data.metadata
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
         sectionsNames.forEach(name => {

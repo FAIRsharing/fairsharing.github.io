@@ -1,6 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
-import EditPublications from "@/components/Editor/EditPublications.vue"
 import CreateRecord from "@/views/CreateRecord/Editor.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
@@ -69,7 +68,7 @@ describe("Editor.vue", function() {
     });
 
     it("shows exit dialog", async () => {
-        let wrapper = await shallowMount(CreateRecord, {
+        wrapper = await shallowMount(CreateRecord, {
             localVue,
             router,
             mocks: {$store, $route, $router}
@@ -80,7 +79,7 @@ describe("Editor.vue", function() {
     });
 
     it("reloads data correctly", async () => {
-        let wrapper = await shallowMount(CreateRecord, {
+        wrapper = await shallowMount(CreateRecord, {
             localVue,
             mocks: {$store, $route}
         });

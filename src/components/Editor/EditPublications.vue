@@ -59,9 +59,9 @@
                 <div> <b>AUTHORS:</b> {{ publication.authors }}</div>
                 <v-switch
                   :input-value="publication.isCitation"
-                  @change="toggleCitation(pubIndex)"
                   color="green"
                   label="Cite record using this publication?"
+                  @change="toggleCitation(pubIndex)"
                 />
               </v-card-text>
               <v-card-actions :class="{'grey lighten-3': !publication.isCitation, 'green lighten-3': publication.isCitation}">
@@ -163,16 +163,16 @@
     </v-card-text>
     <v-card-actions>
       <v-btn
-          class="primary"
-          :loading="loading"
-          @click="saveRecord(false)"
+        class="primary"
+        :loading="loading"
+        @click="saveRecord(false)"
       >
         Save and continue
       </v-btn>
       <v-btn
-          :loading="loading"
-          class="primary"
-          @click="saveRecord(true)"
+        :loading="loading"
+        class="primary"
+        @click="saveRecord(true)"
       >
         Save and exit
       </v-btn>
@@ -342,9 +342,8 @@
         },
         computed: {
           // TODO: Remove
-          //...mapState('record', ['currentRecord', 'recordUpdate']),
           ...mapState('users', ['user']),
-          ...mapGetters("record", ["citations", "getSection", "getChanges", "currentRecord"]),
+          ...mapGetters("record", ["getSection", "getChanges"]),
           section(){
             return this.getSection('publications');
           },

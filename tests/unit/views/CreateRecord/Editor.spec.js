@@ -1,6 +1,5 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
-import EditPublications from "@/components/Editor/EditPublications.vue"
 import CreateRecord from "@/views/CreateRecord/Editor.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";

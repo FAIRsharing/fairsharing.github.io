@@ -18,6 +18,9 @@ const recordsCardUtils = {
             else if(chip.type==='taxonomies') {
                 return 'taxonomic_color';
             }
+            else if(chip.type==='userDefinedTags') {
+                return 'userDefinedTags_color';
+            }
         },
         associatedRecords(record) {
             let records = {

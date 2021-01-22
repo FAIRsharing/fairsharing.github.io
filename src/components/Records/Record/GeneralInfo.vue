@@ -72,6 +72,7 @@
       </div>
     </div>
 
+    <!--  other data  -->
     <div class="d-flex flex-column ml-2">
       <!--Type-->
       <div class="d-flex flex-row mt-4 align-center">
@@ -83,7 +84,7 @@
       <!--Year of Creation-->
       <!--!! Attention need data model to be changed. must be sent by fairsharing Object like below!! -->
       <!--fairsharingRecord.year_creation-->
-      <div class="d-flex flex-row mt-4 align-center">
+      <div class="d-flex flex-row mt-4 align-center min-height-40">
         <b class="width-200">Year of Creation</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <p
@@ -99,21 +100,21 @@
         </div>
       </div>
       <!--Registry-->
-      <div class="d-flex flex-row mt-4 align-center">
+      <div class="d-flex flex-row mt-4 align-center min-height-40">
         <b class="width-200">Registry</b>
         <p class="ma-0 full-width ml-md-12 ml-13">
           {{ getField('registry') | capitalize }}
         </p>
       </div>
       <!--Description-->
-      <div class="d-flex flex-row mt-4">
+      <div class="d-flex flex-row mt-4 min-height-40">
         <b class="width-200">Description</b>
         <p class="ma-0 full-width ml-md-12 ml-13 text-justify">
           {{ getField('description') | capitalize }}
         </p>
       </div>
       <!--Home Page-->
-      <div class="d-flex flex-row mt-4 align-center">
+      <div class="d-flex flex-row mt-4 align-center min-height-40">
         <b class="width-200">Home Page</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
@@ -128,7 +129,7 @@
         </div>
       </div>
       <!--Developed Countries-->
-      <div class="d-flex flex-row mt-4">
+      <div class="d-flex flex-row mt-4 min-height-40">
         <b class="width-200">Countries developing this resource</b>
         <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
           <NoneFound
@@ -161,33 +162,29 @@
         </div>
       </div>
       <!--Maintainers-->
-      <div class="d-flex flex-row mt-4">
+      <div class="d-flex flex-row mt-4 min-height-40">
         <b class="width-200">Maintainers</b>
         <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-          <v-card
+          <div
             v-if="getField('maintainers').length === 0"
-            class="d-flex flex-row"
-            flat
-            outlined
+            class="d-flex flex-wrap"
           >
-            <div class="d-flex flex-wrap">
-              <p class="ma-0 mr-2">
-                This record is in need of a maintainer.
-              </p>
-              <p
-                v-if="canClaim"
-                class="ma-0 mr-2"
-              >
-                If you are affiliated with this project,
-              </p>
-              <a
-                v-if="canClaim"
-                @click="()=>{this.$emit('requestOwnership')}"
-              >
-                Claim it now!
-              </a>
-            </div>
-          </v-card>
+            <p class="ma-0 mr-2">
+              This record is in need of a maintainer.
+            </p>
+            <p
+              v-if="canClaim"
+              class="ma-0 mr-2"
+            >
+              If you are affiliated with this project,
+            </p>
+            <a
+              v-if="canClaim"
+              @click="()=>{this.$emit('requestOwnership')}"
+            >
+              Claim it now!
+            </a>
+          </div>
           <!--<NoneFound :data-field="getField('maintainers')" />-->
           <!--Contact-->
           <div
@@ -204,6 +201,98 @@
           </div>
         </div>
       </div>
+      <!--Taxonomic Range-->
+      <div class="d-flex flex-row mt-4 min-height-40">
+        <b class="width-200">Taxonomic Range</b>
+        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+          <span
+            v-if="!getField('taxonomies').length"
+          >
+            None.
+          </span>
+          <v-chip
+            v-for="item in getField('taxonomies')"
+            :key="item.label"
+            class="mr-2 mb-2"
+            :color="getChipColor(item)"
+            text-color="white"
+          >
+            <KeywordTooltip
+              :keyword="item"
+              :full-width="true"
+            />
+          </v-chip>
+        </div>
+      </div>
+      <!--Subjects-->
+      <div class="d-flex flex-row mt-4 min-height-40">
+        <b class="width-200">Subjects</b>
+        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+          <span
+            v-if="!getField('subjects').length"
+          >
+            None.
+          </span>
+          <v-chip
+            v-for="item in getField('subjects')"
+            :key="item.label"
+            class="mr-2 mb-2"
+            :color="getChipColor(item)"
+            text-color="white"
+          >
+            <KeywordTooltip
+              :keyword="item"
+              :full-width="true"
+            />
+          </v-chip>
+        </div>
+      </div>
+      <!--Domains-->
+      <div class="d-flex flex-row mt-4 min-height-40">
+        <b class="width-200">Domains</b>
+        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+          <span
+            v-if="!getField('domains').length"
+          >
+            None.
+          </span>
+          <v-chip
+            v-for="item in getField('domains')"
+            :key="item.label"
+            class="mr-2 mb-2"
+            text-color="white"
+            :color="getChipColor(item)"
+          >
+            <KeywordTooltip
+              :keyword="item"
+              :full-width="true"
+            />
+          </v-chip>
+        </div>
+      </div>
+      <!--User Defined Tags-->
+      <div class="d-flex flex-row mt-4 min-height-40">
+        <b class="width-200">User Defined Tags</b>
+        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+          <span
+            v-if="!getField('userDefinedTags').length"
+          >
+            None.
+          </span>
+          <v-chip
+            v-for="item in getField('userDefinedTags')"
+            :key="item.label"
+            class="mr-2 mb-2"
+            text-color="white"
+            :color="getChipColor(item)"
+          >
+            <KeywordTooltip
+              :keyword="item"
+              :full-width="true"
+            />
+          </v-chip>
+        </div>
+      </div>
     </div>
     <section />
   </v-card>
@@ -215,6 +304,8 @@ import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import stringUtils from '@/utils/stringUtils';
 import NoneFound from "@/components/Records/Record/NoneFound";
+import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip";
+import recordsCardUtils from "@/utils/recordsCardUtils";
 
 
 export default {
@@ -222,9 +313,10 @@ export default {
   components: {
     NoneFound,
     RecordStatus,
-    SectionTitle
+    SectionTitle,
+    KeywordTooltip
   },
-  mixins: [stringUtils],
+  mixins: [stringUtils,recordsCardUtils],
   props: {
     canClaim: {
       type: Boolean,

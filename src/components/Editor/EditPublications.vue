@@ -1,4 +1,4 @@
-<template xmlns:v-sl ot="http://www.w3.org/1999/XSL/Transform">
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card id="editPublications">
     <v-card-title class="grey lighten-4 blue--text">
       <v-btn
@@ -377,7 +377,7 @@
 
               let updated = _module.checkChanges(newVal);
               /*
-               *  This function deals with seeing what elelemts have been added.
+               *  This function deals with seeing what elements have been added.
                */
               let then = _module.initialFields.map(e => e[0])
               let now = updated.map(e => e[0])

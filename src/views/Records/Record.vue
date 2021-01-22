@@ -87,12 +87,6 @@
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- LICENCES -->
             <Licences class="mt-5 ml-lg-5" />
-            <!-- MAINTAINERS -->
-            <Maintainers
-              class="mt-5 ml-lg-5"
-              :can-claim="canClaim"
-              @requestOwnership="requestOwnership"
-            />
             <!-- PUBLICATIONS -->
             <Publications class="mt-5 ml-lg-5" />
           </v-col>
@@ -112,7 +106,6 @@
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Keywords from '@/components/Records/Record/Keywords';
     import Licences from '@/components/Records/Record/Licences';
-    import Maintainers from '@/components/Records/Record/Maintainers';
     import Organisations from '@/components/Records/Record/Organisations';
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
@@ -121,7 +114,7 @@
 
     export default {
         name: "Record",
-        components:  {GeneralInfo,Keywords,Licences,Maintainers,Organisations,Publications,Support,NotFound},
+        components:  {GeneralInfo,Keywords,Licences,Organisations,Publications,Support,NotFound},
         mixins: [stringUtils],
         data: () => {
             return {

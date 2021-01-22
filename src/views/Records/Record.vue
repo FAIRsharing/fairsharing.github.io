@@ -87,6 +87,8 @@
               v-for="(item,index) in blocks.rightBlocks"
               :key="item+'_'+index"
               class="mt-5 ml-lg-5"
+              :can-claim="canClaim"
+              @requestOwnership="requestOwnership"
             />
           </v-col>
         </v-row>

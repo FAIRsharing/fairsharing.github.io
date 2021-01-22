@@ -160,6 +160,50 @@
           </div>
         </div>
       </div>
+      <!--Maintainers-->
+      <div class="d-flex flex-row mt-4">
+        <b class="width-200">Maintainers</b>
+        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+          <v-card
+            v-if="getField('maintainers').length === 0"
+            class="d-flex flex-row"
+            flat
+            outlined
+          >
+            <div class="d-flex flex-wrap">
+              <p class="ma-0 mr-2">
+                This record is in need of a maintainer.
+              </p>
+              <p
+                v-if="canClaim"
+                class="ma-0 mr-2"
+              >
+                If you are affiliated with this project,
+              </p>
+              <a
+                v-if="canClaim"
+                @click="()=>{this.$emit('requestOwnership')}"
+              >
+                Claim it now!
+              </a>
+            </div>
+          </v-card>
+          <!--<NoneFound :data-field="getField('maintainers')" />-->
+          <!--Contact-->
+          <div
+            v-for="(maintainer,index) in getField('maintainers')"
+            :key="maintainer.contact_name"
+            class="d-flex flex-wrap"
+          >
+            <a
+              :href="maintainer.username + '/' + maintainer.id"
+              class="mr-2"
+            >
+              {{ ` ${maintainer.username+ '/' + maintainer.id}${index!==getField('maintainers').length-1?',':''}` }}
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
     <section />
   </v-card>
@@ -181,6 +225,12 @@ export default {
     SectionTitle
   },
   mixins: [stringUtils],
+  props: {
+    canClaim: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       copyButtonStatus:false

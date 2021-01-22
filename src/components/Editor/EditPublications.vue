@@ -38,7 +38,7 @@
           >
             <v-card
               height="100%"
-              class="flexCard"
+              class="flex flex-column"
             >
               <v-card-title
                 class="white--text"
@@ -411,9 +411,9 @@
             // get available publications from the DB.
             let pub = await graphClient.executeQuery(publicationsQuery);
             let position = 0;
-            pub['searchPublications'].forEach(function(pub){
+            pub['searchPublications'].forEach((pub) => {
                 pub.isCitation = false;
-                _module.publications.forEach(function(publication){
+                _module.publications.forEach((publication) => {
                   if (pub.id === publication.id){
                     publication.tablePosition = position;
                     pub.tablePosition = position;
@@ -475,13 +475,13 @@
               else {
                 let publication = parseBibFile(data).content[0];
                 let title = "";
-                publication.getField('title').data.forEach(function(titleComponent){
+                publication.getField('title').data.forEach((titleComponent) => {
                   if (typeof titleComponent !== "object" ){
                     title += titleComponent
                   }
                   else {
                     let subTitle = "";
-                    titleComponent.data.forEach(function (subTitleComponent) {
+                    titleComponent.data.forEach((subTitleComponent) => {
                       subTitle += subTitleComponent;
                     });
                     title += subTitle;
@@ -533,7 +533,7 @@
             let doi = null;
             if (idsString){
               let IDsArray = idsString.split(". ");
-              IDsArray.forEach(function(IDString){
+              IDsArray.forEach((IDString) => {
                 let IDArray = IDString.split(": ");
                 if (IDArray[0] === 'doi'){
                   doi = IDArray[1]
@@ -634,10 +634,3 @@
         }
     }
 </script>
-
-<style scoped>
-  .flexCard {
-    display:flex;
-    flex-direction: column;
-  }
-</style>

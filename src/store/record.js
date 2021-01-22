@@ -30,7 +30,8 @@ let recordStore = {
         },
         sections: {
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
-            organisations: {}
+            organisations: {},
+            additionalInformation: initEditorSections(false, ["additionalInformation"]).additionalInformation,
         },
         editOrganisationLink: {
             showOverlay: false,
@@ -71,7 +72,8 @@ let recordStore = {
                 "support",
                 "licences",
                 "publications",
-                "organisations"
+                "organisations",
+                "additionalInformation"
             ];
             state.sections = initEditorSections(data['fairsharingRecord'], sectionsNames);
         },

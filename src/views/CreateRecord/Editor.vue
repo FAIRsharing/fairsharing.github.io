@@ -110,6 +110,11 @@
           <v-tab-item class="px-10 py-3">
             <edit-relationships />
           </v-tab-item>
+
+          <!-- EDIT ADDITIONAL INFO -->
+          <v-tab-item class="px-10 py-3">
+            <edit-additional-info />
+          </v-tab-item>
         </v-tabs>
       </v-col>
     </v-row>
@@ -123,6 +128,7 @@
   import EditLicences from "@/components/Editor/EditLicences";
   import EditOrganisations from "@/components/Editor/Organisations/Organisations";
   import EditPublications from "@/components/Editor/EditPublications";
+  import EditAdditionalInfo from "@/components/Editor/EditAdditionalInfo";
   import Unauthorized from "@/views/Errors/403"
   import RESTClient from "@/components/Client/RESTClient.js"
 
@@ -136,6 +142,7 @@
       EditLicences,
       EditRelationships,
       EditGeneralInfo,
+      EditAdditionalInfo,
       Unauthorized
     },
     data(){
@@ -185,6 +192,12 @@
           {
             name: "Relations to other records",
             disabled: true
+          },
+          {
+            name: "Additional Information",
+            disabled: false,
+            target: "additionalInformation",
+            icon: "fa-info"
           }
         ]
       }

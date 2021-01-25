@@ -1,8 +1,8 @@
 import {shallowMount} from "@vue/test-utils";
-import RecordStatus from "@/components/Records/Shared/RecordInfo.vue"
+import RecordStatus from "@/components/Records/Shared/RecordStatus.vue"
 
 
-describe("RecordInfo.vue", function () {
+describe("RecordStatus.vue", function () {
     let wrapper;
 
     wrapper = shallowMount(RecordStatus, {

@@ -85,21 +85,7 @@
         "id"
       ]
     },
-    {
-      "name": "organisationLinks",
-      "fields": [
-        "id",
-        "relation",
-        {
-          "queryName": "grant",
-          "fields": ["name", "id"]
-        },
-        {
-          "queryName": "organisation",
-          "fields": ["name", "id", "homepage", "types"]
-        }
-      ]
-    },
+    {"$ref": "organisationLinks"},
     {
       "name": "publications",
       "fields": [

@@ -86,6 +86,14 @@
         "registry": "standard"
       },
       "recordAssocLabel": "related_to"
+    },
+    {
+      "linkedRecord": {
+        "name": "A collection record",
+        "id": 1245,
+        "registry": "collection"
+      },
+      "recordAssocLabel": "related_to"
     }
   ],
   "reverseRecordAssociations": [

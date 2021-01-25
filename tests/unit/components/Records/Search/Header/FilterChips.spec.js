@@ -45,6 +45,8 @@ describe("FilterChips.vue", () => {
         expect(query).toStrictEqual({page: 1, grants: 'ABCDEF', publications: 'pub1,pub2,pub3'});
         await wrapper.vm.removeParam("publications", "pub3");
         expect($router.push).toHaveBeenCalledTimes(1);
+        wrapper.vm.$route.query= {object:{}}
+        expect(wrapper.vm.getChips).toStrictEqual([{"paramName": "object", "paramVal": {}}]);
     });
 
     it("can remove all parameters value", async () => {

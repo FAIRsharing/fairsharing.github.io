@@ -1,4 +1,4 @@
-//custom colors
+//custom colors-----------------------------
 $color-gray-light1: #bebebe;
 $color-gray-light2: #757575;
 $color-gray-light3: #5a5a5a;
@@ -9,63 +9,20 @@ $max-height-val: 100px;
 $color-primary: #27aae1;
 $color-secondary: #004d40;
 
-a:link {
-  text-decoration: none ;
-}
-
-h1 {
-  font-size: 2em;
-}
-
-h2 {
-  font-size: 1.5em;
-}
-
-h3 {
-  font-size: 1.2em;
-  color: $color-gray-light2;
-  font-weight: normal;
-  overflow: hidden;
-}
-
-h4 {
-  font-size: 1.2em;
-  color: $color-gray-light2;
-  font-weight: bold;
-  overflow: hidden;
-}
-
-.max-width {
-  max-width: $max-width-val;
-}
-
-.max-height {
-  max-height: $max-height-val;
-}
-
 .button-text-color {
   color: $color-gray-light1 !important;
 }
 
-.card-description {
-  margin: 0 .6rem 0 .6rem;
-  max-height: 40px;
-  overflow: hidden;
-  font-size: .9em;
-  text-align: justify;
-  color: $color-gray-light3;
+//End of Custom Colors----------------------
+
+//Global Setting----------------------------
+a:link {
+  text-decoration: none;
 }
 
-.full-width {
-  width: 100%;
-}
+//End of Global Setting---------------------
 
-.text-primary {
-  color: $color-primary;
-}
-
-//Animations
-
+//Animations--------------------------------
 .fade-enter-active, .fade-leave-active {
   transition: opacity .7s;
 }
@@ -84,12 +41,98 @@ h4 {
   opacity: 1;
 }
 
-//End of Animations
+//End of Animations-------------------------
 
-//Helpers
+//Utilities---------------------------------
+.tooltips {
+  max-width: 500px;
+  display: block;
+}
 
-.cursor-pointer{
+.v-tooltip__content {
+  background: rgba(0, 0, 0, 1);
+}
+
+.opacity-low {
+  opacity: 0.3;
+  -moz-opacity: 0.3;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.cursor-pointer {
   cursor: pointer;
 }
 
-//End of Helpers
+.text-ellipses-height-2lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-ellipses-height-3lines {
+  @extend .text-ellipses-height-2lines;
+  -webkit-line-clamp: 3;
+}
+
+.ellipse {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ellipse-width-80 {
+  width: 80px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ellipse-width-600 {
+  @extend .ellipse;
+  max-width: 600px;
+}
+
+.dashed-line {
+  border: none;
+  border-top: 4px dotted gray;
+  color: #fff;
+  background-color: #fff;
+  height: 1px;
+}
+
+.mx-25-percent {
+  margin-right: 25%;
+  margin-left: 25%;
+}
+
+.mx-50-percent {
+  margin-right: 15%;
+  margin-left: 15%;
+}
+
+.ml-25-percent {
+  margin-left: 25%;
+}
+
+.min-height-25 {
+  min-height: 25px;
+}
+
+.height-50 {
+  height: 50px;
+}
+
+.height-75 {
+  height: 75px;
+}
+
+.height-90 {
+  height: 90px;
+}
+//End of Utilities--------------------------

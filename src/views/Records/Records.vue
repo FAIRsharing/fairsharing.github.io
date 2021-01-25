@@ -1,24 +1,11 @@
 <template>
   <v-main>
     <transition name="fade">
-      <jump-to-top
-        v-if="scrollStatus"
-        target-object="scroll-target"
-      />
+      <jump-to-top v-if="scrollStatus" />
     </transition>
-    <div
-      v-if="getChips.length && stickToTop"
-      :class="[responsiveClassSticky]"
-      class="d-flex align-content-center justify-content-center chips-holder"
-    >
-      <filter-chips />
-    </div>
-    <!--Filtered Chips-->
     <v-container
-      id="scroll-target"
       fluid
-      class="overflow-y-auto overflow-x-hidden"
-      :class="getChips.length && stickToTop?'content-custom-new-height':'content-custom'"
+      class="pa-0"
     >
       <!-- Title banner -->
       <div>
@@ -36,9 +23,7 @@
       </div>
 
       <!--  Content  -->
-      <v-row
-        no-gutters
-      >
+      <v-row no-gutters>
         <v-col
           cols="12"
           lg="4"
@@ -47,14 +32,12 @@
           class="d-none d-md-flex mt-2 ml-2"
         >
           <SearchInput
+            id="search-input-mb"
             :class="[responsiveClassObject]"
           />
         </v-col>
         <v-col class="mt-2">
-          <SearchOutput
-            v-scroll:#scroll-target="onScroll"
-            class="pb-5 mr-0 mr-md-2"
-          />
+          <SearchOutput class="pb-5 mr-0 mr-md-2" />
         </v-col>
       </v-row>
     </v-container>
@@ -67,12 +50,11 @@ import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
 import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
-import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "Records",
-  components: { JumpToTop, SearchOutput, SearchInput, FilterChips},
+  components: {JumpToTop, SearchOutput, SearchInput},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -86,7 +68,7 @@ export default {
     recordTypes: recordsLabels['recordTypes']
   }),
   computed: {
-    ...mapState('uiController', ['scrollStatus','stickToTop']),
+    ...mapState('uiController', ['scrollStatus', 'stickToTop']),
     ...mapState('records', ['records']),
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
@@ -109,13 +91,6 @@ export default {
         'left-panel-fixed': this.stickToTop && !this.$vuetify.breakpoint.xlOnly
       }
     },
-    responsiveClassSticky: function () {
-      return {
-        'sticky-style-sm-xs': this.$vuetify.breakpoint.smAndDown,
-        'sticky-style-md-lg': this.$vuetify.breakpoint.lgAndDown,
-        'sticky-style-xl': this.$vuetify.breakpoint.xlOnly,
-      }
-    },
     currentPath: function () {
       let title = this.$route.path.replace('/', '');
       const client = this;
@@ -135,53 +110,47 @@ export default {
   },
   watch: {
     currentPath: async function () {
+      window.scrollTo(0, 0);
       await this.tryRedirect();
     }
   },
   mounted: function () {
+    window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
       await this.tryRedirect();
-    });
-  },
-  created() {
-    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-      bodyOverflowState: true,
-      drawerVisibilityState: false,
-      headerVisibilityState: true,
+      window.scrollTo(0, 0);
     });
   },
   destroyed() {
+    window.removeEventListener("scroll", this.onScroll);
+    this.setStickToTop(false);
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-      bodyOverflowState: false,
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
-    this.setStickToTopLocal(false);
+    window.scrollTo(0, 0);
   },
   methods: {
     ...mapActions('records', ['fetchRecords']),
-    ...mapActions({setScrollStatusLocal: 'uiController/setScrollStatus'}),
-    ...mapActions({setStickToTopLocal: 'uiController/setStickToTop'}),
-    onScroll: function (e) {
+    ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
+    onScroll: function () {
       let _module = this;
-      _module.offsetTop = e.target.scrollTop;
+      _module.offsetTop = window.top.scrollY;
       if (_module.offsetTop > 100 && _module.records.length > 1) {
-          _module.setStickToTopLocal(true);
-          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            bodyOverflowState: true,
-            headerVisibilityState: false,
+        _module.setStickToTop(true);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          headerVisibilityState: false,
         });
       }
       else {
-          _module.setStickToTopLocal(false);
-          _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-            bodyOverflowState: true,
-            drawerVisibilityState: false,
-            headerVisibilityState: true,
-          });
+        _module.setStickToTop(false);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          drawerVisibilityState: false,
+          headerVisibilityState: true,
+        });
       }
-      _module.offsetTop > 500 ? _module.setScrollStatusLocal(true) :
-          _module.setScrollStatusLocal(false);
+      _module.offsetTop > 500 ? _module.setScrollStatus(true) :
+          _module.setScrollStatus(false);
     },
     /**
      * Try to redirect to search of the page that is hit is /standards /databases
@@ -205,13 +174,13 @@ export default {
           }
         }
       }
-      await this.getData()
+      await this.getData();
     },
     /** This methods get the data from the client.
      * @returns {Promise}
      */
     getData: async function () {
-      window.scrollTo(0, 0);
+      this.$scrollTo('body',50,{})
       this.errors = null;
       const _module = this;
       try {
@@ -243,7 +212,7 @@ export default {
 
 <style scoped lang="scss">
 .left-panel-fixed {
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 32vw;
 }
@@ -254,7 +223,7 @@ export default {
 }
 
 .left-panel-fixed-lg {
-  position: fixed;
+  position: sticky;
   top: 0;
   width: 24vw;
 }
@@ -263,7 +232,6 @@ export default {
   position: relative;
   width: 24vw;
 }
-
 
 .content-custom-new-height {
   height: calc(100vh - 40px);
@@ -284,26 +252,7 @@ export default {
   padding: 1em;
 }
 
-.chips-holder {
-  position: sticky;
-  z-index: 5;
-  background: #f5f5f5;
-  min-height: 50px;
-  border: #dbdbdb dotted 2px;
-  border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-}
-
-.sticky-style-xl {
-  margin: 5px 5px 5px 25.4%;
-}
-
-.sticky-style-md-lg {
-  margin: 5px 5px 5px 33.3%;
-}
-
-.sticky-style-sm-xs {
-  margin: 0 0 0 0;
+#search-input-mb{
+  margin-bottom: 105px;
 }
 </style>

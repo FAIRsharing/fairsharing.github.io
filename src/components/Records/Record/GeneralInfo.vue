@@ -293,6 +293,41 @@
           </v-chip>
         </div>
       </div>
+      <!--How to cite record-->
+      <div class="d-flex flex-row mt-4">
+        <v-row>
+          <v-col
+            cols="12"
+            sm="12"
+            md="6"
+          >
+            <v-card
+              class="pa-4 d-flex flex-column min-height-100"
+              outlined
+              color="white"
+              tile
+              elevation="3"
+            >
+              Left
+            </v-card>
+          </v-col>
+          <v-col
+            cols="12"
+            sm="12"
+            md="6"
+          >
+            <v-card
+              class="pa-4 d-flex flex-column min-height-100"
+              outlined
+              color="white"
+              tile
+              elevation="3"
+            >
+              Left
+            </v-card>
+          </v-col>
+        </v-row>
+      </div>
     </div>
     <section />
   </v-card>

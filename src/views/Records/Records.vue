@@ -110,6 +110,7 @@ export default {
   },
   watch: {
     currentPath: async function () {
+      window.scrollTo(0, 0);
       await this.tryRedirect();
     }
   },
@@ -117,6 +118,7 @@ export default {
     window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
       await this.tryRedirect();
+      window.scrollTo(0, 0);
     });
   },
   destroyed() {

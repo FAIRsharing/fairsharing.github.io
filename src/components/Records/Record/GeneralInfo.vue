@@ -160,7 +160,7 @@ import {mapState} from 'vuex';
 
 import Ribbon from "@/components/Records/Shared/Ribbon";
 import SectionTitle from '@/components/Records/Record/SectionTitle';
-import RecordStatus from "@/components/Records/Shared/RecordInfo";
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
 
 import stringUtils from '@/utils/stringUtils';
 import NoneFound from "@/components/Records/Record/NoneFound";

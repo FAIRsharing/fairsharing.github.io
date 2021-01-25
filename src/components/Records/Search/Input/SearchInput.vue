@@ -2,7 +2,6 @@
   <aside>
     <v-card
       id="scrollable-holder"
-      v-scroll-stop
       :class="['pa-2',responsiveClassObject]"
       outlined
       tile

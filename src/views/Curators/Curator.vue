@@ -148,29 +148,29 @@
           </v-card-text>
         </v-card>
         <v-card>
-          <v-card-text v-if="recordsWithoutDois">
+          <v-card-text>
             <v-card-title
-              id="text-curator-search-5"
               class="green white--text"
             >
               Records without dois
-              <v-spacer />
-              <v-text-field
-                v-model="searches.recordsWithoutDois"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
+              <v-btn
+                v-if="downloadContent"
+                class="info ml-5"
+              >
+                <a
+                  :href="downloadContent"
+                  download="recordWithoutDOIs.txt"
+                >
+                  <v-icon
+                    color="white"
+                    class="mr-1"
+                  >
+                    fa fa-download
+                  </v-icon>
+                  <span class="white--text">Obtain file</span>
+                </a>
+              </v-btn>
             </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.recordsWithoutDois"
-              :items="recordsWithoutDois"
-              :search="searches.recordsWithoutDois"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
           </v-card-text>
         </v-card>
         <v-card>
@@ -241,8 +241,10 @@
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
     import recordTypes from "@/data/recordsRegistries.json"
+    import RestClient from "@/components/Client/RESTClient.js"
 
     const client = new GraphClient();
+    const restClient = new RestClient();
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -258,7 +260,6 @@
           maintenanceRequests: [],
           recordsCreatedCuratorsLastWeek: [],
           recordsInCuration: [],
-          recordsWithoutDois: [],
           hiddenRecords: [],
           recordType: null,
           headers: {
@@ -322,28 +323,6 @@
                 value: "curator"
               }
             ],
-            recordsWithoutDois: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "Date created",
-                value: "createdAt"
-              },
-              {
-                text: "Date last edit",
-                value: "updatedAt"
-              },
-              {
-                text: "Created by",
-                value: "creator"
-              },
-              {
-                text: "Last edited by",
-                value: "lastEditor"
-              }
-            ],
             hiddenRecords: [
               {
                 text: "Record name (id)",
@@ -368,10 +347,10 @@
             pendingMaintenanceRequests: "",
             recentCuratorCreations: "",
             recordsInCuration: "",
-            recordsWithoutDois: "",
             hiddenRecords: ""
           },
-          loading: false
+          loading: false,
+          downloadContent: null
         }
       },
       computed: {
@@ -395,6 +374,7 @@
           this.allDataCuration = data.curationSummary;
           client.initalizeHeader();
           this.prepareData();
+          await this.obtainFileRecordsWODois();
           this.loading = false;
         })
       },
@@ -404,7 +384,6 @@
             this.prepareApprovalRequired(this.allDataCuration);
             this.prepareMaintenanceRequests(this.allDataCuration);
             this.prepareRecordsInCuration(this.allDataCuration);
-            this.prepareRecordsWithoutDois(this.allDataCuration);
             this.prepareHiddenRecords(this.allDataCuration);
             this.prepareRecordsCuratorCreationsLastWeek(this.allDataCuration);
           },
@@ -420,7 +399,8 @@
                 object.type = rec.type;
                 if (rec.lastEditor){
                   object.lastEditor = rec.lastEditor.username+' ('+rec.lastEditor.id+')';
-                }else{
+                }
+                else{
                   object.lastEditor = "unknown"
                 }
                 this.approvalRequired.push(object);
@@ -445,7 +425,8 @@
               object.createdAt = item.createdAt;
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
-              }else{
+              }
+              else{
                 object.creator = "unknown"
               }
               this.recordsCreatedCuratorsLastWeek.push(object);
@@ -463,33 +444,14 @@
                 rec.maintainers.forEach(main => {
                   if (numMaint > 0){
                     object.recordMaintainers += ', ' + main.username+' ('+main.id+')';
-                  }else{
+                  }
+                  else{
                     object.recordMaintainers = main.username+' ('+main.id+')';
                   }
                   numMaint += 1;
                 });
                 this.recordsInCuration.push(object);
               });
-            });
-          },
-          prepareRecordsWithoutDois(dataCuration){
-            let records = dataCuration.recordsWithoutDois;
-            records.forEach(item => {
-              let object = {};
-              object.recordNameID = item.name+' ('+item.id+')';
-              object.createdAt = item.createdAt;
-              object.updatedAt = item.updatedAt;
-              if (item.creator){
-                object.creator = item.creator.username +' ('+item.creator.id+')';
-              }else{
-                object.creator = "unknown"
-              }
-              if (item.lastEditor){
-                object.lastEditor = item.lastEditor.username +' ('+item.lastEditor.id+')';
-              }else{
-                object.lastEditor = "unknown"
-              }
-              this.recordsWithoutDois.push(object);
             });
           },
           prepareHiddenRecords(dataCuration){
@@ -500,16 +462,26 @@
               object.createdAt = item.createdAt;
               if (item.curator){
                 object.curator = item.curator.username
-              }else{
+              }
+              else{
                 object.curator = 'none'
               }
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
-              }else{
+              }
+              else{
                 object.creator = "unknown"
               }
               this.hiddenRecords.push(object);
             });
+          },
+          async obtainFileRecordsWODois(){
+            let data = await restClient.getRecordsWoDOIs(this.user().credentials.token);
+            this.downloadContent = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data)
+                .replace(/^\[(.+)\]$/,'$1')
+                .split(',')
+                .join('\r\n')
+                .replace(/['"]+/g, ''));
           }
       }
     }
@@ -529,9 +501,6 @@
     color:#fff;
   }
   #text-curator-search-4 div.theme--light.v-input:not(.v-input--is-disabled) input{
-    color:#fff;
-  }
-  #text-curator-search-5 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }
 </style>

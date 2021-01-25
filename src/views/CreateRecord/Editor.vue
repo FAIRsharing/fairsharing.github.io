@@ -41,7 +41,6 @@
       </v-col>
     </v-row>
 
-
     <v-row v-if="hasLoaded">
       <v-col v-if="error">
         <Unauthorized />
@@ -66,28 +65,30 @@
             {{ panelData.name }}
           </v-btn>
         </v-toolbar>
-        <v-tabs dark>
+        <v-tabs
+          dark
+          slider-color="primary"
+          slider-size="5"
+        >
           <v-tab
             v-for="tab in tabs"
             :key="'tab_' + tab.name"
             :disabled="tab.disabled"
           >
-            {{ tab.name }}
+            <div>
+              <div>{{ tab.name }}</div>
+              <div
+                v-if="tab.target && getChanges[tab.target] > 0"
+                class="orange--text ml-2 font-weight-bold"
+              >
+                ({{ getChanges[tab.target] }})
+              </div>
+            </div>
           </v-tab>
 
           <!-- EDIT GENERAL INFO -->
           <v-tab-item class="px-10 py-3">
             <edit-general-info />
-          </v-tab-item>
-
-          <!-- EDIT KEYWORDS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-keywords />
-          </v-tab-item>
-
-          <!-- EDIT SUPPORT -->
-          <v-tab-item class="px-10 py-3">
-            <edit-support />
           </v-tab-item>
 
           <!-- EDIT LICENSES -->
@@ -109,7 +110,6 @@
           <v-tab-item class="px-10 py-3">
             <edit-relationships />
           </v-tab-item>
-
         </v-tabs>
       </v-col>
     </v-row>
@@ -117,13 +117,11 @@
 </template>
 
 <script>
-  import { mapActions, mapState } from "vuex"
-  import EditGeneralInfo from "@/components/Editor/EditGeneralInfo";
-  import EditKeywords from "@/components/Editor/EditKeywords";
-  import EditSupport from "@/components/Editor/EditSupport";
+  import { mapActions, mapState, mapGetters } from "vuex"
+  import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
   import EditRelationships from "@/components/Editor/EditRelationships";
   import EditLicences from "@/components/Editor/EditLicences";
-  import EditOrganisations from "@/components/Editor/EditOrganisations";
+  import EditOrganisations from "@/components/Editor/Organisations/Organisations";
   import EditPublications from "@/components/Editor/EditPublications";
   import Unauthorized from "@/views/Errors/403"
   import RESTClient from "@/components/Client/RESTClient.js"
@@ -137,8 +135,6 @@
       EditOrganisations,
       EditLicences,
       EditRelationships,
-      EditSupport,
-      EditKeywords,
       EditGeneralInfo,
       Unauthorized
     },
@@ -168,31 +164,26 @@
         ],
         tabs: [
           {
-            name: "Edit General Information",
+            name: "General Information",
+            disabled: false,
+            target: "generalInformation",
+            icon: "fa-info"
+          },
+          {
+            name: "Data Access",
             disabled: false
           },
           {
-            name: "Edit Keywords",
+            name: "Publications",
             disabled: false
           },
           {
-            name: "Edit Support Information",
-            disabled: false
+            name: "Organisations & Grants",
+            disabled: false,
+            target: "organisations"
           },
           {
-            name: "Edit Licenses",
-            disabled: false
-          },
-          {
-            name: "Edit Publications",
-            disabled: false
-          },
-          {
-            name: "Edit Organisations & Grants",
-            disabled: false
-          },
-          {
-            name: "Edit Relations to other records",
+            name: "Relations to other records",
             disabled: true
           }
         ]
@@ -200,6 +191,7 @@
     },
     computed: {
       ...mapState('record', ['currentRecord']),
+      ...mapGetters('record', ['getChanges']),
       ...mapState('users', ['user']),
       userToken(){
         const _module = this;
@@ -214,6 +206,7 @@
     async mounted() {
       this.$nextTick(async () => {
         await this.getData();
+        this.$store.commit("record/setEditingRecord");
       })
     },
     methods: {
@@ -222,17 +215,12 @@
         const _module = this;
         _module.hasLoaded = false;
         _module.error = false;
-
         let userToken = _module.userToken;
         let id = _module.$route.params.id;
-        if (id.includes('FAIRsharing.')){
-          id = "10.25504/" + id;
-        }
+        if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
         await _module.fetchRecord(id);
         let canEdit = await client.canEdit(_module.currentRecord['fairsharingRecord'].id, userToken);
-        if (canEdit.error) {
-          _module.error = true;
-        }
+        if (canEdit.error) _module.error = true;
         _module.hasLoaded = true;
       },
       confirmReturnToRecord() {
@@ -251,5 +239,11 @@
 </script>
 
 <style scoped>
+
+  .tabSquare {
+      width: 140px;
+      height: 140px !important;
+      white-space: initial !important;
+  }
 
 </style>

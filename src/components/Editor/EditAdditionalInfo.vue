@@ -27,9 +27,9 @@
 
 <script>
 
+import {mapGetters, mapState} from "vuex";
 import Alerts from "@/components/Editor/Alerts";
 import RestClient from "@/components/Client/RESTClient.js"
-import {mapGetters, mapState} from "vuex";
 
 let restClient = new RestClient();
 
@@ -53,21 +53,23 @@ export default {
   },
   mounted(){
     this.$nextTick(async () => {
-      const _module = this;
       await this.getAllowedFields();
-
-      // Fetch info. about the fields to be edited here.
-
-      _module.loading = false;
+      this.loading = false;
     });
   },
   methods: {
     async getAllowedFields() {
-      const _module = this;
-      _module.allowedFields = await restClient.extraMetadataFields(
-          _module.fields.type,
-          _module.user().credentials.token
+      let fieldData =  await restClient.extraMetadataFields(
+          this.fields.type,
+          this.user().credentials.token
       );
+      if (fieldData.error){
+        this.errors.general = fieldData.error;
+      }
+      else {
+        this.allowedFields = fieldData;
+      }
+      console.log("FD: " + JSON.stringify(fieldData));
     }
   }
 }

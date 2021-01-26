@@ -1,0 +1,8 @@
+{
+  "queryName": "fairsharingRecord",
+  "queryParam": null,
+  "fields": [
+    "id",
+    {"$ref": "organisationLinks"}
+  ]
+}

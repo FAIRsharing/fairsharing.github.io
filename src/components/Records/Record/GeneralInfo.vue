@@ -317,8 +317,11 @@
               <v-card-title class="pa-0 card-title-customize">
                 How to cite this record
               </v-card-title>
-              <v-card-text class="ma-0 pt-8 text-justify card-text-customize">
-                How to cite this record description ...
+              <v-card-text class="ma-0 pt-8 card-text-customize">
+                FAIRsharing.org:{{ getField('abbreviation')+';'+getField('name') }}
+                <b>DOI:</b>{{ getField('doi') }};
+                <b>Last Edited:</b>12/02/2020
+                <b>Last Accessed:</b>{{ getCurrentDate() }}
               </v-card-text>
             </v-card>
           </v-col>
@@ -344,7 +347,7 @@
               <v-card-title class="pa-0 card-title-customize">
                 Publication for citation
               </v-card-title>
-              <v-card-text class="ma-0 pt-8 text-justify card-text-customize">
+              <v-card-text class="ma-0 pt-8 card-text-customize">
                 Publication for citation description ...
               </v-card-text>
             </v-card>
@@ -361,7 +364,7 @@
         </v-icon>
         <b class="mr-2">Record created at</b>
         <p class="ma-0 mr-2 text-body-2">
-          {{currentRecord['fairsharingRecord'].updatedAt}}
+          {{ currentRecord['fairsharingRecord'].updatedAt }}
         </p>
         <span class="mr-2">|</span>
         <v-icon
@@ -372,7 +375,7 @@
         </v-icon>
         <b class="mr-2">Record updated at</b>
         <p class="ma-0 text-body-2">
-          {{currentRecord['fairsharingRecord'].createdAt}}
+          {{ currentRecord['fairsharingRecord'].createdAt }}
         </p>
       </div>
     </div>
@@ -407,14 +410,26 @@ export default {
   },
   data() {
     return {
-      copyButtonStatus:false
+      copyButtonStatus:false,
+      currentDate:null
     }
   },
   computed:{
   ...mapGetters("record", ["getField"]),
-  ...mapState("record", ["currentRecord"])
+  ...mapState("record", ["currentRecord"]),
+  },
+  mounted() {
+    this.currentDate = new Date();
   },
   methods: {
+    getCurrentDate() {
+      return this.currentDate.getDate() + "/"
+          + (this.currentDate.getMonth() + 1) + "/"
+          + this.currentDate.getFullYear() + " at "
+          + this.currentDate.getHours() + ":"
+          + this.currentDate.getMinutes() + ":"
+          + this.currentDate.getSeconds();
+    },
     generateDoiLink(doi) {
       return `https://doi.org/${doi}`
     },

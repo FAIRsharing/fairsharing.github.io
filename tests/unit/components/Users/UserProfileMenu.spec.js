@@ -70,4 +70,29 @@ describe("UserProfileMenu.vue", () => {
         expect(wrapper.vm.$route.path).toBe("/profiles/edit");
     });
 
+    it("can a user that is a curator access to the curator panel", async () => {
+        restStub.restore();
+        usersStore.state.user = {
+            role: 'super_curator'
+        };
+        const $storeTwo = new Vuex.Store({
+            modules: {
+                users: usersStore
+            }
+        });
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {
+                success: true,
+                message: "Success !"
+            }
+        });
+        wrapper = shallowMount(UserMenu, {
+            localVue,
+            router,
+            mocks: {$storeTwo}
+        });
+        await wrapper.vm.menuItems.filter(obj => obj.name === 'Curator Panel')[0].action();
+        expect(wrapper.vm.$route.path).toBe("/curator");
+    });
+
 });

@@ -309,7 +309,9 @@
               elevation="3"
             >
               <div class="icon-container d-flex justify-center">
-                <v-icon>fa fa-info</v-icon>
+                <v-icon large>
+                  {{ $vuetify.icons.values.howToCite }}
+                </v-icon>
               </div>
               <v-card-title class="pa-0 card-title-customize">
                 How to cite this record
@@ -333,7 +335,9 @@
               elevation="3"
             >
               <div class="icon-container d-flex justify-center">
-                <v-icon>fa fa-info</v-icon>
+                <v-icon large>
+                  {{ $vuetify.icons.values.PublicationCitation }}
+                </v-icon>
               </div>
               <v-card-title class="pa-0 card-title-customize">
                 Publication for citation

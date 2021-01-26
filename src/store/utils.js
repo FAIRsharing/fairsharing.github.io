@@ -83,6 +83,15 @@ export function initEditorSections(data, sectionsNames){
             organisations: data.organisationLinks
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
+        if(data.publications) {
+            schema.publications.forEach((pub) => {
+                pub.isCitation = false;
+                let isCitation = data.metadata.citations.filter(obj => obj.publication_id === pub.id)[0];
+                if (isCitation) {
+                    pub.isCitation = true;
+                }
+            });
+        }
         sectionsNames.forEach(name => {
             let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null;
             sections[name] = {

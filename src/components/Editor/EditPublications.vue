@@ -387,10 +387,8 @@
                     }
                     else {
                       let copy = JSON.parse(JSON.stringify(pub));
-                      if (copy.tablePosition) delete copy.tablePosition;
-                      if (!isEqual(isFound, copy)) {
-                        changes += 1;
-                      }
+                      if (copy.tablePosition > -1) delete copy.tablePosition;
+                      if (!isEqual(isFound, copy)) changes += 1;
                     }
                 });
                 this.$store.commit("record/setChanges", {

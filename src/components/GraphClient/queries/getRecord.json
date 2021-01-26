@@ -11,6 +11,8 @@
     "abbreviation",
     "description",
     "homepage",
+    "createdAt",
+    "updatedAt",
     {
       "name": "countries",
       "fields": [

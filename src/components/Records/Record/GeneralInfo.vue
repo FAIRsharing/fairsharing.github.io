@@ -293,16 +293,17 @@
           </v-chip>
         </div>
       </div>
-      <!--How to cite record-->
+      <!--How to cite & publication for record-->
       <div class="d-flex flex-row mt-8">
         <v-row>
+          <!--How to cite this record-->
           <v-col
             cols="12"
             sm="12"
             md="6"
           >
             <v-card
-              class="pa-4 d-flex flex-column min-height-100"
+              class="pa-4 d-flex flex-column"
               outlined
               color="white"
               tile
@@ -317,10 +318,11 @@
                 How to cite this record
               </v-card-title>
               <v-card-text class="ma-0 pt-8 text-justify card-text-customize">
-                how to cite record description ...
+                How to cite this record description ...
               </v-card-text>
             </v-card>
           </v-col>
+          <!--Publication for citation-->
           <v-col
             cols="12"
             sm="12"
@@ -328,7 +330,7 @@
             class="mt-md-0 mt-sm-8"
           >
             <v-card
-              class="pa-4 d-flex flex-column min-height-100"
+              class="pa-4 d-flex flex-column"
               outlined
               color="white"
               tile
@@ -348,6 +350,30 @@
             </v-card>
           </v-col>
         </v-row>
+      </div>
+      <!--updates and creation date-->
+      <div class="d-flex flex-row flex-wrap align-center mt-4 min-height-40">
+        <v-icon
+          class="mr-2"
+          small
+        >
+          {{ $vuetify.icons.values.createdAt }}
+        </v-icon>
+        <b class="mr-2">Record created at</b>
+        <p class="ma-0 mr-2 text-body-2">
+          {{currentRecord['fairsharingRecord'].updatedAt}}
+        </p>
+        <span class="mr-2">|</span>
+        <v-icon
+          class="mr-2"
+          small
+        >
+          {{ $vuetify.icons.values.updatedAt }}
+        </v-icon>
+        <b class="mr-2">Record updated at</b>
+        <p class="ma-0 text-body-2">
+          {{currentRecord['fairsharingRecord'].createdAt}}
+        </p>
       </div>
     </div>
     <section />

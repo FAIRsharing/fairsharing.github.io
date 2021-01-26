@@ -4,6 +4,7 @@
     <v-expansion-panel-content class="pl-5 pr-5">
       <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
         <v-autocomplete
+          :id="filter.filterName + 'AutocompleteList' "
           v-model="selectedValues"
           :attach="true"
           :items="getValues"
@@ -15,6 +16,7 @@
           :placeholder="`Search through ${filter.filterLabel}`"
           item-text="key"
           item-value="key"
+          @focus="scrollTo(filter.filterName)"
           @click:clear="reset(filter)"
         >
           <template v-slot:selection="data">
@@ -33,8 +35,7 @@
         </v-autocomplete>
         <v-btn
           color="primary"
-          class="ml-lg-2"
-          style="height: 38px"
+          class="ml-lg-2 custom-btn"
           @click="applyFilters(filter)"
         >
           Apply
@@ -45,14 +46,15 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import clearString from '@/utils/stringUtils'
 
 export default {
   name: "FilterAutocomplete",
   mixins: [clearString],
   props: {
-    filter: {default: null, type: Object}
+    filter: {default: null, type: Object},
+    lastItem:{default:false, type:Boolean}
   },
   data: () => {
     return {
@@ -72,7 +74,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions({setComponentOverflowLocal: 'uiController/setComponentOverflow'}),
     /**
      * Apply the filters by building the new query parameters using the form data.
      */
@@ -133,65 +134,19 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
+    /* istanbul ignore next */
+    scrollTo(name) {
+      let _module = this;
+      _module.$scrollTo("#" + name + 'AutocompleteList', 450, {
+        container: '#scrollable-holder',
+        easing: 'ease-in',
+      })
+    }
   }
 }
 </script>
 
-<style scoped lang="scss">
-.badge {
-  width: 35px;
-  height: 25px;
-  background: white;
-  border: #27aae1 solid 1px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  position: relative;
-
-  #inventory {
-    font-size: small;
-    position: absolute;
-    top: 6%;
-    left: 20%;
-  }
-}
-
-.badge-active {
-  width: 35px;
-  height: 24px;
-  background: #27aae1;
-  border: #27aae1 solid 1px;
-  border-radius: 5px 5px 5px 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  position: relative;
-
-  #inventory {
-    color: white;
-    font-size: small;
-    position: absolute;
-    top: 6%;
-    left: 20%;
-  }
-}
-
-.triangle-left {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 12px solid transparent;
-  border-right: 15px solid #27aae1;
-  border-bottom: 11px solid transparent;
-  left: -30%;
-}
-
-.fixed-scrollable-height {
-  max-height: 300px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
+<style scoped>
 .filterValueName {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -212,4 +167,7 @@ export default {
   padding: 0 7px;
 }
 
+.custom-btn {
+  height: 38px;
+}
 </style>

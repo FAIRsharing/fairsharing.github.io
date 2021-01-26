@@ -6,7 +6,6 @@
   "fields": [
     "id",
     "name",
-    "alternativeNames",
     "homepage",
     "types",
     "urlForLogo"

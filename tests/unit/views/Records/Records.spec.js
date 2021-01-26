@@ -9,13 +9,15 @@ import introspection from "@/store/introspector.js"
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
+import VueScrollTo from "vue-scrollto";
+
 const sinon = require("sinon");
 const axios = require("axios");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-
+localVue.use(VueScrollTo,{})
 const $route = {
     name: "Standards",
     path: "standard",
@@ -36,8 +38,6 @@ const $store = new Vuex.Store({
     },
 });
 
-const jsdomScrollTo = window.scrollTo;
-
 describe("Records.vue", () => {
 
     let vuetify;
@@ -55,15 +55,16 @@ describe("Records.vue", () => {
     let wrapper;
     beforeEach(async () => {
         vuetify = new Vuetify();
-        window.scrollTo = () => {};
+
         wrapper = await shallowMount(Records, {
             mocks: {$route, $store},
             localVue,
             vuetify,
         });
-    });
-    afterEach(() => {
-        window.scrollTo = jsdomScrollTo;
+        delete global.window['top'];
+        global.window = Object.create(window);
+        window.scrollTo = () => {
+        };
     });
 
     it("can be instantiated", () => {
@@ -153,7 +154,7 @@ describe("Records.vue", () => {
     });
 
     it("can check responsiveClassObject", () => {
-        $store.dispatch("uiController/setStickToTop",true);
+        $store.dispatch("uiController/setStickToTop", true);
         vuetify.framework.breakpoint.xlOnly = true;
         expect(wrapper.vm.responsiveClassObject).toStrictEqual({
             'left-panel-fixed-lg': true,
@@ -163,41 +164,28 @@ describe("Records.vue", () => {
         });
     });
 
-    it("can check responsiveClassSticky", () => {
-        $store.dispatch("uiController/setStickToTop",true);
-        vuetify.framework.breakpoint.lgAndDown = true;
-        expect(wrapper.vm.responsiveClassSticky).toStrictEqual({
-            'sticky-style-sm-xs': false,
-            'sticky-style-md-lg': true,
-            'sticky-style-xl': false,
-        });
-    });
-
     it("can onScroll function work properly", () => {
 
         wrapper.vm.$store.state.records.records = ['1', '2', '3'];
-        wrapper.vm.offsetTop = 150;
-        let mEvent = {
-            target: {scrollTop: 150},
-        };
+
+        global.window.top = {scrollY:150};
         actions.commit = jest.fn();
         actions.setGeneralUIAttributesAction({});
-        wrapper.vm.onScroll(mEvent);
+        wrapper.vm.onScroll();
         expect(actions.commit).toHaveBeenCalledTimes(1);
 
-        mEvent = {
-            target: {scrollTop: 50},
-        };
-        wrapper.vm.onScroll(mEvent);
-        actions.setGeneralUIAttributesAction({});
-        expect(actions.commit).toHaveBeenCalledTimes(2);
 
-        mEvent = {
-            target: {scrollTop: 501},
-        };
-        actions.setGeneralUIAttributesAction({})
-        expect(actions.commit).toHaveBeenCalledTimes(3);
-        wrapper.vm.onScroll(mEvent);
+        global.window.top = {scrollY:50};
+        actions.commit = jest.fn();
+        actions.setGeneralUIAttributesAction({});
+        wrapper.vm.onScroll();
+        expect(actions.commit).toHaveBeenCalledTimes(1);
+
+        global.window.top = {scrollY:501};
+        actions.commit = jest.fn();
+        actions.setGeneralUIAttributesAction({});
+        wrapper.vm.onScroll();
+        expect(actions.commit).toHaveBeenCalledTimes(1);
     });
 
 });

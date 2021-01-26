@@ -14,14 +14,15 @@
 
       <Alerts target="generalInformation" />
     </v-card>
-    <v-card>
-      <v-card-text>
-        <v-container fluid>
-          <p>Next, make some forms out of this...</p>
-          <p>Fields: {{ allowedFields }}</p>
-        </v-container>
-      </v-card-text>
-    </v-card>
+    <v-row>
+      <v-col
+        v-for="(field, index) in allowedFields"
+        :key="'selected_' + index"
+        class="col-3"
+      >
+        <component :is="componentMapping[field]" />
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 
@@ -29,48 +30,48 @@
 
 import {mapGetters, mapState} from "vuex";
 import Alerts from "@/components/Editor/Alerts";
+import AccessPoints from "@/components/Editor/AdditionalInformation/AccessPoints";
 import RestClient from "@/components/Client/RESTClient.js"
 
 let restClient = new RestClient();
 
 export default {
   name: "EditAdditionalInfo",
-  components: { Alerts },
+  components: { Alerts, AccessPoints },
   data() {
     return {
       initialized: false,
       formValid: false,
       loading: true,
-      allowedFields: []
+      allowedFields: [],
+      componentMapping: {
+        "access_points": "AccessPoints",
+        "data_processes": "AccessPoints",
+        "associated_tools": "AccessPoints"
+      }
     }
   },
   computed: {
     ...mapGetters("record", ["getSection"]),
-    ...mapState('users', ['user']),
+    ...mapState("users", ["user"]),
     fields() {
       return this.getSection("generalInformation").data
     }
   },
   mounted(){
     this.$nextTick(async () => {
-      await this.getAllowedFields();
+      this.allowedFields = await this.getFieldNames();
       this.loading = false;
     });
   },
   methods: {
-    async getAllowedFields() {
-      let fieldData =  await restClient.extraMetadataFields(
+    async getFieldNames() {
+      return restClient.extraMetadataFields(
           this.fields.type,
           this.user().credentials.token
       );
-      if (fieldData.error){
-        this.errors.general = fieldData.error;
-      }
-      else {
-        this.allowedFields = fieldData;
-      }
-      console.log("FD: " + JSON.stringify(fieldData));
-    }
+    },
+
   }
 }
 </script>

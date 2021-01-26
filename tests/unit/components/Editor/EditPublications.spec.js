@@ -47,12 +47,11 @@ recordStore.state.sections = {
     },
     record: {fairsharingRecord: {id: 1243}}
 };
-
+recordStore.state.sections.publications.data[0].tablePosition = 123;
 editorStore.state.availablePublications = [{
     title: "World",
     id: 2
 }];
-
 userStore.state.user().credentials.token = "thisisatoken";
 const $store = new Vuex.Store({
     modules: {
@@ -265,7 +264,7 @@ describe("EditPublications.vue", function() {
         restStub.returns({data: {id: 123}});
         wrapper.vm.publications = [];
         wrapper.vm.publications.push({ id: 3, isCitation: true });
-        // expect(recordStore.state.sections.publications.changes).toEqual(3);
+        wrapper.vm.publications.push({ id: 4, isCitation: false });
         await wrapper.vm.saveRecord(true);
         expect($router.push).toHaveBeenCalledWith({path: "/123"});
         expect($router.push).toHaveBeenCalledTimes(1);
@@ -280,6 +279,24 @@ describe("EditPublications.vue", function() {
     });
 
     it("can toggle a citation", () => {
+        recordStore.state.sections = {
+            publications: {
+                data: pubs,
+                error: false,
+                changes: 0,
+                initialData: JSON.parse(JSON.stringify(pubs))
+            },
+            generalInformation: {
+                data: {
+                    metadata: {
+                        citations: [
+                            {publication_id: 2}
+                        ]
+                    },
+                }
+            },
+            record: {fairsharingRecord: {id: 1243}}
+        };
         wrapper.vm.publications[0].isCitation = true;
         wrapper.vm.toggleCitation(0);
         expect(wrapper.vm.publications[0].isCitation).toBe(false);

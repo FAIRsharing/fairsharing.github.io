@@ -411,15 +411,12 @@ export default {
   data() {
     return {
       copyButtonStatus:false,
-      currentDate:null
+      currentDate:new Date()
     }
   },
   computed:{
   ...mapGetters("record", ["getField"]),
   ...mapState("record", ["currentRecord"]),
-  },
-  mounted() {
-    this.currentDate = new Date();
   },
   methods: {
     getCurrentDate() {

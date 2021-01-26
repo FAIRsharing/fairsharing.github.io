@@ -85,11 +85,7 @@ export function initEditorSections(data, sectionsNames){
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
         if(data.publications) {
             schema.publications.forEach((pub) => {
-                pub.isCitation = false;
-                let isCitation = data.metadata.citations.filter(obj => obj.publication_id === pub.id)[0];
-                if (isCitation) {
-                    pub.isCitation = true;
-                }
+                pub.isCitation = !!data.metadata.citations.filter(obj => obj.publication_id === pub.id)[0];
             });
         }
         sectionsNames.forEach(name => {

@@ -294,7 +294,7 @@
         </div>
       </div>
       <!--How to cite record-->
-      <div class="d-flex flex-row mt-4">
+      <div class="d-flex flex-row mt-8">
         <v-row>
           <v-col
             cols="12"
@@ -308,13 +308,22 @@
               tile
               elevation="3"
             >
-              Left
+              <div class="icon-container d-flex justify-center">
+                <v-icon>fa fa-info</v-icon>
+              </div>
+              <v-card-title class="pa-0 card-title-customize">
+                How to cite this record
+              </v-card-title>
+              <v-card-text class="ma-0 pt-8 text-justify card-text-customize">
+                how to cite record description ...
+              </v-card-text>
             </v-card>
           </v-col>
           <v-col
             cols="12"
             sm="12"
             md="6"
+            class="mt-md-0 mt-sm-8"
           >
             <v-card
               class="pa-4 d-flex flex-column min-height-100"
@@ -323,7 +332,15 @@
               tile
               elevation="3"
             >
-              Left
+              <div class="icon-container d-flex justify-center">
+                <v-icon>fa fa-info</v-icon>
+              </div>
+              <v-card-title class="pa-0 card-title-customize">
+                Publication for citation
+              </v-card-title>
+              <v-card-text class="ma-0 pt-8 text-justify card-text-customize">
+                Publication for citation description ...
+              </v-card-text>
             </v-card>
           </v-col>
         </v-row>
@@ -395,6 +412,31 @@ a {
 
 .width-35 {
   width: 35px;
+}
+
+.icon-container {
+  position: absolute;
+  top: -45px;
+  background: white;
+  border: #b3b3b3 dotted 3px;
+  border-radius: 50%!important;
+  -moz-border-radius: 50%!important;
+  -webkit-border-radius: 50%!important;
+  width: 85px;
+  height: 85px;
+  cursor: help;
+}
+
+.card-text-customize {
+  max-height: 100px;
+  min-height: 100px;
+  overflow: hidden
+}
+
+.card-title-customize {
+  position: absolute;
+  top: 0;
+  left: 120px
 }
 
 </style>

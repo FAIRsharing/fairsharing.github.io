@@ -50,15 +50,4 @@ describe("GeneralInfo.vue", function(){
         expect(wrapper.vm.getField('maintainers')[0].id).toEqual(100);
     });
 
-    it("generates correct doi link", () => {
-        let doiLink = `https://doi.org/${wrapper.vm.currentRecord['fairsharingRecord'].doi}`;
-        expect(wrapper.vm.generateDoiLink(wrapper.vm.currentRecord['fairsharingRecord'].doi)).toEqual(doiLink);
-    });
-
-    it("can copy url correctly", () => {
-        wrapper.vm.copyURL()
-        expect(wrapper.vm.copyButtonStatus).toBe(true);
-    });
-
-
 });

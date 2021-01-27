@@ -10,68 +10,7 @@
     <SectionTitle title="General Information" />
 
     <!-- Title and DOI -->
-    <div class="d-flex mt-4 ml-0">
-      <div
-        class="align-self-center width-200"
-      >
-        <record-status
-          :record="currentRecord['fairsharingRecord']"
-        />
-      </div>
-      <div
-        class="align-self-center full-width ml-15"
-      >
-        <div class="d-flex flex-column">
-          <div class="d-flex flex-row align-center">
-            <h3>{{ getField('name') }}</h3>
-            <b
-              v-if="getField('abbreviation')"
-              class="ml-2"
-            >({{ getField('abbreviation') }})</b>
-          </div>
-          <div class="d-flex align-center width-35">
-            <v-img
-              src="@/assets/DOI_logo.svg"
-              height="30"
-              contain
-              class="mr-2"
-            />
-            <div
-              v-if="getField('doi')"
-              class="d-flex flex-row"
-            >
-              <a
-                :href="generateDoiLink(getField('doi'))"
-                target="_blank"
-              >
-                {{ getField('doi') }}
-              </a>
-              <v-tooltip top>
-                <template #activator="{ on, attrs }">
-                  <v-icon
-                    v-ripple
-                    v-clipboard="copyURL"
-                    v-bind="attrs"
-                    class="primary--text ml-2 cursor-pointer"
-                    small
-                    v-on="on"
-                  >
-                    fa fa-copy
-                  </v-icon>
-                </template>
-                <span v-if="!copyButtonStatus"> Copy URL </span>
-                <span v-else> URL copied </span>
-              </v-tooltip>
-            </div>
-            <NoneFound
-              v-else
-              :string-field="getField('doi')"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <DOITitle />
     <!--  other data  -->
     <div class="d-flex flex-column ml-2">
       <!--Type-->
@@ -297,19 +236,19 @@
 <script>
 import {mapGetters, mapState} from 'vuex';
 import SectionTitle from '@/components/Records/Record/SectionTitle';
-import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import stringUtils from '@/utils/stringUtils';
 import NoneFound from "@/components/Records/Record/NoneFound";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import Keywords from "@/components/Records/Record/Keywords";
+import DOITitle from "@/components/Records/Record/DOITitle";
 
 
 export default {
   name: "GeneralInfo",
   components: {
+    DOITitle,
     Keywords,
     NoneFound,
-    RecordStatus,
     SectionTitle,
   },
   mixins: [stringUtils,recordsCardUtils],
@@ -337,13 +276,6 @@ export default {
           + this.currentDate.getHours() + ":"
           + this.currentDate.getMinutes() + ":"
           + this.currentDate.getSeconds();
-    },
-    generateDoiLink(doi) {
-      return `https://doi.org/${doi}`
-    },
-    copyURL() {
-      this.copyButtonStatus = true;
-      return this.generateDoiLink(this.currentRecord['fairsharingRecord'].doi)
     }
   }
 }

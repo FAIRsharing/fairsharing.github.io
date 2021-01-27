@@ -4,6 +4,7 @@ import Vuetify from "vuetify"
 import VueRouter from "vue-router"
 import editPublications from "@/components/Editor/EditPublications.vue"
 import recordStore from "@/store/record.js";
+import editorStore from "@/store/editor.js";
 import userStore from "@/store/users.js";
 import GraphClient from "@/components/GraphClient/GraphClient.js";
 import RestClient from "@/components/Client/RESTClient.js"
@@ -17,20 +18,23 @@ const vuetify = new Vuetify();
 const VueScrollTo = require('vue-scrollto');
 localVue.use(VueScrollTo);
 
+let pubs = [
+    {
+        title: "Hello",
+        id: 1
+    },
+    {
+        title: "World",
+        id: 2
+    }
+];
+
 recordStore.state.sections = {
     publications: {
-        data: [
-            {
-                title: "Hello",
-                id: 1
-            },
-            {
-                title: "World",
-                id: 2
-            }
-        ],
+        data: pubs,
         error: false,
-        changes: 0
+        changes: 0,
+        initialData: JSON.parse(JSON.stringify(pubs))
     },
     generalInformation: {
         data: {
@@ -40,13 +44,20 @@ recordStore.state.sections = {
                 ]
             },
         }
-    }
+    },
+    record: {fairsharingRecord: {id: 1243}}
 };
+recordStore.state.sections.publications.data[0].tablePosition = 123;
+editorStore.state.availablePublications = [{
+    title: "World",
+    id: 2
+}];
 userStore.state.user().credentials.token = "thisisatoken";
 const $store = new Vuex.Store({
     modules: {
         users: userStore,
-        record: recordStore
+        record: recordStore,
+        editor: editorStore
     }
 });
 let $route = { path: "/123/edit", params: {id: 123} };
@@ -253,7 +264,7 @@ describe("EditPublications.vue", function() {
         restStub.returns({data: {id: 123}});
         wrapper.vm.publications = [];
         wrapper.vm.publications.push({ id: 3, isCitation: true });
-        expect(recordStore.state.sections.publications.changes).toEqual(3); // two removed, one added...
+        wrapper.vm.publications.push({ id: 4, isCitation: false });
         await wrapper.vm.saveRecord(true);
         expect($router.push).toHaveBeenCalledWith({path: "/123"});
         expect($router.push).toHaveBeenCalledTimes(1);
@@ -268,6 +279,24 @@ describe("EditPublications.vue", function() {
     });
 
     it("can toggle a citation", () => {
+        recordStore.state.sections = {
+            publications: {
+                data: pubs,
+                error: false,
+                changes: 0,
+                initialData: JSON.parse(JSON.stringify(pubs))
+            },
+            generalInformation: {
+                data: {
+                    metadata: {
+                        citations: [
+                            {publication_id: 2}
+                        ]
+                    },
+                }
+            },
+            record: {fairsharingRecord: {id: 1243}}
+        };
         wrapper.vm.publications[0].isCitation = true;
         wrapper.vm.toggleCitation(0);
         expect(wrapper.vm.publications[0].isCitation).toBe(false);

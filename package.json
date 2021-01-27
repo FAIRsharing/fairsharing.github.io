@@ -36,7 +36,6 @@
     "vue-loader": "^15.9.3",
     "vue-meta": "^2.4.0",
     "vue-router": "^3.4.3",
-    "vue-scroll-stop": "^0.1.5",
     "vue-scrollto": "^2.20.0",
     "vuetify": "2.3.4",
     "vuex": "^3.5.1"

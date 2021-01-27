@@ -70,6 +70,7 @@
             "id",
             "name",
             "createdAt",
+            "type",
             {
               "queryName": "creator",
               "fields": [
@@ -129,6 +130,7 @@
         "id",
         "name",
         "createdAt",
+        "type",
         {
           "queryName": "creator",
           "fields": [

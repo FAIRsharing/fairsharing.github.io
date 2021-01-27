@@ -8,10 +8,6 @@ import sinon from "sinon"
 import usersStore from "@/store/users"
 import VueRouter from "vue-router"
 
-
-
-
-
 const localVue = createLocalVue();
 localVue.use(Vuex);
 usersStore.state.user = function(){ return {
@@ -102,13 +98,12 @@ describe('Curator -> MaintenanceRequest.vue', () => {
         restStub.returns({data: {error: false}});
         await wrapper.vm.assignMaintenanceOwnConfirm();
         expect(wrapper.vm.maintenanceRequests.length).toBe(1);
+        restStub.restore();
         // TODO: Check that the ProcessingNotes are not updated to "" in the DB
     });
 
     it("can update a record", async () => {
-      await wrapper.vm.saveProcessingNotes(24,"notes of text");
       // TODO: Check that the ProcessingNotes are updated
-      restStub.restore();
       restStub = sinon.stub(Client.prototype, 'executeQuery');
       restStub.returns({data: {error: { response: "Im an error"}}});
       await wrapper.vm.saveProcessingNotes(24,"notes of text");

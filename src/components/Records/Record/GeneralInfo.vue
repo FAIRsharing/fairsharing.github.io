@@ -70,29 +70,7 @@
       <!--How to cite & publication for record named Citations-->
       <Citations />
       <!--updates and creation date-->
-      <div class="d-flex flex-row flex-wrap align-center mt-4 min-height-40">
-        <v-icon
-          class="mr-2"
-          small
-        >
-          {{ $vuetify.icons.values.createdAt }}
-        </v-icon>
-        <b class="mr-2">Record created at</b>
-        <p class="ma-0 mr-2 text-body-2">
-          {{ currentRecord['fairsharingRecord'].createdAt }}
-        </p>
-        <span class="mr-2">|</span>
-        <v-icon
-          class="mr-2"
-          small
-        >
-          {{ $vuetify.icons.values.updatedAt }}
-        </v-icon>
-        <b class="mr-2">Record updated at</b>
-        <p class="ma-0 text-body-2">
-          {{ currentRecord['fairsharingRecord'].updatedAt }}
-        </p>
-      </div>
+      <UpdateCreateDetail />
     </div>
     <section />
   </v-card>
@@ -112,11 +90,13 @@ import Description from "@/components/Records/Record/Description";
 import HomePage from "@/components/Records/Record/HomePage";
 import Countries from "@/components/Records/Record/Countries";
 import Citations from "@/components/Records/Record/Citations";
+import UpdateCreateDetail from "@/components/Records/Record/UpdateCreateDetail";
 
 
 export default {
   name: "GeneralInfo",
   components: {
+    UpdateCreateDetail,
     Citations,
     Countries,
     HomePage,

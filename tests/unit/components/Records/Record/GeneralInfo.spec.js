@@ -1,34 +1,9 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/record.js"
 import GeneralInfo from "@/components/Records/Record/GeneralInfo.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
-localVue.use(Vuex);
 const vuetify = new Vuetify();
-
-Record.state.currentRecord["fairsharingRecord"] = {
-    metadata: {
-        year_creation: 1912,
-    },
-    abbreviation:  "MGY",
-    doi: 'FAIRsharing.wibble',
-    maintainers: [
-        {
-            contact_name: "Maintainer One",
-            id: 100
-        }
-    ],
-    subjects:[],
-    domains:[],
-    taxonomies:[],
-    userDefinedTags:[{label:'a'}],
-};
-const $store = new Vuex.Store({
-    modules: {
-        record:Record
-    }});
 
 describe("GeneralInfo.vue", function(){
     let wrapper;
@@ -38,16 +13,16 @@ describe("GeneralInfo.vue", function(){
         wrapper = shallowMount(GeneralInfo, {
             localVue,
             vuetify,
-            mocks: {$store}
         })
     });
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("GeneralInfo");
-        expect(wrapper.vm.currentRecord['fairsharingRecord'].metadata.year_creation).toEqual(1912);
-        expect(wrapper.vm.currentRecord['fairsharingRecord'].abbreviation).toMatch("MGY");
-        expect(wrapper.vm.getField('maintainers')[0].contact_name).toMatch("Maintainer One");
-        expect(wrapper.vm.getField('maintainers')[0].id).toEqual(100);
+    });
+
+    it("can call callRequestOwnership method", () => {
+        wrapper.vm.callRequestOwnership();
+        expect(wrapper.emitted().requestOwnership).toBeTruthy()
     });
 
 });

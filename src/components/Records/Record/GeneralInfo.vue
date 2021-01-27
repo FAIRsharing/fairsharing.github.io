@@ -26,45 +26,10 @@
       <!--Developed Countries-->
       <Countries />
       <!--Maintainers-->
-      <div class="d-flex flex-row mt-4 min-height-40">
-        <b class="width-200">Maintainers</b>
-        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-          <div
-            v-if="getField('maintainers').length === 0"
-            class="d-flex flex-wrap"
-          >
-            <p class="ma-0 mr-2">
-              This record is in need of a maintainer.
-            </p>
-            <p
-              v-if="canClaim"
-              class="ma-0 mr-2"
-            >
-              If you are affiliated with this project,
-            </p>
-            <a
-              v-if="canClaim"
-              @click="()=>{this.$emit('requestOwnership')}"
-            >
-              Claim it now!
-            </a>
-          </div>
-          <!--<NoneFound :data-field="getField('maintainers')" />-->
-          <!--Contact-->
-          <div
-            v-for="(maintainer,index) in getField('maintainers')"
-            :key="maintainer.contact_name"
-            class="d-flex flex-wrap"
-          >
-            <a
-              :href="maintainer.username + '/' + maintainer.id"
-              class="mr-2"
-            >
-              {{ ` ${maintainer.username+ '/' + maintainer.id}${index!==getField('maintainers').length-1?',':''}` }}
-            </a>
-          </div>
-        </div>
-      </div>
+      <Maintainers
+        :can-claim="canClaim"
+        @requestOwnership="callRequestOwnership"
+      />
       <!--Keywords-->
       <Keywords />
       <!--How to cite & publication for record named Citations-->
@@ -77,10 +42,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex';
 import SectionTitle from '@/components/Records/Record/SectionTitle';
-import stringUtils from '@/utils/stringUtils';
-import recordsCardUtils from "@/utils/recordsCardUtils";
 import Keywords from "@/components/Records/Record/Keywords";
 import DOITitle from "@/components/Records/Record/DOITitle";
 import Type from "@/components/Records/Record/Type";
@@ -91,11 +53,13 @@ import HomePage from "@/components/Records/Record/HomePage";
 import Countries from "@/components/Records/Record/Countries";
 import Citations from "@/components/Records/Record/Citations";
 import UpdateCreateDetail from "@/components/Records/Record/UpdateCreateDetail";
+import Maintainers from "@/components/Records/Record/Maintainers";
 
 
 export default {
   name: "GeneralInfo",
   components: {
+    Maintainers,
     UpdateCreateDetail,
     Citations,
     Countries,
@@ -108,16 +72,16 @@ export default {
     Keywords,
     SectionTitle,
   },
-  mixins: [stringUtils, recordsCardUtils],
   props: {
     canClaim: {
       type: Boolean,
       default: true
     }
   },
-  computed: {
-    ...mapGetters("record", ["getField"]),
-    ...mapState("record", ["currentRecord"]),
+  methods: {
+    callRequestOwnership() {
+      this.$emit('requestOwnership')
+    }
   }
 }
 </script>

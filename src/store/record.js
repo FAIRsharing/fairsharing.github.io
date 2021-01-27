@@ -94,8 +94,6 @@ let recordStore = {
         },
         setPublications(state, publications) {
             state.sections.publications.data = publications;
-            state.sections.publications.changes = 0;
-            state.sections.publications.message = "Record successfully updated!";
         },
         updateOrganisationsLinks(state, links){
             state.sections.organisations.data = links;
@@ -117,6 +115,9 @@ let recordStore = {
         },
         setEditingRecord(state){
             state.newRecord = false;
+        },
+        setMessage(state, message){
+            state.sections[message.target].message = message.value;
         }
     },
     actions: {
@@ -134,7 +135,7 @@ let recordStore = {
             let data = await client.executeQuery(recordHistory);
             state.commit('setRecordHistory', data["fairsharingRecord"]);
         },
-        async updateGeneralInformation({ state, commit }, options) {
+        async updateGeneralInformation({ state, commit}, options) {
             commit("resetMessage", "generalInformation");
             let {
                 type, countries, userDefinedTags, domains, subjects, taxonomies, status,
@@ -206,11 +207,9 @@ let recordStore = {
             };
             publications.forEach(function (publication) {
                 record_data.publication_ids.push(publication.id);
-                /* istanbul ignore else */
                 if (publication.isCitation) {
                     record_data.citation_ids.push(publication.id);
                 }
-                // delete the isCitation field
                 delete publication.isCitation;
             });
             const record = {
@@ -225,6 +224,9 @@ let recordStore = {
                     value: response.error
                 });
                 return response.error;
+            }
+            else {
+                commit("setMessage", {target: "publications", value: "Record successfully updated!"});
             }
         },
         async updateOrganisations({state, commit}, userToken){

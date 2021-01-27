@@ -201,98 +201,8 @@
           </div>
         </div>
       </div>
-      <!--Taxonomic Range-->
-      <div class="d-flex flex-row mt-4 min-height-40">
-        <b class="width-200">Taxonomic Range</b>
-        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-          <span
-            v-if="!getField('taxonomies').length"
-          >
-            None.
-          </span>
-          <v-chip
-            v-for="item in getField('taxonomies')"
-            :key="item.label"
-            class="mr-2 mb-2"
-            :color="getChipColor(item)"
-            text-color="white"
-          >
-            <KeywordTooltip
-              :keyword="item"
-              :full-width="true"
-            />
-          </v-chip>
-        </div>
-      </div>
-      <!--Subjects-->
-      <div class="d-flex flex-row mt-4 min-height-40">
-        <b class="width-200">Subjects</b>
-        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-          <span
-            v-if="!getField('subjects').length"
-          >
-            None.
-          </span>
-          <v-chip
-            v-for="item in getField('subjects')"
-            :key="item.label"
-            class="mr-2 mb-2"
-            :color="getChipColor(item)"
-            text-color="white"
-          >
-            <KeywordTooltip
-              :keyword="item"
-              :full-width="true"
-            />
-          </v-chip>
-        </div>
-      </div>
-      <!--Domains-->
-      <div class="d-flex flex-row mt-4 min-height-40">
-        <b class="width-200">Domains</b>
-        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-          <span
-            v-if="!getField('domains').length"
-          >
-            None.
-          </span>
-          <v-chip
-            v-for="item in getField('domains')"
-            :key="item.label"
-            class="mr-2 mb-2"
-            text-color="white"
-            :color="getChipColor(item)"
-          >
-            <KeywordTooltip
-              :keyword="item"
-              :full-width="true"
-            />
-          </v-chip>
-        </div>
-      </div>
-      <!--User Defined Tags-->
-      <div class="d-flex flex-row mt-4 min-height-40">
-        <b class="width-200">User Defined Tags</b>
-        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-          <span
-            v-if="!getField('userDefinedTags').length"
-          >
-            None.
-          </span>
-          <v-chip
-            v-for="item in getField('userDefinedTags')"
-            :key="item.label"
-            class="mr-2 mb-2"
-            text-color="white"
-            :color="getChipColor(item)"
-          >
-            <KeywordTooltip
-              :keyword="item"
-              :full-width="true"
-            />
-          </v-chip>
-        </div>
-      </div>
+      <!--Keywords-->
+      <Keywords />
       <!--How to cite & publication for record-->
       <div class="d-flex flex-row mt-8">
         <v-row>
@@ -333,6 +243,7 @@
             class="mt-md-0 mt-sm-8"
           >
             <v-card
+              v-if="getField('citations')"
               class="pa-4 d-flex flex-column"
               outlined
               color="white"
@@ -348,21 +259,7 @@
                 Publication for citation
               </v-card-title>
               <v-card-text class="ma-0 pt-8 card-text-customize">
-                <span
-                  v-for="(item,index) in getField('publications')"
-                  :key="index"
-                  class="d-flex flex-row"
-                >
-                  <b class="mr-1">
-                    {{ item['title'] }}
-                  </b>
-                  <p class="ma-0">
-                    {{ item['authors'] }}
-                  </p>
-                  <b>
-                    {{ item['pubmedId'] }}
-                  </b>
-                </span>
+                <!--       TODO: here need to get citation array and look through publication with same id in citation          -->
               </v-card-text>
             </v-card>
           </v-col>
@@ -403,17 +300,17 @@ import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import stringUtils from '@/utils/stringUtils';
 import NoneFound from "@/components/Records/Record/NoneFound";
-import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip";
 import recordsCardUtils from "@/utils/recordsCardUtils";
+import Keywords from "@/components/Records/Record/Keywords";
 
 
 export default {
   name: "GeneralInfo",
   components: {
+    Keywords,
     NoneFound,
     RecordStatus,
     SectionTitle,
-    KeywordTooltip
   },
   mixins: [stringUtils,recordsCardUtils],
   props: {
@@ -460,14 +357,6 @@ a {
     text-decoration: underline;
     outline: 0;
   }
-}
-
-.width-200 {
-  width: 200px;
-}
-
-.width-35 {
-  width: 35px;
 }
 
 .icon-container {

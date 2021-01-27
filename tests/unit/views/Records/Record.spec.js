@@ -21,7 +21,7 @@ users.state.user = function(){ return {
     credentials: {token: 123, username: 123}
 }};
 record.state.currentRecord.fairsharingRecord = {
-    maintainers: [{username: 123}]
+    maintainers: [{username: 123}],
 };
 record.getters = {getField: () => () => { return [{username: 123}]}};
 let $store = new Vuex.Store({

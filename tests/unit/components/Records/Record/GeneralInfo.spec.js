@@ -2,9 +2,12 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
 import GeneralInfo from "@/components/Records/Record/GeneralInfo.vue"
+import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+const vuetify = new Vuetify();
+
 Record.state.currentRecord["fairsharingRecord"] = {
     metadata: {
         year_creation: 1912,
@@ -16,7 +19,11 @@ Record.state.currentRecord["fairsharingRecord"] = {
             contact_name: "Maintainer One",
             id: 100
         }
-    ]
+    ],
+    subjects:[],
+    domains:[],
+    taxonomies:[],
+    userDefinedTags:[{label:'a'}],
 };
 const $store = new Vuex.Store({
     modules: {
@@ -30,6 +37,7 @@ describe("GeneralInfo.vue", function(){
     beforeEach(() => {
         wrapper = shallowMount(GeneralInfo, {
             localVue,
+            vuetify,
             mocks: {$store}
         })
     });

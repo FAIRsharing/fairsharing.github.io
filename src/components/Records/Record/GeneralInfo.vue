@@ -348,7 +348,21 @@
                 Publication for citation
               </v-card-title>
               <v-card-text class="ma-0 pt-8 card-text-customize">
-                Publication for citation description ...
+                <span
+                  v-for="(item,index) in getField('publications')"
+                  :key="index"
+                  class="d-flex flex-row"
+                >
+                  <b class="mr-1">
+                    {{ item['title'] }}
+                  </b>
+                  <p class="ma-0">
+                    {{ item['authors'] }}
+                  </p>
+                  <b>
+                    {{ item['pubmedId'] }}
+                  </b>
+                </span>
               </v-card-text>
             </v-card>
           </v-col>
@@ -364,7 +378,7 @@
         </v-icon>
         <b class="mr-2">Record created at</b>
         <p class="ma-0 mr-2 text-body-2">
-          {{ currentRecord['fairsharingRecord'].updatedAt }}
+          {{ currentRecord['fairsharingRecord'].createdAt }}
         </p>
         <span class="mr-2">|</span>
         <v-icon
@@ -375,7 +389,7 @@
         </v-icon>
         <b class="mr-2">Record updated at</b>
         <p class="ma-0 text-body-2">
-          {{ currentRecord['fairsharingRecord'].createdAt }}
+          {{ currentRecord['fairsharingRecord'].updatedAt }}
         </p>
       </div>
     </div>

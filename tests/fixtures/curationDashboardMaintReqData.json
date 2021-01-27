@@ -1,0 +1,48 @@
+{
+  "propsData": {
+    "maintenanceRequests": [
+      {
+        "createdAt": "Jan 1, 2021",
+        "recordName": "Record1 (23)",
+        "id": 23,
+        "type": "society",
+        "userNameID": "Manolo (99)",
+        "processingNotes": "What a note!!!",
+        "requestID": 0
+      },
+      {
+        "createdAt": "Mar 4, 2017",
+        "recordName": "Record2 (24)",
+        "id": 24,
+        "type": "repository",
+        "userNameID": "Pili (33)",
+        "requestID": 1
+      },
+      {
+        "createdAt": "Nov 30, 1885",
+        "recordName": "Record3 (29)",
+        "id": 99,
+        "type": "society",
+        "userNameID": "Bart Simpson (22)",
+        "processingNotes": "Black puding",
+        "requestID": 3
+      },
+      {
+        "createdAt": "Mar 4, 2017",
+        "recordName": "Record2 (24)",
+        "id": 24,
+        "type": "repository",
+        "userNameID": "Pili (33)",
+        "requestID": 4
+      }
+    ],
+    "approvalRequired": [
+      {
+        "id": 99
+      },
+      {
+        "id": 200
+      }
+    ]
+  }
+}

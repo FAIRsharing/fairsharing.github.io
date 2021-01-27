@@ -118,6 +118,20 @@ let recordStore = {
         },
         setMessage(state, message){
             state.sections[message.target].message = message.value;
+        },
+        setNewRecord(state, id){
+            state.recordUpdate = {
+                error: false,
+                message: "success",
+                id: id
+            }
+        },
+        setError(state, error){
+            state.recordUpdate = {
+                error: true,
+                message: error,
+                id: null
+            }
         }
     },
     actions: {
@@ -267,7 +281,16 @@ let recordStore = {
         },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});
-        }
+        },
+        async updateRecord(state, newRecord){
+            let response = await restClient.updateRecord(newRecord);
+            if (response.error){
+                state.commit("setError", response.error.response)
+            }
+            else {
+                state.commit("setNewRecord", response)
+            }
+        },
     },
     getters: {
         getField: (state) => (fieldName) => {

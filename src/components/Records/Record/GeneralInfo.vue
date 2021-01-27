@@ -18,12 +18,7 @@
       <!--Year of Creation-->
       <YearOfCreation />
       <!--Registry-->
-      <div class="d-flex flex-row mt-4 align-center min-height-40">
-        <b class="width-200">Registry</b>
-        <p class="ma-0 full-width ml-md-12 ml-13">
-          {{ getField('registry') | capitalize }}
-        </p>
-      </div>
+      <Registry />
       <!--Description-->
       <div class="d-flex flex-row mt-4 min-height-40">
         <b class="width-200">Description</b>
@@ -222,11 +217,13 @@ import Keywords from "@/components/Records/Record/Keywords";
 import DOITitle from "@/components/Records/Record/DOITitle";
 import Type from "@/components/Records/Record/Type";
 import YearOfCreation from "@/components/Records/Record/YearOfCreation";
+import Registry from "@/components/Records/Record/Registry";
 
 
 export default {
   name: "GeneralInfo",
   components: {
+    Registry,
     YearOfCreation,
     Type,
     DOITitle,

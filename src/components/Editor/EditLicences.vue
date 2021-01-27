@@ -114,8 +114,7 @@
           <v-col class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
             <v-card
               height="100%"
-              class="newRel green--text"
-              style="cursor: pointer"
+              class="newRel green--text cursor-pointer"
               min-height="383px"
               @click="addLicence()"
             >

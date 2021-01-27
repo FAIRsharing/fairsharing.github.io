@@ -7,11 +7,9 @@
       left
       width="70%"
     />
-    <transition name="fade">
-      <Header v-if="UIGeneralStatus.headerVisibilityState" />
-    </transition>
+    <Header />
     <router-view style="min-height: 70vh" />
-    <Footer v-if="$route.path !== '/search'" />
+    <Footer />
   </v-app>
 </template>
 
@@ -23,28 +21,8 @@
     export default {
         name: "App2",
         components: {Footer, Header},
-        data: () => ({
-            hideOverflow: 'overflow-hidden',
-            root: null,
-            _status: false
-        }),
         computed: {
-            ...mapState('uiController', ["UIGeneralStatus", "scrollStatus"]),
-        },
-        watch: {
-            UIGeneralStatus: {
-                handler(UIGeneralStatus) {
-                    this.toggleOverFlow(UIGeneralStatus.bodyOverflowState);
-                },
-                deep: true
-            },
-        },
-        methods: {
-            toggleOverFlow: function (status) {
-                this._status = status;
-                this.root = document.getElementsByTagName('html')[0]; // '0' to assign the first (and only `HTML` tag)
-                this._status ? this.root.setAttribute('class', this.hideOverflow) : this.root.removeAttribute('class');
-            },
+            ...mapState('uiController', ["UIGeneralStatus"]),
         },
     }
 </script>

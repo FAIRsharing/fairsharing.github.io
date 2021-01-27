@@ -289,12 +289,13 @@
             let userRecords = dataCuration.approvalsRequired;
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {
-                let object = {};
-                object.updatedAt = rec.updatedAt;
-                object.curator = item.username;
-                object.recordName = rec.name;
-                object.id = rec.id;
-                object.type = rec.type;
+                let object = {
+                  updatedAt: rec.updatedAt,
+                  curator: item.username,
+                  recordName: rec.name,
+                  id: rec.id,
+                  type: rec.type
+                };
                 if (rec.lastEditor){
                   object.lastEditor = rec.lastEditor.username+' ('+rec.lastEditor.id+')';
                 }
@@ -308,14 +309,15 @@
           prepareMaintenanceRequests(dataCuration){
             let requests = dataCuration.pendingMaintenanceRequests;
             requests.forEach(item => {
-              let object = {};
-              object.createdAt = item.createdAt;
-              object.recordName = item.fairsharingRecord.name + ' ('+ item.fairsharingRecord.id +')';
-              object.id = item.fairsharingRecord.id;
-              object.type = item.fairsharingRecord.type ;
-              object.userNameID = item.user.username + ' ('+item.user.id+')';
-              object.processingNotes = item.fairsharingRecord.processingNotes;
-              object.requestID = item.id;
+              let object = {
+                createdAt: item.createdAt,
+                recordName: `${item.fairsharingRecord.name} (${item.fairsharingRecord.id})`,
+                id: item.fairsharingRecord.id,
+                type: item.fairsharingRecord.type,
+                userNameID: `${item.user.username} (${item.user.id})`,
+                processingNotes: item.fairsharingRecord.processingNotes,
+                requestID: item.id
+              };
               this.maintenanceRequests.push(object);
             });
             this.maintenanceRequests.sort(compareRecordDesc);
@@ -327,8 +329,9 @@
           prepareRecordsCuratorCreationsLastWeek(dataCuration){
             let records = dataCuration.recentCuratorCreations;
             records.forEach(item => {
-              let object = {};
-              object.recordNameID = item.name+' ('+item.id+')';
+              let object = {
+                recordNameID: `${item.name} (${item.id})`
+              };
               object.createdAt = formatDate(item.createdAt);
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
@@ -343,11 +346,12 @@
             let userRecords = dataCuration.recordsInCuration;
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {
-                let object = {};
-                object.curator = item.username;
-                object.recordNameID = rec.name+' ('+rec.id+')';
+                let object = {
+                  curator: item.username,
+                  recordNameID: `${rec.name} (${rec.id})`,
+                  recordMaintainers: "none"
+                };
                 let numMaint = 0;
-                object.recordMaintainers = "none"
                 rec.maintainers.forEach(main => {
                   if (numMaint > 0){
                     object.recordMaintainers += ', ' + main.username+' ('+main.id+')';
@@ -364,8 +368,9 @@
           prepareHiddenRecords(dataCuration){
             let records = dataCuration.hiddenRecords;
             records.forEach(item => {
-              let object = {};
-              object.recordNameID = item.name+' ('+item.id+')';
+              let object = {
+                recordNameID: `${item.name} (${item.id})`
+              };
               object.createdAt = formatDate(item.createdAt);
               if (item.curator){
                 object.curator = item.curator.username

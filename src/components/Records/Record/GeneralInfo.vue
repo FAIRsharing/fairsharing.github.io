@@ -67,68 +67,8 @@
       </div>
       <!--Keywords-->
       <Keywords />
-      <!--How to cite & publication for record-->
-      <div class="d-flex flex-row mt-8">
-        <v-row>
-          <!--How to cite this record-->
-          <v-col
-            cols="12"
-            sm="12"
-            md="6"
-          >
-            <v-card
-              class="pa-4 d-flex flex-column"
-              outlined
-              color="white"
-              tile
-              elevation="3"
-            >
-              <div class="icon-container d-flex justify-center">
-                <v-icon large>
-                  {{ $vuetify.icons.values.howToCite }}
-                </v-icon>
-              </div>
-              <v-card-title class="pa-0 card-title-customize">
-                How to cite this record
-              </v-card-title>
-              <v-card-text class="ma-0 pt-8 card-text-customize">
-                FAIRsharing.org:{{ getField('abbreviation')+';'+getField('name') }}
-                <b>DOI:</b>{{ getField('doi') }};
-                <b>Last Edited:</b>12/02/2020
-                <b>Last Accessed:</b>{{ getCurrentDate() }}
-              </v-card-text>
-            </v-card>
-          </v-col>
-          <!--Publication for citation-->
-          <v-col
-            cols="12"
-            sm="12"
-            md="6"
-            class="mt-md-0 mt-sm-8"
-          >
-            <v-card
-              v-if="getField('citations')"
-              class="pa-4 d-flex flex-column"
-              outlined
-              color="white"
-              tile
-              elevation="3"
-            >
-              <div class="icon-container d-flex justify-center">
-                <v-icon large>
-                  {{ $vuetify.icons.values.PublicationCitation }}
-                </v-icon>
-              </div>
-              <v-card-title class="pa-0 card-title-customize">
-                Publication for citation
-              </v-card-title>
-              <v-card-text class="ma-0 pt-8 card-text-customize">
-                <!--       TODO: here need to get citation array and look through publication with same id in citation          -->
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </div>
+      <!--How to cite & publication for record named Citations-->
+      <Citations />
       <!--updates and creation date-->
       <div class="d-flex flex-row flex-wrap align-center mt-4 min-height-40">
         <v-icon
@@ -171,11 +111,13 @@ import Registry from "@/components/Records/Record/Registry";
 import Description from "@/components/Records/Record/Description";
 import HomePage from "@/components/Records/Record/HomePage";
 import Countries from "@/components/Records/Record/Countries";
+import Citations from "@/components/Records/Record/Citations";
 
 
 export default {
   name: "GeneralInfo",
   components: {
+    Citations,
     Countries,
     HomePage,
     Description,
@@ -186,31 +128,16 @@ export default {
     Keywords,
     SectionTitle,
   },
-  mixins: [stringUtils,recordsCardUtils],
+  mixins: [stringUtils, recordsCardUtils],
   props: {
     canClaim: {
       type: Boolean,
       default: true
     }
   },
-  data() {
-    return {
-      currentDate:new Date()
-    }
-  },
-  computed:{
-  ...mapGetters("record", ["getField"]),
-  ...mapState("record", ["currentRecord"]),
-  },
-  methods: {
-    getCurrentDate() {
-      return this.currentDate.getDate() + "/"
-          + (this.currentDate.getMonth() + 1) + "/"
-          + this.currentDate.getFullYear() + " at "
-          + this.currentDate.getHours() + ":"
-          + this.currentDate.getMinutes() + ":"
-          + this.currentDate.getSeconds();
-    }
+  computed: {
+    ...mapGetters("record", ["getField"]),
+    ...mapState("record", ["currentRecord"]),
   }
 }
 </script>
@@ -224,30 +151,4 @@ a {
     outline: 0;
   }
 }
-
-.icon-container {
-  position: absolute;
-  top: -45px;
-  background: white;
-  border: #b3b3b3 dotted 3px;
-  border-radius: 50%!important;
-  -moz-border-radius: 50%!important;
-  -webkit-border-radius: 50%!important;
-  width: 85px;
-  height: 85px;
-  cursor: help;
-}
-
-.card-text-customize {
-  max-height: 100px;
-  min-height: 100px;
-  overflow: hidden
-}
-
-.card-title-customize {
-  position: absolute;
-  top: 0;
-  left: 120px
-}
-
 </style>

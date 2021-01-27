@@ -17,14 +17,13 @@
 
 <script>
 import NoneFound from "@/components/Records/Record/NoneFound";
-import {mapGetters, mapState} from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: "HomePage",
   components: {NoneFound},
   computed: {
     ...mapGetters("record", ["getField"]),
-    ...mapState("record", ["currentRecord"]),
   }
 }
 </script>

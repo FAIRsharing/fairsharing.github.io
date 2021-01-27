@@ -96,20 +96,18 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
+import KeywordTooltip from "../Shared/KeywordTooltip";
+import recordsCardUtils from "@/utils/recordsCardUtils";
 
-    import KeywordTooltip from "../Shared/KeywordTooltip";
-    import recordsCardUtils from "@/utils/recordsCardUtils";
-
-    export default {
-        name: "Keywords",
-        components: {
-            KeywordTooltip,
-        },
-        mixins:[recordsCardUtils],
-        computed: {
-            ...mapGetters("record", ["getField"])
-        }
-
-    }
+export default {
+  name: "Keywords",
+  components: {
+    KeywordTooltip,
+  },
+  mixins: [recordsCardUtils],
+  computed: {
+    ...mapGetters("record", ["getField"])
+  }
+}
 </script>

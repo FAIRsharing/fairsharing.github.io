@@ -13,6 +13,7 @@
     "homepage",
     "createdAt",
     "updatedAt",
+    "lastEdited",
     {
       "name": "countries",
       "fields": [

@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
-import DOITitle from "@/components/Records/Record/DOITitle.vue"
+import Type from "@/components/Records/Record/Type.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
@@ -25,25 +25,15 @@ describe("DOITitle.vue", function(){
 
     // TODO: Mock properties in options {}.
     beforeEach(() => {
-        wrapper = shallowMount(DOITitle, {
+        wrapper = shallowMount(Type, {
             localVue,
             vuetify,
             mocks: {$store}
         })
     });
 
-    it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("DOITitle");
-    });
-
-    it("generates correct doi link", () => {
-        let doiLink = `https://doi.org/${wrapper.vm.currentRecord['fairsharingRecord'].doi}`;
-        expect(wrapper.vm.generateDoiLink(wrapper.vm.currentRecord['fairsharingRecord'].doi)).toEqual(doiLink);
-    });
-
-    it("can copy url correctly", () => {
-        wrapper.vm.copyURL()
-        expect(wrapper.vm.copyButtonStatus).toBe(true);
+    it("can be initiated", () => {
+        expect(wrapper.name()).toMatch("Type");
     });
 
 });

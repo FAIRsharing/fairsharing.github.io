@@ -14,15 +14,8 @@
     <!--  other data  -->
     <div class="d-flex flex-column ml-2">
       <!--Type-->
-      <div class="d-flex flex-row mt-4 align-center">
-        <b class="width-200">type</b>
-        <p class="ma-0 full-width ml-md-12 ml-13">
-          {{ cleanString(getField('type')) | capitalize }}
-        </p>
-      </div>
+      <Type />
       <!--Year of Creation-->
-      <!--!! Attention need data model to be changed. must be sent by fairsharing Object like below!! -->
-      <!--fairsharingRecord.year_creation-->
       <div class="d-flex flex-row mt-4 align-center min-height-40">
         <b class="width-200">Year of Creation</b>
         <div class="d-flex full-width ml-md-12 ml-13">
@@ -241,11 +234,13 @@ import NoneFound from "@/components/Records/Record/NoneFound";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import Keywords from "@/components/Records/Record/Keywords";
 import DOITitle from "@/components/Records/Record/DOITitle";
+import Type from "@/components/Records/Record/Type";
 
 
 export default {
   name: "GeneralInfo",
   components: {
+    Type,
     DOITitle,
     Keywords,
     NoneFound,
@@ -260,7 +255,6 @@ export default {
   },
   data() {
     return {
-      copyButtonStatus:false,
       currentDate:new Date()
     }
   },

@@ -16,21 +16,7 @@
       <!--Type-->
       <Type />
       <!--Year of Creation-->
-      <div class="d-flex flex-row mt-4 align-center min-height-40">
-        <b class="width-200">Year of Creation</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <p
-            v-if="getField('metadata').year_creation"
-            class="ma-0"
-          >
-            {{ getField('metadata').year_creation }}
-          </p>
-          <NoneFound
-            v-else
-            :string-field="getField('metadata').year_creation"
-          />
-        </div>
-      </div>
+      <YearOfCreation />
       <!--Registry-->
       <div class="d-flex flex-row mt-4 align-center min-height-40">
         <b class="width-200">Registry</b>
@@ -235,11 +221,13 @@ import recordsCardUtils from "@/utils/recordsCardUtils";
 import Keywords from "@/components/Records/Record/Keywords";
 import DOITitle from "@/components/Records/Record/DOITitle";
 import Type from "@/components/Records/Record/Type";
+import YearOfCreation from "@/components/Records/Record/YearOfCreation";
 
 
 export default {
   name: "GeneralInfo",
   components: {
+    YearOfCreation,
     Type,
     DOITitle,
     Keywords,

@@ -22,53 +22,9 @@
       <!--Description-->
       <Description />
       <!--Home Page-->
-      <div class="d-flex flex-row mt-4 align-center min-height-40">
-        <b class="width-200">Home Page</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <a
-            v-if="getField('homepage')"
-            :href="getField('homepage')"
-            target="_blank"
-          >{{ getField('homepage') }}</a>
-          <NoneFound
-            v-else
-            :string-field="getField('homepage')"
-          />
-        </div>
-      </div>
+      <HomePage />
       <!--Developed Countries-->
-      <div class="d-flex flex-row mt-4 min-height-40">
-        <b class="width-200">Countries developing this resource</b>
-        <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-          <NoneFound
-            v-if="!getField('countries')"
-            :data-field="getField('countries')"
-          />
-          <p
-            v-else-if="!getField('countries').length"
-            class="my-0"
-          >
-            None found.
-          </p>
-          <div
-            v-for="(country,index) in getField('countries')"
-            :key="country.id"
-          >
-            <p
-              v-if="country.name"
-              class="ma-0 mr-2"
-            >
-              {{ ` ${country.name}${index!==getField('countries').length-1?',':''}` }}
-            </p>
-            <span
-              v-else
-              class="warning"
-            >
-              country code undefined!
-            </span>
-          </div>
-        </div>
-      </div>
+      <Countries />
       <!--Maintainers-->
       <div class="d-flex flex-row mt-4 min-height-40">
         <b class="width-200">Maintainers</b>
@@ -206,7 +162,6 @@
 import {mapGetters, mapState} from 'vuex';
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import stringUtils from '@/utils/stringUtils';
-import NoneFound from "@/components/Records/Record/NoneFound";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import Keywords from "@/components/Records/Record/Keywords";
 import DOITitle from "@/components/Records/Record/DOITitle";
@@ -214,18 +169,21 @@ import Type from "@/components/Records/Record/Type";
 import YearOfCreation from "@/components/Records/Record/YearOfCreation";
 import Registry from "@/components/Records/Record/Registry";
 import Description from "@/components/Records/Record/Description";
+import HomePage from "@/components/Records/Record/HomePage";
+import Countries from "@/components/Records/Record/Countries";
 
 
 export default {
   name: "GeneralInfo",
   components: {
+    Countries,
+    HomePage,
     Description,
     Registry,
     YearOfCreation,
     Type,
     DOITitle,
     Keywords,
-    NoneFound,
     SectionTitle,
   },
   mixins: [stringUtils,recordsCardUtils],

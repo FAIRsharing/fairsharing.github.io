@@ -198,7 +198,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

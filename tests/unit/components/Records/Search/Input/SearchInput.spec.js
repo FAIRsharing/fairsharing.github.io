@@ -4,11 +4,9 @@ import Vuetify from "vuetify"
 import SearchInput from "@/components/Records/Search/Input/SearchInput"
 import searchFiltersStore from "@/store/searchFilters.js";
 import uiControllerStore from "@/store/uiController.js";
-import VueScrollStop from 'vue-scroll-stop';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-localVue.use(VueScrollStop);
 const vuetify = new Vuetify();
 
 let $route = {
@@ -49,7 +47,7 @@ describe("FilterPanel.vue", function () {
     it("can check resetPanel", () => {
         wrapper.vm.resetPanel();
         expect(wrapper.vm.panel).toStrictEqual([])
-    })
+    });
 
     it("sorts filterbuttons into the correct order", () => {
         $store.state.searchFilters.filters.push({filterName: 'grants', filterLabel: 'grantLabel', 'sortOrder': 2});
@@ -61,5 +59,6 @@ describe("FilterPanel.vue", function () {
         expect(sorted[1]['filterName']).toEqual('domains');
         expect(sorted[2]['filterName']).toEqual('grants');
         expect(sorted[3]['filterName']).toEqual('filterNameTest');
-    })
+    });
+
 });

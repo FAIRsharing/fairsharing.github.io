@@ -27,6 +27,7 @@
       "pendingMaintenanceRequests": [
           {
               "id": "3",
+              "createdAt": "2020-06-27T09:34:54Z",
               "fairsharingRecord":
                   {
                       "id": "373",
@@ -36,6 +37,48 @@
                   {
                       "username": "Rotedia",
                       "id": "2218"
+                  }
+          },
+          {
+              "id": "6",
+              "createdAt": "2020-09-27T09:34:54Z",
+              "fairsharingRecord":
+                  {
+                      "id": "22",
+                      "name": "Other thing"
+                  },
+              "user":
+                  {
+                      "username": "Mariano",
+                      "id": "22"
+                  }
+          },
+          {
+              "id": "6",
+              "createdAt": "2020-08-27T09:34:54Z",
+              "fairsharingRecord":
+                  {
+                      "id": "44",
+                      "name": "Other thing2"
+                  },
+              "user":
+                  {
+                      "username": "Mariano",
+                      "id": "22"
+                  }
+          },
+          {
+              "id": "6",
+              "createdAt": "2020-08-27T09:34:54Z",
+              "fairsharingRecord":
+                  {
+                      "id": "44",
+                      "name": "Other thing2"
+                  },
+              "user":
+                  {
+                      "username": "Mariano",
+                      "id": "22"
                   }
           }
       ],
@@ -55,6 +98,11 @@
               "id": "44",
               "name": "Second",
               "createdAt": "2020-10-27T09:34:54Z"
+          },
+          {
+              "id": "4443",
+              "name": "Third",
+              "createdAt": "2017-11-11T09:34:54Z"
           }
       ],
       "recordsInCuration": [
@@ -109,7 +157,7 @@
         {
              "id": "2669f95",
              "name": "ShareSfhare",
-             "createdAt": "2020-10-12T13:31:25Z"
+             "createdAt": "1425-01-01T13:31:25Z"
         }
       ]
   }

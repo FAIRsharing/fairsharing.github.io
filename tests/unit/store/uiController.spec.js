@@ -8,9 +8,7 @@ describe('Mutations & Actions', () => {
         state = {
             scrollStatus: false,
             stickToTop: false,
-            componentOverflow:false,
             UIGeneralStatus: {
-                bodyOverflowState: false,
                 drawerVisibilityState: false,
                 headerVisibilityState: false,
             },
@@ -19,7 +17,6 @@ describe('Mutations & Actions', () => {
 
     it("can check the setGeneralUIAttributesAction action", () => {
         let fakeObject = {
-            bodyOverflowState: false,
             drawerVisibilityState: false,
             headerVisibilityState: true,
         }
@@ -42,13 +39,6 @@ describe('Mutations & Actions', () => {
         expect(actions.commit).toHaveBeenCalledWith("uiController/setStickToTop",fakeState);
     });
 
-    it("can check the setComponentOverflow action", () => {
-        let fakeState = true;
-        actions.commit = jest.fn();
-        actions.setComponentOverflow(state, fakeState);
-        expect(actions.commit).toHaveBeenCalledWith("uiController/setComponentOverflow",fakeState);
-    });
-
     it("can check the setScrollStatus Mutations", () => {
         let fakeState = true;
         mutations.setScrollStatus(state, fakeState);
@@ -57,7 +47,6 @@ describe('Mutations & Actions', () => {
 
     it("can check the setUIStatus Mutations", () => {
         const fakeUIStateObject_caseA = {
-            bodyOverflowState: false,
             drawerVisibilityState: false,
             headerVisibilityState: true,
         };
@@ -79,12 +68,6 @@ describe('Mutations & Actions', () => {
         let fakeState = true;
         mutations.setStickToTop(state, fakeState);
         expect(state.stickToTop).toBe(true);
-    });
-
-    it("can check the setComponentOverflow Mutations", () => {
-        let fakeState = true;
-        mutations.setComponentOverflow(state, fakeState);
-        expect(state.componentOverflow).toBe(true);
     });
 
 });

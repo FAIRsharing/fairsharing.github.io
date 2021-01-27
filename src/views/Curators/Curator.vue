@@ -85,7 +85,42 @@
               :search="searches.hiddenRecords"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
+            >
+              <template
+                v-if="recordType"
+                #item="props"
+              >
+                <tr>
+                  <td>
+                    <a :href="'#/' + props.item.id">
+                      <span
+                        v-if="props.item.type"
+                        class="mr-2"
+                      >
+                        <v-avatar
+                          v-if="Object.keys(recordType).includes(props.item.type)"
+                          size="38"
+                        >
+                          <img
+                            :src="'./' + recordType[props.item.type].icon"
+                          >
+                        </v-avatar>
+                      </span>
+                      {{ props.item.recordNameID }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ props.item.createdAt }}
+                  </td>
+                  <td>
+                    {{ props.item.curator }}
+                  </td>
+                  <td>
+                    {{ props.item.creator }}
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
           </v-card-text>
         </v-card>
         <v-card>
@@ -111,7 +146,39 @@
               :search="searches.recentCuratorCreations"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
+              >
+                <template
+                  v-if="recordType"
+                  #item="props"
+                >
+                  <tr>
+                    <td>
+                      <a :href="'#/' + props.item.id">
+                        <span
+                          v-if="props.item.type"
+                          class="mr-2"
+                        >
+                          <v-avatar
+                            v-if="Object.keys(recordType).includes(props.item.type)"
+                            size="38"
+                          >
+                            <img
+                              :src="'./' + recordType[props.item.type].icon"
+                            >
+                          </v-avatar>
+                        </span>
+                        {{ props.item.recordNameID }}
+                      </a>
+                    </td>
+                    <td>
+                      {{ props.item.createdAt }}
+                    </td>
+                    <td>
+                      {{ props.item.creator }}
+                    </td>
+                  </tr>
+                </template>
+              </v-data-table>
           </v-card-text>
         </v-card>
       </v-col>
@@ -248,13 +315,14 @@
             let userRecords = dataCuration.approvalsRequired;
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {
-                let object = {};
-                object.updatedAt = rec.updatedAt;
-                object.curator = item.username;
-                object.recordName = rec.name + ' ('+rec.id +')';
-                object.id = rec.id;
-                object.type = rec.type;
-                object.processingNotes = rec.processingNotes;
+                let object = {
+                  updatedAt: rec.updatedAt,
+                  curator: item.username,
+                  recordName: `${rec.name} (${rec.id})`,
+                  id: rec.id,
+                  type: rec.type,
+                  processingNotes: rec.processingNotes
+                };
                 if (rec.priority){
                   object.priority = "Prior";
                 }else{
@@ -285,14 +353,15 @@
           prepareMaintenanceRequests(dataCuration){
             let requests = dataCuration.pendingMaintenanceRequests;
             requests.forEach(item => {
-              let object = {};
-              object.createdAt = item.createdAt;
-              object.recordName = item.fairsharingRecord.name + ' ('+ item.fairsharingRecord.id +')';
-              object.id = item.fairsharingRecord.id;
-              object.type = item.fairsharingRecord.type ;
-              object.userNameID = item.user.username + ' ('+item.user.id+')';
-              object.processingNotes = item.fairsharingRecord.processingNotes;
-              object.requestID = item.id;
+              let object = {
+                createdAt: item.createdAt,
+                recordName: `${item.fairsharingRecord.name} (${item.fairsharingRecord.id})`,
+                id: item.fairsharingRecord.id,
+                type: item.fairsharingRecord.type,
+                userNameID: `${item.user.username} (${item.user.id})`,
+                processingNotes: item.fairsharingRecord.processingNotes,
+                requestID: item.id
+              };
               this.maintenanceRequests.push(object);
             });
             this.maintenanceRequests.sort(compareRecordDesc);
@@ -304,8 +373,10 @@
           prepareRecordsCuratorCreationsLastWeek(dataCuration){
             let records = dataCuration.recentCuratorCreations;
             records.forEach(item => {
-              let object = {};
-              object.recordNameID = item.name+' ('+item.id+')';
+              let object = {
+                recordNameID: `${item.name} (${item.id})`,
+                type: item.type
+              };
               object.createdAt = formatDate(item.createdAt);
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
@@ -320,11 +391,12 @@
             let userRecords = dataCuration.recordsInCuration;
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {
-                let object = {};
-                object.curator = item.username;
-                object.recordNameID = rec.name+' ('+rec.id+')';
+                let object = {
+                  curator: item.username,
+                  recordNameID: `${rec.name} (${rec.id})`,
+                  recordMaintainers: "none"
+                };
                 let numMaint = 0;
-                object.recordMaintainers = "none"
                 rec.maintainers.forEach(main => {
                   if (numMaint > 0){
                     object.recordMaintainers += ', ' + main.username+' ('+main.id+')';
@@ -341,8 +413,10 @@
           prepareHiddenRecords(dataCuration){
             let records = dataCuration.hiddenRecords;
             records.forEach(item => {
-              let object = {};
-              object.recordNameID = item.name+' ('+item.id+')';
+              let object = {
+                recordNameID: `${item.name} (${item.id})`,
+                type: item.type
+              };
               object.createdAt = formatDate(item.createdAt);
               if (item.curator){
                 object.curator = item.curator.username

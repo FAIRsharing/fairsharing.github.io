@@ -4,6 +4,7 @@ import Vuetify from "vuetify"
 import VueRouter from "vue-router"
 import editPublications from "@/components/Editor/EditPublications.vue"
 import recordStore from "@/store/record.js";
+import editorStore from "@/store/editor.js";
 import userStore from "@/store/users.js";
 import GraphClient from "@/components/GraphClient/GraphClient.js";
 import RestClient from "@/components/Client/RESTClient.js"
@@ -14,30 +15,49 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
-recordStore.state.currentRecord = {
-    fairsharingRecord: {
-        publications: [
-            {
-                title: "Hello",
-                id: 1
-            },
-            {
-                title: "World",
-                id: 2
-            }
-        ],
-        metadata: {
-            citations: [
-                {id:2}
-            ]
-        }
+const VueScrollTo = require('vue-scrollto');
+localVue.use(VueScrollTo);
+
+let pubs = [
+    {
+        title: "Hello",
+        id: 1
+    },
+    {
+        title: "World",
+        id: 2
     }
+];
+
+recordStore.state.sections = {
+    publications: {
+        data: pubs,
+        error: false,
+        changes: 0,
+        initialData: JSON.parse(JSON.stringify(pubs))
+    },
+    generalInformation: {
+        data: {
+            metadata: {
+                citations: [
+                    {publication_id: 2}
+                ]
+            },
+        }
+    },
+    record: {fairsharingRecord: {id: 1243}}
 };
+recordStore.state.sections.publications.data[0].tablePosition = 123;
+editorStore.state.availablePublications = [{
+    title: "World",
+    id: 2
+}];
 userStore.state.user().credentials.token = "thisisatoken";
 const $store = new Vuex.Store({
     modules: {
         users: userStore,
-        record: recordStore
+        record: recordStore,
+        editor: editorStore
     }
 });
 let $route = { path: "/123/edit", params: {id: 123} };
@@ -86,7 +106,14 @@ describe("EditPublications.vue", function() {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("EditPublications");
+        expect(wrapper.name()).toMatch("EditPublications")
+        expect(wrapper.vm.section.data).toStrictEqual(recordStore.state.sections.publications.data);
+        expect(wrapper.vm.metadata).toStrictEqual(recordStore.state.sections.generalInformation.data.metadata);
+        expect(wrapper.vm.message.type()).toBe("success");
+        recordStore.state.sections.publications.error = true;
+        expect(wrapper.vm.message.type()).toBe("error");
+        recordStore.state.sections.publications.error = false;
+        //expect(wrapper.vm.section).toStrictEqual(recordStore.state.sections.publications);
     });
 
     it("can get a DOI and process related errors", async () => {
@@ -222,8 +249,6 @@ describe("EditPublications.vue", function() {
         await wrapper.vm.addPublication();
         expect(wrapper.vm.errors.general).toBe("Im an error");
         restStub.restore();
-
-
     });
 
     it("can edit an added publication", () => {
@@ -233,25 +258,51 @@ describe("EditPublications.vue", function() {
     });
 
     it("can update a record", async () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        recordStore.state.sections.publications.changes = 0;
         restStub = sinon.stub(RestClient.prototype, 'executeQuery');
         restStub.returns({data: {id: 123}});
-        wrapper.vm.publications = [
-            {
-                id: 1,
-                isCitation: true
-            },
-            {
-                doi: 123
-            }
-        ];
-        await wrapper.vm.updateRecordPub();
+        wrapper.vm.publications = [];
+        wrapper.vm.publications.push({ id: 3, isCitation: true });
+        wrapper.vm.publications.push({ id: 4, isCitation: false });
+        await wrapper.vm.saveRecord(true);
+        expect($router.push).toHaveBeenCalledWith({path: "/123"});
+        expect($router.push).toHaveBeenCalledTimes(1);
+        await wrapper.vm.saveRecord(false);
+        expect(recordStore.state.sections.publications.changes).toEqual(0);
+        restStub.returns({data: {error: {response: {data: "error"}}}});
+        await wrapper.vm.saveRecord(true);
+        expect(recordStore.state.sections.publications.error).toBe(true);
+        expect(recordStore.state.sections.publications.message).toStrictEqual({"response": {"data": "error"}});
         restStub.restore();
+        jest.clearAllMocks();
+    });
 
-        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-        restStub.returns({data: {error: { response: "Im an error"}}});
-        await wrapper.vm.updateRecordPub();
-        expect(wrapper.vm.errors.general).toBe("Im an error");
-        restStub.restore();
-    })
+    it("can toggle a citation", () => {
+        recordStore.state.sections = {
+            publications: {
+                data: pubs,
+                error: false,
+                changes: 0,
+                initialData: JSON.parse(JSON.stringify(pubs))
+            },
+            generalInformation: {
+                data: {
+                    metadata: {
+                        citations: [
+                            {publication_id: 2}
+                        ]
+                    },
+                }
+            },
+            record: {fairsharingRecord: {id: 1243}}
+        };
+        wrapper.vm.publications[0].isCitation = true;
+        wrapper.vm.toggleCitation(0);
+        expect(wrapper.vm.publications[0].isCitation).toBe(false);
+        wrapper.vm.toggleCitation(0);
+        expect(wrapper.vm.publications[0].isCitation).toBe(true);
+    });
+
 
 });

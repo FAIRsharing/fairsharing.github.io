@@ -4,7 +4,7 @@
     fluid
     class="standard"
   >
-    <v-row v-if="user().is_curator">
+    <v-row v-if="user().role==='super_curator' || user().role==='senior_curator'">
       <v-col cols12>
         <v-card v-if="!messages()['getUser'].error">
           <v-list>
@@ -26,7 +26,7 @@
               id="text-curator-search-0"
               class="green white--text"
             >
-              Records awaiting approval
+              <b> RECORDS AWAITING APPROVAL </b>
               <v-spacer />
               <v-text-field
                 v-model="searches.recordsAwaitingApproval"
@@ -93,63 +93,17 @@
             </v-data-table>
           </v-card-text>
         </v-card>
-        <v-card>
-          <v-card-text v-if="maintenanceRequests">
-            <v-card-title
-              id="text-curator-search-1"
-              class="green white--text"
-            >
-              Pending Maintenance Requests
-              <v-spacer />
-              <v-text-field
-                v-model="searches.pendingMaintenanceRequests"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.maintenanceRequests"
-              :items="maintenanceRequests"
-              :search="searches.pendingMaintenanceRequests"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
-          </v-card-text>
-        </v-card>
-        <v-card>
-          <v-card-text v-if="recordsInCuration">
-            <v-card-title
-              id="text-curator-search-4"
-              class="green white--text"
-            >
-              Records in curation
-              <v-spacer />
-              <v-text-field
-                v-model="searches.recordsInCuration"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.recordsInCuration"
-              :items="recordsInCuration"
-              :search="searches.recordsInCuration"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-              :sort-by="recordsInCuration.curator"
-              :sort-desc="true"
-            />
-          </v-card-text>
-        </v-card>
+        <MaintenanceRequest
+          :loading="loading"
+          :headers="headers.maintenanceRequests"
+          :maintenance-requests="maintenanceRequests"
+          :record-type="recordType"
+          :approval-required="approvalRequired"
+        />
         <v-card>
           <v-card-text>
             <v-card-title
+              id="text-curator-search-1"
               class="green white--text"
             >
               Records without dois
@@ -176,10 +130,10 @@
         <v-card>
           <v-card-text v-if="hiddenRecords">
             <v-card-title
-              id="text-curator-search-7"
+              id="text-curator-search-2"
               class="green white--text"
             >
-              Hidden records
+              <b> HIDDEN RECORDS </b>
               <v-spacer />
               <v-text-field
                 v-model="searches.hiddenRecords"
@@ -202,10 +156,10 @@
         <v-card>
           <v-card-text v-if="recordsCreatedCuratorsLastWeek">
             <v-card-title
-              id="text-curator-search-2"
+              id="text-curator-search-3"
               class="green white--text"
             >
-              Records created by curators in the past week
+              <b> RECORDS CREATED BY CURATORS IN THE PAST WEEK </b>
               <v-spacer />
               <v-text-field
                 v-model="searches.recentCuratorCreations"
@@ -241,10 +195,28 @@
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
     import recordTypes from "@/data/recordsRegistries.json"
+    import headersTables from "@/data/headersCuratorDashboard.json"
+    import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
     import RestClient from "@/components/Client/RESTClient.js"
+
 
     const client = new GraphClient();
     const restClient = new RestClient();
+
+    function compareRecordDesc(a, b) {
+      if (a.createdAt > b.createdAt) {
+        return -1;
+      }
+      if (a.createdAt < b.createdAt) {
+        return 1;
+      }
+      return 0;
+    }
+
+    function formatDate(d){
+      let date = new Date(d);
+      return date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+    }
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -252,7 +224,10 @@
 
     export default {
       name: "Curator",
-      components: {Unauthorized},
+      components: {
+        Unauthorized,
+        MaintenanceRequest
+      },
       data: () => {
         return {
           allDataCuration: null,
@@ -262,89 +237,9 @@
           recordsInCuration: [],
           hiddenRecords: [],
           recordType: null,
-          headers: {
-            approvalRequired: [
-              {
-                text: "Date last modification",
-                value: "updatedAt"
-              },
-              {
-                text: "Curator",
-                value: "curator"
-              },
-              {
-                text: "Record name (id)",
-                value: "recordName"
-              },
-              {
-                text: "Last editor",
-                value: "lastEditor"
-              }
-            ],
-            maintenanceRequests: [
-              {
-                text: "Date",
-                value: "createdAt"
-              },
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "User login (id)",
-                value: "userNameID"
-              }
-            ],
-            recordsCreatedCuratorsLastWeek: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "Date created",
-                value: "createdAt"
-              },
-              {
-                text: "Creator",
-                value: "creator"
-              }
-            ],
-            recordsInCuration: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "Record maintainer(s)",
-                value: "recordMaintainers"
-              },
-              {
-                text: "Under curation by",
-                value: "curator"
-              }
-            ],
-            hiddenRecords: [
-              {
-                text: "Record name (id)",
-                value: "recordNameID"
-              },
-              {
-                text: "Date created",
-                value: "createdAt"
-              },
-              {
-                text: "Under curation by",
-                value: "curator"
-              },
-              {
-                text: "Created by",
-                value: "creator"
-              }
-            ]
-          },
+          headers: headersTables,
           searches: {
             recordsAwaitingApproval: "",
-            pendingMaintenanceRequests: "",
             recentCuratorCreations: "",
             recordsInCuration: "",
             hiddenRecords: ""
@@ -355,6 +250,7 @@
       },
       computed: {
         ...mapState('users', ['user', "messages"]),
+        ...mapState("record", ["recordUpdate"])
       },
       created() {
         this.$nextTick(function () {
@@ -380,6 +276,8 @@
       },
       methods: {
           ...mapActions('users', ['getUser', 'setError']),
+          ...mapActions("record", ["updateRecord"]),
+
           prepareData(){
             this.prepareApprovalRequired(this.allDataCuration);
             this.prepareMaintenanceRequests(this.allDataCuration);
@@ -391,12 +289,13 @@
             let userRecords = dataCuration.approvalsRequired;
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {
-                let object = {};
-                object.updatedAt = rec.updatedAt;
-                object.curator = item.username;
-                object.recordName = rec.name;
-                object.id = rec.id;
-                object.type = rec.type;
+                let object = {
+                  updatedAt: rec.updatedAt,
+                  curator: item.username,
+                  recordName: rec.name,
+                  id: rec.id,
+                  type: rec.type
+                };
                 if (rec.lastEditor){
                   object.lastEditor = rec.lastEditor.username+' ('+rec.lastEditor.id+')';
                 }
@@ -410,19 +309,30 @@
           prepareMaintenanceRequests(dataCuration){
             let requests = dataCuration.pendingMaintenanceRequests;
             requests.forEach(item => {
-              let object = {};
-              object.createdAt = item.createdAt;
-              object.recordNameID = item.fairsharingRecord.name+' ('+item.fairsharingRecord.id+')';
-              object.userNameID = item.user.username+' ('+item.user.id+')';
+              let object = {
+                createdAt: item.createdAt,
+                recordName: `${item.fairsharingRecord.name} (${item.fairsharingRecord.id})`,
+                id: item.fairsharingRecord.id,
+                type: item.fairsharingRecord.type,
+                userNameID: `${item.user.username} (${item.user.id})`,
+                processingNotes: item.fairsharingRecord.processingNotes,
+                requestID: item.id
+              };
               this.maintenanceRequests.push(object);
             });
+            this.maintenanceRequests.sort(compareRecordDesc);
+            for (let i = 0; i < this.maintenanceRequests.length; i++) {
+              this.maintenanceRequests[i].createdAt = formatDate(this.maintenanceRequests[i].createdAt) ;
+            }
           },
+
           prepareRecordsCuratorCreationsLastWeek(dataCuration){
             let records = dataCuration.recentCuratorCreations;
             records.forEach(item => {
-              let object = {};
-              object.recordNameID = item.name+' ('+item.id+')';
-              object.createdAt = item.createdAt;
+              let object = {
+                recordNameID: `${item.name} (${item.id})`
+              };
+              object.createdAt = formatDate(item.createdAt);
               if (item.creator){
                 object.creator = item.creator.username +' ('+item.creator.id+')';
               }
@@ -436,11 +346,12 @@
             let userRecords = dataCuration.recordsInCuration;
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {
-                let object = {};
-                object.curator = item.username;
-                object.recordNameID = rec.name+' ('+rec.id+')';
+                let object = {
+                  curator: item.username,
+                  recordNameID: `${rec.name} (${rec.id})`,
+                  recordMaintainers: "none"
+                };
                 let numMaint = 0;
-                object.recordMaintainers = "none"
                 rec.maintainers.forEach(main => {
                   if (numMaint > 0){
                     object.recordMaintainers += ', ' + main.username+' ('+main.id+')';
@@ -457,9 +368,10 @@
           prepareHiddenRecords(dataCuration){
             let records = dataCuration.hiddenRecords;
             records.forEach(item => {
-              let object = {};
-              object.recordNameID = item.name+' ('+item.id+')';
-              object.createdAt = item.createdAt;
+              let object = {
+                recordNameID: `${item.name} (${item.id})`
+              };
+              object.createdAt = formatDate(item.createdAt);
               if (item.curator){
                 object.curator = item.curator.username
               }
@@ -498,9 +410,6 @@
     color:#fff;
   }
   #text-curator-search-3 div.theme--light.v-input:not(.v-input--is-disabled) input{
-    color:#fff;
-  }
-  #text-curator-search-4 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }
 </style>

@@ -2967,7 +2967,7 @@ REST API.</p>
 		<ul class="dummy">
 			<li>
 				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
-				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-556">line 556</a>
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-558">line 558</a>
 			</li>
 		</ul>
 	</dd>
@@ -3004,188 +3004,6 @@ REST API.</p>
     <dd>
         
 <span class="param-type">Promise.&lt;*></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="extraMetadataFields"><span class="type-signature">&lt;async> </span>extraMetadataFields(type, userToken)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get the extra metadata fields for a RecordType</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>name of the record type.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>userToken</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>the user jwt</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
-				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-538">line 538</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
 
 
 
@@ -3415,7 +3233,7 @@ REST API.</p>
 		<ul class="dummy">
 			<li>
 				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
-				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-570">line 570</a>
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-572">line 572</a>
 			</li>
 		</ul>
 	</dd>
@@ -5157,6 +4975,212 @@ and the user token</p></td>
             
 <hr>
 <dt>
+    <h4 class="name" id="updateStatusMaintenanceRequest"><span class="type-signature">&lt;async> </span>updateStatusMaintenanceRequest(maintenanceRequest, newStatus, userToken)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Update the maintenanceRequest given the new status value</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>maintenanceRequest</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>ID of the maintenanceRequest to update</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>newStatus</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>new status to update</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>userToken</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the user jwt</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_Client_RESTClient.js.html">components/Client/RESTClient.js</a>,
+				 <a href="components_Client_RESTClient.js.html#sunlight-1-line-540">line 540</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id="validateToken"><span class="type-signature">&lt;async> </span>validateToken(jwt)</h4>
     
     
@@ -5523,7 +5547,7 @@ and the user token</p></td>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Fri Jan 22nd 2021
+		on Thu Jan 28th 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

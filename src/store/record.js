@@ -31,7 +31,7 @@ let recordStore = {
         sections: {
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
             organisations: {},
-            additionalInformation: initEditorSections(false, ["additionalInformation"]).additionalInformation,
+            additionalInformation: {},
         },
         editOrganisationLink: {
             showOverlay: false,

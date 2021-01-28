@@ -5,6 +5,7 @@ const customIcons  = {
         PublicationCitation: 'fa-book-open',
         createdAt: 'fa-edit',
         updatedAt: 'fa-sync',
+        tools: 'fa-tools',
     },
     iconfont: 'fa'
 };

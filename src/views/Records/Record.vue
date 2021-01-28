@@ -9,7 +9,7 @@
         <NotFound />
       </div>
 
-      <!--   Action Menu & Alet   -->
+      <!--   Action Menu & Alert   -->
       <v-row
         v-else
         class="pr-3"
@@ -88,7 +88,7 @@
             <!-- LICENCES -->
             <Licences class="mt-5 ml-lg-5" />
             <!-- PUBLICATIONS -->
-            <Publications class="mt-5 ml-lg-5" />
+            <Tools class="mt-5 ml-lg-5" />
           </v-col>
         </v-row>
         <!-- Top Block -->
@@ -110,11 +110,12 @@
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
     import NotFound from "@/views/Errors/404"
+    import Tools from "@/components/Records/Record/Tools";
     const client = new RestClient();
 
     export default {
         name: "Record",
-        components:  {GeneralInfo,Keywords,Licences,Organisations,Publications,Support,NotFound},
+        components:  {Tools, GeneralInfo,Keywords,Licences,Organisations,Publications,Support,NotFound},
         mixins: [stringUtils],
         data: () => {
             return {

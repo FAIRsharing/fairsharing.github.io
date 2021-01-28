@@ -19,7 +19,7 @@
               {{ $vuetify.icons.values.howToCite }}
             </v-icon>
           </div>
-          <v-card-title class="pa-0 card-title-customize">
+          <v-card-title class="pa-0 text--primary card-title-customize">
             How to cite this record
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
@@ -112,7 +112,7 @@ export default {
 
 .card-title-customize {
   position: absolute;
-  top: 0;
+  top: 5px;
   left: 120px
 }
 </style>

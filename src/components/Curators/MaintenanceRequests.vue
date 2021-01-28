@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-text v-if="maintenanceRequests">
+    <v-card-text v-if="maintenanceRequestsProcessed">
       <v-card-title
         id="text-curator-search-5"
         class="green white--text"
@@ -289,7 +289,6 @@
         },
         mounted: function () {
             this.maintenanceRequestsProcessed = JSON.parse(JSON.stringify(this.maintenanceRequests));
-            console.log(this.maintenanceRequestsProcessed);
         },
         methods: {
             ...mapActions("record", ["updateRecord"]),

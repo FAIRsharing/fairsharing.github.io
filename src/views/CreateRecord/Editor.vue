@@ -128,7 +128,7 @@
   import EditLicences from "@/components/Editor/EditLicences";
   import EditOrganisations from "@/components/Editor/Organisations/Organisations";
   import EditPublications from "@/components/Editor/EditPublications";
-  import EditAdditionalInfo from "@/components/Editor/EditAdditionalInfo";
+  import EditAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo";
   import Unauthorized from "@/views/Errors/403"
   import RESTClient from "@/components/Client/RESTClient.js"
 

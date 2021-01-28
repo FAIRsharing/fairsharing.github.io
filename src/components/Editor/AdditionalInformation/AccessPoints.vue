@@ -7,14 +7,20 @@
       Access Points
     </v-card-title>
     <v-card-text>
-      Some info. here about Access Points.
+      <v-row
+        v-for="(ap, index) in currentFields.access_points"
+        :key="'selected_' + index"
+      >
+        {{ ap }}
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex"
-import { isRequired, isUrl } from "@/utils/rules.js"
+import {mapGetters} from "vuex"
+//import {mapGetters, mapState} from "vuex"
+//import { isRequired, isUrl } from "@/utils/rules.js"
 
 export default {
   name: "AccessPoints",
@@ -24,7 +30,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("record"),
+    ...mapGetters("record", ["getSection"]),
     section(){
       return this.getSection('additionalInformation');
     },
@@ -32,7 +38,7 @@ export default {
       return this.getSection("additionalInformation").initialData
     },
     currentFields(){
-      return this.getSection("additionalInformation").data
+      return this.getSection("additionalInformation").data || []
     },
     message(){
       let error = this.getSection("additionalInfomation").error;

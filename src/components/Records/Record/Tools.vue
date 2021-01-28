@@ -9,7 +9,7 @@
     <!-- General Info -->
     <SectionTitle
       title="Tools"
-      :inactive-section="getField('metadata')['associated_tools']!==null"
+      :inactive-section="getField('metadata')['associated_tools']===undefined"
     />
     <!--  container  -->
     <div class="d-flex flex-column ml-2 min-height-40">

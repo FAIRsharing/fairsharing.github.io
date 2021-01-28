@@ -7,12 +7,14 @@
     elevation="3"
   >
     <!-- General Info -->
-    <SectionTitle title="Tools" />
-
+    <SectionTitle
+      title="Tools"
+      :inactive-section="getField('metadata')['associated_tools']!==null"
+    />
     <!--  container  -->
-    <div class="d-flex flex-column ml-2">
+    <div class="d-flex flex-column ml-2 min-height-40">
       <v-card
-        v-if="getField('metadata')['citations']"
+        v-if="getField('metadata')['associated_tools']"
         class="pa-4 mt-15 d-flex flex-column"
         outlined
         color="white"

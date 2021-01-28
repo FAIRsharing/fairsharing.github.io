@@ -2,10 +2,13 @@ import GraphClient from "@/components/GraphClient/GraphClient.js"
 import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
 import tagsQuery from "@/components/GraphClient/queries/geTags.json"
+import getOrganisationsQuery from "@/components/GraphClient/queries/Organisations/getOrganisations.json"
+import getOrganisationsTypesQuery from "@/components/GraphClient/queries/Organisations/getOrganisationTypes.json"
+import getGrantsQuery from "@/components/GraphClient/queries/Organisations/getGrants.json"
+import getPublicationsQuery from "@/components/GraphClient/queries/getPublications.json"
 import descriptionData from "@/data/fieldsDescription.json"
 import registryIcons from "@/data/recordsRegistries.json"
 import status from "@/data/status.json"
-
 const graphClient = new GraphClient();
 
 let editorStore = {
@@ -33,13 +36,22 @@ let editorStore = {
             return years;
         },
         colors: {
-            domain: "blue",
-            taxonomy: "green",
-            subject: "orange",
-            user_defined_tag: "grey"
+            domain: "domain_color",
+            taxonomy: "taxonomic_color",
+            subject: "subject_color",
+            user_defined_tag: "tags_color"
         },
-        allTags: false
-
+        allTags: false,
+        organisations: null,
+        organisationsTypes: null,
+        organisationsRelations: [
+            "maintains",
+            "funds",
+            "collaborates_on",
+            "undefined"
+        ],
+        grants: null,
+        availablePublications: []
     },
     mutations: {
         setCountries(state, countries){
@@ -53,6 +65,18 @@ let editorStore = {
             if (tags.firstTime){
                 state.allTags = tags.data;
             }
+        },
+        setOrganisations(state, organisations){
+            state.organisations = organisations;
+        },
+        setOrganisationsTypes(state, organisationsTypes){
+            state.organisationsTypes = organisationsTypes;
+        },
+        setGrants(state, grants){
+            state.grants = grants;
+        },
+        setAvailablePublications(state, publications){
+            state.availablePublications = publications;
         }
     },
     actions: {
@@ -88,6 +112,35 @@ let editorStore = {
             let data = await graphClient.executeQuery(tagQueryCopy);
             let first = (!state.state.allTags);
             state.commit("setTags", {data: data['searchTags'], firstTime: first});
+        },
+        async getOrganisations(state){
+            let organisations = await graphClient.executeQuery(getOrganisationsQuery);
+            state.commit("setOrganisations", organisations['searchOrganisations'])
+        },
+        async getOrganisationsTypes(state){
+            let organisationsTypes = await graphClient.executeQuery(getOrganisationsTypesQuery);
+            state.commit("setOrganisationsTypes", organisationsTypes['searchOrganisationTypes'])
+        },
+        async getGrants(state){
+            let grants = await graphClient.executeQuery(getGrantsQuery);
+            state.commit("setGrants", grants['searchGrants'])
+        },
+        async getAvailablePublications({commit}, publications){
+            let pubs = [],
+                position = 0;
+            let response = await graphClient.executeQuery(getPublicationsQuery);
+            response.searchPublications.forEach((pub) => {
+                pub.isCitation = false;
+                publications.forEach((publication) => {
+                    if (pub.id === publication.id){
+                        publication.tablePosition = position;
+                        pub.tablePosition = position;
+                    }
+                });
+                pubs.push(pub);
+                position += 1;
+            });
+            commit("setAvailablePublications", pubs);
         }
     },
     modules: {},

@@ -8,11 +8,22 @@
       "abbreviation": "",
       "year_creation": 2020,
       "homepage": "",
-      "description": ""
+      "description": "",
+      "citations": [{
+        "publication_id": 1
+      }]
     },
     "domains": [],
     "subjects": [],
     "taxonomies": [],
-    "userDefinedTags": []
+    "userDefinedTags": [],
+    "publications": [
+      {
+        "id": 1
+      },
+      {
+        "id": 2
+      }
+    ]
   }
 }

@@ -1,0 +1,112 @@
+{
+  "approvalRequired": [
+    {
+      "text": "Date last modification",
+      "value": "updatedAt"
+    },
+    {
+      "text": "Curator",
+      "value": "curator"
+    },
+    {
+      "text": "Record name (id)",
+      "value": "recordName"
+    },
+    {
+      "text": "Last editor",
+      "value": "lastEditor"
+    }
+  ],
+  "maintenanceRequests": [
+    {
+      "text": "Date",
+      "value": "createdAt"
+    },
+    {
+      "text": "Record name (id)",
+      "value": "recordName"
+    },
+    {
+      "text": "User login (id)",
+      "value": "userNameID"
+    },
+    {
+      "text": "Processing Notes",
+      "value": "processingNotes",
+      "sortable": false,
+      "width": 250
+    },
+    { "text": "Accept request?",
+      "value": "actions",
+      "sortable": false
+    }
+  ],
+  "recordsCreatedCuratorsLastWeek": [
+    {
+      "text": "Record name (id)",
+      "value": "recordNameID"
+    },
+    {
+      "text": "Date created",
+      "value": "createdAt"
+    },
+    {
+      "text": "Creator",
+      "value": "creator"
+    }
+  ],
+  "recordsInCuration": [
+    {
+      "text": "Record name (id)",
+      "value": "recordNameID"
+    },
+    {
+      "text": "Record maintainer(s)",
+      "value": "recordMaintainers"
+    },
+    {
+      "text": "Under curation by",
+      "value": "curator"
+    }
+  ],
+  "recordsWithoutDois": [
+    {
+      "text": "Record name (id)",
+      "value": "recordNameID"
+    },
+    {
+      "text": "Date created",
+      "value": "createdAt"
+    },
+    {
+      "text": "Date last edit",
+      "value": "updatedAt"
+    },
+    {
+      "text": "Created by",
+      "value": "creator"
+    },
+    {
+      "text": "Last edited by",
+      "value": "lastEditor"
+    }
+  ],
+  "hiddenRecords": [
+    {
+      "text": "Record name (id)",
+      "value": "recordNameID"
+    },
+    {
+      "text": "Date created",
+      "value": "createdAt"
+    },
+    {
+      "text": "Under curation by",
+      "value": "curator"
+    },
+    {
+      "text": "Created by",
+      "value": "creator"
+    }
+  ]
+}

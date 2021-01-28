@@ -546,6 +546,25 @@ class RESTClient {
         return response.data;
     }
 
+    /* METHODS FOR CURATION */
+    /**
+     * Update the maintenanceRequest given the new status value
+     * @param {Number} maintenanceRequest  ID of the maintenanceRequest to update
+     * @param {string} newStatus - new status to update
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async updateStatusMaintenanceRequest(maintenanceRequest, newStatus, userToken){
+        let _client = this;
+        const request = {
+            method: "put",
+            baseURL: _client.baseURL + "/maintenance_requests/" + maintenanceRequest,
+            headers: this.auth_headers(userToken),
+            data: { maintenance_request: {status: newStatus}}
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
     /* EXTRA METHODS */
 
     /**

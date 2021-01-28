@@ -24,7 +24,7 @@
       <v-data-table
         :loading="loading"
         :headers="headers"
-        :items="maintenanceRequests"
+        :items="maintenanceRequestsProcessed"
         :search="searches"
         class="elevation-1"
         :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
@@ -66,7 +66,7 @@
                 @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
               >
                 {{ props.item.processingNotes }}
-                <template v-slot:input>
+                <template #input>
                   <div class="testDialog">
                     <div class="mt-4 title">
                       Update Processing Notes
@@ -271,7 +271,8 @@
                 recordID: null,
                 general: null
               },
-              searches: ''
+              searches: '',
+              maintenanceRequestsProcessed: []
             }
         },
         computed: {
@@ -285,6 +286,10 @@
           'dialogs.rejectAssignment' (val) {
             val || this.closeMaintenanceReject()
           }
+        },
+        mounted: function () {
+            this.maintenanceRequestsProcessed = JSON.parse(JSON.stringify(this.maintenanceRequests));
+            console.log(this.maintenanceRequestsProcessed);
         },
         methods: {
             ...mapActions("record", ["updateRecord"]),
@@ -333,10 +338,10 @@
               };
               let data = await restClient.updateStatusMaintenanceRequest(_module.dialogs.requestId, newStatus, this.user().credentials.token);
               if (!data.error){
-                const index = _module.maintenanceRequests.findIndex((element) => element.requestID === _module.dialogs.requestId);
-                _module.maintenanceRequests.splice(index, 1);
+                const index = _module.maintenanceRequestsProcessed.findIndex((element) => element.requestID === _module.dialogs.requestId);
+                _module.maintenanceRequestsProcessed.splice(index, 1);
                 if (_module.approvalRequired.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
-                  if (_module.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
+                  if (_module.maintenanceRequestsProcessed.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
                     await _module.saveProcessingNotes(_module.dialogs.recordID,null);
                   }
                 }

@@ -3,7 +3,7 @@
     <section style="min-height:65vh">
       <!--Filtered Chips-->
       <div
-        v-if="getChips.length && !stickToTop"
+        v-if="getChips.length"
         class="d-flex align-content-center justify-content-center chips-holder"
       >
         <filter-chips />
@@ -21,8 +21,8 @@
         class="no-data-found"
       >
         <v-alert
-          color="gray"
-          icon="info"
+          colored-border
+          type="info"
         >
           No records match your search!
         </v-alert>
@@ -73,9 +73,6 @@
         </article>
       </div>
     </section>
-    <section class="my-10 border-top">
-      <Footer />
-    </section>
   </div>
 </template>
 
@@ -87,12 +84,10 @@ import {mapState, mapGetters} from 'vuex'
 import FilterChips from "../Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 import Pagination from "../Header/Pagination";
-import Footer from "@/components/Navigation/Footer.vue"
-
 
 export default {
   name: "SearchOutput",
-  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination, Footer},
+  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination},
   mixins: [filterChipsUtils],
   data() {
     return {
@@ -102,7 +97,6 @@ export default {
   computed: {
     ...mapState('records', ["records", "hits", "loading", "totalPages"]),
     ...mapGetters('records', ["getRecordsLength"]),
-    ...mapState('uiController', ['stickToTop']),
   },
   methods: {
     changeListType: function (listType) {
@@ -111,8 +105,11 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style scoped>
 .chips-holder {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   background: #f5f5f5;
   min-height: 50px;
   border: #dbdbdb dotted 2px;
@@ -120,7 +117,6 @@ export default {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
-
 .no-data-found {
   display: flex;
   justify-content: center;
@@ -130,8 +126,3 @@ export default {
 }
 </style>
 
-<style scoped lang="scss">
-  .border-top {
-    border-top: 1px solid #ccc;
-  }
-</style>

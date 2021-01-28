@@ -21,11 +21,21 @@
           {{ chip.label }}
         </div>
       </v-chip>
-      <v-chip disabled outlined label v-if="remainTagCount!==0 && remainTagCount!==1">
-        {{ `+${remainTagCount} more tags`}}
+      <v-chip
+        v-if="remainTagCount!==0 && remainTagCount!==1"
+        disabled
+        outlined
+        label
+      >
+        {{ `+${remainTagCount} more tags` }}
       </v-chip>
-      <v-chip disabled outlined label v-else-if="remainTagCount===1">
-        {{ `one more tag`}}
+      <v-chip
+        v-else-if="remainTagCount===1"
+        disabled
+        outlined
+        label
+      >
+        {{ `one more tag` }}
       </v-chip>
     </v-chip-group>
   </section>
@@ -68,7 +78,8 @@ export default {
       });
       if (!currentQuery[chip.type]) {
         currentQuery[chip.type] = encodeURIComponent(chip.label);
-      } else {
+      }
+      else {
         let terms = currentQuery[chip.type].split(',');
         terms.push(encodeURIComponent(chip.label));
         currentQuery[chip.type] = terms.filter((v, i, a) => a.indexOf(v) === i).join();

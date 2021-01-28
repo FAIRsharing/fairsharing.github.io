@@ -32,6 +32,7 @@ let recordStore = {
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
             organisations: {},
             additionalInformation: {},
+            publications: initEditorSections(false, ["publications"]).publications,
         },
         editOrganisationLink: {
             showOverlay: false,
@@ -44,27 +45,16 @@ let recordStore = {
         setCurrentRecord(state, data){
             state.currentRecord = data;
             if (!data["fairsharingRecord"]['metadata']['contacts']) state.currentRecord["fairsharingRecord"]['metadata']['contacts'] = [];
-            if (!data["fairsharingRecord"]['metadata']['citations']) state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
+            // Citations should be created if empty.
+            if (!data["fairsharingRecord"]['metadata']['citations']) {
+                state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
+            }
         },
         setRecordHistory(state, data){
             state.currentRecordHistory = data;
         },
         resetCurrentRecordHistory(state){
             state.currentRecordHistory = {};
-        },
-        setNewRecord(state, id){
-            state.recordUpdate = {
-                error: false,
-                message: "success",
-                id: id
-            }
-        },
-        setError(state, error){
-            state.recordUpdate = {
-                error: true,
-                message: error,
-                id: null
-            }
         },
         setSections(state, data){
             let sectionsNames = [
@@ -104,6 +94,9 @@ let recordStore = {
         resetRegistry(state){
             state.sections.generalInformation.data.type = "";
         },
+        setPublications(state, publications) {
+            state.sections.publications.data = publications;
+        },
         updateOrganisationsLinks(state, links){
             state.sections.organisations.data = links;
             state.sections.organisations.initialData = JSON.parse(JSON.stringify(links));
@@ -124,6 +117,23 @@ let recordStore = {
         },
         setEditingRecord(state){
             state.newRecord = false;
+        },
+        setMessage(state, message){
+            state.sections[message.target].message = message.value;
+        },
+        setNewRecord(state, id){
+            state.recordUpdate = {
+                error: false,
+                message: "success",
+                id: id
+            }
+        },
+        setError(state, error){
+            state.recordUpdate = {
+                error: true,
+                message: error,
+                id: null
+            }
         }
     },
     actions: {
@@ -141,16 +151,7 @@ let recordStore = {
             let data = await client.executeQuery(recordHistory);
             state.commit('setRecordHistory', data["fairsharingRecord"]);
         },
-        async updateRecord(state, newRecord){
-            let response = await restClient.updateRecord(newRecord);
-            if (response.error){
-                state.commit("setError", response.error.response)
-            }
-            else {
-                state.commit("setNewRecord", response)
-            }
-        },
-        async updateGeneralInformation({ state, commit }, options) {
+        async updateGeneralInformation({ state, commit}, options) {
             commit("resetMessage", "generalInformation");
             let {
                 type, countries, userDefinedTags, domains, subjects, taxonomies, status,
@@ -213,6 +214,37 @@ let recordStore = {
                   commit('setGeneralInformation', {fairsharingRecord: newRecord});
               }
         },
+        async updatePublications({ state, commit }, options) {
+            commit("resetMessage", "publications");
+            let publications = JSON.parse(JSON.stringify(state.sections.publications.data));
+            let record_data = {
+                publication_ids: [],
+                citation_ids: []
+            };
+            publications.forEach(function (publication) {
+                record_data.publication_ids.push(publication.id);
+                if (publication.isCitation) {
+                    record_data.citation_ids.push(publication.id);
+                }
+                delete publication.isCitation;
+            });
+            const record = {
+                record: record_data,
+                token: options.token,
+                id: options.id
+            };
+            let response = await restClient.updateRecord(record);
+            if (response.error) {
+                commit("setSectionError", {
+                    section: "publications",
+                    value: response.error
+                });
+                return response.error;
+            }
+            else {
+                commit("setMessage", {target: "publications", value: "Record successfully updated!"});
+            }
+        },
         async updateOrganisations({state, commit}, userToken){
             commit("resetMessage", "organisations");
             let deleteItems = [],
@@ -251,18 +283,20 @@ let recordStore = {
         },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});
-        }
+        },
+        async updateRecord(state, newRecord){
+            let response = await restClient.updateRecord(newRecord);
+            if (response.error){
+                state.commit("setError", response.error.response)
+            }
+            else {
+                state.commit("setNewRecord", response)
+            }
+        },
     },
     getters: {
         getField: (state) => (fieldName) => {
             return state.currentRecord['fairsharingRecord'][fieldName];
-        },
-        citations: (state) => {
-            let citations = [];
-            state.currentRecord['fairsharingRecord'].metadata.citations.forEach(function (citation) {
-                citations.push(citation['publication_id']);
-            });
-            return citations;
         },
         getSection: (state) => (sectionName) => {
             return state.sections[sectionName];

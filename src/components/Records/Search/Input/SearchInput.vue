@@ -1,7 +1,7 @@
 <template>
   <aside>
     <v-card
-      v-scroll-stop
+      id="scrollable-holder"
       :class="['pa-2',responsiveClassObject]"
       outlined
       tile
@@ -10,10 +10,7 @@
       <!-- Search Box -->
       <string-search placeholder="Search through all data." />
 
-      <hr
-        class="mb-3 mr-2 ml-2"
-        style="opacity: .5!important;"
-      >
+      <hr class="mb-3 mr-2 ml-2 custom-hr">
 
       <!-- Filter Buttons     -->
       <FilterButtons />
@@ -51,7 +48,7 @@ export default {
     return {
       panel: [],
       filterSelected: {},
-      sortOrder: filterMapping['sort_order']
+      sortOrder: filterMapping['sort_order'],
     }
   },
   computed: {
@@ -98,41 +95,33 @@ export default {
         comparison = 1;
       }
       return comparison;
-    },
+    }
   }
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .filters-holder-default {
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   overflow-x: hidden;
   height: calc(100vh - 230px);
+  position: sticky;
+  top: 0;
   transition: height ease-in 500ms;
 }
-
 .filters-holder-after-scroll {
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   overflow-x: hidden;
   height: 100vh;
+  position: sticky;
+  top: 0;
   transition: height ease-in 500ms;
 }
-
-.buttons-md-style {
-  min-width: 32px !important;
-}
-
-.first-child {
-  font-size: 11px;
-  width: 16.5%;
-}
-
-.flex-1 {
-  font-size: 11px;
-  flex: 1;
+.custom-hr {
+  opacity: .5;
 }
 </style>

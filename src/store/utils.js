@@ -42,6 +42,7 @@ export function initEditorSections(data, sectionsNames){
         type: {},
         status: {},
         countries: [],
+        //publications: [],
         metadata: {
             name: null,
             abbreviation: null,
@@ -78,10 +79,16 @@ export function initEditorSections(data, sectionsNames){
                 }),
                 is_dataset: false
             },
-            organisations: data.organisationLinks,
-            additionalInformation: JSON.parse(JSON.stringify(data.metadata))
+            additionalInformation: JSON.parse(JSON.stringify(data.metadata)),
+            publications: data.publications,
+            organisations: data.organisationLinks
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
+        if(data.publications) {
+            schema.publications.forEach((pub) => {
+                pub.isCitation = !!data.metadata.citations.filter(obj => obj.publication_id === pub.id)[0];
+            });
+        }
         sectionsNames.forEach(name => {
             let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null;
             sections[name] = {

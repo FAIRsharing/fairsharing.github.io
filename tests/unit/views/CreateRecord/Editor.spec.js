@@ -11,6 +11,7 @@ const sinon = require("sinon");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
 const $store = new Vuex.Store({modules: {
     record: recordStore,
     users: userStore
@@ -67,7 +68,7 @@ describe("Editor.vue", function() {
     });
 
     it("shows exit dialog", async () => {
-        let wrapper = await shallowMount(CreateRecord, {
+        wrapper = await shallowMount(CreateRecord, {
             localVue,
             router,
             mocks: {$store, $route, $router}
@@ -78,7 +79,7 @@ describe("Editor.vue", function() {
     });
 
     it("reloads data correctly", async () => {
-        let wrapper = await shallowMount(CreateRecord, {
+        wrapper = await shallowMount(CreateRecord, {
             localVue,
             mocks: {$store, $route}
         });
@@ -86,6 +87,5 @@ describe("Editor.vue", function() {
         await wrapper.vm.confirmPanels[0].method();
         expect(wrapper.vm.confirmPanels[0].show).toBe(false);
     });
-
 
 });

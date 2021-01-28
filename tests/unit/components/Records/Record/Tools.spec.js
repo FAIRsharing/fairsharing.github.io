@@ -2,9 +2,12 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
 import Tools from "@/components/Records/Record/Tools.vue"
+import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+const vuetify = new Vuetify();
+
 Record.state.currentRecord["fairsharingRecord"] = {
     metadata: {
         associated_tools:[{}]
@@ -31,6 +34,7 @@ describe("Tools.vue", function(){
     beforeEach(() => {
         wrapper = shallowMount(Tools, {
             localVue,
+            vuetify,
             mocks: {$store}
         });
     });

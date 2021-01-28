@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
-import Countries from "@/components/Records/Record/Countries.vue"
+import YearOfCreation from "@/components/Records/Record/GeneralInfo/YearOfCreation.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
@@ -23,12 +23,12 @@ const $store = new Vuex.Store({
         record:Record
     }});
 
-describe("Countries.vue", function(){
+describe("YearOfCreation.vue", function(){
     let wrapper;
 
     // TODO: Mock properties in options {}.
     beforeEach(() => {
-        wrapper = shallowMount(Countries, {
+        wrapper = shallowMount(YearOfCreation, {
             localVue,
             vuetify,
             mocks: {$store}
@@ -36,7 +36,7 @@ describe("Countries.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Countries");
+        expect(wrapper.name()).toMatch("YearOfCreation");
     });
 
 });

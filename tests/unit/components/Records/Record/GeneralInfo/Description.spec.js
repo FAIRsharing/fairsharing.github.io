@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
-import Citations from "@/components/Records/Record/Citations.vue"
+import Description from "@/components/Records/Record/GeneralInfo/Description.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
@@ -19,12 +19,12 @@ const $store = new Vuex.Store({
         record:Record
     }});
 
-describe("Citations.vue", function(){
+describe("Registry.vue", function(){
     let wrapper;
 
     // TODO: Mock properties in options {}.
     beforeEach(() => {
-        wrapper = shallowMount(Citations, {
+        wrapper = shallowMount(Description, {
             localVue,
             vuetify,
             mocks: {$store}
@@ -32,7 +32,7 @@ describe("Citations.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Citations");
+        expect(wrapper.name()).toMatch("Description");
     });
 
 });

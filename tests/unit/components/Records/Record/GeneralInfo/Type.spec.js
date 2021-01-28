@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
-import HomePage from "@/components/Records/Record/HomePage.vue"
+import Type from "@/components/Records/Record/GeneralInfo/Type.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
@@ -10,9 +10,6 @@ const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
     doi: 'FAIRsharing.wibble',
-    metadata: {
-        year_creation: 1912,
-    },
     subjects:[],
     domains:[],
     taxonomies:[],
@@ -23,12 +20,12 @@ const $store = new Vuex.Store({
         record:Record
     }});
 
-describe("HomePage.vue", function(){
+describe("DOITitle.vue", function(){
     let wrapper;
 
     // TODO: Mock properties in options {}.
     beforeEach(() => {
-        wrapper = shallowMount(HomePage, {
+        wrapper = shallowMount(Type, {
             localVue,
             vuetify,
             mocks: {$store}
@@ -36,7 +33,7 @@ describe("HomePage.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("HomePage");
+        expect(wrapper.name()).toMatch("Type");
     });
 
 });

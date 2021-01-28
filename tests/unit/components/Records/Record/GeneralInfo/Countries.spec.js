@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
-import Maintainers from "@/components/Records/Record/Maintainers.vue"
+import Countries from "@/components/Records/Record/GeneralInfo/Countries.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
@@ -10,23 +10,25 @@ const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
     doi: 'FAIRsharing.wibble',
+    metadata: {
+        year_creation: 1912,
+    },
     subjects:[],
     domains:[],
     taxonomies:[],
     userDefinedTags:[{label:'a'}],
-    maintainers:[]
 };
 const $store = new Vuex.Store({
     modules: {
         record:Record
     }});
 
-describe("Maintainers.vue", function(){
+describe("Countries.vue", function(){
     let wrapper;
 
     // TODO: Mock properties in options {}.
     beforeEach(() => {
-        wrapper = shallowMount(Maintainers, {
+        wrapper = shallowMount(Countries, {
             localVue,
             vuetify,
             mocks: {$store}
@@ -34,7 +36,7 @@ describe("Maintainers.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Maintainers");
+        expect(wrapper.name()).toMatch("Countries");
     });
 
 });

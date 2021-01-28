@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
-import YearOfCreation from "@/components/Records/Record/YearOfCreation.vue"
+import Citations from "@/components/Records/Record/GeneralInfo/Citations.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
@@ -9,10 +9,6 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    doi: 'FAIRsharing.wibble',
-    metadata: {
-        year_creation: 1912,
-    },
     subjects:[],
     domains:[],
     taxonomies:[],
@@ -23,12 +19,12 @@ const $store = new Vuex.Store({
         record:Record
     }});
 
-describe("YearOfCreation.vue", function(){
+describe("Citations.vue", function(){
     let wrapper;
 
     // TODO: Mock properties in options {}.
     beforeEach(() => {
-        wrapper = shallowMount(YearOfCreation, {
+        wrapper = shallowMount(Citations, {
             localVue,
             vuetify,
             mocks: {$store}
@@ -36,7 +32,7 @@ describe("YearOfCreation.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("YearOfCreation");
+        expect(wrapper.name()).toMatch("Citations");
     });
 
 });

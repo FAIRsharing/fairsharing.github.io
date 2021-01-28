@@ -43,17 +43,17 @@
 
 <script>
 import SectionTitle from '@/components/Records/Record/SectionTitle';
-import Keywords from "@/components/Records/Record/Keywords";
-import DOITitle from "@/components/Records/Record/DOITitle";
-import Type from "@/components/Records/Record/Type";
-import YearOfCreation from "@/components/Records/Record/YearOfCreation";
-import Registry from "@/components/Records/Record/Registry";
-import Description from "@/components/Records/Record/Description";
-import HomePage from "@/components/Records/Record/HomePage";
-import Countries from "@/components/Records/Record/Countries";
-import Citations from "@/components/Records/Record/Citations";
-import UpdateCreateDetail from "@/components/Records/Record/UpdateCreateDetail";
-import Maintainers from "@/components/Records/Record/Maintainers";
+import Keywords from "@/components/Records/Record/GeneralInfo/Keywords";
+import DOITitle from "@/components/Records/Record/GeneralInfo/DOITitle";
+import Type from "@/components/Records/Record/GeneralInfo/Type";
+import YearOfCreation from "@/components/Records/Record/GeneralInfo/YearOfCreation";
+import Registry from "@/components/Records/Record/GeneralInfo/Registry";
+import Description from "@/components/Records/Record/GeneralInfo/Description";
+import HomePage from "@/components/Records/Record/GeneralInfo/HomePage";
+import Countries from "@/components/Records/Record/GeneralInfo/Countries";
+import Citations from "@/components/Records/Record/GeneralInfo/Citations";
+import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail";
+import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
 
 
 export default {

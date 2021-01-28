@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
-import Registry from "@/components/Records/Record/Registry.vue"
+import Registry from "@/components/Records/Record/GeneralInfo/Registry.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();

@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
-import Keywords from "@/components/Records/Record/Keywords.vue"
+import Keywords from "@/components/Records/Record/GeneralInfo/Keywords.vue"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

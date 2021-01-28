@@ -104,7 +104,7 @@
     import RestClient from "@/components/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
-    import Keywords from '@/components/Records/Record/Keywords';
+    import Keywords from '@/components/Records/Record/GeneralInfo/Keywords';
     import Licences from '@/components/Records/Record/Licences';
     import Organisations from '@/components/Records/Record/Organisations';
     import Publications from '@/components/Records/Record/Publications';

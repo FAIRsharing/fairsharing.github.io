@@ -31,7 +31,7 @@
           <v-card
             v-for="(item,index) in getField('metadata')['associated_tools']"
             :key="item.name+'_'+index"
-            class="pa-4 mt-2 d-flex flex-column v-card-hover cursor-pointer"
+            class="pa-4 mt-2 d-flex flex-column v-card-hover"
             flat
             outlined
           >
@@ -94,15 +94,19 @@ a {
 }
 
 .v-card-hover {
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0!important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0!important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0!important;
-  transition: box-shadow .4s;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  transition: box-shadow .4s linear;
+  -webkit-transition: box-shadow .4s linear;
+  -moz-transition: box-shadow .4s linear;
+  -o-transition: box-shadow .4s linear;
 }
 
 .v-card-hover:hover {
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0!important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0!important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0!important;
+  transform: scale(1.004);
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
 }
 </style>

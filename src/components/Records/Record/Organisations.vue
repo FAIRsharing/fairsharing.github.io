@@ -134,6 +134,9 @@
               >
                 {{ organisationLink.organisation.name }}
               </a>
+              <p class="ma-0" v-if="organisationLink.organisation.types.length > 0">
+                ({{ organisationLink.organisation.types.join(', ') }})
+              </p>
             </v-card>
           </v-card-text>
         </v-card>

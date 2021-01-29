@@ -98,41 +98,46 @@
       :inactive-section="getField('organisations').length===0 || getField('organisations')===undefined"
     />
     <div class="d-flex flex-column ml-2 min-height-40">
-      <!--   Organisations maintaining this resource   -->
-      <v-card
+      <div
         v-for="(value, key, index) in relations"
         :key="'relation_' + index"
-        class="pa-4 mt-15 d-flex flex-column"
-        outlined
-        color="white"
-        tile
-        elevation="3"
       >
-        <div class="icon-container d-flex justify-center">
-          <v-icon large>
-            {{ $vuetify.icons.values[key] }}
-          </v-icon>
-        </div>
-        <v-card-title class="pa-0 text--primary card-title-customize">
-          {{ value }}
-        </v-card-title>
-        <v-card-text class="ma-0 pt-8">
-          <v-card
+        <v-card
+          v-if="getRelations(key).length"
+          class="pa-4 mt-15 d-flex flex-column min-height-100"
+          outlined
+          color="white"
+          tile
+          elevation="3"
+        >
+          <div class="icon-container d-flex justify-center">
+            <v-icon large>
+              {{ $vuetify.icons.values[key] }}
+            </v-icon>
+          </div>
+          <v-card-title class="pa-0 text--primary card-title-customize">
+            {{ value }}
+          </v-card-title>
+          <v-card-text
             v-for="(organisationLink, nodeIndex) in getRelations(key)"
             :key="'organisationLink_' + nodeIndex"
-            class="pa-4 mt-2 d-flex flex-column v-card-hover"
-            flat
-            outlined
+            :class="['pl-4 pl-2 pt-0 pb-0',{'pt-8':nodeIndex===0}]"
           >
-            <a
-              :href="organisationLink.organisation.homepage"
-              target="_blank"
+            <v-card
+              class="pa-4 mt-2 d-flex flex-column v-card-hover"
+              flat
+              outlined
             >
-              {{ organisationLink.organisation.name }}
-            </a>
-          </v-card>
-        </v-card-text>
-      </v-card>
+              <a
+                :href="organisationLink.organisation.homepage"
+                target="_blank"
+              >
+                {{ organisationLink.organisation.name }}
+              </a>
+            </v-card>
+          </v-card-text>
+        </v-card>
+      </div>
     </div>
     <section />
   </v-card>

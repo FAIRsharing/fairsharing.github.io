@@ -26,8 +26,7 @@
   <h2
     v-else
     class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25 ellipse-width-600"
-  >
-  </h2>
+  />
 </template>
 
 <script>

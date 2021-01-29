@@ -50,8 +50,8 @@ describe('Curator -> MaintenanceRequest.vue', () => {
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("MaintenanceRequest");
-        expect(wrapper.vm.maintenanceRequests.length).toBe(4);
-        expect(wrapper.vm.maintenanceRequests[0].recordName).toMatch("Record1 (23)");
+        expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(4);
+        expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch("Record1 (23)");
     });
 
     it("can used methods that only change properties", () => {
@@ -74,14 +74,14 @@ describe('Curator -> MaintenanceRequest.vue', () => {
         restStub = sinon.stub(Client.prototype, "executeQuery");
         restStub.returns({data: {error: false}});
         await wrapper.vm.assignMaintenanceOwnConfirm('approved');
-        expect(wrapper.vm.maintenanceRequests.length).toBe(3);
-        expect(wrapper.vm.maintenanceRequests[0].recordName).toMatch("Record2 (24)");
+        expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(3);
+        expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch("Record2 (24)");
         //There is an error in the client query
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery");
         restStub.returns({data: {error: {response: {data: "error"}}}});
         await wrapper.vm.assignMaintenanceOwnConfirm('rejected');
-        expect(wrapper.vm.maintenanceRequests.length).toBe(3);
+        expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(3);
         expect(wrapper.vm.error.recordID).toBe(23);
         //The element to maintain is repeteated in the table approvalRequired
         wrapper.vm.assignMaintenanceOwner("Record3 (29)", 99, "M (32)", 3);
@@ -89,15 +89,15 @@ describe('Curator -> MaintenanceRequest.vue', () => {
         restStub = sinon.stub(Client.prototype, "executeQuery");
         restStub.returns({data: {error: false}});
         await wrapper.vm.assignMaintenanceOwnConfirm('approved');
-        expect(wrapper.vm.maintenanceRequests.length).toBe(2);
+        expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(2);
         // TODO: Check that the ProcessingNotes are not updated to "" in the DB
-        //The element to maintain is repeteated in the table maintenanceRequests
+        //The element to maintain is repeteated in the table maintenanceRequestsProcessed
         wrapper.vm.assignMaintenanceOwner("Record2 (23)", 24, "M (32)", 1);
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery");
         restStub.returns({data: {error: false}});
         await wrapper.vm.assignMaintenanceOwnConfirm();
-        expect(wrapper.vm.maintenanceRequests.length).toBe(1);
+        expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(1);
         restStub.restore();
         // TODO: Check that the ProcessingNotes are not updated to "" in the DB
     });

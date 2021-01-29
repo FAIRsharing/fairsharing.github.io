@@ -54,6 +54,15 @@
               >
                 ({{ organisationLink.organisation.types.join(', ') }})
               </p>
+              <div
+                v-if="organisationLink.grant"
+                class="mt-4"
+              >
+                grants:
+                <strong>
+                  {{ organisationLink.grant.name }}
+                </strong>
+              </div>
             </v-card>
           </v-card-text>
         </v-card>

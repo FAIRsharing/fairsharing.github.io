@@ -2,9 +2,12 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
 import Organisations from "@/components/Records/Record/Organisations.vue"
+import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+const vuetify = new Vuetify();
+
 Record.state.currentRecord["fairsharingRecord"] = {
     organisationLinks: [
         {
@@ -30,6 +33,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
     domains:[],
     taxonomies:[],
     userDefinedTags:[],
+    organisations:[{ "id": 1119 }]
 };
 const $store = new Vuex.Store({
     modules: {
@@ -42,6 +46,7 @@ describe("Organisations.vue", function(){
     beforeEach(() => {
         wrapper = shallowMount(Organisations, {
             localVue,
+            vuetify,
             mocks: {$store}
         });
     });

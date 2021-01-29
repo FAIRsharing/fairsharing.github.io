@@ -110,11 +110,11 @@
       >
         <div class="icon-container d-flex justify-center">
           <v-icon large>
-            {{ $vuetify.icons.values.tools }}
+            {{ $vuetify.icons.values[key] }}
           </v-icon>
         </div>
         <v-card-title class="pa-0 text--primary card-title-customize">
-          {{value}}
+          {{ value }}
         </v-card-title>
         <v-card-text class="ma-0 pt-8">
           <v-card

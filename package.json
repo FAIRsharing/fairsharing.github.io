@@ -30,6 +30,7 @@
     "lodash": "^4.17.20",
     "node-gyp": "^3.8.0",
     "roboto-fontface": "*",
+    "v-clipboard": "^2.2.3",
     "vue": "^2.6.12",
     "vue-anchor-router-link": "*",
     "vue-country-flag": "^2.0.1",

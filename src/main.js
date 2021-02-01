@@ -4,6 +4,7 @@ import App from "./App.vue";
 import VueMeta from "vue-meta";
 import vuetify from './plugins/vuetify'
 import VueScrollTo from 'vue-scrollto';
+import Clipboard from 'v-clipboard'
 
 /* import router & store */
 import router from './router'
@@ -26,6 +27,9 @@ Vue.config.productionTip = false;
 
 // This is a package for having more flexibility over default scroll
 Vue.use(VueScrollTo);
+
+// This is a package for executing copy past commands
+Vue.use(Clipboard);
 
 // using meta package to inject meta data dynamically.
 Vue.use(VueMeta, {

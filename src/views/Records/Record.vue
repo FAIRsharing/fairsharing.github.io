@@ -78,10 +78,8 @@
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- KEYWORDS -->
             <Keywords class="mt-5" />
-
             <!-- SUPPORT -->
             <Support class="mt-5" />
-
             <!-- ORGANISATION -->
             <Organisations class="mt-5" />
           </v-col>
@@ -101,6 +99,8 @@
             <Publications class="mt-5 ml-lg-5" />
           </v-col>
         </v-row>
+        <!-- Top Block -->
+        <Publications class="mt-5" />
       </div>
     </v-container>
   </v-main>

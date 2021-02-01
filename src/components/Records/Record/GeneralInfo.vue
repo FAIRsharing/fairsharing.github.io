@@ -3,15 +3,11 @@
     class="pa-4 d-flex flex-column"
     outlined
     tile
-    elevation="1"
+    elevation="3"
   >
     <!-- General Info -->
-    <SectionTitle title="General Info" />
-    <!-- Ribbon -->
-    <Ribbon
-      v-if="currentRecord['fairsharingRecord'].isRecommended"
-      title="RECOMMENDED"
-    />
+    <SectionTitle title="General Information" />
+
     <!-- Title and DOI -->
     <v-row
       no-gutters
@@ -158,7 +154,6 @@ import {mapState} from 'vuex';
 // TODO:
 //import { mapState, mapGetters } from 'vuex';
 
-import Ribbon from "@/components/Records/Shared/Ribbon";
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 
@@ -172,7 +167,6 @@ export default {
     NoneFound,
     CountryFlag,
     RecordStatus,
-    Ribbon,
     SectionTitle
   },
   mixins: [stringUtils],

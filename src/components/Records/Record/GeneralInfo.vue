@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
-    class="pa-4 mt-5 d-flex flex-column"
+    class="pa-4 d-flex flex-column"
     outlined
     tile
     elevation="1"

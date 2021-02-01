@@ -77,6 +77,7 @@ const recordsCardUtils = {
                         record[node].remainTagCount++;
                     }
                 });
+                return true;
             }
             else {
                 return false;

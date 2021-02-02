@@ -33,10 +33,11 @@
               :small="$vuetify.breakpoint.mdAndDown"
               :x-large="$vuetify.breakpoint.xlOnly"
               class="mr-1 mt-sm-1"
-              :class="item.color"
+              color="primary"
+              outlined
               :to="item.link"
             >
-              <span class="white--text">{{ item.label }}</span>
+              <span class="primary--text">{{ item.label }}</span>
             </v-btn>
           </li>
           <!-- LOGIN -->
@@ -52,7 +53,7 @@
               <v-btn
                 :small="$vuetify.breakpoint.mdAndDown"
                 :x-large="$vuetify.breakpoint.xlOnly"
-                color="teal darken-2 white--text"
+                color="accent3 white--text"
                 class="mr-1 mt-sm-1"
                 dark
                 v-on="on"
@@ -77,7 +78,7 @@
             v-else
             :small="$vuetify.breakpoint.mdAndDown"
             :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1 teal darken-2 pl-2"
+            class="mr-1 mt-sm-1 accent3 pl-2"
             to="/accounts/profile"
           >
             <v-avatar>

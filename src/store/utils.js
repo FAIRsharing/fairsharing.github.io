@@ -54,12 +54,13 @@ export function initEditorSections(data, sectionsNames){
     };
     let sections = {};
     if (data) {
+        let {support_links, ...metadata} = data.metadata;
         const schema = {
             generalInformation: {
                 type: data.type,
                 status: data.status,
                 countries: data.countries,
-                metadata: data.metadata,
+                metadata: metadata,
                 domains: data.domains.map((obj) => {
                     obj.label = obj.label.toLowerCase();
                     return obj;
@@ -81,7 +82,7 @@ export function initEditorSections(data, sectionsNames){
             publications: data.publications,
             organisations: data.organisationLinks,
             dataAccess: {
-                metadata: data.metadata,
+                support_links: support_links,
                 licences: data.licenceLinks
             }
         };

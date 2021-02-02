@@ -5,6 +5,7 @@ import tagsQuery from "@/components/GraphClient/queries/geTags.json"
 import getOrganisationsQuery from "@/components/GraphClient/queries/Organisations/getOrganisations.json"
 import getOrganisationsTypesQuery from "@/components/GraphClient/queries/Organisations/getOrganisationTypes.json"
 import getGrantsQuery from "@/components/GraphClient/queries/Organisations/getGrants.json"
+import getPublicationsQuery from "@/components/GraphClient/queries/getPublications.json"
 import descriptionData from "@/data/fieldsDescription.json"
 import registryIcons from "@/data/recordsRegistries.json"
 import status from "@/data/status.json"
@@ -50,6 +51,7 @@ let editorStore = {
             "undefined"
         ],
         grants: null,
+        availablePublications: []
     },
     mutations: {
         setCountries(state, countries){
@@ -73,6 +75,9 @@ let editorStore = {
         setGrants(state, grants){
             state.grants = grants;
         },
+        setAvailablePublications(state, publications){
+            state.availablePublications = publications;
+        }
     },
     actions: {
         async getCountries(state){
@@ -119,6 +124,23 @@ let editorStore = {
         async getGrants(state){
             let grants = await graphClient.executeQuery(getGrantsQuery);
             state.commit("setGrants", grants['searchGrants'])
+        },
+        async getAvailablePublications({commit}, publications){
+            let pubs = [],
+                position = 0;
+            let response = await graphClient.executeQuery(getPublicationsQuery);
+            response.searchPublications.forEach((pub) => {
+                pub.isCitation = false;
+                publications.forEach((publication) => {
+                    if (pub.id === publication.id){
+                        publication.tablePosition = position;
+                        pub.tablePosition = position;
+                    }
+                });
+                pubs.push(pub);
+                position += 1;
+            });
+            commit("setAvailablePublications", pubs);
         }
     },
     modules: {},

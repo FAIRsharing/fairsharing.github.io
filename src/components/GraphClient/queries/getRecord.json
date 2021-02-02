@@ -11,6 +11,14 @@
     "abbreviation",
     "description",
     "homepage",
+    "lastEdited",
+    {
+      "name": "lastEditor",
+      "fields": [
+        "username",
+        "id"
+      ]
+    },
     {
       "name": "countries",
       "fields": [

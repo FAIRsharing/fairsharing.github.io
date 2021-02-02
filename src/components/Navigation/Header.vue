@@ -112,32 +112,26 @@ export default {
         {
           label: "Standards",
           link: "/standards",
-          color: "blue"
         },
         {
           label: "Databases",
           link: "/databases",
-          color: "blue"
         },
         {
           label: "Policies",
           link: "/policies",
-          color: "blue"
         },
         {
           label: "Collections",
           link: "/collections",
-          color: "blue"
         },
         {
           label: "Add/Claim content",
           link: "/new",
-          color: "grey"
         },
         {
           label: "Stats",
           link: "/summary-statistics",
-          color: "teal darken-2"
         }
       ]
     }
@@ -163,15 +157,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .1s;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-{
-  opacity: 0;
-}
-
 ul {
   list-style: none;
 }

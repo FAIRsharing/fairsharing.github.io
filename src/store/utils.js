@@ -42,7 +42,6 @@ export function initEditorSections(data, sectionsNames){
         type: {},
         status: {},
         countries: [],
-        //publications: [],
         metadata: {
             name: null,
             abbreviation: null,
@@ -80,7 +79,11 @@ export function initEditorSections(data, sectionsNames){
                 is_dataset: false
             },
             publications: data.publications,
-            organisations: data.organisationLinks
+            organisations: data.organisationLinks,
+            dataAccess: {
+                metadata: data.metadata,
+                licences: data.licenceLinks
+            }
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
         if(data.publications) {

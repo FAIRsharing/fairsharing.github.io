@@ -93,7 +93,7 @@
 
           <!-- EDIT LICENSES -->
           <v-tab-item class="px-10 py-3">
-            <edit-licences />
+            <edit-data-access />
           </v-tab-item>
 
           <!-- EDIT PUBLICATIONS -->
@@ -120,7 +120,7 @@
   import { mapActions, mapState, mapGetters } from "vuex"
   import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
   import EditRelationships from "@/components/Editor/EditRelationships";
-  import EditLicences from "@/components/Editor/EditLicences";
+  import EditDataAccess from "@/components/Editor/DataAccess/EditDataAccess";
   import EditOrganisations from "@/components/Editor/Organisations/Organisations";
   import EditPublications from "@/components/Editor/EditPublications";
   import Unauthorized from "@/views/Errors/403"
@@ -133,7 +133,7 @@
     components: {
       EditPublications,
       EditOrganisations,
-      EditLicences,
+      EditDataAccess,
       EditRelationships,
       EditGeneralInfo,
       Unauthorized
@@ -248,4 +248,30 @@
       white-space: initial !important;
   }
 
+</style>
+
+<style>
+  #recordEditor .expand-transition-enter-active,
+  #recordEditor .expand-transition-leave-active,
+  #recordEditor .delayed-transition .slide-x-transition-enter-active,
+  #recordEditor .delayed-transition .slide-x-transition-leave-active
+  {
+    transition-duration: 0.7s !important;
+  }
+
+  #recordEditor .delayed-transition .scroll-x-transition-enter-active,
+  #recordEditor .delayed-transition .scroll-x-transition-leave-active
+  {
+    transition-duration: 1s !important;
+  }
+
+  #recordEditor .delayed-transition .scroll-x-transition-enter-active
+  {
+    transition-delay: 0.1s !important;
+  }
+
+  #recordEditor .delayed-transition .scroll-x-transition-leave-active
+  {
+    transition-delay: 0.6s !important;
+  }
 </style>

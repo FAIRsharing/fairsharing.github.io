@@ -1,7 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import editAdditionalInfo from "@/components/Editor/EditAdditionalInfo"
+import editAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo"
 import RestClient from "@/components/Client/RESTClient.js"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";

@@ -281,6 +281,16 @@ let recordStore = {
             let organisations = await client.executeQuery(recordOrganisationsQuery);
             commit('updateOrganisationsLinks', organisations.fairsharingRecord.organisationLinks);
         },
+        updateAdditionalInformation({ state, commit}, options){
+            commit("resetMessage", "additionalInformation");
+            let access_points = state.sections.generalInformation.data.metadata.access_points;
+            console.log(options)
+            console.log(JSON.stringify(access_points));
+            // TODO:
+            //  1. Get metadata (new GraphQL query)
+            //  2. Modify with access_points,
+            //  3. Post again (restClient.updateRecord).
+        },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});
         },

@@ -1,25 +1,13 @@
-//custom colors-----------------------------
-$color-gray-light1: #bebebe;
-$color-gray-light2: #757575;
-$color-gray-light3: #5a5a5a;
-
-$max-width-val: 30%;
-$max-height-val: 100px;
-
-$color-primary: #27aae1;
-$color-secondary: #004d40;
-
-.button-text-color {
-  color: $color-gray-light1 !important;
-}
-
-//End of Custom Colors----------------------
 
 //Global Setting----------------------------
-a:link {
+a {
   text-decoration: none;
-}
 
+  &:hover, &:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
 //End of Global Setting---------------------
 
 //Animations--------------------------------
@@ -44,14 +32,6 @@ a:link {
 //End of Animations-------------------------
 
 //Utilities---------------------------------
-a {
-  text-decoration: none;
-
-  &:hover, &:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
-}
 
 .tooltips {
   max-width: 500px;

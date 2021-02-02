@@ -44,6 +44,15 @@ a:link {
 //End of Animations-------------------------
 
 //Utilities---------------------------------
+a {
+  text-decoration: none;
+
+  &:hover, &:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
+
 .tooltips {
   max-width: 500px;
   display: block;

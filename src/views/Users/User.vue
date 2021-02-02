@@ -1,4 +1,4 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<template>
   <v-container
     id="userPage"
     fluid
@@ -6,9 +6,7 @@
   >
     <v-row>
       <v-col cols12>
-        <v-card>
-          <MessageHandler field="getUser" />
-
+        <v-card v-if="!messages()['getUser'].error">
           <v-list-item class="blue">
             <v-list-item-content class="pa-0">
               <v-list-item-title
@@ -20,8 +18,18 @@
             </v-list-item-content>
             <user-profile-menu />
           </v-list-item>
-
-          <v-card-text class="container-fluid">
+          <v-card-text
+            v-if="messages()['getUser'].message"
+            class="mb-0"
+          >
+            <v-alert
+              type="success"
+              class="mb-0"
+            >
+              {{ messages()['getUser'].message }}
+            </v-alert>
+          </v-card-text>
+          <v-card-text class="mt-0 pt-0 container-fluid">
             <v-list-item>
               <v-list-item-content v-if="user().metadata">
                 <!-- META -->
@@ -75,9 +83,9 @@
                                         <v-list-item-content>
                                           <v-list-item-title>
                                             <span>
-                                              <router-link :to="'/' + record.id">
+                                              <a :href="'/#/' + record.id">
                                                 {{ record.name }}
-                                              </router-link>
+                                              </a>
 
                                             </span>
                                           </v-list-item-title>
@@ -125,7 +133,6 @@
 <script>
     import { mapActions, mapState } from "vuex"
     import UserProfileMenu from "../../components/Users/UserProfileMenu";
-    import MessageHandler from "../../components/Users/MessageHandler";
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -133,7 +140,7 @@
 
     export default {
       name: "User",
-      components: {MessageHandler, UserProfileMenu},
+      components: {UserProfileMenu},
       filters: {
           cleanString: function(str){
             return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
@@ -146,7 +153,7 @@
           }
         },
         computed: {
-          ...mapState('users', ['user', "userResetPwdMessage"]),
+          ...mapState('users', ['user', "userResetPwdMessage", "messages"]),
           getUserMeta: function(){
             let userMeta = {};
             const _module = this;
@@ -160,9 +167,13 @@
         },
         async created(){
             await this.getUser();
+            if (this.messages()["getUser"].error){
+              this.setError({field:"login", message:"You've been logged out automatically"});
+              this.$router.push({path: "/accounts/login"})
+            }
         },
         methods: {
-            ...mapActions('users', ['getUser', 'resetPwd']),
+            ...mapActions('users', ['getUser', 'resetPwd', 'setError']),
             getRecords: function(fieldName){
               let output = this.user().records[fieldName];
               if (fieldName === "maintenanceRequests"){

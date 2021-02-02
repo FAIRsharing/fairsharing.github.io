@@ -21,7 +21,12 @@
       class="mt-1 mt-lg-1 ml-2"
       @click="searchString()"
     >
-      <v-icon>search</v-icon>
+      <v-icon
+        x-small
+        class="mr-1"
+      >
+        fas fa-search
+      </v-icon>
       <span class="button-text-size">Search</span>
     </v-btn>
   </form>
@@ -60,11 +65,11 @@ export default {
       const _module = this;
       if (_module.searchTerm) {
         _module.$router.push({
-          path: "search",
+          path: "/search",
           query: {
             q: _module.searchTerm
           }
-        })
+        });
         _module.searchTerm = null;
       }
     },
@@ -76,26 +81,26 @@ export default {
 .v-input {
   box-shadow: 0 0 0 0;
   height: 35px!important;
-  margin-bottom: 3px;
+  margin-bottom: 7px;
 }
 .v-input-lg-up{
   box-shadow: 0 0 0 0;
   height: 48px;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
 }
 
 .button-text-size {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .style-xl {
-  height: 54px !important;
-  margin-bottom: 2px;
+  height: 52px !important;
+  margin-bottom: 4px;
 }
 
 .style-lg {
-  height: 38px !important;
-  margin-bottom: 2px;
+  height: 36px !important;
+  margin-bottom: 4px;
 }
 
 .style-md {
@@ -104,6 +109,7 @@ export default {
 
 .style-sm-xs {
   height: 40px !important;
+  margin-bottom: 5px;
 }
 </style>
 

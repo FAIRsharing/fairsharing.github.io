@@ -1,31 +1,68 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-main>
-    <h1 class="d-none">
-      Content
-    </h1>
     <v-container
       v-if="queryTriggered"
       fluid
     >
       <v-row v-if="error">
         <v-col cols="12">
-          <v-alert type="error">
-            {{ error }}
-          </v-alert>
+          <NotFound />
         </v-col>
       </v-row>
 
       <v-row
-        v-if="user().isLoggedIn && !error && canEdit"
+        v-else
         class="pr-3"
       >
-        <v-spacer />
-        <v-btn
-          class="success"
-          @click="goToEdit()"
+        <v-col
+          cols="12"
+          class="d-flex"
         >
-          EDIT
-        </v-btn>
+          <v-alert
+            v-if="alreadyClaimed || claimedTriggered"
+            :type="claimedTriggered ? 'success' : 'warning'"
+            style="flex:1"
+            class="mr-3"
+          >
+            <span v-if="alreadyClaimed"> You have already requested to maintain this record. </span>
+            <span v-if="claimedTriggered"> Thank you for claiming this record. </span>
+            <span> We will be getting back to you between 48 and 72h.</span>
+          </v-alert>
+          <v-spacer v-else />
+          <v-menu
+            cmass="mt-3"
+            offset-y
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                class="mt-2"
+                color="primary"
+                v-bind="attrs"
+                v-on="on"
+              >
+                Actions
+                <v-icon
+                  small
+                  right
+                >
+                  fa-chevron-down
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item
+                v-for="(button, index) in getMenuButtons"
+                :key="'button_' + index"
+                :disabled="button.isDisabled()"
+                @click="button.method()"
+              >
+                <v-list-item-title>
+                  {{ button.name }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-col>
       </v-row>
 
       <!--  Content  -->
@@ -66,7 +103,10 @@
               <Licences />
 
               <!-- MAINTAINERS -->
-              <Maintainers />
+              <Maintainers
+                :can-claim="canClaim"
+                @requestOwnership="requestOwnership"
+              />
 
               <!-- PUBLICATIONS -->
               <Publications />
@@ -87,7 +127,7 @@
 </template>
 
 <script>
-    import {mapActions, mapState} from 'vuex'
+    import {mapActions, mapState, mapGetters} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
     import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
@@ -97,9 +137,9 @@
     import Organisations from '@/components/Records/Record/Organisations';
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
-
-    import stringUtils from '@/utils/stringUtils';
+    import NotFound from "@/views/Errors/404"
     import RestClient from "@/components/Client/RESTClient.js"
+    import stringUtils from '@/utils/stringUtils';
 
     const client = new RestClient();
 
@@ -113,7 +153,8 @@
             Maintainers,
             Organisations,
             Publications,
-            Support
+            Support,
+            NotFound
         },
         mixins: [stringUtils],
         data: () => {
@@ -122,7 +163,10 @@
                 queryTriggered: false,
                 showScrollToTopButton: false,
                 recordAssociations: [],
-                canEdit: false
+                canEdit: false,
+                canClaim: false,
+                alreadyClaimed: false,
+                claimedTriggered: false,
             }
         },
         computed: {
@@ -135,31 +179,84 @@
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
             ...mapState('users', ["user"]),
+            ...mapGetters("record", ["getField"]),
             userIsLoggedIn(){
               return this.user().isLoggedIn;
             },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
             },
+            getMenuButtons(){
+              let _module = this;
+              return [
+                {
+                  name: "Edit record",
+                  isDisabled: function(){
+                    if (!_module.userIsLoggedIn){
+                      return false
+                    }
+                    return !_module.canEdit
+                  },
+                  method: function(){return _module.goToEdit()}
+                },
+                {
+                  name: "Request ownership",
+                  isDisabled: function(){
+                    if (!_module.userIsLoggedIn){
+                      return false
+                    }
+                    return !_module.canClaim
+                  },
+                  method: function(){
+                    if (!_module.userIsLoggedIn){
+                        _module.$router.push({
+                        path: "/accounts/login",
+                        query: {
+                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                        }
+                      })
+                    }
+                    else {
+                      return _module.requestOwnership()
+                    }
+                  }
+                },
+                {
+                  name: "Watch record",
+                  disable: true,
+                  isDisabled: function(){ return true},
+                  method: function(){return null}
+                },
+                {
+                  name: "Have a suggestion/question ?",
+                  isDisabled: function(){ return true},
+                  method: function(){return null}
+                }
+              ];
+            }
         },
         watch: {
-            async currentRoute() {
-                await this.getData();
-            },
+            async currentRoute() {await this.getData()},
             async userIsLoggedIn() {
               await this.canEditRecord();
+              await this.checkClaimStatus();
             }
+        },
+        destroyed() {
+          // minor change in the y axis can fix a serious bug after going back to records..
+          window.scrollTo(0, 5);
         },
         mounted() {
             this.$nextTick(async function () {
                 this.client = new Client();
                 await this.getData();
-                await this.canEditRecord()
+                await this.canEditRecord();
+                await this.checkClaimStatus();
             })
         },
         methods: {
             ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-            /** Combines associations and reserveAssociations into a single array and prepare the data for the earch table */
+            /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
             prepareAssociations(associations, reverseAssociations) {
                 let _module = this;
                 let joinedArrays = associations.concat(reverseAssociations);
@@ -170,6 +267,12 @@
                     properties.forEach(prop => {
                         if (Object.prototype.hasOwnProperty.call(item, prop)) {
                             object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+                            if (_module.currentRecord['fairsharingRecord'].registry === 'collection' && item.recordAssocLabel === 'collects'){
+                                object.recordAssocLabel = 'is collected by';
+                            }
+                            if (_module.currentRecord['fairsharingRecord'].registry === 'policy' && item.recordAssocLabel === 'recommends'){
+                                object.recordAssocLabel = 'is recommended by';
+                            }
                             object.id = item[prop].id;
                             object.registry = item[prop].registry;
                             object.name = item[prop].name;
@@ -180,6 +283,10 @@
                     _module.recordAssociations.push(object);
                 });
             },
+            /**
+            * Goes to the edit page for this record.
+            * @returns {undefined}
+            * */
             goToEdit(){
               let _module = this;
               const recordID =  _module.currentRecord['fairsharingRecord'].id;
@@ -191,6 +298,48 @@
               })
             },
             /**
+            * Method to create a maintenance_request; sets canClaim and (on fail) error.
+            * @returns {undefined}
+            * */
+            async requestOwnership() {
+              let _module = this;
+              const recordID =  _module.currentRecord['fairsharingRecord'].id;
+              const claim = await client.claimRecord(recordID, _module.user().credentials.token);
+              if (claim.error) {
+                _module.error = "Sorry, your request to claim this record failed. Please contact us.";
+                _module.canClaim = false;
+              }
+              else {
+                // show modal here
+                _module.canClaim = false;
+                _module.claimedTriggered = true;
+              }
+            },
+            /**
+            * Method to set the canClaim status for this record.
+            * @returns {undefined}
+            * */
+            async checkClaimStatus() {
+              let _module = this;
+              if (_module.user().isLoggedIn) {
+                const recordID = _module.currentRecord['fairsharingRecord'].id;
+                const claim = await client.canClaim(recordID, _module.user().credentials.token);
+                if (claim.error) {
+                  if (claim.error.response.data.existing){
+                    let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
+                    if (maintainer.length === 0){
+                      _module.alreadyClaimed = true;
+                    }
+                  }
+                  _module.canClaim = false;
+                }
+                else {
+                  // show modal here
+                  _module.canClaim = !claim.existing;
+                }
+              }
+            },
+            /**
              * Method to set the current record in the store
              * @returns {Promise} - the current record
              * */
@@ -198,6 +347,8 @@
                 let _module = this;
                 this.queryTriggered = false;
                 this.error = null;
+                this.alreadyClaimed = false;
+                this.claimedTriggered = false;
                 try {
                     await _module.fetchRecord(this.currentRoute);
                     const currentRecord = _module.currentRecord['fairsharingRecord'];
@@ -208,7 +359,6 @@
                 }
                 catch (e) {
                     this.error = e.message;
-                    this.$router.push({name: "Error 404", path: "/error/404", query: {source: JSON.stringify(location.href)}})
                 }
                 this.queryTriggered = true;
             },
@@ -231,7 +381,7 @@
         },
         metaInfo() {
             return {
-                title: this.getTitle
+                title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
             }
         },
     }

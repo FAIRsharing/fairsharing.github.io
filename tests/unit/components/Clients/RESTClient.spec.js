@@ -59,6 +59,21 @@ describe("RESTClient", () =>{
         expect(resp).toBe("testData");
     });
 
+    it("can get the list of available profile types", async () => {
+        let resp = await client.getProfileTypes();
+        expect(resp).toBe("testData");
+    });
+
+    it("can create a new user defined tag", async() => {
+        let data = await client.createNewUserDefinedTag("abc", 'def');
+        expect(data).toBe("testData")
+    });
+
+    it("can create a new record", async() => {
+        let data = await client.createRecord({}, 'def');
+        expect(data).toBe("testData")
+    });
+
     it("can process network errors", async () => {
         stub.restore();
         jest.spyOn(console, 'error');
@@ -72,5 +87,9 @@ describe("RESTClient", () =>{
         console.error.mockRestore();
         Vue.config.productionTip = true;
         Vue.config.devtools = true;
-    })
+    });
+
+    it("can set authentication headers correctly", () => {
+        expect(client.auth_headers('fun_token')['Authorization']).toEqual('Bearer fun_token');
+    });
 });

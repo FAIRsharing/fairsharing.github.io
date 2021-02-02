@@ -27,7 +27,7 @@
                 color="secondary"
                 class="mr-2"
               >
-                mdi-format-title
+                fas fa-font
               </v-icon>
             </v-sheet>
           </template>
@@ -51,7 +51,7 @@
         </p>
       </div>
 
-      <!-- authors -->
+      <!-- Journals -->
       <div
         v-if="publication.journal"
         class="d-flex mt-2 "
@@ -66,7 +66,7 @@
                 color="secondary"
                 class="mr-2"
               >
-                mdi-book-open-page-variant
+                fas fa-book
               </v-icon>
             </v-sheet>
           </template>
@@ -92,7 +92,7 @@
                 color="secondary"
                 class="mr-2"
               >
-                mdi-human-male-female
+                fas fa-people-arrows
               </v-icon>
             </v-sheet>
           </template>
@@ -105,7 +105,7 @@
 
       <!-- doi -->
       <div
-        v-if="publication.doi"
+        v-if="checkLinkValue(publication.doi)"
         class="d-flex mt-2 "
       >
         <v-tooltip left>
@@ -118,7 +118,7 @@
                 color="secondary"
                 class="mr-2"
               >
-                mdi-file-cabinet
+                fas fa-file-alt
               </v-icon>
             </v-sheet>
           </template>
@@ -136,7 +136,7 @@
 
       <!-- pubmed -->
       <div
-        v-if="publication.pubmedId"
+        v-if="checkLinkValue(publication.pubmedId)"
         class="d-flex mt-2 "
       >
         <v-tooltip left>
@@ -149,7 +149,7 @@
                 color="secondary"
                 class="mr-2"
               >
-                mdi-medical-bag
+                fas fa-file-medical
               </v-icon>
             </v-sheet>
           </template>
@@ -184,6 +184,16 @@
         mixins: [stringUtils],
         computed: {
             ...mapGetters("record", ["getField"])
+        },
+        methods: {
+          checkLinkValue: (link) => {
+            if (!link) {
+              return false;
+            } else if ((link.toLowerCase() === 'missing') || link === 0 || link === "0") {
+              return false;
+            }
+            return true;
+          }
         }
     }
 </script>

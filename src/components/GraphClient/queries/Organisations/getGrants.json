@@ -1,0 +1,11 @@
+{
+  "queryName": "searchGrants",
+  "queryParam": {
+    "load": false
+  },
+  "fields": [
+    "id",
+    "name",
+    "description"
+  ]
+}

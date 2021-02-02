@@ -11,6 +11,14 @@
     "abbreviation",
     "description",
     "homepage",
+    "lastEdited",
+    {
+      "name": "lastEditor",
+      "fields": [
+        "username",
+        "id"
+      ]
+    },
     {
       "name": "countries",
       "fields": [
@@ -27,20 +35,8 @@
         "id"
       ]
     },
-    {
-      "name": "domains",
-      "fields": [
-        "label",
-        "id"
-      ]
-    },
-    {
-      "name": "subjects",
-      "fields": [
-        "label",
-        "id"
-      ]
-    },
+    {"$ref": "domains"},
+    {"$ref": "subjects"},
     {
       "name": "userDefinedTags",
       "fields": [
@@ -97,21 +93,7 @@
         "id"
       ]
     },
-    {
-      "name": "organisationLinks",
-      "fields": [
-        "id",
-        "relation",
-        {
-          "queryName": "grant",
-          "fields": ["name", "id"]
-        },
-        {
-          "queryName": "organisation",
-          "fields": ["name", "id", "homepage", "types"]
-        }
-      ]
-    },
+    {"$ref": "organisationLinks"},
     {
       "name": "publications",
       "fields": [

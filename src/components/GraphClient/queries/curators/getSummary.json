@@ -1,0 +1,140 @@
+{
+  "queryName": "curationSummary",
+  "queryParam": null,
+  "fields": [
+    {
+      "name": "approvalsRequired",
+      "fields": [
+        "username",
+        "id",
+        {
+          "queryName": "fairsharingRecords",
+          "fields": [
+            "id",
+            "name",
+            "updatedAt",
+            "type",
+            {
+              "name": "lastEditor",
+              "fields": [
+                "id",
+                "username"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "pendingMaintenanceRequests",
+      "fields": [
+        "id",
+        "createdAt",
+        {
+          "queryName": "fairsharingRecord",
+          "fields": [
+            "id",
+            "name",
+            "type",
+            "processingNotes",
+            {
+              "name": "lastEditor",
+              "fields": [
+                "id",
+                "username"
+              ]
+            }
+          ]
+        },
+        {
+          "queryName": "user",
+          "fields": [
+            "username",
+            "id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recentCuratorCreations",
+      "fields": [
+            "id",
+            "name",
+            "createdAt",
+            {
+              "queryName": "creator",
+              "fields": [
+                "id",
+                "username"
+              ]
+            }
+      ]
+    },
+    {
+      "name": "recordsInCuration",
+      "fields": [
+        "username",
+        {
+          "queryName": "fairsharingRecords",
+          "fields": [
+            "id",
+            "name",
+            "status",
+            {
+              "name": "maintainers",
+              "fields": [
+                "id",
+                "username"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recordsWithoutDois",
+      "fields": [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt",
+        {
+          "queryName": "creator",
+          "fields": [
+            "id",
+            "username"
+          ]
+        },
+        {
+          "queryName": "lastEditor",
+          "fields": [
+            "id",
+            "username"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hiddenRecords",
+      "fields": [
+        "id",
+        "name",
+        "createdAt",
+        {
+          "queryName": "creator",
+          "fields": [
+            "id",
+            "username"
+          ]
+        },
+        {
+          "queryName": "curator",
+          "fields": [
+            "id",
+            "username"
+          ]
+        }
+      ]
+    }
+  ]
+}

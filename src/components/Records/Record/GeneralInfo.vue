@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
     class="pa-4 mt-5 d-flex flex-column"
     outlined
@@ -92,7 +92,9 @@
       <!--Description-->
       <div class="d-flex align-center mb-4">
         <b class="mr-2">Description:</b>
-        <p class="mb-0">{{ currentRecord['fairsharingRecord'].description | capitalize }}</p>
+        <p class="mb-0">
+          {{ currentRecord['fairsharingRecord'].description | capitalize }}
+        </p>
       </div>
       <!--HomePage-->
       <div class="d-flex">
@@ -135,7 +137,10 @@
                 :country="country.code"
                 size="big"
               />
-              <div class="warning" v-else>
+              <div
+                v-else
+                class="warning"
+              >
                 country code undefined!
               </div>
             </v-sheet>

@@ -15,11 +15,7 @@
       </v-btn>
       <b> EDIT PUBLICATIONS </b>
     </v-card-title>
-    <v-card-text v-if="errors.general">
-      <v-alert type="error">
-        {{ errors.general.data }}
-      </v-alert>
-    </v-card-text>
+    <Alerts target="publications" />
     <v-card-text>
       <v-container
         fluid
@@ -39,10 +35,16 @@
             v-for="(publication, pubIndex) in publications"
             :key="'selected_' + pubIndex"
             class="col-3"
+            cols="12"
+            sm="12"
+            xs="12"
+            md="6"
+            lg="4"
+            xl="3"
           >
             <v-card
               height="100%"
-              class="flexCard"
+              class="d-flex flex-column"
             >
               <v-card-title
                 class="white--text"
@@ -62,9 +64,10 @@
                 <div> <b>PUBLISHED IN:</b> {{ publication.journal }}, {{ publication.year }}</div>
                 <div> <b>AUTHORS:</b> {{ publication.authors }}</div>
                 <v-switch
-                  v-model="publication.isCitation"
+                  :input-value="publication.isCitation"
                   color="green"
                   label="Cite record using this publication?"
+                  @change="toggleCitation(pubIndex)"
                 />
               </v-card-text>
               <v-card-actions :class="{'grey lighten-3': !publication.isCitation, 'green lighten-3': publication.isCitation}">
@@ -110,7 +113,7 @@
       <v-divider />
       <v-text-field
         v-model="search"
-        append-icon="mdi-magnify"
+        append-icon="fa-search"
         label="Search through publications"
         outlined
         hide-details
@@ -167,9 +170,17 @@
     <v-card-actions>
       <v-btn
         class="primary"
-        @click="updateRecordPub()"
+        :loading="loading"
+        @click="saveRecord(false)"
       >
-        Submit Publications
+        Save and continue
+      </v-btn>
+      <v-btn
+        :loading="loading"
+        class="primary"
+        @click="saveRecord(true)"
+      >
+        Save and exit
       </v-btn>
     </v-card-actions>
     <v-dialog
@@ -274,29 +285,30 @@
 <script>
     import { mapState, mapActions, mapGetters } from "vuex"
     import { parseBibFile } from "bibtex";
+    import { isEqual } from "lodash"
     import PublicationClient from "@/components/Client/ExternalClients.js"
-    import GraphClient from "@/components/GraphClient/GraphClient.js"
     import RestClient from "@/components/Client/RESTClient.js"
-    import publicationsQuery from "@/components/GraphClient/queries/getPublications.json"
-
-    const graphClient = new GraphClient();
+    import Alerts from "@/components/Editor/Alerts";
     const pubClient = new PublicationClient();
     const restClient = new RestClient();
 
     export default {
         name: "EditPublications",
+        components: {Alerts},
         data(){
           return {
-            publications: [],
-            availablePublications: [],
             headers: [
               {
                 text: "title",
                 value: "title"
               },
               {
-                text: "doi",
+                text: "DOI",
                 value: "doi"
+              },
+              {
+                text: "Pubmed ID",
+                value: "pubmedId"
               },
               {
                 text: "authors",
@@ -316,7 +328,7 @@
               }
             ],
             search: null,
-            loading: true,
+            loading: false,
             newPublication: {},
             errors: {
               doi: null,
@@ -325,118 +337,159 @@
             },
             openEditor: false,
             currentPublicationIndex: false,
-            citations_ids: []
+            citations_ids: [],
+            initialized: false
           }
         },
         computed: {
-          ...mapState('record', ['currentRecord', 'recordUpdate']),
           ...mapState('users', ['user']),
-          ...mapGetters("record", ["citations"]),
+          ...mapGetters("record", ["getSection", "getChanges"]),
+          ...mapState("editor", ["availablePublications"]),
+          section(){
+            return this.getSection('publications');
+          },
+          message(){
+            let error = this.getSection("publications").error;
+            return {
+              error: error,
+              value: this.getSection("publications").message,
+              type: function(){if (error){return "error"} else {return "success"}}
+            };
+          },
+          publications: {
+            get() { return this.getSection("publications").data; },
+            set(newValue) { this.$store.commit('record/setPublications', newValue); }
+          },
+          metadata() {
+            return this.getSection("generalInformation").data.metadata
+          }
+        },
+        watch: {
+          publications: {
+            deep: true,
+            handler(){
+              let _module = this;
+              if (_module.initialized) {
+                let changes = 0;
+                let initialPublications = this.getSection("publications").initialData;
+                // DELETE
+                initialPublications.forEach((pub) => {
+                  let isFound = this.publications.filter(obj => obj.id === pub.id)[0];
+                  if (!isFound){
+                    changes =+ 1;
+                  }
+                });
+                // UPDATE//ADD
+                this.publications.forEach((pub) => {
+                    let isFound = initialPublications.filter(obj => obj.id === pub.id)[0];
+                    if (!isFound){
+                      changes += 1;
+                    }
+                    else {
+                      let copy = JSON.parse(JSON.stringify(pub));
+                      if (copy.tablePosition > -1) delete copy.tablePosition;
+                      if (!isEqual(isFound, copy)) changes += 1;
+                    }
+                });
+                this.$store.commit("record/setChanges", {
+                  section: "publications",
+                  value: changes
+                });
+              }
+            }
+          }
         },
         mounted(){
           this.$nextTick(async function () {
-            const _module = this;
-
-            // get selected publications.
-            _module.currentRecord["fairsharingRecord"].publications.forEach(function(pub){
-                let pubCopy = JSON.parse(JSON.stringify(pub));
-                pubCopy.isCitation = _module.citations.indexOf(pubCopy.id) > -1;
-                _module.publications.push(pubCopy);
-            });
-
-            // get available publications from the DB.
-            let pub = await graphClient.executeQuery(publicationsQuery);
-            let position = 0;
-            pub['searchPublications'].forEach(function(pub){
-                pub.isCitation = false;
-                _module.publications.forEach(function(publication){
-                  if (pub.id === publication.id){
-                    publication.tablePosition = position;
-                    pub.tablePosition = position;
-                  }
-                });
-              _module.availablePublications.push(pub);
-              position += 1;
-            });
-
-            // neutralize loading.
-            _module.loading = false;
+            this.loading = true;
+            this.initialized = false;
+            await this.getAvailablePublications(this.publications);
+            this.loading = false;
+            this.initialized = true;
           });
         },
         methods: {
-          ...mapActions("record", ["updateRecord"]),
+          ...mapActions("record", ["updatePublications"]),
+          ...mapActions("editor", ["getAvailablePublications"]),
+          toggleCitation(index) {
+            let pub = this.publications[index];
+            pub.isCitation = !pub.isCitation;
+            this.$set(this.publications, index, pub);
+          },
           async getDOI(){
-              this.currentPublicationIndex = false;
-              this.errors = {
-                  doi: null,
-                  general: null,
-                  pmid: null
-              };
-              let doi = (' ' + this.search).slice(1).trim(); // make a copy of the string and trim it
-              let data = await pubClient.getDOI(doi);
-              if (data.error){
-                this.errors.doi = true;
-              }
-              else {
-                let publication = parseBibFile(data).content[0];
-                let title = "";
-                publication.getField('title').data.forEach(function(titleComponent){
-                  if (typeof titleComponent !== "object" ){
-                    title += titleComponent
-                  }
-                  else {
-                    let subTitle = "";
-                    titleComponent.data.forEach(function (subTitleComponent) {
-                      subTitle += subTitleComponent;
-                    });
-                    title += subTitle;
-                  }
-                });
-                this.newPublication.authors = publication.getField('author').data.join('');
-                this.newPublication.doi = publication.getField('doi').data.join('');
-                this.newPublication.title = title;
-                this.newPublication.journal = publication.getField('journal').data.join('');
-                this.newPublication.url = decodeURIComponent(publication.getField('url').data.join(''));
-                this.newPublication.year = publication.getField('year');
-                this.newPublication.isCitation = false;
-                this.openEditor = true;
-              }
+            this.currentPublicationIndex = false;
+            this.errors = {
+              doi: null,
+              general: null,
+              pmid: null
+            };
+            let doi = (' ' + this.search).slice(1).trim(); // make a copy of the string and trim it
+            let data = await pubClient.getDOI(doi);
+            if (data.error){
+              this.errors.doi = true;
+            }
+            else {
+              let publication = parseBibFile(data).content[0];
+              let title = "";
+              publication.getField('title').data.forEach((titleComponent) => {
+                if (typeof titleComponent !== "object" ){
+                  title += titleComponent
+                }
+                else {
+                  let subTitle = "";
+                  titleComponent.data.forEach((subTitleComponent) => {
+                    subTitle += subTitleComponent;
+                  });
+                  title += subTitle;
+                }
+              });
+              this.newPublication.authors = publication.getField('author').data.join('');
+              this.newPublication.doi = publication.getField('doi').data.join('');
+              this.newPublication.title = title;
+              this.newPublication.journal = publication.getField('journal').data.join('');
+              this.newPublication.url = decodeURIComponent(publication.getField('url').data.join(''));
+              this.newPublication.year = publication.getField('year');
+              this.newPublication.isCitation = false;
+              this.openEditor = true;
+            }
           },
           async getPMID() {
-              this.currentPublicationIndex = false;
-              this.errors = {
-                doi: null,
-                general: null,
-                pmid: null
+            this.currentPublicationIndex = false;
+            this.errors = {
+              doi: null,
+              general: null,
+              pmid: null
+            };
+            let id = (' ' + this.search).slice(1).trim(); // make a copy of the string and trim it
+            let data = await pubClient.getPMID(id);
+            if (data.error || data.result[id].error){
+              this.errors.pmid = true
+            }
+            else {
+              const pub = data.result[id];
+              let pubDate = new Date(pub['sortpubdate']);
+              let doi = this.processIDs(pub['elocationid']);
+              this.newPublication = {
+                title: pub.title,
+                journal: pub['fulljournalname'],
+                year: pubDate.getFullYear(),
+                authors: pub['authors'].map(function(elem){return elem.name;}).join(", "),
+                pubmed_id: pub['uid'],
+                url: "https://pubmed.ncbi.nlm.nih.gov/" + id
               };
-              let id = (' ' + this.search).slice(1).trim(); // make a copy of the string and trim it
-              let data = await pubClient.getPMID(id);
-              if (data.error || data.result[id].error){
-                this.errors.pmid = true
+              if (doi) {
+                this.newPublication.doi = doi;
+                this.newPublication.url = "https://doi.org/" + doi;
               }
-              else {
-                const pub = data.result[id];
-                let doi = this.processIDs(pub['elocationid']);
-                this.newPublication = {
-                  title: pub.title,
-                  journal: pub['fulljournalname'],
-                  year: pub['pubdate'],
-                  authors: pub['authors'].map(function(elem){return elem.name;}).join(", "),
-                  pubmed_id: pub['uid']
-                };
-                if (doi) {
-                  this.newPublication.doi = doi;
-                  this.newPublication.url = "https://doi.org/" + doi;
-                }
-                this.newPublication.isCitation = false;
-                this.openEditor = true;
-              }
+              this.newPublication.isCitation = false;
+              this.openEditor = true;
+            }
           },
           processIDs(idsString){
             let doi = null;
             if (idsString){
               let IDsArray = idsString.split(". ");
-              IDsArray.forEach(function(IDString){
+              IDsArray.forEach((IDString) => {
                 let IDArray = IDString.split(": ");
                 if (IDArray[0] === 'doi'){
                   doi = IDArray[1]
@@ -496,37 +549,25 @@
             this.openEditor = true;
             this.newPublication = JSON.parse(JSON.stringify(publication));
           },
-          async updateRecordPub(){
-              const _module = this;
-              _module.openEditor = false;
-              let publications = {
-                publication_ids: [],
-                citation_ids: []
-              };
-              _module.publications.forEach(function(publication){
-                publications.publication_ids.push(publication.id);
-                if (publication.isCitation) {
-                    publications.citation_ids.push(publication.id);
-                }
-                // delete the isCitation field
-                delete publication.isCitation;
-              });
-              const record = {
-                record: publications,
-                token: _module.user().credentials.token,
-                id: _module.$route.params.id
-              };
-              await _module.updateRecord(record);
-              if (!_module.recordUpdate.error){
-                let ID = _module.$route.params.id;
-                _module.$router.push({
-                  path: "/" + ID
-                })
-              }
-              else {
-                _module.errors.general = _module.recordUpdate.message;
-              }
-            },
+          async saveRecord(redirect){
+            this.openEditor = false; // what's this for?
+            this.loading = true;
+            await this.updatePublications({
+              token: this.user().credentials.token,
+              id: this.$route.params.id
+            });
+            this.loading = false;
+            if (!redirect) {
+              this.$scrollTo("#mainHeader");
+              this.$store.commit("record/setChanges", {
+                section: "publications",
+                value: 0
+              })
+            }
+            if (redirect && !this.message.error){
+              await this.$router.push({path: '/' + this.$route.params.id})
+            }
+          },
           createNewPublication(){
             this.errors = {
               doi: null,
@@ -547,10 +588,3 @@
         }
     }
 </script>
-
-<style scoped>
-  .flexCard {
-    display:flex;
-    flex-direction: column;
-  }
-</style>

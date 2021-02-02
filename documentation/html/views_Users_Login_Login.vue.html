@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -103,17 +103,17 @@
         &lt;v-col
           cols="12"
           sm="12"
-          :md="!popUp ? '4' : '12' "
-          :lg="!popUp ? '4' : '12' "
-          :xl="!popUp ? '4' : '12' "
+          :md="!popUp ? '8' : '12' "
+          :lg="!popUp ? '8' : '12' "
+          :xl="!popUp ? '5' : '12' "
         >
           &lt;v-card :flat="popUp">
             &lt;v-card-title :class="{'blue white--text mb-5': !popUp, 'py-0 mb-5': popUp}">
-              &lt;!-- card title -->
               &lt;h2 class="ma-0">
                 {{ currentPanel | capitalize }}
               &lt;/h2>
             &lt;/v-card-title>
+
             &lt;v-card-text>
               &lt;!-- message handler -->
               &lt;MessageHandler field="login" />
@@ -135,6 +135,8 @@
                 v-if="resendButton"
                 class="pb-0 mb-0"
               />
+
+              &lt;!-- OAUTH -->
               &lt;v-list>
                 &lt;v-list-item
                   v-for="(provider, providerIndex) in oauthLogin"
@@ -145,14 +147,14 @@
                     width="250px"
                     :class="provider.color"
                     class="text-left"
-                    :href="provider.callback"
+                    :href="provider.callback + returnTo()"
                   >
                     &lt;v-layout width="100%">
                       &lt;v-icon
                         left
                         class="mr-5"
                       >
-                        {{ provider.icon }}
+                        {{ 'fab fa-' + provider.name.toLowerCase() }}
                       &lt;/v-icon>
                       &lt;v-layout>with {{ provider.name }}&lt;/v-layout>
                     &lt;/v-layout>
@@ -166,6 +168,8 @@
             &lt;v-card-text v-if="currentPanel === 'login'">
               &lt;v-form
                 id="loginForm"
+                ref="loginForm"
+                v-model="formValid"
               >
                 &lt;!-- account -->
                 &lt;v-text-field
@@ -173,6 +177,7 @@
                   label="Username or email"
                   required
                   outlined
+                  :rules="[rules.isRequired()]"
                 />
 
                 &lt;!-- password -->
@@ -184,23 +189,18 @@
                   counter
                   required
                   outlined
+                  :rules="[rules.isRequired()]"
                   @click:append="show1 = !show1"
                 />
 
                 &lt;v-card-text class="text-center py-1">
-                  &lt;a
-                    href="#/accounts/forgotPassword"
-                    @click="()=>{this.$emit('ClosePopup', true)}"
-                  >
-                    Forgot your password ?
-                  &lt;/a>
+                  &lt;router-link to="/accounts/forgotPassword">
+                    &lt;span @click="()=>{this.$emit('ClosePopup', true)}">Forgot your password ?&lt;/span>
+                  &lt;/router-link>
                   &lt;v-divider />
-                  &lt;a
-                    href="#/accounts/signup"
-                    @click="()=>this.$emit('ClosePopup', true)"
-                  >
-                    Create a new account
-                  &lt;/a>
+                  &lt;router-link to="/accounts/signup">
+                    &lt;span @click="()=>{this.$emit('ClosePopup', true)}">Create a new account&lt;/span>
+                  &lt;/router-link>
                 &lt;/v-card-text>
 
                 &lt;v-card-actions class="mt-2 justify-center">
@@ -208,6 +208,7 @@
                     class=" px-4"
                     light
                     color="primary"
+                    :disabled="!formValid"
                     @click="logUser()"
                   >
                     LOGIN
@@ -226,6 +227,7 @@
 import {mapActions, mapState} from 'vuex'
 import MessageHandler from "@/components/Users/MessageHandler";
 import stringUtils from '@/utils/stringUtils';
+import { isRequired } from "@/utils/rules.js"
 
 /** This component handles the login page
  *
@@ -253,27 +255,28 @@ export default {
       oauthLogin: [
         {
           name: "ORCID",
-          icon: "fab fa-orcid",
           color: "green white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/orcid",
         },
         {
           name: "Twitter",
-          icon: "fab fa-twitter",
           color: "blue white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/twitter",
         },
         {
           name: "GitHub",
-          icon: "fab fa-github",
           color: "black white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/github",
         }
-      ]
+      ],
+      rules: {
+        isRequired: function(){return isRequired()},
+      },
+      formValid: false
     }
   },
   computed: {
-    ...mapState("users", ["messages", "user"])
+    ...mapState("users", ["messages", "user"]),
   },
   methods: {
     ...mapActions('users', ['login', 'logout']),
@@ -285,24 +288,38 @@ export default {
       };
       _module.$emit('ClosePopup',false);
       await _module.login(user);
+
       if (_module.messages().login.error) {
         const confirmationError = "You have to confirm your email address before continuing.";
         if (_module.messages().login.message === confirmationError) {
-          // display resend confirmation link
           _module.resendButton = true;
         }
-      } else {
-        const goTo = _module.$route.query.redirect;
-        if (goTo) {
-          _module.$router.push({
-            path: goTo
-          })
-        }
-        else if (_module.redirect) {
-          _module.$router.go(-1);
+      }
+
+      else {
+        const goTo = _module.$route.query.goTo;
+        if (_module.redirect) {
+          if (goTo) {
+            _module.$router.push({
+              path: goTo
+            })
+          }
+          else {
+            _module.$router.push({
+              path: "/accounts/profile"
+            })
+          }
         }
       }
     },
+    returnTo: function() {
+      const _module = this;
+      const goTo = _module.$route.query.goTo;
+      if (goTo) {
+        return `?return_to=${goTo}`;
+      }
+      return '';
+    }
   }
 }
 &lt;/script>
@@ -361,9 +378,9 @@ export default {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Fri Sep 18th 2020
+		on Mon Feb 1st 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

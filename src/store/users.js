@@ -188,6 +188,7 @@ export const actions = {
                     field: "getUser",
                     message: userMetadata.error.response.data.error
                 });
+                this.commit("users/clearUserData");
             }
             else {
                 getUserQuery.queryParam.id = userMetadata.id;
@@ -197,6 +198,7 @@ export const actions = {
                         field: "getUser",
                         message: userRecords.error.response.data.error
                     });
+                    this.commit("users/clearUserData");
                 }
                 else {
                     this.commit('users/setUser', {
@@ -211,6 +213,7 @@ export const actions = {
                 field: "getUser",
                 message: e.message
             });
+            this.commit("users/clearUserData");
         }
     },
     async getUserMeta(state){
@@ -303,11 +306,24 @@ export const actions = {
             this.commit("users/setError", {field: "resetPassword", message: e.message})
         }
     },
+    async validateUserToken(state){
+        let validity = await client.validateToken(state.state.user().credentials.token);
+        if (!validity.success){
+            this.commit("users/logout");
+            this.commit("users/setError", {
+                field: "getUser",
+                message: validity
+            });
+        }
+    },
     setError(state, error){
         this.commit("users/setError", {
             field: error.field,
             message: error.message
         })
+    },
+    setMessage(state, message){
+        this.commit("users/setMessage", message);
     }
 };
 
@@ -328,5 +344,3 @@ let currentUser = {
 };
 
 export default currentUser;
-
-

@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -93,60 +93,61 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-expansion-panel v-if="filter.filterName">
-    &lt;div
-      :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
-      class="px-3"
-    >
-      &lt;v-autocomplete
-        v-model="selectedValues"
-        :items="getValues"
-        outlined
-        dense
-        clearable
-        multiple
-        prepend-inner-icon="mdi-magnify"
-        :placeholder="`Search through ${filter.filterLabel}`"
-        :label="filter.filterLabel"
-        item-text="key"
-        item-value="key"
-        class="autocomplete-max-width pt-2"
-        @click:clear="reset(filter)"
-      >
-        &lt;template v-slot:selection="data">
-          &lt;v-chip class="blue white--text  mb-1 ">
-            &lt;span class="chipsValueName">
-              {{ cleanString(data.item.key) }}
-            &lt;/span>
-          &lt;/v-chip>
-        &lt;/template>
-        &lt;template v-slot:item="data">
-          &lt;div class="d-flex align-content-around">
-            &lt;span class="filterValueName"> {{ cleanString(data.item.key) }}&lt;/span>
-            &lt;span class="filterValueCount"> {{ data.item['doc_count'] }}&lt;/span>
-          &lt;/div>
-        &lt;/template>
-      &lt;/v-autocomplete>
-      &lt;v-btn
-        color="primary"
-        class="ml-lg-2 mt-2"
-        style="height: 38px"
-        @click="applyFilters(filter)"
-      >
-        Apply
-      &lt;/v-btn>
-    &lt;/div>
+    &lt;v-expansion-panel-header> {{ filter.filterLabel }}&lt;/v-expansion-panel-header>
+    &lt;v-expansion-panel-content class="pl-5 pr-5">
+      &lt;div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
+        &lt;v-autocomplete
+          :id="filter.filterName + 'AutocompleteList' "
+          v-model="selectedValues"
+          :attach="true"
+          :items="getValues"
+          solo
+          dense
+          clearable
+          multiple
+          prepend-inner-icon="fa-search"
+          :placeholder="`Search through ${filter.filterLabel}`"
+          item-text="key"
+          item-value="key"
+          @focus="scrollTo(filter.filterName)"
+          @click:clear="reset(filter)"
+        >
+          &lt;template v-slot:selection="data">
+            &lt;v-chip class="blue white--text  mb-1 ">
+              &lt;span class="chipsValueName">
+                {{ cleanString(data.item.key) }}
+              &lt;/span>
+            &lt;/v-chip>
+          &lt;/template>
+          &lt;template v-slot:item="data">
+            &lt;div class="d-flex full-width">
+              &lt;span class="filterValueName"> {{ cleanString(data.item.key) }}&lt;/span>
+              &lt;span class="filterValueCount"> {{ data.item['doc_count'] }}&lt;/span>
+            &lt;/div>
+          &lt;/template>
+        &lt;/v-autocomplete>
+        &lt;v-btn
+          color="primary"
+          class="ml-lg-2 custom-btn"
+          @click="applyFilters(filter)"
+        >
+          Apply
+        &lt;/v-btn>
+      &lt;/div>
+    &lt;/v-expansion-panel-content>
   &lt;/v-expansion-panel>
 &lt;/template>
 
 &lt;script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import clearString from '@/utils/stringUtils'
 
 export default {
   name: "FilterAutocomplete",
   mixins: [clearString],
   props: {
-    filter: {default: null, type: Object}
+    filter: {default: null, type: Object},
+    lastItem:{default:false, type:Boolean}
   },
   data: () => {
     return {
@@ -155,6 +156,7 @@ export default {
   },
   computed: {
     ...mapGetters('records', ['getFilter']),
+    ...mapState('uiController', ['stickToTop']),
     getValues: function () {
       let _module = this;
       let output = _module.getFilter(this.filter.filterName);
@@ -177,8 +179,8 @@ export default {
         if (_module.selectedValues !== null &amp;&amp; _module.selectedValues.length > 0) {
           if (_module.selectedValues.length === 1) {
             currentParams[filterName] = encodeURIComponent(_module.selectedValues.join(','));
-          } else
-            {
+          }
+          else {
             let newParam = [];
             _module.selectedValues.forEach(function (val) {
               newParam.push(encodeURIComponent(val));
@@ -190,18 +192,16 @@ export default {
             query: currentParams
           });
         }
-      } else
-        {
-        if (_module.selectedValues === null || _module.selectedValues.length === 0)
-        {
+      }
+      else {
+        if (_module.selectedValues === null || _module.selectedValues.length === 0) {
           delete currentParams[_module.filter.filterName];
           _module.$router.push({
             name: _module.$route.name,
             query: currentParams
           });
         }
-        else
-        {
+        else {
           let newParams = [];
           let existingValues = currentParams[_module.filter.filterName].split(",");
           _module.selectedValues.forEach(function (selectedValue) {
@@ -227,80 +227,29 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
+    /* istanbul ignore next */
+    scrollTo(name) {
+      let _module = this;
+      _module.$scrollTo("#" + name + 'AutocompleteList', 450, {
+        container: '#scrollable-holder',
+        easing: 'ease-in',
+      })
+    }
   }
 }
 &lt;/script>
 
-&lt;style scoped lang="scss">
-.badge {
-  width: 35px;
-  height: 25px;
-  background: white;
-  border: #27aae1 solid 1px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  position: relative;
-
-  #inventory {
-    font-size: small;
-    position: absolute;
-    top: 6%;
-    left: 20%;
-  }
-}
-
-.badge-active {
-  width: 35px;
-  height: 24px;
-  background: #27aae1;
-  border: #27aae1 solid 1px;
-  border-radius: 5px 5px 5px 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  position: relative;
-
-  #inventory {
-    color: white;
-    font-size: small;
-    position: absolute;
-    top: 6%;
-    left: 20%;
-  }
-}
-
-.triangle-left {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 12px solid transparent;
-  border-right: 15px solid #27aae1;
-  border-bottom: 11px solid transparent;
-  left: -30%;
-}
-
-.fixed-scrollable-height {
-  max-height: 300px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
+&lt;style scoped>
 .filterValueName {
   width: 378px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  flex: 1;
 }
 
 .chipsValueName {
   width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.autocomplete-max-width {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -312,6 +261,9 @@ export default {
   padding: 0 7px;
 }
 
+.custom-btn {
+  height: 38px;
+}
 &lt;/style>
 </pre>
     </article>
@@ -356,9 +308,9 @@ export default {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Fri Sep 18th 2020
+		on Mon Feb 1st 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

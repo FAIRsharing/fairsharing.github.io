@@ -8,16 +8,14 @@ import GraphClient from "@/components/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 
 const localVue = createLocalVue();
-localVue.use(VueRouter);
 localVue.use(Vuex);
 const $store = new Vuex.Store({
     modules: {
         users: usersStore
     },
 });
-let routes = [{name: "Login", path: "/accounts/login"}];
-const router = new VueRouter({routes});
-
+const router = new VueRouter();
+const $router = { push: jest.fn() };
 
 describe("User.vue", () => {
 
@@ -52,22 +50,36 @@ describe("User.vue", () => {
         graphStub.restore();
     });
 
-    beforeEach( () => {
+    it("can be instantiated", () => {
         wrapper = shallowMount(User, {
             localVue,
             router,
-            mocks: {$store}
+            mocks: {$store,$router}
         });
-    });
-
-    it("can be instantiated", () => {
         const title = "User";
         expect(wrapper.name()).toMatch(title);
     });
 
     it("has a getRecords methods that sorts the records for easy use", () => {
+        wrapper = shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store, $router}
+        });
         let records = wrapper.vm.getRecords('maintenanceRequests');
         expect(records).toStrictEqual([{name: "recordTest"}])
+    });
+
+    it("can process errors", () => {
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {error: "error"}
+        });
+        wrapper = shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store, $router}
+        });
     })
 
 });

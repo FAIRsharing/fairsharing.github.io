@@ -1,137 +1,129 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div
     v-if="recordType"
-    class="circle"
+    class="circle-container"
   >
-    <v-tooltip top>
+    <v-tooltip
+      right
+      nudge-right="15"
+    >
       <template v-slot:activator="{ on }">
-        <img
+        <v-avatar
           v-if="Object.keys(recordType).includes(record.type)"
-          :src="('./' + recordType[record.type].icon)"
-          class="iconClass"
+          size="80"
+          :alt="getRecordStatus.title"
           v-on="on"
         >
+          <img
+            :src="('./' + recordType[record.type].icon)"
+            :alt="getRecordStatus.title"
+          >
+        </v-avatar>
       </template>
       <span>{{ recordType[record.type].tooltip }}</span>
     </v-tooltip>
-    <span
-      id="innerCircle"
-      :style="getRecordStatus.backColor"
-    >
 
-      <v-tooltip right>
-        <template v-slot:activator="{ on }">
-          <b
-            id="status-style"
-            v-on="on"
-          >{{ getRecordStatus.title }}</b>
-        </template>
-        <span>{{ getRecordStatus.tooltip }}</span>
-      </v-tooltip>
-    </span>
+    <v-tooltip right>
+      <template v-slot:activator="{ on }">
+        <span
+          class="white--text headline circle"
+          :style="getRecordStatus.backColor"
+          v-on="on"
+        ><p>{{ getRecordStatus.title }}</p></span>
+      </template>
+      <span>{{ getRecordStatus.tooltip }}</span>
+    </v-tooltip>
   </div>
 </template>
 
 <script>
-    import recordTypes from "@/components/Records/recordsTypeData.json"
-    export default {
-        name: "RecordStatus",
-        props: {
-            record: {default: null, type: Object}
+import recordTypes from "@/data/recordsRegistries.json"
+
+export default {
+  name: "RecordStatus",
+  props: {
+    record: {default: null, type: Object}
+  },
+  data() {
+    return {
+      statusStyles: {
+        ready: {
+          title: 'R',
+          tooltip: 'Ready',
+          backColor: 'background: linear-gradient(#599C0F, lightgreen)'
         },
-        data() {
-            return {
-                statusStyles: {
-                    ready: {
-                        title: 'R',
-                        tooltip: 'Ready',
-                        backColor: 'background: linear-gradient(green, lightgreen)'
-                    },
-                    deprecated: {
-                        title: 'D',
-                        tooltip: 'Deprecated',
-                        backColor: 'background: linear-gradient(#8F4309, #a57202)'
-                    },
-                    uncertain: {
-                        title: 'U',
-                        tooltip: 'Uncertain',
-                        backColor: 'background: linear-gradient(#2d2b2b, #757575)'
-                    },
-                    in_development: {
-                        title: 'I',
-                        tooltip: 'In Development',
-                        backColor: 'background: linear-gradient(#35baef, #02364b)'
-                    },
-                    undefined: {
-                        title: '?',
-                        tooltip: 'Undefined',
-                        backColor: 'background: linear-gradient(red, red)'
-                    },
-                },
-                recordType: null,
-            }
+        deprecated: {
+          title: 'D',
+          tooltip: 'Deprecated',
+          backColor: 'background: linear-gradient(#707070, #C6C6C6)'
         },
-        computed: {
-            getRecordStatus: function () {
-                let _module = this;
-                if (this.statusStyles[_module.record.status] !== undefined && _module.record.status !== undefined)
-                    return this.statusStyles[_module.record.status];
-                else {
-                    return this.statusStyles[undefined]
-                }
-            }
+        uncertain: {
+          title: 'U',
+          tooltip: 'Uncertain',
+          backColor: 'background: linear-gradient(#ADA3A3, #D6CCCC)'
         },
-        created() {
-          this.$nextTick(function () {
-            this.recordType = recordTypes;
-          });
-        }
+        in_development: {
+          title: 'Dev',
+          tooltip: 'In Development',
+          backColor: 'background: linear-gradient(#CB9221, #F5CE80)'
+        },
+        undefined: {
+          title: '?',
+          tooltip: 'Undefined',
+          backColor: 'background: linear-gradient(red, red)'
+        },
+      },
+      recordType: null,
     }
+  },
+  computed: {
+    getRecordStatus: function () {
+      let _module = this;
+      if (this.statusStyles[_module.record.status] !== undefined && _module.record.status !== undefined)
+        return this.statusStyles[_module.record.status];
+      else {
+        return this.statusStyles[undefined]
+      }
+    }
+  },
+  created() {
+    this.$nextTick(function () {
+      this.recordType = recordTypes;
+    });
+  }
+}
 </script>
 
 <style scoped lang="scss">
-    .circle {
-        position: relative;
-        border: lightgray 1px solid;
-        background: linear-gradient(#a7a7a7, white);
-        height: 100px;
-        width: 100px;
-        border-radius: 150px;
-        -moz-border-radius: 150px;
-        -webkit-border-radius: 150px;
+.circle-container {
+  position: relative;
+  border: #b3b3b3 dotted 3px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  width: 86px;
+  height: 87px;
+  cursor: help;
 
-        #innerCircle {
-            position: absolute;
-            right: -25%;
-            top: 30%;
-            height: 45px;
-            border-radius: 45px;
-            -moz-border-radius: 45px;
-            -webkit-border-radius: 45px;
-            width: 45px;
-            opacity: .9;
-            background: linear-gradient(gray, lightgray);
+  .circle {
+    position: absolute;
+    left: 60px;
+    top: 20px;
+    height: 40px;
+    width: 40px;
+    min-width: 40px;
+    border-radius: 40px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    cursor: help;
 
-            #status-style {
-                color: white;
-                position: absolute;
-                top: 20%;
-                left: 35%;
-                font-size: 20px;
-                cursor: help;
-            }
-        }
-
-        .iconClass {
-            position: absolute;
-            left: 25%;
-            top: 25%;
-            width: 50%;
-            border: #b3b3b3 dotted 3px;
-            border-radius: 50%;
-            -moz-border-radius: 50%;
-            -webkit-border-radius: 50%;
-            cursor: help;
-        }
+    p {
+      min-width: 40px;
+      text-align: center;
+      font-size: 18px;
+      position: absolute;
+      top: 4px;
     }
+  }
+}
 </style>

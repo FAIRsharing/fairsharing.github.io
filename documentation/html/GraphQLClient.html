@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -162,7 +162,7 @@ also careful, its constructor is async !!</p>
 		<ul class="dummy">
 			<li>
 				<a href="components_GraphClient_GraphClient.js.html">components/GraphClient/GraphClient.js</a>,
-				 <a href="components_GraphClient_GraphClient.js.html#sunlight-1-line-10">line 10</a>
+				 <a href="components_GraphClient_GraphClient.js.html#sunlight-1-line-11">line 11</a>
 			</li>
 		</ul>
 	</dd>
@@ -344,7 +344,7 @@ also careful, its constructor is async !!</p>
 		<ul class="dummy">
 			<li>
 				<a href="components_GraphClient_GraphClient.js.html">components/GraphClient/GraphClient.js</a>,
-				 <a href="components_GraphClient_GraphClient.js.html#sunlight-1-line-65">line 65</a>
+				 <a href="components_GraphClient_GraphClient.js.html#sunlight-1-line-59">line 59</a>
 			</li>
 		</ul>
 	</dd>
@@ -507,7 +507,7 @@ sending to the API.</p></td>
 		<ul class="dummy">
 			<li>
 				<a href="components_GraphClient_GraphClient.js.html">components/GraphClient/GraphClient.js</a>,
-				 <a href="components_GraphClient_GraphClient.js.html#sunlight-1-line-32">line 32</a>
+				 <a href="components_GraphClient_GraphClient.js.html#sunlight-1-line-26">line 26</a>
 			</li>
 		</ul>
 	</dd>
@@ -560,7 +560,7 @@ sending to the API.</p></td>
             
 <hr>
 <dt>
-    <h4 class="name" id="getData"><span class="type-signature">&lt;async> </span>getData(request)</h4>
+    <h4 class="name" id="getData"><span class="type-signature">&lt;async> </span>getData(queryString)</h4>
     
     
 </dt>
@@ -603,7 +603,7 @@ sending to the API.</p></td>
 
         <tr>
             
-                <td class="name"><code>request</code></td>
+                <td class="name"><code>queryString</code></td>
             
 
             <td class="type">
@@ -620,7 +620,7 @@ sending to the API.</p></td>
 
             
 
-            <td class="description last"><p>processed request coming out of buildQuery()</p></td>
+            <td class="description last"><p>processed request coming out of buildQuery() or a GraphQL query string</p></td>
         </tr>
 
     
@@ -665,7 +665,7 @@ sending to the API.</p></td>
 		<ul class="dummy">
 			<li>
 				<a href="components_GraphClient_GraphClient.js.html">components/GraphClient/GraphClient.js</a>,
-				 <a href="components_GraphClient_GraphClient.js.html#sunlight-1-line-49">line 49</a>
+				 <a href="components_GraphClient_GraphClient.js.html#sunlight-1-line-43">line 43</a>
 			</li>
 		</ul>
 	</dd>
@@ -716,6 +716,144 @@ sending to the API.</p></td>
 
 
         
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="setHeader"><span class="type-signature"></span>setHeader(jwt)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Add the authorization token to the headers</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>jwt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the user json web token</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="components_GraphClient_GraphClient.js.html">components/GraphClient/GraphClient.js</a>,
+				 <a href="components_GraphClient_GraphClient.js.html#sunlight-1-line-126">line 126</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
 </dd>
@@ -772,9 +910,9 @@ sending to the API.</p></td>
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Fri Sep 18th 2020
+		on Mon Feb 1st 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

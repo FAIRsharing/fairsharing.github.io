@@ -52,7 +52,7 @@
         },
         "record_type": {
             "filterName": "recordType",
-            "filterLabel": "Type of records",
+            "filterLabel": "Record Type",
             "type": "String"
         },
         "journals": {
@@ -79,17 +79,17 @@
     "sort_order": [
         "subjects",
         "domains",
-        "userDefinedTags",
-        "taxonomies",
         "fairsharingRegistry",
         "recordType",
+        "taxonomies",
+        "countries",
         "organisations",
         "journals",
         "grants",
+        "userDefinedTags",
         "licences",
         "isRecommended",
         "status",
-        "countries",
         "isApproved",
         "isMaintained"
     ]

@@ -1,39 +1,11 @@
-/*
-Separate routing handle to avoid a big main.js
-*/
-
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
 
-import Home from "@/views/Home/Home";
-import Login from "@/views/Users/Login/Login";
-import Signup from "@/views/Users/Signup";
-import Statistics from "@/views/Stats/Statistics";
-import New from "@/views/CreateRecord/NewRecord";
-import Community from "@/views/Static/Community/Community";
-import Stakeholders from "@/views/Static/Stakeholders/Stakeholders";
-import Timeline from "@/views/Static/Timeline/Timeline";
-import License from "@/views/Static/License/License";
-import Terms from "@/views/Static/TermOfUse/TermsOfUse";
-import Educational from "@/views/Static/Educational/Educational";
-import Privacy from "@/views/Static/Privacy/Privacy";
-import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
-import ResendConfirmation from "@/views/Users/ResendConfirmation.vue"
-import User from "@/views/Users/User.vue"
-import RequestNewPassword from "@/views/Users/RequestNewPassword";
-import ResetPassword from "@/views/Users/ResetPassword";
-import EditProfile from "@/views/Users/EditProfile";
-import OauthLogin from "@/views/Users/Login/OauthLogin.vue";
-import LoginFailure from "@/views/Users/Login/LoginFailure";
-import Editor from "@/views/CreateRecord/Editor";
-import Records from "@/views/Records/Records";
-import Record from "@/views/Records/Record";
-import NotFound from "@/views/Errors/404"
-
-/* CLIENTS */
-import RestClient from "@/components/Client/RESTClient.js"
-const client = new RestClient();
+import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
+    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, LoginFailure, Stat, Community, Stakeholders,
+    Timeline, License, Terms, Educational, Privacy }
+    from "./routes.js"
 
 Vue.use(VueRouter);
 
@@ -48,7 +20,6 @@ let routes = [
         name: "Standards",
         path: "/standards",
         component: Records,
-
     },
     {
         name: "Databases",
@@ -74,12 +45,11 @@ let routes = [
         component: Records,
 
     },
-
     /* CREATION */
     {
         name: "New_content",
         path: "/new",
-        component: New,
+        component: NewRecord,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
         }
@@ -89,7 +59,7 @@ let routes = [
     {
         name: "Statistics",
         path: "/summary-statistics",
-        component: Statistics,
+        component: Stat,
     },
     {
         name: "Community",
@@ -185,6 +155,16 @@ let routes = [
         }
     },
 
+    // CURATORS
+    {
+        name: "Curator",
+        path: "/curator",
+        component: Curator,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+            // isCurator(to, from, next, store);
+        }
+    },
     /*
     Careful, this has to be the very last base path  !!!!
     This component"s page title is handled in the component itself as it needs the :id param
@@ -193,8 +173,8 @@ let routes = [
         name: "Edit Content",
         path: "/:id/edit",
         component: Editor,
-        async beforeEnter(to, from, next) {
-            await canEdit(to, from, next, store);
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
         }
     },
     {
@@ -202,21 +182,17 @@ let routes = [
         path: "/:id",
         component: Record
     },
-
-
     /* ERROR HANDLING */
     {
         name: "Error 404",
-        path: "/error/404/:source?",
+        path: "/error/404",
         component: NotFound
     },
     /* REDIRECTION */
     {
         name: "*",
         path: "*/*",
-        redirect: () => {
-            return redirect()
-        }
+        component: NotFound
     }
 ];
 routes.forEach(function (route) {
@@ -229,12 +205,16 @@ routes.forEach(function (route) {
 
 const router = new VueRouter({
     routes,
-    //mode: "history"
+    // mode: "history"
 });
 
-export function beforeEach(to, from, next) {
+export async function beforeEach(to, from, next, store) {
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
-    next()
+    if (store.state.users.user().isLoggedIn){
+        await store.dispatch('users/validateUserToken');
+    }
+    next();
+
 }
 
 export function isLoggedIn(to, from, next, store) {
@@ -242,39 +222,13 @@ export function isLoggedIn(to, from, next, store) {
         next()
     }
     else {
+        const target = to.path;
         next({
-            name: "Login" // back to safety route //
+            name: "Login", // back to safety route //
+            query: {goTo: target}
         });
     }
-}
 
-export async function canEdit(to, from, next, store){
-    if (!store.state.users.user().isLoggedIn){
-        next({name: "Login"})
-    }
-    else {
-        if (to.params['fromRecordPage']){
-            next();
-        }
-        let recordID = to.params.id;
-        let canEdit = await client.canEdit(recordID, store.state.users.user().credentials.token);
-        if (canEdit.error){
-            if(from.params.id){
-                next({path: from.params.id})
-            }
-            next({path: "/"}); // replace with unauthorized page 403
-        }
-        else {
-            next();
-        }
-    }
-}
-
-export function redirect(){
-    return {
-        name: "Error 404",
-        query: {source: JSON.stringify(location.href)}
-    }
 }
 
 export default router;

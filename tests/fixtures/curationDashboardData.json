@@ -1,0 +1,164 @@
+{
+  "curationSummary": {
+      "approvalsRequired": [
+         {
+              "username": "Terazus",
+              "id": "12345",
+              "fairsharingRecords": [
+                  {
+                      "id": "1451",
+                      "name": "Radiotherapy",
+                      "type": "database",
+                      "lastEditor": [
+                          {
+                              "id": "553",
+                              "username": "Paolo Maldini"
+                          }
+                      ]
+                  },
+                  {
+                      "id": "145f1",
+                      "name": "Radiotgherapy"
+                  }
+
+              ]
+          }
+      ],
+      "pendingMaintenanceRequests": [
+          {
+              "id": "3",
+              "createdAt": "2020-06-27T09:34:54Z",
+              "fairsharingRecord":
+                  {
+                      "id": "373",
+                      "name": "OrthoOntology Deontology"
+                  },
+              "user":
+                  {
+                      "username": "Rotedia",
+                      "id": "2218"
+                  }
+          },
+          {
+              "id": "6",
+              "createdAt": "2020-09-27T09:34:54Z",
+              "fairsharingRecord":
+                  {
+                      "id": "22",
+                      "name": "Other thing"
+                  },
+              "user":
+                  {
+                      "username": "Mariano",
+                      "id": "22"
+                  }
+          },
+          {
+              "id": "6",
+              "createdAt": "2020-08-27T09:34:54Z",
+              "fairsharingRecord":
+                  {
+                      "id": "44",
+                      "name": "Other thing2"
+                  },
+              "user":
+                  {
+                      "username": "Mariano",
+                      "id": "22"
+                  }
+          },
+          {
+              "id": "6",
+              "createdAt": "2020-08-27T09:34:54Z",
+              "fairsharingRecord":
+                  {
+                      "id": "44",
+                      "name": "Other thing2"
+                  },
+              "user":
+                  {
+                      "username": "Mariano",
+                      "id": "22"
+                  }
+          }
+      ],
+      "recentCuratorCreations": [
+          {
+              "id": "32",
+              "name": "ewewrr",
+              "createdAt": "2020-10-27T09:34:54Z",
+              "creator":
+                {
+                  "id": "44",
+                  "username": "Donal J. Trump"
+                }
+
+          },
+          {
+              "id": "44",
+              "name": "Second",
+              "createdAt": "2020-10-27T09:34:54Z"
+          },
+          {
+              "id": "4443",
+              "name": "Third",
+              "createdAt": "2017-11-11T09:34:54Z"
+          }
+      ],
+      "recordsInCuration": [
+         {
+              "username": "PRS",
+              "fairsharingRecords": [
+                  {
+                      "id": "11",
+                      "name": "Amphibian Anatomy Ontology",
+                      "status": "aproved",
+                      "maintainers": [
+                         {
+                             "id": "23",
+                             "username": "Juan"
+                         },
+                         {
+                             "id": "13",
+                             "username": "Manuel"
+                         }
+                      ]
+                  },
+                  {
+                      "id": "12",
+                      "name": "Frog French databases",
+                      "status": "aproved",
+                      "maintainers": [
+                         {
+                             "id": "23",
+                             "username": "Juan"
+                         }
+                      ]
+                  }
+              ]
+         }
+      ],
+      "hiddenRecords":[
+        {
+              "id": "2669f95",
+              "name": "ShareSfhare",
+              "createdAt": "2020-10-12T13:31:25Z",
+              "creator":
+                 {
+                     "id": "234",
+                     "username": "Juancho"
+                 },
+              "curator":
+                 {
+                     "id": "2384",
+                     "username": "Manolo"
+                 }
+        },
+        {
+             "id": "2669f95",
+             "name": "ShareSfhare",
+             "createdAt": "1425-01-01T13:31:25Z"
+        }
+      ]
+  }
+}

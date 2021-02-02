@@ -36,7 +36,7 @@
                   color="secondary"
                   class="mr-2"
                 >
-                  mdi-factory
+                  fas fa-sitemap
                 </v-icon>
               </v-sheet>
             </template>
@@ -70,7 +70,7 @@
                   color="secondary"
                   class="mr-2"
                 >
-                  mdi-cash-multiple
+                  fas fa-funnel-dollar
                 </v-icon>
               </v-sheet>
             </template>
@@ -93,7 +93,7 @@
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     /* TODO: Replace with query from database */
-    import organisationRelations from './organisationRelations.json';
+    import organisationRelations from '@/data/organisationRelations.json';
 
     export default {
         name: "Organisations",

@@ -1,28 +1,16 @@
 <template>
   <aside>
     <v-card
+      id="scrollable-holder"
       :class="['pa-2',responsiveClassObject]"
       outlined
       tile
       elevation="3"
     >
-      <!--
-      this code is related to v-card. will be used later..
-            v-scroll.self="onScroll"
-      -->
-      <h2 class="d-none">
-        Filter List
-      </h2>
-
       <!-- Search Box -->
-      <string-search
-        placeholder="Search through all data."
-      />
+      <string-search placeholder="Search through all data." />
 
-      <hr
-        class="mb-3 mr-2 ml-2"
-        style="opacity: .5!important;"
-      >
+      <hr class="mb-3 mr-2 ml-2 custom-hr">
 
       <!-- Filter Buttons     -->
       <FilterButtons />
@@ -50,7 +38,7 @@
 
 <script>
 import {mapGetters, mapState} from "vuex"
-import filterMapping from "@/components/Records/FiltersLabelMapping.json";
+import filterMapping from "@/data/FiltersLabelMapping.json";
 import FilterAutocomplete from "./FilterAutocomplete";
 import FilterButtons from "./FilterButtons";
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
@@ -62,7 +50,7 @@ export default {
     return {
       panel: [],
       filterSelected: {},
-      sortOrder: filterMapping['sort_order']
+      sortOrder: filterMapping['sort_order'],
     }
   },
   computed: {
@@ -110,40 +98,32 @@ export default {
       }
       return comparison;
     }
-  },
+  }
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .filters-holder-default {
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   overflow-x: hidden;
   height: calc(100vh - 230px);
+  position: sticky;
+  top: 0;
   transition: height ease-in 500ms;
 }
-
 .filters-holder-after-scroll {
   border-radius: 0;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   overflow-x: hidden;
   height: 100vh;
+  position: sticky;
+  top: 0;
   transition: height ease-in 500ms;
 }
-
-.buttons-md-style {
-  min-width: 32px !important;
-}
-
-.first-child {
-  font-size: 11px;
-  width: 16.5%;
-}
-
-.flex-1 {
-  font-size: 11px;
-  flex: 1;
+.custom-hr {
+  opacity: .5;
 }
 </style>

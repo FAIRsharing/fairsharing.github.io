@@ -4,8 +4,8 @@
       <v-col
         cols="12"
         sm="12"
-        md="4"
-        lg="4"
+        md="8"
+        lg="8"
         xl="4"
       >
         <v-card>
@@ -47,6 +47,7 @@
                 outlined
               />
               <v-btn
+                :loading="loading"
                 @click="submitPassword()"
               >
                 Save your new password
@@ -73,6 +74,7 @@
                 error: null,
                 formData: {},
                 password: null,
+                loading: false
             }
         },
         computed: {
@@ -92,8 +94,10 @@
         methods: {
             ...mapActions("users", ["resetPwdWithoutToken", 'resetPwd', "setError"]),
             async submitPassword() {
+                this.loading = true;
                 let _module = this;
                 await _module.submit(_module.user().isLoggedIn);
+                this.loading = false;
             },
             async submit(isLoggedIn) {
                 let _module = this;

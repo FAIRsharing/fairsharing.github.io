@@ -4,8 +4,8 @@
       <v-col
         cols="12"
         sm="12"
-        md="4"
-        lg="4"
+        md="8"
+        lg="8"
         xl="4"
       >
         <v-card>
@@ -38,6 +38,7 @@
                 outlined
               />
               <v-btn
+                :loading="loading"
                 @click="sendEmail()"
               >
                 Request new password
@@ -62,16 +63,19 @@
             message: null,
             formData: {},
             success: false,
-            triggered: false
+            triggered: false,
+            loading: false
           }
         },
         methods: {
           sendEmail: async function(){
+            this.loading = true;
             this.triggered = false;
             let response = await client.requestResetPwd(this.formData.email);
             this.message = response.message;
             this.success = response.success;
             this.triggered = true;
+            this.loading = false;
           }
         }
     }

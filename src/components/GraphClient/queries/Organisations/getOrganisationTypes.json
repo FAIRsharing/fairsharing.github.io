@@ -1,0 +1,10 @@
+{
+  "queryName": "searchOrganisationTypes",
+  "queryParam": {
+    "load": false
+  },
+  "fields": [
+    "id",
+    "name"
+  ]
+}

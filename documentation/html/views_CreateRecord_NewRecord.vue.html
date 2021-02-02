@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -96,228 +96,136 @@
     id="createRecord"
     fluid
   >
-    &lt;v-row>
-      &lt;v-col cols="12">
-        &lt;v-card>
-          &lt;v-card-title class="primary white--text">
-            &lt;h3>Creating a new FAIRsharing record&lt;/h3>
-          &lt;/v-card-title>
-          &lt;v-card-text class="pt-3">
-            &lt;form>
-              &lt;v-container
-                id="recordMetadata"
-                fluid
-              >
+    &lt;v-form
+      id="createRecord"
+      ref="createRecord"
+      v-model="formValid"
+    >
+      &lt;v-row>
+        &lt;v-col cols="12">
+          &lt;v-card v-if="loaded">
+            &lt;v-card-title class="primary white--text">
+              &lt;h3 class="white--text">
+                Creating a new FAIRsharing record
+              &lt;/h3>
+            &lt;/v-card-title>
+            &lt;v-card-text
+              v-if="message.error"
+              class="pt-4"
+            >
+              &lt;v-alert type="error">
+                {{ message.value }}&lt;v-icon class="px-3">
+                  fa-arrow-right
+                &lt;/v-icon> {{ message.value.response.data }}
+              &lt;/v-alert>
+            &lt;/v-card-text>
+            &lt;v-card-text class="pt-3">
+              &lt;v-container fluid>
                 &lt;v-row>
-                  &lt;v-col
-                    v-for="(fieldVal, fieldName, fieldKey) in getFields()"
-                    :key="'edit_' + fieldKey"
-                    :class="{'col-2': fieldVal.type !== 'longtext', 'col-12': fieldVal.type === 'longtext', 'col-3': fieldVal.type === 'autocomplete'}"
-                  >
-                    &lt;!-- simple input -->
-                    &lt;div v-if="fieldVal.type === 'string'">
-                      &lt;v-text-field
-                        v-model="record[fieldName]"
-                        :label="fieldName"
-                        :hint="fieldVal.description"
-                        outlined
-                        :required="fieldVal.required"
-                      />
-                    &lt;/div>
-
-                    &lt;!-- long text -->
-                    &lt;div v-if="fieldVal.type === 'longtext'">
-                      &lt;v-textarea
-                        v-if="fieldName !== 'deprecation_reason' || (models.recordStatus !== null &amp;&amp; models.recordStatus.name === 'deprecated')"
-                        v-model="record[fieldName]"
-                        :label="fieldVal.label"
-                        :hint="fieldVal.description"
-                        outlined
-                        :required="fieldVal.required"
-                      />
-                    &lt;/div>
-
-                    &lt;!-- autocomplete -->
-                    &lt;div v-if="fieldVal.type === 'autocomplete'">
-                      &lt;v-autocomplete
-                        :id="fieldName + '_autocomplete'"
-                        v-model="models[fieldVal.target]"
-                        :items="getItems(fieldVal.source)"
-                        item-text="name"
-                        item-value="name"
-                        :label="fieldName"
-                        outlined
-                        return-object
-                        :required="fieldVal.required"
-                        :disabled="fieldName !== 'Record Type' &amp;&amp; models.recordType !== null &amp;&amp; models.recordType.name === 'collection'"
-                      >
-                        &lt;!-- autocomplete selected -->
-                        &lt;template v-slot:selection="data">
-                          {{ data.item.name.replace(/_/g, ' ') }}
-                        &lt;/template>
-
-                        &lt;!-- autocomplete data -->
-                        &lt;template v-slot:item="data">
-                          &lt;v-list
-                            id="autocompleteSelect"
-                            max-width="565px"
-                            three-line
-                          >
-                            &lt;v-list-item min-height="0px">
-                              &lt;v-list-item-content class="py-0">
-                                &lt;v-list-item-title> {{ data.item.name.replace(/_/g, ' ') }} &lt;/v-list-item-title>
-                                &lt;v-list-item-subtitle> {{ data.item.description }} &lt;/v-list-item-subtitle>
-                              &lt;/v-list-item-content>
-                            &lt;/v-list-item>
-                          &lt;/v-list>
-                        &lt;/template>
-                      &lt;/v-autocomplete>
-                    &lt;/div>
-                  &lt;/v-col>
-                &lt;/v-row>
-                &lt;v-row>
-                  &lt;v-btn
-                    type="submit"
-                    class="primary"
-                    @click="createRecord()"
-                  >
-                    Create Record
-                  &lt;/v-btn>
+                  &lt;base-fields />
                 &lt;/v-row>
               &lt;/v-container>
-            &lt;/form>
-          &lt;/v-card-text>
-        &lt;/v-card>
-      &lt;/v-col>
-    &lt;/v-row>
+            &lt;/v-card-text>
+            &lt;v-card-actions>
+              &lt;v-btn
+                class="primary"
+                :disabled="!formValid"
+                @click="createRecord()"
+              >
+                Create Record
+              &lt;/v-btn>
+            &lt;/v-card-actions>
+          &lt;/v-card>
+
+          &lt;v-fade-transition>
+            &lt;v-overlay
+              v-if="!loaded"
+              :absolute="false"
+              opacity="0.8"
+            >
+              &lt;loaders />
+            &lt;/v-overlay>
+          &lt;/v-fade-transition>
+        &lt;/v-col>
+      &lt;/v-row>
+    &lt;/v-form>
   &lt;/v-container>
 &lt;/template>
 
 &lt;script>
-    import { mapState } from "vuex"
-    import GraphClient from "@/components/GraphClient/GraphClient.js"
-    import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
+    import { mapState, mapActions, mapGetters } from "vuex"
     import RESTClient from "@/components/Client/RESTClient.js"
-    import status from "@/components/Editor/status.json"
+    import status from "@/data/status.json"
+    import BaseFields from "../../components/Editor/GeneralInformation/BaseFields";
+    import Loaders from "../../components/Navigation/Loaders";
 
-    let client = new GraphClient();
     let restClient = new RESTClient();
 
     /** Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database
      *
      */
     export default {
-        name: "NewRecordPage",
-        data(){
+      name: "NewRecordPage",
+      components: {Loaders, BaseFields},
+      data(){
           return {
             record: {},
             recordsTypes: [],
-            models: {
-                recordType: null,
-                recordStatus: null,
-            },
+            formValid: false,
+            loaded: false,
+            message: {
+              error: false,
+              value: null
+            }
           }
         },
         computed: {
             ...mapState('users', ["user"]),
-            status: function(){ return status.status; }
-        },
-        watch: {
-            models: {
-              deep: true,
-              handler(oldVal, newVal){
-                const _module = this;
-                if (newVal.recordType !== null &amp;&amp; newVal.recordType.name === "collection"){
-                  _module.models.recordStatus = "uncertain";
-                  delete _module.record["deprecation_reason"];
-                }
-              }
-            }
+            ...mapGetters('record', ['getSection'])
         },
         async mounted(){
-          const _module = this;
-          let data = await client.executeQuery(typesQuery);
-          const size = data['fairsharingRegistries'].records.length;
-          let currentItem = 0;
-          data['fairsharingRegistries'].records.forEach(function(type){
-            currentItem += 1;
-            _module.recordsTypes.push({
-              header: type.name
-            });
-            type.recordTypes.forEach(function(subType){
-              _module.recordsTypes.push({
-                name: subType.name,
-                group: type.name,
-                id: subType.id,
-                description: subType.description
-              })
-            });
-            if (currentItem &lt; size) _module.recordsTypes.push({ divider: true });
+          this.$nextTick(async function () {
+            this.loaded = false;
+            this.resetRecord();
+            await this.getData();
+            this.loaded = true;
+            this.$store.commit("record/setCreatingNewRecord");
           });
-
-
         },
         methods: {
-          getFields: function () {
-            return {
-                name: {
-                    type: "string",
-                    description: "The name of the record",
-                    required: true
-                },
-                abbreviation: {
-                    type: "string",
-                    description: "Abbreviation or short name for the record",
-                    required: false
-                },
-                homepage: {
-                    type: "string",
-                    description: "The homepage of the record",
-                    format: "uri",
-                    required: false
-                },
-                "Record Type": {
-                    type: "autocomplete",
-                    source: "recordsTypes",
-                    required: true,
-                    target: "recordType"
-                },
-                status: {
-                    type: "autocomplete",
-                    source: "status",
-                    required: false,
-                    target: "recordStatus"
-                },
-                "deprecation_reason": {
-                    type: "longtext",
-                    description: "A short description of why the resource is no longer actively maintained.",
-                    required: false,
-                    label: "Deprecation reason"
-                },
-                description: {
-                    type: "longtext",
-                    description: "The description of the record",
-                    required: false,
-                    label: "description"
-                }
-            }
+          ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
+          ...mapActions("record", ["resetRecord"]),
+          async getData(){
+            await this.getCountries();
+            await this.getRecordTypes();
+            await this.getTags();
           },
-          getItems: function(fieldName){
-              return this[fieldName]
-          },
-          createRecord: async function(){
-            const _module = this;
-            let record = {
-              metadata: _module.record
+          async createRecord(){
+            this.message = {
+              error: false,
+              value: null
             };
-            record.metadata.status = _module.models.recordStatus.name;
-            record.record_type_id = _module.models.recordType.id;
-            let new_record = await restClient.createRecord(record, _module.user().credentials.token);
-            if (Object.prototype.hasOwnProperty.call(new_record.data, "id")) {
-              _module.$router.push({
-                path: new_record.data.id
+            let record = JSON.parse(JSON.stringify(this.getSection("generalInformation").data));
+            record.record_type_id = record.type.id;
+            record.metadata.status = status;
+            record.country_ids = record.countries.map(obj => obj.id);
+            record.metadata.status = record.status;
+
+            delete record.status;
+            delete record.countries;
+            delete record.type;
+            let new_record = await restClient.createRecord(record, this.user().credentials.token);
+            if (!new_record.error) {
+              this.$router.push({
+                path: new_record.data.id + "/edit"
               });
+            } else {
+              this.message = {
+                error: true,
+                value: new_record.error
+              }
             }
+
           }
         },
     }
@@ -377,9 +285,9 @@
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Fri Sep 18th 2020
+		on Mon Feb 1st 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -2,11 +2,9 @@
   "queryName": "searchDomains",
   "queryParam": null,
   "fields": [
-    "definitions",
-    "expandedNames",
-    "id",
-    "label",
-    "synonyms",
+    {
+      "$ref": "keywords"
+    },
     "inFairsharing"
   ]
 }

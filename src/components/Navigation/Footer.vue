@@ -1,8 +1,13 @@
 <template>
   <v-row>
-    <v-col cols="3">
+    <v-col
+      cols="3"
+      class="flex-column align-center d-flex"
+    >
+      <h4>
+        Developed by
+      </h4>
       <ul>
-        <h4>Developed by</h4>
         <li>
           <a
             href="/communities#team"
@@ -24,14 +29,17 @@
         </li>
       </ul>
     </v-col>
-    <v-col cols="3">
+    <v-col
+      cols="3"
+      class="flex-column align-center d-flex"
+    >
+      <h4 id="contact-info">
+        Contact Us
+      </h4>
       <ul>
-        <h4 id="contact-info">
-          Contact Us
-        </h4>
         <li>
           <a href="mailto:contact@fairsharing.org?subject=FAIRsharing Issue"><i
-            class="fa fa-envelope-o"
+            class="fa fa-envelope"
           />
             Email us for
             all
@@ -42,7 +50,7 @@
             href="https://www.facebook.com/fairsharing"
             target="_blank"
           ><i
-            class="fa fa-facebook-official"
+            class="fab fa-facebook"
           />
             Facebook</a>
         </li>
@@ -50,40 +58,44 @@
           <a
             href="https://www.twitter.com/fairsharing_org"
             target="_blank"
-          ><i class="fa fa-twitter" />
+          ><i class="fab fa-twitter" />
             Twitter</a>
         </li>
       </ul>
     </v-col>
-    <v-col cols="3">
+    <v-col
+      cols="3"
+      class="flex-column align-center d-flex"
+    >
+      <h4 id="contact-info2">
+        Support Us
+      </h4>
       <ul>
-        <h4 id="contact-info2">
-          Support Us
-        </h4>
         <li>
           <a
             href="https://www.facebook.com/fairsharing"
             target="_blank"
-          ><i
-            class="fa fa-facebook-official"
-          />
-            Facebook</a>
+          ><i class="fab fa-facebook" />
+            Facebook
+          </a>
         </li>
         <li>
           <a
             href="https://www.twitter.com/fairsharing_org"
             target="_blank"
-          ><i class="fa fa-twitter" />
+          ><i class="fab fa-twitter" />
             Twitter</a>
         </li>
       </ul>
     </v-col>
-    <v-col cols="3">
+    <v-col
+      cols="3"
+      class="flex-column align-center d-flex"
+    >
+      <h4 id="about-info">
+        About FAIRsharing
+      </h4>
       <ul>
-        <h4 id="about-info">
-          About FAIRsharing
-        </h4>
-
         <li>
           <a
             id="tour-link"
@@ -112,22 +124,18 @@
       </ul>
     </v-col>
     <div
-      class="d-flex flex-row justify-center align-center"
-      style="width: 100%"
+      class="d-flex flex-row justify-center align-center full-width mb-2"
     >
-      © FAIRsharing 2009-Present | Licensed under <a
+      <p class="mb-0 mr-2">
+        © FAIRsharing 2009-Present | Licensed under
+      </p>
+      <a
+        class="mr-2"
         href="http://creativecommons.org/licenses/by-sa/4.0/"
-        alt="View License"
         target="_blank"
       >Creative Commons
         by
-        Share Alike 4.0 International</a> |
-      Designed by <a
-        href="http://www.antarctic-design.co.uk"
-        target="_blank"
-      >Antarctic
-        Design</a>
-      <br>
+        Share Alike 4.0 International</a>
       <a href="/licence"><img
         src="https://fairsharing.org/static/img/home/FAIRsharingCC-BY-SA.png"
       ></a>
@@ -136,11 +144,9 @@
 </template>
 
 <script>
-    export default {
-        name: "Footer"
-    }
+export default {
+  name: "Footer"
+}
 </script>
-
 <style scoped>
-
 </style>

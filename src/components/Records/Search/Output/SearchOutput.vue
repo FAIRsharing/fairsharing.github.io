@@ -1,13 +1,9 @@
 <template>
   <div>
     <section style="min-height:65vh">
-      <h1 class="d-none">
-        Records
-      </h1>
-
       <!--Filtered Chips-->
       <div
-        v-if="getChips.length && !stickToTop"
+        v-if="getChips.length"
         class="d-flex align-content-center justify-content-center chips-holder"
       >
         <filter-chips />
@@ -25,25 +21,20 @@
         class="no-data-found"
       >
         <v-alert
-          color="gray"
-          icon="info"
+          colored-border
+          type="info"
         >
           No records match your search!
         </v-alert>
       </div>
       <!--List Row-->
-      <div
-        :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]"
-      >
+      <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
         <article v-if="!isColumnList">
           <v-skeleton-loader
             class="mt-5"
             :loading="loading"
             type="image"
           >
-            <h2 class="d-none">
-              Result
-            </h2>
             <!-- StackCard view -->
             <RecordsCardStack
               v-for="record in records"
@@ -59,32 +50,28 @@
         </article>
       </div>
       <!-- ColumnCard view -->
-      <div
-        v-if="isColumnList"
-        :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]"
-      >
-        <v-skeleton-loader
-          class="mt-5"
-          :loading="loading"
-          type="image"
-        >
-          <v-row>
-            <RecordsCardColumn
-              v-for="record in records"
-              :key="'record_'+record.id"
-              :record="record"
+      <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
+        <article v-if="isColumnList">
+          <v-skeleton-loader
+            class="mt-5"
+            :loading="loading"
+            type="image"
+          >
+            <v-row>
+              <RecordsCardColumn
+                v-for="record in records"
+                :key="'record_'+record.id"
+                :record="record"
+              />
+            </v-row>
+            <!--List Controller-->
+            <Pagination
+              :total-pages="totalPages"
+              class="my-5"
             />
-          </v-row>
-          <!--List Controller-->
-          <Pagination
-            :total-pages="totalPages"
-            class="my-5"
-          />
-        </v-skeleton-loader>
+          </v-skeleton-loader>
+        </article>
       </div>
-    </section>
-    <section class="my-10 border-top">
-      <Footer />
     </section>
   </div>
 </template>
@@ -97,12 +84,10 @@ import {mapState, mapGetters} from 'vuex'
 import FilterChips from "../Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 import Pagination from "../Header/Pagination";
-import Footer from "@/components/Navigation/Footer.vue"
-
 
 export default {
   name: "SearchOutput",
-  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination, Footer},
+  components: {FilterChips, RecordsCardColumn, ListController, RecordsCardStack, Pagination},
   mixins: [filterChipsUtils],
   data() {
     return {
@@ -112,7 +97,6 @@ export default {
   computed: {
     ...mapState('records', ["records", "hits", "loading", "totalPages"]),
     ...mapGetters('records', ["getRecordsLength"]),
-    ...mapState('uiController', ['stickToTop']),
   },
   methods: {
     changeListType: function (listType) {
@@ -121,8 +105,11 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style scoped>
 .chips-holder {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   background: #f5f5f5;
   min-height: 50px;
   border: #dbdbdb dotted 2px;
@@ -130,7 +117,6 @@ export default {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
-
 .no-data-found {
   display: flex;
   justify-content: center;
@@ -140,8 +126,3 @@ export default {
 }
 </style>
 
-<style scoped lang="scss">
-  .border-top {
-    border-top: 1px solid #ccc;
-  }
-</style>

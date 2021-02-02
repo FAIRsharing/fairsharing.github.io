@@ -6,7 +6,32 @@
     elevation="1"
   >
     <SectionTitle title="Maintainers" />
-    <NoneFound :data-field="getField('maintainers')" />
+
+    <v-card
+      v-if="getField('maintainers').length === 0"
+      class="mt-2 pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
+      flat
+      outlined
+    >
+      <div class="d-flex mt-2 ">
+        <p class="ma-0 mr-2">
+          This record is in need of a maintainer.
+        </p>
+        <p
+          v-if="canClaim"
+          class="ma-0 mr-2"
+        >
+          If you are affiliated with this project,
+        </p>
+        <a
+          v-if="canClaim"
+          @click="()=>{this.$emit('requestOwnership')}"
+        >
+          Claim it now!
+        </a>
+      </div>
+    </v-card>
+    <!--<NoneFound :data-field="getField('maintainers')" />-->
 
     <!--Contact-->
     <v-card
@@ -22,7 +47,7 @@
           color="secondary"
           class="mr-2"
         >
-          mdi-account-circle
+          fa fa-user-circle
         </v-icon>
         <b class="mr-2">User Name:</b>
         <a :href="maintainer.username + '/' + maintainer.id">
@@ -34,16 +59,21 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
+    import { mapGetters} from 'vuex';
 
     import SectionTitle from '@/components/Records/Record/SectionTitle';
-    import NoneFound from '@/components/Records/Record/NoneFound';
+
 
     export default {
         name: "Maintainers",
         components: {
-          NoneFound,
           SectionTitle
+        },
+        props: {
+            canClaim: {
+                type: Boolean,
+                default: true
+            }
         },
         computed: {
             ...mapGetters("record", ["getField"])

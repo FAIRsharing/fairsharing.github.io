@@ -9,7 +9,7 @@
      */
     export default {
         name: "Signup",
-      components: {Register}
+        components: {Register}
     }
 </script>
 

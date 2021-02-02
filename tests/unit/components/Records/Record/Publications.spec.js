@@ -33,5 +33,14 @@ describe("Publications.vue", function(){
         expect(wrapper.vm.getField('publications')[1].title).toMatch("Publication Two");
     });
 
+    it("correctly handles dodgy pubmed and doi links", () => {
+        expect(wrapper.vm.checkLinkValue("some text")).toBe(true);
+        expect(wrapper.vm.checkLinkValue("MISSING")).toBe(false);
+        expect(wrapper.vm.checkLinkValue("0")).toBe(false);
+        expect(wrapper.vm.checkLinkValue(0)).toBe(false);
+        expect(wrapper.vm.checkLinkValue(null)).toBe(false);
+        expect(wrapper.vm.checkLinkValue(undefined)).toBe(false);
+    });
+
 
 });

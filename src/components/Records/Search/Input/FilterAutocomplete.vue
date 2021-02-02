@@ -46,14 +46,15 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import clearString from '@/utils/stringUtils'
 
 export default {
   name: "FilterAutocomplete",
   mixins: [clearString],
   props: {
-    filter: {default: null, type: Object}
+    filter: {default: null, type: Object},
+    lastItem:{default:false, type:Boolean}
   },
   data: () => {
     return {
@@ -62,6 +63,7 @@ export default {
   },
   computed: {
     ...mapGetters('records', ['getFilter']),
+    ...mapState('uiController', ['stickToTop']),
     getValues: function () {
       let _module = this;
       let output = _module.getFilter(this.filter.filterName);
@@ -84,8 +86,8 @@ export default {
         if (_module.selectedValues !== null && _module.selectedValues.length > 0) {
           if (_module.selectedValues.length === 1) {
             currentParams[filterName] = encodeURIComponent(_module.selectedValues.join(','));
-          } else
-            {
+          }
+          else {
             let newParam = [];
             _module.selectedValues.forEach(function (val) {
               newParam.push(encodeURIComponent(val));
@@ -97,18 +99,16 @@ export default {
             query: currentParams
           });
         }
-      } else
-        {
-        if (_module.selectedValues === null || _module.selectedValues.length === 0)
-        {
+      }
+      else {
+        if (_module.selectedValues === null || _module.selectedValues.length === 0) {
           delete currentParams[_module.filter.filterName];
           _module.$router.push({
             name: _module.$route.name,
             query: currentParams
           });
         }
-        else
-        {
+        else {
           let newParams = [];
           let existingValues = currentParams[_module.filter.filterName].split(",");
           _module.selectedValues.forEach(function (selectedValue) {
@@ -134,80 +134,29 @@ export default {
     reset: function (selectedItem) {
       selectedItem.filterSelected = {};
     },
+    /* istanbul ignore next */
+    scrollTo(name) {
+      let _module = this;
+      _module.$scrollTo("#" + name + 'AutocompleteList', 450, {
+        container: '#scrollable-holder',
+        easing: 'ease-in',
+      })
+    }
   }
 }
 </script>
 
-<style scoped lang="scss">
-.badge {
-  width: 35px;
-  height: 25px;
-  background: white;
-  border: #27aae1 solid 1px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  position: relative;
-
-  #inventory {
-    font-size: small;
-    position: absolute;
-    top: 6%;
-    left: 20%;
-  }
-}
-
-.badge-active {
-  width: 35px;
-  height: 24px;
-  background: #27aae1;
-  border: #27aae1 solid 1px;
-  border-radius: 5px 5px 5px 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  position: relative;
-
-  #inventory {
-    color: white;
-    font-size: small;
-    position: absolute;
-    top: 6%;
-    left: 20%;
-  }
-}
-
-.triangle-left {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-top: 12px solid transparent;
-  border-right: 15px solid #27aae1;
-  border-bottom: 11px solid transparent;
-  left: -30%;
-}
-
-.fixed-scrollable-height {
-  max-height: 300px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
+<style scoped>
 .filterValueName {
   width: 378px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  flex: 1;
 }
 
 .chipsValueName {
   width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.autocomplete-max-width {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -219,4 +168,7 @@ export default {
   padding: 0 7px;
 }
 
+.custom-btn {
+  height: 38px;
+}
 </style>

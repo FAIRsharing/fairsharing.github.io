@@ -14,7 +14,7 @@ const $store = new Vuex.Store({
         users: usersStore
     },
 });
-let $route = {name: "Login", path: "/accounts/login", query: {}};
+let $route = {name: "Login", path: "/accounts/login", query: {goTo: "/123"}};
 let routes = [
     $route
 ];
@@ -70,6 +70,20 @@ describe("Login.vue", ()=> {
         };
         await wrapper.vm.logUser();
         expect(wrapper.vm.$route.path).toBe("/accounts/login");
+
+        $route.query = {};
+        let anotherWrapper = shallowMount(Login, {
+            localVue,
+            router,
+            propsData: {
+                redirect: true,
+            },
+            stubs: ['router-link', 'router-view'],
+            mocks: {$store, $route, $router}
+        });
+        await anotherWrapper.vm.logUser();
+        expect($router.push).toHaveBeenCalledWith({path: "/accounts/profile"});
+        $route.query = {goTo: "/123"};
     });
 
     it("can prevent users from logging in", async () => {
@@ -156,6 +170,13 @@ describe("Login.vue", ()=> {
         };
         await anotherWrapper.vm.logUser();
         expect(anotherWrapper.vm.$route.path).toBe("/accounts/login");
+        expect($router.push).toHaveBeenCalledWith({path: "/123"})
     })
+
+    it("generates correct oauth links", () => {
+        expect(wrapper.vm.returnTo()).toEqual('?return_to=/123');
+        wrapper.vm.$route.query = {};
+        expect(wrapper.vm.returnTo()).toEqual('');
+    });
 
 });

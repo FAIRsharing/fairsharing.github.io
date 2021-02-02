@@ -2,7 +2,10 @@ import { mutations, actions } from "@/store/users.js"
 import Client from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import { initUserDataState } from "@/store/utils.js"
+import Vue from "vue"
 import sinon from "sinon"
+
+Vue.config.silent = true;
 
 describe('Actions/Mutations', () => {
     let getStub;
@@ -354,7 +357,32 @@ describe('Actions/Mutations', () => {
             field: "resetPassword",
             message: "Cannot read property 'user' of undefined"
         })
-    })
+    });
+
+    it("Can correctly validate a user token", async() => {
+        restClientStub.returns({data: {success: true}});
+        let state = {
+            state: {user: () => {
+                return {credentials:{ token: 123}}
+            }}
+        };
+        await actions.validateUserToken(state);
+        expect(actions.commit).toHaveBeenCalledTimes(0);
+        restClientStub.restore();
+
+        restClientStub = sinon.stub(Client.prototype, 'executeQuery');
+        restClientStub.returns({data: {success: false}});
+        state.state.user = () => {
+            return {credentials:{ token: 123}}
+        };
+        await actions.validateUserToken(state);
+        expect(actions.commit).toHaveBeenCalledWith("users/logout");
+        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+            field: "getUser",
+            message: {success: false}
+        });
+        restClientStub.restore();
+    });
 
 
 });

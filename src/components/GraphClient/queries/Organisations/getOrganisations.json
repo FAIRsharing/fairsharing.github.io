@@ -1,0 +1,13 @@
+{
+  "queryName": "searchOrganisations",
+  "queryParam": {
+    "load": false
+  },
+  "fields": [
+    "id",
+    "name",
+    "homepage",
+    "types",
+    "urlForLogo"
+  ]
+}

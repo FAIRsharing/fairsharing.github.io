@@ -1,0 +1,43 @@
+{
+  "keywords": [
+    "label",
+    "id",
+    "definitions",
+    "iri",
+    "synonyms"
+  ],
+  "domains": [
+    {
+      "queryName": "domains",
+      "fields": [
+        {"$ref": "keywords"},
+        "inFairsharing"
+      ]
+    }
+  ],
+  "subjects": [
+    {
+      "queryName": "subjects",
+      "fields": [
+        {"$ref": "keywords"}
+      ]
+    }
+  ],
+  "organisationLinks": [
+    {
+      "queryName": "organisationLinks",
+      "fields": [
+        "id",
+        "relation",
+        {
+          "name": "grant",
+          "fields": ["name", "id"]
+        },
+        {
+          "name": "organisation",
+          "fields": ["name", "id", "homepage", "types", "urlForLogo"]
+        }
+      ]
+    }
+  ]
+}

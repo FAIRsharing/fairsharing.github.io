@@ -40,7 +40,7 @@
         class="mt-md-0 mt-sm-8"
       >
         <v-card
-          v-if="getField('citations')"
+          v-if="getField('metadata')['citations'] && getField('metadata')['citations'].length>0"
           class="pa-4 d-flex flex-column"
           outlined
           color="white"
@@ -56,7 +56,34 @@
             Publication for citation
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
-            <!--       TODO: here need to get citation array and look through publication with same id in citation          -->
+            <div
+              v-for="citation in getField('metadata')['citations']"
+              :key="citation.id+'_'+citation.pubmed_id"
+            >
+              <div
+                v-for="publication in getField('publications')"
+                :key="publication.title"
+              >
+                <span
+                  v-if="publication.id === citation.publication_id"
+                  class="d-flex flex-wrap"
+                >
+                  <p
+                    class="ma-0 mr-2"
+                  >
+                    {{ publication.title }}
+                    {{ $vuetify.breakpoint.lgAndUp?truncate(publication.authors,100):truncate(publication.authors,30) }}
+                    ({{ publication.year }})
+                    <a
+                      :href="'https://pubmed.ncbi.nlm.nih.gov/' + citation.pubmed_id"
+                      target="_blank"
+                    >
+                      {{ citation.doi }}
+                    </a>
+                  </p>
+                </span>
+              </div>
+            </div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -66,9 +93,11 @@
 
 <script>
 import {mapGetters} from "vuex";
+import {truncate} from "@/utils/stringUtils"
 
 export default {
   name: "Citations",
+  mixins:[truncate],
   data: () => {
     return {
       currentDate: new Date()
@@ -105,8 +134,8 @@ export default {
 }
 
 .card-text-customize {
-  max-height: 100px;
-  min-height: 100px;
+  max-height: 120px;
+  min-height: 120px;
   overflow: hidden
 }
 

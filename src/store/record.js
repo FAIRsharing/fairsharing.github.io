@@ -1,6 +1,7 @@
 import Client from "../components/GraphClient/GraphClient.js"
 import RESTClient from "@/components/Client/RESTClient.js"
 import recordQuery from "../components/GraphClient/queries/getRecord.json"
+import metadataQuery from "../components/GraphClient/queries/getMetadata.json"
 import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
 import recordOrganisationsQuery from "../components/GraphClient/queries/getRecordOrganisations.json"
 import { initEditorSections } from "./utils.js"
@@ -230,8 +231,7 @@ let recordStore = {
             });
             const record = {
                 record: record_data,
-                token: options.token,
-                id: options.id
+                token: options.token
             };
             let response = await restClient.updateRecord(record);
             if (response.error) {
@@ -281,15 +281,36 @@ let recordStore = {
             let organisations = await client.executeQuery(recordOrganisationsQuery);
             commit('updateOrganisationsLinks', organisations.fairsharingRecord.organisationLinks);
         },
-        updateAdditionalInformation({ state, commit}, options){
+        async updateAdditionalInformation({ state, commit}, options){
             commit("resetMessage", "additionalInformation");
-            let access_points = state.sections.generalInformation.data.metadata.access_points;
-            console.log(options)
-            console.log(JSON.stringify(access_points));
+            let access_points = state.sections.additionalInformation.data.access_points;
             // TODO:
             //  1. Get metadata (new GraphQL query)
             //  2. Modify with access_points,
             //  3. Post again (restClient.updateRecord).
+            metadataQuery.queryParam = {
+                id: options.id
+            }
+            let serverMetadata = await client.executeQuery(metadataQuery);
+            let metadata = serverMetadata['fairsharingRecord']['metadata'];
+            metadata['access_points'] = access_points;
+            // define record
+            const record = {
+                record: { metadata: metadata },
+                token: options.token,
+                id: options.id
+            };
+            let response = await restClient.updateRecord(record);
+            if (response.error) {
+                commit("setSectionError", {
+                    section: "additionalInformation",
+                    value: response.error
+                });
+                return response.error;
+            }
+            else {
+                commit("setMessage", {target: "additionalInformation", value: "Record successfully updated!"});
+            }
         },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});

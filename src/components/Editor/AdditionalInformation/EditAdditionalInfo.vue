@@ -60,7 +60,6 @@
 </template>
 
 <script>
-
 import {mapActions, mapGetters, mapState} from "vuex";
 import Alerts from "@/components/Editor/Alerts";
 import AccessPoints from "@/components/Editor/AdditionalInformation/AccessPoints";
@@ -86,7 +85,6 @@ export default {
     }
   },
   computed: {
-    ...mapActions("record", ["updateAdditionalInformation"]),
     ...mapGetters("record", ["getSection"]),
     ...mapState("users", ["user"]),
     fields() {
@@ -104,6 +102,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions("record", ["updateAdditionalInformation"]),
     async getFieldNames() {
       return restClient.extraMetadataFields(
           this.fields.type,

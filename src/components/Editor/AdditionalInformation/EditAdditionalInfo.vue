@@ -31,14 +31,14 @@
       <v-card-actions>
         <v-btn
           class="primary"
-          :disabled="!formValid"
+          :disabled="false"
           :loading="loading"
           @click="saveRecord(false)"
         >
           Save and continue
         </v-btn>
         <v-btn
-          :disabled="!formValid"
+          :disabled="false"
           :loading="loading"
           class="primary"
           @click="saveRecord(true)"
@@ -61,7 +61,7 @@
 
 <script>
 
-import {mapGetters, mapState} from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 import Alerts from "@/components/Editor/Alerts";
 import AccessPoints from "@/components/Editor/AdditionalInformation/AccessPoints";
 import Loaders from "@/components/Navigation/Loaders";
@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       initialized: false,
-      formValid: false,
+      formValid: true, // TODO: Put this back to false.
       loading: true,
       allowedFields: [],
       componentMapping: {
@@ -86,11 +86,13 @@ export default {
     }
   },
   computed: {
+    ...mapActions("record", ["updateAdditionalInformation"]),
     ...mapGetters("record", ["getSection"]),
     ...mapState("users", ["user"]),
     fields() {
       return this.getSection("generalInformation").data
     }
+    // TODO: Changes for watching access points.
   },
   mounted(){
     this.$nextTick(async () => {
@@ -108,7 +110,26 @@ export default {
           this.user().credentials.token
       );
     },
-
+    async saveRecord(redirect){
+      // TODO: Complete this
+      this.openEditor = false;
+      this.loading = true;
+      await this.updateAdditionalInformation({
+        token: this.user().credentials.token,
+        id: this.$route.params.id
+      });
+      this.loading = false;
+      if (!redirect) {
+        this.$scrollTo("#mainHeader");
+        this.$store.commit("record/setChanges", {
+          section: "publications",
+          value: 0
+        })
+      }
+      if (redirect && !this.message.error){
+        await this.$router.push({path: '/' + this.$route.params.id})
+      }
+    }
   }
 }
 </script>

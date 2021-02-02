@@ -175,7 +175,9 @@
           },
           {
             name: "Publications",
-            disabled: false
+            disabled: false,
+            target: "publications",
+            icon: "fa-info"
           },
           {
             name: "Organisations & Grants",

@@ -4,7 +4,7 @@ import fakeData from "@/../tests/fixtures/curationDashboardMaintReqData.json"
 import Client from "@/components/Client/RESTClient.js"
 import Vuex from "vuex"
 import recordStore from "@/store/record.js"
-import sinon, {fake} from "sinon"
+import sinon from "sinon"
 import usersStore from "@/store/users"
 import VueRouter from "vue-router"
 

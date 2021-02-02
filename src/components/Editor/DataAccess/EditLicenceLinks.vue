@@ -12,6 +12,12 @@
           class="mb-5 px-4 grey lighten-3 large"
           column
         >
+          <div
+            v-if="currentLicences.length === 0"
+            class="pt-2"
+          >
+            <i class="mt-3">This record has no licence.</i>
+          </div>
           <v-chip
             v-for="(licenceLink, index) in currentLicences"
             :key="'licence_' + index"

@@ -171,7 +171,8 @@
           },
           {
             name: "Data Access",
-            disabled: false
+            disabled: false,
+            target: "dataAccess"
           },
           {
             name: "Publications",

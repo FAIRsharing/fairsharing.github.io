@@ -35,7 +35,8 @@
 </template>
 
 <script>
-    import { mapActions } from "vuex"
+    import { mapActions, mapState } from "vuex"
+    import { isEqual } from "lodash"
     import EditLicences from "./EditLicenceLinks";
     import EditSupportLinks from "./EditSupportLinks"
     import Loaders from "../../Navigation/Loaders";
@@ -50,6 +51,34 @@
         data(){
           return {
             initialized: false,
+          }
+        },
+        computed: {
+          ...mapState('record', ['sections']),
+          dataAccess(){
+            return this.sections['dataAccess'].data
+          }
+        },
+        watch: {
+          dataAccess: {
+            deep: true,
+            handler(val) {
+              let changes = 0;
+              let initialLicences = this.sections['dataAccess'].initialData.licences,
+                  initialSupportLinks = this.sections['dataAccess'].initialData['support_links'],
+                  licences = val.licences,
+                  supportLinks = val['support_links'];
+              if (!isEqual(initialLicences, licences)){
+                changes += 1;
+              }
+              if (!isEqual(initialSupportLinks, supportLinks)){
+                changes += 1;
+              }
+              this.$store.commit("record/setChanges", {
+                section: "dataAccess",
+                value: changes
+              });
+            }
           }
         },
         mounted() {

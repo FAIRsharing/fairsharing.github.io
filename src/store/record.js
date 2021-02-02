@@ -59,7 +59,7 @@ let recordStore = {
             let sectionsNames = [
                 "generalInformation",
                 "support",
-                "licences",
+                "dataAccess",
                 "publications",
                 "organisations"
             ];

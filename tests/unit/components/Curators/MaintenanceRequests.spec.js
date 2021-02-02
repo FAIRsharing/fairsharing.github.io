@@ -4,7 +4,7 @@ import fakeData from "@/../tests/fixtures/curationDashboardMaintReqData.json"
 import Client from "@/components/Client/RESTClient.js"
 import Vuex from "vuex"
 import recordStore from "@/store/record.js"
-import sinon from "sinon"
+import sinon, {fake} from "sinon"
 import usersStore from "@/store/users"
 import VueRouter from "vue-router"
 
@@ -109,4 +109,10 @@ describe('Curator -> MaintenanceRequest.vue', () => {
       await wrapper.vm.saveProcessingNotes(24,"notes of text");
       expect(wrapper.vm.error.recordID).toBe(24);
     });
+
+    it("can watch props data", () => {
+        wrapper.vm.$options.watch.maintenanceRequests.call(wrapper.vm);
+        expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch("Record1 (23)");
+    });
+
 });

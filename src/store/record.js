@@ -117,6 +117,9 @@ let recordStore = {
                 licences: dataAccess['licenceLinks'],
                 support_links: dataAccess.metadata.support_links
             };
+            record.support_links.forEach(supportLink => {
+               if (supportLink.name) supportLink.url = {title: supportLink.name, url: supportLink.url}
+            });
             state.sections.dataAccess.data = record;
             state.sections.dataAccess.initialData = JSON.parse(JSON.stringify(record));
             state.sections.generalInformation.data.metadata.support_links = [...record.support_links];

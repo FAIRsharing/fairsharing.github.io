@@ -96,7 +96,10 @@ describe("Edit -> DataAccess.vue", function() {
                     {id: 555, name: "test555", licence: {id: 555}}
                 ],
                 metadata: {
-                    support_links: [{type: "Other", url: "https://example.com/test"}]
+                    support_links: [
+                        {type: "Other", url: "https://example.com/test"},
+                        {type: "Tess", name: "a test", url: "https://example.com/test"}
+                    ]
                 }
             }
         });

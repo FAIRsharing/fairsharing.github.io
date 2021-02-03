@@ -120,6 +120,8 @@ let recordStore = {
             };
             state.sections.dataAccess.data = record;
             state.sections.dataAccess.initialData = JSON.parse(JSON.stringify(record));
+            state.sections.generalInformation.data.metadata.support_links = [...record.support_links];
+            state.sections.generalInformation.initialData.metadata.support_links = [...record.support_links];
             state.sections.dataAccess.changes = 0;
             state.sections.dataAccess.message = "Record successfully updated!";
         },

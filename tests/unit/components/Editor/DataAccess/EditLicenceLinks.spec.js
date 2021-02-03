@@ -5,8 +5,8 @@ import EditLicenceLinks from "@/components/Editor/DataAccess/EditLicenceLinks.vu
 import recordStore from "@/store/record.js"
 import editorStore from "@/store/editor.js"
 
-const localVue = createLocalVue(),
-    vuetify = new Vuetify();
+const localVue = createLocalVue();
+const vuetify = new Vuetify();
 localVue.use(Vuex);
 let $route = { path: "/123/edit", params: {id: 123} };
 recordStore.state.sections = {

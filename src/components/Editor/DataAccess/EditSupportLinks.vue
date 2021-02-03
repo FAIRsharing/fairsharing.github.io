@@ -207,8 +207,18 @@
             }
         },
         watch: {
-          'edit.template.type': function() {
+          'edit.template.type': function(val) {
             this.$nextTick(() => {
+              if (this.edit.template
+                      && typeof this.edit.template.url !== "string"
+                      && val !== "TeSS links to training materials") {
+                this.edit.template.url = null;
+              }
+              else if (this.edit.template
+                      && typeof this.edit.template.url === "string"
+                      && val === "TeSS links to training materials") {
+                this.edit.template.url = null;
+              }
               /* istanbul ignore else */
               if (this.$refs['editSupportLink']) this.$refs['editSupportLink'].validate();
             })

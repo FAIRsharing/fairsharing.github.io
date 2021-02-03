@@ -1,3 +1,4 @@
+import Vue from "vue"
 import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
@@ -132,6 +133,15 @@ describe("Edit -> EditSupportLinks.vue", function() {
     it('can find a TeSS record', async () => {
         let response = await wrapper.vm.findTessRecord("abc");
         expect(response).toStrictEqual([{"name": "ABC", "url": "http://example.com"}]);
-    })
+    });
+
+    it("can react to type change", async () => {
+        wrapper.vm.edit.template = {
+            type: "TeSS links to training materials",
+            url: "ABC"
+        };
+        await Vue.nextTick();
+        expect(wrapper.vm.edit.template.url).toBe(null);
+    });
 
 });

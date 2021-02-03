@@ -275,4 +275,15 @@
   {
     transition-delay: 0.6s !important;
   }
+
+  .short{
+    max-width:550px;
+  }
+
+  .short span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
 </style>

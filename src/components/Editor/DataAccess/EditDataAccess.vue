@@ -4,6 +4,7 @@
       <v-card-title class="grey lighten-4 blue--text">
         Edit Data Access
       </v-card-title>
+      <Alerts target="dataAccess" />
       <v-card-text>
         <edit-licences />
         <v-divider />
@@ -12,11 +13,13 @@
       <v-card-actions>
         <v-btn
           class="primary"
+          @click="saveRecord(false)"
         >
           Save and continue
         </v-btn>
         <v-btn
           class="primary"
+          @click="saveRecord(true)"
         >
           Save and exit
         </v-btn>
@@ -40,10 +43,12 @@
     import EditLicences from "./EditLicenceLinks";
     import EditSupportLinks from "./EditSupportLinks"
     import Loaders from "../../Navigation/Loaders";
+    import Alerts from "../Alerts";
 
     export default {
         name: "EditDataAccess",
         components: {
+          Alerts,
           Loaders,
           EditLicences,
           EditSupportLinks
@@ -55,6 +60,7 @@
         },
         computed: {
           ...mapState('record', ['sections']),
+          ...mapState("users", ["user"]),
           dataAccess(){
             return this.sections['dataAccess'].data
           }
@@ -89,10 +95,19 @@
         },
         methods: {
           ...mapActions('editor', ['getLicences']),
+          ...mapActions('record', ['updateDataAccess']),
+          async saveRecord(){
+            await this.updateDataAccess({
+              id: this.$route.params.id,
+              token: this.user().credentials.token
+            });
+          }
         }
     }
 </script>
 
-<style scoped>
+<style>
+
+  .v-dialog__content {}
 
 </style>

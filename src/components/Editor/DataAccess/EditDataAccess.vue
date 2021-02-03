@@ -14,12 +14,14 @@
         <v-btn
           class="primary"
           @click="saveRecord(false)"
+          :loading="saving"
         >
           Save and continue
         </v-btn>
         <v-btn
           class="primary"
           @click="saveRecord(true)"
+          :loading="saving"
         >
           Save and exit
         </v-btn>
@@ -56,6 +58,7 @@
         data(){
           return {
             initialized: false,
+            saving: false
           }
         },
         computed: {
@@ -98,12 +101,14 @@
           ...mapActions('record', ['updateDataAccess']),
           ...mapGetters("record", ["getSection"]),
           async saveRecord(redirect){
+            this.saving = true;
+            if (!redirect) this.$scrollTo("#mainHeader");
             await this.updateDataAccess({
               id: this.$route.params.id,
               token: this.user().credentials.token
             });
-            if (!redirect) this.$scrollTo("#mainHeader");
-            else if (redirect && !this.getSection("dataAccess").error){
+            this.saving = false;
+            if (redirect && !this.getSection("dataAccess").error){
               await this.$router.push({path: '/' + this.$route.params.id})
             }
           }

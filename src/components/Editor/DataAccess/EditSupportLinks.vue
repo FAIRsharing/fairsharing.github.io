@@ -199,7 +199,7 @@
             ...mapState('record', ['sections']),
             ...mapState('editor', ['supportLinksTypes']),
             recordData(){
-                return this.sections["dataAccess"].data['support_links'] || []
+                return this.sections["dataAccess"].data['support_links']
             },
             rule(){
               if (!this.edit.template.type) return null;
@@ -209,12 +209,13 @@
         watch: {
           'edit.template.type': function() {
             this.$nextTick(() => {
+              /* istanbul ignore else */
               if (this.$refs['editSupportLink']) this.$refs['editSupportLink'].validate();
             })
           },
           search: async function(val){
             this.loadingTessRecords = true;
-            if (val) this.tessRecords = await client.getTessRecords(val);
+            if (val) this.tessRecords = await this.findTessRecord(val);
             else this.tessRecords = [];
             this.loadingTessRecords = false;
           }
@@ -268,6 +269,9 @@
               id: null,
               template: null
             }
+          },
+          async findTessRecord(val){
+            return await client.getTessRecords(val);
           }
         }
     }

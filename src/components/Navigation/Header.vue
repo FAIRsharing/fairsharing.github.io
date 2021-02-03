@@ -34,10 +34,10 @@
               :x-large="$vuetify.breakpoint.xlOnly"
               class="mr-1 mt-sm-1"
               color="primary"
-              outlined
+              :outlined="!item.active"
               :to="item.link"
             >
-              <span class="primary--text">{{ item.label }}</span>
+              <span :class="['white--text',{'primary--text':!item.active}]">{{ item.label }}</span>
             </v-btn>
           </li>
           <!-- LOGIN -->
@@ -101,6 +101,7 @@
 import {mapState} from 'vuex'
 import Login from "@/views/Users/Login/Login";
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
+import {isEmpty} from "lodash";
 
 export default {
   name: "Header",
@@ -112,34 +113,64 @@ export default {
       links: [
         {
           label: "Standards",
+          name: "Standard",
           link: "/standards",
+          active:false
         },
         {
           label: "Databases",
+          name: "Database",
           link: "/databases",
+          active:false
         },
         {
           label: "Policies",
+          name: "Policy",
           link: "/policies",
+          active:false
         },
         {
           label: "Collections",
+          name: "Collection",
           link: "/collections",
+          active:false
         },
         {
           label: "Add content",
+          name: "New_content",
           link: "/new",
+          active:false
         },
         {
           label: "Stats",
+          name: "Statistics",
           link: "/summary-statistics",
+          active:false
         }
       ]
     }
   },
   computed: {
     ...mapState('uiController', ["UIGeneralStatus"]),
-    ...mapState('users', ["user"])
+    ...mapState('users', ["user"]),
+    currentParameter() {
+      let currentQuery = this.$route.query;
+      if (!isEmpty(currentQuery)) {
+        return currentQuery
+      }
+      else {
+        return {fairsharingRegistry: this.$route.name}
+      }
+    }
+  },
+  watch: {
+    currentParameter: {
+      handler(newVal) {
+        const _module = this;
+        _module.setCurrentActiveButton(newVal.fairsharingRegistry)
+      },
+      deep: true
+    }
   },
   methods: {
     toggleDrawerLeft: function () {
@@ -151,8 +182,13 @@ export default {
     },
     closePopup: function (status) {
       this.closeMenuStatus = status;
+    },
+    setCurrentActiveButton: function(newValue) {
+      this.links.map(link => {
+        link.name === newValue ? link.active = true : link.active = false;
+      });
     }
-  },
+  }
 }
 
 </script>

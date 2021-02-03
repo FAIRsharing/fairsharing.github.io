@@ -26,6 +26,7 @@
             <a
               :href="generateDoiLink(getField('doi'))"
               target="_blank"
+              class="underline-effect"
             >
               {{ getField('doi') }}
             </a>

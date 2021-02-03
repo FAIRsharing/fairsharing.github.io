@@ -81,12 +81,12 @@ export function initEditorSections(data, sectionsNames){
             publications: data.publications,
             organisations: data.organisationLinks,
             dataAccess: {
-                support_links: data.metadata.support_links,
+                support_links: [...data.metadata.support_links],
                 licences: data.licenceLinks
             }
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
-        if(data.publications) {
+        if (data.publications) {
             schema.publications.forEach((pub) => {
                 pub.isCitation = !!data.metadata.citations.filter(obj => obj.publication_id === pub.id)[0];
             });

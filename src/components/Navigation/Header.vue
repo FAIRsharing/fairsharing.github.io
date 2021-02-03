@@ -4,6 +4,7 @@
     short
     height="100"
     max-height="100"
+    class="header-container"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.smAndDown"
@@ -210,6 +211,9 @@ header {
   width: 94%;
 }
 
+.header-container {
+    border-bottom: 3px dashed #253442;
+}
 </style>
 
 

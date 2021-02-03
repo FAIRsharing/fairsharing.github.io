@@ -264,7 +264,10 @@
         watch: {
           'edit.template': function () {
             this.$nextTick(() => {
-              if (this.$refs['editLink']) this.$refs['editLink'].validate();
+              /* istanbul ignore else */
+              if (this.$refs['editLink']) {
+                this.$refs['editLink'].validate();
+              }
             })
           }
         },

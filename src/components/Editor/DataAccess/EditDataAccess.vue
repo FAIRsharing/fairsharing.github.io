@@ -13,15 +13,15 @@
       <v-card-actions>
         <v-btn
           class="primary"
-          @click="saveRecord(false)"
           :loading="saving"
+          @click="saveRecord(false)"
         >
           Save and continue
         </v-btn>
         <v-btn
+          :loading="saving"
           class="primary"
           @click="saveRecord(true)"
-          :loading="saving"
         >
           Save and exit
         </v-btn>

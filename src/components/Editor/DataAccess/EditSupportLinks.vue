@@ -142,8 +142,7 @@
                   :search-input.sync="search"
                   :rules="[rules.isRequired()]"
                   :loading="loadingTessRecords"
-                >
-                </v-autocomplete>
+                />
               </v-card-text>
               <v-card-actions>
                 <v-btn

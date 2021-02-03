@@ -6,6 +6,7 @@
         v-if="getField('homepage')"
         :href="getField('homepage')"
         target="_blank"
+        class="underline-effect"
       >{{ getField('homepage') }}</a>
       <NoneFound
         v-else

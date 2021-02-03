@@ -2,12 +2,8 @@
 //Global Setting----------------------------
 a {
   text-decoration: none;
-
-  &:hover, &:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
 }
+
 //End of Global Setting---------------------
 
 //Animations--------------------------------
@@ -32,6 +28,12 @@ a {
 //End of Animations-------------------------
 
 //Utilities---------------------------------
+.underline-effect {
+  &:hover, &:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
 
 .tooltips {
   max-width: 500px;

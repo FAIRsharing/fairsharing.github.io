@@ -114,7 +114,7 @@ let recordStore = {
         },
         setDataAccess(state, dataAccess){
             let record = {
-                licences: dataAccess.licenceLinks,
+                licences: dataAccess['licenceLinks'],
                 support_links: dataAccess.metadata.support_links
             };
             state.sections.dataAccess.data = record;

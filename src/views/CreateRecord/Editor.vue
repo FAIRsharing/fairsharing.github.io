@@ -64,7 +64,10 @@
           >
             {{ panelData.name }}
           </v-btn>
-          <v-btn class="ml-2 default" :href="'#/' + $route.params.id">
+          <v-btn
+            class="ml-2 default"
+            :href="'#/' + $route.params.id"
+          >
             Exist editing
           </v-btn>
         </v-toolbar>
@@ -140,6 +143,16 @@
       EditRelationships,
       EditGeneralInfo,
       Unauthorized
+    },
+    beforeRouteLeave(to, from, next){
+      let changes = this.getAllChanges;
+      if (changes === 0) {
+        next();
+      }
+      else {
+        const answer = window.confirm(`Are you sure you want to leave this page? You have ${changes} unsaved modifications.`);
+        if (answer) next();
+      }
     },
     data(){
       let _module = this;
@@ -229,16 +242,6 @@
         await _module.fetchRecord(recordID);
       }
     },
-    beforeRouteLeave(to, from, next){
-      let changes = this.getAllChanges;
-      if (changes === 0) {
-        next();
-      }
-      else {
-        const answer = window.confirm(`Are you sure you want to leave this page? You have ${changes} unsaved modifications.`);
-        if (answer) next();
-      }
-    }
   }
 </script>
 

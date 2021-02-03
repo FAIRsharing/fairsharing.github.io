@@ -91,6 +91,9 @@ export function initEditorSections(data, sectionsNames){
                 pub.isCitation = !!data.metadata.citations.filter(obj => obj.publication_id === pub.id)[0];
             });
         }
+        schema.dataAccess.support_links.forEach(supportLink => {
+            if (supportLink.name) supportLink.url = {title : supportLink.name, url: supportLink.url};
+        });
         sectionsNames.forEach(name => {
             let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null;
             sections[name] = {

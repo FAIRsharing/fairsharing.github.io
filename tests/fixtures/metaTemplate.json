@@ -12,7 +12,16 @@
       "citations": [{
         "publication_id": 1
       }],
-      "support_links": []
+      "support_links": [
+        {
+          "name": "test",
+          "url": "https://example.com"
+        },
+        {
+          "type": "A type",
+          "url": "https://example.com/test"
+        }
+      ]
     },
     "domains": [],
     "subjects": [],

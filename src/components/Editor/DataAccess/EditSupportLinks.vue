@@ -137,7 +137,7 @@
                   :items="tessRecords"
                   outlined
                   item-text="title"
-                  item-value="id"
+                  item-value="title"
                   return-object
                   :search-input.sync="search"
                   :rules="[rules.isRequired()]"
@@ -215,8 +215,7 @@
           },
           search: async function(val){
             this.loadingTessRecords = true;
-            if (val) this.tessRecords = await this.findTessRecord(val);
-            else this.tessRecords = [];
+            this.tessRecords = (val) ? await this.findTessRecord(val) : [];
             this.loadingTessRecords = false;
           }
         },
@@ -244,8 +243,8 @@
               id: id,
               template: JSON.parse(JSON.stringify(this.recordData[id]))
             };
-            if (this.recordData[id].title) {
-              this.search = this.recordData[id].title;
+            if (this.recordData[id].name) {
+              this.search = this.recordData[id].name;
             }
           },
           removeLink(id){
@@ -256,6 +255,7 @@
             let newLink = JSON.parse(JSON.stringify(this.edit.template));
             if (this.edit.template.type === "TeSS links to training materials") {
               newLink.title = newLink.url.title;
+              newLink.name = newLink.url.title;
               newLink.url.url = newLink.url.url.replace(/.json/g, "");
             }
             if (id !== null) {

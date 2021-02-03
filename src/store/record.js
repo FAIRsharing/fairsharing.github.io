@@ -380,6 +380,13 @@ let recordStore = {
             });
             return changes;
         },
+        getAllChanges: (state) => {
+            let changes = 0;
+            Object.keys(state.sections).forEach(section => {
+                changes += state.sections[section].changes;
+            });
+            return changes;
+        },
         getCreatingNewRecord: (state) => {
             return state.newRecord;
         }

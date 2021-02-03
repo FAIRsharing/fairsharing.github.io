@@ -59,10 +59,13 @@
             v-for="(panelData) in confirmPanels"
             :id="panelData.name + '_button'"
             :key="panelData.name"
-            class="default ml-2"
+            class="default"
             @click="panelData.show = true"
           >
             {{ panelData.name }}
+          </v-btn>
+          <v-btn class="ml-2 default">
+            <router-link class="white--text" :to="'/' + $route.params.id">Exist editing</router-link>
           </v-btn>
         </v-toolbar>
         <v-tabs
@@ -154,12 +157,6 @@
               return _module.confirmReloadData()
             },
             show: false
-          },
-          {
-            name: "Exit editing",
-            description: "This will return to the record page without saving. Are you sure you'd like to do this?",
-            method: function() { return _module.confirmReturnToRecord() },
-            show: false
           }
         ],
         tabs: [
@@ -194,7 +191,7 @@
     },
     computed: {
       ...mapState('record', ['currentRecord', 'sections']),
-      ...mapGetters('record', ['getChanges']),
+      ...mapGetters('record', ['getChanges', 'getAllChanges']),
       ...mapState('users', ['user']),
       userToken(){
         const _module = this;
@@ -226,18 +223,22 @@
         if (canEdit.error) _module.error = true;
         _module.hasLoaded = true;
       },
-      confirmReturnToRecord() {
-        const _module = this;
-        let recordID = _module.currentRecord['fairsharingRecord'].id;
-        _module.exitPageCheck = true;
-        _module.$router.push({ path: `/${recordID}` });
-      },
       async confirmReloadData() {
         const _module = this;
         let recordID = _module.currentRecord['fairsharingRecord'].id;
         await _module.fetchRecord(recordID);
       }
     },
+    beforeRouteLeave(to, from, next){
+      let changes = this.getAllChanges;
+      if (changes === 0) {
+        next();
+      }
+      else {
+        const answer = window.confirm(`Are you sure you want to leave this page? You have ${changes} unsaved modifications.`);
+        if (answer) next();
+      }
+    }
   }
 </script>
 

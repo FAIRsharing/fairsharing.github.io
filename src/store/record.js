@@ -113,7 +113,6 @@ let recordStore = {
             state.editOrganisationLink.data.grant = grant;
         },
         setDataAccess(state, dataAccess){
-            console.log(dataAccess);
             let record = {
                 licences: dataAccess.licenceLinks,
                 support_links: dataAccess.metadata.support_links

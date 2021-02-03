@@ -102,8 +102,8 @@
               </v-card-title>
               <v-card-text class="pt-3">
                 <v-form
-                  ref="editLink"
                   id="editLink"
+                  ref="editLink"
                   v-model="formValid.link"
                 >
                   <!-- LICENCE -->

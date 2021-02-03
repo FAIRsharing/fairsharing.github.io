@@ -64,8 +64,8 @@
           >
             {{ panelData.name }}
           </v-btn>
-          <v-btn class="ml-2 default">
-            <router-link class="white--text" :to="'/' + $route.params.id">Exist editing</router-link>
+          <v-btn class="ml-2 default" :href="'#/' + $route.params.id">
+            Exist editing
           </v-btn>
         </v-toolbar>
         <v-tabs

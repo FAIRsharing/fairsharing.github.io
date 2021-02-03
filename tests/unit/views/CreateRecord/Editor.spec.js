@@ -94,6 +94,20 @@ describe("Editor.vue", function() {
         global.confirm = jest.fn(() => false);
         beforeRouteLeave.call(wrapper.vm , "toObj", "fromObj", nextFun);
         expect(nextFun).toHaveBeenCalledTimes(2);
-    })
+    });
+
+    it("can load without support links", async () => {
+        let returnedData = metaTemplate.data;
+        returnedData.metadata.support_links = null;
+        graphStub.returns({
+            fairsharingRecord: returnedData
+        });
+        wrapper = await shallowMount(CreateRecord, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router}
+        });
+        expect(wrapper.name()).toMatch("Editor");
+    });
 
 });

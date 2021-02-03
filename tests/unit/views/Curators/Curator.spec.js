@@ -75,11 +75,9 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12)");
       //Hidden records, date is formatted
       expect(wrapper.vm.hiddenRecords.length).toBe(2);
-      date.year = 1425;
-      date.month = 0;
-      date.day = 1;
+      date = new Date("1425,01,01");
       auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
-      expect(wrapper.vm.hiddenRecords[1].createdAt).toBe("janv. 1, 1425");
+      expect(wrapper.vm.hiddenRecords[1].createdAt).toBe(auxString);
   });
 
   it("can download a file with records without DOIs", async () => {

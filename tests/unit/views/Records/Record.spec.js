@@ -15,6 +15,9 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
 
+delete global.window.scrollTo;
+global.window.scrollTo = () => {};
+
 // Initializing store states and getters
 users.state.user = function(){ return {
     isLoggedIn: true,
@@ -110,6 +113,9 @@ describe("Record.vue", function() {
     });
     afterAll( () => {
         mocks.restoreAll();
+    });
+    afterEach(() => {
+        wrapper.destroy();
     });
     beforeEach(async () => {
         wrapper = await shallowMount(Record, {

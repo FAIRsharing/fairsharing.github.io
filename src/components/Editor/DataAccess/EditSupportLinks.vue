@@ -199,7 +199,7 @@
             ...mapState('record', ['sections']),
             ...mapState('editor', ['supportLinksTypes']),
             recordData(){
-                return this.sections["dataAccess"].data['support_links']
+                return this.sections["dataAccess"].data['support_links'] || []
             },
             rule(){
               if (!this.edit.template.type) return null;

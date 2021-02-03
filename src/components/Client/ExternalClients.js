@@ -16,6 +16,7 @@ class ExternalRESTClients {
             'Accept': 'application/x-bibtex',
         };
         this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=";
+        this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q="
     }
 
     async getDOI(doi){
@@ -29,7 +30,19 @@ class ExternalRESTClients {
 
     async getPMID(id){
         const request = {
-            url: this.pmidBaseURL + id
+            url: this.pmidBaseURL + id,
+            headers: {
+                'Accept': 'application/json',
+            }
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async getTessRecords(string){
+        const request = {
+            url: this.tessBaseURL + string,
+            headers: this.headers
         };
         let response = await this.executeQuery(request);
         return response.data;

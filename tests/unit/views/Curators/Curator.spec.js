@@ -60,16 +60,25 @@ describe("Curator.vue", () => {
       //MaintanceRequest are properly created, elements sorted by date, values edited and formatted properly
       expect(wrapper.vm.maintenanceRequests.length).toBe(4);
       expect(wrapper.vm.maintenanceRequests[0].userNameID).toBe("Mariano (22)");
-      expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe("Aug 27, 2020");
+      let date = new Date("2020,8,28");
+      let auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+
+      expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe(auxString);
       //Records created last week, recordNameID is created and date is formatted
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(3);
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe("Second (44)");
-      expect(wrapper.vm.recordsCreatedCuratorsLastWeek[2].createdAt).toBe("Nov 11, 2017");
+      date = new Date("2017,11,11");
+      auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+      expect(wrapper.vm.recordsCreatedCuratorsLastWeek[2].createdAt).toBe(auxString);
 
       expect(wrapper.vm.recordsInCuration.length).toBe(2);
       expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12)");
       //Hidden records, date is formatted
       expect(wrapper.vm.hiddenRecords.length).toBe(2);
+      date.year = 1425;
+      date.month = 0;
+      date.day = 1;
+      auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
       expect(wrapper.vm.hiddenRecords[1].createdAt).toBe("Jan 1, 1425");
   });
 

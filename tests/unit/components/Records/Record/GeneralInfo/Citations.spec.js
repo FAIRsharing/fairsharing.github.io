@@ -3,10 +3,13 @@ import Vuex from "vuex";
 import Record from "@/store/record.js"
 import Citations from "@/components/Records/Record/GeneralInfo/Citations.vue"
 import Vuetify from "vuetify"
+import VueMoment from "vue-moment"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueMoment);
 const vuetify = new Vuetify();
+
 
 Record.state.currentRecord["fairsharingRecord"] = {
     subjects:[],

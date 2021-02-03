@@ -28,7 +28,7 @@
             </span>
             <b v-if="getField('doi')">DOI:</b>{{ getField('doi') }};
             <b v-if="getField('lastEdited')">Last Edited:</b>{{ getField('lastEdited') }}
-            <b>Last Accessed:</b>{{ getCurrentDate() }}
+            <b>Last Accessed:</b>{{ new Date() | moment("dddd, MMMM Do YYYY") }}
           </v-card-text>
         </v-card>
       </v-col>
@@ -105,16 +105,6 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
-  },
-  methods: {
-    getCurrentDate() {
-      return this.currentDate.getDate() + "/"
-          + (this.currentDate.getMonth() + 1) + "/"
-          + this.currentDate.getFullYear() + " at "
-          + this.currentDate.getHours() + ":"
-          + this.currentDate.getMinutes() + ":"
-          + this.currentDate.getSeconds();
-    }
   }
 }
 </script>

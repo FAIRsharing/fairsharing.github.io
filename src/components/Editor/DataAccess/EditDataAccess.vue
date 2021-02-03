@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import { mapActions, mapState } from "vuex"
+    import { mapActions, mapState, mapGetters } from "vuex"
     import { isEqual } from "lodash"
     import EditLicences from "./EditLicenceLinks";
     import EditSupportLinks from "./EditSupportLinks"
@@ -96,11 +96,16 @@
         methods: {
           ...mapActions('editor', ['getLicences']),
           ...mapActions('record', ['updateDataAccess']),
-          async saveRecord(){
+          ...mapGetters("record", ["getSection"]),
+          async saveRecord(redirect){
             await this.updateDataAccess({
               id: this.$route.params.id,
               token: this.user().credentials.token
             });
+            if (!redirect) this.$scrollTo("#mainHeader");
+            else if (redirect && !this.getSection("dataAccess").error){
+              await this.$router.push({path: '/' + this.$route.params.id})
+            }
           }
         }
     }

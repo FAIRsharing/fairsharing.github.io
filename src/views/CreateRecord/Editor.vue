@@ -197,7 +197,8 @@
           },
           {
             name: "Relations to other records",
-            disabled: true
+            disabled: false,
+            target: "relations"
           }
         ]
       }

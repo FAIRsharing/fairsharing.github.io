@@ -63,7 +63,8 @@ let recordStore = {
                 "support",
                 "dataAccess",
                 "publications",
-                "organisations"
+                "organisations",
+                "relations"
             ];
             state.sections = initEditorSections(data['fairsharingRecord'], sectionsNames);
         },

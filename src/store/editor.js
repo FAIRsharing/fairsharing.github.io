@@ -1,4 +1,5 @@
 import GraphClient from "@/components/GraphClient/GraphClient.js"
+import RESTClient from "@/components/Client/RESTClient.js"
 import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
 import tagsQuery from "@/components/GraphClient/queries/geTags.json"
@@ -13,6 +14,7 @@ import registryIcons from "@/data/recordsRegistries.json"
 import supportLinksTypes from "@/data/SupportLinksTypes.json"
 import status from "@/data/status.json"
 const graphClient = new GraphClient();
+const restClient = new RESTClient();
 
 let editorStore = {
     namespaced: true,
@@ -62,7 +64,8 @@ let editorStore = {
             "applies_to_content",
             "least_permissive"
         ],
-        availableRecords: []
+        availableRecords: [],
+        relationsTypes: []
     },
     mutations: {
         setCountries(state, countries){
@@ -94,6 +97,9 @@ let editorStore = {
         },
         setAvailableRecords(state, records){
             state.availableRecords = records;
+        },
+        setAvailableRelationsTypes(state, types){
+            state.relationsTypes = types;
         }
     },
     actions: {
@@ -168,6 +174,27 @@ let editorStore = {
             if (q) getRecordsQuery.queryParam.q = q;
             let data = await graphClient.executeQuery(getRecordsQuery);
             commit("setAvailableRecords", data.searchFairsharingRecords.records);
+        },
+        async getAvailableRelationsTypes({commit}){
+            let types = await restClient.getRelationsTypes();
+            let allowed = {};
+            types.forEach(typeObject => {
+                let relationName = typeObject.name,
+                    id = typeObject.id;
+                typeObject['allowed_associations'].forEach(allowed_association => {
+                    let relationParent = allowed_association.from;
+                    let relationChild = allowed_association.to;
+                    if (!Object.keys(allowed).includes(relationParent)) {
+                        allowed[relationParent] = [];
+                    }
+                    allowed[relationParent].push({
+                        relation: relationName,
+                        target: relationChild,
+                        id: id
+                    });
+                })
+            });
+            commit("setAvailableRelationsTypes", allowed);
         }
     },
     modules: {},
@@ -180,6 +207,15 @@ let editorStore = {
                 }
             }
             return tags;
+        },
+        allowedRelations: (state) => (options) => {
+            let output = [];
+            state.relationsTypes[options.sourceType].forEach(relation => {
+                if (relation.target === options.target && !options.prohibited.includes(relation.relation)){
+                    output.push(relation)
+                }
+            });
+            return output;
         }
     }
 };

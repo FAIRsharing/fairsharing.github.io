@@ -548,6 +548,24 @@ class RESTClient {
         let response = await _client.executeQuery(request);
         return response.data;
     }
+
+    /**
+     * Get the list of allowed relation types for editing record's relationships.
+     * @returns {Promise}
+     */
+    /* EDITOR DATA */
+    async getRelationsTypes(){
+        let _client = this;
+        const request = {
+            method: "get",
+            baseURL: _client.baseURL + "/record_associations/allowed"
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+
+
     /* EXTRA METHODS */
 
     /**

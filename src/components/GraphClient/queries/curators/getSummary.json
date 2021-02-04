@@ -20,11 +20,19 @@
             "id",
             "name",
             "updatedAt",
+            "createdAt",
             "type",
             "processingNotes",
             "priority",
             {
               "name": "lastEditor",
+              "fields": [
+                "id",
+                "username"
+              ]
+            },
+            {
+              "name": "creator",
               "fields": [
                 "id",
                 "username"

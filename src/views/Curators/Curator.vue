@@ -146,39 +146,39 @@
               :search="searches.recentCuratorCreations"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
+            >
+              <template
+                v-if="recordType"
+                #item="props"
               >
-                <template
-                  v-if="recordType"
-                  #item="props"
-                >
-                  <tr>
-                    <td>
-                      <a :href="'#/' + props.item.id">
-                        <span
-                          v-if="props.item.type"
-                          class="mr-2"
+                <tr>
+                  <td>
+                    <a :href="'#/' + props.item.id">
+                      <span
+                        v-if="props.item.type"
+                        class="mr-2"
+                      >
+                        <v-avatar
+                          v-if="Object.keys(recordType).includes(props.item.type)"
+                          size="38"
                         >
-                          <v-avatar
-                            v-if="Object.keys(recordType).includes(props.item.type)"
-                            size="38"
+                          <img
+                            :src="'./' + recordType[props.item.type].icon"
                           >
-                            <img
-                              :src="'./' + recordType[props.item.type].icon"
-                            >
-                          </v-avatar>
-                        </span>
-                        {{ props.item.recordNameID }}
-                      </a>
-                    </td>
-                    <td>
-                      {{ props.item.createdAt }}
-                    </td>
-                    <td>
-                      {{ props.item.creator }}
-                    </td>
-                  </tr>
-                </template>
-              </v-data-table>
+                        </v-avatar>
+                      </span>
+                      {{ props.item.recordNameID }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ props.item.createdAt }}
+                  </td>
+                  <td>
+                    {{ props.item.creator }}
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
           </v-card-text>
         </v-card>
       </v-col>
@@ -316,8 +316,10 @@
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {
                 let object = {
+                  createdAt: rec.createdAt,
+                  creator: rec.creator.username.substring(0,6),
                   updatedAt: rec.updatedAt,
-                  curator: item.username,
+                  curator: item.username.substring(0,6),
                   recordName: `${rec.name} (${rec.id})`,
                   id: rec.id,
                   type: rec.type,
@@ -339,7 +341,8 @@
             });
             this.approvalRequired.sort(compareRecordDescUpdate);
             for (let i = 0; i < this.approvalRequired.length; i++) {
-              this.approvalRequired[i].updatedAt = formatDate(this.approvalRequired[i].updatedAt) ;
+              this.approvalRequired[i].updatedAt = formatDate(this.approvalRequired[i].updatedAt);
+              this.approvalRequired[i].createdAt = formatDate(this.approvalRequired[i].createdAt);
             }
             let curators = dataCuration.curatorList;
             curators.forEach(item => {
@@ -349,6 +352,11 @@
               this.curatorList.push(object);
             });
             this.curatorList.sort(compareRecordAlphaNames);
+            let object = {
+              id: -1,
+              userName: "none"
+            };
+            this.curatorList.push(object);
           },
           prepareMaintenanceRequests(dataCuration){
             let requests = dataCuration.pendingMaintenanceRequests;

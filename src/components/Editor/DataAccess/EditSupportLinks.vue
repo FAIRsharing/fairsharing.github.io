@@ -198,7 +198,7 @@
             ...mapState('record', ['sections']),
             ...mapState('editor', ['supportLinksTypes']),
             recordData(){
-                return this.sections["dataAccess"].data['support_links']
+                return this.sections["dataAccess"].data.support_links
             },
             rule(){
               if (!this.edit.template.type) return null;
@@ -268,10 +268,12 @@
               newLink.url.url = newLink.url.url.replace(/.json/g, "");
             }
             if (id !== null) {
-              this.sections.dataAccess.data.support_links[id] = newLink;
+              this.$set(this.sections.dataAccess.data.support_links, id,  newLink);
             }
             else {
-              this.sections.dataAccess.data.support_links.push(newLink);
+              this.$set(this.sections.dataAccess.data.support_links,
+                      this.sections.dataAccess.data.support_links.length,
+                      newLink);
             }
             this.edit = {
               show: false,

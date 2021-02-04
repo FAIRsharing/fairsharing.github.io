@@ -1,0 +1,25 @@
+{
+  "firstBlock": {
+    "header": "Developed By",
+    "content": [
+      {
+        "title": "The FAIRsharing team",
+        "url": "/communities#team"
+      },
+      {
+        "title": "Oxford e-Research Centre",
+        "url": "http://www.oerc.ox.ac.uk"
+      },
+      {
+        "title": "University of Oxford",
+        "url": "http://www.ox.ac.uk"
+      }
+    ]
+  },
+  "secondBlock": {
+    "header": "Contact Us"
+  },
+  "thirdBlock": {
+    "header": "About FAIRsharing"
+  }
+}

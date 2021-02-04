@@ -58,7 +58,7 @@
                     <v-btn
                       icon
                       class="green white--text"
-                      @click="showRelationsPanel = true"
+                      @click="showOverlay(record)"
                     >
                       <!--@click="addItem(index)"-->
                       <v-icon small>
@@ -185,17 +185,46 @@
             class="flexCard"
             width="100%"
           >
-            <v-card-text>
-              Select a relationship type
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                class="error"
-                @click="showRelationsPanel = false"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
+            <v-form
+              id="editRecordAssociation"
+              ref="editRecordAssociation"
+              v-model="formValid"
+            >
+              <v-card-text v-if="addingRelation">
+                <v-alert
+                  v-if="!panelContent || panelContent.length === 0"
+                  type="error"
+                  class="mb-6"
+                >
+                  This source and target can't have relationship.
+                </v-alert>
+                <v-autocomplete
+                  v-model="addingRelation.recordAssocLabel"
+                  :items="panelContent"
+                  outlined
+                  item-text="relation"
+                  item-value="relation"
+                  label="Select the type of relationship"
+                  :disabled="!panelContent || panelContent.length === 0"
+                  :rules="[rules.isRequired()]"
+                />
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  class="success"
+                  :disabled="!formValid"
+                  @click="addItem()"
+                >
+                  Add relation
+                </v-btn>
+                <v-btn
+                  class="error"
+                  @click="showRelationsPanel = false"
+                >
+                  Cancel
+                </v-btn>
+              </v-card-actions>
+            </v-form>
           </v-card>
         </v-row>
       </v-container>
@@ -204,7 +233,9 @@
 </template>
 
 <script>
-    import { mapState, mapActions } from "vuex"
+    import { mapState, mapActions, mapGetters } from "vuex"
+    import { isEqual } from "lodash"
+    import { isRequired } from "@/utils/rules.js"
     import stringUtils from '@/utils/stringUtils';
 
     export default {
@@ -216,12 +247,17 @@
             loading: false,
             search: null,
             searchAssociations: null,
-            showRelationsPanel: false
+            showRelationsPanel: false,
+            panelContent: null,
+            addingRelation: null,
+            formValid: false,
+            rules: { isRequired: () => {return isRequired()} },
           }
         },
         computed: {
-          ...mapState("record", ["sections"]),
-          ...mapState("editor", ["icons", "availableRecords"]),
+          ...mapState("record", ["sections", "currentRecord"]),
+          ...mapState("editor", ["icons", "availableRecords", "relationsTypes"]),
+          ...mapGetters("editor", ["allowedRelations"]),
           associations(){
             return this.sections.relations.data.recordAssociations;
           },
@@ -236,31 +272,49 @@
           async search() {
             this.loading = true;
             let search = null;
-            if (this.search.length >= 3) {
-              search = this.search;
+            if (this.search.trim().length >= 3) {
+              search = this.search.trim();
             }
             await this.getAvailableRecords(search);
             this.loading = false;
+          },
+          associations: {
+            deep: true,
+            handler(val){
+              let changes = 0;
+              let initialVal = this.sections.relations.initialData;
+              if (!isEqual(val, initialVal)) {
+                changes += 1;
+              }
+              this.$store.commit("record/setChanges", {
+                section: "relations",
+                value: changes
+              });
+            }
           }
         },
         mounted() {
           this.$nextTick(async function () {
             this.loading = true;
             await this.getAvailableRecords(null);
+            await this.getAvailableRelationsTypes();
             this.loading = false;
           });
         },
         methods: {
-          ...mapActions("editor", ["getAvailableRecords"]),
-          addItem(id) {
+          ...mapActions("editor", ["getAvailableRecords", "getAvailableRelationsTypes"]),
+          addItem() {
             this.searchAssociations = null;
-            this.sections.relations.data.recordAssociations.push({
-              linkedRecord: this.availableRecords[id],
-              recordAssocLabel: "undefined",
+            let newRelation = {
+              linkedRecord: this.addingRelation.linkedRecord,
+              recordAssocLabel: this.addingRelation.recordAssocLabel,
               new: true,
-            });
+            };
+            console.log(newRelation);
+            this.sections.relations.data.recordAssociations.push(newRelation);
+            this.showRelationsPanel = false;
             this.$nextTick(() => {
-              this.$scrollTo('#association_' + this.availableRecords[id].id, 450, {
+              this.$scrollTo('#association_' + this.addingRelation.id, 450, {
                 container: '#associatedRecords',
                 easing: 'ease-in',
               })
@@ -268,6 +322,25 @@
           },
           removeItem(id){
             this.sections.relations.data.recordAssociations.splice(id, 1);
+          },
+          showOverlay(target){
+            this.showRelationsPanel = true;
+            this.panelContent = null;
+            this.addingRelation = {
+              linkedRecord: target,
+              recordAssocLabel: null,
+              id: target.id
+            };
+            let prohibited = [];
+            this.associations.forEach(association => {
+              console.log(association);
+                if (association.linkedRecord.id === target.id) prohibited.push(association.recordAssocLabel)
+            });
+            this.panelContent = this.allowedRelations({
+                target: target.registry.toLowerCase(),
+                sourceType: this.currentRecord.fairsharingRecord.registry.toLowerCase(),
+                prohibited: prohibited
+            })
           }
         }
     }

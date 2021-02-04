@@ -150,6 +150,7 @@ import {mapGetters} from "vuex"
 //import {mapGetters, mapState} from "vuex"
 import {isRequired, isUrl} from "@/utils/rules.js"
 
+
 export default {
   name: "AccessPoints",
   data() {
@@ -164,7 +165,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("record", ["getSection"]),
+    ...mapGetters("record", ["getSection", "getChanges"]),
     section(){
       return this.getSection('additionalInformation');
     },
@@ -172,18 +173,49 @@ export default {
       return this.getSection("additionalInformation").initialData
     },
     currentFields(){
-      return this.getSection("additionalInformation").data || []
+      let data = this.getSection("additionalInformation").data
+      if (!data.access_points) {
+        data.access_points = [];
+      }
+      return data;
     },
     message(){
-      let error = this.getSection("additionalInfomation").error;
+      let error = this.getSection("additionalInformation").error;
       return {
         error: error,
-        value: this.getSection("generalInformation").message,
+        value: this.getSection("additionalInformation").message,
         type: function(){if (error){return "error"} else {return "success"}}
       };
     }
   },
+  watch: {
+    currentFields: {
+      deep: true,
+      handler() {
+        let _module = this;
+        let changes = 0;
+
+        let initialAps = _module.getSection("additionalInformation").initialData.access_points;
+        let currentAps = _module.currentFields.access_points;
+
+        let onlyInitial = initialAps.filter(_module.compare(currentAps));
+        let onlyCurrent = currentAps.filter(_module.compare(initialAps));
+
+        changes += (onlyInitial.length + onlyCurrent.length);
+
+        _module.$emit("update-counts", {access_points: changes});
+
+      }
+    }
+  },
   methods: {
+    compare(array) {
+      return function(current){
+        return array.filter(function(other){
+          return other.type === current.type && other.url === current.url
+        }).length === 0;
+      }
+    },
     createAccessPoint() {
       this.newAccessPoint = {
         type: null,

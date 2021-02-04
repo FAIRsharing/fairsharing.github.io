@@ -5,26 +5,49 @@ import editAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAd
 import RestClient from "@/components/Client/RESTClient.js"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
+import editorStore from "@/store/editor.js"
+import VueRouter from "vue-router";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
-recordStore.state.currentRecord = {
-    fairsharingRecord: {
-        metadata: {
-            type: 'model_and_format'
+const VueScrollTo = require('vue-scrollto');
+localVue.use(VueScrollTo);
+
+let record = {
+    access_points: [
+        {
+            type: 'REST',
+            url: 'http://wibble.com',
+            documentation_url: 'http://wibble.com/docs',
+            example_url: 'http://wibble.com/example'
         }
+    ],
+    type: "model_and_format"
+};
+recordStore.state.sections = {
+    additionalInformation: {
+        error: false,
+        data: record,
+        initialData: JSON.parse(JSON.stringify(record)),
+        changes: 0,
+        message: null
     }
 };
 userStore.state.user().credentials.token = "thisisatoken";
 const $store = new Vuex.Store({
     modules: {
         record: recordStore,
-        users: userStore
+        users: userStore,
+        editor: editorStore
     }
 });
+
+const router = new VueRouter();
+const $router = { push: jest.fn() };
+let $route = { path: "/123/edit", params: {id: 123} };
 
 let restStub;
 
@@ -34,7 +57,8 @@ describe("EditAdditionalInfo", function() {
         wrapper = shallowMount(editAdditionalInfo, {
             localVue,
             vuetify,
-            mocks: {$store}
+            router,
+            mocks: {$store, $router, $route}
         });
         restStub = sinon.stub(RestClient.prototype, 'executeQuery');
         restStub.returns(['this', 'that']);
@@ -45,15 +69,38 @@ describe("EditAdditionalInfo", function() {
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("EditAdditionalInfo");
+        expect(wrapper.vm.message.type()).toBe("success");
+        recordStore.state.sections.additionalInformation.error = true;
+        expect(wrapper.vm.message.type()).toBe("error");
+        recordStore.state.sections.additionalInformation.error = false;
     });
 
-    /*
     // Fails to run in the test for unknown reasons.
     it("returns the correct list of fields names", async () => {
         await wrapper.vm.getFieldNames();
-        console.log("Allowed: " + JSON.stringify(wrapper.vm.allowedFields));
-        expect(wrapper.vm.allowedFields[1]).toEqual('that');
+        expect(wrapper.vm.allowedFields).toStrictEqual(["access_points"]);
     });
-     */
 
+    it("can update a record", async () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        recordStore.state.sections.additionalInformation.changes = 1;
+        restStub.returns({data: {id: 123}});
+        await wrapper.vm.saveRecord(true);
+        expect($router.push).toHaveBeenCalledWith({path: "/123"});
+        expect($router.push).toHaveBeenCalledTimes(1);
+        await wrapper.vm.saveRecord(false);
+        expect(recordStore.state.sections.additionalInformation.changes).toEqual(0);
+        restStub.returns({data: {error: {response: {data: "error"}}}});
+        await wrapper.vm.saveRecord(true);
+        expect(recordStore.state.sections.additionalInformation.error).toBe(true);
+        expect(recordStore.state.sections.additionalInformation.message).toStrictEqual({"response": {"data": "error"}});
+        restStub.restore();
+        jest.clearAllMocks();
+    });
+
+    it("can update counts", () => {
+        expect(wrapper.vm.counts.access_points).toEqual(0);
+        wrapper.vm.updateCounts({access_points: 1});
+        expect(wrapper.vm.counts.access_points).toEqual(1);
+    });
 });

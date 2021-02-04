@@ -32,7 +32,7 @@ let recordStore = {
         sections: {
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
             organisations: {},
-            additionalInformation: {},
+            additionalInformation: initEditorSections(false, ["additionalInformation"]).additionalInformation,
             publications: initEditorSections(false, ["publications"]).publications,
         },
         editOrganisationLink: {
@@ -284,10 +284,12 @@ let recordStore = {
         async updateAdditionalInformation({ state, commit}, options){
             commit("resetMessage", "additionalInformation");
             let access_points = state.sections.additionalInformation.data.access_points;
-            // TODO:
-            //  1. Get metadata (new GraphQL query)
-            //  2. Modify with access_points,
-            //  3. Post again (restClient.updateRecord).
+            /*
+                What this does:
+                1. Get metadata (new GraphQL query)
+                2. Modify with access_points,
+                3. Post again (restClient.updateRecord).
+             */
             metadataQuery.queryParam = {
                 id: options.id
             }

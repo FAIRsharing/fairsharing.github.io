@@ -12,8 +12,8 @@
         Edit Additional Information
       </v-card-title>
 
-      <Alerts target="generalInformation" />
-      
+      <Alerts target="additionalInformation" />
+
       <v-row
         v-for="(field, index) in allowedFields"
         :key="'selected_' + index"
@@ -23,7 +23,10 @@
           class="pa-6"
         >
           <!-- Dynamically loads components -->
-          <component :is="componentMapping[field]" />
+          <component
+            :is="componentMapping[field]" 
+            @update-counts="updateCounts"
+          />
         </v-col>
       </v-row>     
       
@@ -78,9 +81,10 @@ export default {
       loading: true,
       allowedFields: [],
       componentMapping: {
-        "access_points": "AccessPoints",
-        "data_processes": "AccessPoints",
-        "associated_tools": "AccessPoints"
+        "access_points": "AccessPoints"
+      },
+      counts: {
+        access_points: 0
       }
     }
   },
@@ -88,13 +92,21 @@ export default {
     ...mapGetters("record", ["getSection"]),
     ...mapState("users", ["user"]),
     fields() {
-      return this.getSection("generalInformation").data
+      return this.getSection("additionalInformation").data
+    },
+    message(){
+      let error = this.getSection("additionalInformation").error;
+      return {
+        error: error,
+        value: this.getSection("additionalInformation").message,
+        type: function(){if (error){return "error"} else {return "success"}}
+      };
     }
-    // TODO: Changes for watching access points.
   },
   mounted(){
     this.$nextTick(async () => {
       //this.allowedFields = await this.getFieldNames();
+      // TODO: Modify this when all sections have been completed.
       this.allowedFields = ['access_points'];
       //console.log(JSON.stringify(this.allowedFields));
       this.initialized = true;
@@ -110,7 +122,6 @@ export default {
       );
     },
     async saveRecord(redirect){
-      // TODO: Complete this
       this.openEditor = false;
       this.loading = true;
       await this.updateAdditionalInformation({
@@ -121,13 +132,31 @@ export default {
       if (!redirect) {
         this.$scrollTo("#mainHeader");
         this.$store.commit("record/setChanges", {
-          section: "publications",
+          section: "additionalInformation",
           value: 0
         })
       }
       if (redirect && !this.message.error){
         await this.$router.push({path: '/' + this.$route.params.id})
       }
+    },
+    updateCounts(count) {
+      /*
+       * Multiple sections may be updating the counts, with different means of calculating changes,
+       * so the updates to the page are all handled here.
+       */
+      let _module = this;
+      let changes = 0;
+      Object.keys(count).forEach( (key) => {
+        _module.counts[key] = count[key];
+      });
+      Object.keys(_module.counts).forEach( (key) => {
+        changes += _module.counts[key];
+      });
+      _module.$store.commit("record/setChanges", {
+        section: "additionalInformation",
+        value: changes
+      });
     }
   }
 }

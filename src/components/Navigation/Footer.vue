@@ -14,6 +14,7 @@
       <ul>
         <li>
           <a
+            class="underline-effect"
             href="/communities#team"
             target="_blank"
           >The
@@ -23,10 +24,12 @@
           <a
             href="http://www.oerc.ox.ac.uk"
             target="_blank"
+            class="underline-effect"
           >Oxford e-Research Centre</a>
         </li>
         <li>
           <a
+              class="underline-effect"
             href="http://www.ox.ac.uk"
             target="_blank"
           >University of Oxford</a>
@@ -45,7 +48,7 @@
       </h4>
       <ul>
         <li>
-          <a href="mailto:contact@fairsharing.org?subject=FAIRsharing Issue"><i
+          <a href="mailto:contact@fairsharing.org?subject=FAIRsharing Issue" class="underline-effect"><i
             class="fa fa-envelope"
           />
             Email us for
@@ -56,6 +59,7 @@
           <a
             href="https://www.facebook.com/fairsharing"
             target="_blank"
+            class="underline-effect"
           ><i
             class="fab fa-facebook"
           />
@@ -65,6 +69,7 @@
           <a
             href="https://www.twitter.com/fairsharing_org"
             target="_blank"
+            class="underline-effect"
           ><i class="fab fa-twitter" />
             Twitter</a>
         </li>
@@ -83,28 +88,29 @@
       <ul>
         <li>
           <a
+            class="underline-effect"
             id="tour-link"
             href="#"
           >Take a Tour</a>
         </li>
         <li>
-          <a href="/communities">Community</a>
+          <a href="/communities" class="underline-effect">Community</a>
         </li>
         <li><a href="/stakeholders">Stakeholders</a></li>
         <li>
-          <a href="/timeline">Timeline</a>
+          <a href="/timeline" class="underline-effect">Timeline</a>
         </li>
         <li>
-          <a href="/licence">API and data licence</a>
+          <a href="/licence" class="underline-effect">API and data licence</a>
         </li>
         <li>
-          <a href="/terms">Terms of use</a>
+          <a href="/terms" class="underline-effect">Terms of use</a>
         </li>
         <li>
-          <a href="/educational/#faq10-1">How to cite us</a>
+          <a href="/educational/#faq10-1" class="underline-effect">How to cite us</a>
         </li>
         <li>
-          <a href="/privacy">Privacy policy</a>
+          <a href="/privacy" class="underline-effect">Privacy policy</a>
         </li>
       </ul>
     </v-col>
@@ -115,13 +121,13 @@
         © FAIRsharing 2009-Present | Licensed under
       </p>
       <a
-        class="mr-2"
+        class="mr-2 underline-effect"
         href="http://creativecommons.org/licenses/by-sa/4.0/"
         target="_blank"
       >Creative Commons
         by
         Share Alike 4.0 International</a>
-      <a href="/licence"><img
+      <a href="/licence" class="underline-effect"><img
         src="https://fairsharing.org/static/img/home/FAIRsharingCC-BY-SA.png"
       ></a>
     </v-row>

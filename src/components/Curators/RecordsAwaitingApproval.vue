@@ -143,7 +143,7 @@
                   >
                     <a
                       :href="'#/' + props.item.id+ '/edit'"
-                      style="padding-left: 8px;"
+                      style="padding-left: 3px;"
                     >
                       Edit
                     </a>
@@ -151,6 +151,9 @@
                 </template>
                 <span>If edits are saved, record is approved.</span>
               </v-tooltip>
+            </td>
+            <td>
+              {{ props.item.createdAt }}, {{ props.item.creator }}
             </td>
           </tr>
         </template>
@@ -349,7 +352,9 @@
                 curator_id: null,
                 skip_approval: true
               };
-              preparedRecord.curator_id = idUser;
+              if (idUser>=0){
+                preparedRecord.curator_id = idUser;
+              }
               let data = {
                 record: preparedRecord,
                 id: idRecord,
@@ -361,7 +366,7 @@
                 _module.error.recordID = idRecord;
               }
               const index = _module.approvalRequired.findIndex((element) => element.id === idRecord);
-              _module.approvalRequired[index].curator=nameUser;
+              _module.approvalRequired[index].curator=nameUser.substring(0,6);
             },
 
             approveChangesMenu(recordName, recordID){

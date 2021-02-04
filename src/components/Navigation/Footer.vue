@@ -33,8 +33,9 @@
         </li>
       </ul>
     </v-col>
-    <!--  License and copy right  -->
+    <!--  Dash style for footer  -->
     <div class="footer-dash" />
+    <!--  JumpToTop button  -->
     <div
       id="diamond-narrow"
       v-scroll-to="'body'"
@@ -47,6 +48,7 @@
         >{{ $vuetify.icons.values.arrowUp }}</v-icon>
       </span>
     </div>
+    <!--  License and copy right  -->
     <v-row
       class="d-flex flex-row justify-center align-center mb-2"
     >

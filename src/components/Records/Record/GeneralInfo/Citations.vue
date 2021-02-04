@@ -28,7 +28,7 @@
             </span>
             <b v-if="getField('doi')">DOI:</b>{{ getField('doi') }};
             <b v-if="getField('lastEdited')">Last Edited:</b>{{ getField('lastEdited') }}
-            <b>Last Accessed:</b>{{ new Date() | moment("dddd, MMMM Do YYYY") }}
+            <b>Last Accessed:</b>{{ new Date() | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}
           </v-card-text>
         </v-card>
       </v-col>

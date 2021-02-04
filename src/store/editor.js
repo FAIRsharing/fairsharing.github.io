@@ -164,7 +164,7 @@ let editorStore = {
             commit('setAvailableLicences', licences['searchLicences'])
         },
         async getAvailableRecords({commit}, q){
-            getRecordsQuery.queryParam = {perPage: 10};
+            getRecordsQuery.queryParam = {perPage: 100};
             if (q) getRecordsQuery.queryParam.q = q;
             let data = await graphClient.executeQuery(getRecordsQuery);
             commit("setAvailableRecords", data.searchFairsharingRecords.records);

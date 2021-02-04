@@ -6,25 +6,36 @@
     <v-card-text class="pt-2">
       <v-container fluid>
         <v-row>
-          <v-col cols="6">
-            <div class="my-5 pl-4 grey lighten-3 elevation-5">
-              <v-list class="transparent scrollZone pr-3">
-                <v-subheader
-                  style="border-bottom: 1px solid #ccc;"
-                  class="mb-3"
-                >
-                  Select the records you want to add:
-                </v-subheader>
-                <v-list-item class="mb-4">
-                  <v-text-field
-                    v-model="search"
-                    outlined
-                    label="Refine search"
-                    placeholder="e.g. GenBank"
-                    hide-details
-                    :loading="loading"
-                  />
-                </v-list-item>
+          <!-- LEFT PANEL -->
+          <v-col
+            xl="6"
+            lg="6"
+            md="6"
+            sm="6"
+            xs="12"
+          >
+            <v-card
+              class="my-5 pl-4 grey lighten-3"
+              elevation="5"
+            >
+              <v-card-title>
+                Available records:
+              </v-card-title>
+              <v-card-text>
+                <v-text-field
+                  v-model="search"
+                  outlined
+                  label="Refine search"
+                  placeholder="e.g. GenBank"
+                  hide-details
+                  :loading="loading"
+                />
+              </v-card-text>
+              <v-list
+                v-if="availableRecords.length > 0"
+                class="transparent scrollZone pr-3"
+                style="border-bottom: 1px solid #ccc;"
+              >
                 <v-list-item
                   v-for="(record, index) in availableRecords"
                   :key="'availableRecord_' + index"
@@ -47,9 +58,9 @@
                     <v-btn
                       icon
                       class="green white--text"
-                      :disabled="isActive(record)"
-                      @click="addItem(index)"
+                      @click="showRelationsPanel = true"
                     >
+                      <!--@click="addItem(index)"-->
                       <v-icon small>
                         fa-arrow-right
                       </v-icon>
@@ -57,27 +68,47 @@
                   </v-list-item-icon>
                 </v-list-item>
               </v-list>
-            </div>
-          </v-col>
-          <v-col cols="6">
-            <div class="my-5 pl-4 grey lighten-3 elevation-5">
               <v-list
+                v-else
+                class="transparent scrollZone pr-3"
+              >
+                <v-list-item>No records could be found with this search term.</v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+
+          <!-- RIGHT PANEL -->
+          <v-col
+            xl="6"
+            lg="6"
+            md="6"
+            sm="6"
+            xs="12"
+          >
+            <v-card
+              class="my-5 pl-4 grey lighten-3"
+              elevation="5"
+            >
+              <v-card-title>
+                <span>Associated records ({{ associations.length }})</span>
+              </v-card-title>
+              <v-card-text>
+                <v-text-field
+                  v-model="searchAssociations"
+                  outlined
+                  label="Search through existing associations names"
+                  placeholder="e.g. GenBank"
+                  hide-details
+                />
+              </v-card-text>
+              <v-list
+                v-if="getAssociations.length > 0"
                 id="associatedRecords"
                 class="transparent scrollZone pr-3"
               >
-                <v-subheader
-                  style="border-bottom: 1px solid #ccc;"
-                  class="mb-3"
-                >
-                  <i
-                    v-if="associations.length === 0"
-                    class="mt-3"
-                  >This record does not have any associated record.</i>
-                  <span v-else>Associated records ({{ associations.length }})</span>
-                </v-subheader>
                 <v-list-item
-                  v-for="(association, index) in associations"
-                  :id="'association_' + index"
+                  v-for="(association, index) in getAssociations"
+                  :id="'association_' + association.linkedRecord.id"
                   :key="'association_' + index"
                   dense
                   ripple
@@ -109,7 +140,15 @@
                   </v-list-item-icon>
                 </v-list-item>
               </v-list>
-            </div>
+              <v-list
+                v-else
+                class="transparent scrollZone pr-3"
+              >
+                <v-list-item>
+                  This record does not have any association.
+                </v-list-item>
+              </v-list>
+            </v-card>
           </v-col>
         </v-row>
       </v-container>
@@ -128,6 +167,39 @@
         Save and exit
       </v-btn>
     </v-card-actions>
+
+    <v-dialog
+      v-model="showRelationsPanel"
+      class="py-0"
+      :dark="false"
+      opacity="0.8"
+      persistent
+      width="700px"
+    >
+      <v-container
+        fluid
+        class="py-0"
+      >
+        <v-row justify="center">
+          <v-card
+            class="flexCard"
+            width="100%"
+          >
+            <v-card-text>
+              Select a relationship type
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                class="error"
+                @click="showRelationsPanel = false"
+              >
+                Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-row>
+      </v-container>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -142,7 +214,9 @@
           return {
             saving: false,
             loading: false,
-            search: null
+            search: null,
+            searchAssociations: null,
+            showRelationsPanel: false
           }
         },
         computed: {
@@ -150,15 +224,23 @@
           ...mapState("editor", ["icons", "availableRecords"]),
           associations(){
             return this.sections.relations.data.recordAssociations;
+          },
+          getAssociations(){
+            if (!this.searchAssociations) return this.associations;
+            return this.associations.filter(obj => {
+              return obj.linkedRecord.name.includes(this.searchAssociations)
+            });
           }
         },
         watch: {
-          async search(){
-            if (this.search.length >= 3){
-              this.loading = true;
-              await this.getAvailableRecords(this.search);
-              this.loading = false;
+          async search() {
+            this.loading = true;
+            let search = null;
+            if (this.search.length >= 3) {
+              search = this.search;
             }
+            await this.getAvailableRecords(search);
+            this.loading = false;
           }
         },
         mounted() {
@@ -171,27 +253,21 @@
         methods: {
           ...mapActions("editor", ["getAvailableRecords"]),
           addItem(id) {
+            this.searchAssociations = null;
             this.sections.relations.data.recordAssociations.push({
               linkedRecord: this.availableRecords[id],
-              recordAssocLabel: "",
+              recordAssocLabel: "undefined",
               new: true,
             });
-            this.$scrollTo('#association_' + id, 450, {
-              container: '#associatedRecords',
-              easing: 'ease-in',
-            })
+            this.$nextTick(() => {
+              this.$scrollTo('#association_' + this.availableRecords[id].id, 450, {
+                container: '#associatedRecords',
+                easing: 'ease-in',
+              })
+            });
           },
           removeItem(id){
             this.sections.relations.data.recordAssociations.splice(id, 1);
-          },
-          isActive(record){
-            let found = null;
-            this.associations.forEach((obj) => {
-              if (obj.linkedRecord.id === record.id && obj.linkedRecord.registry === record.registry){
-                found = obj;
-              }
-            });
-            return !!found;
           }
         }
     }
@@ -200,7 +276,7 @@
 <style scoped>
 
   .scrollZone {
-    height: 60vh;
+    height: 50vh;
     width: 100%;
     overflow-y: scroll;
   }

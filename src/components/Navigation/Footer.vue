@@ -1,7 +1,11 @@
 <template>
-  <v-row>
+  <v-row class="secondary white--text pt-5">
     <v-col
-      cols="3"
+      :cols="$vuetify.breakpoint.xsOnly?'12':4"
+      lg="4"
+      md="4"
+      sm="12"
+      xsm="12"
       class="flex-column align-center d-flex"
     >
       <h4>
@@ -30,7 +34,10 @@
       </ul>
     </v-col>
     <v-col
-      cols="3"
+      :cols="$vuetify.breakpoint.xsOnly?'12':4"
+      lg="4"
+      md="4"
+      sm="12"
       class="flex-column align-center d-flex"
     >
       <h4 id="contact-info">
@@ -64,32 +71,10 @@
       </ul>
     </v-col>
     <v-col
-      cols="3"
-      class="flex-column align-center d-flex"
-    >
-      <h4 id="contact-info2">
-        Support Us
-      </h4>
-      <ul>
-        <li>
-          <a
-            href="https://www.facebook.com/fairsharing"
-            target="_blank"
-          ><i class="fab fa-facebook" />
-            Facebook
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://www.twitter.com/fairsharing_org"
-            target="_blank"
-          ><i class="fab fa-twitter" />
-            Twitter</a>
-        </li>
-      </ul>
-    </v-col>
-    <v-col
-      cols="3"
+      :cols="$vuetify.breakpoint.xsOnly?'12':4"
+      lg="4"
+      md="4"
+      sm="12"
       class="flex-column align-center d-flex"
     >
       <h4 id="about-info">
@@ -123,8 +108,8 @@
         </li>
       </ul>
     </v-col>
-    <div
-      class="d-flex flex-row justify-center align-center full-width mb-2"
+    <v-row
+      class="d-flex flex-row justify-center align-center mb-2"
     >
       <p class="mb-0 mr-2">
         © FAIRsharing 2009-Present | Licensed under
@@ -139,7 +124,7 @@
       <a href="/licence"><img
         src="https://fairsharing.org/static/img/home/FAIRsharingCC-BY-SA.png"
       ></a>
-    </div>
+    </v-row>
   </v-row>
 </template>
 
@@ -149,4 +134,7 @@ export default {
 }
 </script>
 <style scoped>
+li {
+  min-width: 200px;
+}
 </style>

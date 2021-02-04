@@ -64,12 +64,14 @@
           >
             {{ panelData.name }}
           </v-btn>
-          <v-btn
-            class="ml-2 default"
-            :href="'#/' + $route.params.id"
+          <router-link
+            :to="'/' + $route.params.id"
+            class="ml-2"
           >
-            Exist editing
-          </v-btn>
+            <v-btn class="default">
+              Exit editing
+            </v-btn>
+          </router-link>
         </v-toolbar>
         <v-tabs
           dark

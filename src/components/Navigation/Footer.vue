@@ -1,7 +1,8 @@
 <template>
   <v-row class="secondary white--text pt-5">
-<!--  first block -->
     <v-col
+      v-for="(block,index) in footerData"
+      :key="block.header+'_'+index"
       :cols="$vuetify.breakpoint.xsOnly?'12':4"
       lg="4"
       md="4"
@@ -10,118 +11,24 @@
       class="flex-column align-center d-flex"
     >
       <h4 class="min-width-200 mb-2">
-        {{ firstBlock.header }}
+        {{ block.header }}
       </h4>
       <ul>
         <li
-          v-for="(item,index) in firstBlock.content"
-          :key="item.title+'_'+index"
+          v-for="(item,blockIndex) in block.content"
+          :key="item.title+'_'+blockIndex"
         >
           <a
             class="underline-effect"
-            :href="item.link"
+            :href="item.url"
             target="_blank"
-          >{{ item.title }}</a>
-        </li>
-      </ul>
-    </v-col>
-
-    <v-col
-      :cols="$vuetify.breakpoint.xsOnly?'12':4"
-      lg="4"
-      md="4"
-      sm="12"
-      class="flex-column align-center d-flex"
-    >
-      <h4 class="min-width-200 mb-2">
-        {{ secondBlock.header }}
-      </h4>
-      <ul>
-        <li>
-          <a
-            href="mailto:contact@fairsharing.org?subject=FAIRsharing Issue"
-            class="underline-effect"
-          ><i
-            class="fa fa-envelope"
-          />
-            Email us for
-            all
-            enquiries</a>
-        </li>
-        <li>
-          <a
-            href="https://www.facebook.com/fairsharing"
-            target="_blank"
-            class="underline-effect"
-          ><i
-            class="fab fa-facebook"
-          />
-            Facebook</a>
-        </li>
-        <li>
-          <a
-            href="https://www.twitter.com/fairsharing_org"
-            target="_blank"
-            class="underline-effect"
-          ><i class="fab fa-twitter" />
-            Twitter</a>
-        </li>
-      </ul>
-    </v-col>
-    <v-col
-      :cols="$vuetify.breakpoint.xsOnly?'12':4"
-      lg="4"
-      md="4"
-      sm="12"
-      class="flex-column align-center d-flex"
-    >
-      <h4 class="min-width-200 mb-2">
-        {{ thirdBlock.header }}
-      </h4>
-      <ul>
-        <li>
-          <a
-            id="tour-link"
-            class="underline-effect"
-            href="#"
-          >Take a Tour</a>
-        </li>
-        <li>
-          <a
-            href="/communities"
-            class="underline-effect"
-          >Community</a>
-        </li>
-        <li><a href="/stakeholders">Stakeholders</a></li>
-        <li>
-          <a
-            href="/timeline"
-            class="underline-effect"
-          >Timeline</a>
-        </li>
-        <li>
-          <a
-            href="/licence"
-            class="underline-effect"
-          >API and data licence</a>
-        </li>
-        <li>
-          <a
-            href="/terms"
-            class="underline-effect"
-          >Terms of use</a>
-        </li>
-        <li>
-          <a
-            href="/educational/#faq10-1"
-            class="underline-effect"
-          >How to cite us</a>
-        </li>
-        <li>
-          <a
-            href="/privacy"
-            class="underline-effect"
-          >Privacy policy</a>
+          >
+            <i
+              v-if="item.icon"
+              :class="item.icon"
+            />
+            {{ item.title }}
+          </a>
         </li>
       </ul>
     </v-col>
@@ -149,14 +56,12 @@
 </template>
 
 <script>
-import {firstBlock,secondBlock,thirdBlock} from '@/data/footerData.json'
+import footerData from '@/data/footerData.json'
 export default {
   name: "Footer",
   data: () => {
     return {
-      firstBlock,
-      secondBlock,
-      thirdBlock,
+      footerData
     }
   }
 }

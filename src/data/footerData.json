@@ -7,8 +7,8 @@
         "url": "/communities#team"
       },
       {
-        "title": "Oxford e-Research Centre",
-        "url": "http://www.oerc.ox.ac.uk"
+        "title": "Data Readiness Group",
+        "url": "https://datareadiness.eng.ox.ac.uk/"
       },
       {
         "title": "University of Oxford",
@@ -17,9 +17,60 @@
     ]
   },
   "secondBlock": {
-    "header": "Contact Us"
+    "header": "Contact Us",
+    "content": [
+      {
+        "title": "Email us for all enquiries",
+        "url": "mailto:contact@fairsharing.org?subject=FAIRsharing Issue",
+        "icon": "fa fa-envelope"
+      },
+      {
+        "title": "Facebook",
+        "url": "https://www.facebook.com/fairsharing",
+        "icon": "fab fa-facebook"
+      },
+      {
+        "title": "Twitter",
+        "url": "https://www.twitter.com/fairsharing_org",
+        "icon": "fab fa-twitter"
+      }
+    ]
   },
   "thirdBlock": {
-    "header": "About FAIRsharing"
+    "header": "About FAIRsharing",
+    "content": [
+      {
+        "title": "About us",
+        "url": ""
+      },
+      {
+        "title": "Blog",
+        "url": ""
+      },
+      {
+        "title": "How to cite us",
+        "url": ""
+      },
+      {
+        "title": "Privacy Policy",
+        "url": ""
+      },
+      {
+        "title": "Stakeholders",
+        "url": ""
+      },
+      {
+        "title": "Timeline",
+        "url": ""
+      },
+      {
+        "title": "API and data license",
+        "url": ""
+      },
+      {
+        "title": "Terms of use",
+        "url": ""
+      }
+    ]
   }
 }

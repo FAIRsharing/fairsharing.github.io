@@ -1,5 +1,6 @@
 <template>
-  <v-row class="secondary white--text pt-5">
+  <v-row class="white--text pt-5 mt-8 footer-container">
+    <!--  Footer Blocks  -->
     <v-col
       v-for="(block,index) in footerData"
       :key="block.header+'_'+index"
@@ -32,6 +33,20 @@
         </li>
       </ul>
     </v-col>
+    <!--  License and copy right  -->
+    <div class="footer-dash" />
+    <div
+      id="diamond-narrow"
+      v-scroll-to="'body'"
+      class="cursor-pointer"
+    >
+      <span id="arrow-up">
+        <v-icon
+          color="white"
+          small
+        >{{ $vuetify.icons.values.arrowUp }}</v-icon>
+      </span>
+    </div>
     <v-row
       class="d-flex flex-row justify-center align-center mb-2"
     >
@@ -50,6 +65,7 @@
         class="underline-effect"
       ><img
         src="https://fairsharing.org/static/img/home/FAIRsharingCC-BY-SA.png"
+        alt="fairsharing"
       ></a>
     </v-row>
   </v-row>
@@ -66,8 +82,49 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 li {
   min-width: 200px;
+}
+
+.footer-container {
+  position: relative;
+  background: #253442;
+}
+
+.footer-dash {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  border-top: 3px dashed #253442;
+}
+
+#diamond-narrow {
+  width: 0;
+  height: 0;
+  border: 29px solid transparent;
+  border-bottom: 30px solid #27aae1;
+  position: absolute;
+  top: -59px;
+  left: 48%;
+
+  #arrow-up {
+    position: absolute;
+    left: -7px;
+    top: 15px;
+    z-index: 2;
+  }
+}
+
+#diamond-narrow:after {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 29px;
+  width: 0;
+  height: 0;
+  border: 30px solid transparent;
+  border-top: 30px solid #27aae1;
 }
 </style>

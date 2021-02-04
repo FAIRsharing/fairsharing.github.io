@@ -6,6 +6,7 @@ import getOrganisationsQuery from "@/components/GraphClient/queries/Organisation
 import getOrganisationsTypesQuery from "@/components/GraphClient/queries/Organisations/getOrganisationTypes.json"
 import getGrantsQuery from "@/components/GraphClient/queries/Organisations/getGrants.json"
 import getPublicationsQuery from "@/components/GraphClient/queries/getPublications.json"
+import getRecordsQuery from "@/components/GraphClient/queries/editor/getRecordsSummary.json"
 import getLicencesQuery from "@/components/GraphClient/queries/getLicences.json"
 import descriptionData from "@/data/fieldsDescription.json"
 import registryIcons from "@/data/recordsRegistries.json"
@@ -60,7 +61,8 @@ let editorStore = {
             "undefined",
             "applies_to_content",
             "least_permissive"
-        ]
+        ],
+        availableRecords: []
     },
     mutations: {
         setCountries(state, countries){
@@ -89,6 +91,9 @@ let editorStore = {
         },
         setAvailableLicences(state, licences){
             state.availableLicences = licences;
+        },
+        setAvailableRecords(state, records){
+            state.availableRecords = records;
         }
     },
     actions: {
@@ -158,6 +163,12 @@ let editorStore = {
             let licences = await graphClient.executeQuery(getLicencesQuery);
             commit('setAvailableLicences', licences['searchLicences'])
         },
+        async getAvailableRecords({commit}, q){
+            getRecordsQuery.queryParam = {perPage: 10};
+            if (q) getRecordsQuery.queryParam.q = q;
+            let data = await graphClient.executeQuery(getRecordsQuery);
+            commit("setAvailableRecords", data.searchFairsharingRecords.records);
+        }
     },
     modules: {},
     getters: {

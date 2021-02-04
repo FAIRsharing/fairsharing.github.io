@@ -17,17 +17,18 @@
     },
     {
       "text": "Record name (id)",
-      "value": "recordName"
+      "value": "recordName",
+      "width": 300
     },
     {
       "text": "Last editor",
-      "value": "lastEditor"
+      "value": "lastEditor",
+      "width": 120
     },
     {
       "text": "Processing Notes",
       "value": "processingNotes",
-      "sortable": false,
-      "width": 250
+      "sortable": false
     },
     { "text": "Accept record/edit?",
       "value": "actions",

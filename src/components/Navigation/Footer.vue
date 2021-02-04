@@ -1,5 +1,6 @@
 <template>
   <v-row class="secondary white--text pt-5">
+<!--  first block -->
     <v-col
       :cols="$vuetify.breakpoint.xsOnly?'12':4"
       lg="4"
@@ -9,33 +10,22 @@
       class="flex-column align-center d-flex"
     >
       <h4 class="min-width-200 mb-2">
-        Developed by
+        {{ firstBlock.header }}
       </h4>
       <ul>
-        <li>
+        <li
+          v-for="(item,index) in firstBlock.content"
+          :key="item.title+'_'+index"
+        >
           <a
             class="underline-effect"
-            href="/communities#team"
+            :href="item.link"
             target="_blank"
-          >The
-            FAIRsharing team</a>
-        </li>
-        <li>
-          <a
-            href="http://www.oerc.ox.ac.uk"
-            target="_blank"
-            class="underline-effect"
-          >Oxford e-Research Centre</a>
-        </li>
-        <li>
-          <a
-            class="underline-effect"
-            href="http://www.ox.ac.uk"
-            target="_blank"
-          >University of Oxford</a>
+          >{{ item.title }}</a>
         </li>
       </ul>
     </v-col>
+
     <v-col
       :cols="$vuetify.breakpoint.xsOnly?'12':4"
       lg="4"
@@ -44,7 +34,7 @@
       class="flex-column align-center d-flex"
     >
       <h4 class="min-width-200 mb-2">
-        Contact Us
+        {{ secondBlock.header }}
       </h4>
       <ul>
         <li>
@@ -86,7 +76,7 @@
       class="flex-column align-center d-flex"
     >
       <h4 class="min-width-200 mb-2">
-        About FAIRsharing
+        {{ thirdBlock.header }}
       </h4>
       <ul>
         <li>
@@ -159,8 +149,16 @@
 </template>
 
 <script>
+import {firstBlock,secondBlock,thirdBlock} from '@/data/footerData.json'
 export default {
-  name: "Footer"
+  name: "Footer",
+  data: () => {
+    return {
+      firstBlock,
+      secondBlock,
+      thirdBlock,
+    }
+  }
 }
 </script>
 <style scoped>

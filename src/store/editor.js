@@ -169,9 +169,13 @@ let editorStore = {
             let licences = await graphClient.executeQuery(getLicencesQuery);
             commit('setAvailableLicences', licences['searchLicences'])
         },
-        async getAvailableRecords({commit}, q){
+        async getAvailableRecords({commit}, options){
             getRecordsQuery.queryParam = {perPage: 100};
-            if (q) getRecordsQuery.queryParam.q = q;
+            if (options.q) getRecordsQuery.queryParam.q = options.q;
+            if (options.fairsharingRegistry) {
+                getRecordsQuery.queryParam.fairsharingRegistry = options.fairsharingRegistry;
+                getRecordsQuery.queryParam.searchAnd = false;
+            }
             let data = await graphClient.executeQuery(getRecordsQuery);
             commit("setAvailableRecords", data.searchFairsharingRecords.records);
         },
@@ -220,10 +224,11 @@ let editorStore = {
         },
         allowedTargets: (state) => (source) => {
             let output = [];
+            let allowed = ["standard", "database", "policy", "collection"];
             state.relationsTypes[source.toLowerCase()].forEach(relation => {
-                console.log(relation);
+                if (allowed.includes(relation.target)) output.push(relation.target);
             });
-            return output;
+            return [...new Set(output)];
         }
     }
 };

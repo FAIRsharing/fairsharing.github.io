@@ -30,6 +30,7 @@
           </v-alert>
           <v-spacer v-else />
           <v-menu
+            v-if="!target"
             cmass="mt-3"
             offset-y
           >
@@ -157,6 +158,9 @@
             NotFound
         },
         mixins: [stringUtils],
+        props: {
+          target: {type: Number, default: null}
+        },
         data: () => {
             return {
                 error: null,
@@ -175,7 +179,7 @@
                 if (id.includes("FAIRsharing.")) {
                     return "10.25504/" + id;
                 }
-                return this.$route.params['id'];
+                return this.target || this.$route.params['id'];
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
             ...mapState('users', ["user"]),
@@ -255,7 +259,7 @@
             })
         },
         methods: {
-            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
+            ...mapActions('record', ['fetchRecord', "fetchRecordHistory", "fetchPreviewRecord"]),
             /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
             prepareAssociations(associations, reverseAssociations) {
                 let _module = this;
@@ -350,7 +354,8 @@
                 this.alreadyClaimed = false;
                 this.claimedTriggered = false;
                 try {
-                    await _module.fetchRecord(this.currentRoute);
+                    if (this.target) await _module.fetchPreviewRecord(this.target);
+                    else await _module.fetchRecord(this.currentRoute);
                     const currentRecord = _module.currentRecord['fairsharingRecord'];
                     _module.recordAssociations = [];
                     if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {

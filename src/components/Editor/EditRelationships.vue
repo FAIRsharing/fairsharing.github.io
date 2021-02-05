@@ -331,7 +331,6 @@
               recordAssocLabel: this.addingRelation.recordAssocLabel,
               new: true,
             };
-            console.log(newRelation);
             this.sections.relations.data.recordAssociations.push(newRelation);
             this.showRelationsPanel = false;
             this.$nextTick(() => {

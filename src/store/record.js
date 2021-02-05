@@ -162,6 +162,14 @@ let recordStore = {
             state.commit('setCurrentRecord', data);
             state.commit('setSections', data);
         },
+        async fetchPreviewRecord(state, id){
+            state.commit("resetCurrentRecordHistory");
+            recordQuery.queryParam = {
+                id: id
+            };
+            let data = await client.executeQuery(recordQuery);
+            state.commit('setCurrentRecord', data);
+        },
         async fetchRecordHistory(state, id){
             recordHistory.queryParam = {id: id};
             let data = await client.executeQuery(recordHistory);

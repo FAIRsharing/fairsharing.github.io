@@ -36,7 +36,6 @@
                 class="transparent scrollZone pr-3"
                 style="border-bottom: 1px solid #ccc;"
               >
-                {{ targets }}
                 <v-list-item
                   v-for="(record, index) in availableRecords"
                   :key="'availableRecord_' + index"
@@ -56,6 +55,16 @@
                     </span>
                   </v-list-item-content>
                   <v-list-item-icon>
+                    <v-btn
+                      icon
+                      class="blue white--text mr-2"
+                      @click="showPreviewOverlay(record)"
+                    >
+                      <!--@click="addItem(index)"-->
+                      <v-icon small>
+                        fas fa-eye
+                      </v-icon>
+                    </v-btn>
                     <v-btn
                       icon
                       class="green white--text"
@@ -169,6 +178,7 @@
       </v-btn>
     </v-card-actions>
 
+    <!-- SELECT RELATION LABEL -->
     <v-dialog
       v-model="showRelationsPanel"
       class="py-0"
@@ -230,6 +240,13 @@
         </v-row>
       </v-container>
     </v-dialog>
+
+    <!-- PREVIEW RECORD -->
+    <v-dialog v-model="showPreview">
+      <v-card>
+        <Record :target="targetPreview" />
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -238,9 +255,11 @@
     import { isEqual } from "lodash"
     import { isRequired } from "@/utils/rules.js"
     import stringUtils from '@/utils/stringUtils';
+    import Record from "../../views/Records/Record";
 
     export default {
         name: "EditRelationships",
+        components: {Record},
         mixins: [stringUtils],
         data(){
           return {
@@ -253,6 +272,8 @@
             addingRelation: null,
             formValid: false,
             targets: [],
+            showPreview: false,
+            targetPreview: null,
             rules: { isRequired: () => {return isRequired()} },
           }
         },
@@ -277,7 +298,7 @@
             if (this.search.trim().length >= 3) {
               search = this.search.trim();
             }
-            await this.getAvailableRecords(search);
+            await this.getAvailableRecords({q: search, fairsharingRegistry: this.targets});
             this.loading = false;
           },
           associations: {
@@ -295,9 +316,9 @@
         mounted() {
           this.$nextTick(async function () {
             this.loading = true;
-            await this.getAvailableRecords(null);
             await this.getAvailableRelationsTypes();
             this.targets = this.allowedTargets(this.currentRecord.fairsharingRecord.registry);
+            await this.getAvailableRecords({q: null, fairsharingRegistry: this.targets});
             this.loading = false;
           });
         },
@@ -343,6 +364,10 @@
                 sourceType: this.currentRecord.fairsharingRecord.registry.toLowerCase(),
                 prohibited: prohibited
             })
+          },
+          showPreviewOverlay(record){
+            this.targetPreview = record.id;
+            this.showPreview = true;
           }
         }
     }

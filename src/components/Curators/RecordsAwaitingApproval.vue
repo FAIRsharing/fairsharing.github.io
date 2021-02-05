@@ -450,7 +450,7 @@
   }
 
   .dialogProcNotesEdit {
-    width: 500px !important;
+    width: 450px !important;
   }
 
   .priorityTag {

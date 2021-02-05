@@ -18,7 +18,7 @@
     {
       "text": "Record name (id)",
       "value": "recordName",
-      "width": 350
+      "width": 400
     },
     {
       "text": "Last editor",
@@ -38,7 +38,7 @@
     {
       "text": "Creation date & user",
       "value": "createdAt",
-      "width": 70
+      "width": 90
     }
   ],
   "maintenanceRequests": [

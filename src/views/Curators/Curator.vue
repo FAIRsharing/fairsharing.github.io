@@ -317,7 +317,7 @@
               item.fairsharingRecords.forEach(rec => {
                 let object = {
                   createdAt: rec.createdAt,
-                  creator: rec.creator.username.substring(0,6),
+                  creator: rec.creator.username.substring(0,10),
                   updatedAt: rec.updatedAt,
                   curator: item.username.substring(0,6),
                   recordName: `${rec.name} (${rec.id})`,

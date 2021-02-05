@@ -9,14 +9,13 @@ import RESTClient from "@/components/Client/RESTClient.js";
 import record from "@/store/record.js";
 import users from "@/store/users.js";
 import sinon from "sinon";
+import VueScrollTo from "vue-scrollto";
 
 // Initializing context for mounting
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-
-delete global.window.scrollTo;
-global.window.scrollTo = () => {};
+localVue.use(VueScrollTo,{})
 
 // Initializing store states and getters
 users.state.user = function(){ return {

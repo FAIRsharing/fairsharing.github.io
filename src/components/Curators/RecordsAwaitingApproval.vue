@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-text v-if="approvalRequired">
+    <v-card-text v-if="approvalRequiredProcessed">
       <v-card-title
         id="text-curator-search-0"
         class="green white--text"
@@ -24,7 +24,7 @@
       <v-data-table
         :loading="loading"
         :headers="headers"
-        :items="approvalRequired"
+        :items="approvalRequiredProcessed"
         :search="searches"
         class="elevation-1"
         :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
@@ -305,7 +305,8 @@
                 recordID: null,
                 general: null
               },
-              searches: ''
+              searches: '',
+              approvalRequiredProcessed: []
             }
         },
         computed: {
@@ -313,12 +314,18 @@
           ...mapState("record", ["recordUpdate"])
         },
         watch: {
+          approvalRequired: function(){
+            this.approvalRequiredProcessed = JSON.parse(JSON.stringify(this.approvalRequired));
+          },
           'dialogs.approveChanges' (val) {
             val || this.closeApproveChangesMenu()
           },
           'dialogs.deleteRecord' (val) {
             val || this.closeDeleteMenu()
           }
+        },
+        mounted: function () {
+          this.approvalRequiredProcessed = JSON.parse(JSON.stringify(this.approvalRequired));
         },
         methods: {
             ...mapActions("record", ["updateRecord"]),
@@ -365,8 +372,8 @@
                 _module.error.general = _module.recordUpdate.message;
                 _module.error.recordID = idRecord;
               }
-              const index = _module.approvalRequired.findIndex((element) => element.id === idRecord);
-              _module.approvalRequired[index].curator=nameUser.substring(0,6);
+              const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === idRecord);
+              _module.approvalRequiredProcessed[index].curator=nameUser.substring(0,6);
             },
 
             approveChangesMenu(recordName, recordID){
@@ -399,8 +406,8 @@
                 _module.error.general = _module.recordUpdate.message;
                 _module.error.recordID = _module.dialogs.recordID;
               }else{
-                const index = _module.approvalRequired.findIndex((element) => element.id === _module.dialogs.recordID);
-                _module.approvalRequired.splice(index, 1);
+                const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
+                _module.approvalRequiredProcessed.splice(index, 1);
                 if (_module.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
                     await _module.saveProcessingNotes(_module.dialogs.recordID,"");
                 }
@@ -416,8 +423,8 @@
                 _module.error.general = "error deleting record";
                 _module.error.recordID = _module.dialogs.recordID;
               }else{
-                const index = _module.approvalRequired.findIndex((element) => element.id === _module.dialogs.recordID);
-                _module.approvalRequired.splice(index, 1);
+                const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
+                _module.approvalRequiredProcessed.splice(index, 1);
               }
               _module.dialogs.deleteRecord = false;
             },

@@ -85,7 +85,8 @@ export function initEditorSections(data, sectionsNames){
                 licences: data.licenceLinks
             },
             relations: {
-                recordAssociations: data.recordAssociations
+                recordAssociations: data.recordAssociations,
+                registry: JSON.parse(JSON.stringify(data.registry))
             }
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";

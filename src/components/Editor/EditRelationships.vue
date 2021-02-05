@@ -278,7 +278,7 @@
           }
         },
         computed: {
-          ...mapState("record", ["sections", "currentRecord"]),
+          ...mapState("record", ["sections"]),
           ...mapState("editor", ["icons", "availableRecords", "relationsTypes"]),
           ...mapGetters("editor", ["allowedRelations", "allowedTargets"]),
           associations(){
@@ -317,7 +317,7 @@
           this.$nextTick(async function () {
             this.loading = true;
             await this.getAvailableRelationsTypes();
-            this.targets = this.allowedTargets(this.currentRecord.fairsharingRecord.registry);
+            this.targets = this.allowedTargets(this.sections.relations.data.registry.toLowerCase());
             await this.getAvailableRecords({q: null, fairsharingRegistry: this.targets});
             this.loading = false;
           });
@@ -361,7 +361,7 @@
                   registry: target.registry.toLowerCase(),
                   type: target.type.toLowerCase()
                 },
-                sourceType: this.currentRecord.fairsharingRecord.registry.toLowerCase(),
+                sourceType: this.sections.relations.data.registry.toLowerCase(),
                 prohibited: prohibited
             })
           },

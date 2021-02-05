@@ -211,9 +211,17 @@ let editorStore = {
         allowedRelations: (state) => (options) => {
             let output = [];
             state.relationsTypes[options.sourceType].forEach(relation => {
-                if (relation.target === options.target && !options.prohibited.includes(relation.relation)){
+                if ((relation.target === options.target.registry || relation.target === options.target.type) &&
+                    !options.prohibited.includes(relation.relation)){
                     output.push(relation)
                 }
+            });
+            return output;
+        },
+        allowedTargets: (state) => (source) => {
+            let output = [];
+            state.relationsTypes[source.toLowerCase()].forEach(relation => {
+                console.log(relation);
             });
             return output;
         }

@@ -36,6 +36,7 @@
                 class="transparent scrollZone pr-3"
                 style="border-bottom: 1px solid #ccc;"
               >
+                {{ targets }}
                 <v-list-item
                   v-for="(record, index) in availableRecords"
                   :key="'availableRecord_' + index"
@@ -251,13 +252,14 @@
             panelContent: null,
             addingRelation: null,
             formValid: false,
+            targets: [],
             rules: { isRequired: () => {return isRequired()} },
           }
         },
         computed: {
           ...mapState("record", ["sections", "currentRecord"]),
           ...mapState("editor", ["icons", "availableRecords", "relationsTypes"]),
-          ...mapGetters("editor", ["allowedRelations"]),
+          ...mapGetters("editor", ["allowedRelations", "allowedTargets"]),
           associations(){
             return this.sections.relations.data.recordAssociations;
           },
@@ -280,12 +282,9 @@
           },
           associations: {
             deep: true,
-            handler(val){
+            handler(){
               let changes = 0;
-              let initialVal = this.sections.relations.initialData;
-              if (!isEqual(val, initialVal)) {
-                changes += 1;
-              }
+              if (!isEqual(this.sections.relations.initialData, this.sections.relations.data)) changes += 1;
               this.$store.commit("record/setChanges", {
                 section: "relations",
                 value: changes
@@ -298,6 +297,7 @@
             this.loading = true;
             await this.getAvailableRecords(null);
             await this.getAvailableRelationsTypes();
+            this.targets = this.allowedTargets(this.currentRecord.fairsharingRecord.registry);
             this.loading = false;
           });
         },
@@ -333,11 +333,13 @@
             };
             let prohibited = [];
             this.associations.forEach(association => {
-              console.log(association);
                 if (association.linkedRecord.id === target.id) prohibited.push(association.recordAssocLabel)
             });
             this.panelContent = this.allowedRelations({
-                target: target.registry.toLowerCase(),
+                target: {
+                  registry: target.registry.toLowerCase(),
+                  type: target.type.toLowerCase()
+                },
                 sourceType: this.currentRecord.fairsharingRecord.registry.toLowerCase(),
                 prohibited: prohibited
             })

@@ -455,6 +455,7 @@
 
   .priorityTag {
     background-color: orange;
+    font-size: 60%;
   }
   .thelistCurators{
     max-height: 100px;

@@ -326,7 +326,7 @@
                   processingNotes: rec.processingNotes
                 };
                 if (rec.priority){
-                  object.priority = "Prior";
+                  object.priority = "Priority";
                 }else{
                   object.priority = "";
                 }

@@ -4,7 +4,8 @@ const recordsCardUtils = {
             if (record.doi) {
                 // Only the last part of the DOI is needed for local links.
                 return record.doi.split('/').pop();
-            } else {
+            }
+            else {
                 return record.id;
             }
         },
@@ -17,6 +18,9 @@ const recordsCardUtils = {
             }
             else if(chip.type==='taxonomies') {
                 return 'taxonomic_color';
+            }
+            else if(chip.type==='userDefinedTags') {
+                return 'userDefinedTags_color';
             }
         },
         associatedRecords(record) {
@@ -70,10 +74,12 @@ const recordsCardUtils = {
                     if (index < max_item_shown) {
                         item.type = node;
                         _module.chips.push(item);
-                    } else {
+                    }
+                    else {
                         record[node].remainTagCount++;
                     }
                 });
+                return true;
             }
             else {
                 return false;

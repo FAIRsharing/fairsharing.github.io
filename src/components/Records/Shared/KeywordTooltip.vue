@@ -7,7 +7,7 @@
       <template #activator="{ on, attrs }">
         <div
           v-bind="attrs"
-          class="ellipse-width-80 text-center"
+          :class="['text-center',{'ellipse-width-80':!fullWidth}]"
           v-on="on"
         >
           {{ keyword.label }}
@@ -50,12 +50,8 @@
         name: "KeywordTooltip",
         mixins: [recordsCardUtils],
         props: {
-            keyword: {default: null, type: Object}
-        },
-        data() {
-          return {
-            tooltip: ""
-          }
+            keyword: {default: null, type: Object},
+            fullWidth: {default:false, type:Boolean}
         },
         methods: {
           processArray(array){

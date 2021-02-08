@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="pa-4 mt-3 mt-lg-2 d-flex flex-column"
+    class="pa-4 d-flex flex-column"
     outlined
     tile
     elevation="1"
@@ -52,7 +52,7 @@
           outlined
           text-color="secondary"
         >
-          <v-icon 
+          <v-icon
             small
             left
           >
@@ -80,8 +80,10 @@
           outlined
           text-color="accent"
         >
-          <v-icon small
-                  left>
+          <v-icon
+            small
+            left
+          >
             fas fa-tags
           </v-icon>
           <KeywordTooltip :keyword="item" />

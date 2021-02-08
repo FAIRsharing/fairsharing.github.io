@@ -191,11 +191,23 @@ let editorStore = {
                     if (!Object.keys(allowed).includes(relationParent)) {
                         allowed[relationParent] = [];
                     }
-                    allowed[relationParent].push({
-                        relation: relationName,
-                        target: relationChild,
-                        id: id
-                    });
+                    if (relationChild !== "any") {
+                        allowed[relationParent].push({
+                            relation: relationName,
+                            target: relationChild,
+                            id: id
+                        });
+                    }
+                    else {
+                        let relationChildren = ['standard', 'database', 'policy', 'collection'];
+                        relationChildren.forEach((childRel)=> {
+                            allowed[relationParent].push({
+                                relation: relationName,
+                                target: childRel,
+                                id: id
+                            });
+                        });
+                    }
                 })
             });
             commit("setAvailableRelationsTypes", allowed);

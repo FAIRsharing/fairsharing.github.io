@@ -1,5 +1,5 @@
 <template>
-  <div class="title-style">
+  <div :class="['title-style',{'inactive-section':inactiveSection}]">
     <div>
       <h4>
         {{ title.toUpperCase() }}
@@ -18,7 +18,11 @@
             default: null,
             type: String
           },
-      },
+          inactiveSection:{
+            default:false,
+            type:Boolean
+          }
+      }
     }
 </script>
 
@@ -63,5 +67,9 @@
         border-right: 8px solid transparent;
       }
     }
+  }
+
+  .inactive-section {
+    background: lightgrey;
   }
 </style>

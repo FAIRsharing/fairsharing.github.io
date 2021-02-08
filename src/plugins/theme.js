@@ -13,5 +13,6 @@ export default {
     subject_color: '#E67E22',
     domain_color: '#6B1E1E',
     taxonomic_color: '#006055',
-    tags_color: '#ADA3A3'
+    userDefinedTags_color: '#ADA3A3',
+    bg_record_card: '#f9f9f9'
 }

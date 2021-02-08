@@ -13,7 +13,11 @@ Record.state.currentRecord["fairsharingRecord"] = {
                 contact_email: "contact@goatse.cx"
             },
         ]
-    }
+    },
+    subjects:[],
+    domains:[],
+    taxonomies:[],
+    userDefinedTags:[],
 };
 const $store = new Vuex.Store({
     modules: {

@@ -60,7 +60,7 @@ describe("Curator.vue", () => {
       //MaintanceRequest are properly created, elements sorted by date, values edited and formatted properly
       expect(wrapper.vm.maintenanceRequests.length).toBe(4);
       expect(wrapper.vm.maintenanceRequests[0].userNameID).toBe("Mariano (22)");
-      let date = new Date("2020,8,28");
+      let date = new Date("2020,8,27");
       let auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
 
       expect(wrapper.vm.maintenanceRequests[1].createdAt).toBe(auxString);
@@ -75,11 +75,9 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12)");
       //Hidden records, date is formatted
       expect(wrapper.vm.hiddenRecords.length).toBe(2);
-      date.year = 1425;
-      date.month = 0;
-      date.day = 1;
+      date = new Date("1425,01,01");
       auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
-      expect(wrapper.vm.hiddenRecords[1].createdAt).toBe("Jan 1, 1425");
+      expect(wrapper.vm.hiddenRecords[1].createdAt).toBe(auxString);
   });
 
   it("can download a file with records without DOIs", async () => {

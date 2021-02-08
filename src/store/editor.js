@@ -6,8 +6,10 @@ import getOrganisationsQuery from "@/components/GraphClient/queries/Organisation
 import getOrganisationsTypesQuery from "@/components/GraphClient/queries/Organisations/getOrganisationTypes.json"
 import getGrantsQuery from "@/components/GraphClient/queries/Organisations/getGrants.json"
 import getPublicationsQuery from "@/components/GraphClient/queries/getPublications.json"
+import getLicencesQuery from "@/components/GraphClient/queries/getLicences.json"
 import descriptionData from "@/data/fieldsDescription.json"
 import registryIcons from "@/data/recordsRegistries.json"
+import supportLinksTypes from "@/data/SupportLinksTypes.json"
 import status from "@/data/status.json"
 const graphClient = new GraphClient();
 
@@ -51,7 +53,14 @@ let editorStore = {
             "undefined"
         ],
         grants: null,
-        availablePublications: []
+        availablePublications: [],
+        supportLinksTypes: supportLinksTypes,
+        availableLicences: [],
+        licenceRelations: [
+            "undefined",
+            "applies_to_content",
+            "least_permissive"
+        ]
     },
     mutations: {
         setCountries(state, countries){
@@ -77,6 +86,9 @@ let editorStore = {
         },
         setAvailablePublications(state, publications){
             state.availablePublications = publications;
+        },
+        setAvailableLicences(state, licences){
+            state.availableLicences = licences;
         }
     },
     actions: {
@@ -141,7 +153,11 @@ let editorStore = {
                 position += 1;
             });
             commit("setAvailablePublications", pubs);
-        }
+        },
+        async getLicences({commit}) {
+            let licences = await graphClient.executeQuery(getLicencesQuery);
+            commit('setAvailableLicences', licences['searchLicences'])
+        },
     },
     modules: {},
     getters: {

@@ -211,31 +211,25 @@
     function compareRecordDesc(a, b) {
       if (a.createdAt > b.createdAt) {
         return -1;
-      }
-      if (a.createdAt < b.createdAt) {
+      }else{
         return 1;
       }
-      return 0;
     }
 
     function compareRecordDescUpdate(a, b) {
       if (a.updatedAt > b.updatedAt) {
         return -1;
-      }
-      if (a.updatedAt < b.updatedAt) {
+      }else{
         return 1;
       }
-      return 0;
     }
 
     function compareRecordAlphaNames(a, b) {
       if (a.userName.toLowerCase() < b.userName.toLowerCase()) {
         return -1;
+      }else{
+        return 1
       }
-      if (a.userName.toLowerCase() > b.userName.toLowerCase()) {
-        return 1;
-      }
-      return 0;
     }
 
     function formatDate(d){

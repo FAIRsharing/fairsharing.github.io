@@ -192,16 +192,65 @@
         class="py-0"
       >
         <v-row justify="center">
-          <v-card
-            class="flexCard"
-            width="100%"
+          <v-form
+            id="editRecordAssociation"
+            ref="editRecordAssociation"
+            v-model="formValid"
+            style="width:100%"
           >
-            <v-form
-              id="editRecordAssociation"
-              ref="editRecordAssociation"
-              v-model="formValid"
+            <v-card
+              v-if="addingRelation"
+              class="flexCard"
+              width="100%"
             >
-              <v-card-text v-if="addingRelation">
+              <v-card-title class="green white--text">
+                Add a new relationship
+              </v-card-title>
+              <v-card-text class="text-center py-3 px-4">
+                <div
+                  class="pa-3"
+                  :class="{'blueBorder': formValid, 'redBorder': !formValid}"
+                  style="border-radius:5px;"
+                >
+                  <div>
+                    <b>SOURCE</b>
+                    <span class="ml-1">
+                      {{ sections.relations.data.name }}
+                    </span>
+                    <br>
+                    <span>
+                      ({{ cleanString(sections.relations.data.registry) }}/{{ cleanString(sections.relations.data.type) }})
+                    </span>
+                  </div>
+                  <div>
+                    <v-icon
+                      x-large
+                      class="my-5"
+                      :class="{'blue--text': addingRelation.recordAssocLabel, 'red--text': !addingRelation.recordAssocLabel}"
+                    >
+                      fas fa-arrow-down
+                    </v-icon>
+                    <b
+                      v-if="addingRelation.recordAssocLabel"
+                      class="ml-3 doubleUnderline"
+                    >{{ cleanString(addingRelation.recordAssocLabel).toUpperCase() }}</b>
+                  </div>
+                  <div>
+                    <b>TARGET:</b>
+                    <span class="ml-1">
+                      {{ addingRelation.linkedRecord.name }}
+                    </span>
+                    <br>
+                    <span>
+                      ({{ cleanString(addingRelation.linkedRecord.registry) }}/{{ cleanString(addingRelation.linkedRecord.type) }})
+                    </span>
+                  </div>
+                </div>
+              </v-card-text>
+              <v-card-text
+                v-if="addingRelation"
+                class="pb-0 pt-3"
+              >
                 <v-alert
                   v-if="!panelContent || panelContent.length === 0"
                   type="error"
@@ -235,8 +284,8 @@
                   Cancel
                 </v-btn>
               </v-card-actions>
-            </v-form>
-          </v-card>
+            </v-card>
+          </v-form>
         </v-row>
       </v-container>
     </v-dialog>
@@ -362,7 +411,8 @@
                 },
                 sourceType: this.sections.relations.data.registry.toLowerCase(),
                 prohibited: prohibited
-            })
+            });
+            this.$nextTick(() => {this.$refs['editRecordAssociation'].validate()});
           },
           showPreviewOverlay(record){
             this.targetPreview = record.id;
@@ -383,5 +433,19 @@
   .bordered{
     border-bottom: 1px dashed #ccc;
   }
+
+  .doubleUnderline {
+    text-decoration-line: underline;
+    text-decoration-style: double;
+  }
+
+  .blueBorder {
+    border: 2px dashed rgb(33, 150, 243) !important;
+  }
+
+  .redBorder {
+    border: 2px dashed rgb(245, 94, 83) !important;
+  }
+
 
 </style>

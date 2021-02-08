@@ -86,7 +86,9 @@ export function initEditorSections(data, sectionsNames){
             },
             relations: {
                 recordAssociations: data.recordAssociations,
-                registry: JSON.parse(JSON.stringify(data.registry))
+                registry: JSON.parse(JSON.stringify(data.registry)),
+                type: JSON.parse(JSON.stringify(data.type)),
+                name: JSON.parse(JSON.stringify(data.name))
             }
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";

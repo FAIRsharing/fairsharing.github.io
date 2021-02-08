@@ -200,22 +200,4 @@
       box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
     }
 
-    #editGeneralInformation .expand-transition-enter-active,
-    #editGeneralInformation .expand-transition-leave-active
-    {
-      transition-duration: 0.7s !important;
-    }
-
-    #editGeneralInformation .delayed-transition .scroll-x-transition-enter-active,
-    #editGeneralInformation .delayed-transition .scroll-x-transition-leave-active{
-      transition-duration: 1s !important;
-    }
-
-    #editGeneralInformation .delayed-transition .scroll-x-transition-enter-active {
-      transition-delay: 0.1s !important;
-    }
-    #editGeneralInformation .delayed-transition .scroll-x-transition-leave-active {
-      transition-delay: 0.6s !important;
-    }
-
 </style>

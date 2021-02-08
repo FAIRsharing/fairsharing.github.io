@@ -9,7 +9,11 @@ Record.state.currentRecord["fairsharingRecord"] = {
     licences: [
         {name: "Licence One"},
         {name: "Licence Two"}
-    ]
+    ],
+    subjects:[],
+    domains:[],
+    taxonomies:[],
+    userDefinedTags:[],
 };
 const $store = new Vuex.Store({
     modules: {

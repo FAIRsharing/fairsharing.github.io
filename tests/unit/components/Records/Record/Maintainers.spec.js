@@ -11,7 +11,11 @@ Record.state.currentRecord["fairsharingRecord"] = {
             contact_name: "Maintainer One",
             id: 100
         },
-    ]
+    ],
+    subjects:[],
+    domains:[],
+    taxonomies:[],
+    userDefinedTags:[]
 };
 const $store = new Vuex.Store({
     modules: {

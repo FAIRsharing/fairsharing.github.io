@@ -165,6 +165,11 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
 
     });
 
+    it("can watch props data", () => {
+      wrapper.vm.$options.watch.approvalRequired.call(wrapper.vm);
+      expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch("Record3 (99)");
+    });
+
 
 
 });

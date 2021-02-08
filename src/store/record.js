@@ -40,7 +40,8 @@ let recordStore = {
             data: {},
             id: null
         },
-        newRecord: false
+        newRecord: false,
+        currentID: null
     },
     mutations: {
         setCurrentRecord(state, data){
@@ -58,6 +59,7 @@ let recordStore = {
             state.currentRecordHistory = {};
         },
         setSections(state, data){
+            state.currentID = data['fairsharingRecord'].id;
             let sectionsNames = [
                 "generalInformation",
                 "support",

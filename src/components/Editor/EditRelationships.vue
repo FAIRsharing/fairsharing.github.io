@@ -297,6 +297,15 @@
 
     <!-- PREVIEW RECORD -->
     <v-dialog v-model="showPreview">
+      <v-btn
+        fab
+        small
+        class="grey--text absolute"
+        @click="showPreview = false"
+      >
+        <v-icon>fa-times</v-icon>
+      </v-btn>
+
       <v-card>
         <Record :target="targetPreview" />
       </v-card>
@@ -450,6 +459,13 @@
 
   .redBorder {
     border: 2px dashed rgb(245, 94, 83) !important;
+  }
+
+  .absolute {
+    position: absolute !important;
+    z-index: 1;
+    right: 13px;
+    top: 48px;
   }
 
 

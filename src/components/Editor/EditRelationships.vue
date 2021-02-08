@@ -220,8 +220,8 @@
 
               <v-card-text class="text-center py-3 px-4">
                 <div
-                  class="pa-3"
-                  :class="{'blueBorder': formValid, 'redBorder': !formValid}"
+                  class="pa-3 lighten-5"
+                  :class="{'blue': formValid, 'red': !formValid}"
                   style="border-radius:5px;"
                 >
                   <div>
@@ -451,14 +451,6 @@
   .doubleUnderline {
     text-decoration-line: underline;
     text-decoration-style: double;
-  }
-
-  .blueBorder {
-    border: 2px dashed rgb(33, 150, 243) !important;
-  }
-
-  .redBorder {
-    border: 2px dashed rgb(245, 94, 83) !important;
   }
 
   .absolute {

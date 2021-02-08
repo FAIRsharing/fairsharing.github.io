@@ -6,6 +6,7 @@
     >
       <!--   error   -->
       <div v-if="error">
+        {{error}}
         <NotFound />
       </div>
 
@@ -302,11 +303,6 @@
                 try {
                     if (this.target) await _module.fetchPreviewRecord(this.target);
                     else await _module.fetchRecord(this.currentRoute);
-                    const currentRecord = _module.currentRecord['fairsharingRecord'];
-                    _module.recordAssociations = [];
-                    if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
-                        _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-                    }
                 }
                 catch (e) {
                     this.error = e.message;

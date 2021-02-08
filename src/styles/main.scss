@@ -1,22 +1,6 @@
-//custom colors-----------------------------
-$color-gray-light1: #bebebe;
-$color-gray-light2: #757575;
-$color-gray-light3: #5a5a5a;
-
-$max-width-val: 30%;
-$max-height-val: 100px;
-
-$color-primary: #27aae1;
-$color-secondary: #004d40;
-
-.button-text-color {
-  color: $color-gray-light1 !important;
-}
-
-//End of Custom Colors----------------------
 
 //Global Setting----------------------------
-a:link {
+a {
   text-decoration: none;
 }
 
@@ -44,6 +28,13 @@ a:link {
 //End of Animations-------------------------
 
 //Utilities---------------------------------
+.underline-effect {
+  &:hover, &:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
+
 .tooltips {
   max-width: 500px;
   display: block;
@@ -128,6 +119,10 @@ a:link {
   min-height: 40px;
 }
 
+.min-height-100 {
+  min-height: 100px;
+}
+
 .height-50 {
   height: 50px;
 }
@@ -138,5 +133,13 @@ a:link {
 
 .height-90 {
   height: 90px;
+}
+
+.width-35 {
+  width: 35px;
+}
+
+.width-200 {
+  width: 200px;
 }
 //End of Utilities--------------------------

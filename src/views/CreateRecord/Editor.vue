@@ -52,18 +52,26 @@
           color="primary"
           dark
         >
-          <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
+          <v-toolbar-title> Edit Record - {{ sections.generalInformation.initialData.metadata.name }} </v-toolbar-title>
           <v-spacer />
 
           <v-btn
             v-for="(panelData) in confirmPanels"
             :id="panelData.name + '_button'"
             :key="panelData.name"
-            class="default ml-2"
+            class="default"
             @click="panelData.show = true"
           >
             {{ panelData.name }}
           </v-btn>
+          <router-link
+            :to="'/' + $route.params.id"
+            class="ml-2"
+          >
+            <v-btn class="default">
+              Exit editing
+            </v-btn>
+          </router-link>
         </v-toolbar>
         <v-tabs
           dark
@@ -138,6 +146,16 @@
       EditGeneralInfo,
       Unauthorized
     },
+    beforeRouteLeave(to, from, next){
+      let changes = this.getAllChanges;
+      if (changes === 0) {
+        next();
+      }
+      else {
+        const answer = window.confirm(`Are you sure you want to leave this page? You have ${changes} unsaved modifications.`);
+        if (answer) next();
+      }
+    },
     data(){
       let _module = this;
       return {
@@ -154,12 +172,6 @@
               return _module.confirmReloadData()
             },
             show: false
-          },
-          {
-            name: "Exit editing",
-            description: "This will return to the record page without saving. Are you sure you'd like to do this?",
-            method: function() { return _module.confirmReturnToRecord() },
-            show: false
           }
         ],
         tabs: [
@@ -171,7 +183,8 @@
           },
           {
             name: "Data Access",
-            disabled: false
+            disabled: false,
+            target: "dataAccess"
           },
           {
             name: "Publications",
@@ -192,8 +205,8 @@
       }
     },
     computed: {
-      ...mapState('record', ['currentRecord']),
-      ...mapGetters('record', ['getChanges']),
+      ...mapState('record', ['currentRecord', 'sections']),
+      ...mapGetters('record', ['getChanges', 'getAllChanges']),
       ...mapState('users', ['user']),
       userToken(){
         const _module = this;
@@ -224,12 +237,6 @@
         let canEdit = await client.canEdit(_module.currentRecord['fairsharingRecord'].id, userToken);
         if (canEdit.error) _module.error = true;
         _module.hasLoaded = true;
-      },
-      confirmReturnToRecord() {
-        const _module = this;
-        let recordID = _module.currentRecord['fairsharingRecord'].id;
-        _module.exitPageCheck = true;
-        _module.$router.push({ path: `/${recordID}` });
       },
       async confirmReloadData() {
         const _module = this;
@@ -274,4 +281,15 @@
   {
     transition-delay: 0.6s !important;
   }
+
+  .short{
+    max-width:550px;
+  }
+
+  .short span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
 </style>

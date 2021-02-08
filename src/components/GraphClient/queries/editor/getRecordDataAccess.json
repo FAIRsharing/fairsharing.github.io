@@ -1,0 +1,28 @@
+{
+  "queryName": "fairsharingRecord",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "metadata",
+    {
+      "name": "licenceLinks",
+      "fields": [
+        "relation",
+        "id",
+        {
+          "queryName": "fairsharingRecord",
+          "fields": [
+            "id"
+          ]
+        },
+        {
+          "queryName": "licence",
+          "fields": [
+            "id",
+            "name"
+          ]
+        }
+      ]
+    }
+  ]
+}

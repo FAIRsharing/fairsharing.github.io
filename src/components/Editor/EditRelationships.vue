@@ -206,6 +206,18 @@
               <v-card-title class="green white--text">
                 Add a new relationship
               </v-card-title>
+              <v-card-text
+                v-if="!panelContent || panelContent.length === 0"
+                class="mb-0 pb-0"
+              >
+                <v-alert
+                  type="error"
+                  class="mt-3"
+                >
+                  This source and target can't have relationship.
+                </v-alert>
+              </v-card-text>
+
               <v-card-text class="text-center py-3 px-4">
                 <div
                   class="pa-3"
@@ -219,7 +231,7 @@
                     </span>
                     <br>
                     <span>
-                      ({{ cleanString(sections.relations.data.registry) }}/{{ cleanString(sections.relations.data.type) }})
+                      ({{ cleanString(sections.relations.data.registry) }} - {{ cleanString(sections.relations.data.type) }})
                     </span>
                   </div>
                   <div>
@@ -242,7 +254,7 @@
                     </span>
                     <br>
                     <span>
-                      ({{ cleanString(addingRelation.linkedRecord.registry) }}/{{ cleanString(addingRelation.linkedRecord.type) }})
+                      ({{ cleanString(addingRelation.linkedRecord.registry) }} - {{ cleanString(addingRelation.linkedRecord.type) }})
                     </span>
                   </div>
                 </div>
@@ -251,13 +263,6 @@
                 v-if="addingRelation"
                 class="pb-0 pt-3"
               >
-                <v-alert
-                  v-if="!panelContent || panelContent.length === 0"
-                  type="error"
-                  class="mb-6"
-                >
-                  This source and target can't have relationship.
-                </v-alert>
                 <v-autocomplete
                   v-model="addingRelation.recordAssocLabel"
                   :items="panelContent"

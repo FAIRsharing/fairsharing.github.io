@@ -7,6 +7,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-text-field
         v-model="fields.metadata.name"
@@ -34,6 +35,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-text-field
         v-model="fields.metadata.abbreviation"
@@ -65,6 +67,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-text-field
         v-model="fields.metadata.homepage"
@@ -96,6 +99,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-autocomplete
         v-model="fields.metadata.year_creation"
@@ -127,6 +131,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-autocomplete
         v-model="fields.countries"
@@ -188,6 +193,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-autocomplete
         ref="editRecordType"
@@ -241,6 +247,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-autocomplete
         v-model="fields.status"

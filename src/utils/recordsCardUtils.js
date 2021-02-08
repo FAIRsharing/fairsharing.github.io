@@ -4,7 +4,8 @@ const recordsCardUtils = {
             if (record.doi) {
                 // Only the last part of the DOI is needed for local links.
                 return record.doi.split('/').pop();
-            } else {
+            }
+            else {
                 return record.id;
             }
         },
@@ -73,7 +74,8 @@ const recordsCardUtils = {
                     if (index < max_item_shown) {
                         item.type = node;
                         _module.chips.push(item);
-                    } else {
+                    }
+                    else {
                         record[node].remainTagCount++;
                     }
                 });

@@ -80,8 +80,10 @@
           outlined
           text-color="accent"
         >
-          <v-icon small
-                  left>
+          <v-icon
+            small
+            left
+          >
             fas fa-tags
           </v-icon>
           <KeywordTooltip :keyword="item" />

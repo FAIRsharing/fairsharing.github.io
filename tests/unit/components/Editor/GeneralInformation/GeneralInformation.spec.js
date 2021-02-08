@@ -23,7 +23,8 @@ const vuetify = new Vuetify();
 let record = {
     id: 123,
     metadata: {
-        contacts: []
+        contacts: [],
+        support_links: []
     },
     countries: [{id: 1}],
     subjects: [{id: 2, label: "Abc"}],

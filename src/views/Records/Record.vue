@@ -219,6 +219,10 @@
               await this.checkClaimStatus();
             }
         },
+        destroyed() {
+          // minor change in the y axis can fix a serious bug after going back to records..
+          window.scrollTo(0, 5);
+        },
         mounted() {
             this.$nextTick(async function () {
                 this.client = new Client();

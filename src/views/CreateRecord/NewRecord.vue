@@ -126,13 +126,13 @@
               this.$router.push({
                 path: new_record.data.id + "/edit"
               });
-            } else {
+            }
+            else {
               this.message = {
                 error: true,
                 value: new_record.error
               }
             }
-
           }
         },
     }

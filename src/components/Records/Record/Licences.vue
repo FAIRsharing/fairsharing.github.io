@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="pa-4 mt-0 mt-lg-2 d-flex flex-column"
+    class="pa-4 d-flex flex-column"
     outlined
     tile
     elevation="1"

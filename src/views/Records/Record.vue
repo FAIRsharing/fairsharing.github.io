@@ -237,7 +237,7 @@
             })
         },
         methods: {
-            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
+            ...mapActions('record', ['fetchRecord', "fetchRecordHistory", "fetchPreviewRecord"]),
             goToEdit(){
               let _module = this;
               const recordID =  _module.currentRecord['fairsharingRecord'].id;

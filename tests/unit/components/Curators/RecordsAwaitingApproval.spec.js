@@ -56,8 +56,8 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("RecordsAwaitingApproval");
-        expect(wrapper.vm.approvalRequired.length).toBe(4);
-        expect(wrapper.vm.approvalRequired[0].recordName).toMatch("Record3 (99)");
+        expect(wrapper.vm.approvalRequiredProcessed.length).toBe(4);
+        expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch("Record3 (99)");
     });
 
     it("can use methods that only change properties", () => {
@@ -96,9 +96,9 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
       restStub.restore();
       restStub = sinon.stub(Client.prototype, "executeQuery");
       restStub.returns({data: {error: false}});
-      expect(wrapper.vm.approvalRequired[1].curator).toMatch("David Silla");
+      expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch("David Silla");
       await wrapper.vm.assignCurator(100, 1, "Michael Smith");
-      expect(wrapper.vm.approvalRequired[1].curator).toMatch("Michael Smith");
+      expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch("Michae");
       // TODO: Check that the curator are updated in the record
       restStub.restore();
       restStub = sinon.stub(Client.prototype, 'executeQuery');
@@ -114,27 +114,27 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
       restStub = sinon.stub(Client.prototype, "executeQuery");
       restStub.returns({data: {error: false}});
       await wrapper.vm.confirmApproval();
-      expect(wrapper.vm.approvalRequired.length).toBe(3);
+      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(3);
       expect(wrapper.vm.dialogs.approveChanges).toBe(false);
-      expect(wrapper.vm.approvalRequired[1].id).toBe(101);
-      //The element to approvalRequired is also in maintenanceRequests
+      expect(wrapper.vm.approvalRequiredProcessed[1].id).toBe(101);
+      //The element to approvalRequiredProcessed is also in maintenanceRequests
       restStub.restore();
       wrapper.vm.dialogs.recordID = 99;
       restStub = sinon.stub(Client.prototype, "executeQuery");
       restStub.returns({data: {error: false}});
       await wrapper.vm.confirmApproval();
-      expect(wrapper.vm.approvalRequired.length).toBe(2);
+      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(2);
       expect(wrapper.vm.dialogs.approveChanges).toBe(false);
-      expect(wrapper.vm.approvalRequired[0].id).toBe(101);
+      expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(101);
       //There is an error in the client query
       restStub.restore();
       wrapper.vm.dialogs.recordID = 101;
       restStub = sinon.stub(Client.prototype, "executeQuery");
       restStub.returns({data: {error: {response: {data: "error"}}}});
       await wrapper.vm.confirmApproval();
-      expect(wrapper.vm.approvalRequired.length).toBe(2);
+      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(2);
       expect(wrapper.vm.dialogs.approveChanges).toBe(false);
-      expect(wrapper.vm.approvalRequired[0].id).toBe(101);
+      expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(101);
       expect(wrapper.vm.error.recordID).toBe(101);
       // TODO: Check that the DB is correctly updated
     });
@@ -146,18 +146,18 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
       restStub = sinon.stub(Client.prototype, "executeQuery");
       restStub.returns({data: {error: false}});
       await wrapper.vm.confirmDelete();
-      expect(wrapper.vm.approvalRequired.length).toBe(1);
+      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
       expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
-      expect(wrapper.vm.approvalRequired[0].id).toBe(102);
+      expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);
       //There is an error in the client query
       restStub.restore();
       wrapper.vm.dialogs.recordID = 102;
       restStub = sinon.stub(Client.prototype, "executeQuery");
       restStub.returns({data: {error: {response: {data: "error"}}}});
       await wrapper.vm.confirmDelete();
-      expect(wrapper.vm.approvalRequired.length).toBe(1);
+      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
       expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
-      expect(wrapper.vm.approvalRequired[0].id).toBe(102);
+      expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);
       expect(wrapper.vm.error.recordID).toBe(102);
 
       // TODO: Check that the DB is correctly updated

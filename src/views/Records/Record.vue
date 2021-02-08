@@ -6,7 +6,6 @@
     >
       <!--   error   -->
       <div v-if="error">
-        {{error}}
         <NotFound />
       </div>
 

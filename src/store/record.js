@@ -368,6 +368,12 @@ let recordStore = {
     },
     getters: {
         getField: (state) => (fieldName) => {
+            let tags = ['subjects','domains','taxonomies','userDefinedTags']
+            tags.forEach(tag=>{
+                state.currentRecord['fairsharingRecord'][tag].forEach(item=>{
+                item.type = tag;
+                })
+            })
             return state.currentRecord['fairsharingRecord'][fieldName];
         },
         getSection: (state) => (sectionName) => {

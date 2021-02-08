@@ -81,7 +81,8 @@ describe("Record.vue", function() {
                     }
                 ],
                 metadata: {
-                    contacts: []
+                    contacts: [],
+                    support_links: []
                 },
                 domains: [],
                 subjects: [],

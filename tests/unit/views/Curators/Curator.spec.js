@@ -69,7 +69,7 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek.length).toBe(3);
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek[1].recordNameID).toBe("Second (44)");
       date = new Date("2017,11,11");
-      auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+      auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getDate()+ ', '+date.getFullYear();
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek[2].createdAt).toBe(auxString);
 
       expect(wrapper.vm.recordsInCuration.length).toBe(2);
@@ -77,7 +77,7 @@ describe("Curator.vue", () => {
       //Hidden records, date is formatted
       expect(wrapper.vm.hiddenRecords.length).toBe(2);
       date = new Date("1425,01,01");
-      auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getUTCDate()+ ', '+date.getUTCFullYear();
+      auxString = date.toLocaleString('default', { month: 'short' })+' '+date.getDate()+ ', '+date.getFullYear();
       expect(wrapper.vm.hiddenRecords[1].createdAt).toBe(auxString);
   });
 

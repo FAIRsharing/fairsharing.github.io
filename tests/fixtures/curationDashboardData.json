@@ -9,6 +9,7 @@
                       "id": "1451",
                       "name": "Radiotherapy",
                       "type": "database",
+                      "updatedAt": "2020-01-27",
                       "lastEditor": [
                           {
                               "id": "553",
@@ -23,11 +24,23 @@
 
                   },
                   {
-                      "id": "145f1",
-                      "name": "Radiotgherapy",
+                      "id": "11",
+                      "name": "Radi",
+                      "updatedAt": "2020-09-27T09:34:54Z",
                       "creator":
                           {
                               "id": "442",
+                              "username": "Maria Julia"
+                          }
+                  },
+                  {
+                      "id": "145f1",
+                      "name": "Radiotgherapy",
+                      "updatedAt": "2020-05-27T09:34:54Z",
+                      "priority": true,
+                      "creator":
+                          {
+                              "id": "342",
                               "username": "Andre Milla"
                           }
                   }
@@ -174,7 +187,7 @@
       "curatorList":[
         {
               "id": "22",
-              "username": "Pepa"
+              "username": "H. Pepa"
         },
         {
               "id": "2001",

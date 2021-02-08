@@ -411,7 +411,8 @@
       white-space: nowrap;
       text-align: center;
       font-size: 16px;
-      font-weight: bolder
+      font-weight: bolder;
+      height: 55px;
     }
 
     table#tagsTable tr {

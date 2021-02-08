@@ -156,7 +156,7 @@ let editorStore = {
         },
         async getLicences({commit}) {
             let licences = await graphClient.executeQuery(getLicencesQuery);
-            commit('setAvailableLicences',licences['searchLicences'])
+            commit('setAvailableLicences', licences['searchLicences'])
         },
     },
     modules: {},

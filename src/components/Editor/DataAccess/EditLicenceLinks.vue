@@ -12,6 +12,12 @@
           class="mb-5 px-4 grey lighten-3 large"
           column
         >
+          <div
+            v-if="currentLicences.length === 0"
+            class="pt-2"
+          >
+            <i class="mt-3">This record has no licence.</i>
+          </div>
           <v-chip
             v-for="(licenceLink, index) in currentLicences"
             :key="'licence_' + index"
@@ -70,13 +76,16 @@
       </v-row>
     </v-container>
     <v-expand-transition class="ma-5">
-      <v-overlay
-        v-if="edit.show"
+      <v-dialog
+        v-model="edit.show"
         class="py-0"
         :dark="false"
         opacity="0.8"
+        persistent
+        width="700px"
       >
         <v-container
+          v-if="edit.template"
           fluid
           class="py-0"
         >
@@ -93,6 +102,7 @@
               </v-card-title>
               <v-card-text class="pt-3">
                 <v-form
+                  id="editLink"
                   ref="editLink"
                   v-model="formValid.link"
                 >
@@ -112,8 +122,8 @@
                       :rules="[rules.isRequired()]"
                     >
                       <template #selection="data">
-                        <v-chip class="blue white--text px-3 py-1">
-                          {{ data.item.name }}
+                        <v-chip class="blue white--text px-3 py-1 short">
+                          <span>{{ data.item.name }}</span>
                         </v-chip>
                       </template>
                       <template #item="data">
@@ -211,7 +221,7 @@
             </v-card>
           </v-row>
         </v-container>
-      </v-overlay>
+      </v-dialog>
     </v-expand-transition>
   </div>
 </template>
@@ -251,20 +261,32 @@
                 return this.sections.dataAccess.data.licences
             }
         },
+        watch: {
+          'edit.template': function () {
+            this.$nextTick(() => {
+              /* istanbul ignore else */
+              if (this.$refs['editLink']) {
+                this.$refs['editLink'].validate();
+              }
+            })
+          }
+        },
         methods: {
           showEditItem(id){
               this.edit = {
                 show: true,
                 id: id > -1 ? id : null,
                 template: {
-                  licence: {
-                    name: id > -1 ? this.currentLicences[id].licence.name : null,
-                    id: id > -1 ? this.currentLicences[id].licence.id : null
-                  },
                   relation: id > -1 ? this.currentLicences[id].relation : null,
                   target: id > -1 ? this.currentLicences[id].id : null
                 }
               };
+              if (id >= -1) {
+                this.edit.template.licence = {
+                  name: this.currentLicences[id].licence.name,
+                  id: this.currentLicences[id].licence.id
+                };
+              }
           },
           hideEdit(){
             this.edit = {

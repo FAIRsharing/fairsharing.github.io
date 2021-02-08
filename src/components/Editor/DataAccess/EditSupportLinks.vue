@@ -9,17 +9,28 @@
     </v-row>
     <v-row>
       <v-list class="mb-5 px-4 grey lighten-3 large">
-        <v-list-item
-          v-for="(supportLink, index) in currentSupportLinks"
-          :key="'supportLink_' + index"
+        <div
+          v-if="recordData.length === 0"
+          class="py-2"
         >
-          <v-chip class="blue white--text pr-5 d-block">
+          <i class="mt-3">This record has no support link.</i>
+        </div>
+        <v-list-item
+          v-for="(supportLink, index) in recordData"
+          :key="'supportLink_' + index"
+          class="pl-0"
+        >
+          <v-chip
+            class="blue white--text pr-5"
+            style="cursor:pointer;"
+          >
             <v-tooltip bottom>
               <template #activator="{ on, attrs }">
                 <v-icon
                   v-bind="attrs"
                   small
                   class="mr-2 white--text"
+                  @click="editLink(index)"
                   v-on="on"
                 >
                   fas fa-pen
@@ -27,8 +38,10 @@
               </template>
               <span> Edit support link </span>
             </v-tooltip>
-            <div>
-              <b>{{ supportLink.type }}</b>: {{ supportLink.url }}
+            <div @click="editLink(index)">
+              <b>{{ supportLink.type }}</b>:
+              <span v-if="typeof supportLink.url === 'string'">{{ supportLink.url }}</span>
+              <span v-else> {{ supportLink.url.title }} ({{ supportLink.url.url }}) </span>
             </div>
             <v-tooltip bottom>
               <template #activator="{ on, attrs }">
@@ -36,6 +49,7 @@
                   v-bind="attrs"
                   small
                   class="ml-3 white--text"
+                  @click="removeLink(index)"
                   v-on="on"
                 >
                   fa-times-circle
@@ -49,11 +63,12 @@
         <div class="d-flex borderTop">
           <v-spacer />
           <v-chip
-                  class="green white--text pr-5 shadowChip"
+            class="green white--text pr-5 shadowChip"
+            @click="newLink()"
           >
             <v-icon
-                    small
-                    class="white--text mr-3"
+              small
+              class="white--text mr-3"
             >
               fa-plus-circle
             </v-icon> Add a support link
@@ -61,29 +76,219 @@
         </div>
       </v-list>
     </v-row>
+
+    <v-dialog
+      v-model="edit.show"
+      class="py-0"
+      :dark="false"
+      opacity="0.8"
+      persistent
+      width="700px"
+    >
+      <v-container
+        v-if="edit.template"
+        fluid
+        class="py-0"
+      >
+        <v-row justify="center">
+          <v-card
+            class="flexCard grey black--text lighten-3"
+            width="100%"
+          >
+            <v-form
+              id="editSupportLink"
+              ref="editSupportLink"
+              v-model="formValid"
+            >
+              <v-card-title class="green white--text">
+                <span v-if="edit.id">Edit</span>
+                <span v-else>Create</span>
+                <span class="ml-1"> support link</span>
+              </v-card-title>
+              <v-card-text class="pt-3">
+                <v-select
+                  v-model="edit.template.type"
+                  :items="Object.keys(supportLinksTypes)"
+                  return-object
+                  outlined
+                  label="Select the support link type"
+                  :rules="[rules.isRequired()]"
+                  :menu-props="{ bottom: true, offsetY: true }"
+                />
+                <v-text-field
+                  v-if="rule === 'url'"
+                  v-model="edit.template.url"
+                  outlined
+                  placeholder="Enter a URL"
+                  label="Support link URL"
+                  :rules="[rules.isRequired(), rules.isUrl()]"
+                />
+                <v-text-field
+                  v-if="rule === 'email'"
+                  v-model="edit.template.url"
+                  outlined
+                  placeholder="Enter an email"
+                  label="Support link email"
+                  :rules="[rules.isRequired(), rules.isEmail()]"
+                />
+                <v-autocomplete
+                  v-if="rule === 'api'"
+                  v-model="edit.template.url"
+                  :items="tessRecords"
+                  outlined
+                  item-text="title"
+                  item-value="title"
+                  return-object
+                  :search-input.sync="search"
+                  :rules="[rules.isRequired()]"
+                  :loading="loadingTessRecords"
+                />
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  :disabled="!formValid"
+                  class="success"
+                  @click="submitLink()"
+                >
+                  Submit support link
+                </v-btn>
+                <v-btn
+                  class="error"
+                  @click="hideOverlay()"
+                >
+                  Cancel
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-row>
+      </v-container>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
     import { mapState } from "vuex"
-    import { orderBy } from "lodash"
+    import { isRequired, isUrl, isEmail } from "@/utils/rules.js"
+    import ExternalClient from "@/components/Client/ExternalClients.js"
+
+    let client = new ExternalClient();
 
     export default {
         name: "EditSupportLinks",
+        data(){
+          return {
+            edit: {
+              show: false,
+              id: null,
+              template: null
+            },
+            formValid: false,
+            rules: {
+              isRequired: () => {return isRequired()},
+              isUrl: () => {return isUrl()},
+              isEmail: () => { return isEmail() }
+            },
+            tessRecords: [],
+            search: null,
+            loadingTessRecords: false
+          }
+        },
         computed: {
             ...mapState('record', ['sections']),
             ...mapState('editor', ['supportLinksTypes']),
             recordData(){
-                return this.sections["dataAccess"].data
+                return this.sections["dataAccess"].data.support_links
             },
-            currentSupportLinks(){
-              return orderBy(this.recordData.metadata['support_links'], ['type'], ['asc'])
+            rule(){
+              if (!this.edit.template.type) return null;
+              return this.supportLinksTypes[this.edit.template.type];
             }
+        },
+        watch: {
+          'edit.template.type': function(val) {
+            this.$nextTick(() => {
+              if (this.edit.template
+                      && typeof this.edit.template.url !== "string"
+                      && val !== "TeSS links to training materials") {
+                this.edit.template.url = null;
+              }
+              else if (this.edit.template
+                      && typeof this.edit.template.url === "string"
+                      && val === "TeSS links to training materials") {
+                this.edit.template.url = null;
+              }
+              /* istanbul ignore else */
+              if (this.$refs['editSupportLink']) this.$refs['editSupportLink'].validate();
+            })
+          },
+          search: async function(val){
+            this.loadingTessRecords = true;
+            this.tessRecords = (val) ? await this.findTessRecord(val) : [];
+            this.loadingTessRecords = false;
+          }
+        },
+        methods: {
+          newLink(){
+            this.edit = {
+              show: true,
+              id: null,
+              template: {
+                type: null,
+                url: null
+              }
+            }
+          },
+          hideOverlay(){
+             this.edit = {
+               show: false,
+               id: null,
+               template: null
+             }
+          },
+          editLink(id){
+            this.edit = {
+              show: true,
+              id: id,
+              template: JSON.parse(JSON.stringify(this.recordData[id]))
+            };
+            if (this.recordData[id].name) {
+              this.search = this.recordData[id].name;
+            }
+          },
+          removeLink(id){
+            this.recordData.splice(id, 1);
+          },
+          submitLink(){
+            let id = this.edit.id;
+            let newLink = JSON.parse(JSON.stringify(this.edit.template));
+            if (this.edit.template.type === "TeSS links to training materials") {
+              newLink.title = newLink.url.title;
+              newLink.name = newLink.url.title;
+              newLink.url.url = newLink.url.url.replace(/.json/g, "");
+            }
+            if (id !== null) {
+              this.$set(this.sections.dataAccess.data.support_links, id,  newLink);
+            }
+            else {
+              this.$set(this.sections.dataAccess.data.support_links,
+                      this.sections.dataAccess.data.support_links.length,
+                      newLink);
+            }
+            this.edit = {
+              show: false,
+              id: null,
+              template: null
+            }
+          },
+          async findTessRecord(val){
+            return await client.getTessRecords(val);
+          }
         }
     }
 </script>
 
-<style scoped>
+<style>
   #editSupportLinks .large {
     width: 100%;
   }
@@ -93,4 +298,9 @@
     margin-top:5px;
     padding-top: 10px;
   }
+
+  #editSupportLinks .v-overlay__content {
+    width: 700px;
+  }
+
 </style>

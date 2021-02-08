@@ -42,7 +42,6 @@ export function initEditorSections(data, sectionsNames){
         type: {},
         status: {},
         countries: [],
-        //publications: [],
         metadata: {
             name: null,
             abbreviation: null,
@@ -81,14 +80,21 @@ export function initEditorSections(data, sectionsNames){
             },
             additionalInformation: JSON.parse(JSON.stringify(data.metadata)),
             publications: data.publications,
-            organisations: data.organisationLinks
+            organisations: data.organisationLinks,
+            dataAccess: {
+                support_links: (data.metadata.support_links) ? JSON.parse(JSON.stringify(data.metadata.support_links)): [],
+                licences: data.licenceLinks
+            }
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
-        if(data.publications) {
+        if (data.publications) {
             schema.publications.forEach((pub) => {
                 pub.isCitation = !!data.metadata.citations.filter(obj => obj.publication_id === pub.id)[0];
             });
         }
+        schema.dataAccess.support_links.forEach(supportLink => {
+            if (supportLink.name) supportLink.url = {title : supportLink.name, url: supportLink.url};
+        });
         sectionsNames.forEach(name => {
             let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null;
             sections[name] = {

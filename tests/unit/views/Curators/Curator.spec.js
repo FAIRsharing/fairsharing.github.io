@@ -56,8 +56,8 @@ describe("Curator.vue", () => {
       const title = "Curator";
       expect(wrapper.name()).toMatch(title);
       expect(wrapper.vm.approvalRequired.length).toBe(2);
-      expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazus");
-      expect(wrapper.vm.curatorList.length).toBe(3);
+      expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazu");//Name reduced number to six characters
+      expect(wrapper.vm.curatorList.length).toBe(4);//Added "none" in curatorList
 
       //MaintanceRequest are properly created, elements sorted by date, values edited and formatted properly
       expect(wrapper.vm.maintenanceRequests.length).toBe(4);

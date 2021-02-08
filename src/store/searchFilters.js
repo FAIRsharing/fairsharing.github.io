@@ -131,7 +131,8 @@ export const buildFilters = function (val) {
                     bucket,
                     "key_as_string")) {
                     filterValues.push(bucket["key_as_string"]);
-                } else {
+                }
+                else {
                     filterValues.push(bucket['key']);
                 }
             });

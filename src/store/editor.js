@@ -170,7 +170,7 @@ let editorStore = {
             commit('setAvailableLicences', licences['searchLicences'])
         },
         async getAvailableRecords({commit}, options){
-            getRecordsQuery.queryParam = {perPage: 100};
+            getRecordsQuery.queryParam = {perPage: 40};
             if (options.q) getRecordsQuery.queryParam.q = options.q;
             if (options.fairsharingRegistry) {
                 getRecordsQuery.queryParam.fairsharingRegistry = options.fairsharingRegistry;

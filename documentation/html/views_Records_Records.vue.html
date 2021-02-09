@@ -203,7 +203,7 @@ export default {
   },
   watch: {
     currentPath: async function () {
-      window.scrollTo(0, 0);
+      this.$scrollTo('body',50,{})
       await this.tryRedirect();
     }
   },
@@ -211,11 +211,11 @@ export default {
     window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
       await this.tryRedirect();
-      window.scrollTo(0, 0);
+      this.$scrollTo('body',50,{})
     });
   },
   destroyed() {
-    window.scrollTo(0, 0);
+    this.$scrollTo('body',50,{})
     window.removeEventListener("scroll", this.onScroll);
     this.setStickToTop(false);
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {

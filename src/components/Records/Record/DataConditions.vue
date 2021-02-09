@@ -15,6 +15,8 @@
     <div class="d-flex flex-column ml-2 min-height-40">
       <div v-if="getField('metadata')['data_processes']">
         <v-card
+          v-for="(item,key,index) in generateDataConditions"
+          :key="key+'_'+index"
           class="pa-4 mt-15 d-flex flex-column"
           outlined
           color="white"
@@ -23,25 +25,25 @@
         >
           <div class="icon-container d-flex justify-center">
             <v-icon large>
-              {{ $vuetify.icons.values.tools }}
+              {{ $vuetify.icons.values[item.icon] }}
             </v-icon>
           </div>
           <v-card-title class="pa-0 text--primary card-title-customize">
-            Data Conditions
+            {{ key }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <v-card
-              v-for="(item,index) in getField('metadata')['data_processes']"
-              :key="item.name+'_'+index"
+              v-for="(subItem,subIndex) in item.data"
+              :key="subItem.name+'_'+subIndex"
               class="pa-4 mt-2 d-flex flex-column v-card-hover"
               flat
               outlined
             >
               <a
-                :href="item.url"
+                :href="subItem.url"
                 target="_blank"
               >
-                {{ item.name }}
+                {{ subItem.name }}
               </a>
             </v-card>
           </v-card-text>
@@ -62,6 +64,30 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+    generateDataConditions() {
+      const processedDataCondtions = {
+        'data access': {
+          data: [],
+          icon: null
+        },
+        'data curation': {
+          data: [],
+          icon: null
+        },
+        'data release': {
+          data: [],
+          icon: null
+        }
+      }
+      let data_processes = this.getField('metadata')['data_processes']
+      data_processes.forEach(item => {
+        if (processedDataCondtions[item.type]) {
+          processedDataCondtions[item.type].icon = item.type.replace(/\s/g, '_');
+          processedDataCondtions[item.type].data.push(item)
+        }
+      })
+      return processedDataCondtions
+    }
   }
 }
 </script>

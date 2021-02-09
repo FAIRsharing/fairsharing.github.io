@@ -43,6 +43,7 @@ describe("RecordsCardStack.vue", function () {
     it("can check organizeChips method", () => {
         record['subjects'] = undefined
         expect(wrapper.vm.organizeChips(record, 'subjects', 3)).toBe(false);
+        expect(wrapper.vm.organizeChips(record, 'userDefinedTags', 3)).toBe(true);
     });
 
 });

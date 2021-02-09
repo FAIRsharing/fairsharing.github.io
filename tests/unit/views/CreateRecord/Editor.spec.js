@@ -67,17 +67,6 @@ describe("Editor.vue", function() {
         expect(wrapper.vm.error).toBe(true);
     });
 
-    it("shows exit dialog", async () => {
-        wrapper = await shallowMount(CreateRecord, {
-            localVue,
-            router,
-            mocks: {$store, $route, $router}
-        });
-        let recordID = wrapper.vm.currentRecord['fairsharingRecord'].id;
-        wrapper.vm.confirmPanels[1].method();
-        expect(wrapper.vm.$router.push).toHaveBeenCalledWith({ path: `/${recordID}` });
-    });
-
     it("reloads data correctly", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
@@ -86,6 +75,39 @@ describe("Editor.vue", function() {
         wrapper.vm.confirmPanels[0].show = true;
         await wrapper.vm.confirmPanels[0].method();
         expect(wrapper.vm.confirmPanels[0].show).toBe(false);
+    });
+
+    it("can prevent leaving the route", async () => {
+        wrapper = await shallowMount(CreateRecord, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router}
+        });
+        global.confirm = jest.fn(() => true);
+        const beforeRouteLeave = wrapper.vm.$options.beforeRouteLeave;
+        let nextFun = jest.fn();
+        beforeRouteLeave.call(wrapper.vm , "toObj", "fromObj", nextFun);
+        expect(nextFun).toHaveBeenCalledTimes(1);
+        recordStore.state.sections.generalInformation.changes = 1;
+        beforeRouteLeave.call(wrapper.vm , "toObj", "fromObj", nextFun);
+        expect(nextFun).toHaveBeenCalledTimes(2);
+        global.confirm = jest.fn(() => false);
+        beforeRouteLeave.call(wrapper.vm , "toObj", "fromObj", nextFun);
+        expect(nextFun).toHaveBeenCalledTimes(2);
+    });
+
+    it("can load without support links", async () => {
+        let returnedData = metaTemplate.data;
+        returnedData.metadata.support_links = null;
+        graphStub.returns({
+            fairsharingRecord: returnedData
+        });
+        wrapper = await shallowMount(CreateRecord, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router}
+        });
+        expect(wrapper.name()).toMatch("Editor");
     });
 
 });

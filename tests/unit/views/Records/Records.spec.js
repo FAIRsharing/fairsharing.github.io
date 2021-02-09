@@ -63,8 +63,6 @@ describe("Records.vue", () => {
         });
         delete global.window['top'];
         global.window = Object.create(window);
-        window.scrollTo = () => {
-        };
     });
 
     it("can be instantiated", () => {

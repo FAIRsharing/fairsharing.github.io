@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
 import Organisations from "@/components/Records/Record/Organisations.vue"
@@ -29,18 +29,19 @@ Record.state.currentRecord["fairsharingRecord"] = {
             }
         }
     ],
-    subjects:[],
-    domains:[],
-    taxonomies:[],
-    userDefinedTags:[],
-    organisations:[{ "id": 1119 }]
+    subjects: [],
+    domains: [],
+    taxonomies: [],
+    userDefinedTags: [],
+    organisations: [{"id": 1119}]
 };
 const $store = new Vuex.Store({
     modules: {
-        record:Record
-    }});
+        record: Record
+    }
+});
 
-describe("Organisations.vue", function(){
+describe("Organisations.vue", function () {
     let wrapper;
 
     beforeEach(() => {

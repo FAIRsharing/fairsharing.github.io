@@ -19,7 +19,8 @@ export const mutations = {
                 else {
                     if (!isEqual(JSON.parse(localStorage.searchQueryParameters), JSON.parse(JSON.stringify(state.searchQueryParameters)))) {
                         localStorage.searchQueryParameters = JSON.stringify(state.searchQueryParameters);
-                    } else {
+                    }
+                    else {
                         state.searchQueryParameters = JSON.parse(localStorage.searchQueryParameters);
                     }
                 }

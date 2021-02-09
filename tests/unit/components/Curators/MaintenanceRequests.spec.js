@@ -109,4 +109,10 @@ describe('Curator -> MaintenanceRequest.vue', () => {
       await wrapper.vm.saveProcessingNotes(24,"notes of text");
       expect(wrapper.vm.error.recordID).toBe(24);
     });
+
+    it("can watch props data", () => {
+        wrapper.vm.$options.watch.maintenanceRequests.call(wrapper.vm);
+        expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch("Record1 (23)");
+    });
+
 });

@@ -38,6 +38,14 @@
       "label": "Tax 2"
     }
   ],
+  "userDefinedTags": [
+    {
+      "label": "a user defined tag"
+    },
+    {
+      "label": "tag 1"
+    }
+  ],
   "recordAssociations": [
     {
       "linkedRecord": {

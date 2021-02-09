@@ -18,7 +18,6 @@ const $router = {
 
 describe("AnyAllButton.vue", function () {
     let wrapper;
-    let anotherWrapper;
 
     wrapper = shallowMount(AnyAllButton, {
         localVue,

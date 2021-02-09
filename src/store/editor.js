@@ -182,34 +182,51 @@ let editorStore = {
         async getAvailableRelationsTypes({commit}){
             let types = await restClient.getRelationsTypes();
             let allowed = {};
+            let relationTypes = ['standard', 'database', 'policy', 'collection'];
             types.forEach(typeObject => {
                 let relationName = typeObject.name,
                     id = typeObject.id;
-                typeObject['allowed_associations'].forEach(allowed_association => {
-                    let relationParent = allowed_association.from;
-                    let relationChild = allowed_association.to;
-                    if (!Object.keys(allowed).includes(relationParent)) {
-                        allowed[relationParent] = [];
-                    }
-                    if (relationChild !== "any") {
-                        allowed[relationParent].push({
-                            relation: relationName,
-                            target: relationChild,
-                            id: id
-                        });
-                    }
-                    else {
-                        let relationChildren = ['standard', 'database', 'policy', 'collection'];
-                        relationChildren.forEach((childRel)=> {
+                if (typeObject['allowed_associations'].length > 0) {
+                    typeObject['allowed_associations'].forEach(allowed_association => {
+                        let relationParent = allowed_association.from;
+                        let relationChild = allowed_association.to;
+                        if (!Object.keys(allowed).includes(relationParent)) {
+                            allowed[relationParent] = [];
+                        }
+                        if (relationChild !== "any") {
                             allowed[relationParent].push({
                                 relation: relationName,
-                                target: childRel,
+                                target: relationChild,
                                 id: id
                             });
+                        }
+                        else {
+                            relationTypes.forEach((childRel) => {
+                                allowed[relationParent].push({
+                                    relation: relationName,
+                                    target: childRel,
+                                    id: id
+                                });
+                            });
+                        }
+                    })
+                }
+                else {
+                    relationTypes.forEach(relationParent => {
+                        if (!Object.keys(allowed).includes(relationParent)) {
+                            allowed[relationParent] = [];
+                        }
+                        relationTypes.forEach(relationChild => {
+                           allowed[relationParent].push({
+                               relation: relationName,
+                               target: relationChild,
+                               id: id
+                           });
                         });
-                    }
-                })
+                    });
+                }
             });
+            console.log(allowed);
             commit("setAvailableRelationsTypes", allowed);
         }
     },

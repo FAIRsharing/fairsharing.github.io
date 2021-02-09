@@ -10,6 +10,7 @@ const customIcons  = {
         funds: 'fa-funnel-dollar',
         collaborates_on: 'fa-handshake',
         undefined: 'fa-building',
+        arrowUp:'fa-chevron-up'
     },
     iconfont: 'fa'
 };

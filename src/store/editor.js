@@ -226,7 +226,6 @@ let editorStore = {
                     });
                 }
             });
-            console.log(allowed);
             commit("setAvailableRelationsTypes", allowed);
         }
     },

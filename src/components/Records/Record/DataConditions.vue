@@ -13,7 +13,7 @@
     />
     <!--  container  -->
     <div class="d-flex flex-column ml-2 min-height-40">
-      <div v-if="getField('metadata')['data_processes']">
+      <div v-if="getField('metadata')['data_processes'] && getField('metadata')['data_processes'].length">
         <v-card
           v-for="(item,key,index) in generateDataConditions"
           :key="key+'_'+index"
@@ -65,26 +65,21 @@ export default {
   computed: {
     ...mapGetters("record", ["getField"]),
     generateDataConditions() {
-      const processedDataCondtions = {
-        'data access': {
-          data: [],
-          icon: null
-        },
-        'data curation': {
-          data: [],
-          icon: null
-        },
-        'data release': {
-          data: [],
-          icon: null
-        }
-      }
+      const processedDataCondtions = {}
       let data_processes = this.getField('metadata')['data_processes']
+      //initializing object's key and data dynamically based on any number of types coming from API
       data_processes.forEach(item => {
-        if (processedDataCondtions[item.type]) {
-          processedDataCondtions[item.type].icon = item.type.replace(/\s/g, '_');
-          processedDataCondtions[item.type].data.push(item)
+        if(!Object.prototype.hasOwnProperty.call(processedDataCondtions,item.type)){
+          processedDataCondtions[item.type] = {
+            data:[],
+            icon : null
+          }
         }
+      });
+      // assigning data and icon to the different types came from API.
+      data_processes.forEach(item => {
+          processedDataCondtions[item.type].icon = item.type.replace(/\s/g, '_')
+          processedDataCondtions[item.type].data.push(item)
       })
       return processedDataCondtions
     }

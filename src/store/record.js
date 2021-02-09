@@ -158,8 +158,8 @@ let recordStore = {
                 id: id
             };
             let data = await client.executeQuery(recordQuery);
-            state.commit('setCurrentRecord', data);
-            state.commit('setSections', data);
+            state.commit('setCurrentRecord', JSON.parse(JSON.stringify(data)));
+            state.commit('setSections', JSON.parse(JSON.stringify(data)));
         },
         async fetchRecordHistory(state, id){
             recordHistory.queryParam = {id: id};

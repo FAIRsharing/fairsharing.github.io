@@ -81,7 +81,7 @@
             <!-- SUPPORT -->
             <Support class="mt-5" />
             <!-- ORGANISATION -->
-            <Organisations class="mt-5" />
+            <DataCondtions class="mt-5" />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
@@ -111,7 +111,7 @@
     import Keywords from '@/components/Records/Record/Keywords';
     import Licences from '@/components/Records/Record/Licences';
     import Tools from '@/components/Records/Record/Tools';
-    import Organisations from '@/components/Records/Record/Organisations';
+    import DataCondtions from '@/components/Records/Record/DataConditions';
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
     import NotFound from "@/views/Errors/404"
@@ -125,7 +125,7 @@
             Keywords,
             Licences,
             Tools,
-            Organisations,
+            DataCondtions,
             Publications,
             Support,
             NotFound

@@ -58,19 +58,19 @@
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import {mapGetters} from "vuex";
 export default {
-  name: "Tools",
+  name: "DataConditions",
   components: {
     SectionTitle,
   },
   computed: {
     ...mapGetters("record", ["getField"]),
     generateDataConditions() {
-      const processedDataCondtions = {}
+      const processedDataConditions = {}
       let data_processes = this.getField('metadata')['data_processes']
       //initializing object's key and data dynamically based on any number of types coming from API
       data_processes.forEach(item => {
-        if(!Object.prototype.hasOwnProperty.call(processedDataCondtions,item.type)){
-          processedDataCondtions[item.type] = {
+        if(!Object.prototype.hasOwnProperty.call(processedDataConditions,item.type)){
+          processedDataConditions[item.type] = {
             data:[],
             icon : null
           }
@@ -78,10 +78,10 @@ export default {
       });
       // assigning data and icon to the different types came from API.
       data_processes.forEach(item => {
-          processedDataCondtions[item.type].icon = item.type.replace(/\s/g, '_')
-          processedDataCondtions[item.type].data.push(item)
+          processedDataConditions[item.type].icon = item.type.replace(/\s/g, '_')
+          processedDataConditions[item.type].data.push(item)
       })
-      return processedDataCondtions
+      return processedDataConditions
     }
   }
 }

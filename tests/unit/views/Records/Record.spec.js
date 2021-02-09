@@ -9,14 +9,13 @@ import RESTClient from "@/components/Client/RESTClient.js";
 import record from "@/store/record.js";
 import users from "@/store/users.js";
 import sinon from "sinon";
+import VueScrollTo from "vue-scrollto";
 
 // Initializing context for mounting
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-
-delete global.window.scrollTo;
-global.window.scrollTo = () => {};
+localVue.use(VueScrollTo,{})
 
 // Initializing store states and getters
 users.state.user = function(){ return {
@@ -81,7 +80,8 @@ describe("Record.vue", function() {
                     }
                 ],
                 metadata: {
-                    contacts: []
+                    contacts: [],
+                    support_links: []
                 },
                 domains: [],
                 subjects: [],
@@ -245,79 +245,6 @@ describe("Record.vue", function() {
         await wrapper.vm.getData();
         expect(wrapper.vm.error).toBe("error");
         mocks.restore("graphMock");
-
-        wrapper.vm.error = null;
-        graphMockValue.fairsharingRecord.recordAssociations = [];
-        graphMockValue.fairsharingRecord.reverseRecordAssociations = [];
-        mocks.setMock("graphMock",
-            GraphClient.prototype,
-            "executeQuery",
-            graphMockValue);
-        await wrapper.vm.getData();
-        expect(wrapper.vm.error).toBe(null);
-        mocks.restore("graphMock");
     });
 
-    it("can prepare records associations", async () => {
-        let associations = [
-            {
-                fairsharingRecord: {
-                    name: "name",
-                    registry: "collection"
-                },
-                recordAssocLabel: 'collects',
-            }
-        ];
-        wrapper.vm.prepareAssociations(associations, []);
-        expect(wrapper.vm.recordAssociations).toStrictEqual([
-            {
-                registry: "collection",
-                subject: "I Am a Test",
-                id: undefined,
-                name: "name",
-                type: undefined,
-                recordAssocLabel: 'collects'
-            }
-        ]);
-
-        graphMockValue.fairsharingRecord.registry = "collection";
-        mocks.restore("graphMock");
-        mocks.setMock("graphMock",
-            GraphClient.prototype,
-            "executeQuery",
-            graphMockValue);
-        await wrapper.vm.getData();
-        wrapper.vm.prepareAssociations(associations, []);
-        expect(wrapper.vm.recordAssociations).toStrictEqual([
-            {
-                registry: "collection",
-                subject: "I Am a Test",
-                id: undefined,
-                name: "name",
-                type: undefined,
-                recordAssocLabel: 'is collected by'
-            }
-        ]);
-
-        graphMockValue.fairsharingRecord.registry = "policy";
-        associations[0].recordAssocLabel = "recommends";
-        associations[0].fairsharingRecord.registry = "policy";
-        mocks.restore("graphMock");
-        mocks.setMock("graphMock",
-            GraphClient.prototype,
-            "executeQuery",
-            graphMockValue);
-        await wrapper.vm.getData();
-        wrapper.vm.prepareAssociations(associations, []);
-        expect(wrapper.vm.recordAssociations).toStrictEqual([
-            {
-                registry: "policy",
-                subject: "I Am a Test",
-                id: undefined,
-                name: "name",
-                type: undefined,
-                recordAssocLabel: 'is recommended by'
-            }
-        ]);
-    });
 });

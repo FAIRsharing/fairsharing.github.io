@@ -45,11 +45,6 @@ let recordStore = {
     mutations: {
         setCurrentRecord(state, data){
             state.currentRecord = data;
-            if (!data["fairsharingRecord"]['metadata']['contacts']) state.currentRecord["fairsharingRecord"]['metadata']['contacts'] = [];
-            // Citations should be created if empty.
-            if (!data["fairsharingRecord"]['metadata']['citations']) {
-                state.currentRecord["fairsharingRecord"]['metadata']['citations'] = [];
-            }
         },
         setRecordHistory(state, data){
             state.currentRecordHistory = data;
@@ -158,6 +153,13 @@ let recordStore = {
                 id: id
             };
             let data = await client.executeQuery(recordQuery);
+            if (!data["fairsharingRecord"]['metadata']['contacts']) {
+                data["fairsharingRecord"]['metadata']['contacts'] = [];
+            }
+            // Citations should be created if empty.
+            if (!data["fairsharingRecord"]['metadata']['citations']) {
+                data["fairsharingRecord"]['metadata']['citations'] = [];
+            }
             state.commit('setCurrentRecord', JSON.parse(JSON.stringify(data)));
             state.commit('setSections', JSON.parse(JSON.stringify(data)));
         },

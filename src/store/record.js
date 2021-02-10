@@ -116,6 +116,8 @@ let recordStore = {
             };
             state.sections.generalInformation.data.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
             state.sections.generalInformation.initialData.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
+            state.sections.additionalInformation.data.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
+            state.sections.additionalInformation.initialData.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
             record.support_links.forEach(supportLink => {
                if (supportLink.name) supportLink.url = {title: supportLink.name, url: supportLink.url}
             });
@@ -129,9 +131,12 @@ let recordStore = {
                 access_points: additionalInformation['access_points'],
             };
             // TODO: Separate setting necessary for each available field...
-            state.sections.generalInformation.data.metadata.access_points = JSON.parse(JSON.stringify(record.access_points));
-            state.sections.generalInformation.initialData.metadata.access_points = JSON.parse(JSON.stringify(record.access_points));
-
+            ['access_points'].forEach((type) => {
+                state.sections.generalInformation.data.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+                state.sections.generalInformation.initialData.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+                state.sections.dataAccess.data.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+                state.sections.dataAccess.initialData.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+            });
             state.sections.additionalInformation.data = record;
             state.sections.additionalInformation.initialData = JSON.parse(JSON.stringify(record));
             state.sections.additionalInformation.changes = 0;

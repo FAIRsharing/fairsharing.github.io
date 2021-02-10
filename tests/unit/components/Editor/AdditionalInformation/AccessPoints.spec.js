@@ -26,13 +26,6 @@ recordStore.state.sections = {
         data: record,
         initialData: JSON.parse(JSON.stringify(record)),
         changes: 0,
-    },
-    generalInformation: {
-        error: false,
-        data: {metadata: {}},
-        initialData: {metadata: {}},
-        changes: 0,
-        message: null
     }
 };
 userStore.state.user().credentials.token = "thisisatoken";

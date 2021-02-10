@@ -93,14 +93,6 @@ export default {
     ...mapState("users", ["user"]),
     fields() {
       return this.getSection("additionalInformation").data
-    },
-    message(){
-      let error = this.getSection("additionalInformation").error;
-      return {
-        error: error,
-        value: this.getSection("additionalInformation").message,
-        type: function(){if (error){return "error"} else {return "success"}}
-      };
     }
   },
   mounted(){
@@ -136,7 +128,7 @@ export default {
           value: 0
         })
       }
-      if (redirect && !this.message.error){
+      if (redirect && !this.getSection("additionalInformation").error){
         await this.$router.push({path: '/' + this.$route.params.id})
       }
     },

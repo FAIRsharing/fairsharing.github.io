@@ -87,7 +87,7 @@
                   <v-col class="col-6">
                     <v-select
                       v-model="newAccessPoint.type"
-                      :items="availableTypes"
+                      :items="accessPointTypes"
                       menu-props="auto"
                       label="Type"
                       :rules="[rules.isRequired()]"
@@ -146,8 +146,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
-//import {mapGetters, mapState} from "vuex"
+import {mapGetters, mapState} from "vuex"
 import {isRequired, isUrl} from "@/utils/rules.js"
 
 
@@ -160,12 +159,12 @@ export default {
       rules: {
         isRequired: function(){return isRequired()},
         isUrl: function(){return isUrl()},
-      },
-      availableTypes: ["REST", "SOAP", "SPARQL", "Other"]
+      }
     }
   },
   computed: {
     ...mapGetters("record", ["getSection", "getChanges"]),
+    ...mapState("editor", ["accessPointTypes"]),
     section(){
       return this.getSection('additionalInformation');
     },
@@ -174,18 +173,8 @@ export default {
     },
     currentFields(){
       let data = this.getSection("additionalInformation").data
-      if (!data.access_points) {
-        data.access_points = [];
-      }
+      if (!data.access_points) data.access_points = [];
       return data;
-    },
-    message(){
-      let error = this.getSection("additionalInformation").error;
-      return {
-        error: error,
-        value: this.getSection("additionalInformation").message,
-        type: function(){if (error){return "error"} else {return "success"}}
-      };
     }
   },
   watch: {

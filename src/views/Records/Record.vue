@@ -89,12 +89,8 @@
             <!-- LICENCES -->
             <Licences class="mt-5 ml-lg-5" />
 
-            <!-- MAINTAINERS -->
-            <Maintainers
-              class="mt-5 ml-lg-5"
-              :can-claim="canClaim"
-              @requestOwnership="requestOwnership"
-            />
+            <!-- Tools -->
+            <Tools class="mt-5 ml-lg-5" />
 
             <!-- PUBLICATIONS -->
             <Publications class="mt-5 ml-lg-5" />
@@ -115,7 +111,7 @@
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Keywords from '@/components/Records/Record/Keywords';
     import Licences from '@/components/Records/Record/Licences';
-    import Maintainers from '@/components/Records/Record/Maintainers';
+    import Tools from '@/components/Records/Record/Tools';
     import Organisations from '@/components/Records/Record/Organisations';
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
@@ -129,7 +125,7 @@
             GeneralInfo,
             Keywords,
             Licences,
-            Maintainers,
+            Tools,
             Organisations,
             Publications,
             Support,
@@ -225,7 +221,7 @@
         },
         destroyed() {
           // minor change in the y axis can fix a serious bug after going back to records..
-          window.scrollTo(0, 5);
+          this.$scrollTo('body',5,{})
         },
         mounted() {
             this.$nextTick(async function () {

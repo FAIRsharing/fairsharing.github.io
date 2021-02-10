@@ -4,18 +4,24 @@ import VueRouter from "vue-router"
 import sinon from "sinon"
 import Client from "@/components/Client/RESTClient.js"
 import UserMenu from "@/components/Users/UserProfileMenu.vue"
-import usersStore from "@/store/users";
+import userStore from "@/store/users";
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
 localVue.use(Vuex);
-usersStore.state.user = {
-    email: 'test@test.com'
-};
+userStore.state.user = function(){
+    return {
+        role: "super_curator",
+        email: 'test@test.com',
+        credentials: {
+            token: 'thisisafaketoken'
+        }
+    }
+}
 
 const $store = new Vuex.Store({
     modules: {
-        users: usersStore
+        users: userStore
     }
 });
 let routes = [
@@ -55,6 +61,18 @@ describe("UserProfileMenu.vue", () => {
         expect(wrapper.name()).toMatch(title);
     });
 
+    it("can a user that is a curator access to the curator panel", async () => {
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {
+                success: true,
+                message: "Success !"
+            }
+        });
+        await wrapper.vm.menuItems.filter(obj => obj.name === 'Curator Panel')[0].action();
+        expect(wrapper.vm.$route.path).toBe("/curator");
+    });
+
     it("can log user out", async () => {
         await wrapper.vm.menuItems.filter(obj => obj.name === 'Logout')[0].action();
         expect(wrapper.vm.$route.path).toBe("/accounts/login");
@@ -69,5 +87,7 @@ describe("UserProfileMenu.vue", () => {
         await wrapper.vm.menuItems.filter(obj => obj.name === 'Edit profile')[0].action();
         expect(wrapper.vm.$route.path).toBe("/profiles/edit");
     });
+
+
 
 });

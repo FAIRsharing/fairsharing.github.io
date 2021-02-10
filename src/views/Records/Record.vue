@@ -33,7 +33,7 @@
             cmass="mt-3"
             offset-y
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn
                 class="mt-2"
                 color="primary"

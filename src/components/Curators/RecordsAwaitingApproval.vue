@@ -45,9 +45,9 @@
             </td>
             <td>
               <v-menu>
-                <template v-slot:activator="{ on: menu, attrs }">
+                <template #activator="{ on: menu, attrs }">
                   <v-tooltip bottom>
-                    <template v-slot:activator="{ on: tooltip }">
+                    <template #activator="{ on: tooltip }">
                       <v-icon
                         class="clickable"
                         small
@@ -101,7 +101,7 @@
                 @save="saveProcessingNotes(props.item.id,props.item.processingNotes)"
               >
                 {{ props.item.processingNotes }}
-                <template v-slot:input>
+                <template #input>
                   <div class="dialogProcNotesEdit">
                     <div class="mt-4 title">
                       Update Processing Notes
@@ -136,7 +136,7 @@
                 fas fa-trash
               </v-icon>
               <v-tooltip bottom>
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                   <span
                     v-bind="attrs"
                     v-on="on"

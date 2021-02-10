@@ -5,7 +5,6 @@ import Client from "@/components/Client/RESTClient.js"
 import Vuex from "vuex"
 import recordStore from "@/store/record.js"
 import sinon from "sinon"
-import GraphClient from "@/components/GraphClient/GraphClient.js"
 import usersStore from "@/store/users"
 import VueRouter from "vue-router"
 
@@ -51,7 +50,6 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
             mocks: {$store, $router},
             propsData: fakeData.propsData
         });
-        done();
     });
 
     it("can be mounted", () => {

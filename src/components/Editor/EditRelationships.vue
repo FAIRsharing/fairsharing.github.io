@@ -30,60 +30,87 @@
                   hide-details
                   :loading="loading"
                 />
+                <v-container>
+                  <v-row no-gutters>
+                    <v-col
+                      v-for="(filterVal, filterName, filterIndex) in searchFilters"
+                      :key="'filter_' + filterIndex"
+                      cols="12"
+                      sm="12"
+                      xs="12"
+                      md="6"
+                      lg="3"
+                      xl="3"
+                      class="text-center"
+                    >
+                      <v-switch
+                        v-model="searchFilters[filterName]"
+                        inset
+                        :label="`${capitalize(filterName)}(s)`"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <v-divider class="pa-0 ma-0" />
               </v-card-text>
-              <v-list
-                v-if="availableRecords.length > 0"
-                class="transparent scrollZone pr-3"
-                style="border-bottom: 1px solid #ccc;"
-              >
-                <v-list-item
-                  v-for="(record, index) in availableRecords"
-                  :key="'availableRecord_' + index"
-                  dense
-                  ripple
-                  class="bordered"
+              <div v-if="!loading">
+                <v-list
+                  v-if="availableRecords.length > 0"
+                  class="transparent scrollZone pr-3"
+                  style="border-bottom: 1px solid #ccc;"
                 >
-                  <v-list-item-avatar>
-                    <v-img :src="icons()[record.type]" />
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      {{ record.name }}
-                    </v-list-item-title>
-                    <span class="text-capitalize">
-                      {{ record.registry }} / {{ cleanString(record.type) }}
-                    </span>
-                  </v-list-item-content>
-                  <v-list-item-icon>
-                    <v-btn
-                      icon
-                      class="blue white--text mr-2"
-                      @click="showPreviewOverlay(record)"
-                    >
-                      <!--@click="addItem(index)"-->
-                      <v-icon small>
-                        fas fa-eye
-                      </v-icon>
-                    </v-btn>
-                    <v-btn
-                      icon
-                      class="green white--text"
-                      @click="showOverlay(record)"
-                    >
-                      <!--@click="addItem(index)"-->
-                      <v-icon small>
-                        fa-arrow-right
-                      </v-icon>
-                    </v-btn>
-                  </v-list-item-icon>
-                </v-list-item>
-              </v-list>
-              <v-list
+                  <v-list-item
+                    v-for="(record, index) in availableRecords"
+                    :key="'availableRecord_' + index"
+                    dense
+                    ripple
+                    class="bordered"
+                  >
+                    <v-list-item-avatar>
+                      <v-img :src="icons()[record.type]" />
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        {{ record.name }}
+                      </v-list-item-title>
+                      <span class="text-capitalize">
+                        {{ record.registry }} / {{ cleanString(record.type) }}
+                      </span>
+                    </v-list-item-content>
+                    <v-list-item-icon>
+                      <v-btn
+                        icon
+                        class="blue white--text mr-2"
+                        @click="showPreviewOverlay(record)"
+                      >
+                        <!--@click="addItem(index)"-->
+                        <v-icon small>
+                          fas fa-eye
+                        </v-icon>
+                      </v-btn>
+                      <v-btn
+                        icon
+                        class="green white--text"
+                        @click="showOverlay(record)"
+                      >
+                        <!--@click="addItem(index)"-->
+                        <v-icon small>
+                          fa-arrow-right
+                        </v-icon>
+                      </v-btn>
+                    </v-list-item-icon>
+                  </v-list-item>
+                </v-list>
+                <v-list
                 v-else
                 class="transparent scrollZone pr-3"
               >
                 <v-list-item>No records could be found with this search term.</v-list-item>
               </v-list>
+              </div>
+              <div v-else class="scrollZone">
+                <Loaders />
+              </div>
             </v-card>
           </v-col>
 
@@ -107,9 +134,30 @@
                   v-model="searchAssociations"
                   outlined
                   label="Search through existing associations names"
-                  placeholder="e.g. GenBank"
                   hide-details
                 />
+                <v-container>
+                  <v-row no-gutters>
+                    <v-col
+                      v-for="(filterVal, filterName, filterIndex) in labelsFilter"
+                      :key="'filter_' + filterIndex"
+                      cols="12"
+                      sm="12"
+                      xs="12"
+                      md="6"
+                      lg="3"
+                      xl="3"
+                      class="text-center"
+                    >
+                      <v-switch
+                        v-model="labelsFilter[filterName]"
+                        inset
+                        :label="`${capitalize(filterName)}(s)`"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <v-divider class="pa-0 ma-0" />
               </v-card-text>
               <v-list
                 v-if="getAssociations.length > 0"
@@ -315,14 +363,15 @@
 
 <script>
     import { mapState, mapActions, mapGetters } from "vuex"
-    import { isEqual } from "lodash"
+    import { isEqual, capitalize } from "lodash"
     import { isRequired } from "@/utils/rules.js"
     import stringUtils from '@/utils/stringUtils';
     import Record from "../../views/Records/Record";
+    import Loaders from "../Navigation/Loaders";
 
     export default {
         name: "EditRelationships",
-        components: {Record},
+        components: {Loaders, Record},
         mixins: [stringUtils],
         data(){
           return {
@@ -338,6 +387,9 @@
             showPreview: false,
             targetPreview: null,
             rules: { isRequired: () => {return isRequired()} },
+            labelsFilter: {},
+            searchFilters: {},
+            initialized: false
           }
         },
         computed: {
@@ -348,21 +400,25 @@
             return this.sections.relations.data.recordAssociations;
           },
           getAssociations(){
-            if (!this.searchAssociations) return this.associations;
+            if (!this.labelsFilter) return this.associations;
+            let searchTerm = this.searchAssociations || "";
             return this.associations.filter(obj => {
-              return obj.linkedRecord.name.includes(this.searchAssociations)
+              if (obj.linkedRecord.name.includes(searchTerm)
+                      && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
+                return obj;
+              }
             });
-          }
+          },
         },
         watch: {
           async search() {
-            this.loading = true;
-            let search = null;
-            if (this.search.trim().length >= 3) {
-              search = this.search.trim();
+            await this.runSearch();
+          },
+          searchFilters: {
+            deep: true,
+            async handler() {
+              await this.runSearch();
             }
-            await this.getAvailableRecords({q: search, fairsharingRegistry: this.targets});
-            this.loading = false;
           },
           associations: {
             deep: true,
@@ -381,14 +437,19 @@
             this.loading = true;
             await this.getAvailableRelationsTypes();
             this.targets = this.allowedTargets(this.sections.relations.data.registry.toLowerCase());
-            await this.getAvailableRecords({q: null, fairsharingRegistry: this.targets});
+            this.getRelations();
             this.loading = false;
+            this.initialized = true;
           });
         },
         methods: {
           ...mapActions("editor", ["getAvailableRecords", "getAvailableRelationsTypes"]),
+          capitalize,
           addItem() {
             this.searchAssociations = null;
+            Object.keys(this.labelsFilter).forEach(filter => {
+              this.labelsFilter[filter] = true;
+            });
             let newRelation = {
               linkedRecord: this.addingRelation.linkedRecord,
               recordAssocLabel: this.addingRelation.recordAssocLabel,
@@ -431,6 +492,42 @@
           showPreviewOverlay(record){
             this.targetPreview = record.id;
             this.showPreview = true;
+          },
+          getRelations() {
+            let labelsFilter = {};
+            let allRelations = ['standard', 'database', 'collection', 'policy'];
+
+            let allowedRelations = this.allowedRelations({
+              target: null,
+              sourceType: this.sections.relations.data.registry.toLowerCase(),
+              prohibited: null
+            });
+            allowedRelations.forEach(allowedRelation => {
+              if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
+                labelsFilter[allowedRelation.target] = true;
+                if (allRelations.includes(allowedRelation.target.toLowerCase())) {
+                  allRelations.splice(allRelations.indexOf(allowedRelation.target.toLowerCase()), 1)
+                }
+              }
+            });
+            allRelations.forEach(rel => {labelsFilter[rel] = false});
+            this.labelsFilter = {...labelsFilter};
+            this.searchFilters = {...labelsFilter};
+          },
+          async runSearch(){
+            this.loading = true;
+            let search = null;
+            if (this.search && this.search.trim().length >= 3) {
+              search = this.search.trim();
+            }
+            let registries = [];
+            Object.keys(this.searchFilters).forEach(filter => {
+              if (this.searchFilters[filter]){
+                registries.push(filter);
+              }
+            });
+            await this.getAvailableRecords({q: search, fairsharingRegistry: registries});
+            this.loading = false;
           }
         }
     }

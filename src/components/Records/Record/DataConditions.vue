@@ -9,11 +9,11 @@
     <!-- Data Conditions -->
     <SectionTitle
       title="Data Conditions"
-      :inactive-section="getField('metadata')['data_processes']===undefined || !getField('metadata')['data_processes'].length"
+      :inactive-section="(getField('metadata')['data_processes']===undefined || !getField('metadata')['data_processes'].length) && (getField('licences')===undefined || !getField('licences').length)"
     />
     <!--  container  -->
     <div class="d-flex flex-column ml-2 min-height-40">
-      <div v-if="getField('metadata')['data_processes'] && getField('metadata')['data_processes'].length">
+      <div v-if="(getField('metadata')['data_processes'] && getField('metadata')['data_processes'].length) || (getField('licences').length && getField('licences'))">
         <v-card
           v-for="(item,key,index) in generateDataConditions"
           :key="key+'_'+index"
@@ -40,11 +40,15 @@
               outlined
             >
               <a
+                v-if="subItem.url"
                 :href="subItem.url"
                 target="_blank"
               >
                 {{ subItem.name }}
               </a>
+              <span v-else>
+                {{ subItem.name }}
+              </span>
             </v-card>
           </v-card-text>
         </v-card>
@@ -66,21 +70,35 @@ export default {
     ...mapGetters("record", ["getField"]),
     generateDataConditions() {
       const processedDataConditions = {}
-      let data_processes = this.getField('metadata')['data_processes']
-      //initializing object's key and data dynamically based on any number of types coming from API
-      data_processes.forEach(item => {
-        if(!Object.prototype.hasOwnProperty.call(processedDataConditions,item.type)){
-          processedDataConditions[item.type] = {
-            data:[],
-            icon : null
+      const data_processes = this.getField('metadata')['data_processes']
+      const licences = this.getField('licences')
+
+      // initializing object's key and data dynamically based on any number of types coming from API
+      if (data_processes) {
+        data_processes.forEach(item => {
+          if (!Object.prototype.hasOwnProperty.call(processedDataConditions, item.type)) {
+            processedDataConditions[item.type] = {
+              data: [],
+              icon: null
+            }
           }
-        }
-      });
-      // assigning data and icon to the different types came from API.
-      data_processes.forEach(item => {
+        });
+        // assigning data and icon to the different types came from API.
+        data_processes.forEach(item => {
           processedDataConditions[item.type].icon = item.type.replace(/\s/g, '_')
           processedDataConditions[item.type].data.push(item)
-      })
+        })
+      }
+      // adding licenses if available
+      if (licences.length) {
+        processedDataConditions['licences'] = {
+          data:[],
+          icon:'licences'
+        }
+        licences.forEach(licence => {
+          processedDataConditions['licences'].data.push(licence)
+        })
+      }
       return processedDataConditions
     }
   }

@@ -15,6 +15,7 @@ const customIcons  = {
         data_curation:'fa-chevron-down',
         data_release:'fa-funnel-dollar',
         data_versioning:'fa-sync',
+        licences:'fa-sitemap',
     },
     iconfont: 'fa'
 };

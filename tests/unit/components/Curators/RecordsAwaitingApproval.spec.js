@@ -43,7 +43,7 @@ const $router = { push: jest.fn() };
 describe('Curator -> RecordsAwaitingApproval.vue', () => {
     let restStub;
     let wrapper;
-    beforeAll( async (done) => {
+    beforeAll( async () => {
         wrapper = await shallowMount(RecordsAwaitingApproval, {
             localVue,
             router,

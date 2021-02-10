@@ -641,6 +641,24 @@ class RESTClient {
         let response = await _client.executeQuery(request);
         return response.data;
     }
+
+
+    /**
+     * Delete Record
+     * @param {Number} id - id of the record link to delete
+     * @param {String} token - the user token
+     * @returns {Promise}
+     */
+    async deleteRecord(id, token){
+        let _client = this;
+        const request = {
+            method: "delete",
+            baseURL: _client.baseURL + "/fairsharing_records/" + id,
+            headers: this.auth_headers(token),
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
     /* EXTRA METHODS */
 
     /**

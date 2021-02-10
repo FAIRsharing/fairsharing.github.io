@@ -15,7 +15,7 @@
     <div class="d-flex flex-column ml-2 min-height-40">
       <div v-if="(getField('metadata')['data_processes'] && getField('metadata')['data_processes'].length) || (getField('licences').length && getField('licences'))">
         <v-card
-          v-for="(item,key,index) in generateDataConditions"
+          v-for="(item,key,index) in generateDataConditions()"
           :key="key+'_'+index"
           class="pa-4 mt-15 d-flex flex-column"
           outlined
@@ -68,9 +68,11 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+  },
+  methods:{
     generateDataConditions() {
-      const processedDataConditions = {}
-      const data_processes = this.getField('metadata')['data_processes']
+      let processedDataConditions = {}
+      const data_processes =  this.getField('metadata')['data_processes']
       const licences = this.getField('licences')
 
       // initializing object's key and data dynamically based on any number of types coming from API

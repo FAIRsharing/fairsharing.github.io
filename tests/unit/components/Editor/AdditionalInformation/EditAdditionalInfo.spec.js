@@ -34,6 +34,13 @@ recordStore.state.sections = {
         initialData: JSON.parse(JSON.stringify(record)),
         changes: 0,
         message: null
+    },
+    generalInformation: {
+        error: false,
+        data: {metadata: {}},
+        initialData: {metadata: {}},
+        changes: 0,
+        message: null
     }
 };
 userStore.state.user().credentials.token = "thisisatoken";
@@ -67,12 +74,8 @@ describe("EditAdditionalInfo", function() {
         restStub.restore();
     });
 
-    it("can be instantiated", () => {
+    it("can be mounted", () => {
         expect(wrapper.name()).toMatch("EditAdditionalInfo");
-        expect(wrapper.vm.message.type()).toBe("success");
-        recordStore.state.sections.additionalInformation.error = true;
-        expect(wrapper.vm.message.type()).toBe("error");
-        recordStore.state.sections.additionalInformation.error = false;
     });
 
     // Fails to run in the test for unknown reasons.

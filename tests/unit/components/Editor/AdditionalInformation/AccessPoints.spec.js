@@ -26,6 +26,12 @@ recordStore.state.sections = {
         data: record,
         initialData: JSON.parse(JSON.stringify(record)),
         changes: 0,
+    },
+    generalInformation: {
+        error: false,
+        data: {metadata: {}},
+        initialData: {metadata: {}},
+        changes: 0,
         message: null
     }
 };
@@ -53,10 +59,6 @@ describe("AccessPoints", function() {
         expect(wrapper.name()).toMatch("AccessPoints");
         expect(wrapper.vm.currentFields).toStrictEqual(wrapper.vm.initialFields);
         expect(wrapper.vm.section).toStrictEqual(recordStore.state.sections.additionalInformation);
-        expect(wrapper.vm.message.type()).toBe("success");
-        recordStore.state.sections.additionalInformation.error = true;
-        expect(wrapper.vm.message.type()).toBe("error");
-        recordStore.state.sections.additionalInformation.error = false;
     });
 
     it("can create new access points", () => {
@@ -92,7 +94,6 @@ describe("AccessPoints", function() {
                 data: {},
                 initialData: JSON.parse(JSON.stringify(record)),
                 changes: 0,
-                message: null
             }
         };
         let newWrapper = shallowMount(accessPoints, {

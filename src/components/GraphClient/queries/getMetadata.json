@@ -1,8 +1,0 @@
-{
-  "queryName": "fairsharingRecord",
-  "queryParam": null,
-  "fields": [
-    "id",
-    "metadata"
-  ]
-}

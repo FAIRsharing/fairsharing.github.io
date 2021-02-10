@@ -13,7 +13,8 @@ const customIcons  = {
         arrowUp:'fa-chevron-up',
         data_access:'fa-chevron-up',
         data_curation:'fa-chevron-down',
-        data_release:'fa-funnel-dollar'
+        data_release:'fa-funnel-dollar',
+        data_versioning:'fa-sync',
     },
     iconfont: 'fa'
 };

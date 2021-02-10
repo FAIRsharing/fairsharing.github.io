@@ -41,6 +41,13 @@ recordStore.state.sections = {
         initialData: {metadata: {}},
         changes: 0,
         message: null
+    },
+    dataAccess: {
+        error: false,
+        data: {metadata: {}},
+        initialData: {metadata: {}},
+        changes: 0,
+        message: null
     }
 };
 userStore.state.user().credentials.token = "thisisatoken";

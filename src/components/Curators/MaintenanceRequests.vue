@@ -280,6 +280,9 @@
           ...mapState("record", ["recordUpdate"])
         },
         watch: {
+          maintenanceRequests: function(){
+            this.maintenanceRequestsProcessed = JSON.parse(JSON.stringify(this.maintenanceRequests));
+          },
           'dialogs.confirmAssignment' (val) {
             val || this.closeMaintenanceAssign()
           },

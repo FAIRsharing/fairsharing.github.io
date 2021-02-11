@@ -13,7 +13,7 @@
           bottom
           fixed
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-icon
               large
               class="mouse-cursor"

@@ -25,7 +25,7 @@
         >
           <div class="icon-container d-flex justify-center">
             <v-icon large>
-              {{ $vuetify.icons.values[item.icon] }}
+              {{ Object.keys($vuetify.icons.values).includes(item.icon)?$vuetify.icons.values[item.icon]:$vuetify.icons.values['undefined'] }}
             </v-icon>
           </div>
           <v-card-title class="pa-0 text--primary card-title-customize">

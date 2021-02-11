@@ -9,7 +9,8 @@ const customIcons  = {
         maintains: 'fa-sitemap',
         funds: 'fa-funnel-dollar',
         collaborates_on: 'fa-handshake',
-        undefined: 'fa-building',
+        other_involvement: 'fa-building',
+        undefined: 'fa-question',
         arrowUp:'fa-chevron-up'
     },
     iconfont: 'fa'

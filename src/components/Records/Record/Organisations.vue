@@ -48,7 +48,7 @@
                 {{ organisationLink.organisation.name }}
               </a>
               <p
-                v-if="organisationLink.organisation.types.length > 0"
+                v-if="organisationLink.organisation.types.length > 0 && !organisationLink.organisation.types.includes('Undefined')"
                 class="ma-0"
               >
                 ({{ organisationLink.organisation.types.join(', ') }})
@@ -99,23 +99,23 @@ export default {
   },
   methods: {
     getRelations(relName) {
-      let _module = this;
-      let fields = _module.getField('organisationLinks');
-      let outPut = []
+      const _module = this;
+      const fields = _module.getField('organisationLinks');
+      let processedOrganisations = []
       let filteredData = fields.filter(obj => obj.relation === relName)
       filteredData.forEach(item => {
         // finding repeated organisation items with same id and will not add them if it's already existed
-        if (!outPut.find(obj => obj.organisation.id === item.organisation.id)) {
+        if (!processedOrganisations.find(obj => obj.organisation.id === item.organisation.id)) {
           let extendedItem = {...item, grants: []}
           extendedItem.grants.push(item.grant)
-          outPut.push(extendedItem)
+          processedOrganisations.push(extendedItem)
         } else {
           // add grant of repeated item to the corresponding item with repeated id
-          let repeatedItemIndex = outPut.findIndex(obj => obj.organisation.id === item.organisation.id)
-          outPut[repeatedItemIndex].grants.push(item.grant)
+          let repeatedItemIndex = processedOrganisations.findIndex(obj => obj.organisation.id === item.organisation.id)
+          processedOrganisations[repeatedItemIndex].grants.push(item.grant)
         }
       })
-      return outPut
+      return processedOrganisations
     }
   }
 }

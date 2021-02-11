@@ -6,6 +6,7 @@ const customIcons  = {
         createdAt: 'fa-edit',
         updatedAt: 'fa-sync',
         tools: 'fa-tools',
+        support: 'fa-info',
         maintains: 'fa-sitemap',
         funds: 'fa-funnel-dollar',
         collaborates_on: 'fa-handshake',

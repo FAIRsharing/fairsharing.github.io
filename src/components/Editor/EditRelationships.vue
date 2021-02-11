@@ -53,23 +53,30 @@
                 </v-container>
                 <v-divider class="pa-0 ma-0" />
               </v-card-text>
-              <div v-if="!loading">
-                <v-list
-                  v-if="availableRecords.length > 0"
-                  class="transparent scrollZone pr-3"
-                  style="border-bottom: 1px solid #ccc;"
+              <v-responsive
+                v-if="!loading"
+                class="overflow-y-auto"
+                max-height="50vh"
+              >
+                <v-lazy
+                  v-for="(record, index) in availableRecords"
+                  :key="'availableRecord_' + index"
+                  v-model="record.isActive"
+                  :options="{
+                    threshold: 1
+                  }"
+                  class="py-2"
+                  transition="fade-transition"
+                  height="70px"
                 >
-                  <v-list-item
-                    v-for="(record, index) in availableRecords"
-                    :key="'availableRecord_' + index"
-                    dense
-                    ripple
-                    class="bordered"
-                  >
+                  <v-list-item>
                     <v-list-item-avatar>
                       <v-img :src="icons()[record.type]" />
                     </v-list-item-avatar>
-                    <v-list-item-content>
+                    <v-list-item-content
+                      style="text-align: left"
+                      class="bordered"
+                    >
                       <v-list-item-title>
                         {{ record.name }}
                       </v-list-item-title>
@@ -83,7 +90,6 @@
                         class="blue white--text mr-2"
                         @click="showPreviewOverlay(record)"
                       >
-                        <!--@click="addItem(index)"-->
                         <v-icon small>
                           fas fa-eye
                         </v-icon>
@@ -93,22 +99,71 @@
                         class="green white--text"
                         @click="showOverlay(record)"
                       >
-                        <!--@click="addItem(index)"-->
                         <v-icon small>
                           fa-arrow-right
                         </v-icon>
                       </v-btn>
                     </v-list-item-icon>
                   </v-list-item>
-                </v-list>
-                <v-list
+                </v-lazy>
+              </v-responsive>
+              <!--
+              <v-list
+                v-if="availableRecords.length > 0"
+                class="transparent scrollZone pr-3"
+                style="border-bottom: 1px solid #ccc;"
+              >
+                <v-list-item
+                  v-for="(record, index) in availableRecords"
+                  :key="'availableRecord_' + index"
+                  dense
+                  ripple
+                  class="bordered"
+                >
+                  <v-list-item-avatar>
+                    <v-img :src="icons()[record.type]" />
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      {{ record.name }}
+                    </v-list-item-title>
+                    <span class="text-capitalize">
+                      {{ record.registry }} / {{ cleanString(record.type) }}
+                    </span>
+                  </v-list-item-content>
+                  <v-list-item-icon>
+                    <v-btn
+                      icon
+                      class="blue white--text mr-2"
+                      @click="showPreviewOverlay(record)"
+                    >
+                      <v-icon small>
+                        fas fa-eye
+                      </v-icon>
+                    </v-btn>
+                    <v-btn
+                      icon
+                      class="green white--text"
+                      @click="showOverlay(record)"
+                    >
+                      <v-icon small>
+                        fa-arrow-right
+                      </v-icon>
+                    </v-btn>
+                  </v-list-item-icon>
+                </v-list-item>
+              </v-list>
+              <v-list
                 v-else
                 class="transparent scrollZone pr-3"
               >
                 <v-list-item>No records could be found with this search term.</v-list-item>
               </v-list>
-              </div>
-              <div v-else class="scrollZone">
+              -->
+              <div
+                v-else
+                class="scrollZone"
+              >
                 <Loaders />
               </div>
             </v-card>
@@ -389,7 +444,8 @@
             rules: { isRequired: () => {return isRequired()} },
             labelsFilter: {},
             searchFilters: {},
-            initialized: false
+            initialized: false,
+            lastQuery: null
           }
         },
         computed: {
@@ -526,8 +582,16 @@
                 registries.push(filter);
               }
             });
+            this.lastQuery = search;
             await this.getAvailableRecords({q: search, fairsharingRegistry: registries});
-            this.loading = false;
+
+            let i = 0;
+            this.availableRecords.forEach(rec => {
+              rec.isActive = i < 15; // activate the 15 first items for v-lazy.
+              i += 1;
+            });
+
+            if (search === this.lastQuery) this.loading = false;
           }
         }
     }

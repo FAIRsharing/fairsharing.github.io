@@ -58,6 +58,15 @@
                 class="overflow-y-auto"
                 max-height="50vh"
               >
+                <div
+                  v-if="availableRecords.length === 0"
+                  style="height:50vh"
+                >
+                  <v-list-item>
+                    No records could be found with this search term.
+                  </v-list-item>
+                </div>
+
                 <v-lazy
                   v-for="(record, index) in availableRecords"
                   :key="'availableRecord_' + index"

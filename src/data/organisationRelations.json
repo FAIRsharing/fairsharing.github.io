@@ -2,5 +2,5 @@
   "maintains":  "Organisations maintaining this resource",
   "funds":  "Organisations funding this resource",
   "collaborates_on":  "Collaborating organisations",
-  "undefined": "Organisations with other involvement"
+  "other_involvement": "Organisations with other involvement"
 }

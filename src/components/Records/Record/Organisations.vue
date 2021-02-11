@@ -6,7 +6,6 @@
     tile
     elevation="3"
   >
-    <!-- General Info -->
     <SectionTitle
       title="Organisations"
       :inactive-section="getField('organisations').length===0 || getField('organisations')===undefined"
@@ -75,7 +74,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import SectionTitle from '@/components/Records/Record/SectionTitle';
-/* TODO: Replace with query from database */
 import organisationRelations from '@/data/organisationRelations.json';
 export default {
   name: "Organisations",
@@ -92,9 +90,12 @@ export default {
     ...mapGetters("record", ["getField"])
   },
   methods: {
-    getRelations(relName){
+    getRelations(relName) {
       let _module = this;
       let fields = _module.getField('organisationLinks');
+      if (relName === 'other_involvement') {
+        return fields.filter(obj => obj.relation === 'undefined')
+      }
       return fields.filter(obj => obj.relation === relName);
     }
   }

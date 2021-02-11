@@ -56,12 +56,9 @@
               <v-responsive
                 v-if="!loading"
                 class="overflow-y-auto"
-                max-height="50vh"
+                height="50vh"
               >
-                <div
-                  v-if="availableRecords.length === 0"
-                  style="height:50vh"
-                >
+                <div v-if="availableRecords.length === 0">
                   <v-list-item>
                     No records could be found with this search term.
                   </v-list-item>
@@ -116,59 +113,6 @@
                   </v-list-item>
                 </v-lazy>
               </v-responsive>
-              <!--
-              <v-list
-                v-if="availableRecords.length > 0"
-                class="transparent scrollZone pr-3"
-                style="border-bottom: 1px solid #ccc;"
-              >
-                <v-list-item
-                  v-for="(record, index) in availableRecords"
-                  :key="'availableRecord_' + index"
-                  dense
-                  ripple
-                  class="bordered"
-                >
-                  <v-list-item-avatar>
-                    <v-img :src="icons()[record.type]" />
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      {{ record.name }}
-                    </v-list-item-title>
-                    <span class="text-capitalize">
-                      {{ record.registry }} / {{ cleanString(record.type) }}
-                    </span>
-                  </v-list-item-content>
-                  <v-list-item-icon>
-                    <v-btn
-                      icon
-                      class="blue white--text mr-2"
-                      @click="showPreviewOverlay(record)"
-                    >
-                      <v-icon small>
-                        fas fa-eye
-                      </v-icon>
-                    </v-btn>
-                    <v-btn
-                      icon
-                      class="green white--text"
-                      @click="showOverlay(record)"
-                    >
-                      <v-icon small>
-                        fa-arrow-right
-                      </v-icon>
-                    </v-btn>
-                  </v-list-item-icon>
-                </v-list-item>
-              </v-list>
-              <v-list
-                v-else
-                class="transparent scrollZone pr-3"
-              >
-                <v-list-item>No records could be found with this search term.</v-list-item>
-              </v-list>
-              -->
               <div
                 v-else
                 class="scrollZone"

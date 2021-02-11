@@ -54,13 +54,22 @@
                 ({{ organisationLink.organisation.types.join(', ') }})
               </p>
               <div
-                v-if="organisationLink.grant"
+                v-if="organisationLink.grants.length"
                 class="mt-4"
               >
-                grants:
-                <strong>
-                  {{ organisationLink.grant.name }}
-                </strong>
+                <span v-if="organisationLink.grant">
+                  <span v-if="organisationLink.grants.length>1">grant(s):</span>
+                  <span v-else>grant:</span>
+                </span>
+                <span
+                  v-for="(grant,grantIndex) in organisationLink.grants"
+                  :key="grant+'_'+grantIndex"
+                >
+                  <strong v-if="grant">
+                    {{ grant.name }}
+                  </strong>
+                  <span v-if="grantIndex!==organisationLink.grants.length-1"> , </span>
+                </span>
               </div>
             </v-card>
           </v-card-text>
@@ -80,9 +89,8 @@ export default {
   components: {
     SectionTitle
   },
-  data(){
+  data() {
     return {
-      /* TODO: Replace with query from database */
       relations: organisationRelations
     }
   },
@@ -93,10 +101,59 @@ export default {
     getRelations(relName) {
       let _module = this;
       let fields = _module.getField('organisationLinks');
-      if (relName === 'other_involvement') {
-        return fields.filter(obj => obj.relation === 'undefined')
+
+        let outPut = []
+        let filteredData = fields.filter(obj => obj.relation === relName)
+
+      if (relName === 'other_involvement'){
+        fields = _module.getField('organisationLinks');
+        filteredData = fields.filter(obj => obj.relation === 'undefined')
+        filteredData.forEach(item => {
+          // finding repeated organisation items with same id and will not add them if it's already existed
+          if (!outPut.find(obj => obj.organisation.id === item.organisation.id)) {
+            let extendedItem = {...item, grants: []}
+            extendedItem.grants.push(item.grant)
+            outPut.push(extendedItem)
+          }
+          else
+          {
+            // add grant of repeated item to the corresponding item with repeated id
+            let repeatedItemIndex = outPut.findIndex(obj => obj.organisation.id === item.organisation.id)
+            outPut[repeatedItemIndex].grants.push(item.grant)
+          }
+        })
+        return outPut
       }
-      return fields.filter(obj => obj.relation === relName);
+      else
+      {
+        filteredData.forEach(item => {
+          // finding repeated organisation items with same id and will not add them if it's already existed
+          if (!outPut.find(obj => obj.organisation.id === item.organisation.id)) {
+            let extendedItem = {...item, grants: []}
+            extendedItem.grants.push(item.grant)
+            outPut.push(extendedItem)
+          }
+          else
+          {
+            // add grant of repeated item to the corresponding item with repeated id
+            let repeatedItemIndex = outPut.findIndex(obj => obj.organisation.id === item.organisation.id)
+            outPut[repeatedItemIndex].grants.push(item.grant)
+          }
+        })
+        return outPut
+      }
+    },
+    // Defining function to get unique values from an array
+    getUnique(array) {
+      let uniqueArray = [];
+
+      // Loop through array values
+      for (let value of array) {
+        if (uniqueArray.indexOf(value) === -1) {
+          uniqueArray.push(value);
+        }
+      }
+      return uniqueArray;
     }
   }
 }

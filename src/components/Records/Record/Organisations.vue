@@ -25,7 +25,7 @@
         >
           <div class="icon-container d-flex justify-center">
             <v-icon large>
-              {{ $vuetify.icons.values[key] }}
+              {{ key==='undefined'?$vuetify.icons.values['other_involvement']:$vuetify.icons.values[key] }}
             </v-icon>
           </div>
           <v-card-title class="pa-0 text--primary card-title-customize">
@@ -101,59 +101,21 @@ export default {
     getRelations(relName) {
       let _module = this;
       let fields = _module.getField('organisationLinks');
-
-        let outPut = []
-        let filteredData = fields.filter(obj => obj.relation === relName)
-
-      if (relName === 'other_involvement'){
-        fields = _module.getField('organisationLinks');
-        filteredData = fields.filter(obj => obj.relation === 'undefined')
-        filteredData.forEach(item => {
-          // finding repeated organisation items with same id and will not add them if it's already existed
-          if (!outPut.find(obj => obj.organisation.id === item.organisation.id)) {
-            let extendedItem = {...item, grants: []}
-            extendedItem.grants.push(item.grant)
-            outPut.push(extendedItem)
-          }
-          else
-          {
-            // add grant of repeated item to the corresponding item with repeated id
-            let repeatedItemIndex = outPut.findIndex(obj => obj.organisation.id === item.organisation.id)
-            outPut[repeatedItemIndex].grants.push(item.grant)
-          }
-        })
-        return outPut
-      }
-      else
-      {
-        filteredData.forEach(item => {
-          // finding repeated organisation items with same id and will not add them if it's already existed
-          if (!outPut.find(obj => obj.organisation.id === item.organisation.id)) {
-            let extendedItem = {...item, grants: []}
-            extendedItem.grants.push(item.grant)
-            outPut.push(extendedItem)
-          }
-          else
-          {
-            // add grant of repeated item to the corresponding item with repeated id
-            let repeatedItemIndex = outPut.findIndex(obj => obj.organisation.id === item.organisation.id)
-            outPut[repeatedItemIndex].grants.push(item.grant)
-          }
-        })
-        return outPut
-      }
-    },
-    // Defining function to get unique values from an array
-    getUnique(array) {
-      let uniqueArray = [];
-
-      // Loop through array values
-      for (let value of array) {
-        if (uniqueArray.indexOf(value) === -1) {
-          uniqueArray.push(value);
+      let outPut = []
+      let filteredData = fields.filter(obj => obj.relation === relName)
+      filteredData.forEach(item => {
+        // finding repeated organisation items with same id and will not add them if it's already existed
+        if (!outPut.find(obj => obj.organisation.id === item.organisation.id)) {
+          let extendedItem = {...item, grants: []}
+          extendedItem.grants.push(item.grant)
+          outPut.push(extendedItem)
+        } else {
+          // add grant of repeated item to the corresponding item with repeated id
+          let repeatedItemIndex = outPut.findIndex(obj => obj.organisation.id === item.organisation.id)
+          outPut[repeatedItemIndex].grants.push(item.grant)
         }
-      }
-      return uniqueArray;
+      })
+      return outPut
     }
   }
 }

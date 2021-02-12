@@ -80,8 +80,8 @@
             <Keywords class="mt-5" />
             <!-- SUPPORT -->
             <Support class="mt-5" />
-            <!-- ORGANISATION -->
-            <Organisations class="mt-5" />
+            <!-- Data Conditions -->
+            <DataCondtions class="mt-5" />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
@@ -91,8 +91,8 @@
             <!-- Tools -->
             <Tools class="mt-5 ml-lg-5" />
 
-            <!-- PUBLICATIONS -->
-            <Publications class="mt-5 ml-lg-5" />
+            <!-- Organisations -->
+            <Organisations class="mt-5 ml-lg-5" />
           </v-col>
         </v-row>
         <!-- Top Block -->
@@ -111,21 +111,23 @@
     import Keywords from '@/components/Records/Record/Keywords';
     import Licences from '@/components/Records/Record/Licences';
     import Tools from '@/components/Records/Record/Tools';
-    import Organisations from '@/components/Records/Record/Organisations';
+    import DataCondtions from '@/components/Records/Record/DataConditions';
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
     import NotFound from "@/views/Errors/404"
+    import Organisations from "@/components/Records/Record/Organisations";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          Organisations,
             GeneralInfo,
             Keywords,
             Licences,
             Tools,
-            Organisations,
+            DataCondtions,
             Publications,
             Support,
             NotFound

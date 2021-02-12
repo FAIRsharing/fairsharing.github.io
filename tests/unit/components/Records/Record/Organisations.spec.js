@@ -27,6 +27,17 @@ Record.state.currentRecord["fairsharingRecord"] = {
                 name: "Organisation Two",
                 types: []
             }
+        },
+        {
+            relation: 'funds',
+            organisation: {
+                name: "Organisation One",
+                types: ["exciting", "thrilling"]
+            },
+            grant: {
+                name: "generous grant 2",
+                id: 2
+            }
         }
     ],
     subjects: [],

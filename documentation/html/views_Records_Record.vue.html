@@ -173,7 +173,7 @@
             &lt;Keywords class="mt-5" />
             &lt;!-- SUPPORT -->
             &lt;Support class="mt-5" />
-            &lt;!-- ORGANISATION -->
+            &lt;!-- Data Conditions -->
             &lt;DataCondtions class="mt-5" />
           &lt;/v-col>
           &lt;!--Right Block-->
@@ -184,8 +184,8 @@
             &lt;!-- Tools -->
             &lt;Tools class="mt-5 ml-lg-5" />
 
-            &lt;!-- PUBLICATIONS -->
-            &lt;Publications class="mt-5 ml-lg-5" />
+            &lt;!-- Organisations -->
+            &lt;Organisations class="mt-5 ml-lg-5" />
           &lt;/v-col>
         &lt;/v-row>
         &lt;!-- Top Block -->
@@ -208,12 +208,14 @@
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
     import NotFound from "@/views/Errors/404"
+    import Organisations from "@/components/Records/Record/Organisations";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          Organisations,
             GeneralInfo,
             Keywords,
             Licences,

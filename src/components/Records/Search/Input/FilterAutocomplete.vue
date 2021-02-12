@@ -19,14 +19,14 @@
           @focus="scrollTo(filter.filterName)"
           @click:clear="reset(filter)"
         >
-          <template v-slot:selection="data">
+          <template #selection="data">
             <v-chip class="blue white--text  mb-1 ">
               <span class="chipsValueName">
                 {{ cleanString(data.item.key) }}
               </span>
             </v-chip>
           </template>
-          <template v-slot:item="data">
+          <template #item="data">
             <div class="d-flex full-width">
               <span class="filterValueName"> {{ cleanString(data.item.key) }}</span>
               <span class="filterValueCount"> {{ data.item['doc_count'] }}</span>

@@ -24,7 +24,7 @@
     </v-tooltip>
 
     <v-tooltip right>
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <span
           class="white--text headline circle"
           :style="getRecordStatus.backColor"

@@ -72,7 +72,7 @@ describe("Organisations.vue", function () {
     });
 
     it("counts relations correctly", () => {
-        expect(wrapper.vm.getRelations('funds').length).toEqual(2);
+        expect(wrapper.vm.getRelations('funds').length).toEqual(1);
     });
 
 

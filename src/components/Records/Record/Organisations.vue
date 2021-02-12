@@ -68,7 +68,7 @@
                   <strong v-if="grant">
                     {{ grant.name }}
                   </strong>
-                  <span v-if="grantIndex!==organisationLink.grants.length-1"> , </span>
+                  <span v-if="grantIndex!==organisationLink.grants.length-1">,</span>
                 </span>
               </div>
             </v-card>

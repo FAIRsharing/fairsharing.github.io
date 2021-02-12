@@ -46,9 +46,13 @@
               >
                 {{ subItem.name }}
               </a>
-              <span v-else>
-                {{ subItem.name }}
-              </span>
+              <div v-else class="d-flex flex-column">
+                <span>{{ subItem.name }}</span>
+                <span>
+                  relationship:
+                  <strong>{{ getLicenceRelation(subItem.id) }}</strong>
+                </span>
+              </div>
             </v-card>
           </v-card-text>
         </v-card>
@@ -74,7 +78,6 @@ export default {
       let processedDataConditions = {}
       const data_processes =  this.getField('metadata')['data_processes']
       const licences = this.getField('licences')
-
       // initializing object's key and data dynamically based on any number of types coming from API
       if (data_processes) {
         data_processes.forEach(item => {
@@ -102,6 +105,9 @@ export default {
         })
       }
       return processedDataConditions
+    },
+    getLicenceRelation(licenceId){
+      return this.getField('licenceLinks').find(obj=>obj.licence.id === licenceId).relation
     }
   }
 }

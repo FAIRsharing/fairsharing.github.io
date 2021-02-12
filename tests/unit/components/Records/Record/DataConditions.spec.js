@@ -9,7 +9,8 @@ localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
-    licences: [{name: 'a licence'}],
+    licences: [{name: 'a licence', id: 1}],
+    licenceLinks: [{id: 1, licence: {name: 'a licence', id: 1}, relation: 'undefined'}],
     metadata: {
         associated_tools: [{}],
         data_processes: [{name: 'name1', type: 'data access', url: 'www.somewhere.com'}]
@@ -53,7 +54,7 @@ describe("DataConditions.vue", function () {
                     data: [{name: 'name1', type: 'data access', url: 'www.somewhere.com'}],
                     icon: 'data_access'
                 },
-                licences: {data: [{name: 'a licence'}], icon: 'licences'}
+                licences: {data: [{name: 'a licence',id:1}], icon: 'licences'}
             })
 
         mockData = {

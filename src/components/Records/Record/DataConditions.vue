@@ -46,11 +46,14 @@
               >
                 {{ subItem.name }}
               </a>
-              <div v-else class="d-flex flex-column">
+              <div
+                v-else
+                class="d-flex flex-column"
+              >
                 <span>{{ subItem.name }}</span>
-                <span>
+                <span v-if="getLicenceRelation(subItem.id)!=='undefined'">
                   relationship:
-                  <strong>{{ getLicenceRelation(subItem.id) }}</strong>
+                  <strong>({{ getLicenceRelation(subItem.id) }})</strong>
                 </span>
               </div>
             </v-card>
@@ -106,7 +109,7 @@ export default {
       }
       return processedDataConditions
     },
-    getLicenceRelation(licenceId){
+    getLicenceRelation(licenceId) {
       return this.getField('licenceLinks').find(obj=>obj.licence.id === licenceId).relation
     }
   }

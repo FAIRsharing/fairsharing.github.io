@@ -72,7 +72,7 @@
                         }
                     }
                 ];
-                if (_module.user().role === 'super_curator' || _module.user().role === 'senior_curator'){
+                if (_module.user().role === 'super_curator' || _module.user().role === 'senior_curator' || _module.user().role === 'developer'){
                     vecReturn.push(
                       {
                           name: "Curator Panel",

@@ -23,33 +23,11 @@
           tile
           elevation="3"
         >
-          <div class="icon-container d-flex justify-center">
-            <v-icon large>
-              {{ key === 'undefined' ? $vuetify.icons.values['other_involvement'] : $vuetify.icons.values[key] }}
-            </v-icon>
-          </div>
-          <v-card-title class="pa-0 text--primary card-title-customize">
-            {{ value }}
-          </v-card-title>
-          <v-card-text
-            v-for="(organisationLink, nodeIndex) in getRelations(key)"
-            :key="'organisationLink_' + nodeIndex"
-            :class="['pl-4 pl-2 pt-0 pb-0',{'pt-8':nodeIndex===0}]"
-          >
-            <v-card
-              class="pa-4 mt-2 d-flex flex-column v-card-hover"
-              flat
-              outlined
-            >
-              <a
-                :href="organisationLink.organisation.homepage"
-                target="_blank"
-              >
-                {{ organisationLink.organisation.name }}
-              </a>
-              <p
-                v-if="organisationLink.organisation.types.length > 0 && !organisationLink.organisation.types.includes('Undefined')"
-                class="ma-0"
+          <v-tooltip top>
+            <template #activator="{ on }">
+              <v-sheet
+                class="mb-2 flag-mr"
+                v-on="on"
               >
                 ({{ organisationLink.organisation.types.join(', ') }})
               </p>

@@ -4,7 +4,7 @@
     fluid
     class="standard"
   >
-    <v-row v-if="user().role==='super_curator' || user().role==='senior_curator'">
+    <v-row v-if="user().role==='super_curator' || user().role==='senior_curator' || user().role==='developer' ">
       <v-col cols12>
         <v-card v-if="!messages()['getUser'].error">
           <v-list>

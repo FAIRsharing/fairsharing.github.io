@@ -143,7 +143,7 @@
                   >
                     <a
                       :href="'#/' + props.item.id+ '/edit'"
-                      style="padding-left: 3px;"
+                      style="padding-left: 12px;"
                     >
                       Edit
                     </a>
@@ -461,8 +461,9 @@
   }
 
   .priorityTag {
-    background-color: orange;
-    font-size: 60%;
+    background-color: red;
+    color: white;
+    font-size: 90%;
   }
   .thelistCurators{
     max-height: 100px;

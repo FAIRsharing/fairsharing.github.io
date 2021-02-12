@@ -57,7 +57,11 @@ describe("Curator.vue", () => {
       expect(wrapper.name()).toMatch(title);
       expect(wrapper.vm.approvalRequired.length).toBe(3);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazu");//Name reduced number to six characters
-      expect(wrapper.vm.curatorList.length).toBe(4);//Added "none" in curatorList
+      expect(wrapper.vm.curatorList.length).toBe(4);//Added "none" in curatorList and not adding one that is "dev_curator"
+      expect(wrapper.vm.curatorList[0].userName).toBe("Luther");//It is the super_curator
+      expect(wrapper.vm.curatorList[1].userName).toBe("Mary the Great Curator");//it is the senior_curator
+      expect(wrapper.vm.curatorList[2].userName).toBe("H. Pepa");//it is the curator
+      expect(wrapper.vm.curatorList[3].userName).toBe("none");
 
       //MaintanceRequest are properly created, elements sorted by date, values edited and formatted properly
       expect(wrapper.vm.maintenanceRequests.length).toBe(4);

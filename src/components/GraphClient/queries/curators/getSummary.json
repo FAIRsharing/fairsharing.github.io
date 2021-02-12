@@ -6,7 +6,8 @@
       "name": "curatorList",
       "fields": [
         "username",
-        "id"
+        "id",
+        "role"
       ]
     },
     {

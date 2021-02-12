@@ -187,15 +187,35 @@
       "curatorList":[
         {
               "id": "22",
-              "username": "H. Pepa"
+              "username": "H. Pepa",
+              "role":
+                {
+                  "name": "curator"
+                }
         },
         {
               "id": "2001",
-              "username": "Michael the curator"
+              "username": "Michael the curator",
+              "role":
+                {
+                  "name": "develop_curator"
+                }
         },
         {
               "id": "11",
-              "username": "Mary the Great Curator"
+              "username": "Mary the Great Curator",
+              "role":
+                {
+                  "name": "senior_curator"
+                }
+        },
+        {
+              "id": "33",
+              "username": "Luther",
+              "role":
+                {
+                  "name": "super_curator"
+                }
         }
       ]
   }

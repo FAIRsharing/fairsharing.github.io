@@ -36,33 +36,6 @@
           :approval-required="approvalRequired"
         />
         <v-card>
-          <v-card-text>
-            <v-card-title
-              id="text-curator-search-1"
-              class="green white--text"
-            >
-              Records without dois
-              <v-btn
-                v-if="downloadContent"
-                class="info ml-5"
-              >
-                <a
-                  :href="downloadContent"
-                  download="recordWithoutDOIs.txt"
-                >
-                  <v-icon
-                    color="white"
-                    class="mr-1"
-                  >
-                    fa fa-download
-                  </v-icon>
-                  <span class="white--text">Obtain file</span>
-                </a>
-              </v-btn>
-            </v-card-title>
-          </v-card-text>
-        </v-card>
-        <v-card>
           <v-card-text v-if="hiddenRecords">
             <v-card-title
               id="text-curator-search-2"
@@ -181,6 +154,33 @@
             </v-data-table>
           </v-card-text>
         </v-card>
+        <v-card>
+          <v-card-text>
+            <v-card-title
+              id="text-curator-search-1"
+              class="green white--text"
+            >
+              Records without dois
+              <v-btn
+                v-if="downloadContent"
+                class="info ml-5"
+              >
+                <a
+                  :href="downloadContent"
+                  download="recordWithoutDOIs.txt"
+                >
+                  <v-icon
+                    color="white"
+                    class="mr-1"
+                  >
+                    fa fa-download
+                  </v-icon>
+                  <span class="white--text">Obtain file</span>
+                </a>
+              </v-btn>
+            </v-card-title>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
     <v-row v-else>
@@ -224,13 +224,6 @@
       }
     }
 
-    function compareRecordAlphaNames(a, b) {
-      if (a.userName.toLowerCase() < b.userName.toLowerCase()) {
-        return -1;
-      }else{
-        return 1
-      }
-    }
 
     function formatDate(d){
       let date = new Date(d);
@@ -339,13 +332,28 @@
               this.approvalRequired[i].createdAt = formatDate(this.approvalRequired[i].createdAt);
             }
             let curators = dataCuration.curatorList;
+            let listSuper = [];
+            let listSenior = [];
+            let listCurator = [];
             curators.forEach(item => {
-              let object = {};
-              object.id = item.id;
-              object.userName = item.username;
-              this.curatorList.push(object);
+              let object = {
+                id: item.id,
+                userName: item.username
+              };
+              let role = item.role.name;
+              if (role === "super_curator"){
+                listSuper.push(object);
+              }else{
+                if (role === "senior_curator"){
+                  listSenior.push(object);
+                }else{
+                  if (role === "curator"){
+                    listCurator.push(object);
+                  }
+                }
+              }
             });
-            this.curatorList.sort(compareRecordAlphaNames);
+            this.curatorList = listSuper.concat(listSenior).concat(listCurator);
             let object = {
               id: -1,
               userName: "none"

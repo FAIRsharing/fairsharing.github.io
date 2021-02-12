@@ -90,7 +90,7 @@
                   <span>Edit this publication</span>
                 </v-tooltip>
                 <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
+                  <template #activator="{ on, attrs }">
                     <v-btn
                       v-bind="attrs"
                       class="red white--text"

@@ -160,7 +160,7 @@
               id="text-curator-search-1"
               class="green white--text"
             >
-              RECORDS WITHOU DOIS
+              RECORDS WITHOUT DOIS
               <v-btn
                 v-if="downloadContent"
                 class="info ml-5"

@@ -160,7 +160,7 @@
               id="text-curator-search-1"
               class="green white--text"
             >
-              Records without dois
+              RECORDS WITHOU DOIS
               <v-btn
                 v-if="downloadContent"
                 class="info ml-5"

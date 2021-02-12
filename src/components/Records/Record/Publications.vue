@@ -57,7 +57,7 @@
         class="d-flex mt-2 "
       >
         <v-tooltip left>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-sheet
               class="mb-2 flag-mr"
               v-on="on"
@@ -83,7 +83,7 @@
         class="d-flex mt-2 "
       >
         <v-tooltip left>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-sheet
               class="mb-2 flag-mr"
               v-on="on"
@@ -109,7 +109,7 @@
         class="d-flex mt-2 "
       >
         <v-tooltip left>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-sheet
               class="mb-2 flag-mr"
               v-on="on"
@@ -140,7 +140,7 @@
         class="d-flex mt-2 "
       >
         <v-tooltip left>
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-sheet
               class="mb-2 flag-mr"
               v-on="on"

@@ -66,9 +66,12 @@
                   :key="grant+'_'+grantIndex"
                 >
                   <strong v-if="grant">
-                    {{ grant.name }}
+                    <span>{{ grant.name }}</span>
+                    <span
+                      v-if="grantIndex!==organisationLink.grants.length-1"
+                      class="pr-1"
+                    >,</span>
                   </strong>
-                  <span v-if="grantIndex!==organisationLink.grants.length-1">, </span>
                 </span>
               </div>
             </v-card>

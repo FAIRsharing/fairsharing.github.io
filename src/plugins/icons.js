@@ -10,8 +10,14 @@ const customIcons  = {
         maintains: 'fa-sitemap',
         funds: 'fa-funnel-dollar',
         collaborates_on: 'fa-handshake',
-        undefined: 'fa-building',
-        arrowUp:'fa-chevron-up'
+        other_involvement: 'fa-building',
+        undefined: 'fa-question',
+        arrowUp:'fa-chevron-up',
+        data_access:'fa-chevron-up',
+        data_curation:'fa-chevron-down',
+        data_release:'fa-funnel-dollar',
+        data_versioning:'fa-sync',
+        licences:'fa-sitemap'
     },
     iconfont: 'fa'
 };

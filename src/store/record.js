@@ -329,12 +329,11 @@ let recordStore = {
 
             /// below = dodgy
             // define record
-            const record = {
+            let response = await restClient.updateRecord({
                 record: newRecord,
                 token: options.token,
                 id: options.id
-            };
-            let response = await restClient.updateRecord(record);
+            });
             if (response.error) {
                 commit("setSectionError", {
                     section: "additionalInformation",

@@ -27,7 +27,7 @@
             </v-icon>
           </div>
           <v-card-title class="pa-0 text--primary card-title-customize">
-            {{ key }}
+            {{ key | capitalize }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <v-card
@@ -45,7 +45,7 @@
                 {{ subItem.url }}
               </a>
               <div
-                v-if="subItem.contact_name"
+                v-if="subItem.contact_name || subItem.contact_email"
                 class="d-flex flex-column"
               >
                 <div

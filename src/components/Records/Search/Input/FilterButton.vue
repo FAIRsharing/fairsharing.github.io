@@ -12,7 +12,14 @@
         @click="selectFilter(itemModified)"
         v-on="on"
       >
-        {{ itemModified.title }}
+        <span v-if="itemModified.title!=='ALL'">{{ itemModified.title }}</span>
+        <v-icon
+          v-else
+          small
+          color="primary"
+        >
+          {{ $vuetify.icons.values.loading }}
+        </v-icon>
       </v-btn>
     </template>
     <span>{{ itemModified.tooltip }}</span>

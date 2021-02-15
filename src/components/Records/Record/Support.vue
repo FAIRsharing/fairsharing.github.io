@@ -8,47 +8,49 @@
   >
     <SectionTitle
       title="Support"
-      :inactive-section="getField('metadata')['contacts']===undefined || !getField('metadata')['contacts'].length"
+      :inactive-section="(getField('metadata')['contacts']===undefined || !getField('metadata')['contacts'].length) && (getField('metadata')['support_links']===undefined || !getField('metadata')['support_links'].length)"
     />
     <div class="d-flex flex-column ml-2 min-height-40">
-      <v-card
-        v-if="getField('metadata')['contacts']"
-        class="pa-4 mt-15 d-flex flex-column"
-        outlined
-        color="white"
-        tile
-        elevation="3"
-      >
-        <div class="icon-container d-flex justify-center">
-          <v-icon large>
-            {{ $vuetify.icons.values.support }}
-          </v-icon>
-        </div>
-        <v-card-title class="pa-0 text--primary card-title-customize">
-          Contact
-        </v-card-title>
-        <v-card-text class="ma-0 pt-8">
-          <v-card
-            v-for="(item,index) in getField('metadata')['contacts']"
-            :key="item.name+'_'+index"
-            class="pa-4 mt-2 d-flex flex-column v-card-hover"
-            flat
-            outlined
-          >
-            <a
-              :href="item.contact_email"
-              target="_blank"
+      <div v-if="(getField('metadata')['contacts'] && getField('metadata')['contacts'].length) || (getField('metadata')['support_links'] && getField('metadata')['support_links'].length)">
+        <v-card
+          v-if="getField('metadata')['contacts']"
+          class="pa-4 mt-15 d-flex flex-column"
+          outlined
+          color="white"
+          tile
+          elevation="3"
+        >
+          <div class="icon-container d-flex justify-center">
+            <v-icon large>
+              {{ $vuetify.icons.values.support }}
+            </v-icon>
+          </div>
+          <v-card-title class="pa-0 text--primary card-title-customize">
+            Contact
+          </v-card-title>
+          <v-card-text class="ma-0 pt-8">
+            <v-card
+              v-for="(item,index) in getField('metadata')['contacts']"
+              :key="item.name+'_'+index"
+              class="pa-4 mt-2 d-flex flex-column v-card-hover"
+              flat
+              outlined
             >
-              <span v-if="item.contact_name">
-                {{ item.contact_name }}
-              </span>
-              <span v-else>
-                {{ item.contact_email }}
-              </span>
-            </a>
-          </v-card>
-        </v-card-text>
-      </v-card>
+              <a
+                :href="item.contact_email"
+                target="_blank"
+              >
+                <span v-if="item.contact_name">
+                  {{ item.contact_name }}
+                </span>
+                <span v-else>
+                  {{ item.contact_email }}
+                </span>
+              </a>
+            </v-card>
+          </v-card-text>
+        </v-card>
+      </div>
     </div>
     <section />
   </v-card>

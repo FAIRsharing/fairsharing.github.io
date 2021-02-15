@@ -37,7 +37,7 @@
       :close-on-content-click="false"
       class="mt-5"
     >
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <v-btn
           color="teal darken-2 white--text"
           dark
@@ -75,52 +75,53 @@
      *
      */
     export default {
-        name: "NavbarTop",
-    components: {Login},
-    computed: {
-          ...mapState('users', ["user"])
-        },
-        data() {
-          return {
-            links: [
-              {
-                label: "Search",
-                link: "/search",
-                color: "blue"
-              },
-              {
-                label: "Standards",
-                link: "/standards",
-                color: "blue"
-              },
-              {
-                label: "Databases",
-                link: "/databases",
-                color: "blue"
-              },
-              {
-                label: "Policies",
-                link: "/policies",
-                color: "blue"
-              },
-              {
-                label: "Collections",
-                link: "/collections",
-                color: "blue"
-              },
-              {
-                label: "Add/Claim content",
-                link: "/new",
-                color: "grey"
-              },
-              {
-                label: "Stats",
-                link: "/summary-statistics",
-                color: "teal darken-2"
-              }
-            ]
-          }
+      name: "NavbarTop",
+      components: {Login},
+
+      data() {
+        return {
+          links: [
+            {
+              label: "Search",
+              link: "/search",
+              color: "blue"
+            },
+            {
+              label: "Standards",
+              link: "/standards",
+              color: "blue"
+            },
+            {
+              label: "Databases",
+              link: "/databases",
+              color: "blue"
+            },
+            {
+              label: "Policies",
+              link: "/policies",
+              color: "blue"
+            },
+            {
+              label: "Collections",
+              link: "/collections",
+              color: "blue"
+            },
+            {
+              label: "Add/Claim content",
+              link: "/new",
+              color: "grey"
+            },
+            {
+              label: "Stats",
+              link: "/summary-statistics",
+              color: "teal darken-2"
+            }
+          ]
         }
+      },
+      computed: {
+        ...mapState('users', ["user"])
+      },
     }
 </script>
 

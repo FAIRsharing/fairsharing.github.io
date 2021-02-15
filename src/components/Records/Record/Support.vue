@@ -49,7 +49,7 @@
                 class="d-flex flex-column"
               >
                 <div
-                  v-if="subItem.contact_email"
+                  v-if="subItem.contact_name"
                   class="d-flex flex-wrap"
                 >
                   <span class="min-width-60">Name:</span>
@@ -98,14 +98,14 @@ export default {
   },
   methods:{
     generateSupport() {
-      let processedDataConditions = {}
+      let processedSupport = {}
       const support_links =  this.getField('metadata')['support_links']
       const contacts = this.getField('metadata')['contacts']
       // initializing object's key and data dynamically based on any number of types coming from API
       if (support_links) {
         support_links.forEach(item => {
-          if (!Object.prototype.hasOwnProperty.call(processedDataConditions, item.type)) {
-            processedDataConditions[item.type] = {
+          if (!Object.prototype.hasOwnProperty.call(processedSupport, item.type)) {
+            processedSupport[item.type] = {
               data: [],
               icon: null
             }
@@ -114,21 +114,21 @@ export default {
         // assigning data and icon to the different types came from API.
         support_links.forEach(item => {
           // Replace parentheses, brackets, space,forward slashes with underscore.
-          processedDataConditions[item.type].icon = item.type.replace(/\s/g, '_').replace(/[\])}[{(]/g, '').replace(/\//g, '_').toLowerCase()
-          processedDataConditions[item.type].data.push(item)
+          processedSupport[item.type].icon = item.type.replace(/\s/g, '_').replace(/[\])}[{(]/g, '').replace(/\//g, '_').toLowerCase()
+          processedSupport[item.type].data.push(item)
         })
       }
       // adding licenses if available
       if (contacts && contacts.length) {
-        processedDataConditions['contacts'] = {
+        processedSupport['contacts'] = {
           data:[],
           icon:'contacts'
         }
         contacts.forEach(licence => {
-          processedDataConditions['contacts'].data.push(licence)
+          processedSupport['contacts'].data.push(licence)
         })
       }
-      return processedDataConditions
+      return processedSupport
     }
   }
 }

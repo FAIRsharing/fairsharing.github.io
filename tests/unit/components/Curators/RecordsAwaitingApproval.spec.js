@@ -65,11 +65,10 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
         expect(wrapper.vm.dialogs.approveChanges).toBe(true);
         wrapper.vm.closeApproveChangesMenu ();
         expect(wrapper.vm.dialogs.approveChanges).toBe(false);
+        jest.useFakeTimers();
         wrapper.vm.deleteRecordMenu("Record4 (100)", 100);
-        setTimeout(function() {
-          expect(wrapper.vm.dialogs.disableDelButton).toBe(true);
-        }, 6500);
-
+        jest.advanceTimersByTime(5000);
+        expect(wrapper.vm.dialogs.disableDelButton).toBe(false);
         expect(wrapper.vm.dialogs.recordName).toMatch("Record4 (100)");
         expect(wrapper.vm.dialogs.recordID).toBe(100);
         expect(wrapper.vm.dialogs.deleteRecord).toBe(true);

@@ -58,8 +58,14 @@
                 class="mt-4"
               >
                 <span v-if="organisationLink.grant">
-                  <span v-if="organisationLink.grants.length>1">grant(s):</span>
-                  <span v-else>grant:</span>
+                  <span
+                    v-if="organisationLink.grants.length>1"
+                    class="pr-1"
+                  >grant(s):</span>
+                  <span
+                    v-else
+                    class="pr-1"
+                  >grant:</span>
                 </span>
                 <span
                   v-for="(grant,grantIndex) in organisationLink.grants"

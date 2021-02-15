@@ -7,7 +7,7 @@
       right
       nudge-right="15"
     >
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <v-avatar
           v-if="Object.keys(recordType).includes(record.type)"
           size="80"
@@ -24,7 +24,7 @@
     </v-tooltip>
 
     <v-tooltip right>
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <span
           class="white--text headline circle"
           :style="getRecordStatus.backColor"

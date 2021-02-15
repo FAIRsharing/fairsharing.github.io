@@ -7,7 +7,7 @@
       transition="scale-transition"
       origin="top center 0"
     >
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <v-btn
           dark
           icon

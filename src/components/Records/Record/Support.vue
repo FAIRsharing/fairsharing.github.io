@@ -6,15 +6,13 @@
     tile
     elevation="3"
   >
-    <!-- General Info -->
     <SectionTitle
       title="Support"
-      :inactive-section="getField('metadata')['associated_tools']===undefined"
+      :inactive-section="getField('metadata')['contacts']===undefined || !getField('metadata')['contacts'].length"
     />
-    <!--  container  -->
     <div class="d-flex flex-column ml-2 min-height-40">
       <v-card
-        v-if="getField('metadata')['associated_tools']"
+        v-if="getField('metadata')['contacts']"
         class="pa-4 mt-15 d-flex flex-column"
         outlined
         color="white"
@@ -41,7 +39,12 @@
               :href="item.contact_email"
               target="_blank"
             >
-              {{ item.contact_name }}
+              <span v-if="item.contact_name">
+                {{ item.contact_name }}
+              </span>
+              <span v-else>
+                {{ item.contact_email }}
+              </span>
             </a>
           </v-card>
         </v-card-text>

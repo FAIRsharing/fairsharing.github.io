@@ -29,7 +29,7 @@
             </v-icon>
           </div>
           <v-card-title class="pa-0 text--primary card-title-customize">
-            {{ key }}
+            {{ key | capitalize }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <v-card

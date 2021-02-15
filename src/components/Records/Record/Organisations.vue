@@ -58,17 +58,26 @@
                 class="mt-4"
               >
                 <span v-if="organisationLink.grant">
-                  <span v-if="organisationLink.grants.length>1">grant(s):</span>
-                  <span v-else>grant:</span>
+                  <span
+                    v-if="organisationLink.grants.length>1"
+                    class="pr-1"
+                  >grant(s):</span>
+                  <span
+                    v-else
+                    class="pr-1"
+                  >grant:</span>
                 </span>
                 <span
                   v-for="(grant,grantIndex) in organisationLink.grants"
                   :key="grant+'_'+grantIndex"
                 >
                   <strong v-if="grant">
-                    {{ grant.name }}
+                    <span>{{ grant.name }}</span>
+                    <span
+                      v-if="grantIndex!==organisationLink.grants.length-1"
+                      class="pr-1"
+                    >,</span>
                   </strong>
-                  <span v-if="grantIndex!==organisationLink.grants.length-1">, </span>
                 </span>
               </div>
             </v-card>

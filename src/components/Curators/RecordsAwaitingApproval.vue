@@ -359,9 +359,6 @@
                 curator_id: null,
                 skip_approval: true
               };
-              if (idUser>=0){
-                preparedRecord.curator_id = idUser;
-              }
               let data = {
                 record: preparedRecord,
                 id: idRecord,

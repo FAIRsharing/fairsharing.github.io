@@ -13,7 +13,8 @@
     <div class="d-flex flex-column ml-2 min-height-40">
       <div v-if="(getField('metadata')['contacts'] && getField('metadata')['contacts'].length) || (getField('metadata')['support_links'] && getField('metadata')['support_links'].length)">
         <v-card
-          v-if="getField('metadata')['contacts']"
+          v-for="(item,key,index) in generateContact()"
+          :key="key+'_'+index"
           class="pa-4 mt-15 d-flex flex-column"
           outlined
           color="white"
@@ -22,30 +23,26 @@
         >
           <div class="icon-container d-flex justify-center">
             <v-icon large>
-              {{ $vuetify.icons.values.support }}
+              {{ Object.keys($vuetify.icons.values).includes(item.icon)?$vuetify.icons.values[item.icon]:$vuetify.icons.values['undefined'] }}
             </v-icon>
           </div>
           <v-card-title class="pa-0 text--primary card-title-customize">
-            Contact
+            {{ key }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <v-card
-              v-for="(item,index) in getField('metadata')['contacts']"
-              :key="item.name+'_'+index"
+              v-for="(subItem,subIndex) in item.data"
+              :key="subItem.name+'_'+subIndex"
               class="pa-4 mt-2 d-flex flex-column v-card-hover"
               flat
               outlined
             >
               <a
-                :href="item.contact_email"
+                v-if="subItem.url"
+                :href="subItem.url"
                 target="_blank"
               >
-                <span v-if="item.contact_name">
-                  {{ item.contact_name }}
-                </span>
-                <span v-else>
-                  {{ item.contact_email }}
-                </span>
+                {{ subItem.url }}
               </a>
             </v-card>
           </v-card-text>
@@ -58,14 +55,51 @@
 
 <script>
 import SectionTitle from '@/components/Records/Record/SectionTitle';
+import clearString from '@/utils/stringUtils'
 import {mapGetters} from "vuex";
 export default {
   name: "Support",
   components: {
     SectionTitle,
   },
+  mixins: [clearString],
   computed: {
     ...mapGetters("record", ["getField"]),
+  },
+  methods:{
+    generateContact() {
+      let processedDataConditions = {}
+      const data_processes =  this.getField('metadata')['support_links']
+      const contacts = this.getField('licences')['contacts']
+      // initializing object's key and data dynamically based on any number of types coming from API
+      if (data_processes) {
+        data_processes.forEach(item => {
+          if (!Object.prototype.hasOwnProperty.call(processedDataConditions, item.type)) {
+            processedDataConditions[item.type] = {
+              data: [],
+              icon: null
+            }
+          }
+        });
+        // assigning data and icon to the different types came from API.
+        data_processes.forEach(item => {
+          // Replace parentheses, brackets, space,forward slashes with underscore.
+          processedDataConditions[item.type].icon = item.type.replace(/\s/g, '_').replace(/[\])}[{(]/g, '').replace(/\//g, '_').toLowerCase()
+          processedDataConditions[item.type].data.push(item)
+        })
+      }
+      // adding licenses if available
+      if (contacts && contacts.length) {
+        processedDataConditions['contacts'] = {
+          data:[],
+          icon:'contacts'
+        }
+        contacts.forEach(licence => {
+          processedDataConditions['contacts'].data.push(licence)
+        })
+      }
+      return processedDataConditions
+    }
   }
 }
 </script>

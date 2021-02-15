@@ -6,7 +6,7 @@ const customIcons  = {
         createdAt: 'fa-edit',
         updatedAt: 'fa-sync',
         tools: 'fa-tools',
-        support: 'fa-info',
+        contacts: 'fa-info',
         maintains: 'fa-sitemap',
         funds: 'fa-funnel-dollar',
         collaborates_on: 'fa-handshake',
@@ -17,7 +17,12 @@ const customIcons  = {
         data_curation:'fa-chevron-down',
         data_release:'fa-funnel-dollar',
         data_versioning:'fa-sync',
-        licences:'fa-sitemap'
+        licences:'fa-sitemap',
+        frequently_asked_questions_faqs: 'fa-handshake',
+        forum: 'fa-tools',
+        help_documentation: 'fa-tools',
+        blog_news : 'fa-sitemap',
+        twitter : 'fab fa-twitter'
     },
     iconfont: 'fa'
 };

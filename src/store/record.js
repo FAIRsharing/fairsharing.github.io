@@ -131,11 +131,9 @@ let recordStore = {
                 access_points: additionalInformation['access_points'],
             };
             // TODO: Separate setting necessary for each available field...
-           Object.keys(record).forEach((type) => { ... }
+           Object.keys(record).forEach((type) => {
                 state.sections.generalInformation.data.metadata[type] = JSON.parse(JSON.stringify(record[type]));
                 state.sections.generalInformation.initialData.metadata[type] = JSON.parse(JSON.stringify(record[type]));
-                state.sections.dataAccess.data.metadata[type] = JSON.parse(JSON.stringify(record[type]));
-                state.sections.dataAccess.initialData.metadata[type] = JSON.parse(JSON.stringify(record[type]));
             });
             state.sections.additionalInformation.data = record;
             state.sections.additionalInformation.initialData = JSON.parse(JSON.stringify(record));

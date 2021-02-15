@@ -13,7 +13,7 @@
     <div class="d-flex flex-column ml-2 min-height-40">
       <div v-if="(getField('metadata')['contacts'] && getField('metadata')['contacts'].length) || (getField('metadata')['support_links'] && getField('metadata')['support_links'].length)">
         <v-card
-          v-for="(item,key,index) in generateContact()"
+          v-for="(item,key,index) in generateSupport()"
           :key="key+'_'+index"
           class="pa-4 mt-15 d-flex flex-column"
           outlined
@@ -44,6 +44,36 @@
               >
                 {{ subItem.url }}
               </a>
+              <div
+                v-if="subItem.contact_name"
+                class="d-flex flex-column"
+              >
+                <div
+                  v-if="subItem.contact_email"
+                  class="d-flex flex-wrap"
+                >
+                  <span class="min-width-60">Name:</span>
+                  <strong>{{ subItem.contact_name }}</strong>
+                </div>
+                <div
+                  v-if="subItem.contact_email"
+                  class="d-flex flex-wrap"
+                >
+                  <span class="min-width-60">Email:</span>
+                  <strong>
+                    {{ subItem.contact_email }}
+                  </strong>
+                </div>
+                <div
+                  v-if="subItem.contact_orcid"
+                  class="d-flex flex-wrap"
+                >
+                  <span class="min-width-60">Orcid ID:</span>
+                  <strong>
+                    {{ subItem.contact_orcid }}
+                  </strong>
+                </div>
+              </div>
             </v-card>
           </v-card-text>
         </v-card>
@@ -67,13 +97,13 @@ export default {
     ...mapGetters("record", ["getField"]),
   },
   methods:{
-    generateContact() {
+    generateSupport() {
       let processedDataConditions = {}
-      const data_processes =  this.getField('metadata')['support_links']
-      const contacts = this.getField('licences')['contacts']
+      const support_links =  this.getField('metadata')['support_links']
+      const contacts = this.getField('metadata')['contacts']
       // initializing object's key and data dynamically based on any number of types coming from API
-      if (data_processes) {
-        data_processes.forEach(item => {
+      if (support_links) {
+        support_links.forEach(item => {
           if (!Object.prototype.hasOwnProperty.call(processedDataConditions, item.type)) {
             processedDataConditions[item.type] = {
               data: [],
@@ -82,7 +112,7 @@ export default {
           }
         });
         // assigning data and icon to the different types came from API.
-        data_processes.forEach(item => {
+        support_links.forEach(item => {
           // Replace parentheses, brackets, space,forward slashes with underscore.
           processedDataConditions[item.type].icon = item.type.replace(/\s/g, '_').replace(/[\])}[{(]/g, '').replace(/\//g, '_').toLowerCase()
           processedDataConditions[item.type].data.push(item)

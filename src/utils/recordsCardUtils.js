@@ -20,7 +20,7 @@ const recordsCardUtils = {
                 return 'taxonomic_color';
             }
             else if(chip.type==='userDefinedTags') {
-                return 'userDefinedTags_color';
+                return 'tags_color';
             }
         },
         associatedRecords(record) {

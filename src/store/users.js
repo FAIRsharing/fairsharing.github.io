@@ -192,7 +192,9 @@ export const actions = {
             }
             else {
                 getUserQuery.queryParam.id = userMetadata.id;
+                graphClient.setHeader(state.state.user().credentials.token);
                 const userRecords = await graphClient.executeQuery(getUserQuery);
+                graphClient.initalizeHeader();
                 if (userRecords.error) {
                     this.commit("users/setError", {
                         field: "getUser",

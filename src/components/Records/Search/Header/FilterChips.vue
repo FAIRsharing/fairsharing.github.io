@@ -17,7 +17,7 @@
         class="ma-2"
         close
         color="white"
-        text-color="teal"
+        text-color="secondary"
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
         {{ getFilteredLabel[chip.paramName] }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>

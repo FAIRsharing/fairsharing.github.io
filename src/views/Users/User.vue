@@ -146,7 +146,7 @@
       },
       async created(){
           this.loading = true;
-          await this.getUser(this.user().credentials.token);
+          await this.getUser();
           if (this.messages()["getUser"].error){
             this.setError({field:"login", message:"You've been logged out automatically"});
             this.$router.push({path: "/accounts/login"})

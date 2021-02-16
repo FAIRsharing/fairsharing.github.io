@@ -33,7 +33,7 @@
                     <v-avatar size="40">
                       <v-icon> fa-edit </v-icon>
                     </v-avatar>
-                    <b class="mr-1"> Create at </b> {{ record.createdAt }}
+                    <b class="mr-1"> Created at </b> {{ record.createdAt }}
                   </div>
                 </div>
               </v-card-text>

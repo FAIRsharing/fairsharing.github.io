@@ -22,9 +22,13 @@
           elevation="3"
         >
           <div class="icon-container d-flex justify-center">
-            <v-icon large>
+            <v-icon
+              v-if="!$vuetify.icons.values[item.icon].hasOwnProperty('source')"
+              large
+            >
               {{ Object.keys($vuetify.icons.values).includes(item.icon)?$vuetify.icons.values[item.icon]:$vuetify.icons.values['undefined'] }}
             </v-icon>
+            <CustomIcons :icon-source="$vuetify.icons.values[item.icon].source" />
           </div>
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ key | capitalize }}
@@ -87,10 +91,13 @@
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import clearString from '@/utils/stringUtils'
 import {mapGetters} from "vuex";
+import CustomIcons from '@/components/customIcons/CustomIcons';
+
 export default {
   name: "Support",
   components: {
     SectionTitle,
+    CustomIcons
   },
   mixins: [clearString],
   computed: {

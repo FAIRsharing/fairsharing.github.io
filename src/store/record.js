@@ -32,8 +32,9 @@ let recordStore = {
         },
         sections: {
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
-            publications: initEditorSections(false, ["publications"]).publications,
-            organisations: {}
+            organisations: {},
+            additionalInformation: {},
+            publications: {},
         },
         editOrganisationLink: {
             showOverlay: false,
@@ -58,7 +59,8 @@ let recordStore = {
                 "support",
                 "dataAccess",
                 "publications",
-                "organisations"
+                "organisations",
+                "additionalInformation"
             ];
             state.sections = initEditorSections(data['fairsharingRecord'], sectionsNames);
         },
@@ -114,6 +116,8 @@ let recordStore = {
             };
             state.sections.generalInformation.data.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
             state.sections.generalInformation.initialData.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
+            state.sections.additionalInformation.data.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
+            state.sections.additionalInformation.initialData.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
             record.support_links.forEach(supportLink => {
                if (supportLink.name) supportLink.url = {title: supportLink.name, url: supportLink.url}
             });
@@ -121,6 +125,20 @@ let recordStore = {
             state.sections.dataAccess.initialData = JSON.parse(JSON.stringify(record));
             state.sections.dataAccess.changes = 0;
             state.sections.dataAccess.message = "Record successfully updated!";
+        },
+        setAdditionalInformation(state, additionalInformation) {
+            let record = {
+                access_points: additionalInformation['access_points'],
+            };
+            // TODO: Separate setting necessary for each available field...
+           Object.keys(record).forEach((type) => {
+                state.sections.generalInformation.data.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+                state.sections.generalInformation.initialData.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+            });
+            state.sections.additionalInformation.data = record;
+            state.sections.additionalInformation.initialData = JSON.parse(JSON.stringify(record));
+            state.sections.additionalInformation.changes = 0;
+            state.sections.additionalInformation.message = "Record successfully updated!";
         },
         setCreatingNewRecord(state){
             state.newRecord = true;
@@ -249,8 +267,7 @@ let recordStore = {
             });
             const record = {
                 record: record_data,
-                token: options.token,
-                id: options.id
+                token: options.token
             };
             let response = await restClient.updateRecord(record);
             if (response.error) {
@@ -299,6 +316,33 @@ let recordStore = {
             recordOrganisationsQuery.queryParam = {id: state.currentRecord.fairsharingRecord.id};
             let organisations = await client.executeQuery(recordOrganisationsQuery);
             commit('updateOrganisationsLinks', organisations.fairsharingRecord.organisationLinks);
+        },
+        async updateAdditionalInformation({ state, commit}, options){
+            commit("resetMessage", "additionalInformation");
+            let newRecord = {
+                metadata: state.sections.generalInformation.initialData.metadata,
+            };
+            // TODO: Add remaining fields here
+            newRecord.metadata.access_points = state.sections.additionalInformation.data.access_points;
+
+            /// below = dodgy
+            // define record
+            let response = await restClient.updateRecord({
+                record: newRecord,
+                token: options.token,
+                id: options.id
+            });
+            if (response.error) {
+                commit("setSectionError", {
+                    section: "additionalInformation",
+                    value: response.error
+                });
+                return response.error;
+            }
+            else {
+                commit("setMessage", {target: "additionalInformation", value: "Record successfully updated!"});
+                commit('setAdditionalInformation', newRecord.metadata);
+            }
         },
         async updateDataAccess({state, commit}, options){
             commit("resetMessage", "dataAccess");

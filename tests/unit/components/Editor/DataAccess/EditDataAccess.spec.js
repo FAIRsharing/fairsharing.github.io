@@ -32,6 +32,10 @@ recordStore.state.sections = {
     generalInformation: {
         data: {metadata: {}},
         initialData: {metadata: {}}
+    },
+    additionalInformation: {
+        data: {metadata: {}},
+        initialData: {metadata: {}}
     }
 };
 userStore.state.user().credentials.token = 123;

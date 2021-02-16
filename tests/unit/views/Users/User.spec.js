@@ -54,20 +54,10 @@ describe("User.vue", () => {
         wrapper = shallowMount(User, {
             localVue,
             router,
-            mocks: {$store,$router}
+            mocks: {$store, $router}
         });
         const title = "User";
         expect(wrapper.name()).toMatch(title);
-    });
-
-    it("has a getRecords methods that sorts the records for easy use", () => {
-        wrapper = shallowMount(User, {
-            localVue,
-            router,
-            mocks: {$store, $router}
-        });
-        let records = wrapper.vm.getRecords('maintenanceRequests');
-        expect(records).toStrictEqual([{name: "recordTest"}])
     });
 
     it("can process errors", () => {

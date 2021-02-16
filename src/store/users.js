@@ -180,7 +180,7 @@ export const actions = {
             this.commit("users/setError", {field: "logout", message: e.message});
         }
     },
-    async getUser(state, userToken){
+    async getUser(state){
         try {
             const userMetadata = await client.getUser(state.state.user().credentials.token);
             if (userMetadata.error) {
@@ -192,9 +192,9 @@ export const actions = {
             }
             else {
                 getUserQuery.queryParam.id = userMetadata.id;
-                if (userToken) graphClient.setHeader(userToken);
+                graphClient.setHeader(state.state.user().credentials.token);
                 const userRecords = await graphClient.executeQuery(getUserQuery);
-                if (userToken) graphClient.initalizeHeader();
+                graphClient.initalizeHeader();
                 if (userRecords.error) {
                     this.commit("users/setError", {
                         field: "getUser",

@@ -7,51 +7,22 @@
     {
       "name": "maintenanceRequests",
       "fields": [
+        "createdAt",
+        "status",
         {
           "queryName": "fairsharingRecord",
           "fields": [
             "id",
             "name",
             "type",
-            "description",
-            "doi",
-            "legacyIds"
+            "doi"
           ]
         }
       ]
     },
-    {
-      "name": "createdRecords",
-      "fields": [
-        "id",
-        "type",
-        "name",
-        "description",
-        "doi",
-        "legacyIds"
-      ]
-    },
-    {
-      "name": "maintainedRecords",
-      "fields": [
-        "id",
-        "type",
-        "name",
-        "description",
-        "doi",
-        "legacyIds"
-      ]
-    },
-    {
-      "name": "recordsInCuration",
-      "fields": [
-        "id",
-        "type",
-        "name",
-        "description",
-        "doi",
-        "legacyIds"
-      ]
-    }
+    {"$ref": "createdRecords"},
+    {"$ref": "maintainedRecords"},
+    {"$ref": "recordsInCuration"},
+    {"$ref": "watchedRecords"}
   ]
 }

@@ -60,7 +60,9 @@ let editorStore = {
             "undefined",
             "applies_to_content",
             "least_permissive"
-        ]
+        ],
+        accessPointTypes: ["REST", "SOAP", "SPARQL", "Other"]
+
     },
     mutations: {
         setCountries(state, countries){

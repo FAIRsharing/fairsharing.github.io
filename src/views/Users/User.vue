@@ -72,22 +72,22 @@
               </v-card>
             </v-tab-item>
             <v-tab-item class="pa-5">
-              <MaintenanceRequests />
+              <RecordCard records-type="maintenanceRequests" />
             </v-tab-item>
             <v-tab-item class="pa-5">
-              <OtherRecords records-type="createdRecords" />
+              <RecordCard records-type="createdRecords" />
             </v-tab-item>
             <v-tab-item class="pa-5">
-              <OtherRecords records-type="maintainedRecords" />
+              <RecordCard records-type="maintainedRecords" />
             </v-tab-item>
             <v-tab-item class="pa-5">
-              <OtherRecords records-type="watchedRecords" />
+              <RecordCard records-type="watchedRecords" />
             </v-tab-item>
             <v-tab-item
               v-if="user().is_curator"
               class="pa-5"
             >
-              <OtherRecords records-type="recordsInCuration" />
+              <RecordCard records-type="recordsInCuration" />
             </v-tab-item>
           </v-tabs>
         </v-card>
@@ -109,8 +109,7 @@
     import { mapActions, mapState } from "vuex"
     import UserProfileMenu from "@/components/Users/UserProfileMenu";
     import Loaders from "@/components/Navigation/Loaders";
-    import MaintenanceRequests from "@/components/Users/Profiles/Private/MaintenanceRequests";
-    import OtherRecords from "../../components/Users/Profiles/Private/OtherRecords";
+    import RecordCard from "@/components/Users/Profiles/Private/RecordCard";
 
     /**
      * @vue-data {Object} hideFields - an array of field to NOT display
@@ -118,7 +117,7 @@
 
     export default {
       name: "User",
-      components: {OtherRecords, MaintenanceRequests, Loaders, UserProfileMenu},
+      components: {Loaders, UserProfileMenu, RecordCard},
       filters: {
           cleanString: function(str){
             return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });

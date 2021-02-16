@@ -3,6 +3,14 @@
   "queryParam": null,
   "fields": [
     {
+      "name": "curatorList",
+      "fields": [
+        "username",
+        "id",
+        "role"
+      ]
+    },
+    {
       "name": "approvalsRequired",
       "fields": [
         "username",
@@ -13,9 +21,19 @@
             "id",
             "name",
             "updatedAt",
+            "createdAt",
             "type",
+            "processingNotes",
+            "priority",
             {
               "name": "lastEditor",
+              "fields": [
+                "id",
+                "username"
+              ]
+            },
+            {
+              "name": "creator",
               "fields": [
                 "id",
                 "username"
@@ -61,6 +79,7 @@
             "id",
             "name",
             "createdAt",
+            "type",
             {
               "queryName": "creator",
               "fields": [
@@ -120,6 +139,7 @@
         "id",
         "name",
         "createdAt",
+        "type",
         {
           "queryName": "creator",
           "fields": [

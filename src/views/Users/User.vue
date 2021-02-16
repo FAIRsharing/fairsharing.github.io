@@ -12,7 +12,7 @@
         {{ messages()['getUser'].message }}
       </v-alert>
     </v-row>
-    <v-row>
+    <v-row v-if="user().metadata">
       <v-col cols12>
         <v-card v-if="!messages()['getUser'].error">
           <v-toolbar

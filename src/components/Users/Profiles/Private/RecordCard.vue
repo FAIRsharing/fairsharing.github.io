@@ -38,8 +38,14 @@
                 </div>
               </v-card-text>
               <CardActions
+                v-if="recordsType === 'watchedRecords'"
                 :id="record.id"
                 :curator="user().is_curator"
+              />
+              <CardActions
+                v-else
+                :id="record.id"
+                :curator="true"
               />
             </v-card>
           </v-col>

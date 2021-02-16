@@ -37,7 +37,10 @@
                   </div>
                 </div>
               </v-card-text>
-              <CardActions :id="record.id" />
+              <CardActions
+                :id="record.id"
+                :curator="(recordsType === 'watchedRecords') ? user().is_curator : true"
+              />
             </v-card>
           </v-col>
         </v-row>

@@ -6,7 +6,7 @@ const customIcons  = {
         createdAt: 'fa-edit',
         updatedAt: 'fa-sync',
         tools: 'fa-tools',
-        contacts: 'fa-info',
+        contacts: 'fa-envelope',
         maintains: 'fa-sitemap',
         funds: 'fa-funnel-dollar',
         collaborates_on: 'fa-handshake',
@@ -18,13 +18,17 @@ const customIcons  = {
         data_release: 'fa-funnel-dollar',
         data_versioning: 'fa-sync',
         licences: 'fa-sitemap',
-        frequently_asked_questions_faqs: 'fa-handshake',
-        forum: 'fa-tools',
-        help_documentation: 'fa-tools',
-        blog_news: 'fa-sitemap',
+        frequently_asked_questions_faqs: 'fa-question-circle',
+        forum: 'fa-comment',
+        help_documentation: 'fa-book',
+        blog_news: 'fa-newspaper',
         twitter: 'fab fa-twitter',
-        training_documentation: 'fab fa-twitter',
-        tess_links_to_training_materials: 'fab fa-facebook',
+        facebook: 'fab fa-facebook',
+        training_documentation: 'fab fa-leanpub',
+        tess_links_to_training_materials: {
+            source:'elixir.jpg'
+        },
+        support_email: 'fa-headset',
     },
     iconfont: 'fa'
 };

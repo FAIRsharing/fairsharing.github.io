@@ -12,7 +12,10 @@
     >
       <v-icon>fas fa-eye</v-icon>
     </v-btn>
-    <router-link :to="`/${id}/edit`">
+    <router-link
+      v-if="curator"
+      :to="`/${id}/edit`"
+    >
       <v-btn
         x-small
         fab
@@ -46,7 +49,8 @@
         name: "CardActions",
         components: {Record},
         props: {
-          id: {type: Number, default: null}
+          id: {type: Number, default: null},
+          curator: {type: Boolean, default: false}
         },
         data(){
           return {

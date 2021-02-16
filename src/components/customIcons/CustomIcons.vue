@@ -1,12 +1,9 @@
 <template>
-  <div
-    v-if="iconSource"
-    class="mt-4"
-  >
+  <div v-if="iconSource.source">
     <v-img
       contain
       height="45"
-      :src="getImgUrl(iconSource)"
+      :src="getImgUrl(iconSource.source)"
     />
   </div>
 </template>
@@ -15,11 +12,11 @@
 export default {
   name: "CustomIcons",
   props: {
-    iconSource: {default: null, type: String}
+    iconSource: {default: null, type: Object}
   },
-  methods:{
+  methods: {
     getImgUrl(pic) {
-      return require('@/assets/custom_icons/'+pic)
+      return require('@/assets/custom_icons/' + pic)
     }
   }
 }

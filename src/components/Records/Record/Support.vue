@@ -23,12 +23,16 @@
         >
           <div class="icon-container d-flex justify-center">
             <v-icon
-              v-if="!$vuetify.icons.values[item.icon].hasOwnProperty('source')"
+              v-if="typeof $vuetify.icons.values[item.icon] === 'string'"
               large
             >
               {{ Object.keys($vuetify.icons.values).includes(item.icon)?$vuetify.icons.values[item.icon]:$vuetify.icons.values['undefined'] }}
             </v-icon>
-            <CustomIcons :icon-source="$vuetify.icons.values[item.icon].source" />
+            <CustomIcons
+              v-else
+              class="mt-4"
+              :icon-source="$vuetify.icons.values[item.icon]"
+            />
           </div>
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ key | capitalize }}

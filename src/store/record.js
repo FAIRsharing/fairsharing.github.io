@@ -116,8 +116,8 @@ let recordStore = {
             };
             state.sections.generalInformation.data.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
             state.sections.generalInformation.initialData.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
-            state.sections.additionalInformation.data.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
-            state.sections.additionalInformation.initialData.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
+            //state.sections.additionalInformation.data.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
+            //state.sections.additionalInformation.initialData.metadata.support_links = JSON.parse(JSON.stringify(record.support_links));
             record.support_links.forEach(supportLink => {
                if (supportLink.name) supportLink.url = {title: supportLink.name, url: supportLink.url}
             });

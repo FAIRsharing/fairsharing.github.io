@@ -9,6 +9,7 @@
         :class="{'green': status === 'approved', 'red': status === 'rejected', 'orange': status === 'pending'}"
       />
       <b
+        v-if="showLabel"
         class="ml-4"
         :class="{'green--text': status === 'approved', 'red--text': status === 'rejected', 'orange--text': status === 'pending'}"
       >{{ status.toUpperCase() }}</b>
@@ -22,13 +23,13 @@
         :class="{'green': approved, 'red': !approved}"
       />
       <b
-        v-if="approved"
+        v-if="approved && showLabel"
         class="ml-4 green--text"
       >
         APPROVED
       </b>
       <b
-        v-else
+        v-if="!approved && showLabel"
         class="ml-4 red--text"
       >
         NOT APPROVED
@@ -42,7 +43,8 @@
         name: "StatusPills",
         props: {
             status: {type: String, default: null},
-            approved: {type: Boolean, default: null}
+            approved: {type: Boolean, default: null},
+            showLabel: {type: Boolean, default: true}
         }
     }
 </script>

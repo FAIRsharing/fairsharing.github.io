@@ -20,7 +20,11 @@
         v-if="!messages()['getUser'].error"
         cols12
       >
-        <v-tabs vertical>
+        <v-tabs
+          v-if="!loading"
+          v-model="activeTab"
+          vertical
+        >
           <v-toolbar
             flat
             color="primary"
@@ -75,7 +79,7 @@
                     height="100%"
                   >
                     <v-card-title class="primary white--text py-3">
-                      General Information
+                      Personal Information
                     </v-card-title>
                     <v-card-text class="pb-0">
                       <v-list>
@@ -111,7 +115,6 @@
                     </v-card-text>
                   </v-card>
                 </v-col>
-
                 <v-col
                   class="pt-0"
                   cols="12"
@@ -162,7 +165,6 @@
                     </v-card-actions>
                   </v-card>
                 </v-col>
-
                 <v-col
                   class="pt-0"
                   cols="12"
@@ -199,8 +201,161 @@
                       </v-list>
                     </v-card-text>
                     <v-card-actions>
-                      <v-btn>
-                        View all
+                      <v-btn @click="activeTab = 4">
+                        View all Watched Records
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+                <v-col
+                  cols="12"
+                  xl="4"
+                  lg="6"
+                  md="12"
+                  sm="12"
+                  xs="12"
+                  class="pt-0"
+                >
+                  <v-card
+                    height="100%"
+                    class="d-flex flex-column rounded-0"
+                  >
+                    <v-card-title class="primary white--text py-3">
+                      Created Records
+                    </v-card-title>
+                    <v-card-text
+                      class="pt-3 pb-0"
+                      style="flex-grow: 1"
+                    >
+                      <v-list v-if="user().records.createdRecords">
+                        <v-list-item
+                          v-for="(record, index) in user().records.createdRecords.slice(0, 6)"
+                          :key="'record_' + index"
+                        >
+                          <v-list-item-avatar>
+                            <v-img :src="icons()[record.type]" />
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title>{{ record.name }}</v-list-item-title>
+                            <v-list-item-subtitle>{{ record.registry }} - {{ record.type | cleanString }}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list>
+                      <div
+                        v-if="user().records.createdRecords.length === 0"
+                        class="pb-4"
+                      >
+                        You did not create any record yet. Start creating one <router-link to="/new">
+                          here.
+                        </router-link>
+                      </div>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn @click="activeTab = 2">
+                        View all Created Records
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+                <v-col
+                  cols="12"
+                  xl="4"
+                  lg="6"
+                  md="12"
+                  sm="12"
+                  xs="12"
+                  class="pt-0"
+                >
+                  <v-card
+                    height="100%"
+                    class="d-flex flex-column rounded-0"
+                  >
+                    <v-card-title class="primary white--text py-3">
+                      Maintained Records
+                    </v-card-title>
+                    <v-card-text
+                      class="pt-3 pb-0"
+                      style="flex-grow: 1"
+                    >
+                      <v-list v-if="user().records.maintainedRecords">
+                        <v-list-item
+                          v-for="(record, index) in user().records.maintainedRecords.slice(0, 6)"
+                          :key="'record_' + index"
+                        >
+                          <v-list-item-avatar>
+                            <v-img :src="icons()[record.type]" />
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title>{{ record.name }}</v-list-item-title>
+                            <v-list-item-subtitle>{{ record.registry }} - {{ record.type | cleanString }}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-list>
+                      <div
+                        v-if="user().records.maintainedRecords.length === 0"
+                        class="pb-4"
+                      >
+                        You are not maintaining any record.
+                      </div>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn @click="activeTab = 3">
+                        View all Maintained Records
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+
+                <v-col
+                  cols="12"
+                  xl="4"
+                  lg="6"
+                  md="12"
+                  sm="12"
+                  xs="12"
+                  class="pt-0"
+                >
+                  <v-card
+                    height="100%"
+                    class="d-flex flex-column rounded-0"
+                  >
+                    <v-card-title class="primary white--text py-3">
+                      Maintenance Requests
+                    </v-card-title>
+                    <v-card-text
+                      class="pt-3 pb-0"
+                      style="flex-grow: 1"
+                    >
+                      <v-list v-if="maintenanceRequests">
+                        <v-list-item
+                          v-for="(record, index) in maintenanceRequests.slice(0, 6)"
+                          :key="'record_' + index"
+                        >
+                          <v-list-item-avatar>
+                            <v-img :src="icons()[record.type]" />
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title>{{ record.name }}</v-list-item-title>
+                            <v-list-item-subtitle>{{ record.registry }} - {{ record.type | cleanString }}</v-list-item-subtitle>
+                          </v-list-item-content>
+                          <v-list-item-avatar>
+                            <status-pills
+                              :status="record.status"
+                              :show-label="false"
+                            />
+                          </v-list-item-avatar>
+                        </v-list-item>
+                      </v-list>
+                      <div
+                        v-if="maintenanceRequests.length === 0"
+                        class="pb-4"
+                      >
+                        You do not have any maintenance requests.
+                      </div>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn @click="activeTab = 1">
+                        View all Maintenance Requests
                       </v-btn>
                     </v-card-actions>
                   </v-card>
@@ -247,6 +402,7 @@
     import Loaders from "@/components/Navigation/Loaders";
     import RecordCard from "@/components/Users/Profiles/Private/RecordCard";
     import ExternalClient from "@/components/Client/ExternalClients.js"
+    import StatusPills from "@/components/Users/Profiles/Private/StatusPills";
 
     let client = new ExternalClient();
 
@@ -256,7 +412,7 @@
 
     export default {
       name: "User",
-      components: {Loaders, UserProfileMenu, RecordCard},
+      components: {StatusPills, Loaders, UserProfileMenu, RecordCard},
       filters: {
           cleanString: function(str){
             return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
@@ -267,7 +423,8 @@
             panel: 0,
             hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"],
             loading: false,
-            publications: []
+            publications: [],
+            activeTab: 0
         }
       },
       computed: {
@@ -283,6 +440,19 @@
           });
           return userMeta;
         },
+        maintenanceRequests(){
+          let output = [];
+          if (this.user().records.maintenanceRequests) {
+            this.user().records.maintenanceRequests.forEach(function (record) {
+              output.push({
+                ...record["fairsharingRecord"],
+                createdAt: record.createdAt,
+                status: record.status
+              })
+            });
+          }
+          return output;
+        }
       },
       async created(){
           this.loading = true;
@@ -326,7 +496,7 @@
 
   #userPage .v-slide-group__wrapper {
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    max-height: 89vh;
+    max-height: 80vh;
     transition: height 450ms;
   }
 

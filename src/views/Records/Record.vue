@@ -95,7 +95,7 @@
             <Organisations class="mt-5 ml-lg-5" />
           </v-col>
         </v-row>
-        <!-- Top Block -->
+        <!-- Bottom Block -->
         <Publications class="mt-5" />
       </div>
     </v-container>

@@ -27,46 +27,31 @@
           elevation="3"
         >
           <!-- title, url -->
-          <div class="d-flex">
-            <p
-              v-if="publication.url"
-              class="ma-0"
-            >
-              <a
-                :href="publication.url"
-                target="_blank"
-              >{{ publication.title }}</a>
-            </p>
-            <p
-              v-else
-              class="ma-0"
-            >
-              {{ publication.title }}
-            </p>
-          </div>
-
-          <!-- Journals -->
-          <div
-            v-if="publication.journal"
-            class="d-flex"
+          <v-card-text
+            v-if="publication.url"
+            class="pa-0 text-ellipses-height-3lines min-height-60"
           >
-            <p class="ma-0">
-              {{ publication.journal }}<span v-if="publication.year">, {{ publication.year }}</span>
-            </p>
-          </div>
+            <a
+              :href="publication.url"
+              target="_blank"
+            >{{ publication.title }}</a>
+          </v-card-text>
+          <p
+            v-else
+            class="ma-0"
+          >
+            {{ publication.title }}
+          </p>
 
           <!-- authors -->
-          <div
-            v-if="publication.authors"
-            class="d-flex"
-          >
+          <div v-if="publication.authors">
             <p class="ma-0">
-              {{ prettifyList(publication.authors) }}
+              {{ truncate(prettifyList(publication.authors),50) }}
             </p>
           </div>
 
           <!-- doi -->
-          <div
+<!--          <div
             v-if="checkLinkValue(publication.doi)"
             class="d-flex"
           >
@@ -78,6 +63,14 @@
                 {{ publication.doi }}
               </a>
             </p>
+          </div>-->
+
+
+          <!-- Journals -->
+          <div v-if="publication.journal">
+            <strong class="ma-0">
+              {{ publication.journal }}<span v-if="publication.year">, {{ publication.year }}</span>
+            </strong>
           </div>
 
           <!-- pubmed -->
@@ -94,6 +87,7 @@
               </a>
             </p>
           </div>
+
         </v-card>
       </v-col>
     </v-row>
@@ -156,5 +150,4 @@ a {
   -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
   box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
 }
-
 </style>

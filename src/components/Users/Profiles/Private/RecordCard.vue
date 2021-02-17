@@ -1,6 +1,6 @@
 <template>
-  <v-card>
-    <v-card-title class="primary white--text">
+  <v-card class="rounded-0">
+    <v-card-title class="primary white--text py-3">
       {{ name }} ({{ records.length }})
     </v-card-title>
     <v-card-text>

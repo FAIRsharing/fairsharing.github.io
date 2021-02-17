@@ -6,9 +6,11 @@
     tile
     elevation="3"
   >
-    <SectionTitle title="Publications" />
-    <NoneFound :data-field="getField('publications')" />
-    <v-row>
+    <SectionTitle
+      title="Publications"
+      :inactive-section="getField('publications').length===0 || getField('publications')===undefined"
+    />
+    <v-row dense>
       <v-col
         v-for="(publication,index) in getField('publications')"
         :key="publication.title+'_'+index"
@@ -95,15 +97,12 @@
 
 <script>
     import { mapGetters } from 'vuex';
-
     import stringUtils from '@/utils/stringUtils';
-    import NoneFound from '@/components/Records/Record/NoneFound';
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     export default {
         name: "Publications",
         components: {
-            NoneFound,
             SectionTitle
         },
         mixins: [stringUtils],

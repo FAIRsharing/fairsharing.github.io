@@ -23,13 +23,13 @@
         >
           <div class="icon-container d-flex justify-center">
             <v-icon
-              v-if="typeof $vuetify.icons.values[item.icon] === 'string'"
+              v-if="typeof $vuetify.icons.values[item.icon] === 'string' || typeof $vuetify.icons.values[item.icon] === 'undefined'"
               large
             >
               {{ Object.keys($vuetify.icons.values).includes(item.icon)?$vuetify.icons.values[item.icon]:$vuetify.icons.values['undefined'] }}
             </v-icon>
             <CustomIcons
-              v-else
+              v-else-if="typeof $vuetify.icons.values[item.icon] === 'object'"
               class="mt-4"
               :icon-source="$vuetify.icons.values[item.icon]"
             />

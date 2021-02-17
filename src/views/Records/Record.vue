@@ -76,8 +76,6 @@
         <v-row no-gutters>
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!-- KEYWORDS -->
-            <Keywords class="mt-5" />
             <!-- SUPPORT -->
             <Support class="mt-5" />
             <!-- Data Conditions -->
@@ -85,12 +83,8 @@
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!-- LICENCES -->
-            <Licences class="mt-5 ml-lg-5" />
-
             <!-- Tools -->
             <Tools class="mt-5 ml-lg-5" />
-
             <!-- Organisations -->
             <Organisations class="mt-5 ml-lg-5" />
           </v-col>
@@ -108,8 +102,6 @@
     import RestClient from "@/components/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
-    import Keywords from '@/components/Records/Record/Keywords';
-    import Licences from '@/components/Records/Record/Licences';
     import Tools from '@/components/Records/Record/Tools';
     import DataCondtions from '@/components/Records/Record/DataConditions';
     import Publications from '@/components/Records/Record/Publications';
@@ -124,8 +116,6 @@
         components: {
           Organisations,
             GeneralInfo,
-            Keywords,
-            Licences,
             Tools,
             DataCondtions,
             Publications,

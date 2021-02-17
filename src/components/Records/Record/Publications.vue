@@ -34,7 +34,7 @@
           <!-- title, url -->
           <v-card-text
             v-if="publication.url"
-            class="pa-0 text-ellipses-height-3lines min-height-60"
+            class="pa-0 text-ellipses-height-3lines min-height-68"
           >
             <a
               :href="publication.url"
@@ -56,7 +56,10 @@
           </div>
 
           <!-- Journals -->
-          <div v-if="publication.journal">
+          <div
+            v-if="publication.journal"
+            class="min-height-68"
+          >
             <strong class="ma-0">
               {{ publication.journal }}<span v-if="publication.year">, {{ publication.year }}</span>
             </strong>

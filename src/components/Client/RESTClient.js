@@ -529,6 +529,23 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Get the extra metadata fields for a RecordType
+     * @param {String} type - name of the record type.
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async extraMetadataFields(type, userToken) {
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/fairsharing_records/metadata_fields",
+            headers: this.auth_headers(userToken),
+            data: {type: type}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
     /* METHODS FOR CURATION */
     /**
      * Update the maintenanceRequest given the new status value
@@ -544,6 +561,24 @@ class RESTClient {
             baseURL: _client.baseURL + "/maintenance_requests/" + maintenanceRequest,
             headers: this.auth_headers(userToken),
             data: { maintenance_request: {status: newStatus}}
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+
+    /**
+     * Delete Record
+     * @param {Number} id - id of the record link to delete
+     * @param {String} token - the user token
+     * @returns {Promise}
+     */
+    async deleteRecord(id, token){
+        let _client = this;
+        const request = {
+            method: "delete",
+            baseURL: _client.baseURL + "/fairsharing_records/" + id,
+            headers: this.auth_headers(token),
         };
         let response = await _client.executeQuery(request);
         return response.data;

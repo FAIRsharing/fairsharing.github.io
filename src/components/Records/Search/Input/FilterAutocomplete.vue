@@ -1,5 +1,6 @@
 <template>
   <v-expansion-panel v-if="filter.filterName">
+<<<<<<< HEAD
     <div
       :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]"
       class="px-3"
@@ -42,6 +43,50 @@
         Apply
       </v-btn>
     </div>
+=======
+    <v-expansion-panel-header> {{ filter.filterLabel }}</v-expansion-panel-header>
+    <v-expansion-panel-content class="pl-5 pr-5">
+      <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
+        <v-autocomplete
+          :id="filter.filterName + 'AutocompleteList' "
+          v-model="selectedValues"
+          :attach="true"
+          :items="getValues"
+          solo
+          dense
+          clearable
+          multiple
+          prepend-inner-icon="fa-search"
+          :placeholder="`Search through ${filter.filterLabel}`"
+          item-text="key"
+          item-value="key"
+          @focus="scrollTo(filter.filterName)"
+          @click:clear="reset(filter)"
+        >
+          <template #selection="data">
+            <v-chip class="blue white--text  mb-1 ">
+              <span class="chipsValueName">
+                {{ cleanString(data.item.key) }}
+              </span>
+            </v-chip>
+          </template>
+          <template #item="data">
+            <div class="d-flex full-width">
+              <span class="filterValueName"> {{ cleanString(data.item.key) }}</span>
+              <span class="filterValueCount"> {{ data.item['doc_count'] }}</span>
+            </div>
+          </template>
+        </v-autocomplete>
+        <v-btn
+          color="primary"
+          class="ml-lg-2 custom-btn"
+          @click="applyFilters(filter)"
+        >
+          Apply
+        </v-btn>
+      </div>
+    </v-expansion-panel-content>
+>>>>>>> 695cc9145a63814760913d7daecf06a0f50bd316
   </v-expansion-panel>
 </template>
 

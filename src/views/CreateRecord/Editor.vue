@@ -52,18 +52,26 @@
           color="primary"
           dark
         >
-          <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
+          <v-toolbar-title> Edit Record - {{ sections.generalInformation.initialData.metadata.name }} </v-toolbar-title>
           <v-spacer />
 
           <v-btn
             v-for="(panelData) in confirmPanels"
             :id="panelData.name + '_button'"
             :key="panelData.name"
-            class="default ml-2"
+            class="default"
             @click="panelData.show = true"
           >
             {{ panelData.name }}
           </v-btn>
+          <router-link
+            :to="'/' + $route.params.id"
+            class="ml-2"
+          >
+            <v-btn class="default">
+              Exit editing
+            </v-btn>
+          </router-link>
         </v-toolbar>
         <v-tabs
           dark
@@ -93,7 +101,7 @@
 
           <!-- EDIT LICENSES -->
           <v-tab-item class="px-10 py-3">
-            <edit-licences />
+            <edit-data-access />
           </v-tab-item>
 
           <!-- EDIT PUBLICATIONS -->
@@ -110,6 +118,11 @@
           <v-tab-item class="px-10 py-3">
             <edit-relationships />
           </v-tab-item>
+
+          <!-- EDIT ADDITIONAL INFO -->
+          <v-tab-item class="px-10 py-3">
+            <edit-additional-info />
+          </v-tab-item>
         </v-tabs>
       </v-col>
     </v-row>
@@ -120,9 +133,10 @@
   import { mapActions, mapState, mapGetters } from "vuex"
   import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
   import EditRelationships from "@/components/Editor/EditRelationships";
-  import EditLicences from "@/components/Editor/EditLicences";
+  import EditDataAccess from "@/components/Editor/DataAccess/EditDataAccess";
   import EditOrganisations from "@/components/Editor/Organisations/Organisations";
   import EditPublications from "@/components/Editor/EditPublications";
+  import EditAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo";
   import Unauthorized from "@/views/Errors/403"
   import RESTClient from "@/components/Client/RESTClient.js"
 
@@ -133,10 +147,21 @@
     components: {
       EditPublications,
       EditOrganisations,
-      EditLicences,
+      EditDataAccess,
       EditRelationships,
       EditGeneralInfo,
+      EditAdditionalInfo,
       Unauthorized
+    },
+    beforeRouteLeave(to, from, next){
+      let changes = this.getAllChanges;
+      if (changes === 0) {
+        next();
+      }
+      else {
+        const answer = window.confirm(`Are you sure you want to leave this page? You have ${changes} unsaved modifications.`);
+        if (answer) next();
+      }
     },
     data(){
       let _module = this;
@@ -154,12 +179,6 @@
               return _module.confirmReloadData()
             },
             show: false
-          },
-          {
-            name: "Exit editing",
-            description: "This will return to the record page without saving. Are you sure you'd like to do this?",
-            method: function() { return _module.confirmReturnToRecord() },
-            show: false
           }
         ],
         tabs: [
@@ -171,7 +190,8 @@
           },
           {
             name: "Data Access",
-            disabled: false
+            disabled: false,
+            target: "dataAccess"
           },
           {
             name: "Publications",
@@ -187,13 +207,19 @@
           {
             name: "Relations to other records",
             disabled: true
+          },
+          {
+            name: "Additional Information",
+            disabled: false,
+            target: "additionalInformation",
+            icon: "fa-info"
           }
         ]
       }
     },
     computed: {
-      ...mapState('record', ['currentRecord']),
-      ...mapGetters('record', ['getChanges']),
+      ...mapState('record', ['currentRecord', 'sections']),
+      ...mapGetters('record', ['getChanges', 'getAllChanges']),
       ...mapState('users', ['user']),
       userToken(){
         const _module = this;
@@ -225,12 +251,6 @@
         if (canEdit.error) _module.error = true;
         _module.hasLoaded = true;
       },
-      confirmReturnToRecord() {
-        const _module = this;
-        let recordID = _module.currentRecord['fairsharingRecord'].id;
-        _module.exitPageCheck = true;
-        _module.$router.push({ path: `/${recordID}` });
-      },
       async confirmReloadData() {
         const _module = this;
         let recordID = _module.currentRecord['fairsharingRecord'].id;
@@ -246,6 +266,43 @@
       width: 140px;
       height: 140px !important;
       white-space: initial !important;
+  }
+
+</style>
+
+<style>
+  #recordEditor .expand-transition-enter-active,
+  #recordEditor .expand-transition-leave-active,
+  #recordEditor .delayed-transition .slide-x-transition-enter-active,
+  #recordEditor .delayed-transition .slide-x-transition-leave-active
+  {
+    transition-duration: 0.7s !important;
+  }
+
+  #recordEditor .delayed-transition .scroll-x-transition-enter-active,
+  #recordEditor .delayed-transition .scroll-x-transition-leave-active
+  {
+    transition-duration: 1s !important;
+  }
+
+  #recordEditor .delayed-transition .scroll-x-transition-enter-active
+  {
+    transition-delay: 0.1s !important;
+  }
+
+  #recordEditor .delayed-transition .scroll-x-transition-leave-active
+  {
+    transition-delay: 0.6s !important;
+  }
+
+  .short{
+    max-width:550px;
+  }
+
+  .short span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
 </style>

@@ -74,6 +74,11 @@ describe("RESTClient", () =>{
         expect(data).toBe("testData")
     });
 
+    it("can get the extra metadata fields", async () => {
+        let resp = await client.extraMetadataFields('model_and_format', 'userToken');
+        expect(resp).toBe("testData");
+    });
+
     it("can process network errors", async () => {
         stub.restore();
         jest.spyOn(console, 'error');

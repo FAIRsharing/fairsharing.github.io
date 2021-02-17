@@ -39,5 +39,45 @@
         }
       ]
     }
+  ],
+  "summary": [
+    "id",
+    "type",
+    "name",
+    "doi",
+    "registry",
+    "isApproved"
+  ],
+  "recordsInCuration": [
+    {
+      "queryName": "recordsInCuration",
+      "fields": [
+        {"$ref": "summary"}
+      ]
+    }
+  ],
+  "createdRecords": [
+    {
+      "queryName": "createdRecords",
+      "fields": [
+        {"$ref": "summary"}
+      ]
+    }
+  ],
+  "maintainedRecords": [
+    {
+      "queryName": "maintainedRecords",
+      "fields": [
+        {"$ref": "summary"}
+      ]
+    }
+  ],
+  "watchedRecords": [
+    {
+      "queryName": "watchedRecords",
+      "fields": [
+        {"$ref": "summary"}
+      ]
+    }
   ]
 }

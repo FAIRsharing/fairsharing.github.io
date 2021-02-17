@@ -4,12 +4,12 @@
       v-if="queryTriggered"
       fluid
     >
-      <v-row v-if="error">
-        <v-col cols="12">
-          <NotFound />
-        </v-col>
-      </v-row>
+      <!--   error   -->
+      <div v-if="error">
+        <NotFound />
+      </div>
 
+      <!--   Action Menu & Alert   -->
       <v-row
         v-else
         class="pr-3"
@@ -33,7 +33,7 @@
             cmass="mt-3"
             offset-y
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn
                 class="mt-2"
                 color="primary"
@@ -66,62 +66,38 @@
       </v-row>
 
       <!--  Content  -->
-      <v-row
-        v-if="currentRecord['fairsharingRecord'] && !error"
-        no-gutters
-      >
-        <v-col
-          cols="12"
-          lg="12"
-          md="12"
-          xl="12"
-        >
-          <v-row
-            no-gutters
-          >
-            <v-col>
-              <GeneralInfo />
-            </v-col>
-          </v-row>
+      <div v-if="currentRecord['fairsharingRecord'] && !error">
+        <!-- Top Block -->
+        <GeneralInfo
+          :can-claim="canClaim"
+          @requestOwnership="requestOwnership"
+        />
 
-          <!-- Single Row -->
-          <v-row>
-            <!--Left Column-->
-            <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-              <!-- KEYWORDS -->
-              <Keywords />
+        <v-row no-gutters>
+          <!--Left Block-->
+          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            <!-- KEYWORDS -->
+            <Keywords class="mt-5" />
+            <!-- SUPPORT -->
+            <Support class="mt-5" />
+            <!-- Data Conditions -->
+            <DataCondtions class="mt-5" />
+          </v-col>
+          <!--Right Block-->
+          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            <!-- LICENCES -->
+            <Licences class="mt-5 ml-lg-5" />
 
-              <!-- SUPPORT -->
-              <Support />
+            <!-- Tools -->
+            <Tools class="mt-5 ml-lg-5" />
 
-              <!-- ORGANISATION -->
-              <Organisations />
-            </v-col>
-            <!--Right Column-->
-            <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-              <!-- LICENCES -->
-              <Licences />
-
-              <!-- MAINTAINERS -->
-              <Maintainers
-                :can-claim="canClaim"
-                @requestOwnership="requestOwnership"
-              />
-
-              <!-- PUBLICATIONS -->
-              <Publications />
-            </v-col>
-          </v-row>
-          <!-- Associated Records -->
-          <v-row
-            no-gutters
-          >
-            <v-col>
-              <AssociatedRecords :record-associations="recordAssociations" />
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+            <!-- Organisations -->
+            <Organisations class="mt-5 ml-lg-5" />
+          </v-col>
+        </v-row>
+        <!-- Top Block -->
+        <Publications class="mt-5" />
+      </div>
     </v-container>
   </v-main>
 </template>
@@ -129,29 +105,29 @@
 <script>
     import {mapActions, mapState, mapGetters} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
-    import AssociatedRecords from "@/components/Records/Record/AssociatedRecords";
+    import RestClient from "@/components/Client/RESTClient.js"
+    import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Keywords from '@/components/Records/Record/Keywords';
     import Licences from '@/components/Records/Record/Licences';
-    import Maintainers from '@/components/Records/Record/Maintainers';
-    import Organisations from '@/components/Records/Record/Organisations';
+    import Tools from '@/components/Records/Record/Tools';
+    import DataCondtions from '@/components/Records/Record/DataConditions';
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
     import NotFound from "@/views/Errors/404"
-    import RestClient from "@/components/Client/RESTClient.js"
-    import stringUtils from '@/utils/stringUtils';
+    import Organisations from "@/components/Records/Record/Organisations";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
-            AssociatedRecords,
+          Organisations,
             GeneralInfo,
             Keywords,
             Licences,
-            Maintainers,
-            Organisations,
+            Tools,
+            DataCondtions,
             Publications,
             Support,
             NotFound
@@ -162,7 +138,6 @@
                 error: null,
                 queryTriggered: false,
                 showScrollToTopButton: false,
-                recordAssociations: [],
                 canEdit: false,
                 canClaim: false,
                 alreadyClaimed: false,
@@ -244,7 +219,7 @@
         },
         destroyed() {
           // minor change in the y axis can fix a serious bug after going back to records..
-          window.scrollTo(0, 5);
+          this.$scrollTo('body',5,{})
         },
         mounted() {
             this.$nextTick(async function () {
@@ -256,37 +231,6 @@
         },
         methods: {
             ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
-            /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
-            prepareAssociations(associations, reverseAssociations) {
-                let _module = this;
-                let joinedArrays = associations.concat(reverseAssociations);
-                const properties = ['fairsharingRecord', 'linkedRecord'];
-
-                joinedArrays.forEach(item => {
-                    let object = {};
-                    properties.forEach(prop => {
-                        if (Object.prototype.hasOwnProperty.call(item, prop)) {
-                            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
-                            if (_module.currentRecord['fairsharingRecord'].registry === 'collection' && item.recordAssocLabel === 'collects'){
-                                object.recordAssocLabel = 'is collected by';
-                            }
-                            if (_module.currentRecord['fairsharingRecord'].registry === 'policy' && item.recordAssocLabel === 'recommends'){
-                                object.recordAssocLabel = 'is recommended by';
-                            }
-                            object.id = item[prop].id;
-                            object.registry = item[prop].registry;
-                            object.name = item[prop].name;
-                            object.subject = _module.currentRecord['fairsharingRecord'].name;
-                            object.type = item[prop].type;
-                        }
-                    });
-                    _module.recordAssociations.push(object);
-                });
-            },
-            /**
-            * Goes to the edit page for this record.
-            * @returns {undefined}
-            * */
             goToEdit(){
               let _module = this;
               const recordID =  _module.currentRecord['fairsharingRecord'].id;
@@ -351,11 +295,6 @@
                 this.claimedTriggered = false;
                 try {
                     await _module.fetchRecord(this.currentRoute);
-                    const currentRecord = _module.currentRecord['fairsharingRecord'];
-                    _module.recordAssociations = [];
-                    if (Object.prototype.hasOwnProperty.call(currentRecord, "recordAssociations") || Object.prototype.hasOwnProperty.call(currentRecord, "reverseRecordAssociations")) {
-                        _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-                    }
                 }
                 catch (e) {
                     this.error = e.message;
@@ -380,9 +319,13 @@
             }
         },
         metaInfo() {
+          try {
             return {
-                title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
+              title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
             }
+          } catch (e) {
+            //error
+          }
         },
     }
 </script>

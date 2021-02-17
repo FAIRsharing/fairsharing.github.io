@@ -35,10 +35,10 @@
                     >
                       <ul>
                         <li
-                          v-for="(error, errorName, index) in messages().updateProfile.message "
-                          :key="'error_'+index"
+                          v-for="(errorLocal, errorName, index) in messages().updateProfile.message "
+                          :key="'errorLocal_'+index"
                         >
-                          {{ errorName }}: {{ error[0] }}
+                          {{ errorName }}: {{ errorLocal[0] }}
                         </li>
                       </ul>
                     </v-alert>

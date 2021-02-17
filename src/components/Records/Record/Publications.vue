@@ -51,7 +51,7 @@
           </div>
 
           <!-- doi -->
-<!--          <div
+          <!--          <div
             v-if="checkLinkValue(publication.doi)"
             class="d-flex"
           >
@@ -87,7 +87,6 @@
               </a>
             </p>
           </div>
-
         </v-card>
       </v-col>
     </v-row>

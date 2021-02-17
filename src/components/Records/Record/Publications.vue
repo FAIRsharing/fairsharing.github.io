@@ -64,26 +64,34 @@
 
           <div class="d-flex flex-row mt-2 align-center">
             <!-- pubmed -->
-            <div
+            <v-btn
               v-if="checkLinkValue(publication.pubmedId)"
+              text
+              outlined
+              small
               class="mr-4"
             >
               <a
                 :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"
                 target="_blank"
               >
-                view Paper(PubMed)
+                View on PubMed
               </a>
-            </div>
+            </v-btn>
             <!-- doi -->
-            <div v-if="checkLinkValue(publication.doi)">
+            <v-btn
+              v-if="checkLinkValue(publication.doi)"
+              text
+              outlined
+              small
+            >
               <a
                 :href="'https://doi.org/' + publication.doi"
                 target="_blank"
               >
-                view Publication
+                View Publication
               </a>
-            </div>
+            </v-btn>
           </div>
         </v-card>
       </v-col>

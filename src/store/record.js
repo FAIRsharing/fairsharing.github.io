@@ -267,7 +267,8 @@ let recordStore = {
             });
             const record = {
                 record: record_data,
-                token: options.token
+                token: options.token,
+                id: options.id
             };
             let response = await restClient.updateRecord(record);
             if (response.error) {

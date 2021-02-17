@@ -52,22 +52,6 @@
             </p>
           </div>
 
-          <!-- doi -->
-          <!--          <div
-            v-if="checkLinkValue(publication.doi)"
-            class="d-flex"
-          >
-            <p class="ma-0">
-              <a
-                :href="'https://doi.org/' + publication.doi"
-                target="_blank"
-              >
-                {{ publication.doi }}
-              </a>
-            </p>
-          </div>-->
-
-
           <!-- Journals -->
           <div v-if="publication.journal">
             <strong class="ma-0">
@@ -75,19 +59,28 @@
             </strong>
           </div>
 
-          <!-- pubmed -->
-          <div
-            v-if="checkLinkValue(publication.pubmedId)"
-            class="d-flex mt-2 "
-          >
-            <p class="ma-0">
+          <div class="d-flex flex-row mt-2 align-center">
+            <!-- pubmed -->
+            <div
+              v-if="checkLinkValue(publication.pubmedId)"
+              class="mr-4"
+            >
               <a
                 :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"
                 target="_blank"
               >
-                {{ publication.pubmedId }}
+                view Paper(PubMed)
               </a>
-            </p>
+            </div>
+            <!-- doi -->
+            <div v-if="checkLinkValue(publication.doi)">
+              <a
+                :href="'https://doi.org/' + publication.doi"
+                target="_blank"
+              >
+                view Publication
+              </a>
+            </div>
           </div>
         </v-card>
       </v-col>

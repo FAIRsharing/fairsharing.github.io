@@ -10,7 +10,10 @@
       title="Publications"
       :inactive-section="getField('publications').length===0 || getField('publications')===undefined"
     />
-    <v-row dense>
+    <v-row
+      dense
+      class="ml-2 min-height-40"
+    >
       <v-col
         v-for="(publication,index) in getField('publications')"
         :key="publication.title+'_'+index"

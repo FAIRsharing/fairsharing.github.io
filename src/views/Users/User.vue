@@ -15,7 +15,7 @@
         </v-alert>
       </v-col>
     </v-row>
-    <v-row v-if="user().metadata">
+    <v-row v-if="user().isLoggedIn">
       <v-col
         v-if="!messages()['getUser'].error"
         cols12

@@ -2,7 +2,7 @@
   <v-container
     id="userPage"
     fluid
-    class="standard"
+    class="standard grey lighten-3"
   >
     <v-row v-if="messages()['getUser'].message">
       <v-col cols="12">
@@ -24,6 +24,7 @@
           v-if="!loading"
           v-model="activeTab"
           vertical
+          class="grey lighten-3"
         >
           <v-toolbar
             flat
@@ -115,6 +116,7 @@
                     </v-card-text>
                   </v-card>
                 </v-col>
+
                 <v-col
                   class="pt-0"
                   cols="12"
@@ -165,6 +167,7 @@
                     </v-card-actions>
                   </v-card>
                 </v-col>
+
                 <v-col
                   class="pt-0"
                   cols="12"
@@ -207,6 +210,7 @@
                     </v-card-actions>
                   </v-card>
                 </v-col>
+
                 <v-col
                   cols="12"
                   xl="4"
@@ -229,7 +233,7 @@
                     >
                       <v-list v-if="user().records.createdRecords">
                         <v-list-item
-                          v-for="(record, index) in user().records.createdRecords.slice(0, 6)"
+                          v-for="(record, index) in user().records.createdRecords.slice(0, 3)"
                           :key="'record_' + index"
                         >
                           <v-list-item-avatar>
@@ -238,6 +242,12 @@
                           <v-list-item-content>
                             <v-list-item-title>{{ record.name }}</v-list-item-title>
                             <v-list-item-subtitle>{{ record.registry }} - {{ record.type | cleanString }}</v-list-item-subtitle>
+                            <v-list-item-subtitle>
+                              <status-pills
+                                :approved="record.isApproved"
+                                :small="true"
+                              />
+                            </v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
                       </v-list>
@@ -257,6 +267,7 @@
                     </v-card-actions>
                   </v-card>
                 </v-col>
+
                 <v-col
                   cols="12"
                   xl="4"
@@ -279,7 +290,7 @@
                     >
                       <v-list v-if="user().records.maintainedRecords">
                         <v-list-item
-                          v-for="(record, index) in user().records.maintainedRecords.slice(0, 6)"
+                          v-for="(record, index) in user().records.maintainedRecords.slice(0, 3)"
                           :key="'record_' + index"
                         >
                           <v-list-item-avatar>
@@ -288,6 +299,12 @@
                           <v-list-item-content>
                             <v-list-item-title>{{ record.name }}</v-list-item-title>
                             <v-list-item-subtitle>{{ record.registry }} - {{ record.type | cleanString }}</v-list-item-subtitle>
+                            <v-list-item-subtitle>
+                              <status-pills
+                                :approved="record.isApproved"
+                                :small="true"
+                              />
+                            </v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
                       </v-list>
@@ -328,7 +345,7 @@
                     >
                       <v-list v-if="maintenanceRequests">
                         <v-list-item
-                          v-for="(record, index) in maintenanceRequests.slice(0, 6)"
+                          v-for="(record, index) in maintenanceRequests.slice(0, 3)"
                           :key="'record_' + index"
                         >
                           <v-list-item-avatar>
@@ -336,14 +353,14 @@
                           </v-list-item-avatar>
                           <v-list-item-content>
                             <v-list-item-title>{{ record.name }}</v-list-item-title>
-                            <v-list-item-subtitle>{{ record.registry }} - {{ record.type | cleanString }}</v-list-item-subtitle>
+                            <v-list-item-subtitle>{{ record.type | cleanString }}</v-list-item-subtitle>
+                            <v-list-item-subtitle>
+                              <status-pills
+                                :status="record.status"
+                                :small="true"
+                              />
+                            </v-list-item-subtitle>
                           </v-list-item-content>
-                          <v-list-item-avatar>
-                            <status-pills
-                              :status="record.status"
-                              :show-label="false"
-                            />
-                          </v-list-item-avatar>
                         </v-list-item>
                       </v-list>
                       <div
@@ -496,8 +513,7 @@
 
   #userPage .v-slide-group__wrapper {
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    max-height: 80vh;
-    transition: height 450ms;
+    max-height: 71vh;
   }
 
   #userPage .v-tabs .v-item-group {
@@ -506,6 +522,15 @@
 
   .v-window.v-item-group {
     min-height: 70vh;
+    background: #EEEEEE;
+  }
+
+  .v-tabs-bar {
+    background-color: #EEEEEE !important
+  }
+
+  .v-slide-group__wrapper {
+    background-color: white !important;
   }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-row class="white--text pt-5 mt-8 footer-container">
+  <v-row class="white--text pt-5 footer-container">
     <!--  Footer Blocks  -->
     <v-col
       v-for="(block,index) in footerData"

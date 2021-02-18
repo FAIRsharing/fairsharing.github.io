@@ -2,7 +2,6 @@
   <v-form
     id="editAdditionalInfo"
     ref="editAdditionalInfo"
-    v-model="formValid"
   >
     <v-card
       v-if="initialized"
@@ -24,12 +23,12 @@
         >
           <!-- Dynamically loads components -->
           <component
-            :is="componentMapping[field]" 
+            :is="componentMapping[field]"
             @update-counts="updateCounts"
           />
         </v-col>
-      </v-row>     
-      
+      </v-row>
+
       <v-card-text />
       <v-card-actions>
         <v-btn
@@ -78,7 +77,6 @@ export default {
   data() {
     return {
       initialized: false,
-      formValid: true, // TODO: Put this back to false.
       loading: true,
       allowedFields: [],
       componentMapping: {

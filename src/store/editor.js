@@ -61,7 +61,8 @@ let editorStore = {
             "applies_to_content",
             "least_permissive"
         ],
-        accessPointTypes: ["REST", "SOAP", "SPARQL", "Other"]
+        accessPointTypes: ["REST", "SOAP", "SPARQL", "Other"],
+        dataProcessTypes: ["data access", "data curation", "data release", "data versioning"]
 
     },
     mutations: {

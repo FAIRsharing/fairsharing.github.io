@@ -25,6 +25,13 @@ let record = {
             example_url: 'http://wibble.com/example'
         }
     ],
+    data_processes: [
+        {
+            type: 'data access',
+            name: 'form 51b/28A/C',
+            url: 'http://jobsworths-r-us.co.uk'
+        }
+    ],
     type: "model_and_format"
 };
 recordStore.state.sections = {
@@ -88,7 +95,10 @@ describe("EditAdditionalInfo", function() {
     // Fails to run in the test for unknown reasons.
     it("returns the correct list of fields names", async () => {
         await wrapper.vm.getFieldNames();
-        expect(wrapper.vm.allowedFields).toStrictEqual(["access_points"]);
+        expect(wrapper.vm.allowedFields).toStrictEqual([
+            "access_points",
+            "data_processes"
+        ]);
     });
 
     it("can update a record", async () => {

@@ -127,6 +127,7 @@ let recordStore = {
         setAdditionalInformation(state, additionalInformation) {
             let record = {
                 access_points: additionalInformation['access_points'],
+                data_processes: additionalInformation['data_processes']
             };
             // TODO: Separate setting necessary for each available field...
            Object.keys(record).forEach((type) => {
@@ -323,6 +324,8 @@ let recordStore = {
             };
             // TODO: Add remaining fields here
             newRecord.metadata.access_points = state.sections.additionalInformation.data.access_points;
+            newRecord.metadata.data_processes = state.sections.additionalInformation.data.data_processes;
+
 
             /// below = dodgy
             // define record

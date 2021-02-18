@@ -4,18 +4,18 @@
     class="flexCard"
   >
     <v-card-title>
-      Access Points
+      Associated Tools
     </v-card-title>
     <v-card-text>
+      <p
+        v-if="currentFields.associated_tools.length === 0"
+        class="my-0 mx-3"
+      >
+        No access points defined.
+      </p>
       <v-row>
-        <p
-          v-if="currentFields.access_points.length === 0"
-          class="my-0 mx-3"
-        >
-          No access points defined.
-        </p>
         <v-col
-          v-for="(ap, index) in currentFields.access_points"
+          v-for="(at, index) in currentFields.associated_tools"
           :key="'selected_' + index"
           class="col-3"
           cols="12"
@@ -32,16 +32,14 @@
             <v-card-title
               class="grey white--text"
             >
-              {{ ap.type }} access point
+              {{ at.name }}
             </v-card-title>
 
             <v-card-text
               class="pt-4 pb-4 grey lighten-3"
               style="flex-grow: 1;"
             >
-              <div> <b>URL:</b> {{ ap.url }} </div>
-              <div> <b>Documentation:</b> {{ ap.documentation_url || "N/A" }} </div>
-              <div> <b>Example:</b> {{ ap.example_url || "N/A" }}</div>
+              <div> {{ at.url }} </div>
             </v-card-text>
 
             <v-card-actions
@@ -50,22 +48,22 @@
               <v-btn
                 text
                 color="blue"
-                @click="removeAccessPoint(ap)"
+                @click="removeTool(at)"
               >
                 Remove
-              </v-btn> 
+              </v-btn>
             </v-card-actions>
           </v-card>
-        <!-- end of card for individual access point -->
+          <!-- end of card for individual access point -->
         </v-col>
       </v-row>
     </v-card-text>
     <v-card-actions>
       <v-btn
         class="primary"
-        @click="createAccessPoint"
+        @click="createTool"
       >
-        Add access point
+        Add associated tool
       </v-btn>
     </v-card-actions>
 
@@ -91,37 +89,18 @@
               <v-container fluid>
                 <v-row justify="start">
                   <v-col class="col-6">
-                    <v-select
-                      v-model="newAccessPoint.type"
-                      :items="accessPointTypes"
-                      menu-props="auto"
-                      label="Type"
+                    <v-text-field
+                      v-model="newTool.name"
+                      label="Name"
                       :rules="[rules.isRequired()]"
                       outlined
-                      return-object
                     />
                   </v-col>
                   <v-col class="col-6">
                     <v-text-field
-                      v-model="newAccessPoint.url"
+                      v-model="newTool.url"
                       label="URL"
                       :rules="[rules.isRequired(), rules.isUrl()]"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-6">
-                    <v-text-field
-                      v-model="newAccessPoint.documentation_url"
-                      label="Documentation URL"
-                      :rules="[rules.isUrl()]"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-6">
-                    <v-text-field
-                      v-model="newAccessPoint.example_url"
-                      label="Example URL"
-                      :rules="[rules.isUrl()]"
                       outlined
                     />
                   </v-col>
@@ -131,9 +110,9 @@
             <v-card-actions>
               <v-btn
                 class="green white--text"
-                @click="addAccessPoint()"
+                @click="addTool()"
               >
-                Add Access Point
+                Add Associated Tool
               </v-btn>
               <v-btn
                 class="red white--text"
@@ -152,16 +131,16 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex"
+import {mapGetters} from "vuex"
 import {isRequired, isUrl} from "@/utils/rules.js"
 
 
 export default {
-  name: "AccessPoints",
+  name: "AssociatedTools",
   data() {
     return {
       openEditor: false,
-      newAccessPoint: {},
+      newTool: {},
       rules: {
         isRequired: function(){return isRequired()},
         isUrl: function(){return isUrl()},
@@ -170,7 +149,6 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getSection", "getChanges"]),
-    ...mapState("editor", ["accessPointTypes"]),
     section(){
       return this.getSection('additionalInformation');
     },
@@ -179,7 +157,7 @@ export default {
     },
     currentFields(){
       let data = this.getSection("additionalInformation").data
-      if (!data.access_points) data.access_points = [];
+      if (!data.associated_tools) data.associated_tools = [];
       return data;
     }
   },
@@ -190,15 +168,15 @@ export default {
         let _module = this;
         let changes = 0;
 
-        let initialAps = _module.getSection("additionalInformation").initialData.access_points || [];
-        let currentAps = _module.currentFields.access_points || [];
+        let initialTools = _module.getSection("additionalInformation").initialData.associated_tools;
+        let currentTools = _module.currentFields.associated_tools;
 
-        let onlyInitial = initialAps.filter(_module.compare(currentAps));
-        let onlyCurrent = currentAps.filter(_module.compare(initialAps));
+        let onlyInitial = initialTools.filter(_module.compare(currentTools));
+        let onlyCurrent = currentTools.filter(_module.compare(initialTools));
 
         changes += (onlyInitial.length + onlyCurrent.length);
 
-        _module.$emit("update-counts", {access_points: changes});
+        _module.$emit("update-counts", {associated_tools: changes});
 
       }
     }
@@ -211,25 +189,23 @@ export default {
         }).length === 0;
       }
     },
-    createAccessPoint() {
-      this.newAccessPoint = {
-        type: null,
-        url: null,
-        documentation_url: null,
-        example_url: null,
+    createTool() {
+      this.newTool = {
+        name: null,
+        url: null
       };
       this.openEditor = true;
     },
-    addAccessPoint() {
+    addTool() {
       const _module = this;
-      let newAp = JSON.parse(JSON.stringify(_module.newAccessPoint));
-      this.currentFields.access_points.push(newAp);
-      _module.newAccessPoint = {};
+      let newAt = JSON.parse(JSON.stringify(_module.newTool));
+      this.currentFields.associated_tools.push(newAt);
+      _module.newTool = {};
       _module.openEditor = false;
     },
-    removeAccessPoint(point){
-      this.currentFields.access_points = this.currentFields.access_points.filter(obj =>
-          obj.type !== point.name && obj.url !== point.url
+    removeTool(tool){
+      this.currentFields.associated_tools = this.currentFields.associated_tools.filter(obj =>
+          obj.type !== tool.name && obj.url !== tool.url
       );
     },
   }

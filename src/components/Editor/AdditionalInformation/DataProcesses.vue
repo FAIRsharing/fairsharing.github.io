@@ -71,67 +71,74 @@
       persistent
       no-click-animation
     >
-      <v-container
-        fluid
-        class="py-0"
+      <v-form
+        id="addAssociatedTool"
+        ref="addAssociatedTool"
+        v-model="formValid"
       >
-        <v-row justify="center">
-          <v-card width="100%">
-            <v-card-title class="green white--text">
-              Add a data process
-            </v-card-title>
-            <v-card-text>
-              <v-container fluid>
-                <v-row justify="start">
-                  <v-col class="col-6">
-                    <v-select
-                      v-model="newDataProcess.type"
-                      :items="dataProcessTypes"
-                      menu-props="auto"
-                      label="Type"
-                      :rules="[rules.isRequired()]"
-                      outlined
-                      return-object
-                    />
-                  </v-col>
-                  <v-col class="col-6">
-                    <v-text-field
-                      v-model="newDataProcess.name"
-                      label="Name"
-                      :rules="[rules.isRequired()]"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-6">
-                    <v-text-field
-                      v-model="newDataProcess.url"
-                      label="URL"
-                      :rules="[rules.isUrl()]"
-                      outlined
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                class="green white--text"
-                @click="addDataProcess()"
-              >
-                Add Access Point
-              </v-btn>
-              <v-btn
-                class="red white--text"
-                @click="openEditor = false"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+        <v-container
+          fluid
+          class="py-0"
+        >
+          <v-row justify="center">
+            <v-card width="100%">
+              <v-card-title class="green white--text">
+                Add a data process
+              </v-card-title>
+              <v-card-text>
+                <v-container fluid>
+                  <v-row justify="start">
+                    <v-col class="col-6">
+                      <v-select
+                        v-model="newDataProcess.type"
+                        :items="dataProcessTypes"
+                        menu-props="auto"
+                        label="Type"
+                        :rules="[rules.isRequired()]"
+                        outlined
+                        return-object
+                      />
+                    </v-col>
+                    <v-col class="col-6">
+                      <v-text-field
+                        v-model="newDataProcess.name"
+                        label="Name"
+                        :rules="[rules.isRequired()]"
+                        outlined
+                      />
+                    </v-col>
+                    <v-col class="col-6">
+                      <v-text-field
+                        v-model="newDataProcess.url"
+                        label="URL"
+                        :rules="[rules.isUrl()]"
+                        outlined
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  class="green white--text"
+                  :disabled="!formValid"
+                  @click="addDataProcess()"
+                >
+                  Add Access Point
+                </v-btn>
+                <v-btn
+                  class="red white--text"
+                  @click="openEditor = false"
+                >
+                  Cancel
+                </v-btn>
+              </v-card-actions>
+            </v-card>
 
           <!-- new access point dialogue ends -->
-        </v-row>
-      </v-container>
+          </v-row>
+        </v-container>
+      </v-form>
     </v-dialog>
   </v-card>
 </template>
@@ -146,6 +153,7 @@ export default {
   data() {
     return {
       openEditor: false,
+      formValid: false,
       newDataProcess: {},
       rules: {
         isRequired: function(){return isRequired()},

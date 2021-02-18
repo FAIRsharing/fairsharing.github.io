@@ -11,7 +11,7 @@
         v-if="currentFields.associated_tools.length === 0"
         class="my-0 mx-3"
       >
-        No access points defined.
+        No Associated tools defined.
       </p>
       <v-row>
         <v-col

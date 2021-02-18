@@ -190,8 +190,8 @@ export default {
         let _module = this;
         let changes = 0;
 
-        let initialAps = _module.getSection("additionalInformation").initialData.access_points || [];
-        let currentAps = _module.currentFields.access_points || [];
+        let initialAps = _module.getSection("additionalInformation").initialData.access_points;
+        let currentAps = _module.currentFields.access_points;
 
         let onlyInitial = initialAps.filter(_module.compare(currentAps));
         let onlyCurrent = currentAps.filter(_module.compare(initialAps));

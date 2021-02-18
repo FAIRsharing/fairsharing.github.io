@@ -522,7 +522,7 @@
 
   .v-window.v-item-group {
     min-height: 70vh;
-    background: #EEEEEE;
+    background: #EEEEEE !important;
   }
 
   .v-tabs-bar {

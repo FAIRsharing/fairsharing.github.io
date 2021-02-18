@@ -21,7 +21,7 @@
               <v-card-text class="">
                 <v-divider class="py-0 mb-2 mt-0" />
                 <DOIField :doi="record.doi" />
-                <div>
+                <div class="ml-1 mt-2">
                   <StatusPills :status="record.status" />
                   <StatusPills :approved="record['isApproved']" />
                 </div>

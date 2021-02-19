@@ -20,8 +20,7 @@
         <v-tabs
           v-model="tab"
           background-color="transparent"
-          color="basil"
-          grow
+          centered
         >
           <v-tab
             v-for="item in items"
@@ -30,6 +29,50 @@
             {{ item }}
           </v-tab>
         </v-tabs>
+        <v-tabs-items v-model="tab">
+          <v-tab-item
+            v-for="item in items"
+            :key="item"
+          >
+            <v-card
+              class="mx-1"
+              flat
+            >
+              <v-virtual-scroll
+                :items="items"
+                height="300"
+                item-height="100"
+              >
+                <v-list-item :key="item">
+                  <v-list-item-action>
+                    <v-btn
+                      fab
+                      small
+                      depressed
+                      color="primary"
+                    >
+                      {{ item }}
+                    </v-btn>
+                  </v-list-item-action>
+
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      User Database Record <strong>ID {{ item }}</strong>
+                    </v-list-item-title>
+                  </v-list-item-content>
+
+                  <v-list-item-action>
+                    <v-icon small>
+                      mdi-open-in-new
+                    </v-icon>
+                  </v-list-item-action>
+                </v-list-item>
+
+                <v-divider />
+              </v-virtual-scroll>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
       </v-card>
     </div>
   </v-card>
@@ -47,11 +90,17 @@ export default {
     return {
       tab: null,
       items: [
-        'In collections', 'In Recommendation',
+        'In collections', 'In Recommendations',
       ],
     }
   },
   computed: {
+    items () {
+      return Array.from({ length: this.length }, (k, v) => v + 1)
+    },
+    length () {
+      return 7000
+    },
     ...mapGetters("record", ["getField"]),
   }
 }

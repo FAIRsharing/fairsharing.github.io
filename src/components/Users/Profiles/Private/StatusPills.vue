@@ -9,10 +9,13 @@
         :class="{'green': status === 'approved', 'red': status === 'rejected', 'orange': status === 'pending', 'small': small}"
       />
       <b
+        v-if="!small"
         class="ml-2"
         :class="{'green--text': status === 'approved', 'red--text': status === 'rejected', 'orange--text': status === 'pending'}"
       >{{ status.toUpperCase() }}</b>
     </div>
+
+
     <div
       v-if="approved !== null"
       class="d-flex"
@@ -21,18 +24,20 @@
         class="led d-inline-block"
         :class="{'green': approved, 'red': !approved, 'small': small}"
       />
-      <b
-        v-if="approved"
-        class="ml-2 green--text"
-      >
-        APPROVED
-      </b>
-      <b
-        v-if="!approved"
-        class="ml-2 red--text"
-      >
-        NOT APPROVED
-      </b>
+      <div v-if="!small">
+        <b
+          v-if="approved"
+          class="ml-2 green--text"
+        >
+          APPROVED
+        </b>
+        <b
+          v-if="!approved"
+          class="ml-2 red--text"
+        >
+          NOT APPROVED
+        </b>
+      </div>
     </div>
   </div>
 </template>

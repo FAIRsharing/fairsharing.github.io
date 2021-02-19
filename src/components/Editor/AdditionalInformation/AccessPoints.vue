@@ -161,6 +161,7 @@
 <script>
 import {mapGetters, mapState} from "vuex"
 import {isRequired, isUrl} from "@/utils/rules.js"
+import {compareArray} from "@/utils/utils.js";
 
 
 export default {
@@ -201,8 +202,8 @@ export default {
         let initialAps = _module.getSection("additionalInformation").initialData.access_points;
         let currentAps = _module.currentFields.access_points;
 
-        let onlyInitial = initialAps.filter(_module.compare(currentAps));
-        let onlyCurrent = currentAps.filter(_module.compare(initialAps));
+        let onlyInitial = initialAps.filter(compareArray(currentAps));
+        let onlyCurrent = currentAps.filter(compareArray(initialAps));
 
         changes += (onlyInitial.length + onlyCurrent.length);
 
@@ -212,13 +213,6 @@ export default {
     }
   },
   methods: {
-    compare(array) {
-      return function(current){
-        return array.filter(function(other){
-          return other.type === current.type && other.url === current.url
-        }).length === 0;
-      }
-    },
     createAccessPoint() {
       this.newAccessPoint = {
         type: null,

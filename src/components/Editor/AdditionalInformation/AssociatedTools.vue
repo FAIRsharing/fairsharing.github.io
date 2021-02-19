@@ -140,7 +140,7 @@
 <script>
 import {mapGetters} from "vuex"
 import {isRequired, isUrl} from "@/utils/rules.js"
-
+import {compareArray} from "@/utils/utils.js";
 
 export default {
   name: "AssociatedTools",
@@ -179,8 +179,8 @@ export default {
         let initialTools = _module.getSection("additionalInformation").initialData.associated_tools;
         let currentTools = _module.currentFields.associated_tools;
 
-        let onlyInitial = initialTools.filter(_module.compare(currentTools));
-        let onlyCurrent = currentTools.filter(_module.compare(initialTools));
+        let onlyInitial = initialTools.filter(compareArray(currentTools));
+        let onlyCurrent = currentTools.filter(compareArray(initialTools));
 
         changes += (onlyInitial.length + onlyCurrent.length);
 
@@ -190,13 +190,6 @@ export default {
     }
   },
   methods: {
-    compare(array) {
-      return function(current){
-        return array.filter(function(other){
-          return other.type === current.type && other.url === current.url
-        }).length === 0;
-      }
-    },
     createTool() {
       this.newTool = {
         name: null,

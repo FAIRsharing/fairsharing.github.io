@@ -2,7 +2,6 @@
   <v-form
     id="editAdditionalInfo"
     ref="editAdditionalInfo"
-    v-model="formValid"
   >
     <v-card
       v-if="initialized"
@@ -24,12 +23,12 @@
         >
           <!-- Dynamically loads components -->
           <component
-            :is="componentMapping[field]" 
+            :is="componentMapping[field]"
             @update-counts="updateCounts"
           />
         </v-col>
-      </v-row>     
-      
+      </v-row>
+
       <v-card-text />
       <v-card-actions>
         <v-btn
@@ -66,6 +65,7 @@
 import {mapActions, mapGetters, mapState} from "vuex";
 import Alerts from "@/components/Editor/Alerts";
 import AccessPoints from "@/components/Editor/AdditionalInformation/AccessPoints";
+import AssociatedTools from "@/components/Editor/AdditionalInformation/AssociatedTools";
 import Loaders from "@/components/Navigation/Loaders";
 import RestClient from "@/components/Client/RESTClient.js"
 
@@ -73,18 +73,19 @@ let restClient = new RestClient();
 
 export default {
   name: "EditAdditionalInfo",
-  components: { Alerts, AccessPoints, Loaders },
+  components: { Alerts, AccessPoints, AssociatedTools, Loaders },
   data() {
     return {
       initialized: false,
-      formValid: true, // TODO: Put this back to false.
       loading: true,
       allowedFields: [],
       componentMapping: {
-        "access_points": "AccessPoints"
+        "access_points": "AccessPoints",
+        "associated_tools": "AssociatedTools"
       },
       counts: {
-        access_points: 0
+        access_points: 0,
+        associated_tools: 0
       }
     }
   },
@@ -99,7 +100,10 @@ export default {
     this.$nextTick(async () => {
       //this.allowedFields = await this.getFieldNames();
       // TODO: Modify this when all sections have been completed.
-      this.allowedFields = ['access_points'];
+      this.allowedFields = [
+          'access_points',
+          'associated_tools'
+      ];
       //console.log(JSON.stringify(this.allowedFields));
       this.initialized = true;
       this.loading = false;

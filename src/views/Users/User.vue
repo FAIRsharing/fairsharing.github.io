@@ -2,7 +2,7 @@
   <v-container
     id="userPage"
     fluid
-    class="standard grey lighten-3"
+    class="standard grey lighten-3 pb-10"
   >
     <v-row v-if="messages()['getUser'].message">
       <v-col cols="12">
@@ -39,7 +39,7 @@
           <v-row>
             <v-col
               cols="12"
-              xl="3"
+              xl="2"
               lg="6"
               md="12"
               sm="12"
@@ -53,7 +53,7 @@
                 <v-card-title class="primary white--text py-3">
                   Personal Information
                 </v-card-title>
-                <v-card-text class="pb-0">
+                <v-card-text class="pt-3 pb-0">
                   <v-list>
                     <v-list-item
                       v-for="(field, fieldName, fieldKey) in getUserMeta"
@@ -62,7 +62,7 @@
                     >
                       <v-list-item-content
                         v-if="fieldName !== 'preferences'"
-                        class="py-2"
+                        class="py-0 d-block"
                       >
                         <b class="blue--text">{{ fieldName | cleanString }}: </b>
                         <span v-if="field"> {{ field }} </span>
@@ -92,7 +92,7 @@
               class="pt-0"
               cols="12"
               xl="6"
-              lg="6"
+              lg="5"
               md="12"
               sm="12"
               xs="12"
@@ -142,8 +142,8 @@
             <v-col
               class="pt-0"
               cols="12"
-              xl="3"
-              lg="6"
+              xl="4"
+              lg="4"
               md="12"
               sm="12"
               xs="12"
@@ -156,23 +156,13 @@
                   Watched Records
                 </v-card-title>
                 <v-card-text
-                  class="pt-3 pb-0"
+                  class="px-0"
                   style="flex-grow: 1"
                 >
-                  <v-list v-if="user().records.watchedRecords">
-                    <v-list-item
-                      v-for="(record, index) in user().records.watchedRecords.slice(0, 6)"
-                      :key="'record_' + index"
-                    >
-                      <v-list-item-avatar>
-                        <v-img :src="icons()[record.type]" />
-                      </v-list-item-avatar>
-                      <v-list-item-content>
-                        <v-list-item-title>{{ record.name }}</v-list-item-title>
-                        <v-list-item-subtitle>{{ record.registry }} - {{ record.type | cleanString }}</v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
+                  <RecordsTable
+                    :records="user().records.watchedRecords"
+                    source="watchedRecords"
+                  />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -194,7 +184,7 @@
                   Created Records
                 </v-card-title>
                 <v-card-text
-                  class="pt-3 pb-0"
+                  class="py-0"
                   style="flex-grow: 1"
                 >
                   <RecordsTable
@@ -222,7 +212,7 @@
                   Maintained Records
                 </v-card-title>
                 <v-card-text
-                  class="pt-3 pb-0"
+                  class="py-0"
                   style="flex-grow: 1"
                 >
                   <RecordsTable
@@ -250,7 +240,7 @@
                   Maintenance Requests
                 </v-card-title>
                 <v-card-text
-                  class="pt-3 pb-0"
+                  class="py-0"
                   style="flex-grow: 1"
                 >
                   <RecordsTable
@@ -282,6 +272,7 @@
     import Loaders from "@/components/Navigation/Loaders";
     import ExternalClient from "@/components/Client/ExternalClients.js"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
+    import { cleanString } from "@/utils/stringUtils"
 
     let client = new ExternalClient();
 
@@ -292,11 +283,7 @@
     export default {
       name: "User",
       components: {RecordsTable, Loaders, UserProfileMenu},
-      filters: {
-          cleanString: function(str){
-            return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
-          }
-      },
+      mixins: [cleanString],
       data: () => {
         return {
             panel: 0,
@@ -350,7 +337,7 @@
             if (this.user().metadata.orcid) {
               let publications = await client.getOrcidUser(this.user().metadata.orcid);
               output = publications['activities-summary']['works']['group']
-                      .slice(0, 8)
+                      .slice(0, 7)
                       .map(obj => {return obj['work-summary'][0].title.title.value});
             }
             return output;

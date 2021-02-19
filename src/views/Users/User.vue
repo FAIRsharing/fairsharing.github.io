@@ -486,7 +486,7 @@
           async getPublications(){
             let output = [];
             if (this.user().metadata.orcid) {
-              let publications = await client.getOrcidUser("0000-0002-2109-489X");
+              let publications = await client.getOrcidUser(this.user().metadata.orcid);
               output = publications['activities-summary']['works']['group']
                       .slice(0, 8)
                       .map(obj => {return obj['work-summary'][0].title.title.value});

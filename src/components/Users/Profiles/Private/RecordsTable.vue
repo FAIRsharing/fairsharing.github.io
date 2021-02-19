@@ -1,85 +1,113 @@
 <template>
-  <v-data-table
-    class="userProfileRecordsTable"
-    :items="records"
-    :headers="headers"
-    :items-per-page="perPage"
-    :footer-props="footer"
-    calculate-widths
-  >
-    <template #[`item.name`]="{ item }">
-      <div class="d-flex justify-start align-center">
-        <v-avatar size="30">
-          <v-img :src="icons()[item.type]" />
-        </v-avatar>
-        <div class="mt-1 ml-3 alignLeft">
-          {{ item.name | cleanString }}
+  <div>
+    <v-data-table
+      class="userProfileRecordsTable"
+      :items="records"
+      :headers="headers"
+      :items-per-page="perPage"
+      :footer-props="footer"
+      calculate-widths
+    >
+      <template #[`item.name`]="{ item }">
+        <div class="d-flex justify-start align-center">
+          <v-avatar size="30">
+            <v-img :src="icons()[item.type]" />
+          </v-avatar>
+          <div class="mt-1 ml-3 alignLeft">
+            {{ item.name | cleanString }}
+          </div>
         </div>
-      </div>
-    </template>
-    <template #[`item.type`]="{ item }">
-      {{ item.type | cleanString }}
-    </template>
-    <template #[`item.isApproved`]="{ item }">
-      <StatusPills
-        class="d-flex justify-center"
-        :approved="item['isApproved']"
-        :small="true"
-      />
-    </template>
-    <template #[`item.status`]="{ item }">
-      <StatusPills
-        class="d-flex justify-center"
-        :status="item.status"
-        :small="true"
-      />
-    </template>
-    <template #[`item.actions`]="{ item }">
-      <v-menu offset-x>
-        <template v-slot:activator="{ on, attrs }">
-          <v-icon
-            v-bind="attrs"
-            v-on="on"
+      </template>
+      <template #[`item.type`]="{ item }">
+        {{ item.type | cleanString }}
+      </template>
+      <template #[`item.isApproved`]="{ item }">
+        <StatusPills
+          class="d-flex justify-center"
+          :approved="item['isApproved']"
+          :small="true"
+        />
+      </template>
+      <template #[`item.status`]="{ item }">
+        <StatusPills
+          class="d-flex justify-center"
+          :status="item.status"
+          :small="true"
+        />
+      </template>
+      <template #[`item.actions`]="{ item }">
+        <v-menu offset-x>
+          <template #activator="{ on, attrs }">
+            <v-icon
+              v-bind="attrs"
+              v-on="on"
+            >
+              fas fa-ellipsis-v
+            </v-icon>
+          </template>
+          <v-list>
+            <v-list-item @click="previewRecord(item.id)">
+              Preview record
+            </v-list-item>
+            <v-list-item
+              v-if="source !== 'watchedRecords' && source !== 'maintenanceRequests'"
+              @click="goToEdit(item.id)"
+            >
+              Edit record
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
+      <template slot="no-data">
+        <div>
+          {{ noData }}
+          <router-link
+            v-if="source === 'createdRecords'"
+            to="/new"
           >
-            fas fa-ellipsis-v
-          </v-icon>
-        </template>
-        <v-list>
-          <v-list-item>
-            Preview record {{ item.id }}
-          </v-list-item>
-          <v-list-item v-if="source !== 'watchedRecords'">
-            Edit record {{ item.id }}
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </template>
-    <template slot="no-data">
-      <div>
-        {{ noData }}
-        <router-link
-          v-if="source === 'createdRecords'"
-          to="/new"
-        >
-          here.
-        </router-link>
-      </div>
-    </template>
-  </v-data-table>
+            here.
+          </router-link>
+        </div>
+      </template>
+    </v-data-table>
+
+    <!-- PREVIEW RECORD -->
+    <v-dialog v-model="showOverlay">
+      <v-btn
+        fab
+        small
+        class="grey--text absolute"
+        @click="hideOverlay()"
+      >
+        <v-icon>fa-times</v-icon>
+      </v-btn>
+
+      <v-card>
+        <Record :target="targetID" />
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
     import { mapState } from "vuex"
     import { cleanString } from "@/utils/stringUtils"
-
     import StatusPills from "./StatusPills";
+    import Record from "@/views/Records/Record";
+
     export default {
         name: "RecordsTable",
-        components: {StatusPills},
+        components: {Record, StatusPills},
         mixins: [cleanString],
         props: {
             records: { type: Array, default: null },
             source: { type: String, default: null }
+        },
+        data: () => {
+            return {
+                showOverlay: false,
+                targetID: null
+            }
         },
         computed: {
             ...mapState('editor', ['icons']),
@@ -113,6 +141,19 @@
               if (this.source === 'watchedRecords') return {'items-per-page-options': [7]};
               return {'items-per-page-options': [5]}
             }
+        },
+        methods: {
+            goToEdit(id){
+                this.$router.push({path: `/${id}/edit`})
+            },
+            previewRecord(id) {
+                this.targetID = id;
+                this.showOverlay = true;
+            },
+            hideOverlay(){
+                this.showOverlay = false;
+                this.targetID = null;
+            }
         }
     }
 </script>
@@ -124,5 +165,11 @@
 
   .userProfileRecordsTable th {
     min-width: 100px
+  }
+
+  .absolute {
+      position: absolute !important;
+      z-index: 1;
+      right: 13px;
   }
 </style>

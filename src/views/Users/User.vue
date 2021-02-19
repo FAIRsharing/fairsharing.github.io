@@ -156,7 +156,7 @@
                   Watched Records
                 </v-card-title>
                 <v-card-text
-                  class="px-0"
+                  class="pa-0"
                   style="flex-grow: 1"
                 >
                   <RecordsTable
@@ -184,7 +184,7 @@
                   Created Records
                 </v-card-title>
                 <v-card-text
-                  class="py-0"
+                  class="pa-0"
                   style="flex-grow: 1"
                 >
                   <RecordsTable
@@ -212,7 +212,7 @@
                   Maintained Records
                 </v-card-title>
                 <v-card-text
-                  class="py-0"
+                  class="pa-0"
                   style="flex-grow: 1"
                 >
                   <RecordsTable
@@ -240,7 +240,7 @@
                   Maintenance Requests
                 </v-card-title>
                 <v-card-text
-                  class="py-0"
+                  class="pa-0"
                   style="flex-grow: 1"
                 >
                   <RecordsTable

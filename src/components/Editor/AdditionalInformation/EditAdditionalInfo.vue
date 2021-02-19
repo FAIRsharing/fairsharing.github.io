@@ -66,6 +66,7 @@ import {mapActions, mapGetters, mapState} from "vuex";
 import Alerts from "@/components/Editor/Alerts";
 import AccessPoints from "@/components/Editor/AdditionalInformation/AccessPoints";
 import AssociatedTools from "@/components/Editor/AdditionalInformation/AssociatedTools";
+import CrossReferences from "@/components/Editor/AdditionalInformation/CrossReferences";
 import Loaders from "@/components/Navigation/Loaders";
 import RestClient from "@/components/Client/RESTClient.js"
 
@@ -73,7 +74,7 @@ let restClient = new RestClient();
 
 export default {
   name: "EditAdditionalInfo",
-  components: { Alerts, AccessPoints, AssociatedTools, Loaders },
+  components: { Alerts, AccessPoints, AssociatedTools, CrossReferences, Loaders },
   data() {
     return {
       initialized: false,
@@ -81,11 +82,13 @@ export default {
       allowedFields: [],
       componentMapping: {
         "access_points": "AccessPoints",
-        "associated_tools": "AssociatedTools"
+        "associated_tools": "AssociatedTools",
+        "cross_references": "CrossReferences"
       },
       counts: {
         access_points: 0,
-        associated_tools: 0
+        associated_tools: 0,
+        cross_references: 0
       }
     }
   },
@@ -102,7 +105,8 @@ export default {
       // TODO: Modify this when all sections have been completed.
       this.allowedFields = [
           'access_points',
-          'associated_tools'
+          'associated_tools',
+          'cross_references'
       ];
       //console.log(JSON.stringify(this.allowedFields));
       this.initialized = true;

@@ -4,18 +4,18 @@
     class="flexCard"
   >
     <v-card-title>
-      Associated Tools
+      Cross References
     </v-card-title>
     <v-card-text>
       <p
-        v-if="currentFields.associated_tools.length === 0"
+        v-if="currentFields.cross_references.length === 0"
         class="my-0 mx-3"
       >
-        No Associated tools defined.
+        No cross-references defined.
       </p>
       <v-row>
         <v-col
-          v-for="(at, index) in currentFields.associated_tools"
+          v-for="(cr, index) in currentFields.cross_references"
           :key="'selected_' + index"
           class="col-3"
           cols="12"
@@ -32,14 +32,14 @@
             <v-card-title
               class="grey white--text"
             >
-              {{ at.name }}
+              {{ cr.portal }}
             </v-card-title>
 
             <v-card-text
               class="pt-4 pb-4 grey lighten-3"
               style="flex-grow: 1;"
             >
-              <div> {{ at.url }} </div>
+              <div> {{ cr.name }}: {{ cr.url }} </div>
             </v-card-text>
 
             <v-card-actions
@@ -48,7 +48,7 @@
               <v-btn
                 text
                 color="blue"
-                @click="removeTool(at)"
+                @click="removeReference(cr)"
               >
                 Remove
               </v-btn>
@@ -61,9 +61,9 @@
     <v-card-actions>
       <v-btn
         class="primary"
-        @click="createTool"
+        @click="createReference"
       >
-        Add associated tool
+        Add cross reference
       </v-btn>
     </v-card-actions>
 
@@ -77,8 +77,8 @@
       no-click-animation
     >
       <v-form
-        id="addAssociatedTool"
-        ref="addAssociatedTool"
+        id="addReference"
+        ref="addReference"
         v-model="formValid"
       >
         <v-container
@@ -94,8 +94,19 @@
                 <v-container fluid>
                   <v-row justify="start">
                     <v-col class="col-6">
+                      <v-select
+                        v-model="newReference.portal"
+                        :items="crossReferenceTypes"
+                        menu-props="auto"
+                        label="Portal"
+                        :rules="[rules.isRequired()]"
+                        outlined
+                        return-object
+                      />
+                    </v-col>
+                    <v-col class="col-6">
                       <v-text-field
-                        v-model="newTool.name"
+                        v-model="newReference.name"
                         label="Name"
                         :rules="[rules.isRequired()]"
                         outlined
@@ -103,7 +114,7 @@
                     </v-col>
                     <v-col class="col-6">
                       <v-text-field
-                        v-model="newTool.url"
+                        v-model="newReference.url"
                         label="URL"
                         :rules="[rules.isRequired(), rules.isUrl()]"
                         outlined
@@ -116,9 +127,9 @@
                 <v-btn
                   class="green white--text"
                   :disabled="!formValid"
-                  @click="addTool()"
+                  @click="addReference()"
                 >
-                  Add Associated Tool
+                  Add Cross Reference
                 </v-btn>
                 <v-btn
                   class="red white--text"
@@ -129,7 +140,7 @@
               </v-card-actions>
             </v-card>
 
-          <!-- new access point dialogue ends -->
+            <!-- new access point dialogue ends -->
           </v-row>
         </v-container>
       </v-form>
@@ -138,17 +149,17 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapGetters, mapState} from "vuex"
 import {isRequired, isUrl} from "@/utils/rules.js"
 import {compareArray} from "@/utils/utils.js";
 
 export default {
-  name: "AssociatedTools",
+  name: "CrossReferences",
   data() {
     return {
       openEditor: false,
       formValid: false,
-      newTool: {},
+      newReference: {},
       rules: {
         isRequired: function(){return isRequired()},
         isUrl: function(){return isUrl()},
@@ -157,6 +168,7 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getSection", "getChanges"]),
+    ...mapState("editor", ["crossReferenceTypes"]),
     section(){
       return this.getSection('additionalInformation');
     },
@@ -165,7 +177,7 @@ export default {
     },
     currentFields(){
       let data = this.getSection("additionalInformation").data
-      if (!data.associated_tools) data.associated_tools = [];
+      if (!data.cross_references) data.cross_references = [];
       return data;
     }
   },
@@ -176,37 +188,38 @@ export default {
         let _module = this;
         let changes = 0;
 
-        let initialTools = _module.getSection("additionalInformation").initialData.associated_tools;
-        let currentTools = _module.currentFields.associated_tools;
+        let initialReferences = _module.getSection("additionalInformation").initialData.cross_references;
+        let currentReferences = _module.currentFields.cross_references;
 
-        let onlyInitial = initialTools.filter(compareArray(currentTools));
-        let onlyCurrent = currentTools.filter(compareArray(initialTools));
+        let onlyInitial = initialReferences.filter(compareArray(currentReferences));
+        let onlyCurrent = currentReferences.filter(compareArray(initialReferences));
 
         changes += (onlyInitial.length + onlyCurrent.length);
 
-        _module.$emit("update-counts", {associated_tools: changes});
+        _module.$emit("update-counts", {cross_references: changes});
 
       }
     }
   },
   methods: {
-    createTool() {
-      this.newTool = {
+    createReference() {
+      this.newReference = {
+        portal: null,
         name: null,
         url: null
       };
       this.openEditor = true;
     },
-    addTool() {
+    addReference() {
       const _module = this;
-      let newAt = JSON.parse(JSON.stringify(_module.newTool));
-      this.currentFields.associated_tools.push(newAt);
-      _module.newTool = {};
+      let newRef = JSON.parse(JSON.stringify(_module.newReference));
+      this.currentFields.cross_references.push(newRef);
+      _module.newReference = {};
       _module.openEditor = false;
     },
-    removeTool(tool){
-      this.currentFields.associated_tools = this.currentFields.associated_tools.filter(obj =>
-          obj.name !== tool.name && obj.url !== tool.url
+    removeReference(ref){
+      this.currentFields.cross_references = this.currentFields.cross_references.filter(obj =>
+          obj.type !== ref.name && obj.url !== ref.url && obj.portal !== ref.portal
       );
     },
   }

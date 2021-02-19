@@ -31,6 +31,13 @@ let record = {
             url: 'http://exciting.com'
         }
     ],
+    cross_references: [
+        {
+            portal: 'Bioportal',
+            name: 'Soylent Green',
+            url: 'http://bioportal.org/soylent_green'
+        }
+    ],
     type: "model_and_format"
 };
 recordStore.state.sections = {
@@ -94,9 +101,11 @@ describe("EditAdditionalInfo", function() {
     // Fails to run in the test for unknown reasons.
     it("returns the correct list of fields names", async () => {
         await wrapper.vm.getFieldNames();
+        // TODO: In the final version this will require a mocked call.
         expect(wrapper.vm.allowedFields).toStrictEqual([
             "access_points",
-            "associated_tools"
+            "associated_tools",
+            "cross_references"
         ]);
     });
 

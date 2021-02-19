@@ -3,8 +3,9 @@
     class="userProfileRecordsTable"
     :items="records"
     :headers="headers"
-    :items-per-page="5"
-    :footer-props="{'items-per-page-options': [5]}"
+    :items-per-page="perPage"
+    :footer-props="footer"
+    calculate-widths
   >
     <template #[`item.name`]="{ item }">
       <div class="d-flex justify-start align-center">
@@ -47,7 +48,7 @@
           <v-list-item>
             Preview record {{ item.id }}
           </v-list-item>
-          <v-list-item>
+          <v-list-item v-if="source !== 'watchedRecords'">
             Edit record {{ item.id }}
           </v-list-item>
         </v-list>
@@ -69,16 +70,13 @@
 
 <script>
     import { mapState } from "vuex"
+    import { cleanString } from "@/utils/stringUtils"
 
     import StatusPills from "./StatusPills";
     export default {
         name: "RecordsTable",
         components: {StatusPills},
-        filters: {
-            cleanString: function(str){
-                return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
-            }
-        },
+        mixins: [cleanString],
         props: {
             records: { type: Array, default: null },
             source: { type: String, default: null }
@@ -90,9 +88,13 @@
                     {text: 'Name', value: 'name', align: 'center'},
                     {text: 'Registry', value: 'type', align: 'center'}
                 ];
-                if (this.source !== 'maintenanceRequests') headers.push({text: 'Approved', value: 'isApproved', align: 'center'});
-                else headers.push({text: 'Status', value: 'status', align: 'center'});
-                headers.push({text: 'Actions', value: 'actions', align: 'center'});
+                if (this.source !== 'maintenanceRequests' && this.source !== 'watchedRecords'){
+                  headers.push({text: 'Approved', value: 'isApproved', align: 'center'});
+                }
+                else if (this.source === 'maintenanceRequests') {
+                  headers.push({text: 'Status', value: 'status', align: 'center'});
+                }
+                headers.push({text: 'Actions', value: 'actions', align: 'center', sortable: false});
                 return headers;
             },
             noData(){
@@ -102,13 +104,25 @@
                     maintainedRecords: "You do not maintain any records.",
                     watchedRecords: "You are not watching any record"
                 }[this.source];
+            },
+            perPage(){
+              if (this.source === 'watchedRecords') return 7;
+              return 5
+            },
+            footer(){
+              if (this.source === 'watchedRecords') return {'items-per-page-options': [7]};
+              return {'items-per-page-options': [5]}
             }
         }
     }
 </script>
 
-<style scoped>
+<style>
   .alignLeft {
     text-align: left !important;
+  }
+
+  .userProfileRecordsTable th {
+    min-width: 100px
   }
 </style>

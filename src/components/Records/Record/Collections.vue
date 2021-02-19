@@ -18,56 +18,38 @@
         elevation="3"
       >
         <v-tabs
-          v-model="tab"
+          v-model="tabsData.selectedTab"
           background-color="transparent"
           centered
         >
           <v-tab
-            v-for="item in items"
+            v-for="item in tabsData.tabs"
             :key="item"
           >
             {{ item }}
           </v-tab>
         </v-tabs>
-        <v-tabs-items v-model="tab">
+        <v-tabs-items v-model="tabsData.selectedTab">
           <v-tab-item
-            v-for="item in items"
+            v-for="item in tabsData.tabs"
             :key="item"
           >
             <v-card
-              class="mx-1"
+              class="mx-1 mt-4"
               flat
             >
               <v-virtual-scroll
                 :items="items"
-                height="300"
+                height="400"
                 item-height="100"
               >
                 <v-list-item :key="item">
-                  <v-list-item-action>
-                    <v-btn
-                      fab
-                      small
-                      depressed
-                      color="primary"
-                    >
-                      {{ item }}
-                    </v-btn>
-                  </v-list-item-action>
-
                   <v-list-item-content>
                     <v-list-item-title>
                       User Database Record <strong>ID {{ item }}</strong>
                     </v-list-item-title>
                   </v-list-item-content>
-
-                  <v-list-item-action>
-                    <v-icon small>
-                      mdi-open-in-new
-                    </v-icon>
-                  </v-list-item-action>
                 </v-list-item>
-
                 <v-divider />
               </v-virtual-scroll>
             </v-card>
@@ -86,12 +68,15 @@ export default {
   components: {
     SectionTitle,
   },
-  data:()=>{
+  data: () => {
     return {
+      tabsData: {
+        selectedTab:'',
+        tabs: [
+          'In collections', 'In Recommendations',
+        ]
+      },
       tab: null,
-      items: [
-        'In collections', 'In Recommendations',
-      ],
     }
   },
   computed: {

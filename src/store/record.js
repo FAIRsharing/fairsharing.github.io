@@ -127,6 +127,7 @@ let recordStore = {
         setAdditionalInformation(state, additionalInformation) {
             let record = {
                 access_points: additionalInformation['access_points'],
+                associated_tools: additionalInformation['associated_tools'],
                 data_processes: additionalInformation['data_processes']
             };
             // TODO: Separate setting necessary for each available field...
@@ -325,7 +326,7 @@ let recordStore = {
             // TODO: Add remaining fields here
             newRecord.metadata.access_points = state.sections.additionalInformation.data.access_points;
             newRecord.metadata.data_processes = state.sections.additionalInformation.data.data_processes;
-
+            newRecord.metadata.associated_tools = state.sections.additionalInformation.data.associated_tools;
 
             /// below = dodgy
             // define record

@@ -11,4 +11,3 @@ export const compareArray = function(array) {
         }).length === 0;
     }
 };
-

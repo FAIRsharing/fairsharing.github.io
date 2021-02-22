@@ -32,6 +32,12 @@ let record = {
             url: 'http://jobsworths-r-us.co.uk'
         }
     ],
+    associated_tools: [
+        {
+            name: 'Exciting Access',
+            url: 'http://exciting.com'
+        }
+    ],
     type: "model_and_format"
 };
 recordStore.state.sections = {
@@ -97,6 +103,7 @@ describe("EditAdditionalInfo", function() {
         await wrapper.vm.getFieldNames();
         expect(wrapper.vm.allowedFields).toStrictEqual([
             "access_points",
+            "associated_tools",
             "data_processes"
         ]);
     });

@@ -86,7 +86,8 @@ export default {
         "data_processes": "DataProcesses",
       },
       counts: {
-        access_points: 0
+        access_points: 0,
+        data_processes: 0
       }
     }
   },

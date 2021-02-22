@@ -169,7 +169,7 @@ export default {
       return this.getSection('additionalInformation');
     },
     initialFields(){
-      return this.getSection("additionalInformation").initialData
+      return data = this.getSection("additionalInformation").initialData
     },
     currentFields(){
       let data = this.getSection("additionalInformation").data

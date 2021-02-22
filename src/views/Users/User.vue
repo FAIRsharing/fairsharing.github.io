@@ -114,7 +114,15 @@
                       :key="'pub_' + index"
                     >
                       <v-list-item-content>
-                        <v-list-item-title>{{ pub }}</v-list-item-title>
+                        <v-list-item-title>
+                          <a
+                            v-if="pub.url"
+                            :href="pub.url"
+                            rel="noreferrer"
+                            target="_blank"
+                          >{{ pub.title }}</a>
+                          <span v-else> {{ pub.title }} (No available link)</span>
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
@@ -338,7 +346,19 @@
               let publications = await client.getOrcidUser(this.user().metadata.orcid);
               output = publications['activities-summary']['works']['group']
                       .slice(0, 7)
-                      .map(obj => {return obj['work-summary'][0].title.title.value});
+                      .map(obj => {
+                        let url = null;
+                        if(obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
+                          let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
+                                  obj => obj['external-id-type'] = "doi"
+                          )[0];
+                          url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
+                        }
+                        return {
+                          title: obj['work-summary'][0].title.title.value,
+                          url: url
+                        }
+                      });
             }
             return output;
           },

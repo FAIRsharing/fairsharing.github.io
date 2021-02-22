@@ -20,14 +20,16 @@
         <v-tabs
           v-model="tabsData.selectedTab"
           background-color="transparent"
-          centered
+          grow
+          color="accent3"
+          slider-color="accent3"
           class="mb-5"
         >
           <v-tab
             v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
             :key="tabName+'_'+tabIndex"
           >
-            {{ tabName }}
+            {{ cleanString(tabName) }}
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tabsData.selectedTab">
@@ -37,13 +39,13 @@
           >
             <v-virtual-scroll
               :items="tabItem"
-              height="350"
-              item-height="80"
+              height="400"
+              item-height="130"
               class="ma-4 overflow-x-hidden"
             >
               <template #default="{ item }">
                 <v-card
-                  class="pa-4 d-flex flex-column v-card-hover mx-2"
+                  class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
                   flat
                   outlined
                 >
@@ -61,17 +63,19 @@
 <script>
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import {mapGetters} from "vuex";
+import stringUtils from "@/utils/stringUtils"
 export default {
   name: "Collections",
   components: {
     SectionTitle,
   },
+  mixins:[stringUtils],
   data: () => {
     return {
       tabsData: {
         selectedTab:'',
         tabs: {
-          in_collections: [{id: 1, name: 'a name 1 ask asdkajsdhaskjdhasd askjdashd kjasdh askdjh asdkjash kasdha sdkjashd asdka hsdkjasdh askdjahs dkasjdh askjdh dkhs sadhjashdajshdasdjhasgdjhasdgjhasdgajshdgasjdgajshdgjahsdgasdh asha sdhjasdg jhasdg asjdhgasdhasdgasjdhg'}, {id: 2, name: 'a name 2'}],
+          in_collections: [{id: 1, name: 'a name 1 ask asdkajsdhaskjdhasd'}, {id: 2, name: 'a name 2'}],
           in_recommendations: [
             {id: 1, name: 'a name 1'}, {id: 2, name: 'a name 2'}, {id: 3, name: 'a name 3'}, {id: 4, name: 'a name 4'}, {id: 5, name: 'a name 5'},{id: 6, name: 'a name 6'},
           ]

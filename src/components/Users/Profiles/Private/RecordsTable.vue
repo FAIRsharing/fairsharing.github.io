@@ -47,13 +47,15 @@
           </template>
           <v-list>
             <v-list-item @click="previewRecord(item.id)">
-              Preview record
+              <v-list-item-avatar><v-icon>fas fa-eye</v-icon></v-list-item-avatar>
+              <v-list-item-content><v-lis-item-title> Preview record </v-lis-item-title></v-list-item-content>
             </v-list-item>
             <v-list-item
-              v-if="source !== 'watchedRecords' && source !== 'maintenanceRequests'"
+              v-if="(source !== 'maintenanceRequests' && source !== 'watchedRecords') || (source === 'watchedRecords' && user().is_curator)"
               @click="goToEdit(item.id)"
             >
-              Edit record
+              <v-list-item-avatar><v-icon>fas fa-pen</v-icon></v-list-item-avatar>
+              <v-list-item-content><v-lis-item-title> Edit record </v-lis-item-title></v-list-item-content>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -111,6 +113,7 @@
         },
         computed: {
             ...mapState('editor', ['icons']),
+            ...mapState('users', ['user']),
             headers(){
                 let headers = [
                     {text: 'Name', value: 'name', align: 'center'},

@@ -9,6 +9,7 @@ import ExternalClient from "@/components/Client/ExternalClients.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import editorStore from "@/store/editor";
+import ORCIDfixture from "@/../tests/fixtures/ORCIDpub.json"
 
 
 const localVue = createLocalVue();
@@ -49,11 +50,7 @@ describe("User.vue", () => {
                watchedRecords: []
            }
        });
-        externalClientStub = sinon.stub(ExternalClient.prototype, "executeQuery").returns({
-            data: { 'activities-summary': { works: { group: [
-                {'work-summary': [{title: {title: {value: "abc"}}}] }
-            ]}}}
-        });
+        externalClientStub = sinon.stub(ExternalClient.prototype, "executeQuery").returns({data: ORCIDfixture});
     });
 
     afterAll(() => {

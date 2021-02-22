@@ -32,8 +32,9 @@ let recordStore = {
         },
         sections: {
             generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
-            publications: initEditorSections(false, ["publications"]).publications,
-            organisations: {}
+            organisations: {},
+            additionalInformation: {},
+            publications: {},
         },
         editOrganisationLink: {
             showOverlay: false,
@@ -58,7 +59,8 @@ let recordStore = {
                 "support",
                 "dataAccess",
                 "publications",
-                "organisations"
+                "organisations",
+                "additionalInformation"
             ];
             state.sections = initEditorSections(data['fairsharingRecord'], sectionsNames);
         },
@@ -121,6 +123,21 @@ let recordStore = {
             state.sections.dataAccess.initialData = JSON.parse(JSON.stringify(record));
             state.sections.dataAccess.changes = 0;
             state.sections.dataAccess.message = "Record successfully updated!";
+        },
+        setAdditionalInformation(state, additionalInformation) {
+            let record = {
+                access_points: additionalInformation['access_points'],
+                associated_tools: additionalInformation['associated_tools']
+            };
+            // TODO: Separate setting necessary for each available field...
+           Object.keys(record).forEach((type) => {
+                state.sections.generalInformation.data.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+                state.sections.generalInformation.initialData.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+            });
+            state.sections.additionalInformation.data = record;
+            state.sections.additionalInformation.initialData = JSON.parse(JSON.stringify(record));
+            state.sections.additionalInformation.changes = 0;
+            state.sections.additionalInformation.message = "Record successfully updated!";
         },
         setCreatingNewRecord(state){
             state.newRecord = true;
@@ -300,6 +317,34 @@ let recordStore = {
             let organisations = await client.executeQuery(recordOrganisationsQuery);
             commit('updateOrganisationsLinks', organisations.fairsharingRecord.organisationLinks);
         },
+        async updateAdditionalInformation({ state, commit}, options){
+            commit("resetMessage", "additionalInformation");
+            let newRecord = {
+                metadata: state.sections.generalInformation.initialData.metadata,
+            };
+            // TODO: Add remaining fields here
+            newRecord.metadata.access_points = state.sections.additionalInformation.data.access_points;
+            newRecord.metadata.associated_tools = state.sections.additionalInformation.data.associated_tools;
+
+            /// below = dodgy
+            // define record
+            let response = await restClient.updateRecord({
+                record: newRecord,
+                token: options.token,
+                id: options.id
+            });
+            if (response.error) {
+                commit("setSectionError", {
+                    section: "additionalInformation",
+                    value: response.error
+                });
+                return response.error;
+            }
+            else {
+                commit("setMessage", {target: "additionalInformation", value: "Record successfully updated!"});
+                commit('setAdditionalInformation', newRecord.metadata);
+            }
+        },
         async updateDataAccess({state, commit}, options){
             commit("resetMessage", "dataAccess");
             let newRecord = {
@@ -371,11 +416,13 @@ let recordStore = {
     getters: {
         getField: (state) => (fieldName) => {
             let tags = ['subjects','domains','taxonomies','userDefinedTags']
-            tags.forEach(tag=>{
-                state.currentRecord['fairsharingRecord'][tag].forEach(item=>{
-                item.type = tag;
+            if (tags.includes(fieldName)) {
+                tags.forEach(tag => {
+                    state.currentRecord['fairsharingRecord'][tag].forEach(item => {
+                        item.type = tag;
+                    })
                 })
-            })
+            }
             return state.currentRecord['fairsharingRecord'][fieldName];
         },
         getSection: (state) => (sectionName) => {

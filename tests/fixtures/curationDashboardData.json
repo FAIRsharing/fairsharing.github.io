@@ -9,16 +9,40 @@
                       "id": "1451",
                       "name": "Radiotherapy",
                       "type": "database",
+                      "updatedAt": "2020-01-27",
                       "lastEditor": [
                           {
                               "id": "553",
                               "username": "Paolo Maldini"
                           }
-                      ]
+                      ],
+                      "creator":
+                          {
+                              "id": "553",
+                              "username": "Marco Polo"
+                          }
+
+                  },
+                  {
+                      "id": "11",
+                      "name": "Radi",
+                      "updatedAt": "2020-09-27T09:34:54Z",
+                      "creator":
+                          {
+                              "id": "442",
+                              "username": "Maria Julia"
+                          }
                   },
                   {
                       "id": "145f1",
-                      "name": "Radiotgherapy"
+                      "name": "Radiotgherapy",
+                      "updatedAt": "2020-05-27T09:34:54Z",
+                      "priority": true,
+                      "creator":
+                          {
+                              "id": "342",
+                              "username": "Andre Milla"
+                          }
                   }
 
               ]
@@ -158,6 +182,40 @@
              "id": "2669f95",
              "name": "ShareSfhare",
              "createdAt": "1425-01-01T13:31:25Z"
+        }
+      ],
+      "curatorList":[
+        {
+              "id": "22",
+              "username": "H. Pepa",
+              "role":
+                {
+                  "name": "curator"
+                }
+        },
+        {
+              "id": "2001",
+              "username": "Michael the curator",
+              "role":
+                {
+                  "name": "develop_curator"
+                }
+        },
+        {
+              "id": "11",
+              "username": "Mary the Great Curator",
+              "role":
+                {
+                  "name": "senior_curator"
+                }
+        },
+        {
+              "id": "33",
+              "username": "Luther",
+              "role":
+                {
+                  "name": "super_curator"
+                }
         }
       ]
   }

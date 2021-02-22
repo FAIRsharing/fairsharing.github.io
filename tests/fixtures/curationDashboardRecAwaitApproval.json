@@ -1,0 +1,83 @@
+{
+  "propsData": {
+    "maintenanceRequests": [
+      {
+        "createdAt": "Jan 1, 2021",
+        "recordName": "Record1 (23)",
+        "id": 23,
+        "type": "society",
+        "userNameID": "Manolo (99)",
+        "processingNotes": "What a note!!!",
+        "requestID": 0
+      },
+      {
+        "createdAt": "Mar 4, 2017",
+        "recordName": "Record2 (24)",
+        "id": 24,
+        "type": "repository",
+        "userNameID": "Pili (33)",
+        "requestID": 1
+      },
+      {
+        "createdAt": "Nov 30, 1885",
+        "recordName": "Record3 (29)",
+        "id": 99,
+        "type": "society",
+        "userNameID": "Bart Simpson (22)",
+        "processingNotes": "Black puding",
+        "requestID": 3
+      }
+    ],
+    "approvalRequired": [
+      {
+        "id": 99,
+        "createdAt": "Nov 30, 1885",
+        "recordName": "Record3 (99)",
+        "type": "society",
+        "curator": "Michael Smith",
+        "processingNotes": "Black puding",
+        "priority": "Prior"
+      },
+      {
+        "id": 100,
+        "createdAt": "Feb 4, 2004",
+        "recordName": "Record4 (100)",
+        "type": "repository",
+        "curator": "David Silla",
+        "priority": "Prior"
+      },
+      {
+        "id": 101,
+        "createdAt": "Aug 10, 2012",
+        "recordName": "Record5 (101)",
+        "type": "repository",
+        "curator": "Michael Smith",
+        "processingNotes": "What a note!",
+        "priority": ""
+      },
+      {
+        "id": 102,
+        "createdAt": "Dec 22, 2020",
+        "recordName": "Record6 (102)",
+        "type": "society",
+        "curator": "Mary Mary",
+        "processingNotes": "Black puding",
+        "priority": ""
+      }
+    ],
+    "curatorList": [
+      {
+        "id": 1,
+        "userName": "Michael Smith"
+      },
+      {
+        "id": 2,
+        "userName": "Mary Mary"
+      },
+      {
+        "id": 3,
+        "userName": "David Silla"
+      }
+    ]
+  }
+}

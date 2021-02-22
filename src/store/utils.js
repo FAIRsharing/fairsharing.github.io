@@ -78,6 +78,7 @@ export function initEditorSections(data, sectionsNames){
                 }),
                 is_dataset: false
             },
+            additionalInformation: JSON.parse(JSON.stringify(data.metadata)),
             publications: data.publications,
             organisations: data.organisationLinks,
             dataAccess: {

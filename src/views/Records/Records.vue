@@ -41,6 +41,16 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-fade-transition>
+      <v-overlay
+        v-if="isLoading"
+        :absolute="false"
+        opacity="0.8"
+      >
+        <Loaders />
+      </v-overlay>
+    </v-fade-transition>
   </v-main>
 </template>
 
@@ -51,10 +61,11 @@ import {mapActions, mapState} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import Loaders from "@/components/Navigation/Loaders";
 
 export default {
   name: "Records",
-  components: {JumpToTop, SearchOutput, SearchInput},
+  components: {Loaders, JumpToTop, SearchOutput, SearchInput},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -65,7 +76,8 @@ export default {
     showDrawerLeft: false,
     labels: recordsLabels,
     recordsSubTitles: recordsLabels['recordSubTitles'],
-    recordTypes: recordsLabels['recordTypes']
+    recordTypes: recordsLabels['recordTypes'],
+    isLoading: false
   }),
   computed: {
     ...mapState('uiController', ['scrollStatus', 'stickToTop']),
@@ -110,7 +122,7 @@ export default {
   },
   watch: {
     currentPath: async function () {
-      this.$scrollTo('body',50,{})
+      this.$scrollTo('body',50,{});
       await this.tryRedirect();
     }
   },
@@ -180,7 +192,8 @@ export default {
      * @returns {Promise}
      */
     getData: async function () {
-      this.$scrollTo('body',50,{})
+      this.$scrollTo('body',50,{});
+      this.isLoading = true;
       this.errors = null;
       const _module = this;
       try {
@@ -189,6 +202,7 @@ export default {
       catch (e) {
         this.errors = e.message;
       }
+      this.isLoading = false;
     },
     /**
      * Get the parameters that are allowed for this query

@@ -16,7 +16,8 @@ class ExternalRESTClients {
             'Accept': 'application/x-bibtex',
         };
         this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=";
-        this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q="
+        this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q=";
+        this.orcidBaseURL = "https://pub.orcid.org/v2.0/";
     }
 
     async getDOI(doi){
@@ -45,6 +46,17 @@ class ExternalRESTClients {
             headers: this.headers
         };
         let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async getOrcidUser(user){
+        this.headers['Accept'] = "application/orcid+json";
+        const request = {
+            url: this.orcidBaseURL + user,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        this.headers['Accept'] = 'application/x-bibtex';
         return response.data;
     }
 

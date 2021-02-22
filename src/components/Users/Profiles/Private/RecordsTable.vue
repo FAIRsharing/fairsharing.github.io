@@ -48,14 +48,14 @@
           <v-list>
             <v-list-item @click="previewRecord(item.id)">
               <v-list-item-avatar><v-icon>fas fa-eye</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-lis-item-title> Preview record </v-lis-item-title></v-list-item-content>
+              <v-list-item-content><v-list-item-title> Preview record </v-list-item-title></v-list-item-content>
             </v-list-item>
             <v-list-item
               v-if="(source !== 'maintenanceRequests' && source !== 'watchedRecords') || (source === 'watchedRecords' && user().is_curator)"
               @click="goToEdit(item.id)"
             >
               <v-list-item-avatar><v-icon>fas fa-pen</v-icon></v-list-item-avatar>
-              <v-list-item-content><v-lis-item-title> Edit record </v-lis-item-title></v-list-item-content>
+              <v-list-item-content><v-list-item-title> Edit record </v-list-item-title></v-list-item-content>
             </v-list-item>
           </v-list>
         </v-menu>

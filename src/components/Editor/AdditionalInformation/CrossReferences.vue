@@ -176,9 +176,7 @@ export default {
       return this.getSection("additionalInformation").initialData
     },
     currentFields(){
-      let data = this.getSection("additionalInformation").data
-      if (!data.cross_references) data.cross_references = [];
-      return data;
+      return this.getSection("additionalInformation").data || [];
     }
   },
   watch: {

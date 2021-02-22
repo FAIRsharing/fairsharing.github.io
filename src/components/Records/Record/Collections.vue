@@ -24,31 +24,31 @@
           class="mb-5"
         >
           <v-tab
-            v-for="tab in Object.keys(tabsData.tabs)"
-            :key="tab"
+            v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
+            :key="tabName+'_'+tabIndex"
           >
-            {{ tab }}
+            {{ tabName }}
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tabsData.selectedTab">
           <v-tab-item
-            v-for="(tabItem,tab_index) in Object.values(tabsData.tabs)"
-            :key="tabItem"
+            v-for="(tabItem,tabItemIndex) in tabsData.tabs"
+            :key="tabItem+'_'+tabItemIndex"
           >
             <v-virtual-scroll
               :items="tabItem"
               height="350"
-              item-height="60"
+              item-height="80"
+              class="ma-4 overflow-x-hidden"
             >
-              <template #default="{ item,index }">
-                <v-list-item :key="item.name+'_'+index">
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      User Database Record <strong>ID {{ item.name + '_' + index + '_' + tab_index }}</strong>
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-divider />
+              <template #default="{ item }">
+                <v-card
+                  class="pa-4 d-flex flex-column v-card-hover mx-2"
+                  flat
+                  outlined
+                >
+                  {{ item.name }}
+                </v-card>
               </template>
             </v-virtual-scroll>
           </v-tab-item>
@@ -71,8 +71,10 @@ export default {
       tabsData: {
         selectedTab:'',
         tabs: {
-          in_collections: [{id: 1, name: 'a name 1'}, {id: 2, name: 'a name 2'}],
-          in_recommendations: [{id: 1, name: 'a name 1'}, {id: 2, name: 'a name 2'}, {id: 3, name: 'a name 3'}]
+          in_collections: [{id: 1, name: 'a name 1 ask asdkajsdhaskjdhasd askjdashd kjasdh askdjh asdkjash kasdha sdkjashd asdka hsdkjasdh askdjahs dkasjdh askjdh dkhs sadhjashdajshdasdjhasgdjhasdgjhasdgajshdgasjdgajshdgjahsdgasdh asha sdhjasdg jhasdg asjdhgasdhasdgasjdhg'}, {id: 2, name: 'a name 2'}],
+          in_recommendations: [
+            {id: 1, name: 'a name 1'}, {id: 2, name: 'a name 2'}, {id: 3, name: 'a name 3'}, {id: 4, name: 'a name 4'}, {id: 5, name: 'a name 5'},{id: 6, name: 'a name 6'},
+          ]
         }
       },
       tab: null,

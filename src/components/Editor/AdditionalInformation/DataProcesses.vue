@@ -19,14 +19,14 @@
           lg="4"
           xl="3"
         >
-          <!-- card for individual access point -->
+          <!-- card for individual data process -->
           <v-card
             class="d-flex flex-column ml-1"
           >
             <v-card-title
               class="grey white--text"
             >
-              {{ dp.type }} access point
+              {{ dp.type }} data process
             </v-card-title>
 
             <v-card-text
@@ -49,7 +49,7 @@
               </v-btn>
             </v-card-actions>
           </v-card>
-          <!-- end of card for individual access point -->
+          <!-- end of card for individual data process -->
         </v-col>
       </v-row>
     </v-card-text>
@@ -62,7 +62,7 @@
       </v-btn>
     </v-card-actions>
 
-    <!-- new access point dialogue begins -->
+    <!-- new data process dialogue begins -->
 
     <v-dialog
       v-model="openEditor"
@@ -135,7 +135,7 @@
               </v-card-actions>
             </v-card>
 
-          <!-- new access point dialogue ends -->
+          <!-- new data process dialogue ends -->
           </v-row>
         </v-container>
       </v-form>

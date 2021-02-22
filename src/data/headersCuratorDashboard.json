@@ -1,20 +1,44 @@
 {
   "approvalRequired": [
     {
-      "text": "Date last modification",
-      "value": "updatedAt"
+      "text": "Date last edit",
+      "value": "updatedAt",
+      "width": 90
+    },
+    {
+      "text": "",
+      "value": "priority",
+      "width": 40
     },
     {
       "text": "Curator",
-      "value": "curator"
+      "value": "curator",
+      "width": 50
     },
     {
       "text": "Record name (id)",
-      "value": "recordName"
+      "value": "recordName",
+      "width": 400
     },
     {
       "text": "Last editor",
-      "value": "lastEditor"
+      "value": "lastEditor",
+      "width": 120
+    },
+    {
+      "text": "Processing Notes",
+      "value": "processingNotes",
+      "sortable": false
+    },
+    { "text": "Accept record/edit?",
+      "value": "actions",
+      "sortable": false,
+      "width": 130
+    },
+    {
+      "text": "Creation date & user",
+      "value": "createdAt",
+      "width": 90
     }
   ],
   "maintenanceRequests": [

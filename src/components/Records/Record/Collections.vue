@@ -21,38 +21,36 @@
           v-model="tabsData.selectedTab"
           background-color="transparent"
           centered
+          class="mb-5"
         >
           <v-tab
-            v-for="item in tabsData.tabs"
-            :key="item"
+            v-for="tab in Object.keys(tabsData.tabs)"
+            :key="tab"
           >
-            {{ item }}
+            {{ tab }}
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tabsData.selectedTab">
           <v-tab-item
-            v-for="item in tabsData.tabs"
-            :key="item"
+            v-for="(tabItem,tab_index) in Object.values(tabsData.tabs)"
+            :key="tabItem"
           >
-            <v-card
-              class="mx-1 mt-4"
-              flat
+            <v-virtual-scroll
+              :items="tabItem"
+              height="350"
+              item-height="60"
             >
-              <v-virtual-scroll
-                :items="items"
-                height="400"
-                item-height="100"
-              >
-                <v-list-item :key="item">
+              <template #default="{ item,index }">
+                <v-list-item :key="item.name+'_'+index">
                   <v-list-item-content>
                     <v-list-item-title>
-                      User Database Record <strong>ID {{ item }}</strong>
+                      User Database Record <strong>ID {{ item.name + '_' + index + '_' + tab_index }}</strong>
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-divider />
-              </v-virtual-scroll>
-            </v-card>
+              </template>
+            </v-virtual-scroll>
           </v-tab-item>
         </v-tabs-items>
       </v-card>
@@ -72,19 +70,20 @@ export default {
     return {
       tabsData: {
         selectedTab:'',
-        tabs: [
-          'In collections', 'In Recommendations',
-        ]
+        tabs: {
+          in_collections: [{id: 1, name: 'a name 1'}, {id: 2, name: 'a name 2'}],
+          in_recommendations: [{id: 1, name: 'a name 1'}, {id: 2, name: 'a name 2'}, {id: 3, name: 'a name 3'}]
+        }
       },
       tab: null,
     }
   },
   computed: {
     items () {
-      return Array.from({ length: this.length }, (k, v) => v + 1)
+      return []
     },
     length () {
-      return 7000
+      return 12
     },
     ...mapGetters("record", ["getField"]),
   }

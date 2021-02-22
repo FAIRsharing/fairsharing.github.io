@@ -167,7 +167,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("record", ["getSection", "getChanges"]),
+    ...mapGetters("record", ["getSection"]),
     ...mapState("editor", ["crossReferenceTypes"]),
     section(){
       return this.getSection('additionalInformation');

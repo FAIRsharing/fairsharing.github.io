@@ -88,31 +88,23 @@
              * Apply the filters by building the new query parameters using the form data.
              */
             applyFilters: function (selectedItem) {
-                const _module = this;
-                let currentQuery = {};
-                let oldQuery = {};
-                Object.keys(_module.$route.query).forEach(function (param) {
-                    currentQuery[param] = _module.$route.query[param];
-                    oldQuery[param] = _module.$route.query[param]
+              const _module = this;
+              let currentQuery = {};
+              let oldQuery = {};
+              Object.keys(_module.$route.query).forEach(function (param) {
+                currentQuery[param] = _module.$route.query[param];
+                oldQuery[param] = _module.$route.query[param]
+              });
+
+              Object.prototype.hasOwnProperty.call(selectedItem, 'value') ? currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value)
+                                                                                  : delete currentQuery[selectedItem.filterName];
+
+              if (!isEqual(currentQuery, oldQuery)) {
+                this.$router.push({
+                  name: _module.$route.name,
+                  query: currentQuery
                 });
-
-                if (Object.prototype.hasOwnProperty.call(selectedItem, 'value')) {
-                    currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
-                    if (!isEqual(currentQuery, oldQuery)) {
-                        _module.$router.push({
-                            name: _module.$route.name,
-                            query: currentQuery
-                        });
-                    }
-                }
-                else {
-                    delete currentQuery[selectedItem.filterName];
-                    this.$router.push({
-                        name: _module.$route.name,
-                        query: currentQuery
-                    });
-
-                }
+              }
             },
             selectFilter: function (selectedItem) {
                 let _module = this;

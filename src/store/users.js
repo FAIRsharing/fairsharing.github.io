@@ -122,6 +122,19 @@ export const mutations = {
         state.messages = function(){
             return initStateMessages();
         }
+    },
+    cleanStore(state){
+        let previousState = {...state.user()};
+        state.user = function(){
+            return {
+                isLoggedIn: previousState.isLoggedIn,
+                credentials: previousState.credentials,
+                metadata: {},
+                records: {},
+                is_curator: previousState.is_curator,
+                role: previousState.role
+            }
+        };
     }
 };
 

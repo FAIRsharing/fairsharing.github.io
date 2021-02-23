@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Class: ExternalRESTClients</title>
+	<title>FAIRsharing.org Source: components/Records/Record/Collections.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,294 +81,200 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: ExternalRESTClients</h1>
+		<h1 class="page-title">Source: components/Records/Record/Collections.vue</h1>
+    
 <section>
-
-<header>
-    
-        <h2>
-        ExternalRESTClients
-        </h2>
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-<hr>
-<dt>
-    <h4 class="name" id="ExternalRESTClients"><span class="type-signature"></span>new ExternalRESTClients()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>The RESTClient is a singleton class that handles the connection and data exchange from the back-end
-REST API.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Client_ExternalClients.js.html">components/Client/ExternalClients.js</a>,
-				 <a href="components_Client_ExternalClients.js.html#sunlight-1-line-9">line 9</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="executeQuery"><span class="type-signature">&lt;async> </span>executeQuery(query)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Trigger the given query with Axios</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>query</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="components_Client_ExternalClients.js.html">components/Client/ExternalClients.js</a>,
-				 <a href="components_Client_ExternalClients.js.html#sunlight-1-line-68">line 68</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;*></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-</article>
-
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  &lt;v-card
+    class="pa-4 d-flex flex-column"
+    outlined
+    color="bg_record_card"
+    tile
+    elevation="3"
+  >
+    &lt;SectionTitle
+      title="Collections"
+    />
+    &lt;div class="d-flex flex-column ml-2 min-height-40">
+      &lt;v-tabs
+        v-model="tabsData.selectedTab"
+        background-color="transparent"
+        grow
+        color="accent3"
+        slider-color="accent3"
+        class="my-5"
+      >
+        &lt;v-tab
+          v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
+          :key="tabName+'_'+tabIndex"
+          :disabled="tabsData.tabs[tabName].data.length===0"
+        >
+          {{ cleanString(tabName) }}
+        &lt;/v-tab>
+      &lt;/v-tabs>
+      &lt;v-tabs-items
+        v-model="tabsData.selectedTab"
+        class="transparent height-450"
+      >
+        &lt;v-tab-item
+          v-for="(tabItem,tabItemIndex) in tabsData.tabs"
+          :key="tabItem+'_'+tabItemIndex"
+        >
+          &lt;v-virtual-scroll
+            :items="tabItem.data"
+            height="400"
+            item-height="130"
+            class="ma-4 overflow-x-hidden"
+          >
+            &lt;template #default="{ item,index }">
+              &lt;v-card
+                :key="item.id + '_' + index"
+                class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
+                flat
+                outlined
+              >
+                &lt;div class="d-flex align-center">
+                  &lt;record-status
+                    :record="item"
+                    :show-status="false"
+                  />
+                  &lt;div class="ml-10 text-ellipses-height-2lines">
+                    {{ item.name }}
+                  &lt;/div>
+                &lt;/div>
+              &lt;/v-card>
+            &lt;/template>
+          &lt;/v-virtual-scroll>
+        &lt;/v-tab-item>
+      &lt;/v-tabs-items>
+    &lt;/div>
+  &lt;/v-card>
+&lt;/template>
+
+&lt;script>
+import SectionTitle from '@/components/Records/Record/SectionTitle';
+import {mapState} from "vuex";
+import stringUtils from "@/utils/stringUtils"
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
+export default {
+  name: "Collections",
+  components: {
+    RecordStatus,
+    SectionTitle,
+  },
+  mixins:[stringUtils],
+  data: () => {
+    return {
+      tabsData: {
+        selectedTab:'',
+        tabs: {
+          in_collections: {relation: 'collects', data: []},
+          in_recommendations: {relation: 'recommends', data: []},
+        }
+      }
+    }
+  },
+  computed: {
+    ...mapState("record", ["currentRecord"]),
+  },
+  beforeMount() {
+    this.prepareTabsData();
+  },
+  methods: {
+    /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
+    prepareTabsData() {
+      const _module = this;
+      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
+        Object.keys(_module.tabsData.tabs).forEach(tabName => {
+          _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
+              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+        })
+      }
+    },
+    /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+    prepareAssociations(associations, reverseAssociations) {
+      let _module = this;
+      let recordAssociations = []
+      let joinedArrays = associations.concat(reverseAssociations);
+      const properties = ['fairsharingRecord', 'linkedRecord'];
+
+      joinedArrays.forEach(item => {
+        let object = {};
+        properties.forEach(prop => {
+          if (Object.prototype.hasOwnProperty.call(item, prop)) {
+            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+            object.id = item[prop].id;
+            object.registry = item[prop].registry;
+            object.name = item[prop].name;
+            object.subject = _module.currentRecord['fairsharingRecord'].name;
+            object.type = item[prop].type;
+          }
+        });
+        recordAssociations.push(object);
+      });
+      return recordAssociations;
+    }
+  }
+}
+&lt;/script>
+
+&lt;style scoped lang="scss">
+a {
+  text-decoration: none;
+
+  &amp;:hover, &amp;:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
+
+.icon-container {
+  position: absolute;
+  top: -45px;
+  background: white;
+  border: #b3b3b3 dotted 3px;
+  border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
+  width: 85px;
+  height: 85px;
+  cursor: help;
+}
+
+.card-title-customize {
+  position: absolute;
+  top: 5px;
+  left: 120px
+}
+
+.v-card-hover {
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  transition: box-shadow .4s linear;
+  -webkit-transition: box-shadow .4s linear;
+  -moz-transition: box-shadow .4s linear;
+  -o-transition: box-shadow .4s linear;
+}
+
+.v-card-hover:hover {
+  transform: scale(1.004);
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+}
+&lt;/style>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -378,10 +284,6 @@ REST API.</p>
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

@@ -1,10 +1,12 @@
 <template>
-  <v-expansion-panel v-if="filter.filterName">
+  <v-expansion-panel
+    v-if="filter.filterName"
+    :id="filter.filterName + 'AutocompleteList' "
+  >
     <v-expansion-panel-header> {{ filter.filterLabel }}</v-expansion-panel-header>
     <v-expansion-panel-content class="pl-5 pr-5">
       <div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
         <v-autocomplete
-          :id="filter.filterName + 'AutocompleteList' "
           v-model="selectedValues"
           :attach="true"
           :items="getValues"

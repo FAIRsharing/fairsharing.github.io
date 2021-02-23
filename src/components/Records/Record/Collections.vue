@@ -45,7 +45,12 @@
                 flat
                 outlined
               >
-                {{ item.name }}
+                <div class="d-flex flex-wrap align-center">
+                  <record-status :record="item.type" />
+                  <div class="ml-10">
+                    {{ item.name }}
+                  </div>
+                </div>
               </v-card>
             </template>
           </v-virtual-scroll>
@@ -59,9 +64,11 @@
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import {mapGetters} from "vuex";
 import stringUtils from "@/utils/stringUtils"
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
 export default {
   name: "Collections",
   components: {
+    RecordStatus,
     SectionTitle,
   },
   mixins:[stringUtils],
@@ -70,7 +77,7 @@ export default {
       tabsData: {
         selectedTab:'',
         tabs: {
-          in_collections: [{id: 1, name: 'a name 1 ask someone'}, {id: 2, name: 'a name 2'}],
+          in_collections: [{id: 1, name: 'a name 1 ask someone'}, {id: 2, name: 'a name 2',type:'collection'}],
           in_recommendations: [
             {id: 1, name: 'a name 1'}, {id: 2, name: 'a name 2'}, {id: 3, name: 'a name 3'}, {id: 4, name: 'a name 4'}, {id: 5, name: 'a name 5'},{id: 6, name: 'a name 6'},
           ],

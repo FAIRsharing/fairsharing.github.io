@@ -21,6 +21,7 @@
         <v-tab
           v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
           :key="tabName+'_'+tabIndex"
+          :disabled="tabsData.tabs[tabName].data.length===0"
         >
           {{ cleanString(tabName) }}
         </v-tab>

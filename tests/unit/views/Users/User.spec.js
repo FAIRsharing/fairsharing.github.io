@@ -85,6 +85,17 @@ describe("User.vue", () => {
             mocks: {$store, $router, $route},
             stubs: {RouterLink: RouterLinkStub}
         });
+    });
+
+    it("can clean up store on destroy", () => {
+        wrapper = shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store, $router, $route},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        wrapper.destroy();
+        expect(usersStore.state.user().records).toStrictEqual({})
     })
 
 });

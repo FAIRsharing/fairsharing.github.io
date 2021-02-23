@@ -34,20 +34,21 @@
           :key="tabItem+'_'+tabItemIndex"
         >
           <v-virtual-scroll
-            :items="tabItem"
+            :items="tabItem.data"
             height="400"
             item-height="130"
             class="ma-4 overflow-x-hidden"
           >
-            <template #default="{ item }">
+            <template #default="{ item,index }">
               <v-card
+                :key="item.id + '_' + index"
                 class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
                 flat
                 outlined
               >
-                <div class="d-flex flex-wrap align-center">
-                  <record-status :record="item.type" />
-                  <div class="ml-10">
+                <div class="d-flex align-center">
+                  <record-status :record="item" />
+                  <div class="ml-10 text-ellipses-height-2lines">
                     {{ item.name }}
                   </div>
                 </div>
@@ -62,7 +63,7 @@
 
 <script>
 import SectionTitle from '@/components/Records/Record/SectionTitle';
-import {mapGetters} from "vuex";
+import {mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils"
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 export default {
@@ -77,17 +78,52 @@ export default {
       tabsData: {
         selectedTab:'',
         tabs: {
-          in_collections: [{id: 1, name: 'a name 1 ask someone'}, {id: 2, name: 'a name 2',type:'collection'}],
-          in_recommendations: [
-            {id: 1, name: 'a name 1'}, {id: 2, name: 'a name 2'}, {id: 3, name: 'a name 3'}, {id: 4, name: 'a name 4'}, {id: 5, name: 'a name 5'},{id: 6, name: 'a name 6'},
-          ],
-          empty_tab: [],
+          in_collections: {relation: 'collects', data: []},
+          in_recommendations: {relation: 'recommends', data: []},
         }
-      },
+      }
     }
   },
   computed: {
-    ...mapGetters("record", ["getField"]),
+    ...mapState("record", ["currentRecord"]),
+  },
+  beforeMount() {
+    this.prepareTabsData();
+  },
+  methods: {
+    /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
+    prepareTabsData() {
+      const _module = this;
+      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
+        Object.keys(_module.tabsData.tabs).forEach(tabName => {
+          _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
+              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+        })
+      }
+    },
+    /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+    prepareAssociations(associations, reverseAssociations) {
+      let _module = this;
+      let recordAssociations = []
+      let joinedArrays = associations.concat(reverseAssociations);
+      const properties = ['fairsharingRecord', 'linkedRecord'];
+
+      joinedArrays.forEach(item => {
+        let object = {};
+        properties.forEach(prop => {
+          if (Object.prototype.hasOwnProperty.call(item, prop)) {
+            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+            object.id = item[prop].id;
+            object.registry = item[prop].registry;
+            object.name = item[prop].name;
+            object.subject = _module.currentRecord['fairsharingRecord'].name;
+            object.type = item[prop].type;
+          }
+        });
+        recordAssociations.push(object);
+      });
+      return recordAssociations;
+    }
   }
 }
 </script>

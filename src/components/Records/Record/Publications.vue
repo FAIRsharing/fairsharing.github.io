@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="pa-4 d-flex flex-column mb-10"
+    class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
     tile

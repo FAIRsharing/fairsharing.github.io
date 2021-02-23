@@ -340,7 +340,6 @@
       },
       beforeDestroy() {
         this.cleanStore();
-        console.log(this.user());
       },
       methods: {
           ...mapActions('users', ['getUser', 'resetPwd', 'setError']),

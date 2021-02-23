@@ -47,7 +47,10 @@
                 outlined
               >
                 <div class="d-flex align-center">
-                  <record-status :record="item" />
+                  <record-status
+                    :record="item"
+                    :show-status="false"
+                  />
                   <div class="ml-10 text-ellipses-height-2lines">
                     {{ item.name }}
                   </div>

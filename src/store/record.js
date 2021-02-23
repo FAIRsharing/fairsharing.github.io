@@ -161,6 +161,16 @@ let recordStore = {
                 message: error,
                 id: null
             }
+        },
+        cleanRecordStore(state){
+            state.sections = initEditorSections(false, [
+                "generalInformation",
+                "support",
+                "dataAccess",
+                "publications",
+                "organisations",
+                "additionalInformation"
+            ]);
         }
     },
     actions: {

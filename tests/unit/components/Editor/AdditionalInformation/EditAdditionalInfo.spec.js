@@ -25,6 +25,12 @@ let record = {
             example_url: 'http://wibble.com/example'
         }
     ],
+    associated_tools: [
+        {
+            name: 'Exciting Access',
+            url: 'http://exciting.com'
+        }
+    ],
     type: "model_and_format"
 };
 recordStore.state.sections = {
@@ -88,7 +94,10 @@ describe("EditAdditionalInfo", function() {
     // Fails to run in the test for unknown reasons.
     it("returns the correct list of fields names", async () => {
         await wrapper.vm.getFieldNames();
-        expect(wrapper.vm.allowedFields).toStrictEqual(["access_points"]);
+        expect(wrapper.vm.allowedFields).toStrictEqual([
+            "access_points",
+            "associated_tools"
+        ]);
     });
 
     it("can update a record", async () => {

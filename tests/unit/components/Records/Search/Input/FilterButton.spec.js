@@ -88,6 +88,10 @@ describe("FilterButton.vue", function () {
 
         selectedItem = {active: false, filterName: 'isMaintained', title: 'All'};
         anotherWrapper.vm.applyFilters(selectedItem);
+
+        anotherWrapper.vm.$route.query = {active: false, filterName: 'isMaintained', title: 'All'};
+        selectedItem = {active: false, filterName: 'isMaintained', title: 'All'};
+        anotherWrapper.vm.applyFilters(selectedItem);
     });
 
     it('sets button labels correctly via the checkCurrentParameters function', () => {

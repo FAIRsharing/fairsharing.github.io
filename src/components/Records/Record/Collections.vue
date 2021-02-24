@@ -21,7 +21,7 @@
           dense
           clearable
           prepend-inner-icon="fa-search"
-          placeholder="`Search through collections"
+          :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
           item-text="name"
           item-value="name"
         >
@@ -133,10 +133,6 @@ export default {
     this.prepareTabsData();
   },
   methods: {
-    /** Dynamically resets data of the tab*/
-    reset: function (selectedItem) {
-      selectedItem.filterSelected = {};
-    },
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;

@@ -60,7 +60,7 @@
       <!--  tab content  -->
       <v-tabs-items
         v-model="tabsData.selectedTab"
-        class="transparent height-450"
+        class="transparent height-430"
       >
         <v-tab-item
           v-for="(tabItem,tabItemIndex) in tabsData.tabs"

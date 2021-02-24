@@ -16,6 +16,7 @@
           v-model="selectedValues"
           :items="getValues"
           solo
+          :attach="true"
           dense
           clearable
           prepend-inner-icon="fa-search"
@@ -24,7 +25,9 @@
           item-value="name"
         >
           <template #item="data">
-            {{ data.item.name }}
+            <span class="filterValueName">
+              {{ data.item.name }}
+            </span>
           </template>
         </v-autocomplete>
         <v-btn
@@ -42,6 +45,7 @@
         color="accent3"
         slider-color="accent3"
         class="mb-5"
+        :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length===0"
       >
         <v-tab
           v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
@@ -213,13 +217,6 @@ a {
   box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
 }
 
-.chipsValueName {
-  width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
 .filterValueName {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -227,4 +224,9 @@ a {
   flex: 1;
 }
 
+.v-slide-item--active{
+  height: 0!important;
+  color: red;
+background: none!important;
+}
 </style>

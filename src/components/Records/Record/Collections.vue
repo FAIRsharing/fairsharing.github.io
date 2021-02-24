@@ -10,13 +10,38 @@
       title="Collections"
     />
     <div class="d-flex flex-column ml-2 min-height-40">
+      <div class="d-flex flex-wrap mt-5">
+        <!--  search autocomplete    -->
+        <v-autocomplete
+          v-model="selectedValues"
+          :items="getValues"
+          solo
+          dense
+          clearable
+          prepend-inner-icon="fa-search"
+          placeholder="`Search through collections"
+          item-text="name"
+          item-value="name"
+        >
+          <template #item="data">
+            {{ data.item.name }}
+          </template>
+        </v-autocomplete>
+        <v-btn
+          color="primary"
+          class="ml-2"
+        >
+          Apply
+        </v-btn>
+      </div>
+      <!--  tabs    -->
       <v-tabs
         v-model="tabsData.selectedTab"
         background-color="transparent"
         grow
         color="accent3"
         slider-color="accent3"
-        class="my-5"
+        class="mb-5"
       >
         <v-tab
           v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
@@ -26,6 +51,7 @@
           {{ cleanString(tabName) }}
         </v-tab>
       </v-tabs>
+      <!--  tab content  -->
       <v-tabs-items
         v-model="tabsData.selectedTab"
         class="transparent height-450"
@@ -79,8 +105,9 @@ export default {
   mixins:[stringUtils],
   data: () => {
     return {
+      selectedValues: null,
       tabsData: {
-        selectedTab:'',
+        selectedTab: 0,
         tabs: {
           in_collections: {relation: 'collects', data: []},
           in_recommendations: {relation: 'recommends', data: []},
@@ -90,11 +117,19 @@ export default {
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
+    getValues: function () {
+      let selectedTabKey = Object.keys(this.tabsData.tabs)
+      return this.tabsData.tabs[selectedTabKey[this.tabsData.selectedTab]].data;
+    }
   },
   beforeMount() {
     this.prepareTabsData();
   },
   methods: {
+    /** Dynamically resets data of the tab*/
+    reset: function (selectedItem) {
+      selectedItem.filterSelected = {};
+    },
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
@@ -177,4 +212,19 @@ a {
   -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
   box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
 }
+
+.chipsValueName {
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.filterValueName {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+}
+
 </style>

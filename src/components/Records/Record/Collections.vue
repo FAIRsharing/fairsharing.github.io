@@ -31,14 +31,6 @@
             </span>
           </template>
         </v-autocomplete>
-        <v-btn
-          :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
-          color="primary"
-          class="ml-2 mt-1-pt"
-          @click="applyFilters(selectedValues)"
-        >
-          Apply
-        </v-btn>
       </div>
       <!--  tabs    -->
       <v-tabs
@@ -54,6 +46,7 @@
           v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
           :key="tabName+'_'+tabIndex"
           :disabled="tabsData.tabs[tabName].data.length===0"
+          @change="selectedValues=null"
         >
           {{ cleanString(tabName) }}
         </v-tab>
@@ -182,12 +175,6 @@ export default {
         recordAssociations.push(object);
       });
       return recordAssociations;
-    },
-    /**
-     * Apply the selected value to filter the list.
-     */
-    applyFilters (searchTerm) {
-      this.tabsData.tabs[Object.keys(this.tabsData.tabs)[this.tabsData.selectedTab]].data = this.tabsData.tabs[Object.keys(this.tabsData.tabs)[this.tabsData.selectedTab]].data.filter(item=>item.name===searchTerm)
     }
   }
 }

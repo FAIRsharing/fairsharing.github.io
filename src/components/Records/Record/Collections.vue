@@ -14,6 +14,7 @@
         <!--  search autocomplete    -->
         <v-autocomplete
           v-model="selectedValues"
+          :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
           :items="getValues"
           solo
           :attach="true"
@@ -31,8 +32,9 @@
           </template>
         </v-autocomplete>
         <v-btn
+          :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
           color="primary"
-          class="ml-2"
+          class="ml-2 mt-1-pt"
         >
           Apply
         </v-btn>
@@ -121,6 +123,7 @@ export default {
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
+    /** Fetch content related to each tab and feed search autocomplete*/
     getValues: function () {
       let selectedTabKey = Object.keys(this.tabsData.tabs)
       return this.tabsData.tabs[selectedTabKey[this.tabsData.selectedTab]].data;
@@ -224,9 +227,8 @@ a {
   flex: 1;
 }
 
-.v-slide-item--active{
-  height: 0!important;
-  color: red;
-background: none!important;
+.mt-1-pt {
+  margin-top: 1pt;
 }
+
 </style>

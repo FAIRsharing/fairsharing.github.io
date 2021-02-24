@@ -25,7 +25,7 @@
           lg="4"
           xl="3"
         >
-          <!-- card for individual access point -->
+          <!-- card for individual associated tool -->
           <v-card
             class="d-flex flex-column ml-1"
           >
@@ -54,7 +54,7 @@
               </v-btn>
             </v-card-actions>
           </v-card>
-          <!-- end of card for individual access point -->
+          <!-- end of card for individual associated tool -->
         </v-col>
       </v-row>
     </v-card-text>
@@ -67,7 +67,7 @@
       </v-btn>
     </v-card-actions>
 
-    <!-- new access point dialogue begins -->
+    <!-- new associated tools dialogue begins -->
 
     <v-dialog
       v-model="openEditor"
@@ -88,7 +88,7 @@
           <v-row justify="center">
             <v-card width="100%">
               <v-card-title class="green white--text">
-                Add an access point
+                Add an associated tool
               </v-card-title>
               <v-card-text>
                 <v-container fluid>
@@ -129,7 +129,7 @@
               </v-card-actions>
             </v-card>
 
-          <!-- new access point dialogue ends -->
+          <!-- new associated tool dialogue ends -->
           </v-row>
         </v-container>
       </v-form>

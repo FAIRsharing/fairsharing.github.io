@@ -31,10 +31,7 @@ let recordStore = {
             id: null
         },
         sections: {
-            generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation,
-            organisations: {},
-            additionalInformation: {},
-            publications: {},
+            generalInformation: initEditorSections(false, ["generalInformation"]).generalInformation
         },
         editOrganisationLink: {
             showOverlay: false,
@@ -161,6 +158,17 @@ let recordStore = {
                 message: error,
                 id: null
             }
+        },
+        cleanRecordStore(state){
+            state.sections = null;
+            state.sections = initEditorSections(false, [
+                "generalInformation",
+                "support",
+                "dataAccess",
+                "publications",
+                "organisations",
+                "additionalInformation"
+            ]);
         }
     },
     actions: {

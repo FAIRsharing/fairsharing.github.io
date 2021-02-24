@@ -275,7 +275,7 @@
 </template>
 
 <script>
-    import { mapActions, mapState } from "vuex"
+    import { mapActions, mapState, mapMutations } from "vuex"
     import UserProfileMenu from "@/components/Users/UserProfileMenu";
     import Loaders from "@/components/Navigation/Loaders";
     import ExternalClient from "@/components/Client/ExternalClients.js"
@@ -338,8 +338,12 @@
           this.publications = await this.getPublications();
           this.loading = false;
       },
+      beforeDestroy() {
+        this.cleanStore();
+      },
       methods: {
           ...mapActions('users', ['getUser', 'resetPwd', 'setError']),
+          ...mapMutations('users', ['cleanStore']),
           async getPublications(){
             let output = [];
             if (this.user().metadata.orcid) {
@@ -363,8 +367,7 @@
             return output;
           },
           booleanToString(bool){
-            if (bool) return "Yes";
-            return "No"
+            return (bool) ? "Yes" : "No";
           }
       }
     }

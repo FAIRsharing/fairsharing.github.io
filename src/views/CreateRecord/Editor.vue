@@ -130,7 +130,7 @@
 </template>
 
 <script>
-  import { mapActions, mapState, mapGetters } from "vuex"
+  import { mapActions, mapState, mapGetters, mapMutations } from "vuex"
   import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
   import EditRelationships from "@/components/Editor/EditRelationships";
   import EditDataAccess from "@/components/Editor/DataAccess/EditDataAccess";
@@ -237,8 +237,14 @@
         this.$store.commit("record/setEditingRecord");
       })
     },
+    beforeDestroy() {
+      this.cleanRecordStore();
+      this.cleanEditorStore();
+    },
     methods: {
       ...mapActions("record", ["fetchRecord"]),
+      ...mapMutations("editor", ["cleanEditorStore"]),
+      ...mapMutations("record", ["cleanRecordStore"]),
       async getData(){
         const _module = this;
         _module.hasLoaded = false;

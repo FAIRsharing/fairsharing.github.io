@@ -51,7 +51,7 @@
                 class="d-flex flex-column"
               >
                 <span>{{ subItem.name }}</span>
-                <span v-if="getLicenceRelation(subItem.id)!=='undefined'">
+                <span v-if="subItem.id && subItem.id!=='undefined' && getLicenceRelation(subItem.id)!=='undefined' ">
                   relationship:
                   <strong>({{ cleanString(getLicenceRelation(subItem.id)) }})</strong>
                 </span>

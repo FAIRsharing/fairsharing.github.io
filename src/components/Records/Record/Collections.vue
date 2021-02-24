@@ -35,6 +35,7 @@
           :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
           color="primary"
           class="ml-2 mt-1-pt"
+          @click="applyFilters(selectedValues)"
         >
           Apply
         </v-btn>
@@ -63,7 +64,7 @@
         class="transparent height-430"
       >
         <v-tab-item
-          v-for="(tabItem,tabItemIndex) in tabsData.tabs"
+          v-for="(tabItem,tabItemIndex) in filterList"
           :key="tabItem+'_'+tabItemIndex"
         >
           <v-virtual-scroll
@@ -111,6 +112,7 @@ export default {
   mixins:[stringUtils],
   data: () => {
     return {
+      filteredList:[],
       selectedValues: null,
       tabsData: {
         selectedTab: 0,
@@ -124,9 +126,24 @@ export default {
   computed: {
     ...mapState("record", ["currentRecord"]),
     /** Fetch content related to each tab and feed search autocomplete*/
-    getValues: function () {
+    getValues() {
       let selectedTabKey = Object.keys(this.tabsData.tabs)
       return this.tabsData.tabs[selectedTabKey[this.tabsData.selectedTab]].data;
+    },
+    filterList() {
+      const _module = this
+      // here I deep copied object so the references are gone and my object is a new object with unique reference
+      const output = JSON.parse(JSON.stringify(_module.tabsData.tabs));
+
+      if (this.selectedValues !== null && this.selectedValues !== "" && this.selectedValues !== undefined) {
+        let foundItem = output[Object.keys(_module.tabsData.tabs)[_module.tabsData.selectedTab]].data.find(item => item.name === _module.selectedValues)
+        if (foundItem) {
+          output[Object.keys(output)[_module.tabsData.selectedTab]].data = []
+          output[Object.keys(output)[_module.tabsData.selectedTab]].data.push(foundItem)
+        }
+        return output
+      }
+      return output
     }
   },
   beforeMount() {
@@ -165,6 +182,12 @@ export default {
         recordAssociations.push(object);
       });
       return recordAssociations;
+    },
+    /**
+     * Apply the selected value to filter the list.
+     */
+    applyFilters (searchTerm) {
+      this.tabsData.tabs[Object.keys(this.tabsData.tabs)[this.tabsData.selectedTab]].data = this.tabsData.tabs[Object.keys(this.tabsData.tabs)[this.tabsData.selectedTab]].data.filter(item=>item.name===searchTerm)
     }
   }
 }

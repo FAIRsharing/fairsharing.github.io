@@ -70,7 +70,8 @@
           "queryName": "licence",
           "fields": [
             "id",
-            "name"
+            "name",
+            "url"
           ]
         }
       ]
@@ -79,7 +80,8 @@
       "name": "licences",
       "fields": [
         "id",
-        "name"
+        "name",
+        "url"
       ]
     },
     {

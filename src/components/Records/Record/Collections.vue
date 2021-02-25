@@ -106,7 +106,6 @@ export default {
   mixins:[stringUtils],
   data: () => {
     return {
-      tabsActive:true,
       selectedValues: null,
       tabsData: {
         selectedTab: 0,

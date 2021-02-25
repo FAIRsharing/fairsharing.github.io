@@ -3,6 +3,7 @@
   "queryParam": null,
   "fields": [
     "id",
-    "name"
+    "name",
+    "url"
   ]
 }

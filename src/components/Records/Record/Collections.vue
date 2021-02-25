@@ -152,6 +152,9 @@ export default {
               .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
         })
       }
+      else {
+        return false
+      }
     },
     /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
     prepareAssociations(associations, reverseAssociations) {

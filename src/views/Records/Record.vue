@@ -92,7 +92,7 @@
           </v-col>
         </v-row>
         <!-- Bottom Block -->
-        <Publications class="mt-5" />
+        <Publications class="mt-5 mb-10" />
       </div>
     </v-container>
   </v-main>

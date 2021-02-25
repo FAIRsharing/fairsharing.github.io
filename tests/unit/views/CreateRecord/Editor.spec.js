@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import CreateRecord from "@/views/CreateRecord/Editor.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
+import editorStore from "@/store/editor.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js";
 import RESTClient from "@/components/Client/RESTClient.js"
 import metaTemplate from "../../../fixtures/metaTemplate.json"
@@ -14,7 +15,8 @@ localVue.use(Vuex);
 
 const $store = new Vuex.Store({modules: {
     record: recordStore,
-    users: userStore
+    users: userStore,
+    editor: editorStore
 }});
 $store.state.users.user = function(){return {credentials: {token: "123"}}};
 let $route = {params: {id: "123"}};
@@ -52,6 +54,16 @@ describe("Editor.vue", function() {
         $store.state.users.user = async () => {return {}};
         expect(wrapper.vm.userToken).toBe(null);
         wrapper.destroy();
+    });
+
+    it("can clean the store on destroy", async () => {
+        wrapper = await shallowMount(CreateRecord, {
+            localVue,
+            mocks: {$store, $route}
+        });
+        wrapper.destroy();
+        expect(editorStore.state.countries).toBe(null);
+        expect(recordStore.state.sections.dataAccess).toBe(undefined);
     });
 
     it("can deal with errors", async () => {

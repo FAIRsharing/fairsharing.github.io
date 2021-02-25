@@ -91,6 +91,16 @@ let editorStore = {
         },
         setAvailableLicences(state, licences){
             state.availableLicences = licences;
+        },
+        cleanEditorStore(state){
+            state.countries = null;
+            state.recordTypes = null;
+            state.allTags = [];
+            state.tags = [];
+            state.organisations = null;
+            state.organisationsTypes = null;
+            state.grants = null;
+            state.availablePublications = [];
         }
     },
     actions: {

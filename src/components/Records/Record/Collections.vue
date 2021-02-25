@@ -8,6 +8,7 @@
   >
     <SectionTitle
       title="Collections"
+      :inactive-section="tabsDataExist"
     />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div class="d-flex flex-wrap mt-5">
@@ -105,7 +106,7 @@ export default {
   mixins:[stringUtils],
   data: () => {
     return {
-      filteredList:[],
+      tabsActive:true,
       selectedValues: null,
       tabsData: {
         selectedTab: 0,
@@ -122,6 +123,16 @@ export default {
     getValues() {
       let selectedTabKey = Object.keys(this.tabsData.tabs)
       return this.tabsData.tabs[selectedTabKey[this.tabsData.selectedTab]].data;
+    },
+    tabsDataExist() {
+      let inactiveTabs = true
+      for (const [key] of Object.entries(this.filterList)) {
+        if (this.filterList[key].data.length >= 1) {
+          inactiveTabs = false
+          break
+        }
+      }
+      return inactiveTabs
     },
     filterList() {
       const _module = this

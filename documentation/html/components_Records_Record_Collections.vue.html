@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/Input/FilterAutocomplete.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Record/Collections.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,162 +86,242 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/Input/FilterAutocomplete.vue</h1>
+		<h1 class="page-title">Source: components/Records/Record/Collections.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-expansion-panel
-    v-if="filter.filterName"
-    :id="filter.filterName + 'AutocompleteList' "
+            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  &lt;v-card
+    class="pa-4 d-flex flex-column"
+    outlined
+    color="bg_record_card"
+    tile
+    elevation="3"
   >
-    &lt;v-expansion-panel-header> {{ filter.filterLabel }}&lt;/v-expansion-panel-header>
-    &lt;v-expansion-panel-content class="pl-5 pr-5">
-      &lt;div :class="['d-flex',{'flex-column':$vuetify.breakpoint.mdAndDown}]">
+    &lt;SectionTitle
+      title="Collections"
+    />
+    &lt;div class="d-flex flex-column ml-2 min-height-40">
+      &lt;div class="d-flex flex-wrap mt-5">
+        &lt;!--  search autocomplete    -->
         &lt;v-autocomplete
           v-model="selectedValues"
-          :attach="true"
+          :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length&lt;5"
           :items="getValues"
           solo
+          :attach="true"
           dense
           clearable
-          multiple
           prepend-inner-icon="fa-search"
-          :placeholder="`Search through ${filter.filterLabel}`"
-          item-text="key"
-          item-value="key"
-          @focus="scrollTo(filter.filterName)"
-          @click:clear="reset(filter)"
+          :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
+          item-text="name"
+          item-value="name"
         >
-          &lt;template #selection="data">
-            &lt;v-chip class="blue white--text  mb-1 ">
-              &lt;span class="chipsValueName">
-                {{ cleanString(data.item.key) }}
-              &lt;/span>
-            &lt;/v-chip>
-          &lt;/template>
           &lt;template #item="data">
-            &lt;div class="d-flex full-width">
-              &lt;span class="filterValueName"> {{ cleanString(data.item.key) }}&lt;/span>
-              &lt;span class="filterValueCount"> {{ data.item['doc_count'] }}&lt;/span>
-            &lt;/div>
+            &lt;span class="filterValueName">
+              {{ data.item.name }}
+            &lt;/span>
           &lt;/template>
         &lt;/v-autocomplete>
-        &lt;v-btn
-          color="primary"
-          class="ml-lg-2 custom-btn"
-          @click="applyFilters(filter)"
-        >
-          Apply
-        &lt;/v-btn>
       &lt;/div>
-    &lt;/v-expansion-panel-content>
-  &lt;/v-expansion-panel>
+      &lt;!--  tabs    -->
+      &lt;v-tabs
+        v-model="tabsData.selectedTab"
+        background-color="transparent"
+        grow
+        color="accent3"
+        slider-color="accent3"
+        class="mb-5"
+        :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length===0"
+      >
+        &lt;v-tab
+          v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
+          :key="tabName+'_'+tabIndex"
+          :disabled="tabsData.tabs[tabName].data.length===0"
+          @change="selectedValues=null"
+        >
+          {{ cleanString(tabName) }}
+        &lt;/v-tab>
+      &lt;/v-tabs>
+      &lt;!--  tab content  -->
+      &lt;v-tabs-items
+        v-model="tabsData.selectedTab"
+        class="transparent height-430"
+      >
+        &lt;v-tab-item
+          v-for="(tabItem,tabItemIndex) in filterList"
+          :key="tabItem+'_'+tabItemIndex"
+        >
+          &lt;v-virtual-scroll
+            :items="tabItem.data"
+            height="400"
+            item-height="130"
+            class="ma-4 overflow-x-hidden"
+          >
+            &lt;template #default="{ item,index }">
+              &lt;v-card
+                :key="item.id + '_' + index"
+                class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
+                flat
+                outlined
+              >
+                &lt;div class="d-flex align-center">
+                  &lt;record-status
+                    :record="item"
+                    :show-status="false"
+                  />
+                  &lt;div class="ml-10 text-ellipses-height-2lines">
+                    {{ item.name }}
+                  &lt;/div>
+                &lt;/div>
+              &lt;/v-card>
+            &lt;/template>
+          &lt;/v-virtual-scroll>
+        &lt;/v-tab-item>
+      &lt;/v-tabs-items>
+    &lt;/div>
+  &lt;/v-card>
 &lt;/template>
 
 &lt;script>
-import {mapGetters, mapState} from 'vuex'
-import clearString from '@/utils/stringUtils'
-
+import SectionTitle from '@/components/Records/Record/SectionTitle';
+import {mapState} from "vuex";
+import stringUtils from "@/utils/stringUtils"
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
 export default {
-  name: "FilterAutocomplete",
-  mixins: [clearString],
-  props: {
-    filter: {default: null, type: Object},
-    lastItem:{default:false, type:Boolean}
+  name: "Collections",
+  components: {
+    RecordStatus,
+    SectionTitle,
   },
+  mixins:[stringUtils],
   data: () => {
     return {
-      selectedValues: []
+      filteredList:[],
+      selectedValues: null,
+      tabsData: {
+        selectedTab: 0,
+        tabs: {
+          in_collections: {relation: 'collects', data: []},
+          in_recommendations: {relation: 'recommends', data: []},
+        }
+      }
     }
   },
   computed: {
-    ...mapGetters('records', ['getFilter']),
-    ...mapState('uiController', ['stickToTop']),
-    getValues: function () {
-      let _module = this;
-      let output = _module.getFilter(this.filter.filterName);
-      if (output.values &amp;&amp; typeof output.values === 'object') {
-        return output.values;
+    ...mapState("record", ["currentRecord"]),
+    /** Fetch content related to each tab and feed search autocomplete*/
+    getValues() {
+      let selectedTabKey = Object.keys(this.tabsData.tabs)
+      return this.tabsData.tabs[selectedTabKey[this.tabsData.selectedTab]].data;
+    },
+    filterList() {
+      const _module = this
+      // here I deep copied object so the references are gone and my object is a new object with unique reference
+      const output = JSON.parse(JSON.stringify(_module.tabsData.tabs));
+
+      if (this.selectedValues !== null &amp;&amp; this.selectedValues !== "" &amp;&amp; this.selectedValues !== undefined) {
+        let foundItem = output[Object.keys(_module.tabsData.tabs)[_module.tabsData.selectedTab]].data.find(item => item.name === _module.selectedValues)
+        if (foundItem) {
+          output[Object.keys(output)[_module.tabsData.selectedTab]].data = []
+          output[Object.keys(output)[_module.tabsData.selectedTab]].data.push(foundItem)
+        }
+        return output
       }
-      return []
+      return output
     }
   },
+  beforeMount() {
+    this.prepareTabsData();
+  },
   methods: {
-    /**
-     * Apply the filters by building the new query parameters using the form data.
-     */
-    applyFilters: function () {
-      let _module = this;
-      let filterName = _module.filter.filterName;
-      let currentParams = JSON.parse(JSON.stringify(_module.$route.query));
-
-      if (Object.keys(currentParams).indexOf(filterName) === -1) {
-        if (_module.selectedValues !== null &amp;&amp; _module.selectedValues.length > 0) {
-          if (_module.selectedValues.length === 1) {
-            currentParams[filterName] = encodeURIComponent(_module.selectedValues.join(','));
-          }
-          else {
-            let newParam = [];
-            _module.selectedValues.forEach(function (val) {
-              newParam.push(encodeURIComponent(val));
-            });
-            currentParams[filterName] = newParam.join(",");
-          }
-          _module.$router.push({
-            name: _module.$route.name,
-            query: currentParams
-          });
-        }
+    /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
+    prepareTabsData() {
+      const _module = this;
+      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
+        Object.keys(_module.tabsData.tabs).forEach(tabName => {
+          _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
+              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+        })
       }
       else {
-        if (_module.selectedValues === null || _module.selectedValues.length === 0) {
-          delete currentParams[_module.filter.filterName];
-          _module.$router.push({
-            name: _module.$route.name,
-            query: currentParams
-          });
-        }
-        else {
-          let newParams = [];
-          let existingValues = currentParams[_module.filter.filterName].split(",");
-          _module.selectedValues.forEach(function (selectedValue) {
-            const filterVal = encodeURIComponent(selectedValue);
-            if (existingValues.indexOf(filterVal) === -1) {
-              newParams.push(filterVal);
-            }
-          });
-          currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
-          if (newParams.length > 0) {
-            _module.$router.push({
-              name: _module.$route.name,
-              query: currentParams
-            });
-          }
-        }
+        return false
       }
-      _module.selectedValues = [];
     },
-    /**
-     * Reset the form/filters/parameters to default (go so /search?page=1)
-     */
-    reset: function (selectedItem) {
-      selectedItem.filterSelected = {};
-    },
-    /* istanbul ignore next */
-    scrollTo(name) {
+    /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+    prepareAssociations(associations, reverseAssociations) {
       let _module = this;
-      _module.$scrollTo("#" + name + 'AutocompleteList', 450, {
-        container: '#scrollable-holder',
-        easing: 'ease-in',
-      })
+      let recordAssociations = []
+      let joinedArrays = associations.concat(reverseAssociations);
+      const properties = ['fairsharingRecord', 'linkedRecord'];
+
+      joinedArrays.forEach(item => {
+        let object = {};
+        properties.forEach(prop => {
+          if (Object.prototype.hasOwnProperty.call(item, prop)) {
+            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+            object.id = item[prop].id;
+            object.registry = item[prop].registry;
+            object.name = item[prop].name;
+            object.subject = _module.currentRecord['fairsharingRecord'].name;
+            object.type = item[prop].type;
+          }
+        });
+        recordAssociations.push(object);
+      });
+      return recordAssociations;
     }
   }
 }
 &lt;/script>
 
-&lt;style scoped>
+&lt;style scoped lang="scss">
+a {
+  text-decoration: none;
+
+  &amp;:hover, &amp;:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
+
+.icon-container {
+  position: absolute;
+  top: -45px;
+  background: white;
+  border: #b3b3b3 dotted 3px;
+  border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
+  width: 85px;
+  height: 85px;
+  cursor: help;
+}
+
+.card-title-customize {
+  position: absolute;
+  top: 5px;
+  left: 120px
+}
+
+.v-card-hover {
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  transition: box-shadow .4s linear;
+  -webkit-transition: box-shadow .4s linear;
+  -moz-transition: box-shadow .4s linear;
+  -o-transition: box-shadow .4s linear;
+}
+
+.v-card-hover:hover {
+  transform: scale(1.004);
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+}
+
 .filterValueName {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -249,22 +329,10 @@ export default {
   flex: 1;
 }
 
-.chipsValueName {
-  width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+.mt-1-pt {
+  margin-top: 1pt;
 }
 
-.filterValueCount {
-  background: #2196F3;
-  color: white;
-  padding: 0 7px;
-}
-
-.custom-btn {
-  height: 38px;
-}
 &lt;/style>
 </pre>
     </article>

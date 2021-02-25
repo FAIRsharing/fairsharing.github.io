@@ -76,6 +76,8 @@
         <v-row no-gutters>
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            <!-- COLLECTIONS -->
+            <Collections class="mt-5" />
             <!-- SUPPORT -->
             <Support class="mt-5" />
             <!-- Data Conditions -->
@@ -108,12 +110,14 @@
     import Support from '@/components/Records/Record/Support';
     import NotFound from "@/views/Errors/404"
     import Organisations from "@/components/Records/Record/Organisations";
+    import Collections from "@/components/Records/Record/Collections";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          Collections,
           Organisations,
             GeneralInfo,
             Tools,

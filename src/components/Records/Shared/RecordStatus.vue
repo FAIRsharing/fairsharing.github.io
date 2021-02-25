@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div
     v-if="recordType"
-    class="circle-container"
+    :class="showStatus?'circle-container':'circle-container-dashed'"
   >
     <v-tooltip
       right
@@ -23,7 +23,10 @@
       <span>{{ recordType[record.type].tooltip }}</span>
     </v-tooltip>
 
-    <v-tooltip right>
+    <v-tooltip
+      v-if="showStatus"
+      right
+    >
       <template #activator="{ on }">
         <span
           class="white--text headline circle"
@@ -42,7 +45,8 @@ import recordTypes from "@/data/recordsRegistries.json"
 export default {
   name: "RecordStatus",
   props: {
-    record: {default: null, type: Object}
+    record: {default: null, type: Object},
+    showStatus: {default: true, type: Boolean}
   },
   data() {
     return {
@@ -125,5 +129,16 @@ export default {
       top: 4px;
     }
   }
+}
+
+.circle-container-dashed {
+  position: relative;
+  border: #b3b3b3 dotted 3px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  width: 86px;
+  height: 87px;
+  cursor: help;
 }
 </style>

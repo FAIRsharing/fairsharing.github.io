@@ -151,6 +151,7 @@ export default {
   },
   beforeMount() {
     this.prepareTabsData();
+    this.getFirstActiveTab();
   },
   methods: {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
@@ -188,6 +189,19 @@ export default {
         recordAssociations.push(object);
       });
       return recordAssociations;
+    },
+    /** active the very first tab that contains at least one item */
+    getFirstActiveTab() {
+      let firstActiveTabIndex = 0;
+      let index = -1
+      for (const [key] of Object.entries(this.filterList)) {
+        index++
+        if (this.filterList[key].data.length >= 1) {
+          firstActiveTabIndex = index
+          break
+        }
+      }
+      this.tabsData.selectedTab = firstActiveTabIndex
     }
   }
 }

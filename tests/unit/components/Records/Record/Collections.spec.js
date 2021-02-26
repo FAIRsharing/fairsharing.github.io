@@ -67,6 +67,8 @@ describe("Collections.vue", function(){
         wrapper.vm.selectedValues = "a name 3"
         wrapper.vm.selectedValues = "not going to find me!"
         wrapper.vm.tabsData.tabs.in_collections.data = []
+        wrapper.vm.getFirstActiveTab()
+        expect(wrapper.vm.tabsData.selectedTab).toBe(1)
     });
 
     it("can check if there are no record recordAssociations or reverseRecordAssociations", () => {

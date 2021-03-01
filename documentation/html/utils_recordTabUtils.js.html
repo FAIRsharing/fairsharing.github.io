@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: store/records.js</title>
+	<title>FAIRsharing.org Source: utils/recordTabUtils.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,115 +86,92 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: store/records.js</h1>
+		<h1 class="page-title">Source: utils/recordTabUtils.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import Client from "@/components/GraphClient/GraphClient.js"
-import recordsQuery from "@/components/GraphClient/queries/getRecords.json"
-import filterMapping from "@/data/FiltersLabelMapping.json"
-
-let client = new Client();
-
-export const mutations = {
-    setRecords(state, data) {
-        state.records = data['records'];
-        state.facets = buildFacets(data["aggregations"]);
-        state.totalPages = data["totalPages"];
-        state.perPage = data["perPage"];
-        state.currentPage = data["currentPage"];
-        state.hits = data["totalCount"];
-    },
-    resetRecords(state) {
-        recordsQuery.queryParam = null;
-        state.records = [];
-    },
-    resetPages(state) {
-        state.hits = null;
-        state.perPage = null;
-        state.currentPage = null;
-        state.totalPages = null;
-    },
-    setLoadingStatus(state, status) {
-        state.loading = status;
-    }
-};
-export const actions = {
-    async fetchRecords(state, params) {
-        this.commit("records/setLoadingStatus", true);
-        this.commit("records/resetRecords");
-        this.commit("records/resetPages");
-        if (Object.keys(params).length > 0) {
-            recordsQuery.queryParam = params;
-        }
-        const data = await client.executeQuery(recordsQuery);
-        this.commit('records/setRecords', data["searchFairsharingRecords"]);
-        this.commit("records/setLoadingStatus", false);
-    },
-    resetRecords() {
-        this.commit("records/resetRecords");
-    },
-};
-export const getters = {
-    getFilter: (state) => (facetName) => {
-        if (state.facets.length > 0) {
-            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
-            currentFacet['values'] = currentFacet['buckets'];
-            return currentFacet;
-        }
-        return [];
-    },
-    getRecordsLength: (state) => {
-        return state.records.length;
-    }
-};
-
-/**
- * The records store handles the requests related to records (searchFairsharingRecords and fairsharingRecord).
- * @type {Object}
- */
-let recordsStore = {
-    namespaced: true,
-    state: {
-        records: [],
-        facets: [],
-        hits: null,
-        loading: false,
-        totalPages: null,
-        perPage: null,
-        currentPage: null
-    },
-    mutations: mutations,
-    actions: actions,
-    getters: getters
-};
-export default recordsStore;
-
-/**
- * Given an object containing the raw facets coming from the client and a mapping object , build the ready to use facets
- * for usage by the Vue components.
- * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
- * @returns {Array} output - the array of ready to use facets containing a name, a label and values
- */
-export const buildFacets = function (rawFacets) {
-    let output = [];
-    const mapper = filterMapping["autocomplete"];
-
-    Object.keys(rawFacets).forEach(function (facetName) {
-        if (Object.prototype.hasOwnProperty.call(mapper, facetName)) {
-            let localFacet = mapper[facetName];
-            rawFacets[facetName]["buckets"].forEach(function (bucket) {
-                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
-                    bucket["key"] = bucket["key_as_string"];
+            class="sunlight-highlight-javascript linenums">const recordTabUtils = {
+    computed: {
+        /** Fetch content related to each tab and feed search autocomplete*/
+        getValues() {
+            let selectedTabKey = Object.keys(this.tabsData.tabs)
+            return this.tabsData.tabs[selectedTabKey[this.tabsData.selectedTab]].data;
+        },
+        /** Deactivate the section if none of the tabs hold data*/
+        tabsDataExist() {
+            let inactiveTabs = true
+            for (const [key] of Object.entries(this.filterList)) {
+                if (this.filterList[key].data.length >= 1) {
+                    inactiveTabs = false
+                    break
                 }
-            });
-            localFacet['buckets'] = rawFacets[facetName]['buckets'];
-            output.push(localFacet);
+            }
+            return inactiveTabs
+        },
+        /** Filter down list if search box value changes unless it returns the whole data in a list*/
+        filterList() {
+            const _module = this
+            // here I deep copied object so the references are gone and my object is a new object with unique reference
+            const output = JSON.parse(JSON.stringify(_module.tabsData.tabs));
+
+            if (this.selectedValues !== null &amp;&amp; this.selectedValues !== "" &amp;&amp; this.selectedValues !== undefined) {
+                let foundItem = output[Object.keys(_module.tabsData.tabs)[_module.tabsData.selectedTab]].data.find(item => item.name === _module.selectedValues)
+                if (foundItem) {
+                    output[Object.keys(output)[_module.tabsData.selectedTab]].data = []
+                    output[Object.keys(output)[_module.tabsData.selectedTab]].data.push(foundItem)
+                }
+                return output
+            }
+            return output
         }
-    });
-    return output;
-};
+    },
+    methods: {
+        /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+        prepareAssociations(associations, reverseAssociations) {
+            let _module = this;
+            let recordAssociations = []
+            let joinedArrays = associations.concat(reverseAssociations);
+            const properties = ['fairsharingRecord', 'linkedRecord'];
+
+            joinedArrays.forEach(item => {
+                let object = {};
+                properties.forEach(prop => {
+                    if (Object.prototype.hasOwnProperty.call(item, prop)) {
+                        object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+                        object.id = item[prop].id;
+                        object.registry = item[prop].registry;
+                        object.name = item[prop].name;
+                        object.subject = _module.currentRecord['fairsharingRecord'].name;
+                        object.type = item[prop].type;
+                    }
+                });
+                recordAssociations.push(object);
+            });
+            return recordAssociations;
+        },
+        /** active the very first tab that contains at least one item */
+        getFirstActiveTab() {
+            let firstActiveTabIndex = 0;
+            let index = -1
+            for (const [key] of Object.entries(this.filterList)) {
+                index++
+                if (this.filterList[key].data.length >= 1) {
+                    firstActiveTabIndex = index
+                    break
+                }
+            }
+            this.tabsData.selectedTab = firstActiveTabIndex
+        }
+    },
+    beforeMount() {
+        this.prepareTabsData();
+        this.getFirstActiveTab();
+    }
+}
+
+export default recordTabUtils;
+
 </pre>
     </article>
 </section>

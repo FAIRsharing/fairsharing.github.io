@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: store/records.js</title>
+	<title>FAIRsharing.org Source: components/Records/Record/RelatedContent.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,115 +86,209 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: store/records.js</h1>
+		<h1 class="page-title">Source: components/Records/Record/RelatedContent.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import Client from "@/components/GraphClient/GraphClient.js"
-import recordsQuery from "@/components/GraphClient/queries/getRecords.json"
-import filterMapping from "@/data/FiltersLabelMapping.json"
+            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  &lt;v-card
+    class="pa-4 d-flex flex-column"
+    outlined
+    color="bg_record_card"
+    tile
+    elevation="3"
+  >
+    &lt;SectionTitle
+      title="Related Content"
+      :inactive-section="tabsDataExist"
+    />
+    &lt;div class="d-flex flex-column ml-2 min-height-40">
+      &lt;div class="d-flex flex-wrap mt-5">
+        &lt;!--  search autocomplete    -->
+        &lt;v-autocomplete
+          v-model="selectedValues"
+          :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length&lt;5"
+          :items="getValues"
+          solo
+          :attach="true"
+          dense
+          clearable
+          prepend-inner-icon="fa-search"
+          :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
+          item-text="name"
+          item-value="name"
+        >
+          &lt;template #item="data">
+            &lt;span class="filterValueName">
+              {{ data.item.name }}
+            &lt;/span>
+          &lt;/template>
+        &lt;/v-autocomplete>
+      &lt;/div>
+      &lt;!--  tabs    -->
+      &lt;v-tabs
+        v-model="tabsData.selectedTab"
+        background-color="transparent"
+        grow
+        color="accent3"
+        slider-color="accent3"
+        class="mb-5"
+        :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length===0"
+      >
+        &lt;v-tab
+          v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
+          :key="tabName+'_'+tabIndex"
+          :disabled="tabsData.tabs[tabName].data.length===0"
+          @change="selectedValues=null"
+        >
+          {{ cleanString(tabName) }}
+        &lt;/v-tab>
+      &lt;/v-tabs>
+      &lt;!--  tab content  -->
+      &lt;v-tabs-items
+        v-model="tabsData.selectedTab"
+        class="transparent height-430"
+      >
+        &lt;v-tab-item
+          v-for="(tabItem,tabItemIndex) in filterList"
+          :key="tabItem+'_'+tabItemIndex"
+        >
+          &lt;v-virtual-scroll
+            :items="tabItem.data"
+            height="400"
+            item-height="130"
+            class="ma-4 overflow-x-hidden"
+          >
+            &lt;template #default="{ item,index }">
+              &lt;v-card
+                :key="item.id + '_' + index"
+                class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
+                flat
+                outlined
+              >
+                &lt;div class="d-flex align-center">
+                  &lt;record-status
+                    :record="item"
+                    :show-status="false"
+                  />
+                  &lt;div class="ml-10 text-ellipses-height-2lines">
+                    {{ item.name }}
+                  &lt;/div>
+                &lt;/div>
+              &lt;/v-card>
+            &lt;/template>
+          &lt;/v-virtual-scroll>
+        &lt;/v-tab-item>
+      &lt;/v-tabs-items>
+    &lt;/div>
+  &lt;/v-card>
+&lt;/template>
 
-let client = new Client();
-
-export const mutations = {
-    setRecords(state, data) {
-        state.records = data['records'];
-        state.facets = buildFacets(data["aggregations"]);
-        state.totalPages = data["totalPages"];
-        state.perPage = data["perPage"];
-        state.currentPage = data["currentPage"];
-        state.hits = data["totalCount"];
-    },
-    resetRecords(state) {
-        recordsQuery.queryParam = null;
-        state.records = [];
-    },
-    resetPages(state) {
-        state.hits = null;
-        state.perPage = null;
-        state.currentPage = null;
-        state.totalPages = null;
-    },
-    setLoadingStatus(state, status) {
-        state.loading = status;
+&lt;script>
+import SectionTitle from '@/components/Records/Record/SectionTitle';
+import {mapState} from "vuex";
+import stringUtils from "@/utils/stringUtils"
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import recordTabUtils from "@/utils/recordTabUtils";
+export default {
+  name: "RelatedContent",
+  components: {
+    RecordStatus,
+    SectionTitle,
+  },
+  mixins:[stringUtils,recordTabUtils],
+  data: () => {
+    return {
+      selectedValues: null,
+      tabsData: {
+        selectedTab: 0,
+        tabs: {
+          related_standards: {relation: ['implements', 'related to'], registry: "Standard", data: []},
+          related_databases: {relation: ['implements', 'related to'], registry: "Database", data: []},
+          related_policies: {relation: ['implements', 'related to'], registry: "Policy", data: []}
+        }
+      }
     }
-};
-export const actions = {
-    async fetchRecords(state, params) {
-        this.commit("records/setLoadingStatus", true);
-        this.commit("records/resetRecords");
-        this.commit("records/resetPages");
-        if (Object.keys(params).length > 0) {
-            recordsQuery.queryParam = params;
-        }
-        const data = await client.executeQuery(recordsQuery);
-        this.commit('records/setRecords', data["searchFairsharingRecords"]);
-        this.commit("records/setLoadingStatus", false);
+  },
+  computed: {
+    ...mapState("record", ["currentRecord"]),
+  },
+  methods: {
+    /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
+    prepareTabsData() {
+      const _module = this;
+      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
+        Object.keys(_module.tabsData.tabs).forEach(tabName => {
+          _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
+              .filter(item => _module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) &amp;&amp; item.registry === _module.tabsData.tabs[tabName].registry)
+        })
+      } else {
+        return false
+      }
     },
-    resetRecords() {
-        this.commit("records/resetRecords");
-    },
-};
-export const getters = {
-    getFilter: (state) => (facetName) => {
-        if (state.facets.length > 0) {
-            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
-            currentFacet['values'] = currentFacet['buckets'];
-            return currentFacet;
-        }
-        return [];
-    },
-    getRecordsLength: (state) => {
-        return state.records.length;
-    }
-};
+  }
+}
+&lt;/script>
 
-/**
- * The records store handles the requests related to records (searchFairsharingRecords and fairsharingRecord).
- * @type {Object}
- */
-let recordsStore = {
-    namespaced: true,
-    state: {
-        records: [],
-        facets: [],
-        hits: null,
-        loading: false,
-        totalPages: null,
-        perPage: null,
-        currentPage: null
-    },
-    mutations: mutations,
-    actions: actions,
-    getters: getters
-};
-export default recordsStore;
+&lt;style scoped lang="scss">
+a {
+  text-decoration: none;
 
-/**
- * Given an object containing the raw facets coming from the client and a mapping object , build the ready to use facets
- * for usage by the Vue components.
- * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
- * @returns {Array} output - the array of ready to use facets containing a name, a label and values
- */
-export const buildFacets = function (rawFacets) {
-    let output = [];
-    const mapper = filterMapping["autocomplete"];
+  &amp;:hover, &amp;:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
 
-    Object.keys(rawFacets).forEach(function (facetName) {
-        if (Object.prototype.hasOwnProperty.call(mapper, facetName)) {
-            let localFacet = mapper[facetName];
-            rawFacets[facetName]["buckets"].forEach(function (bucket) {
-                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
-                    bucket["key"] = bucket["key_as_string"];
-                }
-            });
-            localFacet['buckets'] = rawFacets[facetName]['buckets'];
-            output.push(localFacet);
-        }
-    });
-    return output;
-};
+.icon-container {
+  position: absolute;
+  top: -45px;
+  background: white;
+  border: #b3b3b3 dotted 3px;
+  border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  -webkit-border-radius: 50% !important;
+  width: 85px;
+  height: 85px;
+  cursor: help;
+}
+
+.card-title-customize {
+  position: absolute;
+  top: 5px;
+  left: 120px
+}
+
+.v-card-hover {
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  transition: box-shadow .4s linear;
+  -webkit-transition: box-shadow .4s linear;
+  -moz-transition: box-shadow .4s linear;
+  -o-transition: box-shadow .4s linear;
+}
+
+.v-card-hover:hover {
+  transform: scale(1.004);
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+}
+
+.filterValueName {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.mt-1-pt {
+  margin-top: 1pt;
+}
+
+&lt;/style>
 </pre>
     </article>
 </section>

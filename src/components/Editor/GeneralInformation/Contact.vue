@@ -176,7 +176,7 @@
             editContact(contact, contactIndex){
                 this.submitted = false;
                 this.menu.show = true;
-                this.menu.label = "Edit contact point";
+                this.menu.label = "Change contact point";
                 this.menu.index = contactIndex;
                 this.menu.content = JSON.parse(JSON.stringify(contact))
             },

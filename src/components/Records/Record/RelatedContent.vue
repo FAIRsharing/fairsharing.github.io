@@ -110,8 +110,9 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {relation: 'related to', data: []},
-          related_databases: {relation: 'implements', data: []},
+          related_standards: {relation: ['implements', 'related to'], registry: "Standard", data: []},
+          related_databases: {relation: ['implements', 'related to'], registry: "Database", data: []},
+          related_policies: {relation: ['implements', 'related to'], registry: "Policy", data: []}
         }
       }
     }
@@ -160,7 +161,7 @@ export default {
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+              .filter(item => _module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && item.registry === _module.tabsData.tabs[tabName].registry)
         })
       }
       else {
@@ -188,6 +189,7 @@ export default {
         });
         recordAssociations.push(object);
       });
+      console.log(recordAssociations)
       return recordAssociations;
     },
     /** active the very first tab that contains at least one item */

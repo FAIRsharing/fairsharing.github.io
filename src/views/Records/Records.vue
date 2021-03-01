@@ -57,7 +57,7 @@
 <script>
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
-import {mapActions, mapState} from 'vuex'
+import {mapActions, mapState, mapMutations} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import filterChipsUtils from "@/utils/filterChipsUtils";
@@ -82,6 +82,7 @@ export default {
   computed: {
     ...mapState('uiController', ['scrollStatus', 'stickToTop']),
     ...mapState('records', ['records']),
+    ...mapMutations('records', ['cleanRecordsStore']),
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
           (obj, [key, value]) => ({...obj, [value]: key}),
@@ -133,8 +134,11 @@ export default {
       this.$scrollTo('body',50,{})
     });
   },
+  beforeDestroy() {
+    this.cleanRecordsStore();
+  },
   destroyed() {
-    this.$scrollTo('body',50,{})
+    this.$scrollTo('body', 50, {})
     window.removeEventListener("scroll", this.onScroll);
     this.setStickToTop(false);
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {

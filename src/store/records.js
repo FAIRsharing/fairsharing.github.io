@@ -1,6 +1,7 @@
 import Client from "@/components/GraphClient/GraphClient.js"
 import recordsQuery from "@/components/GraphClient/queries/getRecords.json"
 import filterMapping from "@/data/FiltersLabelMapping.json"
+import {initEditorSections} from "@/store/utils";
 
 let client = new Client();
 
@@ -25,6 +26,15 @@ export const mutations = {
     },
     setLoadingStatus(state, status) {
         state.loading = status;
+    },
+    cleanRecordsStore(state){
+        state.records = [];
+        state.facets = [];
+        state.hits = null;
+        state.loading = null;
+        state.totalPages = null;
+        state.perPage = null;
+        state.currentPage = null;
     }
 };
 export const actions = {

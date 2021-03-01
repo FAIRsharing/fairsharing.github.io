@@ -82,7 +82,6 @@ export default {
   computed: {
     ...mapState('uiController', ['scrollStatus', 'stickToTop']),
     ...mapState('records', ['records']),
-    ...mapMutations('records', ['cleanRecordsStore']),
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
           (obj, [key, value]) => ({...obj, [value]: key}),
@@ -147,6 +146,7 @@ export default {
     });
   },
   methods: {
+    ...mapMutations('records',['cleanRecordsStore']),
     ...mapActions('records', ['fetchRecords']),
     ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
     onScroll: function () {

@@ -87,7 +87,7 @@ describe('Editor -> Contact.vue', () => {
         },0);
         expect(wrapper.vm.menu).toStrictEqual({
             show: true,
-            label: "Edit contact point",
+            label: "Change contact point",
             index: 0,
             content: {
                 contact_name: null,

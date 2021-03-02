@@ -43,11 +43,9 @@ let recordStore = {
     mutations: {
         setCurrentRecord(state, data){
             state.currentRecord = data;
-        },
-        setCurrentRecordTagsType(state) {
             let tags = ['subjects', 'domains', 'taxonomies', 'userDefinedTags']
             tags.forEach(tag => {
-                if (state.currentRecord['fairsharingRecord'][tag].length && state.currentRecord['fairsharingRecord'][tag]) {
+                if (state.currentRecord['fairsharingRecord'][tag].length && state.currentRecord['fairsharingRecord'][tag] ) {
                     state.currentRecord['fairsharingRecord'][tag].forEach(item => {
                         item.type = tag;
                     })
@@ -196,7 +194,6 @@ let recordStore = {
                 data["fairsharingRecord"]['metadata']['citations'] = [];
             }
             state.commit('setCurrentRecord', JSON.parse(JSON.stringify(data)));
-            state.commit('setCurrentRecordTagsType');
             state.commit('setSections', JSON.parse(JSON.stringify(data)));
         },
         async fetchRecordHistory(state, id){

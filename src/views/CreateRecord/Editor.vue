@@ -189,7 +189,7 @@
             icon: "fa-info"
           },
           {
-            name: "Data Access",
+            name: "Licences & Support Links",
             disabled: false,
             target: "dataAccess"
           },

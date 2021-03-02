@@ -90,6 +90,8 @@ describe("SearchLinkChips.vue", function () {
         expect(wrapper.vm.getChipColor(chip)).toEqual('domain_color');
         chip = {type: 'taxonomies'};
         expect(wrapper.vm.getChipColor(chip)).toEqual('taxonomic_color');
+        chip = {type: 'userDefinedTags'};
+        expect(wrapper.vm.getChipColor(chip)).toEqual('tags_color');
     });
 
 });

@@ -44,6 +44,16 @@ let recordStore = {
         setCurrentRecord(state, data){
             state.currentRecord = data;
         },
+        setCurrentRecordTagsType(state) {
+            let tags = ['subjects', 'domains', 'taxonomies', 'userDefinedTags']
+            tags.forEach(tag => {
+                if (state.currentRecord['fairsharingRecord'][tag].length && state.currentRecord['fairsharingRecord'][tag]) {
+                    state.currentRecord['fairsharingRecord'][tag].forEach(item => {
+                        item.type = tag;
+                    })
+                }
+            })
+        },
         setRecordHistory(state, data){
             state.currentRecordHistory = data;
         },
@@ -186,6 +196,7 @@ let recordStore = {
                 data["fairsharingRecord"]['metadata']['citations'] = [];
             }
             state.commit('setCurrentRecord', JSON.parse(JSON.stringify(data)));
+            state.commit('setCurrentRecordTagsType');
             state.commit('setSections', JSON.parse(JSON.stringify(data)));
         },
         async fetchRecordHistory(state, id){
@@ -423,14 +434,6 @@ let recordStore = {
     },
     getters: {
         getField: (state) => (fieldName) => {
-            let tags = ['subjects','domains','taxonomies','userDefinedTags']
-            if (tags.includes(fieldName)) {
-                tags.forEach(tag => {
-                    state.currentRecord['fairsharingRecord'][tag].forEach(item => {
-                        item.type = tag;
-                    })
-                })
-            }
             return state.currentRecord['fairsharingRecord'][fieldName];
         },
         getSection: (state) => (sectionName) => {

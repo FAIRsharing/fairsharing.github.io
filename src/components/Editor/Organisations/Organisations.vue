@@ -27,14 +27,18 @@
                     <v-card
                       v-if="link.organisation.name"
                       key="view"
-                      class="flexCard grey lighten-3"
+                      class="flexCard lighten-3"
+                      :class="{'grey': !link.isLead, 'green': link.isLead}"
                       height="100%"
                     >
                       <v-card-text
                         class="py-1"
                         style="flex-grow: 1"
                       >
-                        <v-list class="grey lighten-3 px-0">
+                        <v-list
+                          class="lighten-3 px-0"
+                          :class="{'grey': !link.isLead, 'green': link.isLead}"
+                        >
                           <v-list-item class="px-0">
                             <v-list-item-avatar
                               v-if="link.organisation.name"
@@ -72,6 +76,12 @@
                             </v-list-item-content>
                           </v-list-item>
                         </v-list>
+                        <v-switch
+                          v-if="link.relation === 'maintains'"
+                          v-model="link.isLead"
+                          color="green"
+                          label="Lead organisation?"
+                        />
                       </v-card-text>
                       <v-card-actions style="border-top: 1px solid #ccc">
                         <v-spacer />

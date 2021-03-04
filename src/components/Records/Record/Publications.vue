@@ -36,10 +36,7 @@
             v-if="publication.url"
             class="pa-0 text-ellipses-height-3lines min-height-68"
           >
-            <a
-              :href="publication.url"
-              target="_blank"
-            >{{ publication.title }}</a>
+            {{ publication.title }}
           </v-card-text>
           <p
             v-else

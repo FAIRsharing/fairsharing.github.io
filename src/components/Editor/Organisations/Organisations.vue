@@ -27,8 +27,7 @@
                     <v-card
                       v-if="link.organisation.name"
                       key="view"
-                      class="flexCard lighten-3"
-                      :class="{'grey': !link.isLead, 'green': link.isLead}"
+                      :class="['flexCard lighten-3',{'grey': !link.isLead, 'green': link.isLead}]"
                       height="100%"
                     >
                       <v-card-text
@@ -37,7 +36,7 @@
                       >
                         <v-list
                           class="lighten-3 px-0"
-                          :class="{'grey': !link.isLead, 'green': link.isLead}"
+                          :class="['lighten-3 px-0',{'grey': !link.isLead, 'green': link.isLead}]"
                         >
                           <v-list-item class="px-0">
                             <v-list-item-avatar

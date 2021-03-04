@@ -234,7 +234,7 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <span class="tooltips">{{ data.item.description }}</span>
+            <span>{{ data.item.description }}</span>
           </v-tooltip>
         </template>
       </v-autocomplete>
@@ -281,7 +281,7 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <span class="tooltips"> {{ data.item.description }} </span>
+            <span> {{ data.item.description }} </span>
           </v-tooltip>
         </template>
       </v-autocomplete>
@@ -397,14 +397,5 @@
 <style scoped>
   .registryList {
     max-width: 780px;
-  }
-
-  .tooltips {
-    max-width: 500px;
-    display: block;
-  }
-
-  .v-tooltip__content {
-    background: rgba(0, 0, 0, 1);
   }
 </style>

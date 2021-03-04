@@ -136,6 +136,14 @@ let recordStore = {
     mutations: {
         setCurrentRecord(state, data){
             state.currentRecord = data;
+            let tags = ['subjects', 'domains', 'taxonomies', 'userDefinedTags']
+            tags.forEach(tag => {
+                if (state.currentRecord['fairsharingRecord'][tag].length &amp;&amp; state.currentRecord['fairsharingRecord'][tag] ) {
+                    state.currentRecord['fairsharingRecord'][tag].forEach(item => {
+                        item.type = tag;
+                    })
+                }
+            })
         },
         setRecordHistory(state, data){
             state.currentRecordHistory = data;
@@ -517,14 +525,6 @@ let recordStore = {
     },
     getters: {
         getField: (state) => (fieldName) => {
-            let tags = ['subjects','domains','taxonomies','userDefinedTags']
-            if (tags.includes(fieldName)) {
-                tags.forEach(tag => {
-                    state.currentRecord['fairsharingRecord'][tag].forEach(item => {
-                        item.type = tag;
-                    })
-                })
-            }
             return state.currentRecord['fairsharingRecord'][fieldName];
         },
         getSection: (state) => (sectionName) => {

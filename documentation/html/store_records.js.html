@@ -118,6 +118,15 @@ export const mutations = {
     },
     setLoadingStatus(state, status) {
         state.loading = status;
+    },
+    cleanRecordsStore(state) {
+        state.records = [];
+        state.facets = [];
+        state.hits = null;
+        state.loading = false;
+        state.totalPages = null;
+        state.perPage = null;
+        state.currentPage = null;
     }
 };
 export const actions = {

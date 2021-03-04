@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: views/Records/Records.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: views/Records/Records.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;v-main>
+    &lt;transition name="fade">
+      &lt;jump-to-top v-if="scrollStatus" />
+    &lt;/transition>
+    &lt;v-container
+      fluid
+      class="pa-0"
+    >
+      &lt;!-- Title banner -->
+      &lt;div>
+        &lt;section
+          id="banner"
+          class="secondary"
+        >
+          &lt;h1 class="text-center white--text">
+            {{ getTitle }}
+          &lt;/h1>
+          &lt;p class="text-center white--text">
+            {{ recordsSubTitles[getTitle] }}
+          &lt;/p>
+        &lt;/section>
+      &lt;/div>
+
+      &lt;!--  Content  -->
+      &lt;v-row no-gutters>
+        &lt;v-col
+          cols="12"
+          lg="4"
+          md="4"
+          xl="3"
+          class="d-none d-md-flex mt-2 ml-2"
+        >
+          &lt;SearchInput
+            id="search-input-mb"
+            :class="[responsiveClassObject]"
+          />
+        &lt;/v-col>
+        &lt;v-col class="mt-2">
+          &lt;SearchOutput class="pb-5 mr-0 mr-md-2" />
+        &lt;/v-col>
+      &lt;/v-row>
+    &lt;/v-container>
+
+    &lt;v-fade-transition>
+      &lt;v-overlay
+        v-if="isLoading"
+        :absolute="false"
+        opacity="0.8"
+      >
+        &lt;Loaders />
+      &lt;/v-overlay>
+    &lt;/v-fade-transition>
+  &lt;/v-main>
+&lt;/template>
+
+&lt;script>
+import SearchInput from "@/components/Records/Search/Input/SearchInput";
+import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
+import {mapActions, mapState} from 'vuex'
+import JumpToTop from "@/components/Navigation/jumpToTop";
+import recordsLabels from "@/data/recordsTypes.json"
+import filterChipsUtils from "@/utils/filterChipsUtils";
+import Loaders from "@/components/Navigation/Loaders";
+
+export default {
+  name: "Records",
+  components: {Loaders, JumpToTop, SearchOutput, SearchInput},
+  mixins: [filterChipsUtils],
+  data: () => ({
+    searchTerm: '',
+    offsetTop: 0,
+    bodyOverflowActive: true,
+    hideOverflow: 'overflow-hidden',
+    showHeader: true,
+    showDrawerLeft: false,
+    labels: recordsLabels,
+    recordsSubTitles: recordsLabels['recordSubTitles'],
+    recordTypes: recordsLabels['recordTypes'],
+    isLoading: false
+  }),
+  computed: {
+    ...mapState('uiController', ['scrollStatus', 'stickToTop']),
+    ...mapState('records', ['records']),
+    getTitle: function () {
+      const flipRecordTypes = Object.entries(this.recordTypes).reduce(
+          (obj, [key, value]) => ({...obj, [value]: key}),
+          {}
+      );
+      let title = "Search";
+      if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
+        if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
+          title = flipRecordTypes[this.$route.query.fairsharingRegistry];
+        }
+      }
+      return title;
+    },
+    responsiveClassObject: function () {
+      return {
+        'left-panel-fixed-lg': this.stickToTop &amp;&amp; this.$vuetify.breakpoint.xlOnly,
+        'left-panel-default-lg': !this.stickToTop &amp;&amp; this.$vuetify.breakpoint.xlOnly,
+        'left-panel-default': !this.stickToTop &amp;&amp; !this.$vuetify.breakpoint.xlOnly,
+        'left-panel-fixed': this.stickToTop &amp;&amp; !this.$vuetify.breakpoint.xlOnly
+      }
+    },
+    currentPath: function () {
+      let title = this.$route.path.replace('/', '');
+      const client = this;
+      let queryParams = {};
+      Object.keys(this.$route.query).forEach(function (prop) {
+        let queryVal = client.$route.query[prop];
+        if (queryVal) {
+            queryParams[prop] = decodeURI(queryVal);
+        }
+      });
+      if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
+          title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
+      }
+      else title = title.charAt(0).toUpperCase() + title.slice(1);
+      return [title, queryParams];
+    },
+  },
+  watch: {
+    currentPath: async function () {
+      this.$scrollTo('body',50,{});
+      await this.tryRedirect();
+    }
+  },
+  mounted: function () {
+    window.addEventListener("scroll", this.onScroll);
+    this.$nextTick(async function () {
+      await this.tryRedirect();
+      this.$scrollTo('body',50,{})
+    });
+  },
+  destroyed() {
+    this.$scrollTo('body',50,{})
+    window.removeEventListener("scroll", this.onScroll);
+    this.setStickToTop(false);
+    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+      drawerVisibilityState: false,
+      headerVisibilityState: true,
+    });
+  },
+  methods: {
+    ...mapActions('records', ['fetchRecords']),
+    ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
+    onScroll: function () {
+      let _module = this;
+      _module.offsetTop = window.top.scrollY;
+      if (_module.offsetTop > 100 &amp;&amp; _module.records.length > 1) {
+        _module.setStickToTop(true);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          headerVisibilityState: false,
+        });
+      }
+      else {
+        _module.setStickToTop(false);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          drawerVisibilityState: false,
+          headerVisibilityState: true,
+        });
+      }
+      _module.offsetTop > 500 ? _module.setScrollStatus(true) :
+          _module.setScrollStatus(false);
+    },
+    /**
+     * Try to redirect to search of the page that is hit is /standards /databases
+     * /policies or /collections
+     * */
+    tryRedirect: async function () {
+      if (Object.keys(this.recordTypes).includes(this.$route.name)) {
+        let fairsharingRegistry = this.recordTypes[this.$route.name];
+        let query = this.$route.params;
+        if (query &amp;&amp; query !== {}) {
+          query.fairsharingRegistry = fairsharingRegistry;
+          try {
+            await this.$router.push({
+              name: "search",
+              query: query
+            });
+            return true;
+          }
+          catch (e) {
+            //
+          }
+        }
+      }
+      await this.getData();
+    },
+    /** This methods get the data from the client.
+     * @returns {Promise}
+     */
+    getData: async function () {
+      this.$scrollTo('body',50,{});
+      this.isLoading = true;
+      this.errors = null;
+      const _module = this;
+      try {
+        await _module.fetchRecords(this.getParameters());
+      }
+      catch (e) {
+        this.errors = e.message;
+      }
+      this.isLoading = false;
+    },
+    /**
+     * Get the parameters that are allowed for this query
+     * @returns {Object} parameters - parameters and types allowed for this query
+     */
+    getParameters: function () {
+      return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
+    },
+  },
+  /**
+   * Setting up the metaInfo of the page
+   * @returns {{title: String}}
+   * */
+  metaInfo() {
+    return {
+      title: 'FAIRsharing | ' + this.getTitle
+    }
+  },
+}
+&lt;/script>
+
+&lt;style scoped lang="scss">
+.left-panel-fixed {
+  position: sticky;
+  top: 0;
+  width: 32vw;
+}
+
+.left-panel-default {
+  position: relative;
+  width: 32vw;
+}
+
+.left-panel-fixed-lg {
+  position: sticky;
+  top: 0;
+  width: 24vw;
+}
+
+.left-panel-default-lg {
+  position: relative;
+  width: 24vw;
+}
+
+.content-custom-new-height {
+  height: calc(100vh - 40px);
+  scroll-behavior: smooth;
+  padding: 0;
+}
+
+.content-custom {
+  height: 100vh;
+  scroll-behavior: smooth;
+  padding: 0;
+}
+
+#banner {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1em;
+}
+
+#search-input-mb{
+  margin-bottom: 105px;
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
+	
+		on Wed Mar 3rd 2021
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

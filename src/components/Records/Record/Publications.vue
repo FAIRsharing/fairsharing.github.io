@@ -31,19 +31,12 @@
           tile
           elevation="3"
         >
-          <!-- title, url -->
+          <!-- title -->
           <v-card-text
-            v-if="publication.url"
             class="pa-0 text-ellipses-height-3lines min-height-68"
           >
             {{ publication.title }}
           </v-card-text>
-          <p
-            v-else
-            class="ma-0"
-          >
-            {{ publication.title }}
-          </p>
 
           <!-- authors -->
           <div v-if="publication.authors">

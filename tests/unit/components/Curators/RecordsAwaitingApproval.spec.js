@@ -95,6 +95,8 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
       expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch("David Silla");
       await wrapper.vm.assignCurator(100, 1, "Michael Smith");
       expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch("Michae");
+      await wrapper.vm.assignCurator(100, -1, "none");
+      expect(wrapper.vm.approvalRequiredProcessed[1].curator).toMatch("none");
       // TODO: Check that the curator are updated in the record
       restStub.restore();
       restStub = sinon.stub(Client.prototype, 'executeQuery');

@@ -40,7 +40,6 @@
       <v-text-field
         v-model="fields.metadata.abbreviation"
         label="Abbreviation"
-        :rules="[rules.isRequired()]"
         outlined
       >
         <template #prepend>

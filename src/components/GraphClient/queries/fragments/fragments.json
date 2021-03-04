@@ -29,6 +29,7 @@
       "fields": [
         "id",
         "relation",
+        "isLead",
         {
           "name": "grant",
           "fields": ["name", "id"]

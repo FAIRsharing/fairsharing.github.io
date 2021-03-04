@@ -46,7 +46,14 @@
               outlined
             >
               <a
-                v-if="subItem.url"
+                v-if="subItem.name && subItem.url"
+                :href="subItem.url"
+                target="_blank"
+              >
+                {{ subItem.name }}
+              </a>
+              <a
+                v-if="!subItem.name && subItem.url"
                 :href="subItem.url"
                 target="_blank"
               >
@@ -61,16 +68,13 @@
                   class="d-flex flex-wrap"
                 >
                   <span class="min-width-60">Name:</span>
-                  <strong>{{ subItem.contact_name }}</strong>
-                </div>
-                <div
-                  v-if="subItem.contact_email"
-                  class="d-flex flex-wrap"
-                >
-                  <span class="min-width-60">Email:</span>
-                  <strong>
-                    {{ subItem.contact_email }}
-                  </strong>
+                  <a
+                    v-if="subItem.contact_email"
+                    :href="'mailto:'+subItem.contact_email"
+                    target="_blank"
+                  >
+                    {{ subItem.contact_name }}
+                  </a>
                 </div>
                 <div
                   v-if="subItem.contact_orcid"

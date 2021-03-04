@@ -311,7 +311,8 @@ let recordStore = {
                     fairsharing_record_id: state.currentRecord['fairsharingRecord'].id,
                     organisation_id: obj.organisation.id,
                     relation: obj.relation,
-                    grant_id: (obj.grant) ? obj.grant.id : null
+                    grant_id: (obj.grant) ? obj.grant.id : null,
+                    is_lead: obj.isLead
                 };
                 if (Object.prototype.hasOwnProperty.call(obj, 'id')) updateItems.push({query: query, id: obj.id});
                 else createItems.push(query);

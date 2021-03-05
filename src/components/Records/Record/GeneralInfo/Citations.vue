@@ -23,12 +23,19 @@
             How to cite this record
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
-            <span v-if="getField('abbreviation') && getField('name')">
-              FAIRsharing.org:{{ getField('abbreviation')+';'+getField('name') }}
+            <span
+              v-if="getField('abbreviation') && getField('name')"
+              class="mr-1"
+            >
+              FAIRsharing.org:{{ getField('abbreviation')+';'+getField('name') }},
             </span>
-            <b v-if="getField('doi')">DOI:</b>{{ getField('doi') }};
-            <b v-if="getField('lastEdited')">Last Edited:</b>{{ getField('lastEdited') }}
-            <b>Last Accessed:</b>{{ new Date() | moment("dddd, MMMM Do YYYY, H:mm") }}
+            <b v-if="getField('doi')">DOI:</b><span class="mr-1">{{ getField('doi') }},</span>
+            <b v-if="getField('lastEdited')">Last Edited:</b><span class="mr-1">{{ getField('lastEdited') }},</span>
+            <b v-if="getField('lastEditor')!==null">Last Editor:</b><span
+              v-if="getField('lastEditor')!==null && getField('lastEditor').username"
+              class="mr-1"
+            >{{ getField('lastEditor').username }},</span>
+            <b>Last Accessed:</b><span class="mr-1">{{ new Date() | moment("dddd, MMMM Do YYYY, H:mm") }}</span>
           </v-card-text>
         </v-card>
       </v-col>

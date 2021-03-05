@@ -34,7 +34,7 @@
           class="mr-2"
         >
           {{
-            ` ${maintainer.username + '/' + maintainer.id}${index !== getField('maintainers').length - 1 ? ',' : ''}`
+            ` ${maintainer.username}${index !== getField('maintainers').length - 1 ? ',' : ''}`
           }}
         </a>
       </div>

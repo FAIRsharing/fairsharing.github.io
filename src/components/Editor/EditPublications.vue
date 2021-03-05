@@ -284,7 +284,6 @@
 
 <script>
     import { mapState, mapActions, mapGetters } from "vuex"
-    import { parseBibFile } from "bibtex";
     import { isEqual } from "lodash"
     import PublicationClient from "@/components/Client/ExternalClients.js"
     import RestClient from "@/components/Client/RESTClient.js"
@@ -429,26 +428,17 @@
               this.errors.doi = true;
             }
             else {
-              let publication = parseBibFile(data).content[0];
-              let title = "";
-              publication.getField('title').data.forEach((titleComponent) => {
-                if (typeof titleComponent !== "object" ){
-                  title += titleComponent
-                }
-                else {
-                  let subTitle = "";
-                  titleComponent.data.forEach((subTitleComponent) => {
-                    subTitle += subTitleComponent;
-                  });
-                  title += subTitle;
-                }
+              this.newPublication.journal = data['container-title-short'];
+              this.newPublication.doi = data['DOI'];
+              this.newPublication.title = data.title;
+              this.newPublication.url = data['URL'];
+              let dateParts = data['created']['date-parts'][0].toString();
+              this.newPublication.year = Number(dateParts.split(',')[0]);
+              let authors = [];
+              data.author.forEach(function(a) {
+                authors.push(a.family + ", " + a.given + "; ");
               });
-              this.newPublication.authors = publication.getField('author').data.join('');
-              this.newPublication.doi = publication.getField('doi').data.join('');
-              this.newPublication.title = title;
-              this.newPublication.journal = publication.getField('journal').data.join('');
-              this.newPublication.url = decodeURIComponent(publication.getField('url').data.join(''));
-              this.newPublication.year = publication.getField('year');
+              this.newPublication.authors = authors.join('');
               this.newPublication.isCitation = false;
               this.openEditor = true;
             }

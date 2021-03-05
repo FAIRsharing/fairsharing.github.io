@@ -16,7 +16,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
     domains:[],
     taxonomies:[],
     userDefinedTags:[{label:'a'}],
-    metadata: {citations: []}
+    metadata: {citations: []},
+    lastEditor:{username:"a user"}
 };
 const $store = new Vuex.Store({
     modules: {
@@ -26,7 +27,6 @@ const $store = new Vuex.Store({
 describe("Citations.vue", function(){
     let wrapper;
 
-    // TODO: Mock properties in options {}.
     beforeEach(() => {
         wrapper = shallowMount(Citations, {
             localVue,

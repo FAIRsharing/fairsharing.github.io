@@ -30,8 +30,8 @@
               <span class="mr-2"><span class="mr-2">FAIRsharing.org:</span>{{ getField('abbreviation')+';' }}</span>
               <span>{{ getField('name') }},</span>
             </span>
-            <b v-if="getField('doi')"><span class="mr-2">DOI:</span></b><span class="mr-2">{{ getField('doi') }},</span>
-            <b v-if="getField('lastEdited')"><span class="mr-2">Last Edited:</span></b><span class="mr-2">{{ getField('lastEdited') }},</span>
+            <b v-if="getField('doi')"><span class="mr-2">DOI:</span></b><a :href="'https://doi.org/'+getField('doi')" class="mr-2">{{ getField('doi') }},</a>
+            <b v-if="getField('lastEdited')"><span class="mr-2">Last Edited:</span></b><span class="mr-2">{{ getField('lastEdited') | moment("dddd, MMMM Do YYYY, H:mm") }},</span>
             <b v-if="getField('lastEditor')!==null"><span class="mr-2">Last Editor:</span></b><span
               v-if="getField('lastEditor')!==null && getField('lastEditor').username"
               class="mr-2"

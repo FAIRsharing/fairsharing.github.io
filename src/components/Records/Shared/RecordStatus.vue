@@ -41,7 +41,6 @@
 
 <script>
 import Icon from "@/components/Icon"
-import recordTypes from "@/data/recordsRegistries.json"
 
 export default {
   name: "RecordStatus",
@@ -94,7 +93,7 @@ export default {
   },
   created() {
     this.$nextTick(function () {
-      this.recordType = recordTypes;
+      this.recordType = this.$vuetify.icons.values;
     });
   }
 }

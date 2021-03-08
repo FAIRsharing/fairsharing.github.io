@@ -9,15 +9,15 @@
     >
       <template #activator="{ on }">
         <v-avatar
-          v-if="Object.keys(recordType).includes(record.type)"
           size="80"
           :alt="getRecordStatus.title"
           v-on="on"
         >
-          <img
-            :src="('./' + recordType[record.type].icon)"
-            :alt="getRecordStatus.title"
-          >
+          <Icon
+            :item="record.type"
+            wrapper-class=""
+            :height="80"
+          />
         </v-avatar>
       </template>
       <span>{{ recordType[record.type].tooltip }}</span>
@@ -40,10 +40,12 @@
 </template>
 
 <script>
+import Icon from "@/components/Icon"
 import recordTypes from "@/data/recordsRegistries.json"
 
 export default {
   name: "RecordStatus",
+  components: {Icon},
   props: {
     record: {default: null, type: Object},
     showStatus: {default: true, type: Boolean}

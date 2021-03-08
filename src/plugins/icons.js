@@ -16,6 +16,14 @@ const customIcons  = {
             type: 'icon',
             icon: 'fa-edit'
         },
+        wikipedia: {
+            type: 'icon',
+            icon: 'fab fa-wikipedia-w'
+        },
+        github: {
+            type: 'icon',
+            icon: 'fab fa-github'
+        },
         updatedAt: {
             type: 'icon',
             icon: 'fa-sync'

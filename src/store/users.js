@@ -2,6 +2,7 @@ import RESTClient from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import { initStateMessages, initUserDataState, validateToken } from "./utils.js"
 import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
+import getPublicUserQuery from "@/components/GraphClient/queries/getPublicUserMeta.json"
 
 let client = new RESTClient();
 let graphClient = new GraphClient();
@@ -231,6 +232,17 @@ export const actions = {
             this.commit("users/clearUserData");
         }
     },
+    async getPublicUser(state, userId) {
+        getPublicUserQuery.queryParam.id = parseInt(userId);
+        const publicUser = await graphClient.executeQuery(getPublicUserQuery);
+        graphClient.initalizeHeader();
+        if (publicUser.error) {
+            // What now?
+        }
+        else {
+            return publicUser;
+        }
+    },
     async getUserMeta(state){
         try {
             let metadata = await client.getUser(state.state.user().credentials.token);
@@ -250,8 +262,6 @@ export const actions = {
                 message: e.message
             })
         }
-
-
     },
     async updateUser(state, user){
         try {

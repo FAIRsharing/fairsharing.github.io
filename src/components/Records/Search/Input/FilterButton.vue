@@ -18,7 +18,7 @@
           small
           color="primary"
         >
-          {{ $vuetify.icons.values.loading.icon }}
+          {{ $vuetify.icons.values.loading }}
         </v-icon>
       </v-btn>
     </template>

@@ -4,6 +4,7 @@
       v-if="!Object.keys($vuetify.icons.values).includes(item)"
       :large="size === 'large'"
       :small="size === 'small'"
+      :color="color"
     >
       {{ $vuetify.icons.values[fallback].icon }}
     </v-icon>
@@ -11,14 +12,15 @@
       v-else-if="$vuetify.icons.values[item].type === 'icon'"
       :large="size === 'large'"
       :small="size === 'small'"
+      :color="color"
     >
       {{ $vuetify.icons.values[item].icon }}
     </v-icon>
     <v-img
       v-else-if="$vuetify.icons.values[item].type === 'img'"
-      class="mt-4"
+      :class="{'mt-4': wrapperClass !== ''}"
       contain
-      height="45"
+      :height="height"
       :src="$vuetify.icons.values[item].icon"
     />
   </div>
@@ -31,7 +33,9 @@
             item: {default: null, type: String},
             size: {default: 'large', type: String},
             fallback: {default: 'undefined', type: String},
-            wrapperClass: {default: 'icon-container', type: String}
+            wrapperClass: {default: 'icon-container', type: String},
+            height: {default: 45, type: Number},
+            color: {default: null, type: String},
         }
     }
 </script>

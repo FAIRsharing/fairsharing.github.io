@@ -1,34 +1,174 @@
 const customIcons  = {
     values: {
-        search: 'fa-search',
-        howToCite: 'fa-link',
-        PublicationCitation: 'fa-book-open',
-        createdAt: 'fa-edit',
-        updatedAt: 'fa-sync',
-        tools: 'fa-tools',
-        contacts: 'fa-envelope',
-        maintains: 'fa-sitemap',
-        funds: 'fa-funnel-dollar',
-        collaborates_on: 'fa-handshake',
-        other_involvement: 'fa-building',
-        undefined: 'fa-question',
-        arrowUp: 'fa-chevron-up',
-        data_access: 'fa-chevron-up',
-        data_curation: 'fa-chevron-down',
-        data_release: 'fa-funnel-dollar',
-        data_versioning: 'fa-sync',
-        licences: 'fa-sitemap',
-        frequently_asked_questions_faqs: 'fa-question-circle',
-        forum: 'fa-comment',
-        help_documentation: 'fa-book',
-        blog_news: 'fa-newspaper',
-        twitter: 'fab fa-twitter',
-        facebook: 'fab fa-facebook',
-        training_documentation: 'fab fa-leanpub',
-        tess_links_to_training_materials: {
-            source:'elixir.jpg'
+        search: {
+            type: 'icon',
+            icon: 'fa-search'
         },
-        support_email: 'fa-headset',
+        howToCite: {
+            type: 'icon',
+            icon: 'fa-link'
+        },
+        PublicationCitation: {
+            type: 'icon',
+            icon: 'fa-book-open'
+        },
+        createdAt: {
+            type: 'icon',
+            icon: 'fa-edit'
+        },
+        updatedAt: {
+            type: 'icon',
+            icon: 'fa-sync'
+        },
+        tools: {
+            type: 'icon',
+            icon: 'fa-tools'
+        },
+        contacts: {
+            type: 'icon',
+            icon: 'fa-envelope'
+        },
+        maintains: {
+            type: 'icon',
+            icon: 'fa-sitemap'
+        },
+        funds: {
+            type: 'icon',
+            icon: 'fa-funnel-dollar'
+        },
+        collaborates_on: {
+            type: 'icon',
+            icon: 'fa-handshake'
+        },
+        other_involvement: {
+            type: 'icon',
+            icon: 'fa-building'
+        },
+        undefined: {
+            type: 'icon',
+            icon: 'fa-question'
+        },
+        arrowUp: {
+            type: 'icon',
+            icon: 'fa-chevron-up'
+        },
+        data_access: {
+            type: 'icon',
+            icon: 'fa-chevron-up'
+        },
+        data_curation: {
+            type: 'icon',
+            icon: 'fa-chevron-down'
+        },
+        data_release: {
+            type: 'icon',
+            icon: 'fa-funnel-dollar'
+        },
+        data_versioning: {
+            type: 'icon',
+            icon: 'fa-sync'
+        },
+        licences: {
+            type: 'icon',
+            icon: 'fa-sitemap'
+        },
+        frequently_asked_questions_faqs: {
+            type: 'icon',
+            icon: 'fa-question-circle'
+        },
+        forum: {
+            type: 'icon',
+            icon: 'fa-comment'
+        },
+        help_documentation: {
+            type: 'icon',
+            icon: 'fa-book'
+        },
+        blog_news: {
+            type: 'icon',
+            icon: 'fa-newspaper'
+        },
+        twitter: {
+            type: 'icon',
+            icon: 'fab fa-twitter'
+        },
+        facebook: {
+            type: 'icon',
+            icon: 'fab fa-facebook'
+        },
+        training_documentation: {
+            type: 'icon',
+            icon: 'fa-funnel-dollar'
+        },
+        tess_links_to_training_materials: {
+            type: 'img',
+            icon: 'assets/icons/elixir.jpg'
+        },
+        support_email: {
+            type: 'icon',
+            icon: 'fa-headset'
+        },
+        collection: {
+            type: "img",
+            icon: "assets/records/collection-icon.png",
+            tooltip: "Collection"
+        },
+        journal: {
+            type: "img",
+            icon: "assets/records/policy.png",
+            tooltip: "Journal"
+        },
+        identifier_schema:{
+            type: "img",
+            icon: "assets/records/identifier_schema.png",
+            tooltip: "Identifier Schema"
+        },
+        society: {
+            type: "img",
+            icon: "assets/records/policy.png",
+            tooltip: "Society"
+        },
+        funder: {
+            type: "img",
+            icon: "assets/records/policy.png",
+            tooltip: "Founder"
+        },
+        terminology_artefact: {
+            type: "img",
+            icon: "assets/records/terminology_artifact.png",
+            tooltip: "Terminology Artefact"
+        },
+        model_and_format: {
+            type: "img",
+            icon: "assets/records/model_and_format.png",
+            tooltip: "Model and Format"
+        },
+        reporting_guideline: {
+            type: "img",
+            icon: "assets/records/reporting_guidelines.png",
+            tooltip: "Reporting Guideline"
+        },
+        metric: {
+            type: "img",
+            icon: "assets/records/std-metric.png",
+            tooltip: "Metric"
+        },
+        repository: {
+            type: "img",
+            icon: "assets/records/db-icon.png",
+            tooltip: "Repository"
+        },
+        journal_publisher: {
+            type: "img",
+            icon: "assets/records/policy.png",
+            tooltip: "Journal Publisher"
+        },
+        knowledge_base: {
+            type: "img",
+            icon: "assets/records/db-icon.png",
+            tooltip: "Knowledge Base"
+        }
+
     },
     iconfont: 'fa'
 };

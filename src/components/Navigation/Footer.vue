@@ -45,7 +45,7 @@
         <v-icon
           color="white"
           small
-        >{{ $vuetify.icons.values.arrowUp }}</v-icon>
+        >{{ $vuetify.icons.values.arrowUp.icon }}</v-icon>
       </span>
     </div>
     <!--  License and copy right  -->

@@ -60,6 +60,8 @@ export function initEditorSections(data, sectionsNames){
                 status: data.status,
                 countries: data.countries,
                 metadata: data.metadata,
+                registry: data.registry,
+                name: data.name,
                 domains: data.domains.map((obj) => {
                     obj.label = obj.label.toLowerCase();
                     return obj;

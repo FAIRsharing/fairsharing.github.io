@@ -30,8 +30,7 @@
           </v-alert>
           <v-spacer v-else />
           <v-menu
-            v-if="!target"
-            cmass="mt-3"
+            class="mt-3"
             offset-y
           >
             <template #activator="{ on, attrs }">
@@ -231,7 +230,7 @@
             ...mapActions('record', ['fetchRecord', "fetchRecordHistory", "fetchPreviewRecord"]),
             goToEdit(){
               let _module = this;
-              const recordID =  _module.currentRecord['fairsharingRecord'].id;
+              const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
               this.$router.push({
                 path: recordID + '/edit',
                 params: {

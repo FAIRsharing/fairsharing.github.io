@@ -188,7 +188,7 @@
 </template>
 
 <script>
-    import { mapActions, mapState, mapMutations } from "vuex"
+    import { mapActions, mapState } from "vuex"
     import UserProfileMenu from "@/components/Users/UserProfileMenu";
     import Loaders from "@/components/Navigation/Loaders";
     import ExternalClient from "@/components/Client/ExternalClients.js"
@@ -215,7 +215,7 @@
         }
       },
       computed: {
-        ...mapState('users', ['user', "userResetPwdMessage", "messages"]),
+        ...mapState('users', ['user', "messages"]),
         ...mapState('editor', ['icons']),
         getPublicUserMeta: function(){
           let userMeta = JSON.parse(JSON.stringify(this.userData.user));
@@ -227,17 +227,18 @@
           this.loading = true;
           let userId = this.$route.params.id;
           this.userData = await this.getPublicUser(userId);
-          if (!this.messages()["getPublicUser"].error){
-            this.publications = await this.getPublications();
+          if (this.userData == null || this.userData.user == null){
+            // No userdata, so don't look for publications.
+            this.publications = [];
           }
           else {
-            this.publications = [];
+            // Get user's publications.
+            this.publications = await this.getPublications();
           }
           this.loading = false;
       },
       methods: {
-          ...mapActions('users', ['getPublicUser', 'resetPwd', 'setError']),
-          ...mapMutations('users', ['cleanStore']),
+          ...mapActions('users', ['getPublicUser', 'setError']),
           async getPublications(){
             let output = [];
             if (this.userData.user.orcid) {

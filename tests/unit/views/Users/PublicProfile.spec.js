@@ -9,7 +9,6 @@ import GraphClient from "@/components/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import editorStore from "@/store/editor";
 import ORCIDfixture from "@/../tests/fixtures/ORCIDpub.json"
-import User from "@/views/Users/User";
 
 
 const localVue = createLocalVue();
@@ -34,6 +33,7 @@ describe("PublicProfile.vue", () => {
     let restStub;
     let graphStub;
     let externalClientStub;
+    let getpubs;
 
     beforeAll( () => {
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
@@ -57,6 +57,7 @@ describe("PublicProfile.vue", () => {
             router,
             mocks: {$store, $router, $route},
         });
+        getpubs = jest.spyOn(wrapper.vm, "getPublications");
     });
 
     afterAll(() => {
@@ -68,6 +69,8 @@ describe("PublicProfile.vue", () => {
     it("can be instantiated", () => {
         const title = "PublicProfile";
         expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.publications.length).toBeGreaterThan(0);
+        expect(getpubs).toHaveBeenCalledTimes(1);
     });
 
 
@@ -81,23 +84,35 @@ describe("PublicProfile.vue", () => {
         expect(pubs.length).toBeGreaterThan(0);
         wrapper.vm.userData.user.orcid = null;
         pubs = await wrapper.vm.getPublications();
+        expect(getpubs).toHaveBeenCalledTimes(3);
         expect(pubs.length).toEqual(0);
     });
 
     it("doesn't look for publications if the user doesn't load", async () => {
-        restStub.restore();
-        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-            data: {error: "error"}
+        graphStub.restore();
+        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
+            user: {orcid: "123456"}
         });
-        wrapper = shallowMount(User, {
+        wrapper = shallowMount(PublicProfile, {
             localVue,
             router,
             mocks: {$store, $router, $route},
             stubs: {RouterLink: RouterLinkStub}
         });
-        jest.spyOn(wrapper.vm.methods, "getPublications");
-        expect(wrapper.vm.publications).toStrictEqual([]);
-        expect(wrapper.vm.getPublications()).not.toHaveBeenCalled();
+        expect(getpubs).toHaveBeenCalledTimes(3);
+        graphStub.restore();
+        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
+            error: "error"
+        });
+        wrapper = shallowMount(PublicProfile, {
+            localVue,
+            router,
+            mocks: {$store, $router, $route},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        //expect(wrapper.vm.publications).toStrictEqual([]);
+        // This has already been called thrice; it shouldn't have been called again here.
+        expect(getpubs).toHaveBeenCalledTimes(3);
     });
 
 });

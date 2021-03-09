@@ -38,7 +38,8 @@ let recordStore = {
             data: {},
             id: null
         },
-        newRecord: false
+        newRecord: false,
+        currentID: null
     },
     mutations: {
         setCurrentRecord(state, data){
@@ -59,13 +60,15 @@ let recordStore = {
             state.currentRecordHistory = {};
         },
         setSections(state, data){
+            state.currentID = data['fairsharingRecord'].id;
             let sectionsNames = [
                 "generalInformation",
                 "support",
                 "dataAccess",
                 "publications",
                 "organisations",
-                "additionalInformation"
+                "additionalInformation",
+                "relations"
             ];
             state.sections = initEditorSections(data['fairsharingRecord'], sectionsNames);
         },
@@ -195,6 +198,14 @@ let recordStore = {
             }
             state.commit('setCurrentRecord', JSON.parse(JSON.stringify(data)));
             state.commit('setSections', JSON.parse(JSON.stringify(data)));
+        },
+        async fetchPreviewRecord(state, id){
+            state.commit("resetCurrentRecordHistory");
+            recordQuery.queryParam = {
+                id: id
+            };
+            let data = await client.executeQuery(recordQuery);
+            state.commit('setCurrentRecord', data);
         },
         async fetchRecordHistory(state, id){
             recordHistory.queryParam = {id: id};

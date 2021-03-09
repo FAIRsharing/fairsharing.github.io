@@ -235,13 +235,7 @@ export const actions = {
     async getPublicUser(state, userId) {
         getPublicUserQuery.queryParam.id = parseInt(userId);
         const publicUser = await graphClient.executeQuery(getPublicUserQuery);
-        graphClient.initalizeHeader();
-        if (publicUser.error) {
-            // What now?
-        }
-        else {
-            return publicUser;
-        }
+        return publicUser;
     },
     async getUserMeta(state){
         try {

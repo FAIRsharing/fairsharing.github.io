@@ -21,6 +21,7 @@
       :class="{'mt-4': wrapperClass !== ''}"
       contain
       :height="height"
+      :width="height"
       :src="$vuetify.icons.values[item].icon"
     />
   </div>

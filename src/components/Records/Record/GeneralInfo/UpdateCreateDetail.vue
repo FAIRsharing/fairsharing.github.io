@@ -8,7 +8,7 @@
     </v-icon>
     <b class="mr-2">Record created at</b>
     <p class="ma-0 mr-2 text-body-2">
-      {{ currentRecord['fairsharingRecord'].createdAt }}
+      {{ currentRecord['fairsharingRecord'].createdAt | moment("dddd, MMMM Do YYYY, H:mm") }}
     </p>
     <span class="mr-2">|</span>
     <v-icon
@@ -19,7 +19,7 @@
     </v-icon>
     <b class="mr-2">Record updated at</b>
     <p class="ma-0 text-body-2">
-      {{ currentRecord['fairsharingRecord'].updatedAt }}
+      {{ currentRecord['fairsharingRecord'].updatedAt | moment("dddd, MMMM Do YYYY, H:mm") }}
     </p>
   </div>
 </template>

@@ -15,7 +15,7 @@
         </v-alert>
       </v-col>
     </v-row>
-    <v-row v-if="user().isLoggedIn && !messages()['getPublicUser'].error">
+    <v-row v-if="!messages()['getPublicUser'].error">
       <v-col cols="12">
         <v-toolbar
           flat
@@ -23,7 +23,9 @@
           dark
           height="55"
         >
-          <v-toolbar-title>User Profile for {{ this.userData.user.username }}</v-toolbar-title>
+          <v-toolbar-title>
+            User Profile for {{ userData.user.username }}
+          </v-toolbar-title>
           <v-spacer />
           <user-profile-menu />
         </v-toolbar>
@@ -132,8 +134,8 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-btn
-                    v-if="this.userData.user.orcid && !loading"
-                    :href="`https://orcid.org/${this.userData.user.orcid}`"
+                    v-if="userData.user.orcid && !loading"
+                    :href="`https://orcid.org/${userData.user.orcid}`"
                     rel="external"
                     target="_blank"
                   >
@@ -164,13 +166,12 @@
                   style="flex-grow: 1"
                 >
                   <RecordsTable
-                    :records="this.userData.user.maintainedRecords"
+                    :records="userData.user.maintainedRecords"
                     source="publicMaintainedRecords"
                   />
                 </v-card-text>
               </v-card>
             </v-col>
-
           </v-row>
         </v-container>
       </v-col>
@@ -211,7 +212,11 @@
             loading: false,
             publications: [],
             activeTab: 0,
-            userData: {}
+            userData: {
+              user: {
+                username: 'none'
+              }
+            }
         }
       },
       computed: {
@@ -226,13 +231,14 @@
       async created(){
           this.loading = true;
           let userId = this.$route.params.id;
-          this.userData = await this.getPublicUser(userId);
-          if (this.userData == null || this.userData.user == null){
+          let data = await this.getPublicUser(userId);
+          if (data == null || data.user == null){
             // No userdata, so don't look for publications.
             this.publications = [];
           }
           else {
             // Get user's publications.
+            this.userData = data;
             this.publications = await this.getPublications();
           }
           this.loading = false;

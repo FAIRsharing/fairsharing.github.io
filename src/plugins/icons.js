@@ -16,14 +16,6 @@ const customIcons  = {
             type: 'icon',
             icon: 'fa-edit'
         },
-        wikipedia: {
-            type: 'icon',
-            icon: 'fab fa-wikipedia-w'
-        },
-        github: {
-            type: 'icon',
-            icon: 'fab fa-github'
-        },
         updatedAt: {
             type: 'icon',
             icon: 'fa-sync'
@@ -99,6 +91,14 @@ const customIcons  = {
         twitter: {
             type: 'icon',
             icon: 'fab fa-twitter'
+        },
+        wikipedia: {
+            type: 'icon',
+            icon: 'fab fa-wikipedia-w'
+        },
+        github: {
+            type: 'icon',
+            icon: 'fab fa-github'
         },
         facebook: {
             type: 'icon',
@@ -180,7 +180,6 @@ const customIcons  = {
             type: "img",
             icon: "assets/icons/DOI_logo.svg"
         }
-
     },
     iconfont: 'fa'
 };

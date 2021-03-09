@@ -14,7 +14,12 @@
         </div>
         <div class="d-flex align-center mt-2">
           <div class="width-35">
-            <Icon item="DOI" heigh="20" wrapper-class="" class="mr-2" />
+            <Icon
+              item="DOI"
+              heigh="30"
+              wrapper-class=""
+              class="mr-2"
+            />
           </div>
           <div
             v-if="getField('doi')"

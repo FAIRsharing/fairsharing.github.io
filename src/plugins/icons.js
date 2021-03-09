@@ -175,6 +175,10 @@ const customIcons  = {
             type: "img",
             icon: "assets/records/db-icon.png",
             tooltip: "Knowledge Base"
+        },
+        DOI: {
+            type: "img",
+            icon: "assets/icons/DOI_logo.svg"
         }
 
     },

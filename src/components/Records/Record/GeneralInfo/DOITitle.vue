@@ -14,12 +14,7 @@
         </div>
         <div class="d-flex align-center mt-2">
           <div class="width-35">
-            <v-img
-              src="@/assets/DOI_logo.svg"
-              height="30"
-              contain
-              class="mr-2"
-            />
+            <Icon item="DOI" heigh="20" wrapper-class="" class="mr-2" />
           </div>
           <div
             v-if="getField('doi')"
@@ -61,10 +56,12 @@
 <script>
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import {mapGetters, mapState} from "vuex";
+import Icon from "@/components/Icon";
 
 export default {
   name: "DOITitle",
   components: {
+    Icon,
     RecordStatus
   },
   data() {

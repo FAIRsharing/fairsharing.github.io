@@ -20,7 +20,7 @@
           />
         </v-avatar>
       </template>
-      <span>{{ recordType[record.type].tooltip }}</span>
+      <span v-if="recordType[record.type]">{{ recordType[record.type].tooltip }}</span>
     </v-tooltip>
 
     <v-tooltip

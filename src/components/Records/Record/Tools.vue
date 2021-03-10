@@ -21,11 +21,8 @@
         tile
         elevation="3"
       >
-        <div class="icon-container d-flex justify-center">
-          <v-icon large>
-            {{ $vuetify.icons.values.tools }}
-          </v-icon>
-        </div>
+        <Icon item="tools" />
+
         <v-card-title class="pa-0 text--primary card-title-customize">
           Tools associated with this record
         </v-card-title>
@@ -52,12 +49,15 @@
 </template>
 
 <script>
-import SectionTitle from '@/components/Records/Record/SectionTitle';
 import {mapGetters} from "vuex";
+import SectionTitle from '@/components/Records/Record/SectionTitle'
+import Icon from "@/components/Icon"
+
 export default {
   name: "Tools",
   components: {
     SectionTitle,
+    Icon
   },
   computed: {
     ...mapGetters("record", ["getField"]),

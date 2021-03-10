@@ -11,7 +11,7 @@
 
       <!--   Action Menu & Alert   -->
       <v-row
-        v-else
+        v-if="!target && queryTriggered"
         class="pr-3"
       >
         <v-col

@@ -17,7 +17,7 @@
         </p>
         <a
           v-if="canClaim"
-          @click="()=>{this.$emit('requestOwnership')}"
+          @click="()=>{$emit('requestOwnership')}"
         >
           Claim it now!
         </a>

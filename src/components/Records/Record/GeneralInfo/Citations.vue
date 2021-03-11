@@ -30,7 +30,7 @@
               :href="'https://doi.org/'+getField('doi')"
               class="mr-2"
             >{{ getField('doi') }},</a>
-            <b v-if="getField('lastEdited')"><span class="mr-2">Last Edited:</span></b><span class="mr-2">{{moment( getField('lastEdited'))}},</span>
+            <b v-if="getField('lastEdited')"><span class="mr-2">Last Edited:</span></b><span class="mr-2">{{ moment( getField('lastEdited')) }},</span>
             <b v-if="getField('lastEditor')!==null"><span class="mr-2">Last Editor:</span></b><span
               v-if="getField('lastEditor')!==null && getField('lastEditor').username"
               class="mr-2"

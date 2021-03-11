@@ -25,6 +25,7 @@ const $store = new Vuex.Store({
 describe("UpdateCreateDetail.vue", function(){
     let wrapper;
 
+    // TODO: Mock properties in options {}.
     beforeEach(() => {
         wrapper = shallowMount(UpdateCreateDetail, {
             localVue,

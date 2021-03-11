@@ -74,25 +74,30 @@
               </v-menu>
             </td>
             <td>
+              <v-avatar
+                v-if="props.item.type"
+                class="mr-2"
+                :height="40"
+              >
+                <Icon
+                  :item="props.item.type"
+                  :height="40"
+                  wrapper-class=""
+                />
+              </v-avatar>
               <a :href="'#/' + props.item.id">
-                <span
-                  v-if="props.item.type"
-                  class="mr-2"
-                >
-                  <v-avatar
-                    v-if="Object.keys(recordType).includes(props.item.type)"
-                    size="38"
-                  >
-                    <img
-                      :src="'./' + recordType[props.item.type].icon"
-                    >
-                  </v-avatar>
-                </span>
                 {{ props.item.recordName }}
               </a>
             </td>
             <td>
-              {{ props.item.lastEditor }}
+              <div v-if="props.item.lastEditor === 'unknown'">
+                {{ props.item.lastEditor }}
+              </div>
+              <div v-else>
+                <a :href="'#/users/' + props.item.idLastEditor">
+                  {{ props.item.lastEditor }}
+                </a>
+              </div>
             </td>
             <td>
               <v-edit-dialog
@@ -153,7 +158,10 @@
               </v-tooltip>
             </td>
             <td>
-              {{ props.item.createdAt }}, {{ props.item.creator }}
+              {{ props.item.createdAt }},
+              <a :href="'#/users/' + props.item.idCreator">
+                {{ props.item.creator }} 
+              </a>
             </td>
           </tr>
         </template>
@@ -260,11 +268,15 @@
 <script>
     import { mapActions, mapState }  from "vuex"
     import RestClient from "@/components/Client/RESTClient.js"
+    import Icon from "@/components/Icon"
 
     const restClient = new RestClient();
 
     export default {
         name: "RecordsAwaitingApproval",
+        components: {
+          Icon
+        },
         props: {
             maintenanceRequests: {
                 type: Array,

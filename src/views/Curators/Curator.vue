@@ -65,16 +65,17 @@
               >
                 <tr>
                   <td>
-                    <span
+                    <v-avatar
                       v-if="props.item.type"
                       class="mr-2"
+                      :height="40"
                     >
                       <Icon
                         :item="props.item.type"
-                        :height="38"
+                        :height="40"
                         wrapper-class=""
                       />
-                    </span>
+                    </v-avatar>
                     <a :href="'#/' + props.item.id">
                       {{ props.item.recordNameID }}
                     </a>
@@ -86,7 +87,14 @@
                     {{ props.item.curator }}
                   </td>
                   <td>
-                    {{ props.item.creator }}
+                    <div v-if="props.item.creator === 'unknown'">
+                      {{ props.item.creator }}
+                    </div>
+                    <div v-else>
+                      <a :href="'#/users/' + props.item.idCreator">
+                        {{ props.item.creator }}
+                      </a>
+                    </div>
                   </td>
                 </tr>
               </template>
@@ -123,20 +131,18 @@
               >
                 <tr>
                   <td>
+                    <v-avatar
+                      v-if="props.item.type"
+                      class="mr-2"
+                      :height="40"
+                    >
+                      <Icon
+                        :item="props.item.type"
+                        :height="40"
+                        wrapper-class=""
+                      />
+                    </v-avatar>
                     <a :href="'#/' + props.item.id">
-                      <span
-                        v-if="props.item.type"
-                        class="mr-2"
-                      >
-                        <v-avatar
-                          v-if="Object.keys(recordType).includes(props.item.type)"
-                          size="38"
-                        >
-                          <img
-                            :src="'./' + recordType[props.item.type].icon"
-                          >
-                        </v-avatar>
-                      </span>
                       {{ props.item.recordNameID }}
                     </a>
                   </td>
@@ -144,7 +150,14 @@
                     {{ props.item.createdAt }}
                   </td>
                   <td>
-                    {{ props.item.creator }}
+                    <div v-if="props.item.creator === 'unknown'">
+                      {{ props.item.creator }}
+                    </div>
+                    <div v-else>
+                      <a :href="'#/users/' + props.item.idCreator">
+                        {{ props.item.creator }}
+                      </a>
+                    </div>
                   </td>
                 </tr>
               </template>
@@ -194,12 +207,12 @@
     import getCurationRecords from "@/components/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
-    import recordTypes from "@/data/recordsRegistries.json"
     import headersTables from "@/data/headersCuratorDashboard.json"
     import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
     import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
     import RestClient from "@/components/Client/RESTClient.js"
     import Icon from "@/components/Icon"
+    import recordTypes from "@/data/recordsRegistries.json"
 
 
     const client = new GraphClient();
@@ -303,6 +316,7 @@
                 let object = {
                   createdAt: rec.createdAt,
                   creator: rec.creator.username.substring(0,10),
+                  idCreator: rec.creator.id,
                   updatedAt: rec.updatedAt,
                   curator: item.username.substring(0,6),
                   recordName: `${rec.name} (${rec.id})`,
@@ -316,7 +330,8 @@
                   object.priority = "";
                 }
                 if (rec.lastEditor){
-                  object.lastEditor = rec.lastEditor.username+' ('+rec.lastEditor.id+')';
+                  object.lastEditor = rec.lastEditor.username;
+                  object.idLastEditor = rec.lastEditor.id;
                 }
                 else{
                   object.lastEditor = "unknown"
@@ -366,7 +381,8 @@
                 recordName: `${item.fairsharingRecord.name} (${item.fairsharingRecord.id})`,
                 id: item.fairsharingRecord.id,
                 type: item.fairsharingRecord.type,
-                userNameID: `${item.user.username} (${item.user.id})`,
+                userName: `${item.user.username}`,
+                userId: `${item.user.id}`,
                 processingNotes: item.fairsharingRecord.processingNotes,
                 requestID: item.id
               };
@@ -387,10 +403,11 @@
               };
               object.createdAt = formatDate(item.createdAt);
               if (item.creator){
-                object.creator = item.creator.username +' ('+item.creator.id+')';
+                object.creator = item.creator.username;
+                object.idCreator = item.creator.id;
               }
               else{
-                object.creator = "unknown"
+                object.creator = "unknown";
               }
               this.recordsCreatedCuratorsLastWeek.push(object);
             });
@@ -433,7 +450,8 @@
                 object.curator = 'none'
               }
               if (item.creator){
-                object.creator = item.creator.username +' ('+item.creator.id+')';
+                object.creator = item.creator.username;
+                object.idCreator = item.creator.id;
               }
               else{
                 object.creator = "unknown"

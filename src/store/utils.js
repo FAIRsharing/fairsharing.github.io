@@ -88,7 +88,7 @@ export function initEditorSections(data, sectionsNames){
                 licences: data.licenceLinks
             },
             relations: {
-                recordAssociations: data.recordAssociations,
+                recordAssociations: JSON.parse(JSON.stringify(data.recordAssociations)),
                 registry: JSON.parse(JSON.stringify(data.registry)),
                 type: JSON.parse(JSON.stringify(data.type)),
                 name: JSON.parse(JSON.stringify(data.name))

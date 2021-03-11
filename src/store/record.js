@@ -156,7 +156,7 @@ let recordStore = {
         },
         setRelations(state, relations){
             state.sections.relations.data.recordAssociations = relations;
-            state.sections.relations.initialData.recordAssociations = relations;
+            state.sections.relations.initialData.recordAssociations = JSON.parse(JSON.stringify(relations));
             state.sections.relations.changes = 0;
             state.sections.relations.message = "Record successfully updated!";
             state.sections.relations.error = false;
@@ -444,7 +444,6 @@ let recordStore = {
                 oldAssociations = [];
             state.sections.relations.data.recordAssociations.forEach(association => {
                 if (association.new) {
-                    delete association.new;
                     const newAssociation = {
                         fairsharing_record_id: options.source,
                         linked_record_id: association.linkedRecord.id,
@@ -456,9 +455,10 @@ let recordStore = {
                     oldAssociations.push(association.linkedRecord.id);
                 }
             });
+            console.log(state.sections.relations.initialData.recordAssociations);
             state.sections.relations.initialData.recordAssociations.forEach(oldAssociation => {
                 let id = oldAssociation.linkedRecord.id;
-                if (!oldAssociations.includes(id)) {
+                if (id && !oldAssociations.includes(id)) {
                     deleteAssociations.push({
                         id: oldAssociation.id,
                         _destroy: 1
@@ -477,18 +477,21 @@ let recordStore = {
                     target: options.source
                 })
             ]);
-            responses.forEach((response) => {
+            let error = false;
+            for (let response in responses) {
                 if (response.error) {
                     commit("setSectionError", {
                         section: "relations",
                         value: response.error
                     });
-                    return response.error;
+                    error = true;
                 }
-            });
-            recordRelationsQuery.queryParam = {id: options.source};
-            let relations = await client.executeQuery(recordRelationsQuery);
-            commit('setRelations', relations['fairsharingRecord'].recordAssociations);
+            }
+            if (!error){
+                recordRelationsQuery.queryParam = {id: options.source};
+                let relations = await client.executeQuery(recordRelationsQuery);
+                commit('setRelations', relations['fairsharingRecord'].recordAssociations);
+            }
         },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});

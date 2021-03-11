@@ -42,10 +42,13 @@
       class="cursor-pointer"
     >
       <span id="arrow-up">
-        <v-icon
+        <Icon
+          class="pt-2"
+          item="arrowUp"
+          size="small"
+          wrapper-class=""
           color="white"
-          small
-        >{{ $vuetify.icons.values.arrowUp }}</v-icon>
+        />
       </span>
     </div>
     <!--  License and copy right  -->
@@ -74,9 +77,12 @@
 </template>
 
 <script>
+import Icon from "@/components/Icon"
 import footerData from '@/data/footerData.json'
+
 export default {
   name: "Footer",
+  components: { Icon },
   data: () => {
     return {
       footerData

@@ -23,11 +23,7 @@
           tile
           elevation="3"
         >
-          <div class="icon-container d-flex justify-center">
-            <v-icon large>
-              {{ Object.keys($vuetify.icons.values).includes(item.icon)?$vuetify.icons.values[item.icon]:$vuetify.icons.values['undefined'] }}
-            </v-icon>
-          </div>
+          <Icon :item="item.icon" />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ key | capitalize }}
           </v-card-title>
@@ -66,13 +62,16 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import clearString from '@/utils/stringUtils'
-import {mapGetters} from "vuex";
+import Icon from "@/components/Icon";
+
 export default {
   name: "DataConditions",
   components: {
     SectionTitle,
+    Icon
   },
   mixins: [clearString],
   computed: {

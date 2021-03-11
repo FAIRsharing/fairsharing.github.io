@@ -23,11 +23,10 @@
           tile
           elevation="3"
         >
-          <div class="icon-container d-flex justify-center">
-            <v-icon large>
-              {{ key === 'undefined' ? $vuetify.icons.values['other_involvement'] : $vuetify.icons.values[key] }}
-            </v-icon>
-          </div>
+          <Icon
+            :item="key"
+            fallback="other_involvement"
+          />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ value }}
           </v-card-title>
@@ -92,10 +91,12 @@
 import {mapGetters} from 'vuex';
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import organisationRelations from '@/data/organisationRelations.json';
+import Icon from "@/components/Icon";
 
 export default {
   name: "Organisations",
   components: {
+    Icon,
     SectionTitle
   },
   data() {
@@ -139,19 +140,6 @@ a {
     text-decoration: underline;
     outline: 0;
   }
-}
-
-.icon-container {
-  position: absolute;
-  top: -45px;
-  background: white;
-  border: #b3b3b3 dotted 3px;
-  border-radius: 50% !important;
-  -moz-border-radius: 50% !important;
-  -webkit-border-radius: 50% !important;
-  width: 85px;
-  height: 85px;
-  cursor: help;
 }
 
 .card-title-customize {

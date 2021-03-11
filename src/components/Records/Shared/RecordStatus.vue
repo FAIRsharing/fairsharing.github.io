@@ -9,18 +9,18 @@
     >
       <template #activator="{ on }">
         <v-avatar
-          v-if="Object.keys(recordType).includes(record.type)"
           size="80"
           :alt="getRecordStatus.title"
           v-on="on"
         >
-          <img
-            :src="('./' + recordType[record.type].icon)"
-            :alt="getRecordStatus.title"
-          >
+          <Icon
+            :item="record.type"
+            wrapper-class=""
+            :height="80"
+          />
         </v-avatar>
       </template>
-      <span>{{ recordType[record.type].tooltip }}</span>
+      <span v-if="recordType[record.type]">{{ recordType[record.type].tooltip }}</span>
     </v-tooltip>
 
     <v-tooltip
@@ -40,10 +40,11 @@
 </template>
 
 <script>
-import recordTypes from "@/data/recordsRegistries.json"
+import Icon from "@/components/Icon"
 
 export default {
   name: "RecordStatus",
+  components: {Icon},
   props: {
     record: {default: null, type: Object},
     showStatus: {default: true, type: Boolean}
@@ -92,7 +93,7 @@ export default {
   },
   created() {
     this.$nextTick(function () {
-      this.recordType = recordTypes;
+      this.recordType = this.$vuetify.icons.values;
     });
   }
 }

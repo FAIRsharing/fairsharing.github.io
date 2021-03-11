@@ -27,7 +27,7 @@ recordStore.state.sections = {
     relations: {
         data: {
             registry: "collection",
-            recordAssociations: relations
+            recordAssociations: JSON.parse(JSON.stringify(relations))
         },
         error: false,
         changes: 0,
@@ -150,7 +150,6 @@ describe("EditRelationships.vue", function() {
         await wrapper.vm.runSearch();
         expect(wrapper.vm.availableRecords).toStrictEqual([ { id: 1, isActive: true } ]);
         wrapper.vm.searchFilters.standards = true;
-
     });
 
     it("can save relationships", async () => {
@@ -195,5 +194,37 @@ describe("EditRelationships.vue", function() {
         expect(wrapper.vm.message.error).toBe(true);
         expect(wrapper.vm.message.value).toBe("I am an error")
     });
+
+    it('can save again', async() => {
+        graphStub.restore();
+        graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
+        graphStub.returns({
+            fairsharingRecord: { recordAssociations: []}
+        });
+        recordStore.state.sections.relations.data.recordAssociations = relations;
+        recordStore.state.sections.relations.initialData.recordAssociations = relations;
+        wrapper.vm.showOverlay({
+            name: "yolo",
+            id: 333,
+            registry: 'collection',
+            type: 'collection'
+        });
+        wrapper.vm.addingRelation.recordAssocLabel = {
+            id: 1,
+            relation: 'undefined',
+            relationId: 1,
+            target: "collection"
+        };
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        wrapper.vm.addItem();
+        expect(wrapper.vm.sections.relations.data.recordAssociations[0]).toStrictEqual({
+            new: true,
+            linkedRecord: wrapper.vm.addingRelation.linkedRecord,
+            recordAssocLabel: wrapper.vm.addingRelation.recordAssocLabel
+        });
+        await wrapper.vm.saveRecord(true);
+        jest.clearAllMocks();
+
+    })
 
 });

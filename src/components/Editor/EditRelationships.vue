@@ -515,7 +515,11 @@
             let prohibited = [];
             this.associations.forEach(association => {
                 if (association.linkedRecord.id === target.id) {
-                  prohibited.push(association.recordAssocLabel.relation)
+                  /*istanbul ignore if*/
+                  if (association.recordAssocLabel.relation) {
+                    prohibited.push(association.recordAssocLabel.relation)
+                  }
+                  else prohibited.push(association.recordAssocLabel)
                 }
             });
             this.panelContent = this.allowedRelations({

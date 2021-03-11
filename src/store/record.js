@@ -160,7 +160,6 @@ let recordStore = {
             state.sections.relations.changes = 0;
             state.sections.relations.message = "Record successfully updated!";
             state.sections.relations.error = false;
-
         },
         setMessage(state, message){
             state.sections[message.target].message = message.value;

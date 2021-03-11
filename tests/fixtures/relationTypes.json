@@ -1,0 +1,192 @@
+[
+  {
+    "id": 1,
+    "name": "undefined",
+    "children": [],
+    "allowed_associations": []
+  },
+  {
+    "id": 2,
+    "name": "implements",
+    "children": [
+      {
+        "id": 3,
+        "name": "accepts"
+      },
+      {
+        "id": 4,
+        "name": "outputs"
+      }
+    ],
+    "allowed_associations": [
+      {
+        "id": 3,
+        "from": "database",
+        "to": "standard"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "accepts",
+    "children": [],
+    "allowed_associations": [
+      {
+        "id": 2,
+        "from": "database",
+        "to": "model_and_format"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "outputs",
+    "children": [],
+    "allowed_associations": [
+      {
+        "id": 2,
+        "from": "database",
+        "to": "model_and_format"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "related_to",
+    "children": [
+      {
+        "id": 6,
+        "name": "shares_code"
+      },
+      {
+        "id": 7,
+        "name": "shares_data"
+      },
+      {
+        "id": 8,
+        "name": "profiles"
+      },
+      {
+        "id": 9,
+        "name": "extends"
+      },
+      {
+        "id": 10,
+        "name": "expresses"
+      }
+    ],
+    "allowed_associations": [
+      {
+        "id": 1,
+        "from": "database",
+        "to": "database"
+      },
+      {
+        "id": 4,
+        "from": "standard",
+        "to": "standard"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "shares_code",
+    "children": [],
+    "allowed_associations": [
+      {
+        "id": 1,
+        "from": "database",
+        "to": "database"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "shares_data",
+    "children": [],
+    "allowed_associations": [
+      {
+        "id": 1,
+        "from": "database",
+        "to": "database"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "profiles",
+    "children": [],
+    "allowed_associations": [
+      {
+        "id": 4,
+        "from": "standard",
+        "to": "standard"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "extends",
+    "children": [],
+    "allowed_associations": [
+      {
+        "id": 4,
+        "from": "standard",
+        "to": "standard"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "expresses",
+    "children": [],
+    "allowed_associations": [
+      {
+        "id": 4,
+        "from": "standard",
+        "to": "standard"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "deprecates",
+    "children": [],
+    "allowed_associations": []
+  },
+  {
+    "id": 12,
+    "name": "collects",
+    "children": [],
+    "allowed_associations": []
+  },
+  {
+    "id": 13,
+    "name": "recommends",
+    "children": [],
+    "allowed_associations": [
+      {
+        "id": 6,
+        "from": "policy",
+        "to": "database"
+      },
+      {
+        "id": 7,
+        "from": "policy",
+        "to": "standard"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "associated_with",
+    "children": [],
+    "allowed_associations": [
+      {
+        "id": 5,
+        "from": "policy",
+        "to": "policy"
+      }
+    ]
+  }
+]

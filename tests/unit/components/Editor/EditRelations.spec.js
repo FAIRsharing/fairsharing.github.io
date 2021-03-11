@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import editRelations from "@/components/Editor/editRelationships.vue"
+import editRelations from "@/components/Editor/EditRelationships.vue"
 import recordStore from "@/store/record.js";
 import editorStore from "@/store/editor.js";
 import userStore from "@/store/users.js";

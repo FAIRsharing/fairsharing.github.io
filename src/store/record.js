@@ -454,7 +454,6 @@ let recordStore = {
                     oldAssociations.push(association.linkedRecord.id);
                 }
             });
-            console.log(state.sections.relations.initialData.recordAssociations);
             state.sections.relations.initialData.recordAssociations.forEach(oldAssociation => {
                 let id = oldAssociation.linkedRecord.id;
                 if (id && !oldAssociations.includes(id)) {
@@ -477,7 +476,7 @@ let recordStore = {
                 })
             ]);
             let error = false;
-            for (let response in responses) {
+            for (let response of responses) {
                 if (response.error) {
                     commit("setSectionError", {
                         section: "relations",

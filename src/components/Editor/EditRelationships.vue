@@ -421,6 +421,7 @@
           ...mapState("users", ["user"]),
           ...mapState("editor", ["availableRecords", "relationsTypes"]),
           ...mapGetters("editor", ["allowedRelations", "allowedTargets"]),
+          ...mapGetters("record", ["getSection"]),
           associations(){
             return this.sections.relations.data.recordAssociations;
           },
@@ -434,6 +435,13 @@
               }
             });
           },
+          message(){
+            let error = this.getSection("relations").error;
+            return {
+              error: error,
+              value: this.getSection("relations").message,
+            };
+          }
         },
         watch: {
           async search() {
@@ -449,7 +457,10 @@
             deep: true,
             handler(){
               let changes = 0;
-              if (!isEqual(this.sections.relations.initialData, this.sections.relations.data)) changes += 1;
+              if (!isEqual(this.sections.relations.initialData.recordAssociations,
+                      this.sections.relations.data.recordAssociations)) {
+                changes += 1;
+              }
               this.$store.commit("record/setChanges", {
                 section: "relations",
                 value: changes
@@ -532,13 +543,13 @@
             });
             allowedRelations.forEach(allowedRelation => {
               if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
+                /* istanbul ignore else */
                 if (allRelations.includes(allowedRelation.target.toLowerCase())) {
                   labelsFilter[allowedRelation.target] = true;
                   allRelations.splice(allRelations.indexOf(allowedRelation.target.toLowerCase()), 1)
                 }
               }
             });
-            allRelations.forEach(rel => {labelsFilter[rel] = false});
             this.labelsFilter = {...labelsFilter};
             this.searchFilters = {...labelsFilter};
           },

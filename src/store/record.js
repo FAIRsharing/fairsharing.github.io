@@ -5,6 +5,7 @@ import recordQuery from "../components/GraphClient/queries/getRecord.json"
 import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
 import recordOrganisationsQuery from "../components/GraphClient/queries/getRecordOrganisations.json"
 import recordDataAccessQuery from "../components/GraphClient/queries/editor/getRecordDataAccess.json"
+import recordRelationsQuery from "../components/GraphClient/queries/editor/getRecordRelations.json"
 import { initEditorSections } from "./utils.js"
 
 let client = new Client();
@@ -44,7 +45,7 @@ let recordStore = {
     mutations: {
         setCurrentRecord(state, data){
             state.currentRecord = data;
-            let tags = ['subjects', 'domains', 'taxonomies', 'userDefinedTags']
+            let tags = ['subjects', 'domains', 'taxonomies', 'userDefinedTags'];
             tags.forEach(tag => {
                 if (state.currentRecord['fairsharingRecord'][tag].length && state.currentRecord['fairsharingRecord'][tag] ) {
                     state.currentRecord['fairsharingRecord'][tag].forEach(item => {
@@ -152,6 +153,14 @@ let recordStore = {
         },
         setEditingRecord(state){
             state.newRecord = false;
+        },
+        setRelations(state, relations){
+            state.sections.relations.data.recordAssociations = relations;
+            state.sections.relations.initialData.recordAssociations = relations;
+            state.sections.relations.changes = 0;
+            state.sections.relations.message = "Record successfully updated!";
+            state.sections.relations.error = false;
+
         },
         setMessage(state, message){
             state.sections[message.target].message = message.value;
@@ -427,6 +436,59 @@ let recordStore = {
             recordDataAccessQuery.queryParam = {id: state.currentRecord.fairsharingRecord.id};
             let dataAccess = await client.executeQuery(recordDataAccessQuery);
             commit('setDataAccess', dataAccess.fairsharingRecord);
+        },
+        async updateRelations({state, commit}, options){
+            commit("resetMessage", "relations");
+            let newAssociations = [],
+                deleteAssociations = [],
+                oldAssociations = [];
+            state.sections.relations.data.recordAssociations.forEach(association => {
+                if (association.new) {
+                    delete association.new;
+                    const newAssociation = {
+                        fairsharing_record_id: options.source,
+                        linked_record_id: association.linkedRecord.id,
+                        record_assoc_label_id: association.recordAssocLabel.id
+                    };
+                    newAssociations.push(newAssociation);
+                }
+                else {
+                    oldAssociations.push(association.linkedRecord.id);
+                }
+            });
+            state.sections.relations.initialData.recordAssociations.forEach(oldAssociation => {
+                let id = oldAssociation.linkedRecord.id;
+                if (!oldAssociations.includes(id)) {
+                    deleteAssociations.push({
+                        id: oldAssociation.id,
+                        _destroy: 1
+                    });
+                }
+            });
+            let responses = await Promise.all([
+                restClient.saveRelations({
+                    token: options.token,
+                    relations: newAssociations,
+                    target: options.source
+                }),
+                restClient.deleteRelations({
+                    token: options.token,
+                    relations: deleteAssociations,
+                    target: options.source
+                })
+            ]);
+            responses.forEach((response) => {
+                if (response.error) {
+                    commit("setSectionError", {
+                        section: "relations",
+                        value: response.error
+                    });
+                    return response.error;
+                }
+            });
+            recordRelationsQuery.queryParam = {id: options.source};
+            let relations = await client.executeQuery(recordRelationsQuery);
+            commit('setRelations', relations['fairsharingRecord'].recordAssociations);
         },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});

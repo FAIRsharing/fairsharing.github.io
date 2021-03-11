@@ -208,7 +208,8 @@ let editorStore = {
                             allowed[relationParent].push({
                                 relation: relationName,
                                 target: relationChild,
-                                id: id
+                                id: id,
+                                relationId: typeObject.id
                             });
                         }
                         else {
@@ -216,7 +217,8 @@ let editorStore = {
                                 allowed[relationParent].push({
                                     relation: relationName,
                                     target: childRel,
-                                    id: id
+                                    id: id,
+                                    relationId: typeObject.id
                                 });
                             });
                         }
@@ -231,7 +233,8 @@ let editorStore = {
                            allowed[relationParent].push({
                                relation: relationName,
                                target: relationChild,
-                               id: id
+                               id: id,
+                               relationId: typeObject.id
                            });
                         });
                     });

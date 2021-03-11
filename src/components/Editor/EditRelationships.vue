@@ -3,6 +3,7 @@
     <v-card-title class="grey lighten-4 blue--text">
       Edit Relationships
     </v-card-title>
+    <Alerts target="relations" />
     <v-card-text class="pt-2">
       <v-container fluid>
         <v-row>
@@ -39,7 +40,7 @@
                       sm="12"
                       xs="12"
                       md="6"
-                      lg="3"
+                      lg="6"
                       xl="3"
                       class="text-center"
                     >
@@ -77,7 +78,11 @@
                 >
                   <v-list-item>
                     <v-list-item-avatar>
-                      <v-img :src="icons()[record.type]" />
+                      <Icon
+                        :item="record.type"
+                        wrapper-class=""
+                        :height="40"
+                      />
                     </v-list-item-avatar>
                     <v-list-item-content
                       style="text-align: left"
@@ -153,7 +158,7 @@
                       sm="12"
                       xs="12"
                       md="6"
-                      lg="3"
+                      lg="6"
                       xl="3"
                       class="text-center"
                     >
@@ -182,16 +187,21 @@
                   :class="{'orange lighten-3': association.new}"
                 >
                   <v-list-item-avatar>
-                    <v-img :src="icons()[association.linkedRecord.type]" />
+                    <Icon
+                      :item="association.linkedRecord.type"
+                      wrapper-class=""
+                      :height="40"
+                    />
                   </v-list-item-avatar>
                   <v-list-item-content>
+                    <b v-if="!association.recordAssocLabel.relation">- {{ cleanString(association.recordAssocLabel.toUpperCase()) }} -</b>
+                    <b v-else>- {{ cleanString(association.recordAssocLabel.relation.toUpperCase()) }} -</b>
                     <v-list-item-title>
                       {{ association.linkedRecord.name }}
                     </v-list-item-title>
                     <span class="text-capitalize">
                       {{ association.linkedRecord.registry }} / {{ cleanString(association.linkedRecord.type) }}
                     </span>
-                    <b>- {{ cleanString(association.recordAssocLabel.toUpperCase()) }} -</b>
                   </v-list-item-content>
                   <v-list-item-icon>
                     <v-btn
@@ -223,12 +233,14 @@
       <v-btn
         class="primary"
         :loading="saving"
+        @click="saveRecord(false)"
       >
         Save and continue
       </v-btn>
       <v-btn
         :loading="saving"
         class="primary"
+        @click="saveRecord(true)"
       >
         Save and exit
       </v-btn>
@@ -301,7 +313,7 @@
                     <b
                       v-if="addingRelation.recordAssocLabel"
                       class="ml-3 doubleUnderline"
-                    >{{ cleanString(addingRelation.recordAssocLabel).toUpperCase() }}</b>
+                    >{{ cleanString(addingRelation.recordAssocLabel.relation).toUpperCase() }}</b>
                   </div>
                   <div>
                     <b>TARGET:</b>
@@ -323,6 +335,7 @@
                   v-model="addingRelation.recordAssocLabel"
                   :items="panelContent"
                   outlined
+                  return-object
                   item-text="relation"
                   item-value="relation"
                   label="Select the type of relationship"
@@ -372,14 +385,16 @@
 <script>
     import { mapState, mapActions, mapGetters } from "vuex"
     import { isEqual, capitalize } from "lodash"
-    import { isRequired } from "@/utils/rules.js"
     import stringUtils from '@/utils/stringUtils';
-    import Record from "../../views/Records/Record";
+    import Record from "@/views/Records/Record";
     import Loaders from "../Navigation/Loaders";
+    import Icon from "@/components/Icon";
+    import Alerts from "./Alerts";
+    import { isRequired } from "@/utils/rules.js"
 
     export default {
         name: "EditRelationships",
-        components: {Loaders, Record},
+        components: {Alerts, Icon, Loaders, Record},
         mixins: [stringUtils],
         data(){
           return {
@@ -403,7 +418,8 @@
         },
         computed: {
           ...mapState("record", ["sections"]),
-          ...mapState("editor", ["icons", "availableRecords", "relationsTypes"]),
+          ...mapState("users", ["user"]),
+          ...mapState("editor", ["availableRecords", "relationsTypes"]),
           ...mapGetters("editor", ["allowedRelations", "allowedTargets"]),
           associations(){
             return this.sections.relations.data.recordAssociations;
@@ -453,6 +469,7 @@
         },
         methods: {
           ...mapActions("editor", ["getAvailableRecords", "getAvailableRelationsTypes"]),
+          ...mapActions("record", ["updateRelations"]),
           capitalize,
           addItem() {
             this.searchAssociations = null;
@@ -464,7 +481,7 @@
               recordAssocLabel: this.addingRelation.recordAssocLabel,
               new: true,
             };
-            this.sections.relations.data.recordAssociations.push(newRelation);
+            this.sections.relations.data.recordAssociations.unshift(newRelation);
             this.showRelationsPanel = false;
             this.$nextTick(() => {
               this.$scrollTo('#association_' + this.addingRelation.id, 450, {
@@ -486,7 +503,9 @@
             };
             let prohibited = [];
             this.associations.forEach(association => {
-                if (association.linkedRecord.id === target.id) prohibited.push(association.recordAssocLabel)
+                if (association.linkedRecord.id === target.id) {
+                  prohibited.push(association.recordAssocLabel.relation)
+                }
             });
             this.panelContent = this.allowedRelations({
                 target: {
@@ -513,8 +532,8 @@
             });
             allowedRelations.forEach(allowedRelation => {
               if (!Object.keys(labelsFilter).includes(allowedRelation.target)){
-                labelsFilter[allowedRelation.target] = true;
                 if (allRelations.includes(allowedRelation.target.toLowerCase())) {
+                  labelsFilter[allowedRelation.target] = true;
                   allRelations.splice(allRelations.indexOf(allowedRelation.target.toLowerCase()), 1)
                 }
               }
@@ -545,6 +564,24 @@
             });
 
             if (search === this.lastQuery) this.loading = false;
+          },
+          async saveRecord(redirect){
+            this.saving = true;
+            await this.updateRelations({
+              token: this.user().credentials.token,
+              source: this.$route.params.id
+            });
+            this.saving = false;
+            if (!redirect) {
+              this.$scrollTo("#mainHeader");
+              this.$store.commit("record/setChanges", {
+                section: "relations",
+                value: 0
+              })
+            }
+            if (redirect && !this.message.error){
+              await this.$router.push({path: '/' + this.$route.params.id})
+            }
           }
         }
     }

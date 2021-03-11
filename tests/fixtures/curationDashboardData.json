@@ -111,21 +111,29 @@
               "id": "32",
               "name": "ewewrr",
               "createdAt": "2020-10-27T09:34:54Z",
+              "type": "database",
               "creator":
                 {
                   "id": "44",
-                  "username": "Donal J. Trump"
+                  "username": "Lara Aral"
                 }
 
           },
           {
               "id": "44",
               "name": "Second",
-              "createdAt": "2020-10-27T09:34:54Z"
+              "type": "database",
+              "createdAt": "2019-10-27T09:34:54Z",
+              "creator":
+                {
+                  "id": "22",
+                  "username": "Donal J. Trump"
+                }
           },
           {
               "id": "4443",
               "name": "Third",
+              "type": "database",
               "createdAt": "2017-11-11T09:34:54Z"
           }
       ],

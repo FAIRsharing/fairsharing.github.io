@@ -15,7 +15,12 @@
         </v-alert>
       </v-col>
     </v-row>
-    <v-row v-if="!messages()['getPublicUser'].error">
+
+    <div v-if="error">
+      <NotFound />
+    </div>
+
+    <v-row v-else>
       <v-col cols="12">
         <v-toolbar
           flat
@@ -193,6 +198,7 @@
     import UserProfileMenu from "@/components/Users/UserProfileMenu";
     import Loaders from "@/components/Navigation/Loaders";
     import ExternalClient from "@/components/Client/ExternalClients.js"
+    import NotFound from "@/views/Errors/404"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
     import { cleanString } from "@/utils/stringUtils"
 
@@ -204,12 +210,13 @@
 
     export default {
       name: "PublicProfile",
-      components: {RecordsTable, Loaders, UserProfileMenu},
+      components: {RecordsTable, Loaders, NotFound, UserProfileMenu},
       mixins: [cleanString],
       data: () => {
         return {
             panel: 0,
             loading: false,
+            error: false,
             publications: [],
             activeTab: 0,
             userData: {
@@ -235,6 +242,7 @@
           if (data == null || data.user == null){
             // No userdata, so don't look for publications.
             this.publications = [];
+            this.error = true;
           }
           else {
             // Get user's publications.

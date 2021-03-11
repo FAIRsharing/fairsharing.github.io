@@ -10,7 +10,6 @@ import getPublicationsQuery from "@/components/GraphClient/queries/getPublicatio
 import getRecordsQuery from "@/components/GraphClient/queries/editor/getRecordsSummary.json"
 import getLicencesQuery from "@/components/GraphClient/queries/getLicences.json"
 import descriptionData from "@/data/fieldsDescription.json"
-import registryIcons from "@/data/recordsRegistries.json"
 import supportLinksTypes from "@/data/SupportLinksTypes.json"
 import status from "@/data/status.json"
 const graphClient = new GraphClient();
@@ -24,13 +23,6 @@ let editorStore = {
         status: status.status,
         tooltips: descriptionData.descriptions,
         tags: [],
-        icons(){
-            let icons  = {};
-            Object.keys(registryIcons).forEach(fieldName => {
-                icons[fieldName] = registryIcons[fieldName].icon
-            });
-            return icons;
-        },
         years(){
             let years = [];
             let d = new Date();

@@ -14,11 +14,7 @@
           tile
           elevation="3"
         >
-          <div class="icon-container d-flex justify-center">
-            <v-icon large>
-              {{ $vuetify.icons.values.howToCite }}
-            </v-icon>
-          </div>
+          <Icon item="howToCite" />
           <v-card-title class="pa-0 text--primary card-title-customize">
             How to cite this record
           </v-card-title>
@@ -58,22 +54,18 @@
           tile
           elevation="3"
         >
-          <div class="icon-container d-flex justify-center">
-            <v-icon large>
-              {{ $vuetify.icons.values.PublicationCitation }}
-            </v-icon>
-          </div>
+          <Icon item="PublicationCitation" />
           <v-card-title class="pa-0 card-title-customize">
             Publication for citation
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
             <div
               v-for="citation in getField('metadata')['citations']"
-              :key="citation.id+'_'+citation.pubmed_id"
+              :key="citation.id + '_' + citation.pubmed_id"
             >
               <div
-                v-for="publication in getField('publications')"
-                :key="publication.title"
+                v-for="(publication, pubIndex) in getField('publications')"
+                :key="'publicationCitation_' + pubIndex"
               >
                 <span
                   v-if="publication.id === citation.publication_id"
@@ -104,11 +96,13 @@
 
 <script>
 import {mapGetters} from "vuex";
+import Icon from "@/components/Icon"
 import {truncate} from "@/utils/stringUtils"
 
 export default {
   name: "Citations",
-  mixins:[truncate],
+  components: { Icon },
+  mixins: [ truncate ],
   data: () => {
     return {
       currentDate: new Date()
@@ -121,19 +115,6 @@ export default {
 </script>
 
 <style scoped>
-.icon-container {
-  position: absolute;
-  top: -45px;
-  background: white;
-  border: #b3b3b3 dotted 3px;
-  border-radius: 50%!important;
-  -moz-border-radius: 50%!important;
-  -webkit-border-radius: 50%!important;
-  width: 85px;
-  height: 85px;
-  cursor: help;
-}
-
 .card-text-customize {
   max-height: 120px;
   min-height: 120px;

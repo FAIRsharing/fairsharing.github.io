@@ -30,12 +30,12 @@
               :href="'https://doi.org/'+getField('doi')"
               class="mr-2"
             >{{ getField('doi') }},</a>
-            <b v-if="getField('lastEdited')"><span class="mr-2">Last Edited:</span></b><span class="mr-2">{{ getField('lastEdited') | moment("dddd, MMMM Do YYYY, H:mm") }},</span>
+            <b v-if="getField('lastEdited')"><span class="mr-2">Last Edited:</span></b><span class="mr-2">{{moment( getField('lastEdited'))}},</span>
             <b v-if="getField('lastEditor')!==null"><span class="mr-2">Last Editor:</span></b><span
               v-if="getField('lastEditor')!==null && getField('lastEditor').username"
               class="mr-2"
             >{{ getField('lastEditor').username }},</span>
-            <b><span class="mr-2">Last Accessed:</span></b><span class="mr-2">{{ new Date() | moment("dddd, MMMM Do YYYY, H:mm") }}</span>
+            <b><span class="mr-2">Last Accessed:</span></b><span class="mr-2">{{ moment(new Date()) }}</span>
           </v-card-text>
         </v-card>
       </v-col>
@@ -98,6 +98,7 @@
 import {mapGetters} from "vuex";
 import Icon from "@/components/Icon"
 import {truncate} from "@/utils/stringUtils"
+import moment from "moment";
 
 export default {
   name: "Citations",
@@ -110,6 +111,11 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+  },
+  methods:{
+    moment (date) {
+      return moment(date).format('dddd, MMMM Do YYYY, H:mm');
+    }
   }
 }
 </script>

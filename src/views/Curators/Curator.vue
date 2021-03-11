@@ -65,20 +65,17 @@
               >
                 <tr>
                   <td>
+                    <span
+                      v-if="props.item.type"
+                      class="mr-2"
+                    >
+                      <Icon
+                        :item="props.item.type"
+                        :height="38"
+                        wrapper-class=""
+                      />
+                    </span>
                     <a :href="'#/' + props.item.id">
-                      <span
-                        v-if="props.item.type"
-                        class="mr-2"
-                      >
-                        <v-avatar
-                          v-if="Object.keys(recordType).includes(props.item.type)"
-                          size="38"
-                        >
-                          <img
-                            :src="'./' + recordType[props.item.type].icon"
-                          >
-                        </v-avatar>
-                      </span>
                       {{ props.item.recordNameID }}
                     </a>
                   </td>
@@ -202,7 +199,7 @@
     import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
     import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
     import RestClient from "@/components/Client/RESTClient.js"
-
+    import Icon from "@/components/Icon"
 
 
     const client = new GraphClient();
@@ -239,7 +236,8 @@
       components: {
         Unauthorized,
         RecordsAwaitingApproval,
-        MaintenanceRequest
+        MaintenanceRequest,
+        Icon
       },
       data: () => {
         return {

@@ -175,10 +175,8 @@ let editorStore = {
         async getAvailableRecords({commit}, options){
             getRecordsQuery.queryParam = {perPage: 100};
             if (options.q) getRecordsQuery.queryParam.q = options.q;
-            if (options.fairsharingRegistry) {
-                getRecordsQuery.queryParam.fairsharingRegistry = options.fairsharingRegistry;
-                getRecordsQuery.queryParam.searchAnd = false;
-            }
+            getRecordsQuery.queryParam.fairsharingRegistry = options.fairsharingRegistry;
+            getRecordsQuery.queryParam.searchAnd = false;
             let data = await graphClient.executeQuery(getRecordsQuery);
             commit("setAvailableRecords", data.searchFairsharingRecords.records);
         },
@@ -186,34 +184,19 @@ let editorStore = {
             let types = await restClient.getRelationsTypes();
             let allowed = {};
             let relationTypes = ['standard', 'database', 'policy', 'collection'];
-            types.forEach(typeObject => {
+            for (let typeObject of types) {
                 let relationName = typeObject.name,
                     id = typeObject.id;
                 if (typeObject['allowed_associations'].length > 0) {
                     typeObject['allowed_associations'].forEach(allowed_association => {
                         let relationParent = allowed_association.from;
                         let relationChild = allowed_association.to;
-                        if (!Object.keys(allowed).includes(relationParent)) {
-                            allowed[relationParent] = [];
-                        }
-                        if (relationChild !== "any") {
-                            allowed[relationParent].push({
-                                relation: relationName,
-                                target: relationChild,
-                                id: id,
-                                relationId: typeObject.id
-                            });
-                        }
-                        else {
-                            relationTypes.forEach((childRel) => {
-                                allowed[relationParent].push({
-                                    relation: relationName,
-                                    target: childRel,
-                                    id: id,
-                                    relationId: typeObject.id
-                                });
-                            });
-                        }
+                        allowed[relationParent].push({
+                            relation: relationName,
+                            target: relationChild,
+                            id: id,
+                            relationId: typeObject.id
+                        });
                     })
                 }
                 else {
@@ -231,7 +214,7 @@ let editorStore = {
                         });
                     });
                 }
-            });
+            }
             commit("setAvailableRelationsTypes", allowed);
         }
     },
@@ -264,6 +247,7 @@ let editorStore = {
             let output = [];
             let allowed = ["standard", "database", "policy", "collection"];
             state.relationsTypes[source.toLowerCase()].forEach(relation => {
+                /* istanbul ignore else */
                 if (allowed.includes(relation.target)) output.push(relation.target);
             });
             return [...new Set(output)];

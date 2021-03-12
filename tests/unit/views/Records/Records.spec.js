@@ -115,12 +115,6 @@ describe("Records.vue", () => {
         })
     });
 
-    it("can reset the store when destroyed", () => {
-        wrapper.destroy();
-        expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
-        expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
-    });
-
     it("react to path change", async () => {
         $route.path = "/search";
         $route.query = {};
@@ -184,6 +178,18 @@ describe("Records.vue", () => {
         actions.setGeneralUIAttributesAction({});
         wrapper.vm.onScroll();
         expect(actions.commit).toHaveBeenCalledTimes(1);
+    });
+
+
+    it("can reset the store when destroyed", () => {
+        wrapper.destroy();
+        expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
+        expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
+        expect(wrapper.vm.$store.state.records.loading).toBe(false);
+        const otherStates = ["hits","totalPages","perPage","currentPage"]
+        otherStates.forEach(state => {
+            expect(wrapper.vm.$store.state.records[state]).toBe(null)
+        })
     });
 
 });

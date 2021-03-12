@@ -191,5 +191,11 @@ describe("Edit -> GeneralInformation.vue", function() {
         tagStub.restore();
     });
 
+    it("can raise a no species error", async () => {
+        wrapper.vm.currentFields.taxonomies = [];
+        await wrapper.vm.saveRecord(false);
+        expect(wrapper.vm.message.error).toBe(true);
+    });
+
 
 });

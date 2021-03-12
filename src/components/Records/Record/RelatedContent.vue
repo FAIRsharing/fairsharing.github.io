@@ -83,6 +83,9 @@
                     {{ item.name }}
                   </div>
                 </div>
+                <p class="grey--text text-right relation-style ellipse-width-450">
+                  {{ item.subject }} <span class="red--text">{{ item.recordAssocLabel }}</span>  {{ item.name }}
+                </p>
               </v-card>
             </template>
           </v-virtual-scroll>
@@ -111,9 +114,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {relation: ['implements', 'related to'], registry: "Standard", data: []},
-          related_databases: {relation: ['implements', 'related to'], registry: "Database", data: []},
-          related_policies: {relation: ['implements', 'related to'], registry: "Policy", data: []}
+          related_standards: {relation: ['collects', 'recommends'], registry: "Standard", data: []},
+          related_databases: {relation: ['collects', 'recommends'], registry: "Database", data: []},
         }
       }
     }
@@ -125,10 +127,12 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
+      const fake_rel_object = {linkedRecord:{id:8888,name:"fakeName",registry:"Standard",type:"terminology_artefact"},recordAssocLabel:"share_codes"}
+      _module.currentRecord['fairsharingRecord']['recordAssociations'].push(fake_rel_object)
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => _module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && item.registry === _module.tabsData.tabs[tabName].registry)
+              .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && item.registry === _module.tabsData.tabs[tabName].registry)
         })
       } else {
         return false
@@ -195,4 +199,10 @@ a {
   margin-top: 1pt;
 }
 
+.relation-style {
+  position: absolute;
+  bottom: -12px;
+  left: 143px;
+  font-size: 12px;
+}
 </style>

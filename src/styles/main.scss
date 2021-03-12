@@ -89,6 +89,11 @@ a {
   max-width: 600px;
 }
 
+.ellipse-width-450 {
+  @extend .ellipse;
+  max-width: 450px;
+}
+
 .dashed-line {
   border: none;
   border-top: 4px dotted gray;

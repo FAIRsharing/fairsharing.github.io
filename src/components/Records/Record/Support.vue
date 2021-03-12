@@ -21,19 +21,7 @@
           tile
           elevation="3"
         >
-          <div class="icon-container d-flex justify-center">
-            <v-icon
-              v-if="typeof $vuetify.icons.values[item.icon] === 'string' || typeof $vuetify.icons.values[item.icon] === 'undefined'"
-              large
-            >
-              {{ Object.keys($vuetify.icons.values).includes(item.icon)?$vuetify.icons.values[item.icon]:$vuetify.icons.values['undefined'] }}
-            </v-icon>
-            <CustomIcons
-              v-else-if="typeof $vuetify.icons.values[item.icon] === 'object'"
-              class="mt-4"
-              :icon-source="$vuetify.icons.values[item.icon]"
-            />
-          </div>
+          <Icon :item="item.icon" />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ key | capitalize }}
           </v-card-title>
@@ -46,7 +34,14 @@
               outlined
             >
               <a
-                v-if="subItem.url"
+                v-if="subItem.name && subItem.url"
+                :href="subItem.url"
+                target="_blank"
+              >
+                {{ subItem.name }}
+              </a>
+              <a
+                v-if="!subItem.name && subItem.url"
                 :href="subItem.url"
                 target="_blank"
               >
@@ -61,16 +56,13 @@
                   class="d-flex flex-wrap"
                 >
                   <span class="min-width-60">Name:</span>
-                  <strong>{{ subItem.contact_name }}</strong>
-                </div>
-                <div
-                  v-if="subItem.contact_email"
-                  class="d-flex flex-wrap"
-                >
-                  <span class="min-width-60">Email:</span>
-                  <strong>
-                    {{ subItem.contact_email }}
-                  </strong>
+                  <a
+                    v-if="subItem.contact_email"
+                    :href="'mailto:'+subItem.contact_email"
+                    target="_blank"
+                  >
+                    {{ subItem.contact_name }}
+                  </a>
                 </div>
                 <div
                   v-if="subItem.contact_orcid"
@@ -95,13 +87,13 @@
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import clearString from '@/utils/stringUtils'
 import {mapGetters} from "vuex";
-import CustomIcons from '@/components/customIcons/CustomIcons';
+import Icon from "@/components/Icon";
 
 export default {
   name: "Support",
   components: {
-    SectionTitle,
-    CustomIcons
+    Icon,
+    SectionTitle
   },
   mixins: [clearString],
   computed: {

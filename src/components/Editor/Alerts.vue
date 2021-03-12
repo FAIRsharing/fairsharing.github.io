@@ -8,7 +8,8 @@
         :type="message.type()"
         class="mb-0"
       >
-        {{ message.value }}<span v-if="message.error"> <v-icon class="ml-4 mr-3">fa-arrow-right</v-icon> {{ message.value.response.data }}</span>
+        <span v-if="!message.error">{{ message.value }}</span>
+        <span v-else>{{ message.value.response.data }}</span>
       </v-alert>
     </v-card-text>
   </v-scroll-x-transition>

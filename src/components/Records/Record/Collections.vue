@@ -14,6 +14,7 @@
       <div class="d-flex flex-wrap mt-5">
         <!--  search autocomplete    -->
         <v-autocomplete
+          v-if="!tabsDataExist"
           v-model="selectedValues"
           :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
           :items="getValues"
@@ -35,6 +36,7 @@
       </div>
       <!--  tabs    -->
       <v-tabs
+        v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
         background-color="transparent"
         grow
@@ -54,8 +56,9 @@
       </v-tabs>
       <!--  tab content  -->
       <v-tabs-items
+        v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        class="transparent height-430"
+        :class="['transparent',tabsDataExist]"
       >
         <v-tab-item
           v-for="(tabItem,tabItemIndex) in filterList"

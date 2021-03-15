@@ -3,9 +3,11 @@ import Vuex from "vuex";
 import Record from "@/store/record.js"
 import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail.vue"
 import Vuetify from "vuetify"
+import VueMoment from 'vue-moment';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueMoment);
 const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {

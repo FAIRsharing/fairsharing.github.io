@@ -18,16 +18,26 @@
           cols="12"
           class="d-flex"
         >
-          <v-alert
+          <div
             v-if="alreadyClaimed || claimedTriggered"
-            :type="claimedTriggered ? 'success' : 'warning'"
-            style="flex:1"
-            class="mr-3"
+            class="d-flex flex-grow-1"
           >
-            <span v-if="alreadyClaimed"> You have already requested to maintain this record. </span>
-            <span v-if="claimedTriggered"> Thank you for claiming this record. </span>
-            <span> We will be getting back to you between 48 and 72h.</span>
-          </v-alert>
+            <v-alert
+              v-if="alreadyClaimed"
+              type="warning"
+              style="flex:1"
+              class="mr-3"
+            >
+              <span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.</span>
+            </v-alert>
+            <v-snackbar
+              v-model="claimedTriggered"
+              color="success"
+              class="text-body"
+            >
+              Thank you for claiming this record. We will be getting back to you between 48 and 72h.
+            </v-snackbar>
+          </div>
           <v-spacer v-else />
           <v-menu
             cmass="mt-3"
@@ -205,7 +215,10 @@
             }
         },
         watch: {
-            async currentRoute() {await this.getData()},
+            async currentRoute() {
+              await this.getData()
+              await this.checkClaimStatus();
+            },
             async userIsLoggedIn() {
               await this.canEditRecord();
               await this.checkClaimStatus();

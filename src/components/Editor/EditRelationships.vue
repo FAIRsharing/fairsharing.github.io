@@ -417,7 +417,7 @@
           }
         },
         computed: {
-          ...mapState("record", ["sections"]),
+          ...mapState("record", ["sections", "currentID"]),
           ...mapState("users", ["user"]),
           ...mapState("editor", ["availableRecords", "relationsTypes"]),
           ...mapGetters("editor", ["allowedRelations", "allowedTargets"]),
@@ -558,6 +558,7 @@
             this.searchFilters = {...labelsFilter};
           },
           async runSearch(){
+            let _module = this;
             this.loading = true;
             let search = null;
             if (this.search && this.search.trim().length >= 3) {
@@ -570,7 +571,11 @@
               }
             });
             this.lastQuery = search;
-            await this.getAvailableRecords({q: search, fairsharingRegistry: registries});
+            await _module.getAvailableRecords({
+              q: search,
+              fairsharingRegistry: registries,
+              excludeId: _module.currentID
+            });
 
             let i = 0;
             this.availableRecords.forEach(rec => {

@@ -155,7 +155,6 @@
                             :show-size="1000"
                             clearable
                             chips
-                            :rules="[rules.isImage()]"
                           />
                         </v-col>
                       </v-row>
@@ -336,7 +335,7 @@
 <script>
     import Vue from "vue"
     import { mapState } from "vuex"
-    import { isRequired, isUrl, isImage } from "@/utils/rules.js"
+    import { isRequired, isUrl } from "@/utils/rules.js"
     import RestClient from "@/components/Client/RESTClient.js"
     const restClient = new RestClient();
 
@@ -363,8 +362,7 @@
           },
           rules: {
             isRequired: function(){return isRequired() },
-            isURL: function(){ return isUrl() },
-            isImage: function(){ return isImage() }
+            isURL: function(){ return isUrl() }
           },
         }
       },

@@ -11,7 +11,11 @@
       <template #[`item.name`]="{ item }">
         <div class="d-flex justify-start align-center">
           <v-avatar size="30">
-            <v-img :src="icons()[item.type]" />
+            <Icon
+              :item="item.type"
+              :height="30"
+              wrapper-class=""
+            />
           </v-avatar>
           <div class="mt-1 ml-3 alignLeft">
             {{ item.name | cleanString }}
@@ -96,10 +100,11 @@
     import { cleanString } from "@/utils/stringUtils"
     import StatusPills from "./StatusPills";
     import Record from "@/views/Records/Record";
+    import Icon from "@/components/Icon";
 
     export default {
         name: "RecordsTable",
-        components: {Record, StatusPills},
+        components: {Icon, Record, StatusPills},
         mixins: [cleanString],
         props: {
             records: { type: Array, default: null },
@@ -112,7 +117,6 @@
             }
         },
         computed: {
-            ...mapState('editor', ['icons']),
             ...mapState('users', ['user']),
             headers(){
                 let headers = [
@@ -133,6 +137,7 @@
                     maintenanceRequests: "You do not have any maintenance requests.",
                     createdRecords: "You did not create any record yet. Start creating one ",
                     maintainedRecords: "You do not maintain any records.",
+                    publicMaintainedRecords: "This user does not maintain any records.",
                     watchedRecords: "You are not watching any record"
                 }[this.source];
             },

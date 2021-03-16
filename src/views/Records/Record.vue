@@ -11,26 +11,36 @@
 
       <!--   Action Menu & Alert   -->
       <v-row
-        v-else
+        v-if="!target && queryTriggered"
         class="pr-3"
       >
         <v-col
           cols="12"
           class="d-flex"
         >
-          <v-alert
+          <div
             v-if="alreadyClaimed || claimedTriggered"
-            :type="claimedTriggered ? 'success' : 'warning'"
-            style="flex:1"
-            class="mr-3"
+            class="d-flex flex-grow-1"
           >
-            <span v-if="alreadyClaimed"> You have already requested to maintain this record. </span>
-            <span v-if="claimedTriggered"> Thank you for claiming this record. </span>
-            <span> We will be getting back to you between 48 and 72h.</span>
-          </v-alert>
+            <v-alert
+              v-if="alreadyClaimed"
+              type="warning"
+              style="flex:1"
+              class="mr-3"
+            >
+              <span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.</span>
+            </v-alert>
+            <v-snackbar
+              v-model="claimedTriggered"
+              color="success"
+              class="text-body"
+            >
+              Thank you for claiming this record. We will be getting back to you between 48 and 72h.
+            </v-snackbar>
+          </div>
           <v-spacer v-else />
           <v-menu
-            cmass="mt-3"
+            class="mt-3"
             offset-y
           >
             <template #activator="{ on, attrs }">
@@ -127,6 +137,9 @@
             NotFound
         },
         mixins: [stringUtils],
+        props: {
+          target: {type: Number, default: null}
+        },
         data: () => {
             return {
                 error: null,
@@ -144,7 +157,7 @@
                 if (id.includes("FAIRsharing.")) {
                     return "10.25504/" + id;
                 }
-                return this.$route.params['id'];
+                return this.target || this.$route.params['id'];
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
             ...mapState('users', ["user"]),
@@ -205,7 +218,10 @@
             }
         },
         watch: {
-            async currentRoute() {await this.getData()},
+            async currentRoute() {
+              await this.getData()
+              await this.checkClaimStatus();
+            },
             async userIsLoggedIn() {
               await this.canEditRecord();
               await this.checkClaimStatus();
@@ -224,10 +240,10 @@
             })
         },
         methods: {
-            ...mapActions('record', ['fetchRecord', "fetchRecordHistory"]),
+            ...mapActions('record', ['fetchRecord', "fetchRecordHistory", "fetchPreviewRecord"]),
             goToEdit(){
               let _module = this;
-              const recordID =  _module.currentRecord['fairsharingRecord'].id;
+              const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
               this.$router.push({
                 path: recordID + '/edit',
                 params: {
@@ -288,7 +304,8 @@
                 this.alreadyClaimed = false;
                 this.claimedTriggered = false;
                 try {
-                    await _module.fetchRecord(this.currentRoute);
+                    if (this.target) await _module.fetchPreviewRecord(this.target);
+                    else await _module.fetchRecord(this.currentRoute);
                 }
                 catch (e) {
                     this.error = e.message;
@@ -314,8 +331,10 @@
         },
         metaInfo() {
           try {
-            return {
-              title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
+            if (!this.target) {
+              return {
+                title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
+              }
             }
           } catch (e) {
             //error

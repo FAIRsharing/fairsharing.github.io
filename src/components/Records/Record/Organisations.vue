@@ -141,27 +141,4 @@ a {
     outline: 0;
   }
 }
-
-.card-title-customize {
-  position: absolute;
-  top: 5px;
-  left: 120px
-}
-
-.v-card-hover {
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  transition: box-shadow .4s linear;
-  -webkit-transition: box-shadow .4s linear;
-  -moz-transition: box-shadow .4s linear;
-  -o-transition: box-shadow .4s linear;
-}
-
-.v-card-hover:hover {
-  transform: scale(1.004);
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-}
 </style>

@@ -20,8 +20,14 @@
         >
           <div
             v-if="alreadyClaimed || claimedTriggered"
-            class="d-flex flex-grow-1"
+            class="d-flex flex-column flex-grow-1"
           >
+            <v-alert
+              type="info"
+              class="mr-3"
+            >
+              <span>the record is hidden</span>
+            </v-alert>
             <v-alert
               v-if="alreadyClaimed"
               type="warning"

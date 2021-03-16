@@ -14,6 +14,7 @@
     "createdAt",
     "updatedAt",
     "lastEdited",
+    "isHidden",
     {
       "name": "lastEditor",
       "fields": [

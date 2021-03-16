@@ -45,10 +45,10 @@
           >
             <template #activator="{ on, attrs }">
               <v-btn
+                v-if="!error"
                 class="mt-2"
                 color="primary"
                 v-bind="attrs"
-                v-if="!error"
                 v-on="on"
               >
                 Actions

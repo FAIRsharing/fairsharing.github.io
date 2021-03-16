@@ -19,6 +19,12 @@ recordStore.state.sections = {
                 {type: "Other", url: "https://example.com/test"},
                 {type: "Mailing list", url: {url: "test@example.com"}, name: "a test"}
             ]
+        },
+        initialData: {
+            support_links: [
+                {type: "Other", url: "https://example.com/test"},
+                {type: "Mailing list", url: {url: "test@example.com"}, name: "a test"}
+            ]
         }
     }
 };
@@ -62,6 +68,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("EditSupportLinks");
+        expect(wrapper.vm.isNew({field: 'test'})).toBe(true);
     });
 
     it("can open the new link menu", () => {

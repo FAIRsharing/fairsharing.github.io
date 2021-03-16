@@ -209,12 +209,15 @@
   #editContact .v-overlay__content {
     min-width: 700px;
   }
-  .borderBlue {
+  #editContact .borderBlue {
     border: 1px solid #2A9AF4 !important;
     background-color: white !important;
     border-color: #2A9AF4 !important;
   }
   #editContact .v-chip.white {
     border-color: #2A9AF4 !important;
+  }
+  #editContact .borderBlue * {
+    color: #2A9AF4 !important;
   }
 </style>

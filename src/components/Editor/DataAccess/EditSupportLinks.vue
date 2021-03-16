@@ -146,7 +146,7 @@
                 />
                 <v-text-field
                   v-if="rule === 'url'"
-                  v-model="edit.template.url"
+                  v-model="edit.template.url.url"
                   outlined
                   placeholder="Enter a URL"
                   label="Support link URL"
@@ -154,11 +154,18 @@
                 />
                 <v-text-field
                   v-if="rule === 'email'"
-                  v-model="edit.template.url"
+                  v-model="edit.template.url.url"
                   outlined
                   placeholder="Enter an email"
                   label="Support link email"
                   :rules="[rules.isRequired(), rules.isEmail()]"
+                />
+                <v-text-field
+                  v-if="rule === 'email' || rule === 'url'"
+                  v-model="edit.template.url.title"
+                  outlined
+                  placeholder="Enter a resource name"
+                  label="Support link name"
                 />
                 <v-autocomplete
                   v-if="rule === 'api'"
@@ -228,7 +235,8 @@
               { text: 'Type', value: 'type', class: "test", groupable: true, sortable: false },
               { text: 'Name', value: 'name', groupable: false, sortable: false },
               { text: 'URL', value: 'url', groupable: false, sortable: false }
-            ]
+            ],
+            reactToTypeChange: true
           }
         },
         computed: {
@@ -245,18 +253,20 @@
         watch: {
           'edit.template.type': function(val) {
             this.$nextTick(() => {
-              if (this.edit.template
-                      && typeof this.edit.template.url !== "string"
-                      && val !== "TeSS links to training materials") {
-                this.edit.template.url = null;
-              }
-              else if (this.edit.template
-                      && typeof this.edit.template.url === "string"
-                      && val === "TeSS links to training materials") {
-                this.edit.template.url = null;
+              if (this.reactToTypeChange) {
+                if (this.edit.template
+                        && typeof this.edit.template.url !== "string"
+                        && val !== "TeSS links to training materials") {
+                  this.edit.template.url = {};
+                } else if (this.edit.template
+                        && typeof this.edit.template.url === "string"
+                        && val === "TeSS links to training materials") {
+                  this.edit.template.url = {};
+                }
               }
               /* istanbul ignore else */
               if (this.$refs['editSupportLink']) this.$refs['editSupportLink'].validate();
+              this.reactToTypeChange = true;
             })
           },
           search: async function(val){
@@ -272,7 +282,8 @@
               id: null,
               template: {
                 type: null,
-                url: null
+                url: null,
+                name: null
               }
             }
           },
@@ -284,6 +295,7 @@
              }
           },
           editLink(id){
+            this.reactToTypeChange = false;
             this.edit = {
               show: true,
               id: id,

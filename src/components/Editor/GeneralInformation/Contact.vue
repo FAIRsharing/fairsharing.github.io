@@ -13,7 +13,8 @@
       <v-chip
         v-for="(contact, index) in contacts"
         :key="'contact_' + index"
-        class="blue white--text pr-5"
+        class="pr-3"
+        :class="[!isNew(contact) ? 'white--text blue' : ' blue--text borderBlue']"
       >
         <div>
           <v-tooltip top>
@@ -36,6 +37,7 @@
           <v-tooltip top>
             <template #activator="{ on, attrs }">
               <v-icon
+                class="ml-3"
                 v-bind="attrs"
                 small
                 @click="removeContact(index)"
@@ -126,6 +128,7 @@
 
 <script>
     import { mapGetters } from "vuex"
+    import { isEqual } from 'lodash'
     import { isRequired, isEmail, isOrcid } from "@/utils/rules.js"
 
     export default {
@@ -156,6 +159,9 @@
                 set(val){
                     this.$store.commit("record/setContacts", val);
                 }
+            },
+            initialContact(){
+              return this.getSection('generalInformation').initialData.metadata.contacts
             }
         },
         methods: {
@@ -191,6 +197,9 @@
                     this.menu.show = false;
                     this.submitted = true;
                 }
+            },
+            isNew(term){
+              return !this.initialContact.filter(obj => isEqual(obj, term))[0];
             }
         }
     }
@@ -199,5 +208,12 @@
 <style>
   #editContact .v-overlay__content {
     min-width: 700px;
+  }
+  .borderBlue {
+    border: 1px solid #2A9AF4 !important;
+    background-color: white;
+  }
+  .borderBlue * {
+   color: #2A9AF4 !important;
   }
 </style>

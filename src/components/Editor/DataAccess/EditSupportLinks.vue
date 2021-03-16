@@ -45,8 +45,9 @@
                 <v-chip
                   v-for="(item, index) in props.items"
                   :key="'link_' + index"
-                  class="blue white--text pr-5 ma-1"
+                  class="pr-5 ma-1"
                   style="cursor:pointer;"
+                  :class="[!isNew(item) ? 'blue white--text' : 'borderBlue white blue--text']"
                 >
                   <v-tooltip bottom>
                     <template #activator="{ on, attrs }">
@@ -250,7 +251,10 @@
           rule(){
             if (!this.edit.template.type) return null;
             return this.supportLinksTypes[this.edit.template.type];
-          }
+          },
+          initialData(){
+            return this.sections["dataAccess"].initialData.support_links
+          },
       },
       watch: {
         'edit.template.type': function(val) {
@@ -344,6 +348,9 @@
             }
             index += 1;
           }
+        },
+        isNew(item){
+          return !this.initialData.filter(obj => isEqual(obj, item))[0];
         }
       }
     }

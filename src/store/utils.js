@@ -3,6 +3,7 @@ export const initStateMessages = function(){
         "login",
         "logout",
         "getUser",
+        "getPublicUser",
         "resetPassword",
         "sendResetEmail",
         "changePassword",

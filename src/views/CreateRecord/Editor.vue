@@ -191,7 +191,8 @@
           },
           {
             name: "Relations to other records",
-            disabled: true,
+            disabled: false,
+            target: "relations",
             component:"EditRelationships"
           },
           {
@@ -205,7 +206,7 @@
       }
     },
     computed: {
-      ...mapState('record', ['currentRecord', 'sections']),
+      ...mapState('record', ['currentID', 'sections']),
       ...mapGetters('record', ['getChanges', 'getAllChanges']),
       ...mapState('users', ['user']),
       userToken(){
@@ -240,13 +241,13 @@
         let id = _module.$route.params.id;
         if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
         await _module.fetchRecord(id);
-        let canEdit = await client.canEdit(_module.currentRecord['fairsharingRecord'].id, userToken);
+        let canEdit = await client.canEdit(_module.currentID, userToken);
         if (canEdit.error) _module.error = true;
         _module.hasLoaded = true;
       },
       async confirmReloadData() {
         const _module = this;
-        let recordID = _module.currentRecord['fairsharingRecord'].id;
+        let recordID = _module.currentID;
         await _module.fetchRecord(recordID);
       }
     },

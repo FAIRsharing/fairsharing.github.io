@@ -60,6 +60,7 @@
                     v-if="subItem.contact_email"
                     :href="'mailto:'+subItem.contact_email"
                     target="_blank"
+                    class="underline-effect"
                   >
                     {{ subItem.contact_name }}
                   </a>
@@ -136,14 +137,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-a {
-  text-decoration: none;
-
-  &:hover, &:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
-}
-</style>

@@ -4,6 +4,10 @@ a {
   text-decoration: none;
 }
 
+ul {
+  list-style: none;
+}
+
 //End of Global Setting---------------------
 
 //Animations--------------------------------
@@ -33,6 +37,10 @@ a {
     text-decoration: underline;
     outline: 0;
   }
+}
+
+.mouse-cursor {
+  cursor: pointer;
 }
 
 .tooltips {

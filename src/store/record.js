@@ -191,11 +191,14 @@ let recordStore = {
         }
     },
     actions: {
-        async fetchRecord(state, id){
+        async fetchRecord(state, options){
             state.commit("resetCurrentRecordHistory");
             recordQuery.queryParam = {
-                id: id
+                id: options.id
             };
+            if (options.token) {
+                client.setHeader(options.token);
+            }
             let data = await client.executeQuery(recordQuery);
             if (!data["fairsharingRecord"]['metadata']['contacts']) {
                 data["fairsharingRecord"]['metadata']['contacts'] = [];

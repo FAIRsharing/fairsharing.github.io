@@ -105,6 +105,7 @@ describe("Curator.vue", () => {
           curationSummary: {error: "error"}
       });
       wrapper = await shallowMount(Curator, {
+          vuetify,
           localVue,
           router,
           mocks: {$store, $router}

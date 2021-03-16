@@ -14,7 +14,7 @@
         v-for="(contact, index) in contacts"
         :key="'contact_' + index"
         class="pr-3"
-        :class="[!isNew(contact) ? 'white--text blue' : ' blue--text borderBlue']"
+        :class="[!isNew(contact) ? 'white--text blue' : ' blue--text white borderBlue']"
       >
         <div>
           <v-tooltip top>
@@ -211,9 +211,10 @@
   }
   .borderBlue {
     border: 1px solid #2A9AF4 !important;
-    background-color: white;
+    background-color: white !important;
+    border-color: #2A9AF4 !important;
   }
-  .borderBlue * {
-   color: #2A9AF4 !important;
+  #editContact .v-chip.white {
+    border-color: #2A9AF4 !important;
   }
 </style>

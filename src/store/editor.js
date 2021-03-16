@@ -177,6 +177,7 @@ let editorStore = {
             if (options.q) getRecordsQuery.queryParam.q = options.q;
             getRecordsQuery.queryParam.fairsharingRegistry = options.fairsharingRegistry;
             getRecordsQuery.queryParam.searchAnd = false;
+            getRecordsQuery.queryParam.excludeId = options.excludeId;
             let data = await graphClient.executeQuery(getRecordsQuery);
             commit("setAvailableRecords", data.searchFairsharingRecords.records);
         },

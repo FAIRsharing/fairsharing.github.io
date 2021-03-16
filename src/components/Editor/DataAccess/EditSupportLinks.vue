@@ -94,7 +94,7 @@
                 class="mr-2"
               >
                 <Icon
-                  :item="iconTarget(group)"
+                  :item="getIconName(group)"
                   size="small"
                   wrapper-class=""
                 />
@@ -209,12 +209,14 @@
     import { isRequired, isUrl, isEmail } from "@/utils/rules.js"
     import ExternalClient from "@/components/Client/ExternalClients.js"
     import Icon from "@/components/Icon";
+    import IconsMixin from "@/utils/iconsMixin.js"
 
     let client = new ExternalClient();
 
     export default {
-        name: "EditSupportLinks",
+      name: "EditSupportLinks",
       components: {Icon},
+      mixins: [IconsMixin],
       data(){
           return {
             edit: {
@@ -238,114 +240,111 @@
             ],
             reactToTypeChange: true
           }
-        },
-        computed: {
-            ...mapState('record', ['sections']),
-            ...mapState('editor', ['supportLinksTypes']),
-            recordData(){
-                return this.sections["dataAccess"].data.support_links
-            },
-            rule(){
-              if (!this.edit.template.type) return null;
-              return this.supportLinksTypes[this.edit.template.type];
-            }
-        },
-        watch: {
-          'edit.template.type': function(val) {
-            this.$nextTick(() => {
-              if (this.reactToTypeChange) {
-                if (this.edit.template
-                        && typeof this.edit.template.url !== "string"
-                        && val !== "TeSS links to training materials") {
-                  this.edit.template.url = {};
-                } else if (this.edit.template
-                        && typeof this.edit.template.url === "string"
-                        && val === "TeSS links to training materials") {
-                  this.edit.template.url = {};
-                }
-              }
-              /* istanbul ignore else */
-              if (this.$refs['editSupportLink']) this.$refs['editSupportLink'].validate();
-              this.reactToTypeChange = true;
-            })
+      },
+      computed: {
+          ...mapState('record', ['sections']),
+          ...mapState('editor', ['supportLinksTypes']),
+          recordData(){
+              return this.sections["dataAccess"].data.support_links
           },
-          search: async function(val){
-            this.loadingTessRecords = true;
-            this.tessRecords = (val) ? await this.findTessRecord(val) : [];
-            this.loadingTessRecords = false;
+          rule(){
+            if (!this.edit.template.type) return null;
+            return this.supportLinksTypes[this.edit.template.type];
+          }
+      },
+      watch: {
+        'edit.template.type': function(val) {
+          this.$nextTick(() => {
+            if (this.reactToTypeChange) {
+              if (this.edit.template
+                      && typeof this.edit.template.url !== "string"
+                      && val !== "TeSS links to training materials") {
+                this.edit.template.url = {};
+              } else if (this.edit.template
+                      && typeof this.edit.template.url === "string"
+                      && val === "TeSS links to training materials") {
+                this.edit.template.url = {};
+              }
+            }
+            /* istanbul ignore else */
+            if (this.$refs['editSupportLink']) this.$refs['editSupportLink'].validate();
+            this.reactToTypeChange = true;
+          })
+        },
+        search: async function(val){
+          this.loadingTessRecords = true;
+          this.tessRecords = (val) ? await this.findTessRecord(val) : [];
+          this.loadingTessRecords = false;
+        }
+      },
+      methods: {
+        newLink(){
+          this.edit = {
+            show: true,
+            id: null,
+            template: {
+              type: null,
+              url: null,
+              name: null
+            }
           }
         },
-        methods: {
-          newLink(){
-            this.edit = {
-              show: true,
-              id: null,
-              template: {
-                type: null,
-                url: null,
-                name: null
-              }
+        hideOverlay(){
+           this.edit = {
+             show: false,
+             id: null,
+             template: null
+           }
+        },
+        editLink(id){
+          this.reactToTypeChange = false;
+          this.edit = {
+            show: true,
+            id: id,
+            template: JSON.parse(JSON.stringify(this.recordData[id]))
+          };
+          if (this.recordData[id].name) {
+            this.search = this.recordData[id].name;
+          }
+        },
+        removeLink(id){
+          this.recordData.splice(id, 1);
+        },
+        submitLink(){
+          let id = this.edit.id;
+          let newLink = JSON.parse(JSON.stringify(this.edit.template));
+          if (this.edit.template.type === "TeSS links to training materials") {
+            newLink.title = newLink.url.title;
+            newLink.name = newLink.url.title;
+            newLink.url.url = newLink.url.url.replace(/.json/g, "");
+          }
+          if (id !== null) {
+            this.$set(this.sections.dataAccess.data.support_links, id,  newLink);
+          }
+          else {
+            this.$set(this.sections.dataAccess.data.support_links,
+                    this.sections.dataAccess.data.support_links.length,
+                    newLink);
+          }
+          this.edit = {
+            show: false,
+            id: null,
+            template: null
+          }
+        },
+        async findTessRecord(val){
+          return await client.getTessRecords(val);
+        },
+        getLinkIndex(item){
+          let index = 0;
+          for (let support of this.recordData){
+            if (isEqual(support, item)){
+              return index
             }
-          },
-          hideOverlay(){
-             this.edit = {
-               show: false,
-               id: null,
-               template: null
-             }
-          },
-          editLink(id){
-            this.reactToTypeChange = false;
-            this.edit = {
-              show: true,
-              id: id,
-              template: JSON.parse(JSON.stringify(this.recordData[id]))
-            };
-            if (this.recordData[id].name) {
-              this.search = this.recordData[id].name;
-            }
-          },
-          removeLink(id){
-            this.recordData.splice(id, 1);
-          },
-          submitLink(){
-            let id = this.edit.id;
-            let newLink = JSON.parse(JSON.stringify(this.edit.template));
-            if (this.edit.template.type === "TeSS links to training materials") {
-              newLink.title = newLink.url.title;
-              newLink.name = newLink.url.title;
-              newLink.url.url = newLink.url.url.replace(/.json/g, "");
-            }
-            if (id !== null) {
-              this.$set(this.sections.dataAccess.data.support_links, id,  newLink);
-            }
-            else {
-              this.$set(this.sections.dataAccess.data.support_links,
-                      this.sections.dataAccess.data.support_links.length,
-                      newLink);
-            }
-            this.edit = {
-              show: false,
-              id: null,
-              template: null
-            }
-          },
-          async findTessRecord(val){
-            return await client.getTessRecords(val);
-          },
-          iconTarget(iconName){
-            return iconName.replace(/ /g, '_').replace(/\(/g, '_').replace(/\)/g, '_').toLowerCase() || null
-          },
-          getLinkIndex(item){
-            let index = 0;
-            for (let support of this.recordData){
-              if (isEqual(support, item)){
-                return index
-              }
-              index += 1;
-            }
+            index += 1;
           }
         }
+      }
     }
 </script>
 

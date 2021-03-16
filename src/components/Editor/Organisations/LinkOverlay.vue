@@ -106,7 +106,10 @@
                   >
                     <v-container fluid>
                       <v-row>
-                        <v-col cols="6">
+                        <v-col
+                          cols="12"
+                          class="pb-0"
+                        >
                           <v-text-field
                             v-model="menus.newOrganisation.data.name"
                             label="Organisation Name"
@@ -114,7 +117,10 @@
                             :rules="[rules.isRequired()]"
                           />
                         </v-col>
-                        <v-col cols="6">
+                        <v-col
+                          cols="12"
+                          class="pb-0"
+                        >
                           <v-text-field
                             v-model="menus.newOrganisation.data.homepage"
                             label="Organisation Homepage"
@@ -122,7 +128,10 @@
                             :rules="[rules.isRequired(), rules.isURL()]"
                           />
                         </v-col>
-                        <v-col cols="6">
+                        <v-col
+                          cols="12"
+                          class="pb-0"
+                        >
                           <v-autocomplete
                             v-model="menus.newOrganisation.data.organisation_type_ids"
                             :items="organisationsTypes"
@@ -135,8 +144,9 @@
                             :rules="[rules.isRequired()]"
                           />
                         </v-col>
-                        <v-col cols="6">
+                        <v-col cols="12">
                           <v-file-input
+                            v-if="false"
                             v-model="menus.newOrganisation.data.logo"
                             accept="image/png, image/jpeg"
                             label="File input"
@@ -278,7 +288,6 @@
                       v-model="menus.newGrant.data.description"
                       label="Grant Description"
                       outlined
-                      :rules="[rules.isRequired()]"
                     />
                   </v-form>
                 </v-card-text>

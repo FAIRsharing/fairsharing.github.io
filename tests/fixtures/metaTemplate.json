@@ -23,7 +23,9 @@
         }
       ]
     },
+    "registry": ["test"],
     "domains": [],
+    "name": "??",
     "subjects": [],
     "taxonomies": [],
     "userDefinedTags": [],

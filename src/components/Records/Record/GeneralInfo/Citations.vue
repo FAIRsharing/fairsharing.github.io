@@ -19,27 +19,23 @@
             How to cite this record
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
-            <span class="mr-2">
-              <span :class="{'mr-2':getField('abbreviation')}"><span class="mr-2">FAIRsharing.org:</span>
-                <span v-if="getField('abbreviation')">
-                  {{ getField('abbreviation')+';' }}
-                </span>
-              </span>
+            <span
+              v-if="getField('abbreviation') && getField('name')"
+              class="mr-2"
+            >
+              <span class="mr-2"><span class="mr-2">FAIRsharing.org:</span>{{ getField('abbreviation')+';' }}</span>
               <span>{{ getField('name') }},</span>
             </span>
-            <b v-if="getField('doi')"><span class="mr-2">DOI:</span></b><span
-              v-if="getField('doi')"
+            <b v-if="getField('doi')"><span class="mr-2">DOI:</span></b><a
+              :href="'https://doi.org/'+getField('doi')"
               class="mr-2"
-            >{{ getField('doi') }},</span>
-            <b v-if="getField('lastEdited')"><span class="mr-2">Last Edited:</span></b><span
-              v-if="getField('lastEdited')"
-              class="mr-2"
-            >{{ getField('lastEdited') }},</span>
+            >{{ getField('doi') }},</a>
+            <b v-if="getField('lastEdited')"><span class="mr-2">Last Edited:</span></b><span class="mr-2">{{ moment( getField('lastEdited')) }},</span>
             <b v-if="getField('lastEditor')!==null"><span class="mr-2">Last Editor:</span></b><span
               v-if="getField('lastEditor')!==null && getField('lastEditor').username"
               class="mr-2"
             >{{ getField('lastEditor').username }},</span>
-            <b><span class="mr-2">Last Accessed:</span></b><span class="mr-2">{{ new Date() | moment("dddd, MMMM Do YYYY, H:mm") }}</span>
+            <b><span class="mr-2">Last Accessed:</span></b><span class="mr-2">{{ moment(new Date()) }}</span>
           </v-card-text>
         </v-card>
       </v-col>
@@ -102,6 +98,7 @@
 import {mapGetters} from "vuex";
 import Icon from "@/components/Icon"
 import {truncate} from "@/utils/stringUtils"
+import moment from "moment";
 
 export default {
   name: "Citations",
@@ -114,6 +111,11 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+  },
+  methods:{
+    moment (date) {
+      return moment(date).format('dddd, MMMM Do YYYY, H:mm');
+    }
   }
 }
 </script>

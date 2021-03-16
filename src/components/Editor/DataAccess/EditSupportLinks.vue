@@ -62,7 +62,7 @@
                     </template>
                     <span> Edit support link </span>
                   </v-tooltip>
-                  <div @click="editLink(index)">
+                  <div @click="editLink(getLinkIndex(item))">
                     <span v-if="typeof item.url === 'string'">{{ item.url }}</span>
                     <span v-else> {{ item.url.title }} ({{ item.url.url }}) </span>
                   </div>
@@ -303,6 +303,7 @@
             id: id,
             template: JSON.parse(JSON.stringify(this.recordData[id]))
           };
+          if (typeof this.edit.template.url === 'string'){ this.edit.template.url = {url: this.edit.template.url} }
           if (this.recordData[id].name) {
             this.search = this.recordData[id].name;
           }

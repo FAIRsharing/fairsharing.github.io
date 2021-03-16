@@ -145,4 +145,8 @@ describe("Edit -> EditSupportLinks.vue", function() {
         expect(wrapper.vm.edit.template.url).toStrictEqual({});
     });
 
+    it('can build an item name', () => {
+        expect(wrapper.vm.getIconName("test (123)")).toBe("test_123")
+    })
+
 });

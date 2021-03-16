@@ -17,7 +17,7 @@ recordStore.state.sections = {
         data: {
             support_links: [
                 {type: "Other", url: "https://example.com/test"},
-                {type: "Mailing list", url: "test@example.com", name: "a test"}
+                {type: "Mailing list", url: {url: "test@example.com"}, name: "a test"}
             ]
         }
     }
@@ -93,7 +93,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
             id: 0,
             template: {
                 "type": "Other",
-                "url": "https://example.com/test"
+                "url": {url: "https://example.com/test"}
             }
         });
         expect(wrapper.vm.search).toBe(null);
@@ -105,7 +105,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
     it('can remove a link', () => {
        wrapper.vm.removeLink(0);
        expect(recordStore.state.sections.dataAccess.data.support_links).toStrictEqual(
-           [{type: "Mailing list", url: "test@example.com", name: "a test"}]
+           [{type: "Mailing list", url: {url: "test@example.com"}, name: "a test"}]
        )
     });
 

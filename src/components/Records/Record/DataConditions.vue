@@ -39,6 +39,7 @@
                 v-if="subItem.url"
                 :href="subItem.url"
                 target="_blank"
+                class="underline-effect"
               >
                 {{ subItem.name }}
               </a>
@@ -116,14 +117,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-a {
-  text-decoration: none;
-
-  &:hover, &:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
-}
-</style>

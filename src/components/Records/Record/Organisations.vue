@@ -43,6 +43,7 @@
               <a
                 :href="organisationLink.organisation.homepage"
                 target="_blank"
+                class="underline-effect"
               >
                 {{ organisationLink.organisation.name }}
               </a>
@@ -131,14 +132,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-a {
-  text-decoration: none;
-
-  &:hover, &:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
-}
-</style>

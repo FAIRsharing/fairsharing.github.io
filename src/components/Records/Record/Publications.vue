@@ -67,6 +67,7 @@
               <a
                 :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"
                 target="_blank"
+                class="underline-effect"
               >
                 View on PubMed
               </a>
@@ -118,14 +119,3 @@
         }
     }
 </script>
-
-<style scoped lang="scss">
-a {
-  text-decoration: none;
-
-  &:hover, &:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
-}
-</style>

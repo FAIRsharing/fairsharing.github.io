@@ -137,6 +137,7 @@
                     maintenanceRequests: "You do not have any maintenance requests.",
                     createdRecords: "You did not create any record yet. Start creating one ",
                     maintainedRecords: "You do not maintain any records.",
+                    publicMaintainedRecords: "This user does not maintain any records.",
                     watchedRecords: "You are not watching any record"
                 }[this.source];
             },

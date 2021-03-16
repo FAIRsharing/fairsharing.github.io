@@ -71,7 +71,8 @@ describe("Edit -> EditSupportLinks.vue", function() {
            id: null,
            template: {
                type: null,
-               url: null
+               url: null,
+               name: null
            }
        })
     });
@@ -141,7 +142,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
             url: "ABC"
         };
         await Vue.nextTick();
-        expect(wrapper.vm.edit.template.url).toBe(null);
+        expect(wrapper.vm.edit.template.url).toStrictEqual({});
     });
 
 });

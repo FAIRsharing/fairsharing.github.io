@@ -212,7 +212,6 @@
     import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
     import RestClient from "@/components/Client/RESTClient.js"
     import Icon from "@/components/Icon"
-    import recordTypes from "@/data/recordsRegistries.json"
 
 
     const client = new GraphClient();
@@ -278,7 +277,7 @@
       },
       created() {
         this.$nextTick(function () {
-          this.recordType = recordTypes;
+          this.recordType = this.$vuetify.icons.values;
         });
       },
       async mounted() {

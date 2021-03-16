@@ -147,6 +147,12 @@ describe("Edit -> EditSupportLinks.vue", function() {
 
     it('can build an item name', () => {
         expect(wrapper.vm.getIconName("test (123)")).toBe("test_123")
-    })
+    });
+
+    it('can get the index of recordData items', () => {
+        const object = { type:"Other", url:"https://example.com/test" };
+        wrapper.vm.$store.state.record.sections["dataAccess"].data.support_links = [{}, object];
+        expect(wrapper.vm.getLinkIndex(object)).toBe(1);
+    });
 
 });

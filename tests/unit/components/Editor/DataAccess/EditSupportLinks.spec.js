@@ -149,7 +149,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
             url: "ABC"
         };
         await Vue.nextTick();
-        expect(wrapper.vm.edit.template.url).toStrictEqual({});
+        expect(wrapper.vm.edit.template.url).toStrictEqual("ABC");
     });
 
     it('can build an item name', () => {

@@ -197,7 +197,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     #editGeneralInformation .v-chip.white--text .v-icon {
         color: white;
         margin-left: 10px;

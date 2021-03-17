@@ -464,22 +464,23 @@
 
 </script>
 
-<style>
-  #text-curator-search-0 div.theme--light.v-input:not(.v-input--is-disabled) input{
-    color:#fff;
-  }
+<style scoped>
+#text-curator-search-0 div.theme--light.v-input:not(.v-input--is-disabled) input {
+  color: #fff;
+}
 
-  .dialogProcNotesEdit {
-    width: 450px !important;
-  }
+.dialogProcNotesEdit {
+  width: 450px !important;
+}
 
-  .priorityTag {
-    background-color: red;
-    color: white;
-    font-size: 90%;
-  }
-  .thelistCurators{
-    max-height: 100px;
-    overflow-y: auto;
-  }
+.priorityTag {
+  background-color: red;
+  color: white;
+  font-size: 90%;
+}
+
+.thelistCurators {
+  max-height: 100px;
+  overflow-y: auto;
+}
 </style>

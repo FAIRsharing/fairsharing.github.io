@@ -72,7 +72,7 @@
     }
 </script>
 
-<style>
+<style scoped>
   .highlighted {
     color: red !important;
   }

@@ -166,7 +166,7 @@
     }
 </script>
 
-<style>
+<style scoped>
   .alignLeft {
     text-align: left !important;
   }

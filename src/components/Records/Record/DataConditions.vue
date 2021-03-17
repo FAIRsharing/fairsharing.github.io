@@ -39,6 +39,7 @@
                 v-if="subItem.url"
                 :href="subItem.url"
                 target="_blank"
+                class="underline-effect"
               >
                 {{ subItem.name }}
               </a>
@@ -79,9 +80,9 @@ export default {
   },
   methods:{
     generateDataConditions() {
-      let processedDataConditions = {}
-      const data_processes =  this.getField('metadata')['data_processes']
-      const licences = this.getField('licences')
+      let processedDataConditions = {};
+      const data_processes =  this.getField('metadata')['data_processes'];
+      const licences = this.getField('licences');
       // initializing object's key and data dynamically based on any number of types coming from API
       if (data_processes) {
         data_processes.forEach(item => {
@@ -94,7 +95,7 @@ export default {
         });
         // assigning data and icon to the different types came from API.
         data_processes.forEach(item => {
-          processedDataConditions[item.type].icon = item.type.replace(/\s/g, '_')
+          processedDataConditions[item.type].icon = item.type.replace(/\s/g, '_');
           processedDataConditions[item.type].data.push(item)
         })
       }
@@ -103,7 +104,7 @@ export default {
         processedDataConditions['licences'] = {
           data:[],
           icon:'licences'
-        }
+        };
         licences.forEach(licence => {
           processedDataConditions['licences'].data.push(licence)
         })
@@ -116,50 +117,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-a {
-  text-decoration: none;
-
-  &:hover, &:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
-}
-
-.icon-container {
-  position: absolute;
-  top: -45px;
-  background: white;
-  border: #b3b3b3 dotted 3px;
-  border-radius: 50% !important;
-  -moz-border-radius: 50% !important;
-  -webkit-border-radius: 50% !important;
-  width: 85px;
-  height: 85px;
-  cursor: help;
-}
-
-.card-title-customize {
-  position: absolute;
-  top: 5px;
-  left: 120px
-}
-
-.v-card-hover {
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  transition: box-shadow .4s linear;
-  -webkit-transition: box-shadow .4s linear;
-  -moz-transition: box-shadow .4s linear;
-  -o-transition: box-shadow .4s linear;
-}
-
-.v-card-hover:hover {
-  transform: scale(1.004);
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-}
-</style>

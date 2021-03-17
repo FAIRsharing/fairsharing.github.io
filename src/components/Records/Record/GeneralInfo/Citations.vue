@@ -120,16 +120,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+a {
+  text-decoration: none;
+
+  &:hover, &:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
+
 .card-text-customize {
   max-height: 120px;
   min-height: 120px;
   overflow: hidden
-}
-
-.card-title-customize {
-  position: absolute;
-  top: 5px;
-  left: 120px
 }
 </style>

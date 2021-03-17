@@ -14,7 +14,7 @@ const customIcons  = {
         },
         createdAt: {
             type: 'icon',
-            icon: 'fa-edit'
+            icon: 'fa-folder-plus'
         },
         updatedAt: {
             type: 'icon',
@@ -33,8 +33,8 @@ const customIcons  = {
             icon: 'fa-sitemap'
         },
         funds: {
-            type: 'icon',
-            icon: 'fa-funnel-dollar'
+            type: 'img',
+            icon: 'assets/icons/fund-icon.png'
         },
         collaborates_on: {
             type: 'icon',
@@ -54,15 +54,15 @@ const customIcons  = {
         },
         data_access: {
             type: 'icon',
-            icon: 'fa-chevron-up'
+            icon: 'fa-key'
         },
         data_curation: {
             type: 'icon',
-            icon: 'fa-chevron-down'
+            icon: 'fa-database'
         },
         data_release: {
             type: 'icon',
-            icon: 'fa-funnel-dollar'
+            icon: 'fa-recycle'
         },
         data_versioning: {
             type: 'icon',
@@ -70,7 +70,7 @@ const customIcons  = {
         },
         licences: {
             type: 'icon',
-            icon: 'fa-sitemap'
+            icon: 'fa-certificate'
         },
         frequently_asked_questions_faqs: {
             type: 'icon',
@@ -179,6 +179,10 @@ const customIcons  = {
         DOI: {
             type: "img",
             icon: "assets/icons/DOI_logo.svg"
+        },
+        mailing_list: {
+            type: "icon",
+            icon: "fa-address-book"
         }
     },
     iconfont: 'fa'

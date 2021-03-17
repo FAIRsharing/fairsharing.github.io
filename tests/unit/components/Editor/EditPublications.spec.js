@@ -68,6 +68,7 @@ let graphStub;
 let restStub;
 let fetchStub;
 
+/*
 const article = '@article{Baulieu_1989,' +
     'doi = {10.1126/science.2781282},' +
     'url = {https://doi.org/10.1126%2Fscience.2781282},' +
@@ -81,6 +82,26 @@ const article = '@article{Baulieu_1989,' +
     'title = {Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor},' +
     'journal = {Science}' +
     '} EditPublications.vue:360';
+
+ */
+
+const article = {
+    "container-title-short": "Science",
+    "DOI": "10.1126/science.2781282",
+    "title": "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+    "URL": "https://doi.org/10.1126%2Fscience.2781282",
+    "created": {
+        "date-parts": [
+            1989,3,2
+        ]
+    },
+    "author": [
+        {
+            "given": "E.",
+            "family": "Baulieu"
+        }
+    ],
+}
 
 
 describe("EditPublications.vue", function() {
@@ -120,11 +141,11 @@ describe("EditPublications.vue", function() {
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data:article});
         const expectedArticle = {
-            authors: 'E. Baulieu',
+            authors: 'Baulieu, E.; ',
             doi: '10.1126/science.2781282',
-            title: 'Contragestion and other clinical applications of RU 486, an antiprogesterone at the receptor',
+            title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
             journal: 'Science',
-            url: 'https://doi.org/10.1126/science.2781282',
+            url: 'https://doi.org/10.1126%2Fscience.2781282',
             year: 1989,
             isCitation: false,
         };

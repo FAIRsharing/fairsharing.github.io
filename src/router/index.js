@@ -3,8 +3,13 @@ import VueRouter from "vue-router";
 import store from '@/store'
 
 import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
+<<<<<<< HEAD
     Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
     Stakeholders, Timeline, License, Terms, Educational, Privacy }
+=======
+    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, LoginFailure, Stat, Community, Stakeholders,
+    Timeline, License, Terms, Educational, Privacy, PublicProfile }
+>>>>>>> dev
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -150,6 +155,11 @@ let routes = [
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
         }
+    },
+    {
+        name: "PublicProfile",
+        path: "/users/:id",
+        component: PublicProfile
     },
     {
         name: "Edit profile",

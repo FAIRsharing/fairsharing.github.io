@@ -221,7 +221,11 @@
                 v-on="on"
               >
                 <v-list-item-avatar>
-                  <v-img :src="icons()[data.item.name]" />
+                  <Icon
+                    :item="data.item.name"
+                    wrapper-class=""
+                    height="40"
+                  />
                 </v-list-item-avatar>
                 <v-list-item-content class="py-0">
                   <v-list-item-title>
@@ -348,10 +352,11 @@
     import StatusPills from "@/components/Records/Shared/StatusPills";
     import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
     import DatabaseWarning from "./DatabaseWarning";
+    import Icon from "@/components/Icon"
 
     export default {
         name: "BaseFields",
-        components: {DatabaseWarning, CountryFlag, StatusPills},
+        components: {DatabaseWarning, CountryFlag, StatusPills, Icon},
         data(){
             return {
                 rules: {
@@ -368,7 +373,6 @@
                 "years",
                 "tooltips",
                 "recordTypes",
-                "icons",
                 "status"
             ]),
             ...mapState('users', ['user']),

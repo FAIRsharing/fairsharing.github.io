@@ -238,8 +238,7 @@
               { text: 'Type', value: 'type', class: "test", groupable: true, sortable: false },
               { text: 'Name', value: 'name', groupable: false, sortable: false },
               { text: 'URL', value: 'url', groupable: false, sortable: false }
-            ],
-            reactToTypeChange: true
+            ]
           }
       },
       computed: {
@@ -257,18 +256,10 @@
           },
       },
       watch: {
-        'edit.template.type': function(val) {
+        'edit.template.type': function() {
           this.$nextTick(() => {
-            if (this.reactToTypeChange) {
-              if (this.edit.template
-                      && typeof this.edit.template.url !== "string"
-                      && val !== "TeSS links to training materials") {
+            if (this.reactToTypeChange && this.edit.template) {
                 this.edit.template.url = {};
-              } else if (this.edit.template
-                      && typeof this.edit.template.url === "string"
-                      && val === "TeSS links to training materials") {
-                this.edit.template.url = {};
-              }
             }
             /* istanbul ignore else */
             if (this.$refs['editSupportLink']) this.$refs['editSupportLink'].validate();
@@ -322,6 +313,10 @@
             newLink.title = newLink.url.title;
             newLink.name = newLink.url.title;
             newLink.url.url = newLink.url.url.replace(/.json/g, "");
+          }
+          if (typeof newLink.url !== "string") {
+            newLink.name = newLink.url.title;
+            newLink.title = newLink.url.title
           }
           if (id !== null) {
             this.$set(this.sections.dataAccess.data.support_links, id,  newLink);

@@ -15,7 +15,3 @@
         name: "Statistics"
     }
 </script>
-
-<style scoped>
-
-</style>

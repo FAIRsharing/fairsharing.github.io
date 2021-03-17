@@ -17,7 +17,7 @@
         </p>
         <a
           v-if="canClaim"
-          @click="()=>{this.$emit('requestOwnership')}"
+          @click="()=>{$emit('requestOwnership')}"
         >
           Claim it now!
         </a>
@@ -34,7 +34,7 @@
           class="mr-2"
         >
           {{
-            ` ${maintainer.username + '/' + maintainer.id}${index !== getField('maintainers').length - 1 ? ',' : ''}`
+            ` ${maintainer.username}${index !== getField('maintainers').length - 1 ? ',' : ''}`
           }}
         </a>
       </div>

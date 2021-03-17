@@ -12,13 +12,15 @@
             class="ml-2"
           >({{ getField('abbreviation') }})</b>
         </div>
-        <div class="d-flex align-center width-35">
-          <v-img
-            src="@/assets/DOI_logo.svg"
-            height="30"
-            contain
-            class="mr-2"
-          />
+        <div class="d-flex align-center mt-2">
+          <div class="width-35">
+            <Icon
+              item="DOI"
+              heigh="30"
+              wrapper-class=""
+              class="mr-2"
+            />
+          </div>
           <div
             v-if="getField('doi')"
             class="d-flex flex-row"
@@ -47,10 +49,9 @@
               <span v-else> URL copied </span>
             </v-tooltip>
           </div>
-          <NoneFound
-            v-else
-            :string-field="getField('doi')"
-          />
+          <span v-else>
+            Awaiting DOI
+          </span>
         </div>
       </div>
     </div>
@@ -59,13 +60,13 @@
 
 <script>
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
-import NoneFound from "@/components/Records/Record/NoneFound";
 import {mapGetters, mapState} from "vuex";
+import Icon from "@/components/Icon";
 
 export default {
   name: "DOITitle",
   components: {
-    NoneFound,
+    Icon,
     RecordStatus
   },
   data() {

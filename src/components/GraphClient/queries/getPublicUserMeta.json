@@ -1,0 +1,16 @@
+{
+  "queryName": "user",
+  "queryParam": {
+    "id": null
+  },
+  "fields": [
+    "email",
+    "firstName",
+    "lastName",
+    "homepage",
+    "orcid",
+    "username",
+    "twitter",
+    {"$ref": "maintainedRecords"}
+  ]
+}

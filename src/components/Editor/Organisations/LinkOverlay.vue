@@ -106,7 +106,10 @@
                   >
                     <v-container fluid>
                       <v-row>
-                        <v-col cols="6">
+                        <v-col
+                          cols="12"
+                          class="pb-0"
+                        >
                           <v-text-field
                             v-model="menus.newOrganisation.data.name"
                             label="Organisation Name"
@@ -114,7 +117,10 @@
                             :rules="[rules.isRequired()]"
                           />
                         </v-col>
-                        <v-col cols="6">
+                        <v-col
+                          cols="12"
+                          class="pb-0"
+                        >
                           <v-text-field
                             v-model="menus.newOrganisation.data.homepage"
                             label="Organisation Homepage"
@@ -122,7 +128,10 @@
                             :rules="[rules.isRequired(), rules.isURL()]"
                           />
                         </v-col>
-                        <v-col cols="6">
+                        <v-col
+                          cols="12"
+                          class="pb-0"
+                        >
                           <v-autocomplete
                             v-model="menus.newOrganisation.data.organisation_type_ids"
                             :items="organisationsTypes"
@@ -135,8 +144,9 @@
                             :rules="[rules.isRequired()]"
                           />
                         </v-col>
-                        <v-col cols="6">
+                        <v-col cols="12">
                           <v-file-input
+                            v-if="false"
                             v-model="menus.newOrganisation.data.logo"
                             accept="image/png, image/jpeg"
                             label="File input"
@@ -145,7 +155,6 @@
                             :show-size="1000"
                             clearable
                             chips
-                            :rules="[rules.isImage()]"
                           />
                         </v-col>
                       </v-row>
@@ -278,7 +287,6 @@
                       v-model="menus.newGrant.data.description"
                       label="Grant Description"
                       outlined
-                      :rules="[rules.isRequired()]"
                     />
                   </v-form>
                 </v-card-text>
@@ -327,7 +335,7 @@
 <script>
     import Vue from "vue"
     import { mapState } from "vuex"
-    import { isRequired, isUrl, isImage } from "@/utils/rules.js"
+    import { isRequired, isUrl } from "@/utils/rules.js"
     import RestClient from "@/components/Client/RESTClient.js"
     const restClient = new RestClient();
 
@@ -354,8 +362,7 @@
           },
           rules: {
             isRequired: function(){return isRequired() },
-            isURL: function(){ return isUrl() },
-            isImage: function(){ return isImage() }
+            isURL: function(){ return isUrl() }
           },
         }
       },

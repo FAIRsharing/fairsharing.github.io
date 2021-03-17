@@ -1,0 +1,19 @@
+{
+  "queryName": "fairsharingRecord",
+  "queryParam": null,
+  "fields": [
+    "id",
+    {
+      "name": "recordAssociations",
+      "fields": [
+        {
+          "queryName": "linkedRecord",
+          "fields": ["name", "id", "registry", "type"]
+        },
+        "recordAssocLabel",
+        "recordAssocLabelId",
+        "id"
+      ]
+    }
+  ]
+}

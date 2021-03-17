@@ -28,6 +28,14 @@ recordStore.state.sections = {
             userDefinedTags: [
                 {id: 1, label: "test"}
             ]
+        },
+        initialData: {
+            taxonomies: [
+                {id: 1, label: "test"}
+            ],
+            domains: [],
+            userDefinedTags: [],
+            subjects: []
         }
     }
 };

@@ -40,7 +40,6 @@
       <v-text-field
         v-model="fields.metadata.abbreviation"
         label="Abbreviation"
-        :rules="[rules.isRequired()]"
         outlined
       >
         <template #prepend>
@@ -222,7 +221,11 @@
                 v-on="on"
               >
                 <v-list-item-avatar>
-                  <v-img :src="icons()[data.item.name]" />
+                  <Icon
+                    :item="data.item.name"
+                    wrapper-class=""
+                    height="40"
+                  />
                 </v-list-item-avatar>
                 <v-list-item-content class="py-0">
                   <v-list-item-title>
@@ -234,7 +237,7 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <span class="tooltips">{{ data.item.description }}</span>
+            <span>{{ data.item.description }}</span>
           </v-tooltip>
         </template>
       </v-autocomplete>
@@ -281,7 +284,7 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <span class="tooltips"> {{ data.item.description }} </span>
+            <span> {{ data.item.description }} </span>
           </v-tooltip>
         </template>
       </v-autocomplete>
@@ -349,10 +352,11 @@
     import StatusPills from "@/components/Records/Shared/StatusPills";
     import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
     import DatabaseWarning from "./DatabaseWarning";
+    import Icon from "@/components/Icon"
 
     export default {
         name: "BaseFields",
-        components: {DatabaseWarning, CountryFlag, StatusPills},
+        components: {DatabaseWarning, CountryFlag, StatusPills, Icon},
         data(){
             return {
                 rules: {
@@ -369,7 +373,6 @@
                 "years",
                 "tooltips",
                 "recordTypes",
-                "icons",
                 "status"
             ]),
             ...mapState('users', ['user']),
@@ -397,14 +400,5 @@
 <style scoped>
   .registryList {
     max-width: 780px;
-  }
-
-  .tooltips {
-    max-width: 500px;
-    display: block;
-  }
-
-  .v-tooltip__content {
-    background: rgba(0, 0, 0, 1);
   }
 </style>

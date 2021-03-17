@@ -40,17 +40,18 @@
                   <v-chip
                     v-for="(tag, tagIndex) in section.items"
                     :key="'section_' + sectionIndex + '_tag_' + tagIndex"
-                    class="white"
-                    :class="section.color + '--text'"
+                    :class="[!isNew(tag, sectionName) ? section.color + '--text white' : section.color + ' white--text whiteBorder']"
                   >
-                    <KeywordTooltip :keyword="tag" />
+                    <KeywordTooltip
+                      :keyword="tag"
+                    />
                     <v-tooltip bottom>
                       <template #activator="{ on, attrs }">
                         <v-icon
                           v-bind="attrs"
                           small
                           class="ml-1"
-                          :class="section.color + '--text'"
+                          :class="[!isNew(tag, sectionName) ? section.color + '--text white' : ' white--text']"
                           v-on="on"
                           @click="removeTag(section.items, tagIndex)"
                         >
@@ -348,6 +349,14 @@
                   })
                 }
               }
+            },
+            initialSections() {
+              return {
+                "taxonomic range": this.getSection("generalInformation").initialData.taxonomies,
+                "subjects": this.getSection("generalInformation").initialData.subjects,
+                "domains": this.getSection("generalInformation").initialData.domains,
+                "user defined tags": this.getSection("generalInformation").initialData.userDefinedTags
+              };
             }
         },
         watch: {
@@ -395,6 +404,9 @@
               if (this.showTypes[type]) sections.push(type);
             });
             this.tags = this.getPartialTags(sections);
+          },
+          isNew(term, section){
+            return !this.initialSections[section].filter(obj => obj.id === term.id)[0];
           }
         },
     }
@@ -426,6 +438,10 @@
 
     .limitWidth {
       max-width: 800px;
+    }
+
+    .whiteBorder {
+      border: 1px solid white !important;
     }
 
 </style>

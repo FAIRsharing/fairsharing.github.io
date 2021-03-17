@@ -74,6 +74,7 @@
           </router-link>
         </v-toolbar>
         <v-tabs
+          v-model="selectedTab"
           dark
           slider-color="primary"
           slider-size="5"
@@ -93,36 +94,15 @@
               </div>
             </div>
           </v-tab>
-
-          <!-- EDIT GENERAL INFO -->
-          <v-tab-item class="px-10 py-3">
-            <edit-general-info />
-          </v-tab-item>
-
-          <!-- EDIT LICENSES -->
-          <v-tab-item class="px-10 py-3">
-            <edit-data-access />
-          </v-tab-item>
-
-          <!-- EDIT PUBLICATIONS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-publications />
-          </v-tab-item>
-
-          <!-- EDIT ORGANIZATIONS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-organisations />
-          </v-tab-item>
-
-          <!-- EDIT RELATIONS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-relationships />
-          </v-tab-item>
-
-          <!-- EDIT ADDITIONAL INFO -->
-          <v-tab-item class="px-10 py-3">
-            <edit-additional-info />
-          </v-tab-item>
+          <v-tabs-items v-model="selectedTab">
+            <v-tab-item
+              v-for="(tab,tabIndex) in tabs"
+              :key="tab+'_'+tabIndex"
+              class="px-10 py-3"
+            >
+              <component :is="tab.component" />
+            </v-tab-item>
+          </v-tabs-items>
         </v-tabs>
       </v-col>
     </v-row>
@@ -166,6 +146,7 @@
     data(){
       let _module = this;
       return {
+        selectedTab:null,
         error: false,
         hasLoaded: false,
         dataChanged: false,
@@ -186,39 +167,46 @@
             name: "General Information",
             disabled: false,
             target: "generalInformation",
-            icon: "fa-info"
+            icon: "fa-info",
+            component:"EditGeneralInfo"
           },
           {
-            name: "Data Access",
+            name: "Licences & Support Links",
             disabled: false,
-            target: "dataAccess"
+            target: "dataAccess",
+            component:"EditDataAccess"
           },
           {
             name: "Publications",
             disabled: false,
             target: "publications",
-            icon: "fa-info"
+            icon: "fa-info",
+            component:"EditPublications"
           },
           {
             name: "Organisations & Grants",
             disabled: false,
-            target: "organisations"
+            target: "organisations",
+            component:"EditOrganisations"
           },
           {
             name: "Relations to other records",
-            disabled: true
+            disabled: false,
+            target: "relations",
+            component:"EditRelationships"
           },
           {
             name: "Additional Information",
             disabled: false,
             target: "additionalInformation",
-            icon: "fa-info"
+            icon: "fa-info",
+            component:"EditAdditionalInfo"
           }
         ]
       }
     },
     computed: {
-      ...mapState('record', ['currentRecord', 'sections']),
+      ...mapState('record', ['currentID', 'sections']),
       ...mapGetters('record', ['getChanges', 'getAllChanges']),
       ...mapState('users', ['user']),
       userToken(){
@@ -253,13 +241,13 @@
         let id = _module.$route.params.id;
         if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
         await _module.fetchRecord(id);
-        let canEdit = await client.canEdit(_module.currentRecord['fairsharingRecord'].id, userToken);
+        let canEdit = await client.canEdit(_module.currentID, userToken);
         if (canEdit.error) _module.error = true;
         _module.hasLoaded = true;
       },
       async confirmReloadData() {
         const _module = this;
-        let recordID = _module.currentRecord['fairsharingRecord'].id;
+        let recordID = _module.currentID;
         await _module.fetchRecord(recordID);
       }
     },

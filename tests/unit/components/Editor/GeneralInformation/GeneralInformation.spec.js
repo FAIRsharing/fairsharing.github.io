@@ -33,7 +33,8 @@ let record = {
     userDefinedTags: [],
     type: 'abc',
     status: "ready",
-    name: "ok"
+    name: "ok",
+    registry: "test"
 };
 recordStore.state.sections = {
     generalInformation: {
@@ -169,7 +170,10 @@ describe("Edit -> GeneralInformation.vue", function() {
             label: "newUserDefinedTag"
         });
         let postStub = sinon.stub(RestClient.prototype, "updateRecord");
-        postStub.returns({attributes: {}});
+        postStub.returns({
+            registry: "test",
+            name: "none"
+        });
         await wrapper.vm.saveRecord(true);
         expect($router.push).toHaveBeenCalledWith({path: "/123"});
         expect($router.push).toHaveBeenCalledTimes(1);
@@ -189,6 +193,12 @@ describe("Edit -> GeneralInformation.vue", function() {
         expect(wrapper.vm.message.error).toBe(true);
         postStub.restore();
         tagStub.restore();
+    });
+
+    it("can raise a no species error", async () => {
+        wrapper.vm.currentFields.taxonomies = [];
+        await wrapper.vm.saveRecord(false);
+        expect(wrapper.vm.message.error).toBe(true);
     });
 
 

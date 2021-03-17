@@ -15,6 +15,8 @@
       :placeholder="placeholder"
     />
     <v-btn
+      v-if="$vuetify.breakpoint.mdAndDown"
+      small
       color="primary"
       outlined
       :class="responsiveHeight"

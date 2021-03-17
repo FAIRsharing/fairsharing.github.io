@@ -94,7 +94,7 @@
                 fa-user-circle
               </v-icon>
             </v-avatar>
-            <span class="white--text ellipse">{{ user().credentials.username }}</span>
+            <span class="white--text ellipse-150">{{ user().credentials.username }}</span>
           </v-btn>
         </ul>
       </nav>

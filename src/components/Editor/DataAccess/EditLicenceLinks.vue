@@ -345,7 +345,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     #editLicences .large {
         width: 100%;
     }

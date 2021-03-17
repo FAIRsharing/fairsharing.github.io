@@ -351,7 +351,7 @@
     }
 </script>
 
-<style>
+<style scoped>
   #editSupportLinks .large {
     width: 100%;
   }

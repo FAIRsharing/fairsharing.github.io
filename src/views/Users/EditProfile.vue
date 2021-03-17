@@ -232,7 +232,7 @@
     }
 </script>
 
-<style>
+<style scoped>
   #edit_hide_email label {
     margin-bottom: 0 !important;
   }

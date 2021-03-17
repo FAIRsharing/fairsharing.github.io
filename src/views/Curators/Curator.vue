@@ -455,7 +455,7 @@
     }
 </script>
 
-<style>
+<style scoped>
   #text-curator-search-1 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }

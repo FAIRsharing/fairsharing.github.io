@@ -85,7 +85,7 @@
   }
 </script>
 
-<style lang='scss'>
+<style scoped lang='scss'>
 
 table th {
     min-width: 200px;

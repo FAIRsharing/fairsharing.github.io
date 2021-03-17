@@ -4,18 +4,23 @@
     fluid
     class="standard grey lighten-3 pb-10"
   >
-    <v-row v-if="messages()['getUser'].message">
+    <v-row v-if="messages()['getPublicUser'].message">
       <v-col cols="12">
         <v-alert
           type="success"
           class="mb-0"
           dismissible
         >
-          {{ messages()['getUser'].message }}
+          {{ messages()['getPublicUser'].message }}
         </v-alert>
       </v-col>
     </v-row>
-    <v-row v-if="user().isLoggedIn && !messages()['getUser'].error">
+
+    <div v-if="error">
+      <NotFound />
+    </div>
+
+    <v-row v-else>
       <v-col cols="12">
         <v-toolbar
           flat
@@ -23,7 +28,9 @@
           dark
           height="55"
         >
-          <v-toolbar-title>User Profile</v-toolbar-title>
+          <v-toolbar-title>
+            User Profile for {{ userData.user.username }}
+          </v-toolbar-title>
           <v-spacer />
           <user-profile-menu />
         </v-toolbar>
@@ -56,7 +63,7 @@
                 <v-card-text class="pt-3 pb-0">
                   <v-list>
                     <v-list-item
-                      v-for="(field, fieldName, fieldKey) in getUserMeta"
+                      v-for="(field, fieldName, fieldKey) in getPublicUserMeta"
                       :key="'userMeta' + fieldKey"
                       class="body-1"
                     >
@@ -127,79 +134,19 @@
                     </v-list-item>
                   </v-list>
                   <div v-if="publications.length === 0 && !loading">
-                    You do not have an ORCID. Set one <a
-                      href="https://orcid.org/register"
-                      rel="external"
-                      target="_blank"
-                    >here.</a>
+                    This user does not have any publications listed on ORCID.
                   </div>
                 </v-card-text>
                 <v-card-actions>
                   <v-btn
-                    v-if="user().metadata.orcid && !loading"
-                    :href="`https://orcid.org/${user().metadata.orcid}`"
+                    v-if="userData.user.orcid && !loading"
+                    :href="`https://orcid.org/${userData.user.orcid}`"
                     rel="external"
                     target="_blank"
                   >
                     View ORCID profile
                   </v-btn>
                 </v-card-actions>
-              </v-card>
-            </v-col>
-
-            <v-col
-              class="pt-0"
-              cols="12"
-              xl="4"
-              lg="4"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
-                <v-card-title class="primary white--text py-3">
-                  Watched Records
-                </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
-                  <RecordsTable
-                    :records="user().records.watchedRecords"
-                    source="watchedRecords"
-                  />
-                </v-card-text>
-              </v-card>
-            </v-col>
-
-            <v-col
-              cols="12"
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
-                <v-card-title class="primary white--text py-3">
-                  Created Records
-                </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
-                  <RecordsTable
-                    :records="user().records.createdRecords"
-                    source="createdRecords"
-                  />
-                </v-card-text>
               </v-card>
             </v-col>
 
@@ -224,36 +171,8 @@
                   style="flex-grow: 1"
                 >
                   <RecordsTable
-                    :records="user().records.maintainedRecords"
-                    source="maintainedRecords"
-                  />
-                </v-card-text>
-              </v-card>
-            </v-col>
-
-            <v-col
-              cols="12"
-              xl="4"
-              lg="6"
-              md="12"
-              sm="12"
-              xs="12"
-              class="pt-0"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
-                <v-card-title class="primary white--text py-3">
-                  Maintenance Requests
-                </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
-                  <RecordsTable
-                    :records="maintenanceRequests"
-                    source="maintenanceRequests"
+                    :records="userData.user.maintainedRecords"
+                    source="publicMaintainedRecords"
                   />
                 </v-card-text>
               </v-card>
@@ -275,10 +194,11 @@
 </template>
 
 <script>
-    import { mapActions, mapState, mapMutations } from "vuex"
+    import { mapActions, mapState } from "vuex"
     import UserProfileMenu from "@/components/Users/UserProfileMenu";
     import Loaders from "@/components/Navigation/Loaders";
     import ExternalClient from "@/components/Client/ExternalClients.js"
+    import NotFound from "@/views/Errors/404"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
     import { cleanString } from "@/utils/stringUtils"
 
@@ -289,65 +209,54 @@
      * */
 
     export default {
-      name: "User",
-      components: {RecordsTable, Loaders, UserProfileMenu},
+      name: "PublicProfile",
+      components: {RecordsTable, Loaders, NotFound, UserProfileMenu},
       mixins: [cleanString],
       data: () => {
         return {
             panel: 0,
-            hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"],
             loading: false,
+            error: false,
             publications: [],
-            activeTab: 0
+            activeTab: 0,
+            userData: {
+              user: {
+                username: 'none'
+              }
+            }
         }
       },
       computed: {
-        ...mapState('users', ['user', "userResetPwdMessage", "messages"]),
+        ...mapState('users', ['user', "messages"]),
         ...mapState('editor', ['icons']),
-        getUserMeta: function(){
-          let userMeta = {};
-          const _module = this;
-          Object.keys(_module.user().metadata).forEach(function(field) {
-            if (!_module.hideFields.includes(field)) {
-              userMeta[field] = _module.user().metadata[field]
-            }
-          });
+        getPublicUserMeta: function(){
+          let userMeta = JSON.parse(JSON.stringify(this.userData.user));
+          delete userMeta["maintainedRecords"];
           return userMeta;
         },
-        maintenanceRequests(){
-          let output = [];
-          if (this.user().records.maintenanceRequests) {
-            this.user().records.maintenanceRequests.forEach(function (record) {
-              output.push({
-                ...record["fairsharingRecord"],
-                createdAt: record.createdAt,
-                status: record.status
-              })
-            });
-          }
-          return output;
-        }
       },
       async created(){
           this.loading = true;
-          await this.getUser(); // we need the user BEFORE getting the publications.
-          if (this.messages()["getUser"].error){
-            this.setError({field:"login", message:"You've been logged out automatically"});
-            this.$router.push({path: "/accounts/login"})
+          let userId = this.$route.params.id;
+          let data = await this.getPublicUser(userId);
+          if (data == null || data.user == null){
+            // No userdata, so don't look for publications.
+            this.publications = [];
+            this.error = true;
           }
-          this.publications = await this.getPublications();
+          else {
+            // Get user's publications.
+            this.userData = data;
+            this.publications = await this.getPublications();
+          }
           this.loading = false;
       },
-      beforeDestroy() {
-        this.cleanStore();
-      },
       methods: {
-          ...mapActions('users', ['getUser', 'resetPwd', 'setError']),
-          ...mapMutations('users', ['cleanStore']),
+          ...mapActions('users', ['getPublicUser', 'setError']),
           async getPublications(){
             let output = [];
-            if (this.user().metadata.orcid) {
-              let publications = await client.getOrcidUser(this.user().metadata.orcid);
+            if (this.userData.user.orcid) {
+              let publications = await client.getOrcidUser(this.userData.user.orcid);
               output = publications['activities-summary']['works']['group']
                       .slice(0, 7)
                       .map(obj => {
@@ -366,9 +275,6 @@
             }
             return output;
           },
-          booleanToString(bool){
-            return (bool) ? "Yes" : "No";
-          }
       }
     }
 </script>

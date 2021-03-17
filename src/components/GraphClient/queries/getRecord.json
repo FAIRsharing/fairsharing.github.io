@@ -118,7 +118,9 @@
           "queryName": "linkedRecord",
           "fields": ["name", "id", "registry", "type"]
         },
-        "recordAssocLabel"
+        "recordAssocLabel",
+        "recordAssocLabelId",
+        "id"
       ]
     },
     {

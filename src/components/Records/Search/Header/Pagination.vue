@@ -99,14 +99,11 @@
 </script>
 
 <style scoped>
-    button {
-        outline: none;
-    }
+button {
+  outline: none;
+}
 
-</style>
-
-<style>
-  #advancedSearch {
-    top:20px;
-  }
+#advancedSearch {
+  top: 20px;
+}
 </style>

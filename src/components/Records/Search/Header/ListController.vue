@@ -106,10 +106,6 @@
 </script>
 
 <style scoped>
-    .mouse-cursor {
-        cursor: pointer;
-    }
-
     .active {
         color: lightgrey;
     }

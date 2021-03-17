@@ -1,3 +1,4 @@
+import Vue from "vue"
 import { isEqual } from "lodash"
 import Client from "../components/GraphClient/GraphClient.js"
 import RESTClient from "@/components/Client/RESTClient.js"
@@ -103,6 +104,13 @@ let recordStore = {
         setPublications(state, publications) {
             state.sections.publications.data = publications;
         },
+        setAdditionalInformation(state, additionalInformation) {
+            console.log(additionalInformation);
+            Vue.set(state.sections.additionalInformation.data,
+                additionalInformation.fieldName,
+                additionalInformation.fieldValue
+            );
+        },
         updateOrganisationsLinks(state, links){
             state.sections.organisations.data = links;
             state.sections.organisations.initialData = JSON.parse(JSON.stringify(links));
@@ -133,7 +141,7 @@ let recordStore = {
             state.sections.dataAccess.changes = 0;
             state.sections.dataAccess.message = "Record successfully updated!";
         },
-        setAdditionalInformation(state, additionalInformation) {
+        updateAdditionalInformation(state, additionalInformation) {
             let record = {
                 access_points: additionalInformation['access_points'],
                 associated_tools: additionalInformation['associated_tools']
@@ -378,7 +386,7 @@ let recordStore = {
             }
             else {
                 commit("setMessage", {target: "additionalInformation", value: "Record successfully updated!"});
-                commit('setAdditionalInformation', newRecord.metadata);
+                commit('updateAdditionalInformation', newRecord.metadata);
             }
         },
         async updateDataAccess({state, commit}, options){
@@ -502,7 +510,7 @@ let recordStore = {
             else {
                 state.commit("setNewRecord", response)
             }
-        },
+        }
     },
     getters: {
         getField: (state) => (fieldName) => {

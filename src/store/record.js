@@ -200,6 +200,7 @@ let recordStore = {
                 client.setHeader(options.token);
             }
             let data = await client.executeQuery(recordQuery);
+            client.initalizeHeader()
             if (!data["fairsharingRecord"]['metadata']['contacts']) {
                 data["fairsharingRecord"]['metadata']['contacts'] = [];
             }

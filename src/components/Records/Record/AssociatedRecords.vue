@@ -49,7 +49,3 @@
     }
 
 </script>
-
-<style scoped>
-
-</style>

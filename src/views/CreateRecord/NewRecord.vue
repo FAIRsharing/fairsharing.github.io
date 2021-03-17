@@ -138,14 +138,13 @@
     }
 </script>
 
-<style>
-  .v-autocomplete__content .v-subheader {
-    font-size: 2rem;
-    text-transform: capitalize;
-  }
+<style scoped>
+.v-autocomplete__content .v-subheader {
+  font-size: 2rem;
+  text-transform: capitalize;
+}
 
-  #autocompleteSelect .v-list-item {
-      min-height: 0 !important;
-  }
-
+#autocompleteSelect .v-list-item {
+  min-height: 0 !important;
+}
 </style>

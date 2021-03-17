@@ -20,7 +20,3 @@ export default {
   name: "JumpToTop",
 }
 </script>
-
-<style scoped>
-
-</style>

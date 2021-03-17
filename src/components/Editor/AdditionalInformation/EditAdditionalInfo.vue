@@ -4,7 +4,6 @@
     ref="editAdditionalInfo"
   >
     <v-card>
-      {{allowedFields}}
       <v-card-title class="blue white--text">
         Edit Additional Information
       </v-card-title>
@@ -45,15 +44,13 @@
                   @input="setField($event, fieldName)"
                 />
               </div>
+              <div v-else-if="field.type === 'array'">
+                <b class="mr-2"> {{ cleanString(fieldName) }}: </b>
+                {{ field }}
+              </div>
             </v-col>
           </v-row>
         </v-container>
-        <!--
-          <div v-else-if="field.type === 'array'">
-            <b class="mr-2"> {{ cleanString(fieldName) }}: </b>
-            {{ field }}
-          </div>
-          -->
       </v-card-text>
     </v-card>
   </v-form>

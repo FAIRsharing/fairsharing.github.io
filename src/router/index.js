@@ -3,13 +3,8 @@ import VueRouter from "vue-router";
 import store from '@/store'
 
 import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
-<<<<<<< HEAD
     Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
-    Stakeholders, Timeline, License, Terms, Educational, Privacy }
-=======
-    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, LoginFailure, Stat, Community, Stakeholders,
-    Timeline, License, Terms, Educational, Privacy, PublicProfile }
->>>>>>> dev
+    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile }
     from "./routes.js"
 
 Vue.use(VueRouter);

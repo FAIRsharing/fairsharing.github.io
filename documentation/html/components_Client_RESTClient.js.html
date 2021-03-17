@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -111,6 +111,7 @@ class RESTClient {
             "Cache-Control": "no-cache"
         };
     }
+
 
     /* USERS: all methods below related to handling user authentication */
 
@@ -366,7 +367,7 @@ class RESTClient {
     /**
      * Determine if a user has permission to edit this record.
      * @param {Integer} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} userToken - JWT of the logged in user
+     * @param {String} token - JWT of the logged in user
      * @returns {Promise}
      */
     async canEdit(recordID, userToken){
@@ -382,7 +383,7 @@ class RESTClient {
     /**
      * Attempt to create a MaintenanceRequest for a user for a FairsharingRecord.
      * @param {Integer} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} userToken - JWT of the logged in user
+     * @param {String} token - JWT of the logged in user
      * @returns {Promise}
      */
     async claimRecord(recordID, userToken) {
@@ -399,7 +400,7 @@ class RESTClient {
     /**
      * Determine if a user has permission to create a MaintenanceRequest for a FairsharingRecord.
      * @param {Integer} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} userToken - JWT of the logged in user
+     * @param {String} token - JWT of the logged in user
      * @returns {Promise}
      */
     async canClaim(recordID, userToken) {
@@ -514,40 +515,21 @@ class RESTClient {
         return response.data;
     }
 
-    /* RELATIONSHIPS BETWEEN RECORDS */
+    /* Misc. Editing Methods */
     /**
-     * Saves the relationships as an array of items containing a targetID, a sourceID and a labelID
-     * @param {Object} options - the options to pass as {token: String, relations: Array}
+     * Get the list of available profile types for a user.
      * @returns {Promise}
      */
-    async saveRelations(options){
+    async getProfileTypes(){
         const request = {
-            method: 'put',
-            baseURL: this.baseURL + '/fairsharing_records/' + options.target,
-            headers: this.auth_headers(options.token),
-            data: {fairsharing_record: {record_associations_attributes: options.relations}}
-
+            method: "get",
+            baseURL: this.baseURL + "/users/profile_types",
+            headers: this.headers,
         };
         let response = await this.executeQuery(request);
         return response.data;
     }
 
-    /**
-     * Deletes the relationships as an array of items containing a targetID, a sourceID and a labelID
-     * @param {Object} options - the options to pass as {token: String, relations: Array}
-     * @returns {Promise}
-     */
-    async deleteRelations(options){
-        const request = {
-            method: 'put',
-            baseURL: this.baseURL + '/fairsharing_records/' + options.target,
-            headers: this.auth_headers(options.token),
-            data: {fairsharing_record: {record_associations_attributes: options.relations}}
-
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
 
     /* ORGANISATIONS AND GRANTS */
     /**
@@ -677,6 +659,7 @@ class RESTClient {
         return response.data;
     }
 
+
     /**
      * Delete Record
      * @param {Number} id - id of the record link to delete
@@ -693,36 +676,6 @@ class RESTClient {
         let response = await _client.executeQuery(request);
         return response.data;
     }
-
-    /**
-     * Get the list of allowed relation types for editing record's relationships.
-     * @returns {Promise}
-     */
-    /* EDITOR DATA */
-    async getRelationsTypes(){
-        let _client = this;
-        const request = {
-            method: "get",
-            baseURL: _client.baseURL + "/record_associations/allowed"
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
-    }
-
-    /**
-     * Get the list of available profile types for a user.
-     * @returns {Promise}
-     */
-    async getProfileTypes(){
-        const request = {
-            method: "get",
-            baseURL: this.baseURL + "/users/profile_types",
-            headers: this.headers,
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-
     /* EXTRA METHODS */
 
     /**
@@ -803,7 +756,7 @@ export default RESTClient;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Tue Mar 16th 2021
+		on Wed Mar 17th 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

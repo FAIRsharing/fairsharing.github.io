@@ -39,19 +39,6 @@
                           :class="['lighten-3 px-0',{'grey': !link.isLead, 'green': link.isLead}]"
                         >
                           <v-list-item class="px-0">
-                            <v-list-item-avatar
-                              v-if="link.organisation.name"
-                              class="mr-5"
-                            >
-                              <img
-                                v-if="link.organisation.urlForLogo"
-                                :src="'https://api.fairsharing.org/' + link.organisation.urlForLogo"
-                                alt="organisation logo"
-                              >
-                              <v-icon v-else>
-                                fas fa-sitemap
-                              </v-icon>
-                            </v-list-item-avatar>
                             <v-list-item-content class="mb-0 pb-0">
                               <v-list-item-title class="font-weight-bold">
                                 {{ link.organisation.name }}
@@ -60,10 +47,6 @@
                               <v-list-item-subtitle v-if="link.organisation.types">
                                 Types: {{ link.organisation.types.join(", ") }}
                               </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="px-0">
-                            <v-list-item-content class="mb-0 pb-0">
                               <v-list-item-subtitle v-if="link.relation">
                                 <span class="text-decoration-underline">Relation:</span>
                                 {{ link.relation }}

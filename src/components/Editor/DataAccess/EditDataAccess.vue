@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="editDataAccess">
     <v-card>
       <v-card-title class="grey lighten-4 blue--text">
         Edit Data Access
@@ -118,6 +118,17 @@
 
 <style scoped>
 
-  .v-dialog__content {}
+  #editDataAccess .borderBlue, #editLicences .borderBlue:before {
+    border: 1px solid #2A9AF4 !important;
+    background-color: white !important;
+    border-color: #2A9AF4 !important;
+  }
+
+  #editDataAccess .v-chip.white {
+    border-color: #2A9AF4 !important;
+  }
+  #editDataAccess .borderBlue * {
+    color: #2A9AF4 !important;
+  }
 
 </style>

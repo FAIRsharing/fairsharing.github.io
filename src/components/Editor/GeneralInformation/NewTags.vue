@@ -222,7 +222,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

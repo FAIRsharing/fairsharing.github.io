@@ -80,7 +80,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

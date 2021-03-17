@@ -53,7 +53,7 @@
                 @click="removeAccessPoint(ap)"
               >
                 Remove
-              </v-btn> 
+              </v-btn>
             </v-card-actions>
           </v-card>
         <!-- end of card for individual access point -->
@@ -238,7 +238,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -373,7 +373,7 @@
     }
 </script>
 
-<style>
+<style scoped>
   #userPage .text-truncate {
     max-width: 80%;
   }

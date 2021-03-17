@@ -145,7 +145,7 @@
                         :key="'parent_' + key"
                       >
                         <a
-                          :href="'/organisations/' + parent.id"
+                          @click="$router.push({path: '/organisations/' + parent.id})"
                           target="_blank"
                         >
                           {{ parent.name }}
@@ -171,7 +171,7 @@
                         :key="'child_' + key"
                       >
                         <a
-                          :href="'organisations/' + child.id"
+                          @click="$router.push({path: '/organisations/' + child.id})"
                           target="_blank"
                         >
                           {{ child.name }}

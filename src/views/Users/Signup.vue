@@ -12,7 +12,3 @@
         components: {Register}
     }
 </script>
-
-<style scoped>
-
-</style>

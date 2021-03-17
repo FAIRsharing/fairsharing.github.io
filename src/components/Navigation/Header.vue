@@ -195,10 +195,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-ul {
-  list-style: none;
-}
-
 header {
   padding-right: .5rem;
 }

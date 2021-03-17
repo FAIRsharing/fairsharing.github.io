@@ -17,6 +17,7 @@
         </p>
         <a
           v-if="canClaim"
+          class="underline-effect"
           @click="()=>{$emit('requestOwnership')}"
         >
           Claim it now!

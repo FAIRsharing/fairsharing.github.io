@@ -116,7 +116,7 @@
     }
 </script>
 
-<style>
+<style scoped>
 
   .v-dialog__content {}
 

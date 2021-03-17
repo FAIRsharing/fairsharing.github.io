@@ -8,7 +8,7 @@
       width="70%"
     />
     <Header />
-    <router-view style="min-height: 70vh" />
+    <router-view class="min-height-70vh" />
     <Footer />
   </v-app>
 </template>
@@ -28,17 +28,13 @@
 </script>
 
 <style lang="scss">
-    #app {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        min-height: 99vh;
-    }
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 99vh;
+}
 
-    html, body {
-        height: 100%;
-    }
-
-    .overflow-hidden {
-        overflow: hidden !important;
-    }
+html, body {
+  height: 100%;
+}
 </style>

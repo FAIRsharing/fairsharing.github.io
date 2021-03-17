@@ -21,9 +21,11 @@ class ExternalRESTClients {
     }
 
     async getDOI(doi){
+        let localHeaders = this.headers;
+        localHeaders['Accept'] = 'application/json';
         const request = {
             url: this.doiBaseURL + doi,
-            headers: this.headers
+            headers: localHeaders
         };
         let response = await this.executeQuery(request);
         return response.data;

@@ -256,7 +256,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .flexCard {
         display:flex;
         flex-direction: column;

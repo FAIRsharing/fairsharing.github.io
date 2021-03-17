@@ -253,50 +253,41 @@
     },
   }
 </script>
-
 <style scoped>
+.tabSquare {
+  width: 140px;
+  height: 140px !important;
+  white-space: initial !important;
+}
 
-  .tabSquare {
-      width: 140px;
-      height: 140px !important;
-      white-space: initial !important;
-  }
+#recordEditor .expand-transition-enter-active,
+#recordEditor .expand-transition-leave-active,
+#recordEditor .delayed-transition .slide-x-transition-enter-active,
+#recordEditor .delayed-transition .slide-x-transition-leave-active {
+  transition-duration: 0.7s !important;
+}
 
-</style>
+#recordEditor .delayed-transition .scroll-x-transition-enter-active,
+#recordEditor .delayed-transition .scroll-x-transition-leave-active {
+  transition-duration: 1s !important;
+}
 
-<style>
-  #recordEditor .expand-transition-enter-active,
-  #recordEditor .expand-transition-leave-active,
-  #recordEditor .delayed-transition .slide-x-transition-enter-active,
-  #recordEditor .delayed-transition .slide-x-transition-leave-active
-  {
-    transition-duration: 0.7s !important;
-  }
+#recordEditor .delayed-transition .scroll-x-transition-enter-active {
+  transition-delay: 0.1s !important;
+}
 
-  #recordEditor .delayed-transition .scroll-x-transition-enter-active,
-  #recordEditor .delayed-transition .scroll-x-transition-leave-active
-  {
-    transition-duration: 1s !important;
-  }
+#recordEditor .delayed-transition .scroll-x-transition-leave-active {
+  transition-delay: 0.6s !important;
+}
 
-  #recordEditor .delayed-transition .scroll-x-transition-enter-active
-  {
-    transition-delay: 0.1s !important;
-  }
+.short {
+  max-width: 550px;
+}
 
-  #recordEditor .delayed-transition .scroll-x-transition-leave-active
-  {
-    transition-delay: 0.6s !important;
-  }
-
-  .short{
-    max-width:550px;
-  }
-
-  .short span{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.short span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 </style>

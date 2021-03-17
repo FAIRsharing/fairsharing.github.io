@@ -196,7 +196,7 @@
     }
 </script>
 
-<style>
+<style scoped>
   #editContact .v-overlay__content {
     min-width: 700px;
   }

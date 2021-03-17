@@ -3,6 +3,7 @@ export const initStateMessages = function(){
         "login",
         "logout",
         "getUser",
+        "getPublicUser",
         "resetPassword",
         "sendResetEmail",
         "changePassword",
@@ -60,6 +61,8 @@ export function initEditorSections(data, sectionsNames){
                 status: data.status,
                 countries: data.countries,
                 metadata: data.metadata,
+                registry: data.registry,
+                name: data.name,
                 domains: data.domains.map((obj) => {
                     obj.label = obj.label.toLowerCase();
                     return obj;
@@ -84,6 +87,12 @@ export function initEditorSections(data, sectionsNames){
             dataAccess: {
                 support_links: (data.metadata.support_links) ? JSON.parse(JSON.stringify(data.metadata.support_links)): [],
                 licences: data.licenceLinks
+            },
+            relations: {
+                recordAssociations: data.recordAssociations,
+                registry: JSON.parse(JSON.stringify(data.registry)),
+                type: JSON.parse(JSON.stringify(data.type)),
+                name: JSON.parse(JSON.stringify(data.name))
             }
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";

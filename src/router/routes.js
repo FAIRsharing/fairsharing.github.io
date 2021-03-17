@@ -9,6 +9,7 @@ export const Signup =  () => import(/* webpackChunkName: "signUp-chunk" */ "@/vi
 export const ConfirmAccount =  () => import(/* webpackChunkName: "confirmAccount-chunk" */ "@/views/Users/ConfirmAccount.vue");
 export const ResendConfirmation = () => import(/* webpackChunkName: "resentEmail-chunk" */ "@/views/Users/ResendConfirmation.vue");
 export const User =  () => import(/* webpackChunkName: "user-chunk" */ "@/views/Users/User.vue");
+export const PublicProfile =  () => import(/* webpackChunkName: "user-chunk" */ "@/views/Users/PublicProfile");
 export const Curator = () => import(/* webpackChunkName: "curator-chunk" */ "@/views/Curators/Curator.vue");
 export const RequestNewPassword = () =>  import(/* webpackChunkName: "newPwd-chunk" */ "@/views/Users/RequestNewPassword");
 export const ResetPassword = () =>  import(/* webpackChunkName: "resetPwd-chunk" */ "@/views/Users/ResetPassword");

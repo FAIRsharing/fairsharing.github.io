@@ -21,7 +21,8 @@
           <v-chip
             v-for="(licenceLink, index) in currentLicences"
             :key="'licence_' + index"
-            class="blue white--text pr-5"
+            class="pr-5"
+            :class="[!isNew(licenceLink) ? 'white--text blue' : ' blue--text white borderBlue']"
           >
             <v-tooltip bottom>
               <template #activator="{ on, attrs }">
@@ -228,6 +229,7 @@
 
 <script>
     import { mapState } from "vuex"
+    import { isEqual } from 'lodash'
     import { isRequired, isUrl } from "@/utils/rules.js"
 
     export default {
@@ -259,6 +261,9 @@
             ...mapState('editor', ['availableLicences', 'licenceRelations']),
             currentLicences(){
                 return this.sections.dataAccess.data.licences
+            },
+            initialLicences(){
+              return this.sections.dataAccess.initialData.licences
             }
         },
         watch: {
@@ -332,6 +337,9 @@
               name: null,
               url: null
             }
+          },
+          isNew(item){
+            return !this.initialLicences.filter(obj => isEqual(obj, item))[0];
           }
         }
     }

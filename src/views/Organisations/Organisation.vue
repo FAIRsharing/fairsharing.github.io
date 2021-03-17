@@ -32,29 +32,19 @@
         />
 
         <v-row>
-          <v-col
-            cols="12"
-            xl="2"
-            lg="6"
-            md="12"
-            sm="12"
-            xs="12"
-            class="pt-0"
-            left
-          />
+          <v-col cols="6">
+            <v-card
+              class="d-flex flex-column rounded-0"
+              height="100%"
+            >
+              <v-card-title class="primary white--text py-3">
+                General Information
+              </v-card-title>
 
-          <v-card
-            class="d-flex flex-column rounded-0"
-            height="100%"
-          >
-            <v-card-title class="primary white--text py-3">
-              General Information
-            </v-card-title>
-
-            <!-- TODO: Delete these raw data -->
-            <v-card-text class="pt-3 pb-0">
-              <v-list>
-                <!--
+              <!-- TODO: Delete these raw data -->
+              <v-card-text class="pt-3 pb-0">
+                <v-list>
+                  <!--
                 <v-list-item
                   :key="'organisation_raw'"
                   class="body-1"
@@ -68,133 +58,146 @@
                 </v-list-item>
                 -->
 
-                <!-- TODO: Put logo here... -->
+                  <!-- TODO: Put logo here... -->
 
-                <!-- Homepage -->
-                <v-list-item
-                  :key="'organisation_homepage'"
-                  class="body-1"
-                >
-                  <v-list-item-content
-                    class="py-0 d-block"
+                  <!-- Homepage -->
+                  <v-list-item
+                    :key="'organisation_homepage'"
+                    class="body-1"
                   >
-                    <b class="blue--text">Homepage: </b>
-                    <span v-if="organisation.homepage">
-                      <a
-                        :href="organisation.homepage"
-                        target="_blank"
-                      >
-                        {{ organisation.homepage }}
-                      </a>
-                    </span>
-                    <span v-else> None </span>
-                  </v-list-item-content>
-                </v-list-item>
+                    <v-list-item-content
+                      class="py-0 d-block"
+                    >
+                      <b class="blue--text">Homepage: </b>
+                      <span v-if="organisation.homepage">
+                        <a
+                          :href="organisation.homepage"
+                          target="_blank"
+                        >
+                          {{ organisation.homepage }}
+                        </a>
+                      </span>
+                      <span v-else> None </span>
+                    </v-list-item-content>
+                  </v-list-item>
 
-                <!-- Alternative names -->
-                <v-list-item
-                  :key="'organisation_altnames'"
-                  class="body-1"
-                >
-                  <v-list-item-content
-                    class="py-0 d-block"
+                  <!-- Alternative names -->
+                  <v-list-item
+                    :key="'organisation_altnames'"
+                    class="body-1"
                   >
-                    <b class="blue--text">Alternative Names: </b>
-                    <span v-if="organisation.alternativeNames.length > 0">
+                    <v-list-item-content
+                      class="py-0 d-block"
+                    >
+                      <b class="blue--text">Alternative Names: </b>
+                      <span v-if="organisation.alternativeNames.length > 0">
+                        <ul>
+                          <li
+                            v-for="(name, key) in organisation.alternativeNames"
+                            :key="'altname_' + key"
+                          >
+                            {{ name }}
+                          </li>
+                        </ul>
+                      </span>
+                      <span v-else> None </span>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <v-list-item
+                    :key="'organisation_types'"
+                    class="body-1"
+                  >
+                    <v-list-item-content
+                      class="py-0 d-block"
+                    >
+                      <b class="blue--text">Types: </b>
+                      <span v-if="organisation.types.length > 0">
+                        {{ organisation.types | formatList }}
+                      </span>
+                      <span v-else> None </span>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <!-- Parent organisations -->
+                  <v-list-item
+                    v-if="organisation.parentOrganisations"
+                    :key="'organisation_parents'"
+                    class="body-1"
+                  >
+                    <v-list-item-content
+                      class="py-0 d-block"
+                    >
+                      <b class="blue--text">This organisation belongs to: </b>
                       <ul>
                         <li
-                          v-for="(name, key) in organisation.alternativeNames"
-                          :key="'altname_' + key"
+                          v-for="(parent, key) in organisation.parentOrganisations"
+                          :key="'parent_' + key"
                         >
-                          {{ name }}
+                          <a
+                            target="_blank"
+                            @click="$router.push({path: '/organisations/' + parent.id})"
+                          >
+                            {{ parent.name }}
+                          </a>
                         </li>
                       </ul>
-                    </span>
-                    <span v-else> None </span>
-                  </v-list-item-content>
-                </v-list-item>
+                    </v-list-item-content>
+                  </v-list-item>
 
-                <v-list-item
-                  :key="'organisation_types'"
-                  class="body-1"
-                >
-                  <v-list-item-content
-                    class="py-0 d-block"
+                  <!-- Parent organisations -->
+                  <v-list-item
+                    v-if="organisation.childOrganisations"
+                    :key="'organisation_children'"
+                    class="body-1"
                   >
-                    <b class="blue--text">Types: </b>
-                    <span v-if="organisation.types.length > 0">
-                      {{ organisation.types | formatList }}
-                    </span>
-                    <span v-else> None </span>
-                  </v-list-item-content>
-                </v-list-item>
-
-                <!-- Parent organisations -->
-                <v-list-item
-                  v-if="organisation.parentOrganisations"
-                  :key="'organisation_parents'"
-                  class="body-1"
-                >
-                  <v-list-item-content
-                    class="py-0 d-block"
-                  >
-                    <b class="blue--text">This organisation belongs to: </b>
-                    <ul>
-                      <li
-                        v-for="(parent, key) in organisation.parentOrganisations"
-                        :key="'parent_' + key"
-                      >
-                        <a
-                          @click="$router.push({path: '/organisations/' + parent.id})"
-                          target="_blank"
+                    <v-list-item-content
+                      class="py-0 d-block"
+                    >
+                      <b class="blue--text">This organisation controls: </b>
+                      <ul>
+                        <li
+                          v-for="(child, key) in organisation.childOrganisations"
+                          :key="'child_' + key"
                         >
-                          {{ parent.name }}
-                        </a>
-                      </li>
-                    </ul>
-                  </v-list-item-content>
-                </v-list-item>
+                          <a
+                            target="_blank"
+                            @click="$router.push({path: '/organisations/' + child.id})"
+                          >
+                            {{ child.name }}
+                          </a>
+                        </li>
+                      </ul>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card-text>
+            </v-card>
+          </v-col>
 
-                <!-- Parent organisations -->
-                <v-list-item
-                  v-if="organisation.childOrganisations"
-                  :key="'organisation_children'"
-                  class="body-1"
-                >
-                  <v-list-item-content
-                    class="py-0 d-block"
-                  >
-                    <b class="blue--text">This organisation controls: </b>
-                    <ul>
-                      <li
-                        v-for="(child, key) in organisation.childOrganisations"
-                        :key="'child_' + key"
-                      >
-                        <a
-                          @click="$router.push({path: '/organisations/' + child.id})"
-                          target="_blank"
-                        >
-                          {{ child.name }}
-                        </a>
-                      </li>
-                    </ul>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card-text>
-          </v-card>
+          <v-col cols="6">
+            <v-card
+              class="d-flex flex-column rounded-0"
+              height="100%"
+            >
+              <v-card-title class="primary white--text py-3">
+                Records owned by this organisation
+              </v-card-title>
+              <v-card-text />
+            </v-card>
+          </v-col>
         </v-row>
-      </v-col>
 
-      <v-fade-transition>
-        <v-overlay
-          v-if="loading"
-          :absolute="false"
-          opacity="0.8"
-        >
-          <loaders />
-        </v-overlay>
-      </v-fade-transition>
+        <v-fade-transition>
+          <v-overlay
+            v-if="loading"
+            :absolute="false"
+            opacity="0.8"
+          >
+            <loaders />
+          </v-overlay>
+        </v-fade-transition>
+      </v-col>
     </v-row>
   </v-container>
 </template>

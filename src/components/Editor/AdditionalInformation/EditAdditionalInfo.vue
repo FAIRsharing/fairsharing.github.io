@@ -196,6 +196,7 @@
           </v-card-text>
           <v-card-actions>
             <v-btn
+              :disabled="isDisabled()"
               class="success"
               @click="addItem()"
             >
@@ -308,6 +309,13 @@ export default {
         id: index,
         fieldName
       })
+    },
+    isDisabled(){
+      let fieldsNull = 0;
+      Object.values(this.overlay.fields).forEach(obj => {if (obj === null) { 
+        fieldsNull += 1;
+      }});
+      return fieldsNull === Object.entries(this.overlay.fields).length;
     }
   }
 }

@@ -15,6 +15,11 @@ recordStore.state.sections = {
             licences: [
                 {id: 222, name: "test", licence: {id: 123, name: "myLicence"}}
             ]
+        },
+        initialData: {
+            licences: [
+                {id: 222, name: "test", licence: {id: 123, name: "myLicence"}}
+            ]
         }
     }
 };
@@ -49,6 +54,7 @@ describe("Edit -> EditLicenceLinks.vue", function() {
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("EditLicences");
+        expect(wrapper.vm.isNew({field: 'test'})).toBe(true);
     });
 
     it('can display the overlay', () => {

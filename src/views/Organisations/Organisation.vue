@@ -133,18 +133,12 @@
                           >
                             {{ parent.name }}
                           </router-link>
-                          <router-link
-                            :to="'/organisations/' + parent.id"
-                            @click.native="$router.go()"
-                          >
-                            {{ parent.name }}
-                          </router-link>
                         </li>
                       </ul>
                     </v-list-item-content>
                   </v-list-item>
 
-                  <!-- Parent organisations -->
+                  <!-- Child organisations -->
                   <v-list-item
                     v-if="organisation.childOrganisations"
                     :key="'organisation_children'"
@@ -327,21 +321,32 @@ export default {
   },
   computed: {
     ...mapState('users', ['user']),
+    currentRoute() {
+      return this.target || this.$route.params['id'];
+    },
     logoUrl() {
       return process.env.VUE_APP_API_ENDPOINT + this.organisation.urlForLogo;
     }
   },
-  async created() {
-    this.loading = true;
-    getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
-    let org = await graphClient.executeQuery(getOrganisationQuery);
-    if (org.organisation != null) {
-      this.organisation = JSON.parse(JSON.stringify(org.organisation));
-      this.error = false;
+  watch: {
+    async currentRoute() {
+      await this.getOrganisation();
     }
-    this.loading = false;
+  },
+  async created() {
+    await this.getOrganisation();
   },
   methods: {
+    async getOrganisation() {
+      this.loading = true;
+      getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
+      let org = await graphClient.executeQuery(getOrganisationQuery);
+      if (org.organisation != null) {
+        this.organisation = JSON.parse(JSON.stringify(org.organisation));
+        this.error = false;
+      }
+      this.loading = false;
+    },
     goToEdit(id){
       this.$router.push({path: `/${id}/edit`})
     },

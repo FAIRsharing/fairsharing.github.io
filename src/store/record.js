@@ -105,11 +105,36 @@ let recordStore = {
             state.sections.publications.data = publications;
         },
         setAdditionalInformation(state, additionalInformation) {
-            console.log(additionalInformation);
-            Vue.set(state.sections.additionalInformation.data,
-                additionalInformation.fieldName,
-                additionalInformation.fieldValue
-            );
+            if (!additionalInformation.subfieldName){
+                Vue.set(state.sections.additionalInformation.data,
+                    additionalInformation.fieldName,
+                    additionalInformation.fieldValue
+                );
+            }
+            else {
+                Vue.set(state.sections.additionalInformation.data[additionalInformation.fieldName],
+                    additionalInformation.subfieldName,
+                    additionalInformation.fieldValue
+                );
+            }
+        },
+        setAdditionalInformationSubField(state, additionalInformation) {
+            if (additionalInformation.id !== null) {
+                state.sections.additionalInformation.data[additionalInformation.fieldName][additionalInformation.id] =
+                    additionalInformation.fieldValue;
+            }
+            else {
+                if (!state.sections.additionalInformation.data[additionalInformation.fieldName]){
+                    Vue.set(state.sections.additionalInformation.data, additionalInformation.fieldName,[]);
+                }
+                Vue.set(state.sections.additionalInformation.data[additionalInformation.fieldName],
+                    state.sections.additionalInformation.data[additionalInformation.fieldName].length,
+                    additionalInformation.fieldValue
+                );
+            }
+        },
+        removeAdditionalInformationSubField(state, additionalInformation){
+            state.sections.additionalInformation.data[additionalInformation.fieldName].splice(additionalInformation.id, 1)
         },
         updateOrganisationsLinks(state, links){
             state.sections.organisations.data = links;

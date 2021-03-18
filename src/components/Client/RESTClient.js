@@ -554,7 +554,6 @@ class RESTClient {
      * @returns {Promise}
      */
     async extraMetadataFields(type, userToken) {
-        console.log(type);
         const request = {
             method: "post",
             baseURL: this.baseURL + "/fairsharing_records/metadata_fields",

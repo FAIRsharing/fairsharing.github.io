@@ -224,7 +224,7 @@
                   <Icon
                     :item="data.item.name"
                     wrapper-class=""
-                    height="40"
+                    :height="40"
                   />
                 </v-list-item-avatar>
                 <v-list-item-content class="py-0">

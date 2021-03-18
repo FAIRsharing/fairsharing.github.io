@@ -112,7 +112,7 @@
                           v-for="(subField, subfieldName, subfieldIndex) in item"
                           :key="'arrayFieldSubField_' + subfieldIndex"
                         >
-                          <b>{{ subfieldName.toUpperCase() }}: </b> {{ subField }}
+                          <b>{{ cleanString(subfieldName).toUpperCase() }}: </b> {{ subField }}
                         </div>
                       </v-card-text>
                       <v-card-actions>

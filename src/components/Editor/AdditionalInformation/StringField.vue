@@ -54,7 +54,7 @@
                 return this.getSection("additionalInformation").data
             },
             field() {
-                if (!this.subfieldName) return this.fields[this.fieldName] || '';
+                if (!this.subfieldName) return this.fields[this.fieldName] || null;
                 return ''
             },
             getName() {

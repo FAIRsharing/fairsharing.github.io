@@ -5,6 +5,7 @@ import sinon from "sinon"
 import { RouterLinkStub } from '@vue/test-utils';
 import Organisation from "@/views/Organisations/Organisation";
 import GraphClient from "@/components/GraphClient/GraphClient.js"
+import RecordTable from "@/components/Users/Profiles/Private/RecordsTable";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -82,5 +83,16 @@ describe("Organisation", () => {
             stubs: {RouterLink: RouterLinkStub}
         });
         expect(wrapper.vm.organisation).toStrictEqual({});
-    })
+    });
+
+    it("can show and hide the overlay", () => {
+        wrapper.vm.previewRecord(12);
+        expect(wrapper.vm.targetID).toBe(12);
+        expect(wrapper.vm.showOverlay ).toBe(true);
+        wrapper.vm.hideOverlay(12);
+        expect(wrapper.vm.targetID).toBe(null);
+        expect(wrapper.vm.showOverlay ).toBe(false);
+        wrapper.vm.goToEdit(12);
+        expect($router.push).toHaveBeenCalledWith({path: "/12/edit"})
+    });
 });

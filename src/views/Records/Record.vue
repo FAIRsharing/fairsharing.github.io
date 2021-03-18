@@ -19,17 +19,21 @@
           class="d-flex"
         >
           <div
-            v-if="alreadyClaimed || claimedTriggered"
+            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
             class="d-flex flex-column flex-grow-1"
           >
             <v-alert
+              v-if="user().is_curator && currentRecord.fairsharingRecord['isHidden']"
+              dense
               type="info"
               class="mr-3"
             >
               <span>the record is hidden</span>
             </v-alert>
+
             <v-alert
               v-if="alreadyClaimed"
+              dense
               type="warning"
               style="flex:1"
               class="mr-3"

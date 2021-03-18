@@ -42,14 +42,13 @@
               </v-card-title>
 
               <v-card-text class="pt-3 pb-0">
-
                 <v-avatar
                   v-if="organisation.urlForLogo"
                   size="144"
                   class="ml-4"
                 >
                   <img
-                    :src="process.env.VUE_APP_API_ENDPOINT + organisation.urlForLogo"
+                    :src="logoUrl"
                   >
                 </v-avatar>
 
@@ -309,19 +308,20 @@ export default {
       perPage: 10,
       footer: {'items-per-page-options': [10]},
       showOverlay: false,
-      targetID: null
-    }
-  },
-  computed: {
-    ...mapState('users', ['user']),
-    headers() {
-      return [
+      targetID: null,
+      headers: [
         {text: 'Name', value: 'name', align: 'center'},
         {text: 'Status', value: 'status', align: 'center'},
         {text: 'Relation', value: 'relation', align: 'center'},
         {text: 'Grant', value: 'grant', align: 'center'},
         {text: 'Actions', value: 'actions', align: 'center', sortable: false}
-      ];
+      ]
+    }
+  },
+  computed: {
+    ...mapState('users', ['user']),
+    logoUrl() {
+      return process.env.VUE_APP_API_ENDPOINT + this.organisation.urlForLogo;
     }
   },
   async created() {

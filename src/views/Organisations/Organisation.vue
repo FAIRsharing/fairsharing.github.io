@@ -126,12 +126,19 @@
                           v-for="(parent, key) in organisation.parentOrganisations"
                           :key="'parent_' + key"
                         >
-                          <a
-                            target="_blank"
-                            @click="$router.push({path: '/organisations/' + parent.id})"
+                          <router-link
+                            :to="'/organisations/' + parent.id"
+                            class="sub-link"
+                            @click.native="$router.go()"
                           >
                             {{ parent.name }}
-                          </a>
+                          </router-link>
+                          <router-link
+                            :to="'/organisations/' + parent.id"
+                            @click.native="$router.go()"
+                          >
+                            {{ parent.name }}
+                          </router-link>
                         </li>
                       </ul>
                     </v-list-item-content>
@@ -152,12 +159,12 @@
                           v-for="(child, key) in organisation.childOrganisations"
                           :key="'child_' + key"
                         >
-                          <a
-                            target="_blank"
-                            @click="$router.push({path: '/organisations/' + child.id})"
+                          <router-link
+                            :to="'/organisations/' + child.id"
+                            @click.native="$router.go()"
                           >
                             {{ child.name }}
-                          </a>
+                          </router-link>
                         </li>
                       </ul>
                     </v-list-item-content>

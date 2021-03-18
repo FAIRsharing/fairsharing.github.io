@@ -217,11 +217,8 @@
 <script>
 import Vue from "vue"
 import {mapActions, mapGetters, mapState, mapMutations} from "vuex";
-import RestClient from "@/components/Client/RESTClient.js"
 import stringUtils from '@/utils/stringUtils'
 import StringField from "./StringField";
-
-let restClient = new RestClient();
 
 export default {
   name: "EditAdditionalInfo",
@@ -231,7 +228,6 @@ export default {
     return {
       initialized: false,
       loading: true,
-      allowedFields: null,
       overlay: {
         show: false,
         id: null,
@@ -244,26 +240,14 @@ export default {
   computed: {
     ...mapGetters("record", ["getSection"]),
     ...mapState("users", ["user"]),
+    ...mapState("editor", ["allowedFields"]),
     fields() {
       return this.getSection("additionalInformation").data
     }
   },
-  mounted(){
-    this.$nextTick(async () => {
-      this.allowedFields = await this.getFieldNames();
-      this.initialized = true;
-      this.loading = false;
-    });
-  },
   methods: {
     ...mapActions("record", ["updateAdditionalInformation"]),
     ...mapMutations("record", ["setAdditionalInformationSubField", "removeAdditionalInformationSubField"]),
-    async getFieldNames() {
-      return restClient.extraMetadataFields(
-          this.fields.type,
-          this.user().credentials.token
-      );
-    },
     getFields(type) {
       let output = {};
       if (this.allowedFields && this.allowedFields.properties){

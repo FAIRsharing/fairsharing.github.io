@@ -560,6 +560,9 @@ let recordStore = {
         },
         getCreatingNewRecord: (state) => {
             return state.newRecord;
+        },
+        getRecordType: (state) => {
+            return state.sections['generalInformation'].initialData.type
         }
     }
 };

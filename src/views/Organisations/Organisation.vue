@@ -41,7 +41,6 @@
                 General Information
               </v-card-title>
 
-              <!-- TODO: Delete these raw data process.env.VUE_APP_API_ENDPOINT-->
               <v-card-text class="pt-3 pb-0">
 
                 <v-avatar
@@ -50,13 +49,11 @@
                   class="ml-4"
                 >
                   <img
-                    :src="'http://localhost:3000/' + organisation.urlForLogo"
+                    :src="process.env.VUE_APP_API_ENDPOINT + organisation.urlForLogo"
                   >
                 </v-avatar>
 
                 <v-list>
-                  <!-- TODO: Put logo here... -->
-
                   <!-- Homepage -->
                   <v-list-item
                     :key="'organisation_homepage'"

@@ -103,6 +103,9 @@
               <b class="pt-1">{{ group }}</b>
             </td>
           </template>
+          <template slot="no-data">
+            <div> This record does not have any support link.</div>
+          </template>
         </v-data-table>
       </v-col>
     </v-row>

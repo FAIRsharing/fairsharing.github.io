@@ -89,6 +89,7 @@ import SectionTitle from '@/components/Records/Record/SectionTitle';
 import clearString from '@/utils/stringUtils'
 import {mapGetters} from "vuex";
 import Icon from "@/components/Icon";
+import IconsMixin from "@/utils/iconsMixin.js"
 
 export default {
   name: "Support",
@@ -96,7 +97,7 @@ export default {
     Icon,
     SectionTitle
   },
-  mixins: [clearString],
+  mixins: [clearString, IconsMixin],
   computed: {
     ...mapGetters("record", ["getField"]),
   },
@@ -118,7 +119,7 @@ export default {
         // assigning data and icon to the different types came from API.
         support_links.forEach(item => {
           // Replace parentheses, brackets, space,forward slashes with underscore.
-          processedSupport[item.type].icon = item.type.replace(/\s/g, '_').replace(/[\])}[{(]/g, '').replace(/\//g, '_').toLowerCase()
+          processedSupport[item.type].icon = this.getIconName(item.type);
           processedSupport[item.type].data.push(item)
         })
       }

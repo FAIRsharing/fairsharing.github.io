@@ -24,7 +24,7 @@ describe("Organisation", () => {
     beforeAll(() => {
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
             organisation: {
-                id: 10,
+                id: 1,
                 name: "4DN Data Coordination and Integration Center",
                 alternativeNames: [],
                 homepage: "http://dcic.4dnucleome.org/",
@@ -67,7 +67,8 @@ describe("Organisation", () => {
         });
         const title = "Organisation";
         expect(wrapper.name()).toMatch(title);
-        expect(wrapper.vm.organisation.id).toEqual(10);
+        expect(wrapper.vm.organisation.id).toEqual(1);
+        expect(wrapper.vm.currentRoute).toEqual(1);
     });
 
     it("doesn't display if the organistion is not set in the response", async () => {
@@ -111,5 +112,18 @@ describe("Organisation", () => {
             stubs: {RouterLink: RouterLinkStub}
         });
         expect(wrapper.vm.logoUrl).toEqual(process.env.VUE_APP_API_ENDPOINT + '/logo12345678');
+    });
+
+    it("watches the current route", async () => {
+        graphStub.restore();
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            router,
+            mocks: {$route, $router},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        expect(wrapper.vm.currentRoute).toEqual(1);
+        $route.params.id = 10;
+        expect(wrapper.vm.currentRoute).toEqual(10);
     });
 });

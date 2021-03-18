@@ -20,6 +20,7 @@
       class="field"
       width="80%"
       @input="setField($event)"
+      :rules="rules"
     />
     <v-autocomplete
       v-else
@@ -36,6 +37,7 @@
 <script>
     import { mapGetters, mapMutations } from "vuex"
     import stringUtils from '@/utils/stringUtils'
+    import { isUrl } from "@/utils/rules.js"
 
     export default {
         name: "StringField",
@@ -58,7 +60,13 @@
             getName() {
                 if (!this.subfieldName) return this.cleanString(this.fieldName);
                 return this.cleanString(this.subfieldName);
-            }
+            },
+            rules() {
+              if (this.fieldProps.format === 'uri') {
+                return [isUrl()]
+              }
+              return []
+            },
         },
         methods: {
             ...mapMutations("record", ["setAdditionalInformation"]),

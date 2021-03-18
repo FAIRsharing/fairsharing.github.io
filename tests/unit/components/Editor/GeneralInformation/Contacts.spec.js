@@ -19,6 +19,11 @@ recordStore.state.sections = {
             metadata: {
                 contacts: [contact]
             }
+        },
+        initialData: {
+            metadata: {
+                contacts: [{field: 'nothere'}]
+            }
         }
     }
 };
@@ -52,6 +57,7 @@ describe('Editor -> Contact.vue', () => {
         }];
         wrapper.vm.contacts = contacts;
         expect(wrapper.vm.getSection("generalInformation").data.metadata.contacts).toStrictEqual(contacts)
+        expect(wrapper.vm.isNew({field: 'avc'})).toBe(true)
     });
 
     it("can create a new contact", () => {

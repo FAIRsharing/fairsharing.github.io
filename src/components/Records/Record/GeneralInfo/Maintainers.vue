@@ -31,7 +31,7 @@
         class="d-flex flex-wrap"
       >
         <a
-          :href="maintainer.username + '/' + maintainer.id"
+          @click="$router.push({path: '/users/' + maintainer.id})"
           class="mr-2"
         >
           {{

@@ -17,7 +17,13 @@ recordStore.state.sections = {
         data: {
             support_links: [
                 {type: "Other", url: "https://example.com/test"},
-                {type: "Mailing list", url: "test@example.com", name: "a test"}
+                {type: "Mailing list", url: {url: "test@example.com"}, name: "a test"}
+            ]
+        },
+        initialData: {
+            support_links: [
+                {type: "Other", url: "https://example.com/test"},
+                {type: "Mailing list", url: {url: "test@example.com"}, name: "a test"}
             ]
         }
     }
@@ -62,6 +68,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("EditSupportLinks");
+        expect(wrapper.vm.isNew({field: 'test'})).toBe(true);
     });
 
     it("can open the new link menu", () => {
@@ -71,7 +78,8 @@ describe("Edit -> EditSupportLinks.vue", function() {
            id: null,
            template: {
                type: null,
-               url: null
+               url: null,
+               name: null
            }
        })
     });
@@ -92,7 +100,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
             id: 0,
             template: {
                 "type": "Other",
-                "url": "https://example.com/test"
+                "url": {url: "https://example.com/test"}
             }
         });
         expect(wrapper.vm.search).toBe(null);
@@ -104,7 +112,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
     it('can remove a link', () => {
        wrapper.vm.removeLink(0);
        expect(recordStore.state.sections.dataAccess.data.support_links).toStrictEqual(
-           [{type: "Mailing list", url: "test@example.com", name: "a test"}]
+           [{type: "Mailing list", url: {url: "test@example.com"}, name: "a test"}]
        )
     });
 
@@ -141,7 +149,17 @@ describe("Edit -> EditSupportLinks.vue", function() {
             url: "ABC"
         };
         await Vue.nextTick();
-        expect(wrapper.vm.edit.template.url).toBe(null);
+        expect(wrapper.vm.edit.template.url).toStrictEqual("ABC");
+    });
+
+    it('can build an item name', () => {
+        expect(wrapper.vm.getIconName("test (123)")).toBe("test_123")
+    });
+
+    it('can get the index of recordData items', () => {
+        const object = { type:"Other", url:"https://example.com/test" };
+        wrapper.vm.$store.state.record.sections["dataAccess"].data.support_links = [{}, object];
+        expect(wrapper.vm.getLinkIndex(object)).toBe(1);
     });
 
 });

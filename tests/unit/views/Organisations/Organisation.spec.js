@@ -5,7 +5,6 @@ import sinon from "sinon"
 import { RouterLinkStub } from '@vue/test-utils';
 import Organisation from "@/views/Organisations/Organisation";
 import GraphClient from "@/components/GraphClient/GraphClient.js"
-import RecordTable from "@/components/Users/Profiles/Private/RecordsTable";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -32,7 +31,7 @@ describe("Organisation", () => {
                 types: [
                     "Consortium"
                 ],
-                urlForLogo: null,
+                urlForLogo: "/logo12345678",
                 childOrganisations: [],
                 parentOrganisations: [],
                 organisationLinks: [
@@ -94,5 +93,23 @@ describe("Organisation", () => {
         expect(wrapper.vm.showOverlay ).toBe(false);
         wrapper.vm.goToEdit(12);
         expect($router.push).toHaveBeenCalledWith({path: "/12/edit"})
+    });
+
+    it("can generate the correct URL for the logo", async () => {
+        graphStub.restore();
+        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
+            organisation: {
+                urlForLogo: "/logo12345678",
+                alternativeNames: [],
+                types: []
+            }
+        });
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            router,
+            mocks: {$route, $router},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        expect(wrapper.vm.logoUrl).toEqual(process.env.VUE_APP_API_ENDPOINT + '/logo12345678');
     });
 });

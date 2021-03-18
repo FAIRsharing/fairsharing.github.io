@@ -31,8 +31,8 @@
         class="d-flex flex-wrap"
       >
         <a
-          @click="$router.push({path: '/users/' + maintainer.id})"
           class="mr-2"
+          @click="$router.push({path: '/users/' + maintainer.id})"
         >
           {{
             ` ${maintainer.username}${index !== getField('maintainers').length - 1 ? ',' : ''}`

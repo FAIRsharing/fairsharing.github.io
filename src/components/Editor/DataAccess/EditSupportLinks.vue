@@ -354,15 +354,9 @@
     }
 </script>
 
-<style scoped>
+<style>
   #editSupportLinks .large {
     width: 100%;
-  }
-
-  .borderTop {
-    border-top: 1px solid #ccc;
-    margin-top:5px;
-    padding-top: 10px;
   }
 
   #editSupportLinks .v-overlay__content {
@@ -376,4 +370,10 @@
   .tableFooter{
     border-top: 1px solid #ccc;
   }
+
+  #supportLinksTable tr.v-data-table__empty-wrapper {
+    background: #EEEEEE;
+    font-weight: bold;
+  }
+
 </style>

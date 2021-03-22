@@ -1,69 +1,64 @@
 <template>
-  <section class="charts">
-    <h3>pie-basic</h3>
-    <vue-highcharts :options="pieOptions" ref="pieChart"></vue-highcharts>
-  </section>
+  <div>
+    <RegistryCountChart :content="registriesCounts" />
+  </div>
 </template>
 
 <script>
     /** This component handles the statistic page
      *
      */
-     //import FirstGraph from "@/components/StatsPage/FirstGraph.vue"
+     import RegistryCountChart from "@/components/StatsPage/RegistryCountChart.vue"
      import Vue from "vue/dist/vue.js"
      import VueHighcharts from 'highcharts-vue';
+     import highcharts from "highcharts"
+     import highcharts3d from "highcharts/highcharts-3d"
+     import GraphClient from "@/components/GraphClient/GraphClient.js"
+     import getFilters from "@/components/GraphClient/queries/getFilters.json"
 
 
-     // pie chart data
+
+     const client = new GraphClient();
+
      Vue.use(VueHighcharts);
-     export const PieData = {
-       chart: {
-         type: "pie",
-         options3d: {
-           enabled: true,
-           alpha: 45
-         }
-       },
-       title: {
-         text: "Contents of Highsoft's weekly fruit delivery"
-       },
-       subtitle: {
-         text: "3D donut in Highcharts"
-       },
-       plotOptions: {
-         pie: {
-           innerSize: 100,
-           depth: 45
-         }
-       },
-       series: [
-         {
-           name: "Delivered amount",
-           data: [
-             ["Bananas", 8],
-             ["Kiwi", 3],
-             ["Mixed nuts", 1],
-             ["Oranges", 6],
-             ["Apples", 8],
-             ["Pears", 4],
-             ["Clementines", 4],
-             ["Reddish (bag)", 1],
-             ["Grapes (bunch)", 1]
-           ]
-         }
-       ]
-     };
+     // pie chart data
+     highcharts3d (highcharts);
+
      export default {
        name: "Statistics",
        components: {
-         VueHighcharts
+         RegistryCountChart
        },
-       data() {
-         return {
-           pieOptions: PieData
-         };
+       data () {
+           return {
+             allDataStats: null,
+             registriesCounts: []
+         }
        },
-       mounted() {},
-       methods: {}
-     }
-</script>
+       async mounted() {
+         let data = await client.executeQuery(getFilters);
+         this.allDataStats = data.searchFairsharingRecords.aggregations;
+         //console.log(this.dataStats);
+         this.prepareData();
+         //console.log(this.allDataStats.fairsharing_registry.buckets)
+         //console.log(this.dataStats.countries.buckets);
+       },
+       methods: {
+         prepareData(){
+           this.prepareRegistryCounts(this.allDataStats);
+         },
+         prepareRegistryCounts(data){
+           let regBucket = data.fairsharing_registry.buckets;
+           regBucket.forEach(item => {
+             let vectItem = {
+               name: item.key,
+               y: item.doc_count
+             };
+             this.registriesCounts.push(vectItem);
+           });
+         }
+      }
+    }
+  </script>
+  <style scoped>
+  </style>

@@ -6,6 +6,12 @@ import vuetify from './plugins/vuetify'
 import VueScrollTo from 'vue-scrollto';
 import VueMoment from 'vue-moment';
 import Clipboard from 'v-clipboard'
+import HighchartsVue from 'highcharts-vue'
+import Highcharts from 'highcharts'
+import Networkgraph from 'highcharts/modules/networkgraph'
+import Variablepie from 'highcharts/modules/variable-pie'
+import More from 'highcharts/highcharts-more'
+import Export from 'highcharts/modules/exporting'
 
 /* import router & store */
 import router from './router'
@@ -24,18 +30,16 @@ import '@fortawesome/fontawesome-free/css/all.css'
 /* import Global Sass */
 import "./styles/main.scss"
 
+Variablepie(Highcharts);
+More(Highcharts);
+Export(Highcharts);
+Networkgraph(Highcharts);
+
 Vue.config.productionTip = false;
-
-// This is a package for having more flexibility over default scroll
+Vue.use(HighchartsVue);
 Vue.use(VueScrollTo);
-
-// This is a package for executing copy past commands
 Vue.use(Clipboard);
-
-// This is a package for showing human-friendly date and time
 Vue.use(VueMoment);
-
-// using meta package to inject meta data dynamically.
 Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });

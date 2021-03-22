@@ -56,7 +56,7 @@ export default {
   },
   async mounted () {
     this.option.series[0].data = await this.content;
-    console.log(this.option.series[0].data);
+    //console.log(this.option.series[0].data);
     highcharts.chart (this.id,this.option);
   }
 }

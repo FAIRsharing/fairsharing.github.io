@@ -84,7 +84,19 @@
                   </div>
                 </div>
                 <p class="grey--text text-right relation-style ellipse-width-450">
-                  {{ item.subject }} <span class="red--text mouse-info">{{ item.recordAssocLabel }}</span>  {{ item.name }}
+                  {{ item.subject }}
+                  <v-tooltip top>
+                    <template #activator="{ on }">
+                      <span
+                        class="red--text mouse-info"
+                        v-on="on"
+                      >
+                        {{ item.recordAssocLabel }}
+                      </span>
+                    </template>
+                    <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
+                  </v-tooltip>
+                  {{ item.name }}
                 </p>
               </v-card>
             </template>
@@ -101,6 +113,8 @@ import {mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils"
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordTabUtils from "@/utils/recordTabUtils";
+import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
+
 export default {
   name: "RelatedContent",
   components: {
@@ -110,12 +124,13 @@ export default {
   mixins:[stringUtils,recordTabUtils],
   data: () => {
     return {
+      relationDefinition: recordRelationShipsDefinitions,
       selectedValues: null,
       tabsData: {
         selectedTab: 0,
         tabs: {
           related_standards: {relation: ['collects', 'recommends'], registry: "Standard", data: []},
-          related_databases: {relation: ['collects', 'recommends'], registry: "Database", data: []},
+          related_databases: {relation: ['collects', 'recommends'], registry: "Database", data: []}
         }
       }
     }
@@ -131,7 +146,7 @@ export default {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
               .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && item.registry === _module.tabsData.tabs[tabName].registry)
-        })
+        });
       }
       else {
         return false

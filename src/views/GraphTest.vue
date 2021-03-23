@@ -228,6 +228,15 @@
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 40;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 50;
                 }
+                else if (nodes.length < 30) {
+                  this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 80;
+                  this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 300;
+                }
+                else {
+                  this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 60;
+                  this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 300;
+                }
+                console.log(this.options.plotOptions.networkgraph);
                 this.options.series[0].nodes = nodes;
                 this.options.series[0].data = seriesData;
                 this.loading = false;

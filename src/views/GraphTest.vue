@@ -240,7 +240,6 @@
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 60;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 120;
                 }
-                console.log(this.options.plotOptions.networkgraph.layoutAlgorithm);
                 this.options.series[0].nodes = nodes;
                 this.options.series[0].data = seriesData;
                 this.loading = false;

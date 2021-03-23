@@ -6,7 +6,8 @@
         "recordName": "Record1 (23)",
         "id": 23,
         "type": "society",
-        "userNameID": "Manolo (99)",
+        "userName": "Manolo (99)",
+        "userId": "99",
         "processingNotes": "What a note!!!",
         "requestID": 0
       },
@@ -15,7 +16,8 @@
         "recordName": "Record2 (24)",
         "id": 24,
         "type": "repository",
-        "userNameID": "Pili (33)",
+        "userName": "Pili",
+        "userId": "33",
         "requestID": 1
       },
       {
@@ -23,7 +25,8 @@
         "recordName": "Record3 (29)",
         "id": 99,
         "type": "society",
-        "userNameID": "Bart Simpson (22)",
+        "userName": "Bart Simpson",
+        "userId": "22",
         "processingNotes": "Black puding",
         "requestID": 3
       }
@@ -36,7 +39,9 @@
         "type": "society",
         "curator": "Michael Smith",
         "processingNotes": "Black puding",
-        "priority": "Prior"
+        "priority": "Prior",
+        "idCreator": "44",
+        "creator": "Lupita Lupa"
       },
       {
         "id": 100,
@@ -44,7 +49,9 @@
         "recordName": "Record4 (100)",
         "type": "repository",
         "curator": "David Silla",
-        "priority": "Prior"
+        "priority": "Prior",
+        "idCreator": "875",
+        "creator": "Alf"
       },
       {
         "id": 101,
@@ -53,7 +60,9 @@
         "type": "repository",
         "curator": "Michael Smith",
         "processingNotes": "What a note!",
-        "priority": ""
+        "priority": "",
+        "idCreator": "9424",
+        "creator": "Frank Frost"
       },
       {
         "id": 102,
@@ -62,7 +71,9 @@
         "type": "society",
         "curator": "Mary Mary",
         "processingNotes": "Black puding",
-        "priority": ""
+        "priority": "",
+        "idCreator": "9424",
+        "creator": "Frank Frost"
       }
     ],
     "curatorList": [

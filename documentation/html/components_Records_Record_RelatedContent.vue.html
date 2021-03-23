@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -177,7 +177,19 @@
                   &lt;/div>
                 &lt;/div>
                 &lt;p class="grey--text text-right relation-style ellipse-width-450">
-                  {{ item.subject }} &lt;span class="red--text">{{ item.recordAssocLabel }}&lt;/span>  {{ item.name }}
+                  {{ item.subject }}
+                  &lt;v-tooltip top>
+                    &lt;template #activator="{ on }">
+                      &lt;span
+                        class="red--text mouse-info"
+                        v-on="on"
+                      >
+                        {{ item.recordAssocLabel }}
+                      &lt;/span>
+                    &lt;/template>
+                    &lt;span>{{ relationDefinition[item.recordAssocLabel] }}&lt;/span>
+                  &lt;/v-tooltip>
+                  {{ item.name }}
                 &lt;/p>
               &lt;/v-card>
             &lt;/template>
@@ -194,6 +206,8 @@ import {mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils"
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordTabUtils from "@/utils/recordTabUtils";
+import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
+
 export default {
   name: "RelatedContent",
   components: {
@@ -203,12 +217,13 @@ export default {
   mixins:[stringUtils,recordTabUtils],
   data: () => {
     return {
+      relationDefinition: recordRelationShipsDefinitions,
       selectedValues: null,
       tabsData: {
         selectedTab: 0,
         tabs: {
           related_standards: {relation: ['collects', 'recommends'], registry: "Standard", data: []},
-          related_databases: {relation: ['collects', 'recommends'], registry: "Database", data: []},
+          related_databases: {relation: ['collects', 'recommends'], registry: "Database", data: []}
         }
       }
     }
@@ -220,14 +235,13 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
-      const fake_rel_object = {linkedRecord:{id:8888,name:"fakeName",registry:"Standard",type:"terminology_artefact"},recordAssocLabel:"share_codes"}
-      _module.currentRecord['fairsharingRecord']['recordAssociations'].push(fake_rel_object)
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
               .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) &amp;&amp; item.registry === _module.tabsData.tabs[tabName].registry)
-        })
-      } else {
+        });
+      }
+      else {
         return false
       }
     },
@@ -243,42 +257,6 @@ a {
     text-decoration: underline;
     outline: 0;
   }
-}
-
-.icon-container {
-  position: absolute;
-  top: -45px;
-  background: white;
-  border: #b3b3b3 dotted 3px;
-  border-radius: 50% !important;
-  -moz-border-radius: 50% !important;
-  -webkit-border-radius: 50% !important;
-  width: 85px;
-  height: 85px;
-  cursor: help;
-}
-
-.card-title-customize {
-  position: absolute;
-  top: 5px;
-  left: 120px
-}
-
-.v-card-hover {
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  transition: box-shadow .4s linear;
-  -webkit-transition: box-shadow .4s linear;
-  -moz-transition: box-shadow .4s linear;
-  -o-transition: box-shadow .4s linear;
-}
-
-.v-card-hover:hover {
-  transform: scale(1.004);
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
 }
 
 .filterValueName {
@@ -344,7 +322,7 @@ a {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Fri Mar 12th 2021
+		on Tue Mar 23rd 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

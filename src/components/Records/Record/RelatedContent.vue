@@ -127,14 +127,6 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
-      const fake_rel_object = {linkedRecord:{id:8888,name:"fakeName",registry:"Standard",type:"terminology_artefact"},recordAssocLabel:"share_codes"}
-      const fake_rel_object2 = {linkedRecord:{id:8888,name:"fakeName 2",registry:"Database",type:"repository"},recordAssocLabel:"accepts"}
-      const fake_rel_object3 = {linkedRecord:{id:8888,name:"fakeName 3",registry:"Database",type:"repository"},recordAssocLabel:"extends"}
-      const fake_rel_object4 = {linkedRecord:{id:8888,name:"fakeName 4",registry:"Database",type:"repository"},recordAssocLabel:"deprecates"}
-      _module.currentRecord['fairsharingRecord']['recordAssociations'].push(fake_rel_object)
-      _module.currentRecord['fairsharingRecord']['recordAssociations'].push(fake_rel_object2)
-      _module.currentRecord['fairsharingRecord']['recordAssociations'].push(fake_rel_object3)
-      _module.currentRecord['fairsharingRecord']['recordAssociations'].push(fake_rel_object4)
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])

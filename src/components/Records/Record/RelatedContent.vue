@@ -84,7 +84,7 @@
                   </div>
                 </div>
                 <p class="grey--text text-right relation-style ellipse-width-450">
-                  {{ item.subject }} <span class="red--text">{{ item.recordAssocLabel }}</span>  {{ item.name }}
+                  {{ item.subject }} <span class="red--text mouse-info">{{ item.recordAssocLabel }}</span>  {{ item.name }}
                 </p>
               </v-card>
             </template>
@@ -132,7 +132,8 @@ export default {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
               .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && item.registry === _module.tabsData.tabs[tabName].registry)
         })
-      } else {
+      }
+      else {
         return false
       }
     },
@@ -148,42 +149,6 @@ a {
     text-decoration: underline;
     outline: 0;
   }
-}
-
-.icon-container {
-  position: absolute;
-  top: -45px;
-  background: white;
-  border: #b3b3b3 dotted 3px;
-  border-radius: 50% !important;
-  -moz-border-radius: 50% !important;
-  -webkit-border-radius: 50% !important;
-  width: 85px;
-  height: 85px;
-  cursor: help;
-}
-
-.card-title-customize {
-  position: absolute;
-  top: 5px;
-  left: 120px
-}
-
-.v-card-hover {
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
-  transition: box-shadow .4s linear;
-  -webkit-transition: box-shadow .4s linear;
-  -moz-transition: box-shadow .4s linear;
-  -o-transition: box-shadow .4s linear;
-}
-
-.v-card-hover:hover {
-  transform: scale(1.004);
-  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
-  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
 }
 
 .filterValueName {

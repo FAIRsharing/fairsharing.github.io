@@ -20,10 +20,14 @@
     <div
       class="d-flex justify-end align-center custom-width"
     >
-      <string-search :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'" />
+      <string-search
+        v-if="$vuetify.breakpoint.sm || $vuetify.breakpoint.mdAndUp"
+        placeholder="search through all content"
+        :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'"
+      />
       <nav>
         <ul
-          v-if="!$vuetify.breakpoint.mdAndDown"
+          v-if="$vuetify.breakpoint.lgAndUp"
           class="d-flex flex-row align-center flex-wrap px-0"
         >
           <li
@@ -90,7 +94,7 @@
                 fa-user-circle
               </v-icon>
             </v-avatar>
-            <span class="white--text ellipse">{{ user().credentials.username }}</span>
+            <span class="white--text ellipse-150">{{ user().credentials.username }}</span>
           </v-btn>
         </ul>
       </nav>

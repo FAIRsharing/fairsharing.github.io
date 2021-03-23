@@ -234,7 +234,7 @@
                 }
                 else {
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 60;
-                  this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 300;
+                  this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 120;
                 }
                 console.log(this.options.plotOptions.networkgraph);
                 this.options.series[0].nodes = nodes;

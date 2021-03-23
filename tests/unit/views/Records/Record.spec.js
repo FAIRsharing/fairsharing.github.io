@@ -131,6 +131,19 @@ describe("Record.vue", function() {
         expect(wrapper.vm.currentRoute).toBe('980190962');
     });
 
+    it("can be mounted with a target", async ()  => {
+        let anotherWrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router,
+            propsData: {target: 123}
+        });
+        expect(anotherWrapper.name()).toMatch("Record");
+        expect(anotherWrapper.vm.getTitle).toBe('FAIRsharing | 123');
+        expect(anotherWrapper.vm.currentRoute).toBe(123);
+    });
+
     it("Testing currentRoute & getTitle with a DOI style", () => {
         $route.params.id = "FAIRsharing.abc";
         expect(wrapper.vm.getTitle).toBe('FAIRsharing | 10.25504/FAIRsharing.abc');
@@ -148,7 +161,7 @@ describe("Record.vue", function() {
         $store.state.users.user = function (){return {isLoggedIn: false}};
         let buttons = wrapper.vm.getMenuButtons;
         buttons[0].method();
-        expect($router.push).toHaveBeenCalledWith({path: "980190962/edit", params: {fromRecordPage: true}});
+        expect($router.push).toHaveBeenCalledWith({path: "/980190962/edit", params: {fromRecordPage: true}});
         buttons[1].method();
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         expect($router.push).toHaveBeenCalledTimes(2);
@@ -246,5 +259,4 @@ describe("Record.vue", function() {
         expect(wrapper.vm.error).toBe("error");
         mocks.restore("graphMock");
     });
-
 });

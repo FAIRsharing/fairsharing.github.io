@@ -7,6 +7,7 @@ import GraphClient from "@/components/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import Curator from "@/views/Curators/Curator.vue"
 import dataDahboard from "../../../fixtures/curationDashboardData.json"
+import Vuetify from "vuetify"
 
 
 const localVue = createLocalVue();
@@ -25,6 +26,7 @@ const router = new VueRouter();
 const $router = { push: jest.fn() };
 
 let fakeDataDashboard =  dataDahboard;
+let vuetify = new Vuetify();
 
 describe("Curator.vue", () => {
   let wrapper;
@@ -39,6 +41,7 @@ describe("Curator.vue", () => {
      graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns(fakeDataDashboard);
 
     wrapper = await shallowMount(Curator, {
+        vuetify,
         localVue,
         router,
         mocks: {$store, $router}
@@ -65,7 +68,7 @@ describe("Curator.vue", () => {
 
       //MaintanceRequest are properly created, elements sorted by date, values edited and formatted properly
       expect(wrapper.vm.maintenanceRequests.length).toBe(4);
-      expect(wrapper.vm.maintenanceRequests[0].userNameID).toBe("Mariano (22)");
+      expect(wrapper.vm.maintenanceRequests[0].userName).toBe("Mariano");
       let date = new Date("2020,8,27");
       let auxString = date.toLocaleString('default', { month: 'short' }) + ' ' +
           date.getDate() + ', ' + date.getFullYear();
@@ -102,6 +105,7 @@ describe("Curator.vue", () => {
           curationSummary: {error: "error"}
       });
       wrapper = await shallowMount(Curator, {
+          vuetify,
           localVue,
           router,
           mocks: {$store, $router}

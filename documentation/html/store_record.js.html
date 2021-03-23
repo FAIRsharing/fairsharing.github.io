@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -98,6 +98,7 @@ import recordQuery from "../components/GraphClient/queries/getRecord.json"
 import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
 import recordOrganisationsQuery from "../components/GraphClient/queries/getRecordOrganisations.json"
 import recordDataAccessQuery from "../components/GraphClient/queries/editor/getRecordDataAccess.json"
+import recordRelationsQuery from "../components/GraphClient/queries/editor/getRecordRelations.json"
 import { initEditorSections } from "./utils.js"
 
 let client = new Client();
@@ -131,12 +132,13 @@ let recordStore = {
             data: {},
             id: null
         },
-        newRecord: false
+        newRecord: false,
+        currentID: null
     },
     mutations: {
         setCurrentRecord(state, data){
             state.currentRecord = data;
-            let tags = ['subjects', 'domains', 'taxonomies', 'userDefinedTags']
+            let tags = ['subjects', 'domains', 'taxonomies', 'userDefinedTags'];
             tags.forEach(tag => {
                 if (state.currentRecord['fairsharingRecord'][tag].length &amp;&amp; state.currentRecord['fairsharingRecord'][tag] ) {
                     state.currentRecord['fairsharingRecord'][tag].forEach(item => {
@@ -152,13 +154,15 @@ let recordStore = {
             state.currentRecordHistory = {};
         },
         setSections(state, data){
+            state.currentID = data['fairsharingRecord'].id;
             let sectionsNames = [
                 "generalInformation",
                 "support",
                 "dataAccess",
                 "publications",
                 "organisations",
-                "additionalInformation"
+                "additionalInformation",
+                "relations"
             ];
             state.sections = initEditorSections(data['fairsharingRecord'], sectionsNames);
         },
@@ -243,6 +247,13 @@ let recordStore = {
         setEditingRecord(state){
             state.newRecord = false;
         },
+        setRelations(state, relations){
+            state.sections.relations.data.recordAssociations = relations;
+            state.sections.relations.initialData.recordAssociations = JSON.parse(JSON.stringify(relations));
+            state.sections.relations.changes = 0;
+            state.sections.relations.message = "Record successfully updated!";
+            state.sections.relations.error = false;
+        },
         setMessage(state, message){
             state.sections[message.target].message = message.value;
         },
@@ -288,6 +299,14 @@ let recordStore = {
             }
             state.commit('setCurrentRecord', JSON.parse(JSON.stringify(data)));
             state.commit('setSections', JSON.parse(JSON.stringify(data)));
+        },
+        async fetchPreviewRecord(state, id){
+            state.commit("resetCurrentRecordHistory");
+            recordQuery.queryParam = {
+                id: id
+            };
+            let data = await client.executeQuery(recordQuery);
+            state.commit('setCurrentRecord', data);
         },
         async fetchRecordHistory(state, id){
             recordHistory.queryParam = {id: id};
@@ -510,6 +529,61 @@ let recordStore = {
             let dataAccess = await client.executeQuery(recordDataAccessQuery);
             commit('setDataAccess', dataAccess.fairsharingRecord);
         },
+        async updateRelations({state, commit}, options){
+            commit("resetMessage", "relations");
+            let newAssociations = [],
+                deleteAssociations = [],
+                oldAssociations = [];
+            state.sections.relations.data.recordAssociations.forEach(association => {
+                if (association.new) {
+                    const newAssociation = {
+                        fairsharing_record_id: options.source,
+                        linked_record_id: association.linkedRecord.id,
+                        record_assoc_label_id: association.recordAssocLabel.id
+                    };
+                    newAssociations.push(newAssociation);
+                }
+                else {
+                    oldAssociations.push(association.linkedRecord.id);
+                }
+            });
+            state.sections.relations.initialData.recordAssociations.forEach(oldAssociation => {
+                let id = oldAssociation.linkedRecord.id;
+                if (id &amp;&amp; !oldAssociations.includes(id)) {
+                    deleteAssociations.push({
+                        id: oldAssociation.id,
+                        _destroy: 1
+                    });
+                }
+            });
+            let responses = await Promise.all([
+                restClient.saveRelations({
+                    token: options.token,
+                    relations: newAssociations,
+                    target: options.source
+                }),
+                restClient.deleteRelations({
+                    token: options.token,
+                    relations: deleteAssociations,
+                    target: options.source
+                })
+            ]);
+            let error = false;
+            for (let response of responses) {
+                if (response.error) {
+                    commit("setSectionError", {
+                        section: "relations",
+                        value: response.error
+                    });
+                    error = true;
+                }
+            }
+            if (!error){
+                recordRelationsQuery.queryParam = {id: options.source};
+                let relations = await client.executeQuery(recordRelationsQuery);
+                commit('setRelations', relations['fairsharingRecord'].recordAssociations);
+            }
+        },
         resetRecord(state){
             state.commit('setGeneralInformation', {fairsharingRecord: false});
         },
@@ -612,7 +686,11 @@ export default recordStore;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
+<<<<<<< HEAD
 		on Fri Mar 12th 2021
+=======
+		on Thu Mar 18th 2021
+>>>>>>> c806334a851d9b151dc401db702572e48f2c28f4
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

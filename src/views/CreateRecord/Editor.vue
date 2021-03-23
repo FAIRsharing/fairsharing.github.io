@@ -191,7 +191,8 @@
           },
           {
             name: "Relations to other records",
-            disabled: true,
+            disabled: false,
+            target: "relations",
             component:"EditRelationships"
           },
           {
@@ -205,7 +206,7 @@
       }
     },
     computed: {
-      ...mapState('record', ['currentRecord', 'sections']),
+      ...mapState('record', ['currentID', 'sections']),
       ...mapGetters('record', ['getChanges', 'getAllChanges']),
       ...mapState('users', ['user']),
       userToken(){
@@ -240,62 +241,53 @@
         let id = _module.$route.params.id;
         if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
         await _module.fetchRecord(id);
-        let canEdit = await client.canEdit(_module.currentRecord['fairsharingRecord'].id, userToken);
+        let canEdit = await client.canEdit(_module.currentID, userToken);
         if (canEdit.error) _module.error = true;
         _module.hasLoaded = true;
       },
       async confirmReloadData() {
         const _module = this;
-        let recordID = _module.currentRecord['fairsharingRecord'].id;
+        let recordID = _module.currentID;
         await _module.fetchRecord(recordID);
       }
     },
   }
 </script>
-
 <style scoped>
+.tabSquare {
+  width: 140px;
+  height: 140px !important;
+  white-space: initial !important;
+}
 
-  .tabSquare {
-      width: 140px;
-      height: 140px !important;
-      white-space: initial !important;
-  }
+#recordEditor .expand-transition-enter-active,
+#recordEditor .expand-transition-leave-active,
+#recordEditor .delayed-transition .slide-x-transition-enter-active,
+#recordEditor .delayed-transition .slide-x-transition-leave-active {
+  transition-duration: 0.7s !important;
+}
 
-</style>
+#recordEditor .delayed-transition .scroll-x-transition-enter-active,
+#recordEditor .delayed-transition .scroll-x-transition-leave-active {
+  transition-duration: 1s !important;
+}
 
-<style>
-  #recordEditor .expand-transition-enter-active,
-  #recordEditor .expand-transition-leave-active,
-  #recordEditor .delayed-transition .slide-x-transition-enter-active,
-  #recordEditor .delayed-transition .slide-x-transition-leave-active
-  {
-    transition-duration: 0.7s !important;
-  }
+#recordEditor .delayed-transition .scroll-x-transition-enter-active {
+  transition-delay: 0.1s !important;
+}
 
-  #recordEditor .delayed-transition .scroll-x-transition-enter-active,
-  #recordEditor .delayed-transition .scroll-x-transition-leave-active
-  {
-    transition-duration: 1s !important;
-  }
+#recordEditor .delayed-transition .scroll-x-transition-leave-active {
+  transition-delay: 0.6s !important;
+}
 
-  #recordEditor .delayed-transition .scroll-x-transition-enter-active
-  {
-    transition-delay: 0.1s !important;
-  }
+.short {
+  max-width: 550px;
+}
 
-  #recordEditor .delayed-transition .scroll-x-transition-leave-active
-  {
-    transition-delay: 0.6s !important;
-  }
-
-  .short{
-    max-width:550px;
-  }
-
-  .short span{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.short span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 </style>

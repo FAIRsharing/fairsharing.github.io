@@ -1,8 +1,11 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="2">
-        <v-card height="1168px">
+      <v-col
+        cols="2"
+        class="pt-0 mt-0"
+      >
+        <v-card height="1180px">
           <v-card-title class="blue white--text">
             Legend and configuration
           </v-card-title>
@@ -15,7 +18,17 @@
         cols="10"
         class="pt-0 mt-0"
       >
+        <v-card
+          v-if="loading"
+          height="100%"
+        >
+          <v-card-text class="text-center blue--text body-1">
+            Loading your data
+          </v-card-text>
+          <Loaders />
+        </v-card>
         <highcharts
+          v-else
           ref="chartComponent"
           :options="options"
         />
@@ -28,16 +41,19 @@
     import {Chart} from 'highcharts-vue'
     import GraphClient from '@/components/GraphClient/GraphClient.js'
     import graphQuery from '@/components/GraphClient/queries/getGraphRelations.json'
+    import Loaders from "../components/Navigation/Loaders";
 
     const graphClient = new GraphClient();
 
     export default {
         name: "GraphTest",
         components: {
+          Loaders,
             highcharts: Chart,
         },
         data () {
             return {
+                loading: false,
                 options: {
                     exporting: {
                         sourceWidth: 1502,
@@ -144,6 +160,7 @@
         },
         methods: {
             async getData(){
+                this.loading = true;
                 this.options.series[0].data = [];
                 this.options.series[0].nodes = [];
 
@@ -187,26 +204,29 @@
                     }
                 }));
                 newRelations.forEach(newRelation => {
+                  if (Object.keys(newRelation).includes('fairsharingRecord')) {
                     let subAssociations = newRelation.fairsharingRecord.recordAssociations;
                     subAssociations.forEach(subAssociation => {
-                        if (newIDs.includes(subAssociation.linkedRecord.id)) {
-                            seriesData.push([
-                                newRelation.fairsharingRecord.metadata.name,
-                                subAssociation.linkedRecord.name,
-                                subAssociation.recordAssocLabel.replace(/_/g, " ").toUpperCase()
-                            ]);
-                            /*nodes.push({
+                      if (newIDs.includes(subAssociation.linkedRecord.id)) {
+                        seriesData.push([
+                          newRelation.fairsharingRecord.metadata.name,
+                          subAssociation.linkedRecord.name,
+                          subAssociation.recordAssocLabel.replace(/_/g, " ").toUpperCase()
+                        ]);
+                        /*nodes.push({
                                 id: subAssociation.linkedRecord.name,
                                 color: 'orange',
                                 marker: {
                                     radius: 5
                                 }
                             });*/
-                        }
+                      }
                     });
+                  }
                 });
                 this.options.series[0].nodes = nodes;
                 this.options.series[0].data = seriesData;
+                this.loading = false;
 
             }
         }

@@ -224,6 +224,10 @@
                     });
                   }
                 });
+                if (nodes.length > 100){
+                  this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 40;
+                  this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 50;
+                }
                 this.options.series[0].nodes = nodes;
                 this.options.series[0].data = seriesData;
                 this.loading = false;

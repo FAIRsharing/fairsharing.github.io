@@ -1,0 +1,9 @@
+{
+  "undefined": "record has undefined relationship",
+  "related_to": "record has a two way relationship ...",
+  "profiles": "record profiles means...",
+  "extends": "record extends means...",
+  "expresses": "record expresses means...",
+  "deprecates": "record deprecates means...",
+  "collects": "record collects means..."
+}

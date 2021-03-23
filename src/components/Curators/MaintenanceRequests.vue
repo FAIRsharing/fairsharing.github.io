@@ -39,25 +39,25 @@
               {{ props.item.createdAt }}
             </td>
             <td>
+              <v-avatar
+                v-if="props.item.type"
+                class="mr-2"
+                :height="40"
+              >
+                <Icon
+                  :item="props.item.type"
+                  :height="40"
+                  wrapper-class=""
+                />
+              </v-avatar>
               <a :href="'#/' + props.item.id">
-                <span
-                  v-if="props.item.type"
-                  class="mr-2"
-                >
-                  <v-avatar
-                    v-if="Object.keys(recordType).includes(props.item.type)"
-                    size="38"
-                  >
-                    <img
-                      :src="'./' + recordType[props.item.type].icon"
-                    >
-                  </v-avatar>
-                </span>
                 {{ props.item.recordName }}
               </a>
             </td>
             <td>
-              {{ props.item.userNameID }}
+              <a :href="'#/users/' + props.item.userId">
+                {{ props.item.userName }}
+              </a>
             </td>
             <td>
               <v-edit-dialog
@@ -229,11 +229,16 @@
 <script>
     import { mapActions, mapState }  from "vuex"
     import RestClient from "@/components/Client/RESTClient.js"
+    import Icon from "@/components/Icon"
+
 
     const restClient = new RestClient();
 
     export default {
         name: "MaintenanceRequests",
+        components: {
+          Icon
+        },
         props: {
             maintenanceRequests: {
                 type: Array,
@@ -377,7 +382,7 @@
 
 </script>
 
-<style>
+<style scoped>
   #text-curator-search-5 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }

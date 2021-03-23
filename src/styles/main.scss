@@ -4,6 +4,10 @@ a {
   text-decoration: none;
 }
 
+ul {
+  list-style: none;
+}
+
 //End of Global Setting---------------------
 
 //Animations--------------------------------
@@ -33,6 +37,10 @@ a {
     text-decoration: underline;
     outline: 0;
   }
+}
+
+.mouse-cursor {
+  cursor: pointer;
 }
 
 .tooltips {
@@ -77,6 +85,11 @@ a {
   white-space: nowrap;
 }
 
+.ellipse-150 {
+  @extend .ellipse;
+  max-width: 150px;
+}
+
 .ellipse-width-80 {
   width: 80px;
   text-overflow: ellipsis;
@@ -102,6 +115,7 @@ a {
   height: 1px;
 }
 
+//margins
 .mx-25-percent {
   margin-right: 25%;
   margin-left: 25%;
@@ -116,6 +130,7 @@ a {
   margin-left: 25%;
 }
 
+//sizes
 .min-width-60 {
   min-width: 60px;
 }
@@ -167,6 +182,10 @@ a {
 .height-430 {
   height: 430px;
 }
+
+.min-height-70vh {
+  min-height: 70vh;
+}
 .width-35 {
   width: 35px;
 }
@@ -174,4 +193,34 @@ a {
 .width-200 {
   width: 200px;
 }
+
+.mt-1-pt {
+  margin-top: 1pt;
+}
+
+
 //End of Utilities--------------------------
+
+// shared class
+.card-title-customize {
+  position: absolute;
+  top: 5px;
+  left: 120px
+}
+
+.v-card-hover {
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  transition: box-shadow .4s linear;
+  -webkit-transition: box-shadow .4s linear;
+  -moz-transition: box-shadow .4s linear;
+  -o-transition: box-shadow .4s linear;
+}
+
+.v-card-hover:hover {
+  transform: scale(1.004);
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+}

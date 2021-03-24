@@ -6,5 +6,6 @@
   "expresses": "record expresses means...",
   "deprecates": "record deprecates means...",
   "collects": "record collects means...",
+  "recommends": "record recommends means...",
   "implements": "record implements means..."
 }

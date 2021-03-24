@@ -79,11 +79,11 @@
                     :record="item"
                     :show-status="false"
                   />
-                  <div class="ml-10 text-ellipses-height-2lines">
+                  <div class="ml-10 text-ellipses-height-2lines line-height-20">
                     {{ item.name }}
                   </div>
                 </div>
-                <p class="grey--text text-right relation-style ellipse-width-450">
+                <p class="grey--text relation-style text-ellipses-height-2lines line-height-14">
                   {{ item.subject }}
                   <v-tooltip top>
                     <template #activator="{ on }">
@@ -175,12 +175,5 @@ a {
 
 .mt-1-pt {
   margin-top: 1pt;
-}
-
-.relation-style {
-  position: absolute;
-  bottom: -12px;
-  left: 143px;
-  font-size: 12px;
 }
 </style>

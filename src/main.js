@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify'
 import VueScrollTo from 'vue-scrollto';
 import VueMoment from 'vue-moment';
 import Clipboard from 'v-clipboard'
+import HighchartsVue from 'highcharts-vue'
 
 /* import router & store */
 import router from './router'
@@ -25,6 +26,10 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import "./styles/main.scss"
 
 Vue.config.productionTip = false;
+
+Vue.use(HighchartsVue);
+
+
 
 // This is a package for having more flexibility over default scroll
 Vue.use(VueScrollTo);
@@ -56,8 +61,3 @@ bootstrapApp().then(() => {
         vuetify
     }).$mount("#app")
 });
-
-
-
-
-

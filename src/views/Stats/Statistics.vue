@@ -1,60 +1,213 @@
 <template>
-  <div>
-    <RegistryCountChart :content="registriesCounts" />
-  </div>
+  <v-container fluid>
+    <v-row no-gutters>
+      <v-col>
+        <v-card
+          v-if="optionChartPie1"
+          class="pa-2"
+          outlined
+          tile
+        >
+          <highcharts
+            ref="chartComponent1"
+            :options="optionChartPie1"
+          />
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card
+          v-if="optionChartBars1"
+          class="pa-2"
+          outlined
+          tile
+        >
+          <highcharts
+            ref="chartComponent2"
+            :options="optionChartBars1"
+          />
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
     /** This component handles the statistic page
      *
      */
-     import RegistryCountChart from "@/components/StatsPage/RegistryCountChart.vue"
-     import Vue from "vue/dist/vue.js"
-     import VueHighcharts from 'highcharts-vue';
-     import highcharts from "highcharts"
-     import highcharts3d from "highcharts/highcharts-3d"
+     import {Chart} from 'highcharts-vue'
      import GraphClient from "@/components/GraphClient/GraphClient.js"
      import getFilters from "@/components/GraphClient/queries/getFilters.json"
-
+     import Highcharts from 'highcharts'
+     import Pie from 'highcharts/modules/variable-pie'
 
 
      const client = new GraphClient();
+     const colourPalete = ['#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5', '#c49c94', '#f7b6d2', '#c7c7c7', '#dbdb8d', '#9edae5'];
+     //['#50B432', '#ED561B', '#24CBE5', '#DDDF00', '#64E572', '#FF9655', '#FFF263',      '#6AF9C4']
+     Highcharts.setOptions({
+       lang: {
+         thousandsSep: ','
+       }
+     })
+     Highcharts.setOptions({
+      colors: colourPalete
+     });
 
-     Vue.use(VueHighcharts);
      // pie chart data
-     highcharts3d (highcharts);
+     Pie (Highcharts);
 
      export default {
        name: "Statistics",
        components: {
-         RegistryCountChart
+         highcharts: Chart
        },
        data () {
            return {
              allDataStats: null,
-             registriesCounts: []
+             optionChartPie:{
+               chart:{
+                 plotBackgroundColor: null,
+                 plotBorderWidth: null,
+                 plotShadow: false,
+                 type: 'pie'
+               },
+               title:{
+                 text:"" //The title text of the chart
+               },
+               tooltip: {
+                 pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
+               },
+               plotoptions:{
+                 pie: {
+                     allowPointSelect: true,
+                     cursor: 'pointer',
+                     dataLabels: {
+                         enabled: false
+                     },
+                     showInLegend: true
+                 }
+               },
+               series:[
+               {
+                 type:"pie",
+                 name: "Records",
+                 colorByPoint: true,
+                 data:[],
+                 cursor: 'pointer',
+                 point: {
+                   events: {
+                     click: function() {
+                       location.href = this.options.url;
+                     }
+                   }
+                 }
+                }
+               ]
+             },
+             optionChartBars:{
+               chart: {
+                 type: 'column'
+               },
+               title: {
+                 text: ""
+               },
+               xAxis: {
+                 type: 'category'
+               },
+               yAxis: {
+                 min: 0,
+                 title: {
+                    text: ''
+                  }
+                },
+                tooltip: {
+                  headerFormat: '<span style="font-size:10px">{series.name}</span><table>',
+                  pointFormat: '<tr><td style="padding:0">Records: </td>' +
+                  '<td style="padding:0"><b>{point.y} ({point.z:.1f}%)</b></td></tr>',
+                  footerFormat: '</table>',
+                  shared: true,
+                  useHTML: true
+                },
+                plotOptions: {
+                  column: {
+                    pointWidth: 45,
+                    borderWidth: 0,
+                    grouping: false
+                  }
+                },
+                legend: {
+                  alignColumns: false
+                },
+                series: []
+             },
+             optionChartPie1: null,
+             optionChartBars1: null
          }
        },
        async mounted() {
-         let data = await client.executeQuery(getFilters);
-         this.allDataStats = data.searchFairsharingRecords.aggregations;
-         //console.log(this.dataStats);
-         this.prepareData();
+         this.$nextTick(async function () {
+
+           let data = await client.executeQuery(getFilters);
+           this.allDataStats = data.searchFairsharingRecords.aggregations;
+           //console.log(this.allDataStats);
+           this.prepareData();
+         })
          //console.log(this.allDataStats.fairsharing_registry.buckets)
-         //console.log(this.dataStats.countries.buckets);
+         //console.log(this.allDataStats.countries.buckets);
        },
        methods: {
          prepareData(){
            this.prepareRegistryCounts(this.allDataStats);
+           this.prepareRecordCountry(this.allDataStats);
          },
          prepareRegistryCounts(data){
+           this.optionChartPie1 = this.optionChartPie;
+           this.optionChartPie1.title.text= "Content divided by type";
+           this.optionChartPie1.series[0].data = [];
            let regBucket = data.fairsharing_registry.buckets;
+           let nameMap = { policy:"Policies", standard:"Standards", database:"Databases", collection:"Collections" };
            regBucket.forEach(item => {
              let vectItem = {
-               name: item.key,
-               y: item.doc_count
+               name: nameMap[item.key],
+               y: item.doc_count,
+               url: window.location.hostname+'/#/search?fairsharingRegistry='+item.key
              };
-             this.registriesCounts.push(vectItem);
+             this.optionChartPie1.series[0].data.push(vectItem);
+           });
+         },
+         prepareRecordCountry(data){
+           this.optionChartBars1 = this.optionChartBars;
+           this.optionChartBars1.title.text= "Top 10 countries by content"
+           this.optionChartBars1.yAxis.title.text = 'Number of records'
+           this.optionChartBars1.series = [];
+           let totRecords = data.countries.doc_count;
+           let regBucket = data.countries.buckets.slice(0,10);
+           //let nameMap = { policy:"Policies", standard:"Standards", database:"Databases", collection:"Collections" };
+           let varX = 0;
+           regBucket.forEach(item => {
+             //console.log(item.key);
+             let vectItem = {
+               name: item.key,
+               cursor: 'pointer',
+               point: {
+                   events: {
+                     click: function() {
+                       location.href = window.location.hostname+'/#/search?countries='+item.key;
+                     }
+                   }
+               },
+               data: []
+             };
+             let datItem = {
+               name: "",
+               x: varX,
+               y: item.doc_count,
+               z: 100*item.doc_count/totRecords
+             };
+             vectItem.data.push(datItem);
+             varX +=1;
+             this.optionChartBars1.series.push(vectItem);
            });
          }
       }

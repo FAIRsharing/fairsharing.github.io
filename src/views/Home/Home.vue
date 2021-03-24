@@ -4,7 +4,6 @@
     class="home container-fluid"
   >
     Welcome to FAIRsharing.org
-
     <script
       type="application/ld+json"
       v-text="value"
@@ -18,11 +17,6 @@
      */
     export default {
       name: "Home",
-      data: () => {
-        return {
-          value: '{ @context: "http://schema.org",}'
-        }
-      },
       jsonld() {
         return {
           "@context": "http://schema.org",

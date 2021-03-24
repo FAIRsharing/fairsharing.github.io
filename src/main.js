@@ -20,6 +20,8 @@ import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 
+import VueJsonLD from 'vue-jsonld'
+
 // This is a global sass file, it is applied to every vue instance
 /* import Global Sass */
 import "./styles/main.scss"
@@ -39,6 +41,10 @@ Vue.use(VueMoment);
 Vue.use(VueMeta, {
     refreshOnceOnNavigation: true
 });
+
+// using jsonLD package to inject jsonLD meta data dynamically.
+Vue.use(VueJsonLD);
+
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 

@@ -34,6 +34,7 @@
     "vue": "^2.6.12",
     "vue-anchor-router-link": "*",
     "vue-country-flag": "^2.0.1",
+    "vue-jsonld": "^1.0.1",
     "vue-loader": "^15.9.3",
     "vue-meta": "^2.4.0",
     "vue-moment": "^4.1.0",

@@ -1,0 +1,300 @@
+{
+  "searchFairsharingRecords": {
+    "aggregations": {
+      "is_maintained": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "true",
+            "key_as_string": "true",
+            "doc_count": 47
+          },
+          {
+            "key": "false",
+            "key_as_string": "false",
+            "doc_count": 27
+          }
+        ]
+      },
+      "grants": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "16183mfds541",
+            "doc_count": 1
+          },
+          {
+            "key": "1u24ai117966-01",
+            "doc_count": 1
+          }
+        ]
+      },
+      "fairsharing_registry": {
+        "doc_count": 5000,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "standard",
+            "doc_count": 1000
+          },
+          {
+            "key": "database",
+            "doc_count": 2000
+          },
+          {
+            "key": "policy",
+            "doc_count": 15000
+          },
+          {
+            "key": "database",
+            "doc_count": 500
+          }
+        ]
+      },
+      "subjects": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "natural science",
+            "doc_count": 65
+          },
+          {
+            "key": "natural sciences",
+            "doc_count": 65
+          },
+          {
+            "key": "life science",
+            "doc_count": 62
+          }
+        ]
+      },
+      "domains": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "entity",
+            "doc_count": 67
+          },
+          {
+            "key": "continuant",
+            "doc_count": 53
+          }
+        ]
+      },
+      "countries": {
+        "doc_count": 5000,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "united states of america",
+            "doc_count": 1500
+          },
+          {
+            "key": "united kingdom of great britain and northern ireland",
+            "doc_count": 1000
+          },
+          {
+            "key": "germany",
+            "doc_count": 700
+          },
+          {
+            "key": "all",
+            "doc_count": 500
+          },
+          {
+            "key": "france",
+            "doc_count": 250
+          },
+          {
+            "key": "netherlands",
+            "doc_count": 125
+          },
+          {
+            "key": "switzerland",
+            "doc_count": 100
+          },
+          {
+            "key": "spain",
+            "doc_count": 100
+          },
+          {
+            "key": "european union",
+            "doc_count": 80
+          },
+          {
+            "key": "canada",
+            "doc_count": 50
+          }
+        ]
+      },
+      "journals": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "nat biotechnol",
+            "doc_count": 6
+          },
+          {
+            "key": "nucleic acids res",
+            "doc_count": 5
+          }
+        ]
+      },
+      "record_type": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "reporting_guideline",
+            "doc_count": 38
+          }
+        ]
+      },
+      "is_recommended": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "true",
+            "key_as_string": "true",
+            "doc_count": 74
+          }
+        ]
+      },
+      "organisations": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "national institutes of health (nih), bethesda, md, usa",
+            "doc_count": 15
+          },
+          {
+            "key": "nih common fund, usa",
+            "doc_count": 10
+          }
+        ]
+      },
+      "taxonomies": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "all",
+            "doc_count": 27
+          }
+        ]
+      },
+      "is_approved": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "true",
+            "key_as_string": "true",
+            "doc_count": 74
+          }
+        ]
+      },
+      "licences": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "creative commons attribution 3.0 unported (cc by 3.0)",
+            "doc_count": 5
+          },
+          {
+            "key": "creative commons attribution 4.0 international (cc by 4.0)",
+            "doc_count": 5
+          }
+        ]
+      },
+      "user_defined_tags": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "drug target",
+            "doc_count": 7
+          },
+          {
+            "key": "metadata standardization",
+            "doc_count": 7
+          }
+        ]
+      },
+      "status": {
+        "doc_count": 74,
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "ready",
+            "doc_count": 73
+          },
+          {
+            "key": "deprecated",
+            "doc_count": 1
+          }
+        ]
+      }
+    },
+    "currentPage": 1,
+    "perPage": 30,
+    "totalCount": 74,
+    "totalPages": 3,
+    "firstPage": true,
+    "records": [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  }
+}

@@ -4,10 +4,6 @@
     class="home container-fluid"
   >
     Welcome to FAIRsharing.org
-    <script
-      type="application/ld+json"
-      v-text="value"
-    />
   </div>
 </template>
 

@@ -82,10 +82,25 @@
                     :record="item"
                     :show-status="false"
                   />
-                  <div class="ml-10 text-ellipses-height-2lines">
+                  <div class="ml-10 text-ellipses-height-2lines line-height-20">
                     {{ item.name }}
                   </div>
                 </div>
+                <p class="grey--text  relation-style text-ellipses-height-2lines line-height-14">
+                  {{ item.name }}
+                  <v-tooltip top>
+                    <template #activator="{ on }">
+                      <span
+                        class="red--text mouse-info"
+                        v-on="on"
+                      >
+                        {{ item.recordAssocLabel }}
+                      </span>
+                    </template>
+                    <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
+                  </v-tooltip>
+                  {{ item.subject }}
+                </p>
               </v-card>
             </template>
           </v-virtual-scroll>
@@ -101,6 +116,8 @@ import {mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils"
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordTabUtils from "@/utils/recordTabUtils";
+import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
+
 export default {
   name: "Collections",
   components: {
@@ -110,6 +127,7 @@ export default {
   mixins:[stringUtils,recordTabUtils],
   data: () => {
     return {
+      relationDefinition: recordRelationShipsDefinitions,
       selectedValues: null,
       tabsData: {
         selectedTab: 0,

@@ -2,7 +2,7 @@
   <v-main>
     <v-container
       fluid
-      class="text-center mx-2"
+      class="text-center"
     >
       <h1>A curated, informative and educational resource on data and metadata standards, inter-related to databases and data policies. </h1>
       <h2>How can we help?</h2>
@@ -48,6 +48,67 @@
           </v-tab-item>
         </v-tabs-items>
       </v-tabs>
+      <v-row style="height: 250px;background: white;">
+        <v-col
+            style="border: 5px solid red"
+            sm="12"
+            md="4"
+        >
+          column 1
+        </v-col>
+        <v-col
+            style="border: 5px solid red"
+            sm="12"
+            md="4"
+        >
+          column 2
+        </v-col>
+        <v-col
+            style="border: 5px solid red"
+            sm="12"
+            md="4"
+        >
+          column 3
+        </v-col>
+      </v-row>
+      <v-row style="height: 250px;background: blue">
+        <v-col
+          sm="12"
+          md="6"
+        >
+          Left
+        </v-col>
+        <v-col
+          sm="12"
+          md="6"
+        >
+          Right
+        </v-col>
+      </v-row>
+      <v-row style="height: 250px;background: white;">
+        <v-col
+          style="border: 5px solid red"
+          sm="12"
+          md="4"
+        >
+          column 1
+        </v-col>
+        <v-col
+          style="border: 5px solid red"
+          sm="12"
+          md="4"
+        >
+          column 2
+        </v-col>
+        <v-col
+          style="border: 5px solid red"
+          sm="12"
+          md="4"
+        >
+          column 3
+        </v-col>
+      </v-row>
+      <div style="height: 300px">Our Community of 76 Journals, Funders, and Databases Includes</div>
     </v-container>
   </v-main>
 </template>

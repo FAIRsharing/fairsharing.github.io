@@ -14,8 +14,6 @@ let fakeDataStats =  dataStats;
 
 describe("Statistics.vue", () => {
   let wrapper;
-  let restStub;
-  let graphStub;
 
   beforeAll( async (done) => {
 

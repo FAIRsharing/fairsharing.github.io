@@ -26,7 +26,7 @@
         {{ description }}
       </p>
       <router-link
-        class="text-left"
+        class="text-left font-weight-light underline-effect"
         to=""
       >
         read more

@@ -7,7 +7,6 @@ a {
 ul {
   list-style: none;
 }
-
 //End of Global Setting---------------------
 
 //Animations--------------------------------
@@ -219,3 +218,42 @@ ul {
   -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
   box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
 }
+
+// custom fonts--------------------------
+@font-face {
+  font-family: "lato_font_bold";
+  src: url("~@/assets/fonts/Lato-Black.ttf");
+}
+
+@font-face {
+  font-family: "lato_font_medium";
+  src: url("~@/assets/fonts/Lato-Regular.ttf");
+}
+
+@font-face {
+  font-family: "lato_font_light";
+  src: url("~@/assets/fonts/Lato-Thin.ttf");
+}
+
+.lato-font-bold {
+  font-family: Lato_font_bold, serif;
+}
+
+.lato-font-medium {
+  font-family: Lato_font_medium, serif;
+}
+
+.lato-font-light {
+  font-family: Lato_font_light, serif;
+}
+
+.lato-text-sm {
+  font-size: .8rem;
+}
+.lato-text-md {
+  font-size: 1.2rem;
+}
+.lato-text-lg {
+  font-size: 1.5rem;
+}
+//End of custom fonts--------------------------

@@ -4,9 +4,17 @@
       fluid
       class="text-center"
     >
-      <h1>A curated, informative and educational resource on data and metadata standards, inter-related to databases and data policies. </h1>
-      <h2>How can we help?</h2>
-      <h3> We guide consumers to discover, select and use these resources with confidence, and producers to make their resource more discoverable, more widely adopted and cited.</h3>
+      <div class="px-10">
+        <h1 class="text-body-1 text-sm-h6 my-4 my-sm-4 my-lg-8 text-md-h5 text-lg-h4 text-xl-h3 font-weight-black secondary--text">
+          A curated, informative and educational resource on data and metadata standards, inter-related to databases and data policies.
+        </h1>
+        <h2 class="text-body-2 text-sm-h5 my-8 my-sm-4 my-lg-8 text-md-h5 text-lg-h4 text-xl-h3 font-weight-medium">
+          How can we help?
+        </h2>
+        <h3 :class="['lato-font-medium my-sm-4 my-lg-8 my-8 primary--text px-10',{'lato-text-md':$vuetify.breakpoint.mdOnly,'lato-text-lg':$vuetify.breakpoint.lgAndUp,'lato-text-sm':$vuetify.breakpoint.smAndDown}]">
+          We guide consumers to discover, select and use these resources with confidence, and producers to make their resource more discoverable, more widely adopted and cited.
+        </h3>
+      </div>
       <v-row>
         <v-col
           sm="12"
@@ -50,23 +58,23 @@
       </v-tabs>
       <v-row style="height: 250px;background: white;">
         <v-col
-            style="border: 5px solid red"
-            sm="12"
-            md="4"
+          style="border: 5px solid red"
+          sm="12"
+          md="4"
         >
           column 1
         </v-col>
         <v-col
-            style="border: 5px solid red"
-            sm="12"
-            md="4"
+          style="border: 5px solid red"
+          sm="12"
+          md="4"
         >
           column 2
         </v-col>
         <v-col
-            style="border: 5px solid red"
-            sm="12"
-            md="4"
+          style="border: 5px solid red"
+          sm="12"
+          md="4"
         >
           column 3
         </v-col>
@@ -108,7 +116,9 @@
           column 3
         </v-col>
       </v-row>
-      <div style="height: 300px">Our Community of 76 Journals, Funders, and Databases Includes</div>
+      <div style="height: 300px">
+        Our Community of 76 Journals, Funders, and Databases Includes
+      </div>
     </v-container>
   </v-main>
 </template>

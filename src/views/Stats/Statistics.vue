@@ -1,7 +1,11 @@
 <template>
   <v-container fluid>
     <v-row no-gutters>
-      <v-col>
+      <v-col
+        md="12"
+        sm="12"
+        lg="6"
+      >
         <v-card
           v-if="optionChartPie1"
           class="pa-2"
@@ -14,7 +18,11 @@
           />
         </v-card>
       </v-col>
-      <v-col>
+      <v-col
+        md="12"
+        sm="12"
+        lg="6"
+      >
         <v-card
           v-if="optionChartBars1"
           class="pa-2"
@@ -75,6 +83,9 @@
                title:{
                  text:"" //The title text of the chart
                },
+               credits: {
+                 enabled: false
+               },
                tooltip: {
                  pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
                },
@@ -114,6 +125,9 @@
                },
                xAxis: {
                  type: 'category'
+               },
+               credits: {
+                 enabled: false
                },
                yAxis: {
                  min: 0,
@@ -171,8 +185,8 @@
              let vectItem = {
                name: nameMap[item.key],
                y: item.doc_count,
-               url: window.location.hostname+'/#/search?fairsharingRegistry='+item.key
-             };
+               url: '/#/search?fairsharingRegistry='+item.key
+             };//window.location.hostname+
              this.optionChartPie1.series[0].data.push(vectItem);
            });
          },
@@ -183,17 +197,25 @@
            this.optionChartBars1.series = [];
            let totRecords = data.countries.doc_count;
            let regBucket = data.countries.buckets.slice(0,10);
-           //let nameMap = { policy:"Policies", standard:"Standards", database:"Databases", collection:"Collections" };
+           let nameMap = { "united states of america":"USA",
+           "united kingdom of great britain and northern ireland":"UK",
+           "european union":"European Union"};
            let varX = 0;
+           let nameC = "";
            regBucket.forEach(item => {
              //console.log(item.key);
+             if (item.key in nameMap){
+               nameC = nameMap[item.key];
+             }else{
+               nameC = item.key[0].toUpperCase() + item.key.substring(1);
+             }
              let vectItem = {
-               name: item.key,
+               name: nameC,
                cursor: 'pointer',
                point: {
                    events: {
                      click: function() {
-                       location.href = window.location.hostname+'/#/search?countries='+item.key;
+                       location.href = '/#/search?countries='+item.key;
                      }
                    }
                },

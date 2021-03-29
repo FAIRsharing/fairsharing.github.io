@@ -27,6 +27,10 @@ describe("Statistics.vue", () => {
     });
     done();
   });
+  
+  afterEach(() => {
+    graphStub.restore();
+  });
 
   it("can be mounted and data properly created", async () => {
       const title = "Statistics";

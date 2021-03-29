@@ -5,7 +5,7 @@
       class="text-center"
     >
       <div class="px-10">
-        <h1 class="text-body-1 text-sm-h6 my-4 my-sm-4 my-lg-8 text-md-h5 text-lg-h4 text-xl-h3 font-weight-black secondary--text">
+        <h1 class="text-body-1 text-sm-h6 my-4 my-sm-4 my-lg-8 text-md-h6 text-lg-h5 text-xl-h4 font-weight-black secondary--text">
           A curated, informative and educational resource on data and metadata standards, inter-related to databases and data policies.
         </h1>
         <h2 class="text-body-2 text-sm-h5 my-8 my-sm-4 my-lg-8 text-md-h5 text-lg-h4 text-xl-h3 font-weight-medium">

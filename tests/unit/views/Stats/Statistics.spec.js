@@ -39,7 +39,8 @@ describe("Statistics.vue", () => {
 
       expect(wrapper.vm.optionChartBars1.chart.type).toBe("column");
       expect(wrapper.vm.optionChartBars1.series.length).toBe(10);
-      expect(wrapper.vm.optionChartBars1.series[0].name).toBe("united states of america");
+      expect(wrapper.vm.optionChartBars1.series[0].name).toBe("USA");
+      expect(wrapper.vm.optionChartBars1.series[2].name).toBe("Germany");
       expect(wrapper.vm.optionChartBars1.series[9].data[0].y).toBe(50);
   });
 

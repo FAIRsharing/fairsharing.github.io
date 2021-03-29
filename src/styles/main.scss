@@ -85,6 +85,11 @@ ul {
   white-space: nowrap;
 }
 
+.ellipse-150 {
+  @extend .ellipse;
+  max-width: 150px;
+}
+
 .ellipse-width-80 {
   width: 80px;
   text-overflow: ellipsis;

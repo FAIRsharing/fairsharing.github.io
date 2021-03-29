@@ -29,7 +29,7 @@
           outlined
           color="white"
           tile
-          elevation="3"
+          elevation="1"
         >
           <!-- title -->
           <v-card-text

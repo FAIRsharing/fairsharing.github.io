@@ -27,7 +27,7 @@
       </p>
       <router-link
         class="text-left font-weight-light underline-effect"
-        to=""
+        :to="link"
       >
         read more
       </router-link>
@@ -48,6 +48,10 @@ export default {
       default: null
     },
     image: {
+      type: String,
+      default: null
+    },
+    link: {
       type: String,
       default: null
     }

@@ -40,6 +40,7 @@
               :header="tabItem.header"
               :description="tabItem.description"
               :image="tabItem.image"
+              :link="tabItem.link"
             />
           </v-tab-item>
         </v-tabs-items>

@@ -101,7 +101,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .chips-container-fixed-height {
   height: 40px;
 }

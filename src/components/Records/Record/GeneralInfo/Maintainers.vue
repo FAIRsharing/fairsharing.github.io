@@ -17,6 +17,7 @@
         </p>
         <a
           v-if="canClaim"
+          class="underline-effect"
           @click="()=>{$emit('requestOwnership')}"
         >
           Claim it now!
@@ -30,7 +31,7 @@
         class="d-flex flex-wrap"
       >
         <a
-          :href="maintainer.username + '/' + maintainer.id"
+          @click="$router.push({path: '/users/' + maintainer.id})"
           class="mr-2"
         >
           {{

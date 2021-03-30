@@ -47,7 +47,7 @@
           </v-tab-item>
         </v-tabs-items>
       </v-tabs>
-      <block-categories />
+      <block-categories class="mb-4" />
       <v-row style="height: 250px;background: blue">
         <v-col
           sm="12"

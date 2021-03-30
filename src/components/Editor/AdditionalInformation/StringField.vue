@@ -14,13 +14,13 @@
 
     <v-text-field
       v-if="!fieldProps.enum"
+      :rules="rules"
       :value="target()"
       :label="getName"
       outlined
       class="field"
       width="80%"
       @input="setField($event)"
-      :rules="rules"
     />
     <v-autocomplete
       v-else

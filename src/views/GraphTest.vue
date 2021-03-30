@@ -161,78 +161,25 @@
         methods: {
             async getData(){
                 this.loading = true;
-                this.options.series[0].data = [];
-                this.options.series[0].nodes = [];
 
-                let seriesData = [];
-                let nodes = [];
-                graphQuery.queryParam = {id: this.$route.params.id};
+                // A maxPathLength of 1-4 may be specified (API's default is 2).
+                // Higher values may make the resulting graph rather large...
+                graphQuery.queryParam = {id: parseInt(this.$route.params.id), maxPathLength: 2};
                 const response = await graphClient.executeQuery(graphQuery);
-                this.relations = response.fairsharingRecord;
-                this.options.subtitle.text = this.relations.metadata.name + ' Network Graph';
-                nodes.push({
-                    id: this.relations.metadata.name,
-                    marker: {
-                        symbol: this.markers[this.relations.registry.toLowerCase()],
-                        radius: 20,
-                        fillColor: "red",
-                        // symbol: `url(${this.$vuetify.icons.values[this.relations.type].icon})`
-                    }
-                });
-                let newIDs = [];
-                this.relations.recordAssociations.forEach(association => {
-                    newIDs.push(association.linkedRecord.id);
-                    seriesData.push([
-                        this.relations.metadata.name,
-                        association.linkedRecord.name,
-                        association.recordAssocLabel.replace(/_/g, " ").toUpperCase()
-                    ]);
-                    nodes.push({
-                        id: association.linkedRecord.name,
-                        marker: {
-                            radius: 10,
-                            symbol: this.markers[association.linkedRecord.registry.toLowerCase()]
-                            // symbol: `url(${this.$vuetify.icons.values[association.linkedRecord.type].icon})`
-                        }
-                    });
-                });
-                let newRelations = await Promise.all(newIDs.map(id => {
-                    if (id) {
-                        let subQuery = JSON.parse(JSON.stringify(graphQuery));
-                        subQuery.queryParam.id = id;
-                        return graphClient.executeQuery(subQuery);
-                    }
-                }));
-                newRelations.forEach(newRelation => {
-                  if (Object.keys(newRelation).includes('fairsharingRecord')) {
-                    let subAssociations = newRelation.fairsharingRecord.recordAssociations;
-                    subAssociations.forEach(subAssociation => {
-                      if (newIDs.includes(subAssociation.linkedRecord.id)) {
-                        seriesData.push([
-                          newRelation.fairsharingRecord.metadata.name,
-                          subAssociation.linkedRecord.name,
-                          subAssociation.recordAssocLabel.replace(/_/g, " ").toUpperCase()
-                        ]);
-                        /*nodes.push({
-                                id: subAssociation.linkedRecord.name,
-                                color: 'orange',
-                                marker: {
-                                    radius: 5
-                                }
-                            });*/
-                      }
-                    });
-                  }
-                });
-                if (nodes.length > 200){
+
+                this.options.series[0].data = response.fairsharingGraph.edges;
+                this.options.series[0].nodes = response.fairsharingGraph.nodes;
+                this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
+
+                if (this.options.series[0].nodes.length > 200){
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 40;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 50;
                 }
-                else if (nodes.length > 100){
+                else if (this.options.series[0].nodes.length > 100){
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 60;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 100;
                 }
-                else if (nodes.length < 30) {
+                else if (this.options.series[0].nodes.length < 30) {
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 80;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 300;
                 }
@@ -240,16 +187,8 @@
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 60;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 120;
                 }
-                this.options.series[0].nodes = nodes;
-                this.options.series[0].data = seriesData;
-                this.loading = false;
-                /*
-                console.log("NODES: ");
-                console.log(JSON.stringify(nodes));
-                console.log("DATA: ");
-                console.log(JSON.stringify(seriesData));
-                */
 
+                this.loading = false;
             }
         }
     }

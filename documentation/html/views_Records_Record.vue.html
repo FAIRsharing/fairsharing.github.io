@@ -303,6 +303,15 @@
                   method: function(){return null}
                 },
                 {
+                  name: "View Relation Graph",
+                  isDisabled: function(){ return false },
+                  method: function(){
+                    _module.$router.push({
+                      path: "/graph/" + _module.currentRecord['fairsharingRecord'].id
+                    })
+                  }
+                },
+                {
                   name: "Have a suggestion/question ?",
                   isDisabled: function(){ return true},
                   method: function(){return null}

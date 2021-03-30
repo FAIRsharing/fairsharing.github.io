@@ -18,7 +18,7 @@
 
       <v-tabs
         v-model="tabsData.selectedTab"
-        grow
+        :grow="$vuetify.breakpoint.lgAndDown"
         :show-arrows="$vuetify.breakpoint.mdAndDown"
         centered
         slider-color="primary"

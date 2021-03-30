@@ -166,7 +166,7 @@ describe("Record.vue", function() {
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         expect($router.push).toHaveBeenCalledTimes(2);
         expect(buttons[2].method()).toBe(null);
-        expect(buttons[3].method()).toBe(null);
+        expect(buttons[4].method()).toBe(null);
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123}
@@ -174,6 +174,8 @@ describe("Record.vue", function() {
         await buttons[1].method();
         expect(wrapper.vm.claimedTriggered).toBe(true);
         expect(wrapper.vm.canClaim).toBe(false);
+        buttons[3].method();
+        expect($router.push).toHaveBeenCalledWith({path: "/graph/980190962"});
     });
 
     it("can properly fetch a record history", async () => {

@@ -1,25 +1,8 @@
 {
-  "queryName": "fairsharingRecord",
+  "queryName": "fairsharingGraph",
   "queryParam": null,
   "fields": [
-    "id",
-    "registry",
-    "type",
-    "metadata",
-    {
-      "name": "recordAssociations",
-      "fields": [
-        {
-          "queryName": "linkedRecord",
-          "fields": [
-            "name",
-            "id",
-            "registry",
-            "type"
-          ]
-        },
-        "recordAssocLabel"
-      ]
-    }
+    "nodes",
+    "edges"
   ]
 }

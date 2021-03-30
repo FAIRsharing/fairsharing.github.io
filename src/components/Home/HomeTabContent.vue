@@ -9,8 +9,8 @@
       <v-img
         contain
         :src="image"
-        :width="$vuetify.breakpoint.mdAndDown?'180':'300'"
-        :height="$vuetify.breakpoint.mdAndDown?'180':'300'"
+        :width="$vuetify.breakpoint.mdAndDown?'150':'300'"
+        :height="$vuetify.breakpoint.mdAndDown?'150':'300'"
       />
     </v-col>
     <v-col
@@ -22,11 +22,11 @@
       <h4 class="mb-2 text-left text-body-2 text-sm-h6 text-md-h5 font-weight-bold primary--text">
         {{ header }}
       </h4>
-      <p :class="['lato-font-medium font-weight-thin text-justify lato-text-sm',{'lato-text-md':$vuetify.breakpoint.mdAndUp}]">
+      <p :class="['mb-1 lato-font-medium font-weight-thin text-justify lato-text-sm',{'lato-text-md':$vuetify.breakpoint.mdAndUp}]">
         {{ description }}
       </p>
       <router-link
-        class="text-left font-weight-light underline-effect"
+        class="text-left font-weight-light lato-text-sm underline-effect"
         :to="link"
       >
         read more

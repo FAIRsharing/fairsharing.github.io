@@ -45,30 +45,7 @@
           </v-tab-item>
         </v-tabs-items>
       </v-tabs>
-
-      <v-row style="height: 250px;background: white;">
-        <v-col
-          style="border: 5px solid red"
-          sm="12"
-          md="4"
-        >
-          column 1
-        </v-col>
-        <v-col
-          style="border: 5px solid red"
-          sm="12"
-          md="4"
-        >
-          column 2
-        </v-col>
-        <v-col
-          style="border: 5px solid red"
-          sm="12"
-          md="4"
-        >
-          column 3
-        </v-col>
-      </v-row>
+      <block-categories />
       <v-row style="height: 250px;background: blue">
         <v-col
           sm="12"
@@ -116,12 +93,13 @@
 <script>
 import HomeTabContent from "@/components/Home/HomeTabContent";
 import {tabs} from "@/data/homePageData.json"
+import BlockCategories from "@/components/Home/BlockCategories";
     /** Component to handle the front page (landing page)
      *
      */
     export default {
       name: "Home",
-      components:{HomeTabContent},
+      components:{BlockCategories, HomeTabContent},
       data: () => {
         return {
           tabsData: {

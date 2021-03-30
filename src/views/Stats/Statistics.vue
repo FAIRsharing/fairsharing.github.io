@@ -1,6 +1,62 @@
 <template>
   <v-container fluid>
-    <v-row no-gutters>
+    <v-card-title
+      primary-title
+      class="justify-center"
+    >
+      <div>
+        <h3
+          class="headline text--accent-2"
+        >
+          Summary Statistics
+        </h3>
+      </div>
+    </v-card-title>
+    <v-row
+      align="center"
+      justify="space-around"
+    >
+      <v-btn
+        depressed
+        color="primary"
+        :class="{activeChartClass: activeChart === 0}"
+        @click="chartSelection(0)"
+      >
+        All
+      </v-btn>
+      <v-btn
+        depressed
+        color="primary"
+        :class="{activeChartClass: activeChart === 1}"
+        @click="chartSelection(1)"
+      >
+        Standards
+      </v-btn>
+      <v-btn
+        depressed
+        color="primary"
+        :class="{activeChartClass: activeChart === 2}"
+        @click="chartSelection(2)"
+      >
+        Databases
+      </v-btn>
+      <v-btn
+        depressed
+        color="primary"
+        :class="{activeChartClass: activeChart === 3}"
+        @click="chartSelection(3)"
+      >
+        Policies
+      </v-btn>
+    </v-row>
+    <v-divider
+      class="mx-4"
+      vertical
+    />
+    <v-row
+      v-if="activeChart === 0"
+      no-gutters
+    >
       <v-col
         md="12"
         sm="12"
@@ -73,6 +129,7 @@
        data () {
            return {
              allDataStats: null,
+             activeChart : 0,
              optionChartPie:{
                chart:{
                  plotBackgroundColor: null,
@@ -171,6 +228,9 @@
          //console.log(this.allDataStats.countries.buckets);
        },
        methods: {
+         chartSelection(id) {
+           this.activeChart = id;
+         },
          prepareData(){
            this.prepareRegistryCounts(this.allDataStats);
            this.prepareRecordCountry(this.allDataStats);
@@ -236,4 +296,7 @@
     }
   </script>
   <style scoped>
+    .activeChartClass {
+      background-color: black!important;
+    }
   </style>

@@ -27,7 +27,7 @@ describe("Statistics.vue", () => {
     });
     done();
   });
-  
+
   afterEach(() => {
     graphStub.restore();
   });
@@ -46,6 +46,11 @@ describe("Statistics.vue", () => {
       expect(wrapper.vm.optionChartBars1.series[0].name).toBe("USA");
       expect(wrapper.vm.optionChartBars1.series[2].name).toBe("Germany");
       expect(wrapper.vm.optionChartBars1.series[9].data[0].y).toBe(50);
+  });
+  it("clicks methods work properly", async () => {
+    expect(wrapper.vm.activeChart).toBe(0);
+    wrapper.vm.chartSelection(3);
+    expect(wrapper.vm.activeChart).toBe(3);
   });
 
 });

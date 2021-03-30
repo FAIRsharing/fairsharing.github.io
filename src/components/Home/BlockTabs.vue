@@ -33,7 +33,7 @@
 
 <script>
 import {tabs} from "@/data/homePageData.json";
-import TabContent from "@/components/Home/TabContent";
+import TabContent from "@/components/Home/BlockTabs/TabContent";
 
 export default {
 name: "BlockTabs",

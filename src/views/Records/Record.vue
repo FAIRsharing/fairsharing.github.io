@@ -45,6 +45,7 @@
           >
             <template #activator="{ on, attrs }">
               <v-btn
+                v-if="!error"
                 class="mt-2"
                 color="primary"
                 v-bind="attrs"
@@ -304,8 +305,11 @@
                 this.alreadyClaimed = false;
                 this.claimedTriggered = false;
                 try {
-                    if (this.target) await _module.fetchPreviewRecord(this.target);
-                    else await _module.fetchRecord(this.currentRoute);
+                  if (this.target) await _module.fetchPreviewRecord(this.target);
+                    else await _module.fetchRecord({
+                        id: this.currentRoute,
+                        token: _module.user().credentials.token
+                      });
                 }
                 catch (e) {
                     this.error = e.message;

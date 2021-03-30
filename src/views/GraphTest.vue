@@ -52,6 +52,7 @@
             highcharts: Chart,
         },
         data () {
+          let _module = this;
             return {
                 loading: false,
                 options: {
@@ -110,6 +111,16 @@
                     },
                     series: [{
                         animation: false,
+                        events: {
+                          click: async function(event) {
+                            // Avoid redundant navigation to self...
+                            if (parseInt(_module.$route.params.id) !== parseInt(event.point.record_id)) {
+                              _module.$router.push({
+                                path: "/graph/" +  event.point.record_id
+                              })
+                            }
+                          }
+                        },
                         dataLabels: {
                             enabled: true,
                             linkFormat: '{point.rel}',
@@ -144,14 +155,18 @@
                     }],
                     nodes: null
                 },
-                relations: null,
-                markers: {
-                    standard: 'circle',
-                    database: 'square',
-                    policy: 'triangle',
-                    collection: 'diamond'
-                }
+                relations: null
             }
+        },
+        computed: {
+          currentRoute() {
+            return this.target || this.$route.params['id'];
+          }
+        },
+        watch: {
+          async currentRoute() {
+            await this.getData();
+          }
         },
         mounted() {
             this.$nextTick(async function () {
@@ -193,6 +208,3 @@
         }
     }
 </script>
-
-<style scoped>
-</style>

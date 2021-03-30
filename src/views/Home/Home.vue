@@ -4,7 +4,7 @@
       fluid
       class="text-center"
     >
-      <div class="px-10">
+      <div class="px-md-10">
         <h1 class="text-body-1 text-sm-h6 my-4 my-sm-4 my-lg-8 text-md-h6 text-lg-h5 text-xl-h4 font-weight-black secondary--text">
           A curated, informative and educational resource on data and metadata standards, inter-related to databases and data policies.
         </h1>
@@ -21,9 +21,11 @@
         :grow="$vuetify.breakpoint.lgAndDown"
         :show-arrows="$vuetify.breakpoint.mdAndDown"
         centered
-        slider-color="primary"
         slider-size="5"
         class="height-430"
+        background-color="transparent"
+        color="accent3"
+        slider-color="accent3"
       >
         <v-tab
           v-for="(tab,index) in tabsData.tabs"

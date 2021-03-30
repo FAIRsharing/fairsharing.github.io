@@ -25,6 +25,8 @@
     "dotenv": "^8.2.0",
     "fibers": "^5.0.0",
     "fsevents": "*",
+    "highcharts": "^9.0.1",
+    "highcharts-vue": "*",
     "jquery": "^3.5.1",
     "jsdoc-vuex-plugin": "^1.0.0",
     "lodash": "^4.17.20",
@@ -40,9 +42,7 @@
     "vue-router": "^3.4.3",
     "vue-scrollto": "^2.20.0",
     "vuetify": "2.3.4",
-    "vuex": "^3.5.1",
-    "highcharts": "^9.0.1",
-    "highcharts-vue": "*"
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.4.4",

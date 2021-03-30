@@ -13,6 +13,7 @@
           height="350px"
         >
           <div
+            :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 150%),url(' + 'assets/Home/HeroBlock/pattern3.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
             class="white--text d-flex align-end block-category__card__gradiant__1"
           >
             <v-card-title>Recommendations</v-card-title>
@@ -42,6 +43,7 @@
           height="350px"
         >
           <div
+            :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%),url(' + 'assets/Home/HeroBlock/pattern3-1.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
             class="white--text d-flex align-end block-category__card__gradiant__2"
           >
             <v-card-title>Collections</v-card-title>
@@ -71,6 +73,7 @@
           height="350px"
         >
           <div
+            :style="{ backgroundImage: 'linear-gradient(180deg, rgb(50, 12, 12) 100%, rgb(107, 30, 30) 150%),url(' + 'assets/Home/HeroBlock/pattern3-2.jpg',backgroundBlendMode:'lighten', backgroundSize:'cover'}"
             class="white--text d-flex align-end block-category__card__gradiant__3"
           >
             <v-card-title>Educational</v-card-title>
@@ -129,13 +132,13 @@ mixins: [ truncate ]
     &__gradiant__2 {
       height: 200px;
       background: rgb(37, 52, 66);
-      background: linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(26, 110, 27, 1) 100%);
+      background: linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);
     }
 
     &__gradiant__3 {
       height: 200px;
       background: rgb(50, 12, 12);
-      background: linear-gradient(180deg, rgba(50, 12, 12, 1) 0%, rgba(107, 30, 30, 1) 100%);
+      background: linear-gradient(180deg, rgb(50, 12, 12) 0%, rgb(107, 30, 30) 100%);
     }
   }
 }

@@ -39,7 +39,7 @@
 
 <script>
 export default {
-  name: "HomeTabContent",
+  name: "TabContent",
   props: {
     header: {
       type: String,

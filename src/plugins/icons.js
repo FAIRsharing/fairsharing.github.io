@@ -187,6 +187,18 @@ const customIcons  = {
         contact_form: {
             type: "icon",
             icon: "fa-address-card"
+        },
+        recommended: {
+            type: "icon",
+            icon: "fa-thumbs-up"
+        },
+        collections: {
+            type: "img",
+            icon: "assets/Home/BlockCategories/collections.png"
+        },
+        educational: {
+            type: "icon",
+            icon: "fa-graduation-cap"
         }
     },
     iconfont: 'fa'

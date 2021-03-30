@@ -13,13 +13,27 @@
           height="350px"
         >
           <div
-            :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 150%),url(' + 'assets/Home/HeroBlock/pattern3.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
-            class="white--text d-flex align-end block-category__card__gradiant__1"
+            :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%),url(' + 'assets/Home/BlockHero/pattern3-1.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
+            class="white--text d-flex flex-column justify-center block-category__card__gradiant__2"
           >
-            <v-card-title>Recommendations</v-card-title>
+            <div
+              style="height: 136px"
+              class="d-flex justify-center"
+            >
+              <v-icon
+                size="80"
+                color="white"
+                style="opacity: .7"
+              >
+                {{ $vuetify.icons.values["recommended"].icon }}
+              </v-icon>
+            </div>
+            <v-card-title class="d-inline">
+              Recommendations
+            </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('Standards and/or databases recommended by journal or funder data policies.',100) }}
+            {{ truncate('Standards and/or databases grouped by domain, species or organization.',100) }}
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -43,13 +57,22 @@
           height="350px"
         >
           <div
-            :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%),url(' + 'assets/Home/HeroBlock/pattern3-1.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
-            class="white--text d-flex align-end block-category__card__gradiant__2"
+            :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 150%),url(' + 'assets/Home/BlockHero/pattern3.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
+            class="white--text d-flex flex-column justify-center  block-category__card__gradiant__1"
           >
-            <v-card-title>Collections</v-card-title>
+            <v-img
+              width="400"
+              height="100"
+              :src="$vuetify.icons.values['collections'].icon"
+              contain
+            />
+
+            <v-card-title class="d-inline">
+              Collections
+            </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('Standards and/or databases grouped by domain, species or organization.',100) }}
+            {{ truncate('Standards and/or databases recommended by journal or funder data policies.',100) }}
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -73,10 +96,24 @@
           height="350px"
         >
           <div
-            :style="{ backgroundImage: 'linear-gradient(180deg, rgb(50, 12, 12) 100%, rgb(107, 30, 30) 150%),url(' + 'assets/Home/HeroBlock/pattern3-2.jpg',backgroundBlendMode:'lighten', backgroundSize:'cover'}"
-            class="white--text d-flex align-end block-category__card__gradiant__3"
+            :style="{ backgroundImage: 'linear-gradient(180deg, rgb(50, 12, 12) 100%, rgb(107, 30, 30) 150%),url(' + 'assets/Home/BlockHero/pattern3-2.jpg',backgroundBlendMode:'lighten', backgroundSize:'cover'}"
+            class="white--text d-flex flex-column justify-center block-category__card__gradiant__3"
           >
-            <v-card-title>Educational</v-card-title>
+            <div
+              style="height: 136px"
+              class="d-flex justify-center"
+            >
+              <v-icon
+                size="90"
+                color="white"
+                style="opacity: .7"
+              >
+                {{ $vuetify.icons.values["educational"].icon }}
+              </v-icon>
+            </div>
+            <v-card-title class="d-inline">
+              Educational
+            </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-90">
             {{ truncate('About standards, their use in databases and policies, and how we can help you.',100) }}
@@ -100,7 +137,7 @@ import {truncate} from "@/utils/stringUtils";
 
 export default {
 name: "BlockCategories",
-mixins: [ truncate ]
+  mixins: [ truncate ]
 }
 </script>
 

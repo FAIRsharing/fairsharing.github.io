@@ -10,16 +10,17 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
+          height="350px"
         >
           <v-img
             class="white--text align-end"
             height="200px"
             src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
           >
-            <v-card-title>Recommended</v-card-title>
+            <v-card-title>Recommendations</v-card-title>
           </v-img>
-          <v-card-text class="text--primary text-justify">
-            Standards and/or databases recommended by journal or funder data policies.
+          <v-card-text class="text--primary text-justify height-90">
+            {{ truncate('Standards and/or databases recommended by journal or funder data policies.',100) }}
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -40,23 +41,24 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
+          height="350px"
         >
           <v-img
             class="white--text align-end"
             height="200px"
             src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
           >
-            <v-card-title>Recommended</v-card-title>
+            <v-card-title>Collections</v-card-title>
           </v-img>
-          <v-card-text class="text--primary text-justify">
-            Standards and/or databases recommended by journal or funder data policies.
+          <v-card-text class="text--primary text-justify height-90">
+            {{ truncate('Standards and/or databases grouped by domain, species or organization.',100) }}
           </v-card-text>
           <v-card-actions>
             <v-btn
               color="primary"
               text
             >
-              Find
+              Discover
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -70,23 +72,24 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
+          height="350px"
         >
           <v-img
             class="white--text align-end"
             height="200px"
             src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
           >
-            <v-card-title>Recommended</v-card-title>
+            <v-card-title>Educational</v-card-title>
           </v-img>
-          <v-card-text class="text--primary text-justify">
-            Standards and/or databases recommended by journal or funder data policies.
+          <v-card-text class="text--primary text-justify height-90">
+            {{ truncate('About standards, their use in databases and policies, and how we can help you.',100) }}
           </v-card-text>
           <v-card-actions>
             <v-btn
               color="primary"
               text
             >
-              Find
+              Learn
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -96,8 +99,11 @@
 </template>
 
 <script>
+import {truncate} from "@/utils/stringUtils";
+
 export default {
-name: "BlockCategories"
+name: "BlockCategories",
+mixins: [ truncate ]
 }
 </script>
 

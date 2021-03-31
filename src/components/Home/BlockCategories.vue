@@ -33,7 +33,7 @@
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('Standards and/or databases grouped by domain, species or organization.',100) }}
+            {{ truncate('Standards and/or databases recommended by journal or funder data policies.',100) }}
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -72,7 +72,7 @@
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('Standards and/or databases recommended by journal or funder data policies.',100) }}
+            {{ truncate('Standards and/or databases grouped by domain, species or organization.',100) }}
           </v-card-text>
           <v-card-actions>
             <v-btn

@@ -124,7 +124,7 @@ export default {
     searchStringHomePage() {
       const _module = this;
       if (_module.searchTerm) {
-        if (this.selectedRegistries.length === this.registries.length) {
+        if (_module.selectedRegistries.length === _module.registries.length) {
           _module.$router.push({
             path: "/search",
             query: {
@@ -135,7 +135,7 @@ export default {
         }
         else {
           const selectedRegistriesValues = [];
-          this.selectedRegistries.forEach(registryItem => {
+          _module.selectedRegistries.forEach(registryItem => {
             selectedRegistriesValues.push(registryItem.value)
           });
           _module.$router.push({

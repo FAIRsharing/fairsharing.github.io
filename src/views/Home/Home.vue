@@ -10,28 +10,25 @@
       <block-search />
       <v-row style="height: 250px;background: white;">
         <v-col
-          style="border: 5px solid red"
           sm="12"
           md="4"
         >
           column 1
         </v-col>
         <v-col
-          style="border: 5px solid red"
           sm="12"
           md="4"
         >
           column 2
         </v-col>
         <v-col
-          style="border: 5px solid red"
           sm="12"
           md="4"
         >
           column 3
         </v-col>
       </v-row>
-      <div style="height: 300px">
+      <div style="height: 300px;background: #324e67">
         Our Community of 76 Journals, Funders, and Databases Includes
       </div>
     </v-container>

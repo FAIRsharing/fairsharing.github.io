@@ -7,20 +7,7 @@
       <BlockHero />
       <block-tabs />
       <block-categories class="mb-4" />
-      <v-row style="height: 250px;background: blue">
-        <v-col
-          sm="12"
-          md="6"
-        >
-          Left
-        </v-col>
-        <v-col
-          sm="12"
-          md="6"
-        >
-          Right
-        </v-col>
-      </v-row>
+      <block-search />
       <v-row style="height: 250px;background: white;">
         <v-col
           style="border: 5px solid red"
@@ -55,11 +42,12 @@
 import BlockCategories from "@/components/Home/BlockCategories";
 import BlockHero from "@/components/Home/BlockHero";
 import BlockTabs from "@/components/Home/BlockTabs";
+import BlockSearch from "@/components/Home/BlockSearch";
     /** Component to handle the front page (landing page)
      *
      */
     export default {
       name: "Home",
-      components:{BlockTabs, BlockHero, BlockCategories},
+      components:{BlockSearch, BlockTabs, BlockHero, BlockCategories},
     };
 </script>

@@ -1,6 +1,7 @@
 <template>
   <form
-    class=" d-flex flex-row align-center align-content-center pt-1 mr-1 mr-lg-1 ml-1"
+    class="d-flex flex-row align-center align-content-center pt-1 mr-1 mr-lg-1 ml-1"
+    style="position: relative"
     @submit.prevent="searchString()"
   >
     <v-text-field
@@ -15,11 +16,26 @@
       :placeholder="placeholder"
     />
     <v-btn
-      v-if="$vuetify.breakpoint.mdAndDown"
+      v-if="$vuetify.breakpoint.mdAndDown && !showButton"
       small
       color="primary"
       outlined
       :class="responsiveHeight"
+      class="mt-1 mt-lg-1 ml-2"
+      @click="searchString()"
+    >
+      <v-icon
+        x-small
+        class="mr-1"
+      >
+        fas fa-search
+      </v-icon>
+      <span class="button-text-size">Search</span>
+    </v-btn>
+    <v-btn
+      v-if="showButton"
+      id="home-search-bt"
+      color="primary"
       class="mt-1 mt-lg-1 ml-2"
       @click="searchString()"
     >
@@ -38,7 +54,8 @@
 export default {
   name: "StringSearch",
   props: {
-    placeholder: {default: null, type: String}
+    placeholder: {default: null, type: String},
+    showButton: {default: false, type: Boolean}
   },
   data() {
     return {
@@ -74,7 +91,7 @@ export default {
         });
         _module.searchTerm = null;
       }
-    },
+    }
   }
 }
 </script>
@@ -112,6 +129,16 @@ export default {
 .style-sm-xs {
   height: 40px !important;
   margin-bottom: 5px;
+}
+
+#home-search-bt {
+  height: 40px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+  -webkit-border-radius: unset;
+  -moz-border-radius: unset;
 }
 </style>
 

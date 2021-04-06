@@ -29,7 +29,8 @@ const template = {
         format: "uri",
         minLength: 1,
         description: "The URL at which the named data process can be found."
-    }
+    },
+    anotherField: {}
 };
 
 describe("Editor.vue", function() {
@@ -90,10 +91,10 @@ describe("Editor.vue", function() {
         });
         wrapper.vm.createItem("fieldName", template);
         expect(wrapper.vm.overlay.template).toStrictEqual(template);
-        expect(JSON.stringify(wrapper.vm.overlay.fields)).toStrictEqual(JSON.stringify({url: null}))
+        expect(JSON.stringify(wrapper.vm.overlay.fields)).toStrictEqual(JSON.stringify({url: null, anotherField: null}))
     });
 
-    it("can add an item", () => {
+    it("can add and remove an item", () => {
         wrapper = shallowMount(EditAdditionalInfo, {
             localVue,
             router,
@@ -105,5 +106,7 @@ describe("Editor.vue", function() {
         wrapper.vm.fieldValue = null;
         wrapper.vm.addItem();
         expect(wrapper.vm.fields.contacts[1]).toBe(null);
+        wrapper.vm.removeItem("contacts", 1);
+        expect(wrapper.vm.fields.contacts[1]).toBe(undefined);
     });
 });

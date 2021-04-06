@@ -25,13 +25,16 @@
               />
             </div>
             <v-card-title class="d-inline">
+              <span>
+                {{ getFiltersStatisticCount("fairsharing_registry","standard") }}
+              </span>
               Standards
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-250">
             <div class="d-flex">
               <strong class="flex-grow-1">Terminology Artifact</strong>
-              <span>112</span>
+              <span>22</span>
             </div>
             <v-divider />
             <div class="d-flex">
@@ -69,7 +72,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="400px"
+          height="500px"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -84,10 +87,13 @@
               />
             </div>
             <v-card-title class="d-inline">
+              <span>
+                {{ getFiltersStatisticCount("fairsharing_registry","database") }}
+              </span>
               Databases
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify height-140">
+          <v-card-text class="text--primary text-justify height-250">
             text
           </v-card-text>
           <v-card-actions>
@@ -109,7 +115,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="400px"
+          height="500px"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -124,10 +130,13 @@
               />
             </div>
             <v-card-title class="d-inline">
+              <span>
+                {{ getFiltersStatisticCount("fairsharing_registry","policy") }}
+              </span>
               Policies
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify height-140">
+          <v-card-text class="text--primary text-justify height-250">
             text
           </v-card-text>
           <v-card-actions>
@@ -146,10 +155,14 @@
 
 <script>
 import {truncate} from "@/utils/stringUtils";
+import {mapGetters} from "vuex";
 
 export default {
 name: "BlockInfo",
-  mixins: [ truncate ]
+  mixins: [ truncate ],
+  computed: {
+    ...mapGetters("searchFilters",["getFiltersStatisticCount"])
+  }
 }
 </script>
 

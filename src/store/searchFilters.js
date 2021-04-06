@@ -7,6 +7,9 @@ import buttonOptions from '@/data/ButtonOptions.json'
 const graphClient = new GraphQLClient();
 
 export const mutations = {
+    setFiltersStatistic(state, data) {
+        state.filtersStatistic = data['searchFairsharingRecords']['aggregations'];
+    },
     setFilters(state, data) {
         let rawFilters = data['searchFairsharingRecords']['aggregations'];
         state.rawFilters = buildFilters(rawFilters);
@@ -74,6 +77,7 @@ export const actions = {
         this.commit("searchFilters/setLoadingStatus", true);
         let data = await graphClient.executeQuery(query);
         this.commit('searchFilters/setFilters', data);
+        this.commit('searchFilters/setFiltersStatistic', data);
         this.commit('searchFilters/setFilterButtons');
         this.commit("searchFilters/setLoadingStatus", false);
     }
@@ -88,6 +92,9 @@ export const getters = {
             })
         });
         return output
+    },
+    getFiltersStatisticCount: (state) => (filterName,key) => {
+        return JSON.parse(JSON.stringify(state.filtersStatistic[filterName].buckets.find(item => item.key === key)['doc_count']));
     }
 };
 
@@ -101,6 +108,7 @@ let filtersStore = {
     state: {
         rawFilters: [],
         filters: [],
+        filtersStatistic: [],
         filterButtons: [],
         isLoadingFilters: false
     },

@@ -16,16 +16,31 @@
               <b class="body-1 blue--text"> BASE FIELDS: </b>
             </v-col>
             <v-col
+              xs="12"
+              sm="12"
+              md="12"
+              lg="4"
+              xl="3"
+              class="pt-0"
+            >
+              <FieldInput
+                v-for="(field, fieldName, fieldIndex) in getFields('enum')"
+                :key="'switchField_' + fieldIndex"
+                :field-name="fieldName"
+                :field-props="field"
+              />
+            </v-col>
+            <v-col
               v-for="(field, fieldName, fieldIndex) in getFields('string')"
               :key="'stringField_' + fieldIndex"
               cols="4"
               xs="12"
               sm="12"
               md="12"
-              lg="6"
-              xl="4"
+              lg="8"
+              xl="9"
             >
-              <StringField
+              <FieldInput
                 :field-name="fieldName"
                 :field-props="field"
               />
@@ -43,12 +58,15 @@
               lg="6"
               xl="3"
             >
-              <v-card class="grey lighten-4">
+              <v-card
+                class="grey lighten-4"
+                height="100%"
+              >
                 <v-card-title>
                   <b class="body-1 blue--text"> {{ cleanString(fieldName).toUpperCase() }}: </b>
                 </v-card-title>
                 <v-card-text>
-                  <StringField
+                  <FieldInput
                     v-for="(prop, propName, propIndex) in field.properties"
                     :key="'prop_' + propIndex"
                     :field-name="fieldName"
@@ -183,6 +201,7 @@
                 :label="fieldName"
                 outlined
                 class="field"
+                :rules="rules(fieldName)"
               />
               <v-autocomplete
                 v-else
@@ -217,13 +236,15 @@
 
 <script>
 import Vue from "vue"
+import { isEqual } from "lodash"
 import {mapActions, mapGetters, mapState, mapMutations} from "vuex";
 import stringUtils from '@/utils/stringUtils'
-import StringField from "./StringField";
+import FieldInput from "./FieldInput";
+import { isUrl } from "@/utils/rules.js"
 
 export default {
   name: "EditAdditionalInfo",
-  components: {StringField },
+  components: { FieldInput },
   mixins: [ stringUtils ],
   data() {
     return {
@@ -244,7 +265,7 @@ export default {
     ...mapState("editor", ["allowedFields"]),
     fields() {
       return this.getSection("additionalInformation").data
-    }
+    },
   },
   methods: {
     ...mapActions("record", ["updateAdditionalInformation"]),
@@ -253,8 +274,16 @@ export default {
       let output = {};
       if (this.allowedFields && this.allowedFields.properties){
         Object.keys(this.allowedFields.properties).forEach((fieldName) => {
-          if (this.allowedFields.properties[fieldName].type === type) {
+          if (this.allowedFields.properties[fieldName].type === type
+          && !this.allowedFields.properties[fieldName].enum) {
             output[fieldName] = this.allowedFields.properties[fieldName]
+          }
+          else if (type === 'enum' && this.allowedFields.properties[fieldName].enum){
+              let expected = new Set(["yes", "no"]);
+              let fieldEnum = new Set(this.allowedFields.properties[fieldName].enum);
+              if (isEqual(expected, fieldEnum)) {
+                output[fieldName] = this.allowedFields.properties[fieldName]
+              }
           }
         });
       }
@@ -312,10 +341,16 @@ export default {
     },
     isDisabled(){
       let fieldsNull = 0;
-      Object.values(this.overlay.fields).forEach(obj => {if (obj === null) { 
+      Object.values(this.overlay.fields).forEach(obj => {if (obj === null) {
         fieldsNull += 1;
       }});
       return fieldsNull === Object.entries(this.overlay.fields).length;
+    },
+    rules(fieldName){
+      if (this.overlay.template[fieldName].format && this.overlay.template[fieldName].format === 'uri') {
+        return [isUrl()]
+      }
+      return []
     }
   }
 }
@@ -326,12 +361,12 @@ export default {
     position: relative;
     top: -2px;
   }
-  
+
   #editAdditionalInfo .field {
     display: inline-block;
-    width: 92%;
+    width: 90%;
   }
-  
+
   .v-tooltip__content {
     max-width: 400px;
   }

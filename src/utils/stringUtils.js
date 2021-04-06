@@ -1,4 +1,3 @@
-const lf = new Intl.ListFormat('en');
 const stringUtils = {
     methods: {
         cleanString(string) {
@@ -35,6 +34,7 @@ export const cleanString = {
 export const formatList = {
     filters: {
         formatList: function(list) {
+            const lf = new Intl.ListFormat('en');
             return lf.format(list);
         }
     }

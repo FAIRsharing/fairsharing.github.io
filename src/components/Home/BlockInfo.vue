@@ -10,7 +10,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="400px"
+          height="500"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -28,8 +28,27 @@
               Standards
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify height-140">
-            text
+          <v-card-text class="text--primary text-justify height-250">
+            <div class="d-flex">
+              <strong class="flex-grow-1">Terminology Artifact</strong>
+              <span>112</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Terminology Artifact</strong>
+              <span>112</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Terminology Artifact</strong>
+              <span>112</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Terminology Artifact</strong>
+              <span>112</span>
+            </div>
+            <v-divider />
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -162,5 +181,8 @@ name: "BlockInfo",
       background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(80, 80, 80) 100%);
     }
   }
+}
+.v-divider {
+  margin: 8px;
 }
 </style>

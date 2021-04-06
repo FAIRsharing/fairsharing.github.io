@@ -19,11 +19,12 @@
       outlined
       class="field"
       width="80%"
-      @input="setField($event)"
       :rules="rules"
+      @input="setField($event)"
     />
+
     <v-autocomplete
-      v-else
+      v-else-if="!isSwitch"
       :value="target()"
       :label="getName"
       :items="fieldProps.enum"
@@ -31,11 +32,38 @@
       class="field"
       @input="setField($event)"
     />
+
+    <v-switch
+      v-if="isSwitch"
+      :value="target()"
+      inset
+      class="field ml-3 switch"
+      true-value="yes"
+      false-value="no"
+      @change="setField($event)"
+    >
+      <template #label>
+        <!-- #TODO REWRITE THIS BIT -->
+        {{ getName }}:
+        <span
+          v-if="fields[fieldName]"
+          class="ml-1"
+        >
+          <span v-if="!subfieldName">{{ fields[fieldName] }}</span>
+          <span v-else>{{ fields[fieldName][subfieldName] }}</span>
+        </span>
+        <span
+          v-else
+          class="ml-1"
+        > no </span>
+      </template>
+    </v-switch>
   </div>
 </template>
 
 <script>
     import { mapGetters, mapMutations } from "vuex"
+    import { isEqual } from 'lodash'
     import stringUtils from '@/utils/stringUtils'
     import { isUrl } from "@/utils/rules.js"
 
@@ -67,6 +95,11 @@
               }
               return []
             },
+            isSwitch(){
+              const mySet = new Set(["yes", "no"]);
+              const enumSet = new Set(this.fieldProps.enum);
+              return !!(this.fieldProps.enum && isEqual(enumSet, mySet));
+            }
         },
         methods: {
             ...mapMutations("record", ["setAdditionalInformation"]),
@@ -85,11 +118,14 @@
                     }
                     return this.fields[this.fieldName][this.subfieldName]
                 }
-            },
+            }
         }
     }
 </script>
 
 <style scoped>
-
+  .field.switch {
+    position: relative;
+    top:3px;
+  }
 </style>

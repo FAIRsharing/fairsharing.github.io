@@ -3,6 +3,8 @@
   "queryParam": null,
   "fields": [
     "nodes",
-    "edges"
+    "edges",
+    "linkLength",
+    "maxIterations"
   ]
 }

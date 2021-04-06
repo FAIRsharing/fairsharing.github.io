@@ -315,8 +315,8 @@ export default {
         template,
         fields: {}
       };
-      Object.keys(template).forEach(fieldName => {
-        Vue.set(this.overlay.fields, fieldName, null)
+      Object.keys(template).forEach(field => {
+        Vue.set(this.overlay.fields, field, null)
       })
     },
     addItem(){

@@ -8,29 +8,7 @@
       <block-tabs />
       <block-categories class="mb-4" />
       <block-search />
-      <v-row style="height: 250px;background: white;">
-        <v-col
-          sm="12"
-          md="4"
-        >
-          column 1
-        </v-col>
-        <v-col
-          sm="12"
-          md="4"
-        >
-          column 2
-        </v-col>
-        <v-col
-          sm="12"
-          md="4"
-        >
-          column 3
-        </v-col>
-      </v-row>
-      <div style="height: 300px;background: #324e67">
-        Our Community of 76 Journals, Funders, and Databases Includes
-      </div>
+      <block-info class="mb-4" />
     </v-container>
   </v-main>
 </template>
@@ -40,11 +18,12 @@ import BlockCategories from "@/components/Home/BlockCategories";
 import BlockHero from "@/components/Home/BlockHero";
 import BlockTabs from "@/components/Home/BlockTabs";
 import BlockSearch from "@/components/Home/BlockSearch";
+import BlockInfo from "@/components/Home/BlockInfo";
     /** Component to handle the front page (landing page)
      *
      */
     export default {
       name: "Home",
-      components:{BlockSearch, BlockTabs, BlockHero, BlockCategories},
+      components:{BlockInfo, BlockSearch, BlockTabs, BlockHero, BlockCategories},
     };
 </script>

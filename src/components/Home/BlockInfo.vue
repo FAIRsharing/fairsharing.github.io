@@ -34,22 +34,27 @@
           <v-card-text class="text--primary text-justify height-250">
             <div class="d-flex">
               <strong class="flex-grow-1">Terminology Artifact</strong>
-              <span>22</span>
+              <span>{{ getFiltersStatisticCount("record_type","terminology_artefact") }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
-              <strong class="flex-grow-1">Terminology Artifact</strong>
-              <span>112</span>
+              <strong class="flex-grow-1">Model/Format</strong>
+              <span>{{ getFiltersStatisticCount("record_type","model_and_format") }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
-              <strong class="flex-grow-1">Terminology Artifact</strong>
-              <span>112</span>
+              <strong class="flex-grow-1">Reporting Guideline</strong>
+              <span>{{ getFiltersStatisticCount("record_type","reporting_guideline") }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
-              <strong class="flex-grow-1">Terminology Artifact</strong>
-              <span>112</span>
+              <strong class="flex-grow-1">Identifier Schema</strong>
+              <span>{{ getFiltersStatisticCount("record_type","identifier_schema") }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Fair Metrics</strong>
+              <span>{{ getFiltersStatisticCount("record_type","metric") }}</span>
             </div>
             <v-divider />
           </v-card-text>
@@ -74,7 +79,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="500px"
+          height="500"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -96,7 +101,31 @@
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-250">
-            text
+            <div class="d-flex">
+              <strong class="flex-grow-1">Repository</strong>
+              <span>{{ getFiltersStatisticCount("record_type","repository") }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Natural Science</strong>
+              <span>{{ getFiltersStatisticCount("subjects","natural science") }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Engineering Science</strong>
+              <span>{{ getFiltersStatisticCount("subjects","natural science") }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Humanities</strong>
+              <span>{{ getFiltersStatisticCount("subjects","humanities") }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Social Science</strong>
+              <span>{{ getFiltersStatisticCount("subjects","social science") }}</span>
+            </div>
+            <v-divider />
           </v-card-text>
           <v-card-actions>
             <router-link to="/databases">
@@ -141,7 +170,21 @@
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-250">
-            text
+            <div class="d-flex">
+              <strong class="flex-grow-1">Funder</strong>
+              <span>{{ getFiltersStatisticCount("record_type","funder") }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Journal</strong>
+              <span>{{ getFiltersStatisticCount("record_type","journal") }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Society</strong>
+              <span>{{ getFiltersStatisticCount("record_type","society") }}</span>
+            </div>
+            <v-divider />
           </v-card-text>
           <v-card-actions>
             <router-link to="/policies">

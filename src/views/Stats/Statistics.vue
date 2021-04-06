@@ -18,6 +18,7 @@
     >
       <v-btn
         depressed
+        outlined
         color="primary"
         :class="{activeChartClass: activeChart === 0}"
         @click="chartSelection(0)"
@@ -26,6 +27,7 @@
       </v-btn>
       <v-btn
         depressed
+        outlined
         color="primary"
         :class="{activeChartClass: activeChart === 1}"
         @click="chartSelection(1)"
@@ -34,6 +36,7 @@
       </v-btn>
       <v-btn
         depressed
+        outlined
         color="primary"
         :class="{activeChartClass: activeChart === 2}"
         @click="chartSelection(2)"
@@ -42,6 +45,7 @@
       </v-btn>
       <v-btn
         depressed
+        outlined
         color="primary"
         :class="{activeChartClass: activeChart === 3}"
         @click="chartSelection(3)"
@@ -297,6 +301,7 @@
   </script>
   <style scoped>
     .activeChartClass {
-      background-color: #253442!important;
+      background-color: #27aae1!important;
+      color: white!important;
     }
   </style>

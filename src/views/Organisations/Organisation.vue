@@ -322,7 +322,7 @@ export default {
   computed: {
     ...mapState('users', ['user']),
     currentRoute() {
-      return this.target || this.$route.params['id'];
+      return this.$route.params['id'];
     },
     logoUrl() {
       return process.env.VUE_APP_API_ENDPOINT + this.organisation.urlForLogo;

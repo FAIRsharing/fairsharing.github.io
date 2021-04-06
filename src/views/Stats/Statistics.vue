@@ -301,7 +301,7 @@
   </script>
   <style scoped>
     .activeChartClass {
-      background-color: #27aae1!important;
-      color: white!important;
+      background-color: #27aae1 !important;
+      color: white !important;
     }
   </style>

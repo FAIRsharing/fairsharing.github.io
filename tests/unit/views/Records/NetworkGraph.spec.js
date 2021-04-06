@@ -1,7 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
-import GraphTest from "@/views/GraphTest.vue";
+import GraphTest from "@/views/Records/NetworkGraph.vue";
 import Vuetify from "vuetify"
 import GraphClient from "@/components/GraphClient/GraphClient";
 const sinon = require("sinon");
@@ -49,7 +49,7 @@ let graphMock = {
     }
 }
 
-describe("GraphTest.vue", function() {
+describe("NetworkGraph.vue", function() {
     let wrapper;
 
     // TODO: Mock properties in options {}.

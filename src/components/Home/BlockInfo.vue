@@ -54,12 +54,14 @@
             <v-divider />
           </v-card-text>
           <v-card-actions>
-            <v-btn
-              color="primary"
-              text
-            >
-              View All
-            </v-btn>
+            <router-link to="/standards">
+              <v-btn
+                color="primary"
+                text
+              >
+                View All
+              </v-btn>
+            </router-link>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -97,12 +99,14 @@
             text
           </v-card-text>
           <v-card-actions>
-            <v-btn
-              color="primary"
-              text
-            >
-              View All
-            </v-btn>
+            <router-link to="/databases">
+              <v-btn
+                color="primary"
+                text
+              >
+                View All
+              </v-btn>
+            </router-link>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -140,12 +144,14 @@
             text
           </v-card-text>
           <v-card-actions>
-            <v-btn
-              color="primary"
-              text
-            >
-              View All
-            </v-btn>
+            <router-link to="/policies">
+              <v-btn
+                color="primary"
+                text
+              >
+                View All
+              </v-btn>
+            </router-link>
           </v-card-actions>
         </v-card>
       </v-col>

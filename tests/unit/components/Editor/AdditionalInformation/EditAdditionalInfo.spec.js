@@ -92,4 +92,18 @@ describe("Editor.vue", function() {
         expect(wrapper.vm.overlay.template).toStrictEqual(template);
         expect(JSON.stringify(wrapper.vm.overlay.fields)).toStrictEqual(JSON.stringify({url: null}))
     });
+
+    it("can add an item", () => {
+        wrapper = shallowMount(EditAdditionalInfo, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
+        });
+        wrapper.vm.overlay.fieldName = "contacts";
+        wrapper.vm.overlay.id = 1;
+        wrapper.vm.fieldValue = null;
+        wrapper.vm.addItem();
+        expect(wrapper.vm.fields.contacts[1]).toBe(null);
+    });
 });

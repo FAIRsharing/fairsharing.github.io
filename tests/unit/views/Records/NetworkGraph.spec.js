@@ -31,7 +31,7 @@ let graphMock = {
                 }
             },
             {
-                "id": "Virtual Observatory Data Modeling Language",
+                "id": "Virtual Observatory Data Modeling Languages",
                 "record_id": 1411,
                 "marker": {
                     "symbol": "circle",
@@ -45,12 +45,15 @@ let graphMock = {
                 "Virtual Observatory Data Modeling Language",
                 "Related To"
             ]
-        ]
+        ],
+        "linkLength": 80,
+        "maxIterations": 300
     }
 }
 
 describe("NetworkGraph.vue", function() {
     let wrapper;
+    let getData;
 
     // TODO: Mock properties in options {}.
     beforeEach(() => {
@@ -61,17 +64,29 @@ describe("NetworkGraph.vue", function() {
             vuetify,
             router,
             mocks: { $router, $route }
-        })
+        });
+        getData = jest.spyOn(wrapper.vm, "getData");
+    });
+
+    afterEach(() => {
+        graphStub.restore();
     });
 
     it("is all present and correct", () => {
-        expect(wrapper.name()).toMatch("GraphTest");
+        expect(wrapper.name()).toMatch("NetworkGraph");
         // Has correct options for the default number of nodes.
         expect(wrapper.vm.options.plotOptions.networkgraph.layoutAlgorithm.linkLength).toEqual(80);
         expect(wrapper.vm.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations).toEqual(300);
-        // Watches route.
+    });
+
+    it("reloads page when route or max_path_length change", () => {
+        expect(getData).toHaveBeenCalledTimes(1);
         expect(wrapper.vm.currentRoute).toEqual(1234);
+        expect(wrapper.vm.max_path_length).toEqual(2);
+        wrapper.vm.max_path_length = 3;
+        expect(getData).toHaveBeenCalledTimes(2);
         $route.params.id = 10;
+        expect(getData).toHaveBeenCalledTimes(3);
         expect(wrapper.vm.currentRoute).toEqual(10);
     });
 

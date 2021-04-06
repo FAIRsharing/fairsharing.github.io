@@ -10,7 +10,32 @@
             Legend and configuration
           </v-card-title>
           <v-card-text class="pt-3">
-            Configuration parameters and legend will go in this box.
+            <v-row>
+              Select the depth of the graph:
+              <v-select
+                v-model="max_path_length"
+                :items="depth"
+                label="Graph Depth"
+              />
+            </v-row>
+            <v-row class="text-info">
+              The graph's centre is show in red. The registry of each record is as follows:
+            </v-row>
+            <v-row>
+              <div class="square" /> Database
+            </v-row>
+            <v-row>
+              <div class="circle" /> Standard
+            </v-row>
+            <v-row>
+              <div class="triangle" /> Policy
+            </v-row>
+            <v-row>
+              <div class="diamond" /> Collection
+            </v-row>
+            <v-row>
+              Click on any point to re-draw the graph with that point as the centre.
+            </v-row>
           </v-card-text>
         </v-card>
       </v-col>
@@ -46,7 +71,7 @@
     const graphClient = new GraphClient();
 
     export default {
-        name: "GraphTest",
+        name: "NetworkGraph",
         components: {
           Loaders,
             highcharts: Chart,
@@ -55,6 +80,8 @@
           let _module = this;
             return {
                 loading: false,
+                depth: [1, 2, 3, 4],
+                max_path_length: 2,
                 options: {
                     exporting: {
                         sourceWidth: 1502,
@@ -112,7 +139,7 @@
                     series: [{
                         animation: false,
                         events: {
-                          click: async function(event) {
+                          click: /* istanbul ignore next */ async function(event) {
                             // Avoid redundant navigation to self...
                             if (parseInt(_module.$route.params.id) !== parseInt(event.point.record_id)) {
                               _module.$router.push({
@@ -131,13 +158,13 @@
                                 dy: 12
                               }
                             },
-                            formatter: function() {
-                              // this is not the component but the point
-                              if (this.key.length < 40) {
-                                return this.key
-                              }
-                              return this.key.substring(0, 40) + "..."
+                        formatter: /* istanbul ignore next */ function() {
+                            // this is not the component but the point
+                            if (this.key.length < 40) {
+                              return this.key
                             }
+                            return this.key.substring(0, 40) + "..."
+                          }
                         },
                         link: {
                           color: "rgba(0, 0, 0, 0.5)",
@@ -166,6 +193,9 @@
         watch: {
           async currentRoute() {
             await this.getData();
+          },
+          async max_path_length() {
+            await this.getData();
           }
         },
         mounted() {
@@ -179,28 +209,14 @@
 
                 // A maxPathLength of 1-4 may be specified (API's default is 2).
                 // Higher values may make the resulting graph rather large...
-                graphQuery.queryParam = {id: parseInt(this.$route.params.id), maxPathLength: 2};
+                graphQuery.queryParam = {id: parseInt(this.$route.params.id), maxPathLength: this.max_path_length};
                 const response = await graphClient.executeQuery(graphQuery);
 
                 let nodes = response.fairsharingGraph.nodes;
                 let data = response.fairsharingGraph.edges;
 
-                if (nodes.length > 200){
-                  this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 40;
-                  this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 50;
-                }
-                else if (nodes.length > 100){
-                  this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 60;
-                  this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 100;
-                }
-                else if (nodes.length < 30) {
-                  this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 80;
-                  this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 300;
-                }
-                else {
-                  this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 60;
-                  this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 120;
-                }
+                this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = response.fairsharingGraph.linkLength;
+                this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = response.fairsharingGraph.maxIterations;
 
                 this.options.series[0].data = data;
                 this.options.series[0].nodes = nodes;
@@ -211,3 +227,43 @@
         }
     }
 </script>
+
+<style>
+.square {
+  height: 25px;
+  width: 25px;
+  background-color: #51b0ff;
+}
+.circle {
+  height: 25px;
+  width: 25px;
+  background-color: #51b0ff;
+  border-radius: 50%;
+}
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 12.5px solid transparent;
+  border-right: 12.5px solid transparent;
+  border-bottom: 25px solid #51b0ff;
+}
+.diamond {
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-bottom-color: #51b0ff;
+  position: relative;
+  top: -16px;
+}
+.diamond:after {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 16px;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #51b0ff;
+}
+
+</style>

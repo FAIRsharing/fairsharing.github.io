@@ -18,36 +18,32 @@
     >
       <v-btn
         depressed
-        outlined
+        :outlined="activeChart !== 0"
         color="primary"
-        :class="{activeChartClass: activeChart === 0}"
         @click="chartSelection(0)"
       >
         All
       </v-btn>
       <v-btn
         depressed
-        outlined
+        :outlined="activeChart !== 1"
         color="primary"
-        :class="{activeChartClass: activeChart === 1}"
         @click="chartSelection(1)"
       >
         Standards
       </v-btn>
       <v-btn
         depressed
-        outlined
+        :outlined="activeChart !== 2"
         color="primary"
-        :class="{activeChartClass: activeChart === 2}"
         @click="chartSelection(2)"
       >
         Databases
       </v-btn>
       <v-btn
         depressed
-        outlined
+        :outlined="activeChart !== 3"
         color="primary"
-        :class="{activeChartClass: activeChart === 3}"
         @click="chartSelection(3)"
       >
         Policies
@@ -299,9 +295,3 @@
       }
     }
   </script>
-  <style scoped>
-    .activeChartClass {
-      background-color: #27aae1 !important;
-      color: white !important;
-    }
-  </style>

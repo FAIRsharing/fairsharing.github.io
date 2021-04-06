@@ -1,0 +1,54 @@
+{
+  "queryName": "organisation",
+  "queryParam": {
+    "id": null
+  },
+  "fields": [
+    "id",
+    "name",
+    "alternativeNames",
+    "homepage",
+    "types",
+    "urlForLogo",
+    {
+      "name": "childOrganisations",
+      "fields": [
+        "id",
+        "name"
+      ]
+    },
+    {
+      "name": "parentOrganisations",
+      "fields": [
+        "id",
+        "name"
+      ]
+    },
+    {
+      "name": "organisationLinks",
+      "fields": [
+        "id",
+        "isLead",
+        "relation",
+        {
+          "queryName": "fairsharingRecord",
+          "fields": [
+            "id",
+            "name",
+            "abbreviation",
+            "type",
+            "registry",
+            "status"
+          ]
+        },
+        {
+          "queryName": "grant",
+          "fields": [
+            "id",
+            "name"
+          ]
+        }
+      ]
+    }
+  ]
+}

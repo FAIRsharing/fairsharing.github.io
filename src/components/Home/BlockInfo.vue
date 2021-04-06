@@ -10,27 +10,26 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="350px"
+          height="400px"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
               style="height: 136px"
               class="d-flex justify-center"
             >
-              <v-icon
-                size="80"
-                color="white"
+              <v-img
+                contain
+                height="130px"
                 style="opacity: .7"
-              >
-                {{ $vuetify.icons.values["recommended"].icon }}
-              </v-icon>
+                :src="$vuetify.icons.values['home_standard'].icon"
+              />
             </div>
             <v-card-title class="d-inline">
               Standards
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('Standards and/or databases recommended by journal or funder data policies.',100) }}
+          <v-card-text class="text--primary text-justify height-140">
+            text
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -51,63 +50,66 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="350px"
-        >
-          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
-            <v-img
-              width="400"
-              height="100"
-              :src="$vuetify.icons.values['collections'].icon"
-              contain
-            />
-
-            <v-card-title class="d-inline">
-              Collections
-            </v-card-title>
-          </div>
-          <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('Standards and/or databases grouped by domain, species or organization.',100) }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              color="primary"
-              text
-            >
-              View All
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-      <v-col
-        cols="12"
-        sm="12"
-        md="4"
-        lg="4"
-      >
-        <v-card
-          class="mx-auto block-category__card"
-          max-width="350"
-          height="350px"
+          height="400px"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
               style="height: 136px"
               class="d-flex justify-center"
             >
-              <v-icon
-                size="90"
-                color="white"
+              <v-img
+                contain
+                height="130px"
                 style="opacity: .7"
-              >
-                {{ $vuetify.icons.values["educational"].icon }}
-              </v-icon>
+                :src="$vuetify.icons.values['home_db'].icon"
+              />
             </div>
             <v-card-title class="d-inline">
-              Educational
+              Databases
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('About standards, their use in databases and policies, and how we can help you.',100) }}
+          <v-card-text class="text--primary text-justify height-140">
+            text
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              color="primary"
+              text
+            >
+              View All
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-col
+        cols="12"
+        sm="12"
+        md="4"
+        lg="4"
+      >
+        <v-card
+          class="mx-auto block-category__card"
+          max-width="350"
+          height="400px"
+        >
+          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+            <div
+              style="height: 136px"
+              class="d-flex justify-center"
+            >
+              <v-img
+                contain
+                height="130px"
+                style="opacity: .7"
+                :src="$vuetify.icons.values['home_policies'].icon"
+              />
+            </div>
+            <v-card-title class="d-inline">
+              Policies
+            </v-card-title>
+          </div>
+          <v-card-text class="text--primary text-justify height-140">
+            text
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -154,10 +156,10 @@ name: "BlockInfo",
     &__gradiant {
       height: 200px;
       background: rgb(171, 171, 171);
-      background: linear-gradient(180deg, rgb(171, 171, 171) 0%, rgb(80, 80, 80) 100%);
-      background: -webkit-linear-gradient(180deg, rgb(171, 171, 171) 0%, rgb(80, 80, 80) 100%);
-      background: -o-linear-gradient(180deg, rgb(171, 171, 171) 0%, rgb(80, 80, 80) 100%);
-      background: -ms-linear-gradient(180deg, rgb(171, 171, 171) 0%, rgb(80, 80, 80) 100%);
+      background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(80, 80, 80) 100%);
+      background: -webkit-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(80, 80, 80) 100%);
+      background: -o-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(80, 80, 80) 100%);
+      background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(80, 80, 80) 100%);
     }
   }
 }

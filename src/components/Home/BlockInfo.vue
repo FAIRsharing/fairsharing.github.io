@@ -12,10 +12,7 @@
           max-width="350"
           height="350px"
         >
-          <div
-            :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%),url(' + 'assets/Home/BlockHero/pattern3-1.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
-            class="white--text d-flex flex-column justify-center block-category__card__gradiant__2"
-          >
+          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
               style="height: 136px"
               class="d-flex justify-center"
@@ -29,7 +26,7 @@
               </v-icon>
             </div>
             <v-card-title class="d-inline">
-              Recommendations
+              Standards
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-90">
@@ -40,7 +37,7 @@
               color="primary"
               text
             >
-              Find
+              View All
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -56,16 +53,14 @@
           max-width="350"
           height="350px"
         >
-          <div
-            :style="{ backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 150%),url(' + 'assets/Home/BlockHero/pattern3.jpg',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
-            class="white--text d-flex flex-column justify-center  block-category__card__gradiant__1"
-          >
+          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <v-img
               width="400"
               height="100"
               :src="$vuetify.icons.values['collections'].icon"
               contain
             />
+
             <v-card-title class="d-inline">
               Collections
             </v-card-title>
@@ -78,7 +73,7 @@
               color="primary"
               text
             >
-              Discover
+              View All
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -94,10 +89,7 @@
           max-width="350"
           height="350px"
         >
-          <div
-            :style="{ backgroundImage: 'linear-gradient(180deg, rgb(50, 12, 12) 100%, rgb(107, 30, 30) 150%),url(' + 'assets/Home/BlockHero/pattern3-2.jpg',backgroundBlendMode:'lighten', backgroundSize:'cover'}"
-            class="white--text d-flex flex-column justify-center block-category__card__gradiant__3"
-          >
+          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
               style="height: 136px"
               class="d-flex justify-center"
@@ -122,7 +114,7 @@
               color="primary"
               text
             >
-              Learn
+              View All
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -135,7 +127,7 @@
 import {truncate} from "@/utils/stringUtils";
 
 export default {
-name: "BlockCategories",
+name: "BlockInfo",
   mixins: [ truncate ]
 }
 </script>
@@ -159,31 +151,13 @@ name: "BlockCategories",
       -o-transform: scale(1.05);
     }
 
-    &__gradiant__1 {
+    &__gradiant {
       height: 200px;
-      background: rgb(37, 52, 66);
-      background: linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
-      background: -webkit-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
-      background: -o-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
-      background: -ms-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
-    }
-
-    &__gradiant__2 {
-      height: 200px;
-      background: rgb(37, 52, 66);
-      background: linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);
-      background: -webkit-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);
-      background: -o-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);
-      background: -ms-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);
-    }
-
-    &__gradiant__3 {
-      height: 200px;
-      background: rgb(50, 12, 12);
-      background: linear-gradient(180deg, rgb(50, 12, 12) 0%, rgb(107, 30, 30) 100%);
-      background: -webkit-linear-gradient(180deg, rgb(50, 12, 12) 0%, rgb(107, 30, 30) 100%);
-      background: -o-linear-gradient(180deg, rgb(50, 12, 12) 0%, rgb(107, 30, 30) 100%);
-      background: -ms-linear-gradient(180deg, rgb(50, 12, 12) 0%, rgb(107, 30, 30) 100%);
+      background: rgb(171, 171, 171);
+      background: linear-gradient(180deg, rgb(171, 171, 171) 0%, rgb(80, 80, 80) 100%);
+      background: -webkit-linear-gradient(180deg, rgb(171, 171, 171) 0%, rgb(80, 80, 80) 100%);
+      background: -o-linear-gradient(180deg, rgb(171, 171, 171) 0%, rgb(80, 80, 80) 100%);
+      background: -ms-linear-gradient(180deg, rgb(171, 171, 171) 0%, rgb(80, 80, 80) 100%);
     }
   }
 }

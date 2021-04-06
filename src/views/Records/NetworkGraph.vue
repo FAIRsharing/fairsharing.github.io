@@ -41,7 +41,7 @@
     import {Chart} from 'highcharts-vue'
     import GraphClient from '@/components/GraphClient/GraphClient.js'
     import graphQuery from '@/components/GraphClient/queries/getGraphRelations.json'
-    import Loaders from "../components/Navigation/Loaders";
+    import Loaders from "../../components/Navigation/Loaders";
 
     const graphClient = new GraphClient();
 
@@ -182,19 +182,18 @@
                 graphQuery.queryParam = {id: parseInt(this.$route.params.id), maxPathLength: 2};
                 const response = await graphClient.executeQuery(graphQuery);
 
-                this.options.series[0].data = response.fairsharingGraph.edges;
-                this.options.series[0].nodes = response.fairsharingGraph.nodes;
-                this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
+                let nodes = response.fairsharingGraph.nodes;
+                let data = response.fairsharingGraph.edges;
 
-                if (this.options.series[0].nodes.length > 200){
+                if (nodes.length > 200){
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 40;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 50;
                 }
-                else if (this.options.series[0].nodes.length > 100){
+                else if (nodes.length > 100){
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 60;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 100;
                 }
-                else if (this.options.series[0].nodes.length < 30) {
+                else if (nodes.length < 30) {
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 80;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 300;
                 }
@@ -202,6 +201,10 @@
                   this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = 60;
                   this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = 120;
                 }
+
+                this.options.series[0].data = data;
+                this.options.series[0].nodes = nodes;
+                this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
 
                 this.loading = false;
             }

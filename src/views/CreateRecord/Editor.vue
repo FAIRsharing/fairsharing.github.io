@@ -237,15 +237,17 @@
         _module.hasLoaded = false;
         _module.error = false;
         let userToken = _module.userToken;
-        let id = _module.$route.params.id;
-        if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
-        await _module.fetchRecord(id);
-        let canEdit = await client.canEdit(_module.currentID, userToken);
-        if (canEdit.error) _module.error = true;
-        await this.getAllowedFields({
-          type: this.getRecordType,
-          token: this.user().credentials.token
-        });
+        if (userToken) {
+          let id = _module.$route.params.id;
+          if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
+          await _module.fetchRecord(id);
+          let canEdit = await client.canEdit(_module.currentID, userToken);
+          if (canEdit.error) _module.error = true;
+          await this.getAllowedFields({
+            type: this.getRecordType,
+            token: userToken
+          });
+        }
         _module.hasLoaded = true;
       },
       async confirmReloadData() {

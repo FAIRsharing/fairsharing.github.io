@@ -6,9 +6,9 @@
     >
       <BlockHero />
       <block-tabs />
-      <block-info class="mb-4" />
+      <block-info class="mb-12" />
       <block-search />
-      <block-categories class="mb-4" />
+      <block-categories class="mt-12 mb-12" />
     </v-container>
   </v-main>
 </template>

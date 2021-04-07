@@ -1,48 +1,49 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row no-gutters>
       <v-col
-        cols="2"
-        class="pt-0 mt-0"
+        cols="3"
+        class="pt-0 mt-2"
       >
-        <v-card height="1180px">
+        <v-card height="1173px">
           <v-card-title class="blue white--text">
             Legend and configuration
           </v-card-title>
           <v-card-text class="pt-3">
             <v-row>
-              Select the depth of the graph:
+              <b class="px-2">Select the depth of the graph:</b>
               <v-select
                 v-model="max_path_length"
+                class="mt-2 px-2"
                 :items="depth"
                 label="Graph Depth"
               />
-              Setting to greater than 2 is not recommended.
+              <p class="px-2 ma-0 text--secondary">
+                Setting to greater than 2 is not recommended.
+              </p>
             </v-row>
-            <br/>
-            <v-row class="text-info">
-              The graph's centre is show in red. The registry of each record is as follows:
+            <v-divider />
+            <p>The graph's centre is shown in <span class="red--text">red.</span> The registry of each record is as follows:</p>
+            <v-row class="ml-2">
+              <div class="square mb-2 mr-2" /> Database
             </v-row>
-            <v-row>
-              <div class="square" /> Database
+            <v-row class="ml-2">
+              <div class="circle mb-2 mr-2" /> Standard
             </v-row>
-            <v-row>
-              <div class="circle" /> Standard
+            <v-row class="ml-2">
+              <div class="triangle mb-2 mr-2" /> Policy
             </v-row>
-            <v-row>
-              <div class="triangle" /> Policy
+            <v-row class="ml-1">
+              <div class="diamond mb-2 mr-2" /> Collection
             </v-row>
-            <v-row>
-              <div class="diamond" /> Collection
-            </v-row>
-            <v-row>
+            <p>
               Click on any point to re-draw the graph with that point as the centre.
-            </v-row>
+            </p>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col
-        cols="10"
+        cols="9"
         class="pt-0 mt-0"
       >
         <v-card

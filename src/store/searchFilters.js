@@ -90,7 +90,7 @@ export const getters = {
         return output
     },
     getFiltersStatisticCount: (state) => (option) => {
-        return JSON.parse(JSON.stringify(state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count']));
+        return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
     }
 };
 

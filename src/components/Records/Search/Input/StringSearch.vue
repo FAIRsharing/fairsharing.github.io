@@ -65,7 +65,7 @@
         :label="checkbox.label"
         :value="checkbox"
       >
-        <template v-slot:label>
+        <template #label>
           <span class="v-label-white">{{ checkbox.label }}</span>
         </template>
       </v-checkbox>

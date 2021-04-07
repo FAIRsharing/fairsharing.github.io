@@ -150,7 +150,8 @@ export default {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
               .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
         })
-      } else {
+      } 
+      else {
         return false
       }
     },

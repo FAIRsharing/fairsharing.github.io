@@ -17,7 +17,9 @@
                 :items="depth"
                 label="Graph Depth"
               />
+              Setting to greater than 2 is not recommended.
             </v-row>
+            <br/>
             <v-row class="text-info">
               The graph's centre is show in red. The registry of each record is as follows:
             </v-row>
@@ -80,7 +82,7 @@
           let _module = this;
             return {
                 loading: false,
-                depth: [1, 2, 3, 4],
+                depth: [1, 2, 3],
                 max_path_length: 2,
                 options: {
                     exporting: {

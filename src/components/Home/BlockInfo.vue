@@ -20,13 +20,12 @@
               <v-img
                 contain
                 height="130px"
-                style="opacity: .7"
                 :src="$vuetify.icons.values['home_standard'].icon"
               />
             </div>
-            <v-card-title class="d-inline">
+            <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
               <span>
-                {{ getFiltersStatisticCount("fairsharing_registry","standard") }}
+                {{ getFiltersStatisticCount({filterName:"fairsharing_registry",key:"standard"}) }}
               </span>
               Standards
             </v-card-title>
@@ -34,27 +33,22 @@
           <v-card-text class="text--primary text-justify height-250">
             <div class="d-flex">
               <strong class="flex-grow-1">Terminology Artifact</strong>
-              <span>{{ getFiltersStatisticCount("record_type","terminology_artefact") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'terminology_artefact'}) }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
               <strong class="flex-grow-1">Model/Format</strong>
-              <span>{{ getFiltersStatisticCount("record_type","model_and_format") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'model_and_format'}) }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
               <strong class="flex-grow-1">Reporting Guideline</strong>
-              <span>{{ getFiltersStatisticCount("record_type","reporting_guideline") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'reporting_guideline'}) }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
               <strong class="flex-grow-1">Identifier Schema</strong>
-              <span>{{ getFiltersStatisticCount("record_type","identifier_schema") }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
-              <strong class="flex-grow-1">Fair Metrics</strong>
-              <span>{{ getFiltersStatisticCount("record_type","metric") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'identifier_schema'}) }}</span>
             </div>
             <v-divider />
           </v-card-text>
@@ -87,43 +81,36 @@
               class="d-flex justify-center"
             >
               <v-img
+                class="mt-5"
                 contain
-                height="130px"
-                style="opacity: .7"
+                height="100px"
                 :src="$vuetify.icons.values['home_db'].icon"
               />
             </div>
-            <v-card-title class="d-inline">
-              <span>
-                {{ getFiltersStatisticCount("fairsharing_registry","database") }}
-              </span>
+            <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
+              <span>{{ getFiltersStatisticCount({filterName:'fairsharing_registry',key:'database'}) }}</span>
               Databases
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-250">
             <div class="d-flex">
-              <strong class="flex-grow-1">Repository</strong>
-              <span>{{ getFiltersStatisticCount("record_type","repository") }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
               <strong class="flex-grow-1">Natural Science</strong>
-              <span>{{ getFiltersStatisticCount("subjects","natural science") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'natural science'}) }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
               <strong class="flex-grow-1">Engineering Science</strong>
-              <span>{{ getFiltersStatisticCount("subjects","natural science") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'engineering science'}) }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
               <strong class="flex-grow-1">Humanities</strong>
-              <span>{{ getFiltersStatisticCount("subjects","humanities") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'humanities'}) }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
               <strong class="flex-grow-1">Social Science</strong>
-              <span>{{ getFiltersStatisticCount("subjects","social science") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'social science'}) }}</span>
             </div>
             <v-divider />
           </v-card-text>
@@ -158,31 +145,28 @@
               <v-img
                 contain
                 height="130px"
-                style="opacity: .7"
                 :src="$vuetify.icons.values['home_policies'].icon"
               />
             </div>
-            <v-card-title class="d-inline">
-              <span>
-                {{ getFiltersStatisticCount("fairsharing_registry","policy") }}
-              </span>
+            <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
+              <span>{{ getFiltersStatisticCount({filterName:'fairsharing_registry',key:'policy'}) }}</span>
               Policies
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-250">
             <div class="d-flex">
               <strong class="flex-grow-1">Funder</strong>
-              <span>{{ getFiltersStatisticCount("record_type","funder") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'funder'}) }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
               <strong class="flex-grow-1">Journal</strong>
-              <span>{{ getFiltersStatisticCount("record_type","journal") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'journal'}) }}</span>
             </div>
             <v-divider />
             <div class="d-flex">
               <strong class="flex-grow-1">Society</strong>
-              <span>{{ getFiltersStatisticCount("record_type","society") }}</span>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'society'}) }}</span>
             </div>
             <v-divider />
           </v-card-text>
@@ -237,10 +221,10 @@ name: "BlockInfo",
     &__gradiant {
       height: 200px;
       background: rgb(171, 171, 171);
-      background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(80, 80, 80) 100%);
-      background: -webkit-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(80, 80, 80) 100%);
-      background: -o-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(80, 80, 80) 100%);
-      background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(80, 80, 80) 100%);
+      background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -webkit-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -o-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
     }
   }
 }

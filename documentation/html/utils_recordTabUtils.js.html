@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Record/Collections.vue</title>
+	<title>FAIRsharing.org Source: utils/recordTabUtils.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,171 +86,92 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Record/Collections.vue</h1>
+		<h1 class="page-title">Source: utils/recordTabUtils.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  &lt;v-card
-    class="pa-4 d-flex flex-column"
-    outlined
-    color="bg_record_card"
-    tile
-    elevation="3"
-  >
-    &lt;SectionTitle
-      title="Collections"
-      :inactive-section="tabsDataExist"
-    />
-    &lt;div class="d-flex flex-column ml-2 min-height-40">
-      &lt;div class="d-flex flex-wrap mt-5">
-        &lt;!--  search autocomplete    -->
-        &lt;v-autocomplete
-          v-if="!tabsDataExist"
-          v-model="selectedValues"
-          :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length&lt;5"
-          :items="getValues"
-          solo
-          :attach="true"
-          dense
-          clearable
-          prepend-inner-icon="fa-search"
-          :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
-          item-text="name"
-          item-value="name"
-        >
-          &lt;template #item="data">
-            &lt;span class="filterValueName">
-              {{ data.item.name }}
-            &lt;/span>
-          &lt;/template>
-        &lt;/v-autocomplete>
-      &lt;/div>
-      &lt;!--  tabs    -->
-      &lt;v-tabs
-        v-if="!tabsDataExist"
-        v-model="tabsData.selectedTab"
-        background-color="transparent"
-        grow
-        color="accent3"
-        slider-color="accent3"
-        class="mb-5"
-        :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length===0"
-      >
-        &lt;v-tab
-          v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
-          :key="tabName+'_'+tabIndex"
-          :disabled="tabsData.tabs[tabName].data.length===0"
-          @change="selectedValues=null"
-        >
-          {{ cleanString(tabName) }}
-        &lt;/v-tab>
-      &lt;/v-tabs>
-      &lt;!--  tab content  -->
-      &lt;v-tabs-items
-        v-if="!tabsDataExist"
-        v-model="tabsData.selectedTab"
-        :class="['transparent',tabsDataExist]"
-      >
-        &lt;v-tab-item
-          v-for="(tabItem,tabItemIndex) in filterList"
-          :key="tabItem+'_'+tabItemIndex"
-        >
-          &lt;v-virtual-scroll
-            :items="tabItem.data"
-            height="400"
-            item-height="130"
-            class="ma-4 overflow-x-hidden"
-          >
-            &lt;template #default="{ item,index }">
-              &lt;v-card
-                :key="item.id + '_' + index"
-                class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
-                flat
-                outlined
-              >
-                &lt;div class="d-flex align-center">
-                  &lt;record-status
-                    :record="item"
-                    :show-status="false"
-                  />
-                  &lt;div class="ml-10 text-ellipses-height-2lines line-height-20">
-                    {{ item.name }}
-                  &lt;/div>
-                &lt;/div>
-                &lt;p class="grey--text  relation-style text-ellipses-height-2lines line-height-14">
-                  {{ item.name }}
-                  &lt;v-tooltip top>
-                    &lt;template #activator="{ on }">
-                      &lt;span
-                        class="red--text mouse-info"
-                        v-on="on"
-                      >
-                        {{ item.recordAssocLabel }}
-                      &lt;/span>
-                    &lt;/template>
-                    &lt;span>{{ relationDefinition[item.recordAssocLabel] }}&lt;/span>
-                  &lt;/v-tooltip>
-                  {{ item.subject }}
-                &lt;/p>
-              &lt;/v-card>
-            &lt;/template>
-          &lt;/v-virtual-scroll>
-        &lt;/v-tab-item>
-      &lt;/v-tabs-items>
-    &lt;/div>
-  &lt;/v-card>
-&lt;/template>
+            class="sunlight-highlight-javascript linenums">const recordTabUtils = {
+    computed: {
+        /** Fetch content related to each tab and feed search autocomplete*/
+        getValues() {
+            let selectedTabKey = Object.keys(this.tabsData.tabs)
+            return this.tabsData.tabs[selectedTabKey[this.tabsData.selectedTab]].data;
+        },
+        /** Deactivate the section if none of the tabs hold data*/
+        tabsDataExist() {
+            let inactiveTabs = true
+            for (const [key] of Object.entries(this.filterList)) {
+                if (this.filterList[key].data.length >= 1) {
+                    inactiveTabs = false
+                    break
+                }
+            }
+            return inactiveTabs
+        },
+        /** Filter down list if search box value changes unless it returns the whole data in a list*/
+        filterList() {
+            const _module = this
+            // here I deep copied object so the references are gone and my object is a new object with unique reference
+            const output = JSON.parse(JSON.stringify(_module.tabsData.tabs));
 
-&lt;script>
-import SectionTitle from '@/components/Records/Record/SectionTitle';
-import {mapState} from "vuex";
-import stringUtils from "@/utils/stringUtils"
-import RecordStatus from "@/components/Records/Shared/RecordStatus";
-import recordTabUtils from "@/utils/recordTabUtils";
-import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
-
-export default {
-  name: "Collections",
-  components: {
-    RecordStatus,
-    SectionTitle,
-  },
-  mixins:[stringUtils,recordTabUtils],
-  data: () => {
-    return {
-      relationDefinition: recordRelationShipsDefinitions,
-      selectedValues: null,
-      tabsData: {
-        selectedTab: 0,
-        tabs: {
-          in_collections: {relation: 'collects', data: []},
-          in_recommendations: {relation: 'recommends', data: []},
+            if (this.selectedValues !== null &amp;&amp; this.selectedValues !== "" &amp;&amp; this.selectedValues !== undefined) {
+                let foundItem = output[Object.keys(_module.tabsData.tabs)[_module.tabsData.selectedTab]].data.find(item => item.name === _module.selectedValues)
+                if (foundItem) {
+                    output[Object.keys(output)[_module.tabsData.selectedTab]].data = []
+                    output[Object.keys(output)[_module.tabsData.selectedTab]].data.push(foundItem)
+                }
+                return output
+            }
+            return output
         }
-      }
-    }
-  },
-  computed: {
-    ...mapState("record", ["currentRecord"]),
-  },
-  methods: {
-    /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
-    prepareTabsData() {
-      const _module = this;
-      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
-        Object.keys(_module.tabsData.tabs).forEach(tabName => {
-          _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
-        })
-      } 
-      else {
-        return false
-      }
     },
-  }
+    methods: {
+        /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+        prepareAssociations(associations, reverseAssociations) {
+            let _module = this;
+            let recordAssociations = []
+            let joinedArrays = associations.concat(reverseAssociations);
+            const properties = ['fairsharingRecord', 'linkedRecord'];
+
+            joinedArrays.forEach(item => {
+                let object = {};
+                properties.forEach(prop => {
+                    if (Object.prototype.hasOwnProperty.call(item, prop)) {
+                        object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+                        object.id = item[prop].id;
+                        object.registry = item[prop].registry;
+                        object.name = item[prop].name;
+                        object.subject = _module.currentRecord['fairsharingRecord'].name;
+                        object.type = item[prop].type;
+                    }
+                });
+                recordAssociations.push(object);
+            });
+            return recordAssociations;
+        },
+        /** active the very first tab that contains at least one item */
+        getFirstActiveTab() {
+            let firstActiveTabIndex = 0;
+            let index = -1
+            for (const [key] of Object.entries(this.filterList)) {
+                index++
+                if (this.filterList[key].data.length >= 1) {
+                    firstActiveTabIndex = index
+                    break
+                }
+            }
+            this.tabsData.selectedTab = firstActiveTabIndex
+        }
+    },
+    beforeMount() {
+        this.prepareTabsData();
+        this.getFirstActiveTab();
+    }
 }
-&lt;/script>
+
+export default recordTabUtils;
+
 </pre>
     </article>
 </section>

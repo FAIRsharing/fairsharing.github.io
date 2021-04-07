@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: utils/rules.js</title>
+	<title>FAIRsharing.org Source: utils/recordTabUtils.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,86 +86,92 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: utils/rules.js</h1>
+		<h1 class="page-title">Source: utils/recordTabUtils.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/**
- * Assess if the string is of a certain value (useful to compare passwords)
- * @param {String} val - the value to evaluate the string against
- * @returns {function(*): (boolean|string)}
- */
-export function hasValue(val){
-    return value => value === val || "Invalid repeated password"
-}
+            class="sunlight-highlight-javascript linenums">const recordTabUtils = {
+    computed: {
+        /** Fetch content related to each tab and feed search autocomplete*/
+        getValues() {
+            let selectedTabKey = Object.keys(this.tabsData.tabs)
+            return this.tabsData.tabs[selectedTabKey[this.tabsData.selectedTab]].data;
+        },
+        /** Deactivate the section if none of the tabs hold data*/
+        tabsDataExist() {
+            let inactiveTabs = true
+            for (const [key] of Object.entries(this.filterList)) {
+                if (this.filterList[key].data.length >= 1) {
+                    inactiveTabs = false
+                    break
+                }
+            }
+            return inactiveTabs
+        },
+        /** Filter down list if search box value changes unless it returns the whole data in a list*/
+        filterList() {
+            const _module = this
+            // here I deep copied object so the references are gone and my object is a new object with unique reference
+            const output = JSON.parse(JSON.stringify(_module.tabsData.tabs));
 
- /**
- * Assess email patterns.
- * @returns {function(*): (boolean|string)}
- */
-export function isEmail(){
-    return value => {
-        const pattern = /^(([^&lt;>()[\]\\.,;:\s@"]+(\.[^&lt;>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        return pattern.test(value) || 'Invalid e-mail.'
+            if (this.selectedValues !== null &amp;&amp; this.selectedValues !== "" &amp;&amp; this.selectedValues !== undefined) {
+                let foundItem = output[Object.keys(_module.tabsData.tabs)[_module.tabsData.selectedTab]].data.find(item => item.name === _module.selectedValues)
+                if (foundItem) {
+                    output[Object.keys(output)[_module.tabsData.selectedTab]].data = []
+                    output[Object.keys(output)[_module.tabsData.selectedTab]].data.push(foundItem)
+                }
+                return output
+            }
+            return output
+        }
+    },
+    methods: {
+        /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+        prepareAssociations(associations, reverseAssociations) {
+            let _module = this;
+            let recordAssociations = []
+            let joinedArrays = associations.concat(reverseAssociations);
+            const properties = ['fairsharingRecord', 'linkedRecord'];
+
+            joinedArrays.forEach(item => {
+                let object = {};
+                properties.forEach(prop => {
+                    if (Object.prototype.hasOwnProperty.call(item, prop)) {
+                        object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+                        object.id = item[prop].id;
+                        object.registry = item[prop].registry;
+                        object.name = item[prop].name;
+                        object.subject = _module.currentRecord['fairsharingRecord'].name;
+                        object.type = item[prop].type;
+                    }
+                });
+                recordAssociations.push(object);
+            });
+            return recordAssociations;
+        },
+        /** active the very first tab that contains at least one item */
+        getFirstActiveTab() {
+            let firstActiveTabIndex = 0;
+            let index = -1
+            for (const [key] of Object.entries(this.filterList)) {
+                index++
+                if (this.filterList[key].data.length >= 1) {
+                    firstActiveTabIndex = index
+                    break
+                }
+            }
+            this.tabsData.selectedTab = firstActiveTabIndex
+        }
+    },
+    beforeMount() {
+        this.prepareTabsData();
+        this.getFirstActiveTab();
     }
 }
 
-/**
- * Assess the presence of the field
- * @returns {function(*=): (boolean|string)}
- */
-export function isRequired(){
-    return value => !!value || 'Required.'
-}
+export default recordTabUtils;
 
-/**
- * Assess URL patterns.
- * @returns {function(*): (boolean|string)}
- */
-export function isUrl() {
-    return value => {
-        if (!value) return true;
-        const pattern = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&amp;//=]*)?/gi;
-        return pattern.test(value) || 'Invalid URL.'
-    }
-}
-
-/**
- * Assess if the string is long enough.
- * @param {Number} length - the length to evaluate the string against.
- * @returns {function(*): (boolean|string)}
- */
-export function isLongEnough(length) {
-    return value => {
-        let error = (value) ? `Value is not long enough (${value.length}/${length})` : `Value is not long enough (0/${length})`;
-        if (!value) return error;
-        return value.length >= length || error;
-    }
-}
-/**
- * Assess ORCID patterns. Can be empty if required is false.
- * @params {Boolean} required - is the field required or not.
- * @returns {function(*): (boolean|string)}
- */
-export function isOrcid(required) {
-    return value => {
-        if (!value &amp;&amp; !required) return true; // because this is an optional Orcid ID
-        const pattern = /^(\d|X){4}-(\d|X){4}-(\d|X){4}-(\d|X){4}$/gi;
-        return pattern.test(value) || "Doesn't look like a valid ORCID ID."
-    }
-}
-
-/**
- * Assess if the given file has the correct extension
- * @returns {function(*): (boolean|string)}
- */
-export function isImage(){
-    const accept = ["image/png", "image/jpeg"];
-    return value => {
-        return (!value || accept.indexOf(value.type) > -1) || "File type should be PNG or JPEG"
-    }
-}
 </pre>
     </article>
 </section>

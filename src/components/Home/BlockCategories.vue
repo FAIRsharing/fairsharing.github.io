@@ -35,7 +35,7 @@
           <v-card-text class="text--primary text-justify height-90">
             {{ truncate('Standards and/or databases recommended by journal or funder data policies.',100) }}
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="text-center d-block">
             <v-btn
               color="primary"
               text
@@ -73,7 +73,7 @@
           <v-card-text class="text--primary text-justify height-90">
             {{ truncate('Standards and/or databases grouped by domain, species or organization.',100) }}
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="text-center d-block">
             <v-btn
               color="primary"
               text
@@ -117,7 +117,7 @@
           <v-card-text class="text--primary text-justify height-90">
             {{ truncate('About standards, their use in databases and policies, and how we can help you.',100) }}
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="text-center d-block">
             <v-btn
               color="primary"
               text

@@ -52,7 +52,7 @@
             </div>
             <v-divider />
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="text-center d-block">
             <router-link to="/standards">
               <v-btn
                 color="primary"
@@ -114,7 +114,7 @@
             </div>
             <v-divider />
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="text-center d-block">
             <router-link to="/databases">
               <v-btn
                 color="primary"
@@ -170,7 +170,7 @@
             </div>
             <v-divider />
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="text-center d-block">
             <router-link to="/policies">
               <v-btn
                 color="primary"

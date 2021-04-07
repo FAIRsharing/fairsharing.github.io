@@ -10,6 +10,7 @@ import record from "@/store/record.js";
 import users from "@/store/users.js";
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
+import Client from "@/components/Client/RESTClient";
 
 // Initializing context for mounting
 const localVue = createLocalVue();
@@ -20,7 +21,8 @@ localVue.use(VueScrollTo,{})
 // Initializing store states and getters
 users.state.user = function(){ return {
     isLoggedIn: true,
-    credentials: {token: 123, username: 123}
+    credentials: {token: 123, username: 123},
+    watchedRecords: [1]
 }};
 record.state.currentRecord.fairsharingRecord = {
     maintainers: [{username: 123}]
@@ -165,15 +167,43 @@ describe("Record.vue", function() {
         buttons[1].method();
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         expect($router.push).toHaveBeenCalledTimes(2);
-        expect(buttons[2].method()).toBe(null);
-        expect(buttons[3].method()).toBe(null);
+        await buttons[2].method();
+        expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
+        expect(buttons[4].method()).toBe(null);
         $store.state.users.user = function (){return {
             isLoggedIn: true,
-            credentials: {token: 123, username: 123}
+            credentials: {token: 123, username: 123},
+            watchedRecords: []
         }};
         await buttons[1].method();
         expect(wrapper.vm.claimedTriggered).toBe(true);
         expect(wrapper.vm.canClaim).toBe(false);
+        buttons[3].method();
+        expect($router.push).toHaveBeenCalledWith({path: "/graph/980190962"});
+    });
+
+    it("runs the watch method", async () => {
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {user: 123}
+        );
+        expect(wrapper.vm.isWatching).toBe(false);
+        let changeWatch = jest.spyOn(wrapper.vm, "changeWatchRecord");
+        let buttons = wrapper.vm.getMenuButtons;
+        expect(buttons[2].name()).toEqual("Watch record");
+        await buttons[2].method();
+        expect(changeWatch).toHaveBeenCalledWith(true);
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            credentials: {token: 123, username: 123},
+            watchedRecords: [980190962]
+        }};
+        expect(wrapper.vm.isWatching).toBe(true);
+        expect(buttons[2].name()).toEqual("Unwatch record");
+        await buttons[2].method();
+        expect(changeWatch).toHaveBeenCalledWith(false);
+        mocks.restore("restMock");
     });
 
     it("can properly fetch a record history", async () => {
@@ -208,7 +238,8 @@ describe("Record.vue", function() {
         wrapper.vm.alreadyClaimed = false;
         $store.state.users.user = function(){ return {
             isLoggedIn: true,
-            credentials: {token: 123, username: 567}
+            credentials: {token: 123, username: 567},
+            watchedRecords: []
         }};
         await wrapper.vm.checkClaimStatus();
         expect(wrapper.vm.alreadyClaimed).toBe(true);

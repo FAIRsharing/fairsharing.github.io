@@ -45,7 +45,6 @@
           >
             <template #activator="{ on, attrs }">
               <v-btn
-                v-if="!error"
                 class="mt-2"
                 color="primary"
                 v-bind="attrs"
@@ -68,7 +67,7 @@
                 @click="button.method()"
               >
                 <v-list-item-title>
-                  {{ button.name }}
+                  {{ button.name() }}
                 </v-list-item-title>
               </v-list-item>
             </v-list>
@@ -96,8 +95,6 @@
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!-- RELATED CONTENT -->
-            <RelatedContent class="mt-5 ml-lg-5" />
             <!-- Tools -->
             <Tools class="mt-5 ml-lg-5" />
             <!-- Organisations -->
@@ -124,14 +121,12 @@
     import NotFound from "@/views/Errors/404"
     import Organisations from "@/components/Records/Record/Organisations";
     import Collections from "@/components/Records/Record/Collections";
-    import RelatedContent from "@/components/Records/Record/RelatedContent";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
-          RelatedContent,
           Collections,
           Organisations,
             GeneralInfo,
@@ -170,6 +165,9 @@
             userIsLoggedIn(){
               return this.user().isLoggedIn;
             },
+            isWatching() {
+              return this.user().watchedRecords?.includes(this.currentRecord['fairsharingRecord'].id) || false;
+            },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
             },
@@ -177,7 +175,7 @@
               let _module = this;
               return [
                 {
-                  name: "Edit record",
+                  name: function() { return "Edit record" },
                   isDisabled: function(){
                     if (!_module.userIsLoggedIn){
                       return false
@@ -187,7 +185,7 @@
                   method: function(){return _module.goToEdit()}
                 },
                 {
-                  name: "Request ownership",
+                  name: function() { return "Request ownership" },
                   isDisabled: function(){
                     if (!_module.userIsLoggedIn){
                       return false
@@ -209,13 +207,46 @@
                   }
                 },
                 {
-                  name: "Watch record",
+                  name: function() {
+                    if (_module.isWatching) {
+                      return "Unwatch record"
+                    }
+                    else {
+                      return "Watch record"
+                    }
+                  },
                   disable: true,
-                  isDisabled: function(){ return true},
-                  method: function(){return null}
+                  isDisabled: function() { return false },
+                  method: function(){
+                    if (!_module.userIsLoggedIn){
+                      _module.$router.push({
+                        path: "/accounts/login",
+                        query: {
+                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                        }
+                      })
+                    }
+                    else {
+                      if (_module.isWatching) {
+                        _module.changeWatchRecord(false);
+                      }
+                      else {
+                        _module.changeWatchRecord(true);
+                      }
+                    }
+                  }
                 },
                 {
-                  name: "Have a suggestion/question ?",
+                  name: function() { return "View Relation Graph" },
+                  isDisabled: function(){ return false },
+                  method: function(){
+                    _module.$router.push({
+                      path: "/graph/" + _module.currentRecord['fairsharingRecord'].id
+                    })
+                  }
+                },
+                {
+                  name: function() { return "Have a suggestion/question ?" },
                   isDisabled: function(){ return true},
                   method: function(){return null}
                 }
@@ -245,7 +276,8 @@
             })
         },
         methods: {
-            ...mapActions('record', ['fetchRecord', "fetchRecordHistory", "fetchPreviewRecord"]),
+            ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
+            ...mapActions('users', ['updateUser']),
             goToEdit(){
               let _module = this;
               const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
@@ -309,11 +341,8 @@
                 this.alreadyClaimed = false;
                 this.claimedTriggered = false;
                 try {
-                  if (this.target) await _module.fetchPreviewRecord(this.target);
-                    else await _module.fetchRecord({
-                        id: this.currentRoute,
-                        token: _module.user().credentials.token
-                      });
+                    if (this.target) await _module.fetchPreviewRecord(this.target);
+                    else await _module.fetchRecord(this.currentRoute);
                 }
                 catch (e) {
                     this.error = e.message;
@@ -335,6 +364,25 @@
                 const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
                 _module.canEdit = !canEdit.error;
               }
+            },
+            async changeWatchRecord(watch) {
+              const _module = this;
+              this.loading = true;
+              let records = _module.user().watchedRecords;
+              if (watch) {
+                records.push(_module.currentRecord['fairsharingRecord'].id)
+              } else {
+                records = records.filter(function(value){
+                  return value !== _module.currentRecord['fairsharingRecord'].id;
+                });
+              }
+              let data = {
+                watched_record_ids: records
+              }
+              await this.updateUser(data);
+              // Refresh user data to reload followed record status.
+              // TODO
+              this.loading = false;
             }
         },
         metaInfo() {

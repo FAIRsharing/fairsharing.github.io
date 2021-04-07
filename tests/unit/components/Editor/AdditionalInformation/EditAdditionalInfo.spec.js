@@ -108,5 +108,12 @@ describe("Editor.vue", function() {
         expect(wrapper.vm.fields.contacts[1]).toBe(null);
         wrapper.vm.removeItem("contacts", 1);
         expect(wrapper.vm.fields.contacts[1]).toBe(undefined);
+        wrapper.vm.overlay.fieldName = "testField";
+        wrapper.vm.overlay.id = null;
+        wrapper.vm.addItem();
+        expect(wrapper.vm.fields['testField']).toStrictEqual([null]);
+        wrapper.vm.overlay.fieldName = "contacts";
+        wrapper.vm.addItem();
+        expect(wrapper.vm.fields.contacts[1]).toBe(null);
     });
 });

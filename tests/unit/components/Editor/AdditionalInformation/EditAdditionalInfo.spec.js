@@ -33,7 +33,7 @@ const template = {
     anotherField: {}
 };
 
-describe("Editor.vue", function() {
+describe("EditAdditionalInfo.vue", function() {
     let wrapper;
 
     it("can be mounted without allowed fields", () => {

@@ -77,7 +77,7 @@
     import { isUrl } from "@/utils/rules.js"
 
     export default {
-        name: "StringField",
+        name: "FieldInput",
         mixins: [ stringUtils ],
         props: {
             fieldName: { default: null, type: String },
@@ -89,10 +89,6 @@
             ...mapGetters("record", ["getSection"]),
             fields() {
                 return this.getSection("additionalInformation").data
-            },
-            field() {
-                if (!this.subfieldName) return this.fields[this.fieldName] || null;
-                return ''
             },
             getName() {
                 if (!this.subfieldName) return this.cleanString(this.fieldName);
@@ -121,12 +117,7 @@
             },
             target() {
                 if (!this.subfieldName) return this.fields[this.fieldName];
-                else {
-                    if (!this.fields[this.fieldName]) {
-                        this.fields[this.fieldName] = {}
-                    }
-                    return this.fields[this.fieldName][this.subfieldName]
-                }
+                else if (!this.fields[this.fieldName]) this.fields[this.fieldName] = {};
             }
         }
     }

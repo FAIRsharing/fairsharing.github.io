@@ -191,10 +191,10 @@ import {truncate} from "@/utils/stringUtils";
 import {mapGetters} from "vuex";
 
 export default {
-name: "BlockInfo",
-  mixins: [ truncate ],
+  name: "BlockInfo",
+  mixins: [truncate],
   computed: {
-    ...mapGetters("searchFilters",["getFiltersStatisticCount"])
+    ...mapGetters("searchFilters", ["getFiltersStatisticCount"])
   }
 }
 </script>

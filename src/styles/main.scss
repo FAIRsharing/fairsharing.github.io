@@ -43,6 +43,10 @@ ul {
   cursor: pointer;
 }
 
+.mouse-info {
+  cursor: help;
+}
+
 .tooltips {
   max-width: 500px;
   display: block;
@@ -100,6 +104,11 @@ ul {
 .ellipse-width-600 {
   @extend .ellipse;
   max-width: 600px;
+}
+
+.ellipse-width-450 {
+  @extend .ellipse;
+  max-width: 450px;
 }
 
 .dashed-line {
@@ -193,7 +202,17 @@ ul {
   margin-top: 1pt;
 }
 
+.line-height-14 {
+  line-height: 14px;
+}
 
+.line-height-16 {
+  line-height: 16px;
+}
+
+.line-height-20 {
+  line-height: 20px;
+}
 //End of Utilities--------------------------
 
 // shared class
@@ -218,4 +237,11 @@ ul {
   -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
   -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
   box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+}
+
+.relation-style {
+  position: absolute;
+  bottom: -12px;
+  left: 143px;
+  font-size: 12px;
 }

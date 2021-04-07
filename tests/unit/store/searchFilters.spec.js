@@ -100,7 +100,7 @@ describe('searchFilters store methods', () => {
         expect(actions.commit).toHaveBeenCalledWith("searchFilters/setLoadingStatus", true);
         expect(actions.commit).toHaveBeenCalledWith("searchFilters/setFilterButtons");
         expect(actions.commit).toHaveBeenCalledWith("searchFilters/setLoadingStatus", false);
-        expect(actions.commit).toHaveBeenCalledTimes(6);
+        expect(actions.commit).toHaveBeenCalledTimes(7);
         stub.restore();
     });
 

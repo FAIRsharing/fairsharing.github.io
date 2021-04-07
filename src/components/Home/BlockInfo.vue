@@ -10,7 +10,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="500"
+          height="450"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -30,7 +30,7 @@
               Standards
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify height-250">
+          <v-card-text class="text--primary text-justify">
             <div class="d-flex">
               <strong class="flex-grow-1">Terminology Artifact</strong>
               <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'terminology_artefact'}) }}</span>
@@ -73,7 +73,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="500"
+          height="450"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -92,7 +92,7 @@
               Databases
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify height-250">
+          <v-card-text class="text--primary text-justify">
             <div class="d-flex">
               <strong class="flex-grow-1">Natural Science</strong>
               <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'natural science'}) }}</span>
@@ -135,7 +135,7 @@
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
-          height="500px"
+          height="450"
         >
           <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
             <div
@@ -153,7 +153,7 @@
               Policies
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify height-250">
+          <v-card-text class="text--primary text-justify height-190">
             <div class="d-flex">
               <strong class="flex-grow-1">Funder</strong>
               <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'funder'}) }}</span>

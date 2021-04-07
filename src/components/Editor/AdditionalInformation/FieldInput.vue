@@ -43,19 +43,28 @@
       @change="setField($event)"
     >
       <template #label>
-        <!-- #TODO REWRITE THIS BIT -->
         {{ getName }}:
-        <span
-          v-if="fields[fieldName]"
-          class="ml-1"
-        >
-          <span v-if="!subfieldName">{{ fields[fieldName] }}</span>
-          <span v-else>{{ fields[fieldName][subfieldName] }}</span>
+        <span v-if="!subfieldName">
+          <span
+            v-if="fields[fieldName]"
+            class="ml-1"
+          >{{ fields[fieldName] }}</span>
+          <span
+            v-else
+            class="ml-1"
+          > no </span>
         </span>
-        <span
-          v-else
-          class="ml-1"
-        > no </span>
+
+        <span v-else>
+          <span
+            v-if="fields[fieldName][subfieldName]"
+            class="ml-1"
+          >{{ fields[fieldName][subfieldName] }}</span>
+          <span
+            v-else
+            class="ml-1"
+          > no </span>
+        </span>
       </template>
     </v-switch>
   </div>

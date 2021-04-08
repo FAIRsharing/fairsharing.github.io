@@ -170,9 +170,4 @@
     position: relative;
     top:3px;
   }
-
-  .reposition .fa{
-    position: relative;
-    top: -14px;
-  }
 </style>

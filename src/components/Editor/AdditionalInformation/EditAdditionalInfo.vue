@@ -199,6 +199,7 @@
             <div
               v-for="(field, fieldName, fieldIndex) in overlay.template"
               :key="'templateField_' + fieldIndex"
+              class="d-flex flex-row reposition"
             >
               <v-tooltip
                 v-if="overlay.template[fieldName].description"
@@ -259,6 +260,7 @@ import stringUtils from '@/utils/stringUtils'
 import FieldInput from "./FieldInput";
 import { isUrl } from "@/utils/rules.js"
 import Alerts from "../Alerts";
+const diff = require("deep-object-diff").diff;
 
 export default {
   name: "EditAdditionalInfo",
@@ -285,12 +287,31 @@ export default {
     fields() {
       return this.getSection("additionalInformation").data
     },
+    initialData(){
+      return this.getSection("additionalInformation").initialData;
+    },
     message(){
       let error = this.getSection("additionalInformation").error;
       return {
         error: error,
         value: this.getSection("additionalInformation").message
       };
+    }
+  },
+  watch: {
+    fields: {
+      deep: true,
+      handler(val) {
+        let delta = 0;
+        let changes = diff(this.initialData, val);
+        Object.keys(changes).forEach(change => {
+          if (changes[change] !== null && Object.keys(changes[change]).length > 0) delta += 1
+        });
+        this.$store.commit("record/setChanges", {
+          section: "additionalInformation",
+          value: delta
+        });
+      }
     }
   },
   methods: {
@@ -406,4 +427,10 @@ export default {
   .v-tooltip__content {
     max-width: 400px;
   }
+
+  #editAdditionalInfo .reposition .fa{
+    position: relative;
+    top: -14px;
+  }
+
 </style>

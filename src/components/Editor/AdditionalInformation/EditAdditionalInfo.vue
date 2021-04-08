@@ -264,7 +264,7 @@ const diff = require("deep-object-diff").diff;
 
 export default {
   name: "EditAdditionalInfo",
-  components: {Alerts, FieldInput },
+  components: { Alerts, FieldInput },
   mixins: [ stringUtils ],
   data() {
     return {
@@ -301,16 +301,9 @@ export default {
   watch: {
     fields: {
       deep: true,
-      handler(val) {
-        let delta = 0;
-        let changes = diff(this.initialData, val);
-        Object.keys(changes).forEach(change => {
-          if (changes[change] !== null && Object.keys(changes[change]).length > 0) delta += 1
-        });
-        this.$store.commit("record/setChanges", {
-          section: "additionalInformation",
-          value: delta
-        });
+      /* istanbul ignore next */
+      handler(newVal) {
+        this.submitChanges(newVal);
       }
     }
   },
@@ -413,6 +406,17 @@ export default {
       else {
         await this.$router.push({path: '/' + this.$route.params.id})
       }
+    },
+    submitChanges(newVal){
+      let delta = 0;
+      let changes = diff(this.initialData, newVal);
+      Object.keys(changes).forEach(change => {
+        if (changes[change] !== null && Object.keys(changes[change]).length > 0) delta += 1
+      });
+      this.$store.commit("record/setChanges", {
+        section: "additionalInformation",
+        value: delta
+      });
     }
   }
 }

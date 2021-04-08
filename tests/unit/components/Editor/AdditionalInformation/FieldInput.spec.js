@@ -30,7 +30,7 @@ describe("FieldInput.vue", function() {
         expect(wrapper.name()).toMatch("FieldInput");
     });
 
-    it("can be mounted subfield name", () => {
+    it("can be mounted with a subfield name with value", () => {
         wrapper = shallowMount(FieldInput, {
             localVue,
             mocks: {$store},
@@ -52,6 +52,20 @@ describe("FieldInput.vue", function() {
                 fieldName: "dataset_deposition",
                 fieldProps: additionalInformationFixture.schema.properties['dataset_deposition'].properties['restrictions'],
                 subfieldName: 'restrictions'
+            }
+        });
+        expect(wrapper.name()).toMatch("FieldInput");
+    });
+
+    it("can be mounted with a subfield name but without value", () => {
+        wrapper = shallowMount(FieldInput, {
+            localVue,
+            mocks: {$store},
+            propsData: {
+                fieldName: "anewfield",
+                fieldProps: additionalInformationFixture.schema.definitions.data_process.properties.url,
+                subfieldName: 'url',
+                id: 0
             }
         });
         expect(wrapper.name()).toMatch("FieldInput");

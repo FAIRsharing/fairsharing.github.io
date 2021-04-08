@@ -10,7 +10,6 @@ import record from "@/store/record.js";
 import users from "@/store/users.js";
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
-import Client from "@/components/Client/RESTClient";
 
 // Initializing context for mounting
 const localVue = createLocalVue();
@@ -186,23 +185,51 @@ describe("Record.vue", function() {
         mocks.setMock("restMock",
             RESTClient.prototype,
             "executeQuery",
-            {user: 123}
+            {
+                data: {
+                    modification: 'success'
+                }
+            }
         );
         expect(wrapper.vm.isWatching).toBe(false);
-        let changeWatch = jest.spyOn(wrapper.vm, "changeWatchRecord");
+        let changeWatchRecord = jest.spyOn(wrapper.vm, "changeWatchRecord");
+        let changeWatched = jest.spyOn(wrapper.vm, "changeWatched");
+        expect(changeWatched).toHaveBeenCalledTimes(0);
         let buttons = wrapper.vm.getMenuButtons;
         expect(buttons[2].name()).toEqual("Watch record");
         await buttons[2].method();
-        expect(changeWatch).toHaveBeenCalledWith(true);
-        $store.state.users.user = function (){return {
-            isLoggedIn: true,
-            credentials: {token: 123, username: 123},
-            watchedRecords: [980190962]
-        }};
-        expect(wrapper.vm.isWatching).toBe(true);
-        expect(buttons[2].name()).toEqual("Unwatch record");
+        expect(changeWatchRecord).toHaveBeenCalledWith(true);
+        expect(changeWatched).toHaveBeenCalledTimes(1);
+        //$store.state.users.user = function (){return {
+        //    isLoggedIn: true,
+        //    credentials: {token: 123, username: 123},
+        //    watchedRecords: [980190962]
+        //}};
+        //expect(wrapper.vm.isWatching).toBe(true);
+        //expect(buttons[2].name()).toEqual("Unwatch record");
+        //await buttons[2].method();
+        //expect(changeWatchRecord).toHaveBeenCalledWith(false);
+        //expect(changeWatched).toHaveBeenCalledWith([]);
+        mocks.restore("restMock");
+    });
+
+    it("doesn't change watched records if the user wasn't updated", async() => {
+        let changeWatch = jest.spyOn(wrapper.vm, "changeWatchRecord");
+        let changeWatchUsers = jest.spyOn(wrapper.vm, "changeWatched");
+        expect(changeWatchUsers).toHaveBeenCalledTimes(0);
+        let buttons = wrapper.vm.getMenuButtons;
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {
+            data: {
+              modification: 'failure'
+            }
+          }
+        );
         await buttons[2].method();
-        expect(changeWatch).toHaveBeenCalledWith(false);
+        expect(changeWatch).toHaveBeenCalled();
+        expect(changeWatchUsers).toHaveBeenCalledTimes(0);
         mocks.restore("restMock");
     });
 

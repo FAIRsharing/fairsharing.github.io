@@ -7,14 +7,13 @@
     elevation="3"
   >
     <SectionTitle
-      title="Collections"
+      title="Related Content"
       :inactive-section="tabsDataExist"
     />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div class="d-flex flex-wrap mt-5">
         <!--  search autocomplete    -->
         <v-autocomplete
-          v-if="!tabsDataExist"
           v-model="selectedValues"
           :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length<5"
           :items="getValues"
@@ -36,7 +35,6 @@
       </div>
       <!--  tabs    -->
       <v-tabs
-        v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
         background-color="transparent"
         grow
@@ -56,9 +54,8 @@
       </v-tabs>
       <!--  tab content  -->
       <v-tabs-items
-        v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :class="['transparent',tabsDataExist]"
+        class="transparent height-430"
       >
         <v-tab-item
           v-for="(tabItem,tabItemIndex) in filterList"
@@ -86,8 +83,8 @@
                     {{ item.name }}
                   </div>
                 </div>
-                <p class="grey--text  relation-style text-ellipses-height-2lines line-height-14">
-                  {{ item.name }}
+                <p class="grey--text relation-style text-ellipses-height-2lines line-height-14">
+                  {{ item.subject }}
                   <v-tooltip top>
                     <template #activator="{ on }">
                       <span
@@ -99,7 +96,7 @@
                     </template>
                     <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
                   </v-tooltip>
-                  {{ item.subject }}
+                  {{ item.name }}
                 </p>
               </v-card>
             </template>
@@ -119,7 +116,7 @@ import recordTabUtils from "@/utils/recordTabUtils";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
 
 export default {
-  name: "Collections",
+  name: "RelatedContent",
   components: {
     RecordStatus,
     SectionTitle,
@@ -132,8 +129,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          in_collections: {relation: 'collects', data: []},
-          in_recommendations: {relation: 'recommends', data: []},
+          related_standards: {relation: ['collects', 'recommends'], registry: "Standard", data: []},
+          related_databases: {relation: ['collects', 'recommends'], registry: "Database", data: []}
         }
       }
     }
@@ -148,9 +145,9 @@ export default {
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
-        })
-      } 
+              .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && item.registry === _module.tabsData.tabs[tabName].registry)
+        });
+      }
       else {
         return false
       }
@@ -158,3 +155,25 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+a {
+  text-decoration: none;
+
+  &:hover, &:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
+
+.filterValueName {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.mt-1-pt {
+  margin-top: 1pt;
+}
+</style>

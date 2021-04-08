@@ -7,6 +7,7 @@
       <v-card-title class="blue white--text">
         Edit Additional Information
       </v-card-title>
+      <Alerts target="additionalInformation" />
       <v-card-text>
         <v-container
           fluid
@@ -166,6 +167,22 @@
           </v-row>
         </v-container>
       </v-card-text>
+      <v-card-actions>
+        <v-btn
+          class="info"
+          :loading="loading"
+          @click="saveRecord()"
+        >
+          Save and continue
+        </v-btn>
+        <v-btn
+          class="info"
+          :loading="loading"
+          @click="saveRecord()"
+        >
+          Save And Exit
+        </v-btn>
+      </v-card-actions>
     </v-card>
     <v-fade-transition>
       <v-overlay
@@ -241,22 +258,24 @@ import {mapActions, mapGetters, mapState, mapMutations} from "vuex";
 import stringUtils from '@/utils/stringUtils'
 import FieldInput from "./FieldInput";
 import { isUrl } from "@/utils/rules.js"
+import Alerts from "../Alerts";
 
 export default {
   name: "EditAdditionalInfo",
-  components: { FieldInput },
+  components: {Alerts, FieldInput },
   mixins: [ stringUtils ],
   data() {
     return {
       initialized: false,
-      loading: true,
+      loading: false,
       overlay: {
         show: false,
         id: null,
         fieldName: null,
         fields: null,
         template: null
-      }
+      },
+      saving: false
     }
   },
   computed: {
@@ -266,6 +285,14 @@ export default {
     fields() {
       return this.getSection("additionalInformation").data
     },
+    message(){
+      let error = this.getSection("additionalInformation").error;
+      return {
+        error: error,
+        value: this.getSection("additionalInformation").message,
+        type: function(){if (error){return "error"} else {return "success"}}
+      };
+    }
   },
   methods: {
     ...mapActions("record", ["updateAdditionalInformation"]),
@@ -351,6 +378,21 @@ export default {
         return [isUrl()]
       }
       return []
+    },
+    async saveRecord(redirect){
+      this.saving = true;
+      await this.updateAdditionalInformation({
+        fields: Object.keys(this.allowedFields.properties),
+        id: this.$route.params.id,
+        token: this.user().credentials.token
+      });
+      this.saving = false;
+      if (this.message.error || !redirect){
+        this.$scrollTo("#mainHeader");
+      }
+      else {
+        await this.$router.push({path: '/' + this.$route.params.id})
+      }
     }
   }
 }

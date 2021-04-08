@@ -1,5 +1,5 @@
 <template>
-  <div v-if="fieldName">
+  <div v-if="fieldName" class="d-flex flex-row" :class="{'reposition': !isSwitch}">
     <v-tooltip
       bottom
       class="d-inline-block mr-2"
@@ -17,7 +17,7 @@
       :value="target()"
       :label="getName"
       outlined
-      class="field"
+      class="textField"
       width="80%"
       :rules="rules"
       @input="setField($event)"
@@ -169,5 +169,10 @@
   .field.switch {
     position: relative;
     top:3px;
+  }
+
+  .reposition .fa{
+    position: relative;
+    top: -14px;
   }
 </style>

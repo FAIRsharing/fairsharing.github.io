@@ -21,7 +21,7 @@
               sm="12"
               md="12"
               lg="4"
-              xl="3"
+              xl="2"
               class="pt-0"
             >
               <FieldInput
@@ -34,12 +34,12 @@
             <v-col
               v-for="(field, fieldName, fieldIndex) in getFields('string')"
               :key="'stringField_' + fieldIndex"
-              cols="4"
+              cols="12"
               xs="12"
               sm="12"
               md="12"
               lg="8"
-              xl="9"
+              xl="10"
             >
               <FieldInput
                 :field-name="fieldName"
@@ -52,7 +52,7 @@
             <v-col
               v-for="(field, fieldName, fieldIndex) in getFields('object')"
               :key="'objectField_' + fieldIndex"
-              cols="4"
+              cols="12"
               xs="12"
               sm="12"
               md="12"
@@ -112,7 +112,7 @@
                   <v-col
                     v-for="(item, itemIndex) in fields[fieldName]"
                     :key="'arrayField_' + itemIndex"
-                    cols="4"
+                    cols="12"
                     xs="12"
                     sm="12"
                     md="6"
@@ -402,11 +402,6 @@ export default {
   .iconReposition {
     position: relative;
     top: -2px;
-  }
-
-  #editAdditionalInfo .field {
-    display: inline-block;
-    width: 90%;
   }
 
   .v-tooltip__content {

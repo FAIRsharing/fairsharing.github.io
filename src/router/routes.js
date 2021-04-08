@@ -15,6 +15,7 @@ export const RequestNewPassword = () =>  import(/* webpackChunkName: "newPwd-chu
 export const ResetPassword = () =>  import(/* webpackChunkName: "resetPwd-chunk" */ "@/views/Users/ResetPassword");
 export const EditProfile = () =>  import(/* webpackChunkName: "editProfile-chunk" */ "@/views/Users/EditProfile");
 export const OauthLogin = () =>  import(/* webpackChunkName: "Oauth-chunk" */ "@/views/Users/Login/OauthLogin.vue");
+export const Organisation = () =>  import(/* webpackChunkName: "Organisation-chunk" */ "@/views/Organisations/Organisation");
 export const LoginFailure = () =>  import(/* webpackChunkName: "failedLogin-chunk" */ "@/views/Users/Login/LoginFailure");
 export const Stat =  () => import(/* webpackChunkName: "stat-chunk" */ '@/views/Stats/Statistics.vue');
 export const Community =  () => import(/* webpackChunkName: "community-chunk" */ '@/views/Static/Community/Community');

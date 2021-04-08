@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/record.js"
-import Collections from "@/components/Records/Record/Collections.vue"
+import RelatedContent from "@/components/Records/Record/RelatedContent.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
@@ -18,7 +18,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
                 registry: "Standard",
                 type: "terminology_artifact"
             },
-            recordAssocLabel: "collects"
+            recordAssocLabel: "implements"
         },
         {
             linkedRecord: {
@@ -27,7 +27,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
                 registry: "Database",
                 type: "journal"
             },
-            recordAssocLabel: "collects"
+            recordAssocLabel: "related to"
         }
     ],
     reverseRecordAssociations: [
@@ -35,10 +35,10 @@ Record.state.currentRecord["fairsharingRecord"] = {
             linkedRecord: {
                 id: 2,
                 name: "b name",
-                registry: "Database",
+                registry: "Policy",
                 type: "repository"
             },
-            recordAssocLabel: "recommends"
+            recordAssocLabel: "related to"
         }
     ],
 };
@@ -47,11 +47,11 @@ const $store = new Vuex.Store({
         record:Record
     }});
 
-describe("Collections.vue", function(){
+describe("RelatedContent.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(Collections, {
+        wrapper = shallowMount(RelatedContent, {
             localVue,
             vuetify,
             mocks: {$store}
@@ -59,13 +59,17 @@ describe("Collections.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Collections");
+        expect(wrapper.name()).toMatch("RelatedContent");
     });
 
     it("search data is reactive when user changes text box value", () => {
         wrapper.vm.selectedValues = "a name 3"
-        wrapper.vm.selectedValues = "not going to find me!"
-        wrapper.vm.tabsData.tabs.in_collections.data = []
+        wrapper.vm.tabsData.tabs.related_standards.data = []
+        wrapper.vm.tabsData.selectedTab = 1
+        wrapper.vm.selectedValues = "a name 3"
+        wrapper.vm.tabsData.selectedTab = 0
+        wrapper.vm.getFirstActiveTab()
+        expect(wrapper.vm.tabsData.selectedTab).toBe(1)
     });
 
     it("can check if there are no record recordAssociations or reverseRecordAssociations", () => {

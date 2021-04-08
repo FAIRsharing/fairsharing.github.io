@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Record/Collections.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Record/RelatedContent.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,7 +86,7 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Record/Collections.vue</h1>
+		<h1 class="page-title">Source: components/Records/Record/RelatedContent.vue</h1>
     
 <section>
     <article>
@@ -100,14 +100,13 @@
     elevation="3"
   >
     &lt;SectionTitle
-      title="Collections"
+      title="Related Content"
       :inactive-section="tabsDataExist"
     />
     &lt;div class="d-flex flex-column ml-2 min-height-40">
       &lt;div class="d-flex flex-wrap mt-5">
         &lt;!--  search autocomplete    -->
         &lt;v-autocomplete
-          v-if="!tabsDataExist"
           v-model="selectedValues"
           :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length&lt;5"
           :items="getValues"
@@ -129,7 +128,6 @@
       &lt;/div>
       &lt;!--  tabs    -->
       &lt;v-tabs
-        v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
         background-color="transparent"
         grow
@@ -149,9 +147,8 @@
       &lt;/v-tabs>
       &lt;!--  tab content  -->
       &lt;v-tabs-items
-        v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
-        :class="['transparent',tabsDataExist]"
+        class="transparent height-430"
       >
         &lt;v-tab-item
           v-for="(tabItem,tabItemIndex) in filterList"
@@ -179,8 +176,8 @@
                     {{ item.name }}
                   &lt;/div>
                 &lt;/div>
-                &lt;p class="grey--text  relation-style text-ellipses-height-2lines line-height-14">
-                  {{ item.name }}
+                &lt;p class="grey--text relation-style text-ellipses-height-2lines line-height-14">
+                  {{ item.subject }}
                   &lt;v-tooltip top>
                     &lt;template #activator="{ on }">
                       &lt;span
@@ -192,7 +189,7 @@
                     &lt;/template>
                     &lt;span>{{ relationDefinition[item.recordAssocLabel] }}&lt;/span>
                   &lt;/v-tooltip>
-                  {{ item.subject }}
+                  {{ item.name }}
                 &lt;/p>
               &lt;/v-card>
             &lt;/template>
@@ -212,7 +209,7 @@ import recordTabUtils from "@/utils/recordTabUtils";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
 
 export default {
-  name: "Collections",
+  name: "RelatedContent",
   components: {
     RecordStatus,
     SectionTitle,
@@ -225,8 +222,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          in_collections: {relation: 'collects', data: []},
-          in_recommendations: {relation: 'recommends', data: []},
+          related_standards: {relation: ['collects', 'recommends'], registry: "Standard", data: []},
+          related_databases: {relation: ['collects', 'recommends'], registry: "Database", data: []}
         }
       }
     }
@@ -241,9 +238,9 @@ export default {
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
-        })
-      } 
+              .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) &amp;&amp; item.registry === _module.tabsData.tabs[tabName].registry)
+        });
+      }
       else {
         return false
       }
@@ -251,6 +248,28 @@ export default {
   }
 }
 &lt;/script>
+
+&lt;style scoped lang="scss">
+a {
+  text-decoration: none;
+
+  &amp;:hover, &amp;:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
+
+.filterValueName {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.mt-1-pt {
+  margin-top: 1pt;
+}
+&lt;/style>
 </pre>
     </article>
 </section>

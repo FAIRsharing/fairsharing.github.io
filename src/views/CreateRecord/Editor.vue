@@ -240,7 +240,7 @@
         if (userToken) {
           let id = _module.$route.params.id;
           if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
-          await _module.fetchRecord(id);
+          await _module.fetchRecord({id: id});
           let canEdit = await client.canEdit(_module.currentID, userToken);
           if (canEdit.error) _module.error = true;
           await this.getAllowedFields({

@@ -1,5 +1,9 @@
 <template>
-  <div v-if="fieldName" class="d-flex flex-row" :class="{'reposition': !isSwitch}">
+  <div
+    v-if="fieldName"
+    class="d-flex flex-row"
+    :class="{'reposition': !isSwitch}"
+  >
     <v-tooltip
       bottom
       class="d-inline-block mr-2"

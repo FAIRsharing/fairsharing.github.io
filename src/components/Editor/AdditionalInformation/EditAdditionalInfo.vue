@@ -289,8 +289,7 @@ export default {
       let error = this.getSection("additionalInformation").error;
       return {
         error: error,
-        value: this.getSection("additionalInformation").message,
-        type: function(){if (error){return "error"} else {return "success"}}
+        value: this.getSection("additionalInformation").message
       };
     }
   },

@@ -6,9 +6,13 @@ import userStore from "@/store/users.js";
 import editorStore from "@/store/editor.js"
 import VueRouter from "vue-router";
 import additionalInformationFixture from "@/../tests/fixtures/additionalInformation.json"
+import RestClient from "@/components/Client/RESTClient.js"
+const sinon = require('sinon');
+const VueScrollTo = require('vue-scrollto');
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueScrollTo);
 
 const $store = new Vuex.Store({modules: {
     record: recordStore,
@@ -18,7 +22,9 @@ const $store = new Vuex.Store({modules: {
 $store.state.users.user = function(){return {credentials: {token: "123"}}};
 $store.state.record.sections.additionalInformation = {
     data: additionalInformationFixture.data,
-    initialData: JSON.parse(JSON.stringify(additionalInformationFixture.data))
+    initialData: JSON.parse(JSON.stringify(additionalInformationFixture.data)),
+    error: false,
+    message: null
 };
 let $route = {params: {id: "123"}};
 const router = new VueRouter();
@@ -115,5 +121,31 @@ describe("EditAdditionalInfo.vue", function() {
         wrapper.vm.overlay.fieldName = "contacts";
         wrapper.vm.addItem();
         expect(wrapper.vm.fields.contacts[1]).toBe(null);
+    });
+
+    it("can save the record", async () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        $store.state.editor.allowedFields = additionalInformationFixture.schema;
+        wrapper = shallowMount(EditAdditionalInfo, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
+        });
+        let restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: "Hello !"});
+        await wrapper.vm.saveRecord(true);
+        expect(wrapper.vm.message.error).toBe(false);
+        expect(wrapper.vm.message.value).toBe('Record successfully updated!');
+        restStub.restore();
+
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {error: "I am an error"}});
+        await wrapper.vm.saveRecord();
+        expect($store.state.record.sections.additionalInformation.error).toBe(true);
+        expect($store.state.record.sections.additionalInformation.message).toBe('I am an error');
+        restStub.restore();
+
+        jest.clearAllMocks();
     });
 });

@@ -34,8 +34,43 @@
     />
 
     <v-switch
-      v-if="isSwitch"
-      :value="target()"
+      v-if="isSwitch && !subfieldName"
+      v-model="fields[fieldName]"
+      inset
+      class="field ml-3 switch"
+      true-value="yes"
+      false-value="no"
+      @change="setField($event)"
+    >
+      <template #label>
+        {{ getName }}:
+        <span v-if="!subfieldName">
+          <span
+            v-if="fields[fieldName]"
+            class="ml-1"
+          >{{ fields[fieldName] }}</span>
+          <span
+            v-else
+            class="ml-1"
+          > no </span>
+        </span>
+
+        <span v-else>
+          <span
+            v-if="fields[fieldName][subfieldName]"
+            class="ml-1"
+          >{{ fields[fieldName][subfieldName] }}</span>
+          <span
+            v-else
+            class="ml-1"
+          > no </span>
+        </span>
+      </template>
+    </v-switch>
+
+    <v-switch
+      v-if="isSwitch && subfieldName"
+      v-model="fields[fieldName][subfieldName]"
       inset
       class="field ml-3 switch"
       true-value="yes"
@@ -71,6 +106,7 @@
 </template>
 
 <script>
+    import Vue from "vue"
     import { mapGetters, mapMutations } from "vuex"
     import { isEqual } from 'lodash'
     import stringUtils from '@/utils/stringUtils'
@@ -116,8 +152,14 @@
                 })
             },
             target() {
+                if (!this.fields[this.fieldName]) {
+                  if (!this.subfieldName) Vue.set(this.fields, this.fieldName, null);
+                  else Vue.set(this.fields, this.fieldName, {});
+                }
                 if (!this.subfieldName) return this.fields[this.fieldName];
-                else if (!this.fields[this.fieldName]) this.fields[this.fieldName] = {};
+                else {
+                  return this.fields[this.fieldName][this.subfieldName];
+                }
             }
         }
     }

@@ -253,7 +253,7 @@
       async confirmReloadData() {
         const _module = this;
         let recordID = _module.currentID;
-        await _module.fetchRecord(recordID);
+        await _module.fetchRecord({id: recordID});
       },
       isDisabled(tabName){
         if (tabName === 'Additional Information'){

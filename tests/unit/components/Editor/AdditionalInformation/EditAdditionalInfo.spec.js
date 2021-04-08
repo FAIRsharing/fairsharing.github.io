@@ -1,5 +1,6 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
+import Vuetify from "vuetify"
 import EditAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
@@ -24,7 +25,8 @@ $store.state.record.sections.additionalInformation = {
     data: additionalInformationFixture.data,
     initialData: JSON.parse(JSON.stringify(additionalInformationFixture.data)),
     error: false,
-    message: null
+    message: null,
+    changes: 0
 };
 let $route = {params: {id: "123"}};
 const router = new VueRouter();
@@ -148,4 +150,17 @@ describe("EditAdditionalInfo.vue", function() {
 
         jest.clearAllMocks();
     });
+
+    it("can react to fields changing value", async () => {
+        const vuetify = new Vuetify();
+        wrapper = await shallowMount(EditAdditionalInfo, {
+            localVue,
+            vuetify,
+            mocks: {$store}
+        });
+        wrapper.vm.fields.dataset_citation = "no";
+        wrapper.vm.submitChanges(wrapper.vm.fields);
+        expect($store.state.record.sections.additionalInformation.changes).toBe(1);
+
+    })
 });

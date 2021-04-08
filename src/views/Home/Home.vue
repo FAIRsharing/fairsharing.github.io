@@ -5,7 +5,7 @@
   >
     Welcome to FAIRsharing.org
     <script
-      :v-html="myJSON"
+      :v-html="JSONLD"
       type="application/ld+json"
     />
   </div>
@@ -18,7 +18,7 @@
     export default {
       name: "Home",
       computed: {
-        myJSON: () => {
+        JSONLD: () => {
           return JSON.stringify(  {
             "@context": "http://schema.org",
             "@type": "DataCatalog",

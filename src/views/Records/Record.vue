@@ -109,7 +109,7 @@
 </template>
 
 <script>
-    import {mapActions, mapState, mapGetters} from 'vuex'
+    import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
     import RestClient from "@/components/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
@@ -160,7 +160,7 @@
                 return this.target || this.$route.params['id'];
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
-            ...mapState('users', ["user"]),
+            ...mapState('users', ["user", "messages"]),
             ...mapGetters("record", ["getField"]),
             userIsLoggedIn(){
               return this.user().isLoggedIn;
@@ -277,7 +277,8 @@
         },
         methods: {
             ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
-            ...mapActions('users', ['updateUser']),
+            ...mapActions('users', ['updateWatchedRecords']),
+            ...mapMutations('users', ['changeWatched']),
             goToEdit(){
               let _module = this;
               const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
@@ -341,8 +342,11 @@
                 this.alreadyClaimed = false;
                 this.claimedTriggered = false;
                 try {
-                    if (this.target) await _module.fetchPreviewRecord(this.target);
-                    else await _module.fetchRecord(this.currentRoute);
+                  if (this.target) await _module.fetchPreviewRecord(this.target);
+                    else await _module.fetchRecord({
+                        id: this.currentRoute,
+                        token: _module.user().credentials.token
+                      });
                 }
                 catch (e) {
                     this.error = e.message;
@@ -368,10 +372,11 @@
             async changeWatchRecord(watch) {
               const _module = this;
               this.loading = true;
-              let records = _module.user().watchedRecords;
+              let records = _module.user().watchedRecords.slice();
               if (watch) {
                 records.push(_module.currentRecord['fairsharingRecord'].id)
-              } else {
+              }
+              else {
                 records = records.filter(function(value){
                   return value !== _module.currentRecord['fairsharingRecord'].id;
                 });
@@ -379,9 +384,11 @@
               let data = {
                 watched_record_ids: records
               }
-              await this.updateUser(data);
+              let response = await this.updateWatchedRecords(data);
               // Refresh user data to reload followed record status.
-              // TODO
+              if (response.modification === 'success'){
+                _module.changeWatched(records);
+              }
               this.loading = false;
             }
         },

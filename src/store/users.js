@@ -21,7 +21,7 @@ export const mutations = {
                 records: {},
                 is_curator: user.is_curator,
                 role: user.role,
-                watchedRecords: user.watchedRecords
+                watchedRecords: user.watchedRecords || []
             }
         };
         localStorage.setItem("user", JSON.stringify(state.user()));
@@ -142,6 +142,26 @@ export const mutations = {
                 role: previousState.role
             }
         };
+    },
+    changeWatched(state, watchedRecords) {
+        let user = JSON.parse(localStorage.getItem("user"));
+        console.log("USER: " + JSON.stringify(user));
+        if (user) {
+            console.log("WIBBLE!");
+            state.user = function () {
+                return {
+                    isLoggedIn: true,
+                    credentials: {
+                        username: user.credentials.username,
+                        token: user.credentials.token,
+                        tokenValidity: user.credentials.tokenValidity
+                    },
+                    metadata: user.metadata,
+                    records: user.records,
+                    watchedRecords: watchedRecords
+                }
+            };
+        }
     }
 };
 
@@ -282,6 +302,10 @@ export const actions = {
         catch(e) {
             this.commit("users/setError", {field: "updateProfile", message: e.message})
         }
+    },
+    async updateWatchedRecords(state, user) {
+        let response = await client.editUser(user, state.state.user().credentials.token);
+        return response;
     },
     async resetPwd(state, query){
         try {

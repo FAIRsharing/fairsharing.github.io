@@ -424,19 +424,6 @@ export default {
         fields: null,
         template: null
       }
-    },
-    removeItem(fieldName, index){
-      this.removeAdditionalInformationSubField({
-        id: index,
-        fieldName
-      })
-    },
-    isDisabled(){
-      let fieldsNull = 0;
-      Object.values(this.overlay.fields).forEach(obj => {if (obj === null) { 
-        fieldsNull += 1;
-      }});
-      return fieldsNull === Object.entries(this.overlay.fields).length;
     }
   }
 }

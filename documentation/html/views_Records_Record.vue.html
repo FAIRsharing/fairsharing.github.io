@@ -138,11 +138,11 @@
           >
             &lt;template #activator="{ on, attrs }">
               &lt;v-btn
+                v-if="!error"
                 class="mt-2"
                 color="primary"
                 v-bind="attrs"
                 v-on="on"
-                @click="getMenuButtons()"
               >
                 Actions
                 &lt;v-icon
@@ -155,13 +155,13 @@
             &lt;/template>
             &lt;v-list>
               &lt;v-list-item
-                v-for="(button, index) in buttons"
+                v-for="(button, index) in getMenuButtons"
                 :key="'button_' + index"
                 :disabled="button.isDisabled()"
                 @click="button.method()"
               >
                 &lt;v-list-item-title>
-                  {{ button.name() }}
+                  {{ button.name }}
                 &lt;/v-list-item-title>
               &lt;/v-list-item>
             &lt;/v-list>
@@ -189,6 +189,8 @@
           &lt;/v-col>
           &lt;!--Right Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            &lt;!-- RELATED CONTENT -->
+            &lt;RelatedContent class="mt-5 ml-lg-5" />
             &lt;!-- Tools -->
             &lt;Tools class="mt-5 ml-lg-5" />
             &lt;!-- Organisations -->
@@ -199,11 +201,15 @@
         &lt;Publications class="mt-5 mb-10" />
       &lt;/div>
     &lt;/v-container>
+    &lt;script
+      :v-html="JSONLD"
+      type="application/ld+json"
+    />
   &lt;/v-main>
 &lt;/template>
 
 &lt;script>
-    import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
+    import {mapActions, mapState, mapGetters} from 'vuex'
     import Client from '@/components/GraphClient/GraphClient.js'
     import RestClient from "@/components/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
@@ -215,12 +221,14 @@
     import NotFound from "@/views/Errors/404"
     import Organisations from "@/components/Records/Record/Organisations";
     import Collections from "@/components/Records/Record/Collections";
+    import RelatedContent from "@/components/Records/Record/RelatedContent";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          RelatedContent,
           Collections,
           Organisations,
             GeneralInfo,
@@ -243,11 +251,13 @@
                 canClaim: false,
                 alreadyClaimed: false,
                 claimedTriggered: false,
-                buttons: []
             }
         },
         computed: {
-            currentRoute() {
+          JSONLD () {
+            return JSON.stringify(this.getField("schemaOrg"));
+          },
+          currentRoute() {
                 let id = this.$route.params['id'];
                 if (id.includes("FAIRsharing.")) {
                     return "10.25504/" + id;
@@ -255,18 +265,66 @@
                 return this.target || this.$route.params['id'];
             },
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
-            ...mapState('users', ["user", "messages"]),
+            ...mapState('users', ["user"]),
             ...mapGetters("record", ["getField"]),
             userIsLoggedIn(){
               return this.user().isLoggedIn;
             },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
+            },
+            getMenuButtons(){
+              let _module = this;
+              return [
+                {
+                  name: "Edit record",
+                  isDisabled: function(){
+                    if (!_module.userIsLoggedIn){
+                      return false
+                    }
+                    return !_module.canEdit
+                  },
+                  method: function(){return _module.goToEdit()}
+                },
+                {
+                  name: "Request ownership",
+                  isDisabled: function(){
+                    if (!_module.userIsLoggedIn){
+                      return false
+                    }
+                    return !_module.canClaim
+                  },
+                  method: function(){
+                    if (!_module.userIsLoggedIn){
+                        _module.$router.push({
+                        path: "/accounts/login",
+                        query: {
+                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                        }
+                      })
+                    }
+                    else {
+                      return _module.requestOwnership()
+                    }
+                  }
+                },
+                {
+                  name: "Watch record",
+                  disable: true,
+                  isDisabled: function(){ return true},
+                  method: function(){return null}
+                },
+                {
+                  name: "Have a suggestion/question ?",
+                  isDisabled: function(){ return true},
+                  method: function(){return null}
+                }
+              ];
             }
         },
         watch: {
             async currentRoute() {
-              await this.getData();
+              await this.getData()
               await this.checkClaimStatus();
             },
             async userIsLoggedIn() {
@@ -287,9 +345,7 @@
             })
         },
         methods: {
-            ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
-            ...mapActions('users', ['updateWatchedRecords']),
-            ...mapMutations('users', ['changeWatched']),
+            ...mapActions('record', ['fetchRecord', "fetchRecordHistory", "fetchPreviewRecord"]),
             goToEdit(){
               let _module = this;
               const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
@@ -379,118 +435,7 @@
                 const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
                 _module.canEdit = !canEdit.error;
               }
-            },
-            async changeWatchRecord(watch) {
-              const _module = this;
-              this.loading = true;
-              let records = _module.user().watchedRecords.slice();
-              if (watch) {
-                records.push(_module.currentRecord['fairsharingRecord'].id)
-              }
-              else {
-                records = records.filter(function(value){
-                  return value !== _module.currentRecord['fairsharingRecord'].id;
-                });
-              }
-              let data = {
-                watched_record_ids: records
-              }
-              let response = await this.updateWatchedRecords(data);
-              // Refresh user data to reload followed record status.
-              if (response.modification === 'success'){
-                _module.changeWatched(records);
-              }
-              this.loading = false;
-            },
-            isWatching() {
-              return  this.currentRecord['fairsharingRecord'].id
-                      &amp;&amp; this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
-            },
-            getMenuButtons(){
-              let _module = this;
-              _module.buttons = [
-                {
-                  name: function() { return "Edit record" },
-                  isDisabled: function(){
-                    if (!_module.userIsLoggedIn){
-                      return false
-                    }
-                    return !_module.canEdit
-                  },
-                  method: function(){return _module.goToEdit()}
-                },
-                {
-                  name: function() { return "Request ownership" },
-                  isDisabled: function(){
-                    if (!_module.userIsLoggedIn){
-                      return false
-                    }
-                    return !_module.canClaim
-                  },
-                  method: function(){
-                    if (!_module.userIsLoggedIn){
-                      _module.$router.push({
-                        path: "/accounts/login",
-                        query: {
-                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-                        }
-                      })
-                    }
-                    else {
-                      return _module.requestOwnership()
-                    }
-                  }
-                },
-                {
-                  name: () => {
-                    if (!_module.userIsLoggedIn){
-                      return "Watch record"
-                    }
-                    else {
-                      if (!_module.isWatching()){
-                        return "Watch record"
-                      }
-                      else {
-                        return "Unwatch record"
-                      }
-                    }
-                  },
-                  isDisabled: function() { return false },
-                  method: function(){
-                    if (!_module.userIsLoggedIn){
-                      _module.$router.push({
-                        path: "/accounts/login",
-                        query: {
-                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-                        }
-                      })
-                    }
-                    else {
-                      if (_module.isWatching()) {
-                        _module.changeWatchRecord(false);
-                      }
-                      else {
-                        _module.changeWatchRecord(true);
-                      }
-                    }
-                  }
-                },
-                {
-                  name: function() { return "View Relation Graph" },
-                  isDisabled: function(){ return false },
-                  method: function(){
-                    _module.$router.push({
-                      path: "/graph/" + _module.currentRecord['fairsharingRecord'].id
-                    })
-                  }
-                },
-                {
-                  name: function() { return "Have a suggestion/question ?" },
-                  isDisabled: function(){ return true},
-                  method: function(){return null}
-                }
-            ];
-          }
+            }
         },
         metaInfo() {
           try {

@@ -8,7 +8,7 @@
         <h3
           class="headline text--accent-2"
         >
-          Summary Statistics
+          Summary Statistics (under construction)
         </h3>
       </div>
     </v-card-title>
@@ -221,8 +221,15 @@
 
            let data = await client.executeQuery(getFilters);
            this.allDataStats = data.searchFairsharingRecords.aggregations;
-           //console.log(this.allDataStats);
            this.prepareData();
+           //console.log(this.allDataStats);
+           //let QueryTwo = getFilters;
+           //let filter ={};
+           //filter['fairsharingRegistry']='Database';
+           //QueryTwo['queryParam'] =filter;
+           //data = await client.executeQuery(getFilters);
+           //this.allDataStats = data.searchFairsharingRecords.aggregations;
+           //console.log(this.allDataStats);
          })
          //console.log(this.allDataStats.fairsharing_registry.buckets)
          //console.log(this.allDataStats.countries.buckets);

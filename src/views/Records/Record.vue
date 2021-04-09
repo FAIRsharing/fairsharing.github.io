@@ -49,6 +49,7 @@
                 color="primary"
                 v-bind="attrs"
                 v-on="on"
+                @click="getMenuButtons()"
               >
                 Actions
                 <v-icon
@@ -61,7 +62,7 @@
             </template>
             <v-list>
               <v-list-item
-                v-for="(button, index) in getMenuButtons"
+                v-for="(button, index) in buttons"
                 :key="'button_' + index"
                 :disabled="button.isDisabled()"
                 @click="button.method()"
@@ -149,6 +150,7 @@
                 canClaim: false,
                 alreadyClaimed: false,
                 claimedTriggered: false,
+                buttons: []
             }
         },
         computed: {
@@ -165,97 +167,13 @@
             userIsLoggedIn(){
               return this.user().isLoggedIn;
             },
-            isWatching() {
-              return this.user().watchedRecords?.includes(this.currentRecord['fairsharingRecord'].id) || false;
-            },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
-            },
-            getMenuButtons(){
-              let _module = this;
-              return [
-                {
-                  name: function() { return "Edit record" },
-                  isDisabled: function(){
-                    if (!_module.userIsLoggedIn){
-                      return false
-                    }
-                    return !_module.canEdit
-                  },
-                  method: function(){return _module.goToEdit()}
-                },
-                {
-                  name: function() { return "Request ownership" },
-                  isDisabled: function(){
-                    if (!_module.userIsLoggedIn){
-                      return false
-                    }
-                    return !_module.canClaim
-                  },
-                  method: function(){
-                    if (!_module.userIsLoggedIn){
-                        _module.$router.push({
-                        path: "/accounts/login",
-                        query: {
-                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-                        }
-                      })
-                    }
-                    else {
-                      return _module.requestOwnership()
-                    }
-                  }
-                },
-                {
-                  name: function() {
-                    if (_module.isWatching) {
-                      return "Unwatch record"
-                    }
-                    else {
-                      return "Watch record"
-                    }
-                  },
-                  disable: true,
-                  isDisabled: function() { return false },
-                  method: function(){
-                    if (!_module.userIsLoggedIn){
-                      _module.$router.push({
-                        path: "/accounts/login",
-                        query: {
-                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-                        }
-                      })
-                    }
-                    else {
-                      if (_module.isWatching) {
-                        _module.changeWatchRecord(false);
-                      }
-                      else {
-                        _module.changeWatchRecord(true);
-                      }
-                    }
-                  }
-                },
-                {
-                  name: function() { return "View Relation Graph" },
-                  isDisabled: function(){ return false },
-                  method: function(){
-                    _module.$router.push({
-                      path: "/graph/" + _module.currentRecord['fairsharingRecord'].id
-                    })
-                  }
-                },
-                {
-                  name: function() { return "Have a suggestion/question ?" },
-                  isDisabled: function(){ return true},
-                  method: function(){return null}
-                }
-              ];
             }
         },
         watch: {
             async currentRoute() {
-              await this.getData()
+              await this.getData();
               await this.checkClaimStatus();
             },
             async userIsLoggedIn() {
@@ -390,7 +308,91 @@
                 _module.changeWatched(records);
               }
               this.loading = false;
-            }
+            },
+            isWatching() {
+              return  this.currentRecord['fairsharingRecord'].id
+                      && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
+            },
+            getMenuButtons(){
+              let _module = this;
+              _module.buttons = [
+                {
+                  name: function() { return "Edit record" },
+                  isDisabled: function(){
+                    if (!_module.userIsLoggedIn){
+                      return false
+                    }
+                    return !_module.canEdit
+                  },
+                  method: function(){return _module.goToEdit()}
+                },
+                {
+                  name: function() { return "Request ownership" },
+                  isDisabled: function(){
+                    if (!_module.userIsLoggedIn){
+                      return false
+                    }
+                    return !_module.canClaim
+                  },
+                  method: function(){
+                    if (!_module.userIsLoggedIn){
+                      _module.$router.push({
+                        path: "/accounts/login",
+                        query: {
+                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                        }
+                      })
+                    }
+                    else {
+                      return _module.requestOwnership()
+                    }
+                  }
+                },
+                {
+                  name: () => {
+                    if (_module.isWatching()) {
+                      return "Unwatch record"
+                    }
+                    else {
+                      return "Watch record"
+                    }
+                  },
+                  isDisabled: function() { return false },
+                  method: function(){
+                    if (!_module.userIsLoggedIn){
+                      _module.$router.push({
+                        path: "/accounts/login",
+                        query: {
+                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                        }
+                      })
+                    }
+                    else {
+                      if (_module.isWatching()) {
+                        _module.changeWatchRecord(false);
+                      }
+                      else {
+                        _module.changeWatchRecord(true);
+                      }
+                    }
+                  }
+                },
+                {
+                  name: function() { return "View Relation Graph" },
+                  isDisabled: function(){ return false },
+                  method: function(){
+                    _module.$router.push({
+                      path: "/graph/" + _module.currentRecord['fairsharingRecord'].id
+                    })
+                  }
+                },
+                {
+                  name: function() { return "Have a suggestion/question ?" },
+                  isDisabled: function(){ return true},
+                  method: function(){return null}
+                }
+            ];
+          }
         },
         metaInfo() {
           try {

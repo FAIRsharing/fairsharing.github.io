@@ -53,7 +53,7 @@
             <v-divider />
           </v-card-text>
           <v-card-actions class="text-center d-block">
-            <router-link to="/standards">
+            <router-link to="/search?fairsharingRegistry=Standard">
               <v-btn
                 color="primary"
                 text
@@ -115,7 +115,7 @@
             <v-divider />
           </v-card-text>
           <v-card-actions class="text-center d-block">
-            <router-link to="/databases">
+            <router-link to="/search?fairsharingRegistry=Database">
               <v-btn
                 color="primary"
                 text
@@ -171,7 +171,7 @@
             <v-divider />
           </v-card-text>
           <v-card-actions class="text-center d-block">
-            <router-link to="/policies">
+            <router-link to="/search?fairsharingRegistry=Policy">
               <v-btn
                 color="primary"
                 text

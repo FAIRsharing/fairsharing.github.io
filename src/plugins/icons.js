@@ -171,10 +171,15 @@ const customIcons  = {
             icon: "assets/records/policy.png",
             tooltip: "Journal Publisher"
         },
-        knowledge_base: {
+        knowledgebase: {
             type: "img",
             icon: "assets/records/db-icon.png",
             tooltip: "Knowledge Base"
+        },
+        knowledgebase_and_repository: {
+            type: "img",
+            icon: "assets/records/db-icon.png",
+            tooltip: "Knowledge Base & repository"
         },
         DOI: {
             type: "img",
@@ -187,6 +192,30 @@ const customIcons  = {
         contact_form: {
             type: "icon",
             icon: "fa-address-card"
+        },
+        recommended: {
+            type: "icon",
+            icon: "fa-thumbs-up"
+        },
+        collections: {
+            type: "img",
+            icon: "assets/Home/BlockCategories/collections.png"
+        },
+        educational: {
+            type: "icon",
+            icon: "fa-graduation-cap"
+        },
+        home_standard: {
+            type: "img",
+            icon: "assets/Home/BlockInfo/home-standards.svg"
+        },
+        home_db: {
+            type: "img",
+            icon: "assets/Home/BlockInfo/home-db.svg"
+        },
+        home_policies: {
+            type: "img",
+            icon: "assets/Home/BlockInfo/home-policies.svg"
         }
     },
     iconfont: 'fa'

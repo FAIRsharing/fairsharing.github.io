@@ -76,7 +76,7 @@
         >
           <v-icon
             small
-            class="mr-3"
+            class="mr-3 white--text"
           >
             {{ buttonIcon }}
           </v-icon>

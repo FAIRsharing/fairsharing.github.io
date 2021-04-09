@@ -1,125 +1,166 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
-import editAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo"
-import RestClient from "@/components/Client/RESTClient.js"
+import EditAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo.vue"
 import recordStore from "@/store/record.js";
 import userStore from "@/store/users.js";
 import editorStore from "@/store/editor.js"
 import VueRouter from "vue-router";
-const sinon = require("sinon");
+import additionalInformationFixture from "@/../tests/fixtures/additionalInformation.json"
+import RestClient from "@/components/Client/RESTClient.js"
+const sinon = require('sinon');
+const VueScrollTo = require('vue-scrollto');
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-const vuetify = new Vuetify();
-
-const VueScrollTo = require('vue-scrollto');
 localVue.use(VueScrollTo);
 
-let record = {
-    access_points: [
-        {
-            type: 'REST',
-            url: 'http://wibble.com',
-            documentation_url: 'http://wibble.com/docs',
-            example_url: 'http://wibble.com/example'
-        }
-    ],
-    associated_tools: [
-        {
-            name: 'Exciting Access',
-            url: 'http://exciting.com'
-        }
-    ],
-    type: "model_and_format"
+const $store = new Vuex.Store({modules: {
+    record: recordStore,
+    users: userStore,
+    editor: editorStore
+}});
+$store.state.users.user = function(){return {credentials: {token: "123"}}};
+$store.state.record.sections.additionalInformation = {
+    data: additionalInformationFixture.data,
+    initialData: JSON.parse(JSON.stringify(additionalInformationFixture.data)),
+    error: false,
+    message: null,
+    changes: 0
 };
-recordStore.state.sections = {
-    additionalInformation: {
-        error: false,
-        data: record,
-        initialData: JSON.parse(JSON.stringify(record)),
-        changes: 0,
-        message: null
-    },
-    generalInformation: {
-        error: false,
-        data: {metadata: {}},
-        initialData: {metadata: {}},
-        changes: 0,
-        message: null
-    },
-    dataAccess: {
-        error: false,
-        data: {metadata: {}},
-        initialData: {metadata: {}},
-        changes: 0,
-        message: null
-    }
-};
-userStore.state.user().credentials.token = "thisisatoken";
-const $store = new Vuex.Store({
-    modules: {
-        record: recordStore,
-        users: userStore,
-        editor: editorStore
-    }
-});
-
+let $route = {params: {id: "123"}};
 const router = new VueRouter();
 const $router = { push: jest.fn() };
-let $route = { path: "/123/edit", params: {id: 123} };
+const template = {
+    url: {
+        type: "string",
+        format: "uri",
+        minLength: 1,
+        description: "The URL at which the named data process can be found."
+    },
+    anotherField: {}
+};
 
-let restStub;
-
-describe("EditAdditionalInfo", function() {
+describe("EditAdditionalInfo.vue", function() {
     let wrapper;
-    beforeEach(() => {
-        wrapper = shallowMount(editAdditionalInfo, {
-            localVue,
-            vuetify,
-            router,
-            mocks: {$store, $router, $route}
-        });
-        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
-        restStub.returns(['this', 'that']);
-    });
-    afterEach(() => {
-        restStub.restore();
-    });
 
-    it("can be mounted", () => {
+    it("can be mounted without allowed fields", () => {
+        wrapper = shallowMount(EditAdditionalInfo, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
+        });
         expect(wrapper.name()).toMatch("EditAdditionalInfo");
     });
 
-    // Fails to run in the test for unknown reasons.
-    it("returns the correct list of fields names", async () => {
-        await wrapper.vm.getFieldNames();
-        expect(wrapper.vm.allowedFields).toStrictEqual([
-            "access_points",
-            "associated_tools"
-        ]);
+    it("can be mounted with allowed fields", () => {
+        $store.state.editor.allowedFields = additionalInformationFixture.schema;
+        wrapper = shallowMount(EditAdditionalInfo, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
+        });
+        expect(wrapper.name()).toMatch("EditAdditionalInfo");
     });
 
-    it("can update a record", async () => {
+    it("can show/hide an overlay", () => {
+        wrapper = shallowMount(EditAdditionalInfo, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
+        });
+        wrapper.vm.showOverlay(1, "abc", {schema: "schema"}, template);
+        expect(wrapper.vm.overlay).toStrictEqual({
+            show: true,
+            id: 1,
+            fieldName: "abc",
+            template: template,
+            fields: {schema: "schema"}
+        });
+        wrapper.vm.hideOverlay();
+        expect(wrapper.vm.overlay).toStrictEqual({
+            show: false,
+            id: null,
+            fieldName: null,
+            fields: null,
+            template: null
+        })
+    });
+
+    it("can create a new item", () => {
+        wrapper = shallowMount(EditAdditionalInfo, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
+        });
+        wrapper.vm.createItem("fieldName", template);
+        expect(wrapper.vm.overlay.template).toStrictEqual(template);
+        expect(JSON.stringify(wrapper.vm.overlay.fields)).toStrictEqual(JSON.stringify({url: null, anotherField: null}))
+    });
+
+    it("can add and remove an item", () => {
+        wrapper = shallowMount(EditAdditionalInfo, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
+        });
+        wrapper.vm.overlay.fieldName = "contacts";
+        wrapper.vm.overlay.id = 1;
+        wrapper.vm.fieldValue = null;
+        wrapper.vm.addItem();
+        expect(wrapper.vm.fields.contacts[1]).toBe(null);
+        wrapper.vm.removeItem("contacts", 1);
+        expect(wrapper.vm.fields.contacts[1]).toBe(undefined);
+        wrapper.vm.overlay.fieldName = "testField";
+        wrapper.vm.overlay.id = null;
+        wrapper.vm.addItem();
+        expect(wrapper.vm.fields['testField']).toStrictEqual([null]);
+        wrapper.vm.overlay.fieldName = "contacts";
+        wrapper.vm.addItem();
+        expect(wrapper.vm.fields.contacts[1]).toBe(null);
+    });
+
+    it("can save the record", async () => {
         jest.spyOn(console, 'warn').mockImplementation(() => {});
-        recordStore.state.sections.additionalInformation.changes = 1;
-        restStub.returns({data: {id: 123}});
+        $store.state.editor.allowedFields = additionalInformationFixture.schema;
+        wrapper = shallowMount(EditAdditionalInfo, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
+        });
+        let restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: "Hello !"});
         await wrapper.vm.saveRecord(true);
-        expect($router.push).toHaveBeenCalledWith({path: "/123"});
-        expect($router.push).toHaveBeenCalledTimes(1);
-        await wrapper.vm.saveRecord(false);
-        expect(recordStore.state.sections.additionalInformation.changes).toEqual(0);
-        restStub.returns({data: {error: {response: {data: "error"}}}});
-        await wrapper.vm.saveRecord(true);
-        expect(recordStore.state.sections.additionalInformation.error).toBe(true);
-        expect(recordStore.state.sections.additionalInformation.message).toStrictEqual({"response": {"data": "error"}});
+        expect(wrapper.vm.message.error).toBe(false);
+        expect(wrapper.vm.message.value).toBe('Record successfully updated!');
         restStub.restore();
+
+        restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data: {error: "I am an error"}});
+        await wrapper.vm.saveRecord();
+        expect($store.state.record.sections.additionalInformation.error).toBe(true);
+        expect($store.state.record.sections.additionalInformation.message).toBe('I am an error');
+        restStub.restore();
+
         jest.clearAllMocks();
     });
 
-    it("can update counts", () => {
-        expect(wrapper.vm.counts.access_points).toEqual(0);
-        wrapper.vm.updateCounts({access_points: 1});
-        expect(wrapper.vm.counts.access_points).toEqual(1);
-    });
+    it("can react to fields changing value", async () => {
+        const vuetify = new Vuetify();
+        wrapper = await shallowMount(EditAdditionalInfo, {
+            localVue,
+            vuetify,
+            mocks: {$store}
+        });
+        wrapper.vm.fields.dataset_citation = "no";
+        wrapper.vm.submitChanges(wrapper.vm.fields);
+        expect($store.state.record.sections.additionalInformation.changes).toBe(1);
+
+    })
 });

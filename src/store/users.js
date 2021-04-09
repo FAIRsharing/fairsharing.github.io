@@ -28,6 +28,7 @@ export const mutations = {
     },
     autoLogin(state){
         let user = JSON.parse(localStorage.getItem("user"));
+        console.log(user);
         state.user = function(){
             return user
         };
@@ -145,6 +146,7 @@ export const mutations = {
     },
     changeWatched(state, watchedRecords) {
         state.user().watchedRecords = watchedRecords;
+        localStorage.setItem("user", JSON.stringify(state.user()));
     }
 };
 

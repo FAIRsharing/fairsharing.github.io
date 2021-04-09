@@ -310,6 +310,7 @@
               this.loading = false;
             },
             isWatching() {
+              console.log(this.currentRecord['fairsharingRecord'].id, this.user().watchedRecords)
               return  this.currentRecord['fairsharingRecord'].id
                       && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
             },

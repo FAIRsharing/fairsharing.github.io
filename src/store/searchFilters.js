@@ -8,8 +8,8 @@ const graphClient = new GraphQLClient();
 
 export const mutations = {
     setFilters(state, data) {
-        let rawFilters = data['searchFairsharingRecords']['aggregations'];
-        state.rawFilters = buildFilters(rawFilters);
+        state.filtersStatistic = data['searchFairsharingRecords']['aggregations'];
+        state.rawFilters = buildFilters(state.filtersStatistic);
         state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName !== 'status'));
     },
     setFilterButtons(state) {
@@ -88,6 +88,9 @@ export const getters = {
             })
         });
         return output
+    },
+    getFiltersStatisticCount: (state) => (option) => {
+        return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
     }
 };
 
@@ -101,6 +104,7 @@ let filtersStore = {
     state: {
         rawFilters: [],
         filters: [],
+        filtersStatistic: [],
         filterButtons: [],
         isLoadingFilters: false
     },

@@ -45,6 +45,7 @@
           >
             <template #activator="{ on, attrs }">
               <v-btn
+                v-if="!error"
                 class="mt-2"
                 color="primary"
                 v-bind="attrs"
@@ -95,6 +96,8 @@
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            <!-- RELATED CONTENT -->
+            <RelatedContent class="mt-5 ml-lg-5" />
             <!-- Tools -->
             <Tools class="mt-5 ml-lg-5" />
             <!-- Organisations -->
@@ -121,12 +124,14 @@
     import NotFound from "@/views/Errors/404"
     import Organisations from "@/components/Records/Record/Organisations";
     import Collections from "@/components/Records/Record/Collections";
+    import RelatedContent from "@/components/Records/Record/RelatedContent";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          RelatedContent,
           Collections,
           Organisations,
             GeneralInfo,
@@ -313,8 +318,11 @@
                 this.alreadyClaimed = false;
                 this.claimedTriggered = false;
                 try {
-                    if (this.target) await _module.fetchPreviewRecord(this.target);
-                    else await _module.fetchRecord(this.currentRoute);
+                  if (this.target) await _module.fetchPreviewRecord(this.target);
+                    else await _module.fetchRecord({
+                        id: this.currentRoute,
+                        token: _module.user().credentials.token
+                      });
                 }
                 catch (e) {
                     this.error = e.message;

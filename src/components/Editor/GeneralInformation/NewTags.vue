@@ -132,7 +132,7 @@
                       :loading="loading"
                       @click="createTerms()"
                     >
-                      Create new tags
+                      Submit new tags
                     </v-btn>
                     <v-btn
                       class="error"

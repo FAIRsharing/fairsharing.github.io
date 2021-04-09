@@ -34,9 +34,7 @@
           class="mr-2"
           @click="$router.push({path: '/users/' + maintainer.id})"
         >
-          {{
-            ` ${maintainer.username}${index !== getField('maintainers').length - 1 ? ',' : ''}`
-          }}
+          {{ `${maintainer.username}${index !== getField('maintainers').length - 1 ? ',' : ''}` }}
         </a>
       </div>
     </div>

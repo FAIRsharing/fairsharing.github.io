@@ -183,6 +183,10 @@ const customIcons  = {
         mailing_list: {
             type: "icon",
             icon: "fa-address-book"
+        },
+        contact_form: {
+            type: "icon",
+            icon: "fa-address-card"
         }
     },
     iconfont: 'fa'

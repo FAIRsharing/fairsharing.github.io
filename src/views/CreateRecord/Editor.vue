@@ -82,9 +82,9 @@
           <v-tab
             v-for="tab in tabs"
             :key="'tab_' + tab.name"
-            :disabled="tab.disabled"
+            :disabled="isDisabled(tab.name)"
           >
-            <div>
+            <div v-if="!isDisabled(tab.name)">
               <div>{{ tab.name }}</div>
               <div
                 v-if="tab.target && getChanges[tab.target] > 0"
@@ -96,11 +96,14 @@
           </v-tab>
           <v-tabs-items v-model="selectedTab">
             <v-tab-item
-              v-for="(tab,tabIndex) in tabs"
+              v-for="(tab, tabIndex) in tabs"
               :key="tab+'_'+tabIndex"
               class="px-10 py-3"
             >
-              <component :is="tab.component" />
+              <component
+                :is="tab.component"
+                v-if="!isDisabled(tab.name)"
+              />
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
@@ -165,39 +168,33 @@
         tabs: [
           {
             name: "General Information",
-            disabled: false,
             target: "generalInformation",
             icon: "fa-info",
             component:"EditGeneralInfo"
           },
           {
             name: "Licences & Support Links",
-            disabled: false,
             target: "dataAccess",
             component:"EditDataAccess"
           },
           {
             name: "Publications",
-            disabled: false,
             target: "publications",
             icon: "fa-info",
             component:"EditPublications"
           },
           {
             name: "Organisations & Grants",
-            disabled: false,
             target: "organisations",
             component:"EditOrganisations"
           },
           {
             name: "Relations to other records",
-            disabled: false,
             target: "relations",
             component:"EditRelationships"
           },
           {
             name: "Additional Information",
-            disabled: false,
             target: "additionalInformation",
             icon: "fa-info",
             component:"EditAdditionalInfo"
@@ -207,7 +204,8 @@
     },
     computed: {
       ...mapState('record', ['currentID', 'sections']),
-      ...mapGetters('record', ['getChanges', 'getAllChanges']),
+      ...mapGetters('record', ['getChanges', 'getAllChanges', 'getRecordType']),
+      ...mapState('editor', ['allowedFields']),
       ...mapState('users', ['user']),
       userToken(){
         const _module = this;
@@ -232,23 +230,36 @@
     methods: {
       ...mapActions("record", ["fetchRecord"]),
       ...mapMutations("editor", ["cleanEditorStore"]),
+      ...mapActions("editor", ["getAllowedFields"]),
       ...mapMutations("record", ["cleanRecordStore"]),
       async getData(){
         const _module = this;
         _module.hasLoaded = false;
         _module.error = false;
         let userToken = _module.userToken;
-        let id = _module.$route.params.id;
-        if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
-        await _module.fetchRecord({id: id});
-        let canEdit = await client.canEdit(_module.currentID, userToken);
-        if (canEdit.error) _module.error = true;
+        if (userToken) {
+          let id = _module.$route.params.id;
+          if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
+          await _module.fetchRecord({id: id});
+          let canEdit = await client.canEdit(_module.currentID, userToken);
+          if (canEdit.error) _module.error = true;
+          await this.getAllowedFields({
+            type: this.getRecordType,
+            token: userToken
+          });
+        }
         _module.hasLoaded = true;
       },
       async confirmReloadData() {
         const _module = this;
         let recordID = _module.currentID;
         await _module.fetchRecord({id: recordID});
+      },
+      isDisabled(tabName){
+        if (tabName === 'Additional Information'){
+          return !(this.allowedFields && Object.keys(this.allowedFields).includes('properties'));
+        }
+        return false
       }
     },
   }

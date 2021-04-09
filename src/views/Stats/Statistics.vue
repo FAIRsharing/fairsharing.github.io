@@ -479,26 +479,27 @@
            this.isLoading = true;
            let data = await client.executeQuery(getFilters);
            this.allDataStats = data.searchFairsharingRecords.aggregations;
-
            //console.log(this.allDataStats);
-           let QueryTwo = getFilters;
+           let QueryStand = cloneDeep(getFilters);
            let filter ={};
            filter['fairsharingRegistry']='Standard';
-           QueryTwo['queryParam'] =filter;
+           QueryStand['queryParam'] =filter;
            let dataStand;
-           dataStand = await client.executeQuery(getFilters);
+           dataStand = await client.executeQuery(QueryStand);
            this.allDataStatsStand = dataStand.searchFairsharingRecords.aggregations;
 
+           let QueryDB = cloneDeep(getFilters);
            filter['fairsharingRegistry']='Database';
-           QueryTwo['queryParam'] =filter;
+           QueryDB['queryParam'] =filter;
            let dataDB;
-           dataDB = await client.executeQuery(getFilters);
+           dataDB = await client.executeQuery(QueryDB);
            this.allDataStatsDB = dataDB.searchFairsharingRecords.aggregations;
 
+           let QueryPol= cloneDeep(getFilters);
            filter['fairsharingRegistry']='Policy';
-           QueryTwo['queryParam'] =filter;
+           QueryPol['queryParam'] =filter;
            let dataPol;
-           dataPol = await client.executeQuery(getFilters);
+           dataPol = await client.executeQuery(QueryPol);
            this.allDataStatsPol = dataPol.searchFairsharingRecords.aggregations;
 
            //console.log(this.allDataStatsStand);
@@ -507,10 +508,6 @@
          })
          //console.log(this.allDataStats.fairsharing_registry.buckets)
          //console.log(this.allDataStats.countries.buckets);
-       },
-       beforeDestroy() {
-         this.chartRegistries = null;
-         delete this.chartRegistries;
        },
        methods: {
          chartSelection(id) {
@@ -532,6 +529,8 @@
            this.prepareRecordCountry(this.allDataStatsPol, this.chartCountriesPol,"policy");
            this.chartCountriesAll = cloneDeep(this.optionChartBars);
            this.prepareRecordCountry(this.allDataStats, this.chartCountriesAll,"record");
+           //console.log(this.allDataStats.fairsharing_registry.buckets.length)
+           console.log(this.chartSubjectsStand.series[0]);
          },
          prepareRegistryCounts(data){
            this.chartRegistries = cloneDeep(this.optionChartPie);

@@ -1,0 +1,234 @@
+<template>
+  <v-container>
+    <v-row class="block-category">
+      <v-col
+        cols="12"
+        sm="12"
+        md="4"
+        lg="4"
+      >
+        <v-card
+          class="mx-auto block-category__card"
+          max-width="350"
+          height="450"
+        >
+          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+            <div
+              style="height: 136px"
+              class="d-flex justify-center"
+            >
+              <v-img
+                contain
+                height="130px"
+                :src="$vuetify.icons.values['home_standard'].icon"
+              />
+            </div>
+            <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
+              <span>
+                {{ getFiltersStatisticCount({filterName:"fairsharing_registry",key:"standard"}) }}
+              </span>
+              Standards
+            </v-card-title>
+          </div>
+          <v-card-text class="text--primary text-justify">
+            <div class="d-flex">
+              <strong class="flex-grow-1">Terminology Artifact</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'terminology_artefact'}) }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Model/Format</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'model_and_format'}) }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Reporting Guideline</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'reporting_guideline'}) }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Identifier Schema</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'identifier_schema'}) }}</span>
+            </div>
+            <v-divider />
+          </v-card-text>
+          <v-card-actions class="text-center d-block">
+            <router-link to="/search?fairsharingRegistry=Standard">
+              <v-btn
+                color="primary"
+                text
+              >
+                View All
+              </v-btn>
+            </router-link>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-col
+        cols="12"
+        sm="12"
+        md="4"
+        lg="4"
+      >
+        <v-card
+          class="mx-auto block-category__card"
+          max-width="350"
+          height="450"
+        >
+          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+            <div
+              style="height: 136px"
+              class="d-flex justify-center"
+            >
+              <v-img
+                class="mt-5"
+                contain
+                height="100px"
+                :src="$vuetify.icons.values['home_db'].icon"
+              />
+            </div>
+            <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
+              <span>{{ getFiltersStatisticCount({filterName:'fairsharing_registry',key:'database'}) }}</span>
+              Databases
+            </v-card-title>
+          </div>
+          <v-card-text class="text--primary text-justify">
+            <div class="d-flex">
+              <strong class="flex-grow-1">Natural Science</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'natural science'}) }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Engineering Science</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'engineering science'}) }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Humanities</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'humanities'}) }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Social Science</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'social science'}) }}</span>
+            </div>
+            <v-divider />
+          </v-card-text>
+          <v-card-actions class="text-center d-block">
+            <router-link to="/search?fairsharingRegistry=Database">
+              <v-btn
+                color="primary"
+                text
+              >
+                View All
+              </v-btn>
+            </router-link>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-col
+        cols="12"
+        sm="12"
+        md="4"
+        lg="4"
+      >
+        <v-card
+          class="mx-auto block-category__card"
+          max-width="350"
+          height="450"
+        >
+          <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+            <div
+              style="height: 136px"
+              class="d-flex justify-center"
+            >
+              <v-img
+                contain
+                height="130px"
+                :src="$vuetify.icons.values['home_policies'].icon"
+              />
+            </div>
+            <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
+              <span>{{ getFiltersStatisticCount({filterName:'fairsharing_registry',key:'policy'}) }}</span>
+              Policies
+            </v-card-title>
+          </div>
+          <v-card-text class="text--primary text-justify height-190">
+            <div class="d-flex">
+              <strong class="flex-grow-1">Funder</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'funder'}) }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Journal</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'journal'}) }}</span>
+            </div>
+            <v-divider />
+            <div class="d-flex">
+              <strong class="flex-grow-1">Society</strong>
+              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'society'}) }}</span>
+            </div>
+            <v-divider />
+          </v-card-text>
+          <v-card-actions class="text-center d-block">
+            <router-link to="/search?fairsharingRegistry=Policy">
+              <v-btn
+                color="primary"
+                text
+              >
+                View All
+              </v-btn>
+            </router-link>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import {truncate} from "@/utils/stringUtils";
+import {mapGetters} from "vuex";
+
+export default {
+  name: "BlockInfo",
+  mixins: [truncate],
+  computed: {
+    ...mapGetters("searchFilters", ["getFiltersStatisticCount"])
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.block-category {
+  &__card {
+    transition: all .2ms ease;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -webkit-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -moz-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -o-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+
+    &:hover {
+      transform: scale(1.05);
+      -moz-transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+      -o-transform: scale(1.05);
+    }
+
+    &__gradiant {
+      height: 200px;
+      background: rgb(171, 171, 171);
+      background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -webkit-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -o-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+    }
+  }
+}
+.v-divider {
+  margin: 8px;
+}
+</style>

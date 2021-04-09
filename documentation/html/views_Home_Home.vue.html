@@ -92,20 +92,32 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div
-    id="homePage"
-    class="home container-fluid"
-  >
-    Welcome to FAIRsharing.org
-  &lt;/div>
+  &lt;v-main>
+    &lt;v-container
+      fluid
+      class="text-center pa-0"
+    >
+      &lt;BlockHero />
+      &lt;block-tabs />
+      &lt;block-info class="mb-12" />
+      &lt;block-search />
+      &lt;block-categories class="mt-12 mb-12" />
+    &lt;/v-container>
+  &lt;/v-main>
 &lt;/template>
 
 &lt;script>
+import BlockCategories from "@/components/Home/BlockCategories";
+import BlockHero from "@/components/Home/BlockHero";
+import BlockTabs from "@/components/Home/BlockTabs";
+import BlockSearch from "@/components/Home/BlockSearch";
+import BlockInfo from "@/components/Home/BlockInfo";
     /** Component to handle the front page (landing page)
      *
      */
     export default {
-        name: "Home"
+      name: "Home",
+      components:{BlockInfo, BlockSearch, BlockTabs, BlockHero, BlockCategories},
     };
 &lt;/script>
 </pre>

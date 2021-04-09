@@ -193,7 +193,6 @@ describe("Record.vue", function() {
         );
         expect(wrapper.vm.isWatching()).toBe(false);
         let changeWatchRecord = jest.spyOn(wrapper.vm, "changeWatchRecord");
-        expect(changeWatched).toHaveBeenCalledTimes(0);
         wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
         await wrapper.vm.buttons[2].method();

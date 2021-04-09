@@ -310,7 +310,6 @@
               this.loading = false;
             },
             isWatching() {
-              console.log(this.currentRecord['fairsharingRecord'].id, this.user().watchedRecords)
               return  this.currentRecord['fairsharingRecord'].id
                       && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
             },
@@ -351,11 +350,16 @@
                 },
                 {
                   name: () => {
-                    if (_module.isWatching()) {
-                      return "Unwatch record"
+                    if (!_module.userIsLoggedIn){
+                      return "Watch record"
                     }
                     else {
-                      return "Watch record"
+                      if (!_module.isWatching()){
+                        return "Watch record"
+                      }
+                      else {
+                        return "Unwatch record"
+                      }
                     }
                   },
                   isDisabled: function() { return false },

@@ -171,14 +171,14 @@
         <v-btn
           class="info"
           :loading="loading"
-          @click="saveRecord()"
+          @click="saveRecord(false)"
         >
           Save and continue
         </v-btn>
         <v-btn
           class="info"
           :loading="loading"
-          @click="saveRecord()"
+          @click="saveRecord(true)"
         >
           Save And Exit
         </v-btn>

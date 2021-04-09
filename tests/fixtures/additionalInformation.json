@@ -1,0 +1,303 @@
+{
+  "schema": {
+    "$id": "https://github.com/FAIRsharing/FAIRsharing-API/blob/master/lib/record_schemas/database_repository_schema.json",
+    "type": "object",
+    "title": "Database/repository schema",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+      "dataset_pid": {
+        "enum": [
+          "nono",
+          "no"
+        ],
+        "type": "string",
+        "default": null,
+        "description": "Does the repository assign them to the deposited data? Which type of identifier schema is used? Do they use persistent identifiers?"
+      },
+      "access_points": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/access_point"
+        },
+        "description": "Web Service Access Points"
+      },
+      "data_processes": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/data_process"
+        },
+        "description": "Links to data processes"
+      },
+      "dataset_metrics": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "default": null,
+            "description": "The URL to the information"
+          },
+          "metrics": {
+            "enum": [
+              "yes",
+              "no"
+            ],
+            "type": "string",
+            "default": null,
+            "description": "Do they have metrics on dataset usage?"
+          }
+        },
+        "description": "Metrics to assess the use of the data in the repository and allow researchers insight in data reuse: does the repository collect and share this information (e.g. number of views, downloads)?"
+      },
+      "associated_tools": {
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/tool"
+        },
+        "description": "Links to associated tools"
+      },
+      "dataset_citation": {
+        "enum": [
+          "yes",
+          "no"
+        ],
+        "type": "string",
+        "default": null,
+        "description": "A mechanism to enable link datasets to related articles or pre-prints: does the repository enable this at submission stage or post-submission? Do they have a mechanism?"
+      },
+      "dataset_contacts": {
+        "enum": [
+          "yes",
+          "no"
+        ],
+        "type": "string",
+        "default": null,
+        "description": "Does the resource provide contact information for the owner/depositor of a dataset?"
+      },
+      "dataset_curation": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "default": null,
+            "description": "The URL to the curation information."
+          },
+          "steps": {
+            "type": "string",
+            "default": null,
+            "description": "Set of curation steps that repository performs on the submitted data."
+          }
+        },
+        "description": "Review and annotation of the data performed by the repository (e.g. via a data submission tool that enforces some curation, or by its curation team): are there a set of minimum curation steps that repository performs on the submitted data? Is there a webpage or document that describes the type of curation done?"
+      },
+      "dataset_deposition": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "default": null,
+            "description": "The URL of the condition information"
+          },
+          "restrictions": {
+            "enum": [
+              "yes",
+              "no"
+            ],
+            "type": "string",
+            "default": null,
+            "description": "Do they have restrictions on who can deposit a dataset?"
+          }
+        },
+        "description": "Deposition of data: are there any restrictions (e.g. by location, country, organization, etc.) or can anyone from anywhere deposit data?"
+      },
+      "dataset_versioning": {
+        "enum": [
+          "yes",
+          "no"
+        ],
+        "type": "string",
+        "default": null,
+        "description": "Mechanism and process to make and track edits to a dataset after deposition: does the repository enable modification to the submitted dataset (e.g., to correct it or append additional information)? Is there a process to distinguish, link and access all versions of the data? Do they allow dataset versioning?"
+      },
+      "dataset_prepubreview": {
+        "enum": [
+          "yes",
+          "no"
+        ],
+        "type": "string",
+        "default": null,
+        "description": "Mechanism and process for sharing deposited data via a link anonymously (or otherwise depending on journal policy regarding open/closed review): does the repository allow confidential access to the data for peer-review? Does the repository also have capability for double blind peer review? Do they allow access for peer-review?"
+      },
+      "dataset_preservation": {
+        "type": "string",
+        "format": "uri",
+        "default": null,
+        "description": "Policy that details how the preservation of the data is ensured: does the repository have a page, or document that describes this?"
+      },
+      "data_access_condition": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "minLength": 1,
+            "description": "The URL of the curation information."
+          },
+          "type": {
+            "enum": [
+              "open",
+              "controlled"
+            ],
+            "type": "string",
+            "default": null,
+            "description": "Open or controlled"
+          }
+        },
+        "description": "Data access mechanisms and terms to define access at repository and/or dataset level; what is the process through which access can be requested (and granted)? For example, if the data is freely available or subject to a request and approval process."
+      },
+      "dataset_sustainability": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "default": null,
+            "description": "The URL to the plan."
+          },
+          "plan": {
+            "type": "string",
+            "default": null,
+            "description": "Plan that gives information about sustainability plans for the repository."
+          }
+        },
+        "description": "Plan that gives information about sustainability plans for the repository: does the repository have a webpage, or document that describes these?"
+      },
+      "community_certification": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "minLength": 1,
+            "description": "The URL of the certification."
+          },
+          "type": {
+            "type": "string",
+            "description": "Name/description of the certification"
+          }
+        },
+        "description": "Certification and badges",
+        "dependencies": {
+          "type": [
+            "url"
+          ]
+        }
+      }
+    },
+    "definitions": {
+      "tool": {
+        "type": "object",
+        "required": [
+          "name",
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "minLength": 1,
+            "description": "URL where the tool can be found/downloaded."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The name of the tool."
+          }
+        }
+      },
+      "access_point": {
+        "type": "object",
+        "required": [
+          "type",
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "minLength": 1,
+            "description": "The URL of the web service."
+          },
+          "type": {
+            "enum": [
+              "REST",
+              "SOAP",
+              "SPARQL",
+              "Other"
+            ],
+            "type": "string",
+            "default": "REST",
+            "description": "The type of web service being run. Three most commonly-used values are supplied (REST, SOAP, SPARQL), with “Other” also provided to allow for any other types / unknown service types."
+          },
+          "example_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri",
+            "description": "An example query for the service."
+          },
+          "documentation_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri",
+            "description": "The URL where documentation related to the web service can be found."
+          }
+        }
+      },
+      "data_process": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "minLength": 1,
+            "description": "The URL at which the named data process can be found."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The name of the process being performed."
+          },
+          "type": {
+            "enum": [
+              "data access",
+              "data curation",
+              "data release",
+              "data versioning"
+            ],
+            "type": "string",
+            "default": "data access",
+            "description": "Data access is used when the process is accessing data, e.g. searching, browsing, viewing, and/or visualizing the data. Data curation is used when the process provides data curation tasks, e.g. submitting and/or editing the data. Data release is used when the process is releasing data, e.g. downloading and/or exporting the data. Data versioning is used when the process is versioning data, e.g. upload of new versions of data."
+          }
+        }
+      }
+    },
+    "description": "Properties specific to repositories",
+    "additionalProperties": false
+  },
+  "data": {
+    "doi": "10.25504/FAIRsharing.9kahy4",
+    "name": "GenBank",
+    "status": "ready",
+    "contacts": [ { "contact_name": "NCBI Helpdesk", "contact_email": "info@ncbi.nlm.nih.gov" } ], "homepage": "https://www.ncbi.nlm.nih.gov/genbank/", "citations": [ { "doi": "10.1093/nar/gks1195", "pubmed_id": 23193287, "publication_id": 537 } ], "identifier": 1529, "description": "GenBank is the NIH genetic sequence database, an annotated collection of all publicly available DNA sequences. The complete release notes for the current version of GenBank are available on the NCBI ftp site. A new release is made every two months. GenBank growth statistics for both the traditional GenBank divisions and the WGS division are available from each release. GenBank is part of the International Nucleotide Sequence Database Collaboration (INSDC), which comprises the DNA DataBank of Japan (DDBJ), the European Molecular Biology Laboratory (EMBL), and GenBank at the NCBI. These three organizations exchange data on a daily basis.", "abbreviation": "GenBank", "support_links": [ { "url": "https://www.ncbi.nlm.nih.gov/books/NBK25501/", "name": "Entrez Programming Utilities Help", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/genbank/submit_types/", "name": "GenBank Submission Types", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/genbank/submit/", "name": "How to Submit", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/genbank/update/", "name": "Updating GenBank records", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/books/NBK53707/", "name": "GenBank Submissions Handbook", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/blast/producttable.shtml", "name": "Using BLAST at GenBank", "type": "Help documentation" }, { "url": "https://en.wikipedia.org/wiki/GenBank", "name": "Wikipedia Entry", "type": "Wikipedia" } ], "year_creation": 1982, "data_processes": [ { "name": "bimonthly release (as in every 2 months)", "type": "data release" }, { "name": "manual curation", "type": "data curation" }, { "name": "automated curation", "type": "data curation" }, { "name": "automated annotation", "type": "data curation" }, { "name": "current and historical archived versions are available for download", "type": "data versioning" }, { "url": "ftp://ftp.ncbi.nlm.nih.gov/genbank", "name": "Download (Flatfiles)", "type": "data access" }, { "url": "ftp://ftp.ncbi.nlm.nih.gov/ncbi-asn1", "name": "Download (ASN.1)", "type": "data release" }, { "url": "https://www.ncbi.nlm.nih.gov/nucleotide/", "name": "Search (Entrez Nucleotide)", "type": "data access" }, { "url": "https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank", "name": "Submit via BankIt", "type": "data curation" }, { "url": "https://submit.ncbi.nlm.nih.gov/", "name": "Submit via NCBI Submission Portal", "type": "data curation" }, { "url": "https://www.ncbi.nlm.nih.gov/blast", "name": "BLAST", "type": "data access" }, { "url": "https://www.ncbi.nlm.nih.gov/nuccore/advanced", "name": "Nucleotide Advanced Search Builder", "type": "data access" } ], "associated_tools": [ { "url": "https://www.ncbi.nlm.nih.gov/genbank/tbl2asn2/", "name": "tbl2asn2 Submission Tool" } ], "type": "repository", "dataset_metrics": {}, "dataset_curation": {}, "dataset_deposition": {}, "data_access_condition": {}, "dataset_sustainability": {}, "community_certification": {},
+    "dataset_pid": "yes", "dataset_citation": "yes", "dataset_contacts": "yes", "dataset_versioning": "yes", "dataset_prepubreview": "yes" }
+}

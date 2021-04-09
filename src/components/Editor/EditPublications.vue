@@ -135,18 +135,21 @@
             </div>
             <v-btn
               class="green white--text my-3"
+              :loading="loadingPub"
               @click="getDOI()"
             >
               Import from DOI
             </v-btn>
             <v-btn
               class="green white--text my-3 ml-3"
+              :loading="loadingPub"
               @click="getPMID()"
             >
               Import from PUBMED ID
             </v-btn>
             <v-btn
               class="green white--text my-3 ml-3"
+              :loading="loadingPub"
               @click="createNewPublication()"
             >
               Create new publication
@@ -199,7 +202,15 @@
             <v-card-title class="green white--text">
               Create/Edit a new publication
             </v-card-title>
-            <v-card-text>
+            <v-card-text
+              v-if="errors.general"
+              class="pt-3 mb-0 pb-0"
+            >
+              <v-alert type="error">
+                {{ errors.general.response.data }}
+              </v-alert>
+            </v-card-text>
+            <v-card-text class="pt-0 mt-0">
               <v-container fluid>
                 <v-row justify="start">
                   <v-col class="col-6">
@@ -334,6 +345,7 @@
               general: null,
               pmid: null
             },
+            loadingPub: false,
             openEditor: false,
             currentPublicationIndex: false,
             citations_ids: [],
@@ -416,6 +428,7 @@
             this.$set(this.publications, index, pub);
           },
           async getDOI(){
+            this.loadingPub = true;
             this.currentPublicationIndex = false;
             this.errors = {
               doi: null,
@@ -442,9 +455,11 @@
               this.newPublication.isCitation = false;
               this.openEditor = true;
             }
+            this.loadingPub = false;
           },
           async getPMID() {
             this.currentPublicationIndex = false;
+            this.loadingPub = true;
             this.errors = {
               doi: null,
               general: null,
@@ -474,6 +489,7 @@
               this.newPublication.isCitation = false;
               this.openEditor = true;
             }
+            this.loadingPub = false;
           },
           processIDs(idsString){
             let doi = null;
@@ -520,16 +536,17 @@
               }
             }
 
-            if (!newPub.doi){
-              _module.search = newPub.title;
+            if (!_module.errors.general) {
+              if (!newPub.doi){
+                _module.search = newPub.title;
+              }
+              else {
+                _module.search = newPub.doi;
+              }
+              _module.newPublication = {};
+              _module.openEditor = false;
+              _module.currentPublicationIndex = false;
             }
-            else {
-              _module.search = newPub.doi;
-            }
-
-            _module.newPublication = {};
-            _module.openEditor = false;
-            _module.currentPublicationIndex = false;
           },
           removePublication(pubIndex){
             this.publications.splice(pubIndex, 1);

@@ -47,20 +47,28 @@ describe("Editor.vue", function() {
     it("can be instantiated", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route}
+            mocks: {$store, $route},
+            stubs: ['router-link']
         });
         expect(wrapper.name()).toMatch("Editor");
         expect(wrapper.vm.userToken).toBe("123");
         $store.state.users.user = async () => {return {}};
         expect(wrapper.vm.userToken).toBe(null);
+        let isDisabled = wrapper.vm.isDisabled("Additional Information");
+        expect(isDisabled).toBe(true);
+        isDisabled = wrapper.vm.isDisabled("Another tab");
+        expect(isDisabled).toBe(false);
+        wrapper.vm.hasLoaded = false;
         wrapper.destroy();
     });
 
     it("can clean the store on destroy", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route}
+            mocks: {$store, $route},
+            stubs: ['router-link']
         });
+        wrapper.vm.hasLoaded = false;
         wrapper.destroy();
         expect(editorStore.state.countries).toBe(null);
         expect(recordStore.state.sections.dataAccess).toBe(undefined);
@@ -73,8 +81,10 @@ describe("Editor.vue", function() {
         restStub.withArgs(sinon.match.any).returns({data: {error: "error"}});
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route}
+            mocks: {$store, $route},
+            stubs: ['router-link']
         });
+        $store.state.users.user = function(){return {credentials: {token: "123"}}};
         await wrapper.vm.getData();
         expect(wrapper.vm.error).toBe(true);
     });
@@ -82,7 +92,8 @@ describe("Editor.vue", function() {
     it("reloads data correctly", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route}
+            mocks: {$store, $route},
+            stubs: ['router-link']
         });
         wrapper.vm.confirmPanels[0].show = true;
         await wrapper.vm.confirmPanels[0].method();
@@ -93,7 +104,8 @@ describe("Editor.vue", function() {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
             router,
-            mocks: {$store, $route, $router}
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
         });
         global.confirm = jest.fn(() => true);
         const beforeRouteLeave = wrapper.vm.$options.beforeRouteLeave;
@@ -117,7 +129,8 @@ describe("Editor.vue", function() {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
             router,
-            mocks: {$store, $route, $router}
+            mocks: {$store, $route, $router},
+            stubs: ['router-link']
         });
         expect(wrapper.name()).toMatch("Editor");
     });

@@ -10,6 +10,7 @@ describe("TabContent.vue", function(){
     beforeEach(() => {
         wrapper = shallowMount(TabContent, {
             vuetify,
+            stubs: ['router-link']
         })
     });
 

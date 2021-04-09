@@ -171,10 +171,15 @@ const customIcons  = {
             icon: "assets/records/policy.png",
             tooltip: "Journal Publisher"
         },
-        knowledge_base: {
+        knowledgebase: {
             type: "img",
             icon: "assets/records/db-icon.png",
             tooltip: "Knowledge Base"
+        },
+        knowledgebase_and_repository: {
+            type: "img",
+            icon: "assets/records/db-icon.png",
+            tooltip: "Knowledge Base & repository"
         },
         DOI: {
             type: "img",

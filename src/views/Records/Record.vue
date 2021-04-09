@@ -106,6 +106,10 @@
         <Publications class="mt-5 mb-10" />
       </div>
     </v-container>
+    <script
+      :v-html="JSONLD"
+      type="application/ld+json"
+    />
   </v-main>
 </template>
 
@@ -154,7 +158,10 @@
             }
         },
         computed: {
-            currentRoute() {
+          JSONLD () {
+            return JSON.stringify(this.getField("schemaOrg"));
+          },
+          currentRoute() {
                 let id = this.$route.params['id'];
                 if (id.includes("FAIRsharing.")) {
                     return "10.25504/" + id;

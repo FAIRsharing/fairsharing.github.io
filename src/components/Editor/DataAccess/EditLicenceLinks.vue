@@ -209,7 +209,7 @@
                   @click="updateLink()"
                 >
                   <span v-if="edit.id">Edit</span>
-                  <span v-else>Create</span>
+                  <span v-else>Submit</span>
                   <span class="ml-1">licence link</span>
                 </v-btn>
                 <v-btn

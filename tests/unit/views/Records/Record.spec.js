@@ -20,7 +20,8 @@ localVue.use(VueScrollTo,{})
 // Initializing store states and getters
 users.state.user = function(){ return {
     isLoggedIn: true,
-    credentials: {token: 123, username: 123}
+    credentials: {token: 123, username: 123},
+    watchedRecords: [1]
 }};
 record.state.currentRecord.fairsharingRecord = {
     maintainers: [{username: 123}]
@@ -158,22 +159,75 @@ describe("Record.vue", function() {
     });
 
     it("Testing buttons methods", async () => {
-        $store.state.users.user = function (){return {isLoggedIn: false}};
-        let buttons = wrapper.vm.getMenuButtons;
-        buttons[0].method();
+        $store.state.users.user().isLoggedIn = false;
+        wrapper.vm.getMenuButtons();
+        wrapper.vm.buttons[0].method();
         expect($router.push).toHaveBeenCalledWith({path: "/980190962/edit", params: {fromRecordPage: true}});
-        buttons[1].method();
+        wrapper.vm.buttons[1].method();
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         expect($router.push).toHaveBeenCalledTimes(2);
-        expect(buttons[2].method()).toBe(null);
-        expect(buttons[3].method()).toBe(null);
+        await wrapper.vm.buttons[2].method();
+        expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
+        expect(wrapper.vm.buttons[4].method()).toBe(null);
         $store.state.users.user = function (){return {
             isLoggedIn: true,
-            credentials: {token: 123, username: 123}
+            credentials: {token: 123, username: 123},
+            watchedRecords: []
         }};
-        await buttons[1].method();
+        await wrapper.vm.buttons[1].method();
         expect(wrapper.vm.claimedTriggered).toBe(true);
         expect(wrapper.vm.canClaim).toBe(false);
+        wrapper.vm.buttons[3].method();
+        expect($router.push).toHaveBeenCalledWith({path: "/graph/980190962"});
+    });
+
+    it("runs the watch method", async () => {
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {
+                data: {
+                    modification: 'success'
+                }
+            }
+        );
+        expect(wrapper.vm.isWatching()).toBe(false);
+        let changeWatchRecord = jest.spyOn(wrapper.vm, "changeWatchRecord");
+        wrapper.vm.getMenuButtons();
+        expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
+        await wrapper.vm.buttons[2].method();
+        expect(changeWatchRecord).toHaveBeenCalledWith(true);
+        mocks.restore("restMock");
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            credentials: {token: 123, username: 123},
+            watchedRecords: [980190962]
+        }};
+        expect(wrapper.vm.isWatching()).toBe(true);
+        expect(wrapper.vm.buttons[2].name()).toEqual("Unwatch record");
+        await wrapper.vm.buttons[2].method();
+        expect(changeWatchRecord).toHaveBeenCalledWith(false);
+        mocks.restore("restMock");
+    });
+
+    it("doesn't change watched records if the user wasn't updated", async() => {
+        let changeWatch = jest.spyOn(wrapper.vm, "changeWatchRecord");
+        let changeWatchUsers = jest.spyOn(wrapper.vm, "changeWatched");
+        expect(changeWatchUsers).toHaveBeenCalledTimes(0);
+        wrapper.vm.getMenuButtons();
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {
+            data: {
+              modification: 'failure'
+            }
+          }
+        );
+        await wrapper.vm.buttons[2].method();
+        expect(changeWatch).toHaveBeenCalled();
+        expect(changeWatchUsers).toHaveBeenCalledTimes(0);
+        mocks.restore("restMock");
     });
 
     it("can properly fetch a record history", async () => {
@@ -208,7 +262,8 @@ describe("Record.vue", function() {
         wrapper.vm.alreadyClaimed = false;
         $store.state.users.user = function(){ return {
             isLoggedIn: true,
-            credentials: {token: 123, username: 567}
+            credentials: {token: 123, username: 567},
+            watchedRecords: []
         }};
         await wrapper.vm.checkClaimStatus();
         expect(wrapper.vm.alreadyClaimed).toBe(true);

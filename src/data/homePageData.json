@@ -1,0 +1,10 @@
+{
+  "tabs": [
+    {"link":"stakeholder/","image":"assets/Home/Tabs/researcher.svg","header": "Researchers in academia, industry and government", "description":"Identify and cite the standards, databases or repositories that exist for your discipline when creating a data management plan, releasing data or submitting a manuscript to a journal...", "title": "Researchers"},
+    {"link":"somewhere/","image":"assets/Home/Tabs/developer.svg","header": "Developers & curators of resources", "description":"Make your standard, database or repository discoverable, increasing exposure and credit outside your immediate community and promoting adoption...", "title": "Developers & Curators"},
+    {"link":"somewhereelse/","image":"assets/Home/Tabs/funder.svg","header": "Journal editors & publishers", "description":"Create and maintain an interrelated list of citable standards, databases and repositories to recommend to your authors, users or their community, and revise this recommendation over time...", "title": "Journal Publishers"},
+    {"link":"alink/","image":"assets/Home/Tabs/journal.svg","header": "Research data facilitators, librarians, trainers", "description":"Use FAIRsharing to provide a foundation on which to create or enrich educational lectures, training and teaching material, and to plug into data management planning tools...", "title": "Librarians & Trainers"},
+    {"link":"blink/","image":"assets/Home/Tabs/funder.svg","header": "Societies, unions and community alliances", "description":"Raise awareness around standards, databases, repositories and data policies, as well as mobilise your community to take action to promote the registration, use and citation of key resources...", "title": "Societies & Alliances"},
+    {"link":"clink/","image":"assets/Home/Tabs/funder.svg","header": "Funders & data policy makers", "description":"Recommend FAIRsharing to your awardees to inform the development of their data management plan, and select the appropriate resources to recommend in your data policy...", "title": "Funders"}
+  ]
+}

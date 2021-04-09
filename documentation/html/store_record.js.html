@@ -260,14 +260,12 @@ let recordStore = {
             state.sections.dataAccess.message = "Record successfully updated!";
         },
         updateAdditionalInformation(state, additionalInformation) {
-            let record = {
-                access_points: additionalInformation['access_points'],
-                associated_tools: additionalInformation['associated_tools']
-            };
-            // TODO: Separate setting necessary for each available field...
-           Object.keys(record).forEach((type) => {
-                state.sections.generalInformation.data.metadata[type] = JSON.parse(JSON.stringify(record[type]));
-                state.sections.generalInformation.initialData.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+            let record = {};
+            Object.keys(additionalInformation.record).forEach(field => {
+                record[field] = additionalInformation.record[field];
+                state.sections.generalInformation.data.metadata[field] = JSON.parse(JSON.stringify(record[field]));
+                state.sections.generalInformation.initialData.metadata[field] = JSON.parse(JSON.stringify(record[field]));
+
             });
             state.sections.additionalInformation.data = record;
             state.sections.additionalInformation.initialData = JSON.parse(JSON.stringify(record));
@@ -488,12 +486,11 @@ let recordStore = {
             let newRecord = {
                 metadata: state.sections.generalInformation.initialData.metadata,
             };
-            // TODO: Add remaining fields here
-            newRecord.metadata.access_points = state.sections.additionalInformation.data.access_points;
-            newRecord.metadata.associated_tools = state.sections.additionalInformation.data.associated_tools;
-
-            /// below = dodgy
-            // define record
+            options.fields.forEach(field => {
+                if (state.sections.additionalInformation.data[field]) {
+                    newRecord.metadata[field] = state.sections.additionalInformation.data[field]
+                }
+            });
             let response = await restClient.updateRecord({
                 record: newRecord,
                 token: options.token,
@@ -508,7 +505,7 @@ let recordStore = {
             }
             else {
                 commit("setMessage", {target: "additionalInformation", value: "Record successfully updated!"});
-                commit('updateAdditionalInformation', newRecord.metadata);
+                commit('updateAdditionalInformation', {record: newRecord.metadata, fields: options.fields});
             }
         },
         async updateDataAccess({state, commit}, options){

@@ -14,6 +14,7 @@
     "createdAt",
     "updatedAt",
     "lastEdited",
+    "schemaOrg",
     {
       "name": "lastEditor",
       "fields": [

@@ -177,63 +177,6 @@
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
             },
-            getMenuButtons(){
-              let _module = this;
-              return [
-                {
-                  name: "Edit record",
-                  isDisabled: function(){
-                    if (!_module.userIsLoggedIn){
-                      return false
-                    }
-                    return !_module.canEdit
-                  },
-                  method: function(){return _module.goToEdit()}
-                },
-                {
-                  name: "Request ownership",
-                  isDisabled: function(){
-                    if (!_module.userIsLoggedIn){
-                      return false
-                    }
-                    return !_module.canClaim
-                  },
-                  method: function(){
-                    if (!_module.userIsLoggedIn){
-                        _module.$router.push({
-                        path: "/accounts/login",
-                        query: {
-                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-                        }
-                      })
-                    }
-                    else {
-                      return _module.requestOwnership()
-                    }
-                  }
-                },
-                {
-                  name: "Watch record",
-                  disable: true,
-                  isDisabled: function(){ return true},
-                  method: function(){return null}
-                },
-                {
-                  name: "View Relation Graph",
-                  isDisabled: function(){ return false },
-                  method: function(){
-                    _module.$router.push({
-                      path: "/graph/" + _module.currentRecord['fairsharingRecord'].id
-                    })
-                  }
-                },
-                {
-                  name: "Have a suggestion/question ?",
-                  isDisabled: function(){ return true},
-                  method: function(){return null}
-                }
-              ];
-            }
         },
         watch: {
             async currentRoute() {

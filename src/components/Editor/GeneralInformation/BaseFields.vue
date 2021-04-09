@@ -160,7 +160,7 @@
         <!-- autocomplete selected -->
         <template #selection="data">
           <v-chip
-            class="blue white--text"
+            class="blue white--text removeStyle"
             close
             @click:close="removeCountry(data.item)"
           >
@@ -224,7 +224,7 @@
                   <Icon
                     :item="data.item.name"
                     wrapper-class=""
-                    height="40"
+                    :height="40"
                   />
                 </v-list-item-avatar>
                 <v-list-item-content class="py-0">
@@ -397,8 +397,12 @@
     }
 </script>
 
-<style scoped>
+<style>
   .registryList {
     max-width: 780px;
+  }
+  .removeStyle button {
+    color: white !important;
+    margin-left: 12px !important;
   }
 </style>

@@ -28,6 +28,7 @@ export const mutations = {
     },
     autoLogin(state){
         let user = JSON.parse(localStorage.getItem("user"));
+        console.log(user);
         state.user = function(){
             return user
         };
@@ -144,24 +145,8 @@ export const mutations = {
         };
     },
     changeWatched(state, watchedRecords) {
-        let user = JSON.parse(localStorage.getItem("user"));
-        console.log("USER: " + JSON.stringify(user));
-        if (user) {
-            console.log("WIBBLE!");
-            state.user = function () {
-                return {
-                    isLoggedIn: true,
-                    credentials: {
-                        username: user.credentials.username,
-                        token: user.credentials.token,
-                        tokenValidity: user.credentials.tokenValidity
-                    },
-                    metadata: user.metadata,
-                    records: user.records,
-                    watchedRecords: watchedRecords
-                }
-            };
-        }
+        state.user().watchedRecords = watchedRecords;
+        localStorage.setItem("user", JSON.stringify(state.user()));
     }
 };
 
@@ -260,8 +245,7 @@ export const actions = {
     },
     async getPublicUser(state, userId) {
         getPublicUserQuery.queryParam.id = parseInt(userId);
-        const publicUser = await graphClient.executeQuery(getPublicUserQuery);
-        return publicUser;
+        return await graphClient.executeQuery(getPublicUserQuery);
     },
     async getUserMeta(state){
         try {

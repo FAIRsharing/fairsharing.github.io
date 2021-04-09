@@ -193,23 +193,21 @@ describe("Record.vue", function() {
         );
         expect(wrapper.vm.isWatching()).toBe(false);
         let changeWatchRecord = jest.spyOn(wrapper.vm, "changeWatchRecord");
-        let changeWatched = jest.spyOn(wrapper.vm, "changeWatched");
         expect(changeWatched).toHaveBeenCalledTimes(0);
         wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
         await wrapper.vm.buttons[2].method();
         expect(changeWatchRecord).toHaveBeenCalledWith(true);
-        expect(changeWatched).toHaveBeenCalledTimes(0);
-        //$store.state.users.user = function (){return {
-        //    isLoggedIn: true,
-        //    credentials: {token: 123, username: 123},
-        //    watchedRecords: [980190962]
-        //}};
-        //expect(wrapper.vm.isWatching).toBe(true);
-        //expect(buttons[2].name()).toEqual("Unwatch record");
-        //await buttons[2].method();
-        //expect(changeWatchRecord).toHaveBeenCalledWith(false);
-        //expect(changeWatched).toHaveBeenCalledWith([]);
+        mocks.restore("restMock");
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            credentials: {token: 123, username: 123},
+            watchedRecords: [980190962]
+        }};
+        expect(wrapper.vm.isWatching()).toBe(true);
+        expect(wrapper.vm.buttons[2].name()).toEqual("Unwatch record");
+        await wrapper.vm.buttons[2].method();
+        expect(changeWatchRecord).toHaveBeenCalledWith(false);
         mocks.restore("restMock");
     });
 

@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -101,8 +101,8 @@ const graphClient = new GraphQLClient();
 
 export const mutations = {
     setFilters(state, data) {
-        state.filtersStatistic = data['searchFairsharingRecords']['aggregations'];
-        state.rawFilters = buildFilters(state.filtersStatistic);
+        let rawFilters = data['searchFairsharingRecords']['aggregations'];
+        state.rawFilters = buildFilters(rawFilters);
         state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' &amp;&amp; item.filterName !== 'status'));
     },
     setFilterButtons(state) {
@@ -181,9 +181,6 @@ export const getters = {
             })
         });
         return output
-    },
-    getFiltersStatisticCount: (state) => (option) => {
-        return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
     }
 };
 
@@ -197,7 +194,6 @@ let filtersStore = {
     state: {
         rawFilters: [],
         filters: [],
-        filtersStatistic: [],
         filterButtons: [],
         isLoadingFilters: false
     },

@@ -28,7 +28,7 @@
               type="info"
               class="mr-3"
             >
-              <span>the record is hidden</span>
+              <span>This record is hidden!</span>
             </v-alert>
 
             <v-alert

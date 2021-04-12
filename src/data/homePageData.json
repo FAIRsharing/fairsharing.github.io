@@ -1,0 +1,181 @@
+{
+  "blockTabs": [
+    {
+      "link": "stakeholder/",
+      "image": "assets/Home/Tabs/researcher.svg",
+      "header": "Researchers in academia, industry and government",
+      "description": "Identify and cite the standards, databases or repositories that exist for your discipline when creating a data management plan, releasing data or submitting a manuscript to a journal...",
+      "title": "Researchers"
+    },
+    {
+      "link": "somewhere/",
+      "image": "assets/Home/Tabs/developer.svg",
+      "header": "Developers & curators of resources",
+      "description": "Make your standard, database or repository discoverable, increasing exposure and credit outside your immediate community and promoting adoption...",
+      "title": "Developers & Curators"
+    },
+    {
+      "link": "somewhereelse/",
+      "image": "assets/Home/Tabs/funder.svg",
+      "header": "Journal editors & publishers",
+      "description": "Create and maintain an interrelated list of citable standards, databases and repositories to recommend to your authors, users or their community, and revise this recommendation over time...",
+      "title": "Journal Publishers"
+    },
+    {
+      "link": "alink/",
+      "image": "assets/Home/Tabs/journal.svg",
+      "header": "Research data facilitators, librarians, trainers",
+      "description": "Use FAIRsharing to provide a foundation on which to create or enrich educational lectures, training and teaching material, and to plug into data management planning tools...",
+      "title": "Librarians & Trainers"
+    },
+    {
+      "link": "blink/",
+      "image": "assets/Home/Tabs/funder.svg",
+      "header": "Societies, unions and community alliances",
+      "description": "Raise awareness around standards, databases, repositories and data policies, as well as mobilise your community to take action to promote the registration, use and citation of key resources...",
+      "title": "Societies & Alliances"
+    },
+    {
+      "link": "clink/",
+      "image": "assets/Home/Tabs/funder.svg",
+      "header": "Funders & data policy makers",
+      "description": "Recommend FAIRsharing to your awardees to inform the development of their data management plan, and select the appropriate resources to recommend in your data policy...",
+      "title": "Funders"
+    }
+  ],
+  "blockInfo": {
+    "standard": {
+      "total": {
+        "count": 0,
+        "option": {
+          "filterName": "fairsharing_registry",
+          "key": "standard"
+        }
+      },
+      "items": [
+        {
+          "title": "Terminology Artifact",
+          "searchQuery": "search?recordType=terminology_artefact",
+          "option": {
+            "filterName": "record_type",
+            "key": "terminology_artefact"
+          },
+          "count": 0
+        },
+        {
+          "title": "Model/Format",
+          "searchQuery": "search?recordType=model_and_format",
+          "option": {
+            "filterName": "record_type",
+            "key": "model_and_format"
+          },
+          "count": 0
+        },
+        {
+          "title": "Reporting Guideline",
+          "searchQuery": "search?recordType=reporting_guideline",
+          "option": {
+            "filterName": "record_type",
+            "key": "reporting_guideline"
+          },
+          "count": 0
+        },
+        {
+          "title": "Identifier Schema",
+          "searchQuery": "search?recordType=identifier_schema",
+          "option": {
+            "filterName": "record_type",
+            "key": "identifier_schema"
+          },
+          "count": 0
+        }
+      ]
+    },
+    "database": {
+      "total": {
+        "count": 0,
+        "option": {
+          "filterName": "fairsharing_registry",
+          "key": "database"
+        }
+      },
+      "items": [
+        {
+          "title": "Natural Science",
+          "searchQuery": "search?subjects=natural science",
+          "option": {
+            "filterName": "subjects",
+            "key": "natural science"
+          },
+          "count": 0
+        },
+        {
+          "title": "Engineering Science",
+          "searchQuery": "search?subjects=engineering science",
+          "option": {
+            "filterName": "subjects",
+            "key": "engineering science"
+          },
+          "count": 0
+        },
+        {
+          "title": "Humanities",
+          "searchQuery": "search?subjects=humanities",
+          "option": {
+            "filterName": "subjects",
+            "key": "humanities"
+          },
+          "count": 0
+        },
+        {
+          "title": "Social Science",
+          "searchQuery": "search?subjects=social science",
+          "option": {
+            "filterName": "subjects",
+            "key": "social science"
+          },
+          "count": 0
+        }
+      ]
+    },
+    "policy": {
+      "total": {
+        "count": 0,
+        "option": {
+          "filterName": "fairsharing_registry",
+          "key": "policy"
+        }
+      },
+      "items": [
+        {
+          "title": "Funder",
+          "searchQuery": "search?recordType=funder",
+          "option": {
+            "filterName": "record_type",
+            "key": "funder"
+          },
+          "count": 0
+        },
+        {
+          "title": "Journal",
+          "searchQuery": "search?recordType=journal",
+          "option": {
+            "filterName": "record_type",
+            "key": "journal"
+          },
+          "count": 0
+        },
+        {
+          "title": "Society",
+          "searchQuery": "search?recordType=society",
+          "option": {
+            "filterName": "record_type",
+            "key": "society"
+          },
+          "count": 0
+        }
+      ]
+    }
+  }
+}
+

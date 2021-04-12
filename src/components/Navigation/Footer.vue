@@ -19,9 +19,9 @@
           v-for="(item,blockIndex) in block.content"
           :key="item.title+'_'+blockIndex"
         >
-          <a
+          <router-link
             class="underline-effect"
-            :href="item.url"
+            :to="item.url"
             target="_blank"
           >
             <i
@@ -29,7 +29,7 @@
               :class="item.icon"
             />
             {{ item.title }}
-          </a>
+          </router-link>
         </li>
       </ul>
     </v-col>

@@ -417,7 +417,7 @@
                  cursor: 'pointer',
                  point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = this.options.url;
                      }
                    }

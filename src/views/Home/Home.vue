@@ -11,8 +11,8 @@
       <block-categories class="mt-12 mb-12" />
     </v-container>
     <script
-      :v-html="JSONLD"
       type="application/ld+json"
+      v-html="JSONLD"
     />
   </v-main>
 </template>

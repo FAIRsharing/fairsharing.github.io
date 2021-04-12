@@ -74,7 +74,6 @@ describe("Editor.vue", function() {
         expect(recordStore.state.sections.dataAccess).toBe(undefined);
     });
 
-    /*
     it("can deal with errors", async () => {
         $route.params.id = "FAIRsharing.abcde";
         restStub.restore();
@@ -89,7 +88,6 @@ describe("Editor.vue", function() {
         await wrapper.vm.getData();
         expect(wrapper.vm.error).toBe(true);
     });
-     */
 
     it("reloads data correctly", async () => {
         wrapper = await shallowMount(CreateRecord, {

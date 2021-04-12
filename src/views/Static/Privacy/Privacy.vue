@@ -14,6 +14,7 @@
           <h3>{{ item.title }}</h3>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
+          <!-- eslint-disable-next-line vue/no-v-html -->
           <p
             class="lato-font-medium"
             v-html="item.content"

@@ -165,7 +165,7 @@
                  cursor: 'pointer',
                  point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = this.options.url;
                      }
                    }
@@ -281,7 +281,7 @@
                cursor: 'pointer',
                point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = '/#/search?countries='+item.key;
                      }
                    }

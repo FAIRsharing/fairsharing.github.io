@@ -10,6 +10,7 @@
       <block-search />
       <block-categories class="mt-12 mb-12" />
     </v-container>
+    <!-- eslint-disable-next-line vue/no-v-html -->
     <script
       type="application/ld+json"
       v-html="JSONLD"

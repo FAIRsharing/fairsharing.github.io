@@ -1,0 +1,66 @@
+{
+  "privacy": {
+    "bullet_points": [
+      {
+        "title": "A. Privacy Policy",
+        "content": "FAIRsharing.org (“This site”) is operated by the University of Oxford. We are committed to protecting the privacy and security of your personal information (‘personal data’).\n\nThis policy describes how we collect and use your personal data during your use of our site, in accordance with the General Data Protection Regulation (GDPR) and associated data protection legislation."
+      },
+      {
+        "title": "B. Who is using your personal data?",
+        "content": "The University of Oxford is the “data controller\" for the information that you provide to us when visiting this website. This means that we decide how to use it and are responsible for looking after it in accordance with the GDPR.\n\nAccess to your personal data within the University will be provided to those staff who need to view it as part of their work in connection with the operation of this website. It will also be shared with the third parties described in Section G.\n\nPlease read the following carefully to understand our views and practices regarding your personal data and how we will treat it. We may update this policy at any time.\n\nBy visiting our site you are accepting and consenting to the practices described in this policy."
+      },
+      {
+        "title": "C. Glossary",
+        "content": "Where we refer in this policy to your ‘personal data’, we mean any recorded information that is about you and from which you can be identified. It does not include data where your identity has been removed (anonymous data).\n\nWhere we refer to the ‘processing’ of your personal data, we mean anything that we do with that information, including collection, use, storage, disclosure or retention."
+      },
+      {
+        "title": "D. Types of data we collect about you",
+        "content": "We will collect, store, and use the following categories of data when you use our site:\n\nData you give us. You may give us data including:\n\n\u2022  Your email address.\n• Your name, and the username of your account.\n• <a href='https://orcid.org/' target=''>Your ORCID ID.</a>\n• If you claim a record, your association with that record as a maintainer.\n• If you maintain a record, information about any changes you make to the record.\n\nData we collect about you.\n\n• If you visit our site, we will automatically collect certain technical information, for example, the type of device (and its unique device identifier) you use to access our site, the Internet protocol (IP) address used to connect your device to the Internet, your login information, browser type and version, time zone setting, browser plug-in types and versions, operating system, mobile network information and platform.\n\n• We will automatically collect information about your visit to our site including the full Uniform Resource Locators (URL), clickstream to, through and from the Website (including date and time), pages you viewed, page response times, download errors, length of visits to certain pages, page interaction information (such as scrolling, clicks, and mouse-overs), and methods used to browse away from the page.\n"
+      },
+      {
+        "title": "D. Types of data we collect about you",
+        "content": "We will collect, store, and use the following categories of data when you use our site:\n\nData you give us. You may give us data including:\n\n\u2022 Your email address.\n• Your name, and the username of your account.\n• <a href='https://orcid.org/' target=''>Your ORCID ID.</a>\n• If you claim a record, your association with that record as a maintainer.\n• If you maintain a record, information about any changes you make to the record.\n\n<strong>Data we collect about you.</strong>\n\n• If you visit our site, we will automatically collect certain technical information, for example, the type of device (and its unique device identifier) you use to access our site, the Internet protocol (IP) address used to connect your device to the Internet, your login information, browser type and version, time zone setting, browser plug-in types and versions, operating system, mobile network information and platform.\n\n• We will automatically collect information about your visit to our site including the full Uniform Resource Locators (URL), clickstream to, through and from the Website (including date and time), pages you viewed, page response times, download errors, length of visits to certain pages, page interaction information (such as scrolling, clicks, and mouse-overs), and methods used to browse away from the page.\n"
+      },
+      {
+        "title": "E. When we collect your data",
+        "content": "We will collect the vast majority of data about you when you register to use our site, correspond with us by phone, e-mail or otherwise, search for a record, respond to a survey or when you report a problem with our site.\n\nWhen you visit our site we may also automatically collect technical information about your visit from your computer."
+      },
+      {
+        "title": "F. How we use your data",
+        "content": "We process your data for one or more of the following reasons:\n\nTo provide you with the information you have requested, such as search results.\n\nTo send you email alerting you to activities relevant to you, such as changes to any records you follow or maintain. We do this only where you have specifically indicated that you consent to receive such communications, for example, by claiming or following a record. You can withdraw your consent at any time by contacting us at <a href='mailto:contact@fairsharing.org'>contact@fairsharing.org</a>. In this event, we will stop any processing as soon as we can. However, this will not affect the lawfulness of any processing carried out before your withdrawal of consent and you may no longer be able to use the site in the same way you did before.\n\nTo allow third parties to contact you, if you are the maintainer of a record, by linking your email address to the relevant record.\n\nTo provide information on the popularity and usage patterns of our site, to assist us in applications for funds. This information will be gathered by means of Google Analytics, from which you may opt out by installing a <a href='https://tools.google.com/dlpage/gaoptout' target=blank>browser plugin</a>.\n\nFor purposes arising from your use of this website, for example, to ensure that we understand who uses our site and how our site is used, and to improve our site and ensure it is secure. This processing occurs because it is necessary to meet our legitimate interests in operating this website. Information processed for this purpose includes, but is not limited to, user activity data collected by means of Google Analytics, from which you may opt out by installing a browser plugin. We will only use your data for the purposes for which we collected it, unless we reasonably consider that we need to use it for another related reason and that reason is compatible with the original purpose. If we need to use your data for an unrelated purpose, we will seek your consent to use it for that new purpose. Please note that we may process your data without your knowledge or consent, in compliance with the above rules, where this is required or permitted by law."
+      },
+      {
+        "title": "G. Sharing your data with third parties",
+        "content": "We may share your data with third parties who provide services on our behalf, such as for administrative purposes. All our third-party service providers are required to take appropriate security measures to protect your data in line with our policies. We do not allow them to use your data for their own purposes. We permit them to process your data only for specified purposes and in accordance with our instructions.??Does this satisfy the exchange of maintainer/contact information with Integbio??\n\nWe may also share your personal data with third parties if we are under a duty to disclose or share your personal data in order to comply with any legal obligation, or in order to enforce or apply our site terms of use or to protect the rights, property or safety of our site, our users, and others. Where your data is shared with third parties, we will seek to share the minimum amount necessary."
+      },
+      {
+        "title": "H. Where we store and use your data",
+        "content": "We may store data collected by the website manually or electronically. The data is stored on our secure servers and/or in our premises within the UK. "
+      },
+      {
+        "title": "I. Third party websites",
+        "content": "Our site contains links to and from various third party websites. If you follow a link to any of these websites, please note that these websites have their own privacy policies and that we do not accept any responsibility or liability for these policies. Please check these policies before you submit any personal data to these websites.]"
+      },
+      {
+        "title": "J. Retaining your data",
+        "content": "We will only retain your data for as long as we need it to fulfil our purposes, including any relating to legal, accounting, or reporting requirements."
+      },
+      {
+        "title": "K. Your rights",
+        "content": "Under certain circumstances, by law you have the right to:\n\n• Request access to your data (commonly known as a \"subject access request\"). This enables you to receive a copy of your data and to check that we are lawfully processing it.\n• Request correction of your data. This enables you to ask us to correct any incomplete or inaccurate information we hold about you.\n• Request erasure of your data. This enables you to ask us to delete or remove your data where there is no good reason for us continuing to process it. You also have the right to ask us to delete or remove your data where you have exercised your right to object to processing (see below).\n• Object to processing of your data where we are relying on our legitimate interests (or those of a third party) and there is something about your particular situation which makes you want to object to processing on this ground.\n• Request the restriction of processing of your data. This enables you to ask us to suspend the processing of your data, for example if you want us to establish its accuracy or the reason for processing it.\n• Request the transfer of your data to another party.\n\nDepending on the circumstances and the nature of your request it may not be possible for us to do what you have asked, for example, where there is a statutory or contractual requirement for us to process your data and it would not be possible to fulfil our legal obligations if we were to stop. However, where you have consented to the processing you can withdraw your consent at any time by emailing us at <a href='mailto:contact@fairsharing.org'>contact@fairsharing.org</a>. In this event, we will stop the processing as soon as we can. However, this will not affect the lawfulness of any processing carried out before your withdrawal of consent and you may no longer be able to use the site in the same way as you did before.\n\nIf you want to exercise any of the rights described above or are dissatisfied with the way we have used your information, you should contact the University’s Information Compliance Team at <a href='mailto:data.protection@admin.ox.ac.uk'>data.protection@admin.ox.ac.uk</a>. The same email address may be used to contact the University’s Data Protection Officer. We will seek to deal with your request without undue delay, and in any event in accordance with the requirements of the GDPR. Please note that we may keep a record of your communications to help us resolve any issues which you raise. If you remain dissatisfied, you have the right to lodge a complaint with the Information Commissioner’s Office at https://ico.org.uk/concerns/."
+      },
+      {
+        "title": "L. Cookies",
+        "content": "Our site uses cookies only for essential functionality of the site, e.g. session management."
+      },
+      {
+        "title": "M. Changes to this policy",
+        "content": "Any changes we may make to our privacy policy in the future will be posted on this page. Please check back frequently to see any updates or changes to our privacy policy."
+      },
+      {
+        "title": "N. Contact",
+        "content": "If you wish to raise any queries or concerns about this privacy policy please contact us at <a href='mailto:contact@fairsharing.org'>contact@fairsharing.org</a>."
+      }
+    ]
+  }
+}

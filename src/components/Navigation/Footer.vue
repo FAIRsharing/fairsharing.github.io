@@ -22,7 +22,6 @@
           <router-link
             class="underline-effect"
             :to="item.url"
-            target="_blank"
           >
             <i
               v-if="item.icon"

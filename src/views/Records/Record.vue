@@ -190,7 +190,7 @@
             },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
-            }
+            },
         },
         watch: {
             async currentRoute() {

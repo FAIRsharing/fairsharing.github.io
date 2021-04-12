@@ -106,6 +106,8 @@
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            <!-- Related Content -->
+            <RelatedContent class="mt-5 ml-lg-5" />
             <!-- Tools -->
             <Tools class="mt-5 ml-lg-5" />
             <!-- Organisations -->
@@ -136,12 +138,14 @@
     import NotFound from "@/views/Errors/404"
     import Organisations from "@/components/Records/Record/Organisations";
     import Collections from "@/components/Records/Record/Collections";
+    import RelatedContent from "@/components/Records/Record/RelatedContent";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          RelatedContent,
           Collections,
           Organisations,
             GeneralInfo,

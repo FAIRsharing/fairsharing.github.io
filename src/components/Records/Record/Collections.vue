@@ -82,10 +82,25 @@
                     :record="item"
                     :show-status="false"
                   />
-                  <div class="ml-10 text-ellipses-height-2lines">
+                  <div class="ml-10 text-ellipses-height-2lines line-height-20">
                     {{ item.name }}
                   </div>
                 </div>
+                <p class="grey--text  relation-style text-ellipses-height-2lines line-height-14">
+                  {{ item.name }}
+                  <v-tooltip top>
+                    <template #activator="{ on }">
+                      <span
+                        class="red--text mouse-info"
+                        v-on="on"
+                      >
+                        {{ item.recordAssocLabel }}
+                      </span>
+                    </template>
+                    <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
+                  </v-tooltip>
+                  {{ item.subject }}
+                </p>
               </v-card>
             </template>
           </v-virtual-scroll>
@@ -100,15 +115,19 @@ import SectionTitle from '@/components/Records/Record/SectionTitle';
 import {mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils"
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import recordTabUtils from "@/utils/recordTabUtils";
+import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
+
 export default {
   name: "Collections",
   components: {
     RecordStatus,
     SectionTitle,
   },
-  mixins:[stringUtils],
+  mixins:[stringUtils,recordTabUtils],
   data: () => {
     return {
+      relationDefinition: recordRelationShipsDefinitions,
       selectedValues: null,
       tabsData: {
         selectedTab: 0,
@@ -121,39 +140,6 @@ export default {
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
-    /** Fetch content related to each tab and feed search autocomplete*/
-    getValues() {
-      let selectedTabKey = Object.keys(this.tabsData.tabs)
-      return this.tabsData.tabs[selectedTabKey[this.tabsData.selectedTab]].data;
-    },
-    tabsDataExist() {
-      let inactiveTabs = true
-      for (const [key] of Object.entries(this.filterList)) {
-        if (this.filterList[key].data.length >= 1) {
-          inactiveTabs = false
-          break
-        }
-      }
-      return inactiveTabs
-    },
-    filterList() {
-      const _module = this
-      // here I deep copied object so the references are gone and my object is a new object with unique reference
-      const output = JSON.parse(JSON.stringify(_module.tabsData.tabs));
-
-      if (this.selectedValues !== null && this.selectedValues !== "" && this.selectedValues !== undefined) {
-        let foundItem = output[Object.keys(_module.tabsData.tabs)[_module.tabsData.selectedTab]].data.find(item => item.name === _module.selectedValues)
-        if (foundItem) {
-          output[Object.keys(output)[_module.tabsData.selectedTab]].data = []
-          output[Object.keys(output)[_module.tabsData.selectedTab]].data.push(foundItem)
-        }
-        return output
-      }
-      return output
-    }
-  },
-  beforeMount() {
-    this.prepareTabsData();
   },
   methods: {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
@@ -164,34 +150,11 @@ export default {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
               .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
         })
-      }
+      } 
       else {
         return false
       }
     },
-    /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
-    prepareAssociations(associations, reverseAssociations) {
-      let _module = this;
-      let recordAssociations = []
-      let joinedArrays = associations.concat(reverseAssociations);
-      const properties = ['fairsharingRecord', 'linkedRecord'];
-
-      joinedArrays.forEach(item => {
-        let object = {};
-        properties.forEach(prop => {
-          if (Object.prototype.hasOwnProperty.call(item, prop)) {
-            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
-            object.id = item[prop].id;
-            object.registry = item[prop].registry;
-            object.name = item[prop].name;
-            object.subject = _module.currentRecord['fairsharingRecord'].name;
-            object.type = item[prop].type;
-          }
-        });
-        recordAssociations.push(object);
-      });
-      return recordAssociations;
-    }
   }
 }
 </script>

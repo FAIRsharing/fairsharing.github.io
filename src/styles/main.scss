@@ -1,4 +1,3 @@
-
 //Global Setting----------------------------
 a {
   text-decoration: none;
@@ -43,13 +42,17 @@ ul {
   cursor: pointer;
 }
 
+.mouse-info {
+  cursor: help;
+}
+
 .tooltips {
   max-width: 500px;
   display: block;
 }
 
 .v-tooltip__content {
-  background: rgba(0, 0, 0, 1)!important;
+  background: rgba(0, 0, 0, 1) !important;
 }
 
 .opacity-low {
@@ -85,6 +88,11 @@ ul {
   white-space: nowrap;
 }
 
+.ellipse-150 {
+  @extend .ellipse;
+  max-width: 150px;
+}
+
 .ellipse-width-80 {
   width: 80px;
   text-overflow: ellipsis;
@@ -95,6 +103,11 @@ ul {
 .ellipse-width-600 {
   @extend .ellipse;
   max-width: 600px;
+}
+
+.ellipse-width-450 {
+  @extend .ellipse;
+  max-width: 450px;
 }
 
 .dashed-line {
@@ -169,13 +182,30 @@ ul {
   height: 120px;
 }
 
+.height-140 {
+  height: 140px;
+}
+
+.height-190 {
+  height: 190px;
+}
+
 .height-430 {
   height: 430px;
+}
+
+.min-height-20vh {
+  min-height: 20vh;
+}
+
+.min-height-40vh {
+  min-height: 40vh;
 }
 
 .min-height-70vh {
   min-height: 70vh;
 }
+
 .width-35 {
   width: 35px;
 }
@@ -188,7 +218,17 @@ ul {
   margin-top: 1pt;
 }
 
+.line-height-14 {
+  line-height: 14px;
+}
 
+.line-height-16 {
+  line-height: 16px;
+}
+
+.line-height-20 {
+  line-height: 20px;
+}
 //End of Utilities--------------------------
 
 // shared class
@@ -214,3 +254,51 @@ ul {
   -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
   box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
 }
+
+.relation-style {
+  position: absolute;
+  bottom: -12px;
+  left: 143px;
+  font-size: 12px;
+}
+// custom fonts--------------------------
+@font-face {
+  font-family: "lato_font_bold";
+  src: url("~@/assets/fonts/Lato-Black.ttf");
+}
+
+@font-face {
+  font-family: "lato_font_medium";
+  src: url("~@/assets/fonts/Lato-Regular.ttf");
+}
+
+@font-face {
+  font-family: "lato_font_light";
+  src: url("~@/assets/fonts/Lato-Thin.ttf");
+}
+
+.lato-font-bold {
+  font-family: Lato_font_bold, serif;
+}
+
+.lato-font-medium {
+  font-family: Lato_font_medium, serif;
+}
+
+.lato-font-light {
+  font-family: Lato_font_light, serif;
+}
+
+.lato-text-sm {
+  font-size: .8rem;
+}
+
+.lato-text-md {
+  font-size: 1.2rem;
+}
+
+.lato-text-lg {
+  font-size: 1.7rem;
+}
+
+//End of custom fonts--------------------------

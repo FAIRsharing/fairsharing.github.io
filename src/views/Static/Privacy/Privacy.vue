@@ -1,7 +1,7 @@
 <template>
   <main class="pa-5 mt-5 mb-10">
     <v-expansion-panels
-      v-model="allOpen"
+      v-model="panel"
       multiple
       hover
       accordion
@@ -16,7 +16,7 @@
         <v-expansion-panel-content>
           <p
             class="lato-font-medium"
-            v-html="item.content"
+            :v-html="item.content"
           />
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -34,11 +34,9 @@ export default {
       panel:[]
     }
   },
-  methods:{
-    allOpen () {
-      const _module = this;
-      return [...Array(_module.privacyData['bullet_points'].length).keys()].map((k, i) => i)
-    }
+  async mounted () {
+    await this.$nextTick()
+    this.panel = [...Array(this.privacyData['bullet_points'].length).keys()].map((k, i) => i)
   }
 }
 </script>

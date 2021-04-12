@@ -16,7 +16,7 @@
         <v-expansion-panel-content>
           <p
             class="lato-font-medium"
-            :v-html="item.content"
+            v-html="item.content"
           />
         </v-expansion-panel-content>
       </v-expansion-panel>

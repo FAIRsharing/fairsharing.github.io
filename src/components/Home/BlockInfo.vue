@@ -1,6 +1,8 @@
 <template>
   <v-container>
-    <v-row class="block-category">
+    <v-row
+      class="block-category"
+    >
       <v-col
         cols="12"
         sm="12"
@@ -25,32 +27,29 @@
             </div>
             <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
               <span>
-                {{ getFiltersStatisticCount({filterName:"fairsharing_registry",key:"standard"}) }}
+                {{ blockInfo.standard.total.count }}
               </span>
               Standards
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify">
-            <div class="d-flex">
-              <strong class="flex-grow-1">Terminology Artifact</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'terminology_artefact'}) }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
-              <strong class="flex-grow-1">Model/Format</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'model_and_format'}) }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
-              <strong class="flex-grow-1">Reporting Guideline</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'reporting_guideline'}) }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
-              <strong class="flex-grow-1">Identifier Schema</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'identifier_schema'}) }}</span>
-            </div>
-            <v-divider />
+          <v-card-text
+            v-if="blockInfo.standard.items.length<5"
+            class="text--primary text-justify"
+          >
+            <router-link
+              v-for="(item,index) in blockInfo.standard.items"
+              :key="item.title + '_' + index"
+              :to="item.searchQuery"
+              class="underline-effect"
+            >
+              <div
+                class="d-flex"
+              >
+                <strong class="flex-grow-1">{{ item.title }}</strong>
+                <span>{{ item.count }}</span>
+              </div>
+              <v-divider />
+            </router-link>
           </v-card-text>
           <v-card-actions class="text-center d-block">
             <router-link to="/search?fairsharingRegistry=Standard">
@@ -88,31 +87,28 @@
               />
             </div>
             <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
-              <span>{{ getFiltersStatisticCount({filterName:'fairsharing_registry',key:'database'}) }}</span>
+              <span>{{ blockInfo.database.total.count }}</span>
               Databases
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify">
-            <div class="d-flex">
-              <strong class="flex-grow-1">Natural Science</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'natural science'}) }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
-              <strong class="flex-grow-1">Engineering Science</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'engineering science'}) }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
-              <strong class="flex-grow-1">Humanities</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'humanities'}) }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
-              <strong class="flex-grow-1">Social Science</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'subjects',key:'social science'}) }}</span>
-            </div>
-            <v-divider />
+          <v-card-text
+            v-if="blockInfo.database.items.length<5"
+            class="text--primary text-justify"
+          >
+            <router-link
+              v-for="(item,index) in blockInfo.database.items"
+              :key="item.title + '_' + index"
+              :to="item.searchQuery"
+              class="underline-effect"
+            >
+              <div
+                class="d-flex"
+              >
+                <strong class="flex-grow-1">{{ item.title }}</strong>
+                <span>{{ item.count }}</span>
+              </div>
+              <v-divider />
+            </router-link>
           </v-card-text>
           <v-card-actions class="text-center d-block">
             <router-link to="/search?fairsharingRegistry=Database">
@@ -149,26 +145,28 @@
               />
             </div>
             <v-card-title class="d-inline text-h4 text-md-h5 text-lg-h4">
-              <span>{{ getFiltersStatisticCount({filterName:'fairsharing_registry',key:'policy'}) }}</span>
+              <span>{{ blockInfo.policy.total.count }}</span>
               Policies
             </v-card-title>
           </div>
-          <v-card-text class="text--primary text-justify height-190">
-            <div class="d-flex">
-              <strong class="flex-grow-1">Funder</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'funder'}) }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
-              <strong class="flex-grow-1">Journal</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'journal'}) }}</span>
-            </div>
-            <v-divider />
-            <div class="d-flex">
-              <strong class="flex-grow-1">Society</strong>
-              <span>{{ getFiltersStatisticCount({filterName:'record_type',key:'society'}) }}</span>
-            </div>
-            <v-divider />
+          <v-card-text
+            v-if="blockInfo.policy.items.length<5"
+            class="text--primary text-justify height-190"
+          >
+            <router-link
+              v-for="(item,index) in blockInfo.policy.items"
+              :key="item.title + '_' + index"
+              :to="item.searchQuery"
+              class="underline-effect"
+            >
+              <div
+                class="d-flex"
+              >
+                <strong class="flex-grow-1">{{ item.title }}</strong>
+                <span>{{ item.count }}</span>
+              </div>
+              <v-divider />
+            </router-link>
           </v-card-text>
           <v-card-actions class="text-center d-block">
             <router-link to="/search?fairsharingRegistry=Policy">
@@ -189,12 +187,28 @@
 <script>
 import {truncate} from "@/utils/stringUtils";
 import {mapGetters} from "vuex";
-
+import {blockInfo} from "@/data/homePageData.json"
 export default {
   name: "BlockInfo",
   mixins: [truncate],
+  data: () => {
+    return {
+      blockInfo: blockInfo
+    }
+  },
   computed: {
     ...mapGetters("searchFilters", ["getFiltersStatisticCount"])
+  },
+  mounted() {
+    Object.keys(this.blockInfo).forEach(node => {
+      this.blockInfo[node].total.count = this.getFiltersStatisticCount(this.blockInfo[node].total.option);
+      this.blockInfo[node]['items'].forEach((item, index) => {
+        this.blockInfo[node]['items'][index].count = this.getFiltersStatisticCount(item.option);
+      })
+      this.blockInfo[node]['items'].sort(function (a, b) {
+        return b.count - a.count
+      });
+    });
   }
 }
 </script>

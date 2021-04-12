@@ -49,7 +49,6 @@ describe('Editor -> BaseFields.vue', () => {
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("BaseFields");
-        expect(wrapper.vm.icons()).toStrictEqual(icons);
     });
 
     it("can remove a country", () => {

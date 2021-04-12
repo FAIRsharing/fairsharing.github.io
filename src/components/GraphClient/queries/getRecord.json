@@ -11,7 +11,10 @@
     "abbreviation",
     "description",
     "homepage",
+    "createdAt",
+    "updatedAt",
     "lastEdited",
+    "schemaOrg",
     {
       "name": "lastEditor",
       "fields": [
@@ -68,7 +71,8 @@
           "queryName": "licence",
           "fields": [
             "id",
-            "name"
+            "name",
+            "url"
           ]
         }
       ]
@@ -77,7 +81,8 @@
       "name": "licences",
       "fields": [
         "id",
-        "name"
+        "name",
+        "url"
       ]
     },
     {
@@ -114,7 +119,9 @@
           "queryName": "linkedRecord",
           "fields": ["name", "id", "registry", "type"]
         },
-        "recordAssocLabel"
+        "recordAssocLabel",
+        "recordAssocLabelId",
+        "id"
       ]
     },
     {

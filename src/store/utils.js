@@ -3,6 +3,7 @@ export const initStateMessages = function(){
         "login",
         "logout",
         "getUser",
+        "getPublicUser",
         "resetPassword",
         "sendResetEmail",
         "changePassword",
@@ -42,7 +43,6 @@ export function initEditorSections(data, sectionsNames){
         type: {},
         status: {},
         countries: [],
-        //publications: [],
         metadata: {
             name: null,
             abbreviation: null,
@@ -61,6 +61,8 @@ export function initEditorSections(data, sectionsNames){
                 status: data.status,
                 countries: data.countries,
                 metadata: data.metadata,
+                registry: data.registry,
+                name: data.name,
                 domains: data.domains.map((obj) => {
                     obj.label = obj.label.toLowerCase();
                     return obj;
@@ -79,15 +81,32 @@ export function initEditorSections(data, sectionsNames){
                 }),
                 is_dataset: false
             },
+            additionalInformation: {
+                ...JSON.parse(JSON.stringify(data.metadata)),
+                type: JSON.parse(JSON.stringify(data.type))
+            },
             publications: data.publications,
-            organisations: data.organisationLinks
+            organisations: data.organisationLinks,
+            dataAccess: {
+                support_links: (data.metadata.support_links) ? JSON.parse(JSON.stringify(data.metadata.support_links)): [],
+                licences: data.licenceLinks
+            },
+            relations: {
+                recordAssociations: data.recordAssociations,
+                registry: JSON.parse(JSON.stringify(data.registry)),
+                type: JSON.parse(JSON.stringify(data.type)),
+                name: JSON.parse(JSON.stringify(data.name))
+            }
         };
         schema.generalInformation.metadata.deprecation_reason = data.metadata.deprecation_reason || "";
-        if(data.publications) {
+        if (data.publications) {
             schema.publications.forEach((pub) => {
                 pub.isCitation = !!data.metadata.citations.filter(obj => obj.publication_id === pub.id)[0];
             });
         }
+        schema.dataAccess.support_links.forEach(supportLink => {
+            if (supportLink.name) supportLink.url = {title : supportLink.name, url: supportLink.url};
+        });
         sectionsNames.forEach(name => {
             let copy = (schema[name]) ? JSON.parse(JSON.stringify(schema[name])) : null;
             sections[name] = {

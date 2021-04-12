@@ -11,9 +11,21 @@
       "description": "",
       "citations": [{
         "publication_id": 1
-      }]
+      }],
+      "support_links": [
+        {
+          "name": "test",
+          "url": "https://example.com"
+        },
+        {
+          "type": "A type",
+          "url": "https://example.com/test"
+        }
+      ]
     },
+    "registry": ["test"],
     "domains": [],
+    "name": "??",
     "subjects": [],
     "taxonomies": [],
     "userDefinedTags": [],

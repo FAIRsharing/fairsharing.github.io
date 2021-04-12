@@ -1,30 +1,33 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <div
     v-if="recordType"
-    class="circle-container"
+    :class="showStatus?'circle-container':'circle-container-dashed'"
   >
     <v-tooltip
       right
       nudge-right="15"
     >
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <v-avatar
-          v-if="Object.keys(recordType).includes(record.type)"
           size="80"
           :alt="getRecordStatus.title"
           v-on="on"
         >
-          <img
-            :src="('./' + recordType[record.type].icon)"
-            :alt="getRecordStatus.title"
-          >
+          <Icon
+            :item="record.type"
+            wrapper-class=""
+            :height="80"
+          />
         </v-avatar>
       </template>
-      <span>{{ recordType[record.type].tooltip }}</span>
+      <span v-if="recordType[record.type]">{{ recordType[record.type].tooltip }}</span>
     </v-tooltip>
 
-    <v-tooltip right>
-      <template v-slot:activator="{ on }">
+    <v-tooltip
+      v-if="showStatus"
+      right
+    >
+      <template #activator="{ on }">
         <span
           class="white--text headline circle"
           :style="getRecordStatus.backColor"
@@ -37,12 +40,14 @@
 </template>
 
 <script>
-import recordTypes from "@/data/recordsRegistries.json"
+import Icon from "@/components/Icon"
 
 export default {
   name: "RecordStatus",
+  components: {Icon},
   props: {
-    record: {default: null, type: Object}
+    record: {default: null, type: Object},
+    showStatus: {default: true, type: Boolean}
   },
   data() {
     return {
@@ -88,7 +93,7 @@ export default {
   },
   created() {
     this.$nextTick(function () {
-      this.recordType = recordTypes;
+      this.recordType = this.$vuetify.icons.values;
     });
   }
 }
@@ -125,5 +130,16 @@ export default {
       top: 4px;
     }
   }
+}
+
+.circle-container-dashed {
+  position: relative;
+  border: #b3b3b3 dotted 3px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  width: 86px;
+  height: 87px;
+  cursor: help;
 }
 </style>

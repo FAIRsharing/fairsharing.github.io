@@ -13,7 +13,8 @@
       <v-chip
         v-for="(contact, index) in contacts"
         :key="'contact_' + index"
-        class="blue white--text pr-5"
+        class="pr-3"
+        :class="[!isNew(contact) ? 'white--text blue' : ' blue--text white borderBlue']"
       >
         <div>
           <v-tooltip top>
@@ -21,7 +22,7 @@
               <v-icon
                 v-bind="attrs"
                 small
-                class="mr-2"
+                class="mr-2 white--text"
                 v-on="on"
                 @click="editContact(contact, index)"
               >
@@ -36,6 +37,7 @@
           <v-tooltip top>
             <template #activator="{ on, attrs }">
               <v-icon
+                class="ml-3 white--text"
                 v-bind="attrs"
                 small
                 @click="removeContact(index)"
@@ -56,7 +58,7 @@
       >
         <v-icon
           small
-          class="mr-3"
+          class="mr-3 white--text"
         >
           fa-plus-circle
         </v-icon> Add a new contact point
@@ -70,55 +72,48 @@
         :dark="false"
         opacity="0.8"
       >
-        <v-container
-          fluid
-          class="py-0"
-        >
-          <v-row justify="center">
-            <v-card width="100%">
-              <v-card-title class="green white--text">
-                {{ menu.label }}
-              </v-card-title>
-              <v-card-text class="pt-4">
-                <v-text-field
-                  v-model="menu.content['contact_name']"
-                  label="Contact Name"
-                  :rules="[rules.isRequired()]"
-                  outlined
-                />
-                <v-text-field
-                  v-model="menu.content['contact_email']"
-                  label="Contact Email"
-                  :rules="[rules.isRequired(), rules.isEmail()]"
-                  outlined
-                />
-                <v-text-field
-                  v-model="menu.content['contact_orcid']"
-                  label="Contact ORCID"
-                  :rules="[rules.isOrcid(false)]"
-                  placeholder="0000-0000-0000-0000"
-                  outlined
-                />
-              </v-card-text>
-              <v-card-actions>
-                <v-btn
-                  class="success"
-                  :disabled="!formValid"
-                  type="submit"
-                  @click="addItem()"
-                >
-                  {{ menu.label }}
-                </v-btn>
-                <v-btn
-                  class="error"
-                  @click="menu.show = false"
-                >
-                  Cancel
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-row>
-        </v-container>
+        <v-card width="800px">
+          <v-card-title class="green white--text">
+            {{ menu.label }}
+          </v-card-title>
+          <v-card-text class="pt-4">
+            <v-text-field
+              v-model="menu.content['contact_name']"
+              label="Contact Name"
+              :rules="[rules.isRequired()]"
+              outlined
+            />
+            <v-text-field
+              v-model="menu.content['contact_email']"
+              label="Contact Email"
+              :rules="[rules.isRequired(), rules.isEmail()]"
+              outlined
+            />
+            <v-text-field
+              v-model="menu.content['contact_orcid']"
+              label="Contact ORCID"
+              :rules="[rules.isOrcid(false)]"
+              placeholder="0000-0000-0000-0000"
+              outlined
+            />
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              class="success"
+              :disabled="!formValid"
+              type="submit"
+              @click="addItem()"
+            >
+              {{ menu.label }}
+            </v-btn>
+            <v-btn
+              class="error"
+              @click="menu.show = false"
+            >
+              Cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
       </v-overlay>
     </v-expand-transition>
   </v-form>
@@ -126,6 +121,7 @@
 
 <script>
     import { mapGetters } from "vuex"
+    import { isEqual } from 'lodash'
     import { isRequired, isEmail, isOrcid } from "@/utils/rules.js"
 
     export default {
@@ -156,6 +152,9 @@
                 set(val){
                     this.$store.commit("record/setContacts", val);
                 }
+            },
+            initialContact(){
+              return this.getSection('generalInformation').initialData.metadata.contacts
             }
         },
         methods: {
@@ -176,7 +175,7 @@
             editContact(contact, contactIndex){
                 this.submitted = false;
                 this.menu.show = true;
-                this.menu.label = "Edit contact point";
+                this.menu.label = "Apply changes to contact point";
                 this.menu.index = contactIndex;
                 this.menu.content = JSON.parse(JSON.stringify(contact))
             },
@@ -191,13 +190,27 @@
                     this.menu.show = false;
                     this.submitted = true;
                 }
+            },
+            isNew(term){
+              return !this.initialContact.filter(obj => isEqual(obj, term))[0];
             }
         }
     }
 </script>
 
-<style>
+<style scoped>
   #editContact .v-overlay__content {
     min-width: 700px;
+  }
+  #editContact .borderBlue {
+    border: 1px solid #2A9AF4 !important;
+    background-color: white !important;
+    border-color: #2A9AF4 !important;
+  }
+  #editContact .v-chip.white {
+    border-color: #2A9AF4 !important;
+  }
+  #editContact .borderBlue * {
+    color: #2A9AF4 !important;
   }
 </style>

@@ -1,152 +1,138 @@
 <template>
-  <v-row>
+  <v-row class="white--text pt-5 footer-container">
+    <!--  Footer Blocks  -->
     <v-col
-      cols="3"
+      v-for="(block,index) in footerData"
+      :key="block.header+'_'+index"
+      :cols="$vuetify.breakpoint.xsOnly?'12':4"
+      lg="4"
+      md="4"
+      sm="12"
+      xsm="12"
       class="flex-column align-center d-flex"
     >
-      <h4>
-        Developed by
+      <h4 class="min-width-200 mb-2">
+        {{ block.header }}
       </h4>
       <ul>
-        <li>
-          <a
-            href="/communities#team"
+        <li
+          v-for="(item,blockIndex) in block.content"
+          :key="item.title+'_'+blockIndex"
+        >
+          <router-link
+            class="underline-effect"
+            :to="item.url"
             target="_blank"
-          >The
-            FAIRsharing team</a>
-        </li>
-        <li>
-          <a
-            href="http://www.oerc.ox.ac.uk"
-            target="_blank"
-          >Oxford e-Research Centre</a>
-        </li>
-        <li>
-          <a
-            href="http://www.ox.ac.uk"
-            target="_blank"
-          >University of Oxford</a>
+          >
+            <i
+              v-if="item.icon"
+              :class="item.icon"
+            />
+            {{ item.title }}
+          </router-link>
         </li>
       </ul>
     </v-col>
-    <v-col
-      cols="3"
-      class="flex-column align-center d-flex"
-    >
-      <h4 id="contact-info">
-        Contact Us
-      </h4>
-      <ul>
-        <li>
-          <a href="mailto:contact@fairsharing.org?subject=FAIRsharing Issue"><i
-            class="fa fa-envelope"
-          />
-            Email us for
-            all
-            enquiries</a>
-        </li>
-        <li>
-          <a
-            href="https://www.facebook.com/fairsharing"
-            target="_blank"
-          ><i
-            class="fab fa-facebook"
-          />
-            Facebook</a>
-        </li>
-        <li>
-          <a
-            href="https://www.twitter.com/fairsharing_org"
-            target="_blank"
-          ><i class="fab fa-twitter" />
-            Twitter</a>
-        </li>
-      </ul>
-    </v-col>
-    <v-col
-      cols="3"
-      class="flex-column align-center d-flex"
-    >
-      <h4 id="contact-info2">
-        Support Us
-      </h4>
-      <ul>
-        <li>
-          <a
-            href="https://www.facebook.com/fairsharing"
-            target="_blank"
-          ><i class="fab fa-facebook" />
-            Facebook
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://www.twitter.com/fairsharing_org"
-            target="_blank"
-          ><i class="fab fa-twitter" />
-            Twitter</a>
-        </li>
-      </ul>
-    </v-col>
-    <v-col
-      cols="3"
-      class="flex-column align-center d-flex"
-    >
-      <h4 id="about-info">
-        About FAIRsharing
-      </h4>
-      <ul>
-        <li>
-          <a
-            id="tour-link"
-            href="#"
-          >Take a Tour</a>
-        </li>
-        <li>
-          <a href="/communities">Community</a>
-        </li>
-        <li><a href="/stakeholders">Stakeholders</a></li>
-        <li>
-          <a href="/timeline">Timeline</a>
-        </li>
-        <li>
-          <a href="/licence">API and data licence</a>
-        </li>
-        <li>
-          <a href="/terms">Terms of use</a>
-        </li>
-        <li>
-          <a href="/educational/#faq10-1">How to cite us</a>
-        </li>
-        <li>
-          <a href="/privacy">Privacy policy</a>
-        </li>
-      </ul>
-    </v-col>
+    <!--  Dash style for footer  -->
+    <div class="footer-dash" />
+    <!--  JumpToTop button  -->
     <div
-      class="d-flex flex-row justify-center align-center full-width mb-2"
+      id="diamond-narrow"
+      v-scroll-to="'body'"
+      class="cursor-pointer"
+    >
+      <span id="arrow-up">
+        <Icon
+          class="pt-2"
+          item="arrowUp"
+          size="small"
+          wrapper-class=""
+          color="white"
+        />
+      </span>
+    </div>
+    <!--  License and copy right  -->
+    <v-row
+      class="d-flex flex-row justify-center align-center mb-2"
     >
       <p class="mb-0 mr-2">
         © FAIRsharing 2009-Present | Licensed under
       </p>
       <a
-        class="mr-2"
+        class="mr-2 underline-effect"
         href="http://creativecommons.org/licenses/by-sa/4.0/"
         target="_blank"
       >Creative Commons
         by
         Share Alike 4.0 International</a>
-      <a href="/licence"><img
+      <a
+        href="/licence"
+        class="underline-effect"
+      ><img
         src="https://fairsharing.org/static/img/home/FAIRsharingCC-BY-SA.png"
+        alt="fairsharing"
       ></a>
-    </div>
+    </v-row>
   </v-row>
 </template>
 
 <script>
+import Icon from "@/components/Icon"
+import footerData from '@/data/footerData.json'
+
 export default {
-  name: "Footer"
+  name: "Footer",
+  components: { Icon },
+  data: () => {
+    return {
+      footerData
+    }
+  }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+li {
+  min-width: 200px;
+}
+
+.footer-container {
+  position: relative;
+  background: #253442;
+}
+
+.footer-dash {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  border-top: 3px dashed #253442;
+}
+
+#diamond-narrow {
+  width: 0;
+  height: 0;
+  border: 29px solid transparent;
+  border-bottom: 30px solid #27aae1;
+  position: absolute;
+  top: -59px;
+  left: 48%;
+
+  #arrow-up {
+    position: absolute;
+    left: -7px;
+    top: 15px;
+    z-index: 2;
+  }
+}
+
+#diamond-narrow:after {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 29px;
+  width: 0;
+  height: 0;
+  border: 30px solid transparent;
+  border-top: 30px solid #27aae1;
+}
 </style>

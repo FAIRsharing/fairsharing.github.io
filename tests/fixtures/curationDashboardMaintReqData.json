@@ -6,7 +6,8 @@
         "recordName": "Record1 (23)",
         "id": 23,
         "type": "society",
-        "userNameID": "Manolo (99)",
+        "userName": "Manolo (99)",
+        "userId": "99",
         "processingNotes": "What a note!!!",
         "requestID": 0
       },
@@ -15,7 +16,8 @@
         "recordName": "Record2 (24)",
         "id": 24,
         "type": "repository",
-        "userNameID": "Pili (33)",
+        "userName": "Pili",
+        "userId": "33",
         "requestID": 1
       },
       {
@@ -23,7 +25,8 @@
         "recordName": "Record3 (29)",
         "id": 99,
         "type": "society",
-        "userNameID": "Bart Simpson (22)",
+        "userName": "Bart Simpson",
+        "userId": "22",
         "processingNotes": "Black puding",
         "requestID": 3
       },
@@ -32,7 +35,8 @@
         "recordName": "Record2 (24)",
         "id": 24,
         "type": "repository",
-        "userNameID": "Pili (33)",
+        "userName": "Pili",
+        "userId": "33",
         "requestID": 4
       }
     ],

@@ -27,28 +27,18 @@
                     <v-card
                       v-if="link.organisation.name"
                       key="view"
-                      class="flexCard grey lighten-3"
+                      :class="['flexCard lighten-3',{'grey': !link.isLead, 'green': link.isLead}]"
                       height="100%"
                     >
                       <v-card-text
                         class="py-1"
                         style="flex-grow: 1"
                       >
-                        <v-list class="grey lighten-3 px-0">
+                        <v-list
+                          class="lighten-3 px-0"
+                          :class="['lighten-3 px-0',{'grey': !link.isLead, 'green': link.isLead}]"
+                        >
                           <v-list-item class="px-0">
-                            <v-list-item-avatar
-                              v-if="link.organisation.name"
-                              class="mr-5"
-                            >
-                              <img
-                                v-if="link.organisation.urlForLogo"
-                                :src="'https://api.fairsharing.org/' + link.organisation.urlForLogo"
-                                alt="organisation logo"
-                              >
-                              <v-icon v-else>
-                                fas fa-sitemap
-                              </v-icon>
-                            </v-list-item-avatar>
                             <v-list-item-content class="mb-0 pb-0">
                               <v-list-item-title class="font-weight-bold">
                                 {{ link.organisation.name }}
@@ -57,10 +47,6 @@
                               <v-list-item-subtitle v-if="link.organisation.types">
                                 Types: {{ link.organisation.types.join(", ") }}
                               </v-list-item-subtitle>
-                            </v-list-item-content>
-                          </v-list-item>
-                          <v-list-item class="px-0">
-                            <v-list-item-content class="mb-0 pb-0">
                               <v-list-item-subtitle v-if="link.relation">
                                 <span class="text-decoration-underline">Relation:</span>
                                 {{ link.relation }}
@@ -72,6 +58,12 @@
                             </v-list-item-content>
                           </v-list-item>
                         </v-list>
+                        <v-switch
+                          v-if="link.relation === 'maintains'"
+                          v-model="link.isLead"
+                          color="green"
+                          label="Lead organisation?"
+                        />
                       </v-card-text>
                       <v-card-actions style="border-top: 1px solid #ccc">
                         <v-spacer />
@@ -247,7 +239,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .flexCard {
         display:flex;
         flex-direction: column;

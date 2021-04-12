@@ -4,6 +4,9 @@ import App from "./App.vue";
 import VueMeta from "vue-meta";
 import vuetify from './plugins/vuetify'
 import VueScrollTo from 'vue-scrollto';
+import VueMoment from 'vue-moment';
+import Clipboard from 'v-clipboard'
+import HighchartsVue from 'highcharts-vue'
 
 /* import router & store */
 import router from './router'
@@ -24,8 +27,18 @@ import "./styles/main.scss"
 
 Vue.config.productionTip = false;
 
+Vue.use(HighchartsVue);
+
+
+
 // This is a package for having more flexibility over default scroll
 Vue.use(VueScrollTo);
+
+// This is a package for executing copy past commands
+Vue.use(Clipboard);
+
+// This is a package for showing human-friendly date and time
+Vue.use(VueMoment);
 
 // using meta package to inject meta data dynamically.
 Vue.use(VueMeta, {
@@ -48,8 +61,3 @@ bootstrapApp().then(() => {
         vuetify
     }).$mount("#app")
 });
-
-
-
-
-

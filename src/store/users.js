@@ -2,6 +2,7 @@ import RESTClient from "@/components/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import { initStateMessages, initUserDataState, validateToken } from "./utils.js"
 import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
+import getPublicUserQuery from "@/components/GraphClient/queries/getPublicUserMeta.json"
 
 let client = new RESTClient();
 let graphClient = new GraphClient();
@@ -19,7 +20,8 @@ export const mutations = {
                 metadata: {},
                 records: {},
                 is_curator: user.is_curator,
-                role: user.role
+                role: user.role,
+                watchedRecords: user.watchedRecords || []
             }
         };
         localStorage.setItem("user", JSON.stringify(state.user()));
@@ -46,6 +48,7 @@ export const mutations = {
         if (user) {
             let isCurator = user.is_curator;
             let role = user.role;
+            let watchedRecords = user.watchedRecords;
             state.user = function () {
                 return {
                     isLoggedIn: true,
@@ -57,6 +60,7 @@ export const mutations = {
                     metadata: record.metadata,
                     records: record.records.user,
                     is_curator: isCurator,
+                    watchedRecords: watchedRecords,
                     role: role
                 }
             };
@@ -69,6 +73,7 @@ export const mutations = {
                     },
                     metadata: record.metadata,
                     records: record.records.user,
+                    watchedRecords: [],
                     is_curator: false,
                     role: null
                 }
@@ -87,7 +92,8 @@ export const mutations = {
                         tokenValidity: user.credentials.tokenValidity
                     },
                     metadata: metadata,
-                    records: {}
+                    records: {},
+                    watchedRecords: []
                 }
             };
         }
@@ -122,6 +128,24 @@ export const mutations = {
         state.messages = function(){
             return initStateMessages();
         }
+    },
+    cleanStore(state){
+        let previousState = {...state.user()};
+        state.user = function(){
+            return {
+                isLoggedIn: previousState.isLoggedIn,
+                credentials: previousState.credentials,
+                metadata: {},
+                records: {},
+                watchedRecords: [],
+                is_curator: previousState.is_curator,
+                role: previousState.role
+            }
+        };
+    },
+    changeWatched(state, watchedRecords) {
+        state.user().watchedRecords = watchedRecords;
+        localStorage.setItem("user", JSON.stringify(state.user()));
     }
 };
 
@@ -192,7 +216,9 @@ export const actions = {
             }
             else {
                 getUserQuery.queryParam.id = userMetadata.id;
+                graphClient.setHeader(state.state.user().credentials.token);
                 const userRecords = await graphClient.executeQuery(getUserQuery);
+                graphClient.initalizeHeader();
                 if (userRecords.error) {
                     this.commit("users/setError", {
                         field: "getUser",
@@ -216,6 +242,10 @@ export const actions = {
             this.commit("users/clearUserData");
         }
     },
+    async getPublicUser(state, userId) {
+        getPublicUserQuery.queryParam.id = parseInt(userId);
+        return await graphClient.executeQuery(getPublicUserQuery);
+    },
     async getUserMeta(state){
         try {
             let metadata = await client.getUser(state.state.user().credentials.token);
@@ -235,8 +265,6 @@ export const actions = {
                 message: e.message
             })
         }
-
-
     },
     async updateUser(state, user){
         try {
@@ -257,6 +285,10 @@ export const actions = {
         catch(e) {
             this.commit("users/setError", {field: "updateProfile", message: e.message})
         }
+    },
+    async updateWatchedRecords(state, user) {
+        let response = await client.editUser(user, state.state.user().credentials.token);
+        return response;
     },
     async resetPwd(state, query){
         try {

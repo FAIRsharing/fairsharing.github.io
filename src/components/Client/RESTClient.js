@@ -19,7 +19,6 @@ class RESTClient {
         };
     }
 
-
     /* USERS: all methods below related to handling user authentication */
 
     /**
@@ -274,7 +273,7 @@ class RESTClient {
     /**
      * Determine if a user has permission to edit this record.
      * @param {Integer} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} token - JWT of the logged in user
+     * @param {String} userToken - JWT of the logged in user
      * @returns {Promise}
      */
     async canEdit(recordID, userToken){
@@ -290,7 +289,7 @@ class RESTClient {
     /**
      * Attempt to create a MaintenanceRequest for a user for a FairsharingRecord.
      * @param {Integer} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} token - JWT of the logged in user
+     * @param {String} userToken - JWT of the logged in user
      * @returns {Promise}
      */
     async claimRecord(recordID, userToken) {
@@ -307,7 +306,7 @@ class RESTClient {
     /**
      * Determine if a user has permission to create a MaintenanceRequest for a FairsharingRecord.
      * @param {Integer} recordID - ID for the relevant FairsharingRecord.
-     * @param {String} token - JWT of the logged in user
+     * @param {String} userToken - JWT of the logged in user
      * @returns {Promise}
      */
     async canClaim(recordID, userToken) {
@@ -422,21 +421,40 @@ class RESTClient {
         return response.data;
     }
 
-    /* Misc. Editing Methods */
+    /* RELATIONSHIPS BETWEEN RECORDS */
     /**
-     * Get the list of available profile types for a user.
+     * Saves the relationships as an array of items containing a targetID, a sourceID and a labelID
+     * @param {Object} options - the options to pass as {token: String, relations: Array}
      * @returns {Promise}
      */
-    async getProfileTypes(){
+    async saveRelations(options){
         const request = {
-            method: "get",
-            baseURL: this.baseURL + "/users/profile_types",
-            headers: this.headers,
+            method: 'put',
+            baseURL: this.baseURL + '/fairsharing_records/' + options.target,
+            headers: this.auth_headers(options.token),
+            data: {fairsharing_record: {record_associations_attributes: options.relations}}
+
         };
         let response = await this.executeQuery(request);
         return response.data;
     }
 
+    /**
+     * Deletes the relationships as an array of items containing a targetID, a sourceID and a labelID
+     * @param {Object} options - the options to pass as {token: String, relations: Array}
+     * @returns {Promise}
+     */
+    async deleteRelations(options){
+        const request = {
+            method: 'put',
+            baseURL: this.baseURL + '/fairsharing_records/' + options.target,
+            headers: this.auth_headers(options.token),
+            data: {fairsharing_record: {record_associations_attributes: options.relations}}
+
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
     /* ORGANISATIONS AND GRANTS */
     /**
@@ -529,6 +547,23 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Get the extra metadata fields for a RecordType
+     * @param {String} type - name of the record type.
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async extraMetadataFields(type, userToken) {
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/fairsharing_records/metadata_fields",
+            headers: this.auth_headers(userToken),
+            data: {type: type}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
     /* METHODS FOR CURATION */
     /**
      * Update the maintenanceRequest given the new status value
@@ -548,6 +583,53 @@ class RESTClient {
         let response = await _client.executeQuery(request);
         return response.data;
     }
+
+    /**
+     * Delete Record
+     * @param {Number} id - id of the record link to delete
+     * @param {String} token - the user token
+     * @returns {Promise}
+     */
+    async deleteRecord(id, token){
+        let _client = this;
+        const request = {
+            method: "delete",
+            baseURL: _client.baseURL + "/fairsharing_records/" + id,
+            headers: this.auth_headers(token),
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Get the list of allowed relation types for editing record's relationships.
+     * @returns {Promise}
+     */
+    /* EDITOR DATA */
+    async getRelationsTypes(){
+        let _client = this;
+        const request = {
+            method: "get",
+            baseURL: _client.baseURL + "/record_associations/allowed"
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Get the list of available profile types for a user.
+     * @returns {Promise}
+     */
+    async getProfileTypes(){
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/users/profile_types",
+            headers: this.headers,
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
     /* EXTRA METHODS */
 
     /**

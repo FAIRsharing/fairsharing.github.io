@@ -66,14 +66,7 @@ describe("UserProfileMenu.vue", () => {
         restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {
-                user: {
-                    error: {
-                        response: {
-                            data: { errors: true }
-                        }
-                    },
-                    message: "Success !"
-                }
+                modification: "failure"
             }
         });
         await wrapper.vm.updateProfile();

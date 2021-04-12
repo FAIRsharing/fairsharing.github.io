@@ -41,20 +41,31 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-fade-transition>
+      <v-overlay
+        v-if="isLoading"
+        :absolute="false"
+        opacity="0.8"
+      >
+        <Loaders />
+      </v-overlay>
+    </v-fade-transition>
   </v-main>
 </template>
 
 <script>
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
-import {mapActions, mapState} from 'vuex'
+import {mapActions, mapState, mapMutations} from 'vuex'
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import Loaders from "@/components/Navigation/Loaders";
 
 export default {
   name: "Records",
-  components: {JumpToTop, SearchOutput, SearchInput},
+  components: {Loaders, JumpToTop, SearchOutput, SearchInput},
   mixins: [filterChipsUtils],
   data: () => ({
     searchTerm: '',
@@ -65,7 +76,8 @@ export default {
     showDrawerLeft: false,
     labels: recordsLabels,
     recordsSubTitles: recordsLabels['recordSubTitles'],
-    recordTypes: recordsLabels['recordTypes']
+    recordTypes: recordsLabels['recordTypes'],
+    isLoading: false
   }),
   computed: {
     ...mapState('uiController', ['scrollStatus', 'stickToTop']),
@@ -110,7 +122,7 @@ export default {
   },
   watch: {
     currentPath: async function () {
-      window.scrollTo(0, 0);
+      this.$scrollTo('body',50,{});
       await this.tryRedirect();
     }
   },
@@ -118,19 +130,23 @@ export default {
     window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
       await this.tryRedirect();
-      window.scrollTo(0, 0);
+      this.$scrollTo('body',50,{})
     });
   },
+  beforeDestroy() {
+    this.cleanRecordsStore();
+  },
   destroyed() {
+    this.$scrollTo('body', 50, {})
     window.removeEventListener("scroll", this.onScroll);
     this.setStickToTop(false);
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
       drawerVisibilityState: false,
       headerVisibilityState: true,
     });
-    window.scrollTo(0, 0);
   },
   methods: {
+    ...mapMutations('records',['cleanRecordsStore']),
     ...mapActions('records', ['fetchRecords']),
     ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
     onScroll: function () {
@@ -180,7 +196,8 @@ export default {
      * @returns {Promise}
      */
     getData: async function () {
-      this.$scrollTo('body',50,{})
+      this.$scrollTo('body',50,{});
+      this.isLoading = true;
       this.errors = null;
       const _module = this;
       try {
@@ -189,6 +206,7 @@ export default {
       catch (e) {
         this.errors = e.message;
       }
+      this.isLoading = false;
     },
     /**
      * Get the parameters that are allowed for this query

@@ -9,11 +9,13 @@ export const Signup =  () => import(/* webpackChunkName: "signUp-chunk" */ "@/vi
 export const ConfirmAccount =  () => import(/* webpackChunkName: "confirmAccount-chunk" */ "@/views/Users/ConfirmAccount.vue");
 export const ResendConfirmation = () => import(/* webpackChunkName: "resentEmail-chunk" */ "@/views/Users/ResendConfirmation.vue");
 export const User =  () => import(/* webpackChunkName: "user-chunk" */ "@/views/Users/User.vue");
+export const PublicProfile =  () => import(/* webpackChunkName: "user-chunk" */ "@/views/Users/PublicProfile");
 export const Curator = () => import(/* webpackChunkName: "curator-chunk" */ "@/views/Curators/Curator.vue");
 export const RequestNewPassword = () =>  import(/* webpackChunkName: "newPwd-chunk" */ "@/views/Users/RequestNewPassword");
 export const ResetPassword = () =>  import(/* webpackChunkName: "resetPwd-chunk" */ "@/views/Users/ResetPassword");
 export const EditProfile = () =>  import(/* webpackChunkName: "editProfile-chunk" */ "@/views/Users/EditProfile");
 export const OauthLogin = () =>  import(/* webpackChunkName: "Oauth-chunk" */ "@/views/Users/Login/OauthLogin.vue");
+export const Organisation = () =>  import(/* webpackChunkName: "Organisation-chunk" */ "@/views/Organisations/Organisation");
 export const LoginFailure = () =>  import(/* webpackChunkName: "failedLogin-chunk" */ "@/views/Users/Login/LoginFailure");
 export const Stat =  () => import(/* webpackChunkName: "stat-chunk" */ '@/views/Stats/Statistics.vue');
 export const Community =  () => import(/* webpackChunkName: "community-chunk" */ '@/views/Static/Community/Community');

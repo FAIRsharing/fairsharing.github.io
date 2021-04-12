@@ -5,7 +5,10 @@
         cols="3"
         class="pt-0 mt-2"
       >
-        <v-card height="99.3%" min-height="80vh">
+        <v-card
+          height="99.3%" 
+          min-height="80vh"
+        >
           <v-card-title class="blue white--text">
             Legend and configuration
           </v-card-title>
@@ -30,7 +33,10 @@
                   The graph's centre is shown in <span class="red--text">red.</span> The registry of each record is as follows:
                 </v-col>
                 <v-col cols="12">
-                  <v-container fluid class="pb-0 mt-0">
+                  <v-container
+                    fluid 
+                    class="pb-0 mt-0"
+                  >
                     <v-row class="pl-2">
                       <div class="square mb-3 mr-5" /> Database
                     </v-row>
@@ -41,7 +47,7 @@
                       <div class="triangle mb-3 mr-5" /> Policy
                     </v-row>
                     <v-row class="pl-2">
-                      <div class="diamond mb-3 mr-3"  /> Collection
+                      <div class="diamond mb-3 mr-3" /> Collection
                     </v-row>
                   </v-container>
                   <span>Click on any point to re-draw the graph with that point as the centre.</span>

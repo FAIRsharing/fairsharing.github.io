@@ -161,6 +161,16 @@ describe("Record.vue", function() {
     it("Testing buttons methods", async () => {
         $store.state.users.user().isLoggedIn = false;
         wrapper.vm.getMenuButtons();
+        expect(wrapper.vm.buttons[0].name()).toEqual("Edit record");
+        expect(wrapper.vm.buttons[0].isDisabled()).toBe(false);
+        expect(wrapper.vm.buttons[1].name()).toEqual("Request ownership");
+        expect(wrapper.vm.buttons[1].isDisabled()).toBe(false);
+        expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
+        expect(wrapper.vm.buttons[2].isDisabled()).toBe(false);
+        expect(wrapper.vm.buttons[3].name()).toEqual("View Relation Graph");
+        expect(wrapper.vm.buttons[3].isDisabled()).toBe(false);
+        expect(wrapper.vm.buttons[4].name()).toEqual("Have a suggestion/question ?");
+        expect(wrapper.vm.buttons[4].isDisabled()).toBe(true);
         wrapper.vm.buttons[0].method();
         expect($router.push).toHaveBeenCalledWith({path: "/980190962/edit", params: {fromRecordPage: true}});
         wrapper.vm.buttons[1].method();
@@ -174,6 +184,8 @@ describe("Record.vue", function() {
             credentials: {token: 123, username: 123},
             watchedRecords: []
         }};
+        expect(wrapper.vm.buttons[0].isDisabled()).toBe(!wrapper.vm.canEdit);
+        expect(wrapper.vm.buttons[1].isDisabled()).toBe(!wrapper.vm.canClaim);
         await wrapper.vm.buttons[1].method();
         expect(wrapper.vm.claimedTriggered).toBe(true);
         expect(wrapper.vm.canClaim).toBe(false);

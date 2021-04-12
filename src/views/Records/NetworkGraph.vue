@@ -1,50 +1,59 @@
 <template>
   <v-container fluid>
-    <v-row no-gutters>
+    <v-row>
       <v-col
         cols="3"
         class="pt-0 mt-2"
       >
-        <v-card height="1173px">
+        <v-card height="99.3%" min-height="80vh">
           <v-card-title class="blue white--text">
             Legend and configuration
           </v-card-title>
           <v-card-text class="pt-3">
-            <v-row>
-              <b class="px-2">Select the depth of the graph:</b>
-              <v-select
-                v-model="max_path_length"
-                class="mt-2 px-2"
-                :items="depth"
-                label="Graph Depth"
-              />
-              <p class="px-2 ma-0 text--secondary">
-                Setting to greater than 2 is not recommended.
-              </p>
-            </v-row>
-            <v-divider />
-            <p>The graph's centre is shown in <span class="red--text">red.</span> The registry of each record is as follows:</p>
-            <v-row class="ml-2">
-              <div class="square mb-2 mr-2" /> Database
-            </v-row>
-            <v-row class="ml-2">
-              <div class="circle mb-2 mr-2" /> Standard
-            </v-row>
-            <v-row class="ml-2">
-              <div class="triangle mb-2 mr-2" /> Policy
-            </v-row>
-            <v-row class="ml-1">
-              <div class="diamond mb-2 mr-2" /> Collection
-            </v-row>
-            <p>
-              Click on any point to re-draw the graph with that point as the centre.
-            </p>
+            <v-container fluid>
+              <v-row no-gutters>
+                <v-col cols="12">
+                  <v-autocomplete
+                    v-model="max_path_length"
+                    class="mt-2 px-2"
+                    :items="depth"
+                    label="Select the depth of the graph"
+                    outlined
+                    hint="Setting to greater than 2 is not recommended."
+                    persistent-hint
+                  />
+                </v-col>
+              </v-row>
+              <v-divider />
+              <v-row no-gutters>
+                <v-col cols="12">
+                  The graph's centre is shown in <span class="red--text">red.</span> The registry of each record is as follows:
+                </v-col>
+                <v-col cols="12">
+                  <v-container fluid class="pb-0 mt-0">
+                    <v-row class="pl-2">
+                      <div class="square mb-3 mr-5" /> Database
+                    </v-row>
+                    <v-row class="pl-2">
+                      <div class="circle mb-3 mr-5" /> Standard
+                    </v-row>
+                    <v-row class="pl-2">
+                      <div class="triangle mb-3 mr-5" /> Policy
+                    </v-row>
+                    <v-row class="pl-2">
+                      <div class="diamond mb-3 mr-3"  /> Collection
+                    </v-row>
+                  </v-container>
+                  <span>Click on any point to re-draw the graph with that point as the centre.</span>
+                </v-col>
+              </v-row>
+            </v-container>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col
         cols="9"
-        class="pt-0 mt-0"
+        class="pt-0 mt-2"
       >
         <v-card
           v-if="loading"
@@ -96,12 +105,12 @@
                     },
                     chart: {
                         type: 'networkgraph',
-                        height: '1280px',
+                        height: '62.8%',
                         plotBorderWidth: 0,
                         plotShadow: true,
                         renderTo: 'container',
                         margin: 10,
-                        marginBottom: 100,
+                        marginTop: 0,
                         plotBackgroundColor: "#FFFFFF",
                     },
                     title: {
@@ -127,7 +136,7 @@
                         }
                     },
                     credits: {
-                        enabled: false
+                        enabled: true
                     },
                     plotOptions: {
                         networkgraph: {
@@ -257,6 +266,7 @@
   border-bottom-color: #51b0ff;
   position: relative;
   top: -16px;
+  left:-3px;
 }
 .diamond:after {
   content: '';

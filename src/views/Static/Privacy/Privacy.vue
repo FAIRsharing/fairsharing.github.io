@@ -34,11 +34,10 @@ export default {
       panel:[]
     }
   },
-  computed:{
+  methods:{
     allOpen () {
       const _module = this;
-      _module.panel = [...Array(_module.privacyData['bullet_points'].length).keys()].map((k, i) => i)
-      return _module.panel;
+      return [...Array(_module.privacyData['bullet_points'].length).keys()].map((k, i) => i)
     }
   }
 }

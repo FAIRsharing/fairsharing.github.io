@@ -4,7 +4,7 @@ import store from '@/store'
 
 import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
     Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
-    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile }
+    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile, Graph }
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -14,6 +14,12 @@ let routes = [
         name: "Home",
         path: "/",
         component: Home,
+
+    },
+    {
+        name: "Graph",
+        path: "/graph/:id",
+        component: Graph,
 
     },
     {

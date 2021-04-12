@@ -417,6 +417,13 @@ export default {
         section: "additionalInformation",
         value: delta
       });
+      this.overlay = {
+        show: false,
+        id: null,
+        fieldName: null,
+        fields: null,
+        template: null
+      }
     }
   }
 }

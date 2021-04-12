@@ -50,7 +50,6 @@ const $store = new Vuex.Store({
 describe("Collections.vue", function(){
     let wrapper;
 
-    // TODO: Mock properties in options {}.
     beforeEach(() => {
         wrapper = shallowMount(Collections, {
             localVue,

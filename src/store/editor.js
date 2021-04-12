@@ -58,7 +58,8 @@ let editorStore = {
         ],
         accessPointTypes: ["REST", "SOAP", "SPARQL", "Other"],
         availableRecords: [],
-        relationsTypes: []
+        relationsTypes: [],
+        allowedFields: {}
     },
     mutations: {
         setCountries(state, countries){
@@ -103,6 +104,9 @@ let editorStore = {
         },
         setAvailableRelationsTypes(state, types){
             state.relationsTypes = types;
+        },
+        setAllowedFields(state, fields){
+            state.allowedFields = fields;
         }
     },
     actions: {
@@ -217,6 +221,13 @@ let editorStore = {
                 }
             }
             commit("setAvailableRelationsTypes", allowed);
+        },
+        async getAllowedFields({commit}, options){
+            let response = await restClient.extraMetadataFields(
+                options.type,
+                options.token
+            );
+            commit('setAllowedFields', response);
         }
     },
     modules: {},

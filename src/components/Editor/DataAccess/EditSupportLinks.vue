@@ -103,6 +103,9 @@
               <b class="pt-1">{{ group }}</b>
             </td>
           </template>
+          <template slot="no-data">
+            <div> This record does not have any support link.</div>
+          </template>
         </v-data-table>
       </v-col>
     </v-row>
@@ -351,15 +354,9 @@
     }
 </script>
 
-<style scoped>
+<style>
   #editSupportLinks .large {
     width: 100%;
-  }
-
-  .borderTop {
-    border-top: 1px solid #ccc;
-    margin-top:5px;
-    padding-top: 10px;
   }
 
   #editSupportLinks .v-overlay__content {
@@ -373,4 +370,10 @@
   .tableFooter{
     border-top: 1px solid #ccc;
   }
+
+  #supportLinksTable tr.v-data-table__empty-wrapper {
+    background: #EEEEEE;
+    font-weight: bold;
+  }
+
 </style>

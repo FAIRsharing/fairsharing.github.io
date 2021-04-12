@@ -14,12 +14,18 @@ describe('searchFilters store methods', () => {
     let state = {
         rawFilters: [],
         filters: [],
+        filtersStatistic:[{
+            subjects:{buckets:[{doc_count:12,key:'natural science'}]},
+            fairsharing_registry:{buckets:[{doc_count:500,key:'standard'}]},
+        }],
         filterButtons: [
             {data: [ { active: true }]}
         ],
-        isLoadingFilters: false
+        isLoadingFilters: false,
     };
     actions.commit = jest.fn();
+
+
 
     it("can check resetFilterButtons actions", () => {
         actions.resetFilterButtons(state, 0);
@@ -79,6 +85,11 @@ describe('searchFilters store methods', () => {
         const builtData = getters.getFilters(state);
         expect(builtData[0]).toHaveProperty('filterName');
         expect(builtData.length).toBe(11)
+    });
+
+    it("can check getFiltersStatisticCount getters", () => {
+        const builtData = getters.getFiltersStatisticCount(state);
+        expect(builtData({filterName:'fairsharing_registry',key:'standard'})).toBe(74);
     });
 
     it("can change the state of loading status", () => {

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {tabs} from "@/data/homePageData.json";
+import {blockTabs} from "@/data/homePageData.json";
 import TabContent from "@/components/Home/BlockTabs/TabContent";
 
 export default {
@@ -42,7 +42,7 @@ name: "BlockTabs",
     return {
       tabsData: {
         selectedTab: 0,
-        tabs: tabs,
+        tabs: blockTabs,
       }
     }
   }

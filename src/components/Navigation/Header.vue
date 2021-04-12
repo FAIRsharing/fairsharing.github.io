@@ -8,7 +8,7 @@
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.smAndDown"
-      @click="toggleDrawerLeft"
+      @click.stop="toggleDrawerLeft"
     />
     <router-link to="/">
       <v-img

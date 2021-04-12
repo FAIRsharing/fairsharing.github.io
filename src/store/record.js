@@ -1,3 +1,4 @@
+import Vue from "vue"
 import { isEqual } from "lodash"
 import Client from "../components/GraphClient/GraphClient.js"
 import RESTClient from "@/components/Client/RESTClient.js"
@@ -103,6 +104,38 @@ let recordStore = {
         setPublications(state, publications) {
             state.sections.publications.data = publications;
         },
+        setAdditionalInformation(state, additionalInformation) {
+            if (!additionalInformation.subfieldName){
+                Vue.set(state.sections.additionalInformation.data,
+                    additionalInformation.fieldName,
+                    additionalInformation.fieldValue
+                );
+            }
+            else {
+                Vue.set(state.sections.additionalInformation.data[additionalInformation.fieldName],
+                    additionalInformation.subfieldName,
+                    additionalInformation.fieldValue
+                );
+            }
+        },
+        setAdditionalInformationSubField(state, additionalInformation) {
+            if (additionalInformation.id !== null) {
+                state.sections.additionalInformation.data[additionalInformation.fieldName][additionalInformation.id] =
+                    additionalInformation.fieldValue;
+            }
+            else {
+                if (!state.sections.additionalInformation.data[additionalInformation.fieldName]){
+                    Vue.set(state.sections.additionalInformation.data, additionalInformation.fieldName,[]);
+                }
+                Vue.set(state.sections.additionalInformation.data[additionalInformation.fieldName],
+                    state.sections.additionalInformation.data[additionalInformation.fieldName].length,
+                    additionalInformation.fieldValue
+                );
+            }
+        },
+        removeAdditionalInformationSubField(state, additionalInformation){
+            state.sections.additionalInformation.data[additionalInformation.fieldName].splice(additionalInformation.id, 1)
+        },
         updateOrganisationsLinks(state, links){
             state.sections.organisations.data = links;
             state.sections.organisations.initialData = JSON.parse(JSON.stringify(links));
@@ -133,15 +166,12 @@ let recordStore = {
             state.sections.dataAccess.changes = 0;
             state.sections.dataAccess.message = "Record successfully updated!";
         },
-        setAdditionalInformation(state, additionalInformation) {
-            let record = {
-                access_points: additionalInformation['access_points'],
-                associated_tools: additionalInformation['associated_tools']
-            };
-            // TODO: Separate setting necessary for each available field...
-           Object.keys(record).forEach((type) => {
-                state.sections.generalInformation.data.metadata[type] = JSON.parse(JSON.stringify(record[type]));
-                state.sections.generalInformation.initialData.metadata[type] = JSON.parse(JSON.stringify(record[type]));
+        updateAdditionalInformation(state, additionalInformation) {
+            let record = {};
+            Object.keys(additionalInformation.record).forEach(field => {
+                record[field] = additionalInformation.record[field];
+                state.sections.generalInformation.data.metadata[field] = JSON.parse(JSON.stringify(record[field]));
+                state.sections.generalInformation.initialData.metadata[field] = JSON.parse(JSON.stringify(record[field]));
             });
             state.sections.additionalInformation.data = record;
             state.sections.additionalInformation.initialData = JSON.parse(JSON.stringify(record));
@@ -362,12 +392,11 @@ let recordStore = {
             let newRecord = {
                 metadata: state.sections.generalInformation.initialData.metadata,
             };
-            // TODO: Add remaining fields here
-            newRecord.metadata.access_points = state.sections.additionalInformation.data.access_points;
-            newRecord.metadata.associated_tools = state.sections.additionalInformation.data.associated_tools;
-
-            /// below = dodgy
-            // define record
+            options.fields.forEach(field => {
+                if (state.sections.additionalInformation.data[field]) {
+                    newRecord.metadata[field] = state.sections.additionalInformation.data[field]
+                }
+            });
             let response = await restClient.updateRecord({
                 record: newRecord,
                 token: options.token,
@@ -382,7 +411,7 @@ let recordStore = {
             }
             else {
                 commit("setMessage", {target: "additionalInformation", value: "Record successfully updated!"});
-                commit('setAdditionalInformation', newRecord.metadata);
+                commit('updateAdditionalInformation', {record: newRecord.metadata, fields: options.fields});
             }
         },
         async updateDataAccess({state, commit}, options){
@@ -506,7 +535,7 @@ let recordStore = {
             else {
                 state.commit("setNewRecord", response)
             }
-        },
+        }
     },
     getters: {
         getField: (state) => (fieldName) => {
@@ -531,6 +560,9 @@ let recordStore = {
         },
         getCreatingNewRecord: (state) => {
             return state.newRecord;
+        },
+        getRecordType: (state) => {
+            return state.sections['generalInformation'].initialData.type
         }
     }
 };

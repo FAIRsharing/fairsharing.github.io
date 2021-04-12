@@ -5,7 +5,6 @@ import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
 import recordStore from "@/store/record.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
-import icons from "@/../tests/fixtures/icons.json"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

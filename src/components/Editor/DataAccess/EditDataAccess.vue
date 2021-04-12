@@ -116,7 +116,7 @@
     }
 </script>
 
-<style scoped>
+<style>
 
   #editDataAccess .borderBlue, #editLicences .borderBlue:before {
     border: 1px solid #2A9AF4 !important;

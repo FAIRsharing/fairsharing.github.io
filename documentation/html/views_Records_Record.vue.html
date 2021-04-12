@@ -105,21 +105,28 @@
       &lt;!--   Action Menu &amp; Alert   -->
       &lt;v-row
         v-if="!target &amp;&amp; queryTriggered"
-        class="pr-3"
       >
         &lt;v-col
           cols="12"
-          class="d-flex"
         >
           &lt;div
-            v-if="alreadyClaimed || claimedTriggered"
-            class="d-flex flex-grow-1"
+            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
+            class="d-flex flex-column"
           >
             &lt;v-alert
+              v-if="user().is_curator &amp;&amp; currentRecord.fairsharingRecord['isHidden']"
+              dense
+              type="info"
+              class="mb-2 flex-grow-1"
+            >
+              &lt;span>This record is hidden!&lt;/span>
+            &lt;/v-alert>
+
+            &lt;v-alert
               v-if="alreadyClaimed"
+              dense
               type="warning"
-              style="flex:1"
-              class="mr-3"
+              class="mb-1 flex-grow-1"
             >
               &lt;span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.&lt;/span>
             &lt;/v-alert>
@@ -131,41 +138,44 @@
               Thank you for claiming this record. We will be getting back to you between 48 and 72h.
             &lt;/v-snackbar>
           &lt;/div>
-          &lt;v-spacer v-else />
-          &lt;v-menu
-            class="mt-3"
-            offset-y
+          &lt;div
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            class="text-right"
           >
-            &lt;template #activator="{ on, attrs }">
-              &lt;v-btn
-                class="mt-2"
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="getMenuButtons()"
-              >
-                Actions
-                &lt;v-icon
-                  small
-                  right
+            &lt;v-menu
+              offset-y
+            >
+              &lt;template #activator="{ on, attrs }">
+                &lt;v-btn
+                  class="mt-1"
+                  color="primary"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="getMenuButtons()"
                 >
-                  fa-chevron-down
-                &lt;/v-icon>
-              &lt;/v-btn>
-            &lt;/template>
-            &lt;v-list>
-              &lt;v-list-item
-                v-for="(button, index) in buttons"
-                :key="'button_' + index"
-                :disabled="button.isDisabled()"
-                @click="button.method()"
-              >
-                &lt;v-list-item-title>
-                  {{ button.name() }}
-                &lt;/v-list-item-title>
-              &lt;/v-list-item>
-            &lt;/v-list>
-          &lt;/v-menu>
+                  Actions
+                  &lt;v-icon
+                    small
+                    right
+                  >
+                    fa-chevron-down
+                  &lt;/v-icon>
+                &lt;/v-btn>
+              &lt;/template>
+              &lt;v-list>
+                &lt;v-list-item
+                  v-for="(button, index) in buttons"
+                  :key="'button_' + index"
+                  :disabled="button.isDisabled()"
+                  @click="button.method()"
+                >
+                  &lt;v-list-item-title>
+                    {{ button.name() }}
+                  &lt;/v-list-item-title>
+                &lt;/v-list-item>
+              &lt;/v-list>
+            &lt;/v-menu>
+          &lt;/div>
         &lt;/v-col>
       &lt;/v-row>
 

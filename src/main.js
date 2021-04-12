@@ -13,6 +13,7 @@ import Variablepie from 'highcharts/modules/variable-pie'
 import More from 'highcharts/highcharts-more'
 import Export from 'highcharts/modules/exporting'
 
+
 /* import router & store */
 import router from './router'
 import {beforeEach} from "./router";
@@ -37,6 +38,9 @@ Networkgraph(Highcharts);
 
 Vue.config.productionTip = false;
 Vue.use(HighchartsVue);
+
+
+// This is a package for having more flexibility over default scroll
 Vue.use(VueScrollTo);
 Vue.use(Clipboard);
 Vue.use(VueMoment);
@@ -60,8 +64,3 @@ bootstrapApp().then(() => {
         vuetify
     }).$mount("#app")
 });
-
-
-
-
-

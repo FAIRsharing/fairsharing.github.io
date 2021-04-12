@@ -12,21 +12,28 @@
       <!--   Action Menu & Alert   -->
       <v-row
         v-if="!target && queryTriggered"
-        class="pr-3"
       >
         <v-col
           cols="12"
-          class="d-flex"
         >
           <div
-            v-if="alreadyClaimed || claimedTriggered"
-            class="d-flex flex-grow-1"
+            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
+            class="d-flex flex-column"
           >
             <v-alert
+              v-if="user().is_curator && currentRecord.fairsharingRecord['isHidden']"
+              dense
+              type="info"
+              class="mb-2 flex-grow-1"
+            >
+              <span>This record is hidden!</span>
+            </v-alert>
+
+            <v-alert
               v-if="alreadyClaimed"
+              dense
               type="warning"
-              style="flex:1"
-              class="mr-3"
+              class="mb-1 flex-grow-1"
             >
               <span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.</span>
             </v-alert>
@@ -38,41 +45,44 @@
               Thank you for claiming this record. We will be getting back to you between 48 and 72h.
             </v-snackbar>
           </div>
-          <v-spacer v-else />
-          <v-menu
-            class="mt-3"
-            offset-y
+          <div
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            class="text-right"
           >
-            <template #activator="{ on, attrs }">
-              <v-btn
-                class="mt-2"
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="getMenuButtons()"
-              >
-                Actions
-                <v-icon
-                  small
-                  right
+            <v-menu
+              offset-y
+            >
+              <template #activator="{ on, attrs }">
+                <v-btn
+                  class="mt-1"
+                  color="primary"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="getMenuButtons()"
                 >
-                  fa-chevron-down
-                </v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(button, index) in buttons"
-                :key="'button_' + index"
-                :disabled="button.isDisabled()"
-                @click="button.method()"
-              >
-                <v-list-item-title>
-                  {{ button.name() }}
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+                  Actions
+                  <v-icon
+                    small
+                    right
+                  >
+                    fa-chevron-down
+                  </v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(button, index) in buttons"
+                  :key="'button_' + index"
+                  :disabled="button.isDisabled()"
+                  @click="button.method()"
+                >
+                  <v-list-item-title>
+                    {{ button.name() }}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
         </v-col>
       </v-row>
 
@@ -96,6 +106,8 @@
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            <!-- Related Content -->
+            <RelatedContent class="mt-5 ml-lg-5" />
             <!-- Tools -->
             <Tools class="mt-5 ml-lg-5" />
             <!-- Organisations -->
@@ -126,12 +138,14 @@
     import NotFound from "@/views/Errors/404"
     import Organisations from "@/components/Records/Record/Organisations";
     import Collections from "@/components/Records/Record/Collections";
+    import RelatedContent from "@/components/Records/Record/RelatedContent";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          RelatedContent,
           Collections,
           Organisations,
             GeneralInfo,

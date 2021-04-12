@@ -4,7 +4,7 @@
     fluid
     class="standard"
   >
-    <v-row v-if="user().role==='super_curator' || user().role==='senior_curator'">
+    <v-row v-if="user().role==='super_curator' || user().role==='senior_curator' || user().role==='developer' ">
       <v-col cols12>
         <v-card v-if="!messages()['getUser'].error">
           <v-list>
@@ -20,79 +20,14 @@
             </v-list-item>
           </v-list>
         </v-card>
-        <v-card>
-          <v-card-text v-if="approvalRequired">
-            <v-card-title
-              id="text-curator-search-0"
-              class="green white--text"
-            >
-              <b> RECORDS AWAITING APPROVAL </b>
-              <v-spacer />
-              <v-text-field
-                v-model="searches.recordsAwaitingApproval"
-                label="Search"
-                color="white--text"
-                single-line
-                hide-details
-              />
-            </v-card-title>
-            <v-data-table
-              :loading="loading"
-              :headers="headers.approvalRequired"
-              :items="approvalRequired"
-              :search="searches.recordsAwaitingApproval"
-              class="elevation-1"
-              :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-              :sort-by="approvalRequired.curator"
-              :sort-desc="false"
-            >
-              <template
-                v-if="recordType"
-                #item="props"
-              >
-                <tr>
-                  <td>
-                    {{ props.item.updatedAt }}
-                  </td>
-                  <td>
-                    <v-tooltip bottom>
-                      <template #activator="{on}">
-                        <v-icon
-                          class="clickable"
-                          small
-                          color="nordnetBlue"
-                          @click="openCustomer(item.Id)"
-                          v-on="on"
-                        >
-                          {{ props.item.curator }}
-                        </v-icon>
-                      </template>
-                      Assign to myself
-                    </v-tooltip>
-                  </td>
-                  <td>
-                    <a :href="'#/' + props.item.id">
-                      <span
-                        v-if="props.item.type"
-                        class="mr-2"
-                      >
-                        <img
-                          v-if="Object.keys(recordType).includes(props.item.type)"
-                          :src="'./' + recordType[props.item.type].icon"
-                          class="miniIcon"
-                        >
-                      </span>
-                      {{ props.item.recordName + ' (' + props.item.id + ')' }}
-                    </a>
-                  </td>
-                  <td>
-                    {{ props.item.lastEditor }}
-                  </td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-card>
+        <RecordsAwaitingApproval
+          :loading="loading"
+          :headers="headers.approvalRequired"
+          :maintenance-requests="maintenanceRequests"
+          :record-type="recordType"
+          :approval-required="approvalRequired"
+          :curator-list="curatorList"
+        />
         <MaintenanceRequest
           :loading="loading"
           :headers="headers.maintenanceRequests"
@@ -100,33 +35,6 @@
           :record-type="recordType"
           :approval-required="approvalRequired"
         />
-        <v-card>
-          <v-card-text>
-            <v-card-title
-              id="text-curator-search-1"
-              class="green white--text"
-            >
-              Records without dois
-              <v-btn
-                v-if="downloadContent"
-                class="info ml-5"
-              >
-                <a
-                  :href="downloadContent"
-                  download="recordWithoutDOIs.txt"
-                >
-                  <v-icon
-                    color="white"
-                    class="mr-1"
-                  >
-                    fa fa-download
-                  </v-icon>
-                  <span class="white--text">Obtain file</span>
-                </a>
-              </v-btn>
-            </v-card-title>
-          </v-card-text>
-        </v-card>
         <v-card>
           <v-card-text v-if="hiddenRecords">
             <v-card-title
@@ -150,7 +58,47 @@
               :search="searches.hiddenRecords"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
+            >
+              <template
+                v-if="recordType"
+                #item="props"
+              >
+                <tr>
+                  <td>
+                    <v-avatar
+                      v-if="props.item.type"
+                      class="mr-2"
+                      :height="40"
+                    >
+                      <Icon
+                        :item="props.item.type"
+                        :height="40"
+                        wrapper-class=""
+                      />
+                    </v-avatar>
+                    <a :href="'#/' + props.item.id">
+                      {{ props.item.recordNameID }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ props.item.createdAt }}
+                  </td>
+                  <td>
+                    {{ props.item.curator }}
+                  </td>
+                  <td>
+                    <div v-if="props.item.creator === 'unknown'">
+                      {{ props.item.creator }}
+                    </div>
+                    <div v-else>
+                      <a :href="'#/users/' + props.item.idCreator">
+                        {{ props.item.creator }}
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
           </v-card-text>
         </v-card>
         <v-card>
@@ -176,7 +124,71 @@
               :search="searches.recentCuratorCreations"
               class="elevation-1"
               :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
-            />
+            >
+              <template
+                v-if="recordType"
+                #item="props"
+              >
+                <tr>
+                  <td>
+                    <v-avatar
+                      v-if="props.item.type"
+                      class="mr-2"
+                      :height="40"
+                    >
+                      <Icon
+                        :item="props.item.type"
+                        :height="40"
+                        wrapper-class=""
+                      />
+                    </v-avatar>
+                    <a :href="'#/' + props.item.id">
+                      {{ props.item.recordNameID }}
+                    </a>
+                  </td>
+                  <td>
+                    {{ props.item.createdAt }}
+                  </td>
+                  <td>
+                    <div v-if="props.item.creator === 'unknown'">
+                      {{ props.item.creator }}
+                    </div>
+                    <div v-else>
+                      <a :href="'#/users/' + props.item.idCreator">
+                        {{ props.item.creator }}
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+        <v-card>
+          <v-card-text>
+            <v-card-title
+              id="text-curator-search-1"
+              class="green white--text"
+            >
+              RECORDS WITHOUT DOIS
+              <v-btn
+                v-if="downloadContent"
+                class="info ml-5"
+              >
+                <a
+                  :href="downloadContent"
+                  download="recordWithoutDOIs.txt"
+                >
+                  <v-icon
+                    color="white"
+                    class="mr-1"
+                  >
+                    fa fa-download
+                  </v-icon>
+                  <span class="white--text">Obtain file</span>
+                </a>
+              </v-btn>
+            </v-card-title>
           </v-card-text>
         </v-card>
       </v-col>
@@ -190,14 +202,16 @@
 </template>
 
 <script>
+  // && (user().role==='super_curator' || user().role==='senior_curator')"
     import GraphClient from "@/components/GraphClient/GraphClient.js"
     import getCurationRecords from "@/components/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
-    import recordTypes from "@/data/recordsRegistries.json"
     import headersTables from "@/data/headersCuratorDashboard.json"
     import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
+    import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
     import RestClient from "@/components/Client/RESTClient.js"
+    import Icon from "@/components/Icon"
 
 
     const client = new GraphClient();
@@ -206,12 +220,19 @@
     function compareRecordDesc(a, b) {
       if (a.createdAt > b.createdAt) {
         return -1;
-      }
-      if (a.createdAt < b.createdAt) {
+      }else{
         return 1;
       }
-      return 0;
     }
+
+    function compareRecordDescUpdate(a, b) {
+      if (a.updatedAt > b.updatedAt) {
+        return -1;
+      }else{
+        return 1;
+      }
+    }
+
 
     function formatDate(d){
       let date = new Date(d);
@@ -226,7 +247,9 @@
       name: "Curator",
       components: {
         Unauthorized,
-        MaintenanceRequest
+        RecordsAwaitingApproval,
+        MaintenanceRequest,
+        Icon
       },
       data: () => {
         return {
@@ -236,10 +259,10 @@
           recordsCreatedCuratorsLastWeek: [],
           recordsInCuration: [],
           hiddenRecords: [],
+          curatorList: [],
           recordType: null,
           headers: headersTables,
           searches: {
-            recordsAwaitingApproval: "",
             recentCuratorCreations: "",
             recordsInCuration: "",
             hiddenRecords: ""
@@ -254,7 +277,7 @@
       },
       created() {
         this.$nextTick(function () {
-          this.recordType = recordTypes;
+          this.recordType = this.$vuetify.icons.values;
         });
       },
       async mounted() {
@@ -290,14 +313,24 @@
             userRecords.forEach(item => {
               item.fairsharingRecords.forEach(rec => {
                 let object = {
+                  createdAt: rec.createdAt,
+                  creator: rec.creator.username.substring(0,10),
+                  idCreator: rec.creator.id,
                   updatedAt: rec.updatedAt,
-                  curator: item.username,
-                  recordName: rec.name,
+                  curator: item.username.substring(0,6),
+                  recordName: `${rec.name} (${rec.id})`,
                   id: rec.id,
-                  type: rec.type
+                  type: rec.type,
+                  processingNotes: rec.processingNotes
                 };
+                if (rec.priority){
+                  object.priority = "Priority";
+                }else{
+                  object.priority = "";
+                }
                 if (rec.lastEditor){
-                  object.lastEditor = rec.lastEditor.username+' ('+rec.lastEditor.id+')';
+                  object.lastEditor = rec.lastEditor.username;
+                  object.idLastEditor = rec.lastEditor.id;
                 }
                 else{
                   object.lastEditor = "unknown"
@@ -305,6 +338,39 @@
                 this.approvalRequired.push(object);
               });
             });
+            this.approvalRequired.sort(compareRecordDescUpdate);
+            for (let i = 0; i < this.approvalRequired.length; i++) {
+              this.approvalRequired[i].updatedAt = formatDate(this.approvalRequired[i].updatedAt);
+              this.approvalRequired[i].createdAt = formatDate(this.approvalRequired[i].createdAt);
+            }
+            let curators = dataCuration.curatorList;
+            let listSuper = [];
+            let listSenior = [];
+            let listCurator = [];
+            curators.forEach(item => {
+              let object = {
+                id: item.id,
+                userName: item.username
+              };
+              let role = item.role.name;
+              if (role === "super_curator"){
+                listSuper.push(object);
+              }else{
+                if (role === "senior_curator"){
+                  listSenior.push(object);
+                }else{
+                  if (role === "curator"){
+                    listCurator.push(object);
+                  }
+                }
+              }
+            });
+            this.curatorList = listSuper.concat(listSenior).concat(listCurator);
+            let object = {
+              id: -1,
+              userName: "none"
+            };
+            this.curatorList.push(object);
           },
           prepareMaintenanceRequests(dataCuration){
             let requests = dataCuration.pendingMaintenanceRequests;
@@ -314,7 +380,8 @@
                 recordName: `${item.fairsharingRecord.name} (${item.fairsharingRecord.id})`,
                 id: item.fairsharingRecord.id,
                 type: item.fairsharingRecord.type,
-                userNameID: `${item.user.username} (${item.user.id})`,
+                userName: `${item.user.username}`,
+                userId: `${item.user.id}`,
                 processingNotes: item.fairsharingRecord.processingNotes,
                 requestID: item.id
               };
@@ -330,14 +397,16 @@
             let records = dataCuration.recentCuratorCreations;
             records.forEach(item => {
               let object = {
-                recordNameID: `${item.name} (${item.id})`
+                recordNameID: `${item.name} (${item.id})`,
+                type: item.type
               };
               object.createdAt = formatDate(item.createdAt);
               if (item.creator){
-                object.creator = item.creator.username +' ('+item.creator.id+')';
+                object.creator = item.creator.username;
+                object.idCreator = item.creator.id;
               }
               else{
-                object.creator = "unknown"
+                object.creator = "unknown";
               }
               this.recordsCreatedCuratorsLastWeek.push(object);
             });
@@ -369,7 +438,8 @@
             let records = dataCuration.hiddenRecords;
             records.forEach(item => {
               let object = {
-                recordNameID: `${item.name} (${item.id})`
+                recordNameID: `${item.name} (${item.id})`,
+                type: item.type
               };
               object.createdAt = formatDate(item.createdAt);
               if (item.curator){
@@ -379,7 +449,8 @@
                 object.curator = 'none'
               }
               if (item.creator){
-                object.creator = item.creator.username +' ('+item.creator.id+')';
+                object.creator = item.creator.username;
+                object.idCreator = item.creator.id;
               }
               else{
                 object.creator = "unknown"
@@ -399,10 +470,7 @@
     }
 </script>
 
-<style>
-  #text-curator-search-0 div.theme--light.v-input:not(.v-input--is-disabled) input{
-    color:#fff;
-  }
+<style scoped>
   #text-curator-search-1 div.theme--light.v-input:not(.v-input--is-disabled) input{
     color:#fff;
   }

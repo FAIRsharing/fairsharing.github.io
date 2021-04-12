@@ -1,23 +1,10 @@
-//custom colors-----------------------------
-$color-gray-light1: #bebebe;
-$color-gray-light2: #757575;
-$color-gray-light3: #5a5a5a;
-
-$max-width-val: 30%;
-$max-height-val: 100px;
-
-$color-primary: #27aae1;
-$color-secondary: #004d40;
-
-.button-text-color {
-  color: $color-gray-light1 !important;
+//Global Setting----------------------------
+a {
+  text-decoration: none;
 }
 
-//End of Custom Colors----------------------
-
-//Global Setting----------------------------
-a:link {
-  text-decoration: none;
+ul {
+  list-style: none;
 }
 
 //End of Global Setting---------------------
@@ -44,13 +31,28 @@ a:link {
 //End of Animations-------------------------
 
 //Utilities---------------------------------
+.underline-effect {
+  &:hover, &:focus {
+    text-decoration: underline;
+    outline: 0;
+  }
+}
+
+.mouse-cursor {
+  cursor: pointer;
+}
+
+.mouse-info {
+  cursor: help;
+}
+
 .tooltips {
   max-width: 500px;
   display: block;
 }
 
 .v-tooltip__content {
-  background: rgba(0, 0, 0, 1);
+  background: rgba(0, 0, 0, 1) !important;
 }
 
 .opacity-low {
@@ -86,6 +88,11 @@ a:link {
   white-space: nowrap;
 }
 
+.ellipse-150 {
+  @extend .ellipse;
+  max-width: 150px;
+}
+
 .ellipse-width-80 {
   width: 80px;
   text-overflow: ellipsis;
@@ -98,6 +105,11 @@ a:link {
   max-width: 600px;
 }
 
+.ellipse-width-450 {
+  @extend .ellipse;
+  max-width: 450px;
+}
+
 .dashed-line {
   border: none;
   border-top: 4px dotted gray;
@@ -106,6 +118,7 @@ a:link {
   height: 1px;
 }
 
+//margins
 .mx-25-percent {
   margin-right: 25%;
   margin-left: 25%;
@@ -120,12 +133,37 @@ a:link {
   margin-left: 25%;
 }
 
+//sizes
+.min-width-60 {
+  min-width: 60px;
+}
+
+.min-width-200 {
+  min-width: 200px;
+}
+
 .min-height-25 {
   min-height: 25px;
 }
 
 .min-height-40 {
   min-height: 40px;
+}
+
+.min-height-60 {
+  min-height: 60px;
+}
+
+.min-height-68 {
+  min-height: 68px;
+}
+
+.min-height-70 {
+  min-height: 70px;
+}
+
+.min-height-100 {
+  min-height: 100px;
 }
 
 .height-50 {
@@ -139,4 +177,128 @@ a:link {
 .height-90 {
   height: 90px;
 }
+
+.height-120 {
+  height: 120px;
+}
+
+.height-140 {
+  height: 140px;
+}
+
+.height-190 {
+  height: 190px;
+}
+
+.height-430 {
+  height: 430px;
+}
+
+.min-height-20vh {
+  min-height: 20vh;
+}
+
+.min-height-40vh {
+  min-height: 40vh;
+}
+
+.min-height-70vh {
+  min-height: 70vh;
+}
+
+.width-35 {
+  width: 35px;
+}
+
+.width-200 {
+  width: 200px;
+}
+
+.mt-1-pt {
+  margin-top: 1pt;
+}
+
+.line-height-14 {
+  line-height: 14px;
+}
+
+.line-height-16 {
+  line-height: 16px;
+}
+
+.line-height-20 {
+  line-height: 20px;
+}
 //End of Utilities--------------------------
+
+// shared class
+.card-title-customize {
+  position: absolute;
+  top: 5px;
+  left: 120px
+}
+
+.v-card-hover {
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0) 0 1px 7px 0 !important;
+  transition: box-shadow .4s linear;
+  -webkit-transition: box-shadow .4s linear;
+  -moz-transition: box-shadow .4s linear;
+  -o-transition: box-shadow .4s linear;
+}
+
+.v-card-hover:hover {
+  transform: scale(1.004);
+  -webkit-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  -moz-box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+  box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 7px 0 !important;
+}
+
+.relation-style {
+  position: absolute;
+  bottom: -12px;
+  left: 143px;
+  font-size: 12px;
+}
+// custom fonts--------------------------
+@font-face {
+  font-family: "lato_font_bold";
+  src: url("~@/assets/fonts/Lato-Black.ttf");
+}
+
+@font-face {
+  font-family: "lato_font_medium";
+  src: url("~@/assets/fonts/Lato-Regular.ttf");
+}
+
+@font-face {
+  font-family: "lato_font_light";
+  src: url("~@/assets/fonts/Lato-Thin.ttf");
+}
+
+.lato-font-bold {
+  font-family: Lato_font_bold, serif;
+}
+
+.lato-font-medium {
+  font-family: Lato_font_medium, serif;
+}
+
+.lato-font-light {
+  font-family: Lato_font_light, serif;
+}
+
+.lato-text-sm {
+  font-size: .8rem;
+}
+
+.lato-text-md {
+  font-size: 1.2rem;
+}
+
+.lato-text-lg {
+  font-size: 1.7rem;
+}
+
+//End of custom fonts--------------------------

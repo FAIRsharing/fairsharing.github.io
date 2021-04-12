@@ -3,8 +3,8 @@ import VueRouter from "vue-router";
 import store from '@/store'
 
 import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
-    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, LoginFailure, Stat, Community, Stakeholders,
-    Timeline, License, Terms, Educational, Privacy }
+    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
+    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile }
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -44,6 +44,11 @@ let routes = [
         path: "/search",
         component: Records,
 
+    },
+    {
+        name: "Organisation",
+        path: "/organisations/:id",
+        component: Organisation
     },
     /* CREATION */
     {
@@ -145,6 +150,11 @@ let routes = [
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
         }
+    },
+    {
+        name: "PublicProfile",
+        path: "/users/:id",
+        component: PublicProfile
     },
     {
         name: "Edit profile",

@@ -7,6 +7,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-text-field
         v-model="fields.metadata.name"
@@ -34,11 +35,11 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-text-field
         v-model="fields.metadata.abbreviation"
         label="Abbreviation"
-        :rules="[rules.isRequired()]"
         outlined
       >
         <template #prepend>
@@ -65,6 +66,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-text-field
         v-model="fields.metadata.homepage"
@@ -96,6 +98,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-autocomplete
         v-model="fields.metadata.year_creation"
@@ -127,6 +130,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-autocomplete
         v-model="fields.countries"
@@ -156,7 +160,7 @@
         <!-- autocomplete selected -->
         <template #selection="data">
           <v-chip
-            class="blue white--text"
+            class="blue white--text removeStyle"
             close
             @click:close="removeCountry(data.item)"
           >
@@ -188,6 +192,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-autocomplete
         ref="editRecordType"
@@ -216,7 +221,11 @@
                 v-on="on"
               >
                 <v-list-item-avatar>
-                  <v-img :src="icons()[data.item.name]" />
+                  <Icon
+                    :item="data.item.name"
+                    wrapper-class=""
+                    :height="40"
+                  />
                 </v-list-item-avatar>
                 <v-list-item-content class="py-0">
                   <v-list-item-title>
@@ -228,7 +237,7 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <span class="tooltips">{{ data.item.description }}</span>
+            <span>{{ data.item.description }}</span>
           </v-tooltip>
         </template>
       </v-autocomplete>
@@ -241,6 +250,7 @@
       md="12"
       sm="12"
       xs="12"
+      cols="12"
     >
       <v-autocomplete
         v-model="fields.status"
@@ -274,7 +284,7 @@
                 </v-list-item-content>
               </v-list-item>
             </template>
-            <span class="tooltips"> {{ data.item.description }} </span>
+            <span> {{ data.item.description }} </span>
           </v-tooltip>
         </template>
       </v-autocomplete>
@@ -342,10 +352,11 @@
     import StatusPills from "@/components/Records/Shared/StatusPills";
     import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
     import DatabaseWarning from "./DatabaseWarning";
+    import Icon from "@/components/Icon"
 
     export default {
         name: "BaseFields",
-        components: {DatabaseWarning, CountryFlag, StatusPills},
+        components: {DatabaseWarning, CountryFlag, StatusPills, Icon},
         data(){
             return {
                 rules: {
@@ -362,7 +373,6 @@
                 "years",
                 "tooltips",
                 "recordTypes",
-                "icons",
                 "status"
             ]),
             ...mapState('users', ['user']),
@@ -387,17 +397,12 @@
     }
 </script>
 
-<style scoped>
+<style>
   .registryList {
     max-width: 780px;
   }
-
-  .tooltips {
-    max-width: 500px;
-    display: block;
-  }
-
-  .v-tooltip__content {
-    background: rgba(0, 0, 0, 1);
+  .removeStyle button {
+    color: white !important;
+    margin-left: 12px !important;
   }
 </style>

@@ -1,0 +1,17 @@
+{ "activities-summary": { "works": { "group": [
+  {"work-summary": [
+    {
+      "external-ids": { "external-id": [{"external-id-type": "doi", "external-id-url": "yes"}]},
+      "title": {"title": {"value": "abc"}}
+    }
+  ]},
+  {"work-summary": [
+    {"title": {"title": {"value": "yolo"}}}
+  ]},
+  {"work-summary": [
+    {
+      "external-ids": { "external-id": [{"external-id-type": "no"}]},
+      "title": {"title": {"value": "def"}}
+    }
+  ]}
+]}}}

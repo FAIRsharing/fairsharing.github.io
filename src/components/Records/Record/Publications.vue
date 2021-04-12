@@ -1,184 +1,106 @@
 <template>
   <v-card
-    class="pa-4 mt-5 d-flex flex-column"
+    class="pa-4 d-flex flex-column"
     outlined
+    color="bg_record_card"
     tile
-    elevation="1"
+    elevation="3"
   >
-    <SectionTitle title="Publications" />
-    <NoneFound :data-field="getField('publications')" />
-    <v-card
-      v-for="(publication,index) in getField('publications')"
-      :key="publication.title"
-      class="pr-2 pl-4 pt-1 pb-2 d-flex flex-column"
-      :class="index === 0 ? 'mt-4':'mt-2'"
-      flat
-      outlined
+    <SectionTitle
+      title="Publications"
+      :inactive-section="getField('publications').length===0 || getField('publications')===undefined"
+    />
+    <v-row
+      dense
+      class="ml-2 min-height-40"
     >
-      <!-- title, url -->
-      <div class="d-flex mt-2 ">
-        <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-sheet
-              class="mb-2 flag-mr"
-              v-on="on"
-            >
-              <v-icon
-                color="secondary"
-                class="mr-2"
-              >
-                fas fa-font
-              </v-icon>
-            </v-sheet>
-          </template>
-
-          <span>Title</span>
-        </v-tooltip>
-        <p
-          v-if="publication.url"
-          class="ma-0"
+      <v-col
+        v-for="(publication,index) in getField('publications')"
+        :key="publication.title+'_'+index"
+        class="mt-1"
+        cols="12"
+        sm="12"
+        md="6"
+        lg="4"
+        xl="3"
+      >
+        <v-card
+          class="pa-4 d-flex flex-column v-card-hover"
+          outlined
+          color="white"
+          tile
+          elevation="1"
         >
-          <a
-            :href="publication.url"
-            target="_blank"
-          >{{ publication.title }}</a>
-        </p>
-        <p
-          v-else
-          class="ma-0"
-        >
-          {{ publication.title }}
-        </p>
-      </div>
-
-      <!-- Journals -->
-      <div
-        v-if="publication.journal"
-        class="d-flex mt-2 "
-      >
-        <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-sheet
-              class="mb-2 flag-mr"
-              v-on="on"
-            >
-              <v-icon
-                color="secondary"
-                class="mr-2"
-              >
-                fas fa-book
-              </v-icon>
-            </v-sheet>
-          </template>
-          <span>Journal</span>
-        </v-tooltip>
-        <p class="ma-0">
-          {{ publication.journal }}<span v-if="publication.year">, {{ publication.year }}</span>
-        </p>
-      </div>
-
-      <!-- authors -->
-      <div
-        v-if="publication.authors"
-        class="d-flex mt-2 "
-      >
-        <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-sheet
-              class="mb-2 flag-mr"
-              v-on="on"
-            >
-              <v-icon
-                color="secondary"
-                class="mr-2"
-              >
-                fas fa-people-arrows
-              </v-icon>
-            </v-sheet>
-          </template>
-          <span>Authors</span>
-        </v-tooltip>
-        <p class="ma-0">
-          {{ prettifyList(publication.authors) }}
-        </p>
-      </div>
-
-      <!-- doi -->
-      <div
-        v-if="checkLinkValue(publication.doi)"
-        class="d-flex mt-2 "
-      >
-        <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-sheet
-              class="mb-2 flag-mr"
-              v-on="on"
-            >
-              <v-icon
-                color="secondary"
-                class="mr-2"
-              >
-                fas fa-file-alt
-              </v-icon>
-            </v-sheet>
-          </template>
-          <span>DOI</span>
-        </v-tooltip>
-        <p class="ma-0">
-          <a
-            :href="'https://doi.org/' + publication.doi"
-            target="_blank"
+          <!-- title -->
+          <v-card-text
+            class="pa-0 text-ellipses-height-3lines min-height-68"
           >
-            {{ publication.doi }}
-          </a>
-        </p>
-      </div>
+            {{ publication.title }}
+          </v-card-text>
 
-      <!-- pubmed -->
-      <div
-        v-if="checkLinkValue(publication.pubmedId)"
-        class="d-flex mt-2 "
-      >
-        <v-tooltip left>
-          <template v-slot:activator="{ on }">
-            <v-sheet
-              class="mb-2 flag-mr"
-              v-on="on"
-            >
-              <v-icon
-                color="secondary"
-                class="mr-2"
-              >
-                fas fa-file-medical
-              </v-icon>
-            </v-sheet>
-          </template>
-          <span>PubMed ID</span>
-        </v-tooltip>
-        <p class="ma-0">
-          <a
-            :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"
-            target="_blank"
+          <!-- authors -->
+          <div v-if="publication.authors">
+            <p class="ma-0">
+              {{ truncate(prettifyList(publication.authors),50) }}
+            </p>
+          </div>
+
+          <!-- Journals -->
+          <div
+            v-if="publication.journal"
+            class="min-height-68"
           >
-            {{ publication.pubmedId }}
-          </a>
-        </p>
-      </div>
-    </v-card>
+            <strong class="ma-0">
+              {{ publication.journal }}<span v-if="publication.year">, {{ publication.year }}</span>
+            </strong>
+          </div>
+
+          <div class="d-flex flex-row mt-2 align-center">
+            <!-- pubmed -->
+            <v-btn
+              v-if="checkLinkValue(publication.pubmedId)"
+              text
+              outlined
+              small
+              class="mr-4"
+            >
+              <a
+                :href="'https://pubmed.ncbi.nlm.nih.gov/' + publication.pubmedId"
+                target="_blank"
+                class="underline-effect"
+              >
+                View on PubMed
+              </a>
+            </v-btn>
+            <!-- doi -->
+            <v-btn
+              v-if="checkLinkValue(publication.doi)"
+              text
+              outlined
+              small
+            >
+              <a
+                :href="'https://doi.org/' + publication.doi"
+                target="_blank"
+              >
+                View Publication
+              </a>
+            </v-btn>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
 <script>
     import { mapGetters } from 'vuex';
-
     import stringUtils from '@/utils/stringUtils';
-    import NoneFound from '@/components/Records/Record/NoneFound';
     import SectionTitle from '@/components/Records/Record/SectionTitle';
 
     export default {
         name: "Publications",
         components: {
-            NoneFound,
             SectionTitle
         },
         mixins: [stringUtils],
@@ -197,7 +119,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

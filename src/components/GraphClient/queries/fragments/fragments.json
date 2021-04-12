@@ -29,6 +29,7 @@
       "fields": [
         "id",
         "relation",
+        "isLead",
         {
           "name": "grant",
           "fields": ["name", "id"]
@@ -37,6 +38,46 @@
           "name": "organisation",
           "fields": ["name", "id", "homepage", "types", "urlForLogo"]
         }
+      ]
+    }
+  ],
+  "summary": [
+    "id",
+    "type",
+    "name",
+    "doi",
+    "registry",
+    "isApproved"
+  ],
+  "recordsInCuration": [
+    {
+      "queryName": "recordsInCuration",
+      "fields": [
+        {"$ref": "summary"}
+      ]
+    }
+  ],
+  "createdRecords": [
+    {
+      "queryName": "createdRecords",
+      "fields": [
+        {"$ref": "summary"}
+      ]
+    }
+  ],
+  "maintainedRecords": [
+    {
+      "queryName": "maintainedRecords",
+      "fields": [
+        {"$ref": "summary"}
+      ]
+    }
+  ],
+  "watchedRecords": [
+    {
+      "queryName": "watchedRecords",
+      "fields": [
+        {"$ref": "summary"}
       ]
     }
   ]

@@ -1,4 +1,5 @@
 import GraphClient from "@/components/GraphClient/GraphClient.js"
+import RESTClient from "@/components/Client/RESTClient.js"
 import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
 import tagsQuery from "@/components/GraphClient/queries/geTags.json"
@@ -6,10 +7,13 @@ import getOrganisationsQuery from "@/components/GraphClient/queries/Organisation
 import getOrganisationsTypesQuery from "@/components/GraphClient/queries/Organisations/getOrganisationTypes.json"
 import getGrantsQuery from "@/components/GraphClient/queries/Organisations/getGrants.json"
 import getPublicationsQuery from "@/components/GraphClient/queries/getPublications.json"
+import getRecordsQuery from "@/components/GraphClient/queries/editor/getRecordsSummary.json"
+import getLicencesQuery from "@/components/GraphClient/queries/getLicences.json"
 import descriptionData from "@/data/fieldsDescription.json"
-import registryIcons from "@/data/recordsRegistries.json"
+import supportLinksTypes from "@/data/SupportLinksTypes.json"
 import status from "@/data/status.json"
 const graphClient = new GraphClient();
+const restClient = new RESTClient();
 
 let editorStore = {
     namespaced: true,
@@ -19,13 +23,6 @@ let editorStore = {
         status: status.status,
         tooltips: descriptionData.descriptions,
         tags: [],
-        icons(){
-            let icons  = {};
-            Object.keys(registryIcons).forEach(fieldName => {
-                icons[fieldName] = registryIcons[fieldName].icon
-            });
-            return icons;
-        },
         years(){
             let years = [];
             let d = new Date();
@@ -51,7 +48,18 @@ let editorStore = {
             "undefined"
         ],
         grants: null,
-        availablePublications: []
+        availablePublications: [],
+        supportLinksTypes: supportLinksTypes,
+        availableLicences: [],
+        licenceRelations: [
+            "undefined",
+            "applies_to_content",
+            "least_permissive"
+        ],
+        accessPointTypes: ["REST", "SOAP", "SPARQL", "Other"],
+        availableRecords: [],
+        relationsTypes: [],
+        allowedFields: {}
     },
     mutations: {
         setCountries(state, countries){
@@ -77,6 +85,28 @@ let editorStore = {
         },
         setAvailablePublications(state, publications){
             state.availablePublications = publications;
+        },
+        setAvailableLicences(state, licences){
+            state.availableLicences = licences;
+        },
+        cleanEditorStore(state) {
+            state.countries = null;
+            state.recordTypes = null;
+            state.allTags = [];
+            state.tags = [];
+            state.organisations = null;
+            state.organisationsTypes = null;
+            state.grants = null;
+            state.availablePublications = [];
+        },
+        setAvailableRecords(state, records){
+            state.availableRecords = records;
+        },
+        setAvailableRelationsTypes(state, types){
+            state.relationsTypes = types;
+        },
+        setAllowedFields(state, fields){
+            state.allowedFields = fields;
         }
     },
     actions: {
@@ -141,6 +171,63 @@ let editorStore = {
                 position += 1;
             });
             commit("setAvailablePublications", pubs);
+        },
+        async getLicences({commit}) {
+            let licences = await graphClient.executeQuery(getLicencesQuery);
+            commit('setAvailableLicences', licences['searchLicences'])
+        },
+        async getAvailableRecords({commit}, options){
+            getRecordsQuery.queryParam = {perPage: 100};
+            if (options.q) getRecordsQuery.queryParam.q = options.q;
+            getRecordsQuery.queryParam.fairsharingRegistry = options.fairsharingRegistry;
+            getRecordsQuery.queryParam.searchAnd = false;
+            getRecordsQuery.queryParam.excludeId = options.excludeId;
+            let data = await graphClient.executeQuery(getRecordsQuery);
+            commit("setAvailableRecords", data.searchFairsharingRecords.records);
+        },
+        async getAvailableRelationsTypes({commit}){
+            let types = await restClient.getRelationsTypes();
+            let allowed = {};
+            let relationTypes = ['standard', 'database', 'policy', 'collection'];
+            for (let typeObject of types) {
+                let relationName = typeObject.name,
+                    id = typeObject.id;
+                if (typeObject['allowed_associations'].length > 0) {
+                    typeObject['allowed_associations'].forEach(allowed_association => {
+                        let relationParent = allowed_association.from;
+                        let relationChild = allowed_association.to;
+                        allowed[relationParent].push({
+                            relation: relationName,
+                            target: relationChild,
+                            id: id,
+                            relationId: typeObject.id
+                        });
+                    })
+                }
+                else {
+                    relationTypes.forEach(relationParent => {
+                        if (!Object.keys(allowed).includes(relationParent)) {
+                            allowed[relationParent] = [];
+                        }
+                        relationTypes.forEach(relationChild => {
+                           allowed[relationParent].push({
+                               relation: relationName,
+                               target: relationChild,
+                               id: id,
+                               relationId: typeObject.id
+                           });
+                        });
+                    });
+                }
+            }
+            commit("setAvailableRelationsTypes", allowed);
+        },
+        async getAllowedFields({commit}, options){
+            let response = await restClient.extraMetadataFields(
+                options.type,
+                options.token
+            );
+            commit('setAllowedFields', response);
         }
     },
     modules: {},
@@ -153,7 +240,30 @@ let editorStore = {
                 }
             }
             return tags;
-        }
+        },
+        allowedRelations: (state) => (options) => {
+            let output = [];
+            state.relationsTypes[options.sourceType].forEach(relation => {
+                if ((options.target && options.prohibited) &&
+                    (relation.target === options.target.registry || relation.target === options.target.type) &&
+                    !options.prohibited.includes(relation.relation)){
+                    output.push(relation)
+                }
+                if (!options.target && !options.prohibited){
+                    output.push(relation);
+                }
+            });
+            return output;
+        },
+        allowedTargets: (state) => (source) => {
+            let output = [];
+            let allowed = ["standard", "database", "policy", "collection"];
+            state.relationsTypes[source.toLowerCase()].forEach(relation => {
+                /* istanbul ignore else */
+                if (allowed.includes(relation.target)) output.push(relation.target);
+            });
+            return [...new Set(output)];
+        },
     }
 };
 

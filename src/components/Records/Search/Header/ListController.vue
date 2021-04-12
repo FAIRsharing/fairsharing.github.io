@@ -13,7 +13,7 @@
           bottom
           fixed
         >
-          <template v-slot:activator="{ on }">
+          <template #activator="{ on }">
             <v-icon
               large
               class="mouse-cursor"
@@ -106,10 +106,6 @@
 </script>
 
 <style scoped>
-    .mouse-cursor {
-        cursor: pointer;
-    }
-
     .active {
         color: lightgrey;
     }

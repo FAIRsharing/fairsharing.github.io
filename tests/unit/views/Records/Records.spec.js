@@ -63,8 +63,6 @@ describe("Records.vue", () => {
         });
         delete global.window['top'];
         global.window = Object.create(window);
-        window.scrollTo = () => {
-        };
     });
 
     it("can be instantiated", () => {
@@ -115,12 +113,6 @@ describe("Records.vue", () => {
             test4: 123,
             test5: true
         })
-    });
-
-    it("can reset the store when destroyed", () => {
-        wrapper.destroy();
-        expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
-        expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     });
 
     it("react to path change", async () => {
@@ -186,6 +178,18 @@ describe("Records.vue", () => {
         actions.setGeneralUIAttributesAction({});
         wrapper.vm.onScroll();
         expect(actions.commit).toHaveBeenCalledTimes(1);
+    });
+
+
+    it("can reset the store when destroyed", () => {
+        wrapper.destroy();
+        expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
+        expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
+        expect(wrapper.vm.$store.state.records.loading).toBe(false);
+        const otherStates = ["hits","totalPages","perPage","currentPage"]
+        otherStates.forEach(state => {
+            expect(wrapper.vm.$store.state.records[state]).toBe(null)
+        })
     });
 
 });

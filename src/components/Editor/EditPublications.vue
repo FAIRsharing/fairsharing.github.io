@@ -73,7 +73,7 @@
               <v-card-actions :class="{'grey lighten-3': !publication.isCitation, 'green lighten-3': publication.isCitation}">
                 <v-spacer />
                 <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
+                  <template #activator="{ on, attrs }">
                     <v-btn
                       v-if="user().is_curator"
                       v-bind="attrs"
@@ -90,7 +90,7 @@
                   <span>Edit this publication</span>
                 </v-tooltip>
                 <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
+                  <template #activator="{ on, attrs }">
                     <v-btn
                       v-bind="attrs"
                       class="red white--text"
@@ -135,18 +135,21 @@
             </div>
             <v-btn
               class="green white--text my-3"
+              :loading="loadingPub"
               @click="getDOI()"
             >
               Import from DOI
             </v-btn>
             <v-btn
               class="green white--text my-3 ml-3"
+              :loading="loadingPub"
               @click="getPMID()"
             >
               Import from PUBMED ID
             </v-btn>
             <v-btn
               class="green white--text my-3 ml-3"
+              :loading="loadingPub"
               @click="createNewPublication()"
             >
               Create new publication
@@ -199,7 +202,15 @@
             <v-card-title class="green white--text">
               Create/Edit a new publication
             </v-card-title>
-            <v-card-text>
+            <v-card-text
+              v-if="errors.general"
+              class="pt-3 mb-0 pb-0"
+            >
+              <v-alert type="error">
+                {{ errors.general.response.data }}
+              </v-alert>
+            </v-card-text>
+            <v-card-text class="pt-0 mt-0">
               <v-container fluid>
                 <v-row justify="start">
                   <v-col class="col-6">
@@ -284,7 +295,6 @@
 
 <script>
     import { mapState, mapActions, mapGetters } from "vuex"
-    import { parseBibFile } from "bibtex";
     import { isEqual } from "lodash"
     import PublicationClient from "@/components/Client/ExternalClients.js"
     import RestClient from "@/components/Client/RESTClient.js"
@@ -335,6 +345,7 @@
               general: null,
               pmid: null
             },
+            loadingPub: false,
             openEditor: false,
             currentPublicationIndex: false,
             citations_ids: [],
@@ -417,6 +428,7 @@
             this.$set(this.publications, index, pub);
           },
           async getDOI(){
+            this.loadingPub = true;
             this.currentPublicationIndex = false;
             this.errors = {
               doi: null,
@@ -429,32 +441,25 @@
               this.errors.doi = true;
             }
             else {
-              let publication = parseBibFile(data).content[0];
-              let title = "";
-              publication.getField('title').data.forEach((titleComponent) => {
-                if (typeof titleComponent !== "object" ){
-                  title += titleComponent
-                }
-                else {
-                  let subTitle = "";
-                  titleComponent.data.forEach((subTitleComponent) => {
-                    subTitle += subTitleComponent;
-                  });
-                  title += subTitle;
-                }
+              this.newPublication.journal = data['container-title-short'];
+              this.newPublication.doi = data['DOI'];
+              this.newPublication.title = data.title;
+              this.newPublication.url = data['URL'];
+              let dateParts = data['created']['date-parts'][0].toString();
+              this.newPublication.year = Number(dateParts.split(',')[0]);
+              let authors = [];
+              data.author.forEach(function(a) {
+                authors.push(a.family + ", " + a.given + "; ");
               });
-              this.newPublication.authors = publication.getField('author').data.join('');
-              this.newPublication.doi = publication.getField('doi').data.join('');
-              this.newPublication.title = title;
-              this.newPublication.journal = publication.getField('journal').data.join('');
-              this.newPublication.url = decodeURIComponent(publication.getField('url').data.join(''));
-              this.newPublication.year = publication.getField('year');
+              this.newPublication.authors = authors.join('');
               this.newPublication.isCitation = false;
               this.openEditor = true;
             }
+            this.loadingPub = false;
           },
           async getPMID() {
             this.currentPublicationIndex = false;
+            this.loadingPub = true;
             this.errors = {
               doi: null,
               general: null,
@@ -484,6 +489,7 @@
               this.newPublication.isCitation = false;
               this.openEditor = true;
             }
+            this.loadingPub = false;
           },
           processIDs(idsString){
             let doi = null;
@@ -530,16 +536,17 @@
               }
             }
 
-            if (!newPub.doi){
-              _module.search = newPub.title;
+            if (!_module.errors.general) {
+              if (!newPub.doi){
+                _module.search = newPub.title;
+              }
+              else {
+                _module.search = newPub.doi;
+              }
+              _module.newPublication = {};
+              _module.openEditor = false;
+              _module.currentPublicationIndex = false;
             }
-            else {
-              _module.search = newPub.doi;
-            }
-
-            _module.newPublication = {};
-            _module.openEditor = false;
-            _module.currentPublicationIndex = false;
           },
           removePublication(pubIndex){
             this.publications.splice(pubIndex, 1);

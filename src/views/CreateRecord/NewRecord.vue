@@ -126,26 +126,25 @@
               this.$router.push({
                 path: new_record.data.id + "/edit"
               });
-            } else {
+            }
+            else {
               this.message = {
                 error: true,
                 value: new_record.error
               }
             }
-
           }
         },
     }
 </script>
 
-<style>
-  .v-autocomplete__content .v-subheader {
-    font-size: 2rem;
-    text-transform: capitalize;
-  }
+<style scoped>
+.v-autocomplete__content .v-subheader {
+  font-size: 2rem;
+  text-transform: capitalize;
+}
 
-  #autocompleteSelect .v-list-item {
-      min-height: 0 !important;
-  }
-
+#autocompleteSelect .v-list-item {
+  min-height: 0 !important;
+}
 </style>

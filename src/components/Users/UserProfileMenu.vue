@@ -7,7 +7,7 @@
       transition="scale-transition"
       origin="top center 0"
     >
-      <template v-slot:activator="{ on }">
+      <template #activator="{ on }">
         <v-btn
           dark
           icon
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import { mapActions } from "vuex"
+    import { mapActions, mapState } from "vuex"
 
     export default {
         name: "UserProfileMenu",
@@ -44,9 +44,11 @@
             }
         },
         computed: {
+          ...mapState('users', ['user']),
             menuItems: function(){
                 const _module = this;
-                return [
+                let vecReturn = [];
+                let auxV = [
                     {
                         name: "Edit profile",
                         action: function(){
@@ -69,7 +71,23 @@
                             await _module.logoutUser()
                         }
                     }
-                ]
+                ];
+                if (_module.user().role === 'super_curator' || _module.user().role === 'senior_curator' || _module.user().role === 'developer'){
+                    vecReturn.push(
+                      {
+                          name: "Curator Panel",
+                          action: function(){
+                              _module.$router.push({
+                                path: "/curator"
+                              })
+                          }
+                      }
+                    );
+                }
+                for (let i = 0; i < auxV.length; i++) {
+                  vecReturn.push(auxV[i]);
+                }
+                return vecReturn;
             }
         },
         methods: {
@@ -81,7 +99,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

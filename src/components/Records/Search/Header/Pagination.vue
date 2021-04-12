@@ -37,7 +37,8 @@
                 let _module = this;
                 if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
                     _module.currentPage = 1;
-                } else {
+                }
+                else {
                     _module.currentPage = Number(newVal.page);
                 }
             },
@@ -88,7 +89,8 @@
                 if (!disable) {
                     this.allowPaginate = false;
                     this.PaginatePermission();
-                } else {
+                }
+                else {
                     this.allowPaginate = true;
                 }
             }
@@ -97,14 +99,11 @@
 </script>
 
 <style scoped>
-    button {
-        outline: none;
-    }
+button {
+  outline: none;
+}
 
-</style>
-
-<style>
-  #advancedSearch {
-    top:20px;
-  }
+#advancedSearch {
+  top: 20px;
+}
 </style>

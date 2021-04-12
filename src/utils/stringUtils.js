@@ -23,6 +23,23 @@ const stringUtils = {
     }
 };
 
+export const cleanString = {
+    filters: {
+        cleanString: function(str){
+            return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
+        }
+    }
+};
+
+export const formatList = {
+    filters: {
+        formatList: function(list) {
+            const lf = new Intl.ListFormat('en');
+            return lf.format(list);
+        }
+    }
+}
+
 export default stringUtils;
 
 export const truncate = {

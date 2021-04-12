@@ -52,20 +52,29 @@
           color="primary"
           dark
         >
-          <v-toolbar-title> Edit Record - {{ currentRecord['fairsharingRecord'].name }} </v-toolbar-title>
+          <v-toolbar-title> Edit Record - {{ sections.generalInformation.initialData.metadata.name }} </v-toolbar-title>
           <v-spacer />
 
           <v-btn
             v-for="(panelData) in confirmPanels"
             :id="panelData.name + '_button'"
             :key="panelData.name"
-            class="default ml-2"
+            class="default"
             @click="panelData.show = true"
           >
             {{ panelData.name }}
           </v-btn>
+          <router-link
+            :to="'/' + $route.params.id"
+            class="ml-2"
+          >
+            <v-btn class="default">
+              Exit editing
+            </v-btn>
+          </router-link>
         </v-toolbar>
         <v-tabs
+          v-model="selectedTab"
           dark
           slider-color="primary"
           slider-size="5"
@@ -73,9 +82,9 @@
           <v-tab
             v-for="tab in tabs"
             :key="'tab_' + tab.name"
-            :disabled="tab.disabled"
+            :disabled="isDisabled(tab.name)"
           >
-            <div>
+            <div v-if="!isDisabled(tab.name)">
               <div>{{ tab.name }}</div>
               <div
                 v-if="tab.target && getChanges[tab.target] > 0"
@@ -85,31 +94,18 @@
               </div>
             </div>
           </v-tab>
-
-          <!-- EDIT GENERAL INFO -->
-          <v-tab-item class="px-10 py-3">
-            <edit-general-info />
-          </v-tab-item>
-
-          <!-- EDIT LICENSES -->
-          <v-tab-item class="px-10 py-3">
-            <edit-licences />
-          </v-tab-item>
-
-          <!-- EDIT PUBLICATIONS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-publications />
-          </v-tab-item>
-
-          <!-- EDIT ORGANIZATIONS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-organisations />
-          </v-tab-item>
-
-          <!-- EDIT RELATIONS -->
-          <v-tab-item class="px-10 py-3">
-            <edit-relationships />
-          </v-tab-item>
+          <v-tabs-items v-model="selectedTab">
+            <v-tab-item
+              v-for="(tab, tabIndex) in tabs"
+              :key="tab+'_'+tabIndex"
+              class="px-10 py-3"
+            >
+              <component
+                :is="tab.component"
+                v-if="!isDisabled(tab.name)"
+              />
+            </v-tab-item>
+          </v-tabs-items>
         </v-tabs>
       </v-col>
     </v-row>
@@ -117,12 +113,13 @@
 </template>
 
 <script>
-  import { mapActions, mapState, mapGetters } from "vuex"
+  import { mapActions, mapState, mapGetters, mapMutations } from "vuex"
   import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
   import EditRelationships from "@/components/Editor/EditRelationships";
-  import EditLicences from "@/components/Editor/EditLicences";
+  import EditDataAccess from "@/components/Editor/DataAccess/EditDataAccess";
   import EditOrganisations from "@/components/Editor/Organisations/Organisations";
   import EditPublications from "@/components/Editor/EditPublications";
+  import EditAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo";
   import Unauthorized from "@/views/Errors/403"
   import RESTClient from "@/components/Client/RESTClient.js"
 
@@ -133,14 +130,26 @@
     components: {
       EditPublications,
       EditOrganisations,
-      EditLicences,
+      EditDataAccess,
       EditRelationships,
       EditGeneralInfo,
+      EditAdditionalInfo,
       Unauthorized
+    },
+    beforeRouteLeave(to, from, next){
+      let changes = this.getAllChanges;
+      if (changes === 0) {
+        next();
+      }
+      else {
+        const answer = window.confirm(`Are you sure you want to leave this page? You have ${changes} unsaved modifications.`);
+        if (answer) next();
+      }
     },
     data(){
       let _module = this;
       return {
+        selectedTab:null,
         error: false,
         hasLoaded: false,
         dataChanged: false,
@@ -154,46 +163,49 @@
               return _module.confirmReloadData()
             },
             show: false
-          },
-          {
-            name: "Exit editing",
-            description: "This will return to the record page without saving. Are you sure you'd like to do this?",
-            method: function() { return _module.confirmReturnToRecord() },
-            show: false
           }
         ],
         tabs: [
           {
             name: "General Information",
-            disabled: false,
             target: "generalInformation",
-            icon: "fa-info"
+            icon: "fa-info",
+            component:"EditGeneralInfo"
           },
           {
-            name: "Data Access",
-            disabled: false
+            name: "Licences & Support Links",
+            target: "dataAccess",
+            component:"EditDataAccess"
           },
           {
             name: "Publications",
-            disabled: false,
             target: "publications",
-            icon: "fa-info"
+            icon: "fa-info",
+            component:"EditPublications"
           },
           {
             name: "Organisations & Grants",
-            disabled: false,
-            target: "organisations"
+            target: "organisations",
+            component:"EditOrganisations"
           },
           {
             name: "Relations to other records",
-            disabled: true
+            target: "relations",
+            component:"EditRelationships"
+          },
+          {
+            name: "Additional Information",
+            target: "additionalInformation",
+            icon: "fa-info",
+            component:"EditAdditionalInfo"
           }
         ]
       }
     },
     computed: {
-      ...mapState('record', ['currentRecord']),
-      ...mapGetters('record', ['getChanges']),
+      ...mapState('record', ['currentID', 'sections']),
+      ...mapGetters('record', ['getChanges', 'getAllChanges', 'getRecordType']),
+      ...mapState('editor', ['allowedFields']),
       ...mapState('users', ['user']),
       userToken(){
         const _module = this;
@@ -211,41 +223,82 @@
         this.$store.commit("record/setEditingRecord");
       })
     },
+    beforeDestroy() {
+      this.cleanRecordStore();
+      this.cleanEditorStore();
+    },
     methods: {
       ...mapActions("record", ["fetchRecord"]),
+      ...mapMutations("editor", ["cleanEditorStore"]),
+      ...mapActions("editor", ["getAllowedFields"]),
+      ...mapMutations("record", ["cleanRecordStore"]),
       async getData(){
         const _module = this;
         _module.hasLoaded = false;
         _module.error = false;
         let userToken = _module.userToken;
-        let id = _module.$route.params.id;
-        if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
-        await _module.fetchRecord(id);
-        let canEdit = await client.canEdit(_module.currentRecord['fairsharingRecord'].id, userToken);
-        if (canEdit.error) _module.error = true;
+        if (userToken) {
+          let id = _module.$route.params.id;
+          if (id.includes('FAIRsharing.')) id = "10.25504/" + id;
+          await _module.fetchRecord({id: id});
+          let canEdit = await client.canEdit(_module.currentID, userToken);
+          if (canEdit.error) _module.error = true;
+          await this.getAllowedFields({
+            type: this.getRecordType,
+            token: userToken
+          });
+        }
         _module.hasLoaded = true;
-      },
-      confirmReturnToRecord() {
-        const _module = this;
-        let recordID = _module.currentRecord['fairsharingRecord'].id;
-        _module.exitPageCheck = true;
-        _module.$router.push({ path: `/${recordID}` });
       },
       async confirmReloadData() {
         const _module = this;
-        let recordID = _module.currentRecord['fairsharingRecord'].id;
-        await _module.fetchRecord(recordID);
+        let recordID = _module.currentID;
+        await _module.fetchRecord({id: recordID});
+      },
+      isDisabled(tabName){
+        if (tabName === 'Additional Information'){
+          return !(this.allowedFields && Object.keys(this.allowedFields).includes('properties'));
+        }
+        return false
       }
     },
   }
 </script>
-
 <style scoped>
+.tabSquare {
+  width: 140px;
+  height: 140px !important;
+  white-space: initial !important;
+}
 
-  .tabSquare {
-      width: 140px;
-      height: 140px !important;
-      white-space: initial !important;
-  }
+#recordEditor .expand-transition-enter-active,
+#recordEditor .expand-transition-leave-active,
+#recordEditor .delayed-transition .slide-x-transition-enter-active,
+#recordEditor .delayed-transition .slide-x-transition-leave-active {
+  transition-duration: 0.7s !important;
+}
+
+#recordEditor .delayed-transition .scroll-x-transition-enter-active,
+#recordEditor .delayed-transition .scroll-x-transition-leave-active {
+  transition-duration: 1s !important;
+}
+
+#recordEditor .delayed-transition .scroll-x-transition-enter-active {
+  transition-delay: 0.1s !important;
+}
+
+#recordEditor .delayed-transition .scroll-x-transition-leave-active {
+  transition-delay: 0.6s !important;
+}
+
+.short {
+  max-width: 550px;
+}
+
+.short span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 </style>

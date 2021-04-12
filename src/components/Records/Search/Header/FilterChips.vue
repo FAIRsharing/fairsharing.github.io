@@ -17,7 +17,7 @@
         class="ma-2"
         close
         color="white"
-        text-color="teal"
+        text-color="secondary"
         @click:close="removeParam(chip.paramName, chip.paramVal)"
       >
         {{ getFilteredLabel[chip.paramName] }}:<b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}</b>
@@ -88,8 +88,8 @@ export default {
       Object.keys(_module.$route.query).forEach(function (queryParam) {
         if (queryParam !== paramName) {
           query[queryParam] = _module.$route.query[queryParam]
-        } else
-          {
+        }
+        else {
           if (_module.$route.query[queryParam].includes(',')) {
             let currentValues = _module.$route.query[queryParam].split(",");
             if (currentValues.includes(paramVal)) {

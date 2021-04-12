@@ -4,10 +4,11 @@
     short
     height="100"
     max-height="100"
+    class="header-container"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.smAndDown"
-      @click="toggleDrawerLeft"
+      @click.stop="toggleDrawerLeft"
     />
     <router-link to="/">
       <v-img
@@ -19,10 +20,14 @@
     <div
       class="d-flex justify-end align-center custom-width"
     >
-      <string-search :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'" />
+      <string-search
+        v-if="$vuetify.breakpoint.sm || $vuetify.breakpoint.mdAndUp"
+        placeholder="search through all content"
+        :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'"
+      />
       <nav>
         <ul
-          v-if="!$vuetify.breakpoint.mdAndDown"
+          v-if="$vuetify.breakpoint.lgAndUp"
           class="d-flex flex-row align-center flex-wrap px-0"
         >
           <li
@@ -33,10 +38,11 @@
               :small="$vuetify.breakpoint.mdAndDown"
               :x-large="$vuetify.breakpoint.xlOnly"
               class="mr-1 mt-sm-1"
-              :class="item.color"
+              color="primary"
+              :outlined="!item.active"
               :to="item.link"
             >
-              <span class="white--text">{{ item.label }}</span>
+              <span :class="['white--text',{'primary--text':!item.active}]">{{ item.label }}</span>
             </v-btn>
           </li>
           <!-- LOGIN -->
@@ -48,11 +54,11 @@
             class="mt-5"
             max-height="90vh"
           >
-            <template v-slot:activator="{ on }">
+            <template #activator="{ on }">
               <v-btn
                 :small="$vuetify.breakpoint.mdAndDown"
                 :x-large="$vuetify.breakpoint.xlOnly"
-                color="teal darken-2 white--text"
+                color="accent3 white--text"
                 class="mr-1 mt-sm-1"
                 dark
                 v-on="on"
@@ -77,7 +83,7 @@
             v-else
             :small="$vuetify.breakpoint.mdAndDown"
             :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1 teal darken-2 pl-2"
+            class="mr-1 mt-sm-1 accent3 pl-2"
             to="/accounts/profile"
           >
             <v-avatar>
@@ -88,7 +94,7 @@
                 fa-user-circle
               </v-icon>
             </v-avatar>
-            <span class="white--text ellipse">{{ user().credentials.username }}</span>
+            <span class="white--text ellipse-150">{{ user().credentials.username }}</span>
           </v-btn>
         </ul>
       </nav>
@@ -100,6 +106,7 @@
 import {mapState} from 'vuex'
 import Login from "@/views/Users/Login/Login";
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
+import {isEmpty} from "lodash";
 
 export default {
   name: "Header",
@@ -111,40 +118,64 @@ export default {
       links: [
         {
           label: "Standards",
+          name: "Standard",
           link: "/standards",
-          color: "blue"
+          active:false
         },
         {
           label: "Databases",
+          name: "Database",
           link: "/databases",
-          color: "blue"
+          active:false
         },
         {
           label: "Policies",
+          name: "Policy",
           link: "/policies",
-          color: "blue"
+          active:false
         },
         {
           label: "Collections",
+          name: "Collection",
           link: "/collections",
-          color: "blue"
+          active:false
         },
         {
-          label: "Add/Claim content",
+          label: "Add content",
+          name: "New_content",
           link: "/new",
-          color: "grey"
+          active:false
         },
         {
           label: "Stats",
+          name: "Statistics",
           link: "/summary-statistics",
-          color: "teal darken-2"
+          active:false
         }
       ]
     }
   },
   computed: {
     ...mapState('uiController', ["UIGeneralStatus"]),
-    ...mapState('users', ["user"])
+    ...mapState('users', ["user"]),
+    currentParameter() {
+      let currentQuery = this.$route.query;
+      if (!isEmpty(currentQuery)) {
+        return currentQuery
+      }
+      else {
+        return {fairsharingRegistry: this.$route.name}
+      }
+    }
+  },
+  watch: {
+    currentParameter: {
+      handler(newVal) {
+        const _module = this;
+        _module.setCurrentActiveButton(newVal.fairsharingRegistry)
+      },
+      deep: true
+    }
   },
   methods: {
     toggleDrawerLeft: function () {
@@ -156,26 +187,18 @@ export default {
     },
     closePopup: function (status) {
       this.closeMenuStatus = status;
+    },
+    setCurrentActiveButton: function(newValue) {
+      this.links.map(link => {
+        link.name === newValue ? link.active = true : link.active = false;
+      });
     }
-  },
+  }
 }
 
 </script>
 
 <style scoped lang="scss">
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .1s;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-{
-  opacity: 0;
-}
-
-ul {
-  list-style: none;
-}
-
 header {
   padding-right: .5rem;
 }
@@ -188,6 +211,9 @@ header {
   width: 94%;
 }
 
+.header-container {
+    border-bottom: 3px dashed #253442;
+}
 </style>
 
 

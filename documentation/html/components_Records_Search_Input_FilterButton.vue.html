@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -94,21 +94,28 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-tooltip
     bottom
-    :disabled="item.tooltip===undefined"
+    :disabled="itemModified.tooltip===undefined"
   >
-    &lt;template v-slot:activator="{ on }">
+    &lt;template #activator="{ on }">
       &lt;v-btn
         color="primary"
         class="mr-1 mr-lg-2"
-        :outlined="!item.active"
+        :outlined="!itemModified.active"
         :class="[isFirstItem &amp;&amp; !doubleItems ? 'first-child' : 'flex-1', {'button-style-md-screens' : mdScreens, 'buttons-md-style' : multipleItems &amp;&amp; !isFirstItem}]"
-        @click="selectFilter(item)"
+        @click="selectFilter(itemModified)"
         v-on="on"
       >
-        {{ item.title }}
+        &lt;span v-if="itemModified.title!=='ALL'">{{ itemModified.title }}&lt;/span>
+        &lt;v-icon
+          v-else
+          small
+          color="primary"
+        >
+          {{ $vuetify.icons.values.loading }}
+        &lt;/v-icon>
       &lt;/v-btn>
     &lt;/template>
-    &lt;span>{{ item.tooltip }}&lt;/span>
+    &lt;span>{{ itemModified.tooltip }}&lt;/span>
   &lt;/v-tooltip>
 &lt;/template>
 
@@ -128,14 +135,19 @@
             multipleItems: {default: false, type: Boolean},
             doubleItems: {default: false, type: Boolean},
         },
+        data: () => {
+          return {
+            itemModified: {default: null, type: Object}
+          }
+        },
         watch: {
           currentParameter: {
             handler(newVal) {
               const _module = this;
-              const fieldName = _module.item.filterName;
+              const fieldName = _module.itemModified.filterName;
               const fieldValue = newVal[fieldName];
-              const currentValue = _module.item.value;
-              const title = _module.item.title.toLowerCase();
+              const currentValue = _module.itemModified.value;
+              const title = _module.itemModified.title;
               _module.checkCurrentParameters(title, fieldValue, currentValue);
             },
             deep: true
@@ -144,23 +156,24 @@
         mounted(){
           this.$nextTick(function () {
             const _module = this;
-            const fieldValue = _module.currentParameter[this.item.filterName];
-            const currentValue = _module.item.value;
-            const title = _module.item.title.toLowerCase();
-              _module.checkCurrentParameters(title, fieldValue, currentValue);
+            _module.itemModified = JSON.parse(JSON.stringify(this.item));
+            const fieldValue = _module.currentParameter[this.itemModified.filterName];
+            const currentValue = _module.itemModified.value;
+            const title = _module.itemModified.title;
+            _module.checkCurrentParameters(title, fieldValue, currentValue);
           });
         },
         methods: {
             checkCurrentParameters: function(title, fieldValue, currentValue) {
               if (fieldValue === null) {
-                this.item.active = title === 'all' || title === 'match all terms';
+                this.itemModified.active = title === 'all' || title === 'match all terms';
               }
               else {
                 if (currentValue === undefined) {
-                  this.item.active = false;
+                  this.itemModified.active = false;
                 }
                 else {
-                  this.item.active = currentValue.toString() === fieldValue;
+                  this.itemModified.active = currentValue.toString() === fieldValue;
                 }
               }
             },
@@ -168,31 +181,23 @@
              * Apply the filters by building the new query parameters using the form data.
              */
             applyFilters: function (selectedItem) {
-                const _module = this;
-                let currentQuery = {};
-                let oldQuery = {};
-                Object.keys(_module.$route.query).forEach(function (param) {
-                    currentQuery[param] = _module.$route.query[param];
-                    oldQuery[param] = _module.$route.query[param]
+              const _module = this;
+              let currentQuery = {};
+              let oldQuery = {};
+              Object.keys(_module.$route.query).forEach(function (param) {
+                currentQuery[param] = _module.$route.query[param];
+                oldQuery[param] = _module.$route.query[param]
+              });
+
+              Object.prototype.hasOwnProperty.call(selectedItem, 'value') ? currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value)
+                                                                                  : delete currentQuery[selectedItem.filterName];
+
+              if (!isEqual(currentQuery, oldQuery)) {
+                this.$router.push({
+                  name: _module.$route.name,
+                  query: currentQuery
                 });
-
-                if (Object.prototype.hasOwnProperty.call(selectedItem, 'value')) {
-                    currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value);
-                    if (!isEqual(currentQuery, oldQuery)) {
-                        _module.$router.push({
-                            name: _module.$route.name,
-                            query: currentQuery
-                        });
-                    }
-                }
-                else {
-                    delete currentQuery[selectedItem.filterName];
-                    this.$router.push({
-                        name: _module.$route.name,
-                        query: currentQuery
-                    });
-
-                }
+              }
             },
             selectFilter: function (selectedItem) {
                 let _module = this;
@@ -273,7 +278,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Thu Jan 28th 2021
+		on Mon Apr 12th 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

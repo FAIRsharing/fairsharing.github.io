@@ -70,7 +70,7 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions, mapState } from "vuex"
+    import { mapGetters, mapActions, mapState, mapMutations } from "vuex"
     import Contact from "./Contact";
     import EditTags from "./EditTags";
     import BaseFields from "./BaseFields";
@@ -163,6 +163,7 @@
         methods: {
             ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
             ...mapActions("record", ["updateGeneralInformation"]),
+            ...mapMutations("record", ["setSectionError"]),
             async getData(){
                 await this.getCountries();
                 await this.getRecordTypes();
@@ -170,13 +171,25 @@
             },
             async saveRecord(redirect){
               this.loading = true;
-              await this.updateGeneralInformation({
-                token: this.user().credentials.token,
-                id: this.$route.params.id
-              });
+              if (this.currentFields.taxonomies.length > 0) {
+                await this.updateGeneralInformation({
+                  token: this.user().credentials.token,
+                  id: this.$route.params.id
+                });
+              }
+              else {
+                this.setSectionError({
+                  section: "generalInformation",
+                  value: {
+                    response: {
+                      data: "Taxonomic range is required. Please use 'Not Applicable' if your record isn't related to a species."
+                    }
+                  }
+                });
+              }
               this.loading = false;
               if (!redirect) this.$scrollTo("#mainHeader");
-              if (redirect && !this.message.error){
+              if (redirect && !this.message.error) {
                 await this.$router.push({path: '/' + this.$route.params.id})
               }
             }
@@ -184,7 +197,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     #editGeneralInformation .v-chip.white--text .v-icon {
         color: white;
         margin-left: 10px;
@@ -198,24 +211,6 @@
 
     .shadowChip {
       box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-    }
-
-    #editGeneralInformation .expand-transition-enter-active,
-    #editGeneralInformation .expand-transition-leave-active
-    {
-      transition-duration: 0.7s !important;
-    }
-
-    #editGeneralInformation .delayed-transition .scroll-x-transition-enter-active,
-    #editGeneralInformation .delayed-transition .scroll-x-transition-leave-active{
-      transition-duration: 1s !important;
-    }
-
-    #editGeneralInformation .delayed-transition .scroll-x-transition-enter-active {
-      transition-delay: 0.1s !important;
-    }
-    #editGeneralInformation .delayed-transition .scroll-x-transition-leave-active {
-      transition-delay: 0.6s !important;
     }
 
 </style>

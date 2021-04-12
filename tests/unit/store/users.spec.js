@@ -157,6 +157,7 @@ describe('Actions/Mutations', () => {
                 tokenValidity: 123
             },
             records: {user: {}},
+            watchedRecords: [],
             metadata: {
                 username: "Terazus"
             },
@@ -173,6 +174,7 @@ describe('Actions/Mutations', () => {
                 tokenValidity: 123
             },
             records: {},
+            watchedRecords: [],
             metadata: {username: "Terazus"},
             isLoggedIn: true,
             is_curator: false,
@@ -200,6 +202,7 @@ describe('Actions/Mutations', () => {
                 tokenValidity: 123
             },
             records: {},
+            watchedRecords: [],
             metadata: {username: "Terazus"},
             isLoggedIn: true
         });

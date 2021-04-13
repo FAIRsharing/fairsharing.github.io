@@ -1,5 +1,5 @@
 import {createLocalVue, RouterLinkStub, shallowMount} from "@vue/test-utils";
-import BlockInfo from "@/components/Home/BlockInfo"
+import InfoBlock from "@/components/Home/InfoBlock"
 import Vuetify from "vuetify";
 import icons from "@/plugins/icons";
 const vuetify = new Vuetify({'icons':icons});
@@ -39,7 +39,7 @@ describe("BlockInfo.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(BlockInfo, {
+        wrapper = shallowMount(InfoBlock, {
             vuetify,
             mocks:{$store},
             stubs: {

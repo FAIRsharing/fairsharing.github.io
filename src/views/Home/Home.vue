@@ -6,7 +6,7 @@
     >
       <Jumbotron />
       <Carousel />
-      <block-info class="mb-12" />
+      <InfoBlock class="mb-12" />
       <SearchBlock />
       <block-categories class="mt-12 mb-12" />
     </v-container>
@@ -21,16 +21,16 @@
 <script>
 import Jumbotron from "@/components/Home/Jumbotron";
 import Carousel from "@/components/Home/Carousel";
-import BlockCategories from "@/components/Home/BlockCategories";
+import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
-import BlockInfo from "@/components/Home/BlockInfo";
+import BlockCategories from "@/components/Home/BlockCategories";
 
 /** Component to handle the front page (landing page)
  *
  */
 export default {
   name: "Home",
-  components:{ BlockInfo, SearchBlock, Carousel, Jumbotron, BlockCategories },
+  components:{ Jumbotron, Carousel, InfoBlock, SearchBlock, BlockCategories },
   computed: {
     JSONLD: () => {
       return JSON.stringify(  {

@@ -126,7 +126,7 @@
                 &lt;v-btn
                   class="text-center teal white--text px-2"
                   href="#/users/resendConfirmation"
-                  @click="()=>{this.$emit('ClosePopup', true)}"
+                  @click="()=>{$emit('ClosePopup', true)}"
                 >
                   Resend me the confirmation email
                 &lt;/v-btn>
@@ -195,11 +195,11 @@
 
                 &lt;v-card-text class="text-center py-1">
                   &lt;router-link to="/accounts/forgotPassword">
-                    &lt;span @click="()=>{this.$emit('ClosePopup', true)}">Forgot your password ?&lt;/span>
+                    &lt;span @click="()=>{$emit('ClosePopup', true)}">Forgot your password ?&lt;/span>
                   &lt;/router-link>
                   &lt;v-divider />
                   &lt;router-link to="/accounts/signup">
-                    &lt;span @click="()=>{this.$emit('ClosePopup', true)}">Create a new account&lt;/span>
+                    &lt;span @click="()=>{$emit('ClosePopup', true)}">Create a new account&lt;/span>
                   &lt;/router-link>
                 &lt;/v-card-text>
 

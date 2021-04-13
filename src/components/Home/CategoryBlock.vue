@@ -135,7 +135,7 @@
 import {truncate} from "@/utils/stringUtils";
 
 export default {
-name: "BlockCategories",
+name: "CategoryBlock",
   mixins: [ truncate ]
 }
 </script>

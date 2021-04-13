@@ -118,11 +118,13 @@
         <Publications class="mt-5 mb-10" />
       </div>
     </v-container>
-    <!-- eslint-disable-next-line vue/no-v-html -->
+    <!-- This html is from a safe source -->
+    <!-- eslint-disable vue/no-v-html -->
     <script
       type="application/ld+json"
       v-html="JSONLD"
     />
+    <!-- eslint-enable vue/no-v-html -->
   </v-main>
 </template>
 

@@ -4,7 +4,7 @@ import Vuetify from "vuetify"
 
 const vuetify = new Vuetify();
 
-describe("BlockCategories.vue", function(){
+describe("Jumbotron.vue", function(){
     let wrapper;
 
     beforeEach(() => {
@@ -14,7 +14,7 @@ describe("BlockCategories.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("BlockHero");
+        expect(wrapper.name()).toMatch("Jumbotron");
     });
 
 });

@@ -125,10 +125,7 @@
           xl="3"
           class="d-flex mt-2 ml-2"
         >
-          &lt;SearchInput
-            id="search-input-mb"
-            :class="[responsiveClassObject]"
-          />
+          &lt;SearchInput :class="['search-input-mb', responsiveClassObject]" />
         &lt;/v-col>
         &lt;v-col
           v-else
@@ -408,7 +405,7 @@ export default {
   padding: 1em;
 }
 
-#search-input-mb{
+.search-input-mb{
   margin-bottom: 105px;
 }
 &lt;/style>

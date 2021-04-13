@@ -4,7 +4,7 @@ import Vuetify from "vuetify"
 
 const vuetify = new Vuetify();
 
-describe("BlockSearch.vue", function(){
+describe("Carousel", function(){
     let wrapper;
 
     beforeEach(() => {

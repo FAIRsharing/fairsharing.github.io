@@ -25,22 +25,65 @@
       <!--  Content  -->
       <v-row no-gutters>
         <v-col
+          v-if="$vuetify.breakpoint.mdAndUp"
           cols="12"
           lg="4"
           md="4"
           xl="3"
-          class="d-none d-md-flex mt-2 ml-2"
+          class="d-flex mt-2 ml-2"
         >
           <SearchInput
             id="search-input-mb"
             :class="[responsiveClassObject]"
           />
         </v-col>
+        <v-col
+          v-else
+          cols="12"
+          class="ml-3 mt-2"
+        >
+          <v-btn
+            class="info"
+            @click="showFiltersSM = true"
+          >
+            Show filters
+          </v-btn>
+        </v-col>
+
         <v-col class="mt-2">
-          <SearchOutput class="pb-5 mr-0 mr-md-2" />
+          <SearchOutput class="pb-5 mr-0 mr-md-2 px-3" />
         </v-col>
       </v-row>
     </v-container>
+
+    <v-fade-transition>
+      <v-dialog
+        v-model="showFiltersSM"
+        fullscreen
+        hide-overlay
+        scrollable
+      >
+        <v-card>
+          <v-card-title class="primary white--text pb-5">
+            Add a filter
+            <v-spacer />
+            <v-btn
+              fab
+              x-small
+              @click="showFiltersSM = false"
+            >
+              <v-icon>fa-times</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-card-text class="pt-3">
+            <SearchInput
+              id="search-input-sm"
+              :class="[responsiveClassObject]"
+            />
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </v-fade-transition>
 
     <v-fade-transition>
       <v-overlay
@@ -77,7 +120,8 @@ export default {
     labels: recordsLabels,
     recordsSubTitles: recordsLabels['recordSubTitles'],
     recordTypes: recordsLabels['recordTypes'],
-    isLoading: false
+    isLoading: false,
+    showFiltersSM: false,
   }),
   computed: {
     ...mapState('uiController', ['scrollStatus', 'stickToTop']),
@@ -201,6 +245,7 @@ export default {
       this.errors = null;
       const _module = this;
       try {
+        this.showFiltersSM = false;
         await _module.fetchRecords(this.getParameters());
       }
       catch (e) {

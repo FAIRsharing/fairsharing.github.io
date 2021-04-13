@@ -1,37 +1,36 @@
 <template>
-  <aside>
-    <v-card
-      id="scrollable-holder"
-      :class="['pa-2',responsiveClassObject]"
-      outlined
-      tile
-      elevation="3"
+  <v-card
+    id="scrollable-holder"
+    :class="['pa-2', {responsiveClassObject: $vuetify.breakpoint.mdAndUp, 'fullHeight': $vuetify.breakpoint.smAndDown}]"
+    outlined
+    tile
+    elevation="3"
+    width="100%"
+  >
+    <!-- Search Box -->
+    <string-search placeholder="Search through all data." />
+
+    <hr class="mb-3 mr-2 ml-2 custom-hr">
+
+    <!-- Filter Buttons     -->
+    <FilterButtons />
+
+    <!-- expansion Panels    -->
+    <v-expansion-panels
+      v-if="getFilters.length>0"
+      v-model="panel"
+      multiple
+      flat
+      hover
+      accordion
     >
-      <!-- Search Box -->
-      <string-search placeholder="Search through all data." />
-
-      <hr class="mb-3 mr-2 ml-2 custom-hr">
-
-      <!-- Filter Buttons     -->
-      <FilterButtons />
-
-      <!-- expansion Panels    -->
-      <v-expansion-panels
-        v-if="getFilters.length>0"
-        v-model="panel"
-        multiple
-        flat
-        hover
-        accordion
-      >
-        <filter-autocomplete
-          v-for="filter in setup"
-          :key="filter.filterLabel"
-          :filter="filter"
-        />
-      </v-expansion-panels>
-    </v-card>
-  </aside>
+      <filter-autocomplete
+        v-for="filter in setup"
+        :key="filter.filterLabel"
+        :filter="filter"
+      />
+    </v-expansion-panels>
+  </v-card>
 </template>
 
 <script>
@@ -124,4 +123,9 @@ export default {
 .custom-hr {
   opacity: .5;
 }
+.fullHeight {
+  height: 90vh;
+  overflow: scroll;
+}
+
 </style>

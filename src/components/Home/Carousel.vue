@@ -20,7 +20,7 @@
         v-for="(tabItem,tabItemIndex) in tabsData.tabs"
         :key="tabItem + '_' + tabItemIndex"
       >
-        <tab-content
+        <TabContent
           :header="tabItem.header"
           :description="tabItem.description"
           :image="tabItem.image"
@@ -33,10 +33,10 @@
 
 <script>
 import {blockTabs} from "@/data/homePageData.json";
-import TabContent from "@/components/Home/BlockTabs/TabContent";
+import TabContent from "@/components/Home/CarouselContent";
 
 export default {
-name: "BlockTabs",
+name: "Carousel",
   components: {TabContent},
   data: () => {
     return {
@@ -44,6 +44,17 @@ name: "BlockTabs",
         selectedTab: 0,
         tabs: blockTabs,
       }
+    }
+  },
+  mounted(){
+    this.cycleTabs();
+  },
+  methods: {
+    cycleTabs(){
+      setTimeout(() => {
+        this.tabsData.selectedTab = (this.tabsData.selectedTab < this.tabsData.tabs.length -1) ? this.tabsData.selectedTab + 1 : 0;
+        this.cycleTabs()
+      }, 5000);
     }
   }
 }

@@ -49,7 +49,7 @@ describe("BlockInfo.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("BlockInfo");
+        expect(wrapper.name()).toMatch("InfoBlock");
     });
 
 });

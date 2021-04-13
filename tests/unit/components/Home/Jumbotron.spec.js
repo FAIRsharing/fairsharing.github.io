@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import BlockHero from "@/components/Home/BlockHero"
+import Jumbotron from "@/components/Home/Jumbotron"
 import Vuetify from "vuetify"
 
 const vuetify = new Vuetify();
@@ -8,7 +8,7 @@ describe("Jumbotron.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(BlockHero, {
+        wrapper = shallowMount(Jumbotron, {
             vuetify,
         })
     });

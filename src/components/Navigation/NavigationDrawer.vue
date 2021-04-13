@@ -1,5 +1,8 @@
 <template>
-  <div class="py-10 px-5 d-flex flex-column" style="height:100%">
+  <div
+    class="py-10 px-5 d-flex flex-column"
+    style="height:100%"
+  >
     <div
       v-for="(button, index) in buttons"
       :key="'button_' + index"

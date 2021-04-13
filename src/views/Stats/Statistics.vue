@@ -81,14 +81,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartSubjectsStand"
+              v-if="chartSubjects['standard']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartSubjectsStand"
-                :options="chartSubjectsStand"
+                :options="chartSubjects['standard']"
               />
             </v-card>
           </v-col>
@@ -102,14 +102,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartSubjectsDB"
+              v-if="chartSubjects['database']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartSubjectsDB"
-                :options="chartSubjectsDB"
+                :options="chartSubjects['database']"
               />
             </v-card>
           </v-col>
@@ -119,14 +119,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartSubjectsPol"
+              v-if="chartSubjects['policy']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartSubjectsPol"
-                :options="chartSubjectsPol"
+                :options="chartSubjects['policy']"
               />
             </v-card>
           </v-col>
@@ -157,14 +157,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartCountriesStand"
+              v-if="chartCountries['standard']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartCountriesStand"
-                :options="chartCountriesStand"
+                :options="chartCountries['standard']"
               />
             </v-card>
           </v-col>
@@ -178,14 +178,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartCountriesDB"
+              v-if="chartCountries['database']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartCountriesDB"
-                :options="chartCountriesDB"
+                :options="chartCountries['database']"
               />
             </v-card>
           </v-col>
@@ -195,14 +195,166 @@
             lg="6"
           >
             <v-card
-              v-if="chartCountriesPol"
+              v-if="chartCountries['policy']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartCountriesPol"
-                :options="chartCountriesPol"
+                :options="chartCountries['policy']"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row
+          no-gutters
+        >
+          <v-col
+            md="12"
+            sm="12"
+            lg="6"
+          >
+            <v-card
+              v-if="chartSpecies['standard']"
+              class="pa-2"
+              outlined
+              tile
+            >
+              <highcharts
+                ref="chartSpeciesStand"
+                :options="chartSpecies['standard']"
+              />
+            </v-card>
+          </v-col>
+          <v-col
+            md="12"
+            sm="12"
+            lg="6"
+          >
+            <v-card
+              v-if="chartSpecies['database']"
+              class="pa-2"
+              outlined
+              tile
+            >
+              <highcharts
+                ref="chartSpeciesDB"
+                :options="chartSpecies['database']"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row
+          no-gutters
+        >
+          <v-col
+            md="12"
+            sm="12"
+            lg="6"
+          >
+            <v-card
+              v-if="chartSpecies['policy']"
+              class="pa-2"
+              outlined
+              tile
+            >
+              <highcharts
+                ref="chartSpeciesPol"
+                :options="chartSpecies['policy']"
+              />
+            </v-card>
+          </v-col>
+          <v-col
+            md="12"
+            sm="12"
+            lg="6"
+          >
+            <v-card
+              v-if="chartLicences['standard']"
+              class="pa-2"
+              outlined
+              tile
+            >
+              <highcharts
+                ref="chartLicencesStand"
+                :options="chartLicences['standard']"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row
+          no-gutters
+        >
+          <v-col
+            md="12"
+            sm="12"
+            lg="6"
+          >
+            <v-card
+              v-if="chartLicences['database']"
+              class="pa-2"
+              outlined
+              tile
+            >
+              <highcharts
+                ref="chartLicenseDB"
+                :options="chartLicences['database']"
+              />
+            </v-card>
+          </v-col>
+          <v-col
+            md="12"
+            sm="12"
+            lg="6"
+          >
+            <v-card
+              v-if="chartMaintainer['standard']"
+              class="pa-2"
+              outlined
+              tile
+            >
+              <highcharts
+                ref="chartMaintainerStand"
+                :options="chartMaintainer['standard']"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row
+          no-gutters
+        >
+          <v-col
+            md="12"
+            sm="12"
+            lg="6"
+          >
+            <v-card
+              v-if="chartMaintainer['database']"
+              class="pa-2"
+              outlined
+              tile
+            >
+              <highcharts
+                ref="chartMaintainerDB"
+                :options="chartMaintainer['database']"
+              />
+            </v-card>
+          </v-col>
+          <v-col
+            md="12"
+            sm="12"
+            lg="6"
+          >
+            <v-card
+              v-if="chartMaintainer['policy']"
+              class="pa-2"
+              outlined
+              tile
+            >
+              <highcharts
+                ref="chartMaintainerPol"
+                :options="chartMaintainer['policy']"
               />
             </v-card>
           </v-col>
@@ -218,14 +370,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartSubjectsStand"
+              v-if="chartSubjects['standard']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartSubjectsStand2"
-                :options="chartSubjectsStand"
+                :options="chartSubjects['standard']"
               />
             </v-card>
           </v-col>
@@ -235,14 +387,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartCountriesStand"
+              v-if="chartCountries['standard']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartCountriesStand2"
-                :options="chartCountriesStand"
+                :options="chartCountries['standard']"
               />
             </v-card>
           </v-col>
@@ -258,14 +410,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartSubjectsDB"
+              v-if="chartSubjects['database']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartSubjectsDB2"
-                :options="chartSubjectsDB"
+                :options="chartSubjects['database']"
               />
             </v-card>
           </v-col>
@@ -275,14 +427,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartCountriesDB"
+              v-if="chartCountries['database']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartCountriesDB2"
-                :options="chartCountriesDB"
+                :options="chartCountries['database']"
               />
             </v-card>
           </v-col>
@@ -298,14 +450,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartSubjectsPol"
+              v-if="chartSubjects['policy']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartSubjectsPol2"
-                :options="chartSubjectsPol"
+                :options="chartSubjects['policy']"
               />
             </v-card>
           </v-col>
@@ -315,14 +467,14 @@
             lg="6"
           >
             <v-card
-              v-if="chartCountriesPol"
+              v-if="chartCountries['policy']"
               class="pa-2"
               outlined
               tile
             >
               <highcharts
                 ref="chartCountriesPol2"
-                :options="chartCountriesPol"
+                :options="chartCountries['policy']"
               />
             </v-card>
           </v-col>
@@ -378,7 +530,11 @@
            return {
              isLoading: false,
              allDataStats: null,
-             allDataStatsStand: null,
+             allDataStatsRegistry: {
+               standard: null,
+               database: null,
+               policy: null
+             },
              allDataStatsPol: null,
              allDataStatsDB: null,
              activeChart : 0,
@@ -433,7 +589,10 @@
                  text: ""
                },
                xAxis: {
-                 type: 'category'
+                 type: 'category',
+                 title: {
+                    text: ''
+                  }
                },
                credits: {
                  enabled: false
@@ -465,20 +624,39 @@
                 series: []
              },
              chartRegistries: null,
-             chartSubjectsStand: null,
-             chartSubjectsDB: null,
-             chartSubjectsPol: null,
-             chartCountriesStand: null,
-             chartCountriesDB: null,
-             chartCountriesPol: null,
+             chartSubjects: {
+               standard: null,
+               database: null,
+               policy: null
+             },
+             chartCountries: {
+               standard: null,
+               database: null,
+               policy: null
+             },
+             chartSpecies: {
+               standard: null,
+               database: null,
+               policy: null
+             },
+             chartLicences: {
+               standard: null,
+               database: null
+             },
+             chartMaintainer: {
+               standard: null,
+               database: null,
+               policy: null
+             },
              chartCountriesAll: null
          }
        },
        async mounted() {
-         this.$nextTick(async () => {
-           this.isLoading = true;
+         const _module = this;
+         _module.$nextTick(async () => {
+           _module.isLoading = true;
            let data = await client.executeQuery(getFilters);
-           this.allDataStats = data.searchFairsharingRecords.aggregations;
+           _module.allDataStats = data.searchFairsharingRecords.aggregations;
            //console.log(this.allDataStats);
            let QueryStand = cloneDeep(getFilters);
            let filter ={};
@@ -486,25 +664,25 @@
            QueryStand['queryParam'] =filter;
            let dataStand;
            dataStand = await client.executeQuery(QueryStand);
-           this.allDataStatsStand = dataStand.searchFairsharingRecords.aggregations;
+           _module.allDataStatsRegistry['standard'] = dataStand.searchFairsharingRecords.aggregations;
 
            let QueryDB = cloneDeep(getFilters);
            filter['fairsharingRegistry']='Database';
            QueryDB['queryParam'] =filter;
            let dataDB;
            dataDB = await client.executeQuery(QueryDB);
-           this.allDataStatsDB = dataDB.searchFairsharingRecords.aggregations;
+           _module.allDataStatsRegistry['database'] = dataDB.searchFairsharingRecords.aggregations;
 
            let QueryPol= cloneDeep(getFilters);
            filter['fairsharingRegistry']='Policy';
            QueryPol['queryParam'] =filter;
            let dataPol;
            dataPol = await client.executeQuery(QueryPol);
-           this.allDataStatsPol = dataPol.searchFairsharingRecords.aggregations;
+           _module.allDataStatsRegistry['policy'] = dataPol.searchFairsharingRecords.aggregations;
 
            //console.log(this.allDataStatsStand);
-           this.prepareData();
-           this.isLoading = false;
+           _module.prepareData();
+           _module.isLoading = false;
          })
          //console.log(this.allDataStats.fairsharing_registry.buckets)
          //console.log(this.allDataStats.countries.buckets);
@@ -514,23 +692,28 @@
            this.activeChart = id;
          },
          prepareData(){
-           this.prepareRegistryCounts(this.allDataStats);
-           this.chartSubjectsStand = cloneDeep(this.optionChartBars);
-           this.prepareSubject(this.allDataStatsStand, this.chartSubjectsStand, "standard");
-           this.chartSubjectsDB = cloneDeep(this.optionChartBars);
-           this.prepareSubject(this.allDataStatsDB, this.chartSubjectsDB, "database");
-           this.chartSubjectsPol = cloneDeep(this.optionChartBars);
-           this.prepareSubject(this.allDataStatsPol, this.chartSubjectsPol, "policy");
-           this.chartCountriesStand = cloneDeep(this.optionChartBars);
-           this.prepareRecordCountry(this.allDataStatsStand, this.chartCountriesStand,"standard");
-           this.chartCountriesDB = cloneDeep(this.optionChartBars);
-           this.prepareRecordCountry(this.allDataStatsDB, this.chartCountriesDB,"database");
-           this.chartCountriesPol = cloneDeep(this.optionChartBars);
-           this.prepareRecordCountry(this.allDataStatsPol, this.chartCountriesPol,"policy");
-           this.chartCountriesAll = cloneDeep(this.optionChartBars);
-           this.prepareRecordCountry(this.allDataStats, this.chartCountriesAll,"record");
-           //console.log(this.allDataStats.fairsharing_registry.buckets.length)
-           console.log(this.chartSubjectsStand.series[0]);
+           const _module = this;
+           _module.prepareRegistryCounts(_module.allDataStats);
+           const registries = ["standard", "database", "policy"];
+           registries.forEach(function (item) {
+             _module.chartSubjects[item] = cloneDeep(_module.optionChartBars);
+             _module.prepareSubject(_module.allDataStatsRegistry[item], _module.chartSubjects[item], item);
+             _module.chartCountries[item] = cloneDeep(_module.optionChartBars);
+             _module.prepareRecordCountry(_module.allDataStatsRegistry[item], _module.chartCountries[item], item);
+             _module.chartSpecies[item] = cloneDeep(_module.optionChartBars);
+             _module.prepareSpecies(_module.allDataStatsRegistry[item], _module.chartSpecies[item], item);
+             if (item!== 'policy'){
+               _module.chartLicences[item] = cloneDeep(_module.optionChartBars);
+               _module.prepareLicences(_module.allDataStatsRegistry[item], _module.chartLicences[item], item);
+             }
+             _module.chartMaintainer[item] = cloneDeep(_module.optionChartPie);
+             _module.prepareHasMaintainer(_module.allDataStatsRegistry[item], _module.chartMaintainer[item], item);
+             console.log(item);
+             console.log(_module.allDataStatsRegistry[item]);
+           });
+           _module.chartCountriesAll = cloneDeep(_module.optionChartBars);
+           _module.prepareRecordCountry(_module.allDataStats, _module.chartCountriesAll,"record");
+
          },
          prepareRegistryCounts(data){
            this.chartRegistries = cloneDeep(this.optionChartPie);
@@ -556,6 +739,7 @@
              searchText = "&fairsharingRegistry="+text;
            }
            chartField.yAxis.title.text = 'Number of '+text+'s';
+           chartField.xAxis.title.text = 'Countries';
            chartField.series = [];
            let totRecords = data.countries.doc_count;
            let regBucket = data.countries.buckets.slice(0,10);
@@ -603,6 +787,7 @@
            }
            chartField.title.text= "Top 10 ontologies subjects covered by "+textPlural;
            chartField.yAxis.title.text = 'Number of '+textPlural;
+           chartField.xAxis.title.text = 'Subjects';
            chartField.series = [];
            let totRecords = data.subjects.doc_count;
            let regBucket = data.subjects.buckets.slice(0,10);
@@ -636,6 +821,124 @@
              vectItem.data.push(datItem);
              varX +=1;
              chartField.series.push(vectItem);
+           });
+         },
+         prepareSpecies(data,chartField,text){
+           let textPlural = "";
+           if (text === "policy"){
+             textPlural = "policies";
+           }else{
+             textPlural = text+"s";
+           }
+           chartField.title.text= "Top 10 species covered by "+textPlural;
+           chartField.yAxis.title.text = 'Number of '+textPlural;
+           chartField.xAxis.title.text = 'Species';
+           chartField.series = [];
+           let totRecords = data.taxonomies.doc_count;
+           let regBucket = data.taxonomies.buckets.slice(0,10);
+           let varX = 0;
+           let nameC = "";
+           regBucket.forEach(item => {
+             //console.log(item.key);
+             nameC = item.key[0].toUpperCase() + item.key.substring(1);
+             let vectItem = {
+               name: nameC,
+               cursor: 'pointer',
+               point: {
+                   events: {
+                     click: function() {
+                       location.href = '/#/search?fairsharingRegistry='+text+'&taxonomies='+item.key;
+                     }
+                   }
+               },
+               data: []
+             };
+             let datItem = {
+               name: "",
+               x: varX,
+               y: item.doc_count,
+               z: 100*item.doc_count/totRecords
+             };
+             vectItem.data.push(datItem);
+             varX +=1;
+             chartField.series.push(vectItem);
+           });
+         },
+         prepareLicences(data,chartField,text){
+           if ( text === 'database' ){
+             chartField.title.text = "Top 10 licenses for database content";
+           }else{
+             chartField.title.text = "Top 10 licenses for standards";
+           }
+           chartField.yAxis.title.text = 'Number of '+text+'s';
+           chartField.xAxis.title.text = 'Licenses';
+           chartField.series = [];
+           let totRecords = data.licences.doc_count;
+           let regBucket = data.licences.buckets.slice(0,10);
+           let nameMap = { "creative commons attribution 4.0 international (cc by 4.0)": "CC BY 4.0",
+           "creative commons cc0 1.0 universal (cc0 1.0) public domain dedication": "CC0 1.0",
+           "creative commons attribution 3.0 unported (cc by 3.0)": "CC BY 3.0",
+           "iso privacy and copyright": "ISO Privacy and Copyright",
+           "apache license 2.0" :"Apache License 2.0","w3c document license": "W3C Document License",
+           "bsd-3-clause license (modified bsd license) (new bsd license)":"Modified BSD License",
+           "embl-ebi terms of use": "EMBL-EBI Terms of Use",
+           "creative commons attribution-sharealike 3.0 unported (cc by-sa 3.0)": "CC BY-SA 3.0",
+           "creative commons attribution-sharealike 4.0 international (cc by-sa 4.0)": "CC BY-SA 4.0",
+           "umls metathesaurus license": "UMLS Metathesaurus License","gnu general public license (gpl) 3.0":"GPL 3.0",
+           "creative commons attribution-noncommercial-noderivatives 4.0 international (cc by-nc-nd 4.0)": "CC BY-ND 4.0",
+           "creative commons attribution-noncommercial-sharealike 3.0 unported (cc by-nc-sa 3.0)": "CC BY-NC-SA 3.0",
+           "ogc document notice": "OGC Document Notice","creative commons attribution 2.0 generic (cc by 2.0)": "CC BY 2.0",
+           "library of congress legal information": "Library of Congress Legal Information",
+           "creative commons attribution-noncommercial-sharealike 3.0 igo (cc by-nc-sa 3.0 igo)": "CC BY-NC-SA 3.0 IGO",
+           "open data commons (odc) public domain dedication and licence (pddl) 1.0": "PDDL 1.0",
+           "creative commons attribution-noncommercial 4.0 international (cc by-nc 4.0)": "CC BY-NC 4.0",
+           "gnu lesser general public license (lgpl) 2.1": "LPGL 2.1","nih web policies and notices": "NIH Web Policies and Notices",
+           "creative commons attribution 3.0 china mainland  (cc by 3.0 cn)": "(CC BY 3.0 CN)",
+           "creative commons attribution-noncommercial-sharealike 4.0 international (cc by-nc-sa 4.0)" :"CC BY-NC-SA 4.0",
+           "gnu general public license (gpl) 2.0": "GPL 2.0"}
+           let varX = 0;
+           let nameC = "";
+           regBucket.forEach(item => {
+             if (item.key in nameMap){
+               nameC = nameMap[item.key];
+             }else{
+               nameC = item.key[0].toUpperCase() + item.key.substring(1);
+             }
+             let vectItem = {
+               name: nameC,
+               cursor: 'pointer',
+               point: {
+                   events: {
+                     click: function() {
+                       location.href = '/#/search?fairsharingRegistry='+text+'&licences='+item.key;
+                     }
+                   }
+               },
+               data: []
+             };
+             let datItem = {
+               name: "",
+               x: varX,
+               y: item.doc_count,
+               z: 100*item.doc_count/totRecords
+             };
+             vectItem.data.push(datItem);
+             varX +=1;
+             chartField.series.push(vectItem);
+           });
+         },
+         prepareHasMaintainer(data,chartField,text){
+           chartField.title.text= text[0].toUpperCase() + text.substring(1) +" records that have maintainers";
+           chartField.series[0].data = [];
+           let regBucket = data.is_maintained.buckets;
+           let nameMap = { 0:"No", 1:"Yes" };
+           regBucket.forEach(item => {
+             let vectItem = {
+               name: nameMap[item.key],
+               y: item.doc_count,
+               url: '/#/search?fairsharingRegistry='+text+"&isMaintained="+item.key_as_string
+             };//window.location.hostname+
+             chartField.series[0].data.push(vectItem);
            });
          }
 

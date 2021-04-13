@@ -14,7 +14,7 @@ describe("BlockSearch.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("TabsBlock");
+        expect(wrapper.name()).toMatch("Carousel");
     });
 
     it("can cycle through tabs", () => {

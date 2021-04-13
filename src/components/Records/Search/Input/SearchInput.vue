@@ -1,7 +1,7 @@
 <template>
   <v-card
     id="scrollable-holder"
-    :class="['pa-2', {responsiveClassObject: $vuetify.breakpoint.mdAndUp, 'fullHeight': $vuetify.breakpoint.smAndDown}]"
+    :class="['pa-2', ($vuetify.breakpoint.mdAndUp) ? responsiveClassObject : 'fullHeight']"
     outlined
     tile
     elevation="3"

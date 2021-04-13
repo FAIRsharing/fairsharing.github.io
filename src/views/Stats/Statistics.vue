@@ -69,9 +69,10 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartRegistries"
-                :options="chartRegistries"
+              <PieChart
+                ref-name="pieRegistries"
+                :text-title="chartRegistries.title"
+                :data-chart="chartRegistries.data"
               />
             </v-card>
           </v-col>
@@ -86,9 +87,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartSubjectsStand"
-                :options="chartSubjects['standard']"
+              <BarChart
+                ref-name="barSubjectsStand"
+                :text-title="chartSubjects['standard'].title"
+                :text-x-axis="chartSubjects['standard'].textXAxis"
+                :text-y-axis="chartSubjects['standard'].textYAxis"
+                :data-chart="chartSubjects['standard'].series"
               />
             </v-card>
           </v-col>
@@ -107,9 +111,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartSubjectsDB"
-                :options="chartSubjects['database']"
+              <BarChart
+                ref-name="barSubjectsDB"
+                :text-title="chartSubjects['database'].title"
+                :text-x-axis="chartSubjects['database'].textXAxis"
+                :text-y-axis="chartSubjects['database'].textYAxis"
+                :data-chart="chartSubjects['database'].series"
               />
             </v-card>
           </v-col>
@@ -124,9 +131,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartSubjectsPol"
-                :options="chartSubjects['policy']"
+              <BarChart
+                ref-name="barSubjectsPol"
+                :text-title="chartSubjects['policy'].title"
+                :text-x-axis="chartSubjects['policy'].textXAxis"
+                :text-y-axis="chartSubjects['policy'].textYAxis"
+                :data-chart="chartSubjects['policy'].series"
               />
             </v-card>
           </v-col>
@@ -145,9 +155,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartCountriesAll"
-                :options="chartCountriesAll"
+              <BarChart
+                ref-name="barCountriesAll"
+                :text-title="chartCountriesAll.title"
+                :text-x-axis="chartCountriesAll.textXAxis"
+                :text-y-axis="chartCountriesAll.textYAxis"
+                :data-chart="chartCountriesAll.series"
               />
             </v-card>
           </v-col>
@@ -162,9 +175,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartCountriesStand"
-                :options="chartCountries['standard']"
+              <BarChart
+                ref-name="barCountriesStand"
+                :text-title="chartCountries['standard'].title"
+                :text-x-axis="chartCountries['standard'].textXAxis"
+                :text-y-axis="chartCountries['standard'].textYAxis"
+                :data-chart="chartCountries['standard'].series"
               />
             </v-card>
           </v-col>
@@ -183,9 +199,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartCountriesDB"
-                :options="chartCountries['database']"
+              <BarChart
+                ref-name="barCountriesDB"
+                :text-title="chartCountries['database'].title"
+                :text-x-axis="chartCountries['database'].textXAxis"
+                :text-y-axis="chartCountries['database'].textYAxis"
+                :data-chart="chartCountries['database'].series"
               />
             </v-card>
           </v-col>
@@ -200,9 +219,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartCountriesPol"
-                :options="chartCountries['policy']"
+              <BarChart
+                ref-name="barCountriesPol"
+                :text-title="chartCountries['policy'].title"
+                :text-x-axis="chartCountries['policy'].textXAxis"
+                :text-y-axis="chartCountries['policy'].textYAxis"
+                :data-chart="chartCountries['policy'].series"
               />
             </v-card>
           </v-col>
@@ -221,9 +243,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartSpeciesStand"
-                :options="chartSpecies['standard']"
+              <BarChart
+                ref-name="barSpeciesStand"
+                :text-title="chartSpecies['standard'].title"
+                :text-x-axis="chartSpecies['standard'].textXAxis"
+                :text-y-axis="chartSpecies['standard'].textYAxis"
+                :data-chart="chartSpecies['standard'].series"
               />
             </v-card>
           </v-col>
@@ -238,9 +263,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartSpeciesDB"
-                :options="chartSpecies['database']"
+              <BarChart
+                ref-name="barSpeciesDB"
+                :text-title="chartSpecies['database'].title"
+                :text-x-axis="chartSpecies['database'].textXAxis"
+                :text-y-axis="chartSpecies['database'].textYAxis"
+                :data-chart="chartSpecies['database'].series"
               />
             </v-card>
           </v-col>
@@ -259,9 +287,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartSpeciesPol"
-                :options="chartSpecies['policy']"
+              <BarChart
+                ref-name="barSpeciesPol"
+                :text-title="chartSpecies['policy'].title"
+                :text-x-axis="chartSpecies['policy'].textXAxis"
+                :text-y-axis="chartSpecies['policy'].textYAxis"
+                :data-chart="chartSpecies['policy'].series"
               />
             </v-card>
           </v-col>
@@ -276,9 +307,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartLicencesStand"
-                :options="chartLicences['standard']"
+              <BarChart
+                ref-name="barLicenseStand"
+                :text-title="chartLicences['standard'].title"
+                :text-x-axis="chartLicences['standard'].textXAxis"
+                :text-y-axis="chartLicences['standard'].textYAxis"
+                :data-chart="chartLicences['standard'].series"
               />
             </v-card>
           </v-col>
@@ -297,9 +331,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartLicenseDB"
-                :options="chartLicences['database']"
+              <BarChart
+                ref-name="barLicenseDB"
+                :text-title="chartLicences['database'].title"
+                :text-x-axis="chartLicences['database'].textXAxis"
+                :text-y-axis="chartLicences['database'].textYAxis"
+                :data-chart="chartLicences['database'].series"
               />
             </v-card>
           </v-col>
@@ -314,9 +351,10 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartMaintainerStand"
-                :options="chartMaintainer['standard']"
+              <PieChart
+                ref-name="pieMaintainerStand"
+                :text-title="chartMaintainer['standard'].title"
+                :data-chart="chartMaintainer['standard'].data"
               />
             </v-card>
           </v-col>
@@ -335,9 +373,10 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartMaintainerDB"
-                :options="chartMaintainer['database']"
+              <PieChart
+                ref-name="pieMaintainerDB"
+                :text-title="chartMaintainer['database'].title"
+                :data-chart="chartMaintainer['database'].data"
               />
             </v-card>
           </v-col>
@@ -352,9 +391,10 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartMaintainerPol"
-                :options="chartMaintainer['policy']"
+              <PieChart
+                ref-name="pieMaintainerPol"
+                :text-title="chartMaintainer['policy'].title"
+                :data-chart="chartMaintainer['policy'].data"
               />
             </v-card>
           </v-col>
@@ -375,9 +415,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartSubjectsStand2"
-                :options="chartSubjects['standard']"
+              <BarChart
+                ref-name="barSubjectsStand2"
+                :text-title="chartSubjects['standard'].title"
+                :text-x-axis="chartSubjects['standard'].textXAxis"
+                :text-y-axis="chartSubjects['standard'].textYAxis"
+                :data-chart="chartSubjects['standard'].series"
               />
             </v-card>
           </v-col>
@@ -392,9 +435,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartCountriesStand2"
-                :options="chartCountries['standard']"
+              <BarChart
+                ref-name="barCountriesStand2"
+                :text-title="chartCountries['standard'].title"
+                :text-x-axis="chartCountries['standard'].textXAxis"
+                :text-y-axis="chartCountries['standard'].textYAxis"
+                :data-chart="chartCountries['standard'].series"
               />
             </v-card>
           </v-col>
@@ -415,9 +461,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartSubjectsDB2"
-                :options="chartSubjects['database']"
+              <BarChart
+                ref-name="barSubjectsDB2"
+                :text-title="chartSubjects['database'].title"
+                :text-x-axis="chartSubjects['database'].textXAxis"
+                :text-y-axis="chartSubjects['database'].textYAxis"
+                :data-chart="chartSubjects['database'].series"
               />
             </v-card>
           </v-col>
@@ -432,9 +481,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartCountriesDB2"
-                :options="chartCountries['database']"
+              <BarChart
+                ref-name="barCountriesDB2"
+                :text-title="chartCountries['database'].title"
+                :text-x-axis="chartCountries['database'].textXAxis"
+                :text-y-axis="chartCountries['database'].textYAxis"
+                :data-chart="chartCountries['database'].series"
               />
             </v-card>
           </v-col>
@@ -455,9 +507,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartSubjectsPol2"
-                :options="chartSubjects['policy']"
+              <BarChart
+                ref-name="barSubjectsPol2"
+                :text-title="chartSubjects['policy'].title"
+                :text-x-axis="chartSubjects['policy'].textXAxis"
+                :text-y-axis="chartSubjects['policy'].textYAxis"
+                :data-chart="chartSubjects['policy'].series"
               />
             </v-card>
           </v-col>
@@ -472,9 +527,12 @@
               outlined
               tile
             >
-              <highcharts
-                ref="chartCountriesPol2"
-                :options="chartCountries['policy']"
+              <BarChart
+                ref-name="barCountriesPol2"
+                :text-title="chartCountries['policy'].title"
+                :text-x-axis="chartCountries['policy'].textXAxis"
+                :text-y-axis="chartCountries['policy'].textYAxis"
+                :data-chart="chartCountries['policy'].series"
               />
             </v-card>
           </v-col>
@@ -497,34 +555,22 @@
     /** This component handles the statistic page
      *
      */
-     import {Chart} from 'highcharts-vue'
      import GraphClient from "@/components/GraphClient/GraphClient.js"
      import getFilters from "@/components/GraphClient/queries/getFilters.json"
-     import Highcharts from 'highcharts'
      import Loaders from "@/components/Navigation/Loaders"
      import {cloneDeep} from 'lodash'
+     import PieChart from "@/components/Statistics/PieChart.vue"
+     import BarChart from "@/components/Statistics/BarChart.vue"
 
 
      const client = new GraphClient();
-     const colourPalete = ['#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5', '#c49c94', '#f7b6d2', '#c7c7c7', '#dbdb8d', '#9edae5'];
-     //['#50B432', '#ED561B', '#24CBE5', '#DDDF00', '#64E572', '#FF9655', '#FFF263',      '#6AF9C4']
-     Highcharts.setOptions({
-       lang: {
-         thousandsSep: ','
-       }
-     })
-     Highcharts.setOptions({
-      colors: colourPalete
-     });
-
-     // pie chart data
-     //Pie (Highcharts);
 
      export default {
        name: "Statistics",
        components: {
-         highcharts: Chart,
-         Loaders
+         Loaders,
+         PieChart,
+         BarChart
        },
        data () {
            return {
@@ -538,91 +584,6 @@
              allDataStatsPol: null,
              allDataStatsDB: null,
              activeChart : 0,
-             optionChartPie:{
-               chart:{
-                 plotBackgroundColor: null,
-                 plotBorderWidth: null,
-                 plotShadow: false,
-                 type: 'pie'
-               },
-               title:{
-                 text:"" //The title text of the chart
-               },
-               credits: {
-                 enabled: false
-               },
-               tooltip: {
-                 pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
-               },
-               plotoptions:{
-                 pie: {
-                     allowPointSelect: true,
-                     cursor: 'pointer',
-                     dataLabels: {
-                         enabled: false
-                     },
-                     showInLegend: true
-                 }
-               },
-               series:[
-               {
-                 type:"pie",
-                 name: "Records",
-                 colorByPoint: true,
-                 data:[],
-                 cursor: 'pointer',
-                 point: {
-                   events: {
-                     click: /* istanbul ignore next */ function() {
-                       location.href = this.options.url;
-                     }
-                   }
-                 }
-                }
-               ]
-             },
-             optionChartBars:{
-               chart: {
-                 type: 'column'
-               },
-               title: {
-                 text: ""
-               },
-               xAxis: {
-                 type: 'category',
-                 title: {
-                    text: ''
-                  }
-               },
-               credits: {
-                 enabled: false
-               },
-               yAxis: {
-                 min: 0,
-                 title: {
-                    text: ''
-                  }
-                },
-                tooltip: {
-                  headerFormat: '<span style="font-size:10px">{series.name}</span><table>',
-                  pointFormat: '<tr><td style="padding:0">Records: </td>' +
-                  '<td style="padding:0"><b>{point.y} ({point.z:.1f}%)</b></td></tr>',
-                  footerFormat: '</table>',
-                  shared: true,
-                  useHTML: true
-                },
-                plotOptions: {
-                  column: {
-                    pointWidth: 45,
-                    borderWidth: 0,
-                    grouping: false
-                  }
-                },
-                legend: {
-                  alignColumns: false
-                },
-                series: []
-             },
              chartRegistries: null,
              chartSubjects: {
                standard: null,
@@ -648,7 +609,17 @@
                database: null,
                policy: null
              },
-             chartCountriesAll: null
+             chartCountriesAll: null,
+             auxBarChart : {
+               title: "",
+               xAxisTitle: "",
+               yAxisTitle: "",
+               series: []
+             },
+             auxPieChart: {
+               title: "",
+               data: []
+             }
          }
        },
        async mounted() {
@@ -696,29 +667,31 @@
            _module.prepareRegistryCounts(_module.allDataStats);
            const registries = ["standard", "database", "policy"];
            registries.forEach(function (item) {
-             _module.chartSubjects[item] = cloneDeep(_module.optionChartBars);
+             _module.chartSubjects[item] = cloneDeep(_module.auxBarChart);
              _module.prepareSubject(_module.allDataStatsRegistry[item], _module.chartSubjects[item], item);
-             _module.chartCountries[item] = cloneDeep(_module.optionChartBars);
+             _module.chartCountries[item] = cloneDeep(_module.auxBarChart);
              _module.prepareRecordCountry(_module.allDataStatsRegistry[item], _module.chartCountries[item], item);
-             _module.chartSpecies[item] = cloneDeep(_module.optionChartBars);
+             _module.chartSpecies[item] = cloneDeep(_module.auxBarChart);
              _module.prepareSpecies(_module.allDataStatsRegistry[item], _module.chartSpecies[item], item);
              if (item!== 'policy'){
-               _module.chartLicences[item] = cloneDeep(_module.optionChartBars);
+               _module.chartLicences[item] = cloneDeep(_module.auxBarChart);
                _module.prepareLicences(_module.allDataStatsRegistry[item], _module.chartLicences[item], item);
              }
-             _module.chartMaintainer[item] = cloneDeep(_module.optionChartPie);
+             _module.chartMaintainer[item] = cloneDeep(_module.auxPieChart);
              _module.prepareHasMaintainer(_module.allDataStatsRegistry[item], _module.chartMaintainer[item], item);
              console.log(item);
              console.log(_module.allDataStatsRegistry[item]);
            });
-           _module.chartCountriesAll = cloneDeep(_module.optionChartBars);
+           _module.chartCountriesAll = cloneDeep(_module.auxBarChart);
            _module.prepareRecordCountry(_module.allDataStats, _module.chartCountriesAll,"record");
 
          },
          prepareRegistryCounts(data){
-           this.chartRegistries = cloneDeep(this.optionChartPie);
-           this.chartRegistries.title.text= "Content divided by type";
-           this.chartRegistries.series[0].data = [];
+           let auxObj = {
+             title: "Content divided by type",
+             data: []
+           };
+           this.chartRegistries = auxObj
            let regBucket = data.fairsharing_registry.buckets;
            let nameMap = { policy:"Policies", standard:"Standards", database:"Databases", collection:"Collections" };
            regBucket.forEach(item => {
@@ -727,19 +700,64 @@
                y: item.doc_count,
                url: '/#/search?fairsharingRegistry='+item.key
              };//window.location.hostname+
-             this.chartRegistries.series[0].data.push(vectItem);
+             this.chartRegistries.data.push(vectItem);
+           });
+         },
+         prepareSubject(data,chartField,text){
+           let textPlural = "";
+           if (text === "policy"){
+             textPlural = "policies";
+           }else{
+             textPlural = text+"s";
+           }
+           chartField.title= "Top 10 ontologies subjects covered by "+textPlural;
+           chartField.yAxisTitle = 'Number of '+textPlural;
+           chartField.xAxisTitle = 'Subjects';
+           chartField.series = [];
+           let totRecords = data.subjects.doc_count;
+           let regBucket = data.subjects.buckets.slice(0,10);
+           let varX = 0;
+           let nameC = "";
+           regBucket.forEach(item => {
+             //console.log(item.key);
+             let words = item.key.split(" ");
+             for (let i = 0; i < words.length; i++) {
+               words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+             }
+             nameC = words.join(" ");
+             let vectItem = {
+               name: nameC,
+               cursor: 'pointer',
+               point: {
+                   events: {
+                     click: function() {
+                       location.href = '/#/search?fairsharingRegistry='+text+'&subjects='+item.key;
+                     }
+                   }
+               },
+               data: []
+             };
+             let datItem = {
+               name: "",
+               x: varX,
+               y: item.doc_count,
+               z: 100*item.doc_count/totRecords
+             };
+             vectItem.data.push(datItem);
+             varX +=1;
+             chartField.series.push(vectItem);
            });
          },
          prepareRecordCountry(data,chartField,text){
            let searchText = "";
            if ( text === 'record' ){
-             chartField.title.text = "Top 10 countries by content";
+             chartField.title = "Top 10 countries by content";
            }else{
-             chartField.title.text = "Top 10 "+text+ " producing countries";
+             chartField.title = "Top 10 "+text+ " producing countries";
              searchText = "&fairsharingRegistry="+text;
            }
-           chartField.yAxis.title.text = 'Number of '+text+'s';
-           chartField.xAxis.title.text = 'Countries';
+           chartField.yAxisTitle = 'Number of '+text+'s';
+           chartField.xAxisTitle = 'Countries';
            chartField.series = [];
            let totRecords = data.countries.doc_count;
            let regBucket = data.countries.buckets.slice(0,10);
@@ -778,51 +796,6 @@
              chartField.series.push(vectItem);
            });
          },
-         prepareSubject(data,chartField,text){
-           let textPlural = "";
-           if (text === "policy"){
-             textPlural = "policies";
-           }else{
-             textPlural = text+"s";
-           }
-           chartField.title.text= "Top 10 ontologies subjects covered by "+textPlural;
-           chartField.yAxis.title.text = 'Number of '+textPlural;
-           chartField.xAxis.title.text = 'Subjects';
-           chartField.series = [];
-           let totRecords = data.subjects.doc_count;
-           let regBucket = data.subjects.buckets.slice(0,10);
-           let varX = 0;
-           let nameC = "";
-           regBucket.forEach(item => {
-             //console.log(item.key);
-             let words = item.key.split(" ");
-             for (let i = 0; i < words.length; i++) {
-               words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-             }
-             nameC = words.join(" ");
-             let vectItem = {
-               name: nameC,
-               cursor: 'pointer',
-               point: {
-                   events: {
-                     click: function() {
-                       location.href = '/#/search?fairsharingRegistry='+text+'&subjects='+item.key;
-                     }
-                   }
-               },
-               data: []
-             };
-             let datItem = {
-               name: "",
-               x: varX,
-               y: item.doc_count,
-               z: 100*item.doc_count/totRecords
-             };
-             vectItem.data.push(datItem);
-             varX +=1;
-             chartField.series.push(vectItem);
-           });
-         },
          prepareSpecies(data,chartField,text){
            let textPlural = "";
            if (text === "policy"){
@@ -830,9 +803,9 @@
            }else{
              textPlural = text+"s";
            }
-           chartField.title.text= "Top 10 species covered by "+textPlural;
-           chartField.yAxis.title.text = 'Number of '+textPlural;
-           chartField.xAxis.title.text = 'Species';
+           chartField.title= "Top 10 species covered by "+textPlural;
+           chartField.yAxisTitle = 'Number of '+textPlural;
+           chartField.xAxisTitle = 'Species';
            chartField.series = [];
            let totRecords = data.taxonomies.doc_count;
            let regBucket = data.taxonomies.buckets.slice(0,10);
@@ -866,12 +839,12 @@
          },
          prepareLicences(data,chartField,text){
            if ( text === 'database' ){
-             chartField.title.text = "Top 10 licenses for database content";
+             chartField.title = "Top 10 licenses for database content";
            }else{
-             chartField.title.text = "Top 10 licenses for standards";
+             chartField.title = "Top 10 licenses for standards";
            }
-           chartField.yAxis.title.text = 'Number of '+text+'s';
-           chartField.xAxis.title.text = 'Licenses';
+           chartField.yAxisTitle = 'Number of '+text+'s';
+           chartField.xAxisTitle = 'Licenses';
            chartField.series = [];
            let totRecords = data.licences.doc_count;
            let regBucket = data.licences.buckets.slice(0,10);
@@ -928,8 +901,7 @@
            });
          },
          prepareHasMaintainer(data,chartField,text){
-           chartField.title.text= text[0].toUpperCase() + text.substring(1) +" records that have maintainers";
-           chartField.series[0].data = [];
+           chartField.title = text[0].toUpperCase() + text.substring(1) +" records that have maintainers";
            let regBucket = data.is_maintained.buckets;
            let nameMap = { 0:"No", 1:"Yes" };
            regBucket.forEach(item => {
@@ -938,10 +910,9 @@
                y: item.doc_count,
                url: '/#/search?fairsharingRegistry='+text+"&isMaintained="+item.key_as_string
              };//window.location.hostname+
-             chartField.series[0].data.push(vectItem);
+             chartField.data.push(vectItem);
            });
          }
-
       }
     }
   </script>

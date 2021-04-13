@@ -17,7 +17,7 @@
 <script>
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 export default {
-  name: "BlockSearch",
+  name: "SearchBlock",
   components: {StringSearch}
 }
 </script>

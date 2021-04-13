@@ -39,7 +39,7 @@
 
 <script>
 export default {
-  name: "TabContent",
+  name: "CarouselContent",
   props: {
     header: {
       type: String,

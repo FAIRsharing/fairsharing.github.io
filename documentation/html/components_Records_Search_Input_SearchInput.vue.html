@@ -92,39 +92,38 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;aside>
-    &lt;v-card
-      id="scrollable-holder"
-      :class="['pa-2',responsiveClassObject]"
-      outlined
-      tile
-      elevation="3"
+  &lt;v-card
+    id="scrollable-holder"
+    :class="['pa-2', {responsiveClassObject: $vuetify.breakpoint.mdAndUp, 'fullHeight': $vuetify.breakpoint.smAndDown}]"
+    outlined
+    tile
+    elevation="3"
+    width="100%"
+  >
+    &lt;!-- Search Box -->
+    &lt;string-search placeholder="Search through all data." />
+
+    &lt;hr class="mb-3 mr-2 ml-2 custom-hr">
+
+    &lt;!-- Filter Buttons     -->
+    &lt;FilterButtons />
+
+    &lt;!-- expansion Panels    -->
+    &lt;v-expansion-panels
+      v-if="getFilters.length>0"
+      v-model="panel"
+      multiple
+      flat
+      hover
+      accordion
     >
-      &lt;!-- Search Box -->
-      &lt;string-search placeholder="Search through all data." />
-
-      &lt;hr class="mb-3 mr-2 ml-2 custom-hr">
-
-      &lt;!-- Filter Buttons     -->
-      &lt;FilterButtons />
-
-      &lt;!-- expansion Panels    -->
-      &lt;v-expansion-panels
-        v-if="getFilters.length>0"
-        v-model="panel"
-        multiple
-        flat
-        hover
-        accordion
-      >
-        &lt;filter-autocomplete
-          v-for="filter in setup"
-          :key="filter.filterLabel"
-          :filter="filter"
-        />
-      &lt;/v-expansion-panels>
-    &lt;/v-card>
-  &lt;/aside>
+      &lt;filter-autocomplete
+        v-for="filter in setup"
+        :key="filter.filterLabel"
+        :filter="filter"
+      />
+    &lt;/v-expansion-panels>
+  &lt;/v-card>
 &lt;/template>
 
 &lt;script>
@@ -217,6 +216,11 @@ export default {
 .custom-hr {
   opacity: .5;
 }
+.fullHeight {
+  height: 90vh;
+  overflow: scroll;
+}
+
 &lt;/style>
 </pre>
     </article>

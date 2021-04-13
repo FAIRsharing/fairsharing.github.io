@@ -105,6 +105,7 @@
       &lt;!--   Action Menu &amp; Alert   -->
       &lt;v-row
         v-if="!target &amp;&amp; queryTriggered"
+        class="mx-1"
       >
         &lt;v-col
           cols="12"
@@ -183,6 +184,7 @@
       &lt;div v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error">
         &lt;!-- Top Block -->
         &lt;GeneralInfo
+          class="ma-4"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
@@ -191,24 +193,24 @@
           &lt;!--Left Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             &lt;!-- COLLECTIONS -->
-            &lt;Collections class="mt-5" />
+            &lt;Collections class="ma-4 mb-8" />
             &lt;!-- SUPPORT -->
-            &lt;Support class="mt-5" />
+            &lt;Support class="ma-4 mb-8" />
             &lt;!-- Data Conditions -->
-            &lt;DataCondtions class="mt-5" />
+            &lt;DataCondtions class="ma-4 mb-4" />
           &lt;/v-col>
           &lt;!--Right Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             &lt;!-- Related Content -->
-            &lt;RelatedContent class="mt-5 ml-lg-5" />
+            &lt;RelatedContent class="ma-4 mb-8" />
             &lt;!-- Tools -->
-            &lt;Tools class="mt-5 ml-lg-5" />
+            &lt;Tools class="ma-4 mb-8" />
             &lt;!-- Organisations -->
-            &lt;Organisations class="mt-5 ml-lg-5" />
+            &lt;Organisations class="ma-4 mb-6 mb-sm-4 " />
           &lt;/v-col>
         &lt;/v-row>
         &lt;!-- Bottom Block -->
-        &lt;Publications class="mt-5 mb-10" />
+        &lt;Publications class="mb-10 ma-4" />
       &lt;/div>
     &lt;/v-container>
     &lt;!-- This html is from a safe source -->

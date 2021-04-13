@@ -12,6 +12,7 @@
       <!--   Action Menu & Alert   -->
       <v-row
         v-if="!target && queryTriggered"
+        class="mx-1"
       >
         <v-col
           cols="12"
@@ -90,6 +91,7 @@
       <div v-if="currentRecord['fairsharingRecord'] && !error">
         <!-- Top Block -->
         <GeneralInfo
+          class="ma-4"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
@@ -98,24 +100,24 @@
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- COLLECTIONS -->
-            <Collections class="mt-5" />
+            <Collections class="ma-4 mb-8" />
             <!-- SUPPORT -->
-            <Support class="mt-5" />
+            <Support class="ma-4 mb-8" />
             <!-- Data Conditions -->
-            <DataCondtions class="mt-5" />
+            <DataCondtions class="ma-4 mb-4" />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- Related Content -->
-            <RelatedContent class="mt-5 ml-lg-5" />
+            <RelatedContent class="ma-4 mb-8" />
             <!-- Tools -->
-            <Tools class="mt-5 ml-lg-5" />
+            <Tools class="ma-4 mb-8" />
             <!-- Organisations -->
-            <Organisations class="mt-5 ml-lg-5" />
+            <Organisations class="ma-4 mb-6 mb-sm-4 " />
           </v-col>
         </v-row>
         <!-- Bottom Block -->
-        <Publications class="mt-5 mb-10" />
+        <Publications class="mb-10 ma-4" />
       </div>
     </v-container>
     <!-- This html is from a safe source -->

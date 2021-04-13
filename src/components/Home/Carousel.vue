@@ -20,7 +20,7 @@
         v-for="(tabItem,tabItemIndex) in tabsData.tabs"
         :key="tabItem + '_' + tabItemIndex"
       >
-        <tab-content
+        <TabContent
           :header="tabItem.header"
           :description="tabItem.description"
           :image="tabItem.image"
@@ -33,7 +33,7 @@
 
 <script>
 import {blockTabs} from "@/data/homePageData.json";
-import TabContent from "@/components/Home/BlockTabs/TabContent";
+import TabContent from "@/components/Home/CarouselContent";
 
 export default {
 name: "Carousel",

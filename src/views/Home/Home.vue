@@ -8,7 +8,7 @@
       <Carousel />
       <InfoBlock class="mb-12" />
       <SearchBlock />
-      <block-categories class="mt-12 mb-12" />
+      <CategoryBlock class="mt-12 mb-12" />
     </v-container>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <script
@@ -23,14 +23,14 @@ import Jumbotron from "@/components/Home/Jumbotron";
 import Carousel from "@/components/Home/Carousel";
 import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
-import BlockCategories from "@/components/Home/BlockCategories";
+import CategoryBlock from "@/components/Home/CategoryBlock";
 
 /** Component to handle the front page (landing page)
  *
  */
 export default {
   name: "Home",
-  components:{ Jumbotron, Carousel, InfoBlock, SearchBlock, BlockCategories },
+  components:{ Jumbotron, Carousel, InfoBlock, SearchBlock, CategoryBlock },
   computed: {
     JSONLD: () => {
       return JSON.stringify(  {

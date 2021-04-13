@@ -1,5 +1,5 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import BlockCategories from "@/components/Home/BlockCategories"
+import CategoryBlock from "@/components/Home/CategoryBlock"
 import Vuetify from "vuetify"
 import icons from "@/plugins/icons";
 const vuetify = new Vuetify({'icons':icons});
@@ -11,13 +11,13 @@ describe("BlockCategories.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(BlockCategories, {
+        wrapper = shallowMount(CategoryBlock, {
             vuetify,
         })
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("BlockCategories");
+        expect(wrapper.name()).toMatch("CategoryBlock");
     });
 
 });

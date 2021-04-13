@@ -14,11 +14,13 @@
           <h3>{{ item.title }}</h3>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <!-- eslint-disable-next-line vue/no-v-html -->
+          <!-- This html is from a safe source -->
+          <!-- eslint-disable vue/no-v-html -->
           <p
             class="lato-font-medium"
             v-html="item.content"
           />
+          <!-- eslint-enable vue/no-v-html -->
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>

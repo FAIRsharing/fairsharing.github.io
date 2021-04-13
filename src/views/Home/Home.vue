@@ -5,7 +5,7 @@
       class="text-center pa-0"
     >
       <Jumbotron />
-      <TabsBlock />
+      <Carousel />
       <block-info class="mb-12" />
       <block-search />
       <block-categories class="mt-12 mb-12" />
@@ -19,9 +19,9 @@
 </template>
 
 <script>
-import BlockCategories from "@/components/Home/BlockCategories";
 import Jumbotron from "@/components/Home/Jumbotron";
-import TabsBlock from "@/components/Home/TabsBlock";
+import Carousel from "@/components/Home/Carousel";
+import BlockCategories from "@/components/Home/BlockCategories";
 import BlockSearch from "@/components/Home/BlockSearch";
 import BlockInfo from "@/components/Home/BlockInfo";
     /** Component to handle the front page (landing page)
@@ -29,7 +29,7 @@ import BlockInfo from "@/components/Home/BlockInfo";
      */
     export default {
       name: "Home",
-      components:{BlockInfo, BlockSearch, TabsBlock, Jumbotron, BlockCategories},
+      components:{ BlockInfo, BlockSearch, Carousel, Jumbotron, BlockCategories },
       computed: {
         JSONLD: () => {
           return JSON.stringify(  {

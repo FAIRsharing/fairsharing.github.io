@@ -1,21 +1,20 @@
 import { shallowMount } from "@vue/test-utils";
-import TabContent from "@/components/Home/BlockTabs/TabContent"
+import Jumbotron from "@/components/Home/Jumbotron"
 import Vuetify from "vuetify"
 
 const vuetify = new Vuetify();
 
-describe("TabContent.vue", function(){
+describe("Jumbotron.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(TabContent, {
+        wrapper = shallowMount(Jumbotron, {
             vuetify,
-            stubs: ['router-link']
         })
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("TabContent");
+        expect(wrapper.name()).toMatch("Jumbotron");
     });
 
 });

@@ -189,7 +189,7 @@ import {truncate} from "@/utils/stringUtils";
 import {mapGetters} from "vuex";
 import {blockInfo} from "@/data/homePageData.json"
 export default {
-  name: "BlockInfo",
+  name: "InfoBlock",
   mixins: [truncate],
   data: () => {
     return {

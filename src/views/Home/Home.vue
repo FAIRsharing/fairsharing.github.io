@@ -4,7 +4,7 @@
       fluid
       class="text-center pa-0"
     >
-      <BlockHero />
+      <Jumbotron />
       <block-tabs />
       <block-info class="mb-12" />
       <block-search />
@@ -20,7 +20,7 @@
 
 <script>
 import BlockCategories from "@/components/Home/BlockCategories";
-import BlockHero from "@/components/Home/BlockHero";
+import Jumbotron from "@/components/Home/Jumbotron";
 import BlockTabs from "@/components/Home/BlockTabs";
 import BlockSearch from "@/components/Home/BlockSearch";
 import BlockInfo from "@/components/Home/BlockInfo";
@@ -29,7 +29,7 @@ import BlockInfo from "@/components/Home/BlockInfo";
      */
     export default {
       name: "Home",
-      components:{BlockInfo, BlockSearch, BlockTabs, BlockHero, BlockCategories},
+      components:{BlockInfo, BlockSearch, BlockTabs, Jumbotron, BlockCategories},
       computed: {
         JSONLD: () => {
           return JSON.stringify(  {

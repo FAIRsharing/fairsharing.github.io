@@ -118,9 +118,10 @@
         <Publications class="mt-5 mb-10" />
       </div>
     </v-container>
+    <!-- eslint-disable-next-line vue/no-v-html -->
     <script
-      :v-html="JSONLD"
       type="application/ld+json"
+      v-html="JSONLD"
     />
   </v-main>
 </template>

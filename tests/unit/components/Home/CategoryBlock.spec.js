@@ -7,12 +7,13 @@ const localVue = new createLocalVue()
 
 localVue.use(vuetify);
 
-describe("BlockCategories.vue", function(){
+describe("CategoryBlock.vue", function(){
     let wrapper;
 
     beforeEach(() => {
         wrapper = shallowMount(CategoryBlock, {
             vuetify,
+            stubs: ['router-link']
         })
     });
 

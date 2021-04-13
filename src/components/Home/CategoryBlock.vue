@@ -141,7 +141,7 @@
 import {truncate} from "@/utils/stringUtils";
 import {blockCategories} from "@/data/homePageData.json"
 export default {
-  name: "BlockCategories",
+  name: "CategoryBlock",
   mixins: [ truncate ],
   data: () => {
     return {

@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import BlockTabs from "@/components/Home/BlockTabs"
+import SearchBlock from "@/components/Home/SearchBlock"
 import Vuetify from "vuetify"
 
 const vuetify = new Vuetify();
@@ -8,13 +8,13 @@ describe("BlockSearch.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(BlockTabs, {
+        wrapper = shallowMount(SearchBlock, {
             vuetify,
         })
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("BlockTabs");
+        expect(wrapper.name()).toMatch("SearchBlock");
     });
 
 });

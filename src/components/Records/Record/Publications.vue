@@ -12,7 +12,7 @@
     />
     <v-row
       dense
-      class="ml-2 min-height-40"
+      class="ml-1 min-height-40"
     >
       <v-col
         v-for="(publication,index) in getField('publications')"

@@ -1,0 +1,10 @@
+{
+  "queryName": "fairsharingGraph",
+  "queryParam": null,
+  "fields": [
+    "nodes",
+    "edges",
+    "linkLength",
+    "maxIterations"
+  ]
+}

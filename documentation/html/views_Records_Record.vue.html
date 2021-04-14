@@ -105,21 +105,29 @@
       &lt;!--   Action Menu &amp; Alert   -->
       &lt;v-row
         v-if="!target &amp;&amp; queryTriggered"
-        class="pr-3"
+        class="mx-1"
       >
         &lt;v-col
           cols="12"
-          class="d-flex"
         >
           &lt;div
-            v-if="alreadyClaimed || claimedTriggered"
-            class="d-flex flex-grow-1"
+            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
+            class="d-flex flex-column"
           >
             &lt;v-alert
+              v-if="user().is_curator &amp;&amp; currentRecord.fairsharingRecord['isHidden']"
+              dense
+              type="info"
+              class="mb-2 flex-grow-1"
+            >
+              &lt;span>This record is hidden!&lt;/span>
+            &lt;/v-alert>
+
+            &lt;v-alert
               v-if="alreadyClaimed"
+              dense
               type="warning"
-              style="flex:1"
-              class="mr-3"
+              class="mb-1 flex-grow-1"
             >
               &lt;span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.&lt;/span>
             &lt;/v-alert>
@@ -131,41 +139,44 @@
               Thank you for claiming this record. We will be getting back to you between 48 and 72h.
             &lt;/v-snackbar>
           &lt;/div>
-          &lt;v-spacer v-else />
-          &lt;v-menu
-            class="mt-3"
-            offset-y
+          &lt;div
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            class="text-right"
           >
-            &lt;template #activator="{ on, attrs }">
-              &lt;v-btn
-                class="mt-2"
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="getMenuButtons()"
-              >
-                Actions
-                &lt;v-icon
-                  small
-                  right
+            &lt;v-menu
+              offset-y
+            >
+              &lt;template #activator="{ on, attrs }">
+                &lt;v-btn
+                  class="mt-1"
+                  color="primary"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="getMenuButtons()"
                 >
-                  fa-chevron-down
-                &lt;/v-icon>
-              &lt;/v-btn>
-            &lt;/template>
-            &lt;v-list>
-              &lt;v-list-item
-                v-for="(button, index) in buttons"
-                :key="'button_' + index"
-                :disabled="button.isDisabled()"
-                @click="button.method()"
-              >
-                &lt;v-list-item-title>
-                  {{ button.name() }}
-                &lt;/v-list-item-title>
-              &lt;/v-list-item>
-            &lt;/v-list>
-          &lt;/v-menu>
+                  Actions
+                  &lt;v-icon
+                    small
+                    right
+                  >
+                    fa-chevron-down
+                  &lt;/v-icon>
+                &lt;/v-btn>
+              &lt;/template>
+              &lt;v-list>
+                &lt;v-list-item
+                  v-for="(button, index) in buttons"
+                  :key="'button_' + index"
+                  :disabled="button.isDisabled()"
+                  @click="button.method()"
+                >
+                  &lt;v-list-item-title>
+                    {{ button.name() }}
+                  &lt;/v-list-item-title>
+                &lt;/v-list-item>
+              &lt;/v-list>
+            &lt;/v-menu>
+          &lt;/div>
         &lt;/v-col>
       &lt;/v-row>
 
@@ -173,6 +184,7 @@
       &lt;div v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error">
         &lt;!-- Top Block -->
         &lt;GeneralInfo
+          class="ma-4"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
@@ -181,30 +193,33 @@
           &lt;!--Left Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             &lt;!-- COLLECTIONS -->
-            &lt;Collections class="mt-5" />
+            &lt;Collections class="ma-4 mb-8" />
             &lt;!-- SUPPORT -->
-            &lt;Support class="mt-5" />
+            &lt;Support class="ma-4 mb-8" />
             &lt;!-- Data Conditions -->
-            &lt;DataCondtions class="mt-5" />
+            &lt;DataCondtions class="ma-4 mb-4" />
           &lt;/v-col>
           &lt;!--Right Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             &lt;!-- Related Content -->
-            &lt;RelatedContent class="mt-5 ml-lg-5" />
+            &lt;RelatedContent class="ma-4 mb-8" />
             &lt;!-- Tools -->
-            &lt;Tools class="mt-5 ml-lg-5" />
+            &lt;Tools class="ma-4 mb-8" />
             &lt;!-- Organisations -->
-            &lt;Organisations class="mt-5 ml-lg-5" />
+            &lt;Organisations class="ma-4 mb-6 mb-sm-4 " />
           &lt;/v-col>
         &lt;/v-row>
         &lt;!-- Bottom Block -->
-        &lt;Publications class="mt-5 mb-10" />
+        &lt;Publications class="mb-10 ma-4" />
       &lt;/div>
     &lt;/v-container>
+    &lt;!-- This html is from a safe source -->
+    &lt;!-- eslint-disable vue/no-v-html -->
     &lt;script
-      :v-html="JSONLD"
       type="application/ld+json"
+      v-html="JSONLD"
     />
+    &lt;!-- eslint-enable vue/no-v-html -->
   &lt;/v-main>
 &lt;/template>
 
@@ -273,7 +288,7 @@
             },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
-            }
+            },
         },
         watch: {
             async currentRoute() {
@@ -561,7 +576,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Mon Apr 12th 2021
+		on Wed Apr 14th 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

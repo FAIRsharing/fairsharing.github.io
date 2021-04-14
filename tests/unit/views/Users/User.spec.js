@@ -4,8 +4,8 @@ import Vuex from "vuex"
 import sinon from "sinon"
 import { RouterLinkStub } from '@vue/test-utils';
 import User from "@/views/Users/User.vue"
-import Client from "@/components/Client/RESTClient.js"
-import ExternalClient from "@/components/Client/ExternalClients.js"
+import Client from "@/lib/Client/RESTClient.js"
+import ExternalClient from "@/lib/Client/ExternalClients.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import editorStore from "@/store/editor";

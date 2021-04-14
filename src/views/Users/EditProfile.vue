@@ -113,7 +113,7 @@
 <script>
     import { mapState, mapActions } from "vuex"
     import { isEmail, isRequired, isUrl } from "@/utils/rules.js"
-    import RESTClient from "@/components/Client/RESTClient.js"
+    import RESTClient from "@/lib/Client/RESTClient.js"
 
     const restClient = new RESTClient();
 

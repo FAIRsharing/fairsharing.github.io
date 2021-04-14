@@ -1,5 +1,5 @@
 import GraphClient from "@/components/GraphClient/GraphClient.js"
-import RESTClient from "@/components/Client/RESTClient.js"
+import RESTClient from "@/lib/Client/RESTClient.js"
 import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
 import tagsQuery from "@/components/GraphClient/queries/geTags.json"

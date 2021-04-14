@@ -1,7 +1,7 @@
 import Vue from "vue"
 import { isEqual } from "lodash"
 import Client from "../components/GraphClient/GraphClient.js"
-import RESTClient from "@/components/Client/RESTClient.js"
+import RESTClient from "@/lib/Client/RESTClient.js"
 import recordQuery from "../components/GraphClient/queries/getRecord.json"
 import recordHistory from '../components/GraphClient/queries/getRecordHistory.json'
 import recordOrganisationsQuery from "../components/GraphClient/queries/getRecordOrganisations.json"

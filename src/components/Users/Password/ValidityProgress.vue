@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import RESTClient from "@/components/Client/RESTClient.js"
+    import RESTClient from "@/lib/Client/RESTClient.js"
 
     let restClient = new RESTClient();
 

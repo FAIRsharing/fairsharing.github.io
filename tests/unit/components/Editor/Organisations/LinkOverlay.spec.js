@@ -1,7 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
-import RestClient from "@/components/Client/RESTClient.js"
+import RestClient from "@/lib/Client/RESTClient.js"
 import LinkOverlay from "@/components/Editor/Organisations/LinkOverlay.vue"
 import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"

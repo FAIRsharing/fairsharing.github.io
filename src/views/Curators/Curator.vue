@@ -210,7 +210,7 @@
     import headersTables from "@/data/headersCuratorDashboard.json"
     import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
     import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
-    import RestClient from "@/components/Client/RESTClient.js"
+    import RestClient from "@/lib/Client/RESTClient.js"
     import Icon from "@/components/Icon"
 
 

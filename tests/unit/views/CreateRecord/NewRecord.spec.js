@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import RestClient from "@/components/Client/RESTClient.js";
+import RestClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/components/GraphClient/GraphClient.js";
 import CreateRecord from "@/views/CreateRecord/NewRecord.vue"
 import usersStore from "@/store/users.js";

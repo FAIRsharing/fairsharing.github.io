@@ -5,7 +5,7 @@ import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 import Record from "@/views/Records/Record.vue";
 import GraphClient from "@/components/GraphClient/GraphClient.js";
-import RESTClient from "@/components/Client/RESTClient.js";
+import RESTClient from "@/lib/Client/RESTClient.js";
 import record from "@/store/recordData.js";
 import users from "@/store/users.js";
 import sinon from "sinon";

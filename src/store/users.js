@@ -1,4 +1,4 @@
-import RESTClient from "@/components/Client/RESTClient.js"
+import RESTClient from "@/lib/Client/RESTClient.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js"
 import { initStateMessages, initUserDataState, validateToken } from "./utils.js"
 import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"

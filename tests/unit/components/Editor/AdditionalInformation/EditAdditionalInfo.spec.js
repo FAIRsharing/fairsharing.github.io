@@ -7,7 +7,7 @@ import userStore from "@/store/users.js";
 import editorStore from "@/store/editor.js"
 import VueRouter from "vue-router";
 import additionalInformationFixture from "@/../tests/fixtures/additionalInformation.json"
-import RestClient from "@/components/Client/RESTClient.js"
+import RestClient from "@/lib/Client/RESTClient.js"
 const sinon = require('sinon');
 const VueScrollTo = require('vue-scrollto');
 

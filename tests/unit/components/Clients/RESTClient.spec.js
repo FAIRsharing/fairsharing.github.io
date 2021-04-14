@@ -1,4 +1,4 @@
-import Client from "@/components/Client/RESTClient.js";
+import Client from "@/lib/Client/RESTClient.js";
 import Vue from "vue";
 const sinon = require("sinon");
 

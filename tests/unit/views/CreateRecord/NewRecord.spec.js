@@ -3,14 +3,14 @@ import Vuex from "vuex";
 import Vuetify from "vuetify"
 import VueRouter from "vue-router"
 import RestClient from "@/lib/Client/RESTClient.js";
-import GraphClient from "@/components/GraphClient/GraphClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import CreateRecord from "@/views/CreateRecord/NewRecord.vue"
 import usersStore from "@/store/users.js";
 import recordStore from "@/store/recordData.js";
 import editorStore from "@/store/editor.js";
-import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
-import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
-import tagsQuery from "@/components/GraphClient/queries/geTags.json"
+import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
+import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
+import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

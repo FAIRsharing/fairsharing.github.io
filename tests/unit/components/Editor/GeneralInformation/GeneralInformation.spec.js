@@ -7,11 +7,11 @@ import GeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformati
 import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
-import GraphClient from "@/components/GraphClient/GraphClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import RestClient from "@/lib/Client/RESTClient.js"
-import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
-import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"
-import tagsQuery from "@/components/GraphClient/queries/geTags.json"
+import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
+import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
+import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
 const sinon = require("sinon");
 const VueScrollTo = require('vue-scrollto');
 

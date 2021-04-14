@@ -7,7 +7,7 @@ import recordStore from "@/store/recordData.js";
 import editorStore from "@/store/editor.js";
 import userStore from "@/store/users.js";
 import RestClient from "@/lib/Client/RESTClient.js"
-import GraphClient from "@/components/GraphClient/GraphClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import relationTypes from "@/../tests/fixtures/relationTypes.json"
 const sinon = require("sinon");
 

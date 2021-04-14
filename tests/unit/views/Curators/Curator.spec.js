@@ -60,6 +60,7 @@ describe("Curator.vue", () => {
       expect(wrapper.name()).toMatch(title);
       expect(wrapper.vm.approvalRequired.length).toBe(3);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazu");//Name reduced number to six characters
+      expect(wrapper.vm.approvalRequired[1].creator).toBe("unknown");
       expect(wrapper.vm.curatorList.length).toBe(4);//Added "none" in curatorList and not adding one that is "dev_curator"
       expect(wrapper.vm.curatorList[0].userName).toBe("Luther");//It is the super_curator
       expect(wrapper.vm.curatorList[1].userName).toBe("Mary the Great Curator");//it is the senior_curator

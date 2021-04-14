@@ -21,7 +21,7 @@ export const mutations = {
                 records: {},
                 is_curator: user.is_curator,
                 role: user.role,
-                watchedRecords: user.watchedRecords || []
+                watchedRecords: user['watched_records'] || []
             }
         };
         localStorage.setItem("user", JSON.stringify(state.user()));
@@ -144,7 +144,9 @@ export const mutations = {
         };
     },
     changeWatched(state, watchedRecords) {
-        state.user().watchedRecords = watchedRecords;
+        let user = state.user();
+        user.watchedRecords = watchedRecords;
+        state.user = () => { return user };
         localStorage.setItem("user", JSON.stringify(state.user()));
     }
 };

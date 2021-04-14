@@ -278,7 +278,7 @@
     import { mapActions, mapState, mapMutations } from "vuex"
     import UserProfileMenu from "@/components/Users/UserProfileMenu";
     import Loaders from "@/components/Navigation/Loaders";
-    import ExternalClient from "@/components/Client/ExternalClients.js"
+    import ExternalClient from "@/lib/Client/ExternalClients.js"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
     import { cleanString } from "@/utils/stringUtils"
 

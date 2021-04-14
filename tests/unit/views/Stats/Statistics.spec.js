@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import sinon from "sinon"
 import VueRouter from "vue-router"
-import GraphClient from "@/components/GraphClient/GraphClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import Stats from "@/views/Stats/Statistics.vue"
 import dataStats from "../../../fixtures/getRecordsForStats.json"
 

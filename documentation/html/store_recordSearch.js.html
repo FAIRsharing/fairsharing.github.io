@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: store/searchFilters.js</title>
+	<title>FAIRsharing.org Source: store/recordSearch.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,158 +86,123 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: store/searchFilters.js</h1>
+		<h1 class="page-title">Source: store/recordSearch.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import filterMapping from "@/data/FiltersLabelMapping.json"
-import GraphQLClient from "@/lib/GraphClient/GraphClient.js"
-import query from "@/lib/GraphClient/queries/getFilters.json";
-import {isEqual} from 'lodash'
-import buttonOptions from '@/data/ButtonOptions.json'
+            class="sunlight-highlight-javascript linenums">import Client from "@/lib/GraphClient/GraphClient.js"
+import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
+import filterMapping from "@/data/FiltersLabelMapping.json"
 
-const graphClient = new GraphQLClient();
+let client = new Client();
 
 export const mutations = {
-    setFilters(state, data) {
-        state.filtersStatistic = data['searchFairsharingRecords']['aggregations'];
-        state.rawFilters = buildFilters(state.filtersStatistic);
-        state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' &amp;&amp; item.filterName !== 'status'));
+    setRecords(state, data) {
+        state.records = data['records'];
+        state.facets = buildFacets(data["aggregations"]);
+        state.totalPages = data["totalPages"];
+        state.perPage = data["perPage"];
+        state.currentPage = data["currentPage"];
+        state.hits = data["totalCount"];
     },
-    setFilterButtons(state) {
-        state.filterButtons.push({
-            "data": [
-                {
-                    "title": "Match all terms",
-                    "active": true,
-                    "filterName": "searchAnd",
-                    "value": true
-                },
-                {
-                    "title": "Match any term",
-                    "active": false,
-                    "filterName": "searchAnd",
-                    "value": false
-                }
-            ],
-            "curator_only": false
-        });
-        state.rawFilters.forEach(item => {
-            // TODO: Return here if the button is marked as curator-only and the user isn't logged in as a curator.
-            if (item.type === 'Boolean') {
-                let ObjectModel = buttonOptions[item.filterName];
-                state.filterButtons.push(ObjectModel);
-            }
-            else if (item.filterName === 'status') {
-                let ObjectModel = buttonOptions.status.data;
-                ObjectModel.forEach(function (button) {
-                    if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
-                        button.value = item.values[button["apiIndex"]];
-                    }
-                });
-                state.filterButtons.push({data: ObjectModel, curator_only: false});
-            }
-        });
+    resetRecords(state) {
+        recordsQuery.queryParam = null;
+        state.records = [];
     },
-    setLoadingStatus(state, status){
-        state.isLoadingFilters = status;
+    resetPages(state) {
+        state.hits = null;
+        state.perPage = null;
+        state.currentPage = null;
+        state.totalPages = null;
     },
-    resetFilterButtons(state, itemParentIndex) {
-        state.filterButtons[itemParentIndex].data.map((item) => {
-            item.active = false;
-        });
+    setLoadingStatus(state, status) {
+        state.loading = status;
     },
-    activateButton(state, item) {
-        state.filterButtons[item.itemParentIndex].data.map((filterItem) => {
-            if (isEqual(filterItem, item.activeItem)) {
-                filterItem.active = true;
-            }
-        });
+    cleanRecordsStore(state) {
+        state.records = [];
+        state.facets = [];
+        state.hits = null;
+        state.loading = false;
+        state.totalPages = null;
+        state.perPage = null;
+        state.currentPage = null;
     }
 };
 export const actions = {
-    resetFilterButtons(state, itemParentIndex) {
-        this.commit('searchFilters/resetFilterButtons', itemParentIndex)
+    async fetchRecords(state, params) {
+        this.commit("records/setLoadingStatus", true);
+        this.commit("records/resetRecords");
+        this.commit("records/resetPages");
+        if (Object.keys(params).length > 0) {
+            recordsQuery.queryParam = params;
+        }
+        const data = await client.executeQuery(recordsQuery);
+        this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        this.commit("records/setLoadingStatus", false);
     },
-    activateButton(state, item) {
-        this.commit('searchFilters/activateButton', item)
+    resetRecords() {
+        this.commit("records/resetRecords");
     },
-    async assembleFilters(){
-        this.commit("searchFilters/setLoadingStatus", true);
-        let data = await graphClient.executeQuery(query);
-        this.commit('searchFilters/setFilters', data);
-        this.commit('searchFilters/setFilterButtons');
-        this.commit("searchFilters/setLoadingStatus", false);
-    }
 };
 export const getters = {
-    getFilters: (state) => {
-        let output = [];
-        state.filters.forEach(function (filter) {
-            output.push({
-                filterName: filter.filterName,
-                filterLabel: filter.filterLabel
-            })
-        });
-        return output
+    getFilter: (state) => (facetName) => {
+        if (state.facets.length > 0) {
+            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
+            currentFacet['values'] = currentFacet['buckets'];
+            return currentFacet;
+        }
+        return [];
     },
-    getFiltersStatisticCount: (state) => (option) => {
-        return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
+    getRecordsLength: (state) => {
+        return state.records.length;
     }
 };
 
 /**
- * The searchFilters store trigger a single field query to searchFairsharingRecords, gets the aggregation array and
- * builds the filtering system to be used by advanced search functions.
+ * The records store handles the requests related to records (searchFairsharingRecords and fairsharingRecord).
  * @type {Object}
  */
-let filtersStore = {
+let recordsStore = {
     namespaced: true,
     state: {
-        rawFilters: [],
-        filters: [],
-        filtersStatistic: [],
-        filterButtons: [],
-        isLoadingFilters: false
+        records: [],
+        facets: [],
+        hits: null,
+        loading: false,
+        totalPages: null,
+        perPage: null,
+        currentPage: null
     },
     mutations: mutations,
     actions: actions,
     getters: getters
 };
-export default filtersStore;
+export default recordsStore;
 
 /**
- * Given a searchFairsharingRecords aggregations array, build the values used by the advanced search widgets
- * @param {Array} val - an array of raw filters coming from the api as data['searchFairsharingRecords']['aggregations']
- * @returns {Array} filters - ready to use filters for the advanced search components
+ * Given an object containing the raw facets coming from the client and a mapping object , build the ready to use facets
+ * for usage by the Vue components.
+ * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
+ * @returns {Array} output - the array of ready to use facets containing a name, a label and values
  */
+export const buildFacets = function (rawFacets) {
+    let output = [];
+    const mapper = filterMapping["autocomplete"];
 
-export const buildFilters = function (val) {
-    let filters = [];
-    let filtersLabels = filterMapping['autocomplete'];
-    Object.keys(val).forEach(function (key) {
-        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
-            let filter = filtersLabels[key];
-            filter.values = null;
-            let filterValues = [];
-
-            let buckets = val[key]['buckets'];
-            buckets.forEach(function (bucket) {
-                if (Object.prototype.hasOwnProperty.call(
-                    bucket,
-                    "key_as_string")) {
-                    filterValues.push(bucket["key_as_string"]);
-                }
-                else {
-                    filterValues.push(bucket['key']);
+    Object.keys(rawFacets).forEach(function (facetName) {
+        if (Object.prototype.hasOwnProperty.call(mapper, facetName)) {
+            let localFacet = mapper[facetName];
+            rawFacets[facetName]["buckets"].forEach(function (bucket) {
+                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
+                    bucket["key"] = bucket["key_as_string"];
                 }
             });
-            filter.values = filterValues;
-            filters.push(filter);
+            localFacet['buckets'] = rawFacets[facetName]['buckets'];
+            output.push(localFacet);
         }
     });
-    return filters;
+    return output;
 };
 </pre>
     </article>

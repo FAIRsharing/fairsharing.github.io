@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: store/searchFilters.js</title>
+	<title>FAIRsharing.org Source: lib/GraphClient/GraphClient.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,159 +86,156 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: store/searchFilters.js</h1>
+		<h1 class="page-title">Source: lib/GraphClient/GraphClient.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import filterMapping from "@/data/FiltersLabelMapping.json"
-import GraphQLClient from "@/lib/GraphClient/GraphClient.js"
-import query from "@/lib/GraphClient/queries/getFilters.json";
-import {isEqual} from 'lodash'
-import buttonOptions from '@/data/ButtonOptions.json'
+            class="sunlight-highlight-javascript linenums">const axios = require("axios");
+import Fragments from "./queries/fragments/fragments.json"
 
-const graphClient = new GraphQLClient();
+class GraphQLClient {
 
-export const mutations = {
-    setFilters(state, data) {
-        state.filtersStatistic = data['searchFairsharingRecords']['aggregations'];
-        state.rawFilters = buildFilters(state.filtersStatistic);
-        state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' &amp;&amp; item.filterName !== 'status'));
-    },
-    setFilterButtons(state) {
-        state.filterButtons.push({
-            "data": [
-                {
-                    "title": "Match all terms",
-                    "active": true,
-                    "filterName": "searchAnd",
-                    "value": true
-                },
-                {
-                    "title": "Match any term",
-                    "active": false,
-                    "filterName": "searchAnd",
-                    "value": false
+    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
+     * Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
+     * also careful, its constructor is async !!
+     * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
+     */
+    constructor(){
+        this.initalizeHeader();
+        if (GraphQLClient._instance){
+            return GraphQLClient._instance
+        }
+        GraphQLClient._instance = this;
+        this.url = process.env.VUE_APP_API_ENDPOINT + "/graphql";
+    }
+
+    /**
+     * Execute the given query (coming from a json file, see /queries/getRecords.json)
+     * @param {Object} query - the query coming from the JSON file
+     * sending to the API.
+     * @returns {Promise}
+     */
+    async executeQuery(query){
+        let client = this;
+        let queryString = {
+            query: `{${client.buildQuery(query)}}`
+        };
+        let resp = await this.getData(queryString);
+        if (resp.data.errors) {
+            return resp.data.errors;
+        }
+        return resp.data.data
+    }
+
+    /**
+     * Takes the query, post it with axios and returns the raw data
+     * @param {Object} queryString - processed request coming out of buildQuery() or a GraphQL query string
+     * @returns {Promise} - an axios promise representing the server response.
+     */
+    async getData(queryString){
+        let client = this;
+        const fullQuery = {
+            method: "post",
+            baseURL: client.url,
+            data:  queryString,
+            headers: client.headers
+        };
+        return await axios(fullQuery);
+    }
+
+    /**
+     * Transform the JSON query into a string for graphQL
+     * @param {Object} query - the query coming from the JSON file
+     * @returns {Object} {query: queryString} - a valid graphQL query string to execute
+     */
+    buildQuery(query){
+        let client = this;
+        let queryString = `${query["queryName"]}`; // query name
+
+        // Handle query parameters
+        if (query.queryParam) {
+            queryString += "(";
+            Object.keys(query.queryParam).forEach(function(key){
+                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
+                    queryString += `${key}:${query.queryParam[key]} `;
                 }
-            ],
-            "curator_only": false
-        });
-        state.rawFilters.forEach(item => {
-            // TODO: Return here if the button is marked as curator-only and the user isn't logged in as a curator.
-            if (item.type === 'Boolean') {
-                let ObjectModel = buttonOptions[item.filterName];
-                state.filterButtons.push(ObjectModel);
-            }
-            else if (item.filterName === 'status') {
-                let ObjectModel = buttonOptions.status.data;
-                ObjectModel.forEach(function (button) {
-                    if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
-                        button.value = item.values[button["apiIndex"]];
-                    }
-                });
-                state.filterButtons.push({data: ObjectModel, curator_only: false});
-            }
-        });
-    },
-    setLoadingStatus(state, status){
-        state.isLoadingFilters = status;
-    },
-    resetFilterButtons(state, itemParentIndex) {
-        state.filterButtons[itemParentIndex].data.map((item) => {
-            item.active = false;
-        });
-    },
-    activateButton(state, item) {
-        state.filterButtons[item.itemParentIndex].data.map((filterItem) => {
-            if (isEqual(filterItem, item.activeItem)) {
-                filterItem.active = true;
-            }
-        });
-    }
-};
-export const actions = {
-    resetFilterButtons(state, itemParentIndex) {
-        this.commit('searchFilters/resetFilterButtons', itemParentIndex)
-    },
-    activateButton(state, item) {
-        this.commit('searchFilters/activateButton', item)
-    },
-    async assembleFilters(){
-        this.commit("searchFilters/setLoadingStatus", true);
-        let data = await graphClient.executeQuery(query);
-        this.commit('searchFilters/setFilters', data);
-        this.commit('searchFilters/setFilterButtons');
-        this.commit("searchFilters/setLoadingStatus", false);
-    }
-};
-export const getters = {
-    getFilters: (state) => {
-        let output = [];
-        state.filters.forEach(function (filter) {
-            output.push({
-                filterName: filter.filterName,
-                filterLabel: filter.filterLabel
-            })
-        });
-        return output
-    },
-    getFiltersStatisticCount: (state) => (option) => {
-        return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
-    }
-};
-
-/**
- * The searchFilters store trigger a single field query to searchFairsharingRecords, gets the aggregation array and
- * builds the filtering system to be used by advanced search functions.
- * @type {Object}
- */
-let filtersStore = {
-    namespaced: true,
-    state: {
-        rawFilters: [],
-        filters: [],
-        filtersStatistic: [],
-        filterButtons: [],
-        isLoadingFilters: false
-    },
-    mutations: mutations,
-    actions: actions,
-    getters: getters
-};
-export default filtersStore;
-
-/**
- * Given a searchFairsharingRecords aggregations array, build the values used by the advanced search widgets
- * @param {Array} val - an array of raw filters coming from the api as data['searchFairsharingRecords']['aggregations']
- * @returns {Array} filters - ready to use filters for the advanced search components
- */
-
-export const buildFilters = function (val) {
-    let filters = [];
-    let filtersLabels = filterMapping['autocomplete'];
-    Object.keys(val).forEach(function (key) {
-        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
-            let filter = filtersLabels[key];
-            filter.values = null;
-            let filterValues = [];
-
-            let buckets = val[key]['buckets'];
-            buckets.forEach(function (bucket) {
-                if (Object.prototype.hasOwnProperty.call(
-                    bucket,
-                    "key_as_string")) {
-                    filterValues.push(bucket["key_as_string"]);
+                else if (typeof query.queryParam[key] === "string") {
+                    queryString += `${key}:"${query.queryParam[key]}" `;
                 }
                 else {
-                    filterValues.push(bucket['key']);
+                    let param = [];
+                    query.queryParam[key].forEach(function(paramVal){
+                        param.push("\"" + paramVal + "\"");
+                    });
+                    queryString += `${key}:[${param.join(",")}]`;
                 }
             });
-            filter.values = filterValues;
-            filters.push(filter);
+            queryString += ")";
         }
-    });
-    return filters;
-};
+
+        // Handle query fields
+        if (query.fields){
+            queryString += "{";
+            query.fields.forEach(function(field){
+                if (typeof field === "string"){
+                    queryString += ` ${field}`;
+                }
+                if (typeof field === "object"){
+                    if ("$ref" in field){
+                        let myRef = Fragments[field["$ref"]];
+                        for (let subField of myRef){
+                            if (typeof subField === "string"){
+                                queryString += ` ${subField}`;
+                            }
+                            else {
+                                queryString += ` ${client.buildQuery(subField)}`;
+                            }
+                        }
+                    }
+                    else {
+                        queryString += ` ${field.name}{`;
+                        field.fields.forEach(function(subField){
+                              if (typeof subField === "string"){
+                                  queryString += `${subField} `;
+                              }
+                              else {
+                                  queryString += `${client.buildQuery(subField)}`;
+                              }
+                        });
+                        queryString += "}";
+                    }
+                }
+            });
+            queryString += "}";
+        }
+        return queryString;
+    }
+
+    /**
+    * Add the authorization token to the headers
+    * @param {String} jwt - the user json web token
+    */
+    setHeader(jwt){
+      this.headers['Authorization'] = `Bearer ${jwt}`;
+    }
+
+    initalizeHeader(){
+      this.headers = {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+      };
+      this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
+      /* istanbul ignore if */
+      if (this.headers['X-Client-Id'] === undefined){
+          delete this.headers['X-Client-Id']
+      }
+    }
+
+
+}
+
+export default GraphQLClient;
 </pre>
     </article>
 </section>

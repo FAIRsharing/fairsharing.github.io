@@ -1,5 +1,5 @@
-import Client from "@/components/GraphClient/GraphClient.js"
-import query from "@/components/GraphClient/queries/getRecords.json"
+import Client from "@/lib/GraphClient/GraphClient.js"
+import query from "@/lib/GraphClient/queries/getRecords.json"
 
 const sinon = require("sinon");
 const axios = require("axios");

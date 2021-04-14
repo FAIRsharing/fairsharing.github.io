@@ -1,8 +1,8 @@
-import RESTClient from "@/components/Client/RESTClient.js"
-import GraphClient from "@/components/GraphClient/GraphClient.js"
+import RESTClient from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import { initStateMessages, initUserDataState, validateToken } from "./utils.js"
-import getUserQuery from "@/components/GraphClient/queries/getUserMeta.json"
-import getPublicUserQuery from "@/components/GraphClient/queries/getPublicUserMeta.json"
+import getUserQuery from "@/lib/GraphClient/queries/getUserMeta.json"
+import getPublicUserQuery from "@/lib/GraphClient/queries/getPublicUserMeta.json"
 
 let client = new RESTClient();
 let graphClient = new GraphClient();

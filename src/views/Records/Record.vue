@@ -132,7 +132,7 @@
 
 <script>
     import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
-    import Client from '@/components/GraphClient/GraphClient.js'
+    import Client from '@/lib/GraphClient/GraphClient.js'
     import RestClient from "@/lib/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";

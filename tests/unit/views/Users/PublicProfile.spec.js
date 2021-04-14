@@ -5,7 +5,7 @@ import sinon from "sinon"
 import PublicProfile from "@/views/Users/PublicProfile"
 import Client from "@/lib/Client/RESTClient.js"
 import ExternalClient from "@/lib/Client/ExternalClients.js"
-import GraphClient from "@/components/GraphClient/GraphClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import editorStore from "@/store/editor";
 import ORCIDfixture from "@/../tests/fixtures/ORCIDpub.json"

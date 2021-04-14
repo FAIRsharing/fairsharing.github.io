@@ -4,7 +4,7 @@ import CreateRecord from "@/views/CreateRecord/Editor.vue"
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
 import editorStore from "@/store/editor.js"
-import GraphClient from "@/components/GraphClient/GraphClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import RESTClient from "@/lib/Client/RESTClient.js"
 import metaTemplate from "../../../fixtures/metaTemplate.json"
 import VueRouter from "vue-router";

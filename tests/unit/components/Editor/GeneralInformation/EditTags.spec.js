@@ -4,7 +4,7 @@ import Vuetify from "vuetify"
 import EditTags from "@/components/Editor/GeneralInformation/EditTags.vue"
 import recordStore from "@/store/recordData.js";
 import editorStore from "@/store/editor.js";
-import GraphClient from "@/components/GraphClient/GraphClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 const sinon = require("sinon");
 const VueScrollTo = require('vue-scrollto');
 

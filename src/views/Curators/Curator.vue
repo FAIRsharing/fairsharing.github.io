@@ -203,8 +203,8 @@
 
 <script>
   // && (user().role==='super_curator' || user().role==='senior_curator')"
-    import GraphClient from "@/components/GraphClient/GraphClient.js"
-    import getCurationRecords from "@/components/GraphClient/queries/curators/getSummary.json"
+    import GraphClient from "@/lib/GraphClient/GraphClient.js"
+    import getCurationRecords from "@/lib/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
     import headersTables from "@/data/headersCuratorDashboard.json"

@@ -25,7 +25,7 @@
       <!--  Content  -->
       <v-row no-gutters>
         <v-col
-          v-if="$vuetify.breakpoint.mdAndUp"
+          v-if="$vuetify.breakpoint.lgAndUp"
           cols="12"
           lg="4"
           md="4"

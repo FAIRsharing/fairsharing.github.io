@@ -2,7 +2,7 @@ import Vue from "vue"
 import Vuex from "vuex"
 import searchFilters from "./searchFilters.js"
 import records from "./records.js"
-import record from "./record.js"
+import record from "./recordData.js"
 import introspection from "./introspector.js"
 import users from './users.js'
 import uiController from "./uiController";

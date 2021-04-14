@@ -6,7 +6,7 @@ import RestClient from "@/components/Client/RESTClient.js";
 import GraphClient from "@/components/GraphClient/GraphClient.js";
 import CreateRecord from "@/views/CreateRecord/NewRecord.vue"
 import usersStore from "@/store/users.js";
-import recordStore from "@/store/record.js";
+import recordStore from "@/store/recordData.js";
 import editorStore from "@/store/editor.js";
 import countriesQuery from "@/components/GraphClient/queries/getCountries.json"
 import typesQuery from "@/components/GraphClient/queries/getRecordsTypes.json"

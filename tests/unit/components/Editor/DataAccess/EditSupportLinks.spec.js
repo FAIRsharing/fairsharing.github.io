@@ -4,7 +4,7 @@ import Vuex from "vuex"
 import Vuetify from "vuetify"
 import ExternalClients from "@/components/Client/ExternalClients.js"
 import EditSupportLinks from "@/components/Editor/DataAccess/EditSupportLinks.vue"
-import recordStore from "@/store/record.js"
+import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 const sinon = require("sinon");
 

@@ -6,13 +6,11 @@
     </h1>
 
     <!--  main_subtitle  -->
-    <!-- This html is from a safe source -->
     <!-- eslint-disable vue/no-v-html -->
     <p
       :class="['mb-8 lato-font-medium lato-text-md',{'lato-text-lg':$vuetify.breakpoint.xlOnly }]"
       v-html="stakeholdersData.main_subtitle"
     />
-    <!-- eslint-enable vue/no-v-html -->
 
     <!--  main_title_2 -->
     <h2 class="text-h4 text-xl-h3 mb-2 mb-xl-6">
@@ -29,9 +27,9 @@
       </h3>
       <p
         :class="['mb-8 lato-font-medium lato-text-md',{'lato-text-lg':$vuetify.breakpoint.xlOnly }]"
-      >
-        {{ item.content }}
-      </p>
+        v-html="item.content"
+      />
+      <!-- eslint-enable vue/no-v-html -->
     </div>
   </main>
 </template>
@@ -47,3 +45,13 @@ import {stakeholders} from '@/data/stakeholdersData.json'
       }
     }
 </script>
+<style>
+p {
+  /* make the line of paragraph to break when reaching /n in a string
+   same time having breaking lines and justify texts
+   */
+  white-space: pre-line;
+  text-align: justify;
+  -moz-text-align-last: justify;
+}
+</style>

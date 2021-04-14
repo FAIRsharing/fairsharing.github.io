@@ -6,6 +6,7 @@
     >
       <!--   error   -->
       <div v-if="error">
+        {{error}}
         <NotFound />
       </div>
 
@@ -287,10 +288,10 @@
                 this.claimedTriggered = false;
                 try {
                   if (this.target) await _module.fetchPreviewRecord(this.target);
-                    else await _module.fetchRecord({
-                        id: this.currentRoute,
-                        token: _module.user().credentials.token
-                      });
+                  else await _module.fetchRecord({
+                      id: this.currentRoute,
+                      token: (_module.user().credentials) ? _module.user().credentials.token : null
+                  });
                 }
                 catch (e) {
                     this.error = e.message;
@@ -327,7 +328,7 @@
               }
               let data = {
                 watched_record_ids: records
-              }
+              };
               let response = await this.updateWatchedRecords(data);
               // Refresh user data to reload followed record status.
               if (response.modification === 'success'){
@@ -337,7 +338,7 @@
             },
             isWatching() {
               return  this.currentRecord['fairsharingRecord'].id
-                      && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
+                      && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
             },
             getMenuButtons(){
               let _module = this;

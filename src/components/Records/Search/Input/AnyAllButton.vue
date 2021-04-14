@@ -31,8 +31,7 @@
       mounted() {
         this.$nextTick(function () {
           const _module = this;
-          let param = (_module.$route.query.searchAnd) ? JSON.parse(_module.$route.query.searchAnd) : true;
-          _module.searchAnd = param;
+          _module.searchAnd = (_module.$route.query.searchAnd) ? JSON.parse(_module.$route.query.searchAnd) : true;
         });
       },
       methods: {

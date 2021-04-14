@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
     <v-navigation-drawer
-      v-if="$vuetify.breakpoint.smAndDown"
+      v-if="$vuetify.breakpoint.mdAndDown"
       v-model="UIGeneralStatus.drawerVisibilityState"
       app
       left

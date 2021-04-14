@@ -25,23 +25,25 @@
                 color="white"
                 style="opacity: .7"
               >
-                {{ $vuetify.icons.values["recommended"].icon }}
+                {{ $vuetify.icons.values[blockCategories.firstColumn.icon].icon }}
               </v-icon>
             </div>
             <v-card-title class="d-inline">
-              Recommendations
+              {{ blockCategories.firstColumn.title }}
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('Standards and/or databases recommended by journal or funder data policies.',100) }}
+            {{ truncate(blockCategories.firstColumn.description,100) }}
           </v-card-text>
           <v-card-actions class="text-center d-block">
-            <v-btn
-              color="primary"
-              text
-            >
-              Find
-            </v-btn>
+            <router-link :to="blockCategories.firstColumn.link">
+              <v-btn
+                color="primary"
+                text
+              >
+                {{ blockCategories.firstColumn.buttonTitle }}
+              </v-btn>
+            </router-link>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -63,23 +65,25 @@
             <v-img
               width="400"
               height="100"
-              :src="$vuetify.icons.values['collections'].icon"
+              :src="$vuetify.icons.values[blockCategories.secondColumn.icon].icon"
               contain
             />
             <v-card-title class="d-inline">
-              Collections
+              {{ blockCategories.secondColumn.title }}
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('Standards and/or databases grouped by domain, species or organization.',100) }}
+            {{ truncate(blockCategories.secondColumn.description,100) }}
           </v-card-text>
           <v-card-actions class="text-center d-block">
-            <v-btn
-              color="primary"
-              text
-            >
-              Discover
-            </v-btn>
+            <router-link :to="blockCategories.secondColumn.link">
+              <v-btn
+                color="primary"
+                text
+              >
+                {{ blockCategories.secondColumn.buttonTitle }}
+              </v-btn>
+            </router-link>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -107,7 +111,7 @@
                 color="white"
                 style="opacity: .7"
               >
-                {{ $vuetify.icons.values["educational"].icon }}
+                {{ $vuetify.icons.values[blockCategories.thirdColumn.icon].icon }}
               </v-icon>
             </div>
             <v-card-title class="d-inline">
@@ -115,15 +119,17 @@
             </v-card-title>
           </div>
           <v-card-text class="text--primary text-justify height-90">
-            {{ truncate('About standards, their use in databases and policies, and how we can help you.',100) }}
+            {{ truncate(blockCategories.thirdColumn.description,100) }}
           </v-card-text>
           <v-card-actions class="text-center d-block">
-            <v-btn
-              color="primary"
-              text
-            >
-              Learn
-            </v-btn>
+            <router-link :to="blockCategories.thirdColumn.link">
+              <v-btn
+                color="primary"
+                text
+              >
+                {{ blockCategories.thirdColumn.buttonTitle }}
+              </v-btn>
+            </router-link>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -133,10 +139,15 @@
 
 <script>
 import {truncate} from "@/utils/stringUtils";
-
+import {blockCategories} from "@/data/homePageData.json"
 export default {
-name: "CategoryBlock",
-  mixins: [ truncate ]
+  name: "CategoryBlock",
+  mixins: [ truncate ],
+  data: () => {
+    return {
+      blockCategories: blockCategories
+    }
+  }
 }
 </script>
 

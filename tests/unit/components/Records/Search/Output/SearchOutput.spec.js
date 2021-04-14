@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import Vuetify from "vuetify"
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput.vue"
 import UIController from "@/store/uiController.js"
-import recordsStore from "@/store/records.js";
+import recordsStore from "@/store/recordSearch.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

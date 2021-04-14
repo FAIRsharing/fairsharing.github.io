@@ -72,12 +72,7 @@
               <v-icon>fa-times</v-icon>
             </v-btn>
           </v-card-title>
-          <v-card-text class="pt-3">
-            <SearchInput
-              id="search-input-sm"
-              :class="[responsiveClassObject]"
-            />
-          </v-card-text>
+          <SearchInput class="pa-5"/>
         </v-card>
       </v-dialog>
     </v-fade-transition>

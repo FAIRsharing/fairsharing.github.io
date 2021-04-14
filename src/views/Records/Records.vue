@@ -43,7 +43,10 @@
             class="info"
             @click="showFiltersSM = true"
           >
-            Show filters
+            <span class="mr-2">Show filters</span>
+            <v-icon small>
+              fa-filter
+            </v-icon>
           </v-btn>
         </v-col>
 
@@ -72,7 +75,7 @@
               <v-icon>fa-times</v-icon>
             </v-btn>
           </v-card-title>
-          <SearchInput class="pa-5"/>
+          <SearchInput class="pa-5" />
         </v-card>
       </v-dialog>
     </v-fade-transition>

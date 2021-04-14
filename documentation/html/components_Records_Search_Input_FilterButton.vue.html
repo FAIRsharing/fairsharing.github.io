@@ -94,7 +94,7 @@
             class="sunlight-highlight-javascript linenums">&lt;template>
   &lt;v-tooltip
     bottom
-    :disabled="itemModified.tooltip===undefined"
+    :disabled="itemModified.tooltip===undefined || $vuetify.breakpoint.smAndDown"
   >
     &lt;template #activator="{ on }">
       &lt;v-btn

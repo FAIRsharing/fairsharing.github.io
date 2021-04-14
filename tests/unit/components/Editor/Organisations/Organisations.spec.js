@@ -8,7 +8,7 @@ import getOrganisationsTypesQuery from "@/components/GraphClient/queries/Organis
 import getOrganisationsQuery from "@/components/GraphClient/queries/Organisations/getOrganisations.json"
 import getGrantsQuery from "@/components/GraphClient/queries/Organisations/getGrants.json"
 import Organisations from "@/components/Editor/Organisations/Organisations.vue"
-import recordStore from "@/store/record.js"
+import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
 const sinon = require("sinon");

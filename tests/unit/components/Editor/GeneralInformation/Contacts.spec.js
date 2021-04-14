@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import Contact from "@/components/Editor/GeneralInformation/Contact.vue"
-import recordStore from "@/store/record.js";
+import recordStore from "@/store/recordData.js";
 
 
 const localVue = createLocalVue();

@@ -3,7 +3,7 @@ import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApprov
 import fakeData from "@/../tests/fixtures/curationDashboardRecAwaitApproval.json"
 import Client from "@/components/Client/RESTClient.js"
 import Vuex from "vuex"
-import recordStore from "@/store/record.js"
+import recordStore from "@/store/recordData.js"
 import sinon from "sinon"
 import usersStore from "@/store/users"
 import VueRouter from "vue-router"

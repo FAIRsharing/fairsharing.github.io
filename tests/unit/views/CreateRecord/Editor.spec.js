@@ -1,7 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import CreateRecord from "@/views/CreateRecord/Editor.vue"
-import recordStore from "@/store/record.js";
+import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
 import editorStore from "@/store/editor.js"
 import GraphClient from "@/components/GraphClient/GraphClient.js";

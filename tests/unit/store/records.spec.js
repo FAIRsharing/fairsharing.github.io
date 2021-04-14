@@ -1,4 +1,4 @@
-import {actions, mutations, getters, buildFacets} from "@/store/records.js"
+import {actions, mutations, getters, buildFacets} from "@/store/recordSearch.js"
 import sinon from "sinon"
 import Client from "@/components/GraphClient/GraphClient.js";
 import RecordsData from '../../../tests/fixtures/getRecords.json'

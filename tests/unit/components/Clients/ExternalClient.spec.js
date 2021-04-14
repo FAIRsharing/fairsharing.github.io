@@ -1,4 +1,4 @@
-import Client from "@/components/Client/ExternalClients.js";
+import Client from "@/lib/Client/ExternalClients.js";
 import axios from "axios"
 import Vue from "vue";
 

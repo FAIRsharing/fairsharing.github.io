@@ -128,7 +128,7 @@
 </template>
 
 <script>
-    import RESTClient from "@/components/Client/RESTClient.js";
+    import RESTClient from "@/lib/Client/RESTClient.js";
     import ValidityProgress from "./Password/ValidityProgress";
 
     import { hasValue, isEmail, isRequired } from "@/utils/rules.js"

@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
-import Record from "@/store/record.js"
+import Record from "@/store/recordData.js"
 import Citations from "@/components/Records/Record/GeneralInfo/Citations.vue"
 import Vuetify from "vuetify"
 import VueMoment from "vue-moment"

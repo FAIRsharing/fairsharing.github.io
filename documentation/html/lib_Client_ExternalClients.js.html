@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: store/searchFilters.js</title>
+	<title>FAIRsharing.org Source: lib/Client/ExternalClients.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,159 +86,91 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: store/searchFilters.js</h1>
+		<h1 class="page-title">Source: lib/Client/ExternalClients.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import filterMapping from "@/data/FiltersLabelMapping.json"
-import GraphQLClient from "@/lib/GraphClient/GraphClient.js"
-import query from "@/lib/GraphClient/queries/getFilters.json";
-import {isEqual} from 'lodash'
-import buttonOptions from '@/data/ButtonOptions.json'
+            class="sunlight-highlight-javascript linenums">import axios from "axios"
 
-const graphClient = new GraphQLClient();
+class ExternalRESTClients {
 
-export const mutations = {
-    setFilters(state, data) {
-        state.filtersStatistic = data['searchFairsharingRecords']['aggregations'];
-        state.rawFilters = buildFilters(state.filtersStatistic);
-        state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' &amp;&amp; item.filterName !== 'status'));
-    },
-    setFilterButtons(state) {
-        state.filterButtons.push({
-            "data": [
-                {
-                    "title": "Match all terms",
-                    "active": true,
-                    "filterName": "searchAnd",
-                    "value": true
-                },
-                {
-                    "title": "Match any term",
-                    "active": false,
-                    "filterName": "searchAnd",
-                    "value": false
-                }
-            ],
-            "curator_only": false
-        });
-        state.rawFilters.forEach(item => {
-            // TODO: Return here if the button is marked as curator-only and the user isn't logged in as a curator.
-            if (item.type === 'Boolean') {
-                let ObjectModel = buttonOptions[item.filterName];
-                state.filterButtons.push(ObjectModel);
-            }
-            else if (item.filterName === 'status') {
-                let ObjectModel = buttonOptions.status.data;
-                ObjectModel.forEach(function (button) {
-                    if (Object.prototype.hasOwnProperty.call(button, 'apiIndex')) {
-                        button.value = item.values[button["apiIndex"]];
-                    }
-                });
-                state.filterButtons.push({data: ObjectModel, curator_only: false});
-            }
-        });
-    },
-    setLoadingStatus(state, status){
-        state.isLoadingFilters = status;
-    },
-    resetFilterButtons(state, itemParentIndex) {
-        state.filterButtons[itemParentIndex].data.map((item) => {
-            item.active = false;
-        });
-    },
-    activateButton(state, item) {
-        state.filterButtons[item.itemParentIndex].data.map((filterItem) => {
-            if (isEqual(filterItem, item.activeItem)) {
-                filterItem.active = true;
-            }
-        });
-    }
-};
-export const actions = {
-    resetFilterButtons(state, itemParentIndex) {
-        this.commit('searchFilters/resetFilterButtons', itemParentIndex)
-    },
-    activateButton(state, item) {
-        this.commit('searchFilters/activateButton', item)
-    },
-    async assembleFilters(){
-        this.commit("searchFilters/setLoadingStatus", true);
-        let data = await graphClient.executeQuery(query);
-        this.commit('searchFilters/setFilters', data);
-        this.commit('searchFilters/setFilterButtons');
-        this.commit("searchFilters/setLoadingStatus", false);
-    }
-};
-export const getters = {
-    getFilters: (state) => {
-        let output = [];
-        state.filters.forEach(function (filter) {
-            output.push({
-                filterName: filter.filterName,
-                filterLabel: filter.filterLabel
-            })
-        });
-        return output
-    },
-    getFiltersStatisticCount: (state) => (option) => {
-        return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
-    }
-};
-
-/**
- * The searchFilters store trigger a single field query to searchFairsharingRecords, gets the aggregation array and
- * builds the filtering system to be used by advanced search functions.
- * @type {Object}
- */
-let filtersStore = {
-    namespaced: true,
-    state: {
-        rawFilters: [],
-        filters: [],
-        filtersStatistic: [],
-        filterButtons: [],
-        isLoadingFilters: false
-    },
-    mutations: mutations,
-    actions: actions,
-    getters: getters
-};
-export default filtersStore;
-
-/**
- * Given a searchFairsharingRecords aggregations array, build the values used by the advanced search widgets
- * @param {Array} val - an array of raw filters coming from the api as data['searchFairsharingRecords']['aggregations']
- * @returns {Array} filters - ready to use filters for the advanced search components
- */
-
-export const buildFilters = function (val) {
-    let filters = [];
-    let filtersLabels = filterMapping['autocomplete'];
-    Object.keys(val).forEach(function (key) {
-        if (Object.prototype.hasOwnProperty.call(filtersLabels, key)) {
-            let filter = filtersLabels[key];
-            filter.values = null;
-            let filterValues = [];
-
-            let buckets = val[key]['buckets'];
-            buckets.forEach(function (bucket) {
-                if (Object.prototype.hasOwnProperty.call(
-                    bucket,
-                    "key_as_string")) {
-                    filterValues.push(bucket["key_as_string"]);
-                }
-                else {
-                    filterValues.push(bucket['key']);
-                }
-            });
-            filter.values = filterValues;
-            filters.push(filter);
+    /**
+     * The RESTClient is a singleton class that handles the connection and data exchange from the back-end
+     * REST API.
+     */
+    constructor() {
+        if (ExternalRESTClients._instance) {
+            return ExternalRESTClients._instance
         }
-    });
-    return filters;
-};
+        ExternalRESTClients._instance = this;
+        this.doiBaseURL = 'https://dx.doi.org/';
+        this.headers = {
+            'Accept': 'application/x-bibtex',
+        };
+        this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;retmode=json&amp;id=";
+        this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q=";
+        this.orcidBaseURL = "https://pub.orcid.org/v2.0/";
+    }
+
+    async getDOI(doi){
+        let localHeaders = this.headers;
+        localHeaders['Accept'] = 'application/json';
+        const request = {
+            url: this.doiBaseURL + doi,
+            headers: localHeaders
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async getPMID(id){
+        const request = {
+            url: this.pmidBaseURL + id,
+            headers: {
+                'Accept': 'application/json',
+            }
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async getTessRecords(string){
+        const request = {
+            url: this.tessBaseURL + string,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async getOrcidUser(user){
+        this.headers['Accept'] = "application/orcid+json";
+        const request = {
+            url: this.orcidBaseURL + user,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        this.headers['Accept'] = 'application/x-bibtex';
+        return response.data;
+    }
+
+    /**
+     * Trigger the given query with Axios
+     * @param query
+     * @returns {Promise&lt;*>}
+     */
+    async executeQuery(query) {
+        try {
+            return await axios.get(query.url, {headers: query.headers});
+        }
+        catch(e){
+            return({data: {error: e}});
+        }
+    }
+}
+
+export default ExternalRESTClients;
 </pre>
     </article>
 </section>

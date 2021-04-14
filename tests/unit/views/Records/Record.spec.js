@@ -172,7 +172,7 @@ describe("Record.vue", function() {
         expect(wrapper.vm.buttons[4].name()).toEqual("Have a suggestion/question ?");
         expect(wrapper.vm.buttons[4].isDisabled()).toBe(true);
         wrapper.vm.buttons[0].method();
-        expect($router.push).toHaveBeenCalledWith({path: "/980190962/edit", params: {fromRecordPage: true}});
+        expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         wrapper.vm.buttons[1].method();
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         expect($router.push).toHaveBeenCalledTimes(2);
@@ -184,6 +184,7 @@ describe("Record.vue", function() {
             credentials: {token: 123, username: 123},
             watchedRecords: []
         }};
+        wrapper.vm.buttons[0].method();
         expect(wrapper.vm.buttons[0].isDisabled()).toBe(!wrapper.vm.canEdit);
         expect(wrapper.vm.buttons[1].isDisabled()).toBe(!wrapper.vm.canClaim);
         await wrapper.vm.buttons[1].method();

@@ -1,6 +1,8 @@
 import Pagination from "@/components/Records/Search/Header/Pagination";
 import {shallowMount} from "@vue/test-utils";
+import Vuetify from "vuetify"
 
+const vuetify = new Vuetify();
 let $route = {
     name: "Standards",
     query: {
@@ -26,7 +28,8 @@ describe("Pagination.vue", () => {
             propsData: {
                 totalPages: 10,
                 default: 0
-            }
+            },
+            vuetify
         });
     });
 
@@ -37,7 +40,8 @@ describe("Pagination.vue", () => {
             propsData: {
                 totalPages: 10,
                 default: 0
-            }
+            },
+            vuetify
         });
         expect(anotherWrapper.vm.currentPage).toBe(1);
     });
@@ -59,7 +63,8 @@ describe("Pagination.vue", () => {
             propsData: {
                 totalPages: 10,
                 default: 0
-            }
+            },
+            vuetify
         });
         expect(anotherWrapper2.vm.currentPage).toBe(120);
     });

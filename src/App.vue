@@ -6,7 +6,9 @@
       app
       left
       width="70%"
-    />
+    >
+      <NavigationDrawer />
+    </v-navigation-drawer>
     <Header />
     <router-view class="min-height-70vh" />
     <Footer />
@@ -14,13 +16,14 @@
 </template>
 
 <script>
-    import Header from "./components/Navigation/Header";
+    import Header from "@/components/Navigation/Header";
     import {mapState} from 'vuex';
-    import Footer from "./components/Navigation/Footer";
+    import Footer from "@/components/Navigation/Footer";
+    import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
 
     export default {
         name: "App2",
-        components: {Footer, Header},
+        components: {NavigationDrawer, Footer, Header},
         computed: {
             ...mapState('uiController', ["UIGeneralStatus"]),
         },

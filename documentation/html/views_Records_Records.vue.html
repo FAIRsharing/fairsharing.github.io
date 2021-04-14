@@ -118,22 +118,62 @@
       &lt;!--  Content  -->
       &lt;v-row no-gutters>
         &lt;v-col
+          v-if="$vuetify.breakpoint.mdAndUp"
           cols="12"
           lg="4"
           md="4"
           xl="3"
-          class="d-none d-md-flex mt-2 ml-2"
+          class="d-flex mt-2 ml-2"
         >
-          &lt;SearchInput
-            id="search-input-mb"
-            :class="[responsiveClassObject]"
-          />
+          &lt;SearchInput :class="['search-input-mb', responsiveClassObject]" />
         &lt;/v-col>
+        &lt;v-col
+          v-else
+          cols="12"
+          class="ml-3 mt-2"
+        >
+          &lt;v-btn
+            class="info"
+            @click="showFiltersSM = true"
+          >
+            Show filters
+          &lt;/v-btn>
+        &lt;/v-col>
+
         &lt;v-col class="mt-2">
-          &lt;SearchOutput class="pb-5 mr-0 mr-md-2" />
+          &lt;SearchOutput class="pb-5 mr-0 mr-md-2 px-3" />
         &lt;/v-col>
       &lt;/v-row>
     &lt;/v-container>
+
+    &lt;v-fade-transition>
+      &lt;v-dialog
+        v-model="showFiltersSM"
+        fullscreen
+        hide-overlay
+        scrollable
+      >
+        &lt;v-card>
+          &lt;v-card-title class="primary white--text pb-5">
+            Add a filter
+            &lt;v-spacer />
+            &lt;v-btn
+              fab
+              x-small
+              @click="showFiltersSM = false"
+            >
+              &lt;v-icon>fa-times&lt;/v-icon>
+            &lt;/v-btn>
+          &lt;/v-card-title>
+          &lt;v-card-text class="pt-3">
+            &lt;SearchInput
+              id="search-input-sm"
+              :class="[responsiveClassObject]"
+            />
+          &lt;/v-card-text>
+        &lt;/v-card>
+      &lt;/v-dialog>
+    &lt;/v-fade-transition>
 
     &lt;v-fade-transition>
       &lt;v-overlay
@@ -170,7 +210,8 @@ export default {
     labels: recordsLabels,
     recordsSubTitles: recordsLabels['recordSubTitles'],
     recordTypes: recordsLabels['recordTypes'],
-    isLoading: false
+    isLoading: false,
+    showFiltersSM: false,
   }),
   computed: {
     ...mapState('uiController', ['scrollStatus', 'stickToTop']),
@@ -294,6 +335,7 @@ export default {
       this.errors = null;
       const _module = this;
       try {
+        this.showFiltersSM = false;
         await _module.fetchRecords(this.getParameters());
       }
       catch (e) {
@@ -363,7 +405,7 @@ export default {
   padding: 1em;
 }
 
-#search-input-mb{
+.search-input-mb{
   margin-bottom: 105px;
 }
 &lt;/style>

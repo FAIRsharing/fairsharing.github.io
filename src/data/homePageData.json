@@ -1,4 +1,8 @@
 {
+  "jumbotron": {
+    "title": "A curated, informative and educational resource on data and metadata standards, inter-related to databases and data policies.",
+    "subTitle": "We guide consumers to discover, select and use these resources with confidence, and producers to make their resource more discoverable, more widely adopted and cited."
+  },
   "blockTabs": [
     {
       "link": "stakeholder/",
@@ -176,6 +180,28 @@
         }
       ]
     }
+  },
+  "blockCategories": {
+    "firstColumn":{
+      "title": "Recommendations",
+      "description": "Standards and/or databases recommended by journal or funder data policies.",
+      "icon": "recommended",
+      "buttonTitle": "find",
+      "link": ""
+    },
+    "secondColumn":{
+      "title": "Collections",
+      "description": "Standards and/or databases grouped by domain, species or organization.",
+      "icon": "collections",
+      "buttonTitle": "discover",
+      "link": ""
+    },
+    "thirdColumn":{
+      "title": "Educational",
+      "description": "About standards, their use in databases and policies, and how we can help you.",
+      "icon": "educational",
+      "buttonTitle": "learn",
+      "link": ""
+    }
   }
 }
-

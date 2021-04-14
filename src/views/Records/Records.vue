@@ -25,7 +25,7 @@
       <!--  Content  -->
       <v-row no-gutters>
         <v-col
-          v-if="$vuetify.breakpoint.mdAndUp"
+          v-if="$vuetify.breakpoint.lgAndUp"
           cols="12"
           lg="4"
           md="4"
@@ -43,7 +43,10 @@
             class="info"
             @click="showFiltersSM = true"
           >
-            Show filters
+            <span class="mr-2">Show filters</span>
+            <v-icon small>
+              fa-filter
+            </v-icon>
           </v-btn>
         </v-col>
 
@@ -72,12 +75,7 @@
               <v-icon>fa-times</v-icon>
             </v-btn>
           </v-card-title>
-          <v-card-text class="pt-3">
-            <SearchInput
-              id="search-input-sm"
-              :class="[responsiveClassObject]"
-            />
-          </v-card-text>
+          <SearchInput class="pa-5" />
         </v-card>
       </v-dialog>
     </v-fade-transition>

@@ -37,6 +37,7 @@
                 v-if="subItem.name && subItem.url"
                 :href="subItem.url"
                 target="_blank"
+                class="underline-effect"
               >
                 {{ subItem.name }}
               </a>

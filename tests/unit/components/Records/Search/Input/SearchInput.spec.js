@@ -36,6 +36,10 @@ describe("FilterPanel.vue", function () {
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("SearchInput");
+        expect(wrapper.vm.responsiveClassObject).toStrictEqual({
+            'filters-holder-default': true,
+            'filters-holder-after-scroll': false
+        });
     });
 
     it("can check setup function", () => {

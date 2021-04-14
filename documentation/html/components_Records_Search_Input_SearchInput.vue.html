@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -92,39 +92,38 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;aside>
-    &lt;v-card
-      id="scrollable-holder"
-      :class="['pa-2',responsiveClassObject]"
-      outlined
-      tile
-      elevation="3"
+  &lt;v-card
+    id="scrollable-holder"
+    :class="['pa-2', ($vuetify.breakpoint.mdAndUp) ? responsiveClassObject : 'fullHeight']"
+    outlined
+    tile
+    elevation="3"
+    width="100%"
+  >
+    &lt;!-- Search Box -->
+    &lt;string-search placeholder="Search through all data." />
+
+    &lt;hr class="mb-3 mr-2 ml-2 custom-hr">
+
+    &lt;!-- Filter Buttons     -->
+    &lt;FilterButtons />
+
+    &lt;!-- expansion Panels    -->
+    &lt;v-expansion-panels
+      v-if="getFilters.length>0"
+      v-model="panel"
+      multiple
+      flat
+      hover
+      accordion
     >
-      &lt;!-- Search Box -->
-      &lt;string-search placeholder="Search through all data." />
-
-      &lt;hr class="mb-3 mr-2 ml-2 custom-hr">
-
-      &lt;!-- Filter Buttons     -->
-      &lt;FilterButtons />
-
-      &lt;!-- expansion Panels    -->
-      &lt;v-expansion-panels
-        v-if="getFilters.length>0"
-        v-model="panel"
-        multiple
-        flat
-        hover
-        accordion
-      >
-        &lt;filter-autocomplete
-          v-for="filter in setup"
-          :key="filter.filterLabel"
-          :filter="filter"
-        />
-      &lt;/v-expansion-panels>
-    &lt;/v-card>
-  &lt;/aside>
+      &lt;filter-autocomplete
+        v-for="filter in setup"
+        :key="filter.filterLabel"
+        :filter="filter"
+      />
+    &lt;/v-expansion-panels>
+  &lt;/v-card>
 &lt;/template>
 
 &lt;script>
@@ -217,6 +216,11 @@ export default {
 .custom-hr {
   opacity: .5;
 }
+.fullHeight {
+  height: 90vh;
+  overflow: scroll;
+}
+
 &lt;/style>
 </pre>
     </article>

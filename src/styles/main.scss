@@ -7,6 +7,12 @@ ul {
   list-style: none;
 }
 
+p {
+  white-space: pre-wrap;
+  /* make the line of paragraph to break when reaching /n in a string */
+  line-height: 1.6;
+}
+
 //End of Global Setting---------------------
 
 //Animations--------------------------------

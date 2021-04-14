@@ -1,19 +1,49 @@
 <template>
-  <h2>This will be the Stakeholders page</h2>
+  <main class="pa-5 mt-5 mb-10">
+    <!--  main_title -->
+    <h1 class="text-h4 text-xl-h3 mb-2 mb-xl-6">
+      {{ stakeholdersData.main_title }}
+    </h1>
+
+    <!--  main_subtitle  -->
+    <!-- This html is from a safe source -->
+    <!-- eslint-disable vue/no-v-html -->
+    <p
+      :class="['mb-8 lato-font-medium lato-text-md',{'lato-text-lg':$vuetify.breakpoint.xlOnly }]"
+      v-html="stakeholdersData.main_subtitle"
+    />
+    <!-- eslint-enable vue/no-v-html -->
+
+    <!--  main_title_2 -->
+    <h2 class="text-h4 text-xl-h3 mb-2 mb-xl-6">
+      {{ stakeholdersData.main_title_2 }}
+    </h2>
+
+    <!--  content  -->
+    <div
+      v-for="(item,index) in stakeholdersData.stakeholders_data"
+      :key="index"
+    >
+      <h3 class="text-h5 text-xl-h4 mb-2">
+        {{ item.title }}
+      </h3>
+      <p
+        :class="['mb-8 lato-font-medium lato-text-md',{'lato-text-lg':$vuetify.breakpoint.xlOnly }]"
+      >
+        {{ item.content }}
+      </p>
+    </div>
+  </main>
 </template>
 
 <script>
-    /** This component handles the sign-up/register page
-     * @memberOf Static
-     * @name Stakeholders
-     * @type module
-     * @instance
-     * */
+import {stakeholders} from '@/data/stakeholdersData.json'
     export default {
-        name: "Stakeholders"
+      name: "Stakeholders",
+      data: () => {
+        return {
+          stakeholdersData: stakeholders,
+        }
+      }
     }
 </script>
-
-<style scoped>
-
-</style>

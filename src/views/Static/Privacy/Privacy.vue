@@ -43,11 +43,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-p {
-  white-space: pre-wrap;
-  /* make the line of paragraph to break when reaching /n in a string */
-  line-height: 1.6;
-}
-</style>

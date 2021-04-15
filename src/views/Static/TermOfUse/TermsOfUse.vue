@@ -1,5 +1,5 @@
 <template>
-  <main class="pa-5">
+  <main class="pa-5 mt-5 mb-10">
     <!--  title  -->
     <h1 class="text-h4 mb-2">
       {{ TermsOfUse.title }}

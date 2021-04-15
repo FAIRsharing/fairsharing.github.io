@@ -100,8 +100,8 @@
      *
      */
      import {Chart} from 'highcharts-vue'
-     import GraphClient from "@/components/GraphClient/GraphClient.js"
-     import getFilters from "@/components/GraphClient/queries/getFilters.json"
+     import GraphClient from "@/lib/GraphClient/GraphClient.js"
+     import getFilters from "@/lib/GraphClient/queries/getFilters.json"
      import Highcharts from 'highcharts'
      import Pie from 'highcharts/modules/variable-pie'
 

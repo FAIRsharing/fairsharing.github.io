@@ -4,9 +4,9 @@ import VueMeta from "vue-meta";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 import Record from "@/views/Records/Record.vue";
-import GraphClient from "@/components/GraphClient/GraphClient.js";
-import RESTClient from "@/components/Client/RESTClient.js";
-import record from "@/store/record.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import RESTClient from "@/lib/Client/RESTClient.js";
+import record from "@/store/recordData.js";
 import users from "@/store/users.js";
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
@@ -172,7 +172,7 @@ describe("Record.vue", function() {
         expect(wrapper.vm.buttons[4].name()).toEqual("Have a suggestion/question ?");
         expect(wrapper.vm.buttons[4].isDisabled()).toBe(true);
         wrapper.vm.buttons[0].method();
-        expect($router.push).toHaveBeenCalledWith({path: "/980190962/edit", params: {fromRecordPage: true}});
+        expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         wrapper.vm.buttons[1].method();
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         expect($router.push).toHaveBeenCalledTimes(2);
@@ -184,6 +184,7 @@ describe("Record.vue", function() {
             credentials: {token: 123, username: 123},
             watchedRecords: []
         }};
+        wrapper.vm.buttons[0].method();
         expect(wrapper.vm.buttons[0].isDisabled()).toBe(!wrapper.vm.canEdit);
         expect(wrapper.vm.buttons[1].isDisabled()).toBe(!wrapper.vm.canClaim);
         await wrapper.vm.buttons[1].method();

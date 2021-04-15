@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import App from "@/App.vue";
 import Vuetify from "vuetify"
 import uiControllerStore from "@/store/uiController.js";
+import introspection from "@/store/introspector.js"
 import Vuex from "vuex";
 
 const localVue = createLocalVue();
@@ -13,6 +14,7 @@ const router = new VueRouter({routes});
 const $store = new Vuex.Store({
     modules: {
         uiController: uiControllerStore,
+        introspection: introspection
     }
 });
 

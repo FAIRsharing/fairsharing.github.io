@@ -314,15 +314,19 @@
               item.fairsharingRecords.forEach(rec => {
                 let object = {
                   createdAt: rec.createdAt,
-                  creator: rec.creator.username.substring(0,10),
-                  idCreator: rec.creator.id,
                   updatedAt: rec.updatedAt,
                   curator: item.username.substring(0,6),
                   recordName: `${rec.name} (${rec.id})`,
                   id: rec.id,
                   type: rec.type,
                   processingNotes: rec.processingNotes
-                };
+                }
+                if (rec.creator){
+                  object.creator = rec.creator.username.substring(0,10);
+                  object.idCreator = rec.creator.id;
+                }else{
+                  object.creator = "unknown"
+                }
                 if (rec.priority){
                   object.priority = "Priority";
                 }else{

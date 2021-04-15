@@ -53,6 +53,7 @@
           >
             <v-menu
               offset-y
+              :disabled="readOnlyMode"
             >
               <template #activator="{ on, attrs }">
                 <v-btn
@@ -191,6 +192,7 @@
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
             ...mapState('users', ["user", "messages"]),
             ...mapGetters("record", ["getField"]),
+            ...mapState('introspection', ["readOnlyMode"]),
             userIsLoggedIn(){
               return this.user().isLoggedIn;
             },

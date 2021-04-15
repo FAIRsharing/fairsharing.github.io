@@ -12,6 +12,11 @@ p {
   text-align: justify;
 }
 
+pre {
+  overflow-x: auto;
+  -ms-overflow-x: auto;
+}
+
 //End of Global Setting---------------------
 
 //Animations--------------------------------

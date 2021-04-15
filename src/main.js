@@ -38,22 +38,22 @@ Networkgraph(Highcharts);
 
 Vue.config.productionTip = false;
 Vue.use(HighchartsVue);
-
-
-// This is a package for having more flexibility over default scroll
 Vue.use(VueScrollTo);
 Vue.use(Clipboard);
 Vue.use(VueMoment);
-Vue.use(VueMeta, {
-    refreshOnceOnNavigation: true
-});
+Vue.use(VueMeta, {refreshOnceOnNavigation: true});
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 
 async function bootstrapApp() {
-    await store.dispatch('users/login');
-    await store.dispatch("introspection/fetchParameters");
-    await store.dispatch("searchFilters/assembleFilters");
+    try {
+        await store.dispatch('users/login');
+        await store.dispatch("introspection/fetchParameters");
+        await store.dispatch("searchFilters/assembleFilters");
+    }
+    catch {
+        store.commit("introspection/setMaintenanceMode");
+    }
 }
 
 bootstrapApp().then(() => {

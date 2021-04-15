@@ -98,6 +98,9 @@ describe("Records.vue", () => {
         let returnedVal = {
             data: {
                 data: fakeIntrospection.data
+            },
+            headers: {
+                maintenance: "false"
             }
         };
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);

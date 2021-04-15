@@ -54,7 +54,7 @@
                 text:"" //The title text of the chart
               },
               credits: {
-                enabled: false
+                enabled: true
               },
               tooltip: {
                 pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'

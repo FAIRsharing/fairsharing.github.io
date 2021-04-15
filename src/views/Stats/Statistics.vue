@@ -555,7 +555,7 @@
     /** This component handles the statistic page
      *
      */
-     import GraphClient from "@/components/GraphClient/GraphClient.js"
+     import GraphClient from "@/lib/GraphClient/GraphClient.js"
      import getFilters from "@/lib/GraphClient/queries/getFilters.json"
      import Loaders from "@/components/Navigation/Loaders"
      import {cloneDeep} from 'lodash'

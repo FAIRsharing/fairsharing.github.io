@@ -6,6 +6,7 @@
     >
       <!--   error   -->
       <div v-if="error">
+        {{error}}
         <NotFound />
       </div>
 
@@ -132,8 +133,8 @@
 
 <script>
     import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
-    import Client from '@/components/GraphClient/GraphClient.js'
-    import RestClient from "@/components/Client/RESTClient.js"
+    import Client from '@/lib/GraphClient/GraphClient.js'
+    import RestClient from "@/lib/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Tools from '@/components/Records/Record/Tools';
@@ -226,12 +227,23 @@
             goToEdit(){
               let _module = this;
               const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
-              this.$router.push({
-                path: recordID + '/edit',
-                params: {
-                  fromRecordPage: true
-                }
-              })
+              if (_module.userIsLoggedIn) {
+                this.$router.push({
+                  path: recordID + '/edit',
+                  params: {
+                    fromRecordPage: true
+                  }
+                })
+              }
+              else {
+                this.$router.push({
+                  path: "/accounts/login",
+                  query: {
+                    goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                  }
+                })
+              }
+
             },
             /**
             * Method to create a maintenance_request; sets canClaim and (on fail) error.
@@ -287,10 +299,10 @@
                 this.claimedTriggered = false;
                 try {
                   if (this.target) await _module.fetchPreviewRecord(this.target);
-                    else await _module.fetchRecord({
-                        id: this.currentRoute,
-                        token: _module.user().credentials.token
-                      });
+                  else await _module.fetchRecord({
+                      id: this.currentRoute,
+                      token: (_module.user().credentials) ? _module.user().credentials.token : null
+                  });
                 }
                 catch (e) {
                     this.error = e.message;
@@ -327,7 +339,7 @@
               }
               let data = {
                 watched_record_ids: records
-              }
+              };
               let response = await this.updateWatchedRecords(data);
               // Refresh user data to reload followed record status.
               if (response.modification === 'success'){
@@ -337,7 +349,7 @@
             },
             isWatching() {
               return  this.currentRecord['fairsharingRecord'].id
-                      && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
+                      && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
             },
             getMenuButtons(){
               let _module = this;

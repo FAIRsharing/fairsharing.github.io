@@ -1,6 +1,6 @@
 import router from "@/router"
 import { beforeEach, isLoggedIn } from "@/router"
-import RestClient from "@/components/Client/RESTClient.js"
+import RestClient from "@/lib/Client/RESTClient.js"
 const sinon = require("sinon");
 
 let store = {

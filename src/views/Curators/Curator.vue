@@ -203,14 +203,14 @@
 
 <script>
   // && (user().role==='super_curator' || user().role==='senior_curator')"
-    import GraphClient from "@/components/GraphClient/GraphClient.js"
-    import getCurationRecords from "@/components/GraphClient/queries/curators/getSummary.json"
+    import GraphClient from "@/lib/GraphClient/GraphClient.js"
+    import getCurationRecords from "@/lib/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
     import Unauthorized from "@/views/Errors/403.vue"
     import headersTables from "@/data/headersCuratorDashboard.json"
     import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
     import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
-    import RestClient from "@/components/Client/RESTClient.js"
+    import RestClient from "@/lib/Client/RESTClient.js"
     import Icon from "@/components/Icon"
 
 
@@ -314,15 +314,19 @@
               item.fairsharingRecords.forEach(rec => {
                 let object = {
                   createdAt: rec.createdAt,
-                  creator: rec.creator.username.substring(0,10),
-                  idCreator: rec.creator.id,
                   updatedAt: rec.updatedAt,
                   curator: item.username.substring(0,6),
                   recordName: `${rec.name} (${rec.id})`,
                   id: rec.id,
                   type: rec.type,
                   processingNotes: rec.processingNotes
-                };
+                }
+                if (rec.creator){
+                  object.creator = rec.creator.username.substring(0,10);
+                  object.idCreator = rec.creator.id;
+                }else{
+                  object.creator = "unknown"
+                }
                 if (rec.priority){
                   object.priority = "Priority";
                 }else{

@@ -4,15 +4,18 @@
     "content": [
       {
         "title": "The FAIRsharing team",
-        "url": "/communities#team"
+        "url": "/team",
+        "urlType": "internal"
       },
       {
         "title": "Data Readiness Group",
-        "url": "https://datareadiness.eng.ox.ac.uk/"
+        "url": "https://datareadiness.eng.ox.ac.uk/",
+        "urlType": "external"
       },
       {
         "title": "University of Oxford",
-        "url": "http://www.ox.ac.uk"
+        "url": "http://www.ox.ac.uk",
+        "urlType": "external"
       }
     ]
   },
@@ -22,16 +25,19 @@
       {
         "title": "Email us for all enquiries",
         "url": "mailto:contact@fairsharing.org?subject=FAIRsharing Issue",
+        "urlType": "external",
         "icon": "fa fa-envelope"
       },
       {
         "title": "Facebook",
         "url": "https://www.facebook.com/fairsharing",
+        "urlType": "external",
         "icon": "fab fa-facebook"
       },
       {
         "title": "Twitter",
         "url": "https://www.twitter.com/fairsharing_org",
+        "urlType": "external",
         "icon": "fab fa-twitter"
       }
     ]
@@ -41,35 +47,43 @@
     "content": [
       {
         "title": "About us",
-        "url": ""
+        "url": "",
+        "urlType": "internal"
       },
       {
         "title": "Blog",
-        "url": ""
+        "url": "",
+        "urlType": "external"
       },
       {
         "title": "How to cite us",
-        "url": ""
+        "url": "",
+        "urlType": "internal"
       },
       {
         "title": "Privacy Policy",
-        "url": "/privacy"
+        "url": "/privacy",
+        "urlType": "internal"
       },
       {
         "title": "Stakeholders",
-        "url": "/stakeholders"
+        "url": "",
+        "urlType": "internal"
       },
       {
         "title": "Timeline",
-        "url": ""
+        "url": "",
+        "urlType": "internal"
       },
       {
         "title": "API and data license",
-        "url": ""
+        "url": "",
+        "urlType": "internal"
       },
       {
         "title": "Terms of use",
-        "url": "/terms"
+        "url": "/terms",
+        "urlType": "internal"
       }
     ]
   }

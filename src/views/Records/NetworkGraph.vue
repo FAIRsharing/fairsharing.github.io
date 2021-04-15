@@ -6,7 +6,7 @@
         class="pt-0 mt-2"
       >
         <v-card
-          height="99.3%" 
+          height="99.3%"
           min-height="80vh"
         >
           <v-card-title class="blue white--text">
@@ -34,7 +34,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-container
-                    fluid 
+                    fluid
                     class="pb-0 mt-0"
                   >
                     <v-row class="pl-2">
@@ -82,8 +82,8 @@
 
 <script>
     import {Chart} from 'highcharts-vue'
-    import GraphClient from '@/components/GraphClient/GraphClient.js'
-    import graphQuery from '@/components/GraphClient/queries/getGraphRelations.json'
+    import GraphClient from '@/lib/GraphClient/GraphClient.js'
+    import graphQuery from '@/lib/GraphClient/queries/getGraphRelations.json'
     import Loaders from "../../components/Navigation/Loaders";
 
     const graphClient = new GraphClient();

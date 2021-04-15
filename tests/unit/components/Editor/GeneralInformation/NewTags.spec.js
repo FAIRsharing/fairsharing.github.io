@@ -3,7 +3,7 @@ import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueRouter from "vue-router"
 import NewTags from "@/components/Editor/GeneralInformation/NewTags.vue"
-import recordStore from "@/store/record.js"
+import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 const VueScrollTo = require('vue-scrollto');
 

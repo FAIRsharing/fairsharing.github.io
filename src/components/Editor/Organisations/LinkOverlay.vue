@@ -336,7 +336,7 @@
     import Vue from "vue"
     import { mapState } from "vuex"
     import { isRequired, isUrl } from "@/utils/rules.js"
-    import RestClient from "@/components/Client/RESTClient.js"
+    import RestClient from "@/lib/Client/RESTClient.js"
     const restClient = new RestClient();
 
     export default {

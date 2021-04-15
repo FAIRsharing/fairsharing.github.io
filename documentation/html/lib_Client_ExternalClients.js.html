@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Static/Educational/Educational.vue</title>
+	<title>FAIRsharing.org Source: lib/Client/ExternalClients.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,39 +86,92 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Static/Educational/Educational.vue</h1>
+		<h1 class="page-title">Source: lib/Client/ExternalClients.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div>
-    &lt;h2>This will be the educational page&lt;/h2>
-    &lt;div
-      id="faq10-1"
-      class="anchor"
-      style="position:relative;top:5000px;"
-    >
-      This is a test anchor for internal links
-    &lt;/div>
-  &lt;/div>
-&lt;/template>
+            class="sunlight-highlight-javascript linenums">import axios from "axios"
 
-&lt;script>
-    /** This component handles the sign-up/register page
-     * @memberOf Static
-     * @name Educational
-     * @type module
-     * @instance
-     * */
-    export default {
-        name: "Educational"
+class ExternalRESTClients {
+
+    /**
+     * The RESTClient is a singleton class that handles the connection and data exchange from the back-end
+     * REST API.
+     */
+    constructor() {
+        if (ExternalRESTClients._instance) {
+            return ExternalRESTClients._instance
+        }
+        ExternalRESTClients._instance = this;
+        this.doiBaseURL = 'https://dx.doi.org/';
+        this.headers = {
+            'Accept': 'application/x-bibtex',
+        };
+        this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;retmode=json&amp;id=";
+        this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q=";
+        this.orcidBaseURL = "https://pub.orcid.org/v2.0/";
     }
-&lt;/script>
 
-&lt;style scoped>
+    async getDOI(doi){
+        let localHeaders = this.headers;
+        localHeaders['Accept'] = 'application/json';
+        const request = {
+            url: this.doiBaseURL + doi,
+            headers: localHeaders
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
-&lt;/style></pre>
+    async getPMID(id){
+        const request = {
+            url: this.pmidBaseURL + id,
+            headers: {
+                'Accept': 'application/json',
+            }
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async getTessRecords(string){
+        const request = {
+            url: this.tessBaseURL + string,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async getOrcidUser(user){
+        this.headers['Accept'] = "application/orcid+json";
+        const request = {
+            url: this.orcidBaseURL + user,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        this.headers['Accept'] = 'application/x-bibtex';
+        return response.data;
+    }
+
+    /**
+     * Trigger the given query with Axios
+     * @param query
+     * @returns {Promise&lt;*>}
+     */
+    async executeQuery(query) {
+        try {
+            return await axios.get(query.url, {headers: query.headers});
+        }
+        catch(e){
+            return({data: {error: e}});
+        }
+    }
+}
+
+export default ExternalRESTClients;
+</pre>
     </article>
 </section>
 

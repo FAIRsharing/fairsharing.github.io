@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import DatabaseWarning from "@/components/Editor/GeneralInformation/DatabaseWarning.vue"
-import recordStore from "@/store/record.js";
+import recordStore from "@/store/recordData.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

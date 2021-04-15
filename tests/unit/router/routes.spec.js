@@ -1,5 +1,5 @@
 import router from "@/router"
-import { beforeEach, isLoggedIn } from "@/router"
+import { beforeEach, isLoggedIn, isMaintenanceMode } from "@/router"
 import RestClient from "@/lib/Client/RESTClient.js"
 const sinon = require("sinon");
 
@@ -34,7 +34,7 @@ describe("Routes", () => {
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [
-            "User", "Edit profile", "New_content", "Edit Content", "Curator"
+            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance"
         ];
 
         router.options.routes.forEach(function(route){
@@ -75,6 +75,22 @@ describe("Routes", () => {
         };
         await beforeEach(to, undefined, next, store);
         expect(document.title).toMatch("FAIRsharing");
+        store.state.introspection.maintenanceMode = true;
+        await beforeEach(to, undefined, next, store);
+        expect(next).toHaveBeenCalledWith({path: "maintenance"})
     });
+
+    it("can check is a site is in maintenance mode", () => {
+        store = {
+            state: {
+                introspection: {
+                    maintenanceMode: true
+                }
+            }
+        };
+        const next = jest.fn();
+        isMaintenanceMode(undefined, undefined, next, store);
+        expect(next).toHaveBeenCalledWith();
+    })
 
 });

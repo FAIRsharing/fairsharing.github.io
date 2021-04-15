@@ -34,16 +34,22 @@ export const mutations = {
         let now = new Date();
         localStorage.expiryDate = now;
         return now;
+    },
+    setMaintenanceMode(state){
+        state.maintenanceMode = true;
+    },
+    setReadOnlyMode(state){
+        state.readOnlyMode = true;
     }
 };
 
 export const actions = {
     async fetchParameters(state, timer) {
         let expirationTimer = (timer) ? timer : 24;
+        let data = await client.getData(introspectionQuery);
         if (localStorage.expiryDate) {
             const expiration = paramsAreExpired(localStorage.expiryDate, expirationTimer);
             if (expiration) {
-                let data = await client.getData(introspectionQuery);
                 this.commit("introspection/setLocalStorageExpiryTime");
                 this.commit("introspection/setParameters", data.data);
             }
@@ -52,10 +58,14 @@ export const actions = {
             }
         }
         if (!localStorage.introspectionQuery) {
-            let data = await client.getData(introspectionQuery);
             this.commit("introspection/setLocalStorageExpiryTime");
             this.commit("introspection/setParameters", data.data);
         }
+        if (data.headers['maintenance']) this.commit("introspection/setMaintenanceMode");
+        if (data.headers['read-only']) this.commit("introspection/setReadOnlyMode");
+
+        // temp!
+        this.commit("introspection/setMaintenanceMode");
     }
 };
 export const getters = {
@@ -105,6 +115,8 @@ let introspectionStore = {
     state: {
         errors: String,
         searchQueryParameters: {},
+        maintenanceMode: false,
+        readOnlyMode: false
     },
     modules: {},
     mutations: mutations,

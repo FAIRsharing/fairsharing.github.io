@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -118,7 +118,7 @@
       &lt;!--  Content  -->
       &lt;v-row no-gutters>
         &lt;v-col
-          v-if="$vuetify.breakpoint.lgAndUp"
+          v-if="$vuetify.breakpoint.mdAndUp"
           cols="12"
           lg="4"
           md="4"
@@ -136,10 +136,7 @@
             class="info"
             @click="showFiltersSM = true"
           >
-            &lt;span class="mr-2">Show filters&lt;/span>
-            &lt;v-icon small>
-              fa-filter
-            &lt;/v-icon>
+            Show filters
           &lt;/v-btn>
         &lt;/v-col>
 
@@ -168,7 +165,12 @@
               &lt;v-icon>fa-times&lt;/v-icon>
             &lt;/v-btn>
           &lt;/v-card-title>
-          &lt;SearchInput class="pa-5" />
+          &lt;v-card-text class="pt-3">
+            &lt;SearchInput
+              id="search-input-sm"
+              :class="[responsiveClassObject]"
+            />
+          &lt;/v-card-text>
         &lt;/v-card>
       &lt;/v-dialog>
     &lt;/v-fade-transition>

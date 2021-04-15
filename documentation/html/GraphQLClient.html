@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Namespace: Static</title>
+	<title>FAIRsharing.org Class: GraphQLClient</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,13 +86,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Namespace: Static</h1>
+	<h1 class="page-title">Class: GraphQLClient</h1>
 <section>
 
 <header>
     
         <h2>
-        Static
+        GraphQLClient
         </h2>
         
     
@@ -103,10 +103,30 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>All static pages will be handle through this namespace</p></div>
-        
+<hr>
+<dt>
+    <h4 class="name" id="GraphQLClient"><span class="type-signature"></span>new GraphQLClient()</h4>
+    
+    
+</dt>
+<dd>
 
-        
+    
+    <div class="description">
+        <p>The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
+Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
+also careful, its constructor is async !!</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
 <dl class="details">
     
 
@@ -141,8 +161,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="views_Static_Community_Community.vue.html">views/Static/Community/Community.vue</a>,
-				 <a href="views_Static_Community_Community.vue.html#sunlight-1-line-2">line 2</a>
+				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
+				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-11">line 11</a>
 			</li>
 		</ul>
 	</dd>
@@ -156,7 +176,47 @@
 </dl>
 
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <ul>
+<li>to use this object you need to do &quot;await new ClassName()&quot; or use .then(callback)</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
         
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
     
     </div>
 
@@ -171,34 +231,81 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         <dl>
             
 <hr>
-<dt class="name" id="Community">
-    <h4 id="Community"><span class="type-signature"></span>Community<span class="type-signature"> :module</span></h4>
-
+<dt>
+    <h4 class="name" id="buildQuery"><span class="type-signature"></span>buildQuery(query)</h4>
+    
     
 </dt>
 <dd>
+
     
     <div class="description">
-        <p>This component handles the sign-up/register page</p>
+        <p>Transform the JSON query into a string for graphQL</p>
     </div>
     
 
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
                 
-<span class="param-type">module</span>
+<span class="param-type">Object</span>
 
 
 
-            </li>
-        </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the query coming from the JSON file</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -236,8 +343,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="views_Static_Community_Community.vue.html">views/Static/Community/Community.vue</a>,
-				 <a href="views_Static_Community_Community.vue.html#sunlight-1-line-6">line 6</a>
+				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
+				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-59">line 59</a>
 			</li>
 		</ul>
 	</dd>
@@ -250,6 +357,42 @@
 	
 </dl>
 
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>{query: queryString} - a valid graphQL query string to execute</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>
@@ -257,29 +400,75 @@
         
             
 <hr>
-<dt class="name" id="Educational">
-    <h4 id="Educational"><span class="type-signature"></span>Educational<span class="type-signature"> :module</span></h4>
-
+<dt>
+    <h4 class="name" id="executeQuery"><span class="type-signature">&lt;async> </span>executeQuery(query)</h4>
+    
     
 </dt>
 <dd>
+
     
     <div class="description">
-        <p>This component handles the sign-up/register page</p>
+        <p>Execute the given query (coming from a json file, see /queries/getRecords.json)</p>
     </div>
     
 
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>query</code></td>
+            
+
+            <td class="type">
+            
                 
-<span class="param-type">module</span>
+<span class="param-type">Object</span>
 
 
 
-            </li>
-        </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the query coming from the JSON file
+sending to the API.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -317,8 +506,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="views_Static_Educational_Educational.vue.html">views/Static/Educational/Educational.vue</a>,
-				 <a href="views_Static_Educational_Educational.vue.html#sunlight-1-line-2">line 2</a>
+				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
+				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-26">line 26</a>
 			</li>
 		</ul>
 	</dd>
@@ -331,6 +520,38 @@
 	
 </dl>
 
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>
@@ -338,29 +559,74 @@
         
             
 <hr>
-<dt class="name" id="Timeline">
-    <h4 id="Timeline"><span class="type-signature"></span>Timeline<span class="type-signature"> :module</span></h4>
-
+<dt>
+    <h4 class="name" id="getData"><span class="type-signature">&lt;async> </span>getData(queryString)</h4>
+    
     
 </dt>
 <dd>
+
     
     <div class="description">
-        <p>This component handles the sign-up/register page</p>
+        <p>Takes the query, post it with axios and returns the raw data</p>
     </div>
     
 
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>queryString</code></td>
+            
+
+            <td class="type">
+            
                 
-<span class="param-type">module</span>
+<span class="param-type">Object</span>
 
 
 
-            </li>
-        </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>processed request coming out of buildQuery() or a GraphQL query string</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -398,8 +664,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="views_Static_Timeline_Timeline.vue.html">views/Static/Timeline/Timeline.vue</a>,
-				 <a href="views_Static_Timeline_Timeline.vue.html#sunlight-1-line-2">line 2</a>
+				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
+				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-43">line 43</a>
 			</li>
 		</ul>
 	</dd>
@@ -412,13 +678,187 @@
 	
 </dl>
 
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <ul>
+<li>an axios promise representing the server response.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="setHeader"><span class="type-signature"></span>setHeader(jwt)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Add the authorization token to the headers</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>jwt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the user json web token</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lib_GraphClient_GraphClient.js.html">lib/GraphClient/GraphClient.js</a>,
+				 <a href="lib_GraphClient_GraphClient.js.html#sunlight-1-line-126">line 126</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
 </dd>
 
         </dl>
-    
-
     
 
     

@@ -15,7 +15,11 @@ describe('Mutations & Actions', () => {
         stub.returns({
             data: {
                 message: "Hello"
+            },
+            headers: {
+                maintenance: "false"
             }
+
         })
     });
 
@@ -110,6 +114,9 @@ describe("", () => {
         stub.returns({
             data: {
                 message: "Hello"
+            },
+            headers: {
+                maintenance: "false"
             }
         })
     });

@@ -197,7 +197,7 @@
     import { mapActions, mapState } from "vuex"
     import UserProfileMenu from "@/components/Users/UserProfileMenu";
     import Loaders from "@/components/Navigation/Loaders";
-    import ExternalClient from "@/components/Client/ExternalClients.js"
+    import ExternalClient from "@/lib/Client/ExternalClients.js"
     import NotFound from "@/views/Errors/404"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
     import { cleanString } from "@/utils/stringUtils"

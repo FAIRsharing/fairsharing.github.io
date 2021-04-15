@@ -61,7 +61,7 @@
 
 <script>
     import { mapState, mapActions, mapGetters } from "vuex"
-    import RESTClient from "@/components/Client/RESTClient.js"
+    import RESTClient from "@/lib/Client/RESTClient.js"
     import status from "@/data/status.json"
     import BaseFields from "../../components/Editor/GeneralInformation/BaseFields";
     import Loaders from "../../components/Navigation/Loaders";

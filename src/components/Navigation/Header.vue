@@ -7,7 +7,7 @@
     class="header-container"
   >
     <v-app-bar-nav-icon
-      v-if="$vuetify.breakpoint.smAndDown"
+      v-if="$vuetify.breakpoint.mdAndDown"
       @click.stop="toggleDrawerLeft"
     />
     <router-link to="/">

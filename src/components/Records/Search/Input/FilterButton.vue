@@ -1,7 +1,7 @@
 <template>
   <v-tooltip
     bottom
-    :disabled="itemModified.tooltip===undefined"
+    :disabled="itemModified.tooltip===undefined || $vuetify.breakpoint.smAndDown"
   >
     <template #activator="{ on }">
       <v-btn

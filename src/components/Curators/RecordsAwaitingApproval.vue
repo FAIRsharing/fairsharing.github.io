@@ -272,7 +272,7 @@
 
 <script>
     import { mapActions, mapState }  from "vuex"
-    import RestClient from "@/components/Client/RESTClient.js"
+    import RestClient from "@/lib/Client/RESTClient.js"
     import Icon from "@/components/Icon"
 
     const restClient = new RestClient();

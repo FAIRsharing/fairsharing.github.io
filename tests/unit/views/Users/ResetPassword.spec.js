@@ -3,7 +3,7 @@ import VueRouter from "vue-router"
 import Vuex from "vuex";
 import sinon from "sinon"
 import ResetPassword from "@/views/Users/ResetPassword.vue"
-import Client from "@/components/Client/RESTClient.js"
+import Client from "@/lib/Client/RESTClient.js"
 import usersStore from "@/store/users";
 
 

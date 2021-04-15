@@ -1,6 +1,6 @@
 import { mutations, actions } from "@/store/users.js"
-import Client from "@/components/Client/RESTClient.js"
-import GraphClient from "@/components/GraphClient/GraphClient.js"
+import Client from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import { initUserDataState } from "@/store/utils.js"
 import Vue from "vue"
 import sinon from "sinon"

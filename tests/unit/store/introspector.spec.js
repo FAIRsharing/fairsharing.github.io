@@ -98,9 +98,16 @@ describe('Mutations & Actions', () => {
         isExpired = paramsAreExpired(now, -10);
         expect(isExpired).toBe(true);
     });
+
+    it("can set maintenance and read only mode", () => {
+        mutations.setMaintenanceMode(state);
+        expect(state.maintenanceMode).toBe(true);
+        mutations.setReadOnlyMode(state);
+        expect(state.maintenanceMode).toBe(true);
+    })
 });
 
-describe("", () => {
+describe("Localstorage Suite", () => {
     let state = {};
     let stub;
     beforeEach(() => {
@@ -161,5 +168,19 @@ describe("", () => {
         await actions.fetchParameters(state, -10);
         expect(actions.commit).toHaveBeenCalledTimes(5);
 
+        stub.restore();
+        stub = sinon.stub(Client.prototype, "getData");
+        stub.returns({
+            data: {
+                message: "Hello"
+            },
+            headers: {
+                maintenance: "true",
+                "read-only": "true"
+            }
+        });
+        await actions.fetchParameters(state);
+        expect(actions.commit).toHaveBeenCalledWith("introspection/setMaintenanceMode");
+        expect(actions.commit).toHaveBeenCalledWith("introspection/setReadOnlyMode");
     });
 });

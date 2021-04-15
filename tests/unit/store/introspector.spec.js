@@ -1,4 +1,4 @@
-import Client from "@/components/GraphClient/GraphClient.js";
+import Client from "@/lib/GraphClient/GraphClient.js";
 import {mutations, actions, paramsAreExpired} from "@/store/introspector.js"
 import sinon from "sinon"
 

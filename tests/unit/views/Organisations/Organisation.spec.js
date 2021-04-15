@@ -4,7 +4,7 @@ import Vuex from "vuex"
 import sinon from "sinon"
 import { RouterLinkStub } from '@vue/test-utils';
 import Organisation from "@/views/Organisations/Organisation";
-import GraphClient from "@/components/GraphClient/GraphClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

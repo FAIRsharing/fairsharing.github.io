@@ -159,9 +159,14 @@
             </td>
             <td>
               {{ props.item.createdAt }},
-              <a :href="'#/users/' + props.item.idCreator">
-                {{ props.item.creator }} 
-              </a>
+              <div v-if="props.item.creator === 'unknown'">
+                {{ props.item.creator }}
+              </div>
+              <div v-else>
+                <a :href="'#/users/' + props.item.idCreator">
+                  {{ props.item.creator }}
+                </a>
+              </div>
             </td>
           </tr>
         </template>
@@ -267,7 +272,7 @@
 
 <script>
     import { mapActions, mapState }  from "vuex"
-    import RestClient from "@/components/Client/RESTClient.js"
+    import RestClient from "@/lib/Client/RESTClient.js"
     import Icon from "@/components/Icon"
 
     const restClient = new RestClient();

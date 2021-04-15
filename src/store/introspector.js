@@ -1,5 +1,5 @@
-import Client from "../components/GraphClient/GraphClient.js"
-import introspectionQuery from "../components/GraphClient/queries/introspection.json"
+import Client from "../lib/GraphClient/GraphClient.js"
+import introspectionQuery from "../lib/GraphClient/queries/introspection.json"
 import {isEqual} from 'lodash'
 
 let client = new Client();

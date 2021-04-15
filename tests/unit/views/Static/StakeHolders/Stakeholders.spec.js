@@ -1,20 +1,20 @@
 import { shallowMount } from "@vue/test-utils";
-import BlockHero from "@/components/Home/BlockHero"
+import Stakeholders from "@/views/Static/Stakeholders/Stakeholders"
 import Vuetify from "vuetify"
 
 const vuetify = new Vuetify();
 
-describe("BlockCategories.vue", function(){
+describe("Stakeholders.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(BlockHero, {
+        wrapper = shallowMount(Stakeholders, {
             vuetify,
         })
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("BlockHero");
+        expect(wrapper.name()).toMatch("Stakeholders");
     });
 
 });

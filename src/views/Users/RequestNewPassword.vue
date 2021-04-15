@@ -52,7 +52,7 @@
 </template>
 
 <script>
-    import Client from "@/components/Client/RESTClient.js"
+    import Client from "@/lib/Client/RESTClient.js"
 
     const client = new Client();
 

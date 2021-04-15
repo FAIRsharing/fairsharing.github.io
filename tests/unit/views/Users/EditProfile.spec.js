@@ -1,7 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vuex from "vuex"
 import sinon from "sinon"
-import Client from "@/components/Client/RESTClient.js"
+import Client from "@/lib/Client/RESTClient.js"
 import EditProfile from "@/views/Users/EditProfile.vue"
 import userStore from "@/store/users";
 

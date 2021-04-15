@@ -1,7 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
 import FieldInput from "@/components/Editor/AdditionalInformation/FieldInput.vue"
-import recordStore from "@/store/record.js";
+import recordStore from "@/store/recordData.js";
 import additionalInformationFixture from "@/../tests/fixtures/additionalInformation.json"
 
 const localVue = createLocalVue();

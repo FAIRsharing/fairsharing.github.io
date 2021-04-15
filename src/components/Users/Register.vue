@@ -105,10 +105,27 @@
                 @click:append="showRepeat = !showRepeat"
               />
 
+              <!-- accept terms and conditions -->
+              <div class="d-flex">
+                <v-checkbox
+                  v-model="termsAccepted"
+                  class="pt-0 mt-0"
+                  :rules="[rules.isRequired()]"
+                />
+                <div>
+                  I acknowledge that I have read and agreed to the
+                  <router-link
+                    to="/privacy"
+                    target="_blank"
+                  >
+                    terms and conditions.
+                  </router-link>
+                </div>
+              </div>
               <div class="px-5 mb-5">
-                <a href="#/accounts/login">
+                <router-link to="/accounts/login">
                   - I already have an account -
-                </a>
+                </router-link>
               </div>
 
               <v-btn
@@ -128,7 +145,7 @@
 </template>
 
 <script>
-    import RESTClient from "@/components/Client/RESTClient.js";
+    import RESTClient from "@/lib/Client/RESTClient.js";
     import ValidityProgress from "./Password/ValidityProgress";
 
     import { hasValue, isEmail, isRequired } from "@/utils/rules.js"
@@ -152,6 +169,7 @@
                     isRequired: function(){return isRequired()},
                 },
                 formValid: false,
+                termsAccepted: false,
             }
         },
         methods: {

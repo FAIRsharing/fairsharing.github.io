@@ -15,6 +15,7 @@
     "updatedAt",
     "lastEdited",
     "schemaOrg",
+    "isHidden",
     {
       "name": "lastEditor",
       "fields": [

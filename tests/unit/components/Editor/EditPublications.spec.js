@@ -3,12 +3,12 @@ import Vuex from "vuex";
 import Vuetify from "vuetify"
 import VueRouter from "vue-router"
 import editPublications from "@/components/Editor/EditPublications.vue"
-import recordStore from "@/store/record.js";
+import recordStore from "@/store/recordData.js";
 import editorStore from "@/store/editor.js";
 import userStore from "@/store/users.js";
-import GraphClient from "@/components/GraphClient/GraphClient.js";
-import RestClient from "@/components/Client/RESTClient.js"
-import ExternalClient from "@/components/Client/ExternalClients.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import RestClient from "@/lib/Client/RESTClient.js"
+import ExternalClient from "@/lib/Client/ExternalClients.js"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

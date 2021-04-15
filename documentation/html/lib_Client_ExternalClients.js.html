@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Statistics</title>
+	<title>FAIRsharing.org Source: lib/Client/ExternalClients.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-Statistics.html">Statistics</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -81,100 +81,100 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Statistics</h1>
+		<h1 class="page-title">Source: lib/Client/ExternalClients.js</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import axios from "axios"
 
-<header>
-    
-</header>
+class ExternalRESTClients {
 
+    /**
+     * The RESTClient is a singleton class that handles the connection and data exchange from the back-end
+     * REST API.
+     */
+    constructor() {
+        if (ExternalRESTClients._instance) {
+            return ExternalRESTClients._instance
+        }
+        ExternalRESTClients._instance = this;
+        this.doiBaseURL = 'https://dx.doi.org/';
+        this.headers = {
+            'Accept': 'application/x-bibtex',
+        };
+        this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&amp;retmode=json&amp;id=";
+        this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q=";
+        this.orcidBaseURL = "https://pub.orcid.org/v2.0/";
+    }
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>This component handles the statistic page</p></div>
-        
+    async getDOI(doi){
+        let localHeaders = this.headers;
+        localHeaders['Accept'] = 'application/json';
+        const request = {
+            url: this.doiBaseURL + doi,
+            headers: localHeaders
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
-        
-<dl class="details">
-    
+    async getPMID(id){
+        const request = {
+            url: this.pmidBaseURL + id,
+            headers: {
+                'Accept': 'application/json',
+            }
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
-	
+    async getTessRecords(string){
+        const request = {
+            url: this.tessBaseURL + string,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
 
-	
+    async getOrcidUser(user){
+        this.headers['Accept'] = "application/orcid+json";
+        const request = {
+            url: this.orcidBaseURL + user,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        this.headers['Accept'] = 'application/x-bibtex';
+        return response.data;
+    }
 
-	
+    /**
+     * Trigger the given query with Axios
+     * @param query
+     * @returns {Promise&lt;*>}
+     */
+    async executeQuery(query) {
+        try {
+            return await axios.get(query.url, {headers: query.headers});
+        }
+        catch(e){
+            return({data: {error: e}});
+        }
+    }
+}
 
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_Stats_Statistics.vue.html">views/Stats/Statistics.vue</a>,
-				 <a href="views_Stats_Statistics.vue.html#sunlight-1-line-5">line 5</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+export default ExternalRESTClients;
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -184,10 +184,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>
@@ -220,7 +216,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Mon Apr 12th 2021
+		on Thu Apr 15th 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

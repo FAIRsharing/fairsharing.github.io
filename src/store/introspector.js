@@ -66,6 +66,7 @@ export const actions = {
 
         // temp!
         // this.commit("introspection/setMaintenanceMode");
+        // this.commit("introspection/setReadOnlyMode");
     }
 };
 export const getters = {

@@ -7,6 +7,9 @@ let store = {
     state: {
         users: {
             user: function(){return {isLoggedIn: true}}
+        },
+        introspection: {
+            maintenanceMode: false
         }
     },
     dispatch: jest.fn()
@@ -63,6 +66,9 @@ describe("Routes", () => {
             state: {
                 users: {
                     user: function(){return {isLoggedIn: false}}
+                },
+                introspection: {
+                    maintenanceMode: false
                 }
             },
             dispatch: jest.fn()

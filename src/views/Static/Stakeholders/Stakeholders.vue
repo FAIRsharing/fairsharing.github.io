@@ -1,19 +1,19 @@
 <template>
-  <main class="pa-5 mt-5 mb-10">
+  <main class="pa-15 mb-10">
     <!--  main_title -->
-    <h1 class="text-h4 text-xl-h3 mb-2 mb-xl-6">
+    <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       {{ stakeholdersData.main_title }}
     </h1>
 
     <!--  main_subtitle  -->
     <!-- eslint-disable vue/no-v-html -->
     <p
-      :class="['mb-8 lato-font-medium lato-text-md',{'lato-text-lg':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       v-html="stakeholdersData.main_subtitle"
     />
 
     <!--  main_title_2 -->
-    <h2 class="text-h4 text-xl-h3 mb-2 mb-xl-6">
+    <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       {{ stakeholdersData.main_title_2 }}
     </h2>
 
@@ -22,11 +22,11 @@
       v-for="(item,index) in stakeholdersData.stakeholders_data"
       :key="index"
     >
-      <h3 class="text-h5 text-xl-h4 mb-2">
+      <h3 class="text-h6 text-xl-h5 mb-2">
         {{ item.title }}
       </h3>
       <p
-        :class="['mb-8 lato-font-medium lato-text-md',{'lato-text-lg':$vuetify.breakpoint.xlOnly }]"
+        :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
         v-html="item.content"
       />
       <!-- eslint-enable vue/no-v-html -->

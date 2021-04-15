@@ -4,7 +4,7 @@ import store from '@/store'
 
 import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
     Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
-    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile, Graph }
+    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance }
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -56,6 +56,16 @@ let routes = [
         path: "/organisations/:id",
         component: Organisation
     },
+
+    /* OTHER MODES */
+    {
+        name: "Maintenance",
+        path: "/maintenance",
+        component: Maintenance,
+
+    },
+
+
     /* CREATION */
     {
         name: "New_content",
@@ -225,6 +235,9 @@ const router = new VueRouter({
 });
 
 export async function beforeEach(to, from, next, store) {
+    if (to.path !== '/maintenance' && store.state.introspection.maintenanceMode) {
+        next({path: "maintenance"});
+    }
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
     if (store.state.users.user().isLoggedIn){
         await store.dispatch('users/validateUserToken');

@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -99,7 +99,6 @@
     >
       &lt;!--   error   -->
       &lt;div v-if="error">
-        {{error}}
         &lt;NotFound />
       &lt;/div>
 
@@ -226,8 +225,8 @@
 
 &lt;script>
     import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
-    import Client from '@/lib/GraphClient/GraphClient.js'
-    import RestClient from "@/lib/Client/RESTClient.js"
+    import Client from '@/components/GraphClient/GraphClient.js'
+    import RestClient from "@/components/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Tools from '@/components/Records/Record/Tools';
@@ -381,10 +380,10 @@
                 this.claimedTriggered = false;
                 try {
                   if (this.target) await _module.fetchPreviewRecord(this.target);
-                  else await _module.fetchRecord({
-                      id: this.currentRoute,
-                      token: (_module.user().credentials) ? _module.user().credentials.token : null
-                  });
+                    else await _module.fetchRecord({
+                        id: this.currentRoute,
+                        token: _module.user().credentials.token
+                      });
                 }
                 catch (e) {
                     this.error = e.message;
@@ -421,7 +420,7 @@
               }
               let data = {
                 watched_record_ids: records
-              };
+              }
               let response = await this.updateWatchedRecords(data);
               // Refresh user data to reload followed record status.
               if (response.modification === 'success'){
@@ -431,7 +430,7 @@
             },
             isWatching() {
               return  this.currentRecord['fairsharingRecord'].id
-                      &amp;&amp; this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
+                      &amp;&amp; this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
             },
             getMenuButtons(){
               let _module = this;

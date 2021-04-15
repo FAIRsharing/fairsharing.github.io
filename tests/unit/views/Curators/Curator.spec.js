@@ -2,8 +2,8 @@ import { shallowMount, createLocalVue } from "@vue/test-utils"
 import VueRouter from "vue-router"
 import Vuex from "vuex"
 import sinon from "sinon"
-import Client from "@/components/Client/RESTClient.js"
-import GraphClient from "@/components/GraphClient/GraphClient.js"
+import Client from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import Curator from "@/views/Curators/Curator.vue"
 import dataDahboard from "../../../fixtures/curationDashboardData.json"
@@ -60,6 +60,7 @@ describe("Curator.vue", () => {
       expect(wrapper.name()).toMatch(title);
       expect(wrapper.vm.approvalRequired.length).toBe(3);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazu");//Name reduced number to six characters
+      expect(wrapper.vm.approvalRequired[1].creator).toBe("unknown");
       expect(wrapper.vm.curatorList.length).toBe(4);//Added "none" in curatorList and not adding one that is "dev_curator"
       expect(wrapper.vm.curatorList[0].userName).toBe("Luther");//It is the super_curator
       expect(wrapper.vm.curatorList[1].userName).toBe("Mary the Great Curator");//it is the senior_curator

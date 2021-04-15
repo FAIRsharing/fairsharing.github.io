@@ -20,9 +20,10 @@
           :key="item.title+'_'+blockIndex"
         >
           <router-link
+            v-if="item['urlType']==='internal'"
             class="underline-effect"
             :to="item.url"
-            target="_blank"
+            @click.native="$scrollTo('body',0,{})"
           >
             <i
               v-if="item.icon"
@@ -30,6 +31,18 @@
             />
             {{ item.title }}
           </router-link>
+          <a
+            v-else
+            class="underline-effect"
+            :href="item.url"
+            target="_blank"
+          >
+            <i
+              v-if="item.icon"
+              :class="item.icon"
+            />
+            {{ item.title }}
+          </a>
         </li>
       </ul>
     </v-col>

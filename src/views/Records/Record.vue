@@ -6,27 +6,36 @@
     >
       <!--   error   -->
       <div v-if="error">
+        {{error}}
         <NotFound />
       </div>
 
       <!--   Action Menu & Alert   -->
       <v-row
         v-if="!target && queryTriggered"
-        class="pr-3"
+        class="mx-1"
       >
         <v-col
           cols="12"
-          class="d-flex"
         >
           <div
-            v-if="alreadyClaimed || claimedTriggered"
-            class="d-flex flex-grow-1"
+            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
+            class="d-flex flex-column"
           >
             <v-alert
+              v-if="user().is_curator && currentRecord.fairsharingRecord['isHidden']"
+              dense
+              type="info"
+              class="mb-2 flex-grow-1"
+            >
+              <span>This record is hidden!</span>
+            </v-alert>
+
+            <v-alert
               v-if="alreadyClaimed"
+              dense
               type="warning"
-              style="flex:1"
-              class="mr-3"
+              class="mb-1 flex-grow-1"
             >
               <span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.</span>
             </v-alert>
@@ -38,41 +47,44 @@
               Thank you for claiming this record. We will be getting back to you between 48 and 72h.
             </v-snackbar>
           </div>
-          <v-spacer v-else />
-          <v-menu
-            class="mt-3"
-            offset-y
+          <div
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            class="text-right"
           >
-            <template #activator="{ on, attrs }">
-              <v-btn
-                class="mt-2"
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="getMenuButtons()"
-              >
-                Actions
-                <v-icon
-                  small
-                  right
+            <v-menu
+              offset-y
+            >
+              <template #activator="{ on, attrs }">
+                <v-btn
+                  class="mt-1"
+                  color="primary"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="getMenuButtons()"
                 >
-                  fa-chevron-down
-                </v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(button, index) in buttons"
-                :key="'button_' + index"
-                :disabled="button.isDisabled()"
-                @click="button.method()"
-              >
-                <v-list-item-title>
-                  {{ button.name() }}
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+                  Actions
+                  <v-icon
+                    small
+                    right
+                  >
+                    fa-chevron-down
+                  </v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(button, index) in buttons"
+                  :key="'button_' + index"
+                  :disabled="button.isDisabled()"
+                  @click="button.method()"
+                >
+                  <v-list-item-title>
+                    {{ button.name() }}
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
         </v-col>
       </v-row>
 
@@ -80,6 +92,7 @@
       <div v-if="currentRecord['fairsharingRecord'] && !error">
         <!-- Top Block -->
         <GeneralInfo
+          class="ma-4"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
@@ -88,37 +101,40 @@
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- COLLECTIONS -->
-            <Collections class="mt-5" />
+            <Collections class="ma-4 mb-8" />
             <!-- SUPPORT -->
-            <Support class="mt-5" />
+            <Support class="ma-4 mb-8" />
             <!-- Data Conditions -->
-            <DataCondtions class="mt-5" />
+            <DataCondtions class="ma-4 mb-4" />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- Related Content -->
-            <RelatedContent class="mt-5 ml-lg-5" />
+            <RelatedContent class="ma-4 mb-8" />
             <!-- Tools -->
-            <Tools class="mt-5 ml-lg-5" />
+            <Tools class="ma-4 mb-8" />
             <!-- Organisations -->
-            <Organisations class="mt-5 ml-lg-5" />
+            <Organisations class="ma-4 mb-6 mb-sm-4 " />
           </v-col>
         </v-row>
         <!-- Bottom Block -->
-        <Publications class="mt-5 mb-10" />
+        <Publications class="mb-10 ma-4" />
       </div>
     </v-container>
+    <!-- This html is from a safe source -->
+    <!-- eslint-disable vue/no-v-html -->
     <script
-      :v-html="JSONLD"
       type="application/ld+json"
+      v-html="JSONLD"
     />
+    <!-- eslint-enable vue/no-v-html -->
   </v-main>
 </template>
 
 <script>
     import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
-    import Client from '@/components/GraphClient/GraphClient.js'
-    import RestClient from "@/components/Client/RESTClient.js"
+    import Client from '@/lib/GraphClient/GraphClient.js'
+    import RestClient from "@/lib/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Tools from '@/components/Records/Record/Tools';
@@ -180,7 +196,7 @@
             },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
-            }
+            },
         },
         watch: {
             async currentRoute() {
@@ -211,12 +227,23 @@
             goToEdit(){
               let _module = this;
               const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
-              this.$router.push({
-                path: recordID + '/edit',
-                params: {
-                  fromRecordPage: true
-                }
-              })
+              if (_module.userIsLoggedIn) {
+                this.$router.push({
+                  path: recordID + '/edit',
+                  params: {
+                    fromRecordPage: true
+                  }
+                })
+              }
+              else {
+                this.$router.push({
+                  path: "/accounts/login",
+                  query: {
+                    goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                  }
+                })
+              }
+
             },
             /**
             * Method to create a maintenance_request; sets canClaim and (on fail) error.
@@ -272,10 +299,10 @@
                 this.claimedTriggered = false;
                 try {
                   if (this.target) await _module.fetchPreviewRecord(this.target);
-                    else await _module.fetchRecord({
-                        id: this.currentRoute,
-                        token: _module.user().credentials.token
-                      });
+                  else await _module.fetchRecord({
+                      id: this.currentRoute,
+                      token: (_module.user().credentials) ? _module.user().credentials.token : null
+                  });
                 }
                 catch (e) {
                     this.error = e.message;
@@ -312,7 +339,7 @@
               }
               let data = {
                 watched_record_ids: records
-              }
+              };
               let response = await this.updateWatchedRecords(data);
               // Refresh user data to reload followed record status.
               if (response.modification === 'success'){
@@ -322,7 +349,7 @@
             },
             isWatching() {
               return  this.currentRecord['fairsharingRecord'].id
-                      && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
+                      && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
             },
             getMenuButtons(){
               let _module = this;

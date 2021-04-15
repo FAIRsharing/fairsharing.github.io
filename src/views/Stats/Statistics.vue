@@ -556,7 +556,7 @@
      *
      */
      import GraphClient from "@/components/GraphClient/GraphClient.js"
-     import getFilters from "@/components/GraphClient/queries/getFilters.json"
+     import getFilters from "@/lib/GraphClient/queries/getFilters.json"
      import Loaders from "@/components/Navigation/Loaders"
      import {cloneDeep} from 'lodash'
      import PieChart from "@/components/Statistics/PieChart.vue"

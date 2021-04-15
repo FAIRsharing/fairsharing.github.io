@@ -2,10 +2,9 @@ import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
-import recordStore from "@/store/record.js"
+import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
-import icons from "@/../tests/fixtures/icons.json"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

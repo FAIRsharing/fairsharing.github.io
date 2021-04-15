@@ -1,20 +1,20 @@
 import { shallowMount } from "@vue/test-utils";
-import BlockSearch from "@/components/Home/BlockSearch"
+import Privacy from "@/views/Static/Privacy/Privacy"
 import Vuetify from "vuetify"
 
 const vuetify = new Vuetify();
 
-describe("BlockSearch.vue", function(){
+describe("Privacy.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(BlockSearch, {
+        wrapper = shallowMount(Privacy, {
             vuetify,
         })
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("BlockSearch");
+        expect(wrapper.name()).toMatch("Privacy");
     });
 
 });

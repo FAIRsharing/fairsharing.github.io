@@ -296,8 +296,8 @@
 <script>
     import { mapState, mapActions, mapGetters } from "vuex"
     import { isEqual } from "lodash"
-    import PublicationClient from "@/components/Client/ExternalClients.js"
-    import RestClient from "@/components/Client/RESTClient.js"
+    import PublicationClient from "@/lib/Client/ExternalClients.js"
+    import RestClient from "@/lib/Client/RESTClient.js"
     import Alerts from "@/components/Editor/Alerts";
     const pubClient = new PublicationClient();
     const restClient = new RestClient();

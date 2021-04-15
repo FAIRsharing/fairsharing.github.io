@@ -1,6 +1,8 @@
 <template>
-  <v-layout
+  <v-form
     id="loginPage"
+    ref="loginPage"
+    v-model="formValid"
     class="login"
     style="background: white"
   >
@@ -33,7 +35,7 @@
                 <v-btn
                   class="text-center teal white--text px-2"
                   href="#/users/resendConfirmation"
-                  @click="()=>{this.$emit('ClosePopup', true)}"
+                  @click="()=>{$emit('ClosePopup', true)}"
                 >
                   Resend me the confirmation email
                 </v-btn>
@@ -85,6 +87,7 @@
                   required
                   outlined
                   :rules="[rules.isRequired()]"
+                  @keyup.enter="logUser()"
                 />
 
                 <!-- password -->
@@ -98,15 +101,16 @@
                   outlined
                   :rules="[rules.isRequired()]"
                   @click:append="show1 = !show1"
+                  @keyup.enter="logUser()"
                 />
 
                 <v-card-text class="text-center py-1">
                   <router-link to="/accounts/forgotPassword">
-                    <span @click="()=>{this.$emit('ClosePopup', true)}">Forgot your password ?</span>
+                    <span @click="()=>{$emit('ClosePopup', true)}">Forgot your password ?</span>
                   </router-link>
                   <v-divider />
                   <router-link to="/accounts/signup">
-                    <span @click="()=>{this.$emit('ClosePopup', true)}">Create a new account</span>
+                    <span @click="()=>{$emit('ClosePopup', true)}">Create a new account</span>
                   </router-link>
                 </v-card-text>
 
@@ -127,7 +131,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </v-layout>
+  </v-form>
 </template>
 
 <script>
@@ -187,7 +191,7 @@ export default {
   },
   methods: {
     ...mapActions('users', ['login', 'logout']),
-    logUser: async function () {
+    async logUser() {
       const _module = this;
       const user = {
         "name": _module.loginData.name,
@@ -219,7 +223,7 @@ export default {
         }
       }
     },
-    returnTo: function() {
+    returnTo() {
       const _module = this;
       const goTo = _module.$route.query.goTo;
       if (goTo) {

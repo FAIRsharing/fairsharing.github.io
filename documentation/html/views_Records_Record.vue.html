@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -99,27 +99,36 @@
     >
       &lt;!--   error   -->
       &lt;div v-if="error">
+        {{error}}
         &lt;NotFound />
       &lt;/div>
 
       &lt;!--   Action Menu &amp; Alert   -->
       &lt;v-row
         v-if="!target &amp;&amp; queryTriggered"
-        class="pr-3"
+        class="mx-1"
       >
         &lt;v-col
           cols="12"
-          class="d-flex"
         >
           &lt;div
-            v-if="alreadyClaimed || claimedTriggered"
-            class="d-flex flex-grow-1"
+            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
+            class="d-flex flex-column"
           >
             &lt;v-alert
+              v-if="user().is_curator &amp;&amp; currentRecord.fairsharingRecord['isHidden']"
+              dense
+              type="info"
+              class="mb-2 flex-grow-1"
+            >
+              &lt;span>This record is hidden!&lt;/span>
+            &lt;/v-alert>
+
+            &lt;v-alert
               v-if="alreadyClaimed"
+              dense
               type="warning"
-              style="flex:1"
-              class="mr-3"
+              class="mb-1 flex-grow-1"
             >
               &lt;span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.&lt;/span>
             &lt;/v-alert>
@@ -131,41 +140,44 @@
               Thank you for claiming this record. We will be getting back to you between 48 and 72h.
             &lt;/v-snackbar>
           &lt;/div>
-          &lt;v-spacer v-else />
-          &lt;v-menu
-            class="mt-3"
-            offset-y
+          &lt;div
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            class="text-right"
           >
-            &lt;template #activator="{ on, attrs }">
-              &lt;v-btn
-                class="mt-2"
-                color="primary"
-                v-bind="attrs"
-                v-on="on"
-                @click="getMenuButtons()"
-              >
-                Actions
-                &lt;v-icon
-                  small
-                  right
+            &lt;v-menu
+              offset-y
+            >
+              &lt;template #activator="{ on, attrs }">
+                &lt;v-btn
+                  class="mt-1"
+                  color="primary"
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="getMenuButtons()"
                 >
-                  fa-chevron-down
-                &lt;/v-icon>
-              &lt;/v-btn>
-            &lt;/template>
-            &lt;v-list>
-              &lt;v-list-item
-                v-for="(button, index) in buttons"
-                :key="'button_' + index"
-                :disabled="button.isDisabled()"
-                @click="button.method()"
-              >
-                &lt;v-list-item-title>
-                  {{ button.name() }}
-                &lt;/v-list-item-title>
-              &lt;/v-list-item>
-            &lt;/v-list>
-          &lt;/v-menu>
+                  Actions
+                  &lt;v-icon
+                    small
+                    right
+                  >
+                    fa-chevron-down
+                  &lt;/v-icon>
+                &lt;/v-btn>
+              &lt;/template>
+              &lt;v-list>
+                &lt;v-list-item
+                  v-for="(button, index) in buttons"
+                  :key="'button_' + index"
+                  :disabled="button.isDisabled()"
+                  @click="button.method()"
+                >
+                  &lt;v-list-item-title>
+                    {{ button.name() }}
+                  &lt;/v-list-item-title>
+                &lt;/v-list-item>
+              &lt;/v-list>
+            &lt;/v-menu>
+          &lt;/div>
         &lt;/v-col>
       &lt;/v-row>
 
@@ -173,6 +185,7 @@
       &lt;div v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error">
         &lt;!-- Top Block -->
         &lt;GeneralInfo
+          class="ma-4"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
@@ -181,37 +194,40 @@
           &lt;!--Left Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             &lt;!-- COLLECTIONS -->
-            &lt;Collections class="mt-5" />
+            &lt;Collections class="ma-4 mb-8" />
             &lt;!-- SUPPORT -->
-            &lt;Support class="mt-5" />
+            &lt;Support class="ma-4 mb-8" />
             &lt;!-- Data Conditions -->
-            &lt;DataCondtions class="mt-5" />
+            &lt;DataCondtions class="ma-4 mb-4" />
           &lt;/v-col>
           &lt;!--Right Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             &lt;!-- Related Content -->
-            &lt;RelatedContent class="mt-5 ml-lg-5" />
+            &lt;RelatedContent class="ma-4 mb-8" />
             &lt;!-- Tools -->
-            &lt;Tools class="mt-5 ml-lg-5" />
+            &lt;Tools class="ma-4 mb-8" />
             &lt;!-- Organisations -->
-            &lt;Organisations class="mt-5 ml-lg-5" />
+            &lt;Organisations class="ma-4 mb-6 mb-sm-4 " />
           &lt;/v-col>
         &lt;/v-row>
         &lt;!-- Bottom Block -->
-        &lt;Publications class="mt-5 mb-10" />
+        &lt;Publications class="mb-10 ma-4" />
       &lt;/div>
     &lt;/v-container>
+    &lt;!-- This html is from a safe source -->
+    &lt;!-- eslint-disable vue/no-v-html -->
     &lt;script
-      :v-html="JSONLD"
       type="application/ld+json"
+      v-html="JSONLD"
     />
+    &lt;!-- eslint-enable vue/no-v-html -->
   &lt;/v-main>
 &lt;/template>
 
 &lt;script>
     import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
-    import Client from '@/components/GraphClient/GraphClient.js'
-    import RestClient from "@/components/Client/RESTClient.js"
+    import Client from '@/lib/GraphClient/GraphClient.js'
+    import RestClient from "@/lib/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Tools from '@/components/Records/Record/Tools';
@@ -273,7 +289,7 @@
             },
             getTitle() {
                 return 'FAIRsharing | ' + this.currentRoute;
-            }
+            },
         },
         watch: {
             async currentRoute() {
@@ -304,12 +320,23 @@
             goToEdit(){
               let _module = this;
               const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
-              this.$router.push({
-                path: recordID + '/edit',
-                params: {
-                  fromRecordPage: true
-                }
-              })
+              if (_module.userIsLoggedIn) {
+                this.$router.push({
+                  path: recordID + '/edit',
+                  params: {
+                    fromRecordPage: true
+                  }
+                })
+              }
+              else {
+                this.$router.push({
+                  path: "/accounts/login",
+                  query: {
+                    goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                  }
+                })
+              }
+
             },
             /**
             * Method to create a maintenance_request; sets canClaim and (on fail) error.
@@ -365,10 +392,10 @@
                 this.claimedTriggered = false;
                 try {
                   if (this.target) await _module.fetchPreviewRecord(this.target);
-                    else await _module.fetchRecord({
-                        id: this.currentRoute,
-                        token: _module.user().credentials.token
-                      });
+                  else await _module.fetchRecord({
+                      id: this.currentRoute,
+                      token: (_module.user().credentials) ? _module.user().credentials.token : null
+                  });
                 }
                 catch (e) {
                     this.error = e.message;
@@ -405,7 +432,7 @@
               }
               let data = {
                 watched_record_ids: records
-              }
+              };
               let response = await this.updateWatchedRecords(data);
               // Refresh user data to reload followed record status.
               if (response.modification === 'success'){
@@ -415,7 +442,7 @@
             },
             isWatching() {
               return  this.currentRecord['fairsharingRecord'].id
-                      &amp;&amp; this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
+                      &amp;&amp; this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
             },
             getMenuButtons(){
               let _module = this;
@@ -561,7 +588,11 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
+<<<<<<< HEAD
 		on Tue Apr 13th 2021
+=======
+		on Thu Apr 15th 2021
+>>>>>>> dev
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

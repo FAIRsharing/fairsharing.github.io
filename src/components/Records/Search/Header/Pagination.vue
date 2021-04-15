@@ -2,7 +2,7 @@
   <v-pagination
     v-model="page"
     :length="totalPages"
-    :total-visible="7"
+    :total-visible="($vuetify.breakpoint.mdAndUp) ? 7 : 3"
   />
 </template>
 

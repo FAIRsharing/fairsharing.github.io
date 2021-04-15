@@ -211,7 +211,7 @@
     import { mapState } from "vuex"
     import { isEqual } from "lodash"
     import { isRequired, isUrl, isEmail } from "@/utils/rules.js"
-    import ExternalClient from "@/components/Client/ExternalClients.js"
+    import ExternalClient from "@/lib/Client/ExternalClients.js"
     import Icon from "@/components/Icon";
     import IconsMixin from "@/utils/iconsMixin.js"
 

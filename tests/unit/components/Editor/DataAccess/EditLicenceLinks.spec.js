@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import EditLicenceLinks from "@/components/Editor/DataAccess/EditLicenceLinks.vue"
-import recordStore from "@/store/record.js"
+import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 
 const localVue = createLocalVue();

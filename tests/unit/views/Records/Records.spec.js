@@ -3,8 +3,8 @@ import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueMeta from "vue-meta";
 import Records from "@/views/Records/Records.vue";
-import Client from "@/components/GraphClient/GraphClient.js";
-import records from "@/store/records.js"
+import Client from "@/lib/GraphClient/GraphClient.js";
+import records from "@/store/recordSearch.js"
 import introspection from "@/store/introspector.js"
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"

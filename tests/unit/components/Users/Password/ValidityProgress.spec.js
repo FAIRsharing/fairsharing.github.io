@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils"
 import Vue from "vue"
 import sinon from "sinon"
 import ValidityProgress from "@/components/Users/Password/ValidityProgress"
-import Client from "@/components/Client/RESTClient.js"
+import Client from "@/lib/Client/RESTClient.js"
 
 const localVue = createLocalVue();
 Vue.config.silent = true;

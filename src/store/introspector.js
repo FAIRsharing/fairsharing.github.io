@@ -61,11 +61,11 @@ export const actions = {
             this.commit("introspection/setLocalStorageExpiryTime");
             this.commit("introspection/setParameters", data.data);
         }
-        if (data.headers['maintenance']) this.commit("introspection/setMaintenanceMode");
-        if (data.headers['read-only']) this.commit("introspection/setReadOnlyMode");
+        if (data.headers['maintenance'] === "true") this.commit("introspection/setMaintenanceMode");
+        if (data.headers['read-only'] === "true") this.commit("introspection/setReadOnlyMode");
 
         // temp!
-        this.commit("introspection/setMaintenanceMode");
+        // this.commit("introspection/setMaintenanceMode");
     }
 };
 export const getters = {

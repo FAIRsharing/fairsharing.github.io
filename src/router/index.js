@@ -62,9 +62,10 @@ let routes = [
         name: "Maintenance",
         path: "/maintenance",
         component: Maintenance,
-
+        beforeEnter(to, from, next) {
+            isMaintenanceMode(to, from, next, store);
+        }
     },
-
 
     /* CREATION */
     {
@@ -258,6 +259,14 @@ export function isLoggedIn(to, from, next, store) {
         });
     }
 
+}
+
+export function isMaintenanceMode(to, from, next, store){
+    console.log(store.state.introspection.maintenanceMode);
+    if (!store.state.introspection.maintenanceMode) {
+        next(from);
+    }
+    next();
 }
 
 export default router;

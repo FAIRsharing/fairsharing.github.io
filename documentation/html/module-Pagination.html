@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Namespace: Static</title>
+	<title>FAIRsharing.org Module: Pagination</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,15 +86,10 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Namespace: Static</h1>
+	<h1 class="page-title">Module: Pagination</h1>
 <section>
 
 <header>
-    
-        <h2>
-        Static
-        </h2>
-        
     
 </header>
 
@@ -103,7 +98,44 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>All static pages will be handle through this namespace</p></div>
+            <div class="description"><p>Component to handle the advanced search filters for the searchFairsharingRecords query.</p></div></div></p>
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-props">Props</h3>
+<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-props">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Default value</th>
+        <th>Required?</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>totalPages</code></td>
+        <td>Number</td>
+        <td><code>0</code></td>
+        <td>No</td>
+        <td>the total number of pages to display</td>
+    </tr></tbody>
+</table>
+<h3 class="subsection-title" style="margin-top: 1em" data-jsdoc-vuejs="section-data">Data</h3>
+<table class="table table-responsive table-hover table-striped" data-jsdoc-vuejs="table-data">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Default value</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>currentQuery</code></td>
+        <td>Number</td>
+        <td><code>null</code></td>
+        <td>the current page number</td>
+    </tr></tbody>
+</table>
+<div class="container-overview"><div><p></div>
         
 
         
@@ -137,16 +169,6 @@
 
 
 	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_Static_Community_Community.vue.html">views/Static/Community/Community.vue</a>,
-				 <a href="views_Static_Community_Community.vue.html#sunlight-1-line-2">line 2</a>
-			</li>
-		</ul>
-	</dd>
-	
 
 	
 
@@ -171,34 +193,81 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         <dl>
             
 <hr>
-<dt class="name" id="Community">
-    <h4 id="Community"><span class="type-signature"></span>Community<span class="type-signature"> :module</span></h4>
-
+<dt>
+    <h4 class="name" id="disableThrottle"><span class="type-signature"></span>disableThrottle(disable)</h4>
+    
     
 </dt>
 <dd>
+
     
     <div class="description">
-        <p>This component handles the sign-up/register page</p>
+        <p>Set the environment ready for testing or development</p>
     </div>
     
 
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>disable</code></td>
+            
+
+            <td class="type">
+            
                 
-<span class="param-type">module</span>
+<span class="param-type">Boolean</span>
 
 
 
-            </li>
-        </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>should disable or not the throttle for the next call</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -236,8 +305,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="views_Static_Community_Community.vue.html">views/Static/Community/Community.vue</a>,
-				 <a href="views_Static_Community_Community.vue.html#sunlight-1-line-6">line 6</a>
+				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
+				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-88">line 88</a>
 			</li>
 		</ul>
 	</dd>
@@ -250,6 +319,18 @@
 	
 </dl>
 
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
 </dd>
@@ -257,110 +338,74 @@
         
             
 <hr>
-<dt class="name" id="Educational">
-    <h4 id="Educational"><span class="type-signature"></span>Educational<span class="type-signature"> :module</span></h4>
-
+<dt>
+    <h4 class="name" id="paginate"><span class="type-signature"></span>paginate(pageNumber)</h4>
+    
     
 </dt>
 <dd>
+
     
     <div class="description">
-        <p>This component handles the sign-up/register page</p>
+        <p>Set the current query page parameter value to the given input for vueJs router</p>
     </div>
     
 
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">module</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
 
     
 
     
-
     
+        <h5>Parameters:</h5>
+        
 
-    
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_Static_Educational_Educational.vue.html">views/Static/Educational/Educational.vue</a>,
-				 <a href="views_Static_Educational_Educational.vue.html#sunlight-1-line-2">line 2</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
+        <th>Type</th>
 
         
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<hr>
-<dt class="name" id="Timeline">
-    <h4 id="Timeline"><span class="type-signature"></span>Timeline<span class="type-signature"> :module</span></h4>
+                <td class="name"><code>pageNumber</code></td>
+            
 
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>This component handles the sign-up/register page</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
+            <td class="type">
+            
                 
-<span class="param-type">module</span>
+<span class="param-type">Number</span>
 
 
 
-            </li>
-        </ul>
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the page to go to</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -398,8 +443,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="views_Static_Timeline_Timeline.vue.html">views/Static/Timeline/Timeline.vue</a>,
-				 <a href="views_Static_Timeline_Timeline.vue.html#sunlight-1-line-2">line 2</a>
+				<a href="components_Records_Search_Header_Pagination.vue.html">components/Records/Search/Header/Pagination.vue</a>,
+				 <a href="components_Records_Search_Header_Pagination.vue.html#sunlight-1-line-59">line 59</a>
 			</li>
 		</ul>
 	</dd>
@@ -412,13 +457,23 @@
 	
 </dl>
 
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
 </dd>
 
         </dl>
-    
-
     
 
     

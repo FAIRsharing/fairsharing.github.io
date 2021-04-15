@@ -64,7 +64,7 @@
                  }
               },
               credits: {
-                enabled: false
+                enabled: true
               },
               yAxis: {
                 min: 0,

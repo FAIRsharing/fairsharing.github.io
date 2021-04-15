@@ -227,12 +227,23 @@
             goToEdit(){
               let _module = this;
               const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
-              this.$router.push({
-                path: recordID + '/edit',
-                params: {
-                  fromRecordPage: true
-                }
-              })
+              if (_module.userIsLoggedIn) {
+                this.$router.push({
+                  path: recordID + '/edit',
+                  params: {
+                    fromRecordPage: true
+                  }
+                })
+              }
+              else {
+                this.$router.push({
+                  path: "/accounts/login",
+                  query: {
+                    goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                  }
+                })
+              }
+
             },
             /**
             * Method to create a maintenance_request; sets canClaim and (on fail) error.

@@ -1,7 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify";
 import ExpansionPanel from "@/components/Records/Search/Input/FilterAutocomplete.vue"
-import recordsStore from "@/store/records.js";
+import recordsStore from "@/store/recordSearch.js";
 import uiController from "@/store/uiController.js";
 import getGrants from '../../../../../fixtures/getGrants.json'
 import Vuex from "vuex";

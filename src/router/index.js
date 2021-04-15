@@ -262,7 +262,6 @@ export function isLoggedIn(to, from, next, store) {
 }
 
 export function isMaintenanceMode(to, from, next, store){
-    console.log(store.state.introspection.maintenanceMode);
     if (!store.state.introspection.maintenanceMode) {
         next(from);
     }

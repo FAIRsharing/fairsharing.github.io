@@ -94,7 +94,7 @@
                               </h3>
                             </div>
                           </v-expansion-panel-header>
-                          <v-expansion-panel-content>
+                          <v-expansion-panel-content class="pt-3">
                             <v-lazy
                               v-model="entry.active"
                               :options="{threshold: .5}"
@@ -104,7 +104,8 @@
                               <vue-json-pretty
                                 :data="entry"
                                 :show-double-quotes="false"
-                                deep="5"
+                                :deep="5"
+                                :highlight-mouseover-node="true"
                               />
                             </v-lazy>
                           </v-expansion-panel-content>

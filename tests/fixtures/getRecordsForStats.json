@@ -7,12 +7,12 @@
         "sum_other_doc_count": 0,
         "buckets": [
           {
-            "key": "true",
+            "key": 0,
             "key_as_string": "true",
             "doc_count": 47
           },
           {
-            "key": "false",
+            "key": 1,
             "key_as_string": "false",
             "doc_count": 27
           }
@@ -66,12 +66,12 @@
             "doc_count": 65
           },
           {
-            "key": "natural sciences",
-            "doc_count": 65
+            "key": "maths",
+            "doc_count": 5
           },
           {
             "key": "life science",
-            "doc_count": 62
+            "doc_count": 4
           }
         ]
       },
@@ -224,7 +224,7 @@
           },
           {
             "key": "creative commons attribution 4.0 international (cc by 4.0)",
-            "doc_count": 5
+            "doc_count": 15
           }
         ]
       },

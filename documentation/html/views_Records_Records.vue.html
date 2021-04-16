@@ -125,7 +125,14 @@
           xl="3"
           class="d-flex mt-2 ml-2"
         >
-          &lt;SearchInput :class="['search-input-mb', responsiveClassObject]" />
+          &lt;SearchInput
+            :class="['search-input-mb', {
+              'left-panel-fixed-lg': stickToTop &amp;&amp; $vuetify.breakpoint.xlOnly,
+              'left-panel-default-lg': !stickToTop &amp;&amp; $vuetify.breakpoint.xlOnly,
+              'left-panel-default': !stickToTop &amp;&amp; !$vuetify.breakpoint.xlOnly,
+              'left-panel-fixed': stickToTop &amp;&amp; !$vuetify.breakpoint.xlOnly
+            }]"
+          />
         &lt;/v-col>
         &lt;v-col
           v-else
@@ -226,14 +233,6 @@ export default {
         }
       }
       return title;
-    },
-    responsiveClassObject: function () {
-      return {
-        'left-panel-fixed-lg': this.stickToTop &amp;&amp; this.$vuetify.breakpoint.xlOnly,
-        'left-panel-default-lg': !this.stickToTop &amp;&amp; this.$vuetify.breakpoint.xlOnly,
-        'left-panel-default': !this.stickToTop &amp;&amp; !this.$vuetify.breakpoint.xlOnly,
-        'left-panel-fixed': this.stickToTop &amp;&amp; !this.$vuetify.breakpoint.xlOnly
-      }
     },
     currentPath: function () {
       let title = this.$route.path.replace('/', '');

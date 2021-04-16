@@ -95,19 +95,12 @@
                             </div>
                           </v-expansion-panel-header>
                           <v-expansion-panel-content class="pt-3">
-                            <v-lazy
-                              v-model="entry.active"
-                              :options="{threshold: .5}"
-                              min-height="200"
-                              transition="fade-transition"
-                            >
-                              <vue-json-pretty
-                                :data="entry"
-                                :show-double-quotes="false"
-                                :deep="5"
-                                :highlight-mouseover-node="true"
-                              />
-                            </v-lazy>
+                            <vue-json-pretty
+                              :data="entry"
+                              :show-double-quotes="false"
+                              :deep="5"
+                              :highlight-mouseover-node="true"
+                            />
                           </v-expansion-panel-content>
                         </v-expansion-panel>
                       </v-expansion-panels>
@@ -162,10 +155,6 @@
                 if (index >  0) output = Object.values(output);
                 let length = output.length;
                 if (this.reverseDate) output = output.reverse();
-                output.forEach(entry => {
-                  entry.active = false;
-                });
-                output[this.page - 1].active = true;
                 this.maxPage = Math.ceil(length/this.perPage);
                 const enter = (this.page - 1) * this.perPage,
                     exit = ((this.page - 1) * this.perPage) + this.perPage;

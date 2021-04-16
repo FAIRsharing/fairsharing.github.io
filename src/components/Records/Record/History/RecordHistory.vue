@@ -65,6 +65,7 @@
 
                       <!-- CONTENT -->
                       <v-expansion-panels
+                        v-model="currentPanel"
                         focusable
                         multiple
                       >
@@ -147,7 +148,13 @@
                 perPage: 12,
                 maxPage: 0,
                 reverseDate: true,
+                currentPanel: []
             }
+        },
+        watch: {
+          page(){
+            this.currentPanel = [];
+          }
         },
         methods: {
             reverse(array, index){

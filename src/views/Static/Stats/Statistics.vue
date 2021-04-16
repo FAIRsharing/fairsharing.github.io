@@ -5,12 +5,13 @@
         primary-title
         class="justify-center"
       >
-        <div>
+        <div class="center">
           <h3
             class="headline text--accent-2"
           >
-            Summary Statistics (under construction)
+            Summary Statistics
           </h3>
+          <small>(click pie sector or bar to access specific data)</small>
         </div>
       </v-card-title>
       <v-row

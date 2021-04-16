@@ -559,8 +559,8 @@
      import getFilters from "@/lib/GraphClient/queries/getFilters.json"
      import Loaders from "@/components/Navigation/Loaders"
      import {cloneDeep} from 'lodash'
-     import PieChart from "@/components/Statistics/PieChart.vue"
-     import BarChart from "@/components/Statistics/BarChart.vue"
+     import PieChart from "@/components/Static/Statistics/PieChart.vue"
+     import BarChart from "@/components/Static/Statistics/BarChart.vue"
 
 
      const client = new GraphClient();
@@ -679,8 +679,8 @@
              }
              _module.chartMaintainer[item] = cloneDeep(_module.auxPieChart);
              _module.prepareHasMaintainer(_module.allDataStatsRegistry[item], _module.chartMaintainer[item], item);
-             console.log(item);
-             console.log(_module.allDataStatsRegistry[item]);
+             //console.log(item);
+             //console.log(_module.allDataStatsRegistry[item]);
            });
            _module.chartCountriesAll = cloneDeep(_module.auxBarChart);
            _module.prepareRecordCountry(_module.allDataStats, _module.chartCountriesAll,"record");

@@ -51,6 +51,7 @@
                       <!-- CONFIGURATION -->
                       <div class="text-center mb-10">
                         <v-pagination
+                          v-if="maxPage > 1"
                           v-model="page"
                           :length="maxPage"
                           :total-visible="7"
@@ -75,23 +76,23 @@
                         >
                           <v-expansion-panel-header>
                             <div v-if="entry['updated_at']">
-                              <h3 class="mb-3">
+                              <h3 class="my-3">
                                 <v-icon
                                   class="mr-3"
                                 >
                                   far fa-calendar-check
                                 </v-icon>
-                                <span style="position:relative; top:3px;">{{ entry['updated_at'][1] | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}</span>
+                                <span style="position:relative; top:3px;">{{ entry['updated_at'][1] | moment(dateFormat) }}</span>
                               </h3>
                             </div>
                             <div v-if="entry.changes">
-                              <h3 class="mb-3">
+                              <h3 class="my-3">
                                 <v-icon
                                   class="mr-3"
                                 >
                                   far fa-calendar-check
                                 </v-icon>
-                                <span style="position:relative; top:3px;">{{ entry.changes['updated_at'][1] | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}</span>
+                                <span style="position:relative; top:3px;">{{ entry.changes['updated_at'][1] | moment(dateFormat) }}</span>
                               </h3>
                             </div>
                           </v-expansion-panel-header>
@@ -122,7 +123,41 @@
             max-height="87vh"
             style="overflow-y: scroll"
           >
-            {{ legacyLogs }}
+            <v-pagination
+              v-if="maxPage > 1"
+              v-model="page"
+              :length="maxPage"
+              :total-visible="7"
+              class="mb-10"
+            />
+            <v-expansion-panels
+              v-model="legacyPanels"
+              focusable
+              multiple
+            >
+              <v-expansion-panel
+                v-for="(entry, entryIndex) in reverse(legacyLogs)"
+                :key="'entry_' + entryIndex"
+              >
+                <v-expansion-panel-header>
+                  <h3 class="my-3">
+                    <v-icon class="mr-3">
+                      far fa-calendar-check
+                    </v-icon>
+                    <span style="position:relative; top:3px;">{{ entry['when'] | moment(dateFormat) }}</span>
+                  </h3>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="pt-3">
+                  <b>By {{ entry.username }}</b>
+                  <vue-json-pretty
+                    :data="entry.diff"
+                    :show-double-quotes="false"
+                    :deep="5"
+                    :highlight-mouseover-node="true"
+                  />
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
           </v-card>
         </v-tab-item>
       </v-tabs-items>
@@ -148,12 +183,29 @@
                 perPage: 12,
                 maxPage: 0,
                 reverseDate: true,
-                currentPanel: []
+                currentPanel: [],
+                legacyPanels: [],
+                dateFormat: "dddd, MMMM Do YYYY, h:mm:ss a"
             }
         },
         watch: {
           page(){
             this.currentPanel = [];
+            this.legacyPanels = [];
+          },
+          selectedTab(){
+            this.currentPanel = [];
+            this.legacyPanels = [];
+            this.page = 1;
+          },
+          subTab(){
+            this.currentPanel = [];
+            this.legacyPanels = [];
+          },
+          reverseDate(){
+            this.currentPanel = [];
+            this.legacyPanels = [];
+            this.page = 1;
           }
         },
         methods: {

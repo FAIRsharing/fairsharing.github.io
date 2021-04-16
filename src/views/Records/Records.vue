@@ -32,7 +32,14 @@
           xl="3"
           class="d-flex mt-2 ml-2"
         >
-          <SearchInput :class="['search-input-mb', responsiveClassObject]" />
+          <SearchInput
+            :class="['search-input-mb', {
+              'left-panel-fixed-lg': stickToTop && $vuetify.breakpoint.xlOnly,
+              'left-panel-default-lg': !stickToTop && $vuetify.breakpoint.xlOnly,
+              'left-panel-default': !stickToTop && !$vuetify.breakpoint.xlOnly,
+              'left-panel-fixed': stickToTop && !$vuetify.breakpoint.xlOnly
+            }]"
+          />
         </v-col>
         <v-col
           v-else
@@ -133,14 +140,6 @@ export default {
         }
       }
       return title;
-    },
-    responsiveClassObject: function () {
-      return {
-        'left-panel-fixed-lg': this.stickToTop && this.$vuetify.breakpoint.xlOnly,
-        'left-panel-default-lg': !this.stickToTop && this.$vuetify.breakpoint.xlOnly,
-        'left-panel-default': !this.stickToTop && !this.$vuetify.breakpoint.xlOnly,
-        'left-panel-fixed': this.stickToTop && !this.$vuetify.breakpoint.xlOnly
-      }
     },
     currentPath: function () {
       let title = this.$route.path.replace('/', '');

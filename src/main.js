@@ -30,6 +30,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 // This is a global sass file, it is applied to every vue instance
 /* import Global Sass */
 import "./styles/main.scss"
+import 'vue-json-pretty/lib/styles.css'
 
 Variablepie(Highcharts);
 More(Highcharts);

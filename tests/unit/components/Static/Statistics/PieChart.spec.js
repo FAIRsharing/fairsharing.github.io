@@ -1,10 +1,5 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import PieChart from "@/components/Static/Statistics/PieChart.vue"
-import VueRouter from "vue-router"
-
-
-const router = new VueRouter();
-const $router = { push: jest.fn() };
 
 const localVue = createLocalVue();
 
@@ -13,7 +8,6 @@ describe("PieChart.vue", () => {
   beforeAll( () => {
       wrapper = shallowMount(PieChart, {
           localVue,
-          router,
           propsData: {
             refName: "Name of the Pie chart",
             textTitle: "This a pie chart",

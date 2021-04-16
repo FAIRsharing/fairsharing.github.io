@@ -5,7 +5,6 @@ import GraphClient from "@/lib/GraphClient/GraphClient.js"
 //import getFilters from "@/lib/GraphClient/queries/getFilters.json"
 import Stats from "@/views/Static/Stats/Statistics.vue"
 import dataStats from "../../../../fixtures/getRecordsForStats.json"
-import {cloneDeep} from 'lodash'
 
 const localVue = createLocalVue();
 

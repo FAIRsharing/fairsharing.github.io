@@ -1,10 +1,5 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import BarChart from "@/components/Static/Statistics/BarChart.vue"
-import VueRouter from "vue-router"
-
-
-const router = new VueRouter();
-const $router = { push: jest.fn() };
 
 const localVue = createLocalVue();
 
@@ -13,7 +8,6 @@ describe("BarChart.vue", () => {
   beforeAll( () => {
       wrapper = shallowMount(BarChart, {
           localVue,
-          router,
           propsData: {
             refName: "Name of the chart",
             textTitle: "This a bar chart",

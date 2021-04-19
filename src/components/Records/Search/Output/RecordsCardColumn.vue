@@ -1,7 +1,7 @@
 <template>
   <!--Column List-->
   <v-col
-    class="mt-1"
+    style="padding-top: 3px"
     cols="12"
     sm="12"
     md="6"

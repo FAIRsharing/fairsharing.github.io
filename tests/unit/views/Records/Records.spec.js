@@ -148,17 +148,6 @@ describe("Records.vue", () => {
         expect($router.push).toHaveBeenCalledTimes(2);
     });
 
-    it("can check responsiveClassObject", () => {
-        $store.dispatch("uiController/setStickToTop", true);
-        vuetify.framework.breakpoint.xlOnly = true;
-        expect(wrapper.vm.responsiveClassObject).toStrictEqual({
-            'left-panel-fixed-lg': true,
-            'left-panel-default-lg': false,
-            'left-panel-default': false,
-            'left-panel-fixed': false
-        });
-    });
-
     it("can onScroll function work properly", () => {
 
         wrapper.vm.$store.state.records.records = ['1', '2', '3'];

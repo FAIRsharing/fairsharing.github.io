@@ -11,7 +11,7 @@
           >
             Summary Statistics
           </h3>
-          <small>(click pie sector or bar to access specific data)</small>
+          <small>(click over the pie sector or bar to access specific data)</small>
         </div>
       </v-card-title>
       <v-row

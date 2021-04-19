@@ -237,7 +237,12 @@ puts response.read_body
     <v-data-table
       :headers="tables.availableQueries.headers"
       :items="tables.availableQueries.data"
-      :item-class="itemRowBackground"
+      :item-class="(item)=>{
+        if (item.id % 2 === 0) {
+          return 'grey lighten-3';
+        } else {
+          return 'white';
+        }}"
       disable-pagination
       disable-sort
       hide-default-footer
@@ -641,7 +646,12 @@ puts response.read_body
     <v-data-table
       :headers="tables.relationshipData.headers"
       :items="tables.relationshipData.data"
-      :item-class="itemRowBackground"
+      :item-class="(item)=>{
+        if (item.id % 2 === 0) {
+          return 'grey lighten-3';
+        } else {
+          return 'white';
+        }}"
       disable-pagination
       disable-sort
       hide-default-footer
@@ -791,15 +801,6 @@ export default {
             }
           ]
         }
-      }
-    }
-  },
-  methods:{
-    itemRowBackground: function (item) {
-      if (item.id % 2 === 0) {
-        return 'grey lighten-3';
-      } else {
-        return 'white';
       }
     }
   }

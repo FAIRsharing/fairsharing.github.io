@@ -12,7 +12,7 @@
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
       The new FAIRsharing application has a REST API which offers the opportunity to both query and modify data. It's accessible to any user with an account on the system for showing basic information and for modifying any record you've created or maintain. To query more detailed information from it, please email <a
-        href="contact@fairsharing.org"
+        href="mailto:contact@fairsharing.org"
         target="_blank"
       >contact@fairsharing.org</a> to discuss your requirements.
     </p>
@@ -47,12 +47,11 @@
       You will need to POST the following to <mark>https://api.fairsharing.org/users/sign_in</mark>:
     </p>
 
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="javascript"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
    "user":
       {
@@ -60,9 +59,8 @@
           "password": "your_password"
       }
 }
-        </code>
-      </pre>
-    </div>
+ </pre>
+    </vue-code-highlight>
 
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -70,12 +68,11 @@
       A successful response will return something like the following:
     </p>
 
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="javascript"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
    "success": true,
    "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxYjhjMmMwMS05MjAsg3LTQxOGUtOTNiNS04NjNjNDE1NWZmM302LCJzdWIiOiI2NzMiLCJzY3AiOiJ1c2VyIiwiYXVkIjpudWxsLCJpYXQiOjE2MTQzMzk1MTMsImV4cCI6MTYxNDQyNTkxM30.QzTDIeDCvHc49lLbztxB5roGtIUuOTlRIOLFmiy2M6g",
@@ -91,29 +88,26 @@
    "expiry": 1614425000,
    "message": "Authentication successful"
 }
-       </code>
-      </pre>
-    </div>
+ </pre>
+    </vue-code-highlight>
 
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
       In addition to the general information about your account there's a "jwt" field. This is a JSON web token which is valid until the expiry time given, and you'll need this for any further interactions with the API. The way it should be used is to send headers with each request, as follows:
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="javascript"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
    "Accept": "application/json",
    "Content-Type": "application/json",
    "Authorization": "Bearer your_jwt_goes_here"
-}        </code>
-      </pre>
-    </div>
-
+}
+ </pre>
+    </vue-code-highlight>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
@@ -124,12 +118,11 @@
     >
       cURL
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="javascript"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 curl --location --request POST 'https://api.fairsharing.org/users/sign_in'
 --header 'Accept: application/json'
 --header 'Content-Type: application/json'
@@ -139,21 +132,20 @@ curl --location --request GET 'https://api.fairsharing.org/fairsharing_records/1
 --header 'Accept: application/json'
 --header 'Content-Type: application/json'
 --header 'Authorization: Bearer your_jwt_goes_here'
-        </code>
-      </pre>
-    </div>
+ </pre>
+    </vue-code-highlight>
 
     <p
       :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
       Python
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="python"
     >
-      <pre class="language-python">
-        <code>
+      <pre>
+
 import requests
 
 url = "https://api.fairsharing.org/users/sign_in"
@@ -181,21 +173,21 @@ headers = {
 response = requests.request("GET", url, headers=headers)
 
 print(response.text)
-        </code>
-      </pre>
-    </div>
-
+ </pre>
+    </vue-code-highlight>
     <p
       :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
       Ruby
     </p>
-    <div
-      v-highlight
+
+
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-ruby">
-        <code>
+      <pre>
+
 require "uri"
 require "net/http"
 
@@ -222,9 +214,8 @@ request["Authorization"] = "Bearer your_token_goes_here"
 
 response = http.request(request)
 puts response.read_body
-        </code>
-      </pre>
-    </div>
+</pre>
+    </vue-code-highlight>
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       Available queries
@@ -268,12 +259,12 @@ puts response.read_body
       <br>
       An example is shown below:
     </p>
-    <div
-      v-highlight
+
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
     "fairsharing_record":
     {
@@ -300,9 +291,9 @@ puts response.read_body
         "publication_ids": [1, 2, 3],
         "citation_ids": [1, 2, 3]
     }
-}        </code>
+}
       </pre>
-    </div>
+    </vue-code-highlight>
 
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -324,31 +315,32 @@ puts response.read_body
     >
       The other fields contain references to other objects in our system, such as publications or various other tags. To modify these an array of the IDs of the relevant objects must be sent to the server. For example, a PUT of the following data would remove subject 3 from the record created in the previous step (by sending only 1 and 2).
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
     "fairsharing_record":
     {
         "subject_ids": [1, 2]
     }
-}        </code>
+}
       </pre>
-    </div>
+    </vue-code-highlight>
+
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
       In order to determine the IDs of these objects you can POST to the following URLs:
     </p>
-    <div
-      v-highlight
+
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
+
 /search/domains
 /search/subjects
 /search/user_defined_tags
@@ -356,9 +348,8 @@ puts response.read_body
 /search/countries
 /search/publications
 /search/record_types
-        </code>
       </pre>
-    </div>
+    </vue-code-highlight>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
@@ -388,19 +379,18 @@ puts response.read_body
     >
       The IDs for these may be found as above:
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
+
 /search/licences
 /search/organisations
 /search/grants
 /search/fairsharing_records
-        </code>
       </pre>
-    </div>
+    </vue-code-highlight>
     <h3 class="text-h6 text-xl-h5 mt-4 mb-2">
       Licences:
     </h3>
@@ -409,12 +399,11 @@ puts response.read_body
     >
       POST the following to <mark>/licence_links</mark>
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
   "licence_link":
   {
@@ -423,9 +412,9 @@ puts response.read_body
     "relation": "optional_string"
   }
 }
-        </code>
       </pre>
-    </div>
+    </vue-code-highlight>
+
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
@@ -459,12 +448,11 @@ puts response.read_body
     >
       Organisations are linked to FAIRsharing records by means of an organisation_link, created similarly to licence_links, above. A grant belongs to the relationship between and organisation and FAIRsharing record, if the organisation funds the resource to which the record refers. So, creation is as follows:
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
   "organisation_link":
   {
@@ -472,9 +460,9 @@ puts response.read_body
     "organisation_id": 1,
     "relation": "relation"
    }
-}        </code>
+}
       </pre>
-    </div>
+    </vue-code-highlight>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
@@ -496,12 +484,11 @@ puts response.read_body
     >
       <mark>POST /grants</mark> with these data:
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
   "grant": {
     "description": "A rather generous grant.",
@@ -514,9 +501,9 @@ puts response.read_body
           }
         ]
       }
-}   </code>
+}
       </pre>
-    </div>
+    </vue-code-highlight>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
@@ -527,12 +514,11 @@ puts response.read_body
     >
       <mark>POST /organisations</mark>
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
   "organisation": {
     "organisation_type_ids": [
@@ -550,9 +536,8 @@ puts response.read_body
     }
   }
 }
-        </code>
       </pre>
-    </div>
+    </vue-code-highlight>
 
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -576,12 +561,11 @@ puts response.read_body
     >
       FAIRsharing records can be related to others in a variety of ways. This is represented by creating a record_association which describes the linking record, the record to which it links and what the relationship between them is. These can be created as follows:
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
   "record_association": {
     "fairsharing_record_id": 1,
@@ -589,9 +573,8 @@ puts response.read_body
     "record_assoc_label_id": 3
   }
 }
-        </code>
       </pre>
-    </div>
+    </vue-code-highlight>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
@@ -612,12 +595,11 @@ puts response.read_body
     >
       As an alternative, you can use <mark>PUT /fairsharing_record/1</mark> with the following data structure:
     </p>
-    <div
-      v-highlight
+    <vue-code-highlight
       class="code-container mt-2 mb-4"
+      language="ruby"
     >
-      <pre class="language-javascript">
-        <code>
+      <pre>
 {
   "record_association_attributes": [
     {
@@ -629,9 +611,9 @@ puts response.read_body
       "_delete": 1
     }
   ]
-}        </code>
+}
       </pre>
-    </div>
+    </vue-code-highlight>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
@@ -670,8 +652,11 @@ puts response.read_body
 </template>
 
 <script>
+import {component as VueCodeHighlight} from 'vue-code-highlight';
+
 export default {
   name: "License",
+  components:{VueCodeHighlight},
   data: () => {
     return {
       tables: {

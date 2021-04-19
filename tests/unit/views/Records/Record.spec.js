@@ -169,6 +169,8 @@ describe("Record.vue", function() {
         expect(wrapper.vm.buttons[2].isDisabled()).toBe(false);
         expect(wrapper.vm.buttons[3].name()).toEqual("View Relation Graph");
         expect(wrapper.vm.buttons[3].isDisabled()).toBe(false);
+        expect(wrapper.vm.buttons[4].name()).toEqual("View record history");
+        expect(wrapper.vm.buttons[4].isDisabled()).toBe(true);
         expect(wrapper.vm.buttons[5].name()).toEqual("Have a suggestion/question ?");
         expect(wrapper.vm.buttons[5].isDisabled()).toBe(true);
         wrapper.vm.buttons[0].method();
@@ -192,6 +194,17 @@ describe("Record.vue", function() {
         expect(wrapper.vm.canClaim).toBe(false);
         wrapper.vm.buttons[3].method();
         expect($router.push).toHaveBeenCalledWith({path: "/graph/980190962"});
+
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {data: "abc"}
+        );
+        await wrapper.vm.buttons[4].method();
+        expect(wrapper.vm.history.show).toBe(true);
+        expect(wrapper.vm.history.loading).toBe(false);
+        mocks.restore("restMock");
+
     });
 
     it("runs the watch method", async () => {

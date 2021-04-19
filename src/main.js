@@ -12,6 +12,9 @@ import Networkgraph from 'highcharts/modules/networkgraph'
 import Variablepie from 'highcharts/modules/variable-pie'
 import More from 'highcharts/highcharts-more'
 import Export from 'highcharts/modules/exporting'
+import VueCodeHighlight from 'vue-code-highlight';
+import "vue-code-highlight/themes/prism-twilight.css";
+import "vue-code-highlight/themes/window.css";
 
 
 /* import router & store */
@@ -42,6 +45,7 @@ Vue.use(VueScrollTo);
 Vue.use(Clipboard);
 Vue.use(VueMoment);
 Vue.use(VueMeta, {refreshOnceOnNavigation: true});
+Vue.use(VueCodeHighlight);
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 

@@ -271,6 +271,14 @@ pre {
   left: 143px;
   font-size: 12px;
 }
+
+.code-container {
+  overflow-x: auto;
+  -ms-overflow-x: auto;
+  pre {
+    display: block!important;
+  }
+}
 // custom fonts--------------------------
 @font-face {
   font-family: "lato_font_bold";

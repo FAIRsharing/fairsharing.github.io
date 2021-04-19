@@ -20,9 +20,4 @@ describe("License.vue", function(){
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("License");
     });
-
-    it("can check itemRowBackground", () => {
-        expect(wrapper.vm.itemRowBackground({id:0})).toBe('grey lighten-3');
-    });
-
 });

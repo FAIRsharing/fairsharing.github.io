@@ -29,8 +29,8 @@
                 v-for="(subTabContent, subTabIndex) in history"
                 :key="'subTab_' + subTabIndex"
                 dense
-                style="max-width: 150px;"
-                class="primary white--text"
+                style="width: 150px;height:80px;"
+                class="primary white--text mb-2"
                 @click="page = 1"
               >
                 {{ subTabContent[0] }}

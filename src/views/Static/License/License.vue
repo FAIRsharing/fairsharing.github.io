@@ -792,18 +792,11 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.code-container {
-  overflow-x: auto;
-  -ms-overflow-x: auto;
-  pre {
-    width: 100%;
-  }
-}
-
-li{
+<style scoped>
+li {
   line-height: 1.6;
 }
+
 li::before {
   display: inline-block;
   content: '';

@@ -36,6 +36,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 /* import Global Sass */
 import "./styles/main.scss"
 import 'vue-json-pretty/lib/styles.css'
+import wb from "./registerServiceWorker";
 
 Variablepie(Highcharts);
 More(Highcharts);
@@ -49,6 +50,7 @@ Vue.use(Clipboard);
 Vue.use(VueMoment);
 Vue.use(VueMeta, {refreshOnceOnNavigation: true});
 Vue.use(VueCodeHighlight);
+Vue.prototype.$workbox = wb;
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 

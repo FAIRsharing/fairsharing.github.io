@@ -1,5 +1,4 @@
 import {shallowMount} from "@vue/test-utils";
-import VueCodeHighlight  from 'vue-code-highlight';
 import License from "@/views/Static/License/License"
 import Vuetify from "vuetify"
 
@@ -11,7 +10,7 @@ describe("License.vue", function(){
     beforeEach(() => {
         wrapper = shallowMount(License, {
             vuetify,
-            components:{VueCodeHighlight}
+            stubs: ['router-link']
         })
     });
 

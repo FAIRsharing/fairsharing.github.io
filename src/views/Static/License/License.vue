@@ -34,12 +34,6 @@
     >
       The code below may be used to create a link to our logo.
     </p>
-    <vue-code-highlight
-      class="code-container mt-2 mb-4"
-      language="javascript"
-    >
-      <pre v-text="`<img src='https://fairsharing.org/static/img/home/svg/FAIRsharing-logo.svg' alt='FAIRsharing Logo'>`" />
-    </vue-code-highlight>
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       Search Engines
     </h2>
@@ -64,10 +58,11 @@
     </p>
   </main>
 </template>
-
 <script>
+export default {
+  name: "License"
+}
 </script>
-
 <style scoped>
 pre {
   padding: 9px;

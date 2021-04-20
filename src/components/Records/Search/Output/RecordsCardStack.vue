@@ -1,13 +1,13 @@
 <template>
   <!--Stack List-->
   <router-link :to="'/' + getRecordLink(record)">
-    <section class="ma-2 ma-md-2 ma-lg-1 pt-lg-4 cursor-pointer">
+    <section class="mb-4 ma-lg-1 pt-lg-4 cursor-pointer">
       <v-card
         v-ripple
         class="pa-6 d-flex flex-column"
         outlined
         tile
-        height="400px"
+        :height="$vuetify.breakpoint.smAndDown?'500px':'400px'"
         :elevation="allowClicking?'5':'1'"
         @mouseenter="allowClicking=true"
         @mouseleave="allowClicking=false"

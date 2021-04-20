@@ -27,3 +27,4 @@ export const Educational =  () => import(/* webpackChunkName: "edu-chunk" */ '@/
 export const Privacy =  () => import(/* webpackChunkName: "privacy-chunk" */ '@/views/Static/Privacy/Privacy');
 export const Graph =  () => import(/* webpackChunkName: "graphtest-chunk" */ '@/views/Records/NetworkGraph');
 export const Maintenance =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Errors/Maintenance');
+export const APIDoc =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Static/APIDoc/APIDoc');

@@ -36,6 +36,16 @@
             ...mapState('uiController', ["UIGeneralStatus"]),
             ...mapState('introspection', ["readOnlyMode"])
         },
+        created(){
+          if ('serviceWorker' in navigator) {
+            window.addEventListener("fetch", (event) => {
+              event.respondWith(fetch(event.request));
+            });
+            window.addEventListener('beforeinstallprompt', function(event) {
+              event.prompt();
+            })
+          }
+        }
     }
 </script>
 

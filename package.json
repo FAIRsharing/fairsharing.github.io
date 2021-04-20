@@ -35,6 +35,7 @@
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.12",
     "vue-anchor-router-link": "*",
+    "vue-code-highlight": "^0.7.6",
     "vue-country-flag": "^2.0.1",
     "vue-json-pretty": "^1.7.1",
     "vue-loader": "^15.9.3",

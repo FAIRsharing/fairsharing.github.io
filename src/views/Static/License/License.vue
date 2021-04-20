@@ -16,7 +16,7 @@
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
       In addition, we request that any data taken from FAIRsharing, either by the API, scraping the site or other means, is attributed and cited appropriately. We request that a link and the FAIRsharing logo is presented next to the data taken from FAIRsharing.
-      In order to get full detail about how to use FAIRsharing API please visit <router-link
+      For details of how to use the FAIRsharing API please visit <router-link
         to="/API_doc"
         class="underline-effect"
       >

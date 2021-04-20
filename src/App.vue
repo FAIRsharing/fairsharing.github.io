@@ -36,6 +36,9 @@
             ...mapState('uiController', ["UIGeneralStatus"]),
             ...mapState('introspection', ["readOnlyMode"])
         },
+        created() {
+          window.addEventListener('beforeinstallprompt', () => {});
+      },
     }
 </script>
 

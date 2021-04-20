@@ -22,6 +22,9 @@ module.exports = {
       favicon96:  "assets/favicon.ico"
     },
     icons:[],
-    workboxPluginMode: "GenerateSW",
+    workboxPluginMode: "InjectManifest",
+    workboxOptions: {
+      swSrc: "src/registerServiceWorker.js"
+    }
   }
 };

@@ -34,6 +34,9 @@
     >
       The code below may be used to create a link to our logo.
     </p>
+    
+    <pre>&lt;img src="https://fairsharing.org/static/img/home/svg/FAIRsharing-logo.svg" alt="FAIRsharing Logo"&gt;</pre>
+
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       Search Engines
     </h2>

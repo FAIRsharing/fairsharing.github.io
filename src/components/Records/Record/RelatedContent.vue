@@ -135,7 +135,6 @@ export default {
         tabs: {
           related_standards: {relation: ['deprecates'], registry: "Standard", data: []},
           related_databases: {relation: ['deprecates'], registry: "Database", data: []},
-          // other_related_content: {relation: ['deprecates'],registry: ["Collection","Policy"], data: []}
         }
       }
     }
@@ -147,7 +146,7 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
-      if(_module.currentRecord['fairsharingRecord'].registry === 'Collection'){
+      if (_module.currentRecord['fairsharingRecord'].registry === 'Collection') {
         _module.tabsData.tabs['other_related_records'] = {relation: ['deprecates'],registry: ["Collection","Policy"], data: []}
       }
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {

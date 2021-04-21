@@ -133,7 +133,7 @@ export default {
         selectedTab: 0,
         tabs: {
           related_standards: {relation: ['deprecates'], registry: "Standard", data: []},
-          related_databases: {relation: ['collects', 'recommends', 'deprecates'], registry: "Database", data: []}
+          related_databases: {relation: ['deprecates'], registry: "Database", data: []}
         }
       }
     }

@@ -209,6 +209,12 @@ let routes = [
             isLoggedIn(to, from, next, store);
         }
     },
+    /* To enable old links to collections to work */
+    {
+        name: "CollectionRecord",
+        path: "/collection/:id",
+        redirect: "/:id"
+    },
     {
         name: "Record",
         path: "/:id",

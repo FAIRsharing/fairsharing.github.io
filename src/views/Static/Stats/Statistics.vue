@@ -756,9 +756,6 @@
            _module.isLoading = true;
            let dataAPI = await client.executeQuery(getRecordStats);
            _module.allDataStats = dataAPI.latestStats.data;
-           console.log(_module.allDataStats)
-           //console.log(_module.allDataStats.top_10_stds_recommended_by_pols)
-
            _module.prepareData();
            _module.isLoading = false;
          })
@@ -848,7 +845,6 @@
            let varX = 0;
            let nameC = "";
            regBucket.forEach(item => {
-             //console.log(item.key);
              let words = item.key.split(" ");
              for (let i = 0; i < words.length; i++) {
                words[i] = words[i][0].toUpperCase() + words[i].substr(1);
@@ -895,7 +891,6 @@
            let varX = 0;
            let nameC = "";
            regBucket.forEach(item => {
-             //console.log(item.key);
              if (item.key in nameMap){
                nameC = nameMap[item.key];
              }else{
@@ -939,7 +934,6 @@
            let varX = 0;
            let nameC = "";
            regBucket.forEach(item => {
-             //console.log(item.key);
              nameC = item.key[0].toUpperCase() + item.key.substring(1);
              let vectItem = {
                name: nameC,

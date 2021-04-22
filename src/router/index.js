@@ -4,7 +4,7 @@ import store from '@/store'
 
 import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
     Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
-    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance }
+    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance, APIDoc }
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -117,6 +117,11 @@ let routes = [
         name: "Privacy",
         path: "/privacy",
         component: Privacy,
+    },
+    {
+        name: "API Documentation",
+        path: "/API_doc",
+        component: APIDoc,
     },
 
     // AUTHENTICATION AND USERS

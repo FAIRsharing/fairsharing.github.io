@@ -186,7 +186,7 @@
       &lt;div v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error">
         &lt;!-- Top Block -->
         &lt;GeneralInfo
-          class="ma-4"
+          :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
@@ -195,24 +195,51 @@
           &lt;!--Left Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             &lt;!-- COLLECTIONS -->
-            &lt;Collections class="ma-4 mb-8" />
+            &lt;Collections
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-8"
+            />
             &lt;!-- SUPPORT -->
-            &lt;Support class="ma-4 mb-8" />
+            &lt;Support
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-8"
+            />
             &lt;!-- Data Conditions -->
-            &lt;DataCondtions class="ma-4 mb-4" />
+            &lt;DataCondtions
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-4"
+            />
           &lt;/v-col>
           &lt;!--Right Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             &lt;!-- Related Content -->
-            &lt;RelatedContent class="ma-4 mb-8" />
+            &lt;RelatedContent
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-8"
+            />
             &lt;!-- Tools -->
-            &lt;Tools class="ma-4 mb-8" />
+            &lt;Tools
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-8"
+            />
             &lt;!-- Organisations -->
-            &lt;Organisations class="ma-4 mb-6 mb-sm-4 " />
+            &lt;Organisations
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-6 mb-sm-4 "
+            />
           &lt;/v-col>
         &lt;/v-row>
         &lt;!-- Bottom Block -->
-        &lt;Publications class="mb-10 ma-4" />
+        &lt;Publications
+          v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          class="mb-10 ma-4"
+        />
+
+        &lt;!-- Search Collection -->
+        &lt;SearchCollection
+          v-if="currentRecord.fairsharingRecord.registry==='Collection'"
+          class="mb-10 ma-4"
+        />
       &lt;/div>
     &lt;/v-container>
     &lt;!-- This html is from a safe source -->
@@ -273,12 +300,14 @@
     import RelatedContent from "@/components/Records/Record/RelatedContent";
     import RecordHistory from "@/components/Records/Record/History/RecordHistory";
     import Loaders from "@/components/Navigation/Loaders";
+    import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          SearchCollection,
           Loaders,
           RecordHistory,
           RelatedContent,

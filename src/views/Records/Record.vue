@@ -141,6 +141,12 @@
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
           class="mb-10 ma-4"
         />
+
+        <!-- Search Collection -->
+        <SearchCollection
+          v-if="currentRecord.fairsharingRecord.registry==='Collection'"
+          class="mb-10 ma-4"
+        />
       </div>
     </v-container>
     <!-- This html is from a safe source -->
@@ -201,12 +207,14 @@
     import RelatedContent from "@/components/Records/Record/RelatedContent";
     import RecordHistory from "@/components/Records/Record/History/RecordHistory";
     import Loaders from "@/components/Navigation/Loaders";
+    import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          SearchCollection,
           Loaders,
           RecordHistory,
           RelatedContent,

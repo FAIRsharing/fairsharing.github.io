@@ -93,7 +93,7 @@
       <div v-if="currentRecord['fairsharingRecord'] && !error">
         <!-- Top Block -->
         <GeneralInfo
-          class="ma-4"
+          :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
@@ -102,24 +102,45 @@
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- COLLECTIONS -->
-            <Collections class="ma-4 mb-8" />
+            <Collections
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-8"
+            />
             <!-- SUPPORT -->
-            <Support class="ma-4 mb-8" />
+            <Support
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-8"
+            />
             <!-- Data Conditions -->
-            <DataCondtions class="ma-4 mb-4" />
+            <DataCondtions
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-4"
+            />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- Related Content -->
-            <RelatedContent class="ma-4 mb-8" />
+            <RelatedContent
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-8"
+            />
             <!-- Tools -->
-            <Tools class="ma-4 mb-8" />
+            <Tools
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-8"
+            />
             <!-- Organisations -->
-            <Organisations class="ma-4 mb-6 mb-sm-4 " />
+            <Organisations
+              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+              class="ma-4 mb-6 mb-sm-4 "
+            />
           </v-col>
         </v-row>
         <!-- Bottom Block -->
-        <Publications class="mb-10 ma-4" />
+        <Publications
+          v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          class="mb-10 ma-4"
+        />
       </div>
     </v-container>
     <!-- This html is from a safe source -->

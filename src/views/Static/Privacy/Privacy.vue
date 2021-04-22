@@ -43,3 +43,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+p {
+  white-space: break-spaces;
+}
+</style>

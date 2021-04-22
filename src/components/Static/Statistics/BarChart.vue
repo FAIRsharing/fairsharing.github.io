@@ -1,8 +1,10 @@
 <template>
-  <highcharts
-    :ref="nameChart"
-    :options="optionChartBars"
-  />
+  <div>
+    <highcharts
+      :ref="nameChart"
+      :options="optionChartBars"
+    />
+  </div>
 </template>
 
 <script>
@@ -30,21 +32,13 @@
           type: String,
           default: ""
         },
-        textTitle: {
-            type: String,
-            default: ""
+        fieldsChart: {
+          type: Object,
+          default: null
         },
-        textXAxis: {
-            type: String,
-            default: ""
-        },
-        textYAxis: {
-            type: String,
-            default: ""
-        },
-        dataChart: {
-            type: Array,
-            default: null
+        showPercent:{
+            type: Boolean,
+            default: true
         }
       },
       data () {
@@ -95,11 +89,15 @@
         }
       },
       mounted: function () {
-        this.optionChartBars.title.text = this.textTitle;
-        this.optionChartBars.xAxis.title = this.textXAxis;
-        this.optionChartBars.yAxis.title = this.textYAxis;
-        this.optionChartBars.series = this.dataChart;
+        this.optionChartBars.title.text = this.fieldsChart.title;
+        this.optionChartBars.xAxis.title.text = this.fieldsChart.textXAxis;
+        this.optionChartBars.yAxis.title.text = this.fieldsChart.textYAxis;
+        this.optionChartBars.series = this.fieldsChart.series;
         this.nameChart=this.refName;
+        if (!this.showPercent){
+          this.optionChartBars.tooltip.pointFormat = '<tr><td style="padding:0">Records: </td>' +
+          '<td style="padding:0"><b>{point.y}</b></td></tr>';
+        }
       }
     }
 </script>

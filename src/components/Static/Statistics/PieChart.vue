@@ -31,13 +31,13 @@
           type: String,
           default: ""
         },
-        textTitle: {
-            type: String,
-            default: ""
+        fieldsChart: {
+          type: Object,
+          default: null
         },
-        dataChart: {
-            type: Array,
-            default: null
+        linkWork:{
+            type: Boolean,
+            default: true
         }
       },
       data () {
@@ -89,9 +89,12 @@
           }
         },
         mounted: function () {
-          this.optionChartPie.title.text = this.textTitle;
-          this.optionChartPie.series[0].data = this.dataChart;
+          this.optionChartPie.title.text = this.fieldsChart.title;
+          this.optionChartPie.series[0].data = this.fieldsChart.data;
           this.nameChart=this.refName;
+          if (!this.linkWork){
+            this.optionChartPie.series[0].point.events.click =null ;
+          }
         }
       }
 </script>

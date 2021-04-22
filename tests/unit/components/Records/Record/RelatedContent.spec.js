@@ -28,6 +28,15 @@ Record.state.currentRecord["fairsharingRecord"] = {
                 type: "journal"
             },
             recordAssocLabel: "related to"
+        },
+        {
+            linkedRecord: {
+                id: 4,
+                name: "a name 4",
+                registry: "Collection",
+                type: "collection"
+            },
+            recordAssocLabel: "collects"
         }
     ],
     reverseRecordAssociations: [
@@ -41,6 +50,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
             recordAssocLabel: "related to"
         }
     ],
+    registry:'Standard'
 };
 const $store = new Vuex.Store({
     modules: {
@@ -72,10 +82,18 @@ describe("RelatedContent.vue", function(){
         expect(wrapper.vm.tabsData.selectedTab).toBe(1)
     });
 
+    it("can check if the current record is a collection type to behave accordingly", () => {
+        Record.state.currentRecord["fairsharingRecord"].registry = 'Collection'
+        wrapper.vm.prepareTabsData();
+        expect(wrapper.vm.tabsData.tabs['other_related_records'].data).toStrictEqual([{"id": 4, "name": "a name 4", "recordAssocLabel": "collects", "registry": "Collection", "subject": "standard", "type": "collection"}])
+    });
+
     it("can check if there are no record recordAssociations or reverseRecordAssociations", () => {
         delete Record.state.currentRecord.fairsharingRecord.recordAssociations
         delete Record.state.currentRecord.fairsharingRecord.reverseRecordAssociations
         expect(wrapper.vm.prepareTabsData()).toBe(false)
     });
+
+
 
 });

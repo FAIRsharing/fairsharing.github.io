@@ -29,7 +29,7 @@
           >
             <!--Pagination-->
             <Pagination
-              :total-pages="5"
+              :total-pages="receivedData['totalPages']"
               class="mb-4"
             />
             <!-- StackCard view -->
@@ -52,7 +52,7 @@
             </v-row>
             <!--List Controller-->
             <Pagination
-              :total-pages="5"
+              :total-pages="receivedData['totalPages']"
             />
           </v-skeleton-loader>
         </article>
@@ -64,20 +64,81 @@
 <script>
 import Pagination from "@/components/Records/Search/Header/Pagination";
 import CollectionSearchCard from "@/components/Records/Record/CollectionRecord/CollectionSearchCard";
+
+import {mapState} from "vuex";
+import stringUtils from "@/utils/stringUtils";
+import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
+import Client from "@/lib/GraphClient/GraphClient";
+
+let client = new Client();
+
 export default {
   name: "SearchCollection",
-  components: {CollectionSearchCard, Pagination},
+  components: {Pagination,CollectionSearchCard},
+  mixins:[stringUtils],
+  props: {
+    record: {default: null, type: Object},
+  },
   data() {
     return {
+      allowClicking: false,
+      collectionIDs:[],
+      receivedData:{},
       isColumnList: false
     }
   },
-  methods:{
+  computed: {
+    ...mapState("record", ["currentRecord"])
+  },
+  async mounted() {
+    this.receivedData = await this.prepareTabsData();
+  },
+  methods: {
     changeListType: function (listType) {
       this.isColumnList = listType;
+    },
+    async prepareTabsData() {
+      if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
+        const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
+            .filter(item => item.recordAssocLabel === 'collects')
+        collections.forEach(item => {
+          this.collectionIDs.push(item.id);
+        })
+        recordsQuery.queryParam = {ids: this.collectionIDs}
+        const data = await client.executeQuery(recordsQuery);
+        console.log(data["searchFairsharingRecords"]);
+        return data["searchFairsharingRecords"];
+      }
+      else {
+        return false
+      }
+    },
+    prepareAssociations(associations, reverseAssociations) {
+      let _module = this;
+      let recordAssociations = []
+      let joinedArrays = associations.concat(reverseAssociations);
+      const properties = ['fairsharingRecord', 'linkedRecord'];
+
+      joinedArrays.forEach(item => {
+        let object = {};
+        properties.forEach(prop => {
+          if (Object.prototype.hasOwnProperty.call(item, prop)) {
+            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+            object.id = item[prop].id;
+            object.registry = item[prop].registry;
+            object.name = item[prop].name;
+            object.subject = _module.currentRecord['fairsharingRecord'].name;
+            object.type = item[prop].type;
+          }
+        });
+        recordAssociations.push(object);
+      });
+      return recordAssociations;
     }
   }
 }
+
+
 </script>
 
 <style scoped>

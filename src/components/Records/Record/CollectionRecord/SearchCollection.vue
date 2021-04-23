@@ -36,7 +36,7 @@
             <CollectionSearchCard />
             <!--    result number        -->
             <p class="text-center mt-2">
-              Displaying {{ x }}  to {{ y }} of {{ hits }}.
+<!--              Displaying {{ x }}  to {{ y }} of {{ hits }}.-->
             </p>
           </v-skeleton-loader>
         </article>

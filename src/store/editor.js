@@ -253,6 +253,7 @@ let editorStore = {
                     output.push(relation);
                 }
             });
+
             return output;
         },
         allowedTargets: (state) => (source) => {

@@ -504,6 +504,7 @@
           removeItem(id){
             this.sections.relations.data.recordAssociations.splice(id, 1);
           },
+          // OVERLAY
           showOverlay(target){
             this.showRelationsPanel = true;
             this.panelContent = null;
@@ -513,15 +514,6 @@
               id: target.id
             };
             let prohibited = [];
-            this.associations.forEach(association => {
-                if (association.linkedRecord.id === target.id) {
-                  /*istanbul ignore if*/
-                  if (association.recordAssocLabel.relation) {
-                    prohibited.push(association.recordAssocLabel.relation)
-                  }
-                  else prohibited.push(association.recordAssocLabel)
-                }
-            });
             this.panelContent = this.allowedRelations({
                 target: {
                   registry: target.registry.toLowerCase(),
@@ -556,6 +548,7 @@
             });
             this.labelsFilter = {...labelsFilter};
             this.searchFilters = {...labelsFilter};
+
           },
           async runSearch(){
             let _module = this;

@@ -379,6 +379,15 @@
         <Record :target="targetPreview" />
       </v-card>
     </v-dialog>
+    
+    <!-- attempt to add duplicate relationship -->
+    <v-snackbar
+      v-model="duplicateRelationship"
+      color="warning"
+      class="text-body"
+    >
+      The same record/relation combination may not be added more than once.
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -413,7 +422,8 @@
             labelsFilter: {},
             searchFilters: {},
             initialized: false,
-            lastQuery: null
+            lastQuery: null,
+            duplicateRelationship: false
           }
         },
         computed: {
@@ -483,19 +493,31 @@
           ...mapActions("record", ["updateRelations"]),
           capitalize,
           addItem() {
-            this.searchAssociations = null;
-            Object.keys(this.labelsFilter).forEach(filter => {
-              this.labelsFilter[filter] = true;
+            let _module = this;
+            _module.searchAssociations = null;
+            Object.keys(_module.labelsFilter).forEach(filter => {
+              _module.labelsFilter[filter] = true;
             });
+            // If an item already exists then this shouldn't be added...
+            var exists = this.sections.relations.data.recordAssociations.find(function(link) {
+              if (link.linkedRecord.name === _module.addingRelation.linkedRecord.name &&
+                  link.recordAssocLabel.relation === _module.addingRelation.recordAssocLabel.relation) {
+                return true;
+              }
+            });
+            if (exists) {
+              _module.duplicateRelationship = true;
+              return;
+            }
             let newRelation = {
-              linkedRecord: this.addingRelation.linkedRecord,
-              recordAssocLabel: this.addingRelation.recordAssocLabel,
+              linkedRecord: _module.addingRelation.linkedRecord,
+              recordAssocLabel: _module.addingRelation.recordAssocLabel,
               new: true,
             };
-            this.sections.relations.data.recordAssociations.unshift(newRelation);
-            this.showRelationsPanel = false;
-            this.$nextTick(() => {
-              this.$scrollTo('#association_' + this.addingRelation.id, 450, {
+            _module.sections.relations.data.recordAssociations.unshift(newRelation);
+            _module.showRelationsPanel = false;
+            _module.$nextTick(() => {
+              _module.$scrollTo('#association_' + _module.addingRelation.id, 450, {
                 container: '#associatedRecords',
                 easing: 'ease-in',
               })

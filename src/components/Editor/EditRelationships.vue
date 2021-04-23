@@ -548,7 +548,6 @@
             });
             this.labelsFilter = {...labelsFilter};
             this.searchFilters = {...labelsFilter};
-
           },
           async runSearch(){
             let _module = this;

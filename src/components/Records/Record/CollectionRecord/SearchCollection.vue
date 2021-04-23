@@ -58,12 +58,26 @@
           <v-skeleton-loader
             type="image"
           >
-            <v-row>
-              <CollectionSearchCard />
-            </v-row>
-            <!--List Controller-->
+            <!--Pagination-->
             <Pagination
               :total-pages="receivedData['totalPages']"
+              class="mb-4"
+            />
+            <!--    result number        -->
+            <p class="text-center mt-2">
+              Displaying A b c.
+            </p>
+
+            <!-- ColumnCard view -->
+            <records-card-column
+              v-for="item in receivedData.records"
+              :key="'record_'+item.id"
+              :record="item"
+            />
+            <!--Pagination-->
+            <Pagination
+              :total-pages="receivedData['totalPages']"
+              class="mb-4"
             />
           </v-skeleton-loader>
         </article>
@@ -74,19 +88,19 @@
 
 <script>
 import Pagination from "@/components/Records/Search/Header/Pagination";
-import CollectionSearchCard from "@/components/Records/Record/CollectionRecord/CollectionSearchCard";
 
 import {mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils";
 import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
 import Client from "@/lib/GraphClient/GraphClient";
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
+import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
 
 let client = new Client();
 
 export default {
   name: "SearchCollection",
-  components: {RecordsCardStack, Pagination,CollectionSearchCard},
+  components: {RecordsCardColumn, RecordsCardStack, Pagination},
   mixins:[stringUtils],
   props: {
     record: {default: null, type: Object},

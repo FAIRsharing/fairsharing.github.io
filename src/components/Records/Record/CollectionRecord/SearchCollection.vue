@@ -3,6 +3,7 @@
     dense
   >
     <v-col
+      class="pa-0"
       cols="12"
       sm="12"
       md="4"
@@ -13,6 +14,7 @@
       left
     </v-col>
     <v-col
+      class="pa-0"
       cols="12"
       sm="12"
       md="8"
@@ -25,13 +27,13 @@
           <v-skeleton-loader
             type="image"
           >
-            <!-- StackCard view -->
-            <!-- need to add component   -->
-
-            <!--List Controller-->
+            <!--Pagination-->
             <Pagination
               :total-pages="5"
+              class="mb-4"
             />
+            <!-- StackCard view -->
+            <CollectionSearchCard />
             <!--    result number        -->
             <p class="text-center mt-2">
               Displaying {{ x }}  to {{ y }} of {{ hits }}.
@@ -46,7 +48,7 @@
             type="image"
           >
             <v-row>
-              <!-- need to add component   -->
+              <CollectionSearchCard />
             </v-row>
             <!--List Controller-->
             <Pagination
@@ -61,9 +63,10 @@
 
 <script>
 import Pagination from "@/components/Records/Search/Header/Pagination";
+import CollectionSearchCard from "@/components/Records/Record/CollectionRecord/CollectionSearchCard";
 export default {
   name: "SearchCollection",
-  components: {Pagination},
+  components: {CollectionSearchCard, Pagination},
   data() {
     return {
       isColumnList: false

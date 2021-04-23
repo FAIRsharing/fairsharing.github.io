@@ -26,18 +26,29 @@
         <article v-if="!isColumnList">
           <v-skeleton-loader
             type="image"
+            :loading="loading"
           >
             <!--Pagination-->
             <Pagination
               :total-pages="receivedData['totalPages']"
               class="mb-4"
             />
-            <!-- StackCard view -->
-            <CollectionSearchCard />
             <!--    result number        -->
             <p class="text-center mt-2">
-<!--              Displaying {{ x }}  to {{ y }} of {{ hits }}.-->
+              Displaying A b c.
             </p>
+
+            <!-- StackCard view -->
+            <RecordsCardStack
+              v-for="item in receivedData.records"
+              :key="'record_'+item.id"
+              :record="item"
+            />
+            <!--Pagination-->
+            <Pagination
+              :total-pages="receivedData['totalPages']"
+              class="mb-4"
+            />
           </v-skeleton-loader>
         </article>
       </div>
@@ -69,12 +80,13 @@ import {mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils";
 import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
 import Client from "@/lib/GraphClient/GraphClient";
+import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
 
 let client = new Client();
 
 export default {
   name: "SearchCollection",
-  components: {Pagination,CollectionSearchCard},
+  components: {RecordsCardStack, Pagination,CollectionSearchCard},
   mixins:[stringUtils],
   props: {
     record: {default: null, type: Object},
@@ -84,20 +96,21 @@ export default {
       allowClicking: false,
       collectionIDs:[],
       receivedData:{},
-      isColumnList: false
+      isColumnList: false,
+      loading:false
     }
   },
   computed: {
     ...mapState("record", ["currentRecord"])
   },
   async mounted() {
-    this.receivedData = await this.prepareTabsData();
+    this.receivedData = await this.prepareCollectionData();
   },
   methods: {
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
-    async prepareTabsData() {
+    async prepareCollectionData() {
       if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
         const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
             .filter(item => item.recordAssocLabel === 'collects')
@@ -105,11 +118,12 @@ export default {
           this.collectionIDs.push(item.id);
         })
         recordsQuery.queryParam = {ids: this.collectionIDs}
+        this.loading = true;
         const data = await client.executeQuery(recordsQuery);
-        console.log(data["searchFairsharingRecords"]);
+        this.loading = false;
         return data["searchFairsharingRecords"];
-      }
-      else {
+      } else
+      {
         return false
       }
     },

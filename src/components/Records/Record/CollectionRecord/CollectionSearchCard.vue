@@ -73,6 +73,10 @@ import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips"
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import {mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils";
+import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
+import Client from "@/lib/GraphClient/GraphClient";
+
+let client = new Client();
 
 export default {
   name: "CollectionSearchCard",
@@ -94,11 +98,15 @@ export default {
     this.prepareTabsData();
   },
   methods: {
-    prepareTabsData() {
+    async prepareTabsData() {
       if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
-        this.collectionIDs = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
+        const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
             .filter(item => item.recordAssocLabel === 'collects')
-            console.log(this.collectionIDs);
+        collections.forEach(item => {
+          this.collectionIDs.push(item.id);
+        })
+        recordsQuery.queryParam = {ids: [1, 2]}
+        const data = await client.executeQuery(recordsQuery);
       }
       else {
         return false

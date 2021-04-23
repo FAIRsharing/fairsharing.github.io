@@ -633,6 +633,15 @@
         <StatsStandard
           :chart-subjects="chartSubjects['standard']"
           :chart-countries="chartCountries['standard']"
+          :chart-species="chartSpecies['standard']"
+          :chart-implements="chartImplements['standard']"
+          :chart-links="chartLinkPie['standard']"
+          :chart-journals="chartJournals['standard']"
+          :chart-licences="chartLicences['standard']"
+          :chart-funders="chartFunders['standard']"
+          :chart-non-funders="chartNonFunders['standard']"
+          :chart-maintainers="chartMaintainer['standard']"
+          :chart-publication="chartHavePublication['standard']"
         />
       </v-container>
       <v-container
@@ -642,6 +651,15 @@
         <StatsDB
           :chart-subjects="chartSubjects['database']"
           :chart-countries="chartCountries['database']"
+          :chart-species="chartSpecies['database']"
+          :chart-implements="chartImplements['database']"
+          :chart-links="chartLinkPie['database']"
+          :chart-journals="chartJournals['database']"
+          :chart-licences="chartLicences['database']"
+          :chart-funders="chartFunders['database']"
+          :chart-non-funders="chartNonFunders['database']"
+          :chart-maintainers="chartMaintainer['database']"
+          :chart-publication="chartHavePublication['database']"
         />
       </v-container>
       <v-container
@@ -651,6 +669,11 @@
         <StatsPolicy
           :chart-subjects="chartSubjects['policy']"
           :chart-countries="chartCountries['policy']"
+          :chart-species="chartSpecies['policy']"
+          :chart-links="chartLinkPie['policy']"
+          :chart-funders="chartFunders['policy']"
+          :chart-non-funders="chartNonFunders['policy']"
+          :chart-maintainers="chartMaintainer['policy']"
         />
       </v-container>
     </v-container>
@@ -1050,7 +1073,7 @@
            }
            let varX = 0;
            let sortable = Object.fromEntries(
-             Object.entries(data).sort(([,a],[,b]) => b-a)
+             Object.entries(data).sort(([,a],[,b]) => b.count-a.count)
            );
            Object.keys(sortable).forEach(key => {
              let vectItem = {
@@ -1059,7 +1082,7 @@
                point: {
                    events: {
                      click: function() {
-                       location.href = '/#/search?q='+key;
+                       location.href = '/#/'+data[key].id;
                      }
                    }
                },
@@ -1068,7 +1091,7 @@
              let datItem = {
                name: "",
                x: varX,
-               y: data[key]
+               y: data[key].count
              };
              vectItem.data.push(datItem);
              varX +=1;
@@ -1129,16 +1152,29 @@
            chartField.textYAxis = "Number of "+textPlural ;
            let varX = 0;
            let sortable = Object.fromEntries(
-             Object.entries(data).sort(([,a],[,b]) => b-a)
+             Object.entries(data).sort(([,a],[,b]) => b.count-a.count)
            );
+           let nameC = "";
            Object.keys(sortable).forEach(key => {
+             let par=key.indexOf('(');
+             if (par >=0 ){
+               nameC = key.substring(par+1,key.indexOf(')'));
+             }else{
+               let comm=key.split(',')
+               if (comm.length>2){
+                 nameC=comm[0]+','+comm[comm.length-1];
+               }else{
+                 nameC = key;
+               }
+
+             }
              let vectItem = {
-               name: key,
+               name: nameC,
                cursor: 'pointer',
                point: {
                    events: {
                      click: function() {
-                       location.href = '/#/search?fairsharingRegistry='+type+'&organisations='+key;
+                       location.href = '/#/organisations/'+data[key].id;
                      }
                    }
                },
@@ -1147,8 +1183,8 @@
              let datItem = {
                name: "",
                x: varX,
-               y: data[key],
-               z: 100*data[key]/numRecords
+               y: data[key].count,
+               z: 100*data[key].count/numRecords
              };
              vectItem.data.push(datItem);
              varX +=1;

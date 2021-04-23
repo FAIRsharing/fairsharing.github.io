@@ -71,15 +71,60 @@
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import {mapState} from "vuex";
+import stringUtils from "@/utils/stringUtils";
+
 export default {
   name: "CollectionSearchCard",
   components: {RecordStatus, SearchLinkChips, AssociatedRecordsSummary},
+  mixins:[stringUtils],
   props: {
     record: {default: null, type: Object},
   },
   data() {
     return {
       allowClicking: false,
+      collectionIDs:[]
+    }
+  },
+  computed: {
+    ...mapState("record", ["currentRecord"])
+  },
+  mounted() {
+    this.prepareTabsData();
+  },
+  methods: {
+    prepareTabsData() {
+      if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
+        this.collectionIDs = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
+            .filter(item => item.recordAssocLabel === 'collects')
+            console.log(this.collectionIDs);
+      }
+      else {
+        return false
+      }
+    },
+    prepareAssociations(associations, reverseAssociations) {
+      let _module = this;
+      let recordAssociations = []
+      let joinedArrays = associations.concat(reverseAssociations);
+      const properties = ['fairsharingRecord', 'linkedRecord'];
+
+      joinedArrays.forEach(item => {
+        let object = {};
+        properties.forEach(prop => {
+          if (Object.prototype.hasOwnProperty.call(item, prop)) {
+            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+            object.id = item[prop].id;
+            object.registry = item[prop].registry;
+            object.name = item[prop].name;
+            object.subject = _module.currentRecord['fairsharingRecord'].name;
+            object.type = item[prop].type;
+          }
+        });
+        recordAssociations.push(object);
+      });
+      return recordAssociations;
     }
   }
 }

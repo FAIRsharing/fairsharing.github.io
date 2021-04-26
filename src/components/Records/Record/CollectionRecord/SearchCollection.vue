@@ -21,6 +21,13 @@
       lg="8"
       xl="8"
     >
+      <!--List Controller-->
+      <ListController
+        class="mt-2"
+        :options="{hasPagination:true,hasSorting:false,hasListType:true}"
+        @ChangeListType="changeListType"
+      />
+
       <!--List Row-->
       <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
         <article v-if="!isColumnList">
@@ -28,11 +35,6 @@
             type="image"
             :loading="loading"
           >
-            <!--Pagination-->
-            <Pagination
-              :total-pages="receivedData['totalPages']"
-              class="mb-4"
-            />
             <!--    result number        -->
             <p class="text-center mt-2">
               Displaying A b c.
@@ -58,22 +60,19 @@
           <v-skeleton-loader
             type="image"
           >
-            <!--Pagination-->
-            <Pagination
-              :total-pages="receivedData['totalPages']"
-              class="mb-4"
-            />
             <!--    result number        -->
             <p class="text-center mt-2">
               Displaying A b c.
             </p>
 
             <!-- ColumnCard view -->
-            <records-card-column
-              v-for="item in receivedData.records"
-              :key="'record_'+item.id"
-              :record="item"
-            />
+            <v-row>
+              <records-card-column
+                v-for="item in receivedData.records"
+                :key="'record_'+item.id"
+                :record="item"
+              />
+            </v-row>
             <!--Pagination-->
             <Pagination
               :total-pages="receivedData['totalPages']"
@@ -95,12 +94,13 @@ import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
 import Client from "@/lib/GraphClient/GraphClient";
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
 import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
+import ListController from "@/components/Records/Search/Header/ListController";
 
 let client = new Client();
 
 export default {
   name: "SearchCollection",
-  components: {RecordsCardColumn, RecordsCardStack, Pagination},
+  components: {ListController, RecordsCardColumn, RecordsCardStack, Pagination},
   mixins:[stringUtils],
   props: {
     record: {default: null, type: Object},

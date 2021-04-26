@@ -8,7 +8,6 @@
 </template>
 
 <script>
-    import {throttle} from 'lodash';
     import {mapActions, mapState} from "vuex";
 
     /** Component to handle the advanced search filters for the searchFairsharingRecords query.
@@ -19,8 +18,6 @@
       name: "CollectionPagination",
       data() {
         return {
-          allowPaginate: true,
-          disable: false,
           currentPageLocal: 1
         }
       },
@@ -39,33 +36,12 @@
          * @param {Number} pageNumber - the page to go to
          */
         paginate: async function (pageNumber) {
-          const _module = this;
-          if (this.allowPaginate) {
-            this.disableThrottle(this.disable);
-            await _module.paginateRecords(pageNumber);
-            await _module.fetchRecords();
-          }
-        },
-        /**
-         * Postpone the pagination buttons to be clickable
-         */
-        PaginatePermission: throttle(function () {
-          this.allowPaginate = true
-        }, 1200),
-
-        /**
-         * Set the environment ready for testing or development
-         * @param {Boolean} disable - should disable or not the throttle for the next call
-         */
-        disableThrottle: function (disable) {
-          if (!disable) {
-            this.allowPaginate = false;
-            this.PaginatePermission();
-          } else {
-            this.allowPaginate = true;
+          if (pageNumber !== this.currentPage) {
+            await this.paginateRecords(pageNumber);
+            await this.fetchRecords();
           }
         }
-      },
+      }
     }
 </script>
 

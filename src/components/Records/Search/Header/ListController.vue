@@ -3,7 +3,7 @@
     <div class="d-flex justify-space-between justify-center">
       <!--Sorting-->
       <v-skeleton-loader
-        v-if="options.hasListType"
+        v-if="options.hasSorting"
         :loading="loading"
         width="60px"
         type="avatar"
@@ -28,42 +28,62 @@
           <sorting />
         </v-menu>
       </v-skeleton-loader>
+      <div
+        v-else
+        style="width: 60px;"
+      />
       <!--Pagination-->
       <v-skeleton-loader
+        v-if="options.hasPagination"
         :loading="loading"
         width="100%"
         type="list-item"
       >
         <Pagination :total-pages="totalPages" />
       </v-skeleton-loader>
+      <div
+        v-else
+        style="width: 100%"
+      />
       <!--Stack or Column list toggle buttons-->
       <div class="d-flex flex-row align-start">
         <!--Stack or Column list toggle buttons-->
-        <div class="d-flex flex-row align-center">
-          <v-skeleton-loader
-            :loading="loading"
-            type="avatar"
+        <div
+          class="d-flex flex-row align-center"
+        >
+          <div
+            v-if="options.hasListType"
+            class="d-flex"
           >
-            <v-icon
-              large
-              :class="[{'active':isColumnList},'mr-2']"
-              @click="changeListType('stackList')"
+            <v-skeleton-loader
+              :loading="loading"
+              type="avatar"
             >
-              fa-list
-            </v-icon>
-          </v-skeleton-loader>
-          <v-skeleton-loader
-            :loading="loading"
-            type="avatar"
-          >
-            <v-icon
-              large
-              :class="{'active':!isColumnList}"
-              @click="changeListType('columnList')"
+              <v-icon
+                large
+                :class="[{'active':isColumnList},'mr-2']"
+                @click="changeListType('stackList')"
+              >
+                fa-list
+              </v-icon>
+            </v-skeleton-loader>
+            <v-skeleton-loader
+              :loading="loading"
+              type="avatar"
             >
-              fa-th-list
-            </v-icon>
-          </v-skeleton-loader>
+              <v-icon
+                large
+                :class="{'active':!isColumnList}"
+                @click="changeListType('columnList')"
+              >
+                fa-th-list
+              </v-icon>
+            </v-skeleton-loader>
+          </div>
+          <div
+            v-else
+            style="width: 70px;"
+          />
         </div>
       </div>
     </div>

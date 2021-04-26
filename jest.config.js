@@ -20,5 +20,5 @@ module.exports = {
       "./jest-setup.js"
     ],
     transform: { '^.*\\.js$': 'babel-jest' },
-    transformIgnorePatterns: ['node_modules/(?!vue-router|@babel|vuetify)']
+    transformIgnorePatterns: ['node_modules/(?!vue-router|@babel|vuetify|particles.vue)']
 };

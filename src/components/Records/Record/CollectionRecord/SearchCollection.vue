@@ -28,11 +28,33 @@
         @ChangeListType="changeListType"
       />
 
+      <!-- Alert -->
+      <v-alert
+        v-if="getRecordsLength<1 && !loading"
+        colored-border
+        type="info"
+      >
+        No records match your search!
+      </v-alert>
+      <!-- Error -->
+      <div
+        v-if="errors"
+        class="no-data-found"
+      >
+        <v-alert
+          colored-border
+          type="danger"
+        >
+          Error loading records!
+        </v-alert>
+      </div>
+
       <!--List Row-->
       <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
         <article v-if="!isColumnList">
           <v-skeleton-loader
             type="image"
+            class="mt-2"
             :loading="loading"
           >
             <!--    result number        -->
@@ -42,13 +64,13 @@
 
             <!-- StackCard view -->
             <RecordsCardStack
-              v-for="item in receivedData.records"
+              v-for="item in records"
               :key="'record_'+item.id"
               :record="item"
             />
             <!--Pagination-->
             <Pagination
-              :total-pages="receivedData['totalPages']"
+              :total-pages="totalPages"
               class="mb-4"
             />
           </v-skeleton-loader>
@@ -58,7 +80,9 @@
       <div :class="['opacity-0-transition',{'opacity-1-transition':isColumnList}]">
         <article v-if="isColumnList">
           <v-skeleton-loader
+            :loading="loading"
             type="image"
+            class="mt-2"
           >
             <!--    result number        -->
             <p class="text-center mt-2">
@@ -68,14 +92,14 @@
             <!-- ColumnCard view -->
             <v-row>
               <records-card-column
-                v-for="item in receivedData.records"
+                v-for="item in records"
                 :key="'record_'+item.id"
                 :record="item"
               />
             </v-row>
             <!--Pagination-->
             <Pagination
-              :total-pages="receivedData['totalPages']"
+              :total-pages="totalPages"
               class="mb-4"
             />
           </v-skeleton-loader>
@@ -88,15 +112,11 @@
 <script>
 import Pagination from "@/components/Records/Search/Header/Pagination";
 
-import {mapState} from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils";
-import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
-import Client from "@/lib/GraphClient/GraphClient";
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
 import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
 import CollectionListController from "@/components/Records/Record/CollectionRecord/Header/CollectionListController";
-
-let client = new Client();
 
 export default {
   name: "SearchCollection",
@@ -111,16 +131,19 @@ export default {
       collectionIDs:[],
       receivedData:{},
       isColumnList: false,
-      loading:false
+      errors:null
     }
   },
   computed: {
-    ...mapState("record", ["currentRecord"])
+    ...mapState("record", ["currentRecord"]),
+    ...mapState("collectionRecords",["records","totalPages","currentPage","loading"]),
+    ...mapGetters("collectionRecords",["getRecordsLength"])
   },
   async mounted() {
-    this.receivedData = await this.prepareCollectionData();
+    await this.prepareCollectionData();
   },
   methods: {
+    ...mapActions('collectionRecords', ['fetchRecords']),
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
@@ -130,13 +153,16 @@ export default {
             .filter(item => item.recordAssocLabel === 'collects')
         collections.forEach(item => {
           this.collectionIDs.push(item.id);
-        })
-        recordsQuery.queryParam = {ids: this.collectionIDs}
-        this.loading = true;
-        const data = await client.executeQuery(recordsQuery);
-        this.loading = false;
-        return data["searchFairsharingRecords"];
-      } else
+        });
+        try {
+          // this.showFiltersSM = false;
+          await this.fetchRecords({ids: this.collectionIDs});
+        }
+        catch (e) {
+          this.errors = e.message;
+        }
+      }
+      else
       {
         return false
       }

@@ -499,11 +499,19 @@
               _module.labelsFilter[filter] = true;
             });
             // If an item already exists then this shouldn't be added...
-            var exists = this.sections.relations.data.recordAssociations.find(function(link) {
+            var exists = this.associations.find(function(link) {
+              //  link.recordAssocLabel is sometimes a string, and sometimes an object...
+              let tmpRelation;
+              if (typeof link.recordAssocLabel.relation == 'undefined') {
+                tmpRelation = link.recordAssocLabel;
+              } else {
+                tmpRelation = link.recordAssocLabel.relation;
+              }
               if (link.linkedRecord.name === _module.addingRelation.linkedRecord.name &&
-                  link.recordAssocLabel.relation === _module.addingRelation.recordAssocLabel.relation) {
+                  tmpRelation ===  _module.addingRelation.recordAssocLabel.relation) {
                 return true;
               }
+              return false;
             });
             if (exists) {
               _module.duplicateRelationship = true;

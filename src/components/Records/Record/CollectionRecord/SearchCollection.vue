@@ -62,10 +62,7 @@
               :record="item"
             />
             <!--Pagination-->
-            <CollectionPagination
-              :total-pages="totalPages"
-              class="mb-4"
-            />
+            <CollectionPagination class="mb-4" />
           </v-skeleton-loader>
         </article>
       </div>
@@ -86,10 +83,7 @@
               />
             </v-row>
             <!--Pagination-->
-            <CollectionPagination
-              :total-pages="totalPages"
-              class="mb-4"
-            />
+            <CollectionPagination class="mb-4" />
           </v-skeleton-loader>
         </article>
       </div>
@@ -109,9 +103,6 @@ export default {
   name: "SearchCollection",
   components: {CollectionPagination, CollectionListController, RecordsCardColumn, RecordsCardStack},
   mixins:[stringUtils],
-  props: {
-    record: {default: null, type: Object},
-  },
   data() {
     return {
       allowClicking: false,
@@ -130,7 +121,7 @@ export default {
     await this.prepareCollectionData();
   },
   methods: {
-    ...mapActions('collectionRecords', ['fetchRecords']),
+    ...mapActions('collectionRecords', ['fetchRecords','setCollectionIdsParam']),
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
@@ -143,7 +134,8 @@ export default {
         });
         try {
           // this.showFiltersSM = false;
-          await this.fetchRecords({ids: this.collectionIDs,orderBy:"name,asc"});
+          await this.setCollectionIdsParam(this.collectionIDs);
+          await this.fetchRecords();
         }
         catch (e) {
           this.errors = e.message;

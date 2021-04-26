@@ -45,12 +45,11 @@
         v-else
         style="width: 100%"
       />
-      <!--Stack or Column list toggle buttons-->
       <div class="d-flex flex-row align-start">
-        <!--Stack or Column list toggle buttons-->
         <div
           class="d-flex flex-row align-center"
         >
+          <!--Stack or Column list toggle buttons-->
           <div
             v-if="options.hasListType"
             class="d-flex"
@@ -87,7 +86,7 @@
         </div>
       </div>
     </div>
-    <HitCount />
+    <CollectionHitCount />
   </div>
 </template>
 
@@ -95,11 +94,11 @@
     import {mapState} from "vuex";
     import CollectionPagination from "@/components/Records/Record/CollectionRecord/Header/CollectionPagination";
     import CollectionSorting from "@/components/Records/Record/CollectionRecord/Header/CollectionSorting";
-    import HitCount from "@/components/Records/Search/Header/HitCount";
+    import CollectionHitCount from "@/components/Records/Record/CollectionRecord/Header/CollectionHitCount";
 
     export default {
         name: "CollectionListController",
-        components: {HitCount, CollectionSorting, CollectionPagination},
+        components: {CollectionHitCount, CollectionSorting, CollectionPagination},
         props:{
           options:{
             type:Object,

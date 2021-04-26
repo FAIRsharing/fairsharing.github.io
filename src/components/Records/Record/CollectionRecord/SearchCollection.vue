@@ -9,7 +9,6 @@
       md="4"
       lg="4"
       xl="4"
-      style="background: gray"
     >
       left
     </v-col>
@@ -24,7 +23,7 @@
       <!--List Controller-->
       <CollectionListController
         class="mt-2"
-        :options="{hasPagination:true,hasSorting:true,hasListType:true}"
+        :options="{hasPagination:true,hasSorting:false,hasListType:true}"
         @ChangeListType="changeListType"
       />
 
@@ -49,7 +48,7 @@
         </v-alert>
       </div>
 
-      <!--List Row-->
+      <!-- StackCard view -->
       <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
         <article v-if="!isColumnList">
           <v-skeleton-loader
@@ -57,19 +56,13 @@
             class="mt-2"
             :loading="loading"
           >
-            <!--    result number        -->
-            <p class="text-center mt-2">
-              Displaying A b c.
-            </p>
-
-            <!-- StackCard view -->
             <RecordsCardStack
               v-for="item in records"
               :key="'record_'+item.id"
               :record="item"
             />
             <!--Pagination-->
-            <Pagination
+            <CollectionPagination
               :total-pages="totalPages"
               class="mb-4"
             />
@@ -84,11 +77,6 @@
             type="image"
             class="mt-2"
           >
-            <!--    result number        -->
-            <p class="text-center mt-2">
-              Displaying A b c.
-            </p>
-
             <!-- ColumnCard view -->
             <v-row>
               <records-card-column
@@ -98,7 +86,7 @@
               />
             </v-row>
             <!--Pagination-->
-            <Pagination
+            <CollectionPagination
               :total-pages="totalPages"
               class="mb-4"
             />
@@ -110,17 +98,16 @@
 </template>
 
 <script>
-import Pagination from "@/components/Records/Search/Header/Pagination";
-
 import {mapActions, mapGetters, mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils";
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
 import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
 import CollectionListController from "@/components/Records/Record/CollectionRecord/Header/CollectionListController";
+import CollectionPagination from "@/components/Records/Record/CollectionRecord/Header/CollectionPagination";
 
 export default {
   name: "SearchCollection",
-  components: {CollectionListController, RecordsCardColumn, RecordsCardStack, Pagination},
+  components: {CollectionPagination, CollectionListController, RecordsCardColumn, RecordsCardStack},
   mixins:[stringUtils],
   props: {
     record: {default: null, type: Object},
@@ -156,7 +143,7 @@ export default {
         });
         try {
           // this.showFiltersSM = false;
-          await this.fetchRecords({ids: this.collectionIDs});
+          await this.fetchRecords({ids: this.collectionIDs,orderBy:"name,asc"});
         }
         catch (e) {
           this.errors = e.message;

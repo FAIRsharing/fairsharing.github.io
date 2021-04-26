@@ -5,6 +5,12 @@ import {buildFacets} from "@/store/recordSearch";
 let client = new Client();
 
 export const mutations = {
+    paginateRecords(state, pageNumber) {
+        state.params['page'] = pageNumber
+    },
+    setCollectionIdsParam(state, collectionIDs) {
+        state.params['ids'] = collectionIDs
+    },
     setRecords(state, data) {
         state.records = data['records'];
         state.facets = buildFacets(data["aggregations"]);
@@ -37,32 +43,38 @@ export const mutations = {
     }
 };
 export const actions = {
-    async fetchRecords(state, params) {
+    async fetchRecords(state) {
         this.commit("collectionRecords/setLoadingStatus", true);
         this.commit("collectionRecords/resetRecords");
         this.commit("collectionRecords/resetPages");
-        if (Object.keys(params).length > 0) {
-            recordsQuery.queryParam = params;
+        if (state.state.params['ids'].length > 0) {
+            recordsQuery.queryParam = state.state.params;
         }
         const data = await client.executeQuery(recordsQuery);
         this.commit('collectionRecords/setRecords', data["searchFairsharingRecords"]);
         this.commit("collectionRecords/setLoadingStatus", false);
     },
+    async setCollectionIdsParam(state, collectionIDs) {
+        this.commit("collectionRecords/setCollectionIdsParam", collectionIDs);
+    },
     resetRecords() {
         this.commit("collectionRecords/resetRecords");
     },
+    paginateRecords(state,pageNumber) {
+        this.commit("collectionRecords/paginateRecords",pageNumber);
+    },
 };
 export const getters = {
-/*
-    getFilter: (state) => (facetName) => {
-        if (state.facets.length > 0) {
-            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
-            currentFacet['values'] = currentFacet['buckets'];
-            return currentFacet;
-        }
-        return [];
-    },
-*/
+    /*
+        getFilter: (state) => (facetName) => {
+            if (state.facets.length > 0) {
+                let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
+                currentFacet['values'] = currentFacet['buckets'];
+                return currentFacet;
+            }
+            return [];
+        },
+    */
     getRecordsLength: (state) => {
         return state.records.length;
     }
@@ -77,11 +89,13 @@ let collectionRecordsStore = {
     state: {
         records: [],
         facets: [],
+        params: {ids: [], page: 1},
+        collectionIDs: [],
         hits: null,
         loading: false,
         totalPages: null,
         perPage: null,
-        currentPage: null
+        currentPage: 1
     },
     mutations: mutations,
     actions: actions,

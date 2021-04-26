@@ -3,7 +3,9 @@
     v-if="hits"
     class="mt-2"
   >
-    <p class="text-center">Displaying {{ x }}  to {{ y }} of {{ hits }}.</p>
+    <p class="text-center">
+      Displaying {{ x }}  to {{ y }} of {{ hits }}.
+    </p>
   </div>
 </template>
 

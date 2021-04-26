@@ -8,7 +8,7 @@
       :options="options"
     />
     <h1 class="text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium white--text">
-      {{ jumbotron.title }}
+      {{ title }}
     </h1>
     <h3
       :class="[
@@ -20,19 +20,21 @@
         }
       ]"
     >
-      {{ jumbotron.subTitle }}
+      {{ subtitle }}
     </h3>
   </section>
 </template>
 
 <script>
-import {jumbotron} from '@/data/homePageData.json';
 
 export default {
   name: "Jumbotron",
+  props: {
+    title: {default: null, type: String},
+    subtitle: {default: null, type: String}
+  },
   data:() => {
     return {
-      jumbotron: jumbotron,
       options: {
         background: {
           color: {

@@ -4,7 +4,10 @@
       fluid
       class="text-center pa-0"
     >
-      <Jumbotron />
+      <Jumbotron
+        :title="home_data.title"
+        :subtitle="home_data.subTitle"
+      />
       <Carousel />
       <InfoBlock class="mb-12" />
       <SearchBlock />
@@ -26,6 +29,8 @@ import Carousel from "@/components/Home/Carousel";
 import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
 import CategoryBlock from "@/components/Home/CategoryBlock";
+import { jumbotron }  from '@/data/homePageData.json';
+
 
 /** Component to handle the front page (landing page)
  *
@@ -33,6 +38,11 @@ import CategoryBlock from "@/components/Home/CategoryBlock";
 export default {
   name: "Home",
   components:{ Jumbotron, Carousel, InfoBlock, SearchBlock, CategoryBlock },
+  data () {
+    return {
+      home_data: jumbotron,
+    }
+  },
   computed: {
     JSONLD: () => {
       return JSON.stringify(  {

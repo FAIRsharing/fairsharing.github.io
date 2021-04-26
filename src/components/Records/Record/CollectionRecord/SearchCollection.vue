@@ -22,9 +22,9 @@
       xl="8"
     >
       <!--List Controller-->
-      <ListController
+      <CollectionListController
         class="mt-2"
-        :options="{hasPagination:true,hasSorting:false,hasListType:true}"
+        :options="{hasPagination:true,hasSorting:true,hasListType:true}"
         @ChangeListType="changeListType"
       />
 
@@ -94,13 +94,13 @@ import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
 import Client from "@/lib/GraphClient/GraphClient";
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
 import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
-import ListController from "@/components/Records/Search/Header/ListController";
+import CollectionListController from "@/components/Records/Record/CollectionRecord/Header/CollectionListController";
 
 let client = new Client();
 
 export default {
   name: "SearchCollection",
-  components: {ListController, RecordsCardColumn, RecordsCardStack, Pagination},
+  components: {CollectionListController, RecordsCardColumn, RecordsCardStack, Pagination},
   mixins:[stringUtils],
   props: {
     record: {default: null, type: Object},

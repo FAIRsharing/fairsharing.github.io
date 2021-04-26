@@ -95,7 +95,7 @@ let collectionRecordsStore = {
         loading: false,
         totalPages: null,
         perPage: null,
-        currentPage: 1
+        currentPage: null
     },
     mutations: mutations,
     actions: actions,

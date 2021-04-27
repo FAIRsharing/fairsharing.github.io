@@ -5,6 +5,12 @@ import filterMapping from "@/data/FiltersLabelMapping.json"
 let client = new Client();
 
 export const mutations = {
+    paginateRecords(state, pageNumber) {
+        state.params['page'] = pageNumber
+    },
+    setCollectionIdsParam(state, collectionIDs) {
+        state.params['ids'] = collectionIDs
+    },
     setRecords(state, data) {
         state.records = data['records'];
         state.facets = buildFacets(data["aggregations"]);
@@ -27,6 +33,8 @@ export const mutations = {
         state.loading = status;
     },
     cleanRecordsStore(state) {
+        state.params = {ids:[]};
+        state.collectionIDs = [];
         state.records = [];
         state.facets = [];
         state.hits = null;
@@ -37,6 +45,23 @@ export const mutations = {
     }
 };
 export const actions = {
+    async fetchCollectionRecords(state) {
+        this.commit("records/setLoadingStatus", true);
+        this.commit("records/resetRecords");
+        this.commit("records/resetPages");
+        if (state.state.params['ids'].length > 0) {
+            recordsQuery.queryParam = state.state.params;
+        }
+        const data = await client.executeQuery(recordsQuery);
+        this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        this.commit("records/setLoadingStatus", false);
+    },
+    async setCollectionIdsParam(state, collectionIDs) {
+        this.commit("records/setCollectionIdsParam", collectionIDs);
+    },
+    paginateRecords(state,pageNumber) {
+        this.commit("records/paginateRecords",pageNumber);
+    },
     async fetchRecords(state, params) {
         this.commit("records/setLoadingStatus", true);
         this.commit("records/resetRecords");
@@ -73,6 +98,8 @@ export const getters = {
 let recordsStore = {
     namespaced: true,
     state: {
+        params: {ids: []},
+        collectionIDs: [],
         records: [],
         facets: [],
         hits: null,

@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import Jumbotron from "@/components/Home/Jumbotron"
+import Jumbotron from "@/components/Navigation/Jumbotron"
 import Vuetify from "vuetify"
 
 const vuetify = new Vuetify();

@@ -1,8 +1,4 @@
 {
-  "jumbotron": {
-    "title": "A curated, informative and educational resource on data and metadata standards, inter-related to databases and data policies.",
-    "subTitle": "We guide consumers to discover, select and use these resources with confidence, and producers to make their resource more discoverable, more widely adopted and cited."
-  },
   "blockTabs": [
     {
       "link": "stakeholder/",

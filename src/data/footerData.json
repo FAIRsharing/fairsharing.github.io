@@ -77,7 +77,12 @@
       },
       {
         "title": "API and data license",
-        "url": "",
+        "url": "/license",
+        "urlType": "internal"
+      },
+      {
+        "title": "API Documentation",
+        "url": "/API_doc",
         "urlType": "internal"
       },
       {

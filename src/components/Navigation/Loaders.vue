@@ -1,5 +1,5 @@
 <template>
-  <v-container styl="z-index:3">
+  <v-container style="z-index:3">
     <v-row
       class="justify-center d-none"
       no-gutters

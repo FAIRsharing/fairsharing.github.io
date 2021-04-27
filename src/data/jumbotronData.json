@@ -19,7 +19,7 @@
     "title": "Collections",
     "subtitle": " Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation. A Recommendation is a core-set of resources that are selected or endorsed by data policies from journals, funders or other organizations. "
   },
-  "^privacy": {
+  "privacy": {
     "title": "Privacy policy",
     "subtitle": ""
   },
@@ -46,5 +46,9 @@
   "search": {
     "title": "Search",
     "subtitle": "Search the FAIRsharing records using advanced filtering "
+  },
+  "api documentation": {
+    "title": "FAIRsharing API documentation",
+    "subtitle": "How to use the FAIRsharing REST API for you CRUD operations on records"
   }
 }

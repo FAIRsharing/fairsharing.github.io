@@ -50,6 +50,7 @@
         methods: {
           getJumbotronData(){
             let route = this.$route.name;
+            console.log(route)
             if (route === "search" && Object.keys(this.$route.query).includes("fairsharingRegistry")) {
               route = this.$route.query.fairsharingRegistry
             }

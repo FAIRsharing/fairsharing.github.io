@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/GraphClient/GraphClient.js</title>
+	<title>FAIRsharing.org Source: store/recordSearch.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NavbarTop.html">NavbarTop</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -86,156 +86,124 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/GraphClient/GraphClient.js</h1>
+		<h1 class="page-title">Source: store/recordSearch.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">const axios = require("axios");
-import Fragments from "./queries/fragments/fragments.json"
+            class="sunlight-highlight-javascript linenums">import Client from "@/lib/GraphClient/GraphClient.js"
+import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
+import filterMapping from "@/data/FiltersLabelMapping.json"
 
-class GraphQLClient {
+let client = new Client();
 
-    /** The GraphQLClient retrieves data from the FAIRSharing API and sends it to the front-end.
-     * Be careful, this is a singleton and trying to cast new instances will return the existing instance. Be
-     * also careful, its constructor is async !!
-     * @returns {Promise} - to use this object you need to do "await new ClassName()" or use .then(callback)
-     */
-    constructor(){
-        this.initalizeHeader();
-        if (GraphQLClient._instance){
-            return GraphQLClient._instance
+export const mutations = {
+    setRecords(state, data) {
+        state.records = data['records'];
+        state.facets = buildFacets(data["aggregations"]);
+        state.totalPages = data["totalPages"];
+        state.perPage = data["perPage"];
+        state.currentPage = data["currentPage"];
+        state.hits = data["totalCount"];
+    },
+    resetRecords(state) {
+        recordsQuery.queryParam = null;
+        state.records = [];
+    },
+    resetPages(state) {
+        state.hits = null;
+        state.perPage = null;
+        state.currentPage = null;
+        state.totalPages = null;
+    },
+    setLoadingStatus(state, status) {
+        state.loading = status;
+    },
+    cleanRecordsStore(state) {
+        state.records = [];
+        state.facets = [];
+        state.hits = null;
+        state.loading = false;
+        state.totalPages = null;
+        state.perPage = null;
+        state.currentPage = null;
+    }
+};
+export const actions = {
+    async fetchRecords(state, params) {
+        this.commit("records/setLoadingStatus", true);
+        this.commit("records/resetRecords");
+        this.commit("records/resetPages");
+        if (Object.keys(params).length > 0) {
+            recordsQuery.queryParam = params;
         }
-        GraphQLClient._instance = this;
-        this.url = process.env.VUE_APP_API_ENDPOINT + "/graphql";
-    }
-
-    /**
-     * Execute the given query (coming from a json file, see /queries/getRecords.json)
-     * @param {Object} query - the query coming from the JSON file
-     * sending to the API.
-     * @returns {Promise}
-     */
-    async executeQuery(query){
-        let client = this;
-        let queryString = {
-            query: `{${client.buildQuery(query)}}`
-        };
-        let resp = await this.getData(queryString);
-        if (resp.data.errors) {
-            return resp.data.errors;
+        const data = await client.executeQuery(recordsQuery);
+        this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        this.commit("records/setLoadingStatus", false);
+    },
+    resetRecords() {
+        this.commit("records/resetRecords");
+    },
+};
+export const getters = {
+    getFilter: (state) => (facetName) => {
+        if (state.facets.length > 0) {
+            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
+            currentFacet['values'] = currentFacet['buckets'];
+            return currentFacet;
         }
-        return resp.data.data
+        return [];
+    },
+    getRecordsLength: (state) => {
+        return state.records.length;
     }
+};
 
-    /**
-     * Takes the query, post it with axios and returns the raw data
-     * @param {Object} queryString - processed request coming out of buildQuery() or a GraphQL query string
-     * @returns {Promise} - an axios promise representing the server response.
-     */
-    async getData(queryString){
-        let client = this;
-        const fullQuery = {
-            method: "post",
-            baseURL: client.url,
-            data:  queryString,
-            headers: client.headers
-        };
-        return await axios(fullQuery);
-    }
+/**
+ * The records store handles the requests related to records (searchFairsharingRecords and fairsharingRecord).
+ * @type {Object}
+ */
+let recordsStore = {
+    namespaced: true,
+    state: {
+        records: [],
+        facets: [],
+        hits: null,
+        loading: false,
+        totalPages: null,
+        perPage: null,
+        currentPage: null
+    },
+    mutations: mutations,
+    actions: actions,
+    getters: getters
+};
+export default recordsStore;
 
-    /**
-     * Transform the JSON query into a string for graphQL
-     * @param {Object} query - the query coming from the JSON file
-     * @returns {Object} {query: queryString} - a valid graphQL query string to execute
-     */
-    buildQuery(query){
-        let client = this;
-        let queryString = `${query["queryName"]}`; // query name
+/**
+ * Given an object containing the raw facets coming from the client and a mapping object , build the ready to use facets
+ * for usage by the Vue components.
+ * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
+ * @returns {Array} output - the array of ready to use facets containing a name, a label and values
+ */
+export const buildFacets = function (rawFacets) {
+    let output = [];
+    const mapper = filterMapping["autocomplete"];
 
-        // Handle query parameters
-        if (query.queryParam) {
-            queryString += "(";
-            Object.keys(query.queryParam).forEach(function(key){
-                if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
-                    queryString += `${key}:${query.queryParam[key]} `;
-                }
-                else if (typeof query.queryParam[key] === "string") {
-                    queryString += `${key}:"${query.queryParam[key]}" `;
-                }
-                else {
-                    let param = [];
-                    query.queryParam[key].forEach(function(paramVal){
-                        param.push("\"" + paramVal + "\"");
-                    });
-                    queryString += `${key}:[${param.join(",")}]`;
+    Object.keys(rawFacets).forEach(function (facetName) {
+        if (Object.prototype.hasOwnProperty.call(mapper, facetName)) {
+            let localFacet = mapper[facetName];
+            rawFacets[facetName]["buckets"].forEach(function (bucket) {
+                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
+                    bucket["key"] = bucket["key_as_string"];
                 }
             });
-            queryString += ")";
+            localFacet['buckets'] = rawFacets[facetName]['buckets'];
+            output.push(localFacet);
         }
-
-        // Handle query fields
-        if (query.fields){
-            queryString += "{";
-            query.fields.forEach(function(field){
-                if (typeof field === "string"){
-                    queryString += ` ${field}`;
-                }
-                if (typeof field === "object"){
-                    if ("$ref" in field){
-                        let myRef = Fragments[field["$ref"]];
-                        for (let subField of myRef){
-                            if (typeof subField === "string"){
-                                queryString += ` ${subField}`;
-                            }
-                            else {
-                                queryString += ` ${client.buildQuery(subField)}`;
-                            }
-                        }
-                    }
-                    else {
-                        queryString += ` ${field.name}{`;
-                        field.fields.forEach(function(subField){
-                              if (typeof subField === "string"){
-                                  queryString += `${subField} `;
-                              }
-                              else {
-                                  queryString += `${client.buildQuery(subField)}`;
-                              }
-                        });
-                        queryString += "}";
-                    }
-                }
-            });
-            queryString += "}";
-        }
-        return queryString;
-    }
-
-    /**
-    * Add the authorization token to the headers
-    * @param {String} jwt - the user json web token
-    */
-    setHeader(jwt){
-      this.headers['Authorization'] = `Bearer ${jwt}`;
-    }
-
-    initalizeHeader(){
-      this.headers = {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-      };
-      this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
-      /* istanbul ignore if */
-      if (this.headers['X-Client-Id'] === undefined){
-          delete this.headers['X-Client-Id']
-      }
-    }
-
-
-}
-
-export default GraphQLClient;
+    });
+    return output;
+};
 </pre>
     </article>
 </section>
@@ -281,7 +249,7 @@ export default GraphQLClient;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
 	
-		on Wed Apr 14th 2021
+		on Sun Apr 25th 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

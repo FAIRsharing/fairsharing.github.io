@@ -6,6 +6,7 @@
     >
       <!--   error   -->
       <div v-if="error">
+        {{ error }}
         <NotFound />
       </div>
 
@@ -52,6 +53,7 @@
           >
             <v-menu
               offset-y
+              :disabled="readOnlyMode"
             >
               <template #activator="{ on, attrs }">
                 <v-btn
@@ -126,14 +128,46 @@
       type="application/ld+json"
       v-html="JSONLD"
     />
+    <v-dialog
+      v-model="history.show"
+      fullscreen
+      class="pa-0"
+      persistent
+      no-click-animation
+    >
+      <v-card>
+        <v-card-title
+          class="blue white--text pb-4"
+          style="border-radius: 0 !important;"
+        >
+          {{ getField("name") }} history logs
+          <v-spacer />
+          <v-btn
+            x-small
+            fab
+            @click="history.show = false"
+          >
+            <v-icon> fa-times </v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-text class="pt-2">
+          <RecordHistory
+            v-if="!history.loading"
+            :history="currentRecordHistory.history"
+            :legacy-logs="currentRecordHistory.legacyLogs"
+          />
+          <Loaders v-else />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <!-- eslint-enable vue/no-v-html -->
   </v-main>
 </template>
 
 <script>
     import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
-    import Client from '@/components/GraphClient/GraphClient.js'
-    import RestClient from "@/components/Client/RESTClient.js"
+    import Client from '@/lib/GraphClient/GraphClient.js'
+    import RestClient from "@/lib/Client/RESTClient.js"
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Tools from '@/components/Records/Record/Tools';
@@ -144,12 +178,16 @@
     import Organisations from "@/components/Records/Record/Organisations";
     import Collections from "@/components/Records/Record/Collections";
     import RelatedContent from "@/components/Records/Record/RelatedContent";
+    import RecordHistory from "@/components/Records/Record/History/RecordHistory";
+    import Loaders from "@/components/Navigation/Loaders";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          Loaders,
+          RecordHistory,
           RelatedContent,
           Collections,
           Organisations,
@@ -173,7 +211,11 @@
                 canClaim: false,
                 alreadyClaimed: false,
                 claimedTriggered: false,
-                buttons: []
+                buttons: [],
+                history: {
+                  show: false,
+                  loading: false
+                },
             }
         },
         computed: {
@@ -190,6 +232,7 @@
             ...mapState('record', ["currentRecord", "currentRecordHistory"]),
             ...mapState('users', ["user", "messages"]),
             ...mapGetters("record", ["getField"]),
+            ...mapState('introspection', ["readOnlyMode"]),
             userIsLoggedIn(){
               return this.user().isLoggedIn;
             },
@@ -226,12 +269,23 @@
             goToEdit(){
               let _module = this;
               const recordID = '/' + _module.currentRecord['fairsharingRecord'].id;
-              this.$router.push({
-                path: recordID + '/edit',
-                params: {
-                  fromRecordPage: true
-                }
-              })
+              if (_module.userIsLoggedIn) {
+                this.$router.push({
+                  path: recordID + '/edit',
+                  params: {
+                    fromRecordPage: true
+                  }
+                })
+              }
+              else {
+                this.$router.push({
+                  path: "/accounts/login",
+                  query: {
+                    goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                  }
+                })
+              }
+
             },
             /**
             * Method to create a maintenance_request; sets canClaim and (on fail) error.
@@ -287,10 +341,10 @@
                 this.claimedTriggered = false;
                 try {
                   if (this.target) await _module.fetchPreviewRecord(this.target);
-                    else await _module.fetchRecord({
-                        id: this.currentRoute,
-                        token: _module.user().credentials.token
-                      });
+                  else await _module.fetchRecord({
+                      id: this.currentRoute,
+                      token: (_module.user().credentials) ? _module.user().credentials.token : null
+                  });
                 }
                 catch (e) {
                     this.error = e.message;
@@ -304,6 +358,10 @@
             async getHistory() {
                 await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
             },
+            /**
+            * Test if the current user can edit the current record
+            * @returns {Promise<void>}
+            */
             async canEditRecord(){
               const _module = this;
               _module.canEdit = false;
@@ -313,6 +371,11 @@
                 _module.canEdit = !canEdit.error;
               }
             },
+            /**
+            * Method to add or remove the current record to the list of watched records
+            * @param watch
+            * @returns {Promise<void>}
+            */
             async changeWatchRecord(watch) {
               const _module = this;
               this.loading = true;
@@ -327,7 +390,7 @@
               }
               let data = {
                 watched_record_ids: records
-              }
+              };
               let response = await this.updateWatchedRecords(data);
               // Refresh user data to reload followed record status.
               if (response.modification === 'success'){
@@ -335,95 +398,114 @@
               }
               this.loading = false;
             },
+            /**
+            * Test if the user is watching the current record
+            * @returns {*|boolean}
+            */
             isWatching() {
               return  this.currentRecord['fairsharingRecord'].id
-                      && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id);
+                      && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
             },
+            /**
+            * Method that builds and set the buttons of the action menu
+            */
             getMenuButtons(){
-              let _module = this;
-              _module.buttons = [
-                {
-                  name: function() { return "Edit record" },
-                  isDisabled: function(){
-                    if (!_module.userIsLoggedIn){
-                      return false
-                    }
-                    return !_module.canEdit
+                let _module = this;
+                _module.buttons = [
+                  {
+                    name: function() { return "Edit record" },
+                    isDisabled: function(){
+                      if (!_module.userIsLoggedIn){
+                        return false
+                      }
+                      return !_module.canEdit
+                    },
+                    method: function(){return _module.goToEdit()}
                   },
-                  method: function(){return _module.goToEdit()}
-                },
-                {
-                  name: function() { return "Request ownership" },
-                  isDisabled: function(){
-                    if (!_module.userIsLoggedIn){
-                      return false
+                  {
+                    name: function() { return "Request ownership" },
+                    isDisabled: function(){
+                      if (!_module.userIsLoggedIn){
+                        return false
+                      }
+                      return !_module.canClaim
+                    },
+                    method: function(){
+                      if (!_module.userIsLoggedIn){
+                        _module.$router.push({
+                          path: "/accounts/login",
+                          query: {
+                            goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                          }
+                        })
+                      }
+                      else {
+                        return _module.requestOwnership()
+                      }
                     }
-                    return !_module.canClaim
                   },
-                  method: function(){
-                    if (!_module.userIsLoggedIn){
-                      _module.$router.push({
-                        path: "/accounts/login",
-                        query: {
-                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-                        }
-                      })
-                    }
-                    else {
-                      return _module.requestOwnership()
-                    }
-                  }
-                },
-                {
-                  name: () => {
-                    if (!_module.userIsLoggedIn){
-                      return "Watch record"
-                    }
-                    else {
-                      if (!_module.isWatching()){
+                  {
+                    name: () => {
+                      if (!_module.userIsLoggedIn){
                         return "Watch record"
                       }
                       else {
-                        return "Unwatch record"
+                        if (!_module.isWatching()){
+                          return "Watch record"
+                        }
+                        else {
+                          return "Unwatch record"
+                        }
+                      }
+                    },
+                    isDisabled: function() { return false },
+                    method: function(){
+                      if (!_module.userIsLoggedIn){
+                        _module.$router.push({
+                          path: "/accounts/login",
+                          query: {
+                            goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
+                          }
+                        })
+                      }
+                      else {
+                        if (_module.isWatching()) {
+                          _module.changeWatchRecord(false);
+                        }
+                        else {
+                          _module.changeWatchRecord(true);
+                        }
                       }
                     }
                   },
-                  isDisabled: function() { return false },
-                  method: function(){
-                    if (!_module.userIsLoggedIn){
+                  {
+                    name: function() { return "View Relation Graph" },
+                    isDisabled: function(){ return false },
+                    method: function(){
                       _module.$router.push({
-                        path: "/accounts/login",
-                        query: {
-                          goTo: `/${_module.currentRecord['fairsharingRecord'].id}`
-                        }
+                        path: "/graph/" + _module.currentRecord['fairsharingRecord'].id
                       })
                     }
-                    else {
-                      if (_module.isWatching()) {
-                        _module.changeWatchRecord(false);
-                      }
-                      else {
-                        _module.changeWatchRecord(true);
-                      }
+                  },
+                  {
+                    name: function() { return "View record history" },
+                    isDisabled: function(){return !_module.user().is_curator},
+                    method: async () => {
+                      this.history = {
+                        show: true,
+                        loading: true
+                      };
+                      await this.getHistory();
+                      this.history.loading = false;
                     }
+                  },
+                  {
+                    name: function() { return "Have a suggestion/question ?" },
+                    isDisabled: function(){ return true},
+                    method: function(){return null}
                   }
-                },
-                {
-                  name: function() { return "View Relation Graph" },
-                  isDisabled: function(){ return false },
-                  method: function(){
-                    _module.$router.push({
-                      path: "/graph/" + _module.currentRecord['fairsharingRecord'].id
-                    })
-                  }
-                },
-                {
-                  name: function() { return "Have a suggestion/question ?" },
-                  isDisabled: function(){ return true},
-                  method: function(){return null}
-                }
-            ];
-          }
+              ];
+            }
         },
         metaInfo() {
           try {

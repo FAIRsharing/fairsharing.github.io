@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
-import Record from "@/store/record.js"
+import Record from "@/store/recordData.js"
 import HomePage from "@/components/Records/Record/GeneralInfo/HomePage.vue"
 import Vuetify from "vuetify"
 

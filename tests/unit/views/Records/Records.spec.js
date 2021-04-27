@@ -3,8 +3,8 @@ import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueMeta from "vue-meta";
 import Records from "@/views/Records/Records.vue";
-import Client from "@/components/GraphClient/GraphClient.js";
-import records from "@/store/records.js"
+import Client from "@/lib/GraphClient/GraphClient.js";
+import records from "@/store/recordSearch.js"
 import introspection from "@/store/introspector.js"
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
@@ -98,6 +98,9 @@ describe("Records.vue", () => {
         let returnedVal = {
             data: {
                 data: fakeIntrospection.data
+            },
+            headers: {
+                maintenance: "false"
             }
         };
         sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
@@ -143,17 +146,6 @@ describe("Records.vue", () => {
         $route.query = {fairsharingRegistry: "123"};
         await localWrapper.vm.tryRedirect();
         expect($router.push).toHaveBeenCalledTimes(2);
-    });
-
-    it("can check responsiveClassObject", () => {
-        $store.dispatch("uiController/setStickToTop", true);
-        vuetify.framework.breakpoint.xlOnly = true;
-        expect(wrapper.vm.responsiveClassObject).toStrictEqual({
-            'left-panel-fixed-lg': true,
-            'left-panel-default-lg': false,
-            'left-panel-default': false,
-            'left-panel-fixed': false
-        });
     });
 
     it("can onScroll function work properly", () => {

@@ -38,6 +38,7 @@
       <v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
+        :show-arrows="$vuetify.breakpoint.mdAndDown"
         background-color="transparent"
         grow
         color="accent3"
@@ -132,8 +133,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {relation: ['collects', 'recommends'], registry: "Standard", data: []},
-          related_databases: {relation: ['collects', 'recommends'], registry: "Database", data: []}
+          related_standards: {relation: ['deprecates'], registry: "Standard", data: []},
+          related_databases: {relation: ['deprecates'], registry: "Database", data: []},
         }
       }
     }
@@ -145,10 +146,19 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
+      if (_module.currentRecord['fairsharingRecord'].registry === 'Collection') {
+        _module.tabsData.tabs['other_related_records'] = {relation: ['deprecates'],registry: ["Collection","Policy"], data: []}
+      }
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
-          _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && item.registry === _module.tabsData.tabs[tabName].registry)
+          if (tabName !== 'other_related_records') {
+            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
+                .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && item.registry === _module.tabsData.tabs[tabName].registry)
+          }
+          else {
+            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
+                .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && _module.tabsData.tabs[tabName].registry.includes(item.registry))
+          }
         });
       }
       else {

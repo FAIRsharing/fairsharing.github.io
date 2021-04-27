@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import VueRouter from "vue-router";
 import GraphTest from "@/views/Records/NetworkGraph.vue";
 import Vuetify from "vuetify"
-import GraphClient from "@/components/GraphClient/GraphClient";
+import GraphClient from "@/lib/GraphClient/GraphClient";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

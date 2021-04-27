@@ -89,7 +89,7 @@ let collectionRecordsStore = {
     state: {
         records: [],
         facets: [],
-        params: {ids: [], page: 1},
+        params: {ids: []},
         collectionIDs: [],
         hits: null,
         loading: false,

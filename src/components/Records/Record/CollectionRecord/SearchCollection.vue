@@ -3,14 +3,16 @@
     dense
   >
     <v-col
-      class="pa-0"
+      class="pl-0 pa-4"
       cols="12"
       sm="12"
       md="4"
       lg="4"
       xl="4"
     >
-      left
+      <SearchInput
+        class="search__input"
+      />
     </v-col>
     <v-col
       class="pa-0"
@@ -98,10 +100,11 @@ import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStac
 import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
 import CollectionListController from "@/components/Records/Record/CollectionRecord/Header/CollectionListController";
 import CollectionPagination from "@/components/Records/Record/CollectionRecord/Header/CollectionPagination";
+import SearchInput from "@/components/Records/Search/Input/SearchInput";
 
 export default {
   name: "SearchCollection",
-  components: {CollectionPagination, CollectionListController, RecordsCardColumn, RecordsCardStack},
+  components: {SearchInput, CollectionPagination, CollectionListController, RecordsCardColumn, RecordsCardStack},
   mixins:[stringUtils],
   data() {
     return {
@@ -175,5 +178,10 @@ export default {
 </script>
 
 <style scoped>
-
+.search__input {
+  height: auto;
+  position: relative;
+  overflow-y: auto;
+  margin-right: 2rem;
+}
 </style>

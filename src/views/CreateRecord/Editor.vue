@@ -121,7 +121,7 @@
   import EditPublications from "@/components/Editor/EditPublications";
   import EditAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo";
   import Unauthorized from "@/views/Errors/403"
-  import RESTClient from "@/components/Client/RESTClient.js"
+  import RESTClient from "@/lib/Client/RESTClient.js"
 
   const client = new RESTClient();
 

@@ -285,13 +285,13 @@
 </template>
 
 <script>
-import GraphClient from "@/components/GraphClient/GraphClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import Icon from "@/components/Icon";
 import Loaders from "@/components/Navigation/Loaders";
 import NotFound from "@/views/Errors/404"
 import Record from "@/views/Records/Record";
 import StatusPills from "@/components/Users/Profiles/Private/StatusPills";
-import getOrganisationQuery from "@/components/GraphClient/queries/Organisations/getOrganisation.json"
+import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
 import { cleanString, formatList } from "@/utils/stringUtils"
 import {mapState} from "vuex";
 

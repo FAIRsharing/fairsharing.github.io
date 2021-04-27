@@ -37,12 +37,7 @@
                       "id": "145f1",
                       "name": "Radiotgherapy",
                       "updatedAt": "2020-05-27T09:34:54Z",
-                      "priority": true,
-                      "creator":
-                          {
-                              "id": "342",
-                              "username": "Andre Milla"
-                          }
+                      "priority": true
                   }
 
               ]

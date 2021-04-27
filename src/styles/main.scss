@@ -7,6 +7,16 @@ ul {
   list-style: none;
 }
 
+p {
+  line-height: 1.6;
+  text-align: justify;
+}
+
+pre {
+  overflow-x: auto;
+  -ms-overflow-x: auto;
+}
+
 //End of Global Setting---------------------
 
 //Animations--------------------------------
@@ -261,6 +271,14 @@ ul {
   left: 143px;
   font-size: 12px;
 }
+
+.code-container {
+  overflow-x: auto;
+  -ms-overflow-x: auto;
+  pre {
+    display: block!important;
+  }
+}
 // custom fonts--------------------------
 @font-face {
   font-family: "lato_font_bold";
@@ -289,16 +307,20 @@ ul {
   font-family: Lato_font_light, serif;
 }
 
-.lato-text-sm {
+.lato-text-xs {
   font-size: .8rem;
 }
 
+.lato-text-sm {
+  font-size: 1rem;
+}
+
 .lato-text-md {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
 .lato-text-lg {
-  font-size: 1.7rem;
+  font-size: 1.6rem;
 }
 
 //End of custom fonts--------------------------

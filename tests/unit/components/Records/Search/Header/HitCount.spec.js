@@ -2,7 +2,7 @@ import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import HitCount from "@/components/Records/Search/Header/HitCount.vue"
-import recordsStore from "@/store/records.js";
+import recordsStore from "@/store/recordSearch.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

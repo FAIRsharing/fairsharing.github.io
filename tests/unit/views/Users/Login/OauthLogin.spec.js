@@ -3,7 +3,7 @@ import Vuex from "vuex"
 import VueRouter from "vue-router"
 import sinon from "sinon"
 import OauthLogin from "@/views/Users/Login/OauthLogin.vue"
-import Client from "@/components/Client/RESTClient.js"
+import Client from "@/lib/Client/RESTClient.js"
 import usersStore from "@/store/users.js";
 
 const localVue = createLocalVue();

@@ -25,14 +25,21 @@
       <!--  Content  -->
       <v-row no-gutters>
         <v-col
-          v-if="$vuetify.breakpoint.mdAndUp"
+          v-if="$vuetify.breakpoint.lgAndUp"
           cols="12"
           lg="4"
           md="4"
           xl="3"
           class="d-flex mt-2 ml-2"
         >
-          <SearchInput :class="['search-input-mb', responsiveClassObject]" />
+          <SearchInput
+            :class="['search-input-mb', {
+              'left-panel-fixed-lg': stickToTop && $vuetify.breakpoint.xlOnly,
+              'left-panel-default-lg': !stickToTop && $vuetify.breakpoint.xlOnly,
+              'left-panel-default': !stickToTop && !$vuetify.breakpoint.xlOnly,
+              'left-panel-fixed': stickToTop && !$vuetify.breakpoint.xlOnly
+            }]"
+          />
         </v-col>
         <v-col
           v-else
@@ -43,7 +50,10 @@
             class="info"
             @click="showFiltersSM = true"
           >
-            Show filters
+            <span class="mr-2">Show filters</span>
+            <v-icon small>
+              fa-filter
+            </v-icon>
           </v-btn>
         </v-col>
 
@@ -72,12 +82,7 @@
               <v-icon>fa-times</v-icon>
             </v-btn>
           </v-card-title>
-          <v-card-text class="pt-3">
-            <SearchInput
-              id="search-input-sm"
-              :class="[responsiveClassObject]"
-            />
-          </v-card-text>
+          <SearchInput class="pa-5" />
         </v-card>
       </v-dialog>
     </v-fade-transition>
@@ -135,14 +140,6 @@ export default {
         }
       }
       return title;
-    },
-    responsiveClassObject: function () {
-      return {
-        'left-panel-fixed-lg': this.stickToTop && this.$vuetify.breakpoint.xlOnly,
-        'left-panel-default-lg': !this.stickToTop && this.$vuetify.breakpoint.xlOnly,
-        'left-panel-default': !this.stickToTop && !this.$vuetify.breakpoint.xlOnly,
-        'left-panel-fixed': this.stickToTop && !this.$vuetify.breakpoint.xlOnly
-      }
     },
     currentPath: function () {
       let title = this.$route.path.replace('/', '');

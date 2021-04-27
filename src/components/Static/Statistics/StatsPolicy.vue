@@ -153,7 +153,6 @@
         type: Object,
         default: null
       },
-
       chartLinks:{
         type: Object,
         default: null

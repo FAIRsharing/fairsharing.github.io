@@ -1156,13 +1156,13 @@
            );
            let nameC = "";
            Object.keys(sortable).forEach(key => {
-             let par=key.indexOf('(');
+             let par = key.indexOf('(');
              if (par >=0 ){
                nameC = key.substring(par+1,key.indexOf(')'));
              }else{
-               let comm=key.split(',')
-               if (comm.length>2){
-                 nameC=comm[0]+','+comm[comm.length-1];
+               let comm = key.split(',')
+               if (comm.length > 2){
+                 nameC = comm[0]+','+comm[comm.length-1];
                }else{
                  nameC = key;
                }

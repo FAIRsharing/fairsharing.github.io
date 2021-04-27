@@ -12,6 +12,11 @@ p {
   text-align: justify;
 }
 
+pre {
+  overflow-x: auto;
+  -ms-overflow-x: auto;
+}
+
 //End of Global Setting---------------------
 
 //Animations--------------------------------
@@ -265,6 +270,14 @@ p {
   bottom: -12px;
   left: 143px;
   font-size: 12px;
+}
+
+.code-container {
+  overflow-x: auto;
+  -ms-overflow-x: auto;
+  pre {
+    display: block!important;
+  }
 }
 // custom fonts--------------------------
 @font-face {

@@ -12,6 +12,12 @@ import Networkgraph from 'highcharts/modules/networkgraph'
 import Variablepie from 'highcharts/modules/variable-pie'
 import More from 'highcharts/highcharts-more'
 import Export from 'highcharts/modules/exporting'
+import VueCodeHighlight from 'vue-code-highlight';
+import Particles from "particles.vue";
+import "vue-code-highlight/themes/prism-twilight.css";
+import "vue-code-highlight/themes/window.css";
+import 'prism-es6/components/prism-ruby.min';
+import 'prism-es6/components/prism-python.min';
 
 
 /* import router & store */
@@ -30,6 +36,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 // This is a global sass file, it is applied to every vue instance
 /* import Global Sass */
 import "./styles/main.scss"
+import 'vue-json-pretty/lib/styles.css'
 
 Variablepie(Highcharts);
 More(Highcharts);
@@ -38,22 +45,24 @@ Networkgraph(Highcharts);
 
 Vue.config.productionTip = false;
 Vue.use(HighchartsVue);
-
-
-// This is a package for having more flexibility over default scroll
 Vue.use(VueScrollTo);
 Vue.use(Clipboard);
 Vue.use(VueMoment);
-Vue.use(VueMeta, {
-    refreshOnceOnNavigation: true
-});
+Vue.use(VueMeta, {refreshOnceOnNavigation: true});
+Vue.use(VueCodeHighlight);
+Vue.use(Particles);
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 
 async function bootstrapApp() {
-    await store.dispatch('users/login');
-    await store.dispatch("introspection/fetchParameters");
-    await store.dispatch("searchFilters/assembleFilters");
+    try {
+        await store.dispatch('users/login');
+        await store.dispatch("introspection/fetchParameters");
+        await store.dispatch("searchFilters/assembleFilters");
+    }
+    catch {
+        store.commit("introspection/setMaintenanceMode");
+    }
 }
 
 bootstrapApp().then(() => {

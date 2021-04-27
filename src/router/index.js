@@ -4,7 +4,7 @@ import store from '@/store'
 
 import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
     Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
-    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile, Graph }
+    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance, APIDoc }
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -56,6 +56,17 @@ let routes = [
         path: "/organisations/:id",
         component: Organisation
     },
+
+    /* OTHER MODES */
+    {
+        name: "Maintenance",
+        path: "/maintenance",
+        component: Maintenance,
+        beforeEnter(to, from, next) {
+            isMaintenanceMode(to, from, next, store);
+        }
+    },
+
     /* CREATION */
     {
         name: "New_content",
@@ -106,6 +117,11 @@ let routes = [
         name: "Privacy",
         path: "/privacy",
         component: Privacy,
+    },
+    {
+        name: "API Documentation",
+        path: "/API_doc",
+        component: APIDoc,
     },
 
     // AUTHENTICATION AND USERS
@@ -193,6 +209,12 @@ let routes = [
             isLoggedIn(to, from, next, store);
         }
     },
+    /* To enable old links to collections to work */
+    {
+        name: "CollectionRecord",
+        path: "/collection/:id",
+        redirect: "/:id"
+    },
     {
         name: "Record",
         path: "/:id",
@@ -225,6 +247,9 @@ const router = new VueRouter({
 });
 
 export async function beforeEach(to, from, next, store) {
+    if (to.path !== '/maintenance' && store.state.introspection.maintenanceMode) {
+        next({path: "maintenance"});
+    }
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
     if (store.state.users.user().isLoggedIn){
         await store.dispatch('users/validateUserToken');
@@ -245,6 +270,13 @@ export function isLoggedIn(to, from, next, store) {
         });
     }
 
+}
+
+export function isMaintenanceMode(to, from, next, store){
+    if (!store.state.introspection.maintenanceMode) {
+        next(from);
+    }
+    next();
 }
 
 export default router;

@@ -23,7 +23,7 @@
       xl="8"
     >
       <!--List Controller-->
-      <CollectionListController
+      <ListController
         class="mt-2"
         :options="{hasPagination:true,hasSorting:false,hasListType:true}"
         @ChangeListType="changeListType"
@@ -64,7 +64,10 @@
               :record="item"
             />
             <!--Pagination-->
-            <CollectionPagination class="mb-4" />
+            <Pagination
+              class="mb-4"
+              :total-pages="totalPages"
+            />
           </v-skeleton-loader>
         </article>
       </div>
@@ -85,7 +88,10 @@
               />
             </v-row>
             <!--Pagination-->
-            <CollectionPagination class="mb-4" />
+            <Pagination
+              class="mb-4"
+              :total-pages="totalPages"
+            />
           </v-skeleton-loader>
         </article>
       </div>
@@ -98,13 +104,16 @@ import {mapActions, mapGetters, mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils";
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
 import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
-import CollectionListController from "@/components/Records/Record/CollectionRecord/Header/CollectionListController";
-import CollectionPagination from "@/components/Records/Record/CollectionRecord/Header/CollectionPagination";
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
+import ListController from "@/components/Records/Search/Header/ListController";
+import Pagination from "@/components/Records/Search/Header/Pagination";
 
 export default {
   name: "SearchCollection",
-  components: {SearchInput, CollectionPagination, CollectionListController, RecordsCardColumn, RecordsCardStack},
+  components: {
+    Pagination,
+    ListController,
+    SearchInput, RecordsCardColumn, RecordsCardStack},
   mixins:[stringUtils],
   data() {
     return {
@@ -117,14 +126,14 @@ export default {
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
-    ...mapState("collectionRecords",["records","totalPages","currentPage","loading"]),
-    ...mapGetters("collectionRecords",["getRecordsLength"])
+    ...mapState("records",["records","totalPages","currentPage","loading"]),
+    ...mapGetters("records",["getRecordsLength"])
   },
   async mounted() {
     await this.prepareCollectionData();
   },
   methods: {
-    ...mapActions('collectionRecords', ['fetchRecords','setCollectionIdsParam']),
+    ...mapActions('records', ['fetchCollectionRecords','setCollectionIdsParam']),
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
@@ -138,7 +147,7 @@ export default {
         try {
           // this.showFiltersSM = false;
           await this.setCollectionIdsParam(this.collectionIDs);
-          await this.fetchRecords();
+          await this.fetchCollectionRecords();
         }
         catch (e) {
           this.errors = e.message;
@@ -179,9 +188,8 @@ export default {
 
 <style scoped>
 .search__input {
-  height: auto;
+  height: 2200px;
   position: relative;
   overflow-y: auto;
-  margin-right: 2rem;
 }
 </style>

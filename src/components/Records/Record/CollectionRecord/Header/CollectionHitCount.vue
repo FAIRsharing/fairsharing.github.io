@@ -14,7 +14,7 @@
     export default {
         name: "CollectionHitCount",
         computed: {
-          ...mapState("collectionRecords", ["hits", "perPage", "currentPage"]),
+          ...mapState("records", ["hits", "perPage", "currentPage"]),
           x: function () {
             let _module = this;
             return (_module.perPage * (_module.currentPage -1)) + 1;

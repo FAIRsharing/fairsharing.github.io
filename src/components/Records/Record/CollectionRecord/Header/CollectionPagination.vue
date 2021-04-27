@@ -22,7 +22,7 @@
         }
       },
       computed: {
-        ...mapState('collectionRecords', ["currentPage", "totalPages"]),
+        ...mapState('records', ["currentPage", "totalPages"]),
       },
       mounted() {
         this.$nextTick(() => {
@@ -30,7 +30,7 @@
         })
       },
       methods: {
-        ...mapActions('collectionRecords', ['paginateRecords', 'fetchRecords']),
+        ...mapActions('records', ['paginateRecords', 'fetchCollectionRecords']),
         /**
          * Set the current query page parameter value to the given input for vueJs router
          * @param {Number} pageNumber - the page to go to
@@ -38,7 +38,7 @@
         paginate: async function (pageNumber) {
           if (pageNumber !== this.currentPage) {
             await this.paginateRecords(pageNumber);
-            await this.fetchRecords();
+            await this.fetchCollectionRecords();
           }
         }
       }

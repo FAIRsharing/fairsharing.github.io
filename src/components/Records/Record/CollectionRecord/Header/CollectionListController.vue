@@ -112,7 +112,7 @@
             }
         },
         computed: {
-            ...mapState('collectionRecords', ["totalPages", "loading"]),
+            ...mapState('records', ["totalPages", "loading"]),
         },
         methods: {
             changeListType: function (listType) {

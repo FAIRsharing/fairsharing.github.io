@@ -62,7 +62,7 @@ export const actions = {
     },
     paginateRecords(state,pageNumber) {
         this.commit("collectionRecords/paginateRecords",pageNumber);
-    },
+    }
 };
 export const getters = {
     /*

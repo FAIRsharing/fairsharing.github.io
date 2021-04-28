@@ -41,7 +41,7 @@ export const mutations = {
         state.loading = false;
         state.totalPages = null;
         state.perPage = null;
-        state.currentPage = null;
+        state.currentPage = 1;
     }
 };
 export const actions = {
@@ -69,13 +69,7 @@ export const actions = {
         state.state.params = {ids: [...state.state.params.ids]}
 
         Object.keys(params).forEach(key => {
-            if (!Object.keys(state.state.params).includes(key)) {
-                state.state.params['page'] = 1;
-                state.state.params[key] = params[key]
-            }
-            else {
-                state.state.params[key] = params[key]
-            }
+            state.state.params[key] = params[key]
         })
         recordsQuery.queryParam = state.state.params;
         const data = await client.executeQuery(recordsQuery);
@@ -126,7 +120,7 @@ let recordsStore = {
         loading: false,
         totalPages: null,
         perPage: null,
-        currentPage: null
+        currentPage: 1
     },
     mutations: mutations,
     actions: actions,

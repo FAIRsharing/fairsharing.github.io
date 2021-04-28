@@ -127,13 +127,36 @@ export default {
   computed: {
     ...mapState("record", ["currentRecord"]),
     ...mapState("records",["records","totalPages","currentPage","loading"]),
-    ...mapGetters("records",["getRecordsLength"])
+    ...mapGetters("records",["getRecordsLength"]),
+    ...mapGetters('introspection', ['buildQueryParameters']),
+    currentPath() {
+      const _module = this;
+      let queryParams = {};
+      Object.keys(this.$route.query).forEach(function (prop) {
+        let queryVal = _module.$route.query[prop];
+        if (queryVal) {
+          queryParams[prop] = decodeURI(queryVal);
+        }
+      });
+      const title = 'Collection';
+      return [title, queryParams];
+    }
+  },
+  watch: {
+    currentPath: async function () {
+      let returnedQuery = this.buildQueryParameters(this.currentPath);
+      delete returnedQuery['fairsharingRegistry'];
+      await this.fetchCollectionRecords(returnedQuery);
+    }
   },
   async mounted() {
     await this.prepareCollectionData();
   },
   methods: {
-    ...mapActions('records', ['fetchCollectionRecords','setCollectionIdsParam']),
+    ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
+    getParameters() {
+      return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
+    },
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
@@ -146,8 +169,11 @@ export default {
         });
         try {
           // this.showFiltersSM = false;
-          await this.setCollectionIdsParam(this.collectionIDs);
-          await this.fetchCollectionRecords();
+          await this.initializeCollectionRecords(this.collectionIDs);
+          let returnedQuery = this.buildQueryParameters(this.currentPath);
+          delete returnedQuery['fairsharingRegistry'];
+          returnedQuery['page'] = 1;
+          await this.fetchCollectionRecords(returnedQuery);
         }
         catch (e) {
           this.errors = e.message;

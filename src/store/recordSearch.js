@@ -45,7 +45,8 @@ export const mutations = {
     }
 };
 export const actions = {
-    async fetchCollectionRecords(state) {
+    async initializeCollectionRecords(state,collectionIDs) {
+        this.commit("records/setCollectionIdsParam", collectionIDs);
         this.commit("records/setLoadingStatus", true);
         this.commit("records/resetRecords");
         this.commit("records/resetPages");
@@ -56,11 +57,30 @@ export const actions = {
         this.commit('records/setRecords', data["searchFairsharingRecords"]);
         this.commit("records/setLoadingStatus", false);
     },
-    async setCollectionIdsParam(state, collectionIDs) {
-        this.commit("records/setCollectionIdsParam", collectionIDs);
-    },
     paginateRecords(state,pageNumber) {
         this.commit("records/paginateRecords",pageNumber);
+    },
+    async fetchCollectionRecords(state, params) {
+        this.commit("records/setLoadingStatus", true);
+        this.commit("records/resetRecords");
+        this.commit("records/resetPages");
+
+        //initialize params state
+        state.state.params = {ids: [...state.state.params.ids]}
+
+        Object.keys(params).forEach(key => {
+            if (!Object.keys(state.state.params).includes(key)) {
+                state.state.params['page'] = 1;
+                state.state.params[key] = params[key]
+            }
+            else {
+                state.state.params[key] = params[key]
+            }
+        })
+        recordsQuery.queryParam = state.state.params;
+        const data = await client.executeQuery(recordsQuery);
+        this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        this.commit("records/setLoadingStatus", false);
     },
     async fetchRecords(state, params) {
         this.commit("records/setLoadingStatus", true);
@@ -75,7 +95,7 @@ export const actions = {
     },
     resetRecords() {
         this.commit("records/resetRecords");
-    },
+    }
 };
 export const getters = {
     getFilter: (state) => (facetName) => {

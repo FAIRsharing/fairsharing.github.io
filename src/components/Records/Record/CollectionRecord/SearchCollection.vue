@@ -154,9 +154,6 @@ export default {
   },
   methods: {
     ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
-    getParameters() {
-      return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
-    },
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
@@ -178,8 +175,7 @@ export default {
           this.errors = e.message;
         }
       }
-      else
-      {
+      else {
         return false
       }
     },

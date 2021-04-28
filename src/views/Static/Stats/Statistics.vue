@@ -878,7 +878,7 @@
                cursor: 'pointer',
                point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = '/#/search?fairsharingRegistry='+text+'&subjects='+item.key;
                      }
                    }
@@ -924,7 +924,7 @@
                cursor: 'pointer',
                point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = '/#/search?countries='+item.key+searchText;
                      }
                    }
@@ -963,7 +963,7 @@
                cursor: 'pointer',
                point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = '/#/search?fairsharingRegistry='+text+'&taxonomies='+item.key;
                      }
                    }
@@ -1025,7 +1025,7 @@
                cursor: 'pointer',
                point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = '/#/search?fairsharingRegistry='+text+'&licences='+item.key;
                      }
                    }
@@ -1081,7 +1081,7 @@
                cursor: 'pointer',
                point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = '/#/'+data[key].id;
                      }
                    }
@@ -1109,7 +1109,7 @@
                cursor: 'pointer',
                point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = '/#/'+item.id;
                      }
                    }
@@ -1173,7 +1173,7 @@
                cursor: 'pointer',
                point: {
                    events: {
-                     click: function() {
+                     click: /* istanbul ignore next */ function() {
                        location.href = '/#/organisations/'+data[key].id;
                      }
                    }

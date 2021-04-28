@@ -379,6 +379,15 @@
         <Record :target="targetPreview" />
       </v-card>
     </v-dialog>
+    
+    <!-- attempt to add duplicate relationship -->
+    <v-snackbar
+      v-model="duplicateRelationship"
+      color="warning"
+      class="text-body"
+    >
+      The same record/relation combination may not be added more than once.
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -413,7 +422,8 @@
             labelsFilter: {},
             searchFilters: {},
             initialized: false,
-            lastQuery: null
+            lastQuery: null,
+            duplicateRelationship: false
           }
         },
         computed: {
@@ -483,19 +493,39 @@
           ...mapActions("record", ["updateRelations"]),
           capitalize,
           addItem() {
-            this.searchAssociations = null;
-            Object.keys(this.labelsFilter).forEach(filter => {
-              this.labelsFilter[filter] = true;
+            let _module = this;
+            _module.searchAssociations = null;
+            Object.keys(_module.labelsFilter).forEach(filter => {
+              _module.labelsFilter[filter] = true;
             });
+            // If an item already exists then this shouldn't be added...
+            var exists = this.associations.find(function(link) {
+              //  link.recordAssocLabel is sometimes a string, and sometimes an object...
+              let tmpRelation;
+              if (typeof link.recordAssocLabel.relation == 'undefined') {
+                tmpRelation = link.recordAssocLabel;
+              } else {
+                tmpRelation = link.recordAssocLabel.relation;
+              }
+              if (link.linkedRecord.name === _module.addingRelation.linkedRecord.name &&
+                  tmpRelation ===  _module.addingRelation.recordAssocLabel.relation) {
+                return true;
+              }
+              return false;
+            });
+            if (exists) {
+              _module.duplicateRelationship = true;
+              return;
+            }
             let newRelation = {
-              linkedRecord: this.addingRelation.linkedRecord,
-              recordAssocLabel: this.addingRelation.recordAssocLabel,
+              linkedRecord: _module.addingRelation.linkedRecord,
+              recordAssocLabel: _module.addingRelation.recordAssocLabel,
               new: true,
             };
-            this.sections.relations.data.recordAssociations.unshift(newRelation);
-            this.showRelationsPanel = false;
-            this.$nextTick(() => {
-              this.$scrollTo('#association_' + this.addingRelation.id, 450, {
+            _module.sections.relations.data.recordAssociations.unshift(newRelation);
+            _module.showRelationsPanel = false;
+            _module.$nextTick(() => {
+              _module.$scrollTo('#association_' + _module.addingRelation.id, 450, {
                 container: '#associatedRecords',
                 easing: 'ease-in',
               })
@@ -504,6 +534,7 @@
           removeItem(id){
             this.sections.relations.data.recordAssociations.splice(id, 1);
           },
+          // OVERLAY
           showOverlay(target){
             this.showRelationsPanel = true;
             this.panelContent = null;
@@ -513,15 +544,6 @@
               id: target.id
             };
             let prohibited = [];
-            this.associations.forEach(association => {
-                if (association.linkedRecord.id === target.id) {
-                  /*istanbul ignore if*/
-                  if (association.recordAssocLabel.relation) {
-                    prohibited.push(association.recordAssocLabel.relation)
-                  }
-                  else prohibited.push(association.recordAssocLabel)
-                }
-            });
             this.panelContent = this.allowedRelations({
                 target: {
                   registry: target.registry.toLowerCase(),

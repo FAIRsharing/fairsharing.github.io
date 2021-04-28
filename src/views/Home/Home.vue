@@ -4,7 +4,6 @@
       fluid
       class="text-center pa-0"
     >
-      <Jumbotron />
       <Carousel />
       <InfoBlock class="mb-12" />
       <SearchBlock />
@@ -21,7 +20,6 @@
 </template>
 
 <script>
-import Jumbotron from "@/components/Home/Jumbotron";
 import Carousel from "@/components/Home/Carousel";
 import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
@@ -32,7 +30,7 @@ import CategoryBlock from "@/components/Home/CategoryBlock";
  */
 export default {
   name: "Home",
-  components:{ Jumbotron, Carousel, InfoBlock, SearchBlock, CategoryBlock },
+  components:{ Carousel, InfoBlock, SearchBlock, CategoryBlock },
   computed: {
     JSONLD: () => {
       return JSON.stringify(  {

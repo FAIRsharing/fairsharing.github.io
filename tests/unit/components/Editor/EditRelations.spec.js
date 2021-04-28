@@ -21,7 +21,8 @@ let relations = [{
     id: 123,
     linkedRecord: {id: 111, name: "yes", registry: "collection"},
     recordAssocLabel: "?",
-    recordAssocLabelId: 1
+    recordAssocLabelId: 1,
+
 }];
 recordStore.state.sections = {
     relations: {
@@ -224,7 +225,34 @@ describe("EditRelationships.vue", function() {
         });
         await wrapper.vm.saveRecord(true);
         jest.clearAllMocks();
-
     })
+
+    it("doesn't add the same record/relation twice", () => {
+        wrapper.vm.addingRelation = {
+            linkedRecord: {
+                name: "yes",
+                registry: "collection",
+                type: "collection"
+            },
+            recordAssocLabel: {
+                relation: "undefined"
+            }
+
+        };
+        wrapper.vm.sections.relations.data.recordAssociations = [
+            {
+                "linkedRecord": {
+                    "name":"yes",
+                    registry: "collection",
+                    type: "collection"
+                },
+                "recordAssocLabel": {
+                    "relation":"undefined",
+                },
+            }
+        ]
+        wrapper.vm.addItem();
+        expect(wrapper.vm.duplicateRelationship).toBe(true);
+    });
 
 });

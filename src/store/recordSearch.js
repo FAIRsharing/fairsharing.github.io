@@ -5,9 +5,6 @@ import filterMapping from "@/data/FiltersLabelMapping.json"
 let client = new Client();
 
 export const mutations = {
-    paginateRecords(state, pageNumber) {
-        state.params['page'] = pageNumber
-    },
     setCollectionIdsParam(state, collectionIDs) {
         state.params['ids'] = collectionIDs
     },
@@ -56,9 +53,6 @@ export const actions = {
         const data = await client.executeQuery(recordsQuery);
         this.commit('records/setRecords', data["searchFairsharingRecords"]);
         this.commit("records/setLoadingStatus", false);
-    },
-    paginateRecords(state,pageNumber) {
-        this.commit("records/paginateRecords",pageNumber);
     },
     async fetchCollectionRecords(state, params) {
         this.commit("records/setLoadingStatus", true);

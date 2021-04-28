@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
+import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils";
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
 import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
@@ -152,8 +152,12 @@ export default {
   async mounted() {
     await this.prepareCollectionData();
   },
+  beforeDestroy() {
+    this.cleanRecordsStore();
+  },
   methods: {
     ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
+    ...mapMutations("records", ['cleanRecordsStore']),
     changeListType: function (listType) {
       this.isColumnList = listType;
     },

@@ -172,7 +172,6 @@ export default {
           await this.initializeCollectionRecords(this.collectionIDs);
           let returnedQuery = this.buildQueryParameters(this.currentPath);
           delete returnedQuery['fairsharingRegistry'];
-          returnedQuery['page'] = 1;
           await this.fetchCollectionRecords(returnedQuery);
         }
         catch (e) {

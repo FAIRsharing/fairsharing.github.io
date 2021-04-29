@@ -28,6 +28,21 @@
         :options="{hasPagination:true,hasSorting:false,hasListType:true}"
         @ChangeListType="changeListType"
       />
+      <!--show filter button for tablet and below-->
+      <div
+        v-if="$vuetify.breakpoint.mdAndDown"
+        class="mb-2"
+      >
+        <v-btn
+          class="info"
+          @click="showFiltersSM = true"
+        >
+          <span class="mr-2">Show filters</span>
+          <v-icon small>
+            fa-filter
+          </v-icon>
+        </v-btn>
+      </div>
       <!--Filtered Chips-->
       <div
         v-if="getChips.length"
@@ -102,6 +117,29 @@
         </article>
       </div>
     </v-col>
+    <v-fade-transition>
+      <v-dialog
+        v-model="showFiltersSM"
+        fullscreen
+        hide-overlay
+        scrollable
+      >
+        <v-card>
+          <v-card-title class="primary white--text pb-5">
+            Add a filter
+            <v-spacer />
+            <v-btn
+              fab
+              x-small
+              @click="showFiltersSM = false"
+            >
+              <v-icon>fa-times</v-icon>
+            </v-btn>
+          </v-card-title>
+          <SearchInput class="pa-5" />
+        </v-card>
+      </v-dialog>
+    </v-fade-transition>
   </v-row>
 </template>
 
@@ -131,7 +169,8 @@ export default {
       collectionIDs:[],
       receivedData:{},
       isColumnList: false,
-      errors:null
+      errors:null,
+      showFiltersSM: false
     }
   },
   computed: {
@@ -157,6 +196,7 @@ export default {
       this.scrollTo();
       let returnedQuery = this.buildQueryParameters(this.currentPath);
       delete returnedQuery['fairsharingRegistry'];
+      this.showFiltersSM = false;
       await this.fetchCollectionRecords(returnedQuery);
     }
   },
@@ -192,7 +232,6 @@ export default {
           this.collectionIDs.push(item.id);
         });
         try {
-          // this.showFiltersSM = false;
           await this.initializeCollectionRecords(this.collectionIDs);
           let returnedQuery = this.buildQueryParameters(this.currentPath);
           delete returnedQuery['fairsharingRegistry'];

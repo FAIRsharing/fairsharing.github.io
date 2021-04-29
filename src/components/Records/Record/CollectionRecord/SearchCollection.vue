@@ -10,9 +10,7 @@
       lg="4"
       xl="4"
     >
-      <SearchInput
-        class="search__input"
-      />
+      <SearchInput />
     </v-col>
     <v-col
       id="topElement"
@@ -163,6 +161,9 @@ export default {
   },
   async mounted() {
     await this.prepareCollectionData();
+    this.setGeneralUIAttributesAction({
+      headerVisibilityState: false
+    });
   },
   beforeDestroy() {
     this.cleanRecordsStore();
@@ -170,6 +171,7 @@ export default {
   methods: {
     ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
     ...mapMutations("records", ['cleanRecordsStore']),
+    ...mapActions("uiController", ['setGeneralUIAttributesAction']),
     scrollTo() {
       let _module = this;
       _module.$scrollTo("#topElement", 1000, {
@@ -230,11 +232,6 @@ export default {
 </script>
 
 <style scoped>
-.search__input {
-  height: 2200px;
-  position: relative;
-  overflow-y: auto;
-}
 .chips-holder {
   position: sticky;
   top: 0;

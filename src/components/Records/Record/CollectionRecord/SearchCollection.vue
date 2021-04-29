@@ -15,6 +15,7 @@
       />
     </v-col>
     <v-col
+      id="topElement"
       class="pa-0"
       cols="12"
       sm="12"
@@ -154,6 +155,7 @@ export default {
   },
   watch: {
     currentPath: async function () {
+      this.scrollTo();
       let returnedQuery = this.buildQueryParameters(this.currentPath);
       delete returnedQuery['fairsharingRegistry'];
       await this.fetchCollectionRecords(returnedQuery);
@@ -168,6 +170,12 @@ export default {
   methods: {
     ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
     ...mapMutations("records", ['cleanRecordsStore']),
+    scrollTo() {
+      let _module = this;
+      _module.$scrollTo("#topElement", 1000, {
+        easing: 'ease-out',
+      })
+    },
     changeListType: function (listType) {
       this.isColumnList = listType;
     },

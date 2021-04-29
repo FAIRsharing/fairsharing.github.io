@@ -28,7 +28,13 @@
         :options="{hasPagination:true,hasSorting:false,hasListType:true}"
         @ChangeListType="changeListType"
       />
-
+      <!--Filtered Chips-->
+      <div
+        v-if="getChips.length"
+        class="d-flex align-content-center justify-content-center chips-holder"
+      >
+        <filter-chips />
+      </div>
       <!-- Alert -->
       <v-alert
         v-if="getRecordsLength<1 && !loading"
@@ -107,14 +113,18 @@ import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardCol
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import ListController from "@/components/Records/Search/Header/ListController";
 import Pagination from "@/components/Records/Search/Header/Pagination";
+import FilterChips from "@/components/Records/Search/Header/FilterChips";
+import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "SearchCollection",
   components: {
+    FilterChips,
     Pagination,
     ListController,
-    SearchInput, RecordsCardColumn, RecordsCardStack},
-  mixins:[stringUtils],
+    SearchInput, RecordsCardColumn, RecordsCardStack
+  },
+  mixins: [stringUtils, filterChipsUtils],
   data() {
     return {
       allowClicking: false,
@@ -216,5 +226,16 @@ export default {
   height: 2200px;
   position: relative;
   overflow-y: auto;
+}
+.chips-holder {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f5f5f5;
+  min-height: 50px;
+  border: #dbdbdb dotted 2px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
 }
 </style>

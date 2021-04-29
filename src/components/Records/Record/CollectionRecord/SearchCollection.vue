@@ -3,6 +3,7 @@
     dense
   >
     <v-col
+      v-if="$vuetify.breakpoint.lgAndUp"
       class="pl-0 pa-4"
       cols="12"
       sm="12"
@@ -17,7 +18,7 @@
       class="pa-0"
       cols="12"
       sm="12"
-      md="8"
+      md="12"
       lg="8"
       xl="8"
     >

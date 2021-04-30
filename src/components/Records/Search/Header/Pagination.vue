@@ -41,9 +41,11 @@
                 let _module = this;
                 if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
                     _module.currentPageLocal = 1;
+                    _module.page = _module.currentPageLocal;
                 }
                 else {
                     _module.currentPageLocal = Number(newVal.page);
+                    _module.page = _module.currentPageLocal;
                 }
             },
             'page': function (newPage) {

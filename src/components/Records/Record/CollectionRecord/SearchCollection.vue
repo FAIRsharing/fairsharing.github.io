@@ -11,7 +11,7 @@
       lg="4"
       xl="4"
     >
-      <SearchInput />
+      <SearchInput :show-search-box="false" />
     </v-col>
     <v-col
       id="topElement"

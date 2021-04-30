@@ -178,7 +178,7 @@ describe("Records.vue", () => {
         expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
         expect(wrapper.vm.$store.state.records.loading).toBe(false);
-        const otherStates = ["hits","totalPages","perPage","currentPage"]
+        const otherStates = ["hits","totalPages","perPage"]
         otherStates.forEach(state => {
             expect(wrapper.vm.$store.state.records[state]).toBe(null)
         })

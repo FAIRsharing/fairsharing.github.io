@@ -62,6 +62,17 @@ describe("SearchCollection.vue", function(){
         //expect
     });
 
+    it("can reset the records store when destroyed", () => {
+        wrapper.destroy();
+        expect(wrapper.vm.$store.state.records.facets).toStrictEqual([]);
+        expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
+        expect(wrapper.vm.$store.state.records.loading).toBe(false);
+        const otherStates = ["hits","totalPages","perPage"]
+        otherStates.forEach(state => {
+            expect(wrapper.vm.$store.state.records[state]).toBe(null)
+        })
+    });
+
 
 
 });

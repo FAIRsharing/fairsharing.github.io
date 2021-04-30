@@ -52,7 +52,21 @@ describe("App.vue", () => {
         expect(wrapper.vm.getJumbotronData()).toStrictEqual(jumboData.collection)
     });
 
-    it("can handle a no banner case", () => {
+    it("can handle a no route case", () => {
+        $route = {
+            path: "",
+            name: "",
+        };
+        wrapper = shallowMount(App, {
+            localVue,
+            vuetify,
+            mocks: {$store, $route},
+            stubs: ['router-link', 'router-view']
+        });
+        expect(wrapper.vm.getJumbotronData()).toBe(null)
+    });
+
+    it("can handle an unknown route case", () => {
         $route = {
             path: "/test",
             name: "test",

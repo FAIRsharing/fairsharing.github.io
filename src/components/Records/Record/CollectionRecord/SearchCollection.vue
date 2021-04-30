@@ -153,7 +153,6 @@ import ListController from "@/components/Records/Search/Header/ListController";
 import Pagination from "@/components/Records/Search/Header/Pagination";
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import {prepareAssociations} from "@/utils/recordTabUtils";
 
 export default {
   name: "SearchCollection",
@@ -163,7 +162,7 @@ export default {
     ListController,
     SearchInput, RecordsCardColumn, RecordsCardStack
   },
-  mixins: [stringUtils, filterChipsUtils,prepareAssociations],
+  mixins: [stringUtils, filterChipsUtils],
   data() {
     return {
       allowClicking: false,
@@ -245,6 +244,28 @@ export default {
       else {
         return false
       }
+    },
+    prepareAssociations(associations, reverseAssociations) {
+      let _module = this;
+      let recordAssociations = []
+      let joinedArrays = associations.concat(reverseAssociations);
+      const properties = ['fairsharingRecord', 'linkedRecord'];
+
+      joinedArrays.forEach(item => {
+        let object = {};
+        properties.forEach(prop => {
+          if (Object.prototype.hasOwnProperty.call(item, prop)) {
+            object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+            object.id = item[prop].id;
+            object.registry = item[prop].registry;
+            object.name = item[prop].name;
+            object.subject = _module.currentRecord['fairsharingRecord'].name;
+            object.type = item[prop].type;
+          }
+        });
+        recordAssociations.push(object);
+      });
+      return recordAssociations;
     }
   }
 }

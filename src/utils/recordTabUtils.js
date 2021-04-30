@@ -77,33 +77,5 @@ const recordTabUtils = {
     }
 }
 
-export const prepareAssociations = {
-    methods: {
-        prepareAssociations(associations, reverseAssociations) {
-            let _module = this;
-            let recordAssociations = []
-            let joinedArrays = associations.concat(reverseAssociations);
-            const properties = ['fairsharingRecord', 'linkedRecord'];
-
-            joinedArrays.forEach(item => {
-                let object = {};
-                properties.forEach(prop => {
-                    if (Object.prototype.hasOwnProperty.call(item, prop)) {
-                        object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
-                        object.id = item[prop].id;
-                        object.registry = item[prop].registry;
-                        object.name = item[prop].name;
-                        object.subject = _module.currentRecord['fairsharingRecord'].name;
-                        object.type = item[prop].type;
-                    }
-                });
-                recordAssociations.push(object);
-            });
-            return recordAssociations;
-        }
-    }
-};
-
-
 export default recordTabUtils;
 

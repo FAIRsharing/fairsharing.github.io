@@ -49,12 +49,15 @@
         },
         methods: {
           getJumbotronData(){
-            let route = this.$route.name;
-            if (route === "search" && Object.keys(this.$route.query).includes("fairsharingRegistry")) {
-              route = this.$route.query.fairsharingRegistry
+            if (this.$route.name) {
+              let route = this.$route.name;
+              if (route === "search" && Object.keys(this.$route.query).includes("fairsharingRegistry")) {
+                route = this.$route.query.fairsharingRegistry
+              }
+              if (route) route = route.toLowerCase();
+              return jumbotronData[route] || null
             }
-            route = route.toLowerCase();
-            return jumbotronData[route] || null
+            return null
           }
         }
     }

@@ -1,5 +1,6 @@
 // webpack.config.js
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
 const path = require("path");
 const webpack = require('webpack');
@@ -64,6 +65,12 @@ module.exports = {
         new webpack.DefinePlugin( {
             "process.env": dotenv.parsed
         } ),
+        new PrerenderSPAPlugin({
+            // Required - The path to the webpack-outputted app to prerender.
+            staticDir: path.join(__dirname, 'dist'),
+            // Required - Routes to render.
+            routes: [ '/', '/API_doc', '/FAIRsharing.9kahy4' ],
+        })
     ],
 
 };

@@ -32,6 +32,7 @@
     "lodash": "^4.17.20",
     "node-gyp": "^3.8.0",
     "particles.vue": "^2.9.3",
+    "prerender-spa-plugin": "^3.4.0",
     "roboto-fontface": "*",
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.12",

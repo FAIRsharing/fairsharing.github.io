@@ -9,11 +9,6 @@
         <NotFound />
       </div>
 
-      <Tombstone
-        v-if="tombstone"
-        :record="currentRecord['fairsharingRecord']"
-      />
-
       <!--   Action Menu & Alert   -->
       <v-row
         v-if="!target && queryTriggered"
@@ -93,8 +88,13 @@
         </v-col>
       </v-row>
 
+      <Tombstone
+        v-if="currentRecord['fairsharingRecord'] && currentRecord['fairsharingRecord'].metadata.tombstone"
+        :record="currentRecord['fairsharingRecord']"
+      />
+
       <!--  Content  -->
-      <div v-if="currentRecord['fairsharingRecord'] && !error && !tombstone">
+      <div v-if="currentRecord['fairsharingRecord'] && !error && !currentRecord['fairsharingRecord'].metadata.tombstone">
         <!-- Top Block -->
         <GeneralInfo
           class="ma-4"
@@ -354,9 +354,6 @@
                       token: (_module.user().credentials) ? _module.user().credentials.token : null
                   });
                   // this.currentRecord['fairsharingRecord'].metadata.tombstone = true; // UNCOMMENT ME TO TEST TOMBSTONE PAGE
-                  if (this.currentRecord['fairsharingRecord'].metadata.tombstone) {
-                    this.tombstone = true
-                  }
                 }
                 catch (e) {
                     this.error = e.message;

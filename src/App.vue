@@ -54,8 +54,7 @@
               if (route === "search" && Object.keys(this.$route.query).includes("fairsharingRegistry")) {
                 route = this.$route.query.fairsharingRegistry
               }
-              if (route) route = route.toLowerCase();
-              return jumbotronData[route] || null
+              return jumbotronData[route.toLowerCase()] || null
             }
             return null
           }

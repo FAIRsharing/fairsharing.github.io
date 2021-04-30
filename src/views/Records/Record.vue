@@ -6,7 +6,6 @@
     >
       <!--   error   -->
       <div v-if="error">
-        {{ error }}
         <NotFound />
       </div>
 
@@ -89,8 +88,13 @@
         </v-col>
       </v-row>
 
+      <Tombstone
+        v-if="currentRecord['fairsharingRecord'] && currentRecord['fairsharingRecord'].metadata.tombstone"
+        :record="currentRecord['fairsharingRecord']"
+      />
+
       <!--  Content  -->
-      <div v-if="currentRecord['fairsharingRecord'] && !error">
+      <div v-if="currentRecord['fairsharingRecord'] && !error && !currentRecord['fairsharingRecord'].metadata.tombstone">
         <!-- Top Block -->
         <GeneralInfo
           class="ma-4"
@@ -106,7 +110,7 @@
             <!-- SUPPORT -->
             <Support class="ma-4 mb-8" />
             <!-- Data Conditions -->
-            <DataCondtions class="ma-4 mb-4" />
+            <DataConditions class="ma-4 mb-4" />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
@@ -171,7 +175,7 @@
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Tools from '@/components/Records/Record/Tools';
-    import DataCondtions from '@/components/Records/Record/DataConditions';
+    import DataConditions from '@/components/Records/Record/DataConditions';
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
     import NotFound from "@/views/Errors/404"
@@ -180,23 +184,25 @@
     import RelatedContent from "@/components/Records/Record/RelatedContent";
     import RecordHistory from "@/components/Records/Record/History/RecordHistory";
     import Loaders from "@/components/Navigation/Loaders";
+    import Tombstone from "../Errors/Tombstone";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
+          Tombstone,
           Loaders,
           RecordHistory,
           RelatedContent,
           Collections,
           Organisations,
-            GeneralInfo,
-            Tools,
-            DataCondtions,
-            Publications,
-            Support,
-            NotFound
+          GeneralInfo,
+          Tools,
+          DataConditions,
+          Publications,
+          Support,
+          NotFound
         },
         mixins: [stringUtils],
         props: {
@@ -216,6 +222,7 @@
                   show: false,
                   loading: false
                 },
+                tombstone: false
             }
         },
         computed: {
@@ -233,12 +240,12 @@
             ...mapState('users', ["user", "messages"]),
             ...mapGetters("record", ["getField"]),
             ...mapState('introspection', ["readOnlyMode"]),
-            userIsLoggedIn(){
-              return this.user().isLoggedIn;
-            },
-            getTitle() {
-                return 'FAIRsharing | ' + this.currentRoute;
-            },
+          userIsLoggedIn(){
+            return this.user().isLoggedIn;
+          },
+          getTitle() {
+              return 'FAIRsharing | ' + this.currentRoute;
+          },
         },
         watch: {
             async currentRoute() {
@@ -339,12 +346,14 @@
                 this.error = null;
                 this.alreadyClaimed = false;
                 this.claimedTriggered = false;
+                this.tombstone = false;
                 try {
                   if (this.target) await _module.fetchPreviewRecord(this.target);
                   else await _module.fetchRecord({
                       id: this.currentRoute,
                       token: (_module.user().credentials) ? _module.user().credentials.token : null
                   });
+                  // this.currentRecord['fairsharingRecord'].metadata.tombstone = true; // UNCOMMENT ME TO TEST TOMBSTONE PAGE
                 }
                 catch (e) {
                     this.error = e.message;

@@ -178,7 +178,7 @@ export default {
     ...mapState("records",["records","totalPages","currentPage","loading"]),
     ...mapGetters("records",["getRecordsLength"]),
     ...mapGetters('introspection', ['buildQueryParameters']),
-    currentPath() {
+    currentPath: function () {
       const _module = this;
       let queryParams = {};
       Object.keys(this.$route.query).forEach(function (prop) {

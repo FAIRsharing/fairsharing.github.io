@@ -4,7 +4,7 @@
   >
     <v-col
       v-if="$vuetify.breakpoint.lgAndUp"
-      class="pl-0 pa-4"
+      class="pl-0 pa-4 pt-0"
       cols="12"
       sm="12"
       md="4"
@@ -22,6 +22,13 @@
       lg="8"
       xl="8"
     >
+      <!--Filtered Chips-->
+      <div
+        v-if="getChips.length"
+        class="d-flex align-content-center justify-content-center chips-holder"
+      >
+        <filter-chips />
+      </div>
       <!--List Controller-->
       <ListController
         class="mt-2"
@@ -42,13 +49,6 @@
             fa-filter
           </v-icon>
         </v-btn>
-      </div>
-      <!--Filtered Chips-->
-      <div
-        v-if="getChips.length"
-        class="d-flex align-content-center justify-content-center chips-holder"
-      >
-        <filter-chips />
       </div>
       <!-- Alert -->
       <v-alert

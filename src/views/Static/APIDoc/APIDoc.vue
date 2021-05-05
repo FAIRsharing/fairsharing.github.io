@@ -298,18 +298,144 @@ puts response.read_body
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
-      The metadata section contains information about the record itself, such as its name, contact details for resource maintainers etc. The full specifications for the metadata field, in the form of the JSON schemas used to validate it, can be found at:
+      The metadata section contains information about the record itself, such as its name, contact details for resource maintainers etc. The full specifications for the metadata field, in the form of the JSON schemas used to validate it, can be found the following URLs:
     </p>
-    <a
-      class="underline-effect"
-      href="https://github.com/FAIRsharing/FAIRsharing-API/tree/master/lib/record_schemas"
-      target="_blank"
-    >https://github.com/FAIRsharing/FAIRsharing-API/tree/master/lib/record_schemas</a>
+
+    <!-- SCHEMA LINKS -->
+    <h4>Applies to all FAIRsharing records</h4>
+
+    <ul>
+      <li>
+        <a href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/fairsharing_record_schema.json" target="_blank">FAIRsharing Record schema</a>
+      </li>
+    </ul>
+
+    <h4>Based on the record's FAIRsharing Registry and type</h4>
+
+    <ul>
+      <li>
+        <a href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_schema.json">Database schema</a>
+      </li>
+      <ul>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_knowledgebase_schema.json"
+            target="_blank"
+          >Pure knowledgebase schema</a>
+        </li>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_repository_schema.json"
+            target="_blank"
+          >Pure repository schema</a>
+        </li>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_knowledgebase_and_repository_schema.json"
+            target="_blank"
+          >Combined repository/knowledgebase schema</a>
+        </li>
+      </ul>
+      <li>
+        <a
+          href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_schema.json"
+          target="_blank"
+        >Standard schema</a>
+      </li>
+      <ul>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_identifier_schema.json"
+            target="_blank"
+          >Identifier schema</a>
+        </li>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_metric_schema.json"
+            target="_blank"
+          >Metric schema</a>
+        </li>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_model_schema.json"
+            target="_blank"
+          >Model/format schema</a>
+        </li>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_reporting_schema.json"
+            target="_blank"
+          >Reporting guidline schema</a>
+        </li>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_terminology_schema.json"
+            target="_blank"
+          >Terminology artifact schema</a>
+        </li>
+      </ul>
+      <li>
+        <a
+          href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_schema.json"
+          target="_blank"
+        >Policy schema</a>
+      </li>
+      <ul>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_funder_schema.json"
+            target="_blank"
+          >Funder schema</a>
+        </li>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_journal_schema.json"
+            target="_blank"
+          >Journal schema</a>
+        </li>
+        <li>
+          <a
+            href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_publisher_schema.json"
+            target="_blank"
+          >Publisher schema</a>
+        </li>
+      </ul>
+      <li>
+        <a
+          href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/collection_schema.json"
+          target="_blank"
+        >Collection schema</a>
+      </li>
+    </ul>
+
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
-      ...which is not currently accessible to the public.
+      A record's metadata will be validated against the following, in order:
     </p>
+
+    <ul>
+      <li>
+        The schema for all FAIRsharing records.
+      </li>
+      <li>
+        The relevant registry schema (e.g. the standard schema).
+      </li>
+      <li>
+        Any relevant type schema (e.g. the reporting guideline schema).
+      </li>
+    </ul>
+
+
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      So, the metadata field may contain anything in any of the above three, and nothing else.
+    </p>
+
+    <h4>Other fields</h4>
+
+
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >

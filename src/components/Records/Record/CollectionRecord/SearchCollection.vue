@@ -162,7 +162,7 @@ export default {
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
-    ...mapState("records",["records","totalPages","currentPage","loading"]),
+    ...mapState("records",["records","totalPages","currentPage","loading","facets"]),
     ...mapGetters("records",["getRecordsLength"]),
     ...mapGetters('introspection', ['buildQueryParameters']),
     currentPath: function () {
@@ -219,10 +219,10 @@ export default {
         });
         this.errors = false;
         try {
-          await this.initializeCollectionRecords(this.collectionIDs);
-          let returnedQuery = this.buildQueryParameters(this.currentPath);
-          delete returnedQuery['fairsharingRegistry'];
-          await this.fetchCollectionRecords(returnedQuery);
+            await this.initializeCollectionRecords(this.collectionIDs);
+            let returnedQuery = this.buildQueryParameters(this.currentPath);
+            delete returnedQuery['fairsharingRegistry'];
+            await this.fetchCollectionRecords(returnedQuery);
         }
         catch (e) {
           this.errors = e.message;

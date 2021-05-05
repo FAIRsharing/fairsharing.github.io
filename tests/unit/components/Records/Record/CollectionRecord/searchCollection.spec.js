@@ -8,13 +8,14 @@ import introspection from "@/store/introspector";
 import uiController from "@/store/uiController";
 import Client from "@/lib/GraphClient/GraphClient";
 import Record from "@/store/recordData";
-import sinon from "sinon";
 import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 import VueScrollTo from "vue-scrollto";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueScrollTo,{})
+const sinon = require("sinon");
+const axios = require("axios");
 
 const vuetify = new Vuetify();
 
@@ -110,6 +111,19 @@ describe("SearchCollection.vue", function(){
         expect(wrapper.vm.isColumnList).toBe(true);
     });
 
+    it("can correctly raise an error", async () => {
+        Client.prototype.executeQuery.restore();
+        sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
+            data: {
+                errors: [
+                    {message: "Error"}
+                ]
+            }
+        });
+        await expect(wrapper.vm.prepareCollectionData()).rejects;
+        axios.post.restore();
+    });
+
     it("can react to router changes", () => {
         const wrapper2 = shallowMount(searchCollection, {
             mocks: {$route, $store},
@@ -122,7 +136,8 @@ describe("SearchCollection.vue", function(){
         expect(wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
     });
 
-        it("can check mounted life cycle properly loads data", async () => {
+
+    it("can check mounted life cycle properly loads data", async () => {
             $route.query = {
                 "page": "2",
             };
@@ -138,15 +153,14 @@ describe("SearchCollection.vue", function(){
             await wrapper.vm.$store.dispatch("introspection/fetchParameters");
             Client.prototype.getData.restore();
 
-            // expect(wrapper.vm.$store.state.introspection.searchQueryParameters).toStrictEqual({});
-            // expect(wrapper.vm.$store.state.records).toStrictEqual({});
-
-            const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](wrapper.vm.currentPath);
+            let queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](wrapper.vm.currentPath);
             expect(queryParameters).toStrictEqual({
                 fairsharingRegistry: "Collection",
                 page: "2"
             })
+
     });
+
 
     it("can react when no recordAssociation available", async () => {
         Record.state.currentRecord["fairsharingRecord"] = {

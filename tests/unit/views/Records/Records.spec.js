@@ -84,7 +84,6 @@ describe("Records.vue", () => {
         });
         await expect(wrapper.vm.getData()).rejects;
         axios.post.restore();
-
     });
 
     it("can get the records", async () => {

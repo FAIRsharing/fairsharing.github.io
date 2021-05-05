@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import {shallowMount, createLocalVue, mount} from "@vue/test-utils";
 import Vuex from "vuex";
 import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection"
 import Vuetify from "vuetify"
@@ -10,9 +10,12 @@ import Client from "@/lib/GraphClient/GraphClient";
 import Record from "@/store/recordData";
 import sinon from "sinon";
 import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
+import VueScrollTo from "vue-scrollto";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueScrollTo,{})
+
 const vuetify = new Vuetify();
 
 const $route = {
@@ -79,10 +82,17 @@ describe("SearchCollection.vue", function(){
     });
 
     beforeEach(async () => {
-        wrapper = await shallowMount(searchCollection, {
+        //-- making a mock div element
+        const element = document.createElement('div')
+        element.id = 'topElement'
+        document.body.appendChild(element)
+        //------
+
+        wrapper = await mount(searchCollection, {
             mocks: {$route, $store},
             localVue,
-            vuetify
+            vuetify,
+            attachToDocument:element
         });
     });
 
@@ -90,6 +100,10 @@ describe("SearchCollection.vue", function(){
         expect(wrapper.name()).toMatch("SearchCollection");
     });
 
+    it("can check the mocked html element is correctly added", () => {
+        const byId = wrapper.find('#topElement')
+        expect(byId.element.id).toBe('topElement');
+    });
 
     it("can check changeListType function", () => {
         wrapper.vm.changeListType(true);
@@ -109,32 +123,29 @@ describe("SearchCollection.vue", function(){
     });
 
         it("can check mounted life cycle properly loads data", async () => {
-        $route.query = {
-            "page": "2",
-        };
-        let returnedVal = {
-            data: {
-                data: fakeIntrospection.data
-            },
-            headers: {
-                maintenance: "false"
-            }
-        };
-        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
-        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
-        Client.prototype.getData.restore();
+            $route.query = {
+                "page": "2",
+            };
+            let returnedVal = {
+                data: {
+                    data: fakeIntrospection.data
+                },
+                headers: {
+                    maintenance: "false"
+                }
+            };
+            sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
+            await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+            Client.prototype.getData.restore();
 
-        // expect(wrapper.vm.$store.state.introspection.searchQueryParameters).toStrictEqual({});
-        // expect(wrapper.vm.$store.state.records).toStrictEqual({});
+            // expect(wrapper.vm.$store.state.introspection.searchQueryParameters).toStrictEqual({});
+            // expect(wrapper.vm.$store.state.records).toStrictEqual({});
 
-        console.log('query before ',wrapper.vm.$route.query);
-        console.log('currentPath before ',wrapper.vm.currentPath);
-        const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](wrapper.vm.currentPath);
-        console.log('aa',queryParameters);
-        expect(queryParameters).toStrictEqual({
-            fairsharingRegistry: "Collection",
-            page:"2"
-        })
+            const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](wrapper.vm.currentPath);
+            expect(queryParameters).toStrictEqual({
+                fairsharingRegistry: "Collection",
+                page: "2"
+            })
     });
 
     it("can react when no recordAssociation available", async () => {

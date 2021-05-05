@@ -203,8 +203,7 @@ export default {
     ...mapMutations("records", ['cleanRecordsStore']),
     ...mapActions("uiController", ['setGeneralUIAttributesAction']),
     scrollTo() {
-      let _module = this;
-      _module.$scrollTo("#topElement", 1000, {
+      this.$scrollTo("#topElement", 1000, {
         easing: 'ease-out',
       })
     },

@@ -135,6 +135,9 @@ describe("SearchCollection.vue", function(){
         await wrapper.vm.$store.dispatch("introspection/fetchParameters");
         Client.prototype.getData.restore();
 
+        // expect(wrapper.vm.$store.state.introspection.searchQueryParameters).toStrictEqual({});
+        // expect(wrapper.vm.$store.state.records).toStrictEqual({});
+
         console.log('query before ',wrapper.vm.$route.query);
         console.log('currentPath before ',wrapper.vm.currentPath);
         const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](wrapper.vm.currentPath);

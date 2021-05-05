@@ -109,6 +109,7 @@ export default {
   position: sticky;
   top: 0;
   transition: height ease-in 500ms;
+  overscroll-behavior: contain;
 }
 .filters-holder-after-scroll {
   border-radius: 0;
@@ -119,6 +120,7 @@ export default {
   position: sticky;
   top: 0;
   transition: height ease-in 500ms;
+  overscroll-behavior: contain;
 }
 .custom-hr {
   opacity: .5;

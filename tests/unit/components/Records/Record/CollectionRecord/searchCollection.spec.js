@@ -62,17 +62,6 @@ Record.state.currentRecord["fairsharingRecord"] = {
             recordAssocLabel: "collects"
         }
     ],
-    reverseRecordAssociations: [
-        {
-            linkedRecord: {
-                id: 2,
-                name: "b name",
-                registry: "Policy",
-                type: "repository"
-            },
-            recordAssocLabel: "related to"
-        }
-    ],
     registry:'Collection'
 };
 
@@ -119,7 +108,7 @@ describe("SearchCollection.vue", function(){
         expect(wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
     });
 
-    it("can check mounted life cycle properly loads data", async () => {
+        it("can check mounted life cycle properly loads data", async () => {
         $route.query = {
             "page": "2",
         };
@@ -148,6 +137,13 @@ describe("SearchCollection.vue", function(){
         })
     });
 
+    it("can react when no recordAssociation available", async () => {
+        Record.state.currentRecord["fairsharingRecord"] = {
+            name:"EOSC-Life",
+            registry:'Collection'
+        };
+        expect(await wrapper.vm.prepareCollectionData()).toBe(false)
+    });
 
     it("can reset the records store when destroyed", () => {
         wrapper.destroy();

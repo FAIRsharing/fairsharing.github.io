@@ -58,18 +58,6 @@
       >
         No records match your search!
       </v-alert>
-      <!-- Error -->
-      <div
-        v-if="errors"
-        class="no-data-found"
-      >
-        <v-alert
-          colored-border
-          type="danger"
-        >
-          Error loading records!
-        </v-alert>
-      </div>
 
       <!-- StackCard view -->
       <div :class="['opacity-0-transition',{'opacity-1-transition':!isColumnList}]">
@@ -169,7 +157,6 @@ export default {
       collectionIDs:[],
       receivedData:{},
       isColumnList: false,
-      errors:null,
       showFiltersSM: false
     }
   },
@@ -231,6 +218,7 @@ export default {
         collections.forEach(item => {
           this.collectionIDs.push(item.id);
         });
+        this.errors = false;
         try {
           await this.initializeCollectionRecords(this.collectionIDs);
           let returnedQuery = this.buildQueryParameters(this.currentPath);

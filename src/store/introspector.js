@@ -73,6 +73,7 @@ export const getters = {
     buildQueryParameters: (state) => (params) => {
         let queryParameters = {};
         Object.keys(params[1]).forEach(function (param) {
+            // this is the problem..
             let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
             const expectedTypeObject = currentParam.type;
 

@@ -74,7 +74,6 @@ export const getters = {
         let queryParameters = {};
         Object.keys(params[1]).forEach(function (param) {
             let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
-            console.log(currentParam)
             const expectedTypeObject = currentParam.type;
 
             if (expectedTypeObject.kind !== "LIST") {

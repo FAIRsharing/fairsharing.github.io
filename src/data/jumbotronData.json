@@ -1,0 +1,54 @@
+{
+  "home": {
+    "title": "A curated, informative and educational resource on data and metadata standards, inter-related to databases and data policies.",
+    "subtitle": "We guide consumers to discover, select and use these resources with confidence, and producers to make their resource more discoverable, more widely adopted and cited."
+  },
+  "standard": {
+    "title": "Standards",
+    "subtitle": "The standards in FAIRsharing are manually curated from a variety of sources, including BioPortal, MIBBI and the Equator Network."
+  },
+  "database": {
+    "title": "Databases",
+    "subtitle": "A catalogue of databases, described according to the BioDBcore guidelines, along with the standards used within them; partly compiled with the support of Oxford University Press (NAR Database Issue and DATABASE Journal)."
+  },
+  "policy": {
+    "title": "Policies",
+    "subtitle": "FAIRsharing policies: A catalogue of data preservation, management and sharing policies from international funding agencies, regulators and journals. "
+  },
+  "collection": {
+    "title": "Collections",
+    "subtitle": " Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation. A Recommendation is a core-set of resources that are selected or endorsed by data policies from journals, funders or other organizations. "
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "subtitle": ""
+  },
+  "statistics": {
+    "title": "Summary Statistics",
+    "subtitle": "This section is under construction"
+  },
+  "stakeholders": {
+    "title": "Using FAIRsharing & stakeholders",
+    "subtitle": ""
+  },
+  "license": {
+    "title": "License",
+    "subtitle": "Using FAIRsharing content through the web or through our API"
+  },
+  "terms_of_use": {
+    "title": "Acceptable Use Policy and Conditions of Use",
+    "subtitle": ""
+  },
+  "user": {
+    "title": "User private profile page",
+    "subtitle": "Preview all the information related to your FAIRsharing account."
+  },
+  "search": {
+    "title": "Search",
+    "subtitle": "Search the FAIRsharing records using advanced filtering "
+  },
+  "api documentation": {
+    "title": "FAIRsharing API documentation",
+    "subtitle": "How to use the FAIRsharing REST API for you CRUD operations on records"
+  }
+}

@@ -6,7 +6,6 @@
     >
       <!--   error   -->
       <div v-if="error">
-        {{ error }}
         <NotFound />
       </div>
 
@@ -89,11 +88,16 @@
         </v-col>
       </v-row>
 
+      <Tombstone
+        v-if="currentRecord['fairsharingRecord'] && currentRecord['fairsharingRecord'].metadata.tombstone"
+        :record="currentRecord['fairsharingRecord']"
+      />
+
       <!--  Content  -->
-      <div v-if="currentRecord['fairsharingRecord'] && !error">
+      <div v-if="currentRecord['fairsharingRecord'] && !error && !currentRecord['fairsharingRecord'].metadata.tombstone">
         <!-- Top Block -->
         <GeneralInfo
-          :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
+          class="ma-4"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
@@ -102,51 +106,24 @@
           <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- COLLECTIONS -->
-            <Collections
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
+            <Collections class="ma-4 mb-8" />
             <!-- SUPPORT -->
-            <Support
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
+            <Support class="ma-4 mb-8" />
             <!-- Data Conditions -->
-            <DataCondtions
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-4"
-            />
+            <DataConditions class="ma-4 mb-4" />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <!-- Related Content -->
-            <RelatedContent
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
+            <RelatedContent class="ma-4 mb-8" />
             <!-- Tools -->
-            <Tools
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
+            <Tools class="ma-4 mb-8" />
             <!-- Organisations -->
-            <Organisations
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-6 mb-sm-4 "
-            />
+            <Organisations class="ma-4 mb-6 mb-sm-4 " />
           </v-col>
         </v-row>
         <!-- Bottom Block -->
-        <Publications
-          v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-          class="mb-10 ma-4"
-        />
-
-        <!-- Search Collection -->
-        <SearchCollection
-          v-if="currentRecord.fairsharingRecord.registry==='Collection'"
-          class="mb-10 ma-4"
-        />
+        <Publications class="mb-10 ma-4" />
       </div>
     </v-container>
     <!-- This html is from a safe source -->
@@ -198,7 +175,7 @@
     import stringUtils from '@/utils/stringUtils';
     import GeneralInfo from "@/components/Records/Record/GeneralInfo";
     import Tools from '@/components/Records/Record/Tools';
-    import DataCondtions from '@/components/Records/Record/DataConditions';
+    import DataConditions from '@/components/Records/Record/DataConditions';
     import Publications from '@/components/Records/Record/Publications';
     import Support from '@/components/Records/Record/Support';
     import NotFound from "@/views/Errors/404"
@@ -207,25 +184,25 @@
     import RelatedContent from "@/components/Records/Record/RelatedContent";
     import RecordHistory from "@/components/Records/Record/History/RecordHistory";
     import Loaders from "@/components/Navigation/Loaders";
-    import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
+    import Tombstone from "../Errors/Tombstone";
 
     const client = new RestClient();
 
     export default {
         name: "Record",
         components: {
-          SearchCollection,
+          Tombstone,
           Loaders,
           RecordHistory,
           RelatedContent,
           Collections,
           Organisations,
-            GeneralInfo,
-            Tools,
-            DataCondtions,
-            Publications,
-            Support,
-            NotFound
+          GeneralInfo,
+          Tools,
+          DataConditions,
+          Publications,
+          Support,
+          NotFound
         },
         mixins: [stringUtils],
         props: {
@@ -245,6 +222,7 @@
                   show: false,
                   loading: false
                 },
+                tombstone: false
             }
         },
         computed: {
@@ -262,12 +240,12 @@
             ...mapState('users', ["user", "messages"]),
             ...mapGetters("record", ["getField"]),
             ...mapState('introspection', ["readOnlyMode"]),
-            userIsLoggedIn(){
-              return this.user().isLoggedIn;
-            },
-            getTitle() {
-                return 'FAIRsharing | ' + this.currentRoute;
-            },
+          userIsLoggedIn(){
+            return this.user().isLoggedIn;
+          },
+          getTitle() {
+              return 'FAIRsharing | ' + this.currentRoute;
+          },
         },
         watch: {
             async currentRoute() {
@@ -368,12 +346,14 @@
                 this.error = null;
                 this.alreadyClaimed = false;
                 this.claimedTriggered = false;
+                this.tombstone = false;
                 try {
                   if (this.target) await _module.fetchPreviewRecord(this.target);
                   else await _module.fetchRecord({
                       id: this.currentRoute,
                       token: (_module.user().credentials) ? _module.user().credentials.token : null
                   });
+                  // this.currentRecord['fairsharingRecord'].metadata.tombstone = true; // UNCOMMENT ME TO TEST TOMBSTONE PAGE
                 }
                 catch (e) {
                     this.error = e.message;

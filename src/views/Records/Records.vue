@@ -7,21 +7,6 @@
       fluid
       class="pa-0"
     >
-      <!-- Title banner -->
-      <div>
-        <section
-          id="banner"
-          class="secondary"
-        >
-          <h1 class="text-center white--text">
-            {{ getTitle }}
-          </h1>
-          <p class="text-center white--text">
-            {{ recordsSubTitles[getTitle] }}
-          </p>
-        </section>
-      </div>
-
       <!--  Content  -->
       <v-row no-gutters>
         <v-col

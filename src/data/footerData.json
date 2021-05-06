@@ -81,6 +81,11 @@
         "urlType": "internal"
       },
       {
+        "title": "API Documentation",
+        "url": "/API_doc",
+        "urlType": "internal"
+      },
+      {
         "title": "Terms of use",
         "url": "/terms",
         "urlType": "internal"

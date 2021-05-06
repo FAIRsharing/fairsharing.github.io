@@ -220,9 +220,6 @@ export default {
         this.errors = false;
         try {
             await this.initializeCollectionRecords(this.collectionIDs);
-            let returnedQuery = this.buildQueryParameters(this.currentPath);
-            delete returnedQuery['fairsharingRegistry'];
-            await this.fetchCollectionRecords(returnedQuery);
         }
         catch (e) {
           this.errors = e.message;

@@ -73,10 +73,10 @@ export const getters = {
     buildQueryParameters: (state) => (params) => {
         let queryParameters = {};
         Object.keys(params[1]).forEach(function (param) {
-            // this is the problem..
+            let expectedTypeObject = null;
+            if(state.searchQueryParameters.args===undefined) return;
             let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
-            const expectedTypeObject = currentParam.type;
-
+            expectedTypeObject = currentParam.type;
             if (expectedTypeObject.kind !== "LIST") {
                 queryParameters[param] = parseParam(expectedTypeObject, params[1][param]);
             }

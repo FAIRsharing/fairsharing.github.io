@@ -23,7 +23,7 @@ export const mutations = {
     resetPages(state) {
         state.hits = null;
         state.perPage = null;
-        state.currentPage = null;
+        state.currentPage = 1;
         state.totalPages = null;
     },
     setLoadingStatus(state, status) {
@@ -47,9 +47,7 @@ export const actions = {
         this.commit("records/setLoadingStatus", true);
         this.commit("records/resetRecords");
         this.commit("records/resetPages");
-        if (state.state.params['ids'].length > 0) {
-            recordsQuery.queryParam = state.state.params;
-        }
+        recordsQuery.queryParam = state.state.params;
         const data = await client.executeQuery(recordsQuery);
         this.commit('records/setRecords', data["searchFairsharingRecords"]);
         this.commit("records/setLoadingStatus", false);

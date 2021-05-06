@@ -218,10 +218,18 @@ export default {
           this.collectionIDs.push(item.id);
         });
         this.errors = false;
+        let returnedQuery = this.buildQueryParameters(this.currentPath);
+        delete returnedQuery['fairsharingRegistry'];
         try {
             await this.initializeCollectionRecords(this.collectionIDs);
         }
         catch (e) {
+          this.errors = e.message;
+        }
+        try {
+         await this.fetchCollectionRecords(returnedQuery);
+        }
+        catch (e){
           this.errors = e.message;
         }
       }

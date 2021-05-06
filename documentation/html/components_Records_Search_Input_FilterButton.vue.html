@@ -188,6 +188,7 @@
                 currentQuery[param] = _module.$route.query[param];
                 oldQuery[param] = _module.$route.query[param]
               });
+              currentQuery['page'] = 1;
 
               Object.prototype.hasOwnProperty.call(selectedItem, 'value') ? currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value)
                                                                                   : delete currentQuery[selectedItem.filterName];

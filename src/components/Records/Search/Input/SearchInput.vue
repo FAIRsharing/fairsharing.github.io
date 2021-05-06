@@ -114,7 +114,7 @@ export default {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   overflow-x: hidden;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 355px);
   position: sticky;
   top: 0;
   transition: height ease-in 500ms;

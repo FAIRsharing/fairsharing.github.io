@@ -11,7 +11,9 @@
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
-      The new FAIRsharing application has a REST API which offers the opportunity to both query and modify data. It's accessible to any user with an account on the system for showing basic information and for modifying any record you've created or maintain. To query more detailed information from it, please email <a
+      The new FAIRsharing application has a REST API which offers the opportunity to both query and modify data. It's accessible to any user with an account on the system for showing basic information and for modifying any record you've created or maintain. To query more detailed information from it, please email
+      <a
+        class="underline-effect"
         href="mailto:contact@fairsharing.org"
         target="_blank"
       >contact@fairsharing.org</a> to discuss your requirements.
@@ -306,7 +308,8 @@ puts response.read_body
 
     <ul>
       <li>
-        <a 
+        <a
+          class="underline-effect"
           href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/fairsharing_record_schema.json"
           target="_blank"
         >
@@ -320,6 +323,7 @@ puts response.read_body
     <ul>
       <li>
         <a
+          class="underline-effect"
           href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_schema.json"
           target="_blank"
         >
@@ -329,6 +333,7 @@ puts response.read_body
       <ul>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_knowledgebase_schema.json"
             target="_blank"
           >
@@ -337,6 +342,7 @@ puts response.read_body
         </li>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_repository_schema.json"
             target="_blank"
           >
@@ -345,6 +351,7 @@ puts response.read_body
         </li>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/database_knowledgebase_and_repository_schema.json"
             target="_blank"
           >
@@ -354,6 +361,7 @@ puts response.read_body
       </ul>
       <li>
         <a
+          class="underline-effect"
           href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_schema.json"
           target="_blank"
         >
@@ -363,6 +371,7 @@ puts response.read_body
       <ul>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_identifier_schema.json"
             target="_blank"
           >
@@ -371,6 +380,7 @@ puts response.read_body
         </li>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_metric_schema.json"
             target="_blank"
           >
@@ -379,6 +389,7 @@ puts response.read_body
         </li>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_model_schema.json"
             target="_blank"
           >
@@ -387,6 +398,7 @@ puts response.read_body
         </li>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_reporting_schema.json"
             target="_blank"
           >
@@ -395,6 +407,7 @@ puts response.read_body
         </li>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/standard_terminology_schema.json"
             target="_blank"
           >
@@ -404,6 +417,7 @@ puts response.read_body
       </ul>
       <li>
         <a
+          class="underline-effect"
           href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_schema.json"
           target="_blank"
         >
@@ -413,6 +427,7 @@ puts response.read_body
       <ul>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_funder_schema.json"
             target="_blank"
           >
@@ -421,6 +436,7 @@ puts response.read_body
         </li>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_journal_schema.json"
             target="_blank"
           >
@@ -429,6 +445,7 @@ puts response.read_body
         </li>
         <li>
           <a
+            class="underline-effect"
             href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/policy_publisher_schema.json"
             target="_blank"
           >
@@ -438,6 +455,7 @@ puts response.read_body
       </ul>
       <li>
         <a
+          class="underline-effect"
           href="https://fairsharing.github.io/JSONschema-documenter/?schema_url=https://api.fairsharing.org/model/collection_schema.json"
           target="_blank"
         >

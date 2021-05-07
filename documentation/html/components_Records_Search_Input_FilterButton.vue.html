@@ -188,12 +188,11 @@
                 currentQuery[param] = _module.$route.query[param];
                 oldQuery[param] = _module.$route.query[param]
               });
-              currentQuery['page'] = 1;
 
               Object.prototype.hasOwnProperty.call(selectedItem, 'value') ? currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value)
                                                                                   : delete currentQuery[selectedItem.filterName];
-
               if (!isEqual(currentQuery, oldQuery)) {
+                currentQuery['page'] = 1;
                 this.$router.push({
                   name: _module.$route.name,
                   query: currentQuery

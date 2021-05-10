@@ -25,17 +25,10 @@ import router from './router'
 import {beforeEach} from "./router";
 import store from './store'
 
-/* import HTML BoilerPlates */
-import "./styles/css/normalize.css"
-import "./styles/css/main.css"
-
 import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 
-// This is a global sass file, it is applied to every vue instance
-/* import Global Sass */
-import "./styles/main.scss"
 import 'vue-json-pretty/lib/styles.css'
 
 Variablepie(Highcharts);

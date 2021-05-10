@@ -79,11 +79,12 @@
 }
 
 .dashed-line {
-  border: none;
-  border-top: 4px dotted gray;
-  color: #fff;
-  background-color: #fff;
-  height: 1px;
+  border: none!important;
+  border-top: 4px dotted gray!important;
+  color: #fff!important;
+  background-color: #fff!important;
+  height: 1px!important;
+  opacity: 0.4!important;
 }
 // end of utility classes
 

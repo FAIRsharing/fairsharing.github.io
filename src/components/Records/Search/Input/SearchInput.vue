@@ -8,9 +8,15 @@
     width="100%"
   >
     <!-- Search Box -->
-    <string-search placeholder="Search through all data." />
+    <string-search
+      v-if="showSearchBox"
+      placeholder="Search through all data."
+    />
 
-    <hr class="mb-3 mr-2 ml-2 custom-hr">
+    <hr
+      v-if="showSearchBox"
+      class="mb-3 mr-2 ml-2 custom-hr"
+    >
 
     <!-- Filter Buttons     -->
     <FilterButtons />
@@ -43,6 +49,9 @@ import StringSearch from "@/components/Records/Search/Input/StringSearch";
 export default {
   name: "SearchInput",
   components: {StringSearch, FilterButtons, FilterAutocomplete},
+  props:{
+    showSearchBox: {default: true, type: Boolean}
+  },
   data() {
     return {
       panel: [],

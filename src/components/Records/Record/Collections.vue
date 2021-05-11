@@ -134,6 +134,7 @@ export default {
         tabs: {
           in_collections: {relation: 'collects', data: []},
           in_recommendations: {relation: 'recommends', data: []},
+          other_records: {relation: ['recommends','collects'], data: []}
         }
       }
     }
@@ -145,10 +146,17 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
+      console.log(_module.currentRecord['fairsharingRecord']);
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
-          _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+          if (tabName !== 'other_records') {
+            _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
+                .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+          }
+          else {
+            _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
+                .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel));
+          }
         })
       }
       else {

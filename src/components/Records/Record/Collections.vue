@@ -38,6 +38,7 @@
       <v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
+        :show-arrows="$vuetify.breakpoint.mdAndDown"
         background-color="transparent"
         grow
         color="accent3"
@@ -146,7 +147,6 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
-      console.log(_module.currentRecord['fairsharingRecord']);
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           if (tabName !== 'other_records') {

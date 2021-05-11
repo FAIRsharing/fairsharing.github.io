@@ -8,5 +8,6 @@
   "collects": "record collects means...",
   "recommends": "record recommends means...",
   "implements": "record implements means...",
-  "shares data": "shares data means..."
+  "shares data": "shares data means...",
+  "associated with": " associated with means..."
 }

@@ -155,7 +155,7 @@ export default {
           }
           else {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
-                .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && _module.tabsData.tabs[tabName].registry.includes(item.registry))
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           }
         });
       }

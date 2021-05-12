@@ -134,7 +134,7 @@ export default {
         selectedTab: 0,
         tabs: {
           related_standards: {relation: ['deprecates'], registry: "Standard", data: []},
-          related_databases: {relation: ['deprecates'], registry: "Database", data: []},
+          related_databases: {relation: [], registry: "Database", data: []},
           other_related_records: {relation: [], registry: ["Collection","Policy"], data: []},
         }
       }

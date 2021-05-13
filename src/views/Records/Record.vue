@@ -143,9 +143,10 @@
         <!-- Bottom Block -->
         <Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-          class="mb-10 ma-4"
+          class="mb-8 ma-4"
         />
-
+        <!-- Additional Information -->
+        <AdditionalInfo class="mb-8 ma-4" />
         <!-- Search Collection -->
         <SearchCollection
           v-if="currentRecord.fairsharingRecord.registry==='Collection'"
@@ -213,12 +214,14 @@ import RecordHistory from "@/components/Records/Record/History/RecordHistory";
 import Loaders from "@/components/Navigation/Loaders";
 import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
 import Tombstone from "../Errors/Tombstone";
+import AdditionalInfo from "@/components/Records/Record/GeneralInfo/AdditionalInfo";
 
 const client = new RestClient();
 
 export default {
   name: "Record",
   components: {
+    AdditionalInfo,
     Tombstone,
     SearchCollection,
     Loaders,

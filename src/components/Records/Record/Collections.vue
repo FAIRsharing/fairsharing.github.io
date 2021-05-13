@@ -38,6 +38,7 @@
       <v-tabs
         v-if="!tabsDataExist"
         v-model="tabsData.selectedTab"
+        :show-arrows="$vuetify.breakpoint.mdAndDown"
         background-color="transparent"
         grow
         color="accent3"
@@ -134,6 +135,7 @@ export default {
         tabs: {
           in_collections: {relation: 'collects', data: []},
           in_recommendations: {relation: 'recommends', data: []},
+          other_records: {relation: ['recommends','collects'], data: []}
         }
       }
     }
@@ -147,8 +149,14 @@ export default {
       const _module = this;
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
-          _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+          if (tabName !== 'other_records') {
+            _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
+                .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+          }
+          else {
+            _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
+                .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel));
+          }
         })
       }
       else {

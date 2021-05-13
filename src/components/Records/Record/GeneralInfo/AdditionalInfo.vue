@@ -1,5 +1,13 @@
 <template>
-  <div>
+  <v-card
+    class="pa-4 d-flex flex-column"
+    outlined
+    color="bg_record_card"
+    tile
+    elevation="3"
+  >
+    <!-- General Info -->
+    <SectionTitle title="Additional Information" />
     <div
       v-if="getField('metadata').dataset_pid"
       class="d-flex flex-row mt-4 align-center min-height-40"
@@ -249,14 +257,16 @@
         </div>
       </div>
     </div>
-  </div>
+  </v-card>
 </template>
 
 <script>
 import {mapGetters, mapState} from "vuex";
+import SectionTitle from "@/components/Records/Record/SectionTitle";
 
 export default {
   name: "AdditionalInfo",
+  components: {SectionTitle},
   computed: {
     ...mapState('record', ["currentRecord"]),
     ...mapGetters("record", ["getField"]),

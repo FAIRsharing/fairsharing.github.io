@@ -36,8 +36,6 @@
       <Citations />
       <!--updates and creation date-->
       <UpdateCreateDetail />
-      <!--Additional Info-->
-      <AdditionalInfo />
     </div>
     <section />
   </v-card>
@@ -56,13 +54,10 @@ import Countries from "@/components/Records/Record/GeneralInfo/Countries";
 import Citations from "@/components/Records/Record/GeneralInfo/Citations";
 import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail";
 import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
-import AdditionalInfo from "@/components/Records/Record/GeneralInfo/AdditionalInfo";
-
 
 export default {
   name: "GeneralInfo",
   components: {
-    AdditionalInfo,
     Maintainers,
     UpdateCreateDetail,
     Citations,

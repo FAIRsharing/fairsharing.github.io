@@ -7,5 +7,12 @@ module.exports = {
   chainWebpack(config) {
     config.plugins.delete('prefetch');
     config.plugin('CompressionPlugin').use(CompressionPlugin);
-  }
+  },
+  css: {
+    loaderOptions: {
+      scss: {
+        prependData: `@import "@/styles/index.scss";`,
+      },
+    },
+  },
 };

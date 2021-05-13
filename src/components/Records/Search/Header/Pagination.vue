@@ -8,6 +8,7 @@
 
 <script>
     import {throttle} from 'lodash';
+    import {mapState} from "vuex";
 
     /** Component to handle the advanced search filters for the searchFairsharingRecords query.
      * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
@@ -23,23 +24,28 @@
         },
         data() {
             return {
-                currentPage: null,
+                currentPageLocal: null,
                 allowPaginate: true,
                 disable: false,
                 page: 1
             }
         },
-        watch: {
+      computed:{
+        ...mapState("records", ["currentPage"]),
+      },
+      watch: {
             '$route.name': function () {
-                this.currentPage = 1;
+                this.currentPageLocal = 1;
             },
             '$route.query': function (newVal) {
                 let _module = this;
                 if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
-                    _module.currentPage = 1;
+                    _module.currentPageLocal = 1;
+                    _module.page = _module.currentPageLocal;
                 }
                 else {
-                    _module.currentPage = Number(newVal.page);
+                    _module.currentPageLocal = Number(newVal.page);
+                    _module.page = _module.currentPageLocal;
                 }
             },
             'page': function (newPage) {
@@ -47,9 +53,8 @@
             }
         },
         created() {
-            let currentPage = (this.$route.query.page !== undefined) ? Number(this.$route.query.page ) : 1;
-            this.currentPage = currentPage;
-            this.page = currentPage;
+            this.currentPageLocal = this.currentPage;
+            this.page = this.currentPage;
         },
         methods: {
             /**
@@ -58,10 +63,10 @@
              */
             paginate: async function (pageNumber) {
                 if (this.allowPaginate) {
-                    if (pageNumber !== this.currentPage && this.allowPaginate) {
+                    if (pageNumber !== this.currentPageLocal && this.allowPaginate) {
                         let _module = this;
                         let currentQuery = {};
-                        _module.currentPage = pageNumber;
+                        _module.currentPageLocal = pageNumber;
                         Object.keys(_module.$route.query).forEach(function (param) {
                             currentQuery[param] = _module.$route.query[param]
                         });

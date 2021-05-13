@@ -18,7 +18,7 @@
       <!-- Alert -->
       <div
         v-if="getRecordsLength<1 && !loading"
-        class="no-data-found"
+        class="code-container"
       >
         <v-alert
           colored-border
@@ -117,7 +117,7 @@ export default {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
-.no-data-found {
+.code-container {
   display: flex;
   justify-content: center;
   align-items: center;

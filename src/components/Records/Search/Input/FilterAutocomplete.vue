@@ -96,6 +96,7 @@ export default {
             });
             currentParams[filterName] = newParam.join(",");
           }
+          currentParams['page'] = 1;
           _module.$router.push({
             name: _module.$route.name,
             query: currentParams
@@ -105,6 +106,7 @@ export default {
       else {
         if (_module.selectedValues === null || _module.selectedValues.length === 0) {
           delete currentParams[_module.filter.filterName];
+          currentParams['page'] = 1;
           _module.$router.push({
             name: _module.$route.name,
             query: currentParams
@@ -121,6 +123,7 @@ export default {
           });
           currentParams[_module.filter.filterName] += `,${newParams.join(",")}`;
           if (newParams.length > 0) {
+            currentParams['page'] = 1;
             _module.$router.push({
               name: _module.$route.name,
               query: currentParams

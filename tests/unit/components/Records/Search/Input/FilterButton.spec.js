@@ -59,7 +59,7 @@ describe("FilterButton.vue", function () {
         ];
         wrapper.vm.selectFilter(selectedItem);
         expect($router.push).toHaveBeenCalledTimes(1);
-        expect($router.push).toHaveBeenCalledWith({"name": "search", "query": {"isMaintained": "true"}});
+        expect($router.push).toHaveBeenCalledWith({"name": "search", "query": {"isMaintained": "true", page: 1}});
         expect($store.state.searchFilters.filterButtons[0].data[1].active).toBe(true);
     });
 
@@ -89,7 +89,7 @@ describe("FilterButton.vue", function () {
         selectedItem = {active: false, filterName: 'isMaintained', title: 'All'};
         anotherWrapper.vm.applyFilters(selectedItem);
 
-        anotherWrapper.vm.$route.query = {active: false, filterName: 'isMaintained', title: 'All'};
+        anotherWrapper.vm.$route.query = {isMaintained: 'true'};
         selectedItem = {active: false, filterName: 'isMaintained', title: 'All'};
         anotherWrapper.vm.applyFilters(selectedItem);
     });

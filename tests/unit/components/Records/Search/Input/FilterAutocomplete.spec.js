@@ -21,7 +21,8 @@ const $store = new Vuex.Store({
 let $route = {
     name: "standards",
     query: {
-        grants: '123'
+        grants: '123',
+        page:'1'
     }
 };
 
@@ -85,7 +86,7 @@ describe("FilterAutocomplete.vue", function () {
         expect($router.push).toHaveBeenCalledTimes(1);
         expect($router.push).toHaveBeenCalledWith({
             name: "search",
-            query: {grants: "value1"}
+            query: {grants: "value1", page:1}
         });
 
         wrapper.vm.selectedValues = ["value 2", "value 3"];
@@ -93,7 +94,7 @@ describe("FilterAutocomplete.vue", function () {
         expect($router.push).toHaveBeenCalledTimes(2);
         expect($router.push).toHaveBeenCalledWith({
             name: "search",
-            query: {grants: "value%202,value%203"}
+            query: {grants: "value%202,value%203",page:1}
         });
 
         wrapper.vm.$route.query = {grants: 'value1'};
@@ -102,7 +103,7 @@ describe("FilterAutocomplete.vue", function () {
         expect($router.push).toHaveBeenCalledTimes(3);
         expect($router.push).toHaveBeenCalledWith({
             name: "search",
-            query: {}
+            query: {page:1}
         });
 
         wrapper.vm.$route.query = {grants: 'value1,value%202'};
@@ -111,7 +112,7 @@ describe("FilterAutocomplete.vue", function () {
         expect($router.push).toHaveBeenCalledTimes(4);
         expect($router.push).toHaveBeenCalledWith({
             name: "search",
-            query: {grants: 'value1,value%202,val3'}
+            query: {grants: 'value1,value%202,val3', page:1}
         });
 
         wrapper.vm.$route.query = {grants: 'agrants,newGrants'};

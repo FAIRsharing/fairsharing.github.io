@@ -1,7 +1,7 @@
 <template>
   <!--Stack List-->
   <router-link :to="'/' + getRecordLink(record)">
-    <section class="mb-4 ma-lg-1 pt-lg-4 cursor-pointer">
+    <section class="mb-4 pt-lg-4 cursor-pointer">
       <v-card
         v-ripple
         class="pa-6 d-flex flex-column"

@@ -73,7 +73,7 @@ class GraphQLClient {
                 else {
                     let param = [];
                     query.queryParam[key].forEach(function(paramVal){
-                        param.push("\"" + paramVal + "\"");
+                        typeof paramVal !== "number" ? param.push("\"" + paramVal + "\"") : param.push(paramVal);
                     });
                     queryString += `${key}:[${param.join(",")}]`;
                 }

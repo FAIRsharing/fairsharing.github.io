@@ -9,6 +9,12 @@
               "name": "searchFairsharingRecords",
               "args": [
                 {
+                  "name": "page",
+                  "description": "testDescription",
+                  "type": "int",
+                  "defaultValue": 1
+                },
+                {
                   "name": "test",
                   "description": "testDescription",
                   "type": "String",

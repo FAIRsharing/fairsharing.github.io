@@ -5,6 +5,9 @@ import filterMapping from "@/data/FiltersLabelMapping.json"
 let client = new Client();
 
 export const mutations = {
+    setCollectionIdsParam(state, collectionIDs) {
+        state.params['ids'] = collectionIDs
+    },
     setRecords(state, data) {
         state.records = data['records'];
         state.facets = buildFacets(data["aggregations"]);
@@ -20,23 +23,51 @@ export const mutations = {
     resetPages(state) {
         state.hits = null;
         state.perPage = null;
-        state.currentPage = null;
+        state.currentPage = 1;
         state.totalPages = null;
     },
     setLoadingStatus(state, status) {
         state.loading = status;
     },
     cleanRecordsStore(state) {
+        state.params = {ids:[]};
+        state.collectionIDs = [];
         state.records = [];
         state.facets = [];
         state.hits = null;
         state.loading = false;
         state.totalPages = null;
         state.perPage = null;
-        state.currentPage = null;
+        state.currentPage = 1;
     }
 };
 export const actions = {
+    async initializeCollectionRecords(state,collectionIDs) {
+        this.commit("records/setCollectionIdsParam", collectionIDs);
+        this.commit("records/setLoadingStatus", true);
+        this.commit("records/resetRecords");
+        this.commit("records/resetPages");
+        recordsQuery.queryParam = state.state.params;
+        const data = await client.executeQuery(recordsQuery);
+        this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        this.commit("records/setLoadingStatus", false);
+    },
+    async fetchCollectionRecords(state, params) {
+        this.commit("records/setLoadingStatus", true);
+        this.commit("records/resetRecords");
+        this.commit("records/resetPages");
+
+        //initialize params state
+        state.state.params = {ids: [...state.state.params.ids]}
+
+        Object.keys(params).forEach(key => {
+            state.state.params[key] = params[key]
+        })
+        recordsQuery.queryParam = state.state.params;
+        const data = await client.executeQuery(recordsQuery);
+        this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        this.commit("records/setLoadingStatus", false);
+    },
     async fetchRecords(state, params) {
         this.commit("records/setLoadingStatus", true);
         this.commit("records/resetRecords");
@@ -50,7 +81,7 @@ export const actions = {
     },
     resetRecords() {
         this.commit("records/resetRecords");
-    },
+    }
 };
 export const getters = {
     getFilter: (state) => (facetName) => {
@@ -73,13 +104,15 @@ export const getters = {
 let recordsStore = {
     namespaced: true,
     state: {
+        params: {ids: []},
+        collectionIDs: [],
         records: [],
         facets: [],
         hits: null,
         loading: false,
         totalPages: null,
         perPage: null,
-        currentPage: null
+        currentPage: 1
     },
     mutations: mutations,
     actions: actions,

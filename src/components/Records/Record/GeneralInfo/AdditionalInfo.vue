@@ -355,28 +355,19 @@ export default {
     ...mapState('record', ["currentRecord"]),
     ...mapState('editor', ["allowedFields"]),
     ...mapGetters("record", ["getField",'getRecordType']),
-    ...mapState('users', ['user']),
-    userToken() {
-      const _module = this;
-      return (_module.user().credentials) ? _module.user().credentials.token : null;
-    }
   },
   async mounted() {
     this.$nextTick(async () => {
-      let userToken = this.userToken;
-      if (userToken) {
         await this.getAllowedFields({
-          type: this.getRecordType,
-          token: userToken
+          type: this.getRecordType
         })
-      }
     })
   },
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
     checkDataAvailable(selectedNode) {
       let anyDataAvailable = [];
-      Object.keys(selectedNode).forEach(key=>{
+      Object.keys(selectedNode).forEach(key => {
         if (selectedNode[key].length > 0) {
           anyDataAvailable.push(true);
         }

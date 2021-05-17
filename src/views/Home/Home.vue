@@ -105,6 +105,9 @@ export default {
 
       });
     }
+  },
+  destroyed() {
+    this.$scrollTo('body',0,{});
   }
 };
 </script>

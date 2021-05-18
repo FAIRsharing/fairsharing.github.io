@@ -133,7 +133,8 @@ describe("Edit -> GeneralInformation.vue", function() {
         wrapper.vm.currentFields.status = "uncertain";
         expect(wrapper.vm.currentFields.deprecation_reason).toBe("");
         wrapper.vm.currentFields.type.name = "collection";
-        expect(wrapper.vm.currentFields.status).toBe(null);
+        expect(wrapper.vm.currentFields.status).toBe("uncertain");
+        wrapper.vm.currentFields.type.name = "collection"; // For coverage purposes...
 
         wrapper.vm.currentFields.type.name = "abc";
         wrapper.vm.currentFields.metadata.contacts.push({name: 'test'});

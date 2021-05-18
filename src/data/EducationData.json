@@ -1,0 +1,110 @@
+{
+  "education": {
+    "THE BASICS OF STANDARDS": {
+      "1. generic information": [
+        {
+          "title": "1.1 What is a standard?",
+          "desc": "In essence, a standard is an agreed way of doing something. A standard provides the requirements, specifications, guidelines or characteristics that can be used for the description, interoperability, citation, sharing, publication, or preservation of all kinds of digital objects such as data, code, algorithms, workflows, software, or papers."
+        },
+        {
+          "title": "1.2 How many types are there and what are they for?",
+          "desc": "There are several types of standards that address different, but often complementary challenges. These include (but are not limited to), standards for:\n   • Data/result files and their associated contextual metadata - e.g. minimum reporting requirements, terminologies (controlled vocabularies, taxonomies, thesauri, ontologies), or file formats or conceptual models;\n    • Analysis - e.g., standardized descriptions of the software used and workflow descriptions;\n   • Code and algorithms that are employed, or software that has been developed- e.g., open version repositories and documentation; and\n   • The relationship between interpretations and conclusions to other digital concepts - e.g., through standardized bibliographic resources such as PubMed, but also via citation principles and practices for data and other research objects.\nThe perspective and focus of these standards varies, ranging\n   • from a specific scientific significance, or domain of study - e.g., neuroscience, stem cell),\n   • to the technology used to generate the datasets - e.g., imaging modality, mass spectrometry.\nThe motivation for the development of these standards spans from the creation of de novo standards to fill an existing gap, to the mapping and harmonization of complementary or contrasting efforts, and the extension and repurposing of existing standards.\n(Source: <a href='https://isa-tools.org/archived/' target='_blank' class='underline-effect'>Sansone et al., 2013</a>)"
+        }
+      ],
+      "2. Focussing on data/metadata standards": [
+        {
+          "title": "2.1 a tit",
+          "desc": "some desc"
+        },
+        {
+          "title": "2.2 number 2",
+          "desc": "some desc"
+        }
+      ],
+      "3. Developing, contributing and using a data/metadata standards": [
+        {
+          "title": "3.1 some title",
+          "desc": "some desc"
+        },
+        {
+          "title": "3.2 number 2",
+          "desc": "some desc"
+        }
+      ],
+      "4. Challenges with developing and using data/metadata standards": [
+        {
+          "title": "4.1 assss",
+          "desc": "some desc"
+        },
+        {
+          "title": "4.2 number 2",
+          "desc": "some desc"
+        }
+      ]
+    },
+    "HOW FAIRSHARING HELPS YOU": {
+      "5. generic information": [
+        {
+          "title": "5.1 what is a standard",
+          "desc": "some desc"
+        }
+      ],
+      "6. Focussing on data/metadata standards": [
+        {
+          "title": "6.1 a tit",
+          "desc": "some desc"
+        }
+      ],
+      "7. Developing, contributing and using a data/metadata standards": [
+        {
+          "title": "7.1 some title",
+          "desc": "some desc"
+        }
+      ],
+      "8. Challenges with developing and using data/metadata standards": [
+        {
+          "title": "8.1 assss",
+          "desc": "some desc"
+        },
+        {
+          "title": "8.2 number 2",
+          "desc": "some desc"
+        }
+      ]
+    },
+    "HOW TO USE THE FAIRSHARING PORTAL": {
+      "9. generic information": [
+        {
+          "title": "9.1 what is a standard",
+          "desc": "some desc"
+        },
+        {
+          "title": "9.2 number 2",
+          "desc": "some desc"
+        }
+      ],
+      "10. Focussing on data/metadata standards": [
+        {
+          "title": "10.1 a tit",
+          "desc": "some desc"
+        },
+        {
+          "title": "10.2 number 2",
+          "desc": "some desc"
+        }
+      ],
+      "11. Developing, contributing and using a data/metadata standards": [
+        {
+          "title": "11.1 some title",
+          "desc": "some desc"
+        }
+      ],
+      "12. Challenges with developing and using data/metadata standards": [
+        {
+          "title": "12.1 assss",
+          "desc": "some desc"
+        }
+      ]
+    }
+  }
+}

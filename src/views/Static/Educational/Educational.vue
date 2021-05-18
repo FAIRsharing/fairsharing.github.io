@@ -1,5 +1,6 @@
 <template>
   <main class="pa-15 mb-10">
+    <!-- hard-coded part -->
     <!--  title  -->
     <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       Educational
@@ -20,7 +21,7 @@
     >
       The FAIRsharing team works with and for the community to map the landscape of community-developed standards and to define the indicators necessary to monitor their:
     </p>
-    <ul>
+    <ul class="hardcoded-ul">
       <li>development, evolution and integration;</li>
       <li>implementation and use in databases; and</li>
       <li>adoption in data policies by funders, journals and other organizations.</li>
@@ -61,35 +62,92 @@
         resource
       </router-link>. By registering your resource on FAIRsharing, you not only gain credit for your work, but you increase its visibility outside of your direct domain, so reducing the potential for unnecessary reinvention and proliferation of standards and databases.
     </p>
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      However, if you still cannot find what you are looking for, please <a
+        href="mailto:contact@fairsharing.org"
+        class="underline-effect"
+      >email</a> us with your question and we will add it to this page.
+    </p>
+    <!-- dynamic part loading from JSON   -->
+    <ul class="ul-no-padding">
+      <li
+        v-for="(educationItem,key,index) in education"
+        :key="index"
+      >
+        <h2 class="primary--text">
+          {{ key }}
+        </h2>
+        <ul>
+          <li
+            v-for="(item,title_key,title_index) in educationItem"
+            :key="title_index"
+            class="mb-5"
+          >
+            <h3 class="text-h5 mb-2">
+              {{ title_key }}
+            </h3>
+            <ul>
+              <li
+                v-for="(child_item,child_index) in item"
+                :key="child_index"
+              >
+                <h4 class="text-h6">
+                  {{ child_item.title }}
+                </h4>
+                <p
+                  class="ma-0 "
+                  style="white-space: break-spaces"
+                  :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+                  v-html="child_item.desc"
+                />
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </main>
 </template>
 
 <script>
+  import {education} from '@/data/EducationData.json'
     export default {
-        name: "Educational"
+        name: "Educational",
+        data:()=>{
+          return {
+            education:education
+          }
+        }
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 li {
   line-height: 1.6;
 }
 
-li::before {
-  display: inline-block;
-  content: '';
-  -webkit-border-radius: 0.375rem;
-  border-radius: 0.375rem;
-  -moz-border-radius: 0.375rem;
-  height: 0.4rem;
-  width: 0.4rem;
-  margin-right: 0.5rem;
-  background-color: black;
+.hardcoded-ul {
+  li::before {
+    display: inline-block;
+    content: '';
+    -webkit-border-radius: 0.375rem;
+    border-radius: 0.375rem;
+    -moz-border-radius: 0.375rem;
+    height: 0.4rem;
+    width: 0.4rem;
+    margin-right: 0.5rem;
+    background-color: black;
+  }
 }
 
 mark {
   background: lightgrey;
   color: #636363;
   padding: 2px;
+}
+.ul-no-padding {
+  padding: 0;
 }
 </style>

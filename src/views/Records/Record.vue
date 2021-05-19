@@ -146,7 +146,10 @@
           class="mb-8 ma-4"
         />
         <!-- Additional Information -->
-        <AdditionalInfo class="mb-8 ma-4" />
+        <AdditionalInfo
+          v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          class="mb-8 ma-4"
+        />
         <!-- Search Collection -->
         <SearchCollection
           v-if="currentRecord.fairsharingRecord.registry==='Collection'"

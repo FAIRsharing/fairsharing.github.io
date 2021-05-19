@@ -49,10 +49,6 @@
   },
   "api documentation": {
     "title": "FAIRsharing API documentation",
-    "subtitle": "How to use the FAIRsharing REST API for you CRUD operations on records"
-  },
-  "educational": {
-    "title": "Educational",
-    "subtitle": "education text..."
+    "subtitle": "How to use the FAIRsharing REST API for for querying and modifying records"
   }
 }

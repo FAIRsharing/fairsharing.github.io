@@ -50,5 +50,9 @@
   "api documentation": {
     "title": "FAIRsharing API documentation",
     "subtitle": "How to use the FAIRsharing REST API for for querying and modifying records"
+  },
+  "educational": {
+    "title": "Educational",
+    "subtitle": "Education text..."
   }
 }

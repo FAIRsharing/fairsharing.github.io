@@ -31,12 +31,13 @@
     >
       Whether you are a researcher, standard/database developer, funder, journal editor, librarian or data manager, FAIRsharing can help you understand which standards are mature and appropriate to your use case. By mapping the relationships between standards and the databases that implement them, or the policies that recommend them, FAIRsharing enables you to make an informed decision as to which standard or database to use or endorse.
     </p>
-    <v-img
-      src="assets/Home/BlockCategories/educational.png"
-      contain
-      width="70%"
-      height="70%"
-    />
+    <div class="d-flex justify-center">
+      <img
+        src="assets/Home/BlockCategories/educational.png"
+        alt="educational"
+        width="60%"
+      >
+    </div>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
@@ -93,12 +94,16 @@
                 v-for="(child_item,child_index) in item"
                 :key="child_index"
               >
-                <h4 class="text-h6">
-                  {{ child_item.title }}
-                </h4>
+                <!-- This html is from a safe source -->
+                <!-- eslint-disable vue/no-v-html -->
+                <h4
+                  class="text-h6"
+                  v-html="child_item.title"
+                />
+                <!-- This html is from a safe source -->
+                <!-- eslint-disable vue/no-v-html -->
                 <p
-                  class="ma-0 "
-                  style="white-space: break-spaces"
+                  class="ma-0"
                   :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
                   v-html="child_item.desc"
                 />
@@ -147,7 +152,12 @@ mark {
   color: #636363;
   padding: 2px;
 }
+
 .ul-no-padding {
   padding: 0;
+}
+
+P {
+  white-space: break-spaces;
 }
 </style>

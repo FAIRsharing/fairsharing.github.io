@@ -823,6 +823,55 @@ puts response.read_body
     />
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
+      JSON+LD
+    </h2>
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Are you looking for structured data within an individual record's page? If so then a simple wget or equivalent
+      will fail as the application renders html in the client. All that will normally be returned is a placeholder HTML
+      file asking that you turn on Javascript. We would therefore recommend using the API as described above.
+    </p>
+
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Otherwise, a technique such as that described in
+      <a
+        href="https://developers.google.com/web/tools/puppeteer/articles/ssr"
+        target="_blank"
+      >
+        this Google development document</a>
+      can be used. Here's their simple example:
+    </p>
+
+    <vue-code-highlight
+      class="code-container mt-2 mb-4"
+      language="ruby"
+    >
+      <pre>
+  const puppeteer = require('puppeteer');
+
+  async function ssr(url) {
+    const browser = await puppeteer.launch({headless: true});
+    const page = await browser.newPage();
+    await page.goto(url, {waitUntil: 'networkidle0'});
+    const html = await page.content();
+    await browser.close();
+    console.log(html);
+  }
+  ssr('https://fairsharing.org/#/1');
+      </pre>
+    </vue-code-highlight>
+
+
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      This will return rendered html from which you may parse the JSON+LD data.
+    </p>
+
+    <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       Contact
     </h2>
     <p
@@ -908,47 +957,43 @@ export default {
           ],
           data: [
             {
+              id: 0,
               Label: 'implements',
               Restriction: 'Any database to any standard',
             },
             {
-              id: 0,
+              id: 1,
               Label: 'accepts',
               Restriction: 'Any database to a model/format standard',
             },
             {
-              id: 1,
+              id: 2,
               Label: 'outputs',
               Restriction: '--"--',
             },
             {
-              id: 2,
+              id: 3,
               Label: 'related_to',
-              Restriction: 'Any database to any other database, any standard to any other standard',
+              Restriction: 'Any database to any standard or database, any standard to any standard or database, any policy to any policy',
             },
             {
-              id: 3,
+              id: 4,
               Label: 'shares_code',
               Restriction: 'Any database to any other database',
             },
             {
-              id: 4,
+              id: 5,
               Label: 'shares_data',
               Restriction: '--"--',
             },
             {
-              id: 5,
+              id: 6,
               Label: 'profiles',
               Restriction: 'Any standard to any other standard',
             },
             {
-              id: 6,
-              Label: 'extends',
-              Restriction: '--"--',
-            },
-            {
               id: 7,
-              Label: 'expresses',
+              Label: 'extends',
               Restriction: '--"--',
             },
             {
@@ -963,8 +1008,8 @@ export default {
             },
             {
               id: 10,
-              Label: 'associated_with',
-              Restriction: 'A policy to any other policy',
+              Label: 'deprecates',
+              Restriction: 'Any record to any other of the same registry',
             }
           ]
         }

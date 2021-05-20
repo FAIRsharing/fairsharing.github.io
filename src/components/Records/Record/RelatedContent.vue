@@ -133,8 +133,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {relation: [], registry: "Standard", data: []},
-          related_databases: {relation: [], registry: "Database", data: []},
+          related_standards: {relation: ["collects","recommends"], registry: "Standard", data: []},
+          related_databases: {relation: ["collects","recommends"], registry: "Database", data: []},
           other_related_records: {relation: [], registry: ["Collection","Policy"], data: []},
         }
       }
@@ -150,11 +150,11 @@ export default {
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           if (tabName !== 'other_related_records') {
-            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
-                .filter(item => !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) && item.registry === _module.tabsData.tabs[tabName].registry)
+            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel))
           }
           else {
-            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
+            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
                 .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           }
         });

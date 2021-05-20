@@ -35,7 +35,7 @@
       <img
         src="assets/Educational/educational.png"
         alt="educational"
-        width="60%"
+        :width="$vuetify.breakpoint.lgAndDown?'60%':'50%'"
       >
     </div>
     <p

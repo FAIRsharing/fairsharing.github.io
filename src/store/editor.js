@@ -196,6 +196,9 @@ let editorStore = {
                     typeObject['allowed_associations'].forEach(allowed_association => {
                         let relationParent = allowed_association.from;
                         let relationChild = allowed_association.to;
+                        /* istanbul ignore if */ if (!Object.keys(allowed).includes(relationParent)) {
+                            allowed[relationParent] = [];
+                        }
                         allowed[relationParent].push({
                             relation: relationName,
                             target: relationChild,

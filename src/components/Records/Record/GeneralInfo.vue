@@ -55,7 +55,6 @@ import Citations from "@/components/Records/Record/GeneralInfo/Citations";
 import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail";
 import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
 
-
 export default {
   name: "GeneralInfo",
   components: {

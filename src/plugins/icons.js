@@ -110,7 +110,7 @@ const customIcons  = {
         },
         tess_links_to_training_materials: {
             type: 'img',
-            icon: 'assets/icons/elixir.jpg'
+            icon: 'assets/icons/elixir.png'
         },
         support_email: {
             type: 'icon',

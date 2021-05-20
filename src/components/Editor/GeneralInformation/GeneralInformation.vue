@@ -116,9 +116,6 @@
                 handler(newVal){
                     let changes = 0;
                     if (this.initialized){
-                        if (newVal.type === "collection" || newVal.type.name === "collection"){
-                            this.currentFields.status = null;
-                        }
                         if (newVal.status !== "deprecated"){
                           this.currentFields.deprecation_reason = "";
                         }

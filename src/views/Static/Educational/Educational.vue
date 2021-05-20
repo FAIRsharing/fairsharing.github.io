@@ -33,7 +33,7 @@
     </p>
     <div class="d-flex justify-center">
       <img
-        src="assets/Home/BlockCategories/educational.png"
+        src="assets/Educational/educational.png"
         alt="educational"
         width="60%"
       >

@@ -88,7 +88,7 @@
                   </div>
                 </div>
                 <p class="grey--text relation-style text-ellipses-height-2lines line-height-14">
-                  {{ item.subject }}
+                  {{ Object.keys(tabsData.tabs)[tabsData.selectedTab]==='other_related_records'? item.name : item.subject }}
                   <v-tooltip top>
                     <template #activator="{ on }">
                       <span
@@ -100,7 +100,7 @@
                     </template>
                     <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
                   </v-tooltip>
-                  {{ item.name }}
+                  {{ Object.keys(tabsData.tabs)[tabsData.selectedTab]==='other_related_records'? item.subject : item.name }}
                 </p>
               </v-card>
             </template>
@@ -133,8 +133,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {relation: ["collects","recommends"], registry: "Standard", data: []},
-          related_databases: {relation: ["collects","recommends"], registry: "Database", data: []},
+          related_standards: {relation: ["collects","recommends"], registry: ["Standard"], data: []},
+          related_databases: {relation: ["collects","recommends"], registry: ["Database"], data: []},
           other_related_records: {relation: [], registry: ["Collection","Policy"], data: []},
         }
       }

@@ -92,7 +92,8 @@ describe("RelatedContent.vue", function(){
                 "recordAssocLabel": "collects",
                 "registry": "Collection",
                 "subject": "standard",
-                "type": "collection"
+                "type": "collection",
+                "linkType": "linkedRecord"
             },
             {
                 "id": 2,
@@ -100,7 +101,8 @@ describe("RelatedContent.vue", function(){
                 "recordAssocLabel": "related to",
                 "registry": "Policy",
                 "subject": "standard",
-                "type": "repository"
+                "type": "repository",
+                "linkType": "linkedRecord"
             }
         ])
     });

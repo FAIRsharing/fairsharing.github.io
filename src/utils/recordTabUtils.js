@@ -51,6 +51,7 @@ const recordTabUtils = {
                         object.name = item[prop].name;
                         object.subject = _module.currentRecord['fairsharingRecord'].name;
                         object.type = item[prop].type;
+                        object.linkType = prop;
                     }
                 });
                 recordAssociations.push(object);

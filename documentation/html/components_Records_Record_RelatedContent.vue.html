@@ -181,7 +181,7 @@
                   &lt;/div>
                 &lt;/div>
                 &lt;p class="grey--text relation-style text-ellipses-height-2lines line-height-14">
-                  {{ item.subject }}
+                  {{ item.linkType==='fairsharingRecord'? item.name : item.subject }}
                   &lt;v-tooltip top>
                     &lt;template #activator="{ on }">
                       &lt;span
@@ -193,7 +193,7 @@
                     &lt;/template>
                     &lt;span>{{ relationDefinition[item.recordAssocLabel] }}&lt;/span>
                   &lt;/v-tooltip>
-                  {{ item.name }}
+                  {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
                 &lt;/p>
               &lt;/v-card>
             &lt;/template>
@@ -226,8 +226,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {relation: ["collects","recommends"], registry: "Standard", data: []},
-          related_databases: {relation: ["collects","recommends"], registry: "Database", data: []},
+          related_standards: {relation: ["collects","recommends"], registry: ["Standard"], data: []},
+          related_databases: {relation: ["collects","recommends"], registry: ["Database"], data: []},
           other_related_records: {relation: [], registry: ["Collection","Policy"], data: []},
         }
       }

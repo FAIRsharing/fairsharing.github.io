@@ -23,6 +23,8 @@
       <Description />
       <!--Home Page-->
       <HomePage />
+      <!--Reference URL-->
+      <ReferenceURL v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
       <!--Developed Countries-->
       <Countries />
       <!--Maintainers-->
@@ -54,11 +56,13 @@ import Countries from "@/components/Records/Record/GeneralInfo/Countries";
 import Citations from "@/components/Records/Record/GeneralInfo/Citations";
 import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail";
 import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
-
+import {mapState} from "vuex";
+import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
 
 export default {
   name: "GeneralInfo",
   components: {
+    ReferenceURL,
     Maintainers,
     UpdateCreateDetail,
     Citations,
@@ -77,6 +81,9 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+  computed: {
+    ...mapState('record', ["currentRecord"]),
   },
   methods: {
     callRequestOwnership() {

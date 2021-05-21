@@ -379,7 +379,7 @@
         <Record :target="targetPreview" />
       </v-card>
     </v-dialog>
-    
+
     <!-- attempt to add duplicate relationship -->
     <v-snackbar
       v-model="duplicateRelationship"

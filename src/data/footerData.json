@@ -89,6 +89,11 @@
         "title": "Terms of use",
         "url": "/terms",
         "urlType": "internal"
+      },
+      {
+        "title": "Educational",
+        "url": "/educational",
+        "urlType": "internal"
       }
     ]
   }

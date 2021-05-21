@@ -259,7 +259,6 @@
         item-text="name"
         item-value="name"
         outlined
-        :disabled="fields.type === 'collection' || fields.type.name === 'collection'"
       >
         <!-- autocomplete selected -->
         <template #selection="data">

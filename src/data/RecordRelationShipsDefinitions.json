@@ -9,5 +9,6 @@
   "recommends": "record recommends means...",
   "implements": "record implements means...",
   "shares data": "shares data means...",
+  "shares code": "shares code means...",
   "associated with": " associated with means..."
 }

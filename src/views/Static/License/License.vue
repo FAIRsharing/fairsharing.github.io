@@ -24,7 +24,7 @@
       </router-link>
     </p>
     <v-img
-      src="@/assets/fairsharing-logo.svg"
+      src="assets/fairsharing-logo.svg"
       height="70"
       contain
       class="text-left pa-0 d-inline-block"
@@ -34,7 +34,7 @@
     >
       The code below may be used to create a link to our logo.
     </p>
-    
+
     <pre>&lt;img src="https://fairsharing.org/static/img/home/svg/FAIRsharing-logo.svg" alt="FAIRsharing Logo"&gt;</pre>
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">

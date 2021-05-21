@@ -40,7 +40,6 @@ const recordTabUtils = {
             let recordAssociations = []
             let joinedArrays = associations.concat(reverseAssociations);
             const properties = ['fairsharingRecord', 'linkedRecord'];
-
             joinedArrays.forEach(item => {
                 let object = {};
                 properties.forEach(prop => {

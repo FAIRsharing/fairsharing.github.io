@@ -135,7 +135,7 @@ export default {
         tabs: {
           related_standards: {relation: ["collects","recommends"], registry: ["Standard"], data: []},
           related_databases: {relation: ["collects","recommends"], registry: ["Database"], data: []},
-          other_related_records: {relation: [], registry: ["Collection","Policy"], data: []},
+          other_related_records: {relation: ["collects","recommends"], registry: ["Collection","Policy"], data: []},
         }
       }
     }
@@ -155,7 +155,7 @@ export default {
           }
           else {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && item.linkType !=='fairsharingRecord' && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
           }
         });
       }

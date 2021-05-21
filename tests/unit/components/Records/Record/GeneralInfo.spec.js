@@ -1,9 +1,16 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import GeneralInfo from "@/components/Records/Record/GeneralInfo.vue"
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+import Record from "@/store/recordData";
 
 const localVue = createLocalVue();
+localVue.use(Vuex);
 const vuetify = new Vuetify();
+const $store = new Vuex.Store({
+    modules: {
+        record:Record
+    }});
 
 describe("GeneralInfo.vue", function(){
     let wrapper;
@@ -13,6 +20,7 @@ describe("GeneralInfo.vue", function(){
         wrapper = shallowMount(GeneralInfo, {
             localVue,
             vuetify,
+            mocks: {$store}
         })
     });
 

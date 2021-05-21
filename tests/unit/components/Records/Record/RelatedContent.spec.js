@@ -85,7 +85,17 @@ describe("RelatedContent.vue", function(){
     it("can check if the current record is a collection type to behave accordingly", () => {
         Record.state.currentRecord["fairsharingRecord"].registry = 'Collection'
         wrapper.vm.prepareTabsData();
-        expect(wrapper.vm.tabsData.tabs['other_related_records'].data).toStrictEqual([{"id": 4, "name": "a name 4", "recordAssocLabel": "collects", "registry": "Collection", "subject": "standard", "type": "collection"}])
+        expect(wrapper.vm.tabsData.tabs['other_related_records'].data).toStrictEqual([
+            {
+                "id": 2,
+                "linkType": "linkedRecord",
+                "name": "b name",
+                "recordAssocLabel": "related to",
+                "registry": "Policy",
+                "subject": "standard",
+                "type": "repository"
+            }
+        ])
     });
 
     it("can check if there are no record recordAssociations or reverseRecordAssociations", () => {

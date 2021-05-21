@@ -88,7 +88,7 @@
                   </div>
                 </div>
                 <p class="grey--text relation-style text-ellipses-height-2lines line-height-14">
-                  {{ Object.keys(tabsData.tabs)[tabsData.selectedTab]==='other_related_records'? item.name : item.subject }}
+                  {{ item.linkType==='fairsharingRecord'? item.name : item.subject }}
                   <v-tooltip top>
                     <template #activator="{ on }">
                       <span
@@ -100,7 +100,7 @@
                     </template>
                     <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
                   </v-tooltip>
-                  {{ Object.keys(tabsData.tabs)[tabsData.selectedTab]==='other_related_records'? item.subject : item.name }}
+                  {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
                 </p>
               </v-card>
             </template>

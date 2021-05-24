@@ -293,11 +293,42 @@
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">Type</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
+        <div class="d-flex full-width ml-md-12 ml-13 ml-sm-5">
           <p class="ma-0">
             {{ getField('metadata').community_certification.type }}
           </p>
         </div>
+      </div>
+    </div>
+
+    <div
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cos_top_guidelines && getField('metadata').cos_top_guidelines!==null && getField('metadata').cos_top_guidelines!==undefined"
+      class="d-flex flex-column mt-4 min-height-40"
+    >
+      <div
+        v-if="getField('metadata').cos_top_guidelines.ranking"
+        class="d-flex flex-wrap flex-md-nowrap ml-md-12 ml-sm-5"
+      >
+        <b
+          class="mr-4"
+          style="white-space: pre"
+        >TOP Level Data Transparency</b>
+        <p class="ma-0">
+          {{ getField('metadata').cos_top_guidelines.ranking }}
+        </p>
+      </div>
+
+      <div
+        v-if="getField('metadata').cos_top_guidelines.comment"
+        class="d-flex flex-wrap flex-md-nowrap ml-md-12 ml-sm-5"
+      >
+        <b
+          class="mr-4"
+          style="white-space: pre"
+        >TOP qualifying comments</b>
+        <p class="ma-0">
+          {{ getField('metadata').cos_top_guidelines.comment }}
+        </p>
       </div>
     </div>
 

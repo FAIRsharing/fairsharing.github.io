@@ -37,6 +37,9 @@ describe("AdditionalInfo.vue", function(){
         wrapper.vm.checkDataAvailable(selectedNode)
         retVal = wrapper.vm.checkDataAvailable(selectedNode)
         expect(retVal).toEqual(false);
+        selectedNode = undefined
+        retVal = wrapper.vm.checkDataAvailable(selectedNode)
+        expect(retVal).toEqual(false);
     });
 
 });

@@ -241,6 +241,10 @@ routes.forEach(function (route) {
     }
 });
 
+export async function afterEach() {
+    window.scrollTo(0,0);
+}
+
 const router = new VueRouter({
     routes,
     // mode: "history"

@@ -84,7 +84,7 @@
     </div>
 
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_preservation && (getField('metadata').dataset_preservation!=='' || getField('metadata').dataset_preservation!==null)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_preservation && (getField('metadata').dataset_preservation!=='' && getField('metadata').dataset_preservation!==null && getField('metadata').dataset_preservation!==undefined)"
       class="d-flex flex-row mt-4 align-center min-height-40"
     >
       <b class="width-200">Dataset Preservation</b>
@@ -367,6 +367,7 @@ export default {
     ...mapActions("editor", ["getAllowedFields"]),
     checkDataAvailable(selectedNode) {
       let anyDataAvailable = [];
+      if(selectedNode===undefined) return false
       Object.keys(selectedNode).forEach(key => {
         if (selectedNode[key].length > 0) {
           anyDataAvailable.push(true);

@@ -7,10 +7,7 @@
     tile
     elevation="3"
   >
-    <SectionTitle
-      title="Related Content"
-      :inactive-section="tabsDataExist"
-    />
+    <SectionTitle title="Related Content" />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div class="d-flex flex-wrap mt-5">
         <!--  search autocomplete    -->

@@ -85,7 +85,7 @@
                     {{ item.name }}
                   </div>
                 </div>
-                <p class="grey--text  relation-style text-ellipses-height-2lines line-height-14">
+                <p class="grey--text  relation-style text-ellipses-height-2lines line-height-14 pr-5">
                   {{ item.name }}
                   <v-tooltip top>
                     <template #activator="{ on }">

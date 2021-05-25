@@ -11,7 +11,6 @@
             v-if="getField('abbreviation')"
             class="ml-2"
           >({{ getField('abbreviation') }})</b>
-          <b v-else>(fairsharing)</b>
         </div>
         <div class="d-flex align-center mt-2">
           <div class="width-35">

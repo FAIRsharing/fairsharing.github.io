@@ -23,7 +23,6 @@
             v-if="item['urlType']==='internal'"
             class="underline-effect"
             :to="item.url"
-            @click.native="$scrollTo('body',0,{})"
           >
             <i
               v-if="item.icon"

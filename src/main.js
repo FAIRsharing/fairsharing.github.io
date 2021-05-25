@@ -22,7 +22,7 @@ import 'prism-es6/components/prism-python.min';
 
 /* import router & store */
 import router from './router'
-import {beforeEach} from "./router";
+import {beforeEach,afterEach} from "./router";
 import store from './store'
 
 import '@babel/polyfill'
@@ -46,6 +46,7 @@ Vue.use(VueCodeHighlight);
 Vue.use(Particles);
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
+router.afterEach(async() => await afterEach());
 
 async function bootstrapApp() {
     try {

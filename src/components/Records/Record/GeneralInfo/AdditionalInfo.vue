@@ -1,6 +1,6 @@
 <template>
   <v-card
-    v-if="allowedFields.properties!==undefined && allowedFields.properties!==null && anyDataAvailable.length"
+    v-if="allowedFields.properties!==undefined && allowedFields.properties!==null && anyDataAvailable.includes(true)"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
@@ -331,7 +331,7 @@
     </div>
 
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references && getField('metadata').cross_references.length"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references!==undefined && allowedFields.properties.cross_references!==null && getField('metadata').cross_references.length"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Cross References</b>
@@ -395,22 +395,22 @@ export default {
       await this.getAllowedFields({
         type: this.getRecordType
       });
-      const itemsArray = ['dataset_curation','dataset_metrics','dataset_deposition','data_access_condition','dataset_sustainability','community_certification']
-      for (const key of itemsArray) {
+    })
+    const itemsArray = ['dataset_preservation','dataset_curation','dataset_metrics','dataset_deposition','data_access_condition','dataset_sustainability','community_certification','cos_top_guidelines','cross_references']
+    for (const key of itemsArray) {
+      if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
         await this.checkDataAvailable(this.getField('metadata')[key]);
       }
-    })
+    }
   },
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
     async checkDataAvailable(selectedNode) {
-      if(selectedNode===undefined) return false
       Object.keys(selectedNode).forEach(key => {
-        if (selectedNode[key].length > 0) {
+        if (Object.keys(selectedNode[key]).length) {
           this.anyDataAvailable.push(true);
         }
       })
-      return this.anyDataAvailable.includes(true);
     },
     checkDataAvailableCurrentRecord(selectedNode) {
       let anyAvailableData = [];

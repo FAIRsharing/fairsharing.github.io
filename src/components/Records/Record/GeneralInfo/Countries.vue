@@ -17,11 +17,14 @@
         :key="country.id"
       >
         <p
-          v-if="country.name"
+          v-if="country.name && country.name!=='All'"
           class="ma-0 mr-2"
         >
           {{ ` ${country.name}${index!==getField('countries').length-1?',':''}` }}
         </p>
+        <span v-else-if="country.name==='All'">
+          Worldwide
+        </span>
         <span
           v-else
           class="warning"

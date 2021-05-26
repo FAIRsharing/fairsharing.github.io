@@ -15,8 +15,6 @@
     <div class="d-flex flex-column ml-2">
       <!--Type-->
       <Type />
-      <!--Year of Creation-->
-      <YearOfCreation />
       <!--Registry-->
       <Registry />
       <!--Description-->
@@ -25,6 +23,8 @@
       <HomePage />
       <!--Reference URL-->
       <ReferenceURL v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
+      <!--Year of Creation-->
+      <YearOfCreation />
       <!--Developed Countries-->
       <Countries />
       <!--Maintainers-->

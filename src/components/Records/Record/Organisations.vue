@@ -1,15 +1,13 @@
 <template>
   <v-card
+    v-if="getField('organisations').length!==0 && (getField('organisations')!==undefined && getField('organisations')!==null)"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
     tile
     elevation="3"
   >
-    <SectionTitle
-      title="Organisations"
-      :inactive-section="getField('organisations').length===0 || getField('organisations')===undefined"
-    />
+    <SectionTitle title="Organisations" />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div
         v-for="(value, key, index) in relations"
@@ -61,11 +59,11 @@
                   <span
                     v-if="organisationLink.grants.length>1"
                     class="pr-1"
-                  >grant(s):</span>
+                  >Grants:</span>
                   <span
                     v-else
                     class="pr-1"
-                  >grant:</span>
+                  >Grant:</span>
                 </span>
                 <span
                   v-for="(grant,grantIndex) in organisationLink.grants"

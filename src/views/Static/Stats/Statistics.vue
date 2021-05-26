@@ -988,7 +988,7 @@
              chartField.title = "Top 10 licenses for standards";
            }
            chartField.textYAxis = 'Number of '+text+'s';
-           chartField.textXAxis = 'Licenses';
+           chartField.textXAxis = 'Licences';
            let totRecords = data.licences.doc_count;
            let regBucket = data.licences.buckets.slice(0,10);
            let nameMap = { "creative commons attribution 4.0 international (cc by 4.0)": "CC BY 4.0",

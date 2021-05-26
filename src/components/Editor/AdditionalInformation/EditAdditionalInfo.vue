@@ -12,73 +12,6 @@
         <v-container
           fluid
         >
-          <v-row v-if="Object.keys(getFields('string')).length > 0">
-            <v-col cols="12">
-              <b class="body-1 blue--text"> BASE FIELDS: </b>
-            </v-col>
-            <v-col
-              xs="12"
-              sm="12"
-              md="12"
-              lg="4"
-              xl="2"
-              class="pt-0"
-            >
-              <FieldInput
-                v-for="(field, fieldName, fieldIndex) in getFields('enum')"
-                :key="'switchField_' + fieldIndex"
-                :field-name="fieldName"
-                :field-props="field"
-              />
-            </v-col>
-            <v-col
-              v-for="(field, fieldName, fieldIndex) in getFields('string')"
-              :key="'stringField_' + fieldIndex"
-              cols="12"
-              xs="12"
-              sm="12"
-              md="12"
-              lg="8"
-              xl="10"
-            >
-              <FieldInput
-                :field-name="fieldName"
-                :field-props="field"
-              />
-            </v-col>
-          </v-row>
-          <v-divider v-if="Object.keys(getFields('string')).length > 0" />
-          <v-row>
-            <v-col
-              v-for="(field, fieldName, fieldIndex) in getFields('object')"
-              :key="'objectField_' + fieldIndex"
-              cols="12"
-              xs="12"
-              sm="12"
-              md="12"
-              lg="6"
-              xl="3"
-            >
-              <v-card
-                class="grey lighten-4"
-                height="100%"
-              >
-                <v-card-title>
-                  <b class="body-1 blue--text"> {{ cleanString(fieldName).toUpperCase() }}: </b>
-                </v-card-title>
-                <v-card-text>
-                  <FieldInput
-                    v-for="(prop, propName, propIndex) in field.properties"
-                    :key="'prop_' + propIndex"
-                    :field-name="fieldName"
-                    :field-props="prop"
-                    :subfield-name="propName"
-                  />
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-          <v-divider v-if="Object.keys(getFields('object')).length > 0" />
           <v-row
             v-for="(field, fieldName, fieldIndex) in getFields('array')"
             :key="'arrayFields_' + fieldIndex"
@@ -163,6 +96,73 @@
                   </v-col>
                 </v-row>
               </v-container>
+            </v-col>
+          </v-row>
+          <v-divider v-if="Object.keys(getFields('array')).length > 0" />
+          <v-row>
+            <v-col
+              v-for="(field, fieldName, fieldIndex) in getFields('object')"
+              :key="'objectField_' + fieldIndex"
+              cols="12"
+              xs="12"
+              sm="12"
+              md="12"
+              lg="6"
+              xl="3"
+            >
+              <v-card
+                class="grey lighten-4"
+                height="100%"
+              >
+                <v-card-title>
+                  <b class="body-1 blue--text"> {{ cleanString(fieldName).toUpperCase() }}: </b>
+                </v-card-title>
+                <v-card-text>
+                  <FieldInput
+                    v-for="(prop, propName, propIndex) in field.properties"
+                    :key="'prop_' + propIndex"
+                    :field-name="fieldName"
+                    :field-props="prop"
+                    :subfield-name="propName"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-divider v-if="Object.keys(getFields('object')).length > 0" />
+          <v-row v-if="Object.keys(getFields('string')).length > 0">
+            <v-col cols="12">
+              <b class="body-1 blue--text"> BASE FIELDS: </b>
+            </v-col>
+            <v-col
+              xs="12"
+              sm="12"
+              md="12"
+              lg="4"
+              xl="2"
+              class="pt-0"
+            >
+              <FieldInput
+                v-for="(field, fieldName, fieldIndex) in getFields('enum')"
+                :key="'switchField_' + fieldIndex"
+                :field-name="fieldName"
+                :field-props="field"
+              />
+            </v-col>
+            <v-col
+              v-for="(field, fieldName, fieldIndex) in getFields('string')"
+              :key="'stringField_' + fieldIndex"
+              cols="12"
+              xs="12"
+              sm="12"
+              md="12"
+              lg="8"
+              xl="10"
+            >
+              <FieldInput
+                :field-name="fieldName"
+                :field-props="field"
+              />
             </v-col>
           </v-row>
         </v-container>

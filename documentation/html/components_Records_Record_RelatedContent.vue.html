@@ -93,16 +93,14 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   &lt;v-card
+    v-if="!tabsDataExist"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
     tile
     elevation="3"
   >
-    &lt;SectionTitle
-      title="Related Content"
-      :inactive-section="tabsDataExist"
-    />
+    &lt;SectionTitle title="Related Content" />
     &lt;div class="d-flex flex-column ml-2 min-height-40">
       &lt;div class="d-flex flex-wrap mt-5">
         &lt;!--  search autocomplete    -->

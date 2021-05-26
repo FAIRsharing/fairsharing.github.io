@@ -1,15 +1,13 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
+    v-if="!tabsDataExist"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
     tile
     elevation="3"
   >
-    <SectionTitle
-      title="Related Content"
-      :inactive-section="tabsDataExist"
-    />
+    <SectionTitle title="Related Content" />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div class="d-flex flex-wrap mt-5">
         <!--  search autocomplete    -->

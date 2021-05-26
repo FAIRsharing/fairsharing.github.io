@@ -10,7 +10,7 @@
         v-else-if="!getField('countries').length"
         class="my-0"
       >
-        None found.
+        None found
       </p>
       <div
         v-for="(country,index) in getField('countries')"

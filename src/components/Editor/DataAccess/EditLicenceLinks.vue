@@ -158,7 +158,7 @@
                         <v-text-field
                           v-model="newLicence.name"
                           outlined
-                          label="License's name"
+                          label="Licence's name"
                           :rules="[rules.isRequired()]"
                         />
                         <v-text-field

@@ -1,5 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
+    v-if="getField('metadata')['associated_tools']!==undefined && getField('metadata')['associated_tools']!==null"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
@@ -7,10 +8,7 @@
     elevation="3"
   >
     <!-- General Info -->
-    <SectionTitle
-      title="Tools"
-      :inactive-section="getField('metadata')['associated_tools']===undefined"
-    />
+    <SectionTitle title="Tools" />
     <!--  container  -->
     <div class="d-flex flex-column ml-2 min-height-40">
       <v-card

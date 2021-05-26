@@ -61,11 +61,11 @@
                   <span
                     v-if="organisationLink.grants.length>1"
                     class="pr-1"
-                  >grant(s):</span>
+                  >Grants:</span>
                   <span
                     v-else
                     class="pr-1"
-                  >grant:</span>
+                  >Grant:</span>
                 </span>
                 <span
                   v-for="(grant,grantIndex) in organisationLink.grants"

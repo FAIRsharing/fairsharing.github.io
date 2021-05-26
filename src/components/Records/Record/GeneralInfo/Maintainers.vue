@@ -7,7 +7,7 @@
         class="d-flex flex-wrap"
       >
         <p class="ma-0 mr-2">
-          This record is in need of a maintainer.
+          This record is in need of a maintainer
         </p>
         <p
           v-if="canClaim"

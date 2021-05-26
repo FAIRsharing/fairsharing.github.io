@@ -68,7 +68,7 @@
       class="d-flex flex-row justify-center align-center mb-2"
     >
       <p class="mb-0 mr-2">
-        © FAIRsharing 2009-Present | Licensed under
+        © FAIRsharing 2009-Present | Licenced under
       </p>
       <a
         class="mr-2 underline-effect"

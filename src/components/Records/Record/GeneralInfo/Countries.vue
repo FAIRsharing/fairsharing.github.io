@@ -10,11 +10,13 @@
         v-else-if="!getField('countries').length"
         class="my-0"
       >
-        None found.
+        None found
       </p>
-      <div
+      <router-link
         v-for="(country,index) in getField('countries')"
         :key="country.id"
+        :to="`/search?countries=${country.name}`"
+        class="underline-effect"
       >
         <p
           v-if="country.name"
@@ -28,7 +30,7 @@
         >
           country code undefined!
         </span>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -40,6 +42,11 @@ import {mapGetters} from "vuex";
 export default {
   name: "Countries",
   components: {NoneFound},
+  data:()=>{
+    return {
+      searchTerm: null,
+    }
+  },
   computed: {
     ...mapGetters("record", ["getField"]),
   }

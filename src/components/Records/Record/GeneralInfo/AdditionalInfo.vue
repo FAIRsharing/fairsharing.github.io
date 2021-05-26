@@ -1,5 +1,6 @@
 <template>
   <v-card
+    v-if="allowedFields.properties!==undefined && allowedFields.properties!==null && anyDataAvailable.includes(true)"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
@@ -7,10 +8,7 @@
     elevation="3"
   >
     <!-- Additional Information -->
-    <SectionTitle
-      title="Additional Information"
-      :inactive-section="allowedFields.properties===undefined || allowedFields.properties===null"
-    />
+    <SectionTitle title="Additional Information" />
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_pid && getField('metadata').dataset_pid==='yes'"
       class="d-flex flex-row mt-4 align-center min-height-40"
@@ -100,7 +98,7 @@
     </div>
 
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_curation && checkDataAvailable(getField('metadata').dataset_curation)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_curation && Object.keys(getField('metadata').dataset_curation).length"
       class="pa-4 data-holder"
     >
       <b class="text-h6">Dataset Curation</b>
@@ -132,41 +130,41 @@
       </div>
     </div>
 
+    <!--  in another branch the below fields and above must be turned into component  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_metrics && checkDataAvailable(getField('metadata').dataset_metrics)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_metrics && Object.keys(getField('metadata').dataset_metrics).length && checkDataAvailableCurrentRecord(getField('metadata').dataset_metrics)"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Dataset Metrics</b>
-      <div class="d-flex flex-row align-center min-height-40">
+      <div
+        v-if="Object.keys(getField('metadata').dataset_metrics).includes('url') && getField('metadata').dataset_metrics.url!=='' && getField('metadata').dataset_metrics.url!==null && getField('metadata').dataset_metrics.url!==undefined"
+        class="d-flex flex-row align-center min-height-40"
+      >
         <b class="width-200">URL</b>
-        <div
-          v-if="Object.keys(getField('metadata').dataset_metrics).includes('url') && getField('metadata').dataset_metrics.url!=='' && getField('metadata').dataset_metrics.url!==null && getField('metadata').dataset_metrics.url!==undefined"
-          class="d-flex full-width ml-md-12 ml-13"
+        <a
+          class="underline-effect"
+          :href="getField('metadata').dataset_metrics.url"
+          target="_blank"
         >
-          <a
-            class="underline-effect"
-            :href="getField('metadata').dataset_metrics.url"
-            target="_blank"
-          >
-            {{ getField('metadata').dataset_metrics.url }}
-          </a>
-        </div>
+          {{ getField('metadata').dataset_metrics.url }}
+        </a>
       </div>
       <div
-        v-if="Object.keys(getField('metadata').dataset_metrics).includes('metrics') && getField('metadata').dataset_metrics.metrics!=='' && getField('metadata').dataset_metrics.metrics!==null && getField('metadata').dataset_metrics.metrics!==undefined"
+        v-if="Object.keys(getField('metadata').dataset_metrics).includes('metrics') && getField('metadata').dataset_metrics.metrics!=='no' && getField('metadata').dataset_metrics.metrics!=='' && getField('metadata').dataset_metrics.metrics!==null && getField('metadata').dataset_metrics.metrics!==undefined"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">Metrics</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
+        <div class="d-flex">
           <p class="ma-0">
             {{ getField('metadata').dataset_metrics.metrics }}
           </p>
         </div>
       </div>
     </div>
+    <!--  in another branch the below fields and above must be turned into component  -->
 
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_deposition && checkDataAvailable(getField('metadata').dataset_deposition)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_deposition"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Dataset Deposition</b>
@@ -199,7 +197,7 @@
     </div>
 
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_access_condition && checkDataAvailable(getField('metadata').data_access_condition)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_access_condition"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Data Access Condition</b>
@@ -236,7 +234,7 @@
     </div>
 
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_sustainability && checkDataAvailable(getField('metadata').dataset_sustainability)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_sustainability"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Dataset Sustainability</b>
@@ -269,7 +267,7 @@
     </div>
 
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.community_certification && checkDataAvailable(getField('metadata').community_certification)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.community_certification"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Community Certification</b>
@@ -333,7 +331,7 @@
     </div>
 
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references!==undefined && allowedFields.properties.cross_references!==null && getField('metadata').cross_references.length"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Cross References</b>
@@ -382,6 +380,11 @@ import SectionTitle from "@/components/Records/Record/SectionTitle";
 export default {
   name: "AdditionalInfo",
   components: {SectionTitle},
+  data: () => {
+    return {
+      anyDataAvailable:[]
+    }
+  },
   computed: {
     ...mapState('record', ["currentRecord"]),
     ...mapState('editor', ["allowedFields"]),
@@ -389,22 +392,35 @@ export default {
   },
   async mounted() {
     this.$nextTick(async () => {
-        await this.getAllowedFields({
-          type: this.getRecordType
-        })
+      await this.getAllowedFields({
+        type: this.getRecordType
+      });
     })
+    const itemsArray = ['dataset_preservation','dataset_curation','dataset_metrics','dataset_deposition','data_access_condition','dataset_sustainability','community_certification','cos_top_guidelines','cross_references']
+    for (const key of itemsArray) {
+      if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
+        await this.checkDataAvailable(this.getField('metadata')[key]);
+      }
+    }
   },
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
-    checkDataAvailable(selectedNode) {
-      let anyDataAvailable = [];
-      if(selectedNode===undefined) return false
+    async checkDataAvailable(selectedNode) {
       Object.keys(selectedNode).forEach(key => {
-        if (selectedNode[key].length > 0) {
-          anyDataAvailable.push(true);
+        if (Object.keys(selectedNode[key]).length) {
+          this.anyDataAvailable.push(true);
         }
       })
-      return anyDataAvailable.includes(true);
+    },
+    checkDataAvailableCurrentRecord(selectedNode) {
+      let anyAvailableData = [];
+      if(selectedNode===undefined) return false
+      Object.keys(selectedNode).forEach(key => {
+        if (selectedNode[key]!=="" && selectedNode[key]!=="no") {
+          anyAvailableData.push(true);
+        }
+      })
+      return anyAvailableData.includes(true);
     }
   },
 }

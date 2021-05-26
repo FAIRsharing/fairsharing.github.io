@@ -46,7 +46,7 @@
       <p
         :class="['mb-4 lato-font-medium d-inline-block mr-2 lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
-        API use and data License statements are located at:
+        API use and data Licence statements are located at:
       </p><a
         class="underline-effect"
         target="_blank"

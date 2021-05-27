@@ -1,14 +1,11 @@
 {
-  "undefined": "record has undefined relationship",
-  "related to": "record has a two way relationship ...",
-  "profiles": "record profiles means...",
-  "extends": "record extends means...",
-  "expresses": "record expresses means...",
-  "deprecates": "record deprecates means...",
-  "collects": "record collects means...",
-  "recommends": "record recommends means...",
-  "implements": "record implements means...",
-  "shares data with": "shares data with means...",
-  "shares code with": "shares code with means...",
-  "associated with": " associated with means..."
+  "related to": "This resource is related to another resource in an undefined way",
+  "profiles": "This database shares a portion of data with another database",
+  "extends": "This resource extends or builds upon another resource",
+  "deprecates": "The linked resource has been retired as it is no longer active or actively maintained",
+  "collects": "A Collection can collect Standards, Databases and Data Policies based on a project, initiative or infrastructure",
+  "recommends": "A standard or database can be recommended by a data policy",
+  "implements": "This database implements a particular standard",
+  "shares data with": "This database shares a portion of data with another database",
+  "shares code with": "This database shares a portion of code with another database"
 }

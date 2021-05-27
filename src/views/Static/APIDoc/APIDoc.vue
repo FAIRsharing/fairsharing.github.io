@@ -983,13 +983,13 @@ export default {
             },
             {
               id: 4,
-              Label: 'shares_code',
+              Label: 'shares_code_with',
               Restriction: 'Any database to any other database',
               Description: 'This database shares a portion of code with another database'
             },
             {
               id: 5,
-              Label: 'shares_data',
+              Label: 'shares_data_with',
               Restriction: 'Any database to any other database',
               Description: 'This database shares a portion of data with another database'
             },

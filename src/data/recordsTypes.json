@@ -1,7 +1,7 @@
 {
   "recordSubTitles": {
     "Standards": "The standards in FAIRsharing are manually curated from a variety of sources, including BioPortal, MIBBI and the Equator Network.",
-    "Collections": "Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation. A Recommendation is a core-set of resources that are selected or endorsed by data policies from journals, funders or other organizations.",
+    "Collections": "Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation. A Recommendation is a core-set of resources that are selected or endorsed by data policies from journals, funders or other organisations.",
     "Databases": "A catalogue of databases, described according to the BioDBcore guidelines, along with the standards used within them; partly compiled with the support of Oxford University Press (NAR Database Issue and DATABASE Journal).",
     "Policies": "FAIRsharing policies: A catalogue of data preservation, management and sharing policies from international funding agencies, regulators and journals.",
     "Search": "Search the FAIRsharing records using advanced filtering"

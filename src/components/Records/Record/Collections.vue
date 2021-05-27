@@ -50,7 +50,7 @@
           :disabled="tabsData.tabs[tabName].data.length===0"
           @change="selectedValues=null"
         >
-          {{ cleanString(tabName) }}
+          {{ cleanString(tabName) }} ({{ tabsData.tabs[tabName].count }})
         </v-tab>
       </v-tabs>
       <!--  tab content  -->
@@ -131,8 +131,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          in_collections: {relation: 'collects', data: []},
-          in_recommendations: {relation: 'recommends', data: []},
+          in_collections: {relation: 'collects', data: [], count:0},
+          in_recommendations: {relation: 'recommends', data: [], count:0},
         }
       }
     }
@@ -148,6 +148,7 @@ export default {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
               .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+          _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
         })
       }
       else {

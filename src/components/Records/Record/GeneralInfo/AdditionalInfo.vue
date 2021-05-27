@@ -1,6 +1,6 @@
 <template>
   <v-card
-    v-if="allowedFields.properties!==undefined && allowedFields.properties!==null && anyDataAvailable.includes(true)"
+    v-if="(allowedFields.properties && anyDataAvailable.includes(true) )|| getField('metadata').deprecation_reason"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
@@ -19,8 +19,18 @@
     <DatasetBoolean field-name="dataset_versioning" />
     <!--  dataset_versioning  -->
     <DatasetBoolean field-name="dataset_prepubreview" />
-    <!--  dataset_versioning  -->
-    <DatasetBoolean field-name="deprecation_reason" />
+    <!--  deprecation_reason  -->
+    <div
+      v-if="getField('metadata').deprecation_reason"
+      class="d-flex flex-row mt-4 align-center min-height-40"
+    >
+      <b class="width-200">Dataset Deprecation reason</b>
+      <div class="d-flex full-width ml-md-12 ml-13">
+        <p class="ma-0">
+          {{ getField('metadata').deprecation_reason }}
+        </p>
+      </div>
+    </div>
 
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_preservation && (getField('metadata').dataset_preservation!=='' && getField('metadata').dataset_preservation!==null && getField('metadata').dataset_preservation!==undefined)"
@@ -37,7 +47,6 @@
         </a>
       </div>
     </div>
-
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_curation && Object.keys(getField('metadata').dataset_curation).length"
       class="pa-4 data-holder"
@@ -70,40 +79,6 @@
         </div>
       </div>
     </div>
-
-    <!--  in another branch the below fields and above must be turned into component  -->
-    <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_metrics && Object.keys(getField('metadata').dataset_metrics).length && checkDataAvailableCurrentRecord(getField('metadata').dataset_metrics)"
-      class="pa-4 mt-4 data-holder"
-    >
-      <b class="text-h6">Dataset Metrics</b>
-      <div
-        v-if="Object.keys(getField('metadata').dataset_metrics).includes('url') && getField('metadata').dataset_metrics.url!=='' && getField('metadata').dataset_metrics.url!==null && getField('metadata').dataset_metrics.url!==undefined"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">URL</b>
-        <a
-          class="underline-effect"
-          :href="getField('metadata').dataset_metrics.url"
-          target="_blank"
-        >
-          {{ getField('metadata').dataset_metrics.url }}
-        </a>
-      </div>
-      <div
-        v-if="Object.keys(getField('metadata').dataset_metrics).includes('metrics') && getField('metadata').dataset_metrics.metrics!=='no' && getField('metadata').dataset_metrics.metrics!=='' && getField('metadata').dataset_metrics.metrics!==null && getField('metadata').dataset_metrics.metrics!==undefined"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">Metrics</b>
-        <div class="d-flex">
-          <p class="ma-0">
-            {{ getField('metadata').dataset_metrics.metrics }}
-          </p>
-        </div>
-      </div>
-    </div>
-    <!--  in another branch the below fields and above must be turned into component  -->
-
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_deposition"
       class="pa-4 mt-4 data-holder"
@@ -136,7 +111,6 @@
         </div>
       </div>
     </div>
-
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_access_condition"
       class="pa-4 mt-4 data-holder"
@@ -173,7 +147,6 @@
         </div>
       </div>
     </div>
-
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_sustainability"
       class="pa-4 mt-4 data-holder"
@@ -206,7 +179,6 @@
         </div>
       </div>
     </div>
-
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.community_certification"
       class="pa-4 mt-4 data-holder"
@@ -239,7 +211,6 @@
         </div>
       </div>
     </div>
-
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cos_top_guidelines && getField('metadata').cos_top_guidelines!==null && getField('metadata').cos_top_guidelines!==undefined"
       class="d-flex flex-column mt-4 min-height-40"
@@ -270,7 +241,6 @@
         </p>
       </div>
     </div>
-
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references!==undefined && allowedFields.properties.cross_references!==null && getField('metadata').cross_references.length"
       class="pa-4 mt-4 data-holder"
@@ -333,12 +303,11 @@ export default {
     ...mapGetters("record", ["getField",'getRecordType']),
   },
   async mounted() {
-    this.$nextTick(async () => {
-      await this.getAllowedFields({
-        type: this.getRecordType
-      });
-    })
-    const allAllowedTypes = ['dataset_preservation','dataset_curation','dataset_metrics','dataset_deposition','data_access_condition','dataset_sustainability','community_certification','cos_top_guidelines','cross_references']
+    await this.getAllowedFields({
+      type: this.getRecordType
+    });
+    const excludedTypes = ['access_points','associated_tools','data_processes']
+    const allAllowedTypes = Object.keys(this.allowedFields.properties).filter(key => !excludedTypes.includes(key));
     for (const key of allAllowedTypes) {
       if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
         await this.checkDataAvailable(this.getField('metadata')[key]);

@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/recordData.js"
 import Editor from "@/store/editor"
-import DatasetBoolean from "@/components/Records/Record/GeneralInfo/AdditionalInfo/Dataset_Boolean"
+import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();

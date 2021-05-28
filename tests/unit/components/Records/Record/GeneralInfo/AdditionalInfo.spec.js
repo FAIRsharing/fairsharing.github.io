@@ -39,7 +39,10 @@ describe("AdditionalInfo.vue", function(){
     beforeAll(() => {
         restStub = sinon.stub(RESTClient.prototype, "executeQuery");
         restStub.withArgs(sinon.match.any).returns({
-            data: {properties: {dataset_deposition: {},dataset_curation:{}}}
+            data: {properties: {
+                dataset_deposition: {item:[1.2]},
+                emptyKey:{}
+            }}
         });
     });
     afterAll(() => {

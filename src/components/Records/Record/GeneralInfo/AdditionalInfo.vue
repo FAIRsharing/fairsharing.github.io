@@ -22,7 +22,7 @@
     <!--  deprecation_reason  -->
     <div
       v-if="getField('metadata').deprecation_reason"
-      class="d-flex flex-row mt-4 align-center min-height-40"
+      class="d-flex pa-4 data-holder mb-4 flex-row mt-4 align-center min-height-40"
     >
       <b class="width-200">Dataset Deprecation reason</b>
       <div class="d-flex full-width ml-md-12 ml-13">
@@ -34,7 +34,7 @@
     <!--  dataset_preservation  -->
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_preservation && getField('metadata').dataset_preservation.length && getField('metadata').dataset_preservation"
-      class="d-flex flex-row mt-4 align-center min-height-40"
+      class="d-flex pa-4 data-holder mb-4 flex-row mt-4 align-center min-height-40"
     >
       <b class="width-200">Dataset Preservation</b>
       <div class="d-flex full-width ml-md-12 ml-13">
@@ -50,7 +50,7 @@
     <!--  dataset_curation  -->
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_curation && Object.keys(getField('metadata').dataset_curation).length && getField('metadata').dataset_curation && checkDataAvailableCurrentRecord(getField('metadata').dataset_curation)"
-      class="pa-4 data-holder"
+      class="pa-4 data-holder mb-4"
     >
       <b class="text-h6">Dataset Curation</b>
       <div
@@ -83,7 +83,7 @@
     <!--  dataset_deposition  -->
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_deposition && Object.keys(getField('metadata').dataset_deposition).length && getField('metadata').dataset_deposition && checkDataAvailableCurrentRecord(getField('metadata').dataset_deposition)"
-      class="pa-4 data-holder"
+      class="pa-4 data-holder mb-4"
     >
       <b class="text-h6">Dataset Deposition</b>
       <div
@@ -116,7 +116,7 @@
     <!--  data_access_condition  -->
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_access_condition && Object.keys(getField('metadata').data_access_condition).length && getField('metadata').data_access_condition && checkDataAvailableCurrentRecord(getField('metadata').data_access_condition)"
-      class="pa-4 data-holder"
+      class="pa-4 data-holder mb-4"
     >
       <b class="text-h6">Data Access Condition</b>
       <div
@@ -149,7 +149,7 @@
     <!--  dataset_sustainability  -->
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_sustainability && Object.keys(getField('metadata').dataset_sustainability).length && getField('metadata').dataset_sustainability && checkDataAvailableCurrentRecord(getField('metadata').dataset_sustainability)"
-      class="pa-4 data-holder"
+      class="pa-4 data-holder mb-4"
     >
       <b class="text-h6">Dataset Sustainability</b>
       <div
@@ -219,7 +219,7 @@
     >
       <div
         v-if="getField('metadata').cos_top_guidelines.ranking"
-        class="d-flex flex-wrap flex-md-nowrap ml-md-12 ml-sm-5"
+        class="d-flex flex-wrap flex-md-nowrap"
       >
         <b
           class="mr-4"
@@ -232,7 +232,7 @@
 
       <div
         v-if="getField('metadata').cos_top_guidelines.comment"
-        class="d-flex flex-wrap flex-md-nowrap ml-md-12 ml-sm-5"
+        class="d-flex flex-wrap flex-md-nowrap"
       >
         <b
           class="mr-4"

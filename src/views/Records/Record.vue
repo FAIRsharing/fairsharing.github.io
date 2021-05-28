@@ -217,7 +217,7 @@ import RecordHistory from "@/components/Records/Record/History/RecordHistory";
 import Loaders from "@/components/Navigation/Loaders";
 import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
 import Tombstone from "../Errors/Tombstone";
-import AdditionalInfo from "@/components/Records/Record/AdditionalInfo/AdditionalInfo";
+import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
 
 const client = new RestClient();
 

@@ -33,7 +33,7 @@
     </div>
     <!--  dataset_preservation  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_preservation && getField('metadata').dataset_preservation.length && getField('metadata').dataset_preservation"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_preservation && getField('metadata').dataset_preservation!=='' && getField('metadata').dataset_preservation"
       class="d-flex pa-4 data-holder mb-4 flex-row mt-4 align-center min-height-40"
     >
       <b class="width-200">Dataset Preservation</b>
@@ -315,7 +315,7 @@ export default {
       }
     },
     async checkDataAvailable(selectedNode) {
-      Object.keys(selectedNode).forEach(key => {
+        Object.keys(selectedNode).forEach(key => {
         if (Object.keys(selectedNode[key]).length) {
           this.anyDataAvailable.push(true);
         }

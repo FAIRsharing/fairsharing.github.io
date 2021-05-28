@@ -5,6 +5,8 @@ import AdditionalInfo from "@/components/Records/Record/GeneralInfo/AdditionalIn
 import Vuetify from "vuetify"
 import editorStore from "@/store/editor";
 import record from "@/store/recordData";
+import RESTClient from "@/lib/Client/RESTClient";
+const sinon = require("sinon");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -16,9 +18,14 @@ const $store = new Vuex.Store({
         editor: editorStore
     }});
 
+
 record.state.currentRecord.fairsharingRecord.metadata = {
-    dataset_preservation:{}
+    dataset_deposition: {},
 };
+$store.state.editor.allowedFields.properties = {dataset_deposition: {}}
+let graphStub;
+let restStub;
+
 
 describe("AdditionalInfo.vue", function(){
     let wrapper;
@@ -29,6 +36,17 @@ describe("AdditionalInfo.vue", function(){
             mocks: {$store}
         })
     });
+    beforeAll(() => {
+        restStub = sinon.stub(RESTClient.prototype, "executeQuery");
+        restStub.withArgs(sinon.match.any).returns({
+            data: {properties: {dataset_deposition: {},dataset_curation:{}}}
+        });
+    });
+    afterAll(() => {
+        graphStub.restore();
+        restStub.restore();
+    });
+
 
     it("can be initiated", () => {
         expect(wrapper.name()).toMatch("AdditionalInfo");

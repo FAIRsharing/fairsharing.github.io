@@ -301,16 +301,19 @@ export default {
     await this.getAllowedFields({
       type: this.getRecordType
     });
-    const excludedTypes = ['access_points','associated_tools','data_processes']
-    const allAllowedTypes = Object.keys(this.allowedFields.properties).filter(key => !excludedTypes.includes(key));
-    for (const key of allAllowedTypes) {
-      if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
-        await this.checkDataAvailable(this.getField('metadata')[key]);
-      }
-    }
+    await this.initializeData()
   },
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
+    async initializeData () {
+      const excludedTypes = ['access_points','associated_tools','data_processes']
+      const allAllowedTypes = Object.keys(this.allowedFields.properties).filter(key => !excludedTypes.includes(key));
+      for (const key of allAllowedTypes) {
+        if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
+          await this.checkDataAvailable(this.getField('metadata')[key]);
+        }
+      }
+    },
     async checkDataAvailable(selectedNode) {
       Object.keys(selectedNode).forEach(key => {
         if (Object.keys(selectedNode[key]).length) {

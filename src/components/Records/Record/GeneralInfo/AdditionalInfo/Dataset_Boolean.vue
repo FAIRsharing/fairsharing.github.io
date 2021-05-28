@@ -17,7 +17,7 @@ import {mapGetters, mapState} from "vuex";
 import stringUtils from '@/utils/stringUtils'
 
 export default {
-  name: "DatasetPid",
+  name: "DatasetBoolean",
   mixins: [ stringUtils ],
   props: {
     fieldName: {default: null, type: String}

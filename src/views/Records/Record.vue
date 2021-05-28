@@ -25,6 +25,15 @@
           >
             <span>This record is is awaiting review by FAIRsharing curators</span>
           </v-alert>
+
+          <v-alert
+            v-if="isWatching()"
+            dense
+            type="info"
+            class="mb-2 flex-grow-1"
+          >
+            <span>You are watching this record for changes</span>
+          </v-alert>
           
           <div
             v-if="alreadyClaimed || claimedTriggered || user().is_curator"
@@ -458,6 +467,9 @@ export default {
      * @returns {*|boolean}
      */
     isWatching() {
+      if (this.user().watchedRecords === undefined) {
+        return false;
+      }
       return  this.currentRecord['fairsharingRecord'].id
           && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
     },

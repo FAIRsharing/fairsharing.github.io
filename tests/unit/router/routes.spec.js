@@ -79,7 +79,8 @@ describe("Routes", () => {
         store.state.introspection.maintenanceMode = true;
         await beforeEach(to, undefined, next, store);
         expect(next).toHaveBeenCalledWith({path: "maintenance"})
-        await afterEach();
+        await afterEach({name:'Records'});
+        await afterEach({name:'Record'});
     });
 
     it("can check is a site is in maintenance mode", () => {

@@ -31,9 +31,9 @@
         </p>
       </div>
     </div>
-
+    <!--  dataset_preservation  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_preservation && (getField('metadata').dataset_preservation!=='' && getField('metadata').dataset_preservation!==null && getField('metadata').dataset_preservation!==undefined)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_preservation && getField('metadata').dataset_preservation.length && getField('metadata').dataset_preservation"
       class="d-flex flex-row mt-4 align-center min-height-40"
     >
       <b class="width-200">Dataset Preservation</b>
@@ -47,13 +47,14 @@
         </a>
       </div>
     </div>
+    <!--  dataset_curation  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_curation && Object.keys(getField('metadata').dataset_curation).length"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_curation && Object.keys(getField('metadata').dataset_curation).length && getField('metadata').dataset_curation && checkDataAvailableCurrentRecord(getField('metadata').dataset_curation)"
       class="pa-4 data-holder"
     >
       <b class="text-h6">Dataset Curation</b>
       <div
-        v-if="Object.keys(getField('metadata').dataset_curation).includes('url') && getField('metadata').dataset_curation.url!=='' && getField('metadata').dataset_curation.url!==null && getField('metadata').dataset_curation.url!==undefined"
+        v-if="Object.keys(getField('metadata').dataset_curation).includes('url') && getField('metadata').dataset_curation.url.length && getField('metadata').dataset_curation.url"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
@@ -68,7 +69,7 @@
         </div>
       </div>
       <div
-        v-if="Object.keys(getField('metadata').dataset_curation).includes('steps') && getField('metadata').dataset_curation.steps!=='' && getField('metadata').dataset_curation.steps!==null && getField('metadata').dataset_curation.steps!==undefined"
+        v-if="Object.keys(getField('metadata').dataset_curation).includes('steps') && getField('metadata').dataset_curation.steps.length && getField('metadata').dataset_curation.steps"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">Steps</b>
@@ -79,13 +80,14 @@
         </div>
       </div>
     </div>
+    <!--  dataset_deposition  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_deposition"
-      class="pa-4 mt-4 data-holder"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_deposition && Object.keys(getField('metadata').dataset_deposition).length && getField('metadata').dataset_deposition && checkDataAvailableCurrentRecord(getField('metadata').dataset_deposition)"
+      class="pa-4 data-holder"
     >
       <b class="text-h6">Dataset Deposition</b>
       <div
-        v-if="Object.keys(getField('metadata').dataset_deposition).includes('url') && getField('metadata').dataset_deposition.url!=='' && getField('metadata').dataset_deposition.url!==null && getField('metadata').dataset_deposition.url!==undefined"
+        v-if="Object.keys(getField('metadata').dataset_deposition).includes('url') && getField('metadata').dataset_deposition.url.length && getField('metadata').dataset_deposition.url"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
@@ -100,7 +102,7 @@
         </div>
       </div>
       <div
-        v-if="Object.keys(getField('metadata').dataset_deposition).includes('restrictions') && getField('metadata').dataset_deposition.restrictions!=='' && getField('metadata').dataset_deposition.restrictions!==null && getField('metadata').dataset_deposition.restrictions!==undefined"
+        v-if="Object.keys(getField('metadata').dataset_deposition).includes('restrictions') && getField('metadata').dataset_deposition.restrictions.length && getField('metadata').dataset_deposition.restrictions && getField('metadata').dataset_deposition.restrictions!=='no'"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">Restrictions</b>
@@ -111,19 +113,18 @@
         </div>
       </div>
     </div>
+    <!--  data_access_condition  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_access_condition"
-      class="pa-4 mt-4 data-holder"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_access_condition && Object.keys(getField('metadata').data_access_condition).length && getField('metadata').data_access_condition && checkDataAvailableCurrentRecord(getField('metadata').data_access_condition)"
+      class="pa-4 data-holder"
     >
       <b class="text-h6">Data Access Condition</b>
       <div
-        v-if="Object.keys(getField('metadata').data_access_condition).includes('url') && getField('metadata').data_access_condition.url!=='' && getField('metadata').data_access_condition.url!==null && getField('metadata').data_access_condition.url!==undefined"
+        v-if="Object.keys(getField('metadata').data_access_condition).includes('url') && getField('metadata').data_access_condition.url.length && getField('metadata').data_access_condition.url"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
-        <div
-          class="d-flex full-width ml-md-12 ml-13"
-        >
+        <div class="d-flex full-width ml-md-12 ml-13">
           <a
             class="underline-effect"
             :href="getField('metadata').data_access_condition.url"
@@ -134,26 +135,25 @@
         </div>
       </div>
       <div
-        v-if="Object.keys(getField('metadata').data_access_condition).includes('type') && getField('metadata').data_access_condition.type!=='' && getField('metadata').data_access_condition.type!==null && getField('metadata').data_access_condition.type!==undefined"
+        v-if="Object.keys(getField('metadata').data_access_condition).includes('type') && getField('metadata').data_access_condition.type.length && getField('metadata').data_access_condition.type"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">Type</b>
-        <div
-          class="d-flex full-width ml-md-12 ml-13"
-        >
+        <div class="d-flex full-width ml-md-12 ml-13">
           <p class="ma-0">
             {{ getField('metadata').data_access_condition.type }}
           </p>
         </div>
       </div>
     </div>
+    <!--  dataset_sustainability  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_sustainability"
-      class="pa-4 mt-4 data-holder"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_sustainability && Object.keys(getField('metadata').dataset_sustainability).length && getField('metadata').dataset_sustainability && checkDataAvailableCurrentRecord(getField('metadata').dataset_sustainability)"
+      class="pa-4 data-holder"
     >
       <b class="text-h6">Dataset Sustainability</b>
       <div
-        v-if="Object.keys(getField('metadata').dataset_sustainability).includes('url') && getField('metadata').dataset_sustainability.url!=='' && getField('metadata').dataset_sustainability.url!==null && getField('metadata').dataset_sustainability.url!==undefined"
+        v-if="Object.keys(getField('metadata').dataset_sustainability).includes('url') && getField('metadata').dataset_sustainability.url.length && getField('metadata').dataset_sustainability.url"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
@@ -168,7 +168,7 @@
         </div>
       </div>
       <div
-        v-if="Object.keys(getField('metadata').dataset_sustainability).includes('plan') && getField('metadata').dataset_sustainability.plan!=='' && getField('metadata').dataset_sustainability.plan!==null && getField('metadata').dataset_sustainability.plan!==undefined"
+        v-if="Object.keys(getField('metadata').dataset_sustainability).includes('plan') && getField('metadata').dataset_sustainability.plan.length && getField('metadata').dataset_sustainability.plan"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">Plan</b>
@@ -179,13 +179,14 @@
         </div>
       </div>
     </div>
+    <!--  community_certification  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.community_certification"
-      class="pa-4 mt-4 data-holder"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.community_certification && Object.keys(getField('metadata').community_certification).length && getField('metadata').community_certification && checkDataAvailableCurrentRecord(getField('metadata').community_certification)"
+      class="pa-4 data-holder"
     >
       <b class="text-h6">Community Certification</b>
       <div
-        v-if="Object.keys(getField('metadata').community_certification).includes('url') && getField('metadata').community_certification.url!=='' && getField('metadata').community_certification.url!==null && getField('metadata').community_certification.url!==undefined"
+        v-if="Object.keys(getField('metadata').community_certification).includes('url') && getField('metadata').community_certification.url.length && getField('metadata').community_certification.url"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
@@ -200,20 +201,21 @@
         </div>
       </div>
       <div
-        v-if="Object.keys(getField('metadata').community_certification).includes('type') && getField('metadata').community_certification.type!=='' && getField('metadata').community_certification.type!==null && getField('metadata').community_certification.type!==undefined"
+        v-if="Object.keys(getField('metadata').community_certification).includes('type') && getField('metadata').community_certification.type.length && getField('metadata').community_certification.type"
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">Type</b>
-        <div class="d-flex full-width ml-md-12 ml-13 ml-sm-5">
+        <div class="d-flex full-width ml-md-12 ml-13">
           <p class="ma-0">
             {{ getField('metadata').community_certification.type }}
           </p>
         </div>
       </div>
     </div>
+    <!--  cos_top_guidelines  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cos_top_guidelines && getField('metadata').cos_top_guidelines!==null && getField('metadata').cos_top_guidelines!==undefined"
-      class="d-flex flex-column mt-4 min-height-40"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cos_top_guidelines && getField('metadata').cos_top_guidelines && Object.keys(getField('metadata').cos_top_guidelines).length && checkDataAvailableCurrentRecord(getField('metadata').cos_top_guidelines)"
+      class="d-flex pa-4 data-holder flex-column mt-4 min-height-40"
     >
       <div
         v-if="getField('metadata').cos_top_guidelines.ranking"
@@ -241,8 +243,9 @@
         </p>
       </div>
     </div>
+    <!--  cross_references  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references!==undefined && allowedFields.properties.cross_references!==null && getField('metadata').cross_references.length"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references && getField('metadata').cross_references && Object.keys(getField('metadata').cross_references).length && checkDataAvailableCurrentRecord(getField('metadata').cross_references)"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Cross References</b>
@@ -253,9 +256,13 @@
         <div class="d-flex flex-row align-center min-height-40">
           <b class="width-200">Name</b>
           <div class="d-flex full-width ml-md-12 ml-13">
-            <p class="ma-0">
+            <a
+              class="underline-effect"
+              :href="crossRefObj.url"
+              target="_blank"
+            >
               {{ crossRefObj.name }}
-            </p>
+            </a>
           </div>
         </div>
         <div class="d-flex flex-row align-center min-height-40">
@@ -264,18 +271,6 @@
             <p class="ma-0">
               {{ crossRefObj.portal }}
             </p>
-          </div>
-        </div>
-        <div class="d-flex flex-row align-center min-height-40">
-          <b class="width-200">URL</b>
-          <div class="d-flex full-width ml-md-12 ml-13">
-            <a
-              class="underline-effect"
-              :href="crossRefObj.url"
-              target="_blank"
-            >
-              {{ crossRefObj.url }}
-            </a>
           </div>
         </div>
         <v-divider v-if="getField('metadata').cross_references.length-1!==index" />

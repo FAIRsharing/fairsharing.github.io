@@ -22,7 +22,7 @@
     <!--  deprecation_reason  -->
     <div
       v-if="getField('metadata').deprecation_reason"
-      class="d-flex pa-4 data-holder mb-4 flex-row mt-4 align-center min-height-40"
+      class="d-flex pa-4 data-holder flex-row mt-4 align-center min-height-40"
     >
       <b class="width-200">Dataset Deprecation reason</b>
       <div class="d-flex full-width ml-md-12 ml-13">

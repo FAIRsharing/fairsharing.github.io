@@ -1,6 +1,6 @@
 {
   "descriptions": {
-    "homepage": "The homepage of the resource itself. If there is no official homepage, a related URL may be used. For policies, the resource homepage can be the policy document itself. URLs for related content such as organizations can be described in the Associated Organizations section.",
+    "homepage": "The homepage of the resource itself. If there is no official homepage, a related URL may be used. For policies, the resource homepage can be the policy document itself. URLs for related content such as organisations can be described in the Associated Organisations section.",
     "abbreviation": "If the resource has an official or commonly-used abbreviation then please include it here. If there is no abbreviation, please leave blank. ",
     "year": "The year in which the resource was created",
     "description": "Free text summary of the resource and its purpose.",

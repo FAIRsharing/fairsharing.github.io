@@ -282,7 +282,7 @@
 <script>
 import {mapActions, mapGetters, mapState} from "vuex";
 import SectionTitle from "@/components/Records/Record/SectionTitle";
-import DatasetBoolean from "@/components/Records/Record/GeneralInfo/AdditionalInfo/Dataset_Boolean";
+import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean";
 
 export default {
   name: "AdditionalInfo",

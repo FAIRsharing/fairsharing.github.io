@@ -57,7 +57,10 @@
         v-for="(access_point,index) in getField('metadata').access_points"
         :key="access_point+''+index"
       >
-        <div class="d-flex flex-row align-center min-height-40">
+        <div
+          v-if="access_point.url"
+          class="d-flex flex-row align-center min-height-40"
+        >
           <b class="width-200">URL</b>
           <div class="d-flex full-width ml-md-12 ml-13">
             <a
@@ -69,12 +72,45 @@
             </a>
           </div>
         </div>
-        <div class="d-flex flex-row align-center min-height-40">
+        <div
+          v-if="access_point.type"
+          class="d-flex flex-row align-center min-height-40"
+        >
           <b class="width-200">Type</b>
           <div class="d-flex full-width ml-md-12 ml-13">
             <p class="ma-0">
               {{ access_point.type }}
             </p>
+          </div>
+        </div>
+        <div
+          v-if="access_point.example_url"
+          class="d-flex flex-row align-center min-height-40"
+        >
+          <b class="width-200">Example URL</b>
+          <div class="d-flex full-width ml-md-12 ml-13">
+            <a
+              class="underline-effect"
+              target="_blank"
+              :href="access_point.example_url"
+            >
+              {{ access_point.example_url }}
+            </a>
+          </div>
+        </div>
+        <div
+          v-if="access_point.documentation_url"
+          class="d-flex flex-row align-center min-height-40"
+        >
+          <b class="width-200">Documentation URL</b>
+          <div class="d-flex full-width ml-md-12 ml-13">
+            <a
+              class="underline-effect"
+              target="_blank"
+              :href="access_point.documentation_url"
+            >
+              {{ access_point.documentation_url }}
+            </a>
           </div>
         </div>
         <v-divider v-if="getField('metadata').access_points.length-1!==index" />

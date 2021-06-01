@@ -953,63 +953,75 @@ export default {
               text: 'Restriction',
               value: 'Restriction',
               class:"text--primary text-h6 font-weight-black"
-            }
+            },
+            {text: 'Description', value: 'Description',class:"text--primary text-h6 font-weight-black"},
           ],
           data: [
             {
               id: 0,
               Label: 'implements',
               Restriction: 'Any database to any standard',
+              Description: 'This database implements a particular standard'
             },
             {
               id: 1,
               Label: 'accepts',
-              Restriction: 'Any database to a model/format standard',
+              Restriction: 'Any database to any standard',
+              Description: 'This database accepts data that follows a particular standard.'
             },
             {
               id: 2,
               Label: 'outputs',
-              Restriction: '--"--',
+              Restriction: 'Any database to any standard',
+              Description: 'This database outputs data that follows a particular standard'
             },
             {
               id: 3,
               Label: 'related_to',
               Restriction: 'Any database to any standard or database, any standard to any standard or database, any policy to any policy',
+              Description: 'This resource is related to another resource in an undefined way'
             },
             {
               id: 4,
-              Label: 'shares_code',
+              Label: 'shares_code_with',
               Restriction: 'Any database to any other database',
+              Description: 'This database shares a portion of code with another database'
             },
             {
               id: 5,
-              Label: 'shares_data',
-              Restriction: '--"--',
+              Label: 'shares_data_with',
+              Restriction: 'Any database to any other database',
+              Description: 'This database shares a portion of data with another database'
             },
             {
               id: 6,
               Label: 'profiles',
               Restriction: 'Any standard to any other standard',
+              Description: 'This database shares a portion of data with another database'
             },
             {
               id: 7,
               Label: 'extends',
-              Restriction: '--"--',
+              Restriction: 'A database or standard to another of the same registry',
+              Description: 'This resource extends or builds upon another resource'
             },
             {
               id: 8,
               Label: 'collects',
               Restriction: 'A collection to any other record',
+              Description: 'A Collection can collect Standards, Databases and Data Policies based on a project, initiative or infrastructure'
             },
             {
               id: 9,
               Label: 'recommends',
               Restriction: 'A policy to any standard or database',
+              Description: 'A standard or database can be recommended by a data policy'
             },
             {
               id: 10,
               Label: 'deprecates',
               Restriction: 'Any record to any other of the same registry',
+              Description: 'The linked resource has been retired as it is no longer active or actively maintained'
             }
           ]
         }

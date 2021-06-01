@@ -31,19 +31,19 @@
         :key="maintainer.contact_name"
         class="d-flex flex-wrap"
       >
-        <a
-          class="mr-2"
-          @click="$router.push({path: '/users/' + maintainer.id})"
+        <router-link
+          class="mr-2 underline-effect"
+          :to="`/users/${maintainer.id}`"
         >
           {{ `${maintainer.username}${index !== getField('maintainers').length - 1 ? ',' : ''}` }}
-        </a>
+        </router-link>
         <a
           class="mr-2"
           :href="`https://orcid.org/${maintainer.orcid}`"
           target="_blank"
         >
           <Icon
-            height="27"
+            :height="27"
             item="Orcid"
             wrapper-class=""
           />

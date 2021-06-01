@@ -16,6 +16,7 @@
     "lastEdited",
     "schemaOrg",
     "isHidden",
+    "isApproved",
     {
       "name": "lastEditor",
       "fields": [

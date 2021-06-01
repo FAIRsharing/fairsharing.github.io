@@ -34,7 +34,7 @@
           >
             <span>You are watching this record for changes</span>
           </v-alert>
-          
+
           <div
             v-if="alreadyClaimed || claimedTriggered || user().is_curator"
             class="d-flex flex-column"
@@ -48,7 +48,7 @@
               <span>This record is hidden!</span>
             </v-alert>
 
-            
+
 
             <v-alert
               v-if="alreadyClaimed"

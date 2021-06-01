@@ -25,17 +25,34 @@
       </div>
       <!--<NoneFound :data-field="getField('maintainers')" />-->
       <!--Contact-->
+
       <div
         v-for="(maintainer,index) in getField('maintainers')"
         :key="maintainer.contact_name"
         class="d-flex flex-wrap"
       >
-        <a
-          class="mr-2"
-          @click="$router.push({path: '/users/' + maintainer.id})"
-        >
-          {{ `${maintainer.username}${index !== getField('maintainers').length - 1 ? ',' : ''}` }}
-        </a>
+        <div class="d-flex">
+          <router-link
+            v-if="maintainer"
+            class="mr-1 underline-effect"
+            :to="`/users/${maintainer.id}`"
+          >
+            {{ maintainer.username }}
+          </router-link>
+          <a
+            v-if="maintainer.orcid"
+            class="mr-2"
+            :href="`https://orcid.org/${maintainer.orcid}`"
+            target="_blank"
+          >
+            <Icon
+              :height="27"
+              item="Orcid"
+              wrapper-class=""
+            />
+          </a>
+        </div>
+        {{ index !== getField('maintainers').length - 1 ? ',' : '' }}
       </div>
     </div>
   </div>
@@ -43,8 +60,10 @@
 
 <script>
 import {mapGetters} from "vuex";
+import Icon from "@/components/Icon";
 export default {
   name: "Maintainers",
+  components: {Icon},
   props: {
     canClaim: {
       type: Boolean,

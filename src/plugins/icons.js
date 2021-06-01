@@ -197,6 +197,10 @@ const customIcons  = {
             type: "icon",
             icon: "fa-thumbs-up"
         },
+        video: {
+            type: "icon",
+            icon: "fa-video"
+        },
         collections: {
             type: "img",
             icon: "assets/Home/BlockCategories/collections.png"

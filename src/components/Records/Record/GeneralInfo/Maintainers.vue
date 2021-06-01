@@ -25,6 +25,7 @@
       </div>
       <!--<NoneFound :data-field="getField('maintainers')" />-->
       <!--Contact-->
+
       <div
         v-for="(maintainer,index) in getField('maintainers')"
         :key="maintainer.contact_name"
@@ -36,6 +37,17 @@
         >
           {{ `${maintainer.username}${index !== getField('maintainers').length - 1 ? ',' : ''}` }}
         </a>
+        <a
+          class="mr-2"
+          :href="`https://orcid.org/${maintainer.orcid}`"
+          target="_blank"
+        >
+          <Icon
+            height="27"
+            item="Orcid"
+            wrapper-class=""
+          />
+        </a>
       </div>
     </div>
   </div>
@@ -43,8 +55,10 @@
 
 <script>
 import {mapGetters} from "vuex";
+import Icon from "@/components/Icon";
 export default {
   name: "Maintainers",
+  components: {Icon},
   props: {
     canClaim: {
       type: Boolean,

@@ -185,6 +185,10 @@ const customIcons  = {
             type: "img",
             icon: "assets/icons/DOI_logo.svg"
         },
+        Orcid: {
+            type: "img",
+            icon: "assets/icons/ORCID_iD.svg"
+        },
         mailing_list: {
             type: "icon",
             icon: "fa-address-book"

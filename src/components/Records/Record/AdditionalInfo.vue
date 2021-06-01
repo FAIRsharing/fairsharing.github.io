@@ -47,6 +47,76 @@
         </a>
       </div>
     </div>
+    <!--  access_points  -->
+    <div
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.access_points && getField('metadata').access_points && Object.keys(getField('metadata').access_points).length && checkDataAvailableCurrentRecord(getField('metadata').access_points)"
+      class="pa-4 mt-4 data-holder"
+    >
+      <b class="text-h6">Access Points</b>
+      <div
+        v-for="(access_point,index) in getField('metadata').access_points"
+        :key="access_point+''+index"
+      >
+        <div
+          v-if="access_point.url"
+          class="d-flex flex-row align-center min-height-40"
+        >
+          <b class="width-200">URL</b>
+          <div class="d-flex full-width ml-md-12 ml-13">
+            <a
+              class="underline-effect"
+              :href="access_point.url"
+              target="_blank"
+            >
+              {{ access_point.url }}
+            </a>
+          </div>
+        </div>
+        <div
+          v-if="access_point.type"
+          class="d-flex flex-row align-center min-height-40"
+        >
+          <b class="width-200">Type</b>
+          <div class="d-flex full-width ml-md-12 ml-13">
+            <p class="ma-0">
+              {{ access_point.type }}
+            </p>
+          </div>
+        </div>
+        <div
+          v-if="access_point.example_url"
+          class="d-flex flex-row align-center min-height-40"
+        >
+          <b class="width-200">Example URL</b>
+          <div class="d-flex full-width ml-md-12 ml-13">
+            <a
+              class="underline-effect"
+              target="_blank"
+              :href="access_point.example_url"
+            >
+              {{ access_point.example_url }}
+            </a>
+          </div>
+        </div>
+        <div
+          v-if="access_point.documentation_url"
+          class="d-flex flex-row align-center min-height-40"
+        >
+          <b class="width-200">Documentation URL</b>
+          <div class="d-flex full-width ml-md-12 ml-13">
+            <a
+              class="underline-effect"
+              target="_blank"
+              :href="access_point.documentation_url"
+            >
+              {{ access_point.documentation_url }}
+            </a>
+          </div>
+        </div>
+        <v-divider v-if="getField('metadata').access_points.length-1!==index" />
+      </div>
+    </div>
+
     <!--  dataset_curation  -->
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_curation && Object.keys(getField('metadata').dataset_curation).length && getField('metadata').dataset_curation && checkDataAvailableCurrentRecord(getField('metadata').dataset_curation)"
@@ -306,7 +376,7 @@ export default {
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
     async initializeData () {
-      const excludedTypes = ['access_points','associated_tools','data_processes']
+      const excludedTypes = ['associated_tools','data_processes']
       const allAllowedTypes = Object.keys(this.allowedFields.properties).filter(key => !excludedTypes.includes(key));
       for (const key of allAllowedTypes) {
         if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {

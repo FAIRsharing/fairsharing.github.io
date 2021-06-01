@@ -31,23 +31,28 @@
         :key="maintainer.contact_name"
         class="d-flex flex-wrap"
       >
-        <router-link
-          class="mr-2 underline-effect"
-          :to="`/users/${maintainer.id}`"
-        >
-          {{ `${maintainer.username}${index !== getField('maintainers').length - 1 ? ',' : ''}` }}
-        </router-link>
-        <a
-          class="mr-2"
-          :href="`https://orcid.org/${maintainer.orcid}`"
-          target="_blank"
-        >
-          <Icon
-            :height="27"
-            item="Orcid"
-            wrapper-class=""
-          />
-        </a>
+        <div class="d-flex">
+          <router-link
+            v-if="maintainer"
+            class="mr-1 underline-effect"
+            :to="`/users/${maintainer.id}`"
+          >
+            {{ maintainer.username }}
+          </router-link>
+          <a
+            v-if="maintainer.orcid"
+            class="mr-2"
+            :href="`https://orcid.org/${maintainer.orcid}`"
+            target="_blank"
+          >
+            <Icon
+              :height="27"
+              item="Orcid"
+              wrapper-class=""
+            />
+          </a>
+        </div>
+        {{ index !== getField('maintainers').length - 1 ? ',' : '' }}
       </div>
     </div>
   </div>

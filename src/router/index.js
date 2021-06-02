@@ -241,8 +241,10 @@ routes.forEach(function (route) {
     }
 });
 
-export async function afterEach() {
-    window.scrollTo(0,0);
+export async function afterEach(to) {
+    if (to.name !== "Record") {
+        window.scrollTo(0,0);
+    }
 }
 
 const router = new VueRouter({

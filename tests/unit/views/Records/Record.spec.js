@@ -109,7 +109,13 @@ describe("Record.vue", function() {
             RESTClient.prototype,
             "claimRecord",
             true);
+        let breakpoint = {
+            init: jest.fn(),
+            framework: {},
+            name: 'md'
+        }
         vuetify = new Vuetify();
+        vuetify.framework.breakpoint = breakpoint;
     });
     afterAll( () => {
         mocks.restoreAll();
@@ -340,4 +346,22 @@ describe("Record.vue", function() {
         expect(wrapper.vm.error).toBe("error");
         mocks.restore("graphMock");
     });
+
+    it("Testing breakpoint reactivity", async () => {
+        let breakpoint = {
+            init: jest.fn(),
+            framework: {},
+            name: 'sm'
+        }
+        vuetify.framework.breakpoint = breakpoint;
+
+        const wrapper2 = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        expect(wrapper2.name()).toMatch("Record");
+    });
+
 });

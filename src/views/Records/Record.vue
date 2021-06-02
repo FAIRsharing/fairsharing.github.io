@@ -127,22 +127,22 @@
             <!--Left Block-->
             <component
               :is="block"
-              v-for="(block,index) in dynamicSections.leftBlock"
+              v-for="(block,index) in currentDynamicBlock.leftBlock"
               :key="block"
-              :class="['ma-4',index===dynamicSections.rightBlock.length-1?'mb-4':'mb-8']"
+              :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
             />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             <component
               :is="block"
-              v-for="(block,index) in dynamicSections.rightBlock"
+              v-for="(block,index) in currentDynamicBlock.rightBlock"
               :key="block"
-              :class="['ma-4',index===dynamicSections.rightBlock.length-1?'mb-4':'mb-8']"
+              :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
             />
           </v-col>
         </v-row>
-        
+
         <!-- Bottom Block -->
         <Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
@@ -288,6 +288,19 @@ export default {
     getTitle() {
       return 'FAIRsharing | ' + this.currentRoute;
     },
+    currentDynamicBlock() {
+      if (this.$vuetify.breakpoint.name === 'md') {
+        return {
+          leftBlock: ["Collections", "RelatedContent", "Support"],
+          rightBlock: ["DataConditions", "Tools", "Organisations"]
+        }
+      } else {
+        return {
+          leftBlock: ["Collections", "Support", "DataConditions"],
+          rightBlock: ["RelatedContent", "Tools", "Organisations"]
+        }
+      }
+    }
   },
   watch: {
     async currentRoute() {

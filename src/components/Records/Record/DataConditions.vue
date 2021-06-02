@@ -1,5 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
+    v-if="Object.prototype.hasOwnProperty.call(getField('metadata'),'data_processes') && (getField('licences')!==undefined || getField('licences').length)"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
@@ -7,10 +8,7 @@
     elevation="3"
   >
     <!-- Data Conditions -->
-    <SectionTitle
-      title="Data Conditions"
-      :inactive-section="(getField('metadata')['data_processes']===undefined || !getField('metadata')['data_processes'].length) && (getField('licences')===undefined || !getField('licences').length)"
-    />
+    <SectionTitle title="Data Conditions" />
     <!--  container  -->
     <div class="d-flex flex-column ml-2 min-height-40">
       <div v-if="(getField('metadata')['data_processes'] && getField('metadata')['data_processes'].length) || (getField('licences').length && getField('licences'))">

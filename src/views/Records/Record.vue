@@ -583,13 +583,3 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-.item {
-  background: yellowgreen;
-  flex: 0 0 50%;
-  @include respond(tab-land) {
-    flex: 0 0 100% ;
-    margin: 1rem 0 1rem 0;
-  }
-}
-</style>

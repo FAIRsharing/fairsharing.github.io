@@ -46,7 +46,7 @@ Vue.use(VueCodeHighlight);
 Vue.use(Particles);
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
-router.afterEach(async() => await afterEach());
+router.afterEach(async(to) => await afterEach(to));
 
 async function bootstrapApp() {
     try {

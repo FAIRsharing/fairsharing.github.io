@@ -248,10 +248,6 @@ export default {
   },
   data: () => {
     return {
-      dynamicSections:{
-        leftBlock:["Collections","Support","DataConditions"],
-        rightBlock:["RelatedContent","Tools","Organisations"],
-      },
       error: null,
       queryTriggered: false,
       showScrollToTopButton: false,

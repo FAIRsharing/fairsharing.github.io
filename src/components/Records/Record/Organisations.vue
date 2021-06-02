@@ -47,7 +47,7 @@
                 <v-tooltip
                   bottom
                 >
-                  <template v-slot:activator="{ on }">
+                  <template #activator="{ on }">
                     <v-chip
                       v-if="organisationLink.isLead"
                       class="ma-2"

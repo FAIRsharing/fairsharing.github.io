@@ -16,6 +16,7 @@
     "lastEdited",
     "schemaOrg",
     "isHidden",
+    "isApproved",
     {
       "name": "lastEditor",
       "fields": [
@@ -90,7 +91,8 @@
       "name": "maintainers",
       "fields": [
         "username",
-        "id"
+        "id",
+        "orcid"
       ]
     },
     {

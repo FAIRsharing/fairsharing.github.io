@@ -214,45 +214,28 @@
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
-
+        &lt;!-- Dynamic Block -->
         &lt;v-row no-gutters>
-          &lt;!--Left Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            &lt;!-- COLLECTIONS -->
-            &lt;Collections
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            &lt;!-- SUPPORT -->
-            &lt;Support
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            &lt;!-- Data Conditions -->
-            &lt;DataConditions
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-4"
+            &lt;!--Left Block-->
+            &lt;component
+              :is="block"
+              v-for="(block,index) in currentDynamicBlock.leftBlock"
+              :key="block"
+              :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
             />
           &lt;/v-col>
           &lt;!--Right Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            &lt;!-- Related Content -->
-            &lt;RelatedContent
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            &lt;!-- Tools -->
-            &lt;Tools
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            &lt;!-- Organisations -->
-            &lt;Organisations
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-6 mb-sm-4 "
+            &lt;component
+              :is="block"
+              v-for="(block,index) in currentDynamicBlock.rightBlock"
+              :key="block"
+              :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
             />
           &lt;/v-col>
         &lt;/v-row>
+
         &lt;!-- Bottom Block -->
         &lt;Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
@@ -358,6 +341,10 @@ export default {
   },
   data: () => {
     return {
+      dynamicSections:{
+        leftBlock:["Collections","Support","DataConditions"],
+        rightBlock:["RelatedContent","Tools","Organisations"],
+      },
       error: null,
       queryTriggered: false,
       showScrollToTopButton: false,
@@ -394,6 +381,19 @@ export default {
     getTitle() {
       return 'FAIRsharing | ' + this.currentRoute;
     },
+    currentDynamicBlock() {
+      if (this.$vuetify.breakpoint.name === 'md') {
+        return {
+          leftBlock: ["Collections", "RelatedContent", "Support"],
+          rightBlock: ["DataConditions", "Tools", "Organisations"]
+        }
+      } else {
+        return {
+          leftBlock: ["Collections", "Support", "DataConditions"],
+          rightBlock: ["RelatedContent", "Tools", "Organisations"]
+        }
+      }
+    }
   },
   watch: {
     async currentRoute() {
@@ -680,6 +680,16 @@ export default {
   },
 }
 &lt;/script>
+&lt;style scoped lang="scss">
+.item {
+  background: yellowgreen;
+  flex: 0 0 50%;
+  @include respond(tab-land) {
+    flex: 0 0 100% ;
+    margin: 1rem 0 1rem 0;
+  }
+}
+&lt;/style>
 </pre>
     </article>
 </section>

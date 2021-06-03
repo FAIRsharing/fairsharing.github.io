@@ -259,7 +259,6 @@
         item-text="name"
         item-value="name"
         outlined
-        :onclose="deprecationStatusCheck()"
       >
         <!-- autocomplete selected -->
         <template #selection="data">
@@ -392,13 +391,6 @@
               return false;
             }
             return !_module.user().is_curator;
-          },
-          deprecationStatusCheck(){
-            if (this.fields.metadata.status !== 'deprecated') {
-              if (this.fields.metadata.deprecation_reason && this.fields.metadata.deprecation_reason.trim().length ) {
-                this.fields.metadata.deprecation_reason = null;
-              }
-            }
           }
         }
     }

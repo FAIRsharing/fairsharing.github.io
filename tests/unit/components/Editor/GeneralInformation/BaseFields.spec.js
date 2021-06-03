@@ -70,15 +70,4 @@ describe('Editor -> BaseFields.vue', () => {
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);
     });
 
-    it("resets deprecation_reason on status change", () => {
-        recordStore.state.sections.generalInformation.data.metadata.deprecation_reason = "this should be deleted";
-        recordStore.state.sections.generalInformation.data.metadata.status = "ready";
-        wrapper.vm.deprecationStatusCheck();
-        expect(recordStore.state.sections.generalInformation.data.metadata.deprecation_reason).toBe(null);
-        recordStore.state.sections.generalInformation.data.metadata.deprecation_reason = "this should not be deleted";
-        recordStore.state.sections.generalInformation.data.metadata.status = "deprecated";
-        wrapper.vm.deprecationStatusCheck();
-        expect(recordStore.state.sections.generalInformation.data.metadata.deprecation_reason).toEqual("this should not be deleted");
-    });
-
 });

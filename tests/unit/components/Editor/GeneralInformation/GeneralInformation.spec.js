@@ -175,12 +175,18 @@ describe("Edit -> GeneralInformation.vue", function() {
             registry: "test",
             name: "none"
         });
+        wrapper.vm.currentFields.metadata.deprecation_reason = "should be deleted" // non-deprecated records should delete this
         await wrapper.vm.saveRecord(true);
         expect($router.push).toHaveBeenCalledWith({path: "/123"});
         expect($router.push).toHaveBeenCalledTimes(1);
+        expect(wrapper.vm.currentFields.metadata.deprecation_reason).toEqual("");
+        wrapper.vm.currentFields.status = "deprecated"
+        wrapper.vm.currentFields.metadata.deprecation_reason = "should not be deleted" // now it's deprecated this should remain
+        await wrapper.vm.saveRecord(true);
+        expect(wrapper.vm.currentFields.metadata.deprecation_reason).toEqual("should not be deleted");
         wrapper.vm.currentFields.type = {id: 789};
         await wrapper.vm.saveRecord(false);
-        expect($router.push).toHaveBeenCalledTimes(1);
+        expect($router.push).toHaveBeenCalledTimes(2);
         tagStub.restore();
         postStub.restore();
         jest.clearAllMocks();

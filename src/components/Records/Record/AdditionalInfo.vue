@@ -49,7 +49,7 @@
     </div>
     <!--  access_points  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.access_points && getField('metadata').access_points && Object.keys(getField('metadata').access_points).length && checkDataAvailableCurrentRecord(getField('metadata').access_points)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.access_points && getField('metadata').access_points && checkDataAvailableCurrentRecord(getField('metadata').access_points)"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Access Points</b>
@@ -116,10 +116,9 @@
         <v-divider v-if="getField('metadata').access_points.length-1!==index" />
       </div>
     </div>
-
     <!--  dataset_curation  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_curation && Object.keys(getField('metadata').dataset_curation).length && getField('metadata').dataset_curation && checkDataAvailableCurrentRecord(getField('metadata').dataset_curation)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_curation && getField('metadata').dataset_curation && checkDataAvailableCurrentRecord(getField('metadata').dataset_curation)"
       class="pa-4 data-holder mb-4"
     >
       <b class="text-h6">Dataset Curation</b>
@@ -152,7 +151,7 @@
     </div>
     <!--  dataset_deposition  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_deposition && Object.keys(getField('metadata').dataset_deposition).length && getField('metadata').dataset_deposition && checkDataAvailableCurrentRecord(getField('metadata').dataset_deposition)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_deposition && getField('metadata').dataset_deposition && checkDataAvailableCurrentRecord(getField('metadata').dataset_deposition)"
       class="pa-4 data-holder mb-4"
     >
       <b class="text-h6">Dataset Deposition</b>
@@ -185,7 +184,7 @@
     </div>
     <!--  data_access_condition  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_access_condition && Object.keys(getField('metadata').data_access_condition).length && getField('metadata').data_access_condition && checkDataAvailableCurrentRecord(getField('metadata').data_access_condition)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_access_condition && getField('metadata').data_access_condition && checkDataAvailableCurrentRecord(getField('metadata').data_access_condition)"
       class="pa-4 data-holder mb-4"
     >
       <b class="text-h6">Data Access Condition</b>
@@ -218,7 +217,7 @@
     </div>
     <!--  dataset_sustainability  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_sustainability && Object.keys(getField('metadata').dataset_sustainability).length && getField('metadata').dataset_sustainability && checkDataAvailableCurrentRecord(getField('metadata').dataset_sustainability)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_sustainability && getField('metadata').dataset_sustainability && checkDataAvailableCurrentRecord(getField('metadata').dataset_sustainability)"
       class="pa-4 data-holder mb-4"
     >
       <b class="text-h6">Dataset Sustainability</b>
@@ -251,7 +250,7 @@
     </div>
     <!--  community_certification  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.community_certification && Object.keys(getField('metadata').community_certification).length && getField('metadata').community_certification && checkDataAvailableCurrentRecord(getField('metadata').community_certification)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.community_certification && getField('metadata').community_certification && checkDataAvailableCurrentRecord(getField('metadata').community_certification)"
       class="pa-4 data-holder"
     >
       <b class="text-h6">Community Certification</b>
@@ -284,7 +283,7 @@
     </div>
     <!--  cos_top_guidelines  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cos_top_guidelines && getField('metadata').cos_top_guidelines && Object.keys(getField('metadata').cos_top_guidelines).length && checkDataAvailableCurrentRecord(getField('metadata').cos_top_guidelines)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cos_top_guidelines && getField('metadata').cos_top_guidelines && checkDataAvailableCurrentRecord(getField('metadata').cos_top_guidelines)"
       class="d-flex pa-4 data-holder flex-column mt-4 min-height-40"
     >
       <div
@@ -315,7 +314,7 @@
     </div>
     <!--  cross_references  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references && getField('metadata').cross_references && Object.keys(getField('metadata').cross_references).length && checkDataAvailableCurrentRecord(getField('metadata').cross_references)"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references && getField('metadata').cross_references && checkDataAvailableCurrentRecord(getField('metadata').cross_references)"
       class="pa-4 mt-4 data-holder"
     >
       <b class="text-h6">Cross References</b>

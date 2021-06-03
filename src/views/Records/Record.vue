@@ -121,45 +121,28 @@
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
-
+        <!-- Dynamic Block -->
         <v-row no-gutters>
-          <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!-- COLLECTIONS -->
-            <Collections
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            <!-- SUPPORT -->
-            <Support
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            <!-- Data Conditions -->
-            <DataConditions
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-4"
+            <!--Left Block-->
+            <component
+              :is="block"
+              v-for="(block,index) in currentDynamicBlock.leftBlock"
+              :key="block"
+              :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
             />
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!-- Related Content -->
-            <RelatedContent
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            <!-- Tools -->
-            <Tools
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            <!-- Organisations -->
-            <Organisations
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-6 mb-sm-4 "
+            <component
+              :is="block"
+              v-for="(block,index) in currentDynamicBlock.rightBlock"
+              :key="block"
+              :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
             />
           </v-col>
         </v-row>
+
         <!-- Bottom Block -->
         <Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
@@ -301,6 +284,19 @@ export default {
     getTitle() {
       return 'FAIRsharing | ' + this.currentRoute;
     },
+    currentDynamicBlock() {
+      if (this.$vuetify.breakpoint.name === 'md') {
+        return {
+          leftBlock: ["Collections", "RelatedContent", "Support"],
+          rightBlock: ["DataConditions", "Tools", "Organisations"]
+        }
+      } else {
+        return {
+          leftBlock: ["Collections", "Support", "DataConditions"],
+          rightBlock: ["RelatedContent", "Tools", "Organisations"]
+        }
+      }
+    }
   },
   watch: {
     async currentRoute() {

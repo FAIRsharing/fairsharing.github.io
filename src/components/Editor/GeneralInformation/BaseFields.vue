@@ -396,7 +396,6 @@
           deprecationStatusCheck(){
             if (this.fields.metadata.status !== 'deprecated') {
               if (this.fields.metadata.deprecation_reason && this.fields.metadata.deprecation_reason.trim().length ) {
-                console.log("Checking deprecation!");
                 this.fields.metadata.deprecation_reason = null;
               }
             }

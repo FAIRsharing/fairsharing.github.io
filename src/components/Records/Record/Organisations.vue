@@ -44,6 +44,24 @@
                 class="underline-effect"
               >
                 {{ organisationLink.organisation.name }}
+                <v-tooltip
+                  bottom
+                >
+                  <template #activator="{ on }">
+                    <v-chip
+                      v-if="organisationLink.isLead"
+                      class="ma-2"
+                      color="primary"
+                      label
+                      x-small
+                      v-on="on"
+                    >
+                      Lead
+
+                    </v-chip>
+                  </template>
+                  <span>This is a leading organisation in relation to this resource</span>
+                </v-tooltip>
               </a>
               <p
                 v-if="organisationLink.organisation.types.length > 0 && !organisationLink.organisation.types.includes('Undefined')"

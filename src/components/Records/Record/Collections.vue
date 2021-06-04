@@ -70,37 +70,42 @@
             class="ma-4 overflow-x-hidden"
           >
             <template #default="{ item,index }">
-              <v-card
-                :key="item.id + '_' + index"
-                class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
-                flat
-                outlined
+              <router-link
+                :to="'/'+item.id"
+                @click.native="()=>$scrollTo('body',0,{})"
               >
-                <div class="d-flex align-center">
-                  <record-status
-                    :record="item"
-                    :show-status="false"
-                  />
-                  <div class="ml-10 text-ellipses-height-2lines line-height-20">
-                    {{ item.name }}
+                <v-card
+                  :key="item.id + '_' + index"
+                  class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
+                  flat
+                  outlined
+                >
+                  <div class="d-flex align-center">
+                    <record-status
+                      :record="item"
+                      :show-status="false"
+                    />
+                    <div class="ml-10 underline-effect text-ellipses-height-2lines line-height-20">
+                      {{ item.name }}
+                    </div>
                   </div>
-                </div>
-                <p class="grey--text  relation-style text-ellipses-height-2lines line-height-14 pr-5">
-                  {{ item.name }}
-                  <v-tooltip top>
-                    <template #activator="{ on }">
-                      <span
-                        class="red--text mouse-info"
-                        v-on="on"
-                      >
-                        {{ item.recordAssocLabel }}
-                      </span>
-                    </template>
-                    <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
-                  </v-tooltip>
-                  {{ item.subject }}
-                </p>
-              </v-card>
+                  <p class="grey--text  relation-style text-ellipses-height-2lines line-height-14 pr-5">
+                    {{ item.name }}
+                    <v-tooltip top>
+                      <template #activator="{ on }">
+                        <span
+                          class="red--text mouse-info"
+                          v-on="on"
+                        >
+                          {{ item.recordAssocLabel }}
+                        </span>
+                      </template>
+                      <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
+                    </v-tooltip>
+                    {{ item.subject }}
+                  </p>
+                </v-card>
+              </router-link>
             </template>
           </v-virtual-scroll>
         </v-tab-item>

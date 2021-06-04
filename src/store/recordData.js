@@ -394,6 +394,16 @@ let recordStore = {
             };
             options.fields.forEach(field => {
                 if (state.sections.additionalInformation.data[field]) {
+                    Object.keys(state.sections.additionalInformation.data[field]).forEach(key => {
+                        if (state.sections.additionalInformation.data[field][key] === "") {
+                            delete state.sections.additionalInformation.data[field][key]
+                        }
+                    })
+                    newRecord.metadata[field] = state.sections.additionalInformation.data[field]
+                }
+                else if (state.sections.additionalInformation.data[field] === null) {
+                    // if its the case that there is a single string textInput only
+                    state.sections.additionalInformation.data[field] = "";
                     newRecord.metadata[field] = state.sections.additionalInformation.data[field]
                 }
             });

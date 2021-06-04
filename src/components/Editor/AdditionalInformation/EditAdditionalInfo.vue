@@ -332,7 +332,6 @@ export default {
           }
         });
       }
-      console.log(JSON.stringify(output));
       return output;
     },
     isRequired(fieldName, propName) {
@@ -405,15 +404,13 @@ export default {
       return fieldsNull === Object.entries(this.overlay.fields).length;
     },
     rules(fieldName, required){
-      console.log("REQUIRED: " + required);
       let rules = [];
       if (this.overlay.template[fieldName].format && this.overlay.template[fieldName].format === 'uri') {
         rules.push(isUrl());
       }
-      if (required.indexOf(fieldName) > -1) {
+      if (required && required.indexOf(fieldName) > -1) {
         rules.push(this.isRequired());
       }
-      console.log("RULES: " + JSON.stringify(rules));
       return rules;
     },
     async saveRecord(redirect){

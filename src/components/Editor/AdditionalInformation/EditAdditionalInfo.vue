@@ -29,7 +29,10 @@
                       small
                       class="blue--text white ml-2 iconReposition"
                       v-on="on"
-                      @click="createItem(fieldName, allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].properties)"
+                      @click="createItem(fieldName,
+                                         allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].properties,
+                                         allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].required || []
+                      )"
                     >
                       fas fa-plus-circle
                     </v-icon>
@@ -125,6 +128,7 @@
                     :field-props="prop"
                     :subfield-name="propName"
                   />
+                  <!-- put required in the input above -->
                 </v-card-text>
               </v-card>
             </v-col>
@@ -219,7 +223,7 @@
                 :label="fieldName"
                 outlined
                 class="field"
-                :rules="rules(fieldName)"
+                :rules="rules(fieldName, overlay.required)"
               />
               <v-autocomplete
                 v-else
@@ -314,6 +318,7 @@ export default {
       let output = {};
       if (this.allowedFields && this.allowedFields.properties){
         Object.keys(this.allowedFields.properties).forEach((fieldName) => {
+
           if (this.allowedFields.properties[fieldName].type === type
           && !this.allowedFields.properties[fieldName].enum) {
             output[fieldName] = this.allowedFields.properties[fieldName]
@@ -327,7 +332,18 @@ export default {
           }
         });
       }
+      console.log(JSON.stringify(output));
       return output;
+    },
+    isRequired(fieldName, propName) {
+      if (this.allowedFields.properties[fieldName] && this.allowedFields.properties[fieldName].items) {
+        let property = this.allowedFields.properties[fieldName].items.$ref.replace('#/definitions/', '');
+        let required = this.allowedFields.definitions[property].required;
+        if (required.indexOf(propName) > -1) {
+          return true;
+        }
+      }
+      return false;
     },
     showOverlay(id, fieldName, item, template){
       this.overlay = {
@@ -347,12 +363,13 @@ export default {
         template: null
       }
     },
-    createItem(fieldName, template){
+    createItem(fieldName, template, required){
       this.overlay = {
         show: true,
         id: null,
         fieldName,
         template,
+        required,
         fields: {}
       };
       Object.keys(template).forEach(field => {
@@ -370,6 +387,7 @@ export default {
         id: null,
         fieldName: null,
         fields: null,
+        required: null,
         template: null
       }
     },
@@ -386,11 +404,17 @@ export default {
       }});
       return fieldsNull === Object.entries(this.overlay.fields).length;
     },
-    rules(fieldName){
+    rules(fieldName, required){
+      console.log("REQUIRED: " + required);
+      let rules = [];
       if (this.overlay.template[fieldName].format && this.overlay.template[fieldName].format === 'uri') {
-        return [isUrl()]
+        rules.push(isUrl());
       }
-      return []
+      if (required.indexOf(fieldName) > -1) {
+        rules.push(this.isRequired());
+      }
+      console.log("RULES: " + JSON.stringify(rules));
+      return rules;
     },
     async saveRecord(redirect){
       this.saving = true;

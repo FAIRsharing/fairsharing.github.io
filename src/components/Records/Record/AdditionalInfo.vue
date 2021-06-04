@@ -50,7 +50,7 @@
     <!--  access_points  -->
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.access_points && getField('metadata').access_points && checkDataAvailableCurrentRecord(getField('metadata').access_points)"
-      class="pa-4 mt-4 data-holder"
+      class="pa-4 data-holder mb-4"
     >
       <b class="text-h6">Access Points</b>
       <div

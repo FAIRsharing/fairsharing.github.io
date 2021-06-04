@@ -163,37 +163,42 @@
             class="ma-4 overflow-x-hidden"
           >
             &lt;template #default="{ item,index }">
-              &lt;v-card
-                :key="item.id + '_' + index"
-                class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
-                flat
-                outlined
+              &lt;router-link
+                :to="'/'+item.id"
+                @click.native="()=>$scrollTo('body',0,{})"
               >
-                &lt;div class="d-flex align-center">
-                  &lt;record-status
-                    :record="item"
-                    :show-status="false"
-                  />
-                  &lt;div class="ml-10 text-ellipses-height-2lines line-height-20">
-                    {{ item.name }}
+                &lt;v-card
+                  :key="item.id + '_' + index"
+                  class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
+                  flat
+                  outlined
+                >
+                  &lt;div class="d-flex align-center">
+                    &lt;record-status
+                      :record="item"
+                      :show-status="false"
+                    />
+                    &lt;div class="ml-10 underline-effect text-ellipses-height-2lines line-height-20">
+                      {{ item.name }}
+                    &lt;/div>
                   &lt;/div>
-                &lt;/div>
-                &lt;p class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5">
-                  {{ item.linkType==='fairsharingRecord'? item.name : item.subject }}
-                  &lt;v-tooltip top>
-                    &lt;template #activator="{ on }">
-                      &lt;span
-                        class="red--text mouse-info"
-                        v-on="on"
-                      >
-                        {{ item.recordAssocLabel }}
-                      &lt;/span>
-                    &lt;/template>
-                    &lt;span>{{ relationDefinition[item.recordAssocLabel] }}&lt;/span>
-                  &lt;/v-tooltip>
-                  {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
-                &lt;/p>
-              &lt;/v-card>
+                  &lt;p class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5">
+                    {{ item.linkType==='fairsharingRecord'? item.name : item.subject }}
+                    &lt;v-tooltip top>
+                      &lt;template #activator="{ on }">
+                        &lt;span
+                          class="red--text mouse-info"
+                          v-on="on"
+                        >
+                          {{ item.recordAssocLabel }}
+                        &lt;/span>
+                      &lt;/template>
+                      &lt;span>{{ relationDefinition[item.recordAssocLabel] }}&lt;/span>
+                    &lt;/v-tooltip>
+                    {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
+                  &lt;/p>
+                &lt;/v-card>
+              &lt;/router-link>.
             &lt;/template>
           &lt;/v-virtual-scroll>
         &lt;/v-tab-item>
@@ -258,28 +263,6 @@ export default {
   }
 }
 &lt;/script>
-
-&lt;style scoped lang="scss">
-a {
-  text-decoration: none;
-
-  &amp;:hover, &amp;:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
-}
-
-.filterValueName {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  flex: 1;
-}
-
-.mt-1-pt {
-  margin-top: 1pt;
-}
-&lt;/style>
 </pre>
     </article>
 </section>

@@ -10,7 +10,7 @@
         <v-chip
           v-for="item in getField('taxonomies')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
           text-color="white"
         >
@@ -31,7 +31,7 @@
         <v-chip
           v-for="item in getField('subjects')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
           text-color="white"
         >
@@ -52,7 +52,7 @@
         <v-chip
           v-for="item in getField('domains')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           text-color="white"
           :color="getChipColor(item)"
         >
@@ -73,7 +73,7 @@
         <v-chip
           v-for="item in getField('userDefinedTags')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           text-color="white"
           :color="getChipColor(item)"
         >

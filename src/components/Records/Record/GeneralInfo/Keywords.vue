@@ -32,8 +32,8 @@
           v-for="item in getField('domains')"
           :key="item.label"
           class="mr-2 mb-2 text-capitalize"
-          text-color="white"
           :color="getChipColor(item)"
+          text-color="white"
         >
           <KeywordTooltip
             :keyword="item"
@@ -53,8 +53,8 @@
           v-for="item in getField('taxonomies')"
           :key="item.label"
           class="mr-2 mb-2 text-capitalize"
-          :color="getChipColor(item)"
           text-color="white"
+          :color="getChipColor(item)"
         >
           <KeywordTooltip
             :keyword="item"

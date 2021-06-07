@@ -25,13 +25,13 @@
       <ReferenceURL v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
       <!--Year of Creation-->
       <YearOfCreation />
-      <!--Developed Countries-->
-      <Countries />
       <!--Maintainers-->
       <Maintainers
         :can-claim="canClaim"
         @requestOwnership="callRequestOwnership"
       />
+      <!--Developed Countries-->
+      <Countries />
       <!--Keywords-->
       <Keywords />
       <!--How to cite & publication for record named Citations-->

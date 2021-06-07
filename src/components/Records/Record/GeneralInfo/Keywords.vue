@@ -8,15 +8,15 @@
           None
         </span>
         <v-chip
-            v-for="item in getField('domains')"
-            :key="item.label"
-            class="mr-2 mb-2"
-            text-color="white"
-            :color="getChipColor(item)"
+          v-for="item in getField('domains')"
+          :key="item.label"
+          class="mr-2 mb-2"
+          text-color="white"
+          :color="getChipColor(item)"
         >
           <KeywordTooltip
-              :keyword="item"
-              :full-width="true"
+            :keyword="item"
+            :full-width="true"
           />
         </v-chip>
       </div>
@@ -29,15 +29,15 @@
           None
         </span>
         <v-chip
-            v-for="item in getField('subjects')"
-            :key="item.label"
-            class="mr-2 mb-2"
-            :color="getChipColor(item)"
-            text-color="white"
+          v-for="item in getField('subjects')"
+          :key="item.label"
+          class="mr-2 mb-2"
+          :color="getChipColor(item)"
+          text-color="white"
         >
           <KeywordTooltip
-              :keyword="item"
-              :full-width="true"
+            :keyword="item"
+            :full-width="true"
           />
         </v-chip>
       </div>

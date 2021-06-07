@@ -224,6 +224,10 @@ const customIcons  = {
         home_policies: {
             type: "img",
             icon: "assets/Home/BlockInfo/home-policies.svg"
+        },
+        schema_file: {
+            type: "icon",
+            icon: "fa fa-file-alt"
         }
     },
     iconfont: 'fa'

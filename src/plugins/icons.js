@@ -224,7 +224,11 @@ const customIcons  = {
         home_policies: {
             type: "img",
             icon: "assets/Home/BlockInfo/home-policies.svg"
-        }
+        },
+        other: {
+            type: "icon",
+            icon: "fa-ellipsis-h"
+        },
     },
     iconfont: 'fa'
 };

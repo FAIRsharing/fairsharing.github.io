@@ -282,7 +282,7 @@
             id: null,
             template: {
               type: null,
-              url: null,
+              url: {url: null},
               name: null
             }
           }

@@ -78,7 +78,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
            id: null,
            template: {
                type: null,
-               url: null,
+               url: {url: null},
                name: null
            }
        })

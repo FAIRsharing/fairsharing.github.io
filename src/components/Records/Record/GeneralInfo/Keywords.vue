@@ -1,27 +1,6 @@
 <template>
   <div>
-    <!--Taxonomic Range-->
-    <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-200">Taxonomic Range</b>
-      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-        <span v-if="!getField('taxonomies').length">
-          None
-        </span>
-        <v-chip
-          v-for="item in getField('taxonomies')"
-          :key="item.label"
-          class="mr-2 mb-2 text-capitalize"
-          :color="getChipColor(item)"
-          text-color="white"
-        >
-          <KeywordTooltip
-            :keyword="item"
-            :full-width="true"
-          />
-        </v-chip>
-      </div>
-    </div>
-    <!--Subjects-->
+    <!--Domains-->
     <div class="d-flex flex-row mt-4 min-height-40">
       <b class="width-200">Subjects</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
@@ -42,7 +21,7 @@
         </v-chip>
       </div>
     </div>
-    <!--Domains-->
+    <!--Subjects-->
     <div class="d-flex flex-row mt-4 min-height-40">
       <b class="width-200">Domains</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
@@ -55,6 +34,27 @@
           class="mr-2 mb-2 text-capitalize"
           text-color="white"
           :color="getChipColor(item)"
+        >
+          <KeywordTooltip
+            :keyword="item"
+            :full-width="true"
+          />
+        </v-chip>
+      </div>
+    </div>
+    <!--Taxonomic Range-->
+    <div class="d-flex flex-row mt-4 min-height-40">
+      <b class="width-200">Taxonomic Range</b>
+      <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
+        <span v-if="!getField('taxonomies').length">
+          None
+        </span>
+        <v-chip
+          v-for="item in getField('taxonomies')"
+          :key="item.label"
+          class="mr-2 mb-2 text-capitalize"
+          :color="getChipColor(item)"
+          text-color="white"
         >
           <KeywordTooltip
             :keyword="item"

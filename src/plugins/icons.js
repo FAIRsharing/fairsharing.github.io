@@ -225,10 +225,10 @@ const customIcons  = {
             type: "img",
             icon: "assets/Home/BlockInfo/home-policies.svg"
         },
-        schema_file: {
+        other: {
             type: "icon",
-            icon: "fa fa-file-alt"
-        }
+            icon: "fa-ellipsis-h"
+        },
     },
     iconfont: 'fa'
 };

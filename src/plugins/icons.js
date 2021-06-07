@@ -229,6 +229,10 @@ const customIcons  = {
             type: "icon",
             icon: "fa-ellipsis-h"
         },
+        schema_file: {
+            type: "icon",
+            icon: "fa fa-file-alt"
+        }
     },
     iconfont: 'fa'
 };

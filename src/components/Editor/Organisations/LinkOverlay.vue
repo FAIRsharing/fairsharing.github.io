@@ -389,11 +389,20 @@
           }
         },
         'editOrganisationLink.showOverlay': function() {
-          this.$nextTick(() => {this.$refs['editOrganisationLink'].validate()})
+            this.$nextTick(() => {
+              /* istanbul ignore next */
+              if (this.$refs['editOrganisationLink']) this.$refs['editOrganisationLink'].validate()
+            })
         },
         'menus.show': function(val){
-          if (val === 'grant') this.$nextTick(() => {this.$refs['createNewGrant'].validate()});
-          if (val === 'organisation') this.$nextTick(() => {this.$refs['createNewOrganisation'].validate()});
+          /* istanbul ignore next */
+          if (val === 'grant') this.$nextTick(() => {
+            if (this.$refs['createNewGrant']) this.$refs['createNewGrant'].validate();
+          });
+          /* istanbul ignore next */
+          if (val === 'organisation') this.$nextTick(() => {
+            if (this.$refs['createNewOrganisation']) this.$refs['createNewOrganisation'].validate();
+          });
         }
       },
       methods: {

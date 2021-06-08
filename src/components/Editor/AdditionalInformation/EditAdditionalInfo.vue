@@ -2,6 +2,7 @@
   <v-form
     id="editAdditionalInfo"
     ref="editAdditionalInfo"
+    v-model="formValid"
   >
     <v-card>
       <v-card-title class="blue white--text">
@@ -76,7 +77,10 @@
                           class="success"
                           fab
                           x-small
-                          @click="showOverlay(itemIndex, fieldName, item, allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].properties)"
+                          @click="showOverlay(itemIndex,
+                                              fieldName, item, allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].properties,
+                                              allowedFields.definitions[field.items.$ref.replace('#/definitions/', '')].required || []
+                          )"
                         >
                           <v-icon
                             x-small
@@ -173,6 +177,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
+          :disabled="!formValid"
           class="info"
           :loading="loading"
           @click="saveRecord(false)"
@@ -180,6 +185,7 @@
           Save and continue
         </v-btn>
         <v-btn
+          :disabled="!formValid"
           class="info"
           :loading="loading"
           @click="saveRecord(true)"
@@ -196,60 +202,67 @@
         :dark="false"
       >
         <v-card width="800px">
-          <v-card-title class="green white--text">
-            Edit {{ cleanString(overlay.fieldName) }} {{ overlay.id + 1 }}
-          </v-card-title>
-          <v-card-text class="pt-4">
-            <div
-              v-for="(field, fieldName, fieldIndex) in overlay.template"
-              :key="'templateField_' + fieldIndex"
-              class="d-flex flex-row reposition"
-            >
-              <v-tooltip
-                v-if="overlay.template[fieldName].description"
-                bottom
-                class="d-inline-block mr-2"
+          <v-form
+            id="editAdditionalInformationOverlay"
+            ref="editAdditionalInformationOverlay"
+            v-model="subFormValid"
+          >
+            <v-card-title class="green white--text">
+              Edit {{ cleanString(overlay.fieldName) }} {{ overlay.id + 1 }}
+            </v-card-title>
+            <v-card-text class="pt-4">
+              <div
+                v-for="(field, fieldName, fieldIndex) in overlay.template"
+                :key="'templateField_' + fieldIndex"
+                class="d-flex flex-row reposition"
               >
-                <template #activator="{ on }">
-                  <v-icon v-on="on">
-                    fa-question-circle
-                  </v-icon>
-                </template>
-                {{ overlay.template[fieldName].description }}
-              </v-tooltip>
-              <v-text-field
-                v-if="!field.enum"
-                v-model="overlay.fields[fieldName]"
-                :label="fieldName"
-                outlined
-                class="field"
-                :rules="rules(fieldName, overlay.required)"
-              />
-              <v-autocomplete
-                v-else
-                v-model="overlay.fields[fieldName]"
-                :label="fieldName"
-                outlined
-                :items="field.enum"
-                class="field"
-              />
-            </div>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              :disabled="isDisabled()"
-              class="success"
-              @click="addItem()"
-            >
-              Submit item
-            </v-btn>
-            <v-btn
-              class="error"
-              @click="hideOverlay()"
-            >
-              Cancel
-            </v-btn>
-          </v-card-actions>
+                <v-tooltip
+                  v-if="overlay.template[fieldName].description"
+                  bottom
+                  class="d-inline-block mr-2"
+                >
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ overlay.template[fieldName].description }}
+                </v-tooltip>
+                <v-text-field
+                  v-if="!field.enum"
+                  v-model="overlay.fields[fieldName]"
+                  :label="fieldName"
+                  outlined
+                  class="field"
+                  :rules="rules(fieldName, overlay.required)"
+                />
+                <v-autocomplete
+                  v-else
+                  v-model="overlay.fields[fieldName]"
+                  :label="fieldName"
+                  outlined
+                  :items="field.enum"
+                  class="field"
+                  :rules="rules(fieldName, overlay.required)"
+                />
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                :disabled="!subFormValid"
+                class="success"
+                @click="addItem()"
+              >
+                Submit item
+              </v-btn>
+              <v-btn
+                class="error"
+                @click="hideOverlay()"
+              >
+                Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-overlay>
     </v-fade-transition>
@@ -262,7 +275,7 @@ import { isEqual } from "lodash"
 import {mapActions, mapGetters, mapState, mapMutations} from "vuex";
 import stringUtils from '@/utils/stringUtils'
 import FieldInput from "./FieldInput";
-import { isUrl } from "@/utils/rules.js"
+import { isUrl, isRequired } from "@/utils/rules.js"
 import Alerts from "../Alerts";
 const diff = require("deep-object-diff").diff;
 
@@ -281,7 +294,9 @@ export default {
         fields: null,
         template: null
       },
-      saving: false
+      saving: false,
+      subFormValid: false,
+      formValid: false
     }
   },
   computed: {
@@ -311,6 +326,9 @@ export default {
       }
     }
   },
+  mounted(){
+    this.$nextTick(() => {this.$refs['editAdditionalInfo'].validate()});
+  },
   methods: {
     ...mapActions("record", ["updateAdditionalInformation"]),
     ...mapMutations("record", ["setAdditionalInformationSubField", "removeAdditionalInformationSubField"]),
@@ -334,24 +352,16 @@ export default {
       }
       return output;
     },
-    isRequired(fieldName, propName) {
-      if (this.allowedFields.properties[fieldName] && this.allowedFields.properties[fieldName].items) {
-        let property = this.allowedFields.properties[fieldName].items.$ref.replace('#/definitions/', '');
-        let required = this.allowedFields.definitions[property].required;
-        if (required.indexOf(propName) > -1) {
-          return true;
-        }
-      }
-      return false;
-    },
-    showOverlay(id, fieldName, item, template){
+    showOverlay(id, fieldName, item, template, required){
       this.overlay = {
         show: true,
         id,
         fieldName,
         template,
+        required,
         fields: JSON.parse(JSON.stringify(item))
-      }
+      };
+      this.$nextTick(() => {this.$refs['editAdditionalInformationOverlay'].validate()});
     },
     hideOverlay(){
       this.overlay = {
@@ -373,7 +383,8 @@ export default {
       };
       Object.keys(template).forEach(field => {
         Vue.set(this.overlay.fields, field, null)
-      })
+      });
+      this.$nextTick(() => {this.$refs['editAdditionalInformationOverlay'].validate()});
     },
     addItem(){
       this.setAdditionalInformationSubField({
@@ -396,20 +407,13 @@ export default {
         fieldName
       })
     },
-    isDisabled(){
-      let fieldsNull = 0;
-      Object.values(this.overlay.fields).forEach(obj => {if (obj === null) {
-        fieldsNull += 1;
-      }});
-      return fieldsNull === Object.entries(this.overlay.fields).length;
-    },
     rules(fieldName, required){
       let rules = [];
       if (this.overlay.template[fieldName].format && this.overlay.template[fieldName].format === 'uri') {
         rules.push(isUrl());
       }
       if (required && required.indexOf(fieldName) > -1) {
-        rules.push(this.isRequired());
+        rules.push(isRequired());
       }
       return rules;
     },

@@ -135,7 +135,7 @@
                 return this.cleanString(this.subfieldName);
             },
             rules() {
-              let rules = []
+              let rules = [];
               if (this.fieldProps.format === 'uri') {
                 rules.push(isUrl());
               }

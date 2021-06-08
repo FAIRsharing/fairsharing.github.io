@@ -68,6 +68,14 @@ let graphStub;
 let restStub;
 let fetchStub;
 
+const formValidation = {
+    render: () => {},
+    methods: {
+        validate: () => true,
+    },
+    data(){return {}}
+};
+
 const article = {
     "container-title-short": "Science",
     "DOI": "10.1126/science.2781282",
@@ -84,8 +92,7 @@ const article = {
             "family": "Baulieu"
         }
     ],
-}
-
+};
 
 describe("EditPublications.vue", function() {
     let wrapper;
@@ -102,7 +109,8 @@ describe("EditPublications.vue", function() {
             localVue,
             vuetify,
             router,
-            mocks: {$store, $route, $router}
+            mocks: {$store, $route, $router},
+            stubs: {'v-form': formValidation}
         });
     });
     afterEach( () => {
@@ -110,7 +118,7 @@ describe("EditPublications.vue", function() {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("EditPublications")
+        expect(wrapper.name()).toMatch("EditPublications");
         expect(wrapper.vm.section.data).toStrictEqual(recordStore.state.sections.publications.data);
         expect(wrapper.vm.metadata).toStrictEqual(recordStore.state.sections.generalInformation.data.metadata);
         expect(wrapper.vm.message.type()).toBe("success");

@@ -361,7 +361,10 @@ export default {
         required,
         fields: JSON.parse(JSON.stringify(item))
       };
-      this.$nextTick(() => {this.$refs['editAdditionalInformationOverlay'].validate()});
+      /* istanbul ignore next */
+      this.$nextTick(() => {
+        if(this.$refs['editAdditionalInformationOverlay']) this.$refs['editAdditionalInformationOverlay'].validate()}
+      );
     },
     hideOverlay(){
       this.overlay = {
@@ -384,7 +387,10 @@ export default {
       Object.keys(template).forEach(field => {
         Vue.set(this.overlay.fields, field, null)
       });
-      this.$nextTick(() => {this.$refs['editAdditionalInformationOverlay'].validate()});
+      /* istanbul ignore next */
+      this.$nextTick(() => {
+        if(this.$refs['editAdditionalInformationOverlay']) this.$refs['editAdditionalInformationOverlay'].validate()}
+      );
     },
     addItem(){
       this.setAdditionalInformationSubField({

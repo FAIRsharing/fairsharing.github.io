@@ -388,6 +388,13 @@
             reader.readAsDataURL(this.menus.newOrganisation.data.logo);
           }
         },
+        'editOrganisationLink.showOverlay': function() {
+          this.$nextTick(() => {this.$refs['editOrganisationLink'].validate()})
+        },
+        'menus.show': function(val){
+          if (val === 'grant') this.$nextTick(() => {this.$refs['createNewGrant'].validate()});
+          if (val === 'organisation') this.$nextTick(() => {this.$refs['createNewOrganisation'].validate()});
+        }
       },
       methods: {
         hideMenu(){

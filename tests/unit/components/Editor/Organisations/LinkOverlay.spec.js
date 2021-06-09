@@ -28,6 +28,13 @@ const $store = new Vuex.Store({
         users: userStore
     }
 });
+const formValidation = {
+    render: () => {},
+    methods: {
+        validate: () => true,
+    },
+    data(){return {}}
+};
 
 describe("Edit -> LinkOverlay.vue", function() {
     let wrapper;
@@ -37,7 +44,8 @@ describe("Edit -> LinkOverlay.vue", function() {
         wrapper = await shallowMount(LinkOverlay, {
             localVue,
             vuetify,
-            mocks: {$store}
+            mocks: {$store},
+            stubs: {'v-form': formValidation}
         });
     });
 
@@ -61,12 +69,11 @@ describe("Edit -> LinkOverlay.vue", function() {
     });
 
     it("can hide the menu", () => {
-       wrapper.vm.hideMenu();
+        wrapper.vm.hideMenu();
         expect(wrapper.vm.menus.show).toBe(false);
         expect(wrapper.vm.editOrganisationLink.data).toStrictEqual({});
         expect(wrapper.vm.editOrganisationLink.id).toBe(null);
         expect(wrapper.vm.editOrganisationLink.showOverlay).toBe(false);
-
     });
 
     it("can confirm the modifications", () => {

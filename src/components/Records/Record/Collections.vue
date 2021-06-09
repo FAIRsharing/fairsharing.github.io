@@ -7,7 +7,7 @@
     tile
     elevation="3"
   >
-    <SectionTitle title="In colledted" />
+    <SectionTitle title="Collections &amp; Recommendations" />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div class="d-flex flex-wrap mt-5">
         <!--  search autocomplete    -->

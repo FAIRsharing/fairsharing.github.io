@@ -9,6 +9,7 @@
         <NotFound />
       </div>
 
+
       <!--   Action Menu & Alert   -->
       <v-row
         v-if="!target && queryTriggered"
@@ -108,11 +109,13 @@
         </v-col>
       </v-row>
 
+      <!--  CuratorsNotes   -->
+      <CuratorNotes class="ma-4 mb-7" />
+
       <Tombstone
         v-if="currentRecord['fairsharingRecord'] && currentRecord['fairsharingRecord'].metadata.tombstone"
         :record="currentRecord['fairsharingRecord']"
       />
-
       <!--  Content  -->
       <div v-if="currentRecord['fairsharingRecord'] && !error && !currentRecord['fairsharingRecord'].metadata.tombstone">
         <!-- Top Block -->
@@ -221,12 +224,14 @@ import Loaders from "@/components/Navigation/Loaders";
 import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
 import Tombstone from "../Errors/Tombstone";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
+import CuratorNotes from "@/components/Records/Record/CuratorNotes";
 
 const client = new RestClient();
 
 export default {
   name: "Record",
   components: {
+    CuratorNotes,
     AdditionalInfo,
     Tombstone,
     SearchCollection,

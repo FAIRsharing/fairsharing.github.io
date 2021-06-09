@@ -9,7 +9,9 @@
   >
     <!-- Curator Notes -->
     <SectionTitle title="Curator Notes" />
-    <p class="mt-2">{{ currentRecord['fairsharingRecord'].curatorNotes }}</p>
+    <p class="mt-2">
+      {{ currentRecord['fairsharingRecord'].curatorNotes }}
+    </p>
   </v-card>
 </template>
 

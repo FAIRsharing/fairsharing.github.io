@@ -161,7 +161,7 @@
             &lt;/v-snackbar>
           &lt;/div>
           &lt;div
-            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined &amp;&amp; !error"
             class="text-right"
           >
             &lt;v-menu

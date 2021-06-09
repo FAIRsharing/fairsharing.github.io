@@ -87,13 +87,13 @@ describe("RelatedContent.vue", function(){
         wrapper.vm.prepareTabsData();
         expect(wrapper.vm.tabsData.tabs['other_related_records'].data).toStrictEqual([
             {
-                "id": 4,
+                "id": 2,
                 "linkType": "linkedRecord",
-                "name": "a name 4",
-                "recordAssocLabel": "collects",
-                "registry": "Collection",
+                "name": "b name",
+                "recordAssocLabel": "related to",
+                "registry": "Policy",
                 "subject": "standard",
-                "type": "collection"
+                "type": "repository"
             }
         ])
     });

@@ -388,6 +388,22 @@
             reader.readAsDataURL(this.menus.newOrganisation.data.logo);
           }
         },
+        'editOrganisationLink.showOverlay': function() {
+            this.$nextTick(() => {
+              /* istanbul ignore next */
+              if (this.$refs['editOrganisationLink']) this.$refs['editOrganisationLink'].validate()
+            })
+        },
+        'menus.show': function(val){
+          /* istanbul ignore next */
+          if (val === 'grant') this.$nextTick(() => {
+            if (this.$refs['createNewGrant']) this.$refs['createNewGrant'].validate();
+          });
+          /* istanbul ignore next */
+          if (val === 'organisation') this.$nextTick(() => {
+            if (this.$refs['createNewOrganisation']) this.$refs['createNewOrganisation'].validate();
+          });
+        }
       },
       methods: {
         hideMenu(){

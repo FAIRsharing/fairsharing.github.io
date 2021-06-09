@@ -158,7 +158,7 @@ export default {
           }
           else {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && item.linkType !=='fairsharingRecord' && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && item.linkType !=='fairsharingRecord' && _module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
           }
           _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
         });

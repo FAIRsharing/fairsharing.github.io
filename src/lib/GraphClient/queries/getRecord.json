@@ -17,6 +17,7 @@
     "schemaOrg",
     "isHidden",
     "isApproved",
+    "curatorNotes",
     {
       "name": "lastEditor",
       "fields": [

@@ -79,7 +79,8 @@
                     {{ $vuetify.breakpoint.lgAndUp?truncate(publication.authors,100):truncate(publication.authors,30) }}
                     ({{ publication.year }})
                     <a
-                      :href="'https://pubmed.ncbi.nlm.nih.gov/' + citation.pubmed_id"
+                      v-if="citation.pubmed_id"
+                      :href="`https://pubmed.ncbi.nlm.nih.gov/${citation.pubmed_id}`"
                       target="_blank"
                     >
                       {{ citation.doi }}

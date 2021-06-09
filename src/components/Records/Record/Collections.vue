@@ -7,7 +7,7 @@
     tile
     elevation="3"
   >
-    <SectionTitle title="Collections" />
+    <SectionTitle title="In colledted" />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div class="d-flex flex-wrap mt-5">
         <!--  search autocomplete    -->
@@ -136,8 +136,8 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          in_collections: {relation: 'collects', data: [], count:0},
-          in_recommendations: {relation: 'recommends', data: [], count:0},
+          collected_by: {relation: 'collects', data: [], count:0},
+          recommended_by: {relation: 'recommends', data: [], count:0},
         }
       }
     }

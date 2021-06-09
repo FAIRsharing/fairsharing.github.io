@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-alert type="warning">
       This record does not exist anymore: {{ record.name }}.
-      The record with identifier <b>{{ record.doi }}</b> was invalid.
+      The record with DOI <b>{{ record.doi }}</b> was invalid.
     </v-alert>
     <b class="pl-3">Description: </b> {{ record.description }}
   </v-container>

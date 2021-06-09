@@ -298,6 +298,137 @@
     "doi": "10.25504/FAIRsharing.9kahy4",
     "name": "GenBank",
     "status": "ready",
-    "contacts": [ { "contact_name": "NCBI Helpdesk", "contact_email": "info@ncbi.nlm.nih.gov" } ], "homepage": "https://www.ncbi.nlm.nih.gov/genbank/", "citations": [ { "doi": "10.1093/nar/gks1195", "pubmed_id": 23193287, "publication_id": 537 } ], "identifier": 1529, "description": "GenBank is the NIH genetic sequence database, an annotated collection of all publicly available DNA sequences. The complete release notes for the current version of GenBank are available on the NCBI ftp site. A new release is made every two months. GenBank growth statistics for both the traditional GenBank divisions and the WGS division are available from each release. GenBank is part of the International Nucleotide Sequence Database Collaboration (INSDC), which comprises the DNA DataBank of Japan (DDBJ), the European Molecular Biology Laboratory (EMBL), and GenBank at the NCBI. These three organizations exchange data on a daily basis.", "abbreviation": "GenBank", "support_links": [ { "url": "https://www.ncbi.nlm.nih.gov/books/NBK25501/", "name": "Entrez Programming Utilities Help", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/genbank/submit_types/", "name": "GenBank Submission Types", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/genbank/submit/", "name": "How to Submit", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/genbank/update/", "name": "Updating GenBank records", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/books/NBK53707/", "name": "GenBank Submissions Handbook", "type": "Help documentation" }, { "url": "https://www.ncbi.nlm.nih.gov/blast/producttable.shtml", "name": "Using BLAST at GenBank", "type": "Help documentation" }, { "url": "https://en.wikipedia.org/wiki/GenBank", "name": "Wikipedia Entry", "type": "Wikipedia" } ], "year_creation": 1982, "data_processes": [ { "name": "bimonthly release (as in every 2 months)", "type": "data release" }, { "name": "manual curation", "type": "data curation" }, { "name": "automated curation", "type": "data curation" }, { "name": "automated annotation", "type": "data curation" }, { "name": "current and historical archived versions are available for download", "type": "data versioning" }, { "url": "ftp://ftp.ncbi.nlm.nih.gov/genbank", "name": "Download (Flatfiles)", "type": "data access" }, { "url": "ftp://ftp.ncbi.nlm.nih.gov/ncbi-asn1", "name": "Download (ASN.1)", "type": "data release" }, { "url": "https://www.ncbi.nlm.nih.gov/nucleotide/", "name": "Search (Entrez Nucleotide)", "type": "data access" }, { "url": "https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank", "name": "Submit via BankIt", "type": "data curation" }, { "url": "https://submit.ncbi.nlm.nih.gov/", "name": "Submit via NCBI Submission Portal", "type": "data curation" }, { "url": "https://www.ncbi.nlm.nih.gov/blast", "name": "BLAST", "type": "data access" }, { "url": "https://www.ncbi.nlm.nih.gov/nuccore/advanced", "name": "Nucleotide Advanced Search Builder", "type": "data access" } ], "associated_tools": [ { "url": "https://www.ncbi.nlm.nih.gov/genbank/tbl2asn2/", "name": "tbl2asn2 Submission Tool" } ], "type": "repository", "dataset_metrics": {}, "dataset_curation": {}, "dataset_deposition": {}, "data_access_condition": {}, "dataset_sustainability": {}, "community_certification": {},
-    "dataset_pid": "yes", "dataset_citation": "yes", "dataset_contacts": "yes", "dataset_versioning": "yes", "dataset_prepubreview": "yes" }
+    "contacts": [
+      {
+        "contact_name": "NCBI Helpdesk",
+        "contact_email": "info@ncbi.nlm.nih.gov"
+      }
+    ],
+    "homepage": "https://www.ncbi.nlm.nih.gov/genbank/",
+    "citations": [
+      {
+        "doi": "10.1093/nar/gks1195",
+        "pubmed_id": 23193287,
+        "publication_id": 537
+      }
+    ],
+    "identifier": 1529,
+    "description": "GenBank is the NIH genetic sequence database, an annotated collection of all publicly available DNA sequences. The complete release notes for the current version of GenBank are available on the NCBI ftp site. A new release is made every two months. GenBank growth statistics for both the traditional GenBank divisions and the WGS division are available from each release. GenBank is part of the International Nucleotide Sequence Database Collaboration (INSDC), which comprises the DNA DataBank of Japan (DDBJ), the European Molecular Biology Laboratory (EMBL), and GenBank at the NCBI. These three organizations exchange data on a daily basis.",
+    "abbreviation": "GenBank",
+    "support_links": [
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK25501/",
+        "name": "Entrez Programming Utilities Help",
+        "type": "Help documentation"
+      },
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/genbank/submit_types/",
+        "name": "GenBank Submission Types",
+        "type": "Help documentation"
+      },
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/genbank/submit/",
+        "name": "How to Submit",
+        "type": "Help documentation"
+      },
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/genbank/update/",
+        "name": "Updating GenBank records",
+        "type": "Help documentation"
+      },
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/books/NBK53707/",
+        "name": "GenBank Submissions Handbook",
+        "type": "Help documentation"
+      },
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/blast/producttable.shtml",
+        "name": "Using BLAST at GenBank",
+        "type": "Help documentation"
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/GenBank",
+        "name": "Wikipedia Entry",
+        "type": "Wikipedia"
+      }
+    ],
+    "year_creation": 1982,
+    "data_processes": [
+      {
+        "name": "bimonthly release (as in every 2 months)",
+        "type": "data release"
+      },
+      {
+        "name": "manual curation",
+        "type": "data curation"
+      },
+      {
+        "name": "automated curation",
+        "type": "data curation"
+      },
+      {
+        "name": "automated annotation",
+        "type": "data curation"
+      },
+      {
+        "name": "current and historical archived versions are available for download",
+        "type": "data versioning"
+      },
+      {
+        "url": "ftp://ftp.ncbi.nlm.nih.gov/genbank",
+        "name": "Download (Flatfiles)",
+        "type": "data access"
+      },
+      {
+        "url": "ftp://ftp.ncbi.nlm.nih.gov/ncbi-asn1",
+        "name": "Download (ASN.1)",
+        "type": "data release"
+      },
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/nucleotide/",
+        "name": "Search (Entrez Nucleotide)",
+        "type": "data access"
+      },
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/WebSub/?tool=genbank",
+        "name": "Submit via BankIt",
+        "type": "data curation"
+      },
+      {
+        "url": "https://submit.ncbi.nlm.nih.gov/",
+        "name": "Submit via NCBI Submission Portal",
+        "type": "data curation"
+      },
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/blast",
+        "name": "BLAST",
+        "type": "data access"
+      },
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/nuccore/advanced",
+        "name": "Nucleotide Advanced Search Builder",
+        "type": "data access"
+      }
+    ],
+    "associated_tools": [
+      {
+        "url": "https://www.ncbi.nlm.nih.gov/genbank/tbl2asn2/",
+        "name": "tbl2asn2 Submission Tool"
+      }
+    ],
+    "type": "repository",
+    "dataset_metrics": {
+      "url": ""
+    },
+    "dataset_curation": {},
+    "dataset_deposition": {},
+    "data_access_condition": {},
+    "dataset_sustainability": {},
+    "community_certification": null,
+    "dataset_pid": "yes",
+    "dataset_citation": "yes",
+    "dataset_contacts": "yes",
+    "dataset_versioning": "yes",
+    "dataset_prepubreview": "yes"
+  }
 }

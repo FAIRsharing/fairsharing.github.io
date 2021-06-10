@@ -1,81 +1,175 @@
-<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-main>
-    <v-container
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: views/Records/Record.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: views/Records/Record.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+  &lt;v-main>
+    &lt;v-container
       v-if="queryTriggered"
       fluid
     >
-      <!--   error   -->
-      <div v-if="error">
-        <NotFound />
-      </div>
+      &lt;!--   error   -->
+      &lt;div v-if="error">
+        &lt;NotFound />
+      &lt;/div>
 
-      <!--   Action Menu & Alert   -->
-      <v-row
-        v-if="!target && queryTriggered"
+
+      &lt;!--   Action Menu &amp; Alert   -->
+      &lt;v-row
+        v-if="!target &amp;&amp; queryTriggered"
         class="mx-1"
       >
-        <v-col
+        &lt;v-col
           cols="12"
         >
-          <v-alert
-            v-if="!currentRecord.fairsharingRecord['isApproved'] && !error"
+          &lt;v-alert
+            v-if="!currentRecord.fairsharingRecord['isApproved'] &amp;&amp; !error"
             dense
             type="info"
             class="mb-2 flex-grow-1"
           >
-            <span>This record is is awaiting review by FAIRsharing curators</span>
-          </v-alert>
+            &lt;span>This record is is awaiting review by FAIRsharing curators&lt;/span>
+          &lt;/v-alert>
 
-          <v-alert
+          &lt;v-alert
             v-if="isWatching()"
             dense
             type="info"
             class="mb-2 flex-grow-1"
           >
-            <span>You are watching this record for changes</span>
-          </v-alert>
+            &lt;span>You are watching this record for changes&lt;/span>
+          &lt;/v-alert>
 
-          <div
+          &lt;div
             v-if="alreadyClaimed || claimedTriggered || user().is_curator"
             class="d-flex flex-column"
           >
-            <v-alert
-              v-if="user().is_curator && currentRecord.fairsharingRecord['isHidden']"
+            &lt;v-alert
+              v-if="user().is_curator &amp;&amp; currentRecord.fairsharingRecord['isHidden']"
               dense
               type="info"
               class="mb-2 flex-grow-1"
             >
-              <span>This record is hidden!</span>
-            </v-alert>
+              &lt;span>This record is hidden!&lt;/span>
+            &lt;/v-alert>
 
 
 
-            <v-alert
+            &lt;v-alert
               v-if="alreadyClaimed"
               dense
               type="warning"
               class="mb-1 flex-grow-1"
             >
-              <span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.</span>
-            </v-alert>
-            <v-snackbar
+              &lt;span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.&lt;/span>
+            &lt;/v-alert>
+            &lt;v-snackbar
               v-model="claimedTriggered"
               color="success"
               class="text-body"
             >
               Thank you for claiming this record. We will be getting back to you between 48 and 72h.
-            </v-snackbar>
-          </div>
-          <div
-            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error"
+            &lt;/v-snackbar>
+          &lt;/div>
+          &lt;div
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined &amp;&amp; !error"
             class="text-right"
           >
-            <v-menu
+            &lt;v-menu
               offset-y
               :disabled="readOnlyMode"
             >
-              <template #activator="{ on, attrs }">
-                <v-btn
+              &lt;template #activator="{ on, attrs }">
+                &lt;v-btn
                   class="mt-1"
                   color="primary"
                   v-bind="attrs"
@@ -83,128 +177,128 @@
                   @click="getMenuButtons()"
                 >
                   Actions
-                  <v-icon
+                  &lt;v-icon
                     small
                     right
                   >
                     fa-chevron-down
-                  </v-icon>
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item
+                  &lt;/v-icon>
+                &lt;/v-btn>
+              &lt;/template>
+              &lt;v-list>
+                &lt;v-list-item
                   v-for="(button, index) in buttons"
                   :key="'button_' + index"
                   :disabled="button.isDisabled()"
                   @click="button.method()"
                 >
-                  <v-list-item-title>
+                  &lt;v-list-item-title>
                     {{ button.name() }}
-                  </v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </div>
-        </v-col>
-      </v-row>
+                  &lt;/v-list-item-title>
+                &lt;/v-list-item>
+              &lt;/v-list>
+            &lt;/v-menu>
+          &lt;/div>
+        &lt;/v-col>
+      &lt;/v-row>
 
-      <!--  CuratorsNotes   -->
-      <CuratorNotes class="ma-4 mb-7" />
+      &lt;!--  CuratorsNotes   -->
+      &lt;CuratorNotes class="ma-4 mb-7" />
 
-      <Tombstone
-        v-if="currentRecord['fairsharingRecord'] && currentRecord['fairsharingRecord'].metadata.tombstone"
+      &lt;Tombstone
+        v-if="currentRecord['fairsharingRecord'] &amp;&amp; currentRecord['fairsharingRecord'].metadata.tombstone"
         :record="currentRecord['fairsharingRecord']"
       />
-      <!--  Content  -->
-      <div v-if="currentRecord['fairsharingRecord'] && !error && !currentRecord['fairsharingRecord'].metadata.tombstone">
-        <!-- Top Block -->
-        <GeneralInfo
+      &lt;!--  Content  -->
+      &lt;div v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error &amp;&amp; !currentRecord['fairsharingRecord'].metadata.tombstone">
+        &lt;!-- Top Block -->
+        &lt;GeneralInfo
           :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
-        <!-- Dynamic Block -->
-        <v-row no-gutters>
-          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!--Left Block-->
-            <component
+        &lt;!-- Dynamic Block -->
+        &lt;v-row no-gutters>
+          &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            &lt;!--Left Block-->
+            &lt;component
               :is="block"
               v-for="(block,index) in currentDynamicBlock.leftBlock"
               :key="block"
               :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
             />
-          </v-col>
-          <!--Right Block-->
-          <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <component
+          &lt;/v-col>
+          &lt;!--Right Block-->
+          &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
+            &lt;component
               :is="block"
               v-for="(block,index) in currentDynamicBlock.rightBlock"
               :key="block"
               :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
             />
-          </v-col>
-        </v-row>
+          &lt;/v-col>
+        &lt;/v-row>
 
-        <!-- Bottom Block -->
-        <Publications
+        &lt;!-- Bottom Block -->
+        &lt;Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
           class="mb-8 ma-4"
         />
-        <!-- Additional Information -->
-        <AdditionalInfo
+        &lt;!-- Additional Information -->
+        &lt;AdditionalInfo
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
           class="mb-8 ma-4"
         />
-        <!-- Search Collection -->
-        <SearchCollection
+        &lt;!-- Search Collection -->
+        &lt;SearchCollection
           v-if="currentRecord.fairsharingRecord.registry==='Collection'"
           class="mb-10 ma-4"
         />
-      </div>
-    </v-container>
-    <!-- This html is from a safe source -->
-    <!-- eslint-disable vue/no-v-html -->
-    <script
+      &lt;/div>
+    &lt;/v-container>
+    &lt;!-- This html is from a safe source -->
+    &lt;!-- eslint-disable vue/no-v-html -->
+    &lt;script
       type="application/ld+json"
       v-html="JSONLD"
     />
-    <v-dialog
+    &lt;v-dialog
       v-model="history.show"
       fullscreen
       class="pa-0"
       persistent
       no-click-animation
     >
-      <v-card>
-        <v-card-title
+      &lt;v-card>
+        &lt;v-card-title
           class="blue white--text pb-4"
           style="border-radius: 0 !important;"
         >
           {{ getField("name") }} history logs
-          <v-spacer />
-          <v-btn
+          &lt;v-spacer />
+          &lt;v-btn
             x-small
             fab
             @click="history.show = false"
           >
-            <v-icon> fa-times </v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-card-text class="pt-2">
-          <RecordHistory
+            &lt;v-icon> fa-times &lt;/v-icon>
+          &lt;/v-btn>
+        &lt;/v-card-title>
+        &lt;v-card-text class="pt-2">
+          &lt;RecordHistory
             v-if="!history.loading"
             :history="currentRecordHistory.history"
             :legacy-logs="currentRecordHistory.legacyLogs"
           />
-          <Loaders v-else />
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-    <!-- eslint-enable vue/no-v-html -->
-  </v-main>
-</template>
+          &lt;Loaders v-else />
+        &lt;/v-card-text>
+      &lt;/v-card>
+    &lt;/v-dialog>
+    &lt;!-- eslint-enable vue/no-v-html -->
+  &lt;/v-main>
+&lt;/template>
 
-<script>
+&lt;script>
 import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
 import Client from '@/lib/GraphClient/GraphClient.js'
 import RestClient from "@/lib/Client/RESTClient.js"
@@ -424,7 +518,7 @@ export default {
     },
     /**
      * Test if the current user can edit the current record
-     * @returns {Promise<void>}
+     * @returns {Promise&lt;void>}
      */
     async canEditRecord(){
       const _module = this;
@@ -438,7 +532,7 @@ export default {
     /**
      * Method to add or remove the current record to the list of watched records
      * @param watch
-     * @returns {Promise<void>}
+     * @returns {Promise&lt;void>}
      */
     async changeWatchRecord(watch) {
       const _module = this;
@@ -471,7 +565,7 @@ export default {
         return false;
       }
       return  this.currentRecord['fairsharingRecord'].id
-          && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
+          &amp;&amp; this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
     },
     /**
      * Method that builds and set the buttons of the action menu
@@ -586,4 +680,141 @@ export default {
     }
   },
 }
+&lt;/script>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
+	
+		on Thu Jun 10th 2021
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
 </script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

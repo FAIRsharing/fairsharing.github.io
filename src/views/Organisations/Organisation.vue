@@ -174,21 +174,21 @@
                       class="py-0 d-block"
                     >
                       <b class="blue--text">Associated countries: </b>
-                      <ul
-                        v-for="(country,index) in organisation.countries"
-                        :key="country.id"
-                      >
+                      <ul class="pl-0">
                         <li
-                          v-if="country.name"
-                          class="ma-0 mr-2"
+                          v-for="(country,index) in organisation.countries"
+                          :key="country.id+'_'+index"
+                          class="d-inline-block"
                         >
-                          {{ ` ${country.name}${index!==organisation.countries.length-1?',':''}` }}
-                        </li>
-                        <li
-                          v-else
-                          class="warning"
-                        >
-                          country code undefined!
+                          <p v-if="country.name">
+                            {{ ` ${country.name}${index!==organisation.countries.length-1?',':''}` }}
+                          </p>
+                          <p
+                            v-else
+                            class="warning"
+                          >
+                            country code undefined!
+                          </p>
                         </li>
                       </ul>
                     </v-list-item-content>

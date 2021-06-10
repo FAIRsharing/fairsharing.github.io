@@ -112,7 +112,7 @@
           cols="12"
         >
           &lt;v-alert
-            v-if="!currentRecord.fairsharingRecord['isApproved']"
+            v-if="!currentRecord.fairsharingRecord['isApproved'] &amp;&amp; !error"
             dense
             type="info"
             class="mb-2 flex-grow-1"
@@ -161,7 +161,7 @@
             &lt;/v-snackbar>
           &lt;/div>
           &lt;div
-            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined &amp;&amp; !error"
             class="text-right"
           >
             &lt;v-menu

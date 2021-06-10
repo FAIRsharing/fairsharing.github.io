@@ -19,7 +19,7 @@
           cols="12"
         >
           <v-alert
-            v-if="!currentRecord.fairsharingRecord['isApproved']"
+            v-if="!currentRecord.fairsharingRecord['isApproved'] && !error"
             dense
             type="info"
             class="mb-2 flex-grow-1"
@@ -68,7 +68,7 @@
             </v-snackbar>
           </div>
           <div
-            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error"
             class="text-right"
           >
             <v-menu

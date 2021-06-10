@@ -150,7 +150,6 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
-      console.log(_module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations))
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           if (tabName !== 'other_related_records') {
@@ -158,8 +157,11 @@ export default {
                 .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           }
           else {
-            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel))
+            const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) )
+            const reverseAssociation = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].reverseRecordAssociations, [])
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
+            _module.tabsData.tabs[tabName].data = reverseAssociation.concat(Association)
           }
           _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
         });

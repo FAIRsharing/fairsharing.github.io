@@ -4,7 +4,7 @@
     fluid
     class="standard grey lighten-3 pb-10"
   >
-    <div v-if="error">
+    <div v-if="error && !loading">
       <NotFound />
     </div>
     <v-row v-else>

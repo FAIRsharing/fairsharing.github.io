@@ -39,7 +39,7 @@
               outlined
             >
               <a
-                :href="organisationLink.organisation.homepage"
+                :href="'/#/organisations/' + organisationLink.organisation.id"
                 target="_blank"
                 class="underline-effect"
               >

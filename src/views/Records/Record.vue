@@ -9,7 +9,6 @@
         <NotFound />
       </div>
 
-
       <!--   Action Menu & Alert   -->
       <v-row
         v-if="!target && queryTriggered"

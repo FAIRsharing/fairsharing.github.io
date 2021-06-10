@@ -136,9 +136,9 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {relation: ["collects","recommends"], registry: ["Standard"], data: [], count:0},
-          related_databases: {relation: ["collects","recommends"], registry: ["Database"], data: [], count:0},
-          other_related_records: {relation: ["collects","recommends"], registry: ["Collection","Policy"], data: [],count:0},
+          related_standards: {registry: ["Standard"], data: [], count:0},
+          related_databases: {registry: ["Database"], data: [], count:0},
+          other_related_records: {relation:["collects","recommends"],registry: ["Collection","Policy"], data: [],count:0},
         }
       }
     }
@@ -154,11 +154,14 @@ export default {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           if (tabName !== 'other_related_records') {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel))
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           }
           else {
-            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && item.linkType !=='fairsharingRecord' && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
+            const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) )
+            const reverseAssociation = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].reverseRecordAssociations, [])
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
+            _module.tabsData.tabs[tabName].data = reverseAssociation.concat(Association)
           }
           _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
         });

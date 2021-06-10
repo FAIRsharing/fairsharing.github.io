@@ -180,8 +180,11 @@
                           :key="country.id+'_'+index"
                           class="d-inline-block"
                         >
-                          <p v-if="country.name">
-                            {{ ` ${country.name}${index!==organisation.countries.length-1?',':''}` }}
+                          <p
+                            v-if="country.name"
+                            style="padding-right: 5px;"
+                          >
+                            {{ `${country.name}${index!==organisation.countries.length-1 ? ',' : ''}` }}
                           </p>
                           <p
                             v-else

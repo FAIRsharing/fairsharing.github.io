@@ -11,6 +11,14 @@
     "types",
     "urlForLogo",
     {
+      "name": "countries",
+      "fields": [
+        "name",
+        "id",
+        "code"
+      ]
+    },
+    {
       "name": "childOrganisations",
       "fields": [
         "id",

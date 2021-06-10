@@ -34,7 +34,7 @@
               </td>
               <td :class="section.color + ' lighten-2'">
                 <v-chip-group
-                  class="pl-2"
+                  class="pl-2 text-capitalize"
                   column
                 >
                   <v-chip
@@ -192,7 +192,7 @@
               <template #[`item.label`]="{ item }">
                 <v-chip
                   :class="colors[item.model]"
-                  class="white--text noBreak"
+                  class="white--text noBreak text-capitalize"
                 >
                   {{ item.label }}
                 </v-chip>
@@ -276,11 +276,6 @@
             ...mapState("record", ["sections"]),
             sections() {
                 return {
-                    domains: {
-                        items: this.getSection("generalInformation").data.domains,
-                        color: this.colors["domain"],
-                        tooltip: this.tooltips.domains
-                    },
                     "taxonomic range": {
                         items:this.getSection("generalInformation").data.taxonomies,
                         color: this.colors["taxonomy"],
@@ -290,6 +285,11 @@
                         items: this.getSection("generalInformation").data.subjects,
                         color: this.colors["subject"],
                         tooltip: this.tooltips.subjects
+                    },
+                    domains: {
+                      items: this.getSection("generalInformation").data.domains,
+                      color: this.colors["domain"],
+                      tooltip: this.tooltips.domains
                     },
                     "user defined tags": {
                         items: this.getSection("generalInformation").data.userDefinedTags,

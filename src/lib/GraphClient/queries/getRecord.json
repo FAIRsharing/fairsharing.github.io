@@ -18,6 +18,7 @@
     "isHidden",
     "isApproved",
     "curatorNotes",
+    "deprecationReason",
     {
       "name": "lastEditor",
       "fields": [

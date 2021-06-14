@@ -42,8 +42,8 @@ describe("Support.vue", function(){
     let wrapper;
 
     // TODO: Mock properties in options {}.
-    beforeEach(() => {
-        wrapper = shallowMount(Support, {
+    beforeEach(async () => {
+        wrapper = await shallowMount(Support, {
             localVue,
             vuetify,
             mocks: {$store}

@@ -1,6 +1,7 @@
 <template>
   <!-- eslint-disable vue/no-v-html -->
   <div
+    v-if="currentRecord.fairsharingRecord['deprecationReason']"
     v-linkified:options="{ className: 'underline-effect' }"
     class="mt-5 red--text"
     v-html="currentRecord.fairsharingRecord['deprecationReason']"

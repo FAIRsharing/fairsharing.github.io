@@ -187,8 +187,8 @@ export default {
       await this.fetchCollectionRecords(returnedQuery);
     }
   },
-  async mounted() {
-    await this.prepareCollectionData();
+   mounted() {
+     this.prepareCollectionData();
 
     // make the left panel sticky under any circumstances.
     this.setGeneralUIAttributesAction({
@@ -222,9 +222,14 @@ export default {
         delete returnedQuery['fairsharingRegistry'];
         try {
             await this.initializeCollectionRecords(this.collectionIDs);
-          await this.fetchCollectionRecords(returnedQuery);
         }
         catch (e) {
+          this.errors = e.message;
+        }
+        try {
+         await this.fetchCollectionRecords(returnedQuery);
+        }
+        catch (e){
           this.errors = e.message;
         }
       }

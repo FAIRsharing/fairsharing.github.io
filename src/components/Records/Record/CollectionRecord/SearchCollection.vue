@@ -187,8 +187,8 @@ export default {
       await this.fetchCollectionRecords(returnedQuery);
     }
   },
-   mounted() {
-     this.prepareCollectionData();
+  async mounted() {
+    await this.prepareCollectionData();
 
     // make the left panel sticky under any circumstances.
     this.setGeneralUIAttributesAction({

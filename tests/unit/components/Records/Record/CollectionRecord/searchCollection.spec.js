@@ -124,8 +124,8 @@ describe("SearchCollection.vue",  function(){
         axios.post.restore();
     });
 
-    it("can react to router changes", () => {
-        const wrapper2 = shallowMount(searchCollection, {
+    it("can react to router changes", async () => {
+        const wrapper2 = await shallowMount(searchCollection, {
             mocks: {$route, $store},
             vuetify,
             localVue

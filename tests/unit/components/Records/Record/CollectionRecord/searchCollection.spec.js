@@ -69,7 +69,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
     registry:'Collection'
 };
 
-describe("SearchCollection.vue", async function(){
+describe("SearchCollection.vue",  function(){
 
     let wrapper;
     let stub = sinon.stub(Client.prototype, "executeQuery");

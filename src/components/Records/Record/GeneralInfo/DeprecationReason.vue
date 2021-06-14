@@ -1,10 +1,11 @@
 <template>
-  <p
-    v-if="currentRecord.fairsharingRecord['deprecationReason']"
-    class="ml-2 mt-4 pb-0 red--text"
-  >
-    {{ currentRecord.fairsharingRecord["deprecationReason"] }}
-  </p>
+  <!-- eslint-disable vue/no-v-html -->
+  <div
+    v-linkified:options="{ className: 'underline-effect' }"
+    class="mt-5"
+    v-html="currentRecord.fairsharingRecord['deprecationReason']"
+  />
+  <!-- eslint-enable vue/no-v-html -->
 </template>
 
 <script>

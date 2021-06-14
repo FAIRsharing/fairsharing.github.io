@@ -15,6 +15,7 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueScrollTo,{})
 const sinon = require("sinon");
+const axios = require("axios");
 
 const vuetify = new Vuetify();
 
@@ -110,6 +111,19 @@ describe("SearchCollection.vue", function(){
         expect(wrapper.vm.isColumnList).toBe(true);
     });
 
+    it("can correctly raise an error", async () => {
+        Client.prototype.executeQuery.restore();
+        sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
+            data: {
+                errors: [
+                    {message: "Error"}
+                ]
+            }
+        });
+        await expect(wrapper.vm.prepareCollectionData()).rejects;
+        axios.post.restore();
+    });
+
     it("can react to router changes", () => {
         const wrapper2 = mount(searchCollection, {
             mocks: {$route, $store},
@@ -158,8 +172,9 @@ describe("SearchCollection.vue", function(){
             result= await wrapper.vm.prepareCollectionData()
             expect(result).toBe(false)
         } catch (e) {
-           result = e;
+            result = e;
         }
+
     });
 
     it("can reset the records store when destroyed", () => {

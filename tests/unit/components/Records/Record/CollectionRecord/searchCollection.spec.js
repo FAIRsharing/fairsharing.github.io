@@ -1,4 +1,4 @@
-import { createLocalVue, mount} from "@vue/test-utils";
+import { createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection"
 import Vuetify from "vuetify"
@@ -89,7 +89,7 @@ describe("SearchCollection.vue",  function(){
         document.body.appendChild(element)
         //------
 
-        wrapper = await mount(searchCollection, {
+        wrapper = await shallowMount(searchCollection, {
             mocks: {$route, $store},
             localVue,
             vuetify,
@@ -100,7 +100,7 @@ describe("SearchCollection.vue",  function(){
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("SearchCollection");
     });
-/*
+
     it("can check the mocked html element is correctly added", () => {
         const byId = wrapper.find('#topElement')
         expect(byId.element.id).toBe('topElement');
@@ -125,7 +125,7 @@ describe("SearchCollection.vue",  function(){
     });
 
     it("can react to router changes", () => {
-        const wrapper2 = mount(searchCollection, {
+        const wrapper2 = shallowMount(searchCollection, {
             mocks: {$route, $store},
             vuetify,
             localVue
@@ -179,6 +179,6 @@ describe("SearchCollection.vue",  function(){
         otherStates.forEach(state => {
             expect(wrapper.vm.$store.state.records[state]).toBe(null)
         })
-    });*/
+    });
 
 });

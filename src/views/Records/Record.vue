@@ -4,6 +4,7 @@
       v-if="queryTriggered"
       fluid
     >
+      <div>test</div>
       <!--   error   -->
       <div v-if="error">
         <NotFound />

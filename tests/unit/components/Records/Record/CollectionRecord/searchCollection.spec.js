@@ -1,4 +1,4 @@
-import {shallowMount, createLocalVue, mount} from "@vue/test-utils";
+import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex";
 import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection"
 import Vuetify from "vuetify"
@@ -89,7 +89,7 @@ describe("SearchCollection.vue", function(){
         document.body.appendChild(element)
         //------
 
-        wrapper = await mount(searchCollection, {
+        wrapper = await shallowMount(searchCollection, {
             mocks: {$route, $store},
             localVue,
             vuetify,

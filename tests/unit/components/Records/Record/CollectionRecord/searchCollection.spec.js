@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount} from "@vue/test-utils";
+import {shallowMount, createLocalVue, mount} from "@vue/test-utils";
 import Vuex from "vuex";
 import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection"
 import Vuetify from "vuetify"
@@ -69,7 +69,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
     registry:'Collection'
 };
 
-describe("SearchCollection.vue",  function(){
+describe("SearchCollection.vue", function(){
 
     let wrapper;
     let stub = sinon.stub(Client.prototype, "executeQuery");
@@ -89,7 +89,7 @@ describe("SearchCollection.vue",  function(){
         document.body.appendChild(element)
         //------
 
-        wrapper = await shallowMount(searchCollection, {
+        wrapper = await mount(searchCollection, {
             mocks: {$route, $store},
             localVue,
             vuetify,
@@ -124,8 +124,8 @@ describe("SearchCollection.vue",  function(){
         axios.post.restore();
     });
 
-    it("can react to router changes", async () => {
-        const wrapper2 = await shallowMount(searchCollection, {
+    it("can react to router changes", () => {
+        const wrapper2 = shallowMount(searchCollection, {
             mocks: {$route, $store},
             vuetify,
             localVue

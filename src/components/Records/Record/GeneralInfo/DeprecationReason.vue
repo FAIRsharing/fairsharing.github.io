@@ -2,7 +2,7 @@
   <!-- eslint-disable vue/no-v-html -->
   <div
     v-linkified:options="{ className: 'underline-effect' }"
-    class="mt-5"
+    class="mt-5 red--text"
     v-html="currentRecord.fairsharingRecord['deprecationReason']"
   />
   <!-- eslint-enable vue/no-v-html -->

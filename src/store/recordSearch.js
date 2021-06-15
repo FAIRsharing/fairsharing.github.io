@@ -64,7 +64,14 @@ export const actions = {
             state.state.params[key] = params[key]
         })
         recordsQuery.queryParam = state.state.params;
-        const data = await client.executeQuery(recordsQuery);
+        let data;
+        try {
+            data = await client.executeQuery(recordsQuery);
+        }
+        catch (e) {
+            // Loading complete, but no data returned...
+            console.log("Failed to fetchCollectionRecords: " + JSON.stringify(e));
+        }
         this.commit('records/setRecords', data["searchFairsharingRecords"]);
         this.commit("records/setLoadingStatus", false);
     },
@@ -75,7 +82,14 @@ export const actions = {
         if (Object.keys(params).length > 0) {
             recordsQuery.queryParam = params;
         }
-        const data = await client.executeQuery(recordsQuery);
+        let data;
+        try {
+            data = await client.executeQuery(recordsQuery);
+        }
+        catch (e) {
+            // Loading complete, but no data returned...
+            console.log("Failed to fetchRecords: " + JSON.stringify(e));
+        }
         this.commit('records/setRecords', data["searchFairsharingRecords"]);
         this.commit("records/setLoadingStatus", false);
     },

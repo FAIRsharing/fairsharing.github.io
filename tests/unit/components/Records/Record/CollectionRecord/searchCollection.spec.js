@@ -10,6 +10,7 @@ import Client from "@/lib/GraphClient/GraphClient";
 import Record from "@/store/recordData";
 import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 import VueScrollTo from "vue-scrollto";
+import GraphClient from "@/lib/GraphClient/GraphClient";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -75,7 +76,7 @@ describe("SearchCollection.vue", function(){
     let stub = sinon.stub(Client.prototype, "executeQuery");
 
     beforeAll(() => {
-         stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [{name:'name A'}]}});
+        stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [{name:'name A'}]}});
     });
 
     afterAll(() => {

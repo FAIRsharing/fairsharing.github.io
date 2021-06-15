@@ -179,11 +179,12 @@ export default {
     }
   },
   async mounted() {
-    await this.prepareCollectionData();
-
-    // make the left panel sticky under any circumstances.
-    this.setGeneralUIAttributesAction({
-      headerVisibilityState: false
+    this.$nextTick(async function () {
+      await this.prepareCollectionData();
+      // make the left panel sticky under any circumstances.
+      this.setGeneralUIAttributesAction({
+        headerVisibilityState: false
+      });
     });
   },
   beforeDestroy() {

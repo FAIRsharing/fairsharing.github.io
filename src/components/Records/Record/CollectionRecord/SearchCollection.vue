@@ -214,23 +214,19 @@ export default {
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
-    async prepareCollectionData() {
-      try {
-        if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
-          const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
-              .filter(item => item.recordAssocLabel === 'collects')
-          collections.forEach(item => {
-            this.collectionIDs.push(item.id);
-          });
-          this.errors = false;
-          let returnedQuery = this.buildQueryParameters(this.currentPath);
-          delete returnedQuery['fairsharingRegistry'];
-        }
-        else {
-          return false
-        }
-      }catch (e) {
-        this.errors = e.message;
+    prepareCollectionData() {
+      if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
+        const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
+            .filter(item => item.recordAssocLabel === 'collects')
+        collections.forEach(item => {
+          this.collectionIDs.push(item.id);
+        });
+        this.errors = false;
+        let returnedQuery = this.buildQueryParameters(this.currentPath);
+        delete returnedQuery['fairsharingRegistry'];
+      }
+      else {
+        return false
       }
     },
     prepareAssociations(associations, reverseAssociations) {

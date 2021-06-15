@@ -131,9 +131,9 @@ describe("SearchCollection.vue", function(){
             localVue
         });
         wrapper2.vm.$route.query = {fairsharingRegistry: "Collection",page:"2"};
-        expect(wrapper2.vm.currentPath).toStrictEqual(["Collection", {"fairsharingRegistry": "Collection",page:"2"}]);
+        expect(await wrapper2.vm.currentPath).toStrictEqual(["Collection", {"fairsharingRegistry": "Collection",page:"2"}]);
         wrapper.vm.$route.query = {fairsharingRegistry: ''};
-        expect(wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
+        expect(await wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
     });
 
 
@@ -162,7 +162,7 @@ describe("SearchCollection.vue", function(){
     });
 
 
-/*
+
     it("can react when no recordAssociation available", async () => {
         Record.state.currentRecord["fairsharingRecord"] = {
             name:"EOSC-Life",
@@ -170,7 +170,7 @@ describe("SearchCollection.vue", function(){
         };
         expect(await wrapper.vm.prepareCollectionData()).toBe(false)
     });
-*/
+
 
     it("can reset the records store when destroyed", () => {
         wrapper.destroy();

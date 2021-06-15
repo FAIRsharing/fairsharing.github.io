@@ -179,12 +179,12 @@ export default {
     }
   },
   watch: {
-    currentPath: function () {
+    currentPath: async function () {
       this.scrollTo();
       let returnedQuery = this.buildQueryParameters(this.currentPath);
       delete returnedQuery['fairsharingRegistry'];
       this.showFiltersSM = false;
-      this.fetchCollectionRecords(returnedQuery);
+      await this.fetchCollectionRecords(returnedQuery);
     }
   },
   async mounted() {

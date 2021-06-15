@@ -67,12 +67,13 @@ export const actions = {
         let data;
         try {
             data = await client.executeQuery(recordsQuery);
+            this.commit('records/setRecords', data["searchFairsharingRecords"]);
         }
         catch (e) {
             // Loading complete, but no data returned...
             //console.log("Failed to fetchCollectionRecords: " + JSON.stringify(e));
+            this.commit('records/setRecords', []);
         }
-        this.commit('records/setRecords', data["searchFairsharingRecords"]);
         this.commit("records/setLoadingStatus", false);
     },
     async fetchRecords(state, params) {
@@ -85,12 +86,13 @@ export const actions = {
         let data;
         try {
             data = await client.executeQuery(recordsQuery);
+            this.commit('records/setRecords', data["searchFairsharingRecords"]);
         }
         catch (e) {
             // Loading complete, but no data returned...
             //console.log("Failed to fetchRecords: " + JSON.stringify(e));
+            this.commit('records/setRecords', []);
         }
-        this.commit('records/setRecords', data["searchFairsharingRecords"]);
         this.commit("records/setLoadingStatus", false);
     },
     resetRecords() {

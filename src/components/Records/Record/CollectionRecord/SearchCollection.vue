@@ -157,7 +157,8 @@ export default {
       collectionIDs:[],
       receivedData:{},
       isColumnList: false,
-      showFiltersSM: false
+      showFiltersSM: false,
+      a:0
     }
   },
   computed: {
@@ -189,7 +190,7 @@ export default {
   },
   async mounted() {
     await this.prepareCollectionData();
-
+    this.a = 1;
     // make the left panel sticky under any circumstances.
     this.setGeneralUIAttributesAction({
       headerVisibilityState: false

@@ -10,7 +10,6 @@ import Client from "@/lib/GraphClient/GraphClient";
 import Record from "@/store/recordData";
 import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 import VueScrollTo from "vue-scrollto";
-import GraphClient from "@/lib/GraphClient/GraphClient";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

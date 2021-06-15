@@ -162,6 +162,7 @@ describe("SearchCollection.vue", function(){
     });
 
 
+/*
     it("can react when no recordAssociation available", async () => {
         Record.state.currentRecord["fairsharingRecord"] = {
             name:"EOSC-Life",
@@ -169,6 +170,7 @@ describe("SearchCollection.vue", function(){
         };
         expect(await wrapper.vm.prepareCollectionData()).toBe(false)
     });
+*/
 
     it("can reset the records store when destroyed", () => {
         wrapper.destroy();

@@ -157,8 +157,7 @@ export default {
       collectionIDs:[],
       receivedData:{},
       isColumnList: false,
-      showFiltersSM: false,
-      a:0
+      showFiltersSM: false
     }
   },
   computed: {
@@ -179,6 +178,7 @@ export default {
       return [title, queryParams];
     }
   },
+/*
   watch: {
     currentPath: async function () {
       this.scrollTo();
@@ -188,9 +188,10 @@ export default {
       await this.fetchCollectionRecords(returnedQuery);
     }
   },
+*/
   async mounted() {
     await this.prepareCollectionData();
-    this.a = 1;
+
     // make the left panel sticky under any circumstances.
     this.setGeneralUIAttributesAction({
       headerVisibilityState: false

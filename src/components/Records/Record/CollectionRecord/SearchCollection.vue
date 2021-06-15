@@ -204,11 +204,13 @@ export default {
     ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
     ...mapMutations("records", ['cleanRecordsStore']),
     ...mapActions("uiController", ['setGeneralUIAttributesAction']),
+/*
     scrollTo() {
       this.$scrollTo("#topElement", 1000, {
         easing: 'ease-out',
       })
     },
+*/
     changeListType: function (listType) {
       this.isColumnList = listType;
     },

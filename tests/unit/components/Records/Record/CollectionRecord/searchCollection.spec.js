@@ -124,7 +124,7 @@ describe("SearchCollection.vue", function(){
         axios.post.restore();
     });
 
- /*   it("can react to router changes", async () => {
+    it("can react to router changes", async () => {
         const wrapper2 = await shallowMount(searchCollection, {
             mocks: {$route, $store},
             vuetify,
@@ -134,7 +134,7 @@ describe("SearchCollection.vue", function(){
         expect(wrapper2.vm.currentPath).toStrictEqual(["Collection", {"fairsharingRegistry": "Collection",page:"2"}]);
         wrapper.vm.$route.query = {fairsharingRegistry: ''};
         expect(wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
-    });*/
+    });
 
 
     it("can check mounted life cycle properly loads data", async () => {
@@ -162,7 +162,7 @@ describe("SearchCollection.vue", function(){
     });
 
 
-/*
+
     it("can react when no recordAssociation available", async () => {
         Record.state.currentRecord["fairsharingRecord"] = {
             name:"EOSC-Life",
@@ -170,7 +170,7 @@ describe("SearchCollection.vue", function(){
         };
         expect(await wrapper.vm.prepareCollectionData()).toBe(false)
     });
-*/
+
 
     it("can reset the records store when destroyed", () => {
         wrapper.destroy();

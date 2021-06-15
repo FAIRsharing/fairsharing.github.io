@@ -141,6 +141,7 @@ import ListController from "@/components/Records/Search/Header/ListController";
 import Pagination from "@/components/Records/Search/Header/Pagination";
 import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import Client from "@/lib/GraphClient/GraphClient";
 
 export default {
   name: "SearchCollection",
@@ -178,14 +179,23 @@ export default {
       return [title, queryParams];
     }
   },
-  async mounted() {
+  watch: {
+    currentPath: async function () {
+      this.scrollTo();
+      let returnedQuery = this.buildQueryParameters(this.currentPath);
+      delete returnedQuery['fairsharingRegistry'];
+      this.showFiltersSM = false;
+      await this.fetchCollectionRecords(returnedQuery);
+    }
+  },
+   mounted() {
     this.$nextTick(async function () {
       await this.prepareCollectionData();
       // make the left panel sticky under any circumstances.
       this.setGeneralUIAttributesAction({
         headerVisibilityState: false
       });
-    });
+    })
   },
   beforeDestroy() {
     this.cleanRecordsStore();

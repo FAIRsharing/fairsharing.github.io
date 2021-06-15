@@ -179,15 +179,15 @@ export default {
     }
   },
   watch: {
-    currentPath: async function () {
 /*
+    currentPath: async function () {
       this.scrollTo();
       let returnedQuery = this.buildQueryParameters(this.currentPath);
       delete returnedQuery['fairsharingRegistry'];
       this.showFiltersSM = false;
-*/
-      // await this.fetchCollectionRecords({});
+      await this.fetchCollectionRecords(returnedQuery);
     }
+*/
   },
   async mounted() {
     await this.prepareCollectionData();
@@ -203,11 +203,13 @@ export default {
     ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
     ...mapMutations("records", ['cleanRecordsStore']),
     ...mapActions("uiController", ['setGeneralUIAttributesAction']),
+/*
     scrollTo() {
       this.$scrollTo("#topElement", 1000, {
         easing: 'ease-out',
       })
     },
+*/
     changeListType: function (listType) {
       this.isColumnList = listType;
     },

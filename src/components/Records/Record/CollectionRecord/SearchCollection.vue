@@ -186,7 +186,7 @@ export default {
       delete returnedQuery['fairsharingRegistry'];
       this.showFiltersSM = false;
 */
-      await this.fetchCollectionRecords({});
+      // await this.fetchCollectionRecords({});
     }
   },
   async mounted() {

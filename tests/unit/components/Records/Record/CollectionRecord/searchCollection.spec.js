@@ -96,6 +96,9 @@ describe("SearchCollection.vue", function(){
             attachToDocument:element
         });
     });
+    afterEach(() => {
+        wrapper.destroy();
+    });
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("SearchCollection");

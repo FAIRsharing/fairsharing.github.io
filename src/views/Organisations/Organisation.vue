@@ -343,6 +343,7 @@ export default {
       footer: {'items-per-page-options': [10]},
       showOverlay: false,
       targetID: null,
+      testEnvironment:false,
       headers: [
         {text: 'Name', value: 'name', align: 'center'},
         {text: 'Status', value: 'status', align: 'center'},
@@ -371,14 +372,21 @@ export default {
   },
   methods: {
     async getOrganisation() {
-      this.loading = true;
-      getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
-      let org = await graphClient.executeQuery(getOrganisationQuery);
-      if (org.organisation != null) {
-        this.organisation = JSON.parse(JSON.stringify(org.organisation));
-        this.error = false;
+      try {
+        // testEnvironment variable is only for test case.
+        if(this.testEnvironment) throw new Error("an error occurred while fetching data")
+        this.loading = true;
+        getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
+        let org = await graphClient.executeQuery(getOrganisationQuery);
+        if (org.organisation != null) {
+          this.organisation = JSON.parse(JSON.stringify(org.organisation));
+          this.error = false;
+        }
+        this.loading = false;
       }
-      this.loading = false;
+      catch (e) {
+        this.errors = e.message;
+      }
     },
     goToEdit(id){
       this.$router.push({path: `/${id}/edit`})

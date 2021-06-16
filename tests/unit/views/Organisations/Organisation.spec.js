@@ -112,6 +112,7 @@ describe("Organisation", () => {
             stubs: {RouterLink: RouterLinkStub}
         });
         expect(wrapper.vm.logoUrl).toEqual(process.env.VUE_APP_API_ENDPOINT + '/logo12345678');
+        wrapper.vm.testEnvironment = true;
     });
 
     it("watches the current route", async () => {

@@ -52,13 +52,13 @@ export const actions = {
         try {
             data = await client.executeQuery(recordsQuery);
             this.commit('records/setRecords', data["searchFairsharingRecords"]);
+            this.commit("records/setLoadingStatus", false);
         }
-        catch (e) {
+        catch {
             // Loading complete, but no data returned...
             this.commit('records/setRecords', {"records":[]});
         }
 
-        this.commit("records/setLoadingStatus", false);
     },
     async fetchCollectionRecords(state, params) {
         this.commit("records/setLoadingStatus", true);
@@ -76,12 +76,12 @@ export const actions = {
         try {
             data = await client.executeQuery(recordsQuery);
             this.commit('records/setRecords', data["searchFairsharingRecords"]);
+            this.commit("records/setLoadingStatus", false);
         }
-        catch (e) {
+        catch {
             // Loading complete, but no data returned...
             this.commit('records/setRecords', {"records":[]});
         }
-        this.commit("records/setLoadingStatus", false);
     },
     async fetchRecords(state, params) {
         this.commit("records/setLoadingStatus", true);
@@ -94,12 +94,12 @@ export const actions = {
         try {
             data = await client.executeQuery(recordsQuery);
             this.commit('records/setRecords', data["searchFairsharingRecords"]);
+            this.commit("records/setLoadingStatus", false);
         }
-        catch (e) {
+        catch {
             // Loading complete, but no data returned...
             this.commit('records/setRecords', {"records":[]});
         }
-        this.commit("records/setLoadingStatus", false);
     },
     resetRecords() {
         this.commit("records/resetRecords");

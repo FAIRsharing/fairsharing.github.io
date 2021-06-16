@@ -184,7 +184,12 @@ export default {
       let returnedQuery = this.buildQueryParameters(this.currentPath);
       delete returnedQuery['fairsharingRegistry'];
       this.showFiltersSM = false;
+      try {
       await this.fetchCollectionRecords(returnedQuery);
+      }
+      catch (e) {
+        this.errors = e.message;
+      }
     }
   },
   async mounted() {

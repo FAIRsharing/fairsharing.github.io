@@ -157,7 +157,8 @@ export default {
       collectionIDs:[],
       receivedData:{},
       isColumnList: false,
-      showFiltersSM: false
+      showFiltersSM: false,
+      testEnvironment:false
     }
   },
   computed: {
@@ -180,16 +181,22 @@ export default {
   },
   watch: {
     currentPath: async function () {
-      this.scrollTo();
-      let returnedQuery = this.buildQueryParameters(this.currentPath);
-      delete returnedQuery['fairsharingRegistry'];
-      this.showFiltersSM = false;
-      await this.fetchCollectionRecords(returnedQuery);
+      try {
+        // testEnvironment variable is only for test case.
+        if(this.testEnvironment) throw new Error("an error occurred while fetching data")
+        this.scrollTo();
+        let returnedQuery = this.buildQueryParameters(this.currentPath);
+        delete returnedQuery['fairsharingRegistry'];
+        this.showFiltersSM = false;
+        await this.fetchCollectionRecords(returnedQuery);
+      }
+      catch (e) {
+        this.errors = e.message;
+      }
     }
   },
   async mounted() {
     await this.prepareCollectionData();
-
     // make the left panel sticky under any circumstances.
     this.setGeneralUIAttributesAction({
       headerVisibilityState: false
@@ -202,39 +209,42 @@ export default {
     ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
     ...mapMutations("records", ['cleanRecordsStore']),
     ...mapActions("uiController", ['setGeneralUIAttributesAction']),
+
     scrollTo() {
       this.$scrollTo("#topElement", 1000, {
         easing: 'ease-out',
       })
     },
+
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
-    async prepareCollectionData() {
-      if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
-        const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
-            .filter(item => item.recordAssocLabel === 'collects')
-        collections.forEach(item => {
-          this.collectionIDs.push(item.id);
-        });
-        this.errors = false;
-        let returnedQuery = this.buildQueryParameters(this.currentPath);
-        delete returnedQuery['fairsharingRegistry'];
-        try {
-            await this.initializeCollectionRecords(this.collectionIDs);
+    async prepareCollectionData () {
+      let returnedQuery
+      try {
+        if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
+          const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
+              .filter(item => item.recordAssocLabel === 'collects')
+          collections.forEach(item => {
+            this.collectionIDs.push(item.id);
+          });
+          this.errors = false;
+          returnedQuery = this.buildQueryParameters(this.currentPath);
+          delete returnedQuery['fairsharingRegistry'];
+          await this.initializeCollectionRecords(this.collectionIDs);
         }
-        catch (e) {
-          this.errors = e.message;
-        }
-        try {
-         await this.fetchCollectionRecords(returnedQuery);
-        }
-        catch (e){
-          this.errors = e.message;
+        else {
+          return false
         }
       }
-      else {
-        return false
+      catch (e) {
+        this.errors = e.message;
+      }
+      try {
+        await this.fetchCollectionRecords(returnedQuery);
+      }
+      catch (e) {
+        this.errors = e.message;
       }
     },
     prepareAssociations(associations, reverseAssociations) {

@@ -363,7 +363,12 @@ export default {
   },
   watch: {
     async currentRoute() {
-      await this.getOrganisation();
+      try {
+        await this.getOrganisation();
+      }
+      catch (e) {
+        this.errors = e.message;
+      }
     }
   },
   async created() {

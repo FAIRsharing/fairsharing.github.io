@@ -134,6 +134,7 @@ describe("SearchCollection.vue", function(){
         expect(wrapper2.vm.currentPath).toStrictEqual(["Collection", {"fairsharingRegistry": "Collection",page:"2"}]);
         wrapper.vm.$route.query = {fairsharingRegistry: ''};
         expect(wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
+        wrapper.vm.testEnvironment = true;
     });
 
 
@@ -167,7 +168,7 @@ describe("SearchCollection.vue", function(){
             name:"EOSC-Life",
             registry:'Collection'
         };
-        expect(await wrapper.vm.prepareCollectionData()).toBe(false)
+         expect(await wrapper.vm.prepareCollectionData()).toBe(false)
     });
 
     it("can reset the records store when destroyed", () => {
@@ -180,5 +181,6 @@ describe("SearchCollection.vue", function(){
             expect(wrapper.vm.$store.state.records[state]).toBe(null)
         })
     });
+
 
 });

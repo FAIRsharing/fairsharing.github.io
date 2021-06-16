@@ -157,7 +157,8 @@ export default {
       collectionIDs:[],
       receivedData:{},
       isColumnList: false,
-      showFiltersSM: false
+      showFiltersSM: false,
+      testEnvironment:false
     }
   },
   computed: {
@@ -180,11 +181,13 @@ export default {
   },
   watch: {
     currentPath: async function () {
-      this.scrollTo();
-      let returnedQuery = this.buildQueryParameters(this.currentPath);
-      delete returnedQuery['fairsharingRegistry'];
-      this.showFiltersSM = false;
       try {
+        // testEnvironment variable is only for test case.
+        if(this.testEnvironment) throw new Error("an error occurred while fetching data")
+        this.scrollTo();
+        let returnedQuery = this.buildQueryParameters(this.currentPath);
+        delete returnedQuery['fairsharingRegistry'];
+        this.showFiltersSM = false;
         await this.fetchCollectionRecords(returnedQuery);
       }
       catch (e) {

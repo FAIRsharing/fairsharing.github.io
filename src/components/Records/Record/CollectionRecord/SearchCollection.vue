@@ -212,7 +212,7 @@ export default {
       this.isColumnList = listType;
     },
     async prepareCollectionData () {
-      let returnedQuery = null;
+      let returnedQuery
       try {
         if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
           const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
@@ -232,7 +232,12 @@ export default {
       catch (e) {
         this.errors = e.message;
       }
-      await this.fetchCollectionRecords(returnedQuery);
+      try {
+        await this.fetchCollectionRecords(returnedQuery);
+      }
+      catch (e) {
+        this.errors = e.message;
+      }
     },
     prepareAssociations(associations, reverseAssociations) {
       let _module = this;

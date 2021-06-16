@@ -141,9 +141,15 @@ export const actions = {
         this.commit("records/resetRecords");
         this.commit("records/resetPages");
         recordsQuery.queryParam = state.state.params;
-        const data = await client.executeQuery(recordsQuery);
-        this.commit('records/setRecords', data["searchFairsharingRecords"]);
-        this.commit("records/setLoadingStatus", false);
+        try {
+            const data = await client.executeQuery(recordsQuery);
+            this.commit('records/setRecords', data["searchFairsharingRecords"]);
+            this.commit("records/setLoadingStatus", false);
+        }
+        catch (e) {
+            this.error = e.message;
+        }
+
     },
     async fetchCollectionRecords(state, params) {
         this.commit("records/setLoadingStatus", true);
@@ -157,9 +163,14 @@ export const actions = {
             state.state.params[key] = params[key]
         })
         recordsQuery.queryParam = state.state.params;
-        const data = await client.executeQuery(recordsQuery);
-        this.commit('records/setRecords', data["searchFairsharingRecords"]);
-        this.commit("records/setLoadingStatus", false);
+        try {
+            const data = await client.executeQuery(recordsQuery);
+            this.commit('records/setRecords', data["searchFairsharingRecords"]);
+            this.commit("records/setLoadingStatus", false);
+        }
+        catch (e) {
+            this.error = e.message;
+        }
     },
     async fetchRecords(state, params) {
         this.commit("records/setLoadingStatus", true);

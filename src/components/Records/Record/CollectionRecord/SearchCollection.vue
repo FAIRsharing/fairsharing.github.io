@@ -179,6 +179,7 @@ export default {
     }
   },
   watch: {
+/*
     currentPath: async function () {
       this.scrollTo();
       let returnedQuery = this.buildQueryParameters(this.currentPath);
@@ -186,6 +187,7 @@ export default {
       this.showFiltersSM = false;
       await this.fetchCollectionRecords(returnedQuery);
     }
+*/
   },
   async mounted() {
     await this.prepareCollectionData();
@@ -202,11 +204,13 @@ export default {
     ...mapMutations("records", ['cleanRecordsStore']),
     ...mapActions("uiController", ['setGeneralUIAttributesAction']),
 
+/*
     scrollTo() {
       this.$scrollTo("#topElement", 1000, {
         easing: 'ease-out',
       })
     },
+*/
 
     changeListType: function (listType) {
       this.isColumnList = listType;

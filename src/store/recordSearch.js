@@ -9,6 +9,7 @@ export const mutations = {
         state.params['ids'] = collectionIDs
     },
     setRecords(state, data) {
+        console.log(data)
         state.records = data['records'];
         state.facets = buildFacets(data["aggregations"]);
         state.totalPages = data["totalPages"];

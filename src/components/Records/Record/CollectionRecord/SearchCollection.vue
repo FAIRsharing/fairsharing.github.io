@@ -178,7 +178,6 @@ export default {
       return [title, queryParams];
     }
   },
-/*
   watch: {
     currentPath: async function () {
       this.scrollTo();
@@ -188,14 +187,17 @@ export default {
       await this.fetchCollectionRecords(returnedQuery);
     }
   },
-*/
   async mounted() {
-    await this.prepareCollectionData();
-
-    // make the left panel sticky under any circumstances.
-    this.setGeneralUIAttributesAction({
-      headerVisibilityState: false
-    });
+    try {
+      await this.prepareCollectionData();
+      // make the left panel sticky under any circumstances.
+      this.setGeneralUIAttributesAction({
+        headerVisibilityState: false
+      });
+    }
+    catch (e) {
+      this.errors = e.message;
+    }
   },
   beforeDestroy() {
     this.cleanRecordsStore();
@@ -204,17 +206,15 @@ export default {
     ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
     ...mapMutations("records", ['cleanRecordsStore']),
     ...mapActions("uiController", ['setGeneralUIAttributesAction']),
-/*
     scrollTo() {
       this.$scrollTo("#topElement", 1000, {
         easing: 'ease-out',
       })
     },
-*/
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
-    prepareCollectionData() {
+    async prepareCollectionData() {
       if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
         const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
             .filter(item => item.recordAssocLabel === 'collects')
@@ -224,6 +224,18 @@ export default {
         this.errors = false;
         let returnedQuery = this.buildQueryParameters(this.currentPath);
         delete returnedQuery['fairsharingRegistry'];
+        try {
+            await this.initializeCollectionRecords(this.collectionIDs);
+        }
+        catch (e) {
+          this.errors = e.message;
+        }
+        try {
+         await this.fetchCollectionRecords(returnedQuery);
+        }
+        catch (e){
+          this.errors = e.message;
+        }
       }
       else {
         return false

@@ -1,4 +1,4 @@
-import {shallowMount, createLocalVue, mount} from "@vue/test-utils";
+import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex";
 import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection"
 import Vuetify from "vuetify"
@@ -84,18 +84,16 @@ describe("SearchCollection.vue", function(){
 
     beforeEach(async () => {
         //-- making a mock div element
-/*
         const element = document.createElement('div')
         element.id = 'topElement'
         document.body.appendChild(element)
-*/
         //------
 
-        wrapper = await mount(searchCollection, {
+        wrapper = await shallowMount(searchCollection, {
             mocks: {$route, $store},
             localVue,
             vuetify,
-            // attachToDocument:element
+            attachToDocument:element
         });
     });
 
@@ -164,12 +162,12 @@ describe("SearchCollection.vue", function(){
     });
 
 
-    it("can react when no recordAssociation available",  () => {
+    it("can react when no recordAssociation available", async () => {
         Record.state.currentRecord["fairsharingRecord"] = {
             name:"EOSC-Life",
             registry:'Collection'
         };
-        expect(wrapper.vm.prepareCollectionData()).toBe(false)
+        expect(await wrapper.vm.prepareCollectionData()).toBe(false)
     });
 
     it("can reset the records store when destroyed", () => {

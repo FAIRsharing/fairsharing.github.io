@@ -56,6 +56,7 @@ export const actions = {
         catch (e) {
             // Loading complete, but no data returned...
             console.log("Failed to fetchRecords: " + JSON.stringify(e));
+            this.commit('records/setRecords', []);
         }
 
         this.commit("records/setLoadingStatus", false);
@@ -79,7 +80,7 @@ export const actions = {
         }
         catch (e) {
             // Loading complete, but no data returned...
-            //console.log("Failed to fetchCollectionRecords: " + JSON.stringify(e));
+            console.log("Failed to fetchCollectionRecords: " + JSON.stringify(e));
             this.commit('records/setRecords', []);
         }
         this.commit("records/setLoadingStatus", false);
@@ -98,7 +99,7 @@ export const actions = {
         }
         catch (e) {
             // Loading complete, but no data returned...
-            //console.log("Failed to fetchRecords: " + JSON.stringify(e));
+            console.log("Failed to fetchRecords: " + JSON.stringify(e));
             this.commit('records/setRecords', []);
         }
         this.commit("records/setLoadingStatus", false);

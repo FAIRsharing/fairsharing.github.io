@@ -48,8 +48,16 @@ export const actions = {
         this.commit("records/resetRecords");
         this.commit("records/resetPages");
         recordsQuery.queryParam = state.state.params;
-        const data = await client.executeQuery(recordsQuery);
-        this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        let data;
+        try {
+            data = await client.executeQuery(recordsQuery);
+            this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        }
+        catch (e) {
+            // Loading complete, but no data returned...
+            console.log("Failed to fetchRecords: " + JSON.stringify(e));
+        }
+
         this.commit("records/setLoadingStatus", false);
     },
     async fetchCollectionRecords(state, params) {
@@ -64,8 +72,16 @@ export const actions = {
             state.state.params[key] = params[key]
         })
         recordsQuery.queryParam = state.state.params;
-        const data = await client.executeQuery(recordsQuery);
-        this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        let data;
+        try {
+            data = await client.executeQuery(recordsQuery);
+            this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        }
+        catch (e) {
+            // Loading complete, but no data returned...
+            //console.log("Failed to fetchCollectionRecords: " + JSON.stringify(e));
+            this.commit('records/setRecords', []);
+        }
         this.commit("records/setLoadingStatus", false);
     },
     async fetchRecords(state, params) {
@@ -75,8 +91,16 @@ export const actions = {
         if (Object.keys(params).length > 0) {
             recordsQuery.queryParam = params;
         }
-        const data = await client.executeQuery(recordsQuery);
-        this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        let data;
+        try {
+            data = await client.executeQuery(recordsQuery);
+            this.commit('records/setRecords', data["searchFairsharingRecords"]);
+        }
+        catch (e) {
+            // Loading complete, but no data returned...
+            //console.log("Failed to fetchRecords: " + JSON.stringify(e));
+            this.commit('records/setRecords', []);
+        }
         this.commit("records/setLoadingStatus", false);
     },
     resetRecords() {

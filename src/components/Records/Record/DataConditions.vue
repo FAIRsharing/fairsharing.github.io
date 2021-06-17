@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
-    v-if="Object.prototype.hasOwnProperty.call(getField('metadata'),'data_processes') && (getField('licences')!==undefined || getField('licences').length)"
+    v-if="Object.keys(getField('metadata')).includes('data_processes') || (getField('licences'))"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"

@@ -35,6 +35,26 @@
       <Countries />
       <!--Keywords-->
       <Keywords />
+
+      <!-- Duplicate link to graph (see also action menu) -->
+      <div class="d-flex flex-row">
+        <v-btn
+          class="ma-5"
+          color="primary"
+          v-bind="attrs"
+          v-on="on"
+          @click="showGraph()"
+        >
+          <v-icon
+            small
+            left
+          >
+            fa-project-diagram
+          </v-icon>
+          View Relation Graph&nbsp;
+        </v-btn>
+      </div>
+
       <!--How to cite & publication for record named Citations-->
       <Citations />
       <!--updates and creation date-->
@@ -91,6 +111,11 @@ export default {
   methods: {
     callRequestOwnership() {
       this.$emit('requestOwnership')
+    },
+    showGraph() {
+      this.$router.push({
+        path: '/graph/' + this.currentRecord['fairsharingRecord'].id
+      });
     }
   }
 }

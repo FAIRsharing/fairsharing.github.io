@@ -220,21 +220,25 @@
         &lt;v-row no-gutters>
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
             &lt;!--Left Block-->
-            &lt;component
-              :is="block"
-              v-for="(block,index) in currentDynamicBlock.leftBlock"
-              :key="block"
-              :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
-            />
+            &lt;div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
+              &lt;component
+                :is="block"
+                v-for="(block,index) in currentDynamicBlock.leftBlock"
+                :key="block"
+                :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
+              />
+            &lt;/div>
           &lt;/v-col>
           &lt;!--Right Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            &lt;component
-              :is="block"
-              v-for="(block,index) in currentDynamicBlock.rightBlock"
-              :key="block"
-              :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
-            />
+            &lt;div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
+              &lt;component
+                :is="block"
+                v-for="(block,index) in currentDynamicBlock.rightBlock"
+                :key="block"
+                :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
+              />
+            &lt;/div>
           &lt;/v-col>
         &lt;/v-row>
 

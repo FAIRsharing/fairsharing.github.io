@@ -25,6 +25,10 @@ import router from './router'
 import {beforeEach,afterEach} from "./router";
 import store from './store'
 
+/* import linkify to turn url within text into an actual url link */
+import linkify from 'vue-linkify'
+Vue.directive('linkified', linkify)
+
 import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'

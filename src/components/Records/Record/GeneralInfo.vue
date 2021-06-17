@@ -8,7 +8,8 @@
   >
     <!-- General Info -->
     <SectionTitle title="General Information" />
-
+    <!-- Deprecation Reason -->
+    <DeprecationReason />
     <!-- Title and DOI -->
     <DOITitle />
     <!--  other data  -->
@@ -58,10 +59,12 @@ import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCr
 import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
 import {mapState} from "vuex";
 import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
+import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason";
 
 export default {
   name: "GeneralInfo",
   components: {
+    DeprecationReason,
     ReferenceURL,
     Maintainers,
     UpdateCreateDetail,

@@ -38,7 +38,7 @@
 
       <!-- Duplicate link to graph (see also action menu) -->
       <div class="d-flex flex-row">
-        <router-link :to="`/graph/ ${currentRecord['fairsharingRecord'].id}`">
+        <router-link :to="`/graph/${currentRecord['fairsharingRecord'].id}`">
           <v-btn
             class="my-5"
             color="primary"

@@ -38,13 +38,16 @@
     import { mapActions, mapState } from "vuex"
 
     export default {
-        name: "UserProfileMenu",
-        data: () => {
+      name: "UserProfileMenu",
+      // eslint-disable-next-line vue/require-prop-types
+      props: {
+        viewingId: Number
+      },
+      data: () => {
             return {
                 dialog: false
             }
         },
-        props: ['viewing-id'],
         computed: {
           ...mapState('users', ['user']),
             menuItems: function(){
@@ -105,7 +108,7 @@
             disableEdit: function() {
               let _module = this;
               if (_module.viewingId) {
-                if (_module.viewingId === _module.user().id) {
+                if (Number(_module.viewingId) === Number(_module.user().id)) {
                   return false;
                 }
                 else {

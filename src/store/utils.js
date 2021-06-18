@@ -21,6 +21,7 @@ export const initStateMessages = function(){
 
 export const initUserDataState = function(){
     return {
+        id: null,
         isLoggedIn: false,
         credentials: {
             token: null,

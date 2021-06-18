@@ -79,7 +79,12 @@ describe("SearchCollection.vue", function(){
     });
 
     afterAll(() => {
+        try {
         Client.prototype.executeQuery.restore();
+        }
+        catch (e) {
+            console.log(e)
+        }
     });
 
     beforeEach(() => {

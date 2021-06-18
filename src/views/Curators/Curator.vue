@@ -4,7 +4,7 @@
     fluid
     class="standard"
   >
-    <v-row v-if="user().role==='super_curator' || user().role==='senior_curator' || user().role==='developer' ">
+    <v-row v-if="user().role==='super_curator' || user().role==='developer' ">
       <v-col cols12>
         <v-card v-if="!messages()['getUser'].error">
           <v-list>
@@ -202,7 +202,6 @@
 </template>
 
 <script>
-  // && (user().role==='super_curator' || user().role==='senior_curator')"
     import GraphClient from "@/lib/GraphClient/GraphClient.js"
     import getCurationRecords from "@/lib/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
@@ -349,7 +348,6 @@
             }
             let curators = dataCuration.curatorList;
             let listSuper = [];
-            let listSenior = [];
             let listCurator = [];
             curators.forEach(item => {
               let object = {
@@ -357,19 +355,14 @@
                 userName: item.username
               };
               let role = item.role.name;
-              if (role === "super_curator"){
+              if (role === "super_curator") {
                 listSuper.push(object);
-              }else{
-                if (role === "senior_curator"){
-                  listSenior.push(object);
-                }else{
-                  if (role === "curator"){
-                    listCurator.push(object);
-                  }
-                }
+              }
+              else if (role === "curator") {
+                listCurator.push(object);
               }
             });
-            this.curatorList = listSuper.concat(listSenior).concat(listCurator);
+            this.curatorList = listSuper.concat(listCurator);
             let object = {
               id: -1,
               userName: "none"

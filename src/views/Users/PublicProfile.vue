@@ -33,7 +33,7 @@
           </v-toolbar-title>
           <v-spacer />
           <user-profile-menu
-            :viewing-id="this.$route.params.id"
+            :viewing-id="$route.params.id"
           />
         </v-toolbar>
       </v-col>

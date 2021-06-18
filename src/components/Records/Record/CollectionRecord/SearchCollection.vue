@@ -201,7 +201,7 @@ export default {
     }
 */
   },
-  async mounted() {
+  mounted() {
 /*
     await this.prepareCollectionData();
     // make the left panel sticky under any circumstances.
@@ -211,7 +211,7 @@ export default {
 */
   },
   beforeDestroy() {
-    this.cleanRecordsStore();
+    // this.cleanRecordsStore();
   },
   methods: {
 /*

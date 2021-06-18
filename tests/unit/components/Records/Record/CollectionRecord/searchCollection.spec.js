@@ -82,18 +82,20 @@ describe("SearchCollection.vue", function(){
         Client.prototype.executeQuery.restore();
     });
 
-    beforeEach(async () => {
+    beforeEach(() => {
         //-- making a mock div element
+/*
         const element = document.createElement('div')
         element.id = 'topElement'
         document.body.appendChild(element)
+*/
         //------
 
-        wrapper = await shallowMount(searchCollection, {
+        wrapper = shallowMount(searchCollection, {
             mocks: {$route, $store},
             localVue,
             vuetify,
-            attachToDocument:element
+            // attachToDocument:element
         });
     });
 

@@ -64,6 +64,16 @@
                     {{ subItem.contact_name }}
                   </a>
                 </div>
+                <div v-else-if="subItem.contact_email && !subItem.contact_name">
+                  <a
+                    v-if="subItem.contact_email"
+                    :href="'mailto:'+subItem.contact_email"
+                    target="_blank"
+                    class="underline-effect"
+                  >
+                    {{ subItem.contact_email }}
+                  </a>
+                </div>
                 <div
                   v-if="subItem.contact_orcid"
                   class="d-flex flex-wrap"

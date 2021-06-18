@@ -41,7 +41,10 @@
       name: "UserProfileMenu",
       // eslint-disable-next-line vue/require-prop-types
       props: {
-        viewingId: Number
+        viewingId: {
+          type: Number,
+          default: null
+        }
       },
       data: () => {
             return {

@@ -78,6 +78,16 @@ describe("SearchCollection.vue", function(){
          stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [{name:'name A'}]}});
     });
 
+    afterAll(() => {
+        try {
+            Client.prototype.executeQuery.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {
+
+        }
+    });
+
     beforeEach(async () => {
         //-- making a mock div element
         const element = document.createElement('div')

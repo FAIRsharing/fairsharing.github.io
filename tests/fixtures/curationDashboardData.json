@@ -205,14 +205,6 @@
                 }
         },
         {
-              "id": "11",
-              "username": "Mary the Great Curator",
-              "role":
-                {
-                  "name": "senior_curator"
-                }
-        },
-        {
               "id": "33",
               "username": "Luther",
               "role":

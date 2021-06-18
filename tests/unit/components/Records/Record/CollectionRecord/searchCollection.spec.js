@@ -8,14 +8,14 @@ import introspection from "@/store/introspector";
 import uiController from "@/store/uiController";
 import Client from "@/lib/GraphClient/GraphClient";
 import Record from "@/store/recordData";
-// import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
+import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 import VueScrollTo from "vue-scrollto";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueScrollTo,{})
 const sinon = require("sinon");
-// const axios = require("axios");
+const axios = require("axios");
 
 const vuetify = new Vuetify();
 
@@ -80,27 +80,25 @@ describe("SearchCollection.vue", function(){
 
     afterAll(() => {
         try {
-        Client.prototype.executeQuery.restore();
+            Client.prototype.executeQuery.restore();
         }
         catch (e) {
             console.log(e)
         }
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
         //-- making a mock div element
-/*
         const element = document.createElement('div')
         element.id = 'topElement'
         document.body.appendChild(element)
-*/
         //------
 
-        wrapper = shallowMount(searchCollection, {
+        wrapper = await shallowMount(searchCollection, {
             mocks: {$route, $store},
             localVue,
             vuetify,
-            // attachToDocument:element
+            attachToDocument:element
         });
     });
 
@@ -108,14 +106,11 @@ describe("SearchCollection.vue", function(){
         expect(wrapper.name()).toMatch("SearchCollection");
     });
 
-/*
     it("can check the mocked html element is correctly added", () => {
         const byId = wrapper.find('#topElement')
         expect(byId.element.id).toBe('topElement');
     });
-*/
 
-/*
     it("can check changeListType function", () => {
         wrapper.vm.changeListType(true);
         expect(wrapper.vm.isColumnList).toBe(true);
@@ -147,6 +142,7 @@ describe("SearchCollection.vue", function(){
         wrapper.vm.testEnvironment = true;
     });
 
+
     it("can check mounted life cycle properly loads data", async () => {
             $route.query = {
                 "page": "2",
@@ -171,6 +167,7 @@ describe("SearchCollection.vue", function(){
 
     });
 
+
     it("can react when no recordAssociation available", async () => {
         Record.state.currentRecord["fairsharingRecord"] = {
             name:"EOSC-Life",
@@ -189,7 +186,6 @@ describe("SearchCollection.vue", function(){
             expect(wrapper.vm.$store.state.records[state]).toBe(null)
         })
     });
-*/
 
 
 });

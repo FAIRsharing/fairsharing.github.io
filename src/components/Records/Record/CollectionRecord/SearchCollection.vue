@@ -33,8 +33,8 @@
       <ListController
         class="mt-2"
         :options="{hasPagination:true,hasSorting:false,hasListType:true}"
-        @ChangeListType="changeListType"
       />
+      <!--        @ChangeListType="changeListType"-->
       <!--show filter button for tablet and below-->
       <div
         v-if="$vuetify.breakpoint.mdAndDown"
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
+// import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
 import stringUtils from "@/utils/stringUtils";
 import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
 import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
@@ -162,10 +162,13 @@ export default {
     }
   },
   computed: {
+/*
     ...mapState("record", ["currentRecord"]),
     ...mapState("records",["records","totalPages","currentPage","loading","facets"]),
     ...mapGetters("records",["getRecordsLength"]),
     ...mapGetters('introspection', ['buildQueryParameters']),
+*/
+/*
     currentPath: function () {
       const _module = this;
       let queryParams = {};
@@ -178,8 +181,10 @@ export default {
       const title = 'Collection';
       return [title, queryParams];
     }
+*/
   },
   watch: {
+/*
     currentPath: async function () {
       try {
         // testEnvironment variable is only for test case.
@@ -194,28 +199,36 @@ export default {
         this.errors = e.message;
       }
     }
+*/
   },
   async mounted() {
+/*
     await this.prepareCollectionData();
     // make the left panel sticky under any circumstances.
     this.setGeneralUIAttributesAction({
       headerVisibilityState: false
     });
+*/
   },
   beforeDestroy() {
     this.cleanRecordsStore();
   },
   methods: {
+/*
     ...mapActions("records", ['initializeCollectionRecords','fetchCollectionRecords']),
     ...mapMutations("records", ['cleanRecordsStore']),
     ...mapActions("uiController", ['setGeneralUIAttributesAction']),
+*/
 
+/*
     scrollTo() {
       this.$scrollTo("#topElement", 1000, {
         easing: 'ease-out',
       })
+*/
     },
 
+/*
     changeListType: function (listType) {
       this.isColumnList = listType;
     },
@@ -270,6 +283,7 @@ export default {
       return recordAssociations;
     }
   }
+*/
 }
 
 

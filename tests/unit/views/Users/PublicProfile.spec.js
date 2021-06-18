@@ -21,7 +21,7 @@ const $store = new Vuex.Store({
 });
 let $route = {
     path: "/users/12345",
-    params: { id: "12345" }
+    params: { id: 12345 }
 };
 
 const router = new VueRouter();

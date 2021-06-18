@@ -6,7 +6,7 @@ import records from "@/store/recordSearch";
 import record from "@/store/recordData";
 import introspection from "@/store/introspector";
 import uiController from "@/store/uiController";
-// import Client from "@/lib/GraphClient/GraphClient";
+import Client from "@/lib/GraphClient/GraphClient";
 import Record from "@/store/recordData";
 // import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 import VueScrollTo from "vue-scrollto";
@@ -14,7 +14,7 @@ import VueScrollTo from "vue-scrollto";
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueScrollTo,{})
-// const sinon = require("sinon");
+const sinon = require("sinon");
 // const axios = require("axios");
 
 const vuetify = new Vuetify();
@@ -72,9 +72,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
 describe("SearchCollection.vue", function(){
 
     let wrapper;
-    // let stub = sinon.stub(Client.prototype, "executeQuery");
+    let stub = sinon.stub(Client.prototype, "executeQuery");
 
-/*
     beforeAll(() => {
          stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [{name:'name A'}]}});
     });
@@ -82,7 +81,6 @@ describe("SearchCollection.vue", function(){
     afterAll(() => {
         Client.prototype.executeQuery.restore();
     });
-*/
 
     beforeEach(() => {
         //-- making a mock div element

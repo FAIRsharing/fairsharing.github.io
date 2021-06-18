@@ -31,7 +31,8 @@ describe("GeneralInfo.vue", function(){
             localVue,
             vuetify,
             router,
-            mocks: {$store, $router}
+            mocks: {$store, $router},
+            stubs: ['router-link']
         })
     });
 
@@ -42,11 +43,6 @@ describe("GeneralInfo.vue", function(){
     it("can call callRequestOwnership method", () => {
         wrapper.vm.callRequestOwnership();
         expect(wrapper.emitted().requestOwnership).toBeTruthy()
-    });
-
-    it("can call the view network graph method", () => {
-        wrapper.vm.showGraph();
-        expect($router.push).toHaveBeenCalledWith({path: "/graph/12345"});
     });
 
 });

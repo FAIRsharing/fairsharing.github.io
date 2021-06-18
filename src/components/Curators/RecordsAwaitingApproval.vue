@@ -411,9 +411,10 @@
               const _module = this;
               _module.dialogs.disableButton = true;
               let preparedRecord = {
-                approved: null
+                approved: true,
+                skip_approval: true,
+                processing_notes: null
               };
-              preparedRecord.approved = true;
               let data = {
                 record: preparedRecord,
                 id: _module.dialogs.recordID,
@@ -423,12 +424,10 @@
               if (_module.recordUpdate.error){
                 _module.error.general = _module.recordUpdate.message;
                 _module.error.recordID = _module.dialogs.recordID;
-              }else{
+              }
+              else {
                 const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
                 _module.approvalRequiredProcessed.splice(index, 1);
-                if (_module.maintenanceRequests.findIndex((element) => element.id === _module.dialogs.recordID) < 0){
-                    await _module.saveProcessingNotes(_module.dialogs.recordID,"");
-                }
               }
               _module.dialogs.approveChanges = false;
             },
@@ -440,7 +439,8 @@
               if (data.error){
                 _module.error.general = "error deleting record";
                 _module.error.recordID = _module.dialogs.recordID;
-              }else{
+              }
+              else{
                 const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
                 _module.approvalRequiredProcessed.splice(index, 1);
               }

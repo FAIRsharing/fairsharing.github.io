@@ -35,6 +35,26 @@
       <Countries />
       <!--Keywords-->
       <Keywords />
+
+      <!-- Duplicate link to graph (see also action menu) -->
+      <div class="d-flex flex-row">
+        <router-link :to="`/graph/${currentRecord['fairsharingRecord'].id}`">
+          <v-btn
+            class="my-5"
+            color="primary"
+            outlined
+          >
+            <v-icon
+              small
+              left
+            >
+              fa-project-diagram
+            </v-icon>
+            View Relation Graph&nbsp;
+          </v-btn>
+        </router-link>
+      </div>
+
       <!--How to cite & publication for record named Citations-->
       <Citations />
       <!--updates and creation date-->

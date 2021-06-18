@@ -22,6 +22,7 @@
         <v-list-item
           v-for="(item, index) in menuItems"
           :key="index"
+          :disabled="item.isDisabled"
           @click="item.action()"
         >
           <v-list-item-title>
@@ -43,6 +44,7 @@
                 dialog: false
             }
         },
+        props: ['viewing-id'],
         computed: {
           ...mapState('users', ['user']),
             menuItems: function(){
@@ -51,6 +53,7 @@
                 let auxV = [
                     {
                         name: "Edit profile",
+                        isDisabled: _module.disableEdit(),
                         action: function(){
                             _module.$router.push({
                               path: "/profiles/edit"
@@ -59,6 +62,7 @@
                     },
                     {
                         name: "Reset Password",
+                        isDisabled: false,
                         action: async function(){
                           _module.$router.push({
                             path: "/users/password/edit"
@@ -67,15 +71,17 @@
                     },
                     {
                         name: "Logout",
+                        isDisabled: false,
                         action: async function(){
                             await _module.logoutUser()
                         }
                     }
                 ];
-                if (_module.user().role === 'super_curator' || _module.user().role === 'senior_curator' || _module.user().role === 'developer'){
+                if (_module.user().role === 'super_curator' ||  _module.user().role === 'developer'){
                     vecReturn.push(
                       {
                           name: "Curator Panel",
+                          isDisabled: false,
                           action: function(){
                               _module.$router.push({
                                 path: "/curator"
@@ -96,6 +102,18 @@
                 await this.logout();
                 this.$router.push({name: "Login"})
             },
+            disableEdit: function() {
+              let _module = this;
+              if (_module.viewingId) {
+                if (_module.viewingId === _module.user().id) {
+                  return false;
+                }
+                else {
+                  return true;
+                }
+              }
+              return false;
+            }
         }
     }
 </script>

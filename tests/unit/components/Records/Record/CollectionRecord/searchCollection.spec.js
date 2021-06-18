@@ -79,7 +79,11 @@ describe("SearchCollection.vue", function(){
     });
 
     afterAll(() => {
+        try {
         Client.prototype.executeQuery.restore();
+        }
+        // eslint-disable-next-line no-empty
+        catch {}
     });
 
     beforeEach(async () => {

@@ -38,21 +38,21 @@
 
       <!-- Duplicate link to graph (see also action menu) -->
       <div class="d-flex flex-row">
-        <v-btn
-          class="ma-5"
-          color="primary"
-          v-bind="attrs"
-          v-on="on"
-          @click="showGraph()"
-        >
-          <v-icon
-            small
-            left
+        <router-link :to="`/graph/ ${currentRecord['fairsharingRecord'].id}`">
+          <v-btn
+            class="my-5"
+            color="primary"
+            outlined
           >
-            fa-project-diagram
-          </v-icon>
-          View Relation Graph&nbsp;
-        </v-btn>
+            <v-icon
+              small
+              left
+            >
+              fa-project-diagram
+            </v-icon>
+            View Relation Graph&nbsp;
+          </v-btn>
+        </router-link>
       </div>
 
       <!--How to cite & publication for record named Citations-->
@@ -111,11 +111,6 @@ export default {
   methods: {
     callRequestOwnership() {
       this.$emit('requestOwnership')
-    },
-    showGraph() {
-      this.$router.push({
-        path: '/graph/' + this.currentRecord['fairsharingRecord'].id
-      });
     }
   }
 }

@@ -6,12 +6,14 @@
 </template>
 
 <script>
+/*
 import clearString from '@/utils/stringUtils'
 import IconsMixin from "@/utils/iconsMixin.js"
+*/
 
 export default {
   name: "Support",
-  mixins: [clearString, IconsMixin],
+  // mixins: [clearString, IconsMixin],
 /*  computed: {
     ...mapGetters("record", ["getField"]),
   },*/

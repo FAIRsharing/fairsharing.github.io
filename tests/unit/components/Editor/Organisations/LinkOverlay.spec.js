@@ -126,7 +126,12 @@ describe("Edit -> LinkOverlay.vue", function() {
             homepage: undefined,
             urlForLogo: undefined
         }]);
-        restStub.restore();
+        try {
+            restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
+
     });
 
     it("can create a new grant", async () => {
@@ -151,7 +156,12 @@ describe("Edit -> LinkOverlay.vue", function() {
             description: "another description",
             id: 123
         }]);
+        try {
         restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
+
     });
 
 });

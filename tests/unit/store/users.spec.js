@@ -21,10 +21,14 @@ describe('Actions/Mutations', () => {
         restClientStub = sinon.stub(Client.prototype, "executeQuery");
     });
     afterEach(() => {
-        jest.clearAllMocks();
-        getStub.restore();
-        restClientStub.restore();
-        graphStub.restore();
+        try {
+            jest.clearAllMocks();
+            getStub.restore();
+            restClientStub.restore();
+            graphStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Login: testing no user and valid token", async () => {
@@ -371,7 +375,12 @@ describe('Actions/Mutations', () => {
         };
         await actions.validateUserToken(state);
         expect(actions.commit).toHaveBeenCalledTimes(0);
+
+        try {
         restClientStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
 
         restClientStub = sinon.stub(Client.prototype, 'executeQuery');
         restClientStub.returns({data: {success: false}});
@@ -384,7 +393,13 @@ describe('Actions/Mutations', () => {
             field: "getUser",
             message: {success: false}
         });
-        restClientStub.restore();
+
+        try {
+            restClientStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
+
     });
 
 

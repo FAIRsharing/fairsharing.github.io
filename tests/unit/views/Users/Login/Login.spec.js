@@ -34,7 +34,13 @@ describe("Login.vue", ()=> {
         restStub = sinon.stub(Client.prototype, "executeQuery");
     });
     afterAll(() => {
-        restStub.restore();
+        try {
+            restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {
+
+        }
     });
     beforeEach( () => {
         wrapper = shallowMount(Login, {

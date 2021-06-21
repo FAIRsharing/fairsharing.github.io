@@ -96,7 +96,7 @@
 <script>
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import clearString from '@/utils/stringUtils'
-import {mapGetters} from "vuex";
+// import {mapGetters} from "vuex";
 import Icon from "@/components/Icon";
 import IconsMixin from "@/utils/iconsMixin.js"
 
@@ -107,9 +107,9 @@ export default {
     SectionTitle
   },
   mixins: [clearString, IconsMixin],
-  computed: {
+/*  computed: {
     ...mapGetters("record", ["getField"]),
-  },
+  },*/
   methods:{
   }
 }

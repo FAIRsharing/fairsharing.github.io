@@ -136,7 +136,6 @@ describe("Record.vue", function() {
         expect(wrapper.name()).toMatch("Record");
         expect(wrapper.vm.getTitle).toBe('FAIRsharing | 980190962');
         expect(wrapper.vm.currentRoute).toBe('980190962');
-        wrapper.vm.testEnvironment = true;
     });
 
     it("can be mounted with a target", async ()  => {
@@ -364,5 +363,11 @@ describe("Record.vue", function() {
         });
         expect(wrapper2.name()).toMatch("Record");
     });
+
+    it("", async ()=> {
+        wrapper.vm.testEnvironment = true;
+        await wrapper.vm.checkClaimStatus()
+        expect(wrapper.vm.errors).toBe("an error occurred while fetching data")
+    })
 
 });

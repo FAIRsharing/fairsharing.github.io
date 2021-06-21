@@ -381,6 +381,7 @@ export default {
       if (_module.user().isLoggedIn) {
         const recordID = _module.currentRecord['fairsharingRecord'].id;
         try {
+          // testEnvironment variable is only for test case.
           if(this.testEnvironment) throw new Error("an error occurred while fetching data")
           const claim = await client.canClaim(recordID, _module.user().credentials.token);
           if (claim.error) {
@@ -398,6 +399,7 @@ export default {
         }
         catch (e) {
           _module.canClaim = false;
+          this.errors = e.message;
         }
       }
     },

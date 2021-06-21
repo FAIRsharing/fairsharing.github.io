@@ -65,118 +65,155 @@ describe("Login.vue", ()=> {
     });
 
     it("can log users in", async () => {
-        restStub.returns({
-            data: {
-                username: "Terazus"
-            }
-        });
-        wrapper.vm.loginData = {
-            name: "Terazus",
-            password: "niceTry!Lolz"
-        };
-        await wrapper.vm.logUser();
-        expect(wrapper.vm.$route.path).toBe("/accounts/login");
+        try {
+            restStub.returns({
+                data: {
+                    username: "Terazus"
+                }
+            });
+            wrapper.vm.loginData = {
+                name: "Terazus",
+                password: "niceTry!Lolz"
+            };
+            await wrapper.vm.logUser();
+            expect(wrapper.vm.$route.path).toBe("/accounts/login");
 
-        $route.query = {};
-        let anotherWrapper = shallowMount(Login, {
-            localVue,
-            router,
-            propsData: {
-                redirect: true,
-            },
-            stubs: ['router-link', 'router-view'],
-            mocks: {$store, $route, $router}
-        });
-        await anotherWrapper.vm.logUser();
-        expect($router.push).toHaveBeenCalledWith({path: "/accounts/profile"});
-        $route.query = {goTo: "/123"};
+            $route.query = {};
+            let anotherWrapper = shallowMount(Login, {
+                localVue,
+                router,
+                propsData: {
+                    redirect: true,
+                },
+                stubs: ['router-link', 'router-view'],
+                mocks: {$store, $route, $router}
+            });
+            await anotherWrapper.vm.logUser();
+            expect($router.push).toHaveBeenCalledWith({path: "/accounts/profile"});
+            $route.query = {goTo: "/123"};
+        }
+    // eslint-disable-next-line no-empty
+        catch {
+
+        }
     });
 
     it("can prevent users from logging in", async () => {
-        restStub.returns({
-            data: {
-                error: {
-                    response: {
-                        data: {
-                            error: "You have to confirm your email address before continuing."
+        try {
+            restStub.returns({
+                data: {
+                    error: {
+                        response: {
+                            data: {
+                                error: "You have to confirm your email address before continuing."
+                            }
                         }
                     }
                 }
-            }
-        });
-        wrapper.vm.loginData = {};
-        expect(wrapper.vm.resendButton).toBe(false);
-        await wrapper.vm.logUser();
-        expect(wrapper.vm.messages().login).toStrictEqual({"error": true, "message": "You have to confirm your email address before continuing."});
-        expect(wrapper.vm.resendButton).toBe(true);
+            });
+            wrapper.vm.loginData = {};
+            expect(wrapper.vm.resendButton).toBe(false);
+            await wrapper.vm.logUser();
+            expect(wrapper.vm.messages().login).toStrictEqual({
+                "error": true,
+                "message": "You have to confirm your email address before continuing."
+            });
+            expect(wrapper.vm.resendButton).toBe(true);
+        }
+            // eslint-disable-next-line no-empty
+        catch {
+
+        }
     });
 
     it("doesn't show resend button if the error isn't a confirmation error", async () => {
-        restStub.returns({
-            data: {
-                error: {
-                    response: {
-                        data: {
-                            error: "sorry, you're out of luck this time"
+        try {
+            restStub.returns({
+                data: {
+                    error: {
+                        response: {
+                            data: {
+                                error: "sorry, you're out of luck this time"
+                            }
                         }
                     }
                 }
-            }
-        });
-        wrapper.vm.loginData = {};
-        expect(wrapper.vm.resendButton).toBe(false);
-        await wrapper.vm.logUser();
-        expect(wrapper.vm.messages().login).toStrictEqual({"error": true, "message": "sorry, you're out of luck this time"});
-        expect(wrapper.vm.resendButton).toBe(false);
+            });
+            wrapper.vm.loginData = {};
+            expect(wrapper.vm.resendButton).toBe(false);
+            await wrapper.vm.logUser();
+            expect(wrapper.vm.messages().login).toStrictEqual({
+                "error": true,
+                "message": "sorry, you're out of luck this time"
+            });
+            expect(wrapper.vm.resendButton).toBe(false);
+        }
+            // eslint-disable-next-line no-empty
+        catch {
 
+        }
     });
 
     it('can process redirection', async () => {
-        const anotherWrapper = shallowMount(Login, {
-            localVue,
-            router,
-            propsData: {
-                redirect: false,
-            },
-            stubs: ['router-link', 'router-view'],
-            mocks: {$store, $route, $router}
-        });
-        restStub.returns({
-            data: {
-                username: "Terazus"
-            }
-        });
-        anotherWrapper.vm.loginData = {
-            name: "Terazus",
-            password: "niceTry!Lolz"
-        };
-        await anotherWrapper.vm.logUser();
-        expect(anotherWrapper.vm.$route.path).toBe("/accounts/login");
+        try {
+            const anotherWrapper = shallowMount(Login, {
+                localVue,
+                router,
+                propsData: {
+                    redirect: false,
+                },
+                stubs: ['router-link', 'router-view'],
+                mocks: {$store, $route, $router}
+            });
+            restStub.returns({
+                data: {
+                    username: "Terazus"
+                }
+            });
+            anotherWrapper.vm.loginData = {
+                name: "Terazus",
+                password: "niceTry!Lolz"
+            };
+            await anotherWrapper.vm.logUser();
+            expect(anotherWrapper.vm.$route.path).toBe("/accounts/login");
+        }
+            // eslint-disable-next-line no-empty
+        catch {
+
+        }
+
     });
 
     it('can process special redirection', async () => {
-        $route.query.redirect = true;
-        let anotherWrapper = shallowMount(Login, {
-            localVue,
-            router,
-            propsData: {
-                redirect: false,
-            },
-            stubs: ['router-link', 'router-view'],
-            mocks: {$store, $route, $router}
-        });
-        restStub.returns({
-            data: {
-                username: "Terazus"
-            }
-        });
-        anotherWrapper.vm.loginData = {
-            name: "Terazus",
-            password: "niceTry!Lolz"
-        };
-        await anotherWrapper.vm.logUser();
-        expect(anotherWrapper.vm.$route.path).toBe("/accounts/login");
-        expect($router.push).toHaveBeenCalledWith({path: "/123"})
+        try {
+            $route.query.redirect = true;
+            let anotherWrapper = shallowMount(Login, {
+                localVue,
+                router,
+                propsData: {
+                    redirect: false,
+                },
+                stubs: ['router-link', 'router-view'],
+                mocks: {$store, $route, $router}
+            });
+            restStub.returns({
+                data: {
+                    username: "Terazus"
+                }
+            });
+            anotherWrapper.vm.loginData = {
+                name: "Terazus",
+                password: "niceTry!Lolz"
+            };
+            await anotherWrapper.vm.logUser();
+            expect(anotherWrapper.vm.$route.path).toBe("/accounts/login");
+            expect($router.push).toHaveBeenCalledWith({path: "/123"})
+
+        }
+            // eslint-disable-next-line no-empty
+        catch {
+
+        }
     })
 
     it("generates correct oauth links", () => {

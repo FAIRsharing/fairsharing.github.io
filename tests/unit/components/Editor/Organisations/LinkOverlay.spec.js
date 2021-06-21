@@ -6,6 +6,7 @@ import LinkOverlay from "@/components/Editor/Organisations/LinkOverlay.vue"
 import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
+import Client from "@/lib/GraphClient/GraphClient";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
@@ -126,7 +127,12 @@ describe("Edit -> LinkOverlay.vue", function() {
             homepage: undefined,
             urlForLogo: undefined
         }]);
-        restStub.restore();
+        try {
+            restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
+
     });
 
     it("can create a new grant", async () => {
@@ -151,7 +157,12 @@ describe("Edit -> LinkOverlay.vue", function() {
             description: "another description",
             id: 123
         }]);
+        try {
         restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
+
     });
 
 });

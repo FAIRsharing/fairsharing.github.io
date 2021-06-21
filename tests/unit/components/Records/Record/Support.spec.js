@@ -54,7 +54,6 @@ describe("Support.vue", function(){
         expect(wrapper.name()).toMatch("Support");
         expect(wrapper.vm.getField('metadata')['contacts'][0].contact_name).toMatch("A Contact");
         expect(wrapper.vm.getField('metadata')['contacts'][0].contact_email).toMatch("contact@goatse.cx");
-        wrapper.vm.testEnvironment = true;
     });
 
     it("can be check the reaction of page if appropriate data not provided for support", () => {

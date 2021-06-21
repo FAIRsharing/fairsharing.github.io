@@ -6,6 +6,7 @@ import LinkOverlay from "@/components/Editor/Organisations/LinkOverlay.vue"
 import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
+import Client from "@/lib/GraphClient/GraphClient";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

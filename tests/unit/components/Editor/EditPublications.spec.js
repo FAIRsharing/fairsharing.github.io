@@ -114,7 +114,12 @@ describe("EditPublications.vue", function() {
         });
     });
     afterEach( () => {
+        try {
         graphStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
+
     });
 
     it("can be instantiated", () => {
@@ -142,12 +147,21 @@ describe("EditPublications.vue", function() {
         wrapper.vm.search = 'amIaDoi?';
         await wrapper.vm.getDOI();
         expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
+        try {
         fetchStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
+
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
         await wrapper.vm.getDOI();
         expect(wrapper.vm.errors.doi).toBe(true);
+        try {
         fetchStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("can get a PMID and process related errors", async () => {
@@ -181,8 +195,11 @@ describe("EditPublications.vue", function() {
         wrapper.vm.search = "test";
         await wrapper.vm.getPMID();
         expect(wrapper.vm.newPublication).toStrictEqual(expectedOutput);
-        fetchStub.restore();
-
+        try {
+            fetchStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
         // NO PMID PROCESS
         returnedData.elocationid = null;
         delete expectedOutput.doi;
@@ -193,14 +210,21 @@ describe("EditPublications.vue", function() {
         wrapper.vm.search = "test";
         await wrapper.vm.getPMID();
         expect(wrapper.vm.newPublication).toStrictEqual(expectedOutput);
-        fetchStub.restore();
-
+        try {
+            fetchStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
         // ERROR PROCESS
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data: {error: {response: {data: 'Im an error'}}}});
         await wrapper.vm.getPMID();
         expect(wrapper.vm.errors.pmid).toBe(true);
-        fetchStub.restore();
+        try {
+            fetchStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("can add/remove a publication to the array of publications", async () => {
@@ -211,7 +235,11 @@ describe("EditPublications.vue", function() {
         expect(wrapper.vm.search).toBe("title");
         expect(wrapper.vm.publications[2]).toStrictEqual({id: 123, tablePosition: 3, title: "Im a publication"});
         expect(wrapper.vm.publications.length).toBe(3);
+        try {
         restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
 
         restStub = sinon.stub(RestClient.prototype, 'executeQuery');
         restStub.returns({data: {id: 456}});
@@ -221,7 +249,11 @@ describe("EditPublications.vue", function() {
         expect(wrapper.vm.search).toBe("123");
         expect(wrapper.vm.publications.length).toBe(3);
         expect(wrapper.vm.publications[2]).toStrictEqual({id: 456, tablePosition: 4, isCitation: true});
+        try {
         restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
 
         expect(wrapper.vm.publications.length).toBe(3);
         wrapper.vm.removePublication(2);
@@ -251,7 +283,11 @@ describe("EditPublications.vue", function() {
         wrapper.vm.newPublication = {title: "title"};
         await wrapper.vm.addPublication();
         expect(wrapper.vm.errors.general.response.data).toBe("Im an error");
+        try {
         restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
 
         restStub = sinon.stub(RestClient.prototype, 'executeQuery');
         restStub.returns({data: {error: {response: {data: "Im an error"}}}});
@@ -259,7 +295,11 @@ describe("EditPublications.vue", function() {
         wrapper.vm.newPublication = {pubIndex: 3, title: "title", doi: "123", isCitation: true};
         await wrapper.vm.addPublication();
         expect(wrapper.vm.errors.general.response.data).toBe("Im an error");
+        try {
         restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("can edit an added publication", () => {
@@ -285,7 +325,11 @@ describe("EditPublications.vue", function() {
         await wrapper.vm.saveRecord(true);
         expect(recordStore.state.sections.publications.error).toBe(true);
         expect(recordStore.state.sections.publications.message).toStrictEqual({"response": {"data": "error"}});
+        try {
         restStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
         jest.clearAllMocks();
     });
 

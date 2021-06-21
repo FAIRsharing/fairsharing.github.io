@@ -112,37 +112,42 @@ export default {
   },
   methods:{
     generateSupport() {
-      let processedSupport = {}
-      const support_links =  this.getField('metadata')['support_links']
-      const contacts = this.getField('metadata')['contacts']
-      // initializing object's key and data dynamically based on any number of types coming from API
-      if (support_links) {
-        support_links.forEach(item => {
-          if (!Object.prototype.hasOwnProperty.call(processedSupport, item.type)) {
-            processedSupport[item.type] = {
-              data: [],
-              icon: null
+      try {
+        let processedSupport = {}
+        const support_links = this.getField('metadata')['support_links']
+        const contacts = this.getField('metadata')['contacts']
+        // initializing object's key and data dynamically based on any number of types coming from API
+        if (support_links) {
+          support_links.forEach(item => {
+            if (!Object.prototype.hasOwnProperty.call(processedSupport, item.type)) {
+              processedSupport[item.type] = {
+                data: [],
+                icon: null
+              }
             }
-          }
-        });
-        // assigning data and icon to the different types came from API.
-        support_links.forEach(item => {
-          // Replace parentheses, brackets, space,forward slashes with underscore.
-          processedSupport[item.type].icon = this.getIconName(item.type);
-          processedSupport[item.type].data.push(item)
-        })
-      }
-      // adding licenses if available
-      if (contacts && contacts.length) {
-        processedSupport['contacts'] = {
-          data:[],
-          icon:'contacts'
+          });
+          // assigning data and icon to the different types came from API.
+          support_links.forEach(item => {
+            // Replace parentheses, brackets, space,forward slashes with underscore.
+            processedSupport[item.type].icon = this.getIconName(item.type);
+            processedSupport[item.type].data.push(item)
+          })
         }
-        contacts.forEach(licence => {
-          processedSupport['contacts'].data.push(licence)
-        })
+        // adding licenses if available
+        if (contacts && contacts.length) {
+          processedSupport['contacts'] = {
+            data: [],
+            icon: 'contacts'
+          }
+          contacts.forEach(licence => {
+            processedSupport['contacts'].data.push(licence)
+          })
+        }
+        return processedSupport
       }
-      return processedSupport
+      catch (err) {
+        this.errors = err.message;
+      }
     }
   }
 }

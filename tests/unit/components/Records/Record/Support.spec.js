@@ -1,11 +1,11 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
+import { shallowMount } from "@vue/test-utils";
+// import Vuex from "vuex";
 // import Record from "@/store/recordData.js"
 import Support from "@/components/Records/Record/Support.vue"
 import Vuetify from "vuetify"
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
+// const localVue = createLocalVue();
+// localVue.use(Vuex);
 const vuetify = new Vuetify();
 
 // Record.state.currentRecord["fairsharingRecord"] = {
@@ -45,7 +45,7 @@ describe("Support.vue", function(){
     // TODO: Mock properties in options {}.
     beforeEach(() => {
         wrapper = shallowMount(Support, {
-            localVue,
+            // localVue,
             vuetify,
             // mocks: {$store}
         });

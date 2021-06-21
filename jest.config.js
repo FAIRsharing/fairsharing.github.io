@@ -17,7 +17,8 @@ module.exports = {
         "**/**.spec.js", "**/**/**.spec.js", "tests/**/**.spec.js", "tests/**/**/**.spec.js"
     ],
     setupFiles: [
-      "./jest-setup.js"
+      "./jest-setup.js",
+      "trace-unhandled/register"
     ],
     transform: { '^.*\\.js$': 'babel-jest' },
     transformIgnorePatterns: ['node_modules/(?!vue-router|@babel|vuetify|particles.vue)']

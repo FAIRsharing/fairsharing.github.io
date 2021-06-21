@@ -11,7 +11,7 @@
     <div class="d-flex flex-column ml-2 min-height-40">
       <div v-if="(getField('metadata')['contacts'] && getField('metadata')['contacts'].length) || (getField('metadata')['support_links'] && getField('metadata')['support_links'].length)">
         <v-card
-          v-for="(item,key,index) in generateSupport()"
+          v-for="(item,key,index) in []"
           :key="key+'_'+index"
           class="pa-4 mt-15 d-flex flex-column"
           outlined
@@ -111,44 +111,6 @@ export default {
     ...mapGetters("record", ["getField"]),
   },
   methods:{
-    generateSupport() {
-      try {
-        let processedSupport = {}
-        const support_links = this.getField('metadata')['support_links']
-        const contacts = this.getField('metadata')['contacts']
-        // initializing object's key and data dynamically based on any number of types coming from API
-        if (support_links) {
-          support_links.forEach(item => {
-            if (!Object.prototype.hasOwnProperty.call(processedSupport, item.type)) {
-              processedSupport[item.type] = {
-                data: [],
-                icon: null
-              }
-            }
-          });
-          // assigning data and icon to the different types came from API.
-          support_links.forEach(item => {
-            // Replace parentheses, brackets, space,forward slashes with underscore.
-            processedSupport[item.type].icon = this.getIconName(item.type);
-            processedSupport[item.type].data.push(item)
-          })
-        }
-        // adding licenses if available
-        if (contacts && contacts.length) {
-          processedSupport['contacts'] = {
-            data: [],
-            icon: 'contacts'
-          }
-          contacts.forEach(licence => {
-            processedSupport['contacts'].data.push(licence)
-          })
-        }
-        return processedSupport
-      }
-      catch (err) {
-        this.errors = err.message;
-      }
-    }
   }
 }
 </script>

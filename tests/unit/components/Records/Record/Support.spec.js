@@ -56,6 +56,7 @@ describe("Support.vue", function(){
         expect(wrapper.vm.getField('metadata')['contacts'][0].contact_email).toMatch("contact@goatse.cx");
     });
 
+/*
     it("can be check the reaction of page if appropriate data not provided for support", () => {
         let mockData;
         expect(wrapper.vm.generateSupport()).toStrictEqual({
@@ -182,5 +183,6 @@ describe("Support.vue", function(){
             }
         })
     });
+*/
 
 });

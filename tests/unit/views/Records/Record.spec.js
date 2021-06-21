@@ -364,7 +364,7 @@ describe("Record.vue", function() {
         expect(wrapper2.name()).toMatch("Record");
     });
 
-    it("", async ()=> {
+    it("can raise error", async ()=> {
         wrapper.vm.testEnvironment = true;
         await wrapper.vm.checkClaimStatus()
         expect(wrapper.vm.errors).toBe("an error occurred while fetching data")

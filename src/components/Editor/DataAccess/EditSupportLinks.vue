@@ -270,9 +270,14 @@
           })
         },
         search: async function(val){
-          this.loadingTessRecords = true;
-          this.tessRecords = (val) ? await this.findTessRecord(val) : [];
-          this.loadingTessRecords = false;
+          try {
+            this.loadingTessRecords = true;
+            this.tessRecords = (val) ? await this.findTessRecord(val) : [];
+            this.loadingTessRecords = false;
+          }
+          catch (err) {
+            this.errors = err.message;
+          }
         }
       },
       methods: {
@@ -336,7 +341,12 @@
           }
         },
         async findTessRecord(val){
+          try {
           return await client.getTessRecords(val);
+          }
+          catch (err) {
+            this.errors = err.message;
+          }
         },
         getLinkIndex(item){
           let index = 0;

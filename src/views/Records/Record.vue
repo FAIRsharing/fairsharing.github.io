@@ -379,19 +379,24 @@ export default {
       let _module = this;
       if (_module.user().isLoggedIn) {
         const recordID = _module.currentRecord['fairsharingRecord'].id;
-        const claim = await client.canClaim(recordID, _module.user().credentials.token);
-        if (claim.error) {
-          if (claim.error.response.data.existing){
-            let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
-            if (maintainer.length === 0){
-              _module.alreadyClaimed = true;
+        try {
+          const claim = await client.canClaim(recordID, _module.user().credentials.token);
+          if (claim.error) {
+            if (claim.error.response.data.existing) {
+              let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
+              if (maintainer.length === 0) {
+                _module.alreadyClaimed = true;
+              }
             }
+            _module.canClaim = false;
+          } else {
+            // show modal here
+            _module.canClaim = !claim.existing;
           }
-          _module.canClaim = false;
         }
-        else {
-          // show modal here
-          _module.canClaim = !claim.existing;
+        catch (e) {
+          /* istanbul ignore next */
+          _module.canClaim = false;
         }
       }
     },

@@ -33,6 +33,7 @@
     "node-gyp": "^3.8.0",
     "particles.vue": "^2.9.3",
     "roboto-fontface": "*",
+    "trace-unhandled": "^2.0.1",
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.12",
     "vue-anchor-router-link": "*",

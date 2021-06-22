@@ -145,35 +145,37 @@ export default {
   },
   watch: {
     currentPath: async function () {
-      this.$scrollTo('body',50,{});
       try {
-        await this.tryRedirect();
+        this.$scrollTo('body', 50, {});
       }
-      // eslint-disable-next-line no-empty
-      catch(e) {
-        // Uncaught promise thrown on Github (only).
+      catch (err) {
+        this.errros = err.message;
       }
+      await this.tryRedirect();
     }
   },
   mounted: function () {
     window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
+      await this.tryRedirect();
       try {
-        await this.tryRedirect();
-        this.$scrollTo('body',50,{})
+        this.$scrollTo('body', 50, {});
       }
-      // eslint-disable-next-line no-empty
-      catch(e) {
-        // Uncaught promise thrown on Github (only).
+      catch (err) {
+        this.errros = err.message;
       }
-
     });
   },
   beforeDestroy() {
     this.cleanRecordsStore();
   },
   destroyed() {
-    this.$scrollTo('body', 50, {})
+    try {
+      this.$scrollTo('body', 50, {});
+    }
+    catch (err) {
+      this.errros = err.message;
+    }
     window.removeEventListener("scroll", this.onScroll);
     this.setStickToTop(false);
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
@@ -232,7 +234,12 @@ export default {
      * @returns {Promise}
      */
     getData: async function () {
-      this.$scrollTo('body',50,{});
+      try {
+        this.$scrollTo('body', 50, {});
+      }
+      catch (err) {
+        this.errros = err.message;
+      }
       this.isLoading = true;
       this.errors = null;
       const _module = this;

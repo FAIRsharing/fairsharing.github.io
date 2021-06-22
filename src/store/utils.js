@@ -64,6 +64,7 @@ export function initEditorSections(data, sectionsNames){
                 metadata: data.metadata,
                 registry: data.registry,
                 name: data.name,
+                curator_notes: data.curatorNotes || data.curator_notes,
                 domains: data.domains.map((obj) => {
                     obj.label = obj.label.toLowerCase();
                     return obj;

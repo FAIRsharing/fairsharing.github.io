@@ -56,23 +56,19 @@ describe("Edit -> EditSupportLinks.vue", function() {
     });
 
     beforeEach(async () => {
-        try {
-            const editSupportLink = {
-                render: () => {},
-                methods: {
-                    validate: () => true,
-                },
-                data(){return {}}
-            };
-            wrapper = await shallowMount(EditSupportLinks, {
-                localVue,
-                vuetify,
-                mocks: {$store, $route},
-                stubs: {'v-form': editSupportLink}
-            });
-        }
-            // eslint-disable-next-line no-empty
-        catch {}
+        const editSupportLink = {
+            render: () => {},
+            methods: {
+                validate: () => true,
+            },
+            data(){return {}}
+        };
+        wrapper = await shallowMount(EditSupportLinks, {
+            localVue,
+            vuetify,
+            mocks: {$store, $route},
+            stubs: {'v-form': editSupportLink}
+        });
     });
 
     it("can be mounted", () => {
@@ -148,25 +144,17 @@ describe("Edit -> EditSupportLinks.vue", function() {
     });
 
     it('can find a TeSS record', async () => {
-        try {
-            let response = await wrapper.vm.findTessRecord("abc");
-            expect(response).toStrictEqual([{"name": "ABC", "url": "http://example.com"}]);
-        }
-            // eslint-disable-next-line no-empty
-        catch {}
+        let response = await wrapper.vm.findTessRecord("abc");
+        expect(response).toStrictEqual([{"name": "ABC", "url": "http://example.com"}]);
     });
 
     it("can react to type change", async () => {
-        try {
-            wrapper.vm.edit.template = {
-                type: "TeSS links to training materials",
-                url: "ABC"
-            };
-            await Vue.nextTick();
-            expect(wrapper.vm.edit.template.url).toStrictEqual("ABC");
-        }
-            // eslint-disable-next-line no-empty
-        catch {}
+        wrapper.vm.edit.template = {
+            type: "TeSS links to training materials",
+            url: "ABC"
+        };
+        await Vue.nextTick();
+        expect(wrapper.vm.edit.template.url).toStrictEqual("ABC");
     });
 
     it('can build an item name', () => {

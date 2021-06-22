@@ -76,7 +76,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
         expect(wrapper.vm.isNew({field: 'test'})).toBe(true);
     });
 
-    it("can open the new link menu", () => {
+   /* it("can open the new link menu", () => {
        wrapper.vm.newLink();
        expect(wrapper.vm.edit).toStrictEqual({
            show: true,
@@ -166,5 +166,5 @@ describe("Edit -> EditSupportLinks.vue", function() {
         wrapper.vm.$store.state.record.sections["dataAccess"].data.support_links = [{}, object];
         expect(wrapper.vm.getLinkIndex(object)).toBe(1);
     });
-
+*/
 });

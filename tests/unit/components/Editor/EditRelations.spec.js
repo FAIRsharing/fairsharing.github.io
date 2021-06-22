@@ -90,7 +90,7 @@ describe("EditRelationships.vue", function() {
 
     it("can watch and react to search and associations changes", async () => {
         wrapper.vm.search = 'tester';
-        expect(wrapper.vm.availableRecords).toStrictEqual([{id: 1}]);
+        expect(wrapper.vm.availableRecords).toStrictEqual([{id: 1, isActive: true}]);
         let pushItem = {
             "id":123,
             "linkedRecord":{"id":456,"name":"no","registry":"collection"},

@@ -13,6 +13,7 @@ import Variablepie from 'highcharts/modules/variable-pie'
 import More from 'highcharts/highcharts-more'
 import Export from 'highcharts/modules/exporting'
 import VueCodeHighlight from 'vue-code-highlight';
+import VueSanitize from "vue-sanitize";
 import Particles from "particles.vue";
 import "vue-code-highlight/themes/prism-twilight.css";
 import "vue-code-highlight/themes/window.css";
@@ -35,6 +36,7 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 import 'vue-json-pretty/lib/styles.css'
 
+
 Variablepie(Highcharts);
 More(Highcharts);
 Export(Highcharts);
@@ -48,6 +50,7 @@ Vue.use(VueMoment);
 Vue.use(VueMeta, {refreshOnceOnNavigation: true});
 Vue.use(VueCodeHighlight);
 Vue.use(Particles);
+Vue.use(VueSanitize);
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 router.afterEach(async(to) => await afterEach(to));

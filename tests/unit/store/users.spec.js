@@ -33,6 +33,7 @@ describe('Actions/Mutations', () => {
             credentials: {
                 username: "Terazus",
                 token: "123",
+                id: 1,
                 tokenValidity: now.getTime()
             }
         }));
@@ -47,6 +48,7 @@ describe('Actions/Mutations', () => {
             credentials: {
                 username: "Terazus",
                 token: "123",
+                id: 1,
                 tokenValidity: "100039"
             }
         }));
@@ -151,6 +153,7 @@ describe('Actions/Mutations', () => {
     it("setUser: can set user data", () => {
         const state = {};
         const user = {
+            id: 1,
             credentials: {
                 username: "Terazus",
                 token: 123,
@@ -168,6 +171,7 @@ describe('Actions/Mutations', () => {
         getStub.withArgs("user").returns(JSON.stringify(user));
         mutations.setUser(state, user);
         expect(state.user()).toStrictEqual({
+            id: 1,
             credentials: {
                 username: "Terazus",
                 token: 123,

@@ -11,8 +11,8 @@
           <v-col
             xl="6"
             lg="6"
-            md="6"
-            sm="6"
+            md="12"
+            sm="12"
             xs="12"
           >
             <v-card
@@ -66,7 +66,7 @@
                 </div>
 
                 <v-lazy
-                  v-for="(record, index) in availableRecords"
+                  v-for="(record, index) in recordsList"
                   :key="'availableRecord_' + index"
                   v-model="record.isActive"
                   :options="{
@@ -131,8 +131,8 @@
           <v-col
             xl="6"
             lg="6"
-            md="6"
-            sm="6"
+            md="12"
+            sm="12"
             xs="12"
           >
             <v-card
@@ -423,7 +423,8 @@
             searchFilters: {},
             initialized: false,
             lastQuery: null,
-            duplicateRelationship: false
+            duplicateRelationship: false,
+            recordsList: []
           }
         },
         computed: {
@@ -498,20 +499,17 @@
             Object.keys(_module.labelsFilter).forEach(filter => {
               _module.labelsFilter[filter] = true;
             });
-            // If an item already exists then this shouldn't be added...
-            var exists = this.associations.find(function(link) {
-              //  link.recordAssocLabel is sometimes a string, and sometimes an object...
+            let exists = this.associations.find(function(link) {
               let tmpRelation;
               if (typeof link.recordAssocLabel.relation == 'undefined') {
                 tmpRelation = link.recordAssocLabel;
-              } else {
+              }
+              else {
                 tmpRelation = link.recordAssocLabel.relation;
               }
-              if (link.linkedRecord.name === _module.addingRelation.linkedRecord.name &&
-                  tmpRelation ===  _module.addingRelation.recordAssocLabel.relation) {
-                return true;
-              }
-              return false;
+              return link.linkedRecord.name === _module.addingRelation.linkedRecord.name &&
+                      tmpRelation === _module.addingRelation.recordAssocLabel.relation;
+
             });
             if (exists) {
               _module.duplicateRelationship = true;
@@ -534,7 +532,6 @@
           removeItem(id){
             this.sections.relations.data.recordAssociations.splice(id, 1);
           },
-          // OVERLAY
           showOverlay(target){
             this.showRelationsPanel = true;
             this.panelContent = null;
@@ -598,13 +595,15 @@
               fairsharingRegistry: registries,
               excludeId: _module.currentID
             });
-
             let i = 0;
             this.availableRecords.forEach(rec => {
               rec.isActive = i < 15; // activate the 15 first items for v-lazy.
               i += 1;
             });
 
+            if (search === this.lastQuery) {
+              this.recordsList = this.availableRecords;
+            }
             if (search === this.lastQuery) this.loading = false;
           },
           async saveRecord(redirect){

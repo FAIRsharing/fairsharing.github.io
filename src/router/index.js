@@ -4,7 +4,7 @@ import store from '@/store'
 
 import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
     Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
-    Stakeholders, Timeline, License, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance, APIDoc }
+    Stakeholders, Timeline, Licence, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance, APIDoc }
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -101,7 +101,7 @@ let routes = [
     {
         name: "License",
         path: "/license",
-        component: License,
+        component: Licence,
     },
     {
         name: "Terms_of_use",
@@ -240,6 +240,12 @@ routes.forEach(function (route) {
         }
     }
 });
+
+export async function afterEach(to) {
+    if (to.name !== "Record") {
+        window.scrollTo(0,0);
+    }
+}
 
 const router = new VueRouter({
     routes,

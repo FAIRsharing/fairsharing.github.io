@@ -34,6 +34,13 @@ const $store = new Vuex.Store({
 });
 
 let wrapper;
+const formValidation = {
+    render: () => {},
+    methods: {
+        validate: () => true,
+    },
+    data(){return {}}
+};
 
 describe('Editor -> Contact.vue', () => {
 
@@ -41,7 +48,8 @@ describe('Editor -> Contact.vue', () => {
         wrapper = shallowMount(Contact, {
             localVue,
             vuetify,
-            mocks: {$store}
+            mocks: {$store},
+            stubs: {'v-form': formValidation}
         });
     });
 

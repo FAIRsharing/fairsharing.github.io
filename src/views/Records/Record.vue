@@ -17,6 +17,24 @@
         <v-col
           cols="12"
         >
+          <v-alert
+            v-if="!currentRecord.fairsharingRecord['isApproved'] && !error"
+            dense
+            type="info"
+            class="mb-2 flex-grow-1"
+          >
+            <span>This record is is awaiting review by FAIRsharing curators</span>
+          </v-alert>
+
+          <v-alert
+            v-if="isWatching()"
+            dense
+            type="info"
+            class="mb-2 flex-grow-1"
+          >
+            <span>You are watching this record for changes</span>
+          </v-alert>
+
           <div
             v-if="alreadyClaimed || claimedTriggered || user().is_curator"
             class="d-flex flex-column"
@@ -29,6 +47,8 @@
             >
               <span>This record is hidden!</span>
             </v-alert>
+
+
 
             <v-alert
               v-if="alreadyClaimed"
@@ -47,7 +67,7 @@
             </v-snackbar>
           </div>
           <div
-            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error"
             class="text-right"
           >
             <v-menu
@@ -88,11 +108,13 @@
         </v-col>
       </v-row>
 
+      <!--  CuratorsNotes   -->
+      <CuratorNotes class="ma-4 mb-7" />
+
       <Tombstone
         v-if="currentRecord['fairsharingRecord'] && currentRecord['fairsharingRecord'].metadata.tombstone"
         :record="currentRecord['fairsharingRecord']"
       />
-
       <!--  Content  -->
       <div v-if="currentRecord['fairsharingRecord'] && !error && !currentRecord['fairsharingRecord'].metadata.tombstone">
         <!-- Top Block -->
@@ -101,45 +123,32 @@
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
-
+        <!-- Dynamic Block -->
         <v-row no-gutters>
-          <!--Left Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!-- COLLECTIONS -->
-            <Collections
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            <!-- SUPPORT -->
-            <Support
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            <!-- Data Conditions -->
-            <DataConditions
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-4"
-            />
+            <!--Left Block-->
+            <div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
+              <component
+                :is="block"
+                v-for="(block,index) in currentDynamicBlock.leftBlock"
+                :key="block"
+                :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
+              />
+            </div>
           </v-col>
           <!--Right Block-->
           <v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            <!-- Related Content -->
-            <RelatedContent
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            <!-- Tools -->
-            <Tools
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            <!-- Organisations -->
-            <Organisations
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-6 mb-sm-4 "
-            />
+            <div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
+              <component
+                :is="block"
+                v-for="(block,index) in currentDynamicBlock.rightBlock"
+                :key="block"
+                :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
+              />
+            </div>
           </v-col>
         </v-row>
+
         <!-- Bottom Block -->
         <Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
@@ -217,13 +226,15 @@ import RecordHistory from "@/components/Records/Record/History/RecordHistory";
 import Loaders from "@/components/Navigation/Loaders";
 import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
 import Tombstone from "../Errors/Tombstone";
-import AdditionalInfo from "@/components/Records/Record/GeneralInfo/AdditionalInfo";
+import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
+import CuratorNotes from "@/components/Records/Record/CuratorNotes";
 
 const client = new RestClient();
 
 export default {
   name: "Record",
   components: {
+    CuratorNotes,
     AdditionalInfo,
     Tombstone,
     SearchCollection,
@@ -262,7 +273,7 @@ export default {
   },
   computed: {
     JSONLD () {
-      return JSON.stringify(this.getField("schemaOrg"));
+      return this.$sanitize(JSON.stringify(this.getField("schemaOrg")));
     },
     currentRoute() {
       let id = this.$route.params['id'];
@@ -281,6 +292,19 @@ export default {
     getTitle() {
       return 'FAIRsharing | ' + this.currentRoute;
     },
+    currentDynamicBlock() {
+      if (this.$vuetify.breakpoint.name === 'md') {
+        return {
+          leftBlock: ["Collections", "RelatedContent", "Support"],
+          rightBlock: ["DataConditions", "Tools", "Organisations"]
+        }
+      } else {
+        return {
+          leftBlock: ["Collections", "Support", "DataConditions"],
+          rightBlock: ["RelatedContent", "Tools", "Organisations"]
+        }
+      }
+    }
   },
   watch: {
     async currentRoute() {
@@ -355,19 +379,24 @@ export default {
       let _module = this;
       if (_module.user().isLoggedIn) {
         const recordID = _module.currentRecord['fairsharingRecord'].id;
-        const claim = await client.canClaim(recordID, _module.user().credentials.token);
-        if (claim.error) {
-          if (claim.error.response.data.existing){
-            let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
-            if (maintainer.length === 0){
-              _module.alreadyClaimed = true;
+        try {
+          const claim = await client.canClaim(recordID, _module.user().credentials.token);
+          if (claim.error) {
+            if (claim.error.response.data.existing) {
+              let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
+              if (maintainer.length === 0) {
+                _module.alreadyClaimed = true;
+              }
             }
+            _module.canClaim = false;
+          } else {
+            // show modal here
+            _module.canClaim = !claim.existing;
           }
-          _module.canClaim = false;
         }
-        else {
-          // show modal here
-          _module.canClaim = !claim.existing;
+        catch (e) {
+          /* istanbul ignore next */
+          _module.canClaim = false;
         }
       }
     },
@@ -447,6 +476,9 @@ export default {
      * @returns {*|boolean}
      */
     isWatching() {
+      if (this.user().watchedRecords === undefined) {
+        return false;
+      }
       return  this.currentRecord['fairsharingRecord'].id
           && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
     },
@@ -553,7 +585,7 @@ export default {
   },
   metaInfo() {
     try {
-      if (!this.target) {
+      if (this.currentRecord.fairsharingRecord.abbreviation) {
         return {
           title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
         }

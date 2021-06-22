@@ -8,15 +8,14 @@
   >
     <!-- General Info -->
     <SectionTitle title="General Information" />
-
+    <!-- Deprecation Reason -->
+    <DeprecationReason />
     <!-- Title and DOI -->
     <DOITitle />
     <!--  other data  -->
     <div class="d-flex flex-column ml-2">
       <!--Type-->
       <Type />
-      <!--Year of Creation-->
-      <YearOfCreation />
       <!--Registry-->
       <Registry />
       <!--Description-->
@@ -25,15 +24,37 @@
       <HomePage />
       <!--Reference URL-->
       <ReferenceURL v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
-      <!--Developed Countries-->
-      <Countries />
+      <!--Year of Creation-->
+      <YearOfCreation />
       <!--Maintainers-->
       <Maintainers
         :can-claim="canClaim"
         @requestOwnership="callRequestOwnership"
       />
+      <!--Developed Countries-->
+      <Countries />
       <!--Keywords-->
       <Keywords />
+
+      <!-- Duplicate link to graph (see also action menu) -->
+      <div class="d-flex flex-row">
+        <router-link :to="`/graph/${currentRecord['fairsharingRecord'].id}`">
+          <v-btn
+            class="my-5"
+            color="primary"
+            outlined
+          >
+            <v-icon
+              small
+              left
+            >
+              fa-project-diagram
+            </v-icon>
+            View Relation Graph&nbsp;
+          </v-btn>
+        </router-link>
+      </div>
+
       <!--How to cite & publication for record named Citations-->
       <Citations />
       <!--updates and creation date-->
@@ -58,10 +79,12 @@ import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCr
 import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
 import {mapState} from "vuex";
 import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
+import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason";
 
 export default {
   name: "GeneralInfo",
   components: {
+    DeprecationReason,
     ReferenceURL,
     Maintainers,
     UpdateCreateDetail,

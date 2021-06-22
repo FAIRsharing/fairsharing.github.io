@@ -41,15 +41,27 @@ const template = {
     anotherField: {}
 };
 
+let editAdditionalInfo;
+
 describe("EditAdditionalInfo.vue", function() {
     let wrapper;
+
+    beforeAll(() => {
+        editAdditionalInfo = {
+            render: () => {},
+            methods: {
+                validate: () => true,
+            },
+            data(){return {}}
+        };
+    });
 
     it("can be mounted without allowed fields", () => {
         wrapper = shallowMount(EditAdditionalInfo, {
             localVue,
             router,
             mocks: {$store, $route, $router},
-            stubs: ['router-link']
+            stubs: {'router-link': true, 'v-form': editAdditionalInfo}
         });
         expect(wrapper.name()).toMatch("EditAdditionalInfo");
     });
@@ -60,7 +72,7 @@ describe("EditAdditionalInfo.vue", function() {
             localVue,
             router,
             mocks: {$store, $route, $router},
-            stubs: ['router-link']
+            stubs: {'router-link': true, 'v-form': editAdditionalInfo}
         });
         expect(wrapper.name()).toMatch("EditAdditionalInfo");
     });
@@ -70,16 +82,19 @@ describe("EditAdditionalInfo.vue", function() {
             localVue,
             router,
             mocks: {$store, $route, $router},
-            stubs: ['router-link']
+            stubs: {'router-link': true, 'v-form': editAdditionalInfo}
         });
-        wrapper.vm.showOverlay(1, "abc", {schema: "schema"}, template);
+        wrapper.vm.showOverlay(1, "abc", {schema: "schema"}, template, []);
         expect(wrapper.vm.overlay).toStrictEqual({
             show: true,
             id: 1,
             fieldName: "abc",
             template: template,
-            fields: {schema: "schema"}
+            fields: {schema: "schema"},
+            required: []
         });
+        wrapper.vm.showOverlay(1, "abc", {schema: "schema"}, {abc: {}}, ['abc']);
+        expect(wrapper.vm.rules('abc', ['abc']).length).toBe(1);
         wrapper.vm.hideOverlay();
         expect(wrapper.vm.overlay).toStrictEqual({
             show: false,
@@ -95,7 +110,7 @@ describe("EditAdditionalInfo.vue", function() {
             localVue,
             router,
             mocks: {$store, $route, $router},
-            stubs: ['router-link']
+            stubs: {'router-link': true, 'v-form': editAdditionalInfo}
         });
         wrapper.vm.createItem("fieldName", template);
         expect(wrapper.vm.overlay.template).toStrictEqual(template);
@@ -107,7 +122,7 @@ describe("EditAdditionalInfo.vue", function() {
             localVue,
             router,
             mocks: {$store, $route, $router},
-            stubs: ['router-link']
+            stubs: {'router-link': true, 'v-form': editAdditionalInfo}
         });
         wrapper.vm.overlay.fieldName = "contacts";
         wrapper.vm.overlay.id = 1;
@@ -132,7 +147,7 @@ describe("EditAdditionalInfo.vue", function() {
             localVue,
             router,
             mocks: {$store, $route, $router},
-            stubs: ['router-link']
+            stubs: {'router-link': true, 'v-form': editAdditionalInfo}
         });
         let restStub = sinon.stub(RestClient.prototype, "executeQuery");
         restStub.returns({data: "Hello !"});
@@ -156,7 +171,8 @@ describe("EditAdditionalInfo.vue", function() {
         wrapper = await shallowMount(EditAdditionalInfo, {
             localVue,
             vuetify,
-            mocks: {$store}
+            mocks: {$store},
+            stubs: {'v-form': editAdditionalInfo}
         });
         wrapper.vm.fields.dataset_citation = "no";
         wrapper.vm.submitChanges(wrapper.vm.fields);

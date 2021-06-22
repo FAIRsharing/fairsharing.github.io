@@ -157,6 +157,11 @@
               return this.getSection('generalInformation').initialData.metadata.contacts
             }
         },
+        watch: {
+          'menu.show': function (val) {
+            if (val) this.$nextTick(() => { this.$refs['editContact'].validate()})
+          },
+        },
         methods: {
             createNewContact(){
                 this.submitted = false;
@@ -167,7 +172,7 @@
                     contact_name: null,
                     contact_email: null,
                     contact_orcid: null
-                }
+                };
             },
             removeContact(contactIndex){
                 this.contacts.splice(contactIndex, contactIndex+1)
@@ -177,7 +182,7 @@
                 this.menu.show = true;
                 this.menu.label = "Apply changes to contact point";
                 this.menu.index = contactIndex;
-                this.menu.content = JSON.parse(JSON.stringify(contact))
+                this.menu.content = JSON.parse(JSON.stringify(contact));
             },
             addItem(){
                 if (this.formValid && !this.submitted) {

@@ -1,16 +1,16 @@
 <template>
   <div>
-    <!--Taxonomic Range-->
+    <!--Domains-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-200">Taxonomic Range</b>
+      <b class="width-200">Subjects</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-        <span v-if="!getField('taxonomies').length">
-          None.
+        <span v-if="!getField('subjects').length">
+          None
         </span>
         <v-chip
-          v-for="item in getField('taxonomies')"
+          v-for="item in getField('subjects')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
           text-color="white"
         >
@@ -23,15 +23,15 @@
     </div>
     <!--Subjects-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-200">Subjects</b>
+      <b class="width-200">Domains</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-        <span v-if="!getField('subjects').length">
-          None.
+        <span v-if="!getField('domains').length">
+          None
         </span>
         <v-chip
-          v-for="item in getField('subjects')"
+          v-for="item in getField('domains')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
           text-color="white"
         >
@@ -42,17 +42,17 @@
         </v-chip>
       </div>
     </div>
-    <!--Domains-->
+    <!--Taxonomic Range-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-200">Domains</b>
+      <b class="width-200">Taxonomic Range</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-        <span v-if="!getField('domains').length">
-          None.
+        <span v-if="!getField('taxonomies').length">
+          None
         </span>
         <v-chip
-          v-for="item in getField('domains')"
+          v-for="item in getField('taxonomies')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           text-color="white"
           :color="getChipColor(item)"
         >
@@ -68,12 +68,12 @@
       <b class="width-200">User Defined Tags</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('userDefinedTags').length">
-          None.
+          None
         </span>
         <v-chip
           v-for="item in getField('userDefinedTags')"
           :key="item.label"
-          class="mr-2 mb-2"
+          class="mr-2 mb-2 text-capitalize"
           text-color="white"
           :color="getChipColor(item)"
         >

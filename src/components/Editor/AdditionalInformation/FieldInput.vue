@@ -123,7 +123,7 @@
             fieldName: { default: null, type: String },
             fieldProps: { default: null, type: Object },
             id: {default: null, type: Number},
-            subfieldName: { default: null, type: String },
+            subfieldName: { default: null, type: String }
         },
         computed: {
             ...mapGetters("record", ["getSection"]),
@@ -135,10 +135,11 @@
                 return this.cleanString(this.subfieldName);
             },
             rules() {
+              let rules = [];
               if (this.fieldProps.format === 'uri') {
-                return [isUrl()]
+                rules.push(isUrl());
               }
-              return []
+              return rules
             },
             isSwitch(){
               const mySet = new Set(["yes", "no"]);

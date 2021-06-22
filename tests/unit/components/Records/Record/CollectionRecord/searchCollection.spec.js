@@ -1,4 +1,4 @@
-import {shallowMount, createLocalVue, mount} from "@vue/test-utils";
+import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex";
 import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection"
 import Vuetify from "vuetify"
@@ -79,7 +79,11 @@ describe("SearchCollection.vue", function(){
     });
 
     afterAll(() => {
+        try {
         Client.prototype.executeQuery.restore();
+        }
+        // eslint-disable-next-line no-empty
+        catch {}
     });
 
     beforeEach(async () => {
@@ -89,7 +93,7 @@ describe("SearchCollection.vue", function(){
         document.body.appendChild(element)
         //------
 
-        wrapper = await mount(searchCollection, {
+        wrapper = await shallowMount(searchCollection, {
             mocks: {$route, $store},
             localVue,
             vuetify,
@@ -124,8 +128,8 @@ describe("SearchCollection.vue", function(){
         axios.post.restore();
     });
 
-    it("can react to router changes", () => {
-        const wrapper2 = shallowMount(searchCollection, {
+    it("can react to router changes", async () => {
+        const wrapper2 = await shallowMount(searchCollection, {
             mocks: {$route, $store},
             vuetify,
             localVue
@@ -134,6 +138,7 @@ describe("SearchCollection.vue", function(){
         expect(wrapper2.vm.currentPath).toStrictEqual(["Collection", {"fairsharingRegistry": "Collection",page:"2"}]);
         wrapper.vm.$route.query = {fairsharingRegistry: ''};
         expect(wrapper.vm.currentPath).toStrictEqual(["Collection", {}]);
+        wrapper.vm.testEnvironment = true;
     });
 
 
@@ -167,7 +172,7 @@ describe("SearchCollection.vue", function(){
             name:"EOSC-Life",
             registry:'Collection'
         };
-        expect(await wrapper.vm.prepareCollectionData()).toBe(false)
+         expect(await wrapper.vm.prepareCollectionData()).toBe(false)
     });
 
     it("can reset the records store when destroyed", () => {
@@ -180,5 +185,6 @@ describe("SearchCollection.vue", function(){
             expect(wrapper.vm.$store.state.records[state]).toBe(null)
         })
     });
+
 
 });

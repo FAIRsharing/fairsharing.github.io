@@ -23,7 +23,6 @@
             v-if="item['urlType']==='internal'"
             class="underline-effect"
             :to="item.url"
-            @click.native="$scrollTo('body',0,{})"
           >
             <i
               v-if="item.icon"
@@ -69,7 +68,7 @@
       class="d-flex flex-row justify-center align-center mb-2"
     >
       <p class="mb-0 mr-2">
-        © FAIRsharing 2009-Present | Licensed under
+        © FAIRsharing 2009-Present | Licenced under
       </p>
       <a
         class="mr-2 underline-effect"

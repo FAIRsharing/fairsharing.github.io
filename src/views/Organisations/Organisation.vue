@@ -4,7 +4,7 @@
     fluid
     class="standard grey lighten-3 pb-10"
   >
-    <div v-if="error">
+    <div v-if="error && !loading">
       <NotFound />
     </div>
     <v-row v-else>
@@ -163,6 +163,39 @@
                       </ul>
                     </v-list-item-content>
                   </v-list-item>
+
+                  <!-- countries -->
+                  <v-list-item
+                    :key="'organisation_countries'"
+                    :v-if="organisation.countries"
+                    class="body-1"
+                  >
+                    <v-list-item-content
+                      class="py-0 d-block"
+                    >
+                      <b class="blue--text">Associated countries: </b>
+                      <ul class="pl-0">
+                        <li
+                          v-for="(country,index) in organisation.countries"
+                          :key="country.id+'_'+index"
+                          class="d-inline-block"
+                        >
+                          <p
+                            v-if="country.name"
+                            style="padding-right: 5px;"
+                          >
+                            {{ `${country.name}${index!==organisation.countries.length-1 ? ',' : ''}` }}
+                          </p>
+                          <p
+                            v-else
+                            class="warning"
+                          >
+                            country code undefined!
+                          </p>
+                        </li>
+                      </ul>
+                    </v-list-item-content>
+                  </v-list-item>
                 </v-list>
               </v-card-text>
             </v-card>
@@ -310,6 +343,7 @@ export default {
       footer: {'items-per-page-options': [10]},
       showOverlay: false,
       targetID: null,
+      testEnvironment:false,
       headers: [
         {text: 'Name', value: 'name', align: 'center'},
         {text: 'Status', value: 'status', align: 'center'},
@@ -338,14 +372,21 @@ export default {
   },
   methods: {
     async getOrganisation() {
-      this.loading = true;
-      getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
-      let org = await graphClient.executeQuery(getOrganisationQuery);
-      if (org.organisation != null) {
-        this.organisation = JSON.parse(JSON.stringify(org.organisation));
-        this.error = false;
+      try {
+        // testEnvironment variable is only for test case.
+        if(this.testEnvironment) throw new Error("an error occurred while fetching data")
+        this.loading = true;
+        getOrganisationQuery.queryParam.id = parseInt(this.$route.params.id);
+        let org = await graphClient.executeQuery(getOrganisationQuery);
+        if (org.organisation != null) {
+          this.organisation = JSON.parse(JSON.stringify(org.organisation));
+          this.error = false;
+        }
+        this.loading = false;
       }
-      this.loading = false;
+      catch (e) {
+        this.errors = e.message;
+      }
     },
     goToEdit(id){
       this.$router.push({path: `/${id}/edit`})

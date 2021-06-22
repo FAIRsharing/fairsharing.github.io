@@ -94,6 +94,15 @@ describe("RelatedContent.vue", function(){
                 "registry": "Policy",
                 "subject": "standard",
                 "type": "repository"
+            },
+            {
+                "id": 4,
+                "linkType": "linkedRecord",
+                "name": "a name 4",
+                "recordAssocLabel": "collects",
+                "registry": "Collection",
+                "subject": "standard",
+                "type": "collection"
             }
         ])
     });

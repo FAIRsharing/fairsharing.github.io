@@ -93,16 +93,14 @@
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   &lt;v-card
+    v-if="!tabsDataExist"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
     tile
     elevation="3"
   >
-    &lt;SectionTitle
-      title="Related Content"
-      :inactive-section="tabsDataExist"
-    />
+    &lt;SectionTitle title="Related Content" />
     &lt;div class="d-flex flex-column ml-2 min-height-40">
       &lt;div class="d-flex flex-wrap mt-5">
         &lt;!--  search autocomplete    -->
@@ -145,7 +143,7 @@
           :disabled="tabsData.tabs[tabName].data.length===0"
           @change="selectedValues=null"
         >
-          {{ cleanString(tabName) }}
+          {{ cleanString(tabName) }} ({{ tabsData.tabs[tabName].count }})
         &lt;/v-tab>
       &lt;/v-tabs>
       &lt;!--  tab content  -->
@@ -165,37 +163,42 @@
             class="ma-4 overflow-x-hidden"
           >
             &lt;template #default="{ item,index }">
-              &lt;v-card
-                :key="item.id + '_' + index"
-                class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
-                flat
-                outlined
+              &lt;router-link
+                :to="'/'+item.id"
+                @click.native="()=>$scrollTo('body',0,{})"
               >
-                &lt;div class="d-flex align-center">
-                  &lt;record-status
-                    :record="item"
-                    :show-status="false"
-                  />
-                  &lt;div class="ml-10 text-ellipses-height-2lines line-height-20">
-                    {{ item.name }}
+                &lt;v-card
+                  :key="item.id + '_' + index"
+                  class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
+                  flat
+                  outlined
+                >
+                  &lt;div class="d-flex align-center">
+                    &lt;record-status
+                      :record="item"
+                      :show-status="false"
+                    />
+                    &lt;div class="ml-10 underline-effect text-ellipses-height-2lines line-height-20">
+                      {{ item.name }}
+                    &lt;/div>
                   &lt;/div>
-                &lt;/div>
-                &lt;p class="grey--text relation-style text-ellipses-height-2lines line-height-14">
-                  {{ item.linkType==='fairsharingRecord'? item.name : item.subject }}
-                  &lt;v-tooltip top>
-                    &lt;template #activator="{ on }">
-                      &lt;span
-                        class="red--text mouse-info"
-                        v-on="on"
-                      >
-                        {{ item.recordAssocLabel }}
-                      &lt;/span>
-                    &lt;/template>
-                    &lt;span>{{ relationDefinition[item.recordAssocLabel] }}&lt;/span>
-                  &lt;/v-tooltip>
-                  {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
-                &lt;/p>
-              &lt;/v-card>
+                  &lt;p class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5">
+                    {{ item.linkType==='fairsharingRecord'? item.name : item.subject }}
+                    &lt;v-tooltip top>
+                      &lt;template #activator="{ on }">
+                        &lt;span
+                          class="red--text mouse-info"
+                          v-on="on"
+                        >
+                          {{ item.recordAssocLabel }}
+                        &lt;/span>
+                      &lt;/template>
+                      &lt;span>{{ relationDefinition[item.recordAssocLabel] }}&lt;/span>
+                    &lt;/v-tooltip>
+                    {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
+                  &lt;/p>
+                &lt;/v-card>
+              &lt;/router-link>.
             &lt;/template>
           &lt;/v-virtual-scroll>
         &lt;/v-tab-item>
@@ -226,9 +229,9 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {relation: ["collects","recommends"], registry: ["Standard"], data: []},
-          related_databases: {relation: ["collects","recommends"], registry: ["Database"], data: []},
-          other_related_records: {relation: ["collects","recommends"], registry: ["Collection","Policy"], data: []},
+          related_standards: {registry: ["Standard"], data: [], count:0},
+          related_databases: {registry: ["Database"], data: [], count:0},
+          other_related_records: {relation:["collects","recommends"],registry: ["Collection","Policy"], data: [],count:0},
         }
       }
     }
@@ -244,12 +247,16 @@ export default {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           if (tabName !== 'other_related_records') {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) &amp;&amp; !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel))
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           }
           else {
-            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) &amp;&amp; item.linkType !=='fairsharingRecord' &amp;&amp; !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
+            const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) )
+            const reverseAssociation = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].reverseRecordAssociations, [])
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) &amp;&amp; !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
+            _module.tabsData.tabs[tabName].data = reverseAssociation.concat(Association)
           }
+          _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
         });
       }
       else {
@@ -259,28 +266,6 @@ export default {
   }
 }
 &lt;/script>
-
-&lt;style scoped lang="scss">
-a {
-  text-decoration: none;
-
-  &amp;:hover, &amp;:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
-}
-
-.filterValueName {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  flex: 1;
-}
-
-.mt-1-pt {
-  margin-top: 1pt;
-}
-&lt;/style>
 </pre>
     </article>
 </section>
@@ -326,7 +311,7 @@ a {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on Fri May 21st 2021
+		on Tue Jun 22nd 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

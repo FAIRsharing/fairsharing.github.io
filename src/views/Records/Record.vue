@@ -318,11 +318,7 @@ export default {
   },
   destroyed() {
     // minor change in the y axis can fix a serious bug after going back to records..
-    try {
-      this.$scrollTo('body',5,{})
-    }
-    // eslint-disable-next-line no-empty
-    catch(e) { }
+    this.$scrollTo('body',5,{})
   },
   mounted() {
     this.$nextTick(async function () {

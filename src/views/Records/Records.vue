@@ -146,7 +146,13 @@ export default {
   watch: {
     currentPath: async function () {
       this.$scrollTo('body',50,{});
-      await this.tryRedirect();
+      try {
+        await this.tryRedirect();
+      }
+      // eslint-disable-next-line no-empty
+      catch(e) {
+        // Uncaught promise thrown on Github (only).
+      }
     }
   },
   mounted: function () {

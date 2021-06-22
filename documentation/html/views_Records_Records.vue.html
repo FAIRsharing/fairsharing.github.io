@@ -238,7 +238,7 @@ export default {
   },
   watch: {
     currentPath: async function () {
-      this.$scrollTo('body',50,{});
+      // this.$scrollTo('body',50,{});
       await this.tryRedirect();
     }
   },
@@ -246,14 +246,14 @@ export default {
     window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
       await this.tryRedirect();
-      this.$scrollTo('body',50,{})
+      // this.$scrollTo('body',50,{})
     });
   },
   beforeDestroy() {
     this.cleanRecordsStore();
   },
   destroyed() {
-    this.$scrollTo('body', 50, {})
+    // this.$scrollTo('body', 50, {})
     window.removeEventListener("scroll", this.onScroll);
     this.setStickToTop(false);
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
@@ -312,7 +312,7 @@ export default {
      * @returns {Promise}
      */
     getData: async function () {
-      this.$scrollTo('body',50,{});
+      // this.$scrollTo('body',50,{});
       this.isLoading = true;
       this.errors = null;
       const _module = this;

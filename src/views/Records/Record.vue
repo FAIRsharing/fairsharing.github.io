@@ -322,7 +322,7 @@ export default {
       this.$scrollTo('body',5,{})
     }
     // eslint-disable-next-line no-empty
-    finally { }
+    catch(e) { }
   },
   mounted() {
     this.$nextTick(async function () {

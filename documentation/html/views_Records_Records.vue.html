@@ -251,8 +251,15 @@ export default {
   mounted: function () {
     window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
-      await this.tryRedirect();
-      this.$scrollTo('body',50,{})
+      try {
+        await this.tryRedirect();
+        this.$scrollTo('body',50,{})
+      }
+      // eslint-disable-next-line no-empty
+      catch(e) {
+        // Uncaught promise thrown on Github (only).
+      }
+
     });
   },
   beforeDestroy() {

@@ -71,6 +71,11 @@
         "urlType": "internal"
       },
       {
+        "title": "Community",
+        "url": "/community",
+        "urlType": "internal"
+      },
+      {
         "title": "Timeline",
         "url": "",
         "urlType": "internal"

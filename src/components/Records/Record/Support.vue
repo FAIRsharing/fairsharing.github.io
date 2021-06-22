@@ -1,15 +1,13 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
+    v-if="(getField('metadata')['contacts'] && getField('metadata')['contacts'].length) || (getField('metadata')['support_links'] && getField('metadata')['support_links'].length)"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
     tile
     elevation="3"
   >
-    <SectionTitle
-      title="Support"
-      :inactive-section="(getField('metadata')['contacts']===undefined || !getField('metadata')['contacts'].length) && (getField('metadata')['support_links']===undefined || !getField('metadata')['support_links'].length)"
-    />
+    <SectionTitle title="Support" />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div v-if="(getField('metadata')['contacts'] && getField('metadata')['contacts'].length) || (getField('metadata')['support_links'] && getField('metadata')['support_links'].length)">
         <v-card
@@ -64,6 +62,16 @@
                     class="underline-effect"
                   >
                     {{ subItem.contact_name }}
+                  </a>
+                </div>
+                <div v-else-if="subItem.contact_email && !subItem.contact_name">
+                  <a
+                    v-if="subItem.contact_email"
+                    :href="'mailto:'+subItem.contact_email"
+                    target="_blank"
+                    class="underline-effect"
+                  >
+                    {{ subItem.contact_email }}
                   </a>
                 </div>
                 <div

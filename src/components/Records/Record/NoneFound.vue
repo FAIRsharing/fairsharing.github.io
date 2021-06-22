@@ -9,13 +9,13 @@
     >
       <div class="d-flex mt-2 ">
         <p class="ma-0">
-          None found.
+          None found
         </p>
       </div>
     </v-card>
     <!--  SingleField  -->
     <div v-else-if="!displayString && !dataField">
-      <span>None found.</span>
+      <span>None found</span>
     </div>
   </div>
 </template>

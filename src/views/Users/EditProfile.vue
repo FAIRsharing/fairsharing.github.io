@@ -77,6 +77,7 @@
                         :type="field.type"
                         :disabled="field.disabled"
                         :rules="field.rules"
+                        class="pa-0"
                       />
                     </div>
                     <div v-if="field.type === 'checkbox'">
@@ -184,8 +185,14 @@
                   data: "profileTypes"
                 },
                 {
-                  name: "preferences",
+                  name: "preferences_hide",
                   label: "Hide your email address on public pages.",
+                  hint: null,
+                  type: "checkbox"
+                },
+                {
+                  name: "preferences_send",
+                  label: "Receive record update emails from FAIRsharing.",
                   hint: null,
                   type: "checkbox"
                 },
@@ -200,7 +207,8 @@
               return {
                 username: this.user().credentials.username,
                 email: this.user().metadata.email,
-                preferences: this.user().metadata['preferences']['hide_email'],
+                preferences_hide: this.user().metadata['preferences']['hide_email'],
+                preferences_send: this.user().metadata['preferences']['email_updates'],
                 first_name: this.user().metadata.first_name,
                 last_name: this.user().metadata.last_name,
                 homepage: this.user().metadata.homepage,
@@ -219,7 +227,10 @@
           updateProfile: async function(){
             this.loading = true;
             let data = JSON.parse(JSON.stringify(this.formData));
-            data.preferences = {hide_email: this.formData.preferences};
+            data.preferences = {
+              hide_email: this.formData.preferences_hide,
+              email_updates: this.formData.preferences_send
+            };
             await this.updateUser(data);
             this.loading = false;
             if (!this.messages().updateProfile.error){

@@ -104,7 +104,7 @@
             </td>
           </template>
           <template slot="no-data">
-            <div> This record does not have any support link.</div>
+            <div> This record does not have any support links.</div>
           </template>
         </v-data-table>
       </v-col>
@@ -282,7 +282,7 @@
             id: null,
             template: {
               type: null,
-              url: null,
+              url: {url: null},
               name: null
             }
           }

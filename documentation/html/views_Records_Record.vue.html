@@ -110,6 +110,24 @@
         &lt;v-col
           cols="12"
         >
+          &lt;v-alert
+            v-if="!currentRecord.fairsharingRecord['isApproved'] &amp;&amp; !error"
+            dense
+            type="info"
+            class="mb-2 flex-grow-1"
+          >
+            &lt;span>This record is is awaiting review by FAIRsharing curators&lt;/span>
+          &lt;/v-alert>
+
+          &lt;v-alert
+            v-if="isWatching()"
+            dense
+            type="info"
+            class="mb-2 flex-grow-1"
+          >
+            &lt;span>You are watching this record for changes&lt;/span>
+          &lt;/v-alert>
+
           &lt;div
             v-if="alreadyClaimed || claimedTriggered || user().is_curator"
             class="d-flex flex-column"
@@ -122,6 +140,8 @@
             >
               &lt;span>This record is hidden!&lt;/span>
             &lt;/v-alert>
+
+
 
             &lt;v-alert
               v-if="alreadyClaimed"
@@ -140,7 +160,7 @@
             &lt;/v-snackbar>
           &lt;/div>
           &lt;div
-            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined"
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined &amp;&amp; !error"
             class="text-right"
           >
             &lt;v-menu
@@ -181,11 +201,13 @@
         &lt;/v-col>
       &lt;/v-row>
 
+      &lt;!--  CuratorsNotes   -->
+      &lt;CuratorNotes class="ma-4 mb-7" />
+
       &lt;Tombstone
         v-if="currentRecord['fairsharingRecord'] &amp;&amp; currentRecord['fairsharingRecord'].metadata.tombstone"
         :record="currentRecord['fairsharingRecord']"
       />
-
       &lt;!--  Content  -->
       &lt;div v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error &amp;&amp; !currentRecord['fairsharingRecord'].metadata.tombstone">
         &lt;!-- Top Block -->
@@ -194,45 +216,32 @@
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
         />
-
+        &lt;!-- Dynamic Block -->
         &lt;v-row no-gutters>
-          &lt;!--Left Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            &lt;!-- COLLECTIONS -->
-            &lt;Collections
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            &lt;!-- SUPPORT -->
-            &lt;Support
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            &lt;!-- Data Conditions -->
-            &lt;DataConditions
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-4"
-            />
+            &lt;!--Left Block-->
+            &lt;div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
+              &lt;component
+                :is="block"
+                v-for="(block,index) in currentDynamicBlock.leftBlock"
+                :key="block"
+                :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
+              />
+            &lt;/div>
           &lt;/v-col>
           &lt;!--Right Block-->
           &lt;v-col :cols="$vuetify.breakpoint.mdAndDown?'12':'6'">
-            &lt;!-- Related Content -->
-            &lt;RelatedContent
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            &lt;!-- Tools -->
-            &lt;Tools
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-8"
-            />
-            &lt;!-- Organisations -->
-            &lt;Organisations
-              v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-              class="ma-4 mb-6 mb-sm-4 "
-            />
+            &lt;div v-if="currentRecord.fairsharingRecord.registry!=='Collection'">
+              &lt;component
+                :is="block"
+                v-for="(block,index) in currentDynamicBlock.rightBlock"
+                :key="block"
+                :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
+              />
+            &lt;/div>
           &lt;/v-col>
         &lt;/v-row>
+
         &lt;!-- Bottom Block -->
         &lt;Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
@@ -310,13 +319,15 @@ import RecordHistory from "@/components/Records/Record/History/RecordHistory";
 import Loaders from "@/components/Navigation/Loaders";
 import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
 import Tombstone from "../Errors/Tombstone";
-import AdditionalInfo from "@/components/Records/Record/GeneralInfo/AdditionalInfo";
+import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
+import CuratorNotes from "@/components/Records/Record/CuratorNotes";
 
 const client = new RestClient();
 
 export default {
   name: "Record",
   components: {
+    CuratorNotes,
     AdditionalInfo,
     Tombstone,
     SearchCollection,
@@ -355,7 +366,7 @@ export default {
   },
   computed: {
     JSONLD () {
-      return JSON.stringify(this.getField("schemaOrg"));
+      return this.$sanitize(JSON.stringify(this.getField("schemaOrg")));
     },
     currentRoute() {
       let id = this.$route.params['id'];
@@ -374,6 +385,19 @@ export default {
     getTitle() {
       return 'FAIRsharing | ' + this.currentRoute;
     },
+    currentDynamicBlock() {
+      if (this.$vuetify.breakpoint.name === 'md') {
+        return {
+          leftBlock: ["Collections", "RelatedContent", "Support"],
+          rightBlock: ["DataConditions", "Tools", "Organisations"]
+        }
+      } else {
+        return {
+          leftBlock: ["Collections", "Support", "DataConditions"],
+          rightBlock: ["RelatedContent", "Tools", "Organisations"]
+        }
+      }
+    }
   },
   watch: {
     async currentRoute() {
@@ -448,19 +472,24 @@ export default {
       let _module = this;
       if (_module.user().isLoggedIn) {
         const recordID = _module.currentRecord['fairsharingRecord'].id;
-        const claim = await client.canClaim(recordID, _module.user().credentials.token);
-        if (claim.error) {
-          if (claim.error.response.data.existing){
-            let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
-            if (maintainer.length === 0){
-              _module.alreadyClaimed = true;
+        try {
+          const claim = await client.canClaim(recordID, _module.user().credentials.token);
+          if (claim.error) {
+            if (claim.error.response.data.existing) {
+              let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
+              if (maintainer.length === 0) {
+                _module.alreadyClaimed = true;
+              }
             }
+            _module.canClaim = false;
+          } else {
+            // show modal here
+            _module.canClaim = !claim.existing;
           }
-          _module.canClaim = false;
         }
-        else {
-          // show modal here
-          _module.canClaim = !claim.existing;
+        catch (e) {
+          /* istanbul ignore next */
+          _module.canClaim = false;
         }
       }
     },
@@ -540,6 +569,9 @@ export default {
      * @returns {*|boolean}
      */
     isWatching() {
+      if (this.user().watchedRecords === undefined) {
+        return false;
+      }
       return  this.currentRecord['fairsharingRecord'].id
           &amp;&amp; this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
     },
@@ -646,7 +678,7 @@ export default {
   },
   metaInfo() {
     try {
-      if (!this.target) {
+      if (this.currentRecord.fairsharingRecord.abbreviation) {
         return {
           title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
         }
@@ -702,7 +734,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on Fri May 21st 2021
+		on Tue Jun 22nd 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

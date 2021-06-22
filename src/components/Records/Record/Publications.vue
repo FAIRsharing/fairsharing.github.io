@@ -1,15 +1,13 @@
 <template>
   <v-card
+    v-if="getField('publications').length!==0 && (getField('publications')!==undefined && getField('publications')!==null)"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
     tile
     elevation="3"
   >
-    <SectionTitle
-      title="Publications"
-      :inactive-section="getField('publications').length===0 || getField('publications')===undefined"
-    />
+    <SectionTitle title="Publications" />
     <v-row
       dense
       class="ml-1 min-height-40"

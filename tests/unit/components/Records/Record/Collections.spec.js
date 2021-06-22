@@ -65,7 +65,7 @@ describe("Collections.vue", function(){
     it("search data is reactive when user changes text box value", () => {
         wrapper.vm.selectedValues = "a name 3"
         wrapper.vm.selectedValues = "not going to find me!"
-        wrapper.vm.tabsData.tabs.in_collections.data = []
+        wrapper.vm.tabsData.tabs.collected_by.data = []
     });
 
     it("can check if there are no record recordAssociations or reverseRecordAssociations", () => {

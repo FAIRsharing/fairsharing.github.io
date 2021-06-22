@@ -198,95 +198,107 @@
         class="py-0"
       >
         <v-row justify="center">
-          <v-card width="100%">
-            <v-card-title class="green white--text">
-              Create/Edit a new publication
-            </v-card-title>
-            <v-card-text
-              v-if="errors.general"
-              class="pt-3 mb-0 pb-0"
-            >
-              <v-alert type="error">
-                {{ errors.general.response.data }}
-              </v-alert>
-            </v-card-text>
-            <v-card-text class="pt-0 mt-0">
-              <v-container fluid>
-                <v-row justify="start">
-                  <v-col class="col-6">
-                    <v-text-field
-                      v-model="newPublication.doi"
-                      label="DOI"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-6">
-                    <v-text-field
-                      v-model="newPublication.pubmed_id"
-                      label="PubMed ID"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-12">
-                    <v-text-field
-                      v-model="newPublication.title"
-                      label="Title"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-4">
-                    <v-text-field
-                      v-model="newPublication.authors"
-                      label="Authors"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-4">
-                    <v-text-field
-                      v-model="newPublication.journal"
-                      label="Journal"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-4">
-                    <v-text-field
-                      v-model="newPublication.year"
-                      label="Publication Year"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-12">
-                    <v-text-field
-                      v-model="newPublication.url"
-                      label="URL"
-                      outlined
-                    />
-                  </v-col>
-                  <v-col class="col-12">
-                    <v-switch
-                      v-model="newPublication.isCitation"
-                      color="primary"
-                      label="Do you want to cite this record using this publication?"
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                class="green white--text"
-                @click="addPublication()"
+          <v-form
+            id="editPublication"
+            ref="editPublication"
+            v-model="subFormValid"
+          >
+            <v-card width="100%">
+              <v-card-title class="green white--text">
+                Create/Edit a new publication
+              </v-card-title>
+              <v-card-text
+                v-if="errors.general"
+                class="pt-3 mb-0 pb-0"
               >
-                Edit or add a new publication
-              </v-btn>
-              <v-btn
-                class="red white--text"
-                @click="openEditor = false"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+                <v-alert type="error">
+                  {{ errors.general.response.data }}
+                </v-alert>
+              </v-card-text>
+              <v-card-text class="pt-0 mt-0">
+                <v-container fluid>
+                  <v-row justify="start">
+                    <v-col class="col-6">
+                      <v-text-field
+                        v-model="newPublication.doi"
+                        label="DOI"
+                        outlined
+                      />
+                    </v-col>
+                    <v-col class="col-6">
+                      <v-text-field
+                        v-model="newPublication.pubmed_id"
+                        label="PubMed ID"
+                        outlined
+                      />
+                    </v-col>
+                    <v-col class="col-12">
+                      <v-text-field
+                        v-model="newPublication.title"
+                        label="Title"
+                        outlined
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                    <v-col class="col-4">
+                      <v-text-field
+                        v-model="newPublication.authors"
+                        label="Authors"
+                        outlined
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                    <v-col class="col-4">
+                      <v-text-field
+                        v-model="newPublication.journal"
+                        label="Journal"
+                        outlined
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                    <v-col class="col-4">
+                      <v-text-field
+                        v-model="newPublication.year"
+                        label="Publication Year"
+                        outlined
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                    <v-col class="col-12">
+                      <v-text-field
+                        v-model="newPublication.url"
+                        label="URL"
+                        outlined
+                        :rules="[rules.isRequired()]"
+                      />
+                    </v-col>
+                    <v-col class="col-12">
+                      <v-switch
+                        v-model="newPublication.isCitation"
+                        color="primary"
+                        label="Do you want to cite this record using this publication?"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  class="green white--text"
+                  :disabled="!subFormValid"
+                  @click="addPublication()"
+                >
+                  Edit or add a new publication
+                </v-btn>
+                <v-btn
+                  class="red white--text"
+                  @click="openEditor = false"
+                >
+                  Cancel
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-form>
         </v-row>
       </v-container>
     </v-dialog>
@@ -299,6 +311,7 @@
     import PublicationClient from "@/lib/Client/ExternalClients.js"
     import RestClient from "@/lib/Client/RESTClient.js"
     import Alerts from "@/components/Editor/Alerts";
+    import { isRequired } from "@/utils/rules.js"
     const pubClient = new PublicationClient();
     const restClient = new RestClient();
 
@@ -349,7 +362,11 @@
             openEditor: false,
             currentPublicationIndex: false,
             citations_ids: [],
-            initialized: false
+            initialized: false,
+            subFormValid: false,
+            rules: {
+              isRequired: function(){return isRequired()}
+            },
           }
         },
         computed: {
@@ -408,6 +425,11 @@
                 });
               }
             }
+          },
+          openEditor: function(){
+            this.$nextTick(() => {
+              this.$refs['editPublication'].validate();
+            })
           }
         },
         mounted(){

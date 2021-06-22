@@ -1,15 +1,13 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
+    v-if="!tabsDataExist"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
     tile
     elevation="3"
   >
-    <SectionTitle
-      title="Related Content"
-      :inactive-section="tabsDataExist"
-    />
+    <SectionTitle title="Related Content" />
     <div class="d-flex flex-column ml-2 min-height-40">
       <div class="d-flex flex-wrap mt-5">
         <!--  search autocomplete    -->
@@ -52,7 +50,7 @@
           :disabled="tabsData.tabs[tabName].data.length===0"
           @change="selectedValues=null"
         >
-          {{ cleanString(tabName) }}
+          {{ cleanString(tabName) }} ({{ tabsData.tabs[tabName].count }})
         </v-tab>
       </v-tabs>
       <!--  tab content  -->
@@ -72,37 +70,42 @@
             class="ma-4 overflow-x-hidden"
           >
             <template #default="{ item,index }">
-              <v-card
-                :key="item.id + '_' + index"
-                class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
-                flat
-                outlined
+              <router-link
+                :to="'/'+item.id"
+                @click.native="()=>$scrollTo('body',0,{})"
               >
-                <div class="d-flex align-center">
-                  <record-status
-                    :record="item"
-                    :show-status="false"
-                  />
-                  <div class="ml-10 text-ellipses-height-2lines line-height-20">
-                    {{ item.name }}
+                <v-card
+                  :key="item.id + '_' + index"
+                  class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
+                  flat
+                  outlined
+                >
+                  <div class="d-flex align-center">
+                    <record-status
+                      :record="item"
+                      :show-status="false"
+                    />
+                    <div class="ml-10 underline-effect text-ellipses-height-2lines line-height-20">
+                      {{ item.name }}
+                    </div>
                   </div>
-                </div>
-                <p class="grey--text relation-style text-ellipses-height-2lines line-height-14">
-                  {{ item.linkType==='fairsharingRecord'? item.name : item.subject }}
-                  <v-tooltip top>
-                    <template #activator="{ on }">
-                      <span
-                        class="red--text mouse-info"
-                        v-on="on"
-                      >
-                        {{ item.recordAssocLabel }}
-                      </span>
-                    </template>
-                    <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
-                  </v-tooltip>
-                  {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
-                </p>
-              </v-card>
+                  <p class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5">
+                    {{ item.linkType==='fairsharingRecord'? item.name : item.subject }}
+                    <v-tooltip top>
+                      <template #activator="{ on }">
+                        <span
+                          class="red--text mouse-info"
+                          v-on="on"
+                        >
+                          {{ item.recordAssocLabel }}
+                        </span>
+                      </template>
+                      <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
+                    </v-tooltip>
+                    {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
+                  </p>
+                </v-card>
+              </router-link>.
             </template>
           </v-virtual-scroll>
         </v-tab-item>
@@ -133,9 +136,9 @@ export default {
       tabsData: {
         selectedTab: 0,
         tabs: {
-          related_standards: {relation: ["collects","recommends"], registry: ["Standard"], data: []},
-          related_databases: {relation: ["collects","recommends"], registry: ["Database"], data: []},
-          other_related_records: {relation: ["collects","recommends"], registry: ["Collection","Policy"], data: []},
+          related_standards: {registry: ["Standard"], data: [], count:0},
+          related_databases: {registry: ["Database"], data: [], count:0},
+          other_related_records: {relation:["collects","recommends"],registry: ["Collection","Policy"], data: [],count:0},
         }
       }
     }
@@ -151,12 +154,16 @@ export default {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           if (tabName !== 'other_related_records') {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel))
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
           }
           else {
-            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && item.linkType !=='fairsharingRecord' && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
+            const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) )
+            const reverseAssociation = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].reverseRecordAssociations, [])
+                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssocLabel) )
+            _module.tabsData.tabs[tabName].data = reverseAssociation.concat(Association)
           }
+          _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
         });
       }
       else {
@@ -166,25 +173,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-a {
-  text-decoration: none;
-
-  &:hover, &:focus {
-    text-decoration: underline;
-    outline: 0;
-  }
-}
-
-.filterValueName {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  flex: 1;
-}
-
-.mt-1-pt {
-  margin-top: 1pt;
-}
-</style>

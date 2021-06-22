@@ -1,4 +1,4 @@
-import router from "@/router"
+import router, {afterEach} from "@/router"
 import { beforeEach, isLoggedIn, isMaintenanceMode } from "@/router"
 import RestClient from "@/lib/Client/RESTClient.js"
 const sinon = require("sinon");
@@ -20,6 +20,7 @@ let restStub;
 describe("Routes", () => {
 
     beforeAll(() => {
+        window.scrollTo = jest.fn();
         restStub = sinon.stub(RestClient.prototype, "executeQuery");
         restStub.returns({
             data: {
@@ -78,6 +79,8 @@ describe("Routes", () => {
         store.state.introspection.maintenanceMode = true;
         await beforeEach(to, undefined, next, store);
         expect(next).toHaveBeenCalledWith({path: "maintenance"})
+        await afterEach({name:'Records'});
+        await afterEach({name:'Record'});
     });
 
     it("can check is a site is in maintenance mode", () => {

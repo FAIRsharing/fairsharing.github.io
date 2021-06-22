@@ -168,6 +168,11 @@
             },
             async saveRecord(redirect){
               this.loading = true;
+              // Non-deprecated records will need their deprecation reason to be cleared.
+              if (this.currentFields.status !== 'deprecated') {
+                this.currentFields.metadata.deprecation_reason = null;
+              }
+              // Ensure that taxonomic range is specified.
               if (this.currentFields.taxonomies.length > 0) {
                 await this.updateGeneralInformation({
                   token: this.user().credentials.token,

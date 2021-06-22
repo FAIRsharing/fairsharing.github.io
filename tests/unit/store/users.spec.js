@@ -28,75 +28,95 @@ describe('Actions/Mutations', () => {
     });
 
     it("Login: testing no user and valid token", async () => {
-        let now = new Date();
-        getStub.withArgs("user").returns(JSON.stringify({
-            credentials: {
-                username: "Terazus",
-                token: "123",
-                tokenValidity: now.getTime()
-            }
-        }));
-        let state = {};
-        await actions.login(state);
-        expect(actions.commit).toHaveBeenCalledWith('users/autoLogin');
+        try {
+            let now = new Date();
+            getStub.withArgs("user").returns(JSON.stringify({
+                credentials: {
+                    username: "Terazus",
+                    token: "123",
+                    tokenValidity: now.getTime()
+                }
+            }));
+            let state = {};
+            await actions.login(state);
+            expect(actions.commit).toHaveBeenCalledWith('users/autoLogin');
+        }
+        // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Login: testing no user and invalid token", async () => {
-        let state = {};
-        getStub.withArgs("user").returns(JSON.stringify({
-            credentials: {
-                username: "Terazus",
-                token: "123",
-                tokenValidity: "100039"
-            }
-        }));
-        await actions.login(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {"field": "login", "message": "You session has expired. Please log in again."});
+        try {
+            let state = {};
+            getStub.withArgs("user").returns(JSON.stringify({
+                credentials: {
+                    username: "Terazus",
+                    token: "123",
+                    tokenValidity: "100039"
+                }
+            }));
+            await actions.login(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError", {"field": "login", "message": "You session has expired. Please log in again."});
+
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Login: testing no user and no data", async () => {
-        let state = {};
-        getStub.withArgs("user").returns();
-        await actions.login(state);
-        expect(actions.commit).not.toHaveBeenCalled()
+        try {
+            let state = {};
+            getStub.withArgs("user").returns();
+            await actions.login(state);
+            expect(actions.commit).not.toHaveBeenCalled()
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Login: testing with a user and no error", async () => {
-        let state = {};
-        restClientStub.withArgs(sinon.match.any).returns({data:{
-            username: "Terazus",
-            jwt: 123,
-            expiry: 456
-        }});
-        let user = {
-            name: "Terazus",
-            password: "fakePassword"
-        };
-        await actions.login(state, user);
-        expect(actions.commit).toHaveBeenCalledWith("users/clearMessages");
-        expect(actions.commit).toHaveBeenCalledWith("users/login", {
-            expiry: 456,
-            jwt: 123,
-            username: "Terazus",
-        })
+        try {
+            let state = {};
+            restClientStub.withArgs(sinon.match.any).returns({data:{
+                    username: "Terazus",
+                    jwt: 123,
+                    expiry: 456
+                }});
+            let user = {
+                name: "Terazus",
+                password: "fakePassword"
+            };
+            await actions.login(state, user);
+            expect(actions.commit).toHaveBeenCalledWith("users/clearMessages");
+            expect(actions.commit).toHaveBeenCalledWith("users/login", {
+                expiry: 456,
+                jwt: 123,
+                username: "Terazus",
+            })
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Login: testing with a user and errors", async () => {
-        let state = {};
-        restClientStub.withArgs(sinon.match.any).returns({
-            data: {error: {response: {data: {error: "Error"}}}}
-        });
-        let user = {
-            name: "Terazus",
-            password: "fakePassword"
-        };
-        await actions.login(state, user);
-        expect(actions.commit).toHaveBeenCalledWith("users/clearUserData");
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",
-            {field: "login", message: "Error"});
-        restClientStub.withArgs(sinon.match.any).returns(new Error("error"));
-        await expect(actions.login(state, user)).rejects;
-
+        try {
+            let state = {};
+            restClientStub.withArgs(sinon.match.any).returns({
+                data: {error: {response: {data: {error: "Error"}}}}
+            });
+            let user = {
+                name: "Terazus",
+                password: "fakePassword"
+            };
+            await actions.login(state, user);
+            expect(actions.commit).toHaveBeenCalledWith("users/clearUserData");
+            expect(actions.commit).toHaveBeenCalledWith("users/setError",
+                {field: "login", message: "Error"});
+            restClientStub.withArgs(sinon.match.any).returns(new Error("error"));
+            await expect(actions.login(state, user)).rejects;
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Login: testing automatically", () => {
@@ -112,40 +132,48 @@ describe('Actions/Mutations', () => {
     });
 
     it("Logout Action: can logout a user", async () => {
-        let state = {};
-        mutations.logout(state);
-        expect(localStorage.removeItem).toHaveBeenCalledWith('user');
+        try {
+            let state = {};
+            mutations.logout(state);
+            expect(localStorage.removeItem).toHaveBeenCalledWith('user');
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Logout Mutation: can logout a user", async () => {
-        restClientStub.returns({
-            data: {
-                message: "Success"
-            }
-        });
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
+        try {
+            restClientStub.returns({
+                data: {
+                    message: "Success"
+                }
+            });
+            let state = {
+                state: {
+                    user: function(){
+                        return {
+                            credentials: {
+                                token: 123
+                            }
                         }
                     }
                 }
-            }
-        };
-        actions.commit = jest.fn();
-        actions.logout(state);
-        expect(actions.commit).not.toHaveBeenCalled();
-        restClientStub.returns({
-            data: new Error("error")
-        });
-        state = {};
-        actions.logout(state);
-        expect(actions.commit).toHaveBeenCalledWith(
-            "users/setError",
-            {"field": "logout", "message": "Cannot read property 'user' of undefined"}
-        );
+            };
+            actions.commit = jest.fn();
+            actions.logout(state);
+            expect(actions.commit).not.toHaveBeenCalled();
+            restClientStub.returns({
+                data: new Error("error")
+            });
+            state = {};
+            actions.logout(state);
+            expect(actions.commit).toHaveBeenCalledWith(
+                "users/setError",
+                {"field": "logout", "message": "Cannot read property 'user' of undefined"}
+            );
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("setUser: can set user data", () => {
@@ -219,172 +247,212 @@ describe('Actions/Mutations', () => {
     });
 
     it("Error Handling: getUser outer case", async () => {
-        let state = {};
-        restClientStub.returns({
-            data: new Error("error")
-        });
-        await actions.getUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            "field": "getUser",
-            "message": "Cannot read property 'user' of undefined"
-        });
-
+        try {
+            let state = {};
+            restClientStub.returns({
+                data: new Error("error")
+            });
+            await actions.getUser(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+                "field": "getUser",
+                "message": "Cannot read property 'user' of undefined"
+            });
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it('Error Handling: getUser inner case 1', async () => {
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
+        try {
+            let state = {
+                state: {
+                    user: function(){
+                        return {
+                            credentials: {
+                                token: 123
+                            }
                         }
                     }
                 }
-            }
-        };
-        restClientStub.returns({
-            data: {error: {response: {data: {error: "Error"}}}}
-        });
-        await actions.getUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",
-            {"field": "getUser", "message": "Error"})
+            };
+            restClientStub.returns({
+                data: {error: {response: {data: {error: "Error"}}}}
+            });
+            await actions.getUser(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError",
+                {"field": "getUser", "message": "Error"})
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it('Error Handling: getUser inner case 2', async () => {
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
+        try {
+            let state = {
+                state: {
+                    user: function(){
+                        return {
+                            credentials: {
+                                token: 123
+                            }
                         }
                     }
                 }
-            }
-        };
-        restClientStub.returns({
-            data: {
-                message: "Hello"
-            }
-        });
-        graphStub.returns({
-            error: {response: {data: {error: "Error"}}}
-        });
-        await actions.getUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",
-            {"field": "getUser", "message": "Error"})
+            };
+            restClientStub.returns({
+                data: {
+                    message: "Hello"
+                }
+            });
+            graphStub.returns({
+                error: {response: {data: {error: "Error"}}}
+            });
+            await actions.getUser(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError",
+                {"field": "getUser", "message": "Error"})
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Error Handling: getUserMeta outer case", async () => {
-        restClientStub.returns({
-            data: new Error("Error")
-        });
-        const state = {};
-        await actions.getUserMeta(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "getUser",
-            message: "Cannot read property 'user' of undefined"
-        })
+        try {
+            restClientStub.returns({
+                data: new Error("Error")
+            });
+            const state = {};
+            await actions.getUserMeta(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+                field: "getUser",
+                message: "Cannot read property 'user' of undefined"
+            })
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it('Error Handling: getUserMeta inner case', async () => {
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
+        try {
+            let state = {
+                state: {
+                    user: function(){
+                        return {
+                            credentials: {
+                                token: 123
+                            }
                         }
                     }
                 }
-            }
-        };
-        restClientStub.returns({
-            data: {error: "Error"}
-        });
-        await actions.getUserMeta(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
-            "field": "getUser", "message": "Error"
-        });
+            };
+            restClientStub.returns({
+                data: {error: "Error"}
+            });
+            await actions.getUserMeta(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError",{
+                "field": "getUser", "message": "Error"
+            });
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Error Handling: getUserMeta outer case", async () => {
-        restClientStub.returns({
-            data: new Error("Error")
-        });
-        const state = {};
-        await actions.updateUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "updateProfile",
-            message: "Cannot read property 'user' of undefined"
-        })
+        try {
+            restClientStub.returns({
+                data: new Error("Error")
+            });
+            const state = {};
+            await actions.updateUser(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+                field: "updateProfile",
+                message: "Cannot read property 'user' of undefined"
+            })
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it('Error Handling: getUserMeta inner case', async () => {
-        let state = {
-            state: {
-                user: function(){
-                    return {
-                        credentials: {
-                            token: 123
+        try {
+            let state = {
+                state: {
+                    user: function(){
+                        return {
+                            credentials: {
+                                token: 123
+                            }
                         }
                     }
                 }
-            }
-        };
-        restClientStub.returns({
-            data: {error: "Error"}
-        });
-        await actions.updateUser(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
-            "field": "updateProfile", "message": "Cannot read property 'data' of undefined"
-        });
+            };
+            restClientStub.returns({
+                data: {error: "Error"}
+            });
+            await actions.updateUser(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError",{
+                "field": "updateProfile", "message": "Cannot read property 'data' of undefined"
+            });
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Error Handling: resetPwd outer case", async () => {
-        restClientStub.returns(new Error("Error"));
-        const state = {};
-        await actions.resetPwd(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "resetPassword",
-            message: "Cannot read property 'error' of undefined"
-        })
+        try {
+            restClientStub.returns(new Error("Error"));
+            const state = {};
+            await actions.resetPwd(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+                field: "resetPassword",
+                message: "Cannot read property 'error' of undefined"
+            })
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Error Handling: resetPwdWithoutToken outer case", async () => {
-        restClientStub.returns(new Error("Error"));
-        const state = {};
-        await actions.resetPwdWithoutToken(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "resetPassword",
-            message: "Cannot read property 'user' of undefined"
-        })
+        try {
+            restClientStub.returns(new Error("Error"));
+            const state = {};
+            await actions.resetPwdWithoutToken(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+                field: "resetPassword",
+                message: "Cannot read property 'user' of undefined"
+            })
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
     it("Can correctly validate a user token", async() => {
-        restClientStub.returns({data: {success: true}});
-        let state = {
-            state: {user: () => {
-                return {credentials:{ token: 123}}
-            }}
-        };
-        await actions.validateUserToken(state);
-        expect(actions.commit).toHaveBeenCalledTimes(0);
-        restClientStub.restore();
+        try {
 
-        restClientStub = sinon.stub(Client.prototype, 'executeQuery');
-        restClientStub.returns({data: {success: false}});
-        state.state.user = () => {
-            return {credentials:{ token: 123}}
-        };
-        await actions.validateUserToken(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/logout");
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "getUser",
-            message: {success: false}
-        });
-        restClientStub.restore();
+            restClientStub.returns({data: {success: true}});
+            let state = {
+                state: {user: () => {
+                        return {credentials:{ token: 123}}
+                    }}
+            };
+            await actions.validateUserToken(state);
+            expect(actions.commit).toHaveBeenCalledTimes(0);
+            restClientStub.restore();
+
+            restClientStub = sinon.stub(Client.prototype, 'executeQuery');
+            restClientStub.returns({data: {success: false}});
+            state.state.user = () => {
+                return {credentials:{ token: 123}}
+            };
+            await actions.validateUserToken(state);
+            expect(actions.commit).toHaveBeenCalledWith("users/logout");
+            expect(actions.commit).toHaveBeenCalledWith("users/setError", {
+                field: "getUser",
+                message: {success: false}
+            });
+            restClientStub.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch {}
     });
 
 

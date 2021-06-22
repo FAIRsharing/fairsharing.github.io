@@ -54,5 +54,9 @@
   "educational": {
     "title": "Educational",
     "subtitle": "About standards, their use in databases and policies, and how we can help you."
+  },
+  "community": {
+    "title": "Community",
+    "subtitle": "..."
   }
 }

@@ -53,6 +53,91 @@
         </p>
       </v-col>
     </v-row>
+
+    <p
+      :class="['mb-0 mt-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Learn more about the FAIRsharing community, and please do not hesitate to <a
+        href="mailto:contact@fairsharing.org"
+        class="underline-effect"
+      >contact</a> us if you are interested in working with us.
+    </p>
+
+    <!-- Adopters, activities, Governance -->
+    <v-container>
+      <v-row
+        class="block-category"
+      >
+        <v-col
+          cols="12"
+          sm="12"
+          md="4"
+          lg="4"
+        >
+          <v-card
+            v-scroll-to="'#Adopters'"
+            class="mx-auto block-category__card cursor-pointer"
+            max-width="350"
+            height="300"
+            @click="()=>$router.push({path:'#Adopters'})"
+          >
+            <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+              <div
+                style="height: 136px"
+                class="d-flex justify-center"
+              >
+                <v-img
+                  contain
+                  height="130px"
+                  :src="$vuetify.icons.values['home_standard'].icon"
+                />
+              </div>
+              <v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
+                Adopters
+              </v-card-title>
+            </div>
+            <v-card-text
+              class="text--primary text-justify"
+            >
+              <p class="text-center">
+                Lighthouse stakeholders from our user base.
+              </p>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <!--  content    -->
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div id="Adopters">
+        Adopters
+      </div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div id="Activities">
+        Activities
+      </div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div id="Governance">
+        Governance
+      </div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+      <div>a</div>
+    </v-container>
   </main>
 </template>
 
@@ -147,7 +232,8 @@
                 text:' Funders Association: Science Europe\n' +
                     'Discipline: All '
               }
-            ]
+            ],
+
           }
         },
         methods: {
@@ -158,9 +244,43 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .links {
   border: 1px #d4d4d4 solid;
   margin: 2px;
 }
+
+.block-category {
+  &__card {
+    transition: all .2ms ease;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -webkit-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -moz-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -o-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+
+    &:hover {
+      transform: scale(1.05);
+      -moz-transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+      -o-transform: scale(1.05);
+    }
+
+    &__gradiant {
+      height: 200px;
+      background: rgb(171, 171, 171);
+      background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -webkit-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -o-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+    }
+  }
+}
+
+.v-divider {
+  margin: 8px;
+}
+
 </style>

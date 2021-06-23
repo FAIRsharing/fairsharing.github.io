@@ -249,13 +249,16 @@ export async function afterEach(to) {
 
 const router = new VueRouter({
     routes,
-    scrollBehavior (to) {
-        if (to.hash) {
-            return {selector: to.hash}
-        }
-    },
+    scrollBehavior
     // mode: "history"
 });
+
+export function scrollBehavior(to) {
+    if (to.hash) {
+        return {selector: to.hash}
+    }
+    return false
+}
 
 export async function beforeEach(to, from, next, store) {
     if (to.path !== '/maintenance' && store.state.introspection.maintenanceMode) {

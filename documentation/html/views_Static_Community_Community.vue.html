@@ -146,6 +146,134 @@
         &lt;/p>
       &lt;/v-col>
     &lt;/v-row>
+
+    &lt;p
+      :class="['mb-0 mt-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Learn more about the FAIRsharing community, and please do not hesitate to &lt;a
+        href="mailto:contact@fairsharing.org"
+        class="underline-effect"
+      >contact&lt;/a> us if you are interested in working with us.
+    &lt;/p>
+
+    &lt;!-- Adopters, activities, Governance tabs-->
+    &lt;v-container class="my-10">
+      &lt;v-row
+        class="block-category"
+      >
+        &lt;v-col
+          v-for="(tab,index) in contentTabs"
+          :key="tab.name+'_'+index"
+          cols="12"
+          sm="12"
+          md="4"
+          lg="4"
+        >
+          &lt;v-card
+            class="mx-auto block-category__card cursor-pointer"
+            max-width="350"
+            height="300"
+            @click="()=>$router.push({path:`#${tab.name.toLowerCase()}`})"
+          >
+            &lt;div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+              &lt;div
+                style="height: 136px"
+                class="d-flex justify-center"
+              >
+                &lt;v-icon
+                  size="80"
+                  color="white"
+                  style="opacity: .7"
+                >
+                  {{ $vuetify.icons.values[tab.icon].icon }}
+                &lt;/v-icon>
+              &lt;/div>
+              &lt;v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
+                {{ tab.name }}
+              &lt;/v-card-title>
+            &lt;/div>
+            &lt;v-card-text
+              class="text--primary text-justify"
+            >
+              &lt;p class="text-center">
+                {{ tab.description }}
+              &lt;/p>
+            &lt;/v-card-text>
+          &lt;/v-card>
+        &lt;/v-col>
+      &lt;/v-row>
+    &lt;/v-container>
+
+    &lt;!--  content  -->
+    &lt;section id="adopters">
+      &lt;p
+        :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Anyone can use FAIRsharing. Adopters, however, use FAIRsharing specifically to:
+      &lt;/p>
+      &lt;ul>
+        &lt;li>&lt;b class="mr-4">i:&lt;/b>Educate their users/community on the variety of existing standards, repositories and policies, and actively encourage them to submit/claim records, where relevant;&lt;/li>
+        &lt;li>
+          &lt;b class="mr-3">ii:&lt;/b>Create &lt;a
+            href="https://fairsharing.org/recommendations/"
+            target="_blank"
+            class="underline-effect"
+          >Recommendations&lt;/a> by registering their data policy, and then link it to standards and/or databases recommended in the policy; and/or
+        &lt;/li>
+        &lt;li>
+          &lt;b class="mr-2">iii:&lt;/b>Create a &lt;router-link
+            to="/collections"
+            class="underline-effect"
+          >
+            Collection
+          &lt;/router-link> by pulling together a list of standards and/or databases around a given domain of interest relevant to them.
+        &lt;/li>
+      &lt;/ul>
+      &lt;p
+        :class="['mb-0 mt-2 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        If you wish to create a new metadata record on FAIRsharing, you can find &lt;router-link to="/new">
+          instructions
+        &lt;/router-link> here.
+      &lt;/p>
+      &lt;p
+        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure programmes, societies and other organizations or projects that in turn serve and guide individual researchers or other stakeholders on research data management matters.
+      &lt;/p>
+      &lt;p
+        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Adopters display a FAIRsharing logo on their websites with a link from their website to our homepage.
+      &lt;/p>
+      &lt;b
+        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        We cannot list all of our adopters, but we've listed here those publishers that use FAIRsharing to define and refine their data policy.
+      &lt;/b>
+    &lt;/section>
+
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div id="activities">
+      Activities
+    &lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div id="governance">
+      Governance
+    &lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
+    &lt;div>a&lt;/div>
   &lt;/main>
 &lt;/template>
 
@@ -240,22 +368,56 @@
                 text:' Funders Association: Science Europe\n' +
                     'Discipline: All '
               }
+            ],
+            contentTabs: [
+              {name: "Adopters", icon: "adopters", description: "Lighthouse stakeholders from our user base."},
+              {name: "Activities", icon: "activities", description: "Guidance and tools we lead on or contribute to."},
+              {name: "Governance", icon: "governance", description: "Our international Advisory Board and Team."},
             ]
           }
-        },
-        methods: {
-            greet: function () {
-                return 0
-            }
         }
     }
 &lt;/script>
 
-&lt;style scoped>
+&lt;style scoped lang="scss">
 .links {
   border: 1px #d4d4d4 solid;
   margin: 2px;
 }
+
+.block-category {
+  &amp;__card {
+    transition: all .2ms ease;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -webkit-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -moz-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -o-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+
+    &amp;:hover {
+      transform: scale(1.05);
+      -moz-transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+      -o-transform: scale(1.05);
+    }
+
+    &amp;__gradiant {
+      height: 200px;
+      background: rgb(171, 171, 171);
+      background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -webkit-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -o-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+    }
+  }
+}
+
+.v-divider {
+  margin: 8px;
+}
+
 &lt;/style>
 </pre>
     </article>
@@ -302,7 +464,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on Tue Jun 22nd 2021
+		on Wed Jun 23rd 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

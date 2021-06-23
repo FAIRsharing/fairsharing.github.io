@@ -77,7 +77,6 @@
           lg="4"
         >
           <v-card
-            v-scroll-to="`#${tab.name}`"
             class="mx-auto block-category__card cursor-pointer"
             max-width="350"
             height="300"
@@ -113,7 +112,7 @@
     </v-container>
 
     <!--  content  -->
-    <section id="Adopters">
+    <section id="adopters">
       <p
         :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
@@ -166,7 +165,7 @@
     <div>a</div>
     <div>a</div>
     <div>a</div>
-    <div id="Activities">
+    <div id="activities">
       Activities
     </div>
     <div>a</div>
@@ -174,7 +173,7 @@
     <div>a</div>
     <div>a</div>
     <div>a</div>
-    <div id="Governance">
+    <div id="governance">
       Governance
     </div>
     <div>a</div>

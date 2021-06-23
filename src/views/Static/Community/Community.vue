@@ -64,7 +64,7 @@
     </p>
 
     <!-- Adopters, activities, Governance tabs-->
-    <v-container>
+    <v-container class="my-10">
       <v-row
         class="block-category"
       >
@@ -81,18 +81,20 @@
             class="mx-auto block-category__card cursor-pointer"
             max-width="350"
             height="300"
-            @click="()=>$router.push({path:`#${tab.name}`})"
+            @click="()=>$router.push({path:`#${tab.name.toLowerCase()}`})"
           >
             <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
               <div
                 style="height: 136px"
                 class="d-flex justify-center"
               >
-                <v-img
-                  contain
-                  height="130px"
-                  :src="$vuetify.icons.values[tab.icon].icon"
-                />
+                <v-icon
+                  size="80"
+                  color="white"
+                  style="opacity: .7"
+                >
+                  {{ $vuetify.icons.values[tab.icon].icon }}
+                </v-icon>
               </div>
               <v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
                 {{ tab.name }}
@@ -276,9 +278,9 @@
               }
             ],
             contentTabs: [
-              {name: "Adopters", icon: "home_standard", description: "Lighthouse stakeholders from our user base."},
-              {name: "Activities", icon: "home_standard", description: "Guidance and tools we lead on or contribute to."},
-              {name: "Governance", icon: "home_standard", description: "Our international Advisory Board and Team."},
+              {name: "Adopters", icon: "adopters", description: "Lighthouse stakeholders from our user base."},
+              {name: "Activities", icon: "activities", description: "Guidance and tools we lead on or contribute to."},
+              {name: "Governance", icon: "governance", description: "Our international Advisory Board and Team."},
             ]
           }
         },

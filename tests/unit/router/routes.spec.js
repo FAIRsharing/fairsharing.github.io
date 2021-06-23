@@ -1,4 +1,4 @@
-import router, {afterEach} from "@/router"
+import router, {afterEach,scrollBehavior} from "@/router"
 import { beforeEach, isLoggedIn, isMaintenanceMode } from "@/router"
 import RestClient from "@/lib/Client/RESTClient.js"
 const sinon = require("sinon");
@@ -95,5 +95,11 @@ describe("Routes", () => {
         isMaintenanceMode(undefined, undefined, next, store);
         expect(next).toHaveBeenCalledWith();
     })
+
+    it("can check scrollBehavior", () => {
+        expect(scrollBehavior({hash:'#anchorLink'})).toStrictEqual({selector:"#anchorLink"})
+        expect(scrollBehavior({})).toBe(false)
+    })
+
 
 });

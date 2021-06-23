@@ -282,11 +282,6 @@
               {name: "Governance", icon: "governance", description: "Our international Advisory Board and Team."},
             ]
           }
-        },
-        methods: {
-            greet: function () {
-                return 0
-            }
         }
     }
 </script>

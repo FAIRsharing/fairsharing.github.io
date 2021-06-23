@@ -63,23 +63,25 @@
       >contact</a> us if you are interested in working with us.
     </p>
 
-    <!-- Adopters, activities, Governance -->
+    <!-- Adopters, activities, Governance tabs-->
     <v-container>
       <v-row
         class="block-category"
       >
         <v-col
+          v-for="(tab,index) in contentTabs"
+          :key="tab.name+'_'+index"
           cols="12"
           sm="12"
           md="4"
           lg="4"
         >
           <v-card
-            v-scroll-to="'#Adopters'"
+            v-scroll-to="`#${tab.name}`"
             class="mx-auto block-category__card cursor-pointer"
             max-width="350"
             height="300"
-            @click="()=>$router.push({path:'#Adopters'})"
+            @click="()=>$router.push({path:`#${tab.name}`})"
           >
             <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
               <div
@@ -89,55 +91,95 @@
                 <v-img
                   contain
                   height="130px"
-                  :src="$vuetify.icons.values['home_standard'].icon"
+                  :src="$vuetify.icons.values[tab.icon].icon"
                 />
               </div>
               <v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
-                Adopters
+                {{ tab.name }}
               </v-card-title>
             </div>
             <v-card-text
               class="text--primary text-justify"
             >
               <p class="text-center">
-                Lighthouse stakeholders from our user base.
+                {{ tab.description }}
               </p>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
-      <!--  content    -->
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div id="Adopters">
-        Adopters
-      </div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div id="Activities">
-        Activities
-      </div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div id="Governance">
-        Governance
-      </div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
-      <div>a</div>
     </v-container>
+
+    <!--  content  -->
+    <section id="Adopters">
+      <p
+        :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Anyone can use FAIRsharing. Adopters, however, use FAIRsharing specifically to:
+      </p>
+      <ul>
+        <li><b class="mr-4">i:</b>Educate their users/community on the variety of existing standards, repositories and policies, and actively encourage them to submit/claim records, where relevant;</li>
+        <li>
+          <b class="mr-3">ii:</b>Create <a
+            href="https://fairsharing.org/recommendations/"
+            target="_blank"
+            class="underline-effect"
+          >Recommendations</a> by registering their data policy, and then link it to standards and/or databases recommended in the policy; and/or
+        </li>
+        <li>
+          <b class="mr-2">iii:</b>Create a <router-link
+            to="/collections"
+            class="underline-effect"
+          >
+            Collection
+          </router-link> by pulling together a list of standards and/or databases around a given domain of interest relevant to them.
+        </li>
+      </ul>
+      <p
+        :class="['mb-0 mt-2 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        If you wish to create a new metadata record on FAIRsharing, you can find <router-link to="/new">
+          instructions
+        </router-link> here.
+      </p>
+      <p
+        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure programmes, societies and other organizations or projects that in turn serve and guide individual researchers or other stakeholders on research data management matters.
+      </p>
+      <p
+        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Adopters display a FAIRsharing logo on their websites with a link from their website to our homepage.
+      </p>
+      <b
+        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        We cannot list all of our adopters, but we've listed here those publishers that use FAIRsharing to define and refine their data policy.
+      </b>
+    </section>
+
+    <div>a</div>
+    <div>a</div>
+    <div>a</div>
+    <div>a</div>
+    <div>a</div>
+    <div id="Activities">
+      Activities
+    </div>
+    <div>a</div>
+    <div>a</div>
+    <div>a</div>
+    <div>a</div>
+    <div>a</div>
+    <div id="Governance">
+      Governance
+    </div>
+    <div>a</div>
+    <div>a</div>
+    <div>a</div>
+    <div>a</div>
+    <div>a</div>
   </main>
 </template>
 
@@ -233,7 +275,11 @@
                     'Discipline: All '
               }
             ],
-
+            contentTabs: [
+              {name: "Adopters", icon: "home_standard", description: "Lighthouse stakeholders from our user base."},
+              {name: "Activities", icon: "home_standard", description: "Guidance and tools we lead on or contribute to."},
+              {name: "Governance", icon: "home_standard", description: "Our international Advisory Board and Team."},
+            ]
           }
         },
         methods: {

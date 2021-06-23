@@ -249,6 +249,11 @@ export async function afterEach(to) {
 
 const router = new VueRouter({
     routes,
+    scrollBehavior (to) {
+        if (to.hash) {
+            return {selector: to.hash}
+        }
+    },
     // mode: "history"
 });
 

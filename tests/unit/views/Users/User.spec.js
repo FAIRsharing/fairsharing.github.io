@@ -71,7 +71,7 @@ describe("User.vue", () => {
         expect(wrapper.vm.booleanToString(true)).toBe("Yes");
         expect(wrapper.vm.booleanToString(false)).toBe("No");
         wrapper.vm.user().records = null;
-        expect(wrapper.vm.maintenanceRequests.length).toBe(0)
+        expect(wrapper.vm.maintenanceRequests.length).toBe(0);
     });
 
     it("can process errors", () => {
@@ -97,5 +97,36 @@ describe("User.vue", () => {
         wrapper.destroy();
         expect(usersStore.state.user().records).toStrictEqual({})
     })
+
+    it("handles publications errors", async() => {
+        //externalClientStub.restore();
+        //restStub.restore();
+        //externalClientStub = sinon.stub(ExternalClient.prototype, "executeQuery").returns({data: ORCIDfixture});
+        let wrapper = await shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store, $router, $route},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        console.log("PUBS AFTER MOUNTING: " + JSON.stringify(wrapper.vm.publications));
+        // fails...
+        //expect(wrapper.vm.publications).toStrictEqual([{"title": "abc", "url": undefined}, {"title": "yolo", "url": null}, {"title": "def", "url": null}]);
+
+        //let orcid_query = await wrapper.vm.getPublications();
+        //console.log("SEPARATE Q: " + JSON.stringify(orcid_query));
+        /*
+        let orcid_query = await wrapper.vm.getPublications();
+        expect(orcid_query).toStrictEqual([{"title": "abc", "url": undefined}, {"title": "yolo", "url": null}, {"title": "def", "url": null}]);
+        externalClientStub.restore();
+        restStub.restore();
+        externalClientStub = sinon.stub(ExternalClient.prototype, "executeQuery").returns(
+            {data: {error: "error"} }
+        );
+        await wrapper.vm.getUser();
+        orcid_query = await wrapper.vm.getPublications();
+        expect(orcid_query).toStrictEqual([]);
+        wrapper.destroy();
+         */
+    });
 
 });

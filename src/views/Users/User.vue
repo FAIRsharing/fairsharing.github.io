@@ -127,7 +127,7 @@
                     </v-list-item>
                   </v-list>
                   <div v-if="publications.length === 0 && !loading">
-                    You do not have an ORCID. Set one <a
+                    You do not have a valid ORCID ID. Get one <a
                       href="https://orcid.org/register"
                       rel="external"
                       target="_blank"
@@ -336,6 +336,7 @@
             this.$router.push({path: "/accounts/login"})
           }
           this.publications = await this.getPublications();
+          console.log("P: " + JSON.stringify(this.publications));
           this.loading = false;
       },
       beforeDestroy() {
@@ -348,21 +349,24 @@
             let output = [];
             if (this.user().metadata.orcid) {
               let publications = await client.getOrcidUser(this.user().metadata.orcid);
-              output = publications['activities-summary']['works']['group']
-                      .slice(0, 7)
-                      .map(obj => {
-                        let url = null;
-                        if(obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
-                          let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
-                                  obj => obj['external-id-type'] = "doi"
-                          )[0];
-                          url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
-                        }
-                        return {
-                          title: obj['work-summary'][0].title.title.value,
-                          url: url
-                        }
-                      });
+              if (!publications.error) {
+                console.log("RUNNING");
+                output = publications['activities-summary']['works']['group']
+                    .slice(0, 7)
+                    .map(obj => {
+                      let url = null;
+                      if (obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
+                        let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
+                            obj => obj['external-id-type'] = "doi"
+                        )[0];
+                        url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
+                      }
+                      return {
+                        title: obj['work-summary'][0].title.title.value,
+                        url: url
+                      }
+                    });
+              }
             }
             return output;
           },

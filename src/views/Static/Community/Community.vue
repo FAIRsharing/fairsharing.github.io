@@ -158,6 +158,40 @@
       >
         We cannot list all of our adopters, but we've listed here those publishers that use FAIRsharing to define and refine their data policy.
       </b>
+
+      <v-simple-table>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">
+                Image
+              </th>
+              <th class="text-left">
+                Adopter
+              </th>
+              <th class="text-left">
+                Associated FAIRsharing Record
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="item in desserts"
+              :key="item.name"
+            >
+              <td class="text-left">
+                <v-img
+                  src="assets/fairsharing-logo.svg"
+                  height="70"
+                  contain
+                />
+              </td>
+              <td>{{ item.adopter }}</td>
+              <td>{{ item.associated }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
     </section>
 
     <div>a</div>
@@ -281,7 +315,19 @@ export default {
         {name: "Adopters", icon: "adopters", description: "Lighthouse stakeholders from our user base."},
         {name: "Activities", icon: "activities", description: "Guidance and tools we lead on or contribute to."},
         {name: "Governance", icon: "governance", description: "Our international Advisory Board and Team."},
-      ]
+      ],
+      desserts: [
+        {
+          image: 'Frozen Yogurt',
+          adopter: 159,
+          associated: 159,
+        },
+        {
+          image: 'Frozen Yogurt',
+          adopter: 159,
+          associated: 159,
+        },
+      ],
     }
   },
   watch: {

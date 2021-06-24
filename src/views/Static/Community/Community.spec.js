@@ -4,6 +4,11 @@ import Vuetify from "vuetify"
 import icons from "@/plugins/icons";
 import linkify from "vue-linkify";
 
+let $route = {
+    name: "Community",
+    hash:'#governance'
+};
+
 describe("Community.vue", function () {
     let wrapper;
     const localVue = createLocalVue();
@@ -14,6 +19,7 @@ describe("Community.vue", function () {
             {
                 localVue,
                 vuetify,
+                mocks: {$route},
                 stubs: ['router-link']
             }
         );
@@ -21,6 +27,8 @@ describe("Community.vue", function () {
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("Community");
+        wrapper.vm.$route.hash = '#anotherAnchor'
+        expect(wrapper.vm.applyCss).toBe(false);
     });
 
 });

@@ -158,36 +158,113 @@
       >
         We cannot list all of our adopters, but we've listed here those publishers that use FAIRsharing to define and refine their data policy.
       </b>
-
-      <v-simple-table>
+      <!--Adopter table-->
+      <v-simple-table class="mb-10 mt-2">
         <template v-slot:default>
           <thead>
             <tr>
-              <th class="text-left">
-                Image
-              </th>
-              <th class="text-left">
-                Adopter
-              </th>
-              <th class="text-left">
-                Associated FAIRsharing Record
+              <th
+                v-for="(tab,index) in tables.adopterTable.tabs"
+                :key="`${tab}_${index}`"
+                class="text-left white--text"
+                bgcolor="#27aae1"
+              >
+                <b class="text-capitalize text-h6">{{ tab }}</b>
               </th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="item in desserts"
-              :key="item.name"
+              v-for="(item,index) in tables.adopterTable.data"
+              :key="`${item.adopter}_${index}`"
             >
-              <td class="text-left">
+              <td
+                class="text-left border-bottom"
+              >
                 <v-img
-                  src="assets/fairsharing-logo.svg"
-                  height="70"
+                  max-width="250px"
+                  max-height="250px"
+                  :src="item.image"
+                  height="120"
                   contain
                 />
               </td>
-              <td>{{ item.adopter }}</td>
-              <td>{{ item.associated }}</td>
+              <td class="border-bottom border-left">
+                {{ item.adopter }}
+              </td>
+              <td class="border-bottom border-left">
+                <router-link
+                  target="_blank"
+                  :to="item.associatedLink"
+                  class="underline-effect"
+                >
+                  {{ item.associated }}
+                </router-link>
+              </td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+
+      <!--Global Organisation table-->
+      <p class="text-h6 mt-16">
+        Global Organisations
+      </p>
+      <v-simple-table class="mb-16 mt-2">
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th
+                v-for="(tab,index) in tables.globalOrganisationTable.tabs"
+                :key="`${tab}_${index}`"
+                class="text-left white--text"
+                bgcolor="#27aae1"
+              >
+                <b class="text-capitalize text-h6">{{ tab }}</b>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(item,index) in tables.globalOrganisationTable.data"
+              :key="`${item.adopter}_${index}`"
+            >
+              <td
+                class="text-left border-bottom"
+              >
+                <v-img
+                  v-if="item.image"
+                  max-width="250px"
+                  max-height="250px"
+                  :src="item.image"
+                  height="120"
+                  contain
+                />
+              </td>
+              <td
+                v-if="item.adopter"
+                class="border-bottom border-left"
+              >
+                {{ item.adopter }}
+              </td>
+              <td class="border-bottom border-left">
+                <router-link
+                  v-if="item.associatedLink"
+                  target="_blank"
+                  :to="item.associatedLink"
+                  class="underline-effect"
+                >
+                  {{ item.associated }}
+                </router-link>
+                <a
+                  v-if="item.externalLink"
+                  :href="item.externalLink"
+                  target="_blank"
+                  class="underline-effect"
+                >
+                  {{ item.associated }}
+                </a>
+              </td>
             </tr>
           </tbody>
         </template>
@@ -316,18 +393,99 @@ export default {
         {name: "Activities", icon: "activities", description: "Guidance and tools we lead on or contribute to."},
         {name: "Governance", icon: "governance", description: "Our international Advisory Board and Team."},
       ],
-      desserts: [
-        {
-          image: 'Frozen Yogurt',
-          adopter: 159,
-          associated: 159,
+      tables: {
+        adopterTable: {
+          tabs:['Logo','adopter','Associated FAIRsharing Record'],
+          data: [
+            {
+              image: 'assets/Community/elife.jpg',
+              adopter: 'eLIFE',
+              associated: 'Policy',
+              associatedLink: '/FAIRsharing.F0QmCP',
+            },
+            {
+              image: 'assets/Community/elsevier.png',
+              adopter: 'Elsevier',
+              associated: 'Recommendation',
+              associatedLink: '/bsg-c000041',
+            },
+            {
+              image: 'assets/Community/embo_logo.png',
+              adopter: 'EMBO Press',
+              associated: 'Recommendation',
+              associatedLink: '/bsg-c000014',
+            },
+            {
+              image: 'assets/Community/logo_faculty_1000.png',
+              adopter: 'Faculty of 1000',
+              associated: 'Recommendation',
+              associatedLink: '/bsg-c000010',
+            },
+            {
+              image: 'assets/Community/logo_giga_science.png',
+              adopter: 'GigaScience',
+              associated: 'Recommendation',
+              associatedLink: '/bsg-c000036',
+            },
+            {
+              image: 'assets/Community/PLOS_LOGO_black.png',
+              adopter: 'Public Library of Science (PLOS)',
+              associated: 'Recommendation',
+              associatedLink: '/bsg-c000009',
+            },
+            {
+              image: 'assets/Community/biomed.png',
+              adopter: 'Springer Nature BioMed Central',
+              associated: 'Recommendation',
+              associatedLink: '/bsg-c000007',
+            },
+            {
+              image: 'assets/Community/scientificData.png',
+              adopter: 'Springer Nature Scientific Data',
+              associated: 'Recommendation',
+              associatedLink: '/bsg-c000001',
+            },
+            {
+              image: 'assets/Community/taylor_francis.png',
+              adopter: 'Taylor and Francis',
+              associated: 'Recommendation',
+              associatedLink: '/bsg-c000059',
+            },
+            {
+              image: 'assets/Community/wellcome_bw.png',
+              adopter: 'Wellcome Open Research',
+              associated: 'Recommendation',
+              associatedLink: '/bsg-c000031',
+            },
+            {
+              image: 'assets/Community/b2c-site-logo_desktop_optimized.png',
+              adopter: 'Wiley',
+              associated: 'Policy',
+              associatedLink: '/FAIRsharing.xwnZRC',
+            },
+          ]
         },
-        {
-          image: 'Frozen Yogurt',
-          adopter: 159,
-          associated: 159,
-        },
-      ],
+        globalOrganisationTable: {
+          tabs:['Logo','Name'],
+          data: [
+            {
+              image: 'assets/Community/RDA_logo_cbIKmKK.png',
+              associated: 'RDA',
+              externalLink: 'https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html',
+            },
+            {
+              image: 'assets/Community/logo_go-fair.png',
+              associated: 'GO-FAIR',
+              externalLink: 'https://www.go-fair.org/implementation-networks/overview/fair-strepo/',
+            },
+            {
+              image: 'assets/Community/logo_force11.png',
+              associated: 'FORCE11',
+              externalLink: 'https://www.force11.org/group/biosharingwg',
+            },
+          ]
+        }
+      }
     }
   },
   watch: {
@@ -387,6 +545,14 @@ export default {
 
 .v-divider {
   margin: 8px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #d0d0d0 !important;
+}
+
+.border-left {
+  border-left: 1px solid #d0d0d0 !important;
 }
 
 </style>

@@ -10,12 +10,14 @@ import record from "@/store/recordData.js";
 import users from "@/store/users.js";
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
+import VueSanitize from "vue-sanitize";
 
 // Initializing context for mounting
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
 localVue.use(VueScrollTo,{})
+localVue.use(VueSanitize)
 
 // Initializing store states and getters
 users.state.user = function(){ return {

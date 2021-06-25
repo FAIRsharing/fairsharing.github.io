@@ -273,7 +273,7 @@ export default {
   },
   computed: {
     JSONLD () {
-      return JSON.stringify(this.getField("schemaOrg"));
+      return this.$sanitize(JSON.stringify(this.getField("schemaOrg")));
     },
     currentRoute() {
       let id = this.$route.params['id'];

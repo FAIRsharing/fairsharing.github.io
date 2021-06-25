@@ -82,7 +82,6 @@
             height="300"
             @click="jumpToAnchor(tab.name.toLowerCase())"
           >
-<!--            $router.push({path:`#${tab.name.toLowerCase()}-->
             <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
               <div
                 style="height: 136px"

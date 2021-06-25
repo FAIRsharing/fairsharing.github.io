@@ -112,7 +112,12 @@
     </v-container>
 
     <!--  content  -->
+
+    <!-- Adopters   -->
     <section id="adopters">
+      <h3 class="text-h4 mb-4">
+        Adopters
+      </h3>
       <p
         :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
@@ -159,7 +164,7 @@
         We cannot list all of our adopters, but we've listed here those publishers that use FAIRsharing to define and refine their data policy.
       </b>
       <!--Adopter table-->
-      <v-simple-table class="mb-10 mt-2">
+      <v-simple-table class="mb-16 mt-2">
         <template v-slot:default>
           <thead>
             <tr>
@@ -182,6 +187,7 @@
                 class="text-left border-bottom"
               >
                 <v-img
+                  v-if="item.image"
                   max-width="250px"
                   max-height="250px"
                   :src="item.image"
@@ -189,17 +195,29 @@
                   contain
                 />
               </td>
-              <td class="border-bottom border-left">
+              <td
+                v-if="item.adopter"
+                class="border-bottom border-left"
+              >
                 {{ item.adopter }}
               </td>
               <td class="border-bottom border-left">
                 <router-link
+                  v-if="item.associatedLink"
                   target="_blank"
                   :to="item.associatedLink"
                   class="underline-effect"
                 >
                   {{ item.associated }}
                 </router-link>
+                <a
+                  v-if="item.externalLink"
+                  :href="item.externalLink"
+                  target="_blank"
+                  class="underline-effect"
+                >
+                  {{ item.associated }}
+                </a>
               </td>
             </tr>
           </tbody>
@@ -271,27 +289,34 @@
       </v-simple-table>
     </section>
 
-    <div>a</div>
-    <div>a</div>
-    <div>a</div>
-    <div>a</div>
-    <div>a</div>
-    <div id="activities">
-      Activities
-    </div>
-    <div>a</div>
-    <div>a</div>
-    <div>a</div>
-    <div>a</div>
-    <div>a</div>
+    <!-- Activities   -->
+    <section id="activities">
+      <h3 class="text-h4 mb-4">
+        Activities
+      </h3>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
+      </p>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
+      </p>
+      <b
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
+      </b>
+      <!--Activities table-->
+      <ActivitiesStaticTable />
+    </section>
+
+    <!-- Governance   -->
     <div id="governance">
       Governance
     </div>
-    <div>a</div>
-    <div>a</div>
-    <div>a</div>
-    <div>a</div>
-    <div>a</div>
   </main>
 </template>
 
@@ -300,6 +325,7 @@
 * All static pages will be handle through this namespace
 * @namespace Static
 */
+import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 /** This component handles the sign-up/register page
 * @memberOf Static
 * @name Community
@@ -308,6 +334,7 @@
 * */
 export default {
   name: "Community",
+  components: {ActivitiesStaticTable},
   title: "This will be the community page",
   data: () => {
     return {
@@ -484,7 +511,7 @@ export default {
               externalLink: 'https://www.force11.org/group/biosharingwg',
             },
           ]
-        }
+        },
       }
     }
   },
@@ -548,11 +575,10 @@ export default {
 }
 
 .border-bottom {
-  border-bottom: 1px solid #d0d0d0 !important;
+  border-bottom: 1px solid #ECF0F1 !important;
 }
 
 .border-left {
-  border-left: 1px solid #d0d0d0 !important;
+  border-left: 1px solid #ECF0F1 !important;
 }
-
 </style>

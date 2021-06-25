@@ -1,5 +1,5 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Community from "./Community.vue";
+import Community from "@/views/Static/Community/Community.vue";
 import Vuetify from "vuetify"
 import icons from "@/plugins/icons";
 import linkify from "vue-linkify";

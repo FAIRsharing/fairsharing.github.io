@@ -129,6 +129,23 @@ describe("Routes", () => {
             {"path":"/"}
         );
 
+        let ontology = router.options.routes.find((obj) => { return obj.name === 'ontology'} );
+        expect(ontology.redirect(
+            {params: {name: 'SRAO'}})
+        ).toStrictEqual(
+            {"path":"https://github.com/FAIRsharing/subject-ontology"}
+        );
+        expect(ontology.redirect(
+            {params: {name: 'DRAO'}})
+        ).toStrictEqual(
+            {"path":"https://github.com/FAIRsharing/domain-ontology"}
+        );
+        expect(ontology.redirect(
+            {params: {name: 'dingdong'}})
+        ).toStrictEqual(
+            {"path":"/"}
+        );
+
     });
 
 });

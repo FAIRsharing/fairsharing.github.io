@@ -80,8 +80,9 @@
             class="mx-auto block-category__card cursor-pointer"
             max-width="350"
             height="300"
-            @click="()=>$router.push({path:`#${tab.name.toLowerCase()}`})"
+            @click="jumpToAnchor(tab.name.toLowerCase())"
           >
+<!--            $router.push({path:`#${tab.name.toLowerCase()}-->
             <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
               <div
                 style="height: 136px"
@@ -343,6 +344,7 @@ export default {
   data: () => {
     return {
       applyCss: false,
+      currentAnchor:'',
       subtitle,
       externalLinks,
       contentTabs,
@@ -365,6 +367,14 @@ export default {
       // update the UI padding and margin after DOM is fully loaded.
       this.applyCss = true
     })
+  },
+  methods: {
+    jumpToAnchor(selectedAnchor) {
+      if (selectedAnchor !== this.currentAnchor) {
+        this.$router.push({hash: `${selectedAnchor}`});
+        this.currentAnchor = selectedAnchor;
+      }
+    }
   }
 }
 </script>

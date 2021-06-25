@@ -9,6 +9,11 @@ let $route = {
     hash:'#governance'
 };
 
+const push = jest.fn();
+const $router = {
+    push: jest.fn(),
+};
+
 describe("Community.vue", function () {
     let wrapper;
     const localVue = createLocalVue();
@@ -19,7 +24,7 @@ describe("Community.vue", function () {
             {
                 localVue,
                 vuetify,
-                mocks: {$route},
+                mocks: {$route,$router},
                 stubs: ['router-link']
             }
         );
@@ -29,6 +34,15 @@ describe("Community.vue", function () {
         expect(wrapper.name()).toMatch("Community");
         wrapper.vm.$route.hash = '#anotherAnchor'
         expect(wrapper.vm.applyCss).toBe(false);
+    });
+
+    it("can check jumpToAnchor method", () => {
+        wrapper.vm.currentAnchor = ''
+        wrapper.vm.$router.push = push;
+        wrapper.vm.jumpToAnchor('newAnchor')
+        expect(push).toHaveBeenCalledWith({"hash": "newAnchor"});
+        wrapper.vm.jumpToAnchor('newAnchor')
+        expect(wrapper.vm.currentAnchor).not.toBe("");
     });
 
 });

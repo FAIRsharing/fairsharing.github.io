@@ -259,7 +259,11 @@
             let output = [];
             if (this.userData.user.orcid) {
               let publications = await client.getOrcidUser(this.userData.user.orcid);
-              if (!publications.error) {
+              /* istanbul ignore if */
+              if (publications.error) {
+                return [];
+              }
+              else {
                 output = publications['activities-summary']['works']['group']
                     .slice(0, 7)
                     .map(obj => {

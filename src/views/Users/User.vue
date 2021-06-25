@@ -329,15 +329,14 @@
         }
       },
       async created(){
-          this.loading = true;
-          await this.getUser(); // we need the user BEFORE getting the publications.
-          if (this.messages()["getUser"].error){
-            this.setError({field:"login", message:"You've been logged out automatically"});
-            this.$router.push({path: "/accounts/login"})
-          }
-          this.publications = await this.getPublications();
-          console.log("P: " + JSON.stringify(this.publications));
-          this.loading = false;
+        this.loading = true;
+        await this.getUser(); // we need the user BEFORE getting the publications.
+        if (this.messages()["getUser"].error) {
+          this.setError({field: "login", message: "You've been logged out automatically"});
+          this.$router.push({path: "/accounts/login"})
+        }
+        this.publications = await this.getPublications();
+        this.loading = false;
       },
       beforeDestroy() {
         this.cleanStore();
@@ -349,8 +348,11 @@
             let output = [];
             if (this.user().metadata.orcid) {
               let publications = await client.getOrcidUser(this.user().metadata.orcid);
-              if (!publications.error) {
-                console.log("RUNNING");
+              /* istanbul ignore if */
+              if (publications.error) {
+                return [];
+              }
+              else {
                 output = publications['activities-summary']['works']['group']
                     .slice(0, 7)
                     .map(obj => {

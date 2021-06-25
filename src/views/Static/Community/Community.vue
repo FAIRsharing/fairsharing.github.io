@@ -310,13 +310,15 @@
         Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
       </b>
       <!--Activities table-->
-      <ActivitiesStaticTable />
+      <ActivitiesStaticTable class="mb-16 mt-2" />
     </section>
 
     <!-- Governance   -->
-    <div id="governance">
-      Governance
-    </div>
+    <section id="governance">
+      <h3 class="text-h4 mb-4">
+        Governance
+      </h3>
+    </section>
   </main>
 </template>
 
@@ -326,6 +328,8 @@
 * @namespace Static
 */
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+import {subtitle,externalLinks,contentTabs,tables} from "@/data/communityPageData.json"
+
 /** This component handles the sign-up/register page
 * @memberOf Static
 * @name Community
@@ -339,180 +343,10 @@ export default {
   data: () => {
     return {
       applyCss: false,
-      subtitle: 'Sansone, McQuilton, Rocca-Serra et al. FAIRsharing as a community approach to standards, repositories and policies. Nat Biotech. 37, 358–367(2019).\n' +
-          'https://doi.org/10.1038/s41587-019-0080-8\n',
-      externalLinks: [
-        {
-          title: '“EOSC Strategic Research and Innovation Agenda" 2021',
-          titleLink: 'https://www.eosc.eu/sites/default/files/EOSC-SRIA-V1.0_15Feb2021.pdf',
-          text: ' Funder: EU European Open Science Cloud - EOSC\n' +
-              'Discipline: All '
-        },
-        {
-          title: '“Recommendations on certifying services required to enable FAIR within EOSC” 2021',
-          titleLink: 'https://doi.org/10.2777/127253',
-          text: ' Funder: EU European Open Science Cloud - EOSC\n' +
-              'Discipline: All '
-        },
-        {
-          title: '“FAIR Metrics for EOSC” 2021',
-          titleLink: 'https://doi.org/10.2777/70791',
-          text: ' Funder: EU European Open Science Cloud - EOSC\n' +
-              'Discipline: All '
-        },
-        {
-          title: '“Six Recommendations for implementation of FAIR practice” 2020',
-          titleLink: 'https://doi.org/10.2777/986252',
-          text: ' Funder: EU European Open Science Cloud - EOSC\n' +
-              'Discipline: All '
-        },
-        {
-          title: '“Country Sheets Analysis” 2020',
-          titleLink: 'https://doi.org/10.2777/568900',
-          text: ' Funder: EU European Open Science Cloud - EOSC\n' +
-              'Discipline: All '
-        },
-        {
-          title: '“Horizon 2020 projects working on COVID-19, SARS-CoV-2 and related topics” 2020',
-          titleLink: 'https://ec.europa.eu/research/participants/data/ref/h2020/other/hi/oa-pilot/h2020-guidelines-oa-covid-19_en.pdf',
-          text: ' Funder: EU H2020\n' +
-              'Discipline: Coronavirus research '
-        },
-        {
-          title: '“Horizon 2020 Annotated Grant Agreement” 2019',
-          titleLink: 'https://ec.europa.eu/research/participants/data/ref/h2020/grants_manual/amga/h2020-amga_en.pdf',
-          text: ' Funder: EU H2020\n' +
-              'Discipline: All '
-        },
-        {
-          title: '“Sustainable and FAIR Data Sharing in the Humanities” 2020',
-          titleLink: 'https://doi.org/10.7486/DRI.tq582c863',
-          text: ' Federation: Academies of Sciences and Humanities - ALLEA\n' +
-              'Discipline: Humanities '
-        },
-        {
-          title: '“Open Research Data and Data Management Plans” 2019',
-          titleLink: 'https://erc.europa.eu/sites/default/files/document/file/ERC_info_document-Open_Research_Data_and_Data_Management_Plans.pdf',
-          text: ' Funder: European Research Council - ERC\n' +
-              'Discipline: All '
-        },
-        {
-          title: '“Turning FAIR into Reality” 2018',
-          titleLink: 'https://doi.org/10.2777/1524',
-          text: ' Funder: EU European Open Science Cloud - EOSC\n' +
-              'Discipline: All '
-        },
-        {
-          title: '“Open Research Data Task Force Case Study” 2018',
-          titleLink: 'https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/775379/Case-studies-ORDTF-July-2018.pdf',
-          text: ' Governamental: UK Open Research Data Task Force\n' +
-              'Discipline: All '
-        },
-        {
-          title: '“Framework for Discipline-specific Research Data Management” 2018',
-          titleLink: 'https://www.scienceeurope.org/wp-content/uploads/2018/01/SE_Guidance_Document_RDMPs.pdf',
-          text: ' Funders Association: Science Europe\n' +
-              'Discipline: All '
-        }
-      ],
-      contentTabs: [
-        {name: "Adopters", icon: "adopters", description: "Lighthouse stakeholders from our user base."},
-        {name: "Activities", icon: "activities", description: "Guidance and tools we lead on or contribute to."},
-        {name: "Governance", icon: "governance", description: "Our international Advisory Board and Team."},
-      ],
-      tables: {
-        adopterTable: {
-          tabs:['Logo','adopter','Associated FAIRsharing Record'],
-          data: [
-            {
-              image: 'assets/Community/elife.jpg',
-              adopter: 'eLIFE',
-              associated: 'Policy',
-              associatedLink: '/FAIRsharing.F0QmCP',
-            },
-            {
-              image: 'assets/Community/elsevier.png',
-              adopter: 'Elsevier',
-              associated: 'Recommendation',
-              associatedLink: '/bsg-c000041',
-            },
-            {
-              image: 'assets/Community/embo_logo.png',
-              adopter: 'EMBO Press',
-              associated: 'Recommendation',
-              associatedLink: '/bsg-c000014',
-            },
-            {
-              image: 'assets/Community/logo_faculty_1000.png',
-              adopter: 'Faculty of 1000',
-              associated: 'Recommendation',
-              associatedLink: '/bsg-c000010',
-            },
-            {
-              image: 'assets/Community/logo_giga_science.png',
-              adopter: 'GigaScience',
-              associated: 'Recommendation',
-              associatedLink: '/bsg-c000036',
-            },
-            {
-              image: 'assets/Community/PLOS_LOGO_black.png',
-              adopter: 'Public Library of Science (PLOS)',
-              associated: 'Recommendation',
-              associatedLink: '/bsg-c000009',
-            },
-            {
-              image: 'assets/Community/biomed.png',
-              adopter: 'Springer Nature BioMed Central',
-              associated: 'Recommendation',
-              associatedLink: '/bsg-c000007',
-            },
-            {
-              image: 'assets/Community/scientificData.png',
-              adopter: 'Springer Nature Scientific Data',
-              associated: 'Recommendation',
-              associatedLink: '/bsg-c000001',
-            },
-            {
-              image: 'assets/Community/taylor_francis.png',
-              adopter: 'Taylor and Francis',
-              associated: 'Recommendation',
-              associatedLink: '/bsg-c000059',
-            },
-            {
-              image: 'assets/Community/wellcome_bw.png',
-              adopter: 'Wellcome Open Research',
-              associated: 'Recommendation',
-              associatedLink: '/bsg-c000031',
-            },
-            {
-              image: 'assets/Community/b2c-site-logo_desktop_optimized.png',
-              adopter: 'Wiley',
-              associated: 'Policy',
-              associatedLink: '/FAIRsharing.xwnZRC',
-            },
-          ]
-        },
-        globalOrganisationTable: {
-          tabs:['Logo','Name'],
-          data: [
-            {
-              image: 'assets/Community/RDA_logo_cbIKmKK.png',
-              associated: 'RDA',
-              externalLink: 'https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html',
-            },
-            {
-              image: 'assets/Community/logo_go-fair.png',
-              associated: 'GO-FAIR',
-              externalLink: 'https://www.go-fair.org/implementation-networks/overview/fair-strepo/',
-            },
-            {
-              image: 'assets/Community/logo_force11.png',
-              associated: 'FORCE11',
-              externalLink: 'https://www.force11.org/group/biosharingwg',
-            },
-          ]
-        },
-      }
+      subtitle,
+      externalLinks,
+      contentTabs,
+      tables
     }
   },
   watch: {

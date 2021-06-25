@@ -32,7 +32,9 @@
             User Profile for {{ userData.user.username }}
           </v-toolbar-title>
           <v-spacer />
-          <user-profile-menu />
+          <user-profile-menu
+            :viewing-id="Number($route.params.id)"
+          />
         </v-toolbar>
       </v-col>
       <v-col

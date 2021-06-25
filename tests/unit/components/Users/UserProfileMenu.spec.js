@@ -15,7 +15,8 @@ userStore.state.user = function(){
         email: 'test@test.com',
         credentials: {
             token: 'thisisafaketoken'
-        }
+        },
+        id: 1
     }
 }
 
@@ -86,6 +87,40 @@ describe("UserProfileMenu.vue", () => {
     it("can redirect to user edit profile", async () => {
         await wrapper.vm.menuItems.filter(obj => obj.name === 'Edit profile')[0].action();
         expect(wrapper.vm.$route.path).toBe("/profiles/edit");
+    });
+
+    it("hides edit profile button where required", () => {
+        // Unknown why this has to be duplicated here for the test to pass...
+        userStore.state.user = function(){
+            return {
+                role: "super_curator",
+                email: 'test@test.com',
+                credentials: {
+                    token: 'thisisafaketoken'
+                },
+                id: 1
+            }
+        }
+        const $store = new Vuex.Store({
+            modules: {
+                users: userStore
+            }
+        });
+        wrapper = shallowMount(UserMenu, {
+            propsData: { viewingId: 1},
+            localVue,
+            router,
+            mocks: {$store}
+        });
+        expect(wrapper.vm.disableEdit()).toBe(false);
+
+        wrapper = shallowMount(UserMenu, {
+            propsData: { viewingId: 2},
+            localVue,
+            router,
+            mocks: {$store}
+        });
+        expect(wrapper.vm.disableEdit()).toBe(true);
     });
 
 

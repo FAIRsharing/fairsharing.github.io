@@ -11,6 +11,7 @@ export const mutations = {
     login(state, user){
         state.user = function(){
             return {
+                id: user.id,
                 isLoggedIn: true,
                 credentials: {
                     username: user.username,
@@ -51,6 +52,7 @@ export const mutations = {
             let watchedRecords = user.watchedRecords;
             state.user = function () {
                 return {
+                    id: user.id,
                     isLoggedIn: true,
                     credentials: {
                         username: user.credentials.username,
@@ -68,6 +70,7 @@ export const mutations = {
         else {
             state.user = function () {
                 return {
+                    id: null,
                     isLoggedIn: true,
                     credentials: {
                     },
@@ -133,6 +136,7 @@ export const mutations = {
         let previousState = {...state.user()};
         state.user = function(){
             return {
+                id: previousState.id,
                 isLoggedIn: previousState.isLoggedIn,
                 credentials: previousState.credentials,
                 metadata: {},

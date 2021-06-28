@@ -114,4 +114,15 @@ describe("User.vue", () => {
         expect(wrapper.vm.publications).toStrictEqual([]);
     });
 
+    it("can copy url correctly", async () => {
+        let wrapper = await shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store, $router, $route},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        wrapper.vm.copyURL()
+        expect(wrapper.vm.copyButtonStatus).toBe(true);
+    });
+
 });

@@ -91,10 +91,10 @@ let routes = [
         path: '/ontology/:name',
         redirect: to => {
             if (to.params.name.toLowerCase() === 'srao') {
-                return { path: 'https://github.com/FAIRsharing/subject-ontology' }
+                window.location.assign('https://github.com/FAIRsharing/subject-ontology');
             }
             else if (to.params.name.toLowerCase() === 'drao') {
-                return { path: 'https://github.com/FAIRsharing/domain-ontology' }
+                window.location.assign('https://github.com/FAIRsharing/domain-ontology');
             }
             else {
                 return { path: '/' }

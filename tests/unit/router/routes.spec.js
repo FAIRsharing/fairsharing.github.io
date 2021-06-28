@@ -106,40 +106,46 @@ describe("Routes", () => {
         expect(next).toHaveBeenCalledWith();
     })
 
-    it("performs harcoded redirections correctly", () => {
-        let article = router.options.routes.find((obj) => { return obj.name === 'article'} );
+    it("performs harcoded record redirections correctly", async () => {
+        // Records for articles
+        let article = router.options.routes.find((obj) => {
+            return obj.name === 'article'
+        });
         expect(article.redirect(
             {params: {name: 'live_list_standards_in_policies'}})
         ).toStrictEqual(
-            {"name":"search","query":{"fairsharingRegistry":"Standard","isRecommended":true,"page":1}}
+            {"name": "search", "query": {"fairsharingRegistry": "Standard", "isRecommended": true, "page": 1}}
         );
         expect(article.redirect(
             {params: {name: 'live_list_databases_in_policies'}})
         ).toStrictEqual(
-            {"name":"search","query":{"fairsharingRegistry":"Database","isRecommended":true,"page":1}}
+            {"name": "search", "query": {"fairsharingRegistry": "Database", "isRecommended": true, "page": 1}}
         );
         expect(article.redirect(
             {params: {name: 'live_list_journal_policies'}})
         ).toStrictEqual(
-            {"name":"search","query":{"fairsharingRegistry":"Policy","recordType":"journal","page":1}}
+            {"name": "search", "query": {"fairsharingRegistry": "Policy", "recordType": "journal", "page": 1}}
         );
         expect(article.redirect(
             {params: {name: 'dingdong'}})
         ).toStrictEqual(
-            {"path":"/"}
+            {"path": "/"}
         );
 
+    });
+
+    it("performs harcoded ontology redirections correctly", async () => {
+
+        let assignMock = jest.fn();
+
+        delete window.location;
+        window.location = { assign: assignMock };
+
         let ontology = router.options.routes.find((obj) => { return obj.name === 'ontology'} );
-        expect(ontology.redirect(
-            {params: {name: 'SRAO'}})
-        ).toStrictEqual(
-            {"path":"https://github.com/FAIRsharing/subject-ontology"}
-        );
-        expect(ontology.redirect(
-            {params: {name: 'DRAO'}})
-        ).toStrictEqual(
-            {"path":"https://github.com/FAIRsharing/domain-ontology"}
-        );
+        await ontology.redirect({params: {name: 'SRAO'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology');
+        await ontology.redirect({params: {name: 'DRAO'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/domain-ontology');
         expect(ontology.redirect(
             {params: {name: 'dingdong'}})
         ).toStrictEqual(

@@ -259,21 +259,27 @@
             let output = [];
             if (this.userData.user.orcid) {
               let publications = await client.getOrcidUser(this.userData.user.orcid);
-              output = publications['activities-summary']['works']['group']
-                      .slice(0, 7)
-                      .map(obj => {
-                        let url = null;
-                        if(obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
-                          let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
-                                  obj => obj['external-id-type'] = "doi"
-                          )[0];
-                          url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
-                        }
-                        return {
-                          title: obj['work-summary'][0].title.title.value,
-                          url: url
-                        }
-                      });
+              /* istanbul ignore if */
+              if (publications.error) {
+                return [];
+              }
+              else {
+                output = publications['activities-summary']['works']['group']
+                    .slice(0, 7)
+                    .map(obj => {
+                      let url = null;
+                      if (obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
+                        let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
+                            obj => obj['external-id-type'] = "doi"
+                        )[0];
+                        url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
+                      }
+                      return {
+                        title: obj['work-summary'][0].title.title.value,
+                        url: url
+                      }
+                    });
+              }
             }
             return output;
           },

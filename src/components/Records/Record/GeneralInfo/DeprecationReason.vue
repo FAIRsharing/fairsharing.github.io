@@ -4,7 +4,7 @@
     v-if="currentRecord.fairsharingRecord.metadata['deprecation_reason']"
     v-linkified:options="{ className: 'underline-effect' }"
     class="mt-5 red--text"
-    v-html="currentRecord.fairsharingRecord.metadata['deprecation_reason']"
+    v-html="$sanitize(currentRecord.fairsharingRecord.metadata['deprecation_reason'])"
   />
   <!-- eslint-enable vue/no-v-html -->
 </template>

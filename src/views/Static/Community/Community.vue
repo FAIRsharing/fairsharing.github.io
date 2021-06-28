@@ -16,7 +16,6 @@
       :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       v-html="subtitle"
     />
-    <!-- eslint-enable vue/no-v-html -->
 
     <p
       :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -318,7 +317,62 @@
       <h3 class="text-h4 mb-4">
         Governance
       </h3>
+      <!--  governance json data    -->
+      <div
+        v-for="(governanceItem,key,index) in governance"
+        :key="Object.keys(governanceItem)[index]+'_'+'index'"
+      >
+        <div class="mb-10">
+          <h4 class="text-h5 mb-10">
+            {{ key }}
+          </h4>
+          <div
+            v-for="(item,itemIndex) in governanceItem"
+            :key="item.title+'_'+itemIndex"
+            class="ml-8"
+          >
+            <div class="mb-5">
+              <h4 class="text-h5">
+                {{ item.title }}
+              </h4>
+              <ul class="mt-2">
+                <li
+                  v-for="(itemData,itemDataIndex) in item.data"
+                  :key="itemData+'_'+itemDataIndex"
+                  class="mb-1"
+                >
+                  <p
+                    class="ma-0"
+                    v-html="itemData"
+                  />
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!--        <ul class="mt-2">
+          <li class="mb-1">
+            <p
+              class="ma-0"
+              v-html="governance.advisoryBoard[0].data[0]"
+            />
+          </li>
+        </ul>
+        -->
+        <!--        <h4 class="text-h5 mb-10">
+          {{ governanceItem.advisoryBoard[0].title }}
+        </h4>
+        <h4 class="text-h5">
+          {{ governance.advisoryBoard[0].subtitle }}
+        </h4>-->
+      </div>
+      <!--   Meet the team   -->
+      <h4 class="text-h5 mb-10">
+        {{ meettheteam.title }}
+      </h4>
     </section>
+
+    <!-- eslint-enable vue/no-v-html -->
   </main>
 </template>
 
@@ -328,7 +382,7 @@
 * @namespace Static
 */
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import {subtitle,externalLinks,contentTabs,tables} from "@/data/communityPageData.json"
+import {subtitle,externalLinks,contentTabs,tables,governance,meettheteam} from "@/data/communityPageData.json"
 
 /** This component handles the sign-up/register page
 * @memberOf Static
@@ -347,7 +401,9 @@ export default {
       subtitle,
       externalLinks,
       contentTabs,
-      tables
+      tables,
+      governance,
+      meettheteam
     }
   },
   watch: {

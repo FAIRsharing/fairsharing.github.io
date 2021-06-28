@@ -221,15 +221,30 @@
   },
   "meettheteam": {
     "title": "Meet The Team",
-    "desc": " Operating since 2011, and born from an early community-driven portal we launched in 2008 <a href='http://www.nature.com/nbt/journal/v26/n8/full/nbt.1411.html' class='underline-effect' target='_blank'>(MIBBI)</a>, FAIRsharing has become a sustainable service, hosted at the University of Oxford, and run by the Data Readiness Group funded from a portfolio of infrastructure grants (to Prof. Sansone, a permanent faculty member) that will ensure ongoing management and curation of this invaluable resource.\n\nWe also make you aware of the FAIRsharing RDA and Force11 WG webpages. DOI generation for each record is kindly provided through a collaboration with the Bodleian Library at the University of Oxford. ",
+    "description": " Operating since 2011, and born from an early community-driven portal we launched in 2008 <a href='http://www.nature.com/nbt/journal/v26/n8/full/nbt.1411.html' class='underline-effect' target='_blank'>(MIBBI)</a>, FAIRsharing has become a sustainable service, hosted at the University of Oxford, and run by the <a href='https://sansonegroup.eng.ox.ac.uk/' target='_blank' class='underline-effect'>Data Readiness Group</a> funded from a portfolio of infrastructure grants (to Prof. Sansone, a permanent faculty member) that will ensure ongoing management and curation of this invaluable resource.\n\nWe also make you aware of the FAIRsharing <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' class='underline-effect' target='_blank'>RDA</a> and <a href='https://www.force11.org/group/biosharingwg' target='_blank' class='underline-effect'>Force11</a> WG webpages. DOI generation for each record is kindly provided through a collaboration with the <a href='https://www.bodleian.ox.ac.uk/' target='_blank' class='underline-effect'>Bodleian</a> Library at the University of Oxford. ",
     "profiles": [
       {
-        "name": "Susanna",
-        "role": "",
+        "name": "<a href='https://www.eng.ox.ac.uk/people/susanna-assunta-sansone/' class='underline-effect'>Susanna-Assunta Sansone</a>",
+        "role": "Principal Investigator and Founder",
+        "profileImg": "assets/Community/profiles/susanna.jpg",
         "social": [
-          {"personalWebsite": ""},
-          {"twitter": ""},
-          {"linkedin": ""}
+          {"link": "https://sansonegroup.eng.ox.ac.uk/",
+            "icon": "home"
+          },
+          {"link": "http://www.twitter.com/SusannaASansone","icon": "twitter"},
+          {"link": "http://uk.linkedin.com/in/sasansone","icon": "linkedin"}
+        ]
+      },
+      {
+        "name": "<a href='http://www.oerc.ox.ac.uk/people/philippe-rocca-serra' class='underline-effect'>Philippe Rocca-Serra</a>",
+        "role": "Co-Founder",
+        "profileImg": "assets/Community/profiles/phillipe.jpg",
+        "social": [
+          {"link": "http://github.com/proccaserra",
+            "icon": "github"
+          },
+          {"link": "http://www.twitter.com/Phil_at_OeRC","icon": "twitter"},
+          {"link": "http://uk.linkedin.com/in/philipperoccaserra","icon": "linkedin"}
         ]
       }
     ]

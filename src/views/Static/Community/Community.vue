@@ -323,7 +323,7 @@
         :key="Object.keys(governanceItem)[index]+'_'+'index'"
       >
         <div class="mb-10">
-          <h4 class="text-h5 mb-10">
+          <h4 class="text-h5 mb-8">
             {{ key }}
           </h4>
           <div
@@ -367,9 +367,50 @@
         </h4>-->
       </div>
       <!--   Meet the team   -->
-      <h4 class="text-h5 mb-10">
+      <h4 class="text-h5 mb-2">
         {{ meettheteam.title }}
       </h4>
+      <p
+        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        v-html="meettheteam.description"
+      />
+      <ul class="d-flex flex-wrap pl-0">
+        <li
+          v-for="(profileItem,index) in meettheteam.profiles"
+          :key="`${profileItem}_${index}`"
+          class="text-center width-350 mb-5 mr-1"
+        >
+          <v-avatar size="200">
+            <v-img :src="profileItem.profileImg" />
+          </v-avatar>
+          <p
+            class="text-center lato-font-bold mt-2 ma-0"
+            style="font-size: 1.5rem"
+            v-html="profileItem.name"
+          />
+          <i class="small">
+            Principal Investigator and Founder
+          </i>
+          <div class="text-center mt-2">
+            <span
+              v-for="(socialItem,socialIndex) in profileItem.social"
+              :key="`${socialItem}_${socialIndex}`"
+            >
+              <a
+                class="pr-2 underline-effect"
+                :href="socialItem.link"
+                target="_blank"
+              >
+                <v-icon
+                  size="30"
+                >
+                  {{ $vuetify.icons.values[socialItem.icon].icon }}
+                </v-icon>
+              </a>
+            </span>
+          </div>
+        </li>
+      </ul>
     </section>
 
     <!-- eslint-enable vue/no-v-html -->
@@ -479,5 +520,11 @@ export default {
 
 .border-left {
   border-left: 1px solid #ECF0F1 !important;
+}
+
+a:hover {
+  i {
+    color: cadetblue;
+  }
 }
 </style>

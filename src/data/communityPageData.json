@@ -246,7 +246,56 @@
           {"link": "http://www.twitter.com/Phil_at_OeRC","icon": "twitter"},
           {"link": "http://uk.linkedin.com/in/philipperoccaserra","icon": "linkedin"}
         ]
+      },
+      {
+        "name": "<a href='http://www.oerc.ox.ac.uk/people/philippe-rocca-serra' class='underline-effect'>Philippe Rocca-Serra</a>",
+        "role": "Co-Founder",
+        "profileImg": "assets/Community/profiles/phillipe.jpg",
+        "social": [
+          {"link": "http://github.com/proccaserra",
+            "icon": "github"
+          },
+          {"link": "http://www.twitter.com/Phil_at_OeRC","icon": "twitter"},
+          {"link": "http://uk.linkedin.com/in/philipperoccaserra","icon": "linkedin"}
+        ]
+      },
+      {
+        "name": "<a href='http://www.oerc.ox.ac.uk/people/philippe-rocca-serra' class='underline-effect'>Philippe Rocca-Serra</a>",
+        "role": "Co-Founder",
+        "profileImg": "assets/Community/profiles/phillipe.jpg",
+        "social": [
+          {"link": "http://github.com/proccaserra",
+            "icon": "github"
+          },
+          {"link": "http://www.twitter.com/Phil_at_OeRC","icon": "twitter"},
+          {"link": "http://uk.linkedin.com/in/philipperoccaserra","icon": "linkedin"}
+        ]
+      },
+      {
+        "name": "<a href='http://www.oerc.ox.ac.uk/people/philippe-rocca-serra' class='underline-effect'>Philippe Rocca-Serra</a>",
+        "role": "Co-Founder",
+        "profileImg": "assets/Community/profiles/phillipe.jpg",
+        "social": [
+          {"link": "http://github.com/proccaserra",
+            "icon": "github"
+          },
+          {"link": "http://www.twitter.com/Phil_at_OeRC","icon": "twitter"},
+          {"link": "http://uk.linkedin.com/in/philipperoccaserra","icon": "linkedin"}
+        ]
+      },
+      {
+        "name": "<a href='http://www.oerc.ox.ac.uk/people/philippe-rocca-serra' class='underline-effect'>Philippe Rocca-Serra</a>",
+        "role": "Co-Founder",
+        "profileImg": "assets/Community/profiles/phillipe.jpg",
+        "social": [
+          {"link": "http://github.com/proccaserra",
+            "icon": "github"
+          },
+          {"link": "http://www.twitter.com/Phil_at_OeRC","icon": "twitter"},
+          {"link": "http://uk.linkedin.com/in/philipperoccaserra","icon": "linkedin"}
+        ]
       }
+
     ]
   }
 }

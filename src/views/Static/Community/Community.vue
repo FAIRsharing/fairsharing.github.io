@@ -378,7 +378,7 @@
         <li
           v-for="(profileItem,index) in meettheteam.profiles"
           :key="`${profileItem}_${index}`"
-          class="text-center width-350 mb-5 mr-1"
+          :class="['text-center width-250 height-400 mb-5',$vuetify.breakpoint.mdAndDown?'mx-auto':'mr-auto']"
         >
           <v-avatar size="200">
             <v-img :src="profileItem.profileImg" />

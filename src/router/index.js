@@ -57,6 +57,53 @@ let routes = [
         component: Organisation
     },
 
+    /* VARIOUS REDIRECTIONS */
+    {
+        name: 'article',
+        path: '/article/:name',
+        redirect: to => {
+            if (to.params.name === 'live_list_standards_in_policies') {
+                return {
+                    name: 'search',
+                    query: { fairsharingRegistry: 'Standard', isRecommended: true, page: 1 }
+
+                }
+            }
+            else if (to.params.name === 'live_list_databases_in_policies') {
+                return {
+                    name: 'search',
+                    query: { fairsharingRegistry: 'Database', isRecommended: true, page: 1 }
+                }
+            }
+            else if (to.params.name === 'live_list_journal_policies') {
+                return {
+                    name: 'search',
+                    query: { fairsharingRegistry: 'Policy', recordType: 'journal', page: 1 }
+                }
+            }
+            else {
+                return { path: '/' }
+            }
+        }
+    },
+    {
+        name: 'ontology',
+        path: '/ontology/:name',
+        redirect: to => {
+            if (to.params.name.toLowerCase() === 'srao') {
+                window.location.assign('https://github.com/FAIRsharing/subject-ontology');
+            }
+            else if (to.params.name.toLowerCase() === 'drao') {
+                window.location.assign('https://github.com/FAIRsharing/domain-ontology');
+            }
+            else {
+                return { path: '/' }
+            }
+        }
+    },
+
+
+
     /* OTHER MODES */
     {
         name: "Maintenance",

@@ -240,6 +240,14 @@ const customIcons  = {
         governance: {
             type: "icon",
             icon: "fa-university"
+        },
+        linkedin: {
+            type: "icon",
+            icon: "fab fa-linkedin"
+        },
+        home: {
+            type: "icon",
+            icon: "fa-home"
         }
     },
     iconfont: 'fa'

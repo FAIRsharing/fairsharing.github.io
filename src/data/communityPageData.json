@@ -178,5 +178,60 @@
         }
       ]
     }
+  },
+  "governance": {
+    "advisoryBoard": [
+      {
+        "title": "Executive Advisors",
+        "data": [
+          "<b>Varsha Khodiyar, </b>Springer Nature, UK",
+          "<b>David Carr, </b>The Wellcome Trust and Wellcome Open Research, UK ",
+          "<b>Chris Graf, </b>Wiley, UK ",
+          "<b>Marta Teperek, </b>Data Stewardship Coordinator, TUDelft, The Netherlands",
+          "<b>Robert Hanisch, </b>Director of the Office of Data and Informatics, National Institute of Standards and Technology (NIST), USA"
+        ]
+      },
+      {
+        "title":"Stakeholder Advisors",
+        "data": [
+          "<b>Emma Ganley, </b>Director of Strategic Initiatives, Protocols.io, UK",
+          "<b>Michael Ball, </b>The Economic and Social Research Council (ESRC), UK",
+          "<b>Theo Bloom, </b>British Medical Journal (BMJ), UK",
+          "<b>Matthew Cannon, </b>Taylor and Francis, UK",
+          "<b>Wei-Mun Chan, </b>eLife, UK ",
+          "<b>Geraldine Clement-Stoneham, </b>Head of Knowledge Management and Scholarly Communication, Medical Research Council, UK",
+          "<b>Helena Cousijn, </b>Datacite, The Netherlands",
+          "<b>Scott Edmunds, </b>GigaScience, BGI, China",
+          "<b>Dominic Fripp, </b>JISC, UK",
+          "<b>Simon Hodson, </b>CODATA, France",
+          "<b>Iain Hrynaszkiewicz, </b>PLoS, UK",
+          "<b>Mike Huerta, </b>Coordinator of Data & and Open Science Initiative, Associate Director for Programme Development at the NIH National Library of Medicine, USA",
+          "<b>Amye Kenall, </b>VP of Publishing and Product, Research Square, UK",
+          "<b>Adam Leary, </b>Oxford University Press, UK",
+          "<b>Thomas Lemberger, </b>EMBO Press, UK",
+          "<b>Luiz Olavo Bonino, </b>GO-FAIR, The Netherlands ",
+          "<b>Kiera McNiece, </b>Cambridge University Press, UK ",
+          "<b>Dagmar Meyer, </b>European Research Council (ERC), Executive Agency, Belgium ",
+          "<b>Hollydawn Murray </b>Head of Data Publishing, F1000, UK",
+          "<b>Marina Soares E Silva, </b>Elsevier, The Netherlands ",
+          "<b>Imma Subirats, </b>Information Management Officer, FAO of the United Nations, Italy"
+        ]
+      }
+    ]
+  },
+  "meettheteam": {
+    "title": "Meet The Team",
+    "desc": " Operating since 2011, and born from an early community-driven portal we launched in 2008 <a href='http://www.nature.com/nbt/journal/v26/n8/full/nbt.1411.html' class='underline-effect' target='_blank'>(MIBBI)</a>, FAIRsharing has become a sustainable service, hosted at the University of Oxford, and run by the Data Readiness Group funded from a portfolio of infrastructure grants (to Prof. Sansone, a permanent faculty member) that will ensure ongoing management and curation of this invaluable resource.\n\nWe also make you aware of the FAIRsharing RDA and Force11 WG webpages. DOI generation for each record is kindly provided through a collaboration with the Bodleian Library at the University of Oxford. ",
+    "profiles": [
+      {
+        "name": "Susanna",
+        "role": "",
+        "social": [
+          {"personalWebsite": ""},
+          {"twitter": ""},
+          {"linkedin": ""}
+        ]
+      }
+    ]
   }
 }

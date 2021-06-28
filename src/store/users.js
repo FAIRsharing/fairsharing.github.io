@@ -63,7 +63,9 @@ export const mutations = {
                     records: record.records.user,
                     is_curator: isCurator,
                     watchedRecords: watchedRecords,
-                    role: role
+                    role: role,
+                    orcid: user.orcid,
+                    twitter: user.twitter
                 }
             };
         }
@@ -78,7 +80,9 @@ export const mutations = {
                     records: record.records.user,
                     watchedRecords: [],
                     is_curator: false,
-                    role: null
+                    role: null,
+                    orcid: null,
+                    twitter: null
                 }
             };
         }

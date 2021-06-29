@@ -3,6 +3,10 @@ import Community from "@/views/Static/Community/Community.vue";
 import Vuetify from "vuetify"
 import icons from "@/plugins/icons";
 import linkify from "vue-linkify";
+import VueSanitize from "vue-sanitize";
+
+const localVue = createLocalVue();
+localVue.use(VueSanitize)
 
 let $route = {
     name: "Community",
@@ -16,7 +20,6 @@ const $router = {
 
 describe("Community.vue", function () {
     let wrapper;
-    const localVue = createLocalVue();
     localVue.directive('linkified', linkify)
     const vuetify = new Vuetify({'icons': icons});
     beforeEach(() => {

@@ -139,7 +139,17 @@ const customIcons  = {
         funder: {
             type: "img",
             icon: "assets/records/policy.png",
-            tooltip: "Founder"
+            tooltip: "Funder"
+        },
+        project: {
+            type: "img",
+            icon: "assets/records/policy.png",
+            tooltip: "Project"
+        },
+        institution: {
+            type: "img",
+            icon: "assets/records/policy.png",
+            tooltip: "Institution"
         },
         terminology_artefact: {
             type: "img",

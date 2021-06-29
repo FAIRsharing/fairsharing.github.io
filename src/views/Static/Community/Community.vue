@@ -164,7 +164,7 @@
       </b>
       <!--Adopter table-->
       <v-simple-table class="mb-16 mt-2">
-        <template v-slot:default>
+        <template #default>
           <thead>
             <tr>
               <th
@@ -228,7 +228,7 @@
         Global Organisations
       </p>
       <v-simple-table class="mb-16 mt-2">
-        <template v-slot:default>
+        <template #default>
           <thead>
             <tr>
               <th

@@ -341,6 +341,33 @@
       </v-textarea>
     </v-col>
 
+    <!-- curator notes -->
+    <v-col cols="12">
+      <v-expand-transition>
+        <v-textarea
+          v-if="user().is_curator"
+          v-model="fields.curator_notes"
+          label="Curator notes"
+          outlined
+        >
+          <template #prepend>
+            <v-tooltip
+              bottom
+              max-width="300px"
+              class="text-justify"
+            >
+              <template #activator="{ on }">
+                <v-icon v-on="on">
+                  fa-question-circle
+                </v-icon>
+              </template>
+              {{ tooltips['curator_notes'] }}
+            </v-tooltip>
+          </template>
+        </v-textarea>
+      </v-expand-transition>
+    </v-col>
+
     <database-warning />
   </v-row>
 </template>

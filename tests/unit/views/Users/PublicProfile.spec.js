@@ -9,6 +9,7 @@ import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import editorStore from "@/store/editor";
 import ORCIDfixture from "@/../tests/fixtures/ORCIDpub.json"
+import User from "@/views/Users/User";
 
 
 const localVue = createLocalVue();
@@ -113,6 +114,22 @@ describe("PublicProfile.vue", () => {
         //expect(wrapper.vm.publications).toStrictEqual([]);
         // This has already been called thrice; it shouldn't have been called again here.
         expect(getpubs).toHaveBeenCalledTimes(3);
+    });
+
+    it("handles publications errors", async() => {
+        /*
+         * TODO: This test does not address normal conditions, i.e. no error returned by the
+         * TODO: external query. For unknown reasons publications are always [] even though
+         * TODO: the Vue methods are getting data from the stub correctly.
+         */
+        externalClientStub.returns({data: {error: "error"}});
+        let wrapper = await shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store, $router, $route},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        expect(wrapper.vm.publications).toStrictEqual([]);
     });
 
 });

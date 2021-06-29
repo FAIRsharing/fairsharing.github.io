@@ -71,7 +71,7 @@ describe("User.vue", () => {
         expect(wrapper.vm.booleanToString(true)).toBe("Yes");
         expect(wrapper.vm.booleanToString(false)).toBe("No");
         wrapper.vm.user().records = null;
-        expect(wrapper.vm.maintenanceRequests.length).toBe(0)
+        expect(wrapper.vm.maintenanceRequests.length).toBe(0);
     });
 
     it("can process errors", () => {
@@ -97,5 +97,21 @@ describe("User.vue", () => {
         wrapper.destroy();
         expect(usersStore.state.user().records).toStrictEqual({})
     })
+
+    it("handles publications errors", async() => {
+        /*
+         * TODO: This test does not address normal conditions, i.e. no error returned by the
+         * TODO: external query. For unknown reasons publications are always [] even though
+         * TODO: the Vue methods are getting data from the stub correctly.
+         */
+        externalClientStub.returns({data: {error: "error"} });
+        let wrapper = await shallowMount(User, {
+            localVue,
+            router,
+            mocks: {$store, $router, $route},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        expect(wrapper.vm.publications).toStrictEqual([]);
+    });
 
 });

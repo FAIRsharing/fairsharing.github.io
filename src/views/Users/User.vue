@@ -84,6 +84,33 @@
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
+                  <div
+                    class="d-flex flex-row ml-4 mb-4"
+                  >
+                    <a
+                      :href="'https://fairsharing.org/users/' + user().id"
+                      target="_blank"
+                      class="underline-effect"
+                    >
+                      https://fairsharing.org/users/{{ user().id }}
+                    </a>
+                    <v-tooltip top>
+                      <template #activator="{ on, attrs }">
+                        <v-icon
+                          v-ripple
+                          v-clipboard="copyURL"
+                          v-bind="attrs"
+                          class="primary--text ml-2 cursor-pointer"
+                          small
+                          v-on="on"
+                        >
+                          fa fa-copy
+                        </v-icon>
+                      </template>
+                      <span v-if="!copyButtonStatus"> Copy URL </span>
+                      <span v-else> URL copied </span>
+                    </v-tooltip>
+                  </div>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -294,6 +321,7 @@
       mixins: [cleanString],
       data: () => {
         return {
+            copyButtonStatus: false,
             panel: 0,
             hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"],
             loading: false,
@@ -374,6 +402,10 @@
           },
           booleanToString(bool){
             return (bool) ? "Yes" : "No";
+          },
+          copyURL() {
+            this.copyButtonStatus = true;
+            return 'https://fairsharing.org/users/' + this.user().id;
           }
       }
     }

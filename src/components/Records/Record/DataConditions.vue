@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
-    v-if="Object.keys(getField('metadata')).includes('data_processes') || (getField('licences'))"
+    v-if="Object.keys(getField('metadata')).includes('data_processes') || (getField('licences') && getField('licences').length)"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"

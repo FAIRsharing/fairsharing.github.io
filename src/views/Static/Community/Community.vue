@@ -363,18 +363,18 @@
         <li
           v-for="(profileItem,index) in meettheteam.profiles"
           :key="`${profileItem}_${index}`"
-          :class="['text-center width-250 height-400 mb-5',$vuetify.breakpoint.mdAndDown?'mx-auto':'mr-auto']"
+          :class="['text-center width-250 height-400 mb-5',$vuetify.breakpoint.mdAndDown?'mx-auto':'']"
         >
           <v-avatar size="200">
             <v-img :src="profileItem.profileImg" />
           </v-avatar>
-          <p
-            class="text-center lato-font-bold mt-2 ma-0"
-            style="font-size: 1.5rem"
+          <a
+            class="text-center lato-font-bold mt-2 ma-0 underline-effect"
+            style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
             v-html="$sanitize(profileItem.name)"
           />
-          <i class="small">
-            Principal Investigator and Founder
+          <i class="small d-block">
+            {{ profileItem.role }}
           </i>
           <div class="text-center mt-2">
             <span

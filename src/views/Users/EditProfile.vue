@@ -89,6 +89,12 @@
                   </v-col>
                 </v-row>
 
+                <p>
+                  If you would like to request an update to any non-editable profile fields, please
+                  <a href="mailto:contact@fairsharing.org?subject=FAIRsharing user profile modification">
+                    get in touch</a>.
+                </p>
+
                 <!-- ACTIONS -->
                 <v-row>
                   <v-col cols="12">
@@ -175,6 +181,18 @@
                   ]
                 },
                 {
+                  name: "twitter",
+                  label: "Twitter",
+                  hint: null,
+                  type: "input"
+                },
+                {
+                  name: "orcid",
+                  label: "Orcid ID",
+                  hint: null,
+                  type: "input"
+                },
+                {
                   name: "profile_type",
                   label: "Profile Type",
                   hint: null,
@@ -212,15 +230,17 @@
                 first_name: this.user().metadata.first_name,
                 last_name: this.user().metadata.last_name,
                 homepage: this.user().metadata.homepage,
-                profile_type: this.user().metadata.profile_type
+                profile_type: this.user().metadata.profile_type,
+                orcid: this.user().metadata.orcid,
+                twitter: this.user().metadata.twitter
               }
             }
             return null;
           }
         },
         async created(){
-            await this.getUserMeta();
-            this.data.profileTypes = await restClient.getProfileTypes();
+          await this.getUserMeta();
+          this.data.profileTypes = await restClient.getProfileTypes();
         },
         methods: {
           ...mapActions('users', ['getUserMeta', "updateUser", "setMessage"]),

@@ -14,7 +14,7 @@
     <p
       v-linkified:options="{ className: 'underline-effect' }"
       :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      v-html="subtitle"
+      v-html="$sanitize(subtitle)"
     />
 
     <p
@@ -343,28 +343,13 @@
                 >
                   <p
                     class="ma-0"
-                    v-html="itemData"
+                    v-html="$sanitize(itemData)"
                   />
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <!--        <ul class="mt-2">
-          <li class="mb-1">
-            <p
-              class="ma-0"
-              v-html="governance.advisoryBoard[0].data[0]"
-            />
-          </li>
-        </ul>
-        -->
-        <!--        <h4 class="text-h5 mb-10">
-          {{ governanceItem.advisoryBoard[0].title }}
-        </h4>
-        <h4 class="text-h5">
-          {{ governance.advisoryBoard[0].subtitle }}
-        </h4>-->
       </div>
       <!--   Meet the team   -->
       <h4 class="text-h5 mb-2">
@@ -372,7 +357,7 @@
       </h4>
       <p
         :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-        v-html="meettheteam.description"
+        v-html="$sanitize(meettheteam.description)"
       />
       <ul class="d-flex flex-wrap pl-0">
         <li
@@ -386,7 +371,7 @@
           <p
             class="text-center lato-font-bold mt-2 ma-0"
             style="font-size: 1.5rem"
-            v-html="profileItem.name"
+            v-html="$sanitize(profileItem.name)"
           />
           <i class="small">
             Principal Investigator and Founder

@@ -272,13 +272,6 @@
                         :rules="[rules.isRequired()]"
                       />
                     </v-col>
-                    <v-col class="col-12">
-                      <v-switch
-                        v-model="newPublication.isCitation"
-                        color="primary"
-                        label="Do you want to cite this record using this publication?"
-                      />
-                    </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>

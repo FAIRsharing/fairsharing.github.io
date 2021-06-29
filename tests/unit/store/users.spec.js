@@ -166,7 +166,9 @@ describe('Actions/Mutations', () => {
             },
             isLoggedIn: true,
             is_curator: false,
-            role: null
+            role: null,
+            orcid: 123456,
+            twitter: 'terazus'
         };
         getStub.withArgs("user").returns(JSON.stringify(user));
         mutations.setUser(state, user);
@@ -182,7 +184,9 @@ describe('Actions/Mutations', () => {
             metadata: {username: "Terazus"},
             isLoggedIn: true,
             is_curator: false,
-            role: null
+            role: null,
+            orcid: 123456,
+            twitter: 'terazus'
         });
     });
 

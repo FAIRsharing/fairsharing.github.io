@@ -1,7 +1,17 @@
-import router, {afterEach,scrollBehavior} from "@/router"
+import router, {afterEach} from "@/router"
 import { beforeEach, isLoggedIn, isMaintenanceMode } from "@/router"
 import RestClient from "@/lib/Client/RESTClient.js"
+//import VueRouter from "vue-router";
 const sinon = require("sinon");
+
+/*
+const testrouter = new VueRouter(),
+    $testrouter = { push: jest.fn() };
+const $route = {
+    path: '/some/path'
+}
+ */
+
 
 let store = {
     state: {
@@ -96,10 +106,52 @@ describe("Routes", () => {
         expect(next).toHaveBeenCalledWith();
     })
 
-    it("can check scrollBehavior", () => {
-        expect(scrollBehavior({hash:'#anchorLink'})).toStrictEqual({selector:"#anchorLink"})
-        expect(scrollBehavior({})).toBe(false)
-    })
+    it("performs harcoded record redirections correctly", async () => {
+        // Records for articles
+        let article = router.options.routes.find((obj) => {
+            return obj.name === 'article'
+        });
+        expect(article.redirect(
+            {params: {name: 'live_list_standards_in_policies'}})
+        ).toStrictEqual(
+            {"name": "search", "query": {"fairsharingRegistry": "Standard", "isRecommended": true, "page": 1}}
+        );
+        expect(article.redirect(
+            {params: {name: 'live_list_databases_in_policies'}})
+        ).toStrictEqual(
+            {"name": "search", "query": {"fairsharingRegistry": "Database", "isRecommended": true, "page": 1}}
+        );
+        expect(article.redirect(
+            {params: {name: 'live_list_journal_policies'}})
+        ).toStrictEqual(
+            {"name": "search", "query": {"fairsharingRegistry": "Policy", "recordType": "journal", "page": 1}}
+        );
+        expect(article.redirect(
+            {params: {name: 'dingdong'}})
+        ).toStrictEqual(
+            {"path": "/"}
+        );
 
+    });
+
+    it("performs harcoded ontology redirections correctly", async () => {
+
+        let assignMock = jest.fn();
+
+        delete window.location;
+        window.location = { assign: assignMock };
+
+        let ontology = router.options.routes.find((obj) => { return obj.name === 'ontology'} );
+        await ontology.redirect({params: {name: 'SRAO'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology');
+        await ontology.redirect({params: {name: 'DRAO'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/domain-ontology');
+        expect(ontology.redirect(
+            {params: {name: 'dingdong'}})
+        ).toStrictEqual(
+            {"path":"/"}
+        );
+
+    });
 
 });

@@ -1,6 +1,13 @@
 <template>
   <main :class="applyCss?'pa-15 mb-10':''">
     <!--  main_title_2 -->
+<<<<<<< HEAD
+=======
+    <h1 class="text-h6 text-xl-h5 mb-2 mb-xl-6">
+      How to cite FAIRsharing:
+    </h1>
+
+>>>>>>> 84db9ee87 (Apply Allyson feedback)
     <!-- eslint-disable vue/no-v-html -->
     <h1 class="mb-5">
       FAIRsharing is a community-driven resource with users and collaborators across all disciplines.
@@ -72,6 +79,35 @@
       </v-row>
     </v-container>
 
+<<<<<<< HEAD
+=======
+    <!--  content  -->
+
+    <!-- Activities   -->
+    <section id="activities">
+      <h3 class="text-h4 mb-4">
+        Activities
+      </h3>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
+      </p>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
+      </p>
+      <b
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
+      </b>
+      <!--Activities table-->
+      <ActivitiesStaticTable class="mb-16 mt-2" />
+    </section>
+
+>>>>>>> 84db9ee87 (Apply Allyson feedback)
     <!-- Adopters   -->
     <section id="adopters">
       <h3 class="text-h4 mb-4 mt-5">
@@ -214,6 +250,7 @@
       </v-row>
     </section>
 
+<<<<<<< HEAD
     <!--  content  -->
 
 
@@ -242,6 +279,8 @@
     </section>
 
 
+=======
+>>>>>>> 84db9ee87 (Apply Allyson feedback)
     <!-- Governance   -->
     <section id="governance">
       <h3 class="text-h4 mb-4">
@@ -315,6 +354,7 @@
               <h4 class="text-h5">
                 {{ item.title }}
               </h4>
+<<<<<<< HEAD
               <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"
@@ -367,6 +407,18 @@
                       />
                     </a>
                   </div>
+=======
+              <ul class="mt-2 column-count">
+                <li
+                  v-for="(itemData,itemDataIndex) in item.data"
+                  :key="itemData+'_'+itemDataIndex"
+                  class="mb-1"
+                >
+                  <p
+                    class="ma-0"
+                    v-html="$sanitize(itemData)"
+                  />
+>>>>>>> 84db9ee87 (Apply Allyson feedback)
                 </li>
               </ul>
             </div>
@@ -385,9 +437,15 @@
 * @namespace Static
 */
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+<<<<<<< HEAD
 import {externalLinks, contentTabs, tables, governance, meettheteam} from "@/data/communityPageData.json"
 import Icon from "@/components/Icon";
 import {isArray} from "lodash";
+=======
+import {subtitle,externalLinks,contentTabs,tables,governance,meettheteam} from "@/data/communityPageData.json"
+import Icon from "@/components/Icon";
+
+>>>>>>> 84db9ee87 (Apply Allyson feedback)
 /** This component handles the sign-up/register page
 * @memberOf Static
 * @name Community
@@ -505,9 +563,12 @@ td {
   -moz-column-count: 2;
   -webkit-column-count: 2;
 }
+<<<<<<< HEAD
 
 .word-break {
   white-space: break-spaces;
 }
 
+=======
+>>>>>>> 84db9ee87 (Apply Allyson feedback)
 </style>

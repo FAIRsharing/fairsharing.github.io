@@ -1,14 +1,9 @@
 <template>
   <main :class="applyCss?'pa-15 mb-10':''">
-    <!--  main_title -->
-    <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-      Making standards, databases and policies count, collaborators and activities, all working to enable the FAIR Principles and to make Standards, Knowledgebases, Repositories and Data Policies FAIR.
-    </h1>
-
     <!--  main_title_2 -->
-    <h2 class="text-h6 mt-8 text-xl-h5 mb-2 mb-xl-6">
+    <h1 class="text-h6 text-xl-h5 mb-2 mb-xl-6">
       How to cite FAIRsharing:
-    </h2>
+    </h1>
 
     <!-- eslint-disable vue/no-v-html -->
     <p
@@ -111,6 +106,30 @@
     </v-container>
 
     <!--  content  -->
+
+    <!-- Activities   -->
+    <section id="activities">
+      <h3 class="text-h4 mb-4">
+        Activities
+      </h3>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
+      </p>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
+      </p>
+      <b
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
+      </b>
+      <!--Activities table-->
+      <ActivitiesStaticTable class="mb-16 mt-2" />
+    </section>
 
     <!-- Adopters   -->
     <section id="adopters">
@@ -288,36 +307,59 @@
       </v-simple-table>
     </section>
 
-    <!-- Activities   -->
-    <section id="activities">
-      <h3 class="text-h4 mb-4">
-        Activities
-      </h3>
-      <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
-      </p>
-      <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
-      </p>
-      <b
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
-      </b>
-      <!--Activities table-->
-      <ActivitiesStaticTable class="mb-16 mt-2" />
-    </section>
-
     <!-- Governance   -->
     <section id="governance">
       <h3 class="text-h4 mb-4">
         Governance
       </h3>
-      <!--  governance json data    -->
+      <!--   Meet the team   -->
+      <h4 class="text-h5 mb-2">
+        {{ meettheteam.title }}
+      </h4>
+      <p
+        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        v-html="$sanitize(meettheteam.description)"
+      />
+      <ul class="d-flex flex-wrap pl-0">
+        <li
+          v-for="(profileItem,index) in meettheteam.profiles"
+          :key="`${profileItem}_${index}`"
+          :class="['text-center width-250 height-400 mb-10',$vuetify.breakpoint.mdAndDown?'mx-auto':'']"
+        >
+          <v-avatar size="200">
+            <v-img :src="profileItem.profileImg" />
+          </v-avatar>
+          <a
+            class="text-center lato-font-bold mt-2 ma-0 underline-effect"
+            style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
+            v-html="$sanitize(profileItem.name)"
+          />
+          <i class="small d-block height-75">
+            {{ profileItem.role }}
+          </i>
+          <div class="text-center mt-2 d-flex justify-center">
+            <span
+              v-for="(socialItem,socialIndex) in profileItem.social"
+              :key="`${socialItem}_${socialIndex}`"
+            >
+              <a
+                class="pr-2"
+                :href="socialItem.link.includes('@')?`mailto:${socialItem.link}`:socialItem.link"
+                target="_blank"
+              >
+                <Icon
+                  class="mr-1"
+                  :item="socialItem.icon"
+                  :height="25"
+                  size="30"
+                  wrapper-class=""
+                />
+              </a>
+            </span>
+          </div>
+        </li>
+      </ul>
+      <!--  Advisory Board   -->
       <div
         v-for="(governanceItem,key,index) in governance"
         :key="Object.keys(governanceItem)[index]+'_'+'index'"
@@ -335,7 +377,7 @@
               <h4 class="text-h5">
                 {{ item.title }}
               </h4>
-              <ul class="mt-2">
+              <ul class="mt-2 column-count">
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"
                   :key="itemData+'_'+itemDataIndex"
@@ -351,51 +393,6 @@
           </div>
         </div>
       </div>
-      <!--   Meet the team   -->
-      <h4 class="text-h5 mb-2">
-        {{ meettheteam.title }}
-      </h4>
-      <p
-        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-        v-html="$sanitize(meettheteam.description)"
-      />
-      <ul class="d-flex flex-wrap pl-0">
-        <li
-          v-for="(profileItem,index) in meettheteam.profiles"
-          :key="`${profileItem}_${index}`"
-          :class="['text-center width-250 height-400 mb-5',$vuetify.breakpoint.mdAndDown?'mx-auto':'']"
-        >
-          <v-avatar size="200">
-            <v-img :src="profileItem.profileImg" />
-          </v-avatar>
-          <a
-            class="text-center lato-font-bold mt-2 ma-0 underline-effect"
-            style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
-            v-html="$sanitize(profileItem.name)"
-          />
-          <i class="small d-block">
-            {{ profileItem.role }}
-          </i>
-          <div class="text-center mt-2">
-            <span
-              v-for="(socialItem,socialIndex) in profileItem.social"
-              :key="`${socialItem}_${socialIndex}`"
-            >
-              <a
-                class="pr-2 underline-effect"
-                :href="socialItem.link"
-                target="_blank"
-              >
-                <v-icon
-                  size="30"
-                >
-                  {{ $vuetify.icons.values[socialItem.icon].icon }}
-                </v-icon>
-              </a>
-            </span>
-          </div>
-        </li>
-      </ul>
     </section>
 
     <!-- eslint-enable vue/no-v-html -->
@@ -409,6 +406,7 @@
 */
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import {subtitle,externalLinks,contentTabs,tables,governance,meettheteam} from "@/data/communityPageData.json"
+import Icon from "@/components/Icon";
 
 /** This component handles the sign-up/register page
 * @memberOf Static
@@ -418,7 +416,7 @@ import {subtitle,externalLinks,contentTabs,tables,governance,meettheteam} from "
 * */
 export default {
   name: "Community",
-  components: {ActivitiesStaticTable},
+  components: {Icon, ActivitiesStaticTable},
   title: "This will be the community page",
   data: () => {
     return {
@@ -429,7 +427,8 @@ export default {
       contentTabs,
       tables,
       governance,
-      meettheteam
+      meettheteam,
+      Icon
     }
   },
   watch: {
@@ -508,8 +507,20 @@ export default {
 }
 
 a:hover {
-  i {
-    color: cadetblue;
+  div {
+    transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
   }
+}
+td {
+  font-size: 1rem!important;
+}
+
+.column-count {
+  column-count:2;
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
 }
 </style>

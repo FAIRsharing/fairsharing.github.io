@@ -1,6 +1,6 @@
 {
   "header": "Adding and Claiming content in FAIRsharing",
-  "firstDescription": " The FAIRsharing Team curates and integrates descriptions of community resources, such as standards and databases, progressively linking both to policies. However, we know that the maintainers of these resources know best. So if you find that the resource you lead or work for has an incomplete or incorrect description, you can claim and edit the record(s). If a resource is missing you can submit a new record in the appropriate registry.\n\nWhy should you claim a record? First and foremost to make your resource more discoverable to others. Secondly, to get credit, both for you and your group/organisation.\n\nDo you fear that can be too much work maintaining the record? Don’t worry, claiming and editing can be a one off event, after which the FAIRsharing team will continue to link your resources to others, making them even more visible and ‘adoptable’! For even more reasons to get involved, click here for the FAQ. ",
+  "firstDescription": " The <a href='https://fairsharing.org/community#governance' target='_blank' class='underline-effect'>FAIRsharing Team</a> curates and integrates descriptions of community resources, such as standards and databases, progressively linking both to policies. However, we know that the maintainers of these resources know best. So if you find that the resource you lead or work for has an incomplete or incorrect description, you can claim and edit the record(s). If a resource is missing you can submit a new record in the appropriate registry.\n\nWhy should you claim a record? First and foremost to make your resource more discoverable to others. Secondly, to get credit, both for you and your group/organisation.\n\nDo you fear that can be too much work maintaining the record? Don’t worry, claiming and editing can be a one off event, after which the FAIRsharing team will continue to link your resources to others, making them even more visible and ‘adoptable’! For even more reasons to get involved, click <a href='https://fairsharing.org/educational' class='underline-effect' target='_blank'>here</a> for the FAQ. ",
   "description": [
     {
       "header": "What to add",
@@ -22,11 +22,11 @@
         "Allows data submissions from the community.",
         "Provides documentation on / help with the resource."
       ],
-      "textAfter": "If your resource is a data set, it may not suitable for FAIRsharing. However, there are other sites you may wish to consider.\n\nIf you are looking for a centralized location to store your data set, ClinicalTrials.gov is a registry and results database of publicly and privately supported clinical studies of human participants conducted around the world. Alternatively, the Dryad Digital Repository is a curated resource that makes the data underlying scientific publications discoverable, freely reusable, and citable. Dryad provides a general-purpose home for a wide diversity of datatypes. Data associated with any published article can be uploaded."
+      "textAfter": "If your resource is a data set, it may not suitable for FAIRsharing. However, there are other sites you may wish to consider.\n\nIf you are looking for a centralized location to store your data set, <a href='https://fairsharing.org/biodbcore-000470' target='_blank' class='underline-effect'>ClinicalTrials.gov</a> is a registry and results database of publicly and privately supported clinical studies of human participants conducted around the world. Alternatively, the <a href='https://fairsharing.org/' target='_blank' class='underline-effect'>Dryad Digital Repository</a> is a curated resource that makes the data underlying scientific publications discoverable, freely reusable, and citable. Dryad provides a general-purpose home for a wide diversity of datatypes. Data associated with any published article can be uploaded."
     },
     {
       "header": "How to claim a record",
-      "textBefore": " It couldn’t be easier. Simply find the record you wish to claim and click the ‘Claim Ownership' button in the top right hand corner; you will be directed to create an account or to sign in if you already have one. A FAIRsharing curator will quickly perform a few sanity checks and add any outstanding links and confirm ownership."
+      "textBefore": " It couldn’t be easier. Simply find the record you wish to claim and click the ‘Claim Ownership' button in the top right hand corner; you will be directed to <a href='https://fairsharing.org/accounts/signup' target='_blank' class='underline-effect'>create an account</a> or to sign in if you already have one. A FAIRsharing curator will quickly perform a few sanity checks and add any outstanding links and confirm ownership."
     },
     {
       "header": "How to create a Collection",
@@ -34,7 +34,7 @@
     },
     {
       "header": "Get started!",
-      "textBefore": " If you have not already done so, you may wish to create an account before selecting one of the buttons below. If you have an account then clicking on one of the buttons below will take you to the relevant page, via the login screen if necessary.\n\nAny questions? Don't hesitate to contact us. "
+      "textBefore": " If you have not already done so, you may wish to create an account before selecting one of the buttons below. If you have an account then clicking on one of the buttons below will take you to the relevant page, via the login screen if necessary.\n\nAny questions? Don't hesitate to <a href='mailto:contact@fairsharing.org' class='underline-effect'>contact us</a>. "
     }
   ]
 }

@@ -15,14 +15,14 @@
             colspan="4"
             class="extra-header-row"
           >
-            <a name="activity_1">
+            <a id="activity_1">
               CHANGE - focusing on priorities, policies and incentives for implementing FAIR
             </a>
           </td>
         </tr>
         <tr>
           <td rowspan="2">
-            <a name="activity_2">
+            <a id="activity_2">
               <b>1. FAIR maturity indicators, metrics and models</b>
             </a>
           </td>
@@ -61,7 +61,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_3">
+            <a id="activity_3">
               <b>2. Cross-publishers common criteria for repository selection</b>
             </a>
           </td>
@@ -186,7 +186,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_4">
+            <a id="activity_4">
               <b>3. Journal data policies and the TOP guidelines</b>
             </a>
           </td>
@@ -216,7 +216,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_5">
+            <a id="activity_5">
               <b>4. Standardized templates for journal data policies</b>
             </a>
           </td>
@@ -239,7 +239,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_6">
+            <a id="activity_6">
               <b>5. UK Reproducibility Network</b>
             </a>
           </td>
@@ -267,7 +267,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_7">
+            <a id="activity_7">
               <b>6. Research graphs</b>
             </a>
           </td>
@@ -296,7 +296,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_8">
+            <a id="activity_8">
               <b>7. Domain and subject terminologies for data classification</b>
             </a>
           </td>
@@ -315,7 +315,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_9">
+            <a id="activity_9">
               <b>8. Future-proofing the FAIRsharing technical architecture</b>
             </a>
           </td>
@@ -333,7 +333,7 @@
         </tr>
         <tr>
           <td rowspan="2">
-            <a name="activity_10">
+            <a id="activity_10">
               <b>9. FAIR assessment tools</b>
             </a>
           </td>
@@ -368,7 +368,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_11">
+            <a id="activity_11">
               <b>10. Connecting FAIRsharing to data stewardship and data management plans tools</b>
             </a>
           </td>
@@ -387,7 +387,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_12">
+            <a id="activity_12">
               <b>11. Data FAIRification</b>
             </a>
           </td>
@@ -411,7 +411,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_13">
+            <a id="activity_13">
               <b>12. Metadata standards for machines</b>
             </a>
           </td>
@@ -441,7 +441,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_14">
+            <a id="activity_14">
               <b>13. Guidance to stakeholders</b>
             </a>
           </td>
@@ -459,7 +459,7 @@
         </tr>
         <tr>
           <td>
-            <a name="activity_15">
+            <a id="activity_15">
               <b>14. FAIR competencies and curricula</b>
             </a>
           </td>

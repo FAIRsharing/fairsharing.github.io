@@ -131,8 +131,8 @@ let routes = [
         component: Stat,
     },
     {
-        name: "Community",
-        path: "/community",
+        name: "Communities",
+        path: "/communities",
         component: Community,
     },
     {

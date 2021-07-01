@@ -1,0 +1,40 @@
+{
+  "header": "Adding and Claiming content in FAIRsharing",
+  "firstDescription": " The FAIRsharing Team curates and integrates descriptions of community resources, such as standards and databases, progressively linking both to policies. However, we know that the maintainers of these resources know best. So if you find that the resource you lead or work for has an incomplete or incorrect description, you can claim and edit the record(s). If a resource is missing you can submit a new record in the appropriate registry.\n\nWhy should you claim a record? First and foremost to make your resource more discoverable to others. Secondly, to get credit, both for you and your group/organisation.\n\nDo you fear that can be too much work maintaining the record? Don’t worry, claiming and editing can be a one off event, after which the FAIRsharing team will continue to link your resources to others, making them even more visible and ‘adoptable’! For even more reasons to get involved, click here for the FAQ. ",
+  "description": [
+    {
+      "header": "What to add",
+      "textBefore": " FAIRsharing maintains three resource registries covering the life and biomedical sciences, that are progressively interrelated: ",
+      "bulletPoints": [
+        "<b>Standards,</b> including (but not limited to) reporting guidelines, terminology artefacts, models and formats, and metrics.",
+        "<b>Databases,</b> focusing on global and community-driven repositories",
+        "<b>Policies,</b> highlighting data preservation, management and sharing"
+      ],
+      "textAfter": " To allow the grouping of records across these three registries, we support the generation of Collections. We encourage Collections collated according to a specific criteria, for example, those databases and standards recommended by a funding body or journal policy. These can be browsed by clicking on the Collections button in the navigation bar above. "
+    },
+    {
+      "header": "Adding Database records",
+      "textBefore": "FAIRsharing has a focus on global and community-driven repositories and generally does not store records describing individual data sets. Although this list is neither required nor exhaustive, databases listed within FAIRsharing generally conform to most of the following:",
+      "bulletPoints": [
+        "Allows viewing, searching and download of the database.",
+        "Serves data from multiple experiments to the community.",
+        "Produces regular releases.",
+        "Allows data submissions from the community.",
+        "Provides documentation on / help with the resource."
+      ],
+      "textAfter": "If your resource is a data set, it may not suitable for FAIRsharing. However, there are other sites you may wish to consider.\n\nIf you are looking for a centralized location to store your data set, ClinicalTrials.gov is a registry and results database of publicly and privately supported clinical studies of human participants conducted around the world. Alternatively, the Dryad Digital Repository is a curated resource that makes the data underlying scientific publications discoverable, freely reusable, and citable. Dryad provides a general-purpose home for a wide diversity of datatypes. Data associated with any published article can be uploaded."
+    },
+    {
+      "header": "How to claim a record",
+      "textBefore": " It couldn’t be easier. Simply find the record you wish to claim and click the ‘Claim Ownership' button in the top right hand corner; you will be directed to create an account or to sign in if you already have one. A FAIRsharing curator will quickly perform a few sanity checks and add any outstanding links and confirm ownership."
+    },
+    {
+      "header": "How to create a Collection",
+      "textBefore": " To allow the grouping of records within or across our three registries, we support the generation of Collections. To create a new Collection, click the ‘Submit Collection’ button, or the 'Contribute by submitting a Collection’ button on the Collections page. Collections can be created for many different reasons, but to get an idea of what’s possible, take a look at the existing Collections. "
+    },
+    {
+      "header": "Get started!",
+      "textBefore": " If you have not already done so, you may wish to create an account before selecting one of the buttons below. If you have an account then clicking on one of the buttons below will take you to the relevant page, via the login screen if necessary.\n\nAny questions? Don't hesitate to contact us. "
+    }
+  ]
+}

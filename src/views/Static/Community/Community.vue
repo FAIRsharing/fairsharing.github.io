@@ -144,15 +144,18 @@
       <ul>
         <li><b class="mr-4">i:</b>Educate their users/community on the variety of existing standards, repositories and policies, and actively encourage them to submit/claim records, where relevant;</li>
         <li>
-          <b class="mr-3">ii:</b>Create <a
-            href="https://fairsharing.org/recommendations/"
+          <b class="mr-3">ii:</b>Create <router-link
+            to="/search?isRecommended=true"
             target="_blank"
             class="underline-effect"
-          >Recommendations</a> by registering their data policy, and then link it to standards and/or databases recommended in the policy; and/or
+          >
+            Recommendations
+          </router-link> by registering their data policy, and then link it to standards and/or databases recommended in the policy; and/or
         </li>
         <li>
           <b class="mr-2">iii:</b>Create a <router-link
             to="/collections"
+            target="_blank"
             class="underline-effect"
           >
             Collection

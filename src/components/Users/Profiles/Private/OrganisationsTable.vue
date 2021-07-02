@@ -45,15 +45,6 @@ export default {
   props: {
     organisations: { type: Array, default: null }
   },
-  methods: {
-    objToList(obj) {
-      let names = [];
-      obj.forEach((t) => {
-        names.push(t.name)
-      })
-      return names.join(", ");
-    }
-  },
   computed: {
     ...mapState('users', ['user']),
     headers() {
@@ -70,7 +61,16 @@ export default {
     footer(){
       return {'items-per-page-options': [5]}
     }
-  }
+  },
+  methods: {
+    objToList(obj) {
+      let names = [];
+      obj.forEach((t) => {
+        names.push(t.name)
+      })
+      return names.join(", ");
+    }
+  },
 }
 </script>
 

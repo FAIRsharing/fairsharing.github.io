@@ -142,7 +142,7 @@ export default {
         },
         {
           label: "Add content",
-          name: "New_content",
+          name: "New",
           link: "/new",
           active:false
         },

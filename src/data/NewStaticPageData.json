@@ -26,7 +26,7 @@
     },
     {
       "header": "How to claim a record",
-      "textBefore": " It couldn’t be easier. Simply find the record you wish to claim and click the ‘Claim Ownership' button in the top right hand corner; you will be directed to <a href='https://fairsharing.org/accounts/signup' target='_blank' class='underline-effect'>create an account</a> or to sign in if you already have one. A FAIRsharing curator will quickly perform a few sanity checks and add any outstanding links and confirm ownership."
+      "textBefore": " It couldn’t be easier. Simply find the record you wish to claim and click the ‘Claim Ownership' button in the top right hand corner; you will be directed to <a href='/accounts/signup' target='_blank' class='underline-effect'>create an account</a> or to sign in if you already have one. A FAIRsharing curator will quickly perform a few sanity checks and add any outstanding links and confirm ownership."
     },
     {
       "header": "How to create a Collection",

@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
 
-import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
+import { Home, NotFound, Record, Records, New, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
     Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
     Stakeholders, Timeline, Licence, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance, APIDoc }
     from "./routes.js"
@@ -117,7 +117,7 @@ let routes = [
     /* CREATION */
     {
         name: "New_content",
-        path: "/new",
+        path: "/create",
         component: NewRecord,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
@@ -125,6 +125,11 @@ let routes = [
     },
 
     /* Static pages */
+    {
+        name: "New",
+        path: "/new",
+        component: New,
+    },
     {
         name: "Statistics",
         path: "/summary-statistics",

@@ -25,7 +25,7 @@ export const Licence =  () => import(/* webpackChunkName: "licence-chunk" */ '@/
 export const Terms =  () => import(/* webpackChunkName: "tos-chunk" */ '@/views/Static/TermOfUse/TermsOfUse');
 export const Educational =  () => import(/* webpackChunkName: "edu-chunk" */ '@/views/Static/Educational/Educational');
 export const Privacy =  () => import(/* webpackChunkName: "privacy-chunk" */ '@/views/Static/Privacy/Privacy');
-export const New = () => import(/* webpackChunkName: "newRecord-chunk" */ '@/views/Static/New/New');
+export const New = () => import(/* webpackChunkName: "new-chunk" */ '@/views/Static/New/New');
 export const Graph =  () => import(/* webpackChunkName: "graphtest-chunk" */ '@/views/Records/NetworkGraph');
 export const Maintenance =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Errors/Maintenance');
 export const APIDoc =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Static/APIDoc/APIDoc');

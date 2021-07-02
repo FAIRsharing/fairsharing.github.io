@@ -47,10 +47,10 @@
         }
       },
       data: () => {
-            return {
-                dialog: false
-            }
-        },
+        return {
+          dialog: false
+        }
+      },
       computed: {
           ...mapState('users', ['user']),
             menuItems: function(){
@@ -102,21 +102,19 @@
                 return vecReturn;
             }
         },
-        methods: {
-            ...mapActions('users', ['logout']),
-            logoutUser: async function(){
-                await this.logout();
-                this.$router.push({name: "Login"})
-            },
-            disableEdit: function() {
-              let _module = this;
-              if (_module.viewingId) {
-                if (Number(_module.viewingId) === Number(_module.user().id) || (_module.user().role!=='super_curator' || _module.user().role!=='developer')) {
-                  return false;
-                }
-              }
-              return false;
-            }
+      methods: {
+        ...mapActions('users', ['logout']),
+        logoutUser: async function () {
+          await this.logout();
+          this.$router.push({name: "Login"})
+        },
+        disableEdit: function () {
+          let _module = this;
+          if (_module.viewingId) {
+            return !(Number(_module.viewingId) === Number(_module.user().id) || (_module.user().role !== 'super_curator' || _module.user().role !== 'developer'));
+          }
+          return false;
         }
+      }
     }
 </script>

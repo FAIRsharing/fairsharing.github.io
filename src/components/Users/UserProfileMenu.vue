@@ -51,7 +51,7 @@
                 dialog: false
             }
         },
-        computed: {
+      computed: {
           ...mapState('users', ['user']),
             menuItems: function(){
                 const _module = this;
@@ -111,11 +111,8 @@
             disableEdit: function() {
               let _module = this;
               if (_module.viewingId) {
-                if (Number(_module.viewingId) === Number(_module.user().id)) {
+                if (Number(_module.viewingId) === Number(_module.user().id) || (_module.user().role!=='super_curator' || _module.user().role!=='developer')) {
                   return false;
-                }
-                else {
-                  return true;
                 }
               }
               return false;

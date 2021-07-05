@@ -69,7 +69,6 @@
                           {{ organisation.homepage }}
                         </a>
                       </span>
-                      <span v-else> None </span>
                     </v-list-item-content>
                   </v-list-item>
 
@@ -92,7 +91,6 @@
                           </li>
                         </ul>
                       </span>
-                      <span v-else> None </span>
                     </v-list-item-content>
                   </v-list-item>
 

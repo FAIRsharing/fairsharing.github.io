@@ -304,43 +304,61 @@
                 :items-per-page="perPage"
                 :footer-props="footer"
                 calculate-widths
-              />
+              >
+                <template #[`item.username`]="{ item }">
+                  <router-link
+                    :to="'/users/' + item.id"
+                  >
+                    {{ item.username }}
+                  </router-link>
+                </template>
 
-              <template #[`item.username`]="{ item }">
-                <router-link
-                  :to="'/users/' + item.id"
-                >
-                  USER: {{ item.username }}
-                </router-link>
-              </template>
+                <template #[`item.email`]="{ item }">
+                  <a
+                    v-if="item.email"
+                    :href="'mailto:' + item.email"
+                  >
+                    {{ item.email }}
+                  </a>
+                  <span
+                    v-if="!item.email"
+                  >
+                    No email address available.
+                  </span>
+                </template>
 
-              <template #[`item.orcid`]="{ item }">
-                <router-link
-                  v-if="item.orcid"
-                  :to="'https://orcid.org/' + item.orcid"
-                >
-                  ORCID: {{ item.orcid }}
-                </router-link>
-                <span
-                  v-if="!item.orcid"
-                >
-                  No ORCID ID supplied.
-                </span>
-              </template>
+                <template #[`item.orcid`]="{ item }">
+                  <a
+                    v-if="item.orcid"
+                    :href="'https://orcid.org/' + item.orcid"
+                    target="_blank"
+                  >
+                    {{ item.orcid }}
+                  </a>
+                  <span
+                    v-if="!item.orcid"
+                  >
+                    No ORCID ID supplied.
+                  </span>
+                </template>
 
-              <template #[`item.email`]="{ item }">
-                <router-link
-                  v-if="item.email"
-                  :to="'mailto:' + item.orcid"
-                >
-                  {{ item.email }}
-                </router-link>
-                <span
-                  v-if="!item.email"
-                >
-                  No email address available.
-                </span>
-              </template>
+                <template #[`item.twitter`]="{ item }">
+                  <a
+                      v-if="item.twitter"
+                      :href="'https://twitter.com/' + item.twitter"
+                      target="_blank"
+                  >
+                    {{ item.twitter }}
+                  </a>
+                  <span
+                    v-if="!item.twitter"
+                  >
+                    No Twitter username supplied.
+                  </span>
+                </template>
+              </v-data-table>
+
+
 
               <template slot="no-data">
                 <div>

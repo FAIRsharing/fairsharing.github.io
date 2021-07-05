@@ -2,9 +2,40 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
 
-import { Home, NotFound, Record, Records, New, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
-    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
-    Stakeholders, Timeline, Licence, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance, APIDoc }
+import {
+    Home,
+    NotFound,
+    Record,
+    Records,
+    New,
+    NewRecord,
+    Editor,
+    Login,
+    Signup,
+    ConfirmAccount,
+    ResendConfirmation,
+    User,
+    Curator,
+    RequestNewPassword,
+    ResetPassword,
+    EditProfile,
+    OauthLogin,
+    Organisation,
+    LoginFailure,
+    Stat,
+    Community,
+    Stakeholders,
+    Timeline,
+    Licence,
+    Terms,
+    Educational,
+    Privacy,
+    PublicProfile,
+    Graph,
+    Maintenance,
+    APIDoc,
+    EditPublicProfile
+}
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -238,7 +269,14 @@ let routes = [
             isLoggedIn(to, from, next, store);
         }
     },
-
+    {
+        name: "EditPublicProfile",
+        path: "/profiles/editPublicProfile",
+        component: EditPublicProfile,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+        }
+    },
     // CURATORS
     {
         name: "Curator",

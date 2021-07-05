@@ -61,9 +61,16 @@
                         name: "Edit profile",
                         isDisabled: _module.disableEdit(),
                         action: function(){
+                          if (_module.viewingId === Number(_module.user().id)) {
                             _module.$router.push({
                               path: "/profiles/edit"
                             })
+                          }
+                          else if (_module.viewingId !== Number(_module.user().id) && (_module.user().role === 'developer' || _module.user().role === 'super_curator')) {
+                            _module.$router.push({
+                              path: "/profiles/editPublicProfile"
+                            })
+                          }
                         }
                     },
                     {

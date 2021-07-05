@@ -344,9 +344,9 @@
 
                 <template #[`item.twitter`]="{ item }">
                   <a
-                      v-if="item.twitter"
-                      :href="'https://twitter.com/' + item.twitter"
-                      target="_blank"
+                    v-if="item.twitter"
+                    :href="'https://twitter.com/' + item.twitter"
+                    target="_blank"
                   >
                     {{ item.twitter }}
                   </a>

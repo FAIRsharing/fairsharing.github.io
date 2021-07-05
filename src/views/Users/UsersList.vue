@@ -23,9 +23,6 @@
 
 <script>
 import { mapActions } from "vuex"
-// import RESTClient from "@/lib/Client/RESTClient.js"
-
-// const restClient = new RESTClient();
 
 export default {
   name: "UsersList",
@@ -129,10 +126,11 @@ export default {
       ],
     }
   },
-  async created(){
+  async mounted() {
+      await this.getUsersList()
   },
   methods: {
-    ...mapActions('users', ['getUserMeta', "updateUser", "setMessage"])
+    ...mapActions('users', ['getUsersList'])
   }
 }
 </script>

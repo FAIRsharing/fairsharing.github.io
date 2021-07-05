@@ -132,13 +132,18 @@
         disableEdit: function () {
           let _module = this;
           if (_module.viewingId) {
-            return !(Number(_module.viewingId) === Number(_module.user().id) || (_module.user().role !== 'super_curator' || _module.user().role !== 'developer'));
+            return !(Number(_module.viewingId) === Number(_module.user().id) || (_module.user().role === 'super_curator' || _module.user().role === 'developer'));
           }
           return false;
         },
         disableUserList: function () {
-            const _module = this;
+          const _module = this;
+          if (process.env.NODE_ENV === 'development') {
             return _module.user().role !== 'super_curator' && _module.user().role !== 'developer'
+          }
+          else {
+            return _module.user().role !== 'super_curator'
+          }
         }
       }
     }

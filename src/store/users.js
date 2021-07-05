@@ -256,6 +256,16 @@ export const actions = {
         getPublicUserQuery.queryParam.id = parseInt(userId);
         return await graphClient.executeQuery(getPublicUserQuery);
     },
+    async getUsersList(state) {
+        try {
+            let responseData = await client.getUsersList(state.state.user().credentials.token)
+            console.log(responseData)
+            return responseData;
+        }
+        catch (e) {
+            console.log(e);
+        }
+    },
     async getUserMeta(state){
         try {
             let metadata = await client.getUser(state.state.user().credentials.token);

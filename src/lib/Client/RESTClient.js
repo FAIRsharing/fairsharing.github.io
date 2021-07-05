@@ -202,6 +202,21 @@ class RESTClient {
     }
 
     /**
+     * Get all users list
+     * @param jwt
+     * @returns {Promise}
+     */
+    async getUsersList(jwt){
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/user_admin/",
+            headers: this.auth_headers(jwt)
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Edit the current logged in user profile
      * @param {Object} newUser - the new values for the logged in user
      * @param {String} jwt - JWT of the logged in user

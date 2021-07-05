@@ -34,7 +34,8 @@ import {
     Graph,
     Maintenance,
     APIDoc,
-    EditPublicProfile
+    EditPublicProfile,
+    UsersList
 }
     from "./routes.js"
 
@@ -273,6 +274,14 @@ let routes = [
         name: "EditPublicProfile",
         path: "/profiles/editPublicProfile",
         component: EditPublicProfile,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+        }
+    },
+    {
+        name: "UsersList",
+        path: "/profiles/usersList",
+        component: UsersList,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
         }

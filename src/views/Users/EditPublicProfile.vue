@@ -239,7 +239,6 @@
           }
         },
         async created(){
-          console.log('editProfile')
           await this.getUserMeta();
           this.data.profileTypes = await restClient.getProfileTypes();
         },

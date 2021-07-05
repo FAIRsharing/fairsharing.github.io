@@ -11,6 +11,16 @@
     "types",
     "urlForLogo",
     {
+      "name": "users",
+      "fields": [
+        "id",
+        "username",
+        "email",
+        "orcid",
+        "twitter"
+      ]
+    },
+    {
       "name": "countries",
       "fields": [
         "name",

@@ -21,7 +21,7 @@
       <v-list>
         <v-list-item
           v-for="(item, index) in menuItems"
-          :key="index"
+          :key="item.name+'_'+index"
           :disabled="item.isDisabled"
           @click="item.action()"
         >
@@ -53,7 +53,7 @@
       },
       computed: {
           ...mapState('users', ['user']),
-            menuItems: function(){
+            menuItems: function () {
                 const _module = this;
                 let vecReturn = [];
                 let auxV = [
@@ -120,6 +120,7 @@
                 for (let i = 0; i < auxV.length; i++) {
                   vecReturn.push(auxV[i]);
                 }
+                console.log(vecReturn)
                 return vecReturn;
             }
         },

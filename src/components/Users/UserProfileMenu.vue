@@ -66,12 +66,26 @@
                               path: "/profiles/edit"
                             })
                           }
-                          else if (_module.viewingId !== Number(_module.user().id) && (_module.user().role === 'developer' || _module.user().role === 'super_curator')) {
+                          else if ((_module.viewingId !== Number(_module.user().id) && _module.viewingId) && (_module.user().role === 'developer' || _module.user().role === 'super_curator')) {
                             _module.$router.push({
                               path: "/profiles/editPublicProfile"
                             })
                           }
+                          else {
+                            _module.$router.push({
+                              path: "/profiles/edit"
+                            })
+                          }
                         }
+                    },
+                    {
+                      name: "Users List",
+                      isDisabled: _module.disableUserList(),
+                      action: function () {
+                          _module.$router.push({
+                            path: "/profiles/usersList"
+                          })
+                      }
                     },
                     {
                         name: "Reset Password",
@@ -121,6 +135,10 @@
             return !(Number(_module.viewingId) === Number(_module.user().id) || (_module.user().role !== 'super_curator' || _module.user().role !== 'developer'));
           }
           return false;
+        },
+        disableUserList: function () {
+            const _module = this;
+            return _module.user().role !== 'super_curator' && _module.user().role !== 'developer'
         }
       }
     }

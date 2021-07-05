@@ -4,13 +4,13 @@
       <v-col
         cols="12"
         sm="12"
-        md="4"
-        lg="4"
-        xl="4"
+        md="8"
+        lg="8"
+        xl="6"
       >
         <v-card>
           <v-card-title class="primary white--text">
-            <h2> Edit your profile</h2>
+            <h2> Edit Public profile</h2>
           </v-card-title>
 
           <v-card-text

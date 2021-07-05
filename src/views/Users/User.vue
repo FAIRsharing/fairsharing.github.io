@@ -340,7 +340,6 @@
               userMeta[field] = _module.user().metadata[field]
             }
           });
-          console.log('b',userMeta)
           return userMeta;
         },
         maintenanceRequests(){

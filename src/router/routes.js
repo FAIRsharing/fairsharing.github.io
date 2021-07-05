@@ -14,7 +14,7 @@ export const Curator = () => import(/* webpackChunkName: "curator-chunk" */ "@/v
 export const RequestNewPassword = () =>  import(/* webpackChunkName: "newPwd-chunk" */ "@/views/Users/RequestNewPassword");
 export const ResetPassword = () =>  import(/* webpackChunkName: "resetPwd-chunk" */ "@/views/Users/ResetPassword");
 export const EditProfile = () =>  import(/* webpackChunkName: "editProfile-chunk" */ "@/views/Users/EditProfile");
-export const EditPublicProfile = () =>  import(/* webpackChunkName: "editProfile-chunk" */ "@/views/Users/EditPublicProfile");
+export const EditPublicProfile = () =>  import(/* webpackChunkName: "editPublicProfile-chunk" */ "@/views/Users/EditPublicProfile");
 export const OauthLogin = () =>  import(/* webpackChunkName: "Oauth-chunk" */ "@/views/Users/Login/OauthLogin.vue");
 export const Organisation = () =>  import(/* webpackChunkName: "Organisation-chunk" */ "@/views/Organisations/Organisation");
 export const LoginFailure = () =>  import(/* webpackChunkName: "failedLogin-chunk" */ "@/views/Users/Login/LoginFailure");

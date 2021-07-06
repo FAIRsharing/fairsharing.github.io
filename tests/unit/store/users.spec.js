@@ -166,6 +166,7 @@ describe('Actions/Mutations', () => {
             },
             isLoggedIn: true,
             is_curator: false,
+            is_super_curator: false,
             role: null,
             orcid: 123456,
             twitter: 'terazus'
@@ -184,6 +185,7 @@ describe('Actions/Mutations', () => {
             metadata: {username: "Terazus"},
             isLoggedIn: true,
             is_curator: false,
+            is_super_curator: false,
             role: null,
             orcid: 123456,
             twitter: 'terazus'

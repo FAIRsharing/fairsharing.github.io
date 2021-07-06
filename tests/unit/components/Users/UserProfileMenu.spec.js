@@ -120,7 +120,7 @@ describe("UserProfileMenu.vue", () => {
             router,
             mocks: {$store}
         });
-        expect(wrapper.vm.disableEdit()).toBe(true);
+        expect(wrapper.vm.disableEdit()).toBe(false);
     });
 
 

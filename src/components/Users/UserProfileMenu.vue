@@ -120,7 +120,6 @@
                 for (let i = 0; i < auxV.length; i++) {
                   vecReturn.push(auxV[i]);
                 }
-                console.log(vecReturn)
                 return vecReturn;
             }
         },
@@ -128,7 +127,7 @@
         ...mapActions('users', ['logout']),
         logoutUser: async function () {
           await this.logout();
-          this.$router.push({name: "Login"})
+          await this.$router.push({name: "Login"})
         },
         disableEdit: function () {
           let _module = this;

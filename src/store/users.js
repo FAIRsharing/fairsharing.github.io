@@ -87,6 +87,9 @@ export const mutations = {
             };
         }
     },
+    setUsersList(state,usersList) {
+        state.usersList = usersList;
+    },
     setUserMeta(state, metadata){
         let user = JSON.parse(localStorage.getItem("user"));
         if (user) {
@@ -258,12 +261,14 @@ export const actions = {
     },
     async getUsersList(state) {
         try {
-            let responseData = await client.getUsersList(state.state.user().credentials.token)
-            console.log(responseData)
-            return responseData;
+            let usersListData = await client.getUsersList(state.state.user().credentials.token);
+            this.commit('users/setUsersList', usersListData);
         }
         catch (e) {
-            console.log(e);
+            this.commit("users/setError", {
+                field: "getUsersList",
+                message: e.message
+            });
         }
     },
     async getUserMeta(state){
@@ -387,7 +392,8 @@ let currentUser = {
         },
         messages: function(){
             return initStateMessages();
-        }
+        },
+        usersList:[]
     },
     mutations: mutations,
     actions: actions,

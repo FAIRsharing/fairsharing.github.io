@@ -30,6 +30,7 @@ export const initUserDataState = function(){
         metadata: {},
         records: {},
         is_curator: false,
+        is_super_curator: false,
         role: null
     }
 };

@@ -19,7 +19,6 @@ userStore.state.user = function(){
         id: 1
     }
 }
-process.env = Object.assign(process.env, { NODE_ENV: 'development' });
 
 const $store = new Vuex.Store({
     modules: {
@@ -223,30 +222,4 @@ describe("UserProfileMenu.vue", () => {
         expect(wrapper.vm.disableEdit()).toBe(false);
     });
 
-    it("can disable disable User List button", () => {
-        userStore.state.user = function(){
-            return {
-                role: "curator",
-                email: 'test@test.com',
-                credentials: {
-                    token: 'thisisafaketoken'
-                },
-                id: 2
-            }
-        }
-        const $store = new Vuex.Store({
-            modules: {
-                users: userStore
-            }
-        });
-        process.env = Object.assign(process.env, { NODE_ENV: 'production' });
-
-        wrapper = shallowMount(UserMenu, {
-            propsData: { viewingId: 2},
-            localVue,
-            router,
-            mocks: {$store}
-        });
-        expect(wrapper.vm.disableUserList()).toBe(true);
-    });
 });

@@ -21,8 +21,9 @@ export const mutations = {
                 metadata: {},
                 records: {},
                 is_curator: user.is_curator,
+                is_super_curator:user.is_super_curator,
                 role: user.role,
-                watchedRecords: user['watched_records'] || []
+                watchedRecords: user['watched_records'] || [],
             }
         };
         localStorage.setItem("user", JSON.stringify(state.user()));
@@ -48,6 +49,7 @@ export const mutations = {
         let user = JSON.parse(localStorage.getItem("user"));
         if (user) {
             let isCurator = user.is_curator;
+            let isSuperCurator = user.is_super_curator;
             let role = user.role;
             let watchedRecords = user.watchedRecords;
             state.user = function () {
@@ -62,6 +64,7 @@ export const mutations = {
                     metadata: record.metadata,
                     records: record.records.user,
                     is_curator: isCurator,
+                    is_super_curator: isSuperCurator,
                     watchedRecords: watchedRecords,
                     role: role,
                     orcid: user.orcid,
@@ -80,6 +83,7 @@ export const mutations = {
                     records: record.records.user,
                     watchedRecords: [],
                     is_curator: false,
+                    is_super_curator: false,
                     role: null,
                     orcid: null,
                     twitter: null
@@ -150,6 +154,7 @@ export const mutations = {
                 records: {},
                 watchedRecords: [],
                 is_curator: previousState.is_curator,
+                is_super_curator: previousState.is_super_curator,
                 role: previousState.role
             }
         };

@@ -350,6 +350,21 @@ describe('Actions/Mutations', () => {
         });
     });
 
+    it('Error Handling: getUsersList', async () => {
+        let state = {
+            state: {
+                usersList:[]
+            }
+        };
+        restClientStub.returns({
+            data: {error: "Error"}
+        });
+        await actions.getUsersList(state);
+        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
+            "field": "getUsersList", "message": "state.state.user is not a function"
+        });
+    });
+
     it("Error Handling: resetPwd outer case", async () => {
         restClientStub.returns(new Error("Error"));
         const state = {};

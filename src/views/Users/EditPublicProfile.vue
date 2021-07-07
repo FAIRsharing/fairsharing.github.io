@@ -8,52 +8,74 @@
         lg="10"
         xl="8"
       >
-        <v-card-title class="primary white--text">
-          <h2> Edit Public profile of {{ $route.params.id }}</h2>
-        </v-card-title>
-        <v-container class="text-center elevation-3 pa-5">
-          <v-row>
-            <v-col
-              v-for="(field, fieldKey) in fields"
-              :id="'edit_' + field.name"
-              :key="'edit_field_' + fieldKey"
-              cols="12"
-            >
-              <div v-if="field.type === 'select'">
-                <v-select
-                  v-model="formData[field.name]"
-                  outlined
-                  :label="field.label"
-                  :items="data[field.data]"
-                  :rules="field.rules"
-                />
-              </div>
-              <div v-else-if="field.type !== 'checkbox'">
-                <v-text-field
-                  v-model="formData[field.name]"
-                  :label="field.label"
-                  outlined
-                  :type="field.type"
-                  :disabled="field.disabled"
-                  :rules="field.rules"
-                  class="pa-0"
-                />
-              </div>
-              <div v-if="field.type === 'checkbox'">
-                <v-checkbox
-                  v-model="formData[field.name]"
-                  :label="field.label"
-                />
-              </div>
-            </v-col>
-          </v-row>
-          <v-btn
-            class="primary"
-            type="submit"
+        <!--   Error Handling     -->
+        <div v-if="messages().updateProfile.message">
+          <v-alert
+            v-if="messages().updateProfile.error"
+            class="white--text"
+            type="error"
           >
-            Update Profile
-          </v-btn>
-        </v-container>
+            {{ messages().updateProfile.error }}
+          </v-alert>
+          <v-alert
+            v-else
+            type="success"
+          >
+            {{ messages().updateProfile.message }}
+          </v-alert>
+        </div>
+
+        <v-form
+          v-model="valid"
+          @submit.prevent="valid ? updatePublicProfile() : valid=false"
+        >
+          <v-card-title class="primary white--text">
+            <h2> Edit Public profile of {{ $route.params.id }}</h2>
+          </v-card-title>
+          <v-container class="text-center elevation-3 pa-5">
+            <v-row>
+              <v-col
+                v-for="(field, fieldKey) in fields"
+                :id="'edit_' + field.name"
+                :key="'edit_field_' + fieldKey"
+                cols="12"
+              >
+                <div v-if="field.type === 'select'">
+                  <v-select
+                    v-model="formData[field.name]"
+                    outlined
+                    :label="field.label"
+                    :items="data[field.data]"
+                    :rules="field.rules"
+                  />
+                </div>
+                <div v-else-if="field.type !== 'checkbox'">
+                  <v-text-field
+                    v-model="formData[field.name]"
+                    :label="field.label"
+                    outlined
+                    :type="field.type"
+                    :disabled="field.disabled"
+                    :rules="field.rules"
+                    class="pa-0"
+                  />
+                </div>
+                <div v-if="field.type === 'checkbox'">
+                  <v-checkbox
+                    v-model="formData[field.name]"
+                    :label="field.label"
+                  />
+                </div>
+              </v-col>
+            </v-row>
+            <v-btn
+              class="primary"
+              type="submit"
+            >
+              Update Profile
+            </v-btn>
+          </v-container>
+        </v-form>
       </v-col>
     </v-row>
   </v-container>
@@ -72,7 +94,7 @@ export default {
     return {
       message: null,
       error: null,
-      valid: false,
+      valid: true,
       loading: false,
       rules: {
         isRequired: () => isRequired(),
@@ -165,11 +187,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('users',['currentPublicUser']),
+    ...mapState('users',['currentPublicUser','messages']),
     formData: function () {
       if (this.currentPublicUser.preferences) {
         return {
           username: this.currentPublicUser.username,
+          id: this.$route.params.id,
           email: this.currentPublicUser.email,
           preferences_hide: this.currentPublicUser['preferences']['hide_email'],
           preferences_send: this.currentPublicUser['preferences']['email_updates'],
@@ -189,7 +212,7 @@ export default {
     this.data.profileTypes = await restClient.getProfileTypes();
   },
   methods: {
-    ...mapActions('users', ['getPublicUserForModification']),
+    ...mapActions('users', ['getPublicUserForModification','updatePublicUser']),
     async updatePublicProfile () {
       this.loading = true;
       let data = JSON.parse(JSON.stringify(this.formData));
@@ -197,7 +220,9 @@ export default {
         hide_email: this.formData.preferences_hide,
         email_updates: this.formData.preferences_send
       };
-      // await this.updateUser(data);
+      await this.updatePublicUser(data);
+      this.loading = false;
+      this.$scrollTo('body',1000,{})
     }
   }
 }

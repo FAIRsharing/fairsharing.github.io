@@ -276,6 +276,7 @@ let routes = [
         component: EditPublicProfile,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
+            isSuperCurator(to, from, next, store);
         }
     },
     {
@@ -284,6 +285,7 @@ let routes = [
         component: UsersList,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
+            isSuperCurator(to, from, next, store);
         }
     },
     // CURATORS
@@ -374,7 +376,19 @@ export function isLoggedIn(to, from, next, store) {
             query: {goTo: target}
         });
     }
+}
 
+export function isSuperCurator(to, from, next, store) {
+    if (store.state.users.user().is_super_curator) {
+        next()
+    }
+    else {
+        const target = to.path;
+        next({
+            name: "Login", // back to safety route //
+            query: {goTo: target}
+        });
+    }
 }
 
 export function isMaintenanceMode(to, from, next, store){

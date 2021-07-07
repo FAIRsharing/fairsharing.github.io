@@ -94,6 +94,19 @@ export const mutations = {
     setUsersList(state,usersList) {
         state.usersList = usersList;
     },
+    setCurrentPublicUser(state,user) {
+        state.currentPublicUser = {
+            username: user.username,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            homepage: user.homepage,
+            twitter: user.twitter,
+            orcid: user.orcid,
+            profile_type: user.profile_type,
+            preferences: user.preferences
+        }
+    },
     setUserMeta(state, metadata){
         let user = JSON.parse(localStorage.getItem("user"));
         if (user) {
@@ -276,6 +289,18 @@ export const actions = {
             });
         }
     },
+    async getPublicUserForModification(state,id) {
+        try {
+            let userData = await client.getPublicUser(state.state.user().credentials.token,id);
+            this.commit('users/setCurrentPublicUser', userData.user);
+        }
+        catch (e) {
+            this.commit("users/setError", {
+                field: "getPublicUser",
+                message: e.message
+            });
+        }
+    },
     async getUserMeta(state){
         try {
             let metadata = await client.getUser(state.state.user().credentials.token);
@@ -398,7 +423,18 @@ let currentUser = {
         messages: function(){
             return initStateMessages();
         },
-        usersList:[]
+        usersList:[],
+        currentPublicUser: {
+            username: null,
+            email: null,
+            first_name: null,
+            last_name: null,
+            homepage: null,
+            twitter: null,
+            orcid: null,
+            profile_type: null,
+            preferences: {}
+        }
     },
     mutations: mutations,
     actions: actions,

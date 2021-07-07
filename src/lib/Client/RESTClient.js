@@ -202,6 +202,22 @@ class RESTClient {
     }
 
     /**
+     * Get the current user data
+     * @param jwt
+     * @param id
+     * @returns {Promise}
+     */
+    async getPublicUser(jwt,id){
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + `/user_admin/${id}`,
+            headers: this.auth_headers(jwt)
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Get all users list
      * @param jwt
      * @returns {Promise}

@@ -1,0 +1,294 @@
+{
+  "subtitle": "Sansone, McQuilton, Rocca-Serra et al. FAIRsharing as a community approach to standards, repositories and policies. Nat Biotech. 37, 358–367(2019).\nhttps://doi.org/10.1038/s41587-019-0080-8\n",
+  "externalLinks": [
+    {
+      "title": "“EOSC Strategic Research and Innovation Agenda\" 2021",
+      "titleLink": "https://www.eosc.eu/sites/default/files/EOSC-SRIA-V1.0_15Feb2021.pdf",
+      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
+    },
+    {
+      "title": "“Recommendations on certifying services required to enable FAIR within EOSC” 2021",
+      "titleLink": "https://doi.org/10.2777/127253",
+      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
+    },
+    {
+      "title": "“FAIR Metrics for EOSC” 2021",
+      "titleLink": "https://doi.org/10.2777/70791",
+      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
+    },
+    {
+      "title": "“Six Recommendations for implementation of FAIR practice” 2020",
+      "titleLink": "https://doi.org/10.2777/986252",
+      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
+    },
+    {
+      "title": "“Country Sheets Analysis” 2020",
+      "titleLink": "https://doi.org/10.2777/568900",
+      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
+    },
+    {
+      "title": "“Horizon 2020 projects working on COVID-19, SARS-CoV-2 and related topics” 2020",
+      "titleLink": "https://ec.europa.eu/research/participants/data/ref/h2020/other/hi/oa-pilot/h2020-guidelines-oa-covid-19_en.pdf",
+      "text": " Funder: EU H2020\nDiscipline: Coronavirus research "
+    },
+    {
+      "title": "“Horizon 2020 Annotated Grant Agreement” 2019",
+      "titleLink": "https://ec.europa.eu/research/participants/data/ref/h2020/grants_manual/amga/h2020-amga_en.pdf",
+      "text": " Funder: EU H2020\nDiscipline: All "
+    },
+    {
+      "title": "“Sustainable and FAIR Data Sharing in the Humanities” 2020",
+      "titleLink": "https://doi.org/10.7486/DRI.tq582c863",
+      "text": " Federation: Academies of Sciences and Humanities - ALLEA\nDiscipline: Humanities "
+    },
+    {
+      "title": "“Open Research Data and Data Management Plans” 2019",
+      "titleLink": "https://erc.europa.eu/sites/default/files/document/file/ERC_info_document-Open_Research_Data_and_Data_Management_Plans.pdf",
+      "text": " Funder: European Research Council - ERC\nDiscipline: All "
+    },
+    {
+      "title": "“Turning FAIR into Reality” 2018",
+      "titleLink": "https://doi.org/10.2777/1524",
+      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
+    },
+    {
+      "title": "“Open Research Data Task Force Case Study” 2018",
+      "titleLink": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/775379/Case-studies-ORDTF-July-2018.pdf",
+      "text": " Governamental: UK Open Research Data Task Force\nDiscipline: All "
+    },
+    {
+      "title": "“Framework for Discipline-specific Research Data Management” 2018",
+      "titleLink": "https://www.scienceeurope.org/wp-content/uploads/2018/01/SE_Guidance_Document_RDMPs.pdf",
+      "text": " Funders Association: Science Europe\nDiscipline: All "
+    }
+  ],
+  "contentTabs": [
+    {
+      "name": "Activities",
+      "icon": "activities",
+      "description": "Guidance and tools we lead on or contribute to."
+    },
+    {
+      "name": "Adopters",
+      "icon": "adopters",
+      "description": "Lighthouse stakeholders from our user base."
+    },
+    {
+      "name": "Governance",
+      "icon": "governance",
+      "description": "Our international Advisory Board and Team."
+    }
+  ],
+  "tables": {
+    "adopterTable": {
+      "tabs": [
+        "Logo",
+        "adopter",
+        "Associated FAIRsharing Record"
+      ],
+      "data": [
+        {
+          "image": "assets/Community/elife.jpg",
+          "adopter": "eLIFE",
+          "associated": "Policy",
+          "associatedLink": "/FAIRsharing.F0QmCP"
+        },
+        {
+          "image": "assets/Community/elsevier.png",
+          "adopter": "Elsevier",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000041"
+        },
+        {
+          "image": "assets/Community/embo_logo.png",
+          "adopter": "EMBO Press",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000014"
+        },
+        {
+          "image": "assets/Community/logo_faculty_1000.png",
+          "adopter": "Faculty of 1000",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000010"
+        },
+        {
+          "image": "assets/Community/logo_giga_science.png",
+          "adopter": "GigaScience",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000036"
+        },
+        {
+          "image": "assets/Community/PLOS_LOGO_black.png",
+          "adopter": "Public Library of Science (PLOS)",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000009"
+        },
+        {
+          "image": "assets/Community/biomed.png",
+          "adopter": "Springer Nature BioMed Central",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000007"
+        },
+        {
+          "image": "assets/Community/scientificData.png",
+          "adopter": "Springer Nature Scientific Data",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000001"
+        },
+        {
+          "image": "assets/Community/taylor_francis.png",
+          "adopter": "Taylor and Francis",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000059"
+        },
+        {
+          "image": "assets/Community/wellcome_bw.png",
+          "adopter": "Wellcome Open Research",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000031"
+        },
+        {
+          "image": "assets/Community/b2c-site-logo_desktop_optimized.png",
+          "adopter": "Wiley",
+          "associated": "Policy",
+          "associatedLink": "/FAIRsharing.xwnZRC"
+        }
+      ]
+    },
+    "globalOrganisationTable": {
+      "tabs": [
+        "Logo",
+        "Name"
+      ],
+      "data": [
+        {
+          "image": "assets/Community/RDA_logo_cbIKmKK.png",
+          "associated": "RDA",
+          "externalLink": "https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html"
+        },
+        {
+          "image": "assets/Community/logo_go-fair.png",
+          "associated": "GO-FAIR",
+          "externalLink": "https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
+        },
+        {
+          "image": "assets/Community/logo_force11.png",
+          "associated": "FORCE11",
+          "externalLink": "https://www.force11.org/group/biosharingwg"
+        }
+      ]
+    }
+  },
+  "governance": {
+    "Advisory Board": [
+      {
+        "title": "Executive Advisors",
+        "data": [
+          "<b>Peter McQuilton, </b>GSK",
+          "<b>Varsha Khodiyar, </b>Springer Nature, UK",
+          "<b>David Carr, </b>The Wellcome Trust and Wellcome Open Research, UK ",
+          "<b>Chris Graf, </b>Wiley, UK ",
+          "<b>Marta Teperek, </b>Data Stewardship Coordinator, TUDelft, The Netherlands",
+          "<b>Robert Hanisch, </b>Director of the Office of Data and Informatics, National Institute of Standards and Technology (NIST), USA"
+        ]
+      },
+      {
+        "title":"Stakeholder Advisors",
+        "data": [
+          "<b>Emma Ganley, </b>Director of Strategic Initiatives, Protocols.io, UK",
+          "<b>Michael Ball, </b>The Economic and Social Research Council (ESRC), UK",
+          "<b>Theo Bloom, </b>British Medical Journal (BMJ), UK",
+          "<b>Matthew Cannon, </b>Taylor and Francis, UK",
+          "<b>Wei-Mun Chan, </b>eLife, UK ",
+          "<b>Geraldine Clement-Stoneham, </b>Head of Knowledge Management and Scholarly Communication, Medical Research Council, UK",
+          "<b>Helena Cousijn, </b>Datacite, The Netherlands",
+          "<b>Scott Edmunds, </b>GigaScience, BGI, China",
+          "<b>Dominic Fripp, </b>JISC, UK",
+          "<b>Simon Hodson, </b>CODATA, France",
+          "<b>Iain Hrynaszkiewicz, </b>PLoS, UK",
+          "<b>Mike Huerta, </b>Coordinator of Data & and Open Science Initiative, Associate Director for Programme Development at the NIH National Library of Medicine, USA",
+          "<b>Amye Kenall, </b>VP of Publishing and Product, Research Square, UK",
+          "<b>Adam Leary, </b>Oxford University Press, UK",
+          "<b>Thomas Lemberger, </b>EMBO Press, UK",
+          "<b>Luiz Olavo Bonino, </b>GO-FAIR, The Netherlands ",
+          "<b>Kiera McNiece, </b>Cambridge University Press, UK ",
+          "<b>Dagmar Meyer, </b>European Research Council (ERC), Executive Agency, Belgium ",
+          "<b>Hollydawn Murray </b>Head of Data Publishing, F1000, UK",
+          "<b>Marina Soares E Silva, </b>Elsevier, The Netherlands ",
+          "<b>Imma Subirats, </b>Information Management Officer, FAO of the United Nations, Italy"
+        ]
+      }
+    ]
+  },
+  "meettheteam": {
+    "title": "Meet The Team",
+    "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk/#people' class='underline-effect' target='_blank'>Data Readiness Group</a>, the DOI generation is provided by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>, at the University of Oxford.\n    FAIRsharing also operates as a joint <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' target='_blank'>Force11/RDA working group</a>, reaching out to the broader community.\n",
+    "profiles": [
+      {
+        "name": "<a href='https://www.eng.ox.ac.uk/people/susanna-assunta-sansone/' class='underline-effect'>Susanna-Assunta Sansone</a>",
+        "role": "Principal Investigator and Founder",
+        "profileImg": "assets/Community/profiles/susanna.jpg",
+        "social": [
+          {"link": "https://sansonegroup.eng.ox.ac.uk/",
+            "icon": "home"
+          },
+          {"link": "https://orcid.org/0000-0001-5306-5690",
+            "icon": "Orcid"
+          },
+          {"link": "http://uk.linkedin.com/in/sasansone","icon": "linkedin"},
+          {"link": "http://www.twitter.com/SusannaASansone","icon": "twitter"},
+          {"link": "susanna-assunta.sansone@oerc.ox.ac.uk","icon": "contacts"}
+        ]
+      },
+      {
+        "name": "<a href='http://www.oerc.ox.ac.uk/people/philippe-rocca-serra' class='underline-effect'>Philippe Rocca-Serra</a>",
+        "role": "Co-Founder",
+        "profileImg": "assets/Community/profiles/philippe.jpg",
+        "social": [
+          {"link": "https://eng.ox.ac.uk/people/philippe-rocca-serra/",
+            "icon": "home"
+          },
+          {"link": "https://orcid.org/0000-0001-9853-5668",
+            "icon": "Orcid"
+          },
+          {"link": "http://uk.linkedin.com/in/philipperoccaserra","icon": "linkedin"},
+          {"link": "http://www.twitter.com/Phil_at_OeRC","icon": "twitter"},
+          {"link": "http://github.com/proccaserra","icon": "github"},
+          {"link": "philippe.rocca-serra@oerc.ox.ac.uk","icon": "contacts"}
+        ]
+      },
+      {
+        "name": "<a href='https://www.eng.ox.ac.uk/people/milo-thurston/' class='underline-effect'>Milo Thurston</a>",
+        "role": "Technical Coordinator",
+        "profileImg": "assets/Community/profiles/milo.jpg",
+        "social": [
+          {"link": "https://www.eng.ox.ac.uk/people/milo-thurston/",
+            "icon": "home"
+          },
+          {"link": "https://orcid.org/0000-0002-6468-9260",
+            "icon": "Orcid"
+          },
+          {"link": "https://www.linkedin.com/in/milo-thurston-86557510/","icon": "linkedin"},
+          {"link": "https://github.com/knirirr","icon": "github"},
+          {"link": "milo.thurston@oerc.ox.ac.uk","icon": "contacts"}
+        ]
+      },
+      {
+        "name": "<a href='https://www.eng.ox.ac.uk/people/allyson-lister/' class='underline-effect'>Allyson Lister</a>",
+        "role": "Content and Community Coordinator",
+        "profileImg": "assets/Community/profiles/allyson.jpg",
+        "social": [
+          {"link": "https://www.eng.ox.ac.uk/people/allyson-lister/",
+            "icon": "home"
+          },
+          {"link": "https://orcid.org/0000-0002-7702-4495",
+            "icon": "Orcid"
+          },
+          {"link": "https://www.linkedin.com/in/allysonlister/","icon": "linkedin"},
+          {"link": "https://github.com/allysonlister","icon": "github"},
+          {"link": "allyson.lister@oerc.ox.ac.uk","icon": "contacts"}
+        ]
+      }
+    ]
+  }
+}

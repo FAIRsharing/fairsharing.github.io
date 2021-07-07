@@ -291,14 +291,34 @@ export const actions = {
     },
     async getPublicUserForModification(state,id) {
         try {
-            let userData = await client.getPublicUser(state.state.user().credentials.token,id);
-            this.commit('users/setCurrentPublicUser', userData.user);
+            let {user} = await client.getPublicUser(state.state.user().credentials.token, id);
+            this.commit('users/setCurrentPublicUser', user);
         }
         catch (e) {
             this.commit("users/setError", {
                 field: "getPublicUser",
                 message: e.message
             });
+        }
+    },
+    async updatePublicUser(state, user){
+        try {
+            let response = await client.editPublicUser(user, state.state.user().credentials.token);
+            if (response.error) {
+                this.commit("users/setError", {
+                    field: "updateProfile",
+                    message: response.error.response.data.errors
+                })
+            }
+            else {
+                this.commit("users/setMessage", {
+                    field: "updateProfile",
+                    message: "Update successful !"
+                })
+            }
+        }
+        catch(e) {
+            this.commit("users/setError", {field: "updateProfile", message: e.message})
         }
     },
     async getUserMeta(state){

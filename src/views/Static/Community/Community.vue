@@ -1,9 +1,5 @@
 <template>
   <main :class="applyCss?'pa-15 mb-10':''">
-    <!--  main_title_2 -->
-    <h1 class="text-h6 text-xl-h5 mb-2 mb-xl-6">
-      How to cite FAIRsharing:
-    </h1>
 
     <!-- eslint-disable vue/no-v-html -->
     <p

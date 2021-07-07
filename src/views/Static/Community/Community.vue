@@ -1,12 +1,12 @@
 <template>
   <main :class="applyCss?'pa-15 mb-10':''">
+    <!--  main_title_2 -->
 
-    <!-- eslint-disable vue/no-v-html -->
-    <p
-      v-linkified:options="{ className: 'underline-effect' }"
-      :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      v-html="$sanitize(subtitle)"
-    />
+    <h1>Community: adopters, activities and governance</h1>
+    <h2>FAIRsharing is a community-driven resource with a growing number of users and collaborators,
+      all working to enable the FAIR Principles and to make standards, databases and policies FAIR.</h2>
+
+    <br/>
 
     <p
       :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"

@@ -272,7 +272,7 @@ let routes = [
     },
     {
         name: "EditPublicProfile",
-        path: "/profiles/editPublicProfile",
+        path: "/profiles/editPublicProfile/:id",
         component: EditPublicProfile,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);

@@ -68,7 +68,7 @@
                           }
                           else if ((_module.viewingId !== Number(_module.user().id) && _module.viewingId) && (_module.user().role === 'developer' || _module.user().role === 'super_curator')) {
                             _module.$router.push({
-                              path: "/profiles/editPublicProfile"
+                              path: "/profiles/editPublicProfile/" + _module.viewingId
                             })
                           }
                           else {

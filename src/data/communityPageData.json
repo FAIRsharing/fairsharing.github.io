@@ -1,5 +1,4 @@
 {
-  "subtitle": "Sansone, McQuilton, Rocca-Serra et al. FAIRsharing as a community approach to standards, repositories and policies. Nat Biotech. 37, 358–367(2019).\nhttps://doi.org/10.1038/s41587-019-0080-8\n",
   "externalLinks": [
     {
       "title": "“EOSC Strategic Research and Innovation Agenda\" 2021",
@@ -222,7 +221,7 @@
   },
   "meettheteam": {
     "title": "Meet The Team",
-    "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk/#people' class='underline-effect' target='_blank'>Data Readiness Group</a>, the DOI generation is provided by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>, at the University of Oxford.\n    FAIRsharing also operates as a joint <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' target='_blank'>Force11/RDA working group</a>, reaching out to the broader community.\n",
+    "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk/' class='underline-effect' target='_blank'>Data Readiness Group</a> and DOI generation is provided by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>, at the University of Oxford.\n",
     "profiles": [
       {
         "name": "<a href='https://www.eng.ox.ac.uk/people/susanna-assunta-sansone/' class='underline-effect'>Susanna-Assunta Sansone</a>",

@@ -3,55 +3,10 @@
     <!--  main_title_2 -->
 
     <h1>Community: adopters, activities and governance</h1>
-    <h2>FAIRsharing is a community-driven resource with a growing number of users and collaborators,
-      all working to enable the FAIR Principles and to make standards, databases and policies FAIR.</h2>
-
-    <br/>
-
-    <p
-      :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
-    </p>
-
-    <!--  External Links  -->
-    <v-row
-      class="mt-2"
-    >
-      <v-col
-        v-for="(item,index) in externalLinks"
-        :key="index+'_'+item.titleLink"
-        cols="12"
-        md="12"
-        lg="4"
-        :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
-      >
-        <a
-          :href="item.titleLink"
-          target="_blank"
-        >
-          <p
-            :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-          >
-            {{ item.title }}
-          </p>
-        </a>
-        <p
-          :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-        >
-          {{ item.text }}
-        </p>
-      </v-col>
-    </v-row>
-
-    <p
-      :class="['mb-0 mt-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      Learn more about the FAIRsharing community, and please do not hesitate to <a
-        href="mailto:contact@fairsharing.org"
-        class="underline-effect"
-      >contact</a> us if you are interested in working with us.
-    </p>
+    <h2>
+      FAIRsharing is a community-driven resource with a growing number of users and collaborators,
+      all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
+    </h2>
 
     <!-- Adopters, activities, Governance tabs-->
     <v-container class="my-10">
@@ -101,31 +56,55 @@
       </v-row>
     </v-container>
 
+    <p
+      :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
+    </p>
+
+    <!--  External Links  -->
+    <v-row
+      class="mt-2"
+    >
+      <v-col
+        v-for="(item,index) in externalLinks"
+        :key="index+'_'+item.titleLink"
+        cols="12"
+        md="12"
+        lg="4"
+        :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+      >
+        <a
+          :href="item.titleLink"
+          target="_blank"
+        >
+          <p
+            :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+          >
+            {{ item.title }}
+          </p>
+        </a>
+        <p
+          :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        >
+          {{ item.text }}
+        </p>
+      </v-col>
+    </v-row>
+
+    <p
+      :class="['mb-0 mt-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Learn more about the FAIRsharing community, and please do not hesitate to <a
+        href="mailto:contact@fairsharing.org"
+        class="underline-effect"
+      >contact</a> us if you are interested in working with us.
+    </p>
+
+
+
     <!--  content  -->
 
-    <!-- Activities   -->
-    <section id="activities">
-      <h3 class="text-h4 mb-4">
-        Activities
-      </h3>
-      <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
-      </p>
-      <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
-      </p>
-      <b
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
-      </b>
-      <!--Activities table-->
-      <ActivitiesStaticTable class="mb-16 mt-2" />
-    </section>
 
     <!-- Adopters   -->
     <section id="adopters">
@@ -306,6 +285,31 @@
       </v-simple-table>
     </section>
 
+    <!-- Activities   -->
+    <section id="activities">
+      <h3 class="text-h4 mb-4">
+        Activities
+      </h3>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
+      </p>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
+      </p>
+      <b
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
+      </b>
+      <!--Activities table-->
+      <ActivitiesStaticTable class="mb-16 mt-2" />
+    </section>
+
+
     <!-- Governance   -->
     <section id="governance">
       <h3 class="text-h4 mb-4">
@@ -404,7 +408,7 @@
 * @namespace Static
 */
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import {subtitle,externalLinks,contentTabs,tables,governance,meettheteam} from "@/data/communityPageData.json"
+import {externalLinks, contentTabs, tables, governance, meettheteam} from "@/data/communityPageData.json"
 import Icon from "@/components/Icon";
 
 /** This component handles the sign-up/register page
@@ -421,7 +425,6 @@ export default {
     return {
       applyCss: false,
       currentAnchor:'',
-      subtitle,
       externalLinks,
       contentTabs,
       tables,

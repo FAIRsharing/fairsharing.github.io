@@ -13,6 +13,7 @@
           class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
           text-color="white"
+          @click="returnToSearch('subjects', item.label)"
         >
           <KeywordTooltip
             :keyword="item"
@@ -34,6 +35,7 @@
           class="mr-2 mb-2 text-capitalize"
           :color="getChipColor(item)"
           text-color="white"
+          @click="returnToSearch('domains', item.label)"
         >
           <KeywordTooltip
             :keyword="item"
@@ -55,6 +57,7 @@
           class="mr-2 mb-2 text-capitalize"
           text-color="white"
           :color="getChipColor(item)"
+          @click="returnToSearch('taxonomies', item.label)"
         >
           <KeywordTooltip
             :keyword="item"
@@ -76,6 +79,7 @@
           class="mr-2 mb-2 text-capitalize"
           text-color="white"
           :color="getChipColor(item)"
+          @click="returnToSearch('userDefinedTags', item.label)"
         >
           <KeywordTooltip
             :keyword="item"
@@ -99,6 +103,11 @@ export default {
   mixins: [recordsCardUtils],
   computed: {
     ...mapGetters("record", ["getField"])
+  },
+  methods: {
+    returnToSearch(field, item) {
+      this.$router.push({path: `/search?${field}=${item}`})
+    }
   }
 }
 </script>

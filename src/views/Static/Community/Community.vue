@@ -189,6 +189,7 @@
                   :src="item.image"
                   height="120"
                   contain
+                  style="filter: grayscale(1);"
                 />
               </td>
               <td
@@ -253,6 +254,7 @@
                   :src="item.image"
                   height="120"
                   contain
+                  style="filter: grayscale(1);"
                 />
               </td>
               <td
@@ -329,8 +331,11 @@
           :key="`${profileItem}_${index}`"
           :class="['text-center width-250 height-400 mb-10',$vuetify.breakpoint.mdAndDown?'mx-auto':'']"
         >
-          <v-avatar size="200">
-            <v-img :src="profileItem.profileImg" />
+          <v-avatar size="160">
+            <v-img 
+              :src="profileItem.profileImg"
+              style="filter: grayscale(1);"
+            />
           </v-avatar>
           <a
             class="text-center lato-font-bold mt-2 ma-0 underline-effect"

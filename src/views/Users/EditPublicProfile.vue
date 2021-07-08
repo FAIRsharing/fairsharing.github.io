@@ -63,7 +63,7 @@
                 <div v-if="field.type === 'switch'">
                   <v-switch
                     v-model="formData[field.name]"
-                    :label="formData[field.name]?'Switch off to activate user account':field.label"
+                    :label="formData[field.name]?'Switch off to deactivate user account':field.label"
                   />
                 </div>
                 <div v-if="field.type === 'select'">
@@ -253,7 +253,7 @@ export default {
         },
         {
           name: "deactivated",
-          label: "Switch on to deactivate user account",
+          label: "Switch on to activate user account",
           hint: null,
           type: "switch"
         }
@@ -292,7 +292,7 @@ export default {
       this.formData.profile_type = this.currentPublicUser.profile_type;
       this.formData.orcid = this.currentPublicUser.orcid;
       this.formData.twitter = this.currentPublicUser.twitter;
-      this.formData.deactivated = this.currentPublicUser.deactivated;
+      this.formData.deactivated = !this.currentPublicUser.deactivated;
     }
   },
   beforeDestroy() {
@@ -308,6 +308,7 @@ export default {
         hide_email: this.formData.preferences_hide,
         email_updates: this.formData.preferences_send
       };
+      data.deactivated = !data.deactivated
       await this.updatePublicUser(data);
       this.loading = false;
       this.$scrollTo('body',1000,{})

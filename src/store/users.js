@@ -104,7 +104,8 @@ export const mutations = {
             twitter: user.twitter,
             orcid: user.orcid,
             profile_type: user.profile_type,
-            preferences: user.preferences
+            preferences: user.preferences,
+            deactivated: user.deactivated
         }
     },
     setUserMeta(state, metadata){
@@ -321,6 +322,26 @@ export const actions = {
             this.commit("users/setError", {field: "updateProfile", message: e.message})
         }
     },
+    async deletePublicUser(state, userId){
+        try {
+            let response = await client.deletePublicUser(userId, state.state.user().credentials.token);
+            if (response.error) {
+                this.commit("users/setError", {
+                    field: "deletePublicUser",
+                    message: response.error.response.data.errors
+                })
+            }
+            else {
+                this.commit("users/setMessage", {
+                    field: "deletePublicUser",
+                    message: "Delete successful !"
+                })
+            }
+        }
+        catch(e) {
+            this.commit("users/setError", {field: "updateProfile", message: e.message})
+        }
+    },
     async getUserMeta(state){
         try {
             let metadata = await client.getUser(state.state.user().credentials.token);
@@ -453,7 +474,8 @@ let currentUser = {
             twitter: null,
             orcid: null,
             profile_type: null,
-            preferences: {}
+            preferences: {},
+            deactivated:null
         }
     },
     mutations: mutations,

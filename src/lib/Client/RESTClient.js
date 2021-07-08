@@ -265,6 +265,21 @@ class RESTClient {
         return response.data;
     }
     /**
+     * Delete the user
+     * @param userID
+     * @param {String} jwt - JWT of the logged in user
+     * @returns {Promise}
+     */
+    async deletePublicUser(userID, jwt){
+        const request = {
+            method: "delete",
+            baseURL: this.baseURL + `/user_admin/${userID}` ,
+            headers: this.auth_headers(jwt),
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+    /**
      * Verify that the given JWT is still valid
      * @param {String} jwt - the token to validate
      * @returns {Promise}

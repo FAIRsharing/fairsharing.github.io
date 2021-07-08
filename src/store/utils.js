@@ -4,6 +4,7 @@ export const initStateMessages = function(){
         "logout",
         "getUser",
         "getPublicUser",
+        "deletePublicUser",
         "resetPassword",
         "sendResetEmail",
         "changePassword",

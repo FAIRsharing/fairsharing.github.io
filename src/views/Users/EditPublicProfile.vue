@@ -1,6 +1,9 @@
 <template>
   <v-container class="mb-10">
-    <v-row class="justify-center">
+    <v-row
+      v-if="!messages().getPublicUser.message"
+      class="justify-center"
+    >
       <v-col
         cols="12"
         sm="12"
@@ -8,7 +11,7 @@
         lg="10"
         xl="8"
       >
-        <!--   Error Handling     -->
+        <!--   Error Handling for update user action     -->
         <div v-if="messages().updateProfile.message">
           <v-alert
             v-if="messages().updateProfile.error"
@@ -25,21 +28,44 @@
           </v-alert>
         </div>
 
+        <!--   Error Handling for delete user action     -->
+        <div v-if="messages().deletePublicUser.message">
+          <v-alert
+            v-if="messages().deletePublicUser.error"
+            class="white--text"
+            type="error"
+          >
+            {{ messages().deletePublicUser.error }}
+          </v-alert>
+          <v-alert
+            v-else
+            type="success"
+          >
+            {{ messages().deletePublicUser.message }}
+          </v-alert>
+        </div>
+
         <v-form
           v-model="valid"
           @submit.prevent="valid ? updatePublicProfile() : valid=false"
         >
           <v-card-title class="primary white--text">
-            <h2> Edit Public profile of {{ $route.params.id }}</h2>
+            <h2> Edit Public profile of User ID: {{ $route.params.id }}</h2>
           </v-card-title>
           <v-container class="text-center elevation-3 pa-5">
             <v-row>
               <v-col
                 v-for="(field, fieldKey) in fields"
                 :id="'edit_' + field.name"
-                :key="'edit_field_' + fieldKey"
+                :key="field.name+'_' + fieldKey"
                 cols="12"
               >
+                <div v-if="field.type === 'switch'">
+                  <v-switch
+                    v-model="formData[field.name]"
+                    :label="formData[field.name]?'Switch off to activate user account':field.label"
+                  />
+                </div>
                 <div v-if="field.type === 'select'">
                   <v-select
                     v-model="formData[field.name]"
@@ -49,7 +75,7 @@
                     :rules="field.rules"
                   />
                 </div>
-                <div v-else-if="field.type !== 'checkbox'">
+                <div v-if="field.type === 'input'">
                   <v-text-field
                     v-model="formData[field.name]"
                     :label="field.label"
@@ -69,15 +95,31 @@
               </v-col>
             </v-row>
             <v-btn
-              class="primary"
+              class="primary mr-5 white--text"
               type="submit"
+              outlined
             >
               Update Profile
+            </v-btn>
+            <v-btn
+              color="error"
+              text
+              outlined
+              @click.prevent="deleteAccount()"
+            >
+              Delete Account!
             </v-btn>
           </v-container>
         </v-form>
       </v-col>
     </v-row>
+    <v-alert
+      v-else
+      class="white--text"
+      type="error"
+    >
+      {{ messages().getPublicUser.message }}
+    </v-alert>
   </v-container>
 </template>
 
@@ -94,7 +136,7 @@ export default {
     return {
       message: null,
       error: null,
-      valid: true,
+      valid: false,
       loading: false,
       rules: {
         isRequired: () => isRequired(),
@@ -183,36 +225,52 @@ export default {
           hint: null,
           type: "checkbox"
         },
+        {
+          name: "deactivated",
+          label: "Switch on to deactivate user account",
+          hint: null,
+          type: "switch"
+        }
       ],
+      formData:{
+        username: null,
+        id: null,
+        email: null,
+        preferences_hide: null,
+        preferences_send: null,
+        first_name: null,
+        last_name: null,
+        homepage: null,
+        profile_type: null,
+        orcid: null,
+        twitter: null,
+        deactivated:null
+      }
     }
   },
   computed: {
     ...mapState('users',['currentPublicUser','messages']),
-    formData: function () {
-      if (this.currentPublicUser.preferences) {
-        return {
-          username: this.currentPublicUser.username,
-          id: this.$route.params.id,
-          email: this.currentPublicUser.email,
-          preferences_hide: this.currentPublicUser['preferences']['hide_email'],
-          preferences_send: this.currentPublicUser['preferences']['email_updates'],
-          first_name: this.currentPublicUser.first_name,
-          last_name: this.currentPublicUser.last_name,
-          homepage: this.currentPublicUser.homepage,
-          profile_type: this.currentPublicUser.profile_type,
-          orcid: this.currentPublicUser.orcid,
-          twitter: this.currentPublicUser.twitter
-        }
-      }
-      return null;
-    }
   },
   async created() {
     await this.getPublicUserForModification(this.$route.params.id);
     this.data.profileTypes = await restClient.getProfileTypes();
+    if (this.currentPublicUser.preferences) {
+      this.formData.username = this.currentPublicUser.username;
+      this.formData.id = this.$route.params.id;
+      this.formData.email = this.currentPublicUser.email;
+      this.formData.preferences_hide = this.currentPublicUser['preferences']['hide_email'];
+      this.formData.preferences_send = this.currentPublicUser['preferences']['email_updates'];
+      this.formData.first_name = this.currentPublicUser.first_name;
+      this.formData.last_name = this.currentPublicUser.last_name;
+      this.formData.homepage = this.currentPublicUser.homepage;
+      this.formData.profile_type = this.currentPublicUser.profile_type;
+      this.formData.orcid = this.currentPublicUser.orcid;
+      this.formData.twitter = this.currentPublicUser.twitter;
+      this.formData.deactivated = this.currentPublicUser.deactivated;
+    }
   },
   methods: {
-    ...mapActions('users', ['getPublicUserForModification','updatePublicUser']),
+    ...mapActions('users', ['getPublicUserForModification','updatePublicUser','deletePublicUser']),
     async updatePublicProfile () {
       this.loading = true;
       let data = JSON.parse(JSON.stringify(this.formData));
@@ -221,6 +279,12 @@ export default {
         email_updates: this.formData.preferences_send
       };
       await this.updatePublicUser(data);
+      this.loading = false;
+      this.$scrollTo('body',1000,{})
+    },
+    async deleteAccount() {
+      this.loading = true;
+      await this.deletePublicUser(this.$route.params.id);
       this.loading = false;
       this.$scrollTo('body',1000,{})
     }

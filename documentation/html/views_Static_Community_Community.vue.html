@@ -381,7 +381,7 @@
           :class="['text-center width-250 height-400 mb-10',$vuetify.breakpoint.mdAndDown?'mx-auto':'']"
         >
           &lt;v-avatar size="160">
-            &lt;v-img 
+            &lt;v-img
               :src="profileItem.profileImg"
               style="filter: grayscale(1);"
             />
@@ -434,7 +434,7 @@
               &lt;h4 class="text-h5">
                 {{ item.title }}
               &lt;/h4>
-              &lt;ul class="mt-2 column-count">
+              &lt;ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
                 &lt;li
                   v-for="(itemData,itemDataIndex) in item.data"
                   :key="itemData+'_'+itemDataIndex"

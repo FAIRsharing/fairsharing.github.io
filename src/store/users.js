@@ -172,6 +172,19 @@ export const mutations = {
                 role: previousState.role
             }
         };
+        state.usersList = [];
+        state.currentPublicUser = {
+            username: null,
+            email: null,
+            first_name: null,
+            last_name: null,
+            homepage: null,
+            twitter: null,
+            orcid: null,
+            profile_type: null,
+            preferences: {},
+            deactivated: null
+        }
     },
     changeWatched(state, watchedRecords) {
         let user = state.user();

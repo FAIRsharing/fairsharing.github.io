@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex"
+import {mapActions, mapMutations, mapState} from "vuex"
 
 export default {
   name: "UsersList",
@@ -54,15 +54,19 @@ export default {
     }
   },
   computed: {
-    ...mapState('users', ['usersList'])
+    ...mapState('users', ['usersList']),
   },
   async mounted() {
     this.loading = true;
     await this.getUsersList()
     this.loading = false;
   },
+  beforeDestroy() {
+    this.cleanStore();
+  },
   methods: {
-    ...mapActions('users', ['getUsersList'])
+    ...mapActions('users', ['getUsersList']),
+    ...mapMutations('users', ['cleanStore'])
   }
 }
 </script>

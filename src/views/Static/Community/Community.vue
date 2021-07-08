@@ -1,16 +1,60 @@
 <template>
   <main :class="applyCss?'pa-15 mb-10':''">
     <!--  main_title_2 -->
-    <h1 class="text-h6 text-xl-h5 mb-2 mb-xl-6">
-      How to cite FAIRsharing:
-    </h1>
 
-    <!-- eslint-disable vue/no-v-html -->
-    <p
-      v-linkified:options="{ className: 'underline-effect' }"
-      :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      v-html="$sanitize(subtitle)"
-    />
+    <h1>Community: adopters, activities and governance</h1>
+    <h2>
+      FAIRsharing is a community-driven resource with a growing number of users and collaborators,
+      all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
+    </h2>
+
+    <!-- Adopters, activities, Governance tabs-->
+    <v-container class="my-10">
+      <v-row
+        class="block-category"
+      >
+        <v-col
+          v-for="(tab,index) in contentTabs"
+          :key="tab.name+'_'+index"
+          cols="12"
+          sm="12"
+          md="4"
+          lg="4"
+        >
+          <v-card
+            class="mx-auto block-category__card cursor-pointer"
+            max-width="350"
+            height="300"
+            @click="jumpToAnchor(tab.name.toLowerCase())"
+          >
+            <div class="white--text d-flex flex-column justify-center block-category__card__gradient">
+              <div
+                style="height: 136px"
+                class="d-flex justify-center"
+              >
+                <v-icon
+                  size="80"
+                  color="white"
+                  style="opacity: .7"
+                >
+                  {{ $vuetify.icons.values[tab.icon].icon }}
+                </v-icon>
+              </div>
+              <v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
+                {{ tab.name }}
+              </v-card-title>
+            </div>
+            <v-card-text
+              class="text--primary text-justify"
+            >
+              <p class="text-center">
+                {{ tab.description }}
+              </p>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <p
       :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -48,88 +92,8 @@
       </v-col>
     </v-row>
 
-    <p
-      :class="['mb-0 mt-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      Learn more about the FAIRsharing community, and please do not hesitate to <a
-        href="mailto:contact@fairsharing.org"
-        class="underline-effect"
-      >contact</a> us if you are interested in working with us.
-    </p>
-
-    <!-- Adopters, activities, Governance tabs-->
-    <v-container class="my-10">
-      <v-row
-        class="block-category"
-      >
-        <v-col
-          v-for="(tab,index) in contentTabs"
-          :key="tab.name+'_'+index"
-          cols="12"
-          sm="12"
-          md="4"
-          lg="4"
-        >
-          <v-card
-            class="mx-auto block-category__card cursor-pointer"
-            max-width="350"
-            height="300"
-            @click="jumpToAnchor(tab.name.toLowerCase())"
-          >
-            <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
-              <div
-                style="height: 136px"
-                class="d-flex justify-center"
-              >
-                <v-icon
-                  size="80"
-                  color="white"
-                  style="opacity: .7"
-                >
-                  {{ $vuetify.icons.values[tab.icon].icon }}
-                </v-icon>
-              </div>
-              <v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
-                {{ tab.name }}
-              </v-card-title>
-            </div>
-            <v-card-text
-              class="text--primary text-justify"
-            >
-              <p class="text-center">
-                {{ tab.description }}
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-
     <!--  content  -->
 
-    <!-- Activities   -->
-    <section id="activities">
-      <h3 class="text-h4 mb-4">
-        Activities
-      </h3>
-      <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
-      </p>
-      <p
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
-      </p>
-      <b
-        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
-      </b>
-      <!--Activities table-->
-      <ActivitiesStaticTable class="mb-16 mt-2" />
-    </section>
 
     <!-- Adopters   -->
     <section id="adopters">
@@ -144,13 +108,14 @@
       <ul>
         <li><b class="mr-4">i:</b>Educate their users/community on the variety of existing standards, repositories and policies, and actively encourage them to submit/claim records, where relevant;</li>
         <li>
-          <b class="mr-3">ii:</b>Create <router-link
+          <b class="mr-3">ii:</b>Recommend resources by registering their data policy, and then link it to standards and/or databases
+          <router-link
             to="/search?isRecommended=true"
             target="_blank"
             class="underline-effect"
           >
-            Recommendations
-          </router-link> by registering their data policy, and then link it to standards and/or databases recommended in the policy; and/or
+            recommended
+          </router-link> in the policy; and/or
         </li>
         <li>
           <b class="mr-2">iii:</b>Create a <router-link
@@ -182,7 +147,7 @@
       <b
         :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
-        We cannot list all of our adopters, but we've listed here those publishers that use FAIRsharing to define and refine their data policy.
+        We cannot list all of our adopters, but we've listed here some publishers that use FAIRsharing to define and refine their data policy.
       </b>
       <!--Adopter table-->
       <v-simple-table class="mb-16 mt-2">
@@ -214,6 +179,7 @@
                   :src="item.image"
                   height="120"
                   contain
+                  style="filter: grayscale(1);"
                 />
               </td>
               <td
@@ -247,68 +213,60 @@
 
       <!--Global Organisation table-->
       <p class="text-h6 mt-16">
-        Global Organisations
+        Other Organisations
       </p>
-      <v-simple-table class="mb-16 mt-2">
-        <template #default>
-          <thead>
-            <tr>
-              <th
-                v-for="(tab,index) in tables.globalOrganisationTable.tabs"
-                :key="`${tab}_${index}`"
-                class="text-left white--text"
-                bgcolor="#27aae1"
-              >
-                <b class="text-capitalize text-h6">{{ tab }}</b>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item,index) in tables.globalOrganisationTable.data"
-              :key="`${item.adopter}_${index}`"
-            >
-              <td
-                class="text-left border-bottom"
-              >
-                <v-img
-                  v-if="item.image"
-                  max-width="250px"
-                  max-height="250px"
-                  :src="item.image"
-                  height="120"
-                  contain
-                />
-              </td>
-              <td
-                v-if="item.adopter"
-                class="border-bottom border-left"
-              >
-                {{ item.adopter }}
-              </td>
-              <td class="border-bottom border-left">
-                <router-link
-                  v-if="item.associatedLink"
-                  target="_blank"
-                  :to="item.associatedLink"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                </router-link>
-                <a
-                  v-if="item.externalLink"
-                  :href="item.externalLink"
-                  target="_blank"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
+      <ul
+        style="display: flex; flex-wrap: wrap; list-style-type: none;"
+      >
+        <li
+          v-for="(item,index) in tables.globalOrganisationTable.data"
+          :key="`${item.adopter}_${index}`"
+          class="text-center pa-10"
+        >
+          <a
+            v-if="item.externalLink"
+            :href="item.externalLink"
+            target="_blank"
+          >
+            <v-img
+              v-if="item.image"
+              max-width="250px"
+              max-height="250px"
+              :src="item.image"
+              height="120"
+              contain
+              style="filter: grayscale(1);"
+            />
+
+          </a>
+        </li>
+      </ul>
     </section>
+
+    <!-- Activities   -->
+    <section id="activities">
+      <h3 class="text-h4 mb-4">
+        Activities
+      </h3>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
+      </p>
+      <p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
+      </p>
+      <b
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
+      </b>
+      <!--Activities table-->
+      <ActivitiesStaticTable class="mb-16 mt-2" />
+    </section>
+
 
     <!-- Governance   -->
     <section id="governance">
@@ -329,11 +287,14 @@
           :key="`${profileItem}_${index}`"
           :class="['text-center width-250 height-400 mb-10',$vuetify.breakpoint.mdAndDown?'mx-auto':'']"
         >
-          <v-avatar size="200">
-            <v-img :src="profileItem.profileImg" />
+          <v-avatar size="160">
+            <v-img
+              :src="profileItem.profileImg"
+              style="filter: grayscale(1);"
+            />
           </v-avatar>
           <a
-            class="text-center lato-font-bold mt-2 ma-0 underline-effect"
+            class="text-center lato-font-bold mt-2 ma-0"
             style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
             v-html="$sanitize(profileItem.name)"
           />
@@ -380,7 +341,7 @@
               <h4 class="text-h5">
                 {{ item.title }}
               </h4>
-              <ul class="mt-2 column-count">
+              <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"
                   :key="itemData+'_'+itemDataIndex"
@@ -408,7 +369,7 @@
 * @namespace Static
 */
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import {subtitle,externalLinks,contentTabs,tables,governance,meettheteam} from "@/data/communityPageData.json"
+import {externalLinks, contentTabs, tables, governance, meettheteam} from "@/data/communityPageData.json"
 import Icon from "@/components/Icon";
 
 /** This component handles the sign-up/register page
@@ -425,7 +386,6 @@ export default {
     return {
       applyCss: false,
       currentAnchor:'',
-      subtitle,
       externalLinks,
       contentTabs,
       tables,
@@ -486,7 +446,7 @@ export default {
       -o-transform: scale(1.05);
     }
 
-    &__gradiant {
+    &__gradient {
       height: 200px;
       background: rgb(171, 171, 171);
       background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
@@ -526,4 +486,6 @@ td {
   -moz-column-count: 2;
   -webkit-column-count: 2;
 }
+
+
 </style>

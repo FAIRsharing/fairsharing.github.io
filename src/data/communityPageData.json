@@ -151,6 +151,30 @@
           "adopter": "Wiley",
           "associated": "Policy",
           "associatedLink": "/FAIRsharing.xwnZRC"
+        },
+        {
+          "image": "assets/Community/peerj.png",
+          "adopter": "PeerJ",
+          "associated": "Policy",
+          "associatedLink": "/FAIRsharing.GWDS6L"
+        },
+        {
+          "image": "assets/Community/hindawi.png",
+          "adopter": "Hindawi",
+          "associated": "Policy",
+          "associatedLink": "/FAIRsharing.6kP2Dv"
+        },
+        {
+          "image": "assets/Community/cambridge_university_press.png",
+          "adopter": "Cambridge University Press"
+        },
+        {
+          "image": "assets/Community/oxford_university_press.png",
+          "adopter": "Oxford University Press"
+        },
+        {
+          "image": "assets/community/royal_society.png",
+          "adopter": "The Royal Society Publishing"
         }
       ]
     },

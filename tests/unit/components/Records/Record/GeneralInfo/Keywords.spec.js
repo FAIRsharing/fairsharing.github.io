@@ -2,9 +2,15 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/recordData.js"
 import Keywords from "@/components/Records/Record/GeneralInfo/Keywords.vue"
+import VueRouter from "vue-router";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+
+let $route = {params: {id: "123"}};
+const router = new VueRouter();
+const $router = { push: jest.fn() };
+
 Record.state.currentRecord["fairsharingRecord"] = {
     taxonomies: [
         {label: "Turdus turdus"},
@@ -28,7 +34,8 @@ describe("Keywords.vue", function(){
     beforeEach(() => {
         wrapper = shallowMount(Keywords, {
             localVue,
-            mocks: {$store}
+            router,
+            mocks: {$store, $route, $router}
         });
     });
 
@@ -40,5 +47,9 @@ describe("Keywords.vue", function(){
         expect(wrapper.vm.getField('userDefinedTags').length).toEqual(1);
     });
 
+    it("returns to the search page when a chip is clicked", () => {
+        wrapper.vm.returnToSearch('subjects', 'citizens');
+        expect($router.push).toHaveBeenCalledWith({path: '/search?subjects=citizens'})
+    });
 
 });

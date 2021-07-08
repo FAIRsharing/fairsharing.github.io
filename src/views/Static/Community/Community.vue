@@ -27,7 +27,7 @@
             height="300"
             @click="jumpToAnchor(tab.name.toLowerCase())"
           >
-            <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
+            <div class="white--text d-flex flex-column justify-center block-category__card__gradient">
               <div
                 style="height: 136px"
                 class="d-flex justify-center"
@@ -92,17 +92,6 @@
       </v-col>
     </v-row>
 
-    <p
-      :class="['mb-0 mt-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      Learn more about the FAIRsharing community, and please do not hesitate to <a
-        href="mailto:contact@fairsharing.org"
-        class="underline-effect"
-      >contact</a> us if you are interested in working with us.
-    </p>
-
-
-
     <!--  content  -->
 
 
@@ -119,13 +108,14 @@
       <ul>
         <li><b class="mr-4">i:</b>Educate their users/community on the variety of existing standards, repositories and policies, and actively encourage them to submit/claim records, where relevant;</li>
         <li>
-          <b class="mr-3">ii:</b>Create <router-link
+          <b class="mr-3">ii:</b>Recommend resources by registering their data policy, and then link it to standards and/or databases
+          <router-link
             to="/search?isRecommended=true"
             target="_blank"
             class="underline-effect"
           >
-            Recommendations
-          </router-link> by registering their data policy, and then link it to standards and/or databases recommended in the policy; and/or
+            recommended
+          </router-link> in the policy; and/or
         </li>
         <li>
           <b class="mr-2">iii:</b>Create a <router-link
@@ -157,7 +147,7 @@
       <b
         :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
-        We cannot list all of our adopters, but we've listed here those publishers that use FAIRsharing to define and refine their data policy.
+        We cannot list all of our adopters, but we've listed here some publishers that use FAIRsharing to define and refine their data policy.
       </b>
       <!--Adopter table-->
       <v-simple-table class="mb-16 mt-2">
@@ -223,68 +213,34 @@
 
       <!--Global Organisation table-->
       <p class="text-h6 mt-16">
-        Global Organisations
+        Other Organisations
       </p>
-      <v-simple-table class="mb-16 mt-2">
-        <template #default>
-          <thead>
-            <tr>
-              <th
-                v-for="(tab,index) in tables.globalOrganisationTable.tabs"
-                :key="`${tab}_${index}`"
-                class="text-left white--text"
-                bgcolor="#27aae1"
-              >
-                <b class="text-capitalize text-h6">{{ tab }}</b>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item,index) in tables.globalOrganisationTable.data"
-              :key="`${item.adopter}_${index}`"
-            >
-              <td
-                class="text-left border-bottom"
-              >
-                <v-img
-                  v-if="item.image"
-                  max-width="250px"
-                  max-height="250px"
-                  :src="item.image"
-                  height="120"
-                  contain
-                  style="filter: grayscale(1);"
-                />
-              </td>
-              <td
-                v-if="item.adopter"
-                class="border-bottom border-left"
-              >
-                {{ item.adopter }}
-              </td>
-              <td class="border-bottom border-left">
-                <router-link
-                  v-if="item.associatedLink"
-                  target="_blank"
-                  :to="item.associatedLink"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                </router-link>
-                <a
-                  v-if="item.externalLink"
-                  :href="item.externalLink"
-                  target="_blank"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
+      <ul
+        style="display: flex; flex-wrap: wrap; list-style-type: none;"
+      >
+        <li
+          v-for="(item,index) in tables.globalOrganisationTable.data"
+          :key="`${item.adopter}_${index}`"
+          class="text-center pa-10"
+        >
+          <a
+            v-if="item.externalLink"
+            :href="item.externalLink"
+            target="_blank"
+          >
+            <v-img
+              v-if="item.image"
+              max-width="250px"
+              max-height="250px"
+              :src="item.image"
+              height="120"
+              contain
+              style="filter: grayscale(1);"
+            />
+
+          </a>
+        </li>
+      </ul>
     </section>
 
     <!-- Activities   -->
@@ -338,7 +294,7 @@
             />
           </v-avatar>
           <a
-            class="text-center lato-font-bold mt-2 ma-0 underline-effect"
+            class="text-center lato-font-bold mt-2 ma-0"
             style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
             v-html="$sanitize(profileItem.name)"
           />
@@ -490,7 +446,7 @@ export default {
       -o-transform: scale(1.05);
     }
 
-    &__gradiant {
+    &__gradient {
       height: 200px;
       background: rgb(171, 171, 171);
       background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
@@ -530,4 +486,6 @@ td {
   -moz-column-count: 2;
   -webkit-column-count: 2;
 }
+
+
 </style>

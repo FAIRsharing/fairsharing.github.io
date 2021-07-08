@@ -174,6 +174,11 @@
           "image": "assets/Community/logo_force11.png",
           "associated": "FORCE11",
           "externalLink": "https://www.force11.org/group/biosharingwg"
+        },
+        {
+          "image": "assets/Community/elixir.jpg",
+          "associated": "ELIXIR",
+          "externalLink": "https://elixir-europe.org/"
         }
       ]
     }
@@ -194,98 +199,126 @@
       {
         "title":"Stakeholder Advisors",
         "data": [
-          "<b>Emma Ganley, </b>Director of Strategic Initiatives, Protocols.io, UK",
-          "<b>Michael Ball, </b>The Economic and Social Research Council (ESRC), UK",
-          "<b>Theo Bloom, </b>British Medical Journal (BMJ), UK",
-          "<b>Matthew Cannon, </b>Taylor and Francis, UK",
-          "<b>Wei-Mun Chan, </b>eLife, UK ",
-          "<b>Geraldine Clement-Stoneham, </b>Head of Knowledge Management and Scholarly Communication, Medical Research Council, UK",
-          "<b>Helena Cousijn, </b>Datacite, The Netherlands",
-          "<b>Scott Edmunds, </b>GigaScience, BGI, China",
-          "<b>Dominic Fripp, </b>JISC, UK",
-          "<b>Simon Hodson, </b>CODATA, France",
-          "<b>Iain Hrynaszkiewicz, </b>PLoS, UK",
-          "<b>Mike Huerta, </b>Coordinator of Data & and Open Science Initiative, Associate Director for Programme Development at the NIH National Library of Medicine, USA",
-          "<b>Amye Kenall, </b>VP of Publishing and Product, Research Square, UK",
-          "<b>Adam Leary, </b>Oxford University Press, UK",
-          "<b>Thomas Lemberger, </b>EMBO Press, UK",
-          "<b>Luiz Olavo Bonino, </b>GO-FAIR, The Netherlands ",
-          "<b>Kiera McNiece, </b>Cambridge University Press, UK ",
-          "<b>Dagmar Meyer, </b>European Research Council (ERC), Executive Agency, Belgium ",
-          "<b>Hollydawn Murray </b>Head of Data Publishing, F1000, UK",
-          "<b>Marina Soares E Silva, </b>Elsevier, The Netherlands ",
-          "<b>Imma Subirats, </b>Information Management Officer, FAO of the United Nations, Italy"
+          "<b>Emma Ganley</b>, Director of Strategic Initiatives, Protocols.io",
+          "<b>Michael Ball</b>, Biotechnology and Biological Sciences Research Council (BBSRC), UK",
+          "<b>Theo Bloom</b>, British Medical Journal (BMJ), UK",
+          "<b>Nick Everitt and Matthew Cannon</b>, Taylor and Francis",
+          "<b>Wei-Mun Chan</b>, eLife, UK",
+          "<b>Geraldine Clement-Stoneham</b>, Head of Knowledge Management and Scholarly Communication, Medical Research Council, UK",
+          "<b>Helena Cousijn</b>, DataCite",
+          "<b>Scott Edmunds</b>, GigaScience, Oxford University Press",
+          "<b>Dominic Fripp</b>, JISC, UK",
+          "<b>Simon Hodson</b>, CODATA",
+          "<b>Iain Hrynaszkiewicz</b>, PLoS",
+          "<b>Mike Huerta</b>, Coordinator of Data & and Open Science Initiative, Associate Director for Programme Development at the NIH NLM, USA",
+          "<b>Amye Kenall</b>, VP of Publishing and Product, Research Square, UK",
+          "<b>Adam Leary</b>, Oxford University Press",
+          "<b>Thomas Lemberger</b>, EMBO Press",
+          "<b>Luiz Olavo Bonino</b>, GO-FAIR",
+          "<b>Kiera McNiece</b>, Cambridge University Press",
+          "<b>Dagmar Meyer</b>, European Research Council (ERC), Executive Agency, Belgium",
+          "<b>Marina Soares E Silva</b>, Ilaria Carnevale and Sarah Callaghan, Elsevier",
+          "<b>Imma Subirats</b>, Information Management Officer, FAO of the United Nations, Italy",
+          "<b>Molly Cranston and Guillaume Wright</b>, F1000Research",
+          "<b>Kathryn Sharples</b>, Wiley",
+          "<b>Catriona MacCallum</b>, Hindawi"
         ]
       }
     ]
   },
   "meettheteam": {
     "title": "Meet The Team",
-    "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk/' class='underline-effect' target='_blank'>Data Readiness Group</a> and DOI generation is provided by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>, at the University of Oxford.\n",
+  "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk#people' class='underline-effect' target='_blank'>Data Readiness Group</a> and DOI generation is provided by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>, at the University of Oxford.\n",
     "profiles": [
       {
-        "name": "<a href='https://www.eng.ox.ac.uk/people/susanna-assunta-sansone/' class='underline-effect'>Susanna-Assunta Sansone</a>",
-        "role": "Principal Investigator and Founder",
-        "profileImg": "assets/Community/profiles/susanna.jpg",
+        "name": "Allyson Lister",
+        "role": "Content and Community Coordinator",
+        "profileImg": "assets/Community/profiles/allyson.jpg",
         "social": [
-          {"link": "https://sansonegroup.eng.ox.ac.uk/",
-            "icon": "home"
-          },
-          {"link": "https://orcid.org/0000-0001-5306-5690",
-            "icon": "Orcid"
-          },
-          {"link": "http://uk.linkedin.com/in/sasansone","icon": "linkedin"},
-          {"link": "http://www.twitter.com/SusannaASansone","icon": "twitter"},
-          {"link": "susanna-assunta.sansone@oerc.ox.ac.uk","icon": "contacts"}
+          {"link": "https://www.eng.ox.ac.uk/people/allyson-lister/", "icon": "home"},
+          {"link": "https://orcid.org/0000-0002-7702-4495", "icon": "Orcid"},
+          {"link": "https://www.linkedin.com/in/allysonlister/","icon": "linkedin"},
+          {"link": "https://github.com/allysonlister","icon": "github"},
+          {"link": "allyson.lister@oerc.ox.ac.uk","icon": "contacts"}
         ]
       },
       {
-        "name": "<a href='http://www.oerc.ox.ac.uk/people/philippe-rocca-serra' class='underline-effect'>Philippe Rocca-Serra</a>",
-        "role": "Co-Founder",
-        "profileImg": "assets/Community/profiles/philippe.jpg",
-        "social": [
-          {"link": "https://eng.ox.ac.uk/people/philippe-rocca-serra/",
-            "icon": "home"
-          },
-          {"link": "https://orcid.org/0000-0001-9853-5668",
-            "icon": "Orcid"
-          },
-          {"link": "http://uk.linkedin.com/in/philipperoccaserra","icon": "linkedin"},
-          {"link": "http://www.twitter.com/Phil_at_OeRC","icon": "twitter"},
-          {"link": "http://github.com/proccaserra","icon": "github"},
-          {"link": "philippe.rocca-serra@oerc.ox.ac.uk","icon": "contacts"}
-        ]
-      },
-      {
-        "name": "<a href='https://www.eng.ox.ac.uk/people/milo-thurston/' class='underline-effect'>Milo Thurston</a>",
+        "name": "Milo Thurston",
         "role": "Technical Coordinator",
         "profileImg": "assets/Community/profiles/milo.jpg",
         "social": [
-          {"link": "https://www.eng.ox.ac.uk/people/milo-thurston/",
-            "icon": "home"
-          },
-          {"link": "https://orcid.org/0000-0002-6468-9260",
-            "icon": "Orcid"
-          },
+          {"link": "https://www.eng.ox.ac.uk/people/milo-thurston/", "icon": "home"},
+          {"link": "https://orcid.org/0000-0002-6468-9260", "icon": "Orcid"},
           {"link": "https://www.linkedin.com/in/milo-thurston-86557510/","icon": "linkedin"},
           {"link": "https://github.com/knirirr","icon": "github"},
           {"link": "milo.thurston@oerc.ox.ac.uk","icon": "contacts"}
         ]
       },
       {
-        "name": "<a href='https://www.eng.ox.ac.uk/people/allyson-lister/' class='underline-effect'>Allyson Lister</a>",
-        "role": "Content and Community Coordinator",
-        "profileImg": "assets/Community/profiles/allyson.jpg",
+        "name": "Susanna-Assunta Sansone",
+        "role": "Principal Investigator and Founder",
+        "profileImg": "assets/Community/profiles/susanna.jpg",
         "social": [
-          {"link": "https://www.eng.ox.ac.uk/people/allyson-lister/",
-            "icon": "home"
-          },
-          {"link": "https://orcid.org/0000-0002-7702-4495",
-            "icon": "Orcid"
-          },
-          {"link": "https://www.linkedin.com/in/allysonlister/","icon": "linkedin"},
-          {"link": "https://github.com/allysonlister","icon": "github"},
-          {"link": "allyson.lister@oerc.ox.ac.uk","icon": "contacts"}
+          {"link": "https://sansonegroup.eng.ox.ac.uk/", "icon": "home"},
+          {"link": "https://orcid.org/0000-0001-5306-5690", "icon": "Orcid"},
+          {"link": "http://uk.linkedin.com/in/sasansone", "icon": "linkedin"},
+          {"link": "http://www.twitter.com/SusannaASansone", "icon": "twitter"},
+          {"link": "susanna-assunta.sansone@oerc.ox.ac.uk", "icon": "contacts"}
+        ]
+      },
+      {
+        "name": "Philippe Rocca-Serra",
+        "role": "Co-Founder",
+        "profileImg": "assets/Community/profiles/philippe.jpg",
+        "social": [
+          {"link": "https://eng.ox.ac.uk/people/philippe-rocca-serra/", "icon": "home"},
+          {"link": "https://orcid.org/0000-0001-9853-5668", "icon": "Orcid"},
+          {"link": "http://uk.linkedin.com/in/philipperoccaserra", "icon": "linkedin"},
+          {"link": "http://www.twitter.com/Phil_at_OeRC", "icon": "twitter"},
+          {"link": "http://github.com/proccaserra", "icon": "github"},
+          {"link": "philippe.rocca-serra@oerc.ox.ac.uk", "icon": "contacts"}
+        ]
+      },
+      {
+        "name": "Ramon Granell",
+        "role": "TBA",
+        "profileImg": "assets/Community/profiles/ramon.jpg",
+        "social": [
+          {"link": "https://eng.ox.ac.uk/people/ramon-granell/", "icon": "home"},
+          {"link": "https://orcid.org/0000-0001-9572-0972", "icon": "Orcid"},
+          {"link": "https://github.com/ramGranell", "icon": "github"},
+          {"link": "ramon.granell@oerc.ox.ac.uk", "icon": "contacts"}
+        ]
+      },
+      {
+        "name": "Hossein Mirian",
+        "role": "TBA",
+        "profileImg": "assets/Community/profiles/hossein.jpg",
+        "social": [
+          {"link": "https://eng.ox.ac.uk/people/hossein-mirian/", "icon": "home"},
+          {"link": "https://orcid.org/0000-0002-9305-7238", "icon": "Orcid"},
+          {"link": "https://www.linkedin.com/in/hossein-mirian", "icon": "linkedin"},
+          {"link": "https://github.com/hoseinmirian", "icon": "github"},
+          {"link": "hossein.mirian@oerc.ox.ac.uk", "icon": "contacts"}
+        ]
+      },
+      {
+        "name": "Dominique Batista",
+        "role": "TBA",
+        "profileImg": "assets/Community/profiles/dominique.jpg",
+        "social": [
+          {"link": "https://www.eng.ox.ac.uk/people/dominique-batista/", "icon": "home"},
+          {"link": "https://orcid.org/0000-0002-2109-489X", "icon": "Orcid"},
+          {"link": "https://github.com/terazus", "icon": "github"},
+          {"link": "dominique.batista@oerc.ox.ac.uk", "icon": "contacts"}
+        ]
+      },
+      {
+        "name": "Delphine Dauga",
+        "role": "TBA",
+        "profileImg": "assets/Community/profiles/delphine.jpg",
+        "social": [
+          {"link": "http://www.bioself-communication.com/", "icon": "home"}
         ]
       }
     ]

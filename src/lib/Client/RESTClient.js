@@ -17,6 +17,7 @@ class RESTClient {
             "Content-Type": "application/json",
             "Cache-Control": "no-cache"
         };
+        this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
     }
 
     /* USERS: all methods below related to handling user authentication */
@@ -202,6 +203,37 @@ class RESTClient {
     }
 
     /**
+     * Get the current user data
+     * @param jwt
+     * @param id
+     * @returns {Promise}
+     */
+    async getPublicUser(jwt,id){
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + `/user_admin/${id}`,
+            headers: this.auth_headers(jwt)
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Get all users list
+     * @param jwt
+     * @returns {Promise}
+     */
+    async getUsersList(jwt){
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/user_admin/",
+            headers: this.auth_headers(jwt)
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Edit the current logged in user profile
      * @param {Object} newUser - the new values for the logged in user
      * @param {String} jwt - JWT of the logged in user
@@ -217,7 +249,37 @@ class RESTClient {
         let response = await this.executeQuery(request);
         return response.data;
     }
-
+    /**
+     * Edit the current logged in user profile
+     * @param {Object} newUser - the new values for the logged in user
+     * @param {String} jwt - JWT of the logged in user
+     * @returns {Promise}
+     */
+    async editPublicUser(newUser, jwt){
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + `/user_admin/${newUser.id}` ,
+            headers: this.auth_headers(jwt),
+            data: {user: newUser}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+    /**
+     * Delete the user
+     * @param userID
+     * @param {String} jwt - JWT of the logged in user
+     * @returns {Promise}
+     */
+    async deletePublicUser(userID, jwt){
+        const request = {
+            method: "delete",
+            baseURL: this.baseURL + `/user_admin/${userID}` ,
+            headers: this.auth_headers(jwt),
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
     /**
      * Verify that the given JWT is still valid
      * @param {String} jwt - the token to validate

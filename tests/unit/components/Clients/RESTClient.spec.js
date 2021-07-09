@@ -79,6 +79,31 @@ describe("RESTClient", () =>{
         expect(resp).toBe("testData");
     });
 
+    it("can get a public user by ID", async () => {
+        let resp = await client.getPublicUser('userToken', 1);
+        expect(resp).toBe("testData");
+    });
+
+    it("can get a public users list", async () => {
+        let resp = await client.getUsersList('userToken');
+        expect(resp).toBe("testData");
+    });
+
+    it("can edit a user", async () => {
+        let resp = await client.editUser({},'userToken');
+        expect(resp).toBe("testData");
+    });
+
+    it("can edit a public user", async () => {
+        let resp = await client.editPublicUser({},'userToken');
+        expect(resp).toBe("testData");
+    });
+
+    it("can delete a public user", async () => {
+        let resp = await client.deletePublicUser({},'userToken');
+        expect(resp).toBe("testData");
+    });
+
     it("can process network errors", async () => {
         stub.restore();
         jest.spyOn(console, 'error');

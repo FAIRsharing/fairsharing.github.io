@@ -1,4 +1,4 @@
-import router, {afterEach,scrollBehavior} from "@/router"
+import router, {afterEach,scrollBehavior,isSuperCurator} from "@/router"
 import { beforeEach, isLoggedIn, isMaintenanceMode } from "@/router"
 import RestClient from "@/lib/Client/RESTClient.js"
 //import VueRouter from "vue-router";
@@ -16,7 +16,7 @@ const $route = {
 let store = {
     state: {
         users: {
-            user: function(){return {isLoggedIn: true}}
+            user: function(){return {isLoggedIn: true,is_super_curator: true}}
         },
         introspection: {
             maintenanceMode: false
@@ -45,7 +45,7 @@ describe("Routes", () => {
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [
-            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance"
+            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile","UsersList"
         ];
 
         router.options.routes.forEach(function(route){
@@ -61,6 +61,7 @@ describe("Routes", () => {
     it ("- NAVGUARD - redirect if the user is not logged in", async () => {
         const next = jest.fn();
         await isLoggedIn(undefined, undefined, next, store);
+        await isSuperCurator(undefined, undefined, next, store);
         expect(next).toHaveBeenCalled();
     });
 
@@ -76,7 +77,7 @@ describe("Routes", () => {
         store = {
             state: {
                 users: {
-                    user: function(){return {isLoggedIn: false}}
+                    user: function(){return {isLoggedIn: false, is_super_curator: true}}
                 },
                 introspection: {
                     maintenanceMode: false

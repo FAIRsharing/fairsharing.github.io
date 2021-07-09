@@ -2,9 +2,41 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
 
-import { Home, NotFound, Record, Records, New, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
-    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
-    Stakeholders, Timeline, Licence, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance, APIDoc }
+import {
+    Home,
+    NotFound,
+    Record,
+    Records,
+    New,
+    NewRecord,
+    Editor,
+    Login,
+    Signup,
+    ConfirmAccount,
+    ResendConfirmation,
+    User,
+    Curator,
+    RequestNewPassword,
+    ResetPassword,
+    EditProfile,
+    OauthLogin,
+    Organisation,
+    LoginFailure,
+    Stat,
+    Community,
+    Stakeholders,
+    Timeline,
+    Licence,
+    Terms,
+    Educational,
+    Privacy,
+    PublicProfile,
+    Graph,
+    Maintenance,
+    APIDoc,
+    EditPublicProfile,
+    UsersList
+}
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -238,7 +270,24 @@ let routes = [
             isLoggedIn(to, from, next, store);
         }
     },
-
+    {
+        name: "EditPublicProfile",
+        path: "/profiles/editPublicProfile/:id",
+        component: EditPublicProfile,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+            isSuperCurator(to, from, next, store);
+        }
+    },
+    {
+        name: "UsersList",
+        path: "/profiles/usersList",
+        component: UsersList,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+            isSuperCurator(to, from, next, store);
+        }
+    },
     // CURATORS
     {
         name: "Curator",
@@ -335,7 +384,19 @@ export function isLoggedIn(to, from, next, store) {
             query: {goTo: target}
         });
     }
+}
 
+export function isSuperCurator(to, from, next, store) {
+    if (store.state.users.user().is_super_curator) {
+        next()
+    }
+    else {
+        const target = to.path;
+        next({
+            name: "Login", // back to safety route //
+            query: {goTo: target}
+        });
+    }
 }
 
 export function isMaintenanceMode(to, from, next, store){

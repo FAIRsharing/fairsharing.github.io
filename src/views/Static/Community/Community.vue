@@ -1,7 +1,7 @@
 <template>
   <main :class="applyCss?'pa-15 mb-10':''">
     <!--  main_title_2 -->
-
+    <!-- eslint-disable vue/no-v-html -->
     <h1>Community: adopters, activities and governance</h1>
     <h2>
       FAIRsharing is a community-driven resource with a growing number of users and collaborators,

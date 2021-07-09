@@ -119,6 +119,7 @@ export default {
   top: 0;
   transition: height ease-in 500ms;
   overscroll-behavior: contain;
+  scrollbar-width:thin;
 }
 .filters-holder-after-scroll {
   border-radius: 0;
@@ -130,6 +131,7 @@ export default {
   top: 0;
   transition: height ease-in 500ms;
   overscroll-behavior: contain;
+  scrollbar-width:thin;
 }
 .custom-hr {
   opacity: .5;

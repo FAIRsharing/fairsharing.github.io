@@ -17,11 +17,12 @@
       </template>
 
       <template #[`item.homepage`]="{ item }">
-        <router-link
-          :to="item.homepage"
+        <a
+          :href="item.homepage"
+          target="_blank"
         >
           {{ item.homepage }}
-        </router-link>
+        </a>
       </template>
 
       <template #[`item.organisationTypes`]="{ item }">

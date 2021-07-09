@@ -73,12 +73,12 @@
           </div>
         </div>
         <div
-            v-if="access_point.name"
-            class="d-flex flex-row align-center min-height-40"
+          v-if="access_point.name"
+          class="d-flex flex-row align-center min-height-40"
         >
           <b class="width-200">Name</b>
           <div class="d-flex full-width ml-md-12 ml-13">
-              {{ access_point.name }}
+            {{ access_point.name }}
           </div>
         </div>
         <div

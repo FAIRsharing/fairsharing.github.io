@@ -317,6 +317,11 @@ let routes = [
         redirect: "/:id"
     },
     {
+        name: "RecordByDoi",
+        path: "/10.25504/:id",
+        component: Record
+    },
+    {
         name: "Record",
         path: "/:id",
         component: Record

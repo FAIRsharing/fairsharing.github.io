@@ -19,7 +19,7 @@
         :loading="loading"
         loading-text="Loading... Please wait"
       >
-        <template v-slot:item.id="{ item }">
+        <template #item.id="{ item }">
           <router-link
             class="underline-effect"
             :to="`/users/${item.id}`"

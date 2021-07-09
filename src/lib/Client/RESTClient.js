@@ -17,6 +17,7 @@ class RESTClient {
             "Content-Type": "application/json",
             "Cache-Control": "no-cache"
         };
+        this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
     }
 
     /* USERS: all methods below related to handling user authentication */

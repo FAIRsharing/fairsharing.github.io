@@ -37,7 +37,7 @@
             class="mr-1 underline-effect"
             :to="`/users/${maintainer.id}`"
           >
-            {{ maintainer.username }}
+            {{ maintainer.username }}{{ index !== getField('maintainers').length - 1 ? ', ' : '' }}
           </router-link>
           <a
             v-if="maintainer.orcid"
@@ -52,7 +52,6 @@
             />
           </a>
         </div>
-        {{ index !== getField('maintainers').length - 1 ? ',' : '' }}
       </div>
     </div>
   </div>

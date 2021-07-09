@@ -31,6 +31,10 @@ describe("UsersList.vue", function () {
         })
     });
 
+    afterEach(() => {
+        wrapper.destroy();
+    });
+
     afterAll(() => {
         restStub.restore();
     })

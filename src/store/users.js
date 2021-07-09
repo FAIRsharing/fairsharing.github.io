@@ -317,19 +317,11 @@ export const actions = {
     },
     async updatePublicUser(state, user){
         try {
-            let response = await client.editPublicUser(user, state.state.user().credentials.token);
-            if (response.error) {
-                this.commit("users/setError", {
-                    field: "updateProfile",
-                    message: response.error.response.data.errors
-                })
-            }
-            else {
-                this.commit("users/setMessage", {
-                    field: "updateProfile",
-                    message: "Update successful !"
-                })
-            }
+            await client.editPublicUser(user, state.state.user().credentials.token);
+            this.commit("users/setMessage", {
+                field: "updateProfile",
+                message: "Update successful !"
+            })
         }
         catch(e) {
             this.commit("users/setError", {field: "updateProfile", message: e.message})
@@ -337,19 +329,11 @@ export const actions = {
     },
     async deletePublicUser(state, userId){
         try {
-            let response = await client.deletePublicUser(userId, state.state.user().credentials.token);
-            if (response.error) {
-                this.commit("users/setError", {
-                    field: "deletePublicUser",
-                    message: response.error.response.data.errors
-                })
-            }
-            else {
+             await client.deletePublicUser(userId, state.state.user().credentials.token);
                 this.commit("users/setMessage", {
                     field: "deletePublicUser",
                     message: "Delete successful !"
                 })
-            }
         }
         catch(e) {
             this.commit("users/setError", {field: "updateProfile", message: e.message})

@@ -367,6 +367,37 @@ describe('Actions/Mutations', () => {
         });
     });
 
+    it('Error Handling: updatePublicUsers', async () => {
+        let state = {
+            state: {
+                usersList:[]
+            }
+        };
+        restClientStub.returns({
+            data: {error: "Error"}
+        });
+        await actions.updatePublicUser(state);
+        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
+            "field": "updateProfile", "message": "state.state.user is not a function"
+        });
+    });
+
+    it('Error Handling: deletePublicUser', async () => {
+        let state = {
+            state: {
+                usersList:[]
+            }
+        };
+        restClientStub.returns({
+            data: {error: "Error"}
+        });
+        await actions.deletePublicUser(state);
+        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
+            "field": "updateProfile", "message": "state.state.user is not a function"
+        });
+    });
+
+
     it("Error Handling: resetPwd outer case", async () => {
         restClientStub.returns(new Error("Error"));
         const state = {};

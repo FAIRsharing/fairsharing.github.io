@@ -130,7 +130,7 @@ describe("UserProfileMenu.vue", () => {
             mocks: {$store}
         });
         await wrapper.vm.menuItems.filter(obj => obj.name === 'Edit profile')[0].action();
-        expect(wrapper.vm.$route.path).toBe("/profiles/editPublicProfile");
+        expect(wrapper.vm.$route.path).toBe("/profiles/editPublicProfile/2");
         userStore.state.user = function(){
             return {
                 role: "super_curator",

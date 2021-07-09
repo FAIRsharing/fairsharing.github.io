@@ -164,11 +164,6 @@ export default {
       valid: false,
       loading: false,
       dialog: false,
-      rules: {
-        isRequired: () => isRequired(),
-        isEmail: () => isEmail(),
-        isUrl: () => isUrl(),
-      },
       data: {
         profileTypes: []
       },

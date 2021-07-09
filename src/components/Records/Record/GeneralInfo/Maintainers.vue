@@ -34,10 +34,10 @@
         <div class="d-flex">
           <router-link
             v-if="maintainer"
-            class="mr-1 underline-effect"
+            :class="[{'mr-1':maintainer.orcid},'underline-effect']"
             :to="`/users/${maintainer.id}`"
           >
-            {{ maintainer.username }}{{ index !== getField('maintainers').length - 1 ? ', ' : '' }}
+            {{ maintainer.username }}
           </router-link>
           <a
             v-if="maintainer.orcid"
@@ -52,6 +52,7 @@
             />
           </a>
         </div>
+        <span class="mr-1">{{ index !== getField('maintainers').length - 1 ? ',' : '' }}</span>
       </div>
     </div>
   </div>

@@ -84,9 +84,83 @@ describe("UserProfileMenu.vue", () => {
         expect(wrapper.vm.$route.path).toBe("/users/password/edit");
     });
 
-    it("can redirect to user edit profile", async () => {
+    it("can redirect to user edit profile or editPublicProfile", async () => {
+        userStore.state.user = function(){
+            return {
+                role: "super_curator",
+                email: 'test@test.com',
+                credentials: {
+                    token: 'thisisafaketoken'
+                },
+                id: 1
+            }
+        }
+        let $store = new Vuex.Store({
+            modules: {
+                users: userStore
+            }
+        });
+        wrapper = shallowMount(UserMenu, {
+            propsData: { viewingId: 1},
+            localVue,
+            router,
+            mocks: {$store}
+        });
         await wrapper.vm.menuItems.filter(obj => obj.name === 'Edit profile')[0].action();
         expect(wrapper.vm.$route.path).toBe("/profiles/edit");
+        userStore.state.user = function(){
+            return {
+                role: "super_curator",
+                email: 'test@test.com',
+                credentials: {
+                    token: 'thisisafaketoken'
+                },
+                id: 1
+            }
+        }
+        $store = new Vuex.Store({
+            modules: {
+                users: userStore
+            }
+        });
+        wrapper = shallowMount(UserMenu, {
+            propsData: { viewingId: 2},
+            localVue,
+            router,
+            mocks: {$store}
+        });
+        await wrapper.vm.menuItems.filter(obj => obj.name === 'Edit profile')[0].action();
+        expect(wrapper.vm.$route.path).toBe("/profiles/editPublicProfile/2");
+        userStore.state.user = function(){
+            return {
+                role: "super_curator",
+                email: 'test@test.com',
+                credentials: {
+                    token: 'thisisafaketoken'
+                },
+                id: 1
+            }
+        }
+        $store = new Vuex.Store({
+            modules: {
+                users: userStore
+            }
+        });
+        wrapper = shallowMount(UserMenu, {
+            propsData: {},
+            localVue,
+            router,
+            mocks: {$store}
+        });
+        await wrapper.vm.menuItems.filter(obj => obj.name === 'Edit profile')[0].action();
+        expect(wrapper.vm.$route.path).toBe("/profiles/edit");
+
+
+    });
+
+    it("can redirect to userLists", async () => {
+        await wrapper.vm.menuItems.filter(obj => obj.name === 'Users List')[0].action();
+        expect(wrapper.vm.$route.path).toBe("/profiles/usersList");
     });
 
     it("hides edit profile button where required", () => {
@@ -120,9 +194,32 @@ describe("UserProfileMenu.vue", () => {
             router,
             mocks: {$store}
         });
-        expect(wrapper.vm.disableEdit()).toBe(true);
+        expect(wrapper.vm.disableEdit()).toBe(false);
     });
 
-
+    it("can disable edit when user is a curator", () => {
+        userStore.state.user = function(){
+            return {
+                role: "curator",
+                email: 'test@test.com',
+                credentials: {
+                    token: 'thisisafaketoken'
+                },
+                id: 2
+            }
+        }
+        const $store = new Vuex.Store({
+            modules: {
+                users: userStore
+            }
+        });
+        wrapper = shallowMount(UserMenu, {
+            propsData: { viewingId: 2},
+            localVue,
+            router,
+            mocks: {$store}
+        });
+        expect(wrapper.vm.disableEdit()).toBe(false);
+    });
 
 });

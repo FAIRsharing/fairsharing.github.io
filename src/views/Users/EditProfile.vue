@@ -255,11 +255,10 @@
             this.loading = false;
             if (!this.messages().updateProfile.error){
               this.setMessage({field: 'getUser', message: "Your profile was updated successfully."});
-              this.$router.push({path: "/accounts/profile"})
+              await this.$router.push({path: "/accounts/profile"})
             }
           }
         },
-
     }
 </script>
 

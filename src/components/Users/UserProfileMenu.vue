@@ -21,7 +21,7 @@
       <v-list>
         <v-list-item
           v-for="(item, index) in menuItems"
-          :key="index"
+          :key="item.name+'_'+index"
           :disabled="item.isDisabled"
           @click="item.action()"
         >
@@ -47,13 +47,13 @@
         }
       },
       data: () => {
-            return {
-                dialog: false
-            }
-        },
-        computed: {
+        return {
+          dialog: false
+        }
+      },
+      computed: {
           ...mapState('users', ['user']),
-            menuItems: function(){
+            menuItems: function () {
                 const _module = this;
                 let vecReturn = [];
                 let auxV = [
@@ -61,10 +61,31 @@
                         name: "Edit profile",
                         isDisabled: _module.disableEdit(),
                         action: function(){
+                          if (_module.viewingId === Number(_module.user().id)) {
                             _module.$router.push({
                               path: "/profiles/edit"
                             })
+                          }
+                          else if ((_module.viewingId !== Number(_module.user().id) && _module.viewingId) && (_module.user().role === 'developer' || _module.user().role === 'super_curator')) {
+                            _module.$router.push({
+                              path: "/profiles/editPublicProfile/" + _module.viewingId
+                            })
+                          }
+                          else {
+                            _module.$router.push({
+                              path: "/profiles/edit"
+                            })
+                          }
                         }
+                    },
+                    {
+                      name: "Users List",
+                      isDisabled: _module.disableUserList(),
+                      action: function () {
+                          _module.$router.push({
+                            path: "/profiles/usersList"
+                          })
+                      }
                     },
                     {
                         name: "Reset Password",
@@ -102,24 +123,23 @@
                 return vecReturn;
             }
         },
-        methods: {
-            ...mapActions('users', ['logout']),
-            logoutUser: async function(){
-                await this.logout();
-                this.$router.push({name: "Login"})
-            },
-            disableEdit: function() {
-              let _module = this;
-              if (_module.viewingId) {
-                if (Number(_module.viewingId) === Number(_module.user().id)) {
-                  return false;
-                }
-                else {
-                  return true;
-                }
-              }
-              return false;
-            }
+      methods: {
+        ...mapActions('users', ['logout']),
+        logoutUser: async function () {
+          await this.logout();
+          await this.$router.push({name: "Login"})
+        },
+        disableEdit: function () {
+          let _module = this;
+          if (_module.viewingId) {
+            return !(Number(_module.viewingId) === Number(_module.user().id) || (_module.user().role === 'super_curator' || _module.user().role === 'developer'));
+          }
+          return false;
+        },
+        disableUserList: function () {
+          const _module = this;
+          return !_module.user().is_super_curator
         }
+      }
     }
 </script>

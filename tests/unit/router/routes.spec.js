@@ -1,4 +1,4 @@
-import router, {afterEach,scrollBehavior,isSuperCurator} from "@/router"
+import router, {afterEach, scrollBehavior, isSuperCurator, isNotLoggedIn} from "@/router"
 import { beforeEach, isLoggedIn, isMaintenanceMode } from "@/router"
 import RestClient from "@/lib/Client/RESTClient.js"
 //import VueRouter from "vue-router";
@@ -45,7 +45,7 @@ describe("Routes", () => {
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [
-            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile","UsersList"
+            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile","UsersList","Login","Register"
         ];
 
         router.options.routes.forEach(function(route){
@@ -61,6 +61,7 @@ describe("Routes", () => {
     it ("- NAVGUARD - redirect if the user is not logged in", async () => {
         const next = jest.fn();
         await isLoggedIn(undefined, undefined, next, store);
+        await isNotLoggedIn(undefined, undefined, next, store);
         await isSuperCurator(undefined, undefined, next, store);
         expect(next).toHaveBeenCalled();
     });
@@ -158,6 +159,24 @@ describe("Routes", () => {
             {"path":"/"}
         );
 
+    });
+
+    it ("- NAVGUARD - not let logged in User to access some pages like login and signup ", async () => {
+        const next = jest.fn();
+        store = {
+            state: {
+                users: {
+                    user: function(){return {isLoggedIn: false,is_super_curator: true}}
+                },
+                introspection: {
+                    maintenanceMode: false
+                }
+            },
+            dispatch: jest.fn()
+        };
+        await isNotLoggedIn(undefined, undefined, next, store);
+
+        expect(next).toHaveBeenCalled();
     });
 
 });

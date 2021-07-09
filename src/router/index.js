@@ -223,11 +223,17 @@ let routes = [
         name: "Login",
         path: "/accounts/login",
         component: Login,
+        beforeEnter(to, from, next) {
+            isNotLoggedIn(to, from, next, store);
+        }
     },
     {
         name: "Register",
         path: "/accounts/signup",
         component: Signup,
+        beforeEnter(to, from, next) {
+            isNotLoggedIn(to, from, next, store);
+        }
     },
     {
         name: "Confirm email",
@@ -383,6 +389,15 @@ export function isLoggedIn(to, from, next, store) {
             name: "Login", // back to safety route //
             query: {goTo: target}
         });
+    }
+}
+
+export function isNotLoggedIn(to, from, next, store) {
+    if (!store.state.users.user().isLoggedIn) {
+        next()
+    }
+    else {
+        next(from);
     }
 }
 

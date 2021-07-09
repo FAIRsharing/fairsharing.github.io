@@ -239,6 +239,26 @@ const customIcons  = {
             type: "icon",
             icon: "fa-ellipsis-h"
         },
+        adopters: {
+            type: "icon",
+            icon: "fa-file-alt"
+        },
+        activities: {
+            type: "icon",
+            icon: "fa-chart-line"
+        },
+        governance: {
+            type: "icon",
+            icon: "fa-university"
+        },
+        linkedin: {
+            type: "icon",
+            icon: "fab fa-linkedin"
+        },
+        home: {
+            type: "icon",
+            icon: "fa-home"
+        }
     },
     iconfont: 'fa'
 };

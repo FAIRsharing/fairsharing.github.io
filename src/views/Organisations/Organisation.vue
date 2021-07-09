@@ -69,7 +69,6 @@
                           {{ organisation.homepage }}
                         </a>
                       </span>
-                      <span v-else> None </span>
                     </v-list-item-content>
                   </v-list-item>
 
@@ -92,7 +91,6 @@
                           </li>
                         </ul>
                       </span>
-                      <span v-else> None </span>
                     </v-list-item-content>
                   </v-list-item>
 
@@ -286,6 +284,90 @@
             </v-card>
           </v-col>
         </v-row>
+        
+        <v-row>
+          <v-col cols="6">
+            <v-card
+              class="d-flex flex-column rounded-0"
+              height="100%"
+            >
+              <v-card-title class="primary white--text py-3">
+                Users affiliated with this organisation
+              </v-card-title>
+
+              <v-data-table
+                class="organisationUsersTable"
+                :items="organisation.users"
+                :headers="userHeaders"
+                :items-per-page="perPage"
+                :footer-props="footer"
+                calculate-widths
+              >
+                <template #[`item.username`]="{ item }">
+                  <router-link
+                    :to="'/users/' + item.id"
+                  >
+                    {{ item.username }}
+                  </router-link>
+                </template>
+
+                <template #[`item.email`]="{ item }">
+                  <a
+                    v-if="item.email"
+                    :href="'mailto:' + item.email"
+                  >
+                    {{ item.email }}
+                  </a>
+                  <span
+                    v-if="!item.email"
+                  >
+                    No email address available.
+                  </span>
+                </template>
+
+                <template #[`item.orcid`]="{ item }">
+                  <a
+                    v-if="item.orcid"
+                    :href="'https://orcid.org/' + item.orcid"
+                    target="_blank"
+                  >
+                    {{ item.orcid }}
+                  </a>
+                  <span
+                    v-if="!item.orcid"
+                  >
+                    No ORCID ID supplied.
+                  </span>
+                </template>
+
+                <template #[`item.twitter`]="{ item }">
+                  <a
+                    v-if="item.twitter"
+                    :href="'https://twitter.com/' + item.twitter"
+                    target="_blank"
+                  >
+                    {{ item.twitter }}
+                  </a>
+                  <span
+                    v-if="!item.twitter"
+                  >
+                    No Twitter username supplied.
+                  </span>
+                </template>
+              </v-data-table>
+
+
+
+              <template slot="no-data">
+                <div>
+                  This organisation has no affiliated users.
+                </div>
+              </template>
+            </v-card>
+          </v-col>
+        </v-row>
+          
+          
 
         <!-- PREVIEW RECORD -->
         <v-dialog v-model="showOverlay">
@@ -350,6 +432,12 @@ export default {
         {text: 'Relation', value: 'relation', align: 'center'},
         {text: 'Grant', value: 'grant', align: 'center'},
         {text: 'Actions', value: 'actions', align: 'center', sortable: false}
+      ],
+      userHeaders: [
+        {text: 'Username', value: 'username', align: 'center'},
+        {text: 'Email address', value: 'email', align: 'center'},
+        {text: 'ORCID ID', value: 'orcid', align: 'center'},
+        {text: 'Twitter', value: 'twitter', align: 'center'},
       ]
     }
   },

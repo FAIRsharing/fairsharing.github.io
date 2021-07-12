@@ -249,8 +249,9 @@ let recordStore = {
             let data = await client.executeQuery(recordQuery);
             state.commit('setCurrentRecord', data);
         },
-        async fetchRecordHistory(state, id){
-            recordHistory.queryParam = {id: id};
+        async fetchRecordHistory(state, options){
+            recordHistory.queryParam = {id: options.id};
+            client.setHeader(options.token);
             let data = await client.executeQuery(recordHistory);
             state.commit('setRecordHistory', data["fairsharingRecord"]);
         },

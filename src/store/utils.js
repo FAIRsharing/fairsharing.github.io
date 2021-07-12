@@ -4,6 +4,7 @@ export const initStateMessages = function(){
         "logout",
         "getUser",
         "getPublicUser",
+        "deletePublicUser",
         "resetPassword",
         "sendResetEmail",
         "changePassword",
@@ -30,6 +31,7 @@ export const initUserDataState = function(){
         metadata: {},
         records: {},
         is_curator: false,
+        is_super_curator: false,
         role: null
     }
 };
@@ -64,6 +66,7 @@ export function initEditorSections(data, sectionsNames){
                 metadata: data.metadata,
                 registry: data.registry,
                 name: data.name,
+                curator_notes: data.curatorNotes || data.curator_notes,
                 domains: data.domains.map((obj) => {
                     obj.label = obj.label.toLowerCase();
                     return obj;

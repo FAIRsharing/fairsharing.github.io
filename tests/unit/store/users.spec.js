@@ -166,7 +166,10 @@ describe('Actions/Mutations', () => {
             },
             isLoggedIn: true,
             is_curator: false,
-            role: null
+            is_super_curator: false,
+            role: null,
+            orcid: 123456,
+            twitter: 'terazus'
         };
         getStub.withArgs("user").returns(JSON.stringify(user));
         mutations.setUser(state, user);
@@ -182,7 +185,10 @@ describe('Actions/Mutations', () => {
             metadata: {username: "Terazus"},
             isLoggedIn: true,
             is_curator: false,
-            role: null
+            is_super_curator: false,
+            role: null,
+            orcid: 123456,
+            twitter: 'terazus'
         });
     });
 
@@ -345,6 +351,52 @@ describe('Actions/Mutations', () => {
             "field": "updateProfile", "message": "Cannot read property 'data' of undefined"
         });
     });
+
+    it('Error Handling: getUsersList', async () => {
+        let state = {
+            state: {
+                usersList:[]
+            }
+        };
+        restClientStub.returns({
+            data: {error: "Error"}
+        });
+        await actions.getUsersList(state);
+        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
+            "field": "getUsersList", "message": "state.state.user is not a function"
+        });
+    });
+
+    it('Error Handling: updatePublicUsers', async () => {
+        let state = {
+            state: {
+                usersList:[]
+            }
+        };
+        restClientStub.returns({
+            data: {error: "Error"}
+        });
+        await actions.updatePublicUser(state);
+        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
+            "field": "updateProfile", "message": "state.state.user is not a function"
+        });
+    });
+
+    it('Error Handling: deletePublicUser', async () => {
+        let state = {
+            state: {
+                usersList:[]
+            }
+        };
+        restClientStub.returns({
+            data: {error: "Error"}
+        });
+        await actions.deletePublicUser(state);
+        expect(actions.commit).toHaveBeenCalledWith("users/setError",{
+            "field": "updateProfile", "message": "state.state.user is not a function"
+        });
+    });
+
 
     it("Error Handling: resetPwd outer case", async () => {
         restClientStub.returns(new Error("Error"));

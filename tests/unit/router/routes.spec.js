@@ -1,12 +1,22 @@
-import router, {afterEach} from "@/router"
+import router, {afterEach, scrollBehavior, isSuperCurator, isNotLoggedIn} from "@/router"
 import { beforeEach, isLoggedIn, isMaintenanceMode } from "@/router"
 import RestClient from "@/lib/Client/RESTClient.js"
+//import VueRouter from "vue-router";
 const sinon = require("sinon");
+
+/*
+const testrouter = new VueRouter(),
+    $testrouter = { push: jest.fn() };
+const $route = {
+    path: '/some/path'
+}
+ */
+
 
 let store = {
     state: {
         users: {
-            user: function(){return {isLoggedIn: true}}
+            user: function(){return {isLoggedIn: true,is_super_curator: true}}
         },
         introspection: {
             maintenanceMode: false
@@ -35,7 +45,7 @@ describe("Routes", () => {
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [
-            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance"
+            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile","UsersList","Login","Register"
         ];
 
         router.options.routes.forEach(function(route){
@@ -51,6 +61,8 @@ describe("Routes", () => {
     it ("- NAVGUARD - redirect if the user is not logged in", async () => {
         const next = jest.fn();
         await isLoggedIn(undefined, undefined, next, store);
+        await isNotLoggedIn(undefined, undefined, next, store);
+        await isSuperCurator(undefined, undefined, next, store);
         expect(next).toHaveBeenCalled();
     });
 
@@ -66,7 +78,7 @@ describe("Routes", () => {
         store = {
             state: {
                 users: {
-                    user: function(){return {isLoggedIn: false}}
+                    user: function(){return {isLoggedIn: false, is_super_curator: true}}
                 },
                 introspection: {
                     maintenanceMode: false
@@ -95,5 +107,76 @@ describe("Routes", () => {
         isMaintenanceMode(undefined, undefined, next, store);
         expect(next).toHaveBeenCalledWith();
     })
+
+    it("can check scrollBehavior", () => {
+        expect(scrollBehavior({hash:'#anchorLink'})).toStrictEqual({selector:"#anchorLink"})
+        expect(scrollBehavior({})).toBe(false)
+    })
+
+    it("performs harcoded record redirections correctly", async () => {
+        // Records for articles
+        let article = router.options.routes.find((obj) => {
+            return obj.name === 'article'
+        });
+        expect(article.redirect(
+            {params: {name: 'live_list_standards_in_policies'}})
+        ).toStrictEqual(
+            {"name": "search", "query": {"fairsharingRegistry": "Standard", "isRecommended": true, "page": 1}}
+        );
+        expect(article.redirect(
+            {params: {name: 'live_list_databases_in_policies'}})
+        ).toStrictEqual(
+            {"name": "search", "query": {"fairsharingRegistry": "Database", "isRecommended": true, "page": 1}}
+        );
+        expect(article.redirect(
+            {params: {name: 'live_list_journal_policies'}})
+        ).toStrictEqual(
+            {"name": "search", "query": {"fairsharingRegistry": "Policy", "recordType": "journal", "page": 1}}
+        );
+        expect(article.redirect(
+            {params: {name: 'dingdong'}})
+        ).toStrictEqual(
+            {"path": "/"}
+        );
+
+    });
+
+    it("performs harcoded ontology redirections correctly", async () => {
+
+        let assignMock = jest.fn();
+
+        delete window.location;
+        window.location = { assign: assignMock };
+
+        let ontology = router.options.routes.find((obj) => { return obj.name === 'ontology'} );
+        await ontology.redirect({params: {name: 'SRAO'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology');
+        await ontology.redirect({params: {name: 'DRAO'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/domain-ontology');
+        expect(ontology.redirect(
+            {params: {name: 'dingdong'}})
+        ).toStrictEqual(
+            {"path":"/"}
+        );
+
+    });
+
+    it ("- NAVGUARD - not let logged in User to access some pages like login and signup ", async () => {
+        const next = jest.fn();
+        store = {
+            state: {
+                users: {
+                    user: function(){return {isLoggedIn: false,is_super_curator: true}}
+                },
+                introspection: {
+                    maintenanceMode: false
+                }
+            },
+            dispatch: jest.fn()
+        };
+        await isNotLoggedIn(undefined, undefined, next, store);
+
+        expect(next).toHaveBeenCalled();
+    });
 
 });

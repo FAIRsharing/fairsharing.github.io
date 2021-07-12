@@ -84,6 +84,33 @@
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
+                  <div
+                    class="d-flex flex-row ml-4 mb-4"
+                  >
+                    <a
+                      :href="'https://fairsharing.org/users/' + user().id"
+                      target="_blank"
+                      class="underline-effect"
+                    >
+                      https://fairsharing.org/users/{{ user().id }}
+                    </a>
+                    <v-tooltip top>
+                      <template #activator="{ on, attrs }">
+                        <v-icon
+                          v-ripple
+                          v-clipboard="copyURL"
+                          v-bind="attrs"
+                          class="primary--text ml-2 cursor-pointer"
+                          small
+                          v-on="on"
+                        >
+                          fa fa-copy
+                        </v-icon>
+                      </template>
+                      <span v-if="!copyButtonStatus"> Copy URL </span>
+                      <span v-else> URL copied </span>
+                    </v-tooltip>
+                  </div>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -127,7 +154,7 @@
                     </v-list-item>
                   </v-list>
                   <div v-if="publications.length === 0 && !loading">
-                    You do not have an ORCID. Set one <a
+                    You do not have a valid ORCID ID. Get one <a
                       href="https://orcid.org/register"
                       rel="external"
                       target="_blank"
@@ -146,6 +173,7 @@
                 </v-card-actions>
               </v-card>
             </v-col>
+
 
             <v-col
               class="pt-0"
@@ -258,6 +286,33 @@
                 </v-card-text>
               </v-card>
             </v-col>
+
+            <v-col
+              class="pt-0"
+              cols="12"
+              xl="4"
+              lg="6"
+              md="12"
+              sm="12"
+              xs="12"
+            >
+              <v-card
+                height="100%"
+                class="d-flex flex-column rounded-0"
+              >
+                <v-card-title class="primary white--text py-3">
+                  Organisations
+                </v-card-title>
+                <v-card-text
+                  class="pa-0"
+                  style="flex-grow: 1"
+                >
+                  <OrganisationsTable
+                    :organisations="user().records.organisations"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-col>
           </v-row>
         </v-container>
       </v-col>
@@ -280,6 +335,7 @@
     import Loaders from "@/components/Navigation/Loaders";
     import ExternalClient from "@/lib/Client/ExternalClients.js"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
+    import OrganisationsTable from "../../components/Users/Profiles/Private/OrganisationsTable";
     import { cleanString } from "@/utils/stringUtils"
 
     let client = new ExternalClient();
@@ -290,10 +346,11 @@
 
     export default {
       name: "User",
-      components: {RecordsTable, Loaders, UserProfileMenu},
+      components: {RecordsTable, OrganisationsTable, Loaders, UserProfileMenu},
       mixins: [cleanString],
       data: () => {
         return {
+            copyButtonStatus: false,
             panel: 0,
             hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"],
             loading: false,
@@ -329,14 +386,14 @@
         }
       },
       async created(){
-          this.loading = true;
-          await this.getUser(); // we need the user BEFORE getting the publications.
-          if (this.messages()["getUser"].error){
-            this.setError({field:"login", message:"You've been logged out automatically"});
-            this.$router.push({path: "/accounts/login"})
-          }
-          this.publications = await this.getPublications();
-          this.loading = false;
+        this.loading = true;
+        await this.getUser(); // we need the user BEFORE getting the publications.
+        if (this.messages()["getUser"].error) {
+          this.setError({field: "login", message: "You've been logged out automatically"});
+          this.$router.push({path: "/accounts/login"})
+        }
+        this.publications = await this.getPublications();
+        this.loading = false;
       },
       beforeDestroy() {
         this.cleanStore();
@@ -348,26 +405,36 @@
             let output = [];
             if (this.user().metadata.orcid) {
               let publications = await client.getOrcidUser(this.user().metadata.orcid);
-              output = publications['activities-summary']['works']['group']
-                      .slice(0, 7)
-                      .map(obj => {
-                        let url = null;
-                        if(obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
-                          let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
-                                  obj => obj['external-id-type'] = "doi"
-                          )[0];
-                          url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
-                        }
-                        return {
-                          title: obj['work-summary'][0].title.title.value,
-                          url: url
-                        }
-                      });
+              /* istanbul ignore if */
+              if (publications.error) {
+                return [];
+              }
+              else {
+                output = publications['activities-summary']['works']['group']
+                    .slice(0, 7)
+                    .map(obj => {
+                      let url = null;
+                      if (obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
+                        let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
+                            obj => obj['external-id-type'] = "doi"
+                        )[0];
+                        url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
+                      }
+                      return {
+                        title: obj['work-summary'][0].title.title.value,
+                        url: url
+                      }
+                    });
+              }
             }
             return output;
           },
           booleanToString(bool){
             return (bool) ? "Yes" : "No";
+          },
+          copyURL() {
+            this.copyButtonStatus = true;
+            return 'https://fairsharing.org/users/' + this.user().id;
           }
       }
     }

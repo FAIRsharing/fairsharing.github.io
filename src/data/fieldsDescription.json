@@ -9,6 +9,7 @@
     "species": "The taxonomies covered by this resource. Please use latin names where possible. As you type, you will be presented with a list of matching values in a scrollable, drop-down menu. If you do not find an appropriate species, you may enter your own.",
     "subjects": "A discipline is a term describing a subject area / academic discipline used within FAIRsharing records by curators and the user community.",
     "domains": "A domain is a term describing a cross-discipline research domain used within FAIRsharing records by curators and the user community.",
-    "userDefinedTags": "User-defined tags that have been created by the user but not yet incorporated into the FAIRsharing vocabularies. New user-defined tags will be added to your record automatically when a new tag is submitted from the Tag Input Field."
+    "userDefinedTags": "User-defined tags that have been created by the user but not yet incorporated into the FAIRsharing vocabularies. New user-defined tags will be added to your record automatically when a new tag is submitted from the Tag Input Field.",
+    "curator_notes": "Notes, viewable only by curators, concerning the curation of this record."
   }
 }

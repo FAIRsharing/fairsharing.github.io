@@ -2,9 +2,41 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
 
-import { Home, NotFound, Record, Records, NewRecord, Editor, Login, Signup, ConfirmAccount, ResendConfirmation, User,
-    Curator, RequestNewPassword, ResetPassword, EditProfile, OauthLogin, Organisation, LoginFailure, Stat, Community,
-    Stakeholders, Timeline, Licence, Terms, Educational, Privacy, PublicProfile, Graph, Maintenance, APIDoc }
+import {
+    Home,
+    NotFound,
+    Record,
+    Records,
+    New,
+    NewRecord,
+    Editor,
+    Login,
+    Signup,
+    ConfirmAccount,
+    ResendConfirmation,
+    User,
+    Curator,
+    RequestNewPassword,
+    ResetPassword,
+    EditProfile,
+    OauthLogin,
+    Organisation,
+    LoginFailure,
+    Stat,
+    Community,
+    Stakeholders,
+    Timeline,
+    Licence,
+    Terms,
+    Educational,
+    Privacy,
+    PublicProfile,
+    Graph,
+    Maintenance,
+    APIDoc,
+    EditPublicProfile,
+    UsersList
+}
     from "./routes.js"
 
 Vue.use(VueRouter);
@@ -57,6 +89,53 @@ let routes = [
         component: Organisation
     },
 
+    /* VARIOUS REDIRECTIONS */
+    {
+        name: 'article',
+        path: '/article/:name',
+        redirect: to => {
+            if (to.params.name === 'live_list_standards_in_policies') {
+                return {
+                    name: 'search',
+                    query: { fairsharingRegistry: 'Standard', isRecommended: true, page: 1 }
+
+                }
+            }
+            else if (to.params.name === 'live_list_databases_in_policies') {
+                return {
+                    name: 'search',
+                    query: { fairsharingRegistry: 'Database', isRecommended: true, page: 1 }
+                }
+            }
+            else if (to.params.name === 'live_list_journal_policies') {
+                return {
+                    name: 'search',
+                    query: { fairsharingRegistry: 'Policy', recordType: 'journal', page: 1 }
+                }
+            }
+            else {
+                return { path: '/' }
+            }
+        }
+    },
+    {
+        name: 'ontology',
+        path: '/ontology/:name',
+        redirect: to => {
+            if (to.params.name.toLowerCase() === 'srao') {
+                window.location.assign('https://github.com/FAIRsharing/subject-ontology');
+            }
+            else if (to.params.name.toLowerCase() === 'drao') {
+                window.location.assign('https://github.com/FAIRsharing/domain-ontology');
+            }
+            else {
+                return { path: '/' }
+            }
+        }
+    },
+
+
+
     /* OTHER MODES */
     {
         name: "Maintenance",
@@ -70,7 +149,7 @@ let routes = [
     /* CREATION */
     {
         name: "New_content",
-        path: "/new",
+        path: "/create",
         component: NewRecord,
         beforeEnter(to, from, next) {
             isLoggedIn(to, from, next, store);
@@ -79,13 +158,18 @@ let routes = [
 
     /* Static pages */
     {
+        name: "New",
+        path: "/new",
+        component: New,
+    },
+    {
         name: "Statistics",
         path: "/summary-statistics",
         component: Stat,
     },
     {
-        name: "Community",
-        path: "/community",
+        name: "Communities",
+        path: "/communities",
         component: Community,
     },
     {
@@ -139,11 +223,17 @@ let routes = [
         name: "Login",
         path: "/accounts/login",
         component: Login,
+        beforeEnter(to, from, next) {
+            isNotLoggedIn(to, from, next, store);
+        }
     },
     {
         name: "Register",
         path: "/accounts/signup",
         component: Signup,
+        beforeEnter(to, from, next) {
+            isNotLoggedIn(to, from, next, store);
+        }
     },
     {
         name: "Confirm email",
@@ -186,7 +276,24 @@ let routes = [
             isLoggedIn(to, from, next, store);
         }
     },
-
+    {
+        name: "EditPublicProfile",
+        path: "/profiles/editPublicProfile/:id",
+        component: EditPublicProfile,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+            isSuperCurator(to, from, next, store);
+        }
+    },
+    {
+        name: "UsersList",
+        path: "/profiles/usersList",
+        component: UsersList,
+        beforeEnter(to, from, next) {
+            isLoggedIn(to, from, next, store);
+            isSuperCurator(to, from, next, store);
+        }
+    },
     // CURATORS
     {
         name: "Curator",
@@ -214,6 +321,11 @@ let routes = [
         name: "CollectionRecord",
         path: "/collection/:id",
         redirect: "/:id"
+    },
+    {
+        name: "RecordByDoi",
+        path: "/10.25504/:id",
+        component: Record
     },
     {
         name: "Record",
@@ -249,8 +361,16 @@ export async function afterEach(to) {
 
 const router = new VueRouter({
     routes,
+    scrollBehavior
     // mode: "history"
 });
+
+export function scrollBehavior(to) {
+    if (to.hash) {
+        return {selector: to.hash}
+    }
+    return false
+}
 
 export async function beforeEach(to, from, next, store) {
     if (to.path !== '/maintenance' && store.state.introspection.maintenanceMode) {
@@ -275,7 +395,28 @@ export function isLoggedIn(to, from, next, store) {
             query: {goTo: target}
         });
     }
+}
 
+export function isNotLoggedIn(to, from, next, store) {
+    if (!store.state.users.user().isLoggedIn) {
+        next()
+    }
+    else {
+        next(from);
+    }
+}
+
+export function isSuperCurator(to, from, next, store) {
+    if (store.state.users.user().is_super_curator) {
+        next()
+    }
+    else {
+        const target = to.path;
+        next({
+            name: "Login", // back to safety route //
+            query: {goTo: target}
+        });
+    }
 }
 
 export function isMaintenanceMode(to, from, next, store){

@@ -14,6 +14,8 @@ export const Curator = () => import(/* webpackChunkName: "curator-chunk" */ "@/v
 export const RequestNewPassword = () =>  import(/* webpackChunkName: "newPwd-chunk" */ "@/views/Users/RequestNewPassword");
 export const ResetPassword = () =>  import(/* webpackChunkName: "resetPwd-chunk" */ "@/views/Users/ResetPassword");
 export const EditProfile = () =>  import(/* webpackChunkName: "editProfile-chunk" */ "@/views/Users/EditProfile");
+export const EditPublicProfile = () =>  import(/* webpackChunkName: "editPublicProfile-chunk" */ "@/views/Users/EditPublicProfile");
+export const UsersList = () =>  import(/* webpackChunkName: "usersList-chunk" */ "@/views/Users/UsersList");
 export const OauthLogin = () =>  import(/* webpackChunkName: "Oauth-chunk" */ "@/views/Users/Login/OauthLogin.vue");
 export const Organisation = () =>  import(/* webpackChunkName: "Organisation-chunk" */ "@/views/Organisations/Organisation");
 export const LoginFailure = () =>  import(/* webpackChunkName: "failedLogin-chunk" */ "@/views/Users/Login/LoginFailure");
@@ -25,6 +27,7 @@ export const Licence =  () => import(/* webpackChunkName: "licence-chunk" */ '@/
 export const Terms =  () => import(/* webpackChunkName: "tos-chunk" */ '@/views/Static/TermOfUse/TermsOfUse');
 export const Educational =  () => import(/* webpackChunkName: "edu-chunk" */ '@/views/Static/Educational/Educational');
 export const Privacy =  () => import(/* webpackChunkName: "privacy-chunk" */ '@/views/Static/Privacy/Privacy');
+export const New = () => import(/* webpackChunkName: "new-chunk" */ '@/views/Static/New/New');
 export const Graph =  () => import(/* webpackChunkName: "graphtest-chunk" */ '@/views/Records/NetworkGraph');
 export const Maintenance =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Errors/Maintenance');
 export const APIDoc =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Static/APIDoc/APIDoc');

@@ -11,6 +11,20 @@
     "orcid",
     "username",
     "twitter",
-    {"$ref": "maintainedRecords"}
+    {"$ref": "maintainedRecords"},
+    {
+      "name": "organisations",
+      "fields": [
+        "id",
+        "name",
+        "homepage",
+        {
+          "queryName": "organisationTypes",
+          "fields": [
+            "name"
+          ]
+        }
+      ]
+    }
   ]
 }

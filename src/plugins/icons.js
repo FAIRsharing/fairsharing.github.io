@@ -139,7 +139,17 @@ const customIcons  = {
         funder: {
             type: "img",
             icon: "assets/records/policy.png",
-            tooltip: "Founder"
+            tooltip: "Funder"
+        },
+        project: {
+            type: "img",
+            icon: "assets/records/policy.png",
+            tooltip: "Project"
+        },
+        institution: {
+            type: "img",
+            icon: "assets/records/policy.png",
+            tooltip: "Institution"
         },
         terminology_artefact: {
             type: "img",
@@ -229,6 +239,26 @@ const customIcons  = {
             type: "icon",
             icon: "fa-ellipsis-h"
         },
+        adopters: {
+            type: "icon",
+            icon: "fa-file-alt"
+        },
+        activities: {
+            type: "icon",
+            icon: "fa-chart-line"
+        },
+        governance: {
+            type: "icon",
+            icon: "fa-university"
+        },
+        linkedin: {
+            type: "icon",
+            icon: "fab fa-linkedin"
+        },
+        home: {
+            type: "icon",
+            icon: "fa-home"
+        }
     },
     iconfont: 'fa'
 };

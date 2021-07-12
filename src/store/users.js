@@ -21,8 +21,9 @@ export const mutations = {
                 metadata: {},
                 records: {},
                 is_curator: user.is_curator,
+                is_super_curator:user.is_super_curator,
                 role: user.role,
-                watchedRecords: user['watched_records'] || []
+                watchedRecords: user['watched_records'] || [],
             }
         };
         localStorage.setItem("user", JSON.stringify(state.user()));
@@ -48,6 +49,7 @@ export const mutations = {
         let user = JSON.parse(localStorage.getItem("user"));
         if (user) {
             let isCurator = user.is_curator;
+            let isSuperCurator = user.is_super_curator;
             let role = user.role;
             let watchedRecords = user.watchedRecords;
             state.user = function () {
@@ -62,8 +64,11 @@ export const mutations = {
                     metadata: record.metadata,
                     records: record.records.user,
                     is_curator: isCurator,
+                    is_super_curator: isSuperCurator,
                     watchedRecords: watchedRecords,
-                    role: role
+                    role: role,
+                    orcid: user.orcid,
+                    twitter: user.twitter
                 }
             };
         }
@@ -78,9 +83,29 @@ export const mutations = {
                     records: record.records.user,
                     watchedRecords: [],
                     is_curator: false,
-                    role: null
+                    is_super_curator: false,
+                    role: null,
+                    orcid: null,
+                    twitter: null
                 }
             };
+        }
+    },
+    setUsersList(state,usersList) {
+        state.usersList = usersList;
+    },
+    setCurrentPublicUser(state,user) {
+        state.currentPublicUser = {
+            username: user.username,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            homepage: user.homepage,
+            twitter: user.twitter,
+            orcid: user.orcid,
+            profile_type: user.profile_type,
+            preferences: user.preferences,
+            deactivated: user.deactivated
         }
     },
     setUserMeta(state, metadata){
@@ -143,9 +168,23 @@ export const mutations = {
                 records: {},
                 watchedRecords: [],
                 is_curator: previousState.is_curator,
+                is_super_curator: previousState.is_super_curator,
                 role: previousState.role
             }
         };
+        state.usersList = [];
+        state.currentPublicUser = {
+            username: null,
+            email: null,
+            first_name: null,
+            last_name: null,
+            homepage: null,
+            twitter: null,
+            orcid: null,
+            profile_type: null,
+            preferences: {},
+            deactivated: null
+        }
     },
     changeWatched(state, watchedRecords) {
         let user = state.user();
@@ -251,6 +290,54 @@ export const actions = {
     async getPublicUser(state, userId) {
         getPublicUserQuery.queryParam.id = parseInt(userId);
         return await graphClient.executeQuery(getPublicUserQuery);
+    },
+    async getUsersList(state) {
+        try {
+            let usersListData = await client.getUsersList(state.state.user().credentials.token);
+            this.commit('users/setUsersList', usersListData);
+        }
+        catch (e) {
+            this.commit("users/setError", {
+                field: "getUsersList",
+                message: e.message
+            });
+        }
+    },
+    async getPublicUserForModification(state,id) {
+        try {
+            let {user} = await client.getPublicUser(state.state.user().credentials.token, id);
+            this.commit('users/setCurrentPublicUser', user);
+        }
+        catch (e) {
+            this.commit("users/setError", {
+                field: "getPublicUser",
+                message: e.message
+            });
+        }
+    },
+    async updatePublicUser(state, user){
+        try {
+            await client.editPublicUser(user, state.state.user().credentials.token);
+            this.commit("users/setMessage", {
+                field: "updateProfile",
+                message: "Update successful !"
+            })
+        }
+        catch(e) {
+            this.commit("users/setError", {field: "updateProfile", message: e.message})
+        }
+    },
+    async deletePublicUser(state, userId){
+        try {
+             await client.deletePublicUser(userId, state.state.user().credentials.token);
+                this.commit("users/setMessage", {
+                    field: "deletePublicUser",
+                    message: "Delete successful !"
+                })
+        }
+        catch(e) {
+            this.commit("users/setError", {field: "updateProfile", message: e.message})
+        }
     },
     async getUserMeta(state){
         try {
@@ -373,6 +460,19 @@ let currentUser = {
         },
         messages: function(){
             return initStateMessages();
+        },
+        usersList:[],
+        currentPublicUser: {
+            username: null,
+            email: null,
+            first_name: null,
+            last_name: null,
+            homepage: null,
+            twitter: null,
+            orcid: null,
+            profile_type: null,
+            preferences: {},
+            deactivated:null
         }
     },
     mutations: mutations,

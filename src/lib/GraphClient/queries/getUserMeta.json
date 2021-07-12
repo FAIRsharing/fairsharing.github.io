@@ -23,6 +23,20 @@
     {"$ref": "createdRecords"},
     {"$ref": "maintainedRecords"},
     {"$ref": "recordsInCuration"},
-    {"$ref": "watchedRecords"}
+    {"$ref": "watchedRecords"},
+    {
+      "name": "organisations",
+      "fields": [
+        "id",
+        "name",
+        "homepage",
+        {
+          "queryName": "organisationTypes",
+          "fields": [
+            "name"
+          ]
+        }
+      ]
+    }
   ]
 }

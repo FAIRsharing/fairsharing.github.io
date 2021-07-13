@@ -535,7 +535,10 @@ export default {
      * @returns {Promise} - the current record history
      * */
     async getHistory() {
-      await this.$store.dispatch("record/fetchRecordHistory", this.currentRoute);
+      await this.$store.dispatch("record/fetchRecordHistory", {
+        id: this.currentRoute, token: this.user().credentials.token
+      }
+      );
     },
     /**
      * Test if the current user can edit the current record

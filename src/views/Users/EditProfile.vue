@@ -95,6 +95,13 @@
                     get in touch</a>.
                 </p>
 
+                <p
+                  :v-if="!user().metadata.orcid"
+                >
+                  <b>We strongly recommend including your ORCID ID to provide extra information for the FAIRsharing
+                    community about you and the resources you develop.</b>
+                </p>
+
                 <!-- ACTIONS -->
                 <v-row>
                   <v-col cols="12">

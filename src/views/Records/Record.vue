@@ -426,9 +426,15 @@ export default {
           }
         },
         {
-          name: function() { return "Have a suggestion/question ?" },
-          isDisabled: function(){ return false},
-          method: function(){return null}
+          name: function () {
+            return "Have a suggestion/question ?"
+          },
+          isDisabled: function () {
+            return false
+          },
+          method: function () {
+            parent.location = "mailto:contact@fairsharing.org?subject=[FAIRsharing][Feedback] Comments on " + _module.currentRecord.fairsharingRecord.name;
+          }
         }
       ];
     },

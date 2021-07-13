@@ -178,9 +178,9 @@ describe("Record.vue", function() {
         expect(wrapper.vm.buttons[3].name()).toEqual("View Relation Graph");
         expect(wrapper.vm.buttons[3].isDisabled()).toBe(false);
         expect(wrapper.vm.buttons[4].name()).toEqual("View record history");
-        expect(wrapper.vm.buttons[4].isDisabled()).toBe(true);
+        expect(wrapper.vm.buttons[4].isDisabled()).toBe(false);
         expect(wrapper.vm.buttons[5].name()).toEqual("Have a suggestion/question ?");
-        expect(wrapper.vm.buttons[5].isDisabled()).toBe(true);
+        expect(wrapper.vm.buttons[5].isDisabled()).toBe(false);
         wrapper.vm.buttons[0].method();
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         wrapper.vm.buttons[1].method();
@@ -188,7 +188,8 @@ describe("Record.vue", function() {
         expect($router.push).toHaveBeenCalledTimes(2);
         await wrapper.vm.buttons[2].method();
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
-        expect(wrapper.vm.buttons[5].method()).toBe(null);
+        await wrapper.vm.buttons[5].method();
+        expect($router.push).toHaveBeenCalledTimes(3);
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},

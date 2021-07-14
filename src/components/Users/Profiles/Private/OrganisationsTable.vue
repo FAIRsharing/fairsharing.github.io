@@ -175,7 +175,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('users', ['updatePublicUser']),
+    ...mapActions('users', ['updateUserOrganisations','getUser']),
     objToList(obj) {
       let names = [];
       obj.forEach((t) => {
@@ -190,19 +190,15 @@ export default {
     deleteItem (item) {
       this.dialogDelete = true
       this.selectedOrganisationID = item.id
-      // delete using a put operation to rest API...
-
-      // this.editedIndex = this.organisations.indexOf(item)
-      // console.log(this.editedIndex)
     },
     async deleteItemConfirm() {
-      console.log(this.selectedOrganisationID)
-      console.log(this.userOrganisations)
-
-      // async updatePublicUser
-      // this.organisations.splice(this.editedIndex, 1)
-      // this.$forceUpdate()
-      // console.log(this.organisations)
+      this.userOrganisations.splice(this.userOrganisations.findIndex(item => item.id === this.selectedOrganisationID), 1)
+      let newUser = {
+        userID : this.user().id,
+        organisation_ids: this.userOrganisations.map(item=>item.id)
+      }
+      await this.updateUserOrganisations(newUser)
+      // await this.getUser(); // we need the new user data.
       this.closeDelete()
     }
   }

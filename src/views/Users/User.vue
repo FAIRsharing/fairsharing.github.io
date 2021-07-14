@@ -290,8 +290,8 @@
             <v-col
               class="pt-0"
               cols="12"
-              xl="4"
-              lg="6"
+              xl="6"
+              lg="12"
               md="12"
               sm="12"
               xs="12"
@@ -307,9 +307,7 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <OrganisationsTable
-                    :organisations="user().records.organisations"
-                  />
+                  <OrganisationsTable/>
                 </v-card-text>
               </v-card>
             </v-col>

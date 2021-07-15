@@ -19,6 +19,20 @@
     "isApproved",
     "curatorNotes",
     {
+      "name": "reviews",
+      "fields": [
+        "id",
+        "createdAt",
+        {
+          "queryName": "user",
+          "fields": [
+            "id",
+            "username"
+          ]
+        }
+      ]
+    },
+    {
       "name": "lastEditor",
       "fields": [
         "username",
@@ -137,10 +151,6 @@
         },
         "recordAssocLabel"
       ]
-    },
-    {
-      "name": "reviews",
-      "fields":  ["id", "fairsharingRecordId", "createdAt", "userId"]
     }
   ]
 }

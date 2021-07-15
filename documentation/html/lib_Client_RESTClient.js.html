@@ -474,6 +474,23 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Attempt to create a RecordReview for a user for a FairsharingRecord.
+     * @param {Integer} recordID - ID for the relevant FairsharingRecord.
+     * @param {String} userToken - JWT of the logged in user
+     * @returns {Promise}
+     */
+    async reviewRecord(recordID, userToken) {
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/record_reviews",
+            headers: this.auth_headers(userToken),
+            data: {record_review: {fairsharing_record_id: recordID}}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
     /* USER DEFINED TAGS */
 
     /**

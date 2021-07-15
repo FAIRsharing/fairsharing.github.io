@@ -27,7 +27,7 @@
           </v-alert>
 
           <v-alert
-            v-if="needsReviewing()"
+            v-if="user().is_curator && needsReviewing()"
             dense
             type="warning"
             class="mb-2 flex-grow-1"

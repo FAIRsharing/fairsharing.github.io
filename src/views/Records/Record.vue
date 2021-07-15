@@ -27,18 +27,18 @@
           </v-alert>
 
           <v-alert
-              v-if="needsReviewing()"
-              dense
-              type="warning"
-              class="mb-2 flex-grow-1"
+            v-if="needsReviewing()"
+            dense
+            type="warning"
+            class="mb-2 flex-grow-1"
           >
             <span>This record is in need of periodic curator review. </span>
             <span v-if="currentRecord['fairsharingRecord']['reviews'].length === 0">
               There has not been any review to date.
             </span>
             <span v-else>
-              The last review was on {{ currentRecord['fairsharingRecord']['reviews'][0]['createdAt'].split(/T/)[0]}}
-              by {{ currentRecord['fairsharingRecord']['reviews'][0]['user']['username']}}.
+              The last review was on {{ currentRecord['fairsharingRecord']['reviews'][0]['createdAt'].split(/T/)[0] }}
+              by {{ currentRecord['fairsharingRecord']['reviews'][0]['user']['username'] }}.
             </span>
           </v-alert>
 
@@ -82,18 +82,18 @@
               Thank you for claiming this record. We will be getting back to you between 48 and 72h.
             </v-snackbar>
             <v-snackbar
-                v-model="reviewSuccess"
-                color="success"
-                class="text-body text-center"
+              v-model="reviewSuccess"
+              color="success"
+              class="text-body text-center"
             >
               <span class="text-center">
                 Thank you for reviewing this record.
               </span>
             </v-snackbar>
             <v-snackbar
-                v-model="reviewFail"
-                color="warning"
-                class="text-body"
+              v-model="reviewFail"
+              color="warning"
+              class="text-body"
             >
               <span class="text-center">
                 Sorry, it was not possibly to save a review for this record.

@@ -120,7 +120,7 @@
           &lt;/v-alert>
 
           &lt;v-alert
-            v-if="needsReviewing()"
+            v-if="user().is_curator &amp;&amp; needsReviewing()"
             dense
             type="warning"
             class="mb-2 flex-grow-1"

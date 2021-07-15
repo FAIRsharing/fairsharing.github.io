@@ -3,9 +3,10 @@
     <!--  user existing organisations  -->
     <v-data-table
       :items="userOrganisations"
-      :headers="headers"
+      :headers="userCanEditOrganisation?headers:headers.filter(item=>item.text!=='action')"
       :items-per-page="perPage"
       :footer-props="footer"
+      :loading="loading"
       calculate-widths
     >
       <template v-slot:top>
@@ -61,7 +62,10 @@
       </template>
 
 
-      <template v-slot:item.actions="{ item }">
+      <template
+        v-if="userCanEditOrganisation"
+        v-slot:item.actions="{ item }"
+      >
         <v-icon
           small
           @click="deleteItem(item)"
@@ -115,12 +119,13 @@ export default {
   name: "OrganisationsTable",
   data:()=> {
     return {
+      loading:false,
       dialogDelete: false,
       selectedOrganisationID:-1,
       selected: [],
       search:'',
       userOrganisations:[],
-      allOrganisations: [
+      /*allOrganisations: [
         {
           name: 'Gingerbread',
           calories: 356,
@@ -145,11 +150,16 @@ export default {
           protein: 0,
           iron: '2%',
         }
-      ],
+      ],*/
+      allOrganisations:[],
+      userCanEditOrganisation:false
     }
   },
   computed: {
     ...mapState('users', ['user']),
+    userIsLoggedIn(){
+      return this.user().isLoggedIn;
+    },
     headers() {
       return [
         {text: 'Name', value: 'name', align: 'center'},
@@ -170,20 +180,44 @@ export default {
     },
     footer(){
       return {'items-per-page-options': [5]}
-    },
+    }
   },
   watch:{
-    async '$route.path' () {
-      await this.loadOrganisationData()
+    async userIsLoggedIn() {
+      await this.loadUserOrganisationData()
+      this.viewerCanManipulate()
+    },
+      async '$route.path' () {
+      await this.loadUserOrganisationData()
+      this.viewerCanManipulate()
     }
   },
   async mounted() {
-    await this.loadOrganisationData()
+    await this.loadUserOrganisationData()
+    this.viewerCanManipulate()
   },
   methods: {
-    ...mapActions('users', ['updateUser','getUser','getPublicUser']),
-    async loadOrganisationData() {
+    ...mapActions('users', ['updateUser','getUser','getPublicUser','updatePublicUser']),
+    viewerCanManipulate() {
+      if (this.user().isLoggedIn) {
+        if (this.$route.name === 'PublicProfile' && this.user().id === Number(this.$route.params.id)) {
+          this.userCanEditOrganisation = true;
+          return
+        }
+        else if (this.$route.name === 'PublicProfile' && this.user().is_super_curator) {
+          this.userCanEditOrganisation = true;
+          return
+        }
+        else if (this.$route.name === 'User') {
+          this.userCanEditOrganisation = true;
+          return
+        }
+      }
+      this.userCanEditOrganisation = false;
+    },
+    async loadUserOrganisationData() {
       // if it is the Public Profile route
+      this.loading = true
       if (this.$route.params.id) {
         let userId = this.$route.params.id;
         let {user} = await this.getPublicUser(userId);
@@ -194,6 +228,7 @@ export default {
         await this.getUser()
         this.userOrganisations = this.user().records.organisations
       }
+      this.loading = false
     },
     objToList(obj) {
       let names = [];
@@ -216,8 +251,14 @@ export default {
         id : this.user().id,
         organisation_ids: this.userOrganisations.map(item=>item.id)
       }
-      await this.updateUser(newUser)
-      await this.loadOrganisationData()
+      if (this.$route.name === 'PublicProfile' && this.user().is_super_curator) {
+        newUser.id = this.$route.params.id
+        await this.updatePublicUser(newUser)
+      }
+      else {
+        await this.updateUser(newUser)
+      }
+      await this.loadUserOrganisationData()
       this.closeDelete()
     }
   },

@@ -119,6 +119,7 @@ export default {
       selectedOrganisationID:-1,
       selected: [],
       search:'',
+      userOrganisations:[],
       allOrganisations: [
         {
           name: 'Gingerbread',
@@ -144,14 +145,11 @@ export default {
           protein: 0,
           iron: '2%',
         }
-      ]
+      ],
     }
   },
   computed: {
     ...mapState('users', ['user']),
-    userOrganisations() {
-      return this.user().records.organisations
-    },
     headers() {
       return [
         {text: 'Name', value: 'name', align: 'center'},
@@ -172,10 +170,31 @@ export default {
     },
     footer(){
       return {'items-per-page-options': [5]}
+    },
+  },
+  watch:{
+    async '$route.path' () {
+      await this.loadOrganisationData()
     }
   },
+  async mounted() {
+    await this.loadOrganisationData()
+  },
   methods: {
-    ...mapActions('users', ['updateUserOrganisations','getUser']),
+    ...mapActions('users', ['updateUser','getUser','getPublicUser']),
+    async loadOrganisationData() {
+      // if it is the Public Profile route
+      if (this.$route.params.id) {
+        let userId = this.$route.params.id;
+        let {user} = await this.getPublicUser(userId);
+        this.userOrganisations = user.organisations;
+      }
+      // if it is the Private Profile route
+      else {
+        await this.getUser()
+        this.userOrganisations = this.user().records.organisations
+      }
+    },
     objToList(obj) {
       let names = [];
       obj.forEach((t) => {
@@ -194,13 +213,13 @@ export default {
     async deleteItemConfirm() {
       this.userOrganisations.splice(this.userOrganisations.findIndex(item => item.id === this.selectedOrganisationID), 1)
       let newUser = {
-        userID : this.user().id,
+        id : this.user().id,
         organisation_ids: this.userOrganisations.map(item=>item.id)
       }
-      await this.updateUserOrganisations(newUser)
-      // await this.getUser(); // we need the new user data.
+      await this.updateUser(newUser)
+      await this.loadOrganisationData()
       this.closeDelete()
     }
-  }
+  },
 }
 </script>

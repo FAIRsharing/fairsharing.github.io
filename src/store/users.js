@@ -315,18 +315,6 @@ export const actions = {
             });
         }
     },
-    async updateUserOrganisations(state, user){
-        try {
-            await client.updateUserOrganisations(user, state.state.user().credentials.token);
-            this.commit("users/setMessage", {
-                field: "updateProfile",
-                message: "Update successful !"
-            })
-        }
-        catch(e) {
-            this.commit("users/setError", {field: "updateProfile", message: e.message})
-        }
-    },
     async updatePublicUser(state, user){
         try {
             await client.editPublicUser(user, state.state.user().credentials.token);

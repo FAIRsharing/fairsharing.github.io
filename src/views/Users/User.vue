@@ -307,7 +307,7 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <OrganisationsTable/>
+                  <OrganisationsTable />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -388,7 +388,7 @@
         await this.getUser(); // we need the user BEFORE getting the publications.
         if (this.messages()["getUser"].error) {
           this.setError({field: "login", message: "You've been logged out automatically"});
-          this.$router.push({path: "/accounts/login"})
+          await this.$router.push({path: "/accounts/login"})
         }
         this.publications = await this.getPublications();
         this.loading = false;

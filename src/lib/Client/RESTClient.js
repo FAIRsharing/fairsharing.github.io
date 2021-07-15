@@ -250,24 +250,6 @@ class RESTClient {
         return response.data;
     }
     /**
-     * Update current users' attached organisations
-     * @param newUser the new values for the current user
-     * @param {String} jwt - JWT of the logged in user
-     * @returns {Promise}
-     */
-    async updateUserOrganisations(newUser, jwt){
-        let {userID} = newUser
-        delete newUser.userID;
-        const request = {
-            method: "put",
-            baseURL: this.baseURL + `/users/${userID}`,
-            headers: this.auth_headers(jwt),
-            data: {user: newUser}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
-    }
-    /**
      * Edit the current logged in user profile
      * @param {Object} newUser - the new values for the logged in user
      * @param {String} jwt - JWT of the logged in user

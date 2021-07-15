@@ -23,7 +23,23 @@
             type="info"
             class="mb-2 flex-grow-1"
           >
-            <span>This record is is awaiting review by FAIRsharing curators</span>
+            <span>This record is awaiting review by FAIRsharing curators</span>
+          </v-alert>
+
+          <v-alert
+            v-if="user().is_curator && needsReviewing()"
+            dense
+            type="warning"
+            class="mb-2 flex-grow-1"
+          >
+            <span>This record is in need of periodic curator review. </span>
+            <span v-if="currentRecord['fairsharingRecord']['reviews'].length === 0">
+              There has not been any review to date.
+            </span>
+            <span v-else>
+              The last review was on {{ currentRecord['fairsharingRecord']['reviews'][0]['createdAt'].split(/T/)[0] }}
+              by {{ currentRecord['fairsharingRecord']['reviews'][0]['user']['username'] }}.
+            </span>
           </v-alert>
 
           <v-alert
@@ -64,6 +80,24 @@
               class="text-body"
             >
               Thank you for claiming this record. We will be getting back to you between 48 and 72h.
+            </v-snackbar>
+            <v-snackbar
+              v-model="reviewSuccess"
+              color="success"
+              class="text-body text-center"
+            >
+              <span class="text-center">
+                Thank you for reviewing this record.
+              </span>
+            </v-snackbar>
+            <v-snackbar
+              v-model="reviewFail"
+              color="warning"
+              class="text-body"
+            >
+              <span class="text-center">
+                Sorry, it was not possibly to save a review for this record.
+              </span>
             </v-snackbar>
           </div>
           <div
@@ -262,6 +296,8 @@ export default {
       canClaim: false,
       alreadyClaimed: false,
       claimedTriggered: false,
+      reviewSuccess: false,
+      reviewFail: false,
       buttons: [],
       history: {
         show: false,
@@ -336,7 +372,7 @@ export default {
     async getMenuButtons() {
       let _module = this;
       this.buttons = []
-      this.buttons = [
+      let initial_buttons = [
         {
           name: function() { return "Edit record" },
           isDisabled: function(){
@@ -429,13 +465,35 @@ export default {
             return "Have a suggestion/question ?"
           },
           isDisabled: function () {
-            return false
+            return false;
           },
           method: function () {
             parent.location = "mailto:contact@fairsharing.org?subject=[FAIRsharing][Feedback] Comments on " + _module.currentRecord.fairsharingRecord.name;
           }
         }
       ];
+      if (_module.user().is_curator && _module.needsReviewing()) {
+        initial_buttons.push(
+          {
+            name: function () {
+              return "Review this record"
+            },
+            isDisabled: function () {
+              // Only to be seen by logged-in curators.
+              // So, this line shouldn't really be encountered...
+              /* istanbul ignore if */
+              if (!_module.userIsLoggedIn) {
+                return true;
+              }
+              return !_module.user().is_curator;
+            },
+            method: async function () {
+              await _module.reviewRecord();
+            }
+          }
+        )
+      }
+      this.buttons = initial_buttons;
     },
     goToEdit(){
       let _module = this;
@@ -590,6 +648,44 @@ export default {
       return  this.currentRecord['fairsharingRecord'].id
           && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
     },
+    needsReviewing() {
+      const _module = this;
+      let need = true;
+      let d = new Date();
+      var pastYear = d.getFullYear() - 1;
+      d.setFullYear(pastYear);
+      // Will always be 0 if user is not a curator, so the check for showing the button (above
+      // also checks for their curator status.
+      if (_module.currentRecord['fairsharingRecord']['reviews'].length === 0) {
+        need = true;
+      }
+      else {
+        // Creating a date from the string returned by the API.
+        // See: https://stackoverflow.com/a/11658343/1195207
+        _module.currentRecord['fairsharingRecord']['reviews'].forEach(function (review) {
+          let rawDate = review['createdAt'].split('T')[0].split('-');
+          if (new Date(rawDate[0], rawDate[1]-1, rawDate[2]) > d) {
+            need = false;
+          }
+        })
+      }
+      return need;
+    },
+    async reviewRecord() {
+      // Post a review to the server.
+      const _module = this;
+      const recordID = _module.currentRecord['fairsharingRecord'].id;
+      const reviewRecord = await client.reviewRecord(recordID, _module.user().credentials.token);
+      if (reviewRecord.error) {
+        _module.reviewFail = true;
+      }
+      else {
+        _module.reviewSuccess = true;
+        await this.getData();
+      }
+      // Re-display the menu.
+      await this.getMenuButtons();
+    }
   },
   metaInfo() {
     try {

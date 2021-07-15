@@ -26,7 +26,8 @@ users.state.user = function(){ return {
     watchedRecords: [1]
 }};
 record.state.currentRecord.fairsharingRecord = {
-    maintainers: [{username: 123}]
+    maintainers: [{username: 123}],
+    reviews: []
 };
 record.getters = {getField: () => () => { return [{username: 123}]}};
 let $store = new Vuex.Store({
@@ -89,7 +90,8 @@ describe("Record.vue", function() {
                 domains: [],
                 subjects: [],
                 taxonomies: [],
-                userDefinedTags: []
+                userDefinedTags: [],
+                reviews: []
             }
         };
 
@@ -366,5 +368,68 @@ describe("Record.vue", function() {
         });
         expect(wrapper2.name()).toMatch("Record");
     });
+
+    it("handles failed attempts to review", async () => {
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {
+                data: {
+                    error: 'oh no!'
+                }
+            }
+        );
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            credentials: {token: 123, username: 123},
+            is_curator: true
+        }};
+        let reviewRecord = jest.spyOn(wrapper.vm, "reviewRecord");
+
+        await wrapper.vm.getData();
+        expect(wrapper.vm.reviewSuccess).toBe(false);
+        wrapper.vm.getMenuButtons();
+        await wrapper.vm.buttons[6].method();
+        expect(reviewRecord).toHaveBeenCalled();
+        expect(wrapper.vm.needsReviewing()).toBe(true);
+        expect(wrapper.vm.reviewSuccess).toBe(false);
+        mocks.restore("restMock");
+
+    });
+
+
+
+    it("runs the review method", async () => {
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {
+                data: {
+                    modification: 'success'
+                }
+            }
+        );
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            credentials: {token: 123, username: 123},
+            is_curator: true
+        }};
+        let reviewRecord = jest.spyOn(wrapper.vm, "reviewRecord");
+
+        await wrapper.vm.getData();
+        record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '1950-01-01T123456' }];
+        expect(wrapper.vm.reviewSuccess).toBe(false);
+        expect(wrapper.vm.needsReviewing()).toBe(true);
+        wrapper.vm.getMenuButtons();
+        expect(wrapper.vm.buttons[6].name()).toEqual("Review this record");
+        expect(wrapper.vm.buttons[6].isDisabled()).toBe(false);
+        await wrapper.vm.buttons[6].method();
+        expect(reviewRecord).toHaveBeenCalled();
+        record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '2050-01-01T123456' }];
+        expect(wrapper.vm.needsReviewing()).toBe(false);
+        expect(wrapper.vm.reviewSuccess).toBe(true);
+        mocks.restore("restMock");
+    });
+
 
 });

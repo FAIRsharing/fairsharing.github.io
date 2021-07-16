@@ -170,7 +170,7 @@ describe("Record.vue", function() {
 
     it("Testing buttons methods", async () => {
         $store.state.users.user().isLoggedIn = false;
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[0].name()).toEqual("Edit record");
         expect(wrapper.vm.buttons[0].isDisabled()).toBe(false);
         expect(wrapper.vm.buttons[1].name()).toEqual("Request ownership");
@@ -230,7 +230,7 @@ describe("Record.vue", function() {
         );
         expect(wrapper.vm.isWatching()).toBe(false);
         let changeWatchRecord = jest.spyOn(wrapper.vm, "changeWatchRecord");
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
         await wrapper.vm.buttons[2].method();
         expect(changeWatchRecord).toHaveBeenCalledWith(true);
@@ -251,7 +251,7 @@ describe("Record.vue", function() {
         let changeWatch = jest.spyOn(wrapper.vm, "changeWatchRecord");
         let changeWatchUsers = jest.spyOn(wrapper.vm, "changeWatched");
         expect(changeWatchUsers).toHaveBeenCalledTimes(0);
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         mocks.setMock("restMock",
             RESTClient.prototype,
             "executeQuery",
@@ -388,7 +388,7 @@ describe("Record.vue", function() {
 
         await wrapper.vm.getData();
         expect(wrapper.vm.reviewSuccess).toBe(false);
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         await wrapper.vm.buttons[6].method();
         expect(reviewRecord).toHaveBeenCalled();
         expect(wrapper.vm.needsReviewing()).toBe(true);
@@ -420,7 +420,7 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '1950-01-01T123456' }];
         expect(wrapper.vm.reviewSuccess).toBe(false);
         expect(wrapper.vm.needsReviewing()).toBe(true);
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[6].name()).toEqual("Review this record");
         expect(wrapper.vm.buttons[6].isDisabled()).toBe(false);
         await wrapper.vm.buttons[6].method();

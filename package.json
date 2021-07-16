@@ -27,6 +27,7 @@
     "fsevents": "*",
     "highcharts": "^9.0.1",
     "highcharts-vue": "*",
+    "jest-environment-jsdom-fifteen": "^1.0.2",
     "jquery": "^3.5.1",
     "jsdoc-vuex-plugin": "^1.0.0",
     "lodash": "^4.17.20",

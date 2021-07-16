@@ -350,6 +350,7 @@ export default {
     },
     async userIsLoggedIn() {
       await this.canEditRecord();
+      await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons();
     }

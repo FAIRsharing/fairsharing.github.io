@@ -2,38 +2,37 @@
   <v-container fluid>
     <v-row>
       <v-col
-          cols="12"
-          md="12"
-          lg="6"
-          xl="6"
+        cols="12"
+        md="12"
+        lg="6"
+        xl="6"
       >
         <!--  all available organisations  -->
         <v-card-title>
           Available Organisations
           <v-spacer />
           <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
           />
         </v-card-title>
         <v-data-table
-            v-model="selected"
-            :headers="headersAvailableOrganisations"
-            :items="allOrganisations"
-            :search="search"
-            :loading="loadingAllOrganisations"
-            :items-per-page="perPage"
-            :footer-props="footer"
-            item-key="name"
-            show-select
-            class="elevation-1"
+          v-model="selected"
+          :headers="headersAvailableOrganisations"
+          :items="allOrganisations"
+          :search="search"
+          :loading="loadingAllOrganisations"
+          :items-per-page="perPage"
+          :footer-props="footer"
+          item-key="name"
+          class="elevation-1"
         >
           <template #[`item.name`]="{ item }">
             <router-link
-                :to="'/organisations/' + item.id"
+              :to="'/organisations/' + item.id"
             >
               {{ item.name }}
             </router-link>
@@ -41,14 +40,25 @@
 
           <template #[`item.homepage`]="{ item }">
             <a
-                :href="item.homepage"
-                target="_blank"
+              :href="item.homepage"
+              target="_blank"
             >
               {{ item.homepage }}
             </a>
           </template>
           <template #[`item.types`]="{ item }">
             {{ item.types.join(', ') }}
+          </template>
+          <template
+            v-if="userCanEditOrganisation"
+            v-slot:item.actions="{ item }"
+          >
+            <v-icon
+              small
+              @click="AddToUsersOrganisations(item)"
+            >
+              {{ $vuetify.icons.values.plus }}
+            </v-icon>
           </template>
         </v-data-table>
       </v-col>
@@ -69,7 +79,6 @@
             label="Search"
             single-line
             hide-details
-
           />
         </v-card-title>
         <v-data-table
@@ -168,6 +177,7 @@ export default {
       loading:false,
       loadingAllOrganisations:false,
       dialogDelete: false,
+      dialogAddToUserOrganisations:false,
       selectedOrganisationID:-1,
       selected: [],
       search:'',
@@ -196,6 +206,7 @@ export default {
         {text: 'Name', value: 'name', align: 'center'},
         {text: 'Types', value: 'types', align: 'center',sortable: false},
         {text: 'Homepage', value: 'homepage', align: 'center',sortable: false},
+        {text: 'action', value: 'actions', align: 'center',sortable: false},
       ];
     },
     perPage(){
@@ -275,11 +286,27 @@ export default {
       this.dialogDelete = true
       this.selectedOrganisationID = item.id
     },
+    async AddToUsersOrganisations(item) {
+      if (this.userOrganisations.every(el => el.id !== item.id)) {
+        item.organisationTypes = item.types.map(obj => {
+          return {name: obj}
+        })
+        this.userOrganisations.push(item)
+        await this.persistUserOrganisations()
+      }
+      else {
+        alert('This organisation is already in your list!')
+      }
+    },
     async deleteItemConfirm() {
       this.userOrganisations.splice(this.userOrganisations.findIndex(item => item.id === this.selectedOrganisationID), 1)
+      await this.persistUserOrganisations()
+      this.closeDelete()
+    },
+    async persistUserOrganisations() {
       let newUser = {
-        id : this.user().id,
-        organisation_ids: this.userOrganisations.map(item=>item.id)
+        id: this.user().id,
+        organisation_ids: this.userOrganisations.map(item => item.id)
       }
       if (this.$route.name === 'PublicProfile' && this.user().is_super_curator) {
         newUser.id = this.$route.params.id
@@ -289,7 +316,6 @@ export default {
         await this.updateUser(newUser)
       }
       await this.loadUserOrganisationData()
-      this.closeDelete()
     }
   },
 }

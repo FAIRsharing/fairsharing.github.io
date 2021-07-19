@@ -43,7 +43,7 @@
       >
         <v-container
           fluid
-          class="py-0"
+          class="py-0 pa-0"
         >
           <v-row>
             <v-col
@@ -101,7 +101,7 @@
               class="pt-0"
               cols="12"
               xl="6"
-              lg="5"
+              lg="6"
               md="12"
               sm="12"
               xs="12"
@@ -154,8 +154,8 @@
 
             <v-col
               cols="12"
-              xl="4"
-              lg="6"
+              xl="12"
+              lg="12"
               md="12"
               sm="12"
               xs="12"
@@ -183,8 +183,8 @@
             <v-col
               class="pt-0"
               cols="12"
-              xl="4"
-              lg="6"
+              xl="12"
+              lg="12"
               md="12"
               sm="12"
               xs="12"

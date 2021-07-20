@@ -59,6 +59,8 @@ let mocks = {
         this.restore("canEditStub");
         this.restore("canClaimStub");
         this.restore("claimRecord");
+        this.restore("reviewRecord");
+        this.restore("metadataFields");
     },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
         this[mockKey] = sinon.stub(targetClass, targetMethod);
@@ -116,6 +118,10 @@ describe("Record.vue", function() {
         mocks.setMock("reviewRecord",
             RESTClient.prototype,
             "reviewRecord",
+            true);
+        mocks.setMock("metadataFields",
+            RESTClient.prototype,
+            "extraMetadataFields",
             true);
         let breakpoint = {
             init: jest.fn(),

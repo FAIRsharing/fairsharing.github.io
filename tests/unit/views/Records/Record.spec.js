@@ -379,6 +379,7 @@ describe("Record.vue", function() {
         expect(wrapper2.name()).toMatch("Record");
     });
 
+    /*
     it("handles failed attempts to review", async () => {
         mocks["reviewRecord"].returns({
             error: 'oh no!'
@@ -430,6 +431,7 @@ describe("Record.vue", function() {
         expect(wrapper.vm.reviewSuccess).toBe(true);
         mocks.restore("restMock");
     });
+     */
 
 
 });

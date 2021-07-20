@@ -15,7 +15,7 @@
       class="text-body text-center"
     >
       <span class="text-center">
-        Successfully {{successTerm}} the organisation in your list!
+        Successfully {{ successTerm }} the organisation in your list!
       </span>
     </v-snackbar>
     <v-row>
@@ -99,6 +99,20 @@
             hide-details
           />
         </v-card-title>
+        <div class="d-flex align-center mb-4">
+          <v-btn
+            v-if="userCanEditOrganisation"
+            fab
+            small
+            class="green white--text mt-2 ml-2"
+            @click="AddNewOrganisation.show = true"
+          >
+            <v-icon small>
+              fa-plus
+            </v-icon>
+          </v-btn>
+          <b class="ml-2">Add a new Organisation</b>
+        </div>
         <v-data-table
           :search="userOrganisationsSearch"
           :items="userOrganisations"
@@ -182,11 +196,114 @@
         </v-data-table>
       </v-col>
     </v-row>
+    <!--  create a new organisation card   -->
+    <v-card
+      v-if="AddNewOrganisation.show === true"
+      class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
+      style="border: 2px dashed grey !important; border-radius:5px;"
+    >
+      <v-card-title>Create a new organisation</v-card-title>
+      <v-card-text
+        v-if="AddNewOrganisation.error"
+        class="mb-0 pb-0"
+      >
+        <v-alert
+          type="error"
+          class="mb-0"
+        >
+          {{ AddNewOrganisation.error.response.data }}
+        </v-alert>
+      </v-card-text>
+      <v-card-text>
+        <v-form
+          id="createNewOrganisation"
+          ref="createNewOrganisation"
+          v-model="AddNewOrganisation.formValid"
+        >
+          <v-container fluid>
+            <v-row>
+              <v-col
+                cols="12"
+                class="pb-0"
+              >
+                <v-text-field
+                  v-model="AddNewOrganisation.data.name"
+                  label="Organisation Name"
+                  outlined
+                  :rules="[rules.isRequired()]"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                class="pb-0"
+              >
+                <v-text-field
+                  v-model="AddNewOrganisation.data.homepage"
+                  label="Organisation Homepage"
+                  outlined
+                  :rules="[rules.isRequired(), rules.isURL()]"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                class="pb-0"
+              >
+                <v-autocomplete
+                  v-model="AddNewOrganisation.data.organisation_type_ids"
+                  :items="organisationsTypes"
+                  multiple
+                  outlined
+                  item-text="name"
+                  item-value="id"
+                  return-object
+                  label="Select the organisation type(s)"
+                  :rules="[rules.isRequired()]"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-file-input
+                  v-if="false"
+                  v-model="AddNewOrganisation.data.logo"
+                  accept="image/png, image/jpeg"
+                  label="File input"
+                  placeholder="Select a logo"
+                  outlined
+                  :show-size="1000"
+                  clearable
+                  chips
+                />
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          class="success"
+          :disabled="!AddNewOrganisation.formValid"
+          :loading="AddNewOrganisation.loading"
+          @click="createNewOrganisation()"
+        >
+          Save new organisation
+        </v-btn>
+        <v-btn
+          class="error"
+          @click="AddNewOrganisation.show = false"
+        >
+          Cancel
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 import {mapActions, mapState} from "vuex";
+import { isRequired, isUrl } from "@/utils/rules.js"
+import Vue from "vue";
+import RestClient from "@/lib/Client/RESTClient.js"
+const restClient = new RestClient();
 
 export default {
   name: "OrganisationsTable",
@@ -204,7 +321,20 @@ export default {
       allOrganisations:[],
       userCanEditOrganisation:false,
       showSuccessAction:false,
-      successTerm:'added' // or 'deleted'
+      successTerm:'added', // or 'deleted',
+      showAddOrganisationDialog:false,
+      AddNewOrganisation: {
+        show:false,
+        data: {},
+        loading: false,
+        formValid: false,
+        logoData: null,
+        error: false
+      },
+      rules: {
+        isRequired: ()=> isRequired(),
+        isURL: ()=> isUrl()
+      },
     }
   },
   computed: {
@@ -249,8 +379,9 @@ export default {
   async mounted() {
     this.loadingAllOrganisations = true
     await Promise.all([
-    await this.loadUserOrganisationData(),
-    await this.getOrganisations()
+    this.getOrganisationsTypes(),
+    this.loadUserOrganisationData(),
+    this.getOrganisations()
     ]);
     this.loadingAllOrganisations = false
     this.allOrganisations = this.organisations
@@ -258,7 +389,7 @@ export default {
   },
   methods: {
     ...mapActions('users', ['updateUser','getUser','getPublicUser','updatePublicUser']),
-    ...mapActions("editor", ["getOrganisations"]),
+    ...mapActions("editor", ["getOrganisations","getOrganisationsTypes"]),
     viewerCanManipulate() {
       if (this.user().isLoggedIn) {
         if (this.$route.name === 'PublicProfile' && this.user().id === Number(this.$route.params.id)) {
@@ -340,6 +471,38 @@ export default {
         await this.updateUser(newUser)
       }
       await this.loadUserOrganisationData()
+    },
+    async createNewOrganisation() {
+      this.AddNewOrganisation.loading = true;
+      this.AddNewOrganisation.error = false;
+      let organisationInput = JSON.parse(JSON.stringify(this.AddNewOrganisation.data));
+      if (this.AddNewOrganisation.logoData){
+        organisationInput.logo = this.AddNewOrganisation.logoData;
+        organisationInput.logo.data = organisationInput.logo.data.replace("data:image/png;base64,", "");
+      }
+      let organisation_type_ids = JSON.parse(JSON.stringify(organisationInput.organisation_type_ids));
+      organisationInput.organisation_type_ids = organisationInput.organisation_type_ids.map(obj => obj.id);
+      let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
+      if (!data.error) {
+        let newOrganisation = {
+          id: data.id,
+          name: data.name,
+          homepage: data.homepage,
+          types: organisation_type_ids.map(obj => obj.name),
+          urlForLogo: data['url_for_logo']
+        };
+        this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
+        Vue.set(this.organisations, this.organisations.length, newOrganisation);
+        this.AddNewOrganisation.show = null;
+        this.AddNewOrganisation.data = {};
+      }
+      else {
+        this.AddNewOrganisation.error = data.error;
+      }
+      this.AddNewOrganisation.loading = false;
+      await this.loadUserOrganisationData();
+      this.showSuccessAction = true
+      this.successTerm = 'added'
     }
   },
 }

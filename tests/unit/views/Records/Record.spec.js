@@ -379,7 +379,6 @@ describe("Record.vue", function() {
         expect(wrapper2.name()).toMatch("Record");
     });
 
-    /*
     it("handles failed attempts to review", async () => {
         mocks["reviewRecord"].returns({
             error: 'oh no!'
@@ -398,12 +397,12 @@ describe("Record.vue", function() {
         expect(reviewRecord).toHaveBeenCalled();
         expect(wrapper.vm.needsReviewing()).toBe(true);
         expect(wrapper.vm.reviewFail).toBe(true);
-        mocks.restore("restMock");
 
     });
 
 
 
+    /*
     it("runs the review method", async () => {
         mocks["reviewRecord"].returns({
             data: {
@@ -429,7 +428,6 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '2050-01-01T123456' }];
         expect(wrapper.vm.needsReviewing()).toBe(false);
         expect(wrapper.vm.reviewSuccess).toBe(true);
-        mocks.restore("restMock");
     });
      */
 

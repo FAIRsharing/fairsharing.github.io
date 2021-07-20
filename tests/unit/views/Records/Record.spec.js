@@ -113,6 +113,10 @@ describe("Record.vue", function() {
             RESTClient.prototype,
             "claimRecord",
             true);
+        mocks.setMock("reviewRecord",
+            RESTClient.prototype,
+            "reviewRecord",
+            true);
         let breakpoint = {
             init: jest.fn(),
             framework: {},
@@ -370,15 +374,9 @@ describe("Record.vue", function() {
     });
 
     it("handles failed attempts to review", async () => {
-        mocks.setMock("restMock",
-            RESTClient.prototype,
-            "executeQuery",
-            {
-                data: {
-                    error: 'oh no!'
-                }
-            }
-        );
+        mocks["reviewRecord"].returns({
+            error: 'oh no!'
+        });
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},
@@ -387,12 +385,12 @@ describe("Record.vue", function() {
         let reviewRecord = jest.spyOn(wrapper.vm, "reviewRecord");
 
         await wrapper.vm.getData();
-        expect(wrapper.vm.reviewSuccess).toBe(false);
+        expect(wrapper.vm.reviewFail).toBe(false);
         wrapper.vm.getMenuButtons();
         await wrapper.vm.buttons[6].method();
         expect(reviewRecord).toHaveBeenCalled();
         expect(wrapper.vm.needsReviewing()).toBe(true);
-        expect(wrapper.vm.reviewSuccess).toBe(false);
+        expect(wrapper.vm.reviewFail).toBe(true);
         mocks.restore("restMock");
 
     });
@@ -400,15 +398,11 @@ describe("Record.vue", function() {
 
 
     it("runs the review method", async () => {
-        mocks.setMock("restMock",
-            RESTClient.prototype,
-            "executeQuery",
-            {
-                data: {
-                    modification: 'success'
-                }
+        mocks["reviewRecord"].returns({
+            data: {
+                modification: 'success'
             }
-        );
+        });
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},

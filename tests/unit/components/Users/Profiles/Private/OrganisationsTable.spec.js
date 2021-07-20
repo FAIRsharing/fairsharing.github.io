@@ -105,6 +105,8 @@ describe('OrganisationTable.vue', () => {
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("OrganisationsTable");
         expect(wrapper.vm.perPage).toBe(5)
+        wrapper.vm.rules.isRequired();
+        wrapper.vm.rules.isURL();
         delete $route.params.id
     });
 

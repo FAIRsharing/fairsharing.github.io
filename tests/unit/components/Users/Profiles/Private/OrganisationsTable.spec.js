@@ -1,6 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
 import OrganisationsTable from "@/components/Users/Profiles/Private/OrganisationsTable";
 import userStore from "@/store/users.js";
+import editor from "@/store/editor.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import RESTClient from "@/lib/Client/RESTClient.js";
 import Vuex from "vuex";
@@ -23,7 +24,8 @@ userStore.state.user = function () {
 };
 let $store = new Vuex.Store({
         modules: {
-            users: userStore
+            users: userStore,
+            editor:editor
         }
     }),
     $route = {
@@ -146,10 +148,19 @@ describe('OrganisationTable.vue', () => {
     })
 
     it("can check watcher behavior", () => {
+
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            credentials: {token: 123, username: 123},
+            is_super_curator: false,
+            id:1
+        }};
+        wrapper.vm.viewerCanManipulate()
+        expect(wrapper.vm.userCanEditOrganisation).toBe(true);
         $store.state.users.user = function (){return {
             isLoggedIn: false,
             credentials: {token: 123, username: 123},
-            is_super_curator: true
+            is_super_curator: true,
         }};
         $route.path = "another route";
         $route.name = "User";
@@ -163,6 +174,23 @@ describe('OrganisationTable.vue', () => {
         }};
         wrapper.vm.viewerCanManipulate()
         expect(wrapper.vm.userCanEditOrganisation).toBe(false);
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            credentials: {token: 123, username: 123},
+            is_super_curator: false,
+        }};
+        wrapper.vm.viewerCanManipulate()
+        expect(wrapper.vm.userCanEditOrganisation).toBe(true);
+
+    })
+
+    it("can check AddToUsersOrganisations method", async () => {
+            let item = {id:1,types:['company','organisation']}
+            await wrapper.vm.AddToUsersOrganisations(item)
+            expect(wrapper.vm.userOrganisations).toStrictEqual([{"id": 1, "organisationTypes": [{"name": "company"}, {"name": "organisation"}], "types": ["company", "organisation"]}])
+            item = {id:1,types:['company','organisation']}
+            await wrapper.vm.AddToUsersOrganisations(item)
+            expect(wrapper.vm.userOrganisations).toStrictEqual([{"id": 1, "organisationTypes": [{"name": "company"}, {"name": "organisation"}], "types": ["company", "organisation"]}])
     })
 
 

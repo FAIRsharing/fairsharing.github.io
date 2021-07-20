@@ -1,5 +1,23 @@
 <template>
   <v-container fluid>
+    <v-snackbar
+      v-model="showFailedAction"
+      color="red"
+      class="text-body text-center"
+    >
+      <span class="text-center">
+        You have already added this organisation in your list!
+      </span>
+    </v-snackbar>
+    <v-snackbar
+      v-model="showSuccessAction"
+      color="green"
+      class="text-body text-center"
+    >
+      <span class="text-center">
+        Successfully {{successTerm}} the organisation in your list!
+      </span>
+    </v-snackbar>
     <v-row>
       <v-col
         cols="12"
@@ -177,14 +195,16 @@ export default {
       loading:false,
       loadingAllOrganisations:false,
       dialogDelete: false,
-      dialogAddToUserOrganisations:false,
+      showFailedAction:false,
       selectedOrganisationID:-1,
       selected: [],
       search:'',
       userOrganisationsSearch:'',
       userOrganisations:[],
       allOrganisations:[],
-      userCanEditOrganisation:false
+      userCanEditOrganisation:false,
+      showSuccessAction:false,
+      successTerm:'added' // or 'deleted'
     }
   },
   computed: {
@@ -293,15 +313,19 @@ export default {
         })
         this.userOrganisations.push(item)
         await this.persistUserOrganisations()
+        this.successTerm = 'added'
+        this.showSuccessAction = true
       }
       else {
-        alert('This organisation is already in your list!')
+        this.showFailedAction = true
       }
     },
     async deleteItemConfirm() {
       this.userOrganisations.splice(this.userOrganisations.findIndex(item => item.id === this.selectedOrganisationID), 1)
       await this.persistUserOrganisations()
       this.closeDelete()
+      this.successTerm = 'deleted'
+      this.showSuccessAction = true
     },
     async persistUserOrganisations() {
       let newUser = {

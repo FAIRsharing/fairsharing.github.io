@@ -59,6 +59,8 @@ let mocks = {
         this.restore("canEditStub");
         this.restore("canClaimStub");
         this.restore("claimRecord");
+        this.restore("reviewRecord");
+        this.restore("metadataFields");
     },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
         this[mockKey] = sinon.stub(targetClass, targetMethod);
@@ -112,6 +114,14 @@ describe("Record.vue", function() {
         mocks.setMock("claimRecord",
             RESTClient.prototype,
             "claimRecord",
+            true);
+        mocks.setMock("reviewRecord",
+            RESTClient.prototype,
+            "reviewRecord",
+            true);
+        mocks.setMock("metadataFields",
+            RESTClient.prototype,
+            "extraMetadataFields",
             true);
         let breakpoint = {
             init: jest.fn(),
@@ -369,16 +379,15 @@ describe("Record.vue", function() {
         expect(wrapper2.name()).toMatch("Record");
     });
 
+
     it("handles failed attempts to review", async () => {
-        mocks.setMock("restMock",
-            RESTClient.prototype,
-            "executeQuery",
-            {
-                data: {
-                    error: 'oh no!'
-                }
-            }
-        );
+        mocks.restore("graphMock");
+        mocks.setMock("graphMock",
+            GraphClient.prototype,
+            "executeQuery");
+        mocks["reviewRecord"].returns({
+            error: 'oh no!'
+        });
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},
@@ -387,28 +396,27 @@ describe("Record.vue", function() {
         let reviewRecord = jest.spyOn(wrapper.vm, "reviewRecord");
 
         await wrapper.vm.getData();
-        expect(wrapper.vm.reviewSuccess).toBe(false);
+        expect(wrapper.vm.reviewFail).toBe(false);
         wrapper.vm.getMenuButtons();
         await wrapper.vm.buttons[6].method();
         expect(reviewRecord).toHaveBeenCalled();
         expect(wrapper.vm.needsReviewing()).toBe(true);
-        expect(wrapper.vm.reviewSuccess).toBe(false);
-        mocks.restore("restMock");
-
+        expect(wrapper.vm.reviewFail).toBe(true);
+        mocks.restore("graphMock");
     });
 
 
 
     it("runs the review method", async () => {
-        mocks.setMock("restMock",
-            RESTClient.prototype,
-            "executeQuery",
-            {
-                data: {
-                    modification: 'success'
-                }
+        mocks.restore("graphMock");
+        mocks.setMock("graphMock",
+            GraphClient.prototype,
+            "executeQuery");
+        mocks["reviewRecord"].returns({
+            data: {
+                modification: 'success'
             }
-        );
+        });
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},
@@ -428,7 +436,7 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '2050-01-01T123456' }];
         expect(wrapper.vm.needsReviewing()).toBe(false);
         expect(wrapper.vm.reviewSuccess).toBe(true);
-        mocks.restore("restMock");
+        mocks.restore("graphMock");
     });
 
 

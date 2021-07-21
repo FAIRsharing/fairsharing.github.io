@@ -8,10 +8,14 @@ import Vuex from "vuex";
 import VueRouter from "vue-router";
 import sinon from "sinon";
 import Vuetify from "vuetify";
+import RestClient from "@/lib/Client/RESTClient";
+import editorStore from "@/store/editor.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 // Initializing store states and getters
+editorStore.state.organisations = [];
+
 userStore.state.user = function () {
     return {
         isLoggedIn: true,
@@ -25,7 +29,7 @@ userStore.state.user = function () {
 let $store = new Vuex.Store({
         modules: {
             users: userStore,
-            editor:editor
+            editor:editor,
         }
     }),
     $route = {
@@ -107,6 +111,7 @@ describe('OrganisationTable.vue', () => {
         expect(wrapper.vm.perPage).toBe(5)
         wrapper.vm.rules.isRequired();
         wrapper.vm.rules.isURL();
+        wrapper.vm.rules.isLongEnough(1);
         delete $route.params.id
     });
 
@@ -195,5 +200,30 @@ describe('OrganisationTable.vue', () => {
             expect(wrapper.vm.userOrganisations).toStrictEqual([{"id": 1, "organisationTypes": [{"name": "company"}, {"name": "organisation"}], "types": ["company", "organisation"]}])
     })
 
+    it("can create a new organisation", async () => {
+        let restStub = sinon.stub(RestClient.prototype, "executeQuery");
+        restStub.returns({data:{
+                error: "I am an error"
+            }});
+        wrapper.vm.AddNewOrganisation.logoData = {
+            data: "data:image/png;base64,AnotherTest"
+        };
+        wrapper.vm.AddNewOrganisation.data = {
+            name: "test",
+            homepage: "https://example.com/test",
+            organisation_type_ids: [{id:1, name: "?"}]
+        };
+        await wrapper.vm.createNewOrganisation();
+        expect(wrapper.vm.AddNewOrganisation.error).toBe("I am an error");
+        wrapper.vm.AddNewOrganisation.logoData = null;
+        restStub.returns({data:{
+                id: 1,
+                name: "test",
+                types: [{name: "?"}]
+            }});
+        await wrapper.vm.createNewOrganisation();
+        expect(wrapper.vm.organisations).toStrictEqual(undefined);
+        restStub.restore();
+    });
 
 });

@@ -59,6 +59,8 @@ let mocks = {
         this.restore("canEditStub");
         this.restore("canClaimStub");
         this.restore("claimRecord");
+        this.restore("reviewRecord");
+        this.restore("metadataFields");
     },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
         this[mockKey] = sinon.stub(targetClass, targetMethod);
@@ -112,6 +114,14 @@ describe("Record.vue", function() {
         mocks.setMock("claimRecord",
             RESTClient.prototype,
             "claimRecord",
+            true);
+        mocks.setMock("reviewRecord",
+            RESTClient.prototype,
+            "reviewRecord",
+            true);
+        mocks.setMock("metadataFields",
+            RESTClient.prototype,
+            "extraMetadataFields",
             true);
         let breakpoint = {
             init: jest.fn(),
@@ -170,7 +180,7 @@ describe("Record.vue", function() {
 
     it("Testing buttons methods", async () => {
         $store.state.users.user().isLoggedIn = false;
-        await wrapper.vm.getMenuButtons();
+        wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[0].name()).toEqual("Edit record");
         expect(wrapper.vm.buttons[0].isDisabled()).toBe(false);
         expect(wrapper.vm.buttons[1].name()).toEqual("Request ownership");
@@ -230,7 +240,7 @@ describe("Record.vue", function() {
         );
         expect(wrapper.vm.isWatching()).toBe(false);
         let changeWatchRecord = jest.spyOn(wrapper.vm, "changeWatchRecord");
-        await wrapper.vm.getMenuButtons();
+        wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
         await wrapper.vm.buttons[2].method();
         expect(changeWatchRecord).toHaveBeenCalledWith(true);
@@ -251,7 +261,7 @@ describe("Record.vue", function() {
         let changeWatch = jest.spyOn(wrapper.vm, "changeWatchRecord");
         let changeWatchUsers = jest.spyOn(wrapper.vm, "changeWatched");
         expect(changeWatchUsers).toHaveBeenCalledTimes(0);
-        await wrapper.vm.getMenuButtons();
+        wrapper.vm.getMenuButtons();
         mocks.setMock("restMock",
             RESTClient.prototype,
             "executeQuery",
@@ -369,16 +379,15 @@ describe("Record.vue", function() {
         expect(wrapper2.name()).toMatch("Record");
     });
 
+
     it("handles failed attempts to review", async () => {
-        mocks.setMock("restMock",
-            RESTClient.prototype,
-            "executeQuery",
-            {
-                data: {
-                    error: 'oh no!'
-                }
-            }
-        );
+        mocks.restore("graphMock");
+        mocks.setMock("graphMock",
+            GraphClient.prototype,
+            "executeQuery");
+        mocks["reviewRecord"].returns({
+            error: 'oh no!'
+        });
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},
@@ -387,8 +396,8 @@ describe("Record.vue", function() {
         let reviewRecord = jest.spyOn(wrapper.vm, "reviewRecord");
 
         await wrapper.vm.getData();
-        expect(wrapper.vm.reviewSuccess).toBe(false);
-        await wrapper.vm.getMenuButtons();
+        expect(wrapper.vm.reviewFail).toBe(false);
+        wrapper.vm.getMenuButtons();
         await wrapper.vm.buttons[6].method();
         expect(reviewRecord).toHaveBeenCalled();
         expect(wrapper.vm.needsReviewing()).toBe(true);
@@ -400,15 +409,15 @@ describe("Record.vue", function() {
 
 
     it("runs the review method", async () => {
-        mocks.setMock("restMock",
-            RESTClient.prototype,
-            "executeQuery",
-            {
-                data: {
-                    modification: 'success'
-                }
+        mocks.restore("graphMock");
+        mocks.setMock("graphMock",
+            GraphClient.prototype,
+            "executeQuery");
+        mocks["reviewRecord"].returns({
+            data: {
+                modification: 'success'
             }
-        );
+        });
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},

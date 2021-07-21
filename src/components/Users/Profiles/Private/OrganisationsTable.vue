@@ -197,111 +197,118 @@
       </v-col>
     </v-row>
     <!--  create a new organisation card   -->
-    <v-card
-      v-if="AddNewOrganisation.show === true"
-      class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
-      style="border: 2px dashed grey !important; border-radius:5px;"
-    >
-      <v-card-title>Create a new organisation</v-card-title>
-      <v-card-text
-        v-if="AddNewOrganisation.error"
-        class="mb-0 pb-0"
+    <v-expand-transition>
+      <v-overlay
+        v-if="AddNewOrganisation.show === true"
+        :dark="false"
+        :absolute="false"
+        opacity="0.8"
       >
-        <v-alert
-          type="error"
-          class="mb-0"
+        <v-card
+          class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
+          style="border: 2px dashed grey !important; border-radius:5px;"
         >
-          {{ AddNewOrganisation.error.response.data }}
-        </v-alert>
-      </v-card-text>
-      <v-card-text>
-        <v-form
-          id="createNewOrganisation"
-          ref="createNewOrganisation"
-          v-model="AddNewOrganisation.formValid"
-        >
-          <v-container fluid>
-            <v-row>
-              <v-col
-                cols="12"
-                class="pb-0"
-              >
-                <v-text-field
-                  v-model="AddNewOrganisation.data.name"
-                  label="Organisation Name"
-                  outlined
-                  :rules="[rules.isRequired()]"
-                />
-              </v-col>
-              <v-col
-                cols="12"
-                class="pb-0"
-              >
-                <v-text-field
-                  v-model="AddNewOrganisation.data.homepage"
-                  label="Organisation Homepage"
-                  outlined
-                  :rules="[rules.isRequired(), rules.isURL()]"
-                />
-              </v-col>
-              <v-col
-                cols="12"
-                class="pb-0"
-              >
-                <v-autocomplete
-                  v-model="AddNewOrganisation.data.organisation_type_ids"
-                  :items="organisationsTypes"
-                  multiple
-                  outlined
-                  item-text="name"
-                  item-value="id"
-                  return-object
-                  label="Select the organisation type(s)"
-                  :rules="[rules.isRequired()]"
-                />
-              </v-col>
-              <v-col cols="12">
-                <v-file-input
-                  v-if="false"
-                  v-model="AddNewOrganisation.data.logo"
-                  accept="image/png, image/jpeg"
-                  label="File input"
-                  placeholder="Select a logo"
-                  outlined
-                  :show-size="1000"
-                  clearable
-                  chips
-                />
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn
-          class="success"
-          :disabled="!AddNewOrganisation.formValid"
-          :loading="AddNewOrganisation.loading"
-          @click="createNewOrganisation()"
-        >
-          Save new organisation
-        </v-btn>
-        <v-btn
-          class="error"
-          @click="AddNewOrganisation.show = false"
-        >
-          Cancel
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+          <v-card-title>Create a new organisation</v-card-title>
+          <v-card-text
+            v-if="AddNewOrganisation.error"
+            class="mb-0 pb-0"
+          >
+            <v-alert
+              type="error"
+              class="mb-0"
+            >
+              {{ AddNewOrganisation.error.response.data }}
+            </v-alert>
+          </v-card-text>
+          <v-card-text>
+            <v-form
+              id="createNewOrganisation"
+              ref="createNewOrganisation"
+              v-model="AddNewOrganisation.formValid"
+            >
+              <v-container fluid>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-text-field
+                      v-model="AddNewOrganisation.data.name"
+                      label="Organisation Name"
+                      outlined
+                      :rules="[rules.isRequired()]"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-text-field
+                      v-model="AddNewOrganisation.data.homepage"
+                      label="Organisation Homepage"
+                      outlined
+                      :rules="[rules.isRequired(), rules.isURL()]"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    class="pb-0"
+                  >
+                    <v-autocomplete
+                      v-model="AddNewOrganisation.data.organisation_type_ids"
+                      :items="organisationsTypes"
+                      multiple
+                      outlined
+                      item-text="name"
+                      item-value="id"
+                      return-object
+                      label="Select the organisation type(s)"
+                      :rules="[rules.isRequired(),rules.isLongEnough(1)]"
+                    />
+                  </v-col>
+                  <v-col cols="12">
+                    <v-file-input
+                      v-if="false"
+                      v-model="AddNewOrganisation.data.logo"
+                      accept="image/png, image/jpeg"
+                      label="File input"
+                      placeholder="Select a logo"
+                      outlined
+                      :show-size="1000"
+                      clearable
+                      chips
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              class="success"
+              :disabled="!AddNewOrganisation.formValid"
+              :loading="AddNewOrganisation.loading"
+              @click="createNewOrganisation()"
+            >
+              Save new organisation
+            </v-btn>
+            <v-btn
+              class="error"
+              @click="AddNewOrganisation.show = false"
+            >
+              Cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-overlay>
+    </v-expand-transition>
   </v-container>
 </template>
 
 <script>
 import {mapActions, mapState} from "vuex";
-import { isRequired, isUrl } from "@/utils/rules.js"
-import Vue from "vue";
+import { isRequired, isUrl,isLongEnough } from "@/utils/rules.js"
 import RestClient from "@/lib/Client/RESTClient.js"
 const restClient = new RestClient();
 
@@ -333,7 +340,8 @@ export default {
       },
       rules: {
         isRequired: ()=> isRequired(),
-        isURL: ()=> isUrl()
+        isURL: ()=> isUrl(),
+        isLongEnough: (val)=> isLongEnough(val),
       },
     }
   },
@@ -480,30 +488,24 @@ export default {
         organisationInput.logo = this.AddNewOrganisation.logoData;
         organisationInput.logo.data = organisationInput.logo.data.replace("data:image/png;base64,", "");
       }
-      let organisation_type_ids = JSON.parse(JSON.stringify(organisationInput.organisation_type_ids));
       organisationInput.organisation_type_ids = organisationInput.organisation_type_ids.map(obj => obj.id);
       let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
       if (!data.error) {
-        let newOrganisation = {
-          id: data.id,
-          name: data.name,
-          homepage: data.homepage,
-          types: organisation_type_ids.map(obj => obj.name),
-          urlForLogo: data['url_for_logo']
-        };
-        this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
-        Vue.set(this.organisations, this.organisations.length, newOrganisation);
         this.AddNewOrganisation.show = null;
         this.AddNewOrganisation.data = {};
+        this.AddNewOrganisation.loading = false;
+        await this.loadUserOrganisationData();
+        this.loadingAllOrganisations = true
+        await this.getOrganisations()
+        this.loadingAllOrganisations = false
+        this.allOrganisations = this.organisations
+        this.showSuccessAction = true
+        this.successTerm = 'added'
       }
       else {
         this.AddNewOrganisation.error = data.error;
       }
-      this.AddNewOrganisation.loading = false;
-      await this.loadUserOrganisationData();
-      this.showSuccessAction = true
-      this.successTerm = 'added'
     }
-  },
+  }
 }
 </script>

@@ -380,8 +380,11 @@ describe("Record.vue", function() {
     });
 
 
-    /*
     it("handles failed attempts to review", async () => {
+        mocks.restore("graphMock");
+        mocks.setMock("graphMock",
+            GraphClient.prototype,
+            "executeQuery");
         mocks["reviewRecord"].returns({
             error: 'oh no!'
         });
@@ -399,13 +402,16 @@ describe("Record.vue", function() {
         expect(reviewRecord).toHaveBeenCalled();
         expect(wrapper.vm.needsReviewing()).toBe(true);
         expect(wrapper.vm.reviewFail).toBe(true);
-
+        mocks.restore("graphMock");
     });
-    */
 
 
 
     it("runs the review method", async () => {
+        mocks.restore("graphMock");
+        mocks.setMock("graphMock",
+            GraphClient.prototype,
+            "executeQuery");
         mocks["reviewRecord"].returns({
             data: {
                 modification: 'success'
@@ -430,6 +436,7 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '2050-01-01T123456' }];
         expect(wrapper.vm.needsReviewing()).toBe(false);
         expect(wrapper.vm.reviewSuccess).toBe(true);
+        mocks.restore("graphMock");
     });
 
 

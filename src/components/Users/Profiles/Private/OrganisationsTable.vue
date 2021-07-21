@@ -69,7 +69,7 @@
           </template>
           <template
             v-if="userCanEditOrganisation"
-            v-slot:item.actions="{ item }"
+            #item.actions="{ item }"
           >
             <v-icon
               small
@@ -123,7 +123,7 @@
           calculate-widths
           class="elevation-1"
         >
-          <template v-slot:top>
+          <template #top>
             <v-dialog
               v-model="dialogDelete"
               max-width="500px"
@@ -178,7 +178,7 @@
 
           <template
             v-if="userCanEditOrganisation"
-            v-slot:item.actions="{ item }"
+            #item.actions="{ item }"
           >
             <v-icon
               small

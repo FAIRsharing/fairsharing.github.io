@@ -59,7 +59,6 @@ let mocks = {
         this.restore("canEditStub");
         this.restore("canClaimStub");
         this.restore("claimRecord");
-        this.restore("reviewRecord");
         this.restore("metadataFields");
     },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
@@ -114,10 +113,6 @@ describe("Record.vue", function() {
         mocks.setMock("claimRecord",
             RESTClient.prototype,
             "claimRecord",
-            true);
-        mocks.setMock("reviewRecord",
-            RESTClient.prototype,
-            "reviewRecord",
             true);
         mocks.setMock("metadataFields",
             RESTClient.prototype,
@@ -385,9 +380,14 @@ describe("Record.vue", function() {
         mocks.setMock("graphMock",
             GraphClient.prototype,
             "executeQuery");
-        mocks["reviewRecord"].returns({
-            error: 'oh no!'
-        });
+        mocks.restore("restMock");
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {data: {
+               error: 'oh no!'
+            }}
+        );
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},
@@ -403,6 +403,7 @@ describe("Record.vue", function() {
         expect(wrapper.vm.needsReviewing()).toBe(true);
         expect(wrapper.vm.reviewFail).toBe(true);
         mocks.restore("graphMock");
+        mocks.restore("restMock");
     });
 
 
@@ -412,11 +413,16 @@ describe("Record.vue", function() {
         mocks.setMock("graphMock",
             GraphClient.prototype,
             "executeQuery");
-        mocks["reviewRecord"].returns({
-            data: {
-                modification: 'success'
+        mocks.restore("restMock");
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {
+                data: {
+                    modification: 'success'
+                }
             }
-        });
+        );
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},

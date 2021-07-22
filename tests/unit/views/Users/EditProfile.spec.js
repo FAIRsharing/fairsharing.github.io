@@ -104,4 +104,10 @@ describe("UserProfileMenu.vue", () => {
         });
         expect(anotherWrapper.vm.formData).toBe(null);
     });
+
+    it("disables the email edit field for third party users", () => {
+        expect(wrapper.vm.isDisabled('email')).toBe(false);
+        userStore.state.user = function() {return {metadata: {third_party: true}}};
+        expect(wrapper.vm.isDisabled('email')).toBe(true);
+    });
 });

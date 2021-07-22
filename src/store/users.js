@@ -21,7 +21,8 @@ export const mutations = {
                 metadata: {},
                 records: {},
                 is_curator: user.is_curator,
-                is_super_curator:user.is_super_curator,
+                is_super_curator: user.is_super_curator,
+                third_party: user.third_party,
                 role: user.role,
                 watchedRecords: user['watched_records'] || [],
             }
@@ -50,6 +51,7 @@ export const mutations = {
         if (user) {
             let isCurator = user.is_curator;
             let isSuperCurator = user.is_super_curator;
+            let thirdParty = user.third_party;
             let role = user.role;
             let watchedRecords = user.watchedRecords;
             state.user = function () {
@@ -65,6 +67,7 @@ export const mutations = {
                     records: record.records.user,
                     is_curator: isCurator,
                     is_super_curator: isSuperCurator,
+                    third_party: thirdParty,
                     watchedRecords: watchedRecords,
                     role: role,
                     orcid: user.orcid,
@@ -84,6 +87,7 @@ export const mutations = {
                     watchedRecords: [],
                     is_curator: false,
                     is_super_curator: false,
+                    third_party: false,
                     role: null,
                     orcid: null,
                     twitter: null
@@ -105,7 +109,8 @@ export const mutations = {
             orcid: user.orcid,
             profile_type: user.profile_type,
             preferences: user.preferences,
-            deactivated: user.deactivated
+            deactivated: user.deactivated,
+            third_party: user.third_party
         }
     },
     setUserMeta(state, metadata){
@@ -169,6 +174,7 @@ export const mutations = {
                 watchedRecords: [],
                 is_curator: previousState.is_curator,
                 is_super_curator: previousState.is_super_curator,
+                third_party: previousState.third_party,
                 role: previousState.role
             }
         };

@@ -59,7 +59,6 @@ let mocks = {
         this.restore("canEditStub");
         this.restore("canClaimStub");
         this.restore("claimRecord");
-        this.restore("reviewRecord");
         this.restore("metadataFields");
     },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
@@ -114,10 +113,6 @@ describe("Record.vue", function() {
         mocks.setMock("claimRecord",
             RESTClient.prototype,
             "claimRecord",
-            true);
-        mocks.setMock("reviewRecord",
-            RESTClient.prototype,
-            "reviewRecord",
             true);
         mocks.setMock("metadataFields",
             RESTClient.prototype,
@@ -385,9 +380,14 @@ describe("Record.vue", function() {
         mocks.setMock("graphMock",
             GraphClient.prototype,
             "executeQuery");
-        mocks["reviewRecord"].returns({
-            error: 'oh no!'
-        });
+        mocks.restore("restMock");
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {data: {
+               error: 'oh no!'
+            }}
+        );
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},
@@ -401,9 +401,9 @@ describe("Record.vue", function() {
         await wrapper.vm.buttons[6].method();
         expect(reviewRecord).toHaveBeenCalled();
         expect(wrapper.vm.needsReviewing()).toBe(true);
-        expect(wrapper.vm.reviewSuccess).toBe(false);
+        expect(wrapper.vm.reviewFail).toBe(true);
+        mocks.restore("graphMock");
         mocks.restore("restMock");
-
     });
 
 
@@ -413,11 +413,16 @@ describe("Record.vue", function() {
         mocks.setMock("graphMock",
             GraphClient.prototype,
             "executeQuery");
-        mocks["reviewRecord"].returns({
-            data: {
-                modification: 'success'
+        mocks.restore("restMock");
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {
+                data: {
+                    modification: 'success'
+                }
             }
-        });
+        );
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},
@@ -429,7 +434,7 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '1950-01-01T123456' }];
         expect(wrapper.vm.reviewSuccess).toBe(false);
         expect(wrapper.vm.needsReviewing()).toBe(true);
-        await wrapper.vm.getMenuButtons();
+        wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[6].name()).toEqual("Review this record");
         expect(wrapper.vm.buttons[6].isDisabled()).toBe(false);
         await wrapper.vm.buttons[6].method();
@@ -437,7 +442,7 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '2050-01-01T123456' }];
         expect(wrapper.vm.needsReviewing()).toBe(false);
         expect(wrapper.vm.reviewSuccess).toBe(true);
-        mocks.restore("restMock");
+        mocks.restore("graphMock");
     });
 
 

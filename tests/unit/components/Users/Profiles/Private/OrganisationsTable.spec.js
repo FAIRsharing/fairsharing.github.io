@@ -35,7 +35,7 @@ let $store = new Vuex.Store({
     $route = {
         path: "/",
         params: {id: "1"},
-        name:"PublicProfile"
+        name:"EditPublicProfile"
     };
 const router = new VueRouter(),
     $router = { push: jest.fn() };
@@ -170,7 +170,7 @@ describe('OrganisationTable.vue', () => {
             is_super_curator: true,
         }};
         $route.path = "another route";
-        $route.name = "User";
+        $route.name = "Edit profile";
         $store.state.users.user = function (){return {
             isLoggedIn: true,
         }};
@@ -221,8 +221,16 @@ describe('OrganisationTable.vue', () => {
                 name: "test",
                 types: [{name: "?"}]
             }});
+        $route.name = 'EditPublicProfile'
         await wrapper.vm.createNewOrganisation();
         expect(wrapper.vm.organisations).toStrictEqual(undefined);
+        wrapper.vm.AddNewOrganisation.data = {
+            name: "test",
+            homepage: "https://example.com/test",
+            organisation_type_ids: [{id:1, name: "?"}]
+        };
+        $route.name = 'sss'
+        await wrapper.vm.createNewOrganisation();
         restStub.restore();
     });
 

@@ -183,4 +183,11 @@ describe("Support.vue", function(){
         })
     });
 
+    it("deals with mailto: correctly", () => {
+        let url = 'http://dodgy.com';
+        expect(wrapper.vm.checkUrl(url)).toEqual(url);
+        url = 'me@dodgy.com';
+        expect(wrapper.vm.checkUrl(url)).toEqual('mailto:' + url);
+    })
+
 });

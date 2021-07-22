@@ -1,11 +1,11 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row justify="center">
       <v-col
         cols="12"
         sm="12"
-        md="4"
-        lg="4"
+        md="6"
+        lg="6"
         xl="4"
       >
         <v-card>
@@ -121,6 +121,20 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-card
+      height="100%"
+      class="d-flex flex-column rounded-0 mb-10"
+    >
+      <v-card-title class="primary white--text py-3">
+        Organisations
+      </v-card-title>
+      <v-card-text
+        class="pa-0"
+        style="flex-grow: 1"
+      >
+        <OrganisationsTable />
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -128,12 +142,14 @@
     import { mapState, mapActions } from "vuex"
     import { isEmail, isRequired, isUrl } from "@/utils/rules.js"
     import RESTClient from "@/lib/Client/RESTClient.js"
+    import OrganisationsTable from "@/components/Users/Profiles/Private/OrganisationsTable";
 
     const restClient = new RESTClient();
 
     export default {
         name: "EditProfile",
-        data: () => {
+      components: {OrganisationsTable},
+      data: () => {
             return {
               data: {
                 profileTypes: []

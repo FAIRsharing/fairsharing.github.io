@@ -39,7 +39,7 @@
         </v-card-title>
         <v-data-table
           v-model="selected"
-          :headers="headersAvailableOrganisations"
+          :headers="userCanEditOrganisation?headersAvailableOrganisations:headersAvailableOrganisations.filter(item=>item.text!=='action')"
           :items="allOrganisations"
           :search="search"
           :loading="loadingAllOrganisations"

@@ -153,9 +153,9 @@
             </v-col>
             <v-col
               cols="12"
-              xl="12"
-              lg="12"
-              md="12"
+              xl="6"
+              lg="6"
+              md="6"
               sm="12"
               xs="12"
               class="pt-0"
@@ -175,6 +175,31 @@
                     :records="userData.user.maintainedRecords"
                     source="publicMaintainedRecords"
                   />
+                </v-card-text>
+              </v-card>
+            </v-col>
+
+            <v-col
+              cols="12"
+              xl="12"
+              lg="12"
+              md="12"
+              sm="12"
+              xs="12"
+              class="pt-0"
+            >
+              <v-card
+                height="100%"
+                class="d-flex flex-column rounded-0"
+              >
+                <v-card-title class="primary white--text py-3">
+                  Organisations
+                </v-card-title>
+                <v-card-text
+                  class="pa-0"
+                  style="flex-grow: 1"
+                >
+                  <OrganisationsTable />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -202,6 +227,7 @@
     import NotFound from "@/views/Errors/404"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
     import { cleanString } from "@/utils/stringUtils"
+    import OrganisationsTable from "@/components/Users/Profiles/Private/OrganisationsTable";
 
     let client = new ExternalClient();
 
@@ -211,7 +237,7 @@
 
     export default {
       name: "PublicProfile",
-      components: {RecordsTable, Loaders, NotFound, UserProfileMenu},
+      components: {OrganisationsTable, RecordsTable, Loaders, NotFound, UserProfileMenu},
       mixins: [cleanString],
       data: () => {
         return {

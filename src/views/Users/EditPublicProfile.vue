@@ -328,6 +328,9 @@ export default {
       data.deactivated = !data.deactivated
       await this.updatePublicUser(data);
       this.loading = false;
+      if (!this.messages().updateProfile.error){
+        await this.$router.push({path: `/users/${this.$route.params.id}`})
+      }
       this.$scrollTo('body',1000,{})
     },
     async deleteAccount() {

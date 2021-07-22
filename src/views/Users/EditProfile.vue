@@ -75,7 +75,7 @@
                         :label="field.label"
                         outlined
                         :type="field.type"
-                        :disabled="field.disabled"
+                        :disabled="isDisabled(field.name)"
                         :rules="field.rules"
                         class="pa-0"
                       />
@@ -278,6 +278,16 @@ export default {
         this.setMessage({field: 'getUser', message: "Your profile was updated successfully."});
         await this.$router.push({path: "/accounts/profile"})
       }
+    },
+    isDisabled(name) {
+      const _module = this;
+      if (name === 'username') {
+        return true;
+      }
+      else if (name === 'email' && _module.user().metadata.third_party) {
+        return true;
+      }
+      return false;
     }
   },
 }

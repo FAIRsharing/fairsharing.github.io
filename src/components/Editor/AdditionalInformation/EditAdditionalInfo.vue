@@ -5,7 +5,7 @@
     v-model="formValid"
   >
     <v-card>
-      <v-card-title class="blue white--text">
+      <v-card-title class="grey lighten-4 blue--text">
         Edit Additional Information
       </v-card-title>
       <Alerts target="additionalInformation" />

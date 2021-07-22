@@ -4,12 +4,18 @@
     ref="editOrganisations"
     v-model="formValid"
   >
-    <v-container fluid>
+    <v-container
+      fluid
+      class="pa-0"
+    >
       <v-row>
-        <v-col cols="12">
+        <v-col
+          cols="12"
+          class="pa-0"
+        >
           <v-card>
             <v-card-title class="grey lighten-4 blue--text">
-              Edit Organisations and Grants
+              Edit Organisations & Grants
             </v-card-title>
             <Alerts target="organisations" />
             <v-card-text class="pt-3 mb-0">

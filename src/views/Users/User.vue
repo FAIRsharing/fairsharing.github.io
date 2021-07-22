@@ -285,31 +285,6 @@
                 </v-card-text>
               </v-card>
             </v-col>
-
-            <v-col
-              class="pt-0"
-              cols="12"
-              xl="12"
-              lg="12"
-              md="12"
-              sm="12"
-              xs="12"
-            >
-              <v-card
-                height="100%"
-                class="d-flex flex-column rounded-0"
-              >
-                <v-card-title class="primary white--text py-3">
-                  Organisations
-                </v-card-title>
-                <v-card-text
-                  class="pa-0"
-                  style="flex-grow: 1"
-                >
-                  <OrganisationsTable />
-                </v-card-text>
-              </v-card>
-            </v-col>
           </v-row>
         </v-container>
       </v-col>
@@ -332,7 +307,6 @@
     import Loaders from "@/components/Navigation/Loaders";
     import ExternalClient from "@/lib/Client/ExternalClients.js"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
-    import OrganisationsTable from "../../components/Users/Profiles/Private/OrganisationsTable";
     import { cleanString } from "@/utils/stringUtils"
 
     let client = new ExternalClient();
@@ -343,7 +317,7 @@
 
     export default {
       name: "User",
-      components: {RecordsTable, OrganisationsTable, Loaders, UserProfileMenu},
+      components: {RecordsTable, Loaders, UserProfileMenu},
       mixins: [cleanString],
       data: () => {
         return {

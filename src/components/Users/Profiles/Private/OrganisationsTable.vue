@@ -400,15 +400,15 @@ export default {
     ...mapActions("editor", ["getOrganisations","getOrganisationsTypes"]),
     viewerCanManipulate() {
       if (this.user().isLoggedIn) {
-        if (this.$route.name === 'PublicProfile' && this.user().id === Number(this.$route.params.id)) {
+        if (this.$route.name === 'EditPublicProfile' && this.user().id === Number(this.$route.params.id)) {
           this.userCanEditOrganisation = true;
           return
         }
-        else if (this.$route.name === 'PublicProfile' && this.user().is_super_curator) {
+        else if (this.$route.name === 'EditPublicProfile' && this.user().is_super_curator) {
           this.userCanEditOrganisation = true;
           return
         }
-        else if (this.$route.name === 'User') {
+        else if (this.$route.name === 'Edit profile') {
           this.userCanEditOrganisation = true;
           return
         }
@@ -471,7 +471,7 @@ export default {
         id: this.user().id,
         organisation_ids: this.userOrganisations.map(item => item.id)
       }
-      if (this.$route.name === 'PublicProfile' && this.user().is_super_curator) {
+      if (this.$route.name === 'EditPublicProfile' && this.user().is_super_curator) {
         newUser.id = this.$route.params.id
         await this.updatePublicUser(newUser)
       }
@@ -494,8 +494,18 @@ export default {
         this.AddNewOrganisation.show = null;
         this.AddNewOrganisation.data = {};
         this.AddNewOrganisation.loading = false;
+        // assign the created organisation to user if route is EditPublicUser
+        if (this.$route.name === 'EditPublicProfile') {
+          this.userOrganisations.push({id:data.id})
+          let newUserData = {
+            id: this.$route.params.id,
+            organisation_ids: this.userOrganisations.map(item => item.id)
+          }
+          await this.updatePublicUser(newUserData)
+        }
         await this.loadUserOrganisationData();
         this.loadingAllOrganisations = true
+        await this.getOrganisations()
         await this.getOrganisations()
         this.loadingAllOrganisations = false
         this.allOrganisations = this.organisations

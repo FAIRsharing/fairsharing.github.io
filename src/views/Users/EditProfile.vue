@@ -75,7 +75,7 @@
                         :label="field.label"
                         outlined
                         :type="field.type"
-                        :disabled="field.disabled"
+                        :disabled="isDisabled(field.name)"
                         :rules="field.rules"
                         class="pa-0"
                       />
@@ -134,96 +134,95 @@
     export default {
         name: "EditProfile",
         data: () => {
-            return {
-              data: {
-                profileTypes: []
+          return {
+            data: {
+              profileTypes: []
+            },
+            selectedProfileType: null,
+            message: null,
+            error: null,
+            valid: false,
+            fields: [
+              {
+                name: "username",
+                label: "Username",
+                hint: null,
+                type: "input"
               },
-              selectedProfileType: null,
-              message: null,
-              error: null,
-              valid: false,
-              fields: [
-                {
-                  name: "username",
-                  label: "Username",
-                  hint: null,
-                  type: "input",
-                  disabled: true,
-                },
-                {
-                  name: "email",
-                  label: "Email address",
-                  hint: null,
-                  type: "input",
-                  rules: [
-                    isEmail(),
-                    isRequired()
-                  ]
-                },
-                {
-                  name: "first_name",
-                  label: "First Name",
-                  hint: null,
-                  type: "input",
-                  rules: [
-                    isRequired()
-                  ]
-                },
-                {
-                  name: "last_name",
-                  label: "Last Name",
-                  hint: null,
-                  type: "input",
-                  rules: [
-                    isRequired()
-                  ]
-                },
-                {
-                  name: "homepage",
-                  label: "Homepage",
-                  hint: null,
-                  type: "input",
-                  rules: [
-                    isUrl()
-                  ]
-                },
-                {
-                  name: "twitter",
-                  label: "Twitter",
-                  hint: null,
-                  type: "input"
-                },
-                {
-                  name: "orcid",
-                  label: "Orcid ID",
-                  hint: null,
-                  type: "input"
-                },
-                {
-                  name: "profile_type",
-                  label: "Profile Type",
-                  hint: null,
-                  type: "select",
-                  rules: [
-                    isRequired()
-                  ],
-                  data: "profileTypes"
-                },
-                {
-                  name: "preferences_hide",
-                  label: "Hide your email address on public pages.",
-                  hint: null,
-                  type: "checkbox"
-                },
-                {
-                  name: "preferences_send",
-                  label: "Receive record update emails from FAIRsharing.",
-                  hint: null,
-                  type: "checkbox"
-                },
-              ],
-              loading: false,
-            }
+              {
+                name: "email",
+                label: "Email address",
+                hint: null,
+                type: "input",
+                rules: [
+                  isEmail(),
+                  isRequired()
+                ]
+              },
+              {
+                name: "first_name",
+                label: "First Name",
+                hint: null,
+                type: "input",
+                rules: [
+                  isRequired()
+                ]
+              },
+              {
+                name: "last_name",
+                label: "Last Name",
+                hint: null,
+                type: "input",
+                rules: [
+                  isRequired()
+                ]
+              },
+              {
+                name: "homepage",
+                label: "Homepage",
+                hint: null,
+                type: "input",
+                rules: [
+                  isUrl()
+                ]
+              },
+              {
+                name: "twitter",
+                label: "Twitter",
+                hint: null,
+                type: "input"
+              },
+              {
+                name: "orcid",
+                label: "Orcid ID",
+                hint: null,
+                type: "input"
+              },
+              {
+                name: "profile_type",
+                label: "Profile Type",
+                hint: null,
+                type: "select",
+                rules: [
+                  isRequired()
+                ],
+                data: "profileTypes"
+              },
+              {
+                name: "preferences_hide",
+                label: "Hide your email address on public pages.",
+                hint: null,
+                type: "checkbox"
+              },
+              {
+                name: "preferences_send",
+                label: "Receive record update emails from FAIRsharing.",
+                hint: null,
+                type: "checkbox"
+              },
+            ],
+            loading: false,
+          }
         },
         computed: {
           ...mapState("users", ["user", "messages"]),
@@ -264,6 +263,16 @@
               this.setMessage({field: 'getUser', message: "Your profile was updated successfully."});
               await this.$router.push({path: "/accounts/profile"})
             }
+          },
+          isDisabled(name) {
+            const _module = this;
+            if (name === 'username') {
+              return true;
+            }
+            else if (name === 'email' && _module.user().metadata.third_party) {
+              return true;
+            }
+            return false;
           }
         },
     }

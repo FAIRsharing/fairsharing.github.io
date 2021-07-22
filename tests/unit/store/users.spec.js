@@ -168,6 +168,7 @@ describe('Actions/Mutations', () => {
             is_curator: false,
             is_super_curator: false,
             role: null,
+            third_party: false,
             orcid: 123456,
             twitter: 'terazus'
         };
@@ -187,6 +188,7 @@ describe('Actions/Mutations', () => {
             is_curator: false,
             is_super_curator: false,
             role: null,
+            third_party: false,
             orcid: 123456,
             twitter: 'terazus'
         });

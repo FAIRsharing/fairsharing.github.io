@@ -81,7 +81,7 @@
                     :label="field.label"
                     outlined
                     :type="field.type"
-                    :disabled="field.disabled"
+                    :disabled="isDisabled(field.name)"
                     :rules="field.rules"
                     class="pa-0"
                   />
@@ -173,7 +173,6 @@ export default {
           label: "Username",
           hint: null,
           type: "input",
-          disabled: true,
         },
         {
           name: "email",
@@ -313,6 +312,16 @@ export default {
       await this.deletePublicUser(this.$route.params.id);
       this.loading = false;
       this.$scrollTo('body',1000,{})
+    },
+    isDisabled(name) {
+      const _module = this;
+      if (name === 'username') {
+        return true;
+      }
+      else if (name === 'email' && _module.currentPublicUser.third_party) {
+        return true;
+      }
+      return false;
     }
   }
 }

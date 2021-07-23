@@ -123,18 +123,6 @@
           "associatedLink": "/bsg-c000009"
         },
         {
-          "image": "assets/Community/biomed.png",
-          "adopter": "Springer Nature BioMed Central",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000007"
-        },
-        {
-          "image": "assets/Community/scientificData.png",
-          "adopter": "Springer Nature Scientific Data",
-          "associated": "Recommendation",
-          "associatedLink": "/bsg-c000001"
-        },
-        {
           "image": "assets/Community/taylor_francis.png",
           "adopter": "Taylor and Francis",
           "associated": "Recommendation",
@@ -151,6 +139,12 @@
           "adopter": "Wiley",
           "associated": "Policy",
           "associatedLink": "/FAIRsharing.xwnZRC"
+        },
+        {
+          "image": "assets/Community/biomed.png",
+          "adopter": "Springer Nature BioMed Central",
+          "associated": "Recommendation",
+          "associatedLink": "/bsg-c000007"
         },
         {
           "image": "assets/Community/peerj.png",
@@ -259,7 +253,7 @@
         "role": "Content and Community Coordinator",
         "profileImg": "assets/Community/profiles/allyson.jpg",
         "social": [
-          {"link": "https://www.eng.ox.ac.uk/people/allyson-lister/", "icon": "home"},
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
           {"link": "https://orcid.org/0000-0002-7702-4495", "icon": "Orcid"},
           {"link": "https://www.linkedin.com/in/allysonlister/","icon": "linkedin"},
           {"link": "https://github.com/allysonlister","icon": "github"},
@@ -271,7 +265,7 @@
         "role": "Technical Coordinator",
         "profileImg": "assets/Community/profiles/milo.jpg",
         "social": [
-          {"link": "https://www.eng.ox.ac.uk/people/milo-thurston/", "icon": "home"},
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
           {"link": "https://orcid.org/0000-0002-6468-9260", "icon": "Orcid"},
           {"link": "https://www.linkedin.com/in/milo-thurston-86557510/","icon": "linkedin"},
           {"link": "https://github.com/knirirr","icon": "github"},
@@ -283,7 +277,7 @@
         "role": "Principal Investigator and Founder",
         "profileImg": "assets/Community/profiles/susanna.jpg",
         "social": [
-          {"link": "https://sansonegroup.eng.ox.ac.uk/", "icon": "home"},
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
           {"link": "https://orcid.org/0000-0001-5306-5690", "icon": "Orcid"},
           {"link": "http://uk.linkedin.com/in/sasansone", "icon": "linkedin"},
           {"link": "http://www.twitter.com/SusannaASansone", "icon": "twitter"},
@@ -295,7 +289,7 @@
         "role": "Co-Founder",
         "profileImg": "assets/Community/profiles/philippe.jpg",
         "social": [
-          {"link": "https://eng.ox.ac.uk/people/philippe-rocca-serra/", "icon": "home"},
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
           {"link": "https://orcid.org/0000-0001-9853-5668", "icon": "Orcid"},
           {"link": "http://uk.linkedin.com/in/philipperoccaserra", "icon": "linkedin"},
           {"link": "http://www.twitter.com/Phil_at_OeRC", "icon": "twitter"},
@@ -305,10 +299,10 @@
       },
       {
         "name": "Ramon Granell",
-        "role": "Research Software & Knowledge Engineer",
+        "role": "Data Enrichment and Quality Manager",
         "profileImg": "assets/Community/profiles/ramon.jpg",
         "social": [
-          {"link": "https://eng.ox.ac.uk/people/ramon-granell/", "icon": "home"},
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
           {"link": "https://orcid.org/0000-0001-9572-0972", "icon": "Orcid"},
           {"link": "https://github.com/ramGranell", "icon": "github"},
           {"link": "ramon.granell@oerc.ox.ac.uk", "icon": "contacts"}
@@ -316,10 +310,10 @@
       },
       {
         "name": "Hossein Mirian",
-        "role": "Research Software & Web Developer",
+        "role": "Web Developer",
         "profileImg": "assets/Community/profiles/hossein.jpg",
         "social": [
-          {"link": "https://eng.ox.ac.uk/people/hossein-mirian/", "icon": "home"},
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
           {"link": "https://orcid.org/0000-0002-9305-7238", "icon": "Orcid"},
           {"link": "https://www.linkedin.com/in/hossein-mirian", "icon": "linkedin"},
           {"link": "https://github.com/hoseinmirian", "icon": "github"},
@@ -328,10 +322,10 @@
       },
       {
         "name": "Dominique Batista",
-        "role": "Research Software & Knowledge Engineer",
+        "role": "Research Software Engineer",
         "profileImg": "assets/Community/profiles/dominique.jpg",
         "social": [
-          {"link": "https://www.eng.ox.ac.uk/people/dominique-batista/", "icon": "home"},
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
           {"link": "https://orcid.org/0000-0002-2109-489X", "icon": "Orcid"},
           {"link": "https://github.com/terazus", "icon": "github"},
           {"link": "dominique.batista@oerc.ox.ac.uk", "icon": "contacts"}
@@ -339,10 +333,10 @@
       },
       {
         "name": "Delphine Dauga",
-        "role": "Curator (Contract)",
+        "role": "Research Software Engineer",
         "profileImg": "assets/Community/profiles/delphine.jpg",
         "social": [
-          {"link": "http://www.bioself-communication.com/", "icon": "home"}
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"}
         ]
       }
     ]

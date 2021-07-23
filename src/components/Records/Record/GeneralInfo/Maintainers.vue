@@ -10,19 +10,20 @@
           This record is in need of a maintainer. If you are affiliated with this project,
         </p>
 
+
+        <router-link
+          v-if="!canClaim && !user().isLoggedIn"
+          :to="`accounts/login?goTo=%2F${this.$route.params.id}`"
+          class="mr-1"
+        >
+          login
+        </router-link>
         <p
           v-if="!canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
         >
-          log in and
+          and claim it now!
         </p>
-        <router-link
-          v-if="!canClaim && !user().isLoggedIn"
-          to="/login"
-        >
-          claim it now!
-        </router-link>
-
         <a
           v-if="canClaim"
           class="underline-effect"

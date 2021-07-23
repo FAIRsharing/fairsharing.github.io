@@ -2,11 +2,11 @@
   <main :class="applyCss?'pa-15 mb-10':''">
     <!--  main_title_2 -->
     <!-- eslint-disable vue/no-v-html -->
-    <h1>Community: adopters, activities and governance</h1>
-    <h2>
+    <h1>
       FAIRsharing is a community-driven resource with a growing number of users and collaborators,
       all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
-    </h2>
+    </h1>
+    <h2>Community: adopters, activities and governance</h2>
 
     <!-- Adopters, activities, Governance tabs-->
     <v-container class="my-10">
@@ -150,68 +150,28 @@
         We cannot list all of our adopters, but we've listed here some publishers that use FAIRsharing to define and refine their data policy.
       </b>
       <!--Adopter table-->
-      <v-simple-table class="mb-16 mt-2">
-        <template #default>
-          <thead>
-            <tr>
-              <th
-                v-for="(tab,index) in tables.adopterTable.tabs"
-                :key="`${tab}_${index}`"
-                class="text-left white--text"
-                bgcolor="#27aae1"
-              >
-                <b class="text-capitalize text-h6">{{ tab }}</b>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item,index) in tables.adopterTable.data"
-              :key="`${item.adopter}_${index}`"
-            >
-              <td
-                class="text-left border-bottom"
-              >
-                <v-img
-                  v-if="item.image"
-                  max-width="250px"
-                  max-height="250px"
-                  :src="item.image"
-                  height="120"
-                  contain
-                  style="filter: grayscale(1);"
-                />
-              </td>
-              <td
-                v-if="item.adopter"
-                class="border-bottom border-left"
-              >
-                {{ item.adopter }}
-              </td>
-              <td class="border-bottom border-left">
-                <router-link
-                  v-if="item.associatedLink"
-                  target="_blank"
-                  :to="item.associatedLink"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                </router-link>
-                <a
-                  v-if="item.externalLink"
-                  :href="item.externalLink"
-                  target="_blank"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-
-      <!--Global Organisation table-->
+      <v-row
+        class="mt-2"
+      >
+        <v-col
+          v-for="(item,index) in tables.adopterTable.data"
+          :key="index+'_'+item.adopter"
+          cols="12"
+          md="12"
+          lg="4"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+        >
+          <v-img
+            v-if="item.image"
+            max-width="250px"
+            max-height="250px"
+            :src="item.image"
+            height="120"
+            contain
+            style="filter: grayscale(1);"
+          />
+        </v-col>
+      </v-row>
       <p class="text-h6 mt-16">
         Other Organisations
       </p>
@@ -293,8 +253,8 @@
               style="filter: grayscale(1);"
             />
           </v-avatar>
-          <a
-            class="text-center lato-font-bold mt-2 ma-0"
+          <p
+            class="text-center primary--text lato-font-bold mt-2 ma-0"
             style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
             v-html="$sanitize(profileItem.name)"
           />

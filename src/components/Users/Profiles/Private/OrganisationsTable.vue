@@ -206,7 +206,7 @@
       >
         <v-card
           class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
-          style="border: 2px dashed grey !important; border-radius:5px;"
+          style="border: 2px dashed grey !important; border-radius:5px;max-width: 1200px"
         >
           <v-card-title>Create a new organisation</v-card-title>
           <v-card-text

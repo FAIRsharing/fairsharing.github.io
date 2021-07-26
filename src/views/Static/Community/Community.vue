@@ -6,7 +6,6 @@
       FAIRsharing is a community-driven resource with a growing number of users and collaborators,
       all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
     </h1>
-    <h2>Community: adopters, activities and governance</h2>
 
     <!-- Adopters, activities, Governance tabs-->
     <v-container class="my-10">

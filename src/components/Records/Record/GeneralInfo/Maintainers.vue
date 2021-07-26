@@ -18,7 +18,7 @@
 
         <router-link
           v-if="!canClaim && !user().isLoggedIn"
-          :to="`accounts/login?goTo=%2F${this.$route.params.id}`"
+          :to="`accounts/login?goTo=%2F${$route.params.id}`"
           class="mr-1"
         >
           login

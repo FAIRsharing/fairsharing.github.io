@@ -20,6 +20,7 @@
     </v-snackbar>
     <v-row>
       <v-col
+        v-if="userCanEditOrganisation"
         cols="12"
         md="12"
         lg="6"
@@ -83,12 +84,12 @@
       <v-col
         cols="12"
         md="12"
-        lg="6"
-        xl="6"
+        :lg="userCanEditOrganisation?6:12"
+        :xl="userCanEditOrganisation?6:12"
       >
         <!--  user existing organisations  -->
         <v-card-title>
-          User Organisations
+          <span v-if="userCanEditOrganisation">User Organisations</span>
           <v-spacer />
           <v-text-field
             v-if="userOrganisations.length>10"
@@ -111,7 +112,10 @@
               fa-plus
             </v-icon>
           </v-btn>
-          <b class="ml-2">Add a new Organisation</b>
+          <b
+            v-if="userCanEditOrganisation"
+            class="ml-2"
+          >Add a new Organisation</b>
         </div>
         <v-data-table
           :search="userOrganisationsSearch"

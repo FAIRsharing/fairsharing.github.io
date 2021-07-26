@@ -306,7 +306,9 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <OrganisationsTable />
+                  <ViewOrganisations
+                      :organisations="user().records.organisations"
+                  />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -333,7 +335,7 @@
     import ExternalClient from "@/lib/Client/ExternalClients.js"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
     import { cleanString } from "@/utils/stringUtils"
-    import OrganisationsTable from "@/components/Users/Profiles/Private/OrganisationsTable";
+    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
 
     let client = new ExternalClient();
 
@@ -343,7 +345,7 @@
 
     export default {
       name: "User",
-      components: {OrganisationsTable, RecordsTable, Loaders, UserProfileMenu},
+      components: {ViewOrganisations, RecordsTable, Loaders, UserProfileMenu},
       mixins: [cleanString],
       data: () => {
         return {

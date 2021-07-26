@@ -242,6 +242,7 @@ export const actions = {
         let userResponse = await client.getUser(user.jwt);
         state.commit("login", {
             username: userResponse.username,
+            id: userResponse.id,
             jwt: user.jwt,
             expiry: user.expiry
         })

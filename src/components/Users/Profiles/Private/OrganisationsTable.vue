@@ -70,7 +70,7 @@
           </template>
           <template
             v-if="userCanEditOrganisation"
-            #item.actions="{ item }"
+            #[`item.actions`]="{ item }"
           >
             <v-icon
               small

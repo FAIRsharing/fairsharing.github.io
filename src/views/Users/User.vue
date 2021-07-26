@@ -307,7 +307,7 @@
                   style="flex-grow: 1"
                 >
                   <ViewOrganisations
-                      :organisations="user().records.organisations"
+                    :organisations="user().records.organisations"
                   />
                 </v-card-text>
               </v-card>

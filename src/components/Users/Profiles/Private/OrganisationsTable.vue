@@ -68,6 +68,7 @@
           <template #[`item.types`]="{ item }">
             {{ item.types.join(', ') }}
           </template>
+          <!-- eslint-disable-next-line vue/no-v-html -->
           <template
             v-if="userCanEditOrganisation"
             #[`item.actions`]="{ item }"

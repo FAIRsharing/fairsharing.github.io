@@ -199,9 +199,7 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <ViewOrganisations
-                    :organisations="userData.user.organisations"
-                  />
+                  <OrganisationsTable />
                 </v-card-text>
               </v-card>
             </v-col>
@@ -229,7 +227,7 @@
     import NotFound from "@/views/Errors/404"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
     import { cleanString } from "@/utils/stringUtils"
-    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
+    import OrganisationsTable from "@/components/Users/Profiles/Private/OrganisationsTable";
 
     let client = new ExternalClient();
 
@@ -239,7 +237,7 @@
 
     export default {
       name: "PublicProfile",
-      components: {ViewOrganisations, RecordsTable, Loaders, NotFound, UserProfileMenu},
+      components: {OrganisationsTable, RecordsTable, Loaders, NotFound, UserProfileMenu},
       mixins: [cleanString],
       data: () => {
         return {

@@ -27,13 +27,7 @@
           v-if="!canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
         >
-          and
-        </p>
-        <p
-          v-if="!canClaim"
-          class="ma-0 mr-1"
-        >
-          claim it now!
+          and claim it now!
         </p>
         <a
           v-if="canClaim"

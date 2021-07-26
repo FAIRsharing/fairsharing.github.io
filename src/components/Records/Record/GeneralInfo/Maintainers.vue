@@ -7,9 +7,14 @@
         class="d-flex flex-wrap"
       >
         <p class="ma-0 mr-1">
-          This record is in need of a maintainer. If you are affiliated with this project,
+          This record is in need of a maintainer.
         </p>
-
+        <p
+          v-if="canClaim && user().isLoggedIn || !canClaim && !user().isLoggedIn"
+          class="ma-0 mr-1"
+        >
+          If you are affiliated with this project,
+        </p>
 
         <router-link
           v-if="!canClaim && !user().isLoggedIn"
@@ -22,7 +27,13 @@
           v-if="!canClaim && !user().isLoggedIn"
           class="ma-0 mr-1"
         >
-          and claim it now!
+          and
+        </p>
+        <p
+          v-if="!canClaim"
+          class="ma-0 mr-1"
+        >
+          claim it now!
         </p>
         <a
           v-if="canClaim"

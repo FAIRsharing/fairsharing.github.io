@@ -191,6 +191,33 @@
             </v-card-title>
           </v-card-text>
         </v-card>
+        <v-card>
+          <v-card-text>
+            <v-card-title
+                id="download-review-needed"
+                class="green white--text"
+            >
+              RECORDS NEEDING REVIEW
+              <v-btn
+                  v-if="downloadReviewContent"
+                  class="info ml-5"
+              >
+                <a
+                    :href="downloadReviewContent"
+                    download="recordsNeedingReview.txt"
+                >
+                  <v-icon
+                      color="white"
+                      class="mr-1"
+                  >
+                    fa fa-download
+                  </v-icon>
+                  <span class="white--text">Obtain file</span>
+                </a>
+              </v-btn>
+            </v-card-title>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
     <v-row v-else>
@@ -267,7 +294,8 @@
             hiddenRecords: ""
           },
           loading: false,
-          downloadContent: null
+          downloadContent: null,
+          downloadReviewContent: null
         }
       },
       computed: {
@@ -294,6 +322,7 @@
           this.prepareData();
           await this.obtainFileRecordsWODois();
           this.loading = false;
+          this.downloadReviewContent = "data:text/json;charset=utf-8," + encodeURIComponent(this.allDataCuration.needsReview.join('\n'));
         })
       },
       methods: {

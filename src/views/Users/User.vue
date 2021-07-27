@@ -34,7 +34,7 @@
       >
         <v-container
           fluid
-          class="py-0"
+          class="py-0 pa-0"
         >
           <v-row>
             <v-col
@@ -119,7 +119,7 @@
               class="pt-0"
               cols="12"
               xl="6"
-              lg="5"
+              lg="6"
               md="12"
               sm="12"
               xs="12"
@@ -174,12 +174,11 @@
               </v-card>
             </v-col>
 
-
             <v-col
               class="pt-0"
               cols="12"
               xl="4"
-              lg="4"
+              lg="6"
               md="12"
               sm="12"
               xs="12"
@@ -288,13 +287,13 @@
             </v-col>
 
             <v-col
-              class="pt-0"
               cols="12"
               xl="4"
               lg="6"
               md="12"
               sm="12"
               xs="12"
+              class="pt-0"
             >
               <v-card
                 height="100%"
@@ -307,7 +306,7 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <OrganisationsTable
+                  <ViewOrganisations
                     :organisations="user().records.organisations"
                   />
                 </v-card-text>
@@ -335,8 +334,8 @@
     import Loaders from "@/components/Navigation/Loaders";
     import ExternalClient from "@/lib/Client/ExternalClients.js"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
-    import OrganisationsTable from "../../components/Users/Profiles/Private/OrganisationsTable";
     import { cleanString } from "@/utils/stringUtils"
+    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
 
     let client = new ExternalClient();
 
@@ -346,7 +345,7 @@
 
     export default {
       name: "User",
-      components: {RecordsTable, OrganisationsTable, Loaders, UserProfileMenu},
+      components: {ViewOrganisations, RecordsTable, Loaders, UserProfileMenu},
       mixins: [cleanString],
       data: () => {
         return {
@@ -390,7 +389,7 @@
         await this.getUser(); // we need the user BEFORE getting the publications.
         if (this.messages()["getUser"].error) {
           this.setError({field: "login", message: "You've been logged out automatically"});
-          this.$router.push({path: "/accounts/login"})
+          await this.$router.push({path: "/accounts/login"})
         }
         this.publications = await this.getPublications();
         this.loading = false;

@@ -1,6 +1,7 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/recordData.js"
+import users from "@/store/users"
 import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers.vue"
 import Vuetify from "vuetify"
 
@@ -18,7 +19,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
 };
 const $store = new Vuex.Store({
     modules: {
-        record:Record
+        record:Record,
+        users
     }});
 
 describe("Maintainers.vue", function(){

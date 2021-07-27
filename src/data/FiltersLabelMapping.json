@@ -57,7 +57,7 @@
         },
         "journals": {
             "filterName": "journals",
-            "filterLabel": "Journals(s)",
+            "filterLabel": "Publication venue(s)",
             "type": "String"
         },
         "status": {

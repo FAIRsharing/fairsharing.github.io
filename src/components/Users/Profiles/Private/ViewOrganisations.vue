@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-data-table
-      class="userProfileOrganistionsTable"
+      class="userProfileViewOrganistions"
       :items="organisations"
       :headers="headers"
       :items-per-page="perPage"
@@ -42,7 +42,7 @@
 import {mapState} from "vuex";
 
 export default {
-  name: "OrganisationsTable",
+  name: "ViewOrganisations",
   props: {
     organisations: { type: Array, default: null }
   },

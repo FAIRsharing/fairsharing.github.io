@@ -33,7 +33,7 @@
             >
               <a
                 v-if="subItem.name && subItem.url"
-                :href="subItem.url"
+                :href="checkUrl(subItem.url)"
                 target="_blank"
                 class="underline-effect"
               >
@@ -41,7 +41,7 @@
               </a>
               <a
                 v-if="!subItem.name && subItem.url"
-                :href="subItem.url"
+                :href="checkUrl(subItem.url)"
                 target="_blank"
               >
                 {{ subItem.url }}
@@ -143,6 +143,13 @@ export default {
         })
       }
       return processedSupport
+    },
+    // If it's an email address, add mailto:
+    checkUrl(url) {
+      if (/\S+@\S+\.\S+/.test(url)) {
+        return "mailto:" + url;
+      }
+      return url;
     }
   }
 }

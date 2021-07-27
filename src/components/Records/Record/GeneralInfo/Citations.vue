@@ -20,23 +20,36 @@
           </v-card-title>
           <v-card-text class="ma-0 pt-8 card-text-customize">
             <span
-              v-if="getField('abbreviation') && getField('name')"
-              class="mr-2"
+              v-if="getField('name')"
             >
-              <span class="mr-2"><span class="mr-2">FAIRsharing.org:</span>{{ getField('abbreviation')+';' }}</span>
-              <span>{{ getField('name') }},</span>
+              FAIRsharing.org:
             </span>
-            <b v-if="getField('doi')"><span class="mr-2">DOI:</span></b><a
-              :href="'https://doi.org/'+getField('doi')"
-            >{{ getField('doi') }}</a><span class="mr-2">,</span>
-            <b v-if="getField('lastEdited')"><span class="mr-2">Last Edited:</span>
-              <span class="mr-2">{{ moment( getField('lastEdited')) }},</span>
+            <span
+              v-if="getField('abbreviation')"
+            >
+              {{ getField('abbreviation')+';' }}
+            </span>{{ getField('name') }},
+
+            <span v-if="getField('doi')">
+              <b>
+                DOI:
+                <a :href="'https://doi.org/'+getField('doi')">{{ getField('doi') }}</a>,
+              </b>
+            </span>
+
+            <b v-if="getField('lastEdited')">
+              Last Edited: {{ moment( getField('lastEdited')) }},
             </b>
             <b v-if="getField('lastEditor')!==null"><span class="mr-2">Last Editor:</span></b><span
               v-if="getField('lastEditor')!==null && getField('lastEditor').username"
               class="mr-2"
             >{{ getField('lastEditor').username }},</span>
-            <b><span class="mr-2">Last Accessed:</span></b><span class="mr-2">{{ moment(new Date()) }}</span>
+            <b>Last Accessed:</b>
+            <span
+              class="mr-2"
+            >
+              {{ moment(new Date()) }}
+            </span>
           </v-card-text>
         </v-card>
       </v-col>

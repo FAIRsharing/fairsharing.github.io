@@ -95,10 +95,48 @@
   &lt;main :class="applyCss?'pa-15 mb-10':''">
     &lt;!--  main_title_2 -->
     &lt;!-- eslint-disable vue/no-v-html -->
-    &lt;h1>
+    &lt;h1 class="mb-5">
       FAIRsharing is a community-driven resource with a growing number of users and collaborators,
       all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
     &lt;/h1>
+
+    &lt;p
+      :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
+    &lt;/p>
+
+    &lt;!--  External Links  -->
+    &lt;v-row
+      class="mt-2"
+    >
+      &lt;v-col
+        v-for="(item,index) in externalLinks"
+        :key="index+'_'+item.titleLink"
+        cols="12"
+        md="12"
+        lg="4"
+        :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+      >
+        &lt;a
+          :href="item.titleLink"
+          target="_blank"
+        >
+          &lt;p
+            :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+          >
+            {{ item.title }}
+          &lt;/p>
+        &lt;/a>
+        &lt;p
+          :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        >
+          {{ item.text }}
+        &lt;/p>
+      &lt;/v-col>
+    &lt;/v-row>
+
+    &lt;!--  content  -->
 
     &lt;!-- Adopters, activities, Governance tabs-->
     &lt;v-container class="my-10">
@@ -148,48 +186,9 @@
       &lt;/v-row>
     &lt;/v-container>
 
-    &lt;p
-      :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
-    &lt;/p>
-
-    &lt;!--  External Links  -->
-    &lt;v-row
-      class="mt-2"
-    >
-      &lt;v-col
-        v-for="(item,index) in externalLinks"
-        :key="index+'_'+item.titleLink"
-        cols="12"
-        md="12"
-        lg="4"
-        :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
-      >
-        &lt;a
-          :href="item.titleLink"
-          target="_blank"
-        >
-          &lt;p
-            :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-          >
-            {{ item.title }}
-          &lt;/p>
-        &lt;/a>
-        &lt;p
-          :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-        >
-          {{ item.text }}
-        &lt;/p>
-      &lt;/v-col>
-    &lt;/v-row>
-
-    &lt;!--  content  -->
-
-
     &lt;!-- Adopters   -->
     &lt;section id="adopters">
-      &lt;h3 class="text-h4 mb-4">
+      &lt;h3 class="text-h4 mb-4 mt-5">
         Adopters
       &lt;/h3>
       &lt;p
@@ -243,7 +242,7 @@
       &lt;/b>
       &lt;!--Adopter table-->
       &lt;v-row
-        class="mt-2"
+        class="mt-2 ml-0"
       >
         &lt;v-col
           v-for="(item,index) in tables.adopterTable.data"
@@ -262,42 +261,44 @@
             contain
             style="filter: grayscale(1);"
           />
+          &lt;p class="mt-5">
+            {{ item.adopter }}
+          &lt;/p>
         &lt;/v-col>
       &lt;/v-row>
       &lt;p class="text-h6 mt-16">
         Other Organisations
       &lt;/p>
-      &lt;ul
-        style="display: flex; flex-wrap: wrap; list-style-type: none;"
+      &lt;v-row
+        class="mt-2 ml-0"
       >
-        &lt;li
+        &lt;v-col
           v-for="(item,index) in tables.globalOrganisationTable.data"
           :key="`${item.adopter}_${index}`"
-          class="text-center pa-10"
+          :class="['pa-5 links full-width',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+          cols="12"
+          md="12"
+          lg="4"
         >
-          &lt;a
-            v-if="item.externalLink"
-            :href="item.externalLink"
-            target="_blank"
-          >
-            &lt;v-img
-              v-if="item.image"
-              max-width="250px"
-              max-height="250px"
-              :src="item.image"
-              height="120"
-              contain
-              style="filter: grayscale(1);"
-            />
-
-          &lt;/a>
-        &lt;/li>
-      &lt;/ul>
+          &lt;v-img
+            v-if="item.image"
+            max-width="250px"
+            max-height="250px"
+            :src="item.image"
+            height="120"
+            contain
+            style="filter: grayscale(1);"
+          />
+          &lt;p class="mt-5">
+            {{ item.associated }}
+          &lt;/p>
+        &lt;/v-col>
+      &lt;/v-row>
     &lt;/section>
 
     &lt;!-- Activities   -->
     &lt;section id="activities">
-      &lt;h3 class="text-h4 mb-4">
+      &lt;h3 class="text-h4 my-4">
         Activities
       &lt;/h3>
       &lt;p
@@ -586,7 +587,7 @@ td {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on Mon Jul 26th 2021
+		on Tue Jul 27th 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

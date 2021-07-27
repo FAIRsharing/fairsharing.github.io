@@ -28,6 +28,7 @@
                 :src="logo.image"
                 width="100"
                 height="100"
+                style="filter: grayscale(1);"
               />
             </v-row>
           </v-sheet>

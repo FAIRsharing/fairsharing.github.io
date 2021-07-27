@@ -1,5 +1,8 @@
 <template>
-  <v-container class="mb-10">
+  <v-container
+    class="mb-10"
+    fluid
+  >
     <v-row
       v-if="!messages().getPublicUser.message"
       class="justify-center"
@@ -52,7 +55,10 @@
           <v-card-title class="primary white--text">
             <h2> Edit Public profile of User ID: {{ $route.params.id }}</h2>
           </v-card-title>
-          <v-container class="text-center elevation-3 pa-5">
+          <v-container
+            fluid
+            class="text-center elevation-3 pa-5"
+          >
             <v-row>
               <v-col
                 v-for="(field, fieldKey) in fields"
@@ -147,6 +153,20 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-card
+      height="100%"
+      class="d-flex flex-column rounded-0 mb-10"
+    >
+      <v-card-title class="primary white--text py-3">
+        Organisations
+      </v-card-title>
+      <v-card-text
+        class="pa-0"
+        style="flex-grow: 1"
+      >
+        <OrganisationsTable />
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -154,11 +174,13 @@
 import { isEmail, isRequired, isUrl } from "@/utils/rules.js"
 import {mapActions, mapMutations, mapState} from "vuex";
 import RESTClient from "@/lib/Client/RESTClient";
+import OrganisationsTable from "@/components/Users/Profiles/Private/OrganisationsTable";
 
 const restClient = new RESTClient();
 
 export default {
   name: "EditPublicProfile",
+  components: {OrganisationsTable},
   data: () => {
     return {
       valid: false,
@@ -305,7 +327,7 @@ export default {
       data.deactivated = !data.deactivated
       await this.updatePublicUser(data);
       this.loading = false;
-      this.$scrollTo('body',1000,{})
+      await this.$router.push({path: `/users/${this.$route.params.id}`})
     },
     async deleteAccount() {
       this.loading = true;

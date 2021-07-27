@@ -335,7 +335,8 @@
         "role": "Curation Manager",
         "profileImg": "assets/Community/profiles/delphine.jpg",
         "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"}
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
+          {"link": "https://orcid.org/0000-0003-3152-1194", "icon": "Orcid"}
         ]
       }
     ]

@@ -107,7 +107,7 @@
         components: {Icon, Record, StatusPills},
         mixins: [cleanString],
         props: {
-            records: { type: Array, default: null },
+            records: {type: Array, default: () => []},
             source: { type: String, default: null }
         },
         data: () => {

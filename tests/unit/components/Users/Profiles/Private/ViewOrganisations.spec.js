@@ -1,9 +1,9 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
-import OrganisationsTable from "@/components/Users/Profiles/Private/OrganisationsTable";
+import OrganisationsTable from "@/components/Users/Profiles/Private/ViewOrganisations";
 const localVue = createLocalVue();
 
 
-describe('OrganisationTable.vue', () => {
+describe('ViewOrganisations', () => {
     let wrapper;
 
     it("can be mounted", () => {
@@ -13,7 +13,7 @@ describe('OrganisationTable.vue', () => {
                 organisations: [],
             }
         });
-        const title = "OrganisationsTable";
+        const title = "ViewOrganisations";
         expect(wrapper.name()).toMatch(title);
         expect(wrapper.vm.perPage).toBe(5)
     });

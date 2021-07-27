@@ -318,7 +318,7 @@ import RestClient from "@/lib/Client/RESTClient.js"
 const restClient = new RestClient();
 
 export default {
-  name: "OrganisationsTable",
+  name: "EditOrganisations",
   data:()=> {
     return {
       loading:false,

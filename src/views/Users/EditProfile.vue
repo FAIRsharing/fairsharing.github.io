@@ -132,7 +132,7 @@
         class="pa-0"
         style="flex-grow: 1"
       >
-        <OrganisationsTable />
+        <EditOrganisations />
       </v-card-text>
     </v-card>
   </v-container>
@@ -142,11 +142,11 @@
 import { mapState, mapActions } from "vuex"
 import { isEmail, isRequired, isUrl } from "@/utils/rules.js"
 import RESTClient from "@/lib/Client/RESTClient.js"
-import OrganisationsTable from "@/components/Users/Profiles/Private/OrganisationsTable";
+import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
 const restClient = new RESTClient();
 export default {
   name: "EditProfile",
-  components: {OrganisationsTable},
+  components: {EditOrganisations},
   data: () => {
     return {
       data: {

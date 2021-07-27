@@ -1,5 +1,5 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils"
-import OrganisationsTable from "@/components/Users/Profiles/Private/OrganisationsTable";
+import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
 import userStore from "@/store/users.js";
 import editor from "@/store/editor.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
@@ -98,7 +98,7 @@ describe('OrganisationTable.vue', () => {
         wrapper.destroy();
     });
     beforeEach(async () => {
-        wrapper = await shallowMount(OrganisationsTable, {
+        wrapper = await shallowMount(EditOrganisations, {
             mocks: {$route, $store, $router},
             localVue,
             vuetify,
@@ -107,7 +107,7 @@ describe('OrganisationTable.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("OrganisationsTable");
+        expect(wrapper.name()).toMatch("EditOrganisations");
         expect(wrapper.vm.perPage).toBe(5)
         wrapper.vm.rules.isRequired();
         wrapper.vm.rules.isURL();

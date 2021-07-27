@@ -2,10 +2,48 @@
   <main :class="applyCss?'pa-15 mb-10':''">
     <!--  main_title_2 -->
     <!-- eslint-disable vue/no-v-html -->
-    <h1>
+    <h1 class="mb-5">
       FAIRsharing is a community-driven resource with a growing number of users and collaborators,
       all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
     </h1>
+
+    <p
+      :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
+    </p>
+
+    <!--  External Links  -->
+    <v-row
+      class="mt-2"
+    >
+      <v-col
+        v-for="(item,index) in externalLinks"
+        :key="index+'_'+item.titleLink"
+        cols="12"
+        md="12"
+        lg="4"
+        :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+      >
+        <a
+          :href="item.titleLink"
+          target="_blank"
+        >
+          <p
+            :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+          >
+            {{ item.title }}
+          </p>
+        </a>
+        <p
+          :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        >
+          {{ item.text }}
+        </p>
+      </v-col>
+    </v-row>
+
+    <!--  content  -->
 
     <!-- Adopters, activities, Governance tabs-->
     <v-container class="my-10">
@@ -55,48 +93,9 @@
       </v-row>
     </v-container>
 
-    <p
-      :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
-    </p>
-
-    <!--  External Links  -->
-    <v-row
-      class="mt-2"
-    >
-      <v-col
-        v-for="(item,index) in externalLinks"
-        :key="index+'_'+item.titleLink"
-        cols="12"
-        md="12"
-        lg="4"
-        :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
-      >
-        <a
-          :href="item.titleLink"
-          target="_blank"
-        >
-          <p
-            :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-          >
-            {{ item.title }}
-          </p>
-        </a>
-        <p
-          :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-        >
-          {{ item.text }}
-        </p>
-      </v-col>
-    </v-row>
-
-    <!--  content  -->
-
-
     <!-- Adopters   -->
     <section id="adopters">
-      <h3 class="text-h4 mb-4">
+      <h3 class="text-h4 mb-4 mt-5">
         Adopters
       </h3>
       <p
@@ -150,7 +149,7 @@
       </b>
       <!--Adopter table-->
       <v-row
-        class="mt-2"
+        class="mt-2 ml-0"
       >
         <v-col
           v-for="(item,index) in tables.adopterTable.data"
@@ -169,42 +168,44 @@
             contain
             style="filter: grayscale(1);"
           />
+          <p class="mt-5">
+            {{ item.adopter }}
+          </p>
         </v-col>
       </v-row>
       <p class="text-h6 mt-16">
         Other Organisations
       </p>
-      <ul
-        style="display: flex; flex-wrap: wrap; list-style-type: none;"
+      <v-row
+        class="mt-2 ml-0"
       >
-        <li
+        <v-col
           v-for="(item,index) in tables.globalOrganisationTable.data"
           :key="`${item.adopter}_${index}`"
-          class="text-center pa-10"
+          :class="['pa-5 links full-width',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+          cols="12"
+          md="12"
+          lg="4"
         >
-          <a
-            v-if="item.externalLink"
-            :href="item.externalLink"
-            target="_blank"
-          >
-            <v-img
-              v-if="item.image"
-              max-width="250px"
-              max-height="250px"
-              :src="item.image"
-              height="120"
-              contain
-              style="filter: grayscale(1);"
-            />
-
-          </a>
-        </li>
-      </ul>
+          <v-img
+            v-if="item.image"
+            max-width="250px"
+            max-height="250px"
+            :src="item.image"
+            height="120"
+            contain
+            style="filter: grayscale(1);"
+          />
+          <p class="mt-5">
+            {{ item.associated }}
+          </p>
+        </v-col>
+      </v-row>
     </section>
 
     <!-- Activities   -->
     <section id="activities">
-      <h3 class="text-h4 mb-4">
+      <h3 class="text-h4 my-4">
         Activities
       </h3>
       <p

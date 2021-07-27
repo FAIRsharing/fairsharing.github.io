@@ -43,7 +43,7 @@
       >
         <v-container
           fluid
-          class="py-0"
+          class="py-0 pa-0"
         >
           <v-row>
             <v-col
@@ -101,7 +101,7 @@
               class="pt-0"
               cols="12"
               xl="6"
-              lg="5"
+              lg="6"
               md="12"
               sm="12"
               xs="12"
@@ -151,12 +151,11 @@
                 </v-card-actions>
               </v-card>
             </v-col>
-
             <v-col
               cols="12"
               xl="4"
               lg="6"
-              md="12"
+              md="6"
               sm="12"
               xs="12"
               class="pt-0"
@@ -179,15 +178,15 @@
                 </v-card-text>
               </v-card>
             </v-col>
-            
+
             <v-col
-              class="pt-0"
               cols="12"
               xl="4"
               lg="6"
               md="12"
               sm="12"
               xs="12"
+              class="pt-0"
             >
               <v-card
                 height="100%"
@@ -200,7 +199,7 @@
                   class="pa-0"
                   style="flex-grow: 1"
                 >
-                  <OrganisationsTable
+                  <ViewOrganisations
                     :organisations="userData.user.organisations"
                   />
                 </v-card-text>
@@ -229,8 +228,8 @@
     import ExternalClient from "@/lib/Client/ExternalClients.js"
     import NotFound from "@/views/Errors/404"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
-    import OrganisationsTable from "../../components/Users/Profiles/Private/OrganisationsTable";
     import { cleanString } from "@/utils/stringUtils"
+    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
 
     let client = new ExternalClient();
 
@@ -240,7 +239,7 @@
 
     export default {
       name: "PublicProfile",
-      components: {RecordsTable, OrganisationsTable, Loaders, NotFound, UserProfileMenu},
+      components: {ViewOrganisations, RecordsTable, Loaders, NotFound, UserProfileMenu},
       mixins: [cleanString],
       data: () => {
         return {

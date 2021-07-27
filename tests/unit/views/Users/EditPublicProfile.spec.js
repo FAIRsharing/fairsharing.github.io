@@ -12,7 +12,9 @@ import VueScrollTo from "vue-scrollto";
 localVue.use(Vuex);
 localVue.use(VueScrollTo,{})
 let $route = { params: {id: 123} };
-
+let $router = {
+    push: jest.fn()
+};
 userStore.state.user = function() {
     return {
         metadata: {
@@ -53,7 +55,7 @@ describe("EditPublicProfile.vue", function () {
         wrapper =  shallowMount(EditPublicProfile, {
             vuetify,
             localVue,
-            mocks:{$store,$route}
+            mocks:{$store,$route,$router}
         })
     });
 

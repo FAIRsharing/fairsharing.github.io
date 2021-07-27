@@ -1,5 +1,5 @@
 <template>
-  <main class="pa-15 mb-10">
+  <main :class="applyCss?'pa-15 mb-10':''">
     <!-- hard-coded part -->
     <!--  title  -->
     <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
@@ -75,7 +75,7 @@
     <ul class="ul-no-padding">
       <li
         v-for="(educationItem,key,index) in education"
-        :key="index"
+        :key="key+'_'+index"
       >
         <h2 class="primary--text">
           {{ key }}
@@ -83,7 +83,7 @@
         <ul>
           <li
             v-for="(item,title_key,title_index) in educationItem"
-            :key="title_index"
+            :key="title_key+'_'+title_index"
             class="mb-5"
           >
             <h3 class="text-h5 mb-2">
@@ -92,14 +92,17 @@
             <ul>
               <li
                 v-for="(child_item,child_index) in item"
-                :key="child_index"
+                :key="child_item.title+'_'+child_index"
               >
                 <!-- This html is from a safe source -->
                 <!-- eslint-disable vue/no-v-html -->
-                <h4
-                  class="text-h6"
-                  v-html="child_item.title"
-                />
+                <a :href="`#/educational#${child_item.anchorLink}`">
+                  <h4
+                    :id="child_item.anchorLink"
+                    class="text-h6"
+                    v-html="child_item.title"
+                  />
+                </a>
                 <!-- This html is from a safe source -->
                 <!-- eslint-disable vue/no-v-html -->
                 <p
@@ -119,12 +122,29 @@
 <script>
   import {education} from '@/data/EducationData.json'
     export default {
-        name: "Educational",
-        data:()=>{
-          return {
-            education:education
+      name: "Educational",
+      data: () => {
+        return {
+          education: education,
+          applyCss: false
+        }
+      },
+      watch: {
+        $route: {
+          deep:true,
+          handler() {
+            this.applyCss = false
+            this.$nextTick(() => {
+              this.applyCss = true
+            })
           }
         }
+      },
+      async created() {
+        await this.$nextTick();
+        this.applyCss = true
+        // update the UI padding and margin after DOM is fully loaded.
+      }
     }
 </script>
 
@@ -133,6 +153,9 @@ li {
   line-height: 1.6;
 }
 
+ul,li {
+  padding: 0;
+}
 .hardcoded-ul {
   li::before {
     display: inline-block;

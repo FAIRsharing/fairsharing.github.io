@@ -26,7 +26,8 @@ users.state.user = function(){ return {
     watchedRecords: [1]
 }};
 record.state.currentRecord.fairsharingRecord = {
-    maintainers: [{username: 123}]
+    maintainers: [{username: 123}],
+    reviews: []
 };
 record.getters = {getField: () => () => { return [{username: 123}]}};
 let $store = new Vuex.Store({
@@ -58,6 +59,7 @@ let mocks = {
         this.restore("canEditStub");
         this.restore("canClaimStub");
         this.restore("claimRecord");
+        this.restore("metadataFields");
     },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
         this[mockKey] = sinon.stub(targetClass, targetMethod);
@@ -89,7 +91,8 @@ describe("Record.vue", function() {
                 domains: [],
                 subjects: [],
                 taxonomies: [],
-                userDefinedTags: []
+                userDefinedTags: [],
+                reviews: []
             }
         };
 
@@ -110,6 +113,10 @@ describe("Record.vue", function() {
         mocks.setMock("claimRecord",
             RESTClient.prototype,
             "claimRecord",
+            true);
+        mocks.setMock("metadataFields",
+            RESTClient.prototype,
+            "extraMetadataFields",
             true);
         let breakpoint = {
             init: jest.fn(),
@@ -178,9 +185,9 @@ describe("Record.vue", function() {
         expect(wrapper.vm.buttons[3].name()).toEqual("View Relation Graph");
         expect(wrapper.vm.buttons[3].isDisabled()).toBe(false);
         expect(wrapper.vm.buttons[4].name()).toEqual("View record history");
-        expect(wrapper.vm.buttons[4].isDisabled()).toBe(true);
+        expect(wrapper.vm.buttons[4].isDisabled()).toBe(false);
         expect(wrapper.vm.buttons[5].name()).toEqual("Have a suggestion/question ?");
-        expect(wrapper.vm.buttons[5].isDisabled()).toBe(true);
+        expect(wrapper.vm.buttons[5].isDisabled()).toBe(false);
         wrapper.vm.buttons[0].method();
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
         wrapper.vm.buttons[1].method();
@@ -188,7 +195,8 @@ describe("Record.vue", function() {
         expect($router.push).toHaveBeenCalledTimes(2);
         await wrapper.vm.buttons[2].method();
         expect($router.push).toHaveBeenCalledWith({path: "/accounts/login", query: {goTo: "/980190962"}});
-        expect(wrapper.vm.buttons[5].method()).toBe(null);
+        await wrapper.vm.buttons[5].method();
+        expect($router.push).toHaveBeenCalledTimes(3);
         $store.state.users.user = function (){return {
             isLoggedIn: true,
             credentials: {token: 123, username: 123},
@@ -365,5 +373,77 @@ describe("Record.vue", function() {
         });
         expect(wrapper2.name()).toMatch("Record");
     });
+
+
+    it("handles failed attempts to review", async () => {
+        mocks.restore("graphMock");
+        mocks.setMock("graphMock",
+            GraphClient.prototype,
+            "executeQuery");
+        mocks.restore("restMock");
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {data: {
+               error: 'oh no!'
+            }}
+        );
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            credentials: {token: 123, username: 123},
+            is_curator: true
+        }};
+        let reviewRecord = jest.spyOn(wrapper.vm, "reviewRecord");
+
+        await wrapper.vm.getData();
+        expect(wrapper.vm.reviewFail).toBe(false);
+        wrapper.vm.getMenuButtons();
+        await wrapper.vm.buttons[6].method();
+        expect(reviewRecord).toHaveBeenCalled();
+        expect(wrapper.vm.needsReviewing()).toBe(true);
+        expect(wrapper.vm.reviewFail).toBe(true);
+        mocks.restore("graphMock");
+        mocks.restore("restMock");
+    });
+
+
+
+    it("runs the review method", async () => {
+        mocks.restore("graphMock");
+        mocks.setMock("graphMock",
+            GraphClient.prototype,
+            "executeQuery");
+        mocks.restore("restMock");
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {
+                data: {
+                    modification: 'success'
+                }
+            }
+        );
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            credentials: {token: 123, username: 123},
+            is_curator: true
+        }};
+        let reviewRecord = jest.spyOn(wrapper.vm, "reviewRecord");
+
+        await wrapper.vm.getData();
+        record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '1950-01-01T123456' }];
+        expect(wrapper.vm.reviewSuccess).toBe(false);
+        expect(wrapper.vm.needsReviewing()).toBe(true);
+        wrapper.vm.getMenuButtons();
+        expect(wrapper.vm.buttons[6].name()).toEqual("Review this record");
+        expect(wrapper.vm.buttons[6].isDisabled()).toBe(false);
+        await wrapper.vm.buttons[6].method();
+        expect(reviewRecord).toHaveBeenCalled();
+        record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '2050-01-01T123456' }];
+        expect(wrapper.vm.needsReviewing()).toBe(false);
+        expect(wrapper.vm.reviewSuccess).toBe(true);
+        mocks.restore("graphMock");
+    });
+
 
 });

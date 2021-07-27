@@ -12,7 +12,9 @@ import VueScrollTo from "vue-scrollto";
 localVue.use(Vuex);
 localVue.use(VueScrollTo,{})
 let $route = { params: {id: 123} };
-
+let $router = {
+    push: jest.fn()
+};
 userStore.state.user = function() {
     return {
         metadata: {
@@ -53,7 +55,7 @@ describe("EditPublicProfile.vue", function () {
         wrapper =  shallowMount(EditPublicProfile, {
             vuetify,
             localVue,
-            mocks:{$store,$route}
+            mocks:{$store,$route,$router}
         })
     });
 
@@ -83,6 +85,12 @@ describe("EditPublicProfile.vue", function () {
     it("can check updatePublicProfile method", async () => {
         await wrapper.vm.deleteAccount()
         expect(wrapper.vm.loading).toBe(false);
+    });
+
+    it("disables the email edit field for third party users", () => {
+        expect(wrapper.vm.isDisabled('email')).toBe(false);
+        $store.state.users.currentPublicUser.third_party = true;
+        expect(wrapper.vm.isDisabled('email')).toBe(true);
     });
 
 });

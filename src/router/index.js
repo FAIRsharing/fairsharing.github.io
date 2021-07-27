@@ -43,6 +43,13 @@ Vue.use(VueRouter);
 
 let routes = [
     {
+        name: 'sitemap',
+        path: '/sitemap.xml.gz',
+        redirect: () => {
+            window.location.assign(process.env.VUE_APP_API_ENDPOINT + '/sitemap.xml.gz');
+        }
+    },
+    {
         name: "Home",
         path: "/",
         component: Home,

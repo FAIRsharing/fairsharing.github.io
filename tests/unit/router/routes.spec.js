@@ -142,12 +142,9 @@ describe("Routes", () => {
     });
 
     it("performs harcoded ontology redirections correctly", async () => {
-
         let assignMock = jest.fn();
-
         delete window.location;
         window.location = { assign: assignMock };
-
         let ontology = router.options.routes.find((obj) => { return obj.name === 'ontology'} );
         await ontology.redirect({params: {name: 'SRAO'}});
         expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology');
@@ -158,6 +155,18 @@ describe("Routes", () => {
         ).toStrictEqual(
             {"path":"/"}
         );
+
+    });
+
+    it("gets sitemap from the api", async () => {
+        process.env.VUE_APP_API_ENDPOINT = 'https://api.fairsharing.org'
+        let assignMock = jest.fn();
+        delete window.location;
+        window.location = { assign: assignMock };
+        let sitemap = router.options.routes.find((obj) => { return obj.name === 'sitemap'} );
+        await sitemap.redirect();
+        // process.env.VUE_APP_API_ENDPOINT
+        expect(window.location.assign).toHaveBeenCalledWith( process.env.VUE_APP_API_ENDPOINT + '/sitemap.xml.gz');
 
     });
 

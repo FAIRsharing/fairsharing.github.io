@@ -1,19 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card id="editPublications">
     <v-card-title class="grey lighten-4 blue--text">
-      <v-btn
-        class="blue mr-4"
-        fab
-        x-small
-      >
-        <v-icon
-          class="white--text"
-          small
-        >
-          fa fa-info
-        </v-icon>
-      </v-btn>
-      <b> EDIT PUBLICATIONS </b>
+      Edit Publications
     </v-card-title>
     <Alerts target="publications" />
     <v-card-text>

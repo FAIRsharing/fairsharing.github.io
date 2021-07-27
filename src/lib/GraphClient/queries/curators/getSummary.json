@@ -2,6 +2,7 @@
   "queryName": "curationSummary",
   "queryParam": null,
   "fields": [
+    "needsReview",
     {
       "name": "curatorList",
       "fields": [

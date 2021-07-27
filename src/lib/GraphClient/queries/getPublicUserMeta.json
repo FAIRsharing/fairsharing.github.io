@@ -11,6 +11,7 @@
     "orcid",
     "username",
     "twitter",
+    "thirdParty",
     {"$ref": "maintainedRecords"},
     {
       "name": "organisations",

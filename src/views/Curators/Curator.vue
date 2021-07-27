@@ -194,21 +194,21 @@
         <v-card>
           <v-card-text>
             <v-card-title
-                id="download-review-needed"
-                class="green white--text"
+              id="download-review-needed"
+              class="green white--text"
             >
               RECORDS NEEDING REVIEW
               <v-btn
-                  v-if="downloadReviewContent"
-                  class="info ml-5"
+                v-if="downloadReviewContent"
+                class="info ml-5"
               >
                 <a
-                    :href="downloadReviewContent"
-                    download="recordsNeedingReview.txt"
+                  :href="downloadReviewContent"
+                  download="recordsNeedingReview.txt"
                 >
                   <v-icon
-                      color="white"
-                      class="mr-1"
+                    color="white"
+                    class="mr-1"
                   >
                     fa fa-download
                   </v-icon>

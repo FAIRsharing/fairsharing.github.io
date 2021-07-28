@@ -60,6 +60,43 @@
       <h3 class="text-h4 mb-4 mt-5">
         Adopters
       </h3>
+
+      <p
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
+      </p>
+
+      <!--  External Links  -->
+      <v-row
+        class="my-2"
+      >
+        <v-col
+          v-for="(item,index) in externalLinks"
+          :key="index+'_'+item.titleLink"
+          cols="12"
+          md="12"
+          lg="4"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+        >
+          <a
+            :href="item.titleLink"
+            target="_blank"
+          >
+            <p
+              :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            >
+              {{ item.title }}
+            </p>
+          </a>
+          <p
+            :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+          >
+            {{ item.text }}
+          </p>
+        </v-col>
+      </v-row>
+
       <p
         :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
@@ -158,42 +195,6 @@
         </v-col>
       </v-row>
     </section>
-
-    <p
-      :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
-    </p>
-
-    <!--  External Links  -->
-    <v-row
-      class="mt-2"
-    >
-      <v-col
-        v-for="(item,index) in externalLinks"
-        :key="index+'_'+item.titleLink"
-        cols="12"
-        md="12"
-        lg="4"
-        :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
-      >
-        <a
-          :href="item.titleLink"
-          target="_blank"
-        >
-          <p
-            :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-          >
-            {{ item.title }}
-          </p>
-        </a>
-        <p
-          :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-        >
-          {{ item.text }}
-        </p>
-      </v-col>
-    </v-row>
 
     <!--  content  -->
 

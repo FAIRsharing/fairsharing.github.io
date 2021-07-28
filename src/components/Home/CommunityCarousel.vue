@@ -34,6 +34,12 @@
           </v-sheet>
         </v-carousel-item>
       </v-carousel>
+      <v-btn
+        color="primary"
+        to="/communities"
+      >
+        View All
+      </v-btn>
     </v-container>
   </div>
 </template>

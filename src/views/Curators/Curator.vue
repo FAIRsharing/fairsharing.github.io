@@ -322,7 +322,8 @@
           this.prepareData();
           await this.obtainFileRecordsWODois();
           this.loading = false;
-          this.downloadReviewContent = "data:text/json;charset=utf-8," + encodeURIComponent(this.allDataCuration.needsReview.join('\n'));
+          let review = this.allDataCuration.needsReview || [];
+          this.downloadReviewContent = "data:text/json;charset=utf-8," + encodeURIComponent(review.join('\n'));
         })
       },
       methods: {

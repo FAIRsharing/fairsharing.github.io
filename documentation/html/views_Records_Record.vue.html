@@ -92,7 +92,7 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  &lt;v-main>
+  &lt;main>
     &lt;v-container
       v-if="queryTriggered"
       fluid
@@ -235,16 +235,21 @@
       &lt;/v-row>
 
       &lt;!--  CuratorsNotes   -->
-      &lt;CuratorNotes class="ma-4 mb-7" />
+      &lt;CuratorNotes
+        id="curatorNotes"
+        class="ma-4 mb-7"
+      />
 
       &lt;Tombstone
         v-if="currentRecord['fairsharingRecord'] &amp;&amp; currentRecord['fairsharingRecord'].metadata.tombstone"
+        id="tombStone"
         :record="currentRecord['fairsharingRecord']"
       />
       &lt;!--  Content  -->
       &lt;div v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error &amp;&amp; !currentRecord['fairsharingRecord'].metadata.tombstone">
         &lt;!-- Top Block -->
         &lt;GeneralInfo
+          id="generalInfo"
           :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
@@ -257,6 +262,7 @@
               &lt;component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.leftBlock"
+                :id="block"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
@@ -268,6 +274,7 @@
               &lt;component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.rightBlock"
+                :id="block"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
@@ -278,16 +285,19 @@
         &lt;!-- Bottom Block -->
         &lt;Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          id="publications"
           class="mb-8 ma-4"
         />
         &lt;!-- Additional Information -->
         &lt;AdditionalInfo
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          id="additionalInfo"
           class="mb-8 ma-4"
         />
         &lt;!-- Search Collection -->
         &lt;SearchCollection
           v-if="currentRecord.fairsharingRecord.registry==='Collection'"
+          id="searchCollection"
           class="mb-10 ma-4"
         />
       &lt;/div>
@@ -323,6 +333,7 @@
         &lt;v-card-text class="pt-2">
           &lt;RecordHistory
             v-if="!history.loading"
+            id="recordHistory"
             :history="currentRecordHistory.history"
             :legacy-logs="currentRecordHistory.legacyLogs"
           />
@@ -331,7 +342,7 @@
       &lt;/v-card>
     &lt;/v-dialog>
     &lt;!-- eslint-enable vue/no-v-html -->
-  &lt;/v-main>
+  &lt;/main>
 &lt;/template>
 
 &lt;script>
@@ -435,6 +446,21 @@ export default {
     },
   },
   watch: {
+    $route: {
+      deep:true,
+      async handler() {
+        await this.getData();
+        await this.canEditRecord();
+        await this.checkClaimStatus();
+        await this.getMenuButtons()
+        await this.$nextTick();
+        if(this.$route.hash) {
+           await this.$scrollTo(this.$route.hash)
+         } else {
+           await this.$scrollTo('body')
+         }
+      }
+    },
     async currentRoute() {
       await this.getData();
       await this.canEditRecord();
@@ -457,6 +483,11 @@ export default {
       await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons()
+      await this.$nextTick();
+      if(this.$route.hash) {
+        this.$scrollTo(this.$route.hash)
+      }
+    // update the UI padding and margin after DOM is fully loaded.
   },
   methods: {
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
@@ -793,6 +824,11 @@ export default {
   },
 }
 &lt;/script>
+&lt;style scoped>
+ul,li {
+  padding: 0;
+}
+&lt;/style>
 </pre>
     </article>
 </section>

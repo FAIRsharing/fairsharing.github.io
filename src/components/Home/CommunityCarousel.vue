@@ -11,7 +11,7 @@
         hide-delimiter-background
       >
         <v-carousel-item
-          v-for="(logo, index) in logos"
+          v-for="(logo, index) in responsiveSlideData"
           :key="logo.image+'_'+index"
         >
           <v-sheet
@@ -51,7 +51,17 @@ export default {
   data: () => ({
     model: 0,
     logos: blockLogos
-  })
+  }),
+  computed: {
+    responsiveSlideData() {
+      if (this.$vuetify.breakpoint.smAndUp) {
+        return this.logos.multipleImageSlider
+      }
+      else {
+        return this.logos.singleImageSlider
+      }
+    }
+  }
 }
 </script>
 

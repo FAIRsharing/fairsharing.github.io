@@ -211,7 +211,7 @@ export default {
     tryRedirect: async function () {
       if (Object.keys(this.recordTypes).includes(this.$route.name)) {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
-        let query = this.$route.params;
+        let query = this.$route.query;
         if (query && query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
           try {
@@ -251,7 +251,7 @@ export default {
      */
     getParameters: function () {
       return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
-    },
+    }
   },
   /**
    * Setting up the metaInfo of the page

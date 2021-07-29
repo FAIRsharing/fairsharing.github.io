@@ -114,7 +114,7 @@ describe("Records.vue", () => {
             test3: ['abc', ' def'],
             test4: 123,
             test5: true
-        })
+        });
     });
 
     it("react to path change", async () => {
@@ -123,7 +123,6 @@ describe("Records.vue", () => {
         expect(wrapper.vm.currentPath[0]).toBe("Search");
         $route.path = "/standard";
         expect(wrapper.vm.currentPath[0]).toBe("Standard");
-
     });
 
     it("can correctly redirect", async () => {

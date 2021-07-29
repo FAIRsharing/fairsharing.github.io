@@ -88,11 +88,11 @@
                     class="d-flex flex-row ml-4 mb-4"
                   >
                     <a
-                      :href="'https://fairsharing.org/users/' + user().id"
+                      :href="getHostname() + 'users/' + user().id"
                       target="_blank"
                       class="underline-effect"
                     >
-                      https://fairsharing.org/users/{{ user().id }}
+                      {{ getHostname() + 'users/' + user().id }}
                     </a>
                     <v-tooltip top>
                       <template #activator="{ on, attrs }">
@@ -433,7 +433,10 @@
           },
           copyURL() {
             this.copyButtonStatus = true;
-            return 'https://fairsharing.org/users/' + this.user().id;
+            return this.getHostname() + 'users/' + this.user().id;
+          },
+          getHostname() {
+            return process.env.VUE_APP_HOSTNAME;
           }
       }
     }

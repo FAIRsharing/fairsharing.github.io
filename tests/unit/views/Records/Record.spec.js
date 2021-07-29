@@ -38,10 +38,14 @@ let $store = new Vuex.Store({
 }),
     $route = {
         path: "/",
-        params: {id: "980190962"}
+        params: {id: "980190962"},
     };
 const router = new VueRouter(),
     $router = { push: jest.fn() };
+//-- making a mock div element
+const element = document.createElement('div')
+element.id = 'hashtag'
+document.body.appendChild(element)
 
 // Preparing mocks
 let mocks = {
@@ -137,7 +141,8 @@ describe("Record.vue", function() {
             mocks: {$route, $store, $router},
             localVue,
             vuetify,
-            router
+            router,
+            attachToDocument:element
         });
     });
 
@@ -445,5 +450,17 @@ describe("Record.vue", function() {
         mocks.restore("graphMock");
     });
 
+    it("can react to anchorPoint changes in route", async () => {
+        $route = {
+            path: "/",
+            params: {id: "980190962"}
+        }
+        await wrapper.vm.getData();
+        expect(wrapper.vm.$route.hash).toBe(undefined);
+        wrapper.vm.$route.hash = '#hashtag'
+        wrapper.vm.$route.path = '/a'
+        await wrapper.vm.getData();
+        expect(wrapper.vm.$route.hash).toBe('#hashtag');
+    });
 
 });

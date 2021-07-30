@@ -211,35 +211,35 @@
           "<b>Robert Hanisch, </b>Director of the Office of Data and Informatics, National Institute of Standards and Technology (NIST)",
           "<b>Varsha Khodiyar, </b>Springer Nature",
           "<b>Peter McQuilton, </b>(FAIRsharing Former Coordinator and Founding Member), GSK",
-          "<b>Sowmya Swaminathan, </b>Springer Nature",
           "<b>Marta Teperek, </b>Data Stewardship Coordinator, TUDelft"
         ]
       },
       {
         "title":"Stakeholder Advisors",
         "data": [
-          "<b>Emma Ganley</b>, Director of Strategic Initiatives, Protocols.io",
           "<b>Michael Ball</b>, Biotechnology and Biological Sciences Research Council (BBSRC)",
           "<b>Theo Bloom</b>, British Medical Journal (BMJ)",
-          "<b>Nick Everitt and Matthew Cannon</b>, Taylor and Francis",
+          "<b>Luiz Olavo Bonino</b>, GO-FAIR",
           "<b>Wei-Mun Chan</b>, eLife",
           "<b>Geraldine Clement-Stoneham</b>, Head of Knowledge Management and Scholarly Communication, Medical Research Council",
           "<b>Helena Cousijn</b>, DataCite",
+          "<b>Molly Cranston and Guillaume Wright</b>, F1000Research",
           "<b>Scott Edmunds</b>, GigaScience, Oxford University Press",
+          "<b>Nick Everitt and Matthew Cannon</b>, Taylor and Francis",
           "<b>Dominic Fripp</b>, JISC",
+          "<b>Emma Ganley</b>, Director of Strategic Initiatives, Protocols.io",
           "<b>Simon Hodson</b>, CODATA",
           "<b>Iain Hrynaszkiewicz</b>, PLoS",
           "<b>Mike Huerta</b>, Coordinator of Data & and Open Science Initiative, Associate Director for Programme Development at the NIH National Library of Medicine",
           "<b>Amye Kenall</b>, VP of Publishing and Product, Research Square",
           "<b>Adam Leary</b>, Oxford University Press",
           "<b>Thomas Lemberger</b>, EMBO Press",
-          "<b>Luiz Olavo Bonino</b>, GO-FAIR",
+          "<b>Catriona MacCallum</b>, Hindawi",
           "<b>Kiera McNiece</b>, Cambridge University Press",
           "<b>Dagmar Meyer</b>, European Research Council (ERC), Executive Agency",
           "<b>Marina Soares E Silva and Sarah Callaghan</b>, Elsevier",
           "<b>Imma Subirats</b>, Information Management Officer, FAO of the United Nations",
-          "<b>Molly Cranston and Guillaume Wright</b>, F1000Research",
-          "<b>Catriona MacCallum</b>, Hindawi"
+          "<b>Sowmya Swaminathan, </b>Springer Nature"
         ]
       }
     ]

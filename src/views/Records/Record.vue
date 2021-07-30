@@ -353,26 +353,13 @@ export default {
     },
   },
   watch: {
-    $route: {
-      deep:true,
-      async handler() {
-        await this.getData();
-        await this.canEditRecord();
-        await this.checkClaimStatus();
-        await this.getMenuButtons()
-        await this.$nextTick();
-        if(this.$route.hash) {
-           await this.$scrollTo(this.$route.hash)
-         } else {
-           await this.$scrollTo('body')
-         }
-      }
-    },
     async currentRoute() {
       await this.getData();
       await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons();
+      await this.$nextTick();
+      await this.$scrollTo(this.$route.hash || 'body')
     },
     async userIsLoggedIn() {
       await this.canEditRecord();
@@ -391,9 +378,7 @@ export default {
       await this.checkClaimStatus();
       await this.getMenuButtons()
       await this.$nextTick();
-      if(this.$route.hash) {
-        this.$scrollTo(this.$route.hash)
-      }
+      await this.$scrollTo(this.$route.hash || 'body')
     // update the UI padding and margin after DOM is fully loaded.
   },
   methods: {

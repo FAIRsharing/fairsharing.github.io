@@ -47,6 +47,11 @@ const element = document.createElement('div')
 element.id = 'hashtag'
 document.body.appendChild(element)
 
+//-- making a mock div element
+const element2 = document.createElement('div')
+element2.id = 'a'
+document.body.appendChild(element2)
+
 // Preparing mocks
 let mocks = {
     graphMock: null,
@@ -142,7 +147,7 @@ describe("Record.vue", function() {
             localVue,
             vuetify,
             router,
-            attachToDocument:element
+            attachToDocument:[element,element2]
         });
     });
 
@@ -448,19 +453,6 @@ describe("Record.vue", function() {
         expect(wrapper.vm.needsReviewing()).toBe(false);
         expect(wrapper.vm.reviewSuccess).toBe(true);
         mocks.restore("graphMock");
-    });
-
-    it("can react to anchorPoint changes in route", async () => {
-        $route = {
-            path: "/",
-            params: {id: "980190962"}
-        }
-        await wrapper.vm.getData();
-        expect(wrapper.vm.$route.hash).toBe(undefined);
-        wrapper.vm.$route.hash = '#hashtag'
-        wrapper.vm.$route.path = '/a'
-        await wrapper.vm.getData();
-        expect(wrapper.vm.$route.hash).toBe('#hashtag');
     });
 
 });

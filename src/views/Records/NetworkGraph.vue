@@ -53,6 +53,32 @@
                   <span>Click on any point to re-draw the graph with that point as the centre.</span>
                 </v-col>
               </v-row>
+              <v-divider />
+              <v-row v-if="initialized">
+                <v-col
+                  cols="12"
+                  class="mt-0 pt-0 mb-0"
+                >
+                  <h4>Records Relationships</h4>
+                </v-col>
+                <v-col
+                  v-for="(relationName, relationColor, relationIndex) in legend.relations"
+                  :key="'relationInLegend_' + relationIndex"
+                  cols="12"
+                  sm="12"
+                  md="12"
+                  lg="6"
+                  xl="4"
+                  class="pt-1"
+                >
+                  <div
+                    class="legendColor"
+                    :style="'background:' + relationColor"
+                  >
+                    <span class="white--text">{{ relationName }}</span>
+                  </div>
+                </v-col>
+              </v-row>
             </v-container>
           </v-card-text>
         </v-card>
@@ -85,6 +111,7 @@
     import GraphClient from '@/lib/GraphClient/GraphClient.js'
     import graphQuery from '@/lib/GraphClient/queries/getGraphRelations.json'
     import Loaders from "../../components/Navigation/Loaders";
+    import relationColors from "@/data/RelationsColors.json"
 
     const graphClient = new GraphClient();
 
@@ -98,6 +125,7 @@
           let _module = this;
             return {
                 loading: false,
+                initialized: false,
                 depth: [1, 2, 3],
                 max_path_length: 2,
                 options: {
@@ -146,7 +174,7 @@
                     },
                     plotOptions: {
                         networkgraph: {
-                            keys: ['from', 'to', 'rel'],
+                            keys: ['from', 'to', 'rel', 'color'],
                             layoutAlgorithm: {
                                 enableSimulation: true,
                                 linkLength: 60,
@@ -168,7 +196,7 @@
                         },
                         dataLabels: {
                             enabled: true,
-                            linkFormat: '{point.rel}',
+                            linkFormat: '',
                             color: '#2F2F30',
                             font: 'light 30px "Trebuchet MS", Verdana, sans-serif',
                             linkTextPath: {
@@ -200,7 +228,11 @@
                     }],
                     nodes: null
                 },
-                relations: null
+                relations: null,
+                relations_colors: relationColors,
+                legend: {
+                  relations: {}
+                }
             }
         },
         computed: {
@@ -233,14 +265,22 @@
                 let nodes = response.fairsharingGraph.nodes;
                 let data = response.fairsharingGraph.edges;
 
+                data.forEach(edge => {
+                  if (Object.keys(this.relations_colors).includes(edge[2].toLowerCase())) {
+                    edge.push(this.relations_colors[edge[2].toLowerCase()])
+                    if (!(Object.keys(this.legend.relations).includes(this.relations_colors[edge[2].toLowerCase()]))) {
+                      this.legend.relations[this.relations_colors[edge[2].toLowerCase()]] = edge[2]
+                    }
+                  }
+                })
+
                 this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = response.fairsharingGraph.linkLength;
                 this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = response.fairsharingGraph.maxIterations;
-
                 this.options.series[0].data = data;
                 this.options.series[0].nodes = nodes;
                 this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
-
                 this.loading = false;
+                this.initialized = true;
             }
         }
     }
@@ -283,6 +323,14 @@
   height: 0;
   border: 16px solid transparent;
   border-top-color: #51b0ff;
+}
+
+.legendColor {
+  padding: 10px;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid #ccc;
+  box-shadow: 3px 3px 6px #ccc;
 }
 
 </style>

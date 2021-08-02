@@ -38,15 +38,39 @@
                     class="pb-0 mt-0"
                   >
                     <v-row class="pl-2">
+                      <v-switch
+                        v-model="legend.types.square"
+                        inset
+                        class="field mx-3 switch mt-0 pt-0"
+                        @change="getData($event)"
+                      />
                       <div class="square mb-3 mr-5" /> Database
                     </v-row>
                     <v-row class="pl-2">
+                      <v-switch
+                        v-model="legend.types.circle"
+                        inset
+                        class="field mx-3 switch mt-0 pt-0"
+                        @change="getData($event)"
+                      />
                       <div class="circle mb-3 mr-5" /> Standard
                     </v-row>
                     <v-row class="pl-2">
+                      <v-switch
+                        v-model="legend.types.triangle"
+                        inset
+                        class="field mx-3 switch mt-0 pt-0"
+                        @change="getData($event)"
+                      />
                       <div class="triangle mb-3 mr-5" /> Policy
                     </v-row>
                     <v-row class="pl-2">
+                      <v-switch
+                        v-model="legend.types.diamond"
+                        inset
+                        class="field mx-3 switch mt-0 pt-0"
+                        @change="getData($event)"
+                      />
                       <div class="diamond mb-3 mr-3" /> Collection
                     </v-row>
                   </v-container>
@@ -231,7 +255,13 @@
                 relations: null,
                 relations_colors: relationColors,
                 legend: {
-                  relations: {}
+                  relations: {},
+                  types: {
+                    circle: true,
+                    square: true,
+                    triangle: true,
+                    diamond: true
+                  }
                 }
             }
         },
@@ -256,16 +286,42 @@
         methods: {
             async getData(){
                 this.loading = true;
-
-                // A maxPathLength of 1-4 may be specified (API's default is 2).
-                // Higher values may make the resulting graph rather large...
+                /* A maxPathLength of 1-4 may be specified (API's default is 2).
+                 Higher values may make the resulting graph rather large... */
                 graphQuery.queryParam = {id: parseInt(this.$route.params.id), maxPathLength: this.max_path_length};
                 const response = await graphClient.executeQuery(graphQuery);
+                /* istanbul ignore next */
+                if (!this.initialized && response.fairsharingGraph.nodes.length > 50 && this.max_path_length > 1){
+                  this.max_path_length--;
+                  await this.getData()
+                }
+                else {
+                  this.drawGraph(response.fairsharingGraph)
+                  this.loading = false;
+                  this.initialized = true;
+                }
 
-                let nodes = response.fairsharingGraph.nodes;
-                let data = response.fairsharingGraph.edges;
-
-                data.forEach(edge => {
+            },
+            drawGraph(graphData){
+                let raw_nodes = graphData.nodes,
+                    raw_edges = graphData.edges,
+                    tree = {},
+                    nodes_processed = [],
+                    edges = [],
+                    nodes = []
+                raw_nodes.forEach(node => {
+                  tree[node.id] = {
+                    content: node,
+                    marker: node.marker.symbol,
+                    children: {}
+                  }
+                })
+                raw_edges.forEach(edge => {
+                  tree[edge[0]].children[edge[1]] = edge
+                })
+                this.processNode(edges, tree, tree[Object.keys(tree)[0]], Object.keys(tree)[0], nodes, nodes_processed)
+                this.legend.relations = {}
+                edges.forEach(edge => {
                   if (Object.keys(this.relations_colors).includes(edge[2].toLowerCase())) {
                     edge.push(this.relations_colors[edge[2].toLowerCase()])
                     if (!(Object.keys(this.legend.relations).includes(this.relations_colors[edge[2].toLowerCase()]))) {
@@ -273,14 +329,26 @@
                     }
                   }
                 })
-
-                this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = response.fairsharingGraph.linkLength;
-                this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = response.fairsharingGraph.maxIterations;
-                this.options.series[0].data = data;
+                this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = graphData.linkLength;
+                this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = graphData.maxIterations;
+                this.options.series[0].data = edges;
                 this.options.series[0].nodes = nodes;
                 this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
-                this.loading = false;
-                this.initialized = true;
+
+            },
+            processNode(edges, tree, node, nodeID, outputNodes, nodes_processed){
+              if (!nodes_processed.includes(nodeID)) {
+                outputNodes.push(node.content)
+                nodes_processed.push(nodeID)
+                Object.keys(node.children).forEach(childName => {
+                  const child = node.children[childName],
+                  childNode = tree[childName]
+                  if (this.legend.types[childNode.marker]) {
+                    edges.push(child)
+                    this.processNode(edges, tree, childNode, childName, outputNodes, nodes_processed)
+                  }
+                })
+              }
             }
         }
     }

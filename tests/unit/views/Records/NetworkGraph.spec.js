@@ -44,6 +44,9 @@ let graphMock = {
                 "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
                 "Virtual Observatory Data Modeling Language",
                 "Related To"
+            ],
+            [
+                "", "", "test"
             ]
         ],
         "linkLength": 80,

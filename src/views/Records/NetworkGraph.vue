@@ -278,7 +278,7 @@
             await this.getData();
           }
         },
-        mounted() {
+        async mounted() {
             this.$nextTick(async function () {
                 await this.getData();
             })
@@ -293,7 +293,6 @@
                 /* istanbul ignore next */
                 if (!this.initialized && response.fairsharingGraph.nodes.length > 50 && this.max_path_length > 1){
                   this.max_path_length--;
-                  await this.getData()
                 }
                 else {
                   this.drawGraph(response.fairsharingGraph)

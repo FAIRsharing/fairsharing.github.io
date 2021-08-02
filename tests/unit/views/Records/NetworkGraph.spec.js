@@ -32,9 +32,17 @@ let graphMock = {
             },
             {
                 "id": "Virtual Observatory Data Modeling Languages",
-                "record_id": 1411,
+                "record_id": 1412,
                 "marker": {
-                    "symbol": "circle",
+                    "symbol": "square",
+                    "radius": 10
+                }
+            },
+            {
+                "id": "Third",
+                "record_id": 140,
+                "marker": {
+                    "symbol": "diamond",
                     "radius": 10
                 }
             }
@@ -42,11 +50,23 @@ let graphMock = {
         "edges": [
             [
                 "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
-                "Virtual Observatory Data Modeling Language",
+                "Virtual Observatory Data Modeling Languages",
                 "Related To"
             ],
             [
-                "", "", "test"
+                "Virtual Observatory Data Modeling Languages",
+                "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                "test2"
+            ],
+            [
+                "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                "Virtual Observatory Data Modeling Languages",
+                "Related To"
+            ],
+            [
+                "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                "Third",
+                "Related To"
             ]
         ],
         "linkLength": 80,
@@ -59,10 +79,10 @@ describe("NetworkGraph.vue", function() {
     let getData;
 
     // TODO: Mock properties in options {}.
-    beforeEach(() => {
+    beforeEach(async () => {
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         graphStub.returns(graphMock);
-        wrapper = shallowMount(GraphTest, {
+        wrapper = await shallowMount(GraphTest, {
             localVue,
             vuetify,
             router,
@@ -75,21 +95,24 @@ describe("NetworkGraph.vue", function() {
         graphStub.restore();
     });
 
-    it("is all present and correct", () => {
+    it("is all present and correct", async () => {
         expect(wrapper.name()).toMatch("NetworkGraph");
-        // Has correct options for the default number of nodes.
         expect(wrapper.vm.options.plotOptions.networkgraph.layoutAlgorithm.linkLength).toEqual(80);
         expect(wrapper.vm.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations).toEqual(300);
+        expect(wrapper.vm.options.series[0].nodes.length).toBe(3)
+        wrapper.vm.legend.types.square = false;
+        await wrapper.vm.getData();
+        expect(wrapper.vm.options.series[0].nodes.length).toBe(2)
     });
 
-    it("reloads page when route or max_path_length change", () => {
-        expect(getData).toHaveBeenCalledTimes(1);
+    it("reloads page when route or max_path_length change", async () => {
+        expect(getData).toHaveBeenCalledTimes(0);
         expect(wrapper.vm.currentRoute).toEqual(1234);
         expect(wrapper.vm.max_path_length).toEqual(2);
         wrapper.vm.max_path_length = 3;
-        expect(getData).toHaveBeenCalledTimes(2);
+        expect(getData).toHaveBeenCalledTimes(1);
         $route.params.id = 10;
-        expect(getData).toHaveBeenCalledTimes(3);
+        expect(getData).toHaveBeenCalledTimes(2);
         expect(wrapper.vm.currentRoute).toEqual(10);
     });
 

@@ -45,6 +45,14 @@ let graphMock = {
                     "symbol": "diamond",
                     "radius": 10
                 }
+            },
+            {
+                "id": "Fourth",
+                "record_id": 160,
+                "marker": {
+                    "symbol": "??",
+                    "radius": 10
+                }
             }
         ],
         "edges": [
@@ -67,6 +75,11 @@ let graphMock = {
                 "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
                 "Third",
                 "Related To"
+            ],
+            [
+                "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                "Fourth",
+                "??"
             ]
         ],
         "linkLength": 80,
@@ -99,21 +112,21 @@ describe("NetworkGraph.vue", function() {
         expect(wrapper.name()).toMatch("NetworkGraph");
         expect(wrapper.vm.options.plotOptions.networkgraph.layoutAlgorithm.linkLength).toEqual(80);
         expect(wrapper.vm.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations).toEqual(300);
-        expect(wrapper.vm.options.series[0].nodes.length).toBe(3)
+        expect(wrapper.vm.options.series[0].nodes.length).toBe(4)
         wrapper.vm.legend.types.square = false;
         await wrapper.vm.getData();
-        expect(wrapper.vm.options.series[0].nodes.length).toBe(2)
+        expect(wrapper.vm.options.series[0].nodes.length).toBe(4)
+        wrapper.vm.drawGraph()
     });
 
     it("reloads page when route or max_path_length change", async () => {
         expect(getData).toHaveBeenCalledTimes(0);
         expect(wrapper.vm.currentRoute).toEqual(1234);
-        expect(wrapper.vm.max_path_length).toEqual(2);
+        expect(wrapper.vm.max_path_length).toEqual(1);
         wrapper.vm.max_path_length = 3;
         expect(getData).toHaveBeenCalledTimes(1);
         $route.params.id = 10;
         expect(getData).toHaveBeenCalledTimes(2);
         expect(wrapper.vm.currentRoute).toEqual(10);
-    });
-
+    })
 });

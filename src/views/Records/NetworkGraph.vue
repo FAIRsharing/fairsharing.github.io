@@ -3,12 +3,14 @@
     <v-row>
       <v-col
         cols="3"
+        xs="12"
+        sm="12"
+        md="12"
+        lg="12"
+        xl="3"
         class="pt-0 mt-2"
       >
-        <v-card
-          height="99.3%"
-          min-height="80vh"
-        >
+        <v-card height="100%">
           <v-card-title class="blue white--text">
             Legend and configuration
           </v-card-title>
@@ -42,7 +44,8 @@
                         v-model="legend.types.square"
                         inset
                         class="field mx-3 switch mt-0 pt-0"
-                        @change="getData($event)"
+                        :disabled="!typesFound.includes('square')"
+                        @change="drawGraph($event)"
                       />
                       <div class="square mb-3 mr-5" /> Database
                     </v-row>
@@ -51,7 +54,8 @@
                         v-model="legend.types.circle"
                         inset
                         class="field mx-3 switch mt-0 pt-0"
-                        @change="getData($event)"
+                        :disabled="!typesFound.includes('circle')"
+                        @change="drawGraph($event)"
                       />
                       <div class="circle mb-3 mr-5" /> Standard
                     </v-row>
@@ -60,7 +64,8 @@
                         v-model="legend.types.triangle"
                         inset
                         class="field mx-3 switch mt-0 pt-0"
-                        @change="getData($event)"
+                        :disabled="!typesFound.includes('triangle')"
+                        @change="drawGraph($event)"
                       />
                       <div class="triangle mb-3 mr-5" /> Policy
                     </v-row>
@@ -69,7 +74,8 @@
                         v-model="legend.types.diamond"
                         inset
                         class="field mx-3 switch mt-0 pt-0"
-                        @change="getData($event)"
+                        :disabled="!typesFound.includes('diamond')"
+                        @change="drawGraph($event)"
                       />
                       <div class="diamond mb-3 mr-3" /> Collection
                     </v-row>
@@ -109,6 +115,11 @@
       </v-col>
       <v-col
         cols="9"
+        xs="12"
+        sm="12"
+        md="12"
+        lg="12"
+        xl="9"
         class="pt-0 mt-2"
       >
         <v-card
@@ -151,7 +162,7 @@
                 loading: false,
                 initialized: false,
                 depth: [1, 2, 3],
-                max_path_length: 2,
+                max_path_length: 1,
                 options: {
                     exporting: {
                         sourceWidth: 1502,
@@ -167,9 +178,10 @@
                         plotBorderWidth: 0,
                         plotShadow: true,
                         renderTo: 'container',
-                        margin: 10,
+                        marginBottom: 2,
                         marginTop: 0,
                         plotBackgroundColor: "#FFFFFF",
+                        animation: false
                     },
                     title: {
                         text: 'FAIRsharing',
@@ -200,16 +212,18 @@
                         networkgraph: {
                             keys: ['from', 'to', 'rel', 'color'],
                             layoutAlgorithm: {
-                                enableSimulation: true,
+                                enableSimulation: false,
                                 linkLength: 60,
                                 maxIterations: 120
-                            }
+                            },
+                          enableMouseTracking: true,
+                          findNearestPointBy: "xy"
                         },
                     },
                     series: [{
                         animation: false,
                         events: {
-                          click: /* istanbul ignore next */ async function(event) {
+                          click: /* istanbul ignore next */  async function(event) {
                             // Avoid redundant navigation to self...
                             if (parseInt(_module.$route.params.id) !== parseInt(event.point.record_id)) {
                               _module.$router.push({
@@ -221,20 +235,10 @@
                         dataLabels: {
                             enabled: true,
                             linkFormat: '',
-                            color: '#2F2F30',
-                            font: 'light 30px "Trebuchet MS", Verdana, sans-serif',
-                            linkTextPath: {
-                              attributes: {
-                                dy: 12
-                              }
+                            formatter: /* istanbul ignore next */ function() {
+                                return (this.key.length < 30) ? this.key : this.key.substring(0, 30) + "..."
                             },
-                        formatter: /* istanbul ignore next */ function() {
-                            // this is not the component but the point
-                            if (this.key.length < 40) {
-                              return this.key
-                            }
-                            return this.key.substring(0, 40) + "..."
-                          }
+                            useHTML: true
                         },
                         link: {
                           color: "rgba(0, 0, 0, 0.5)",
@@ -245,10 +249,16 @@
                         states: {
                           inactive: {
                             enabled: true,
-                            linkOpacity: 0.000001,
-                            opacity: 0.000001
+                            linkOpacity: 0.05,
                           }
-                        }
+                        },
+                        marker: {
+                          states: {
+                            inactive: {
+                              opacity: 0.05,
+                            }
+                          }
+                        },
                     }],
                     nodes: null
                 },
@@ -257,12 +267,14 @@
                 legend: {
                   relations: {},
                   types: {
-                    circle: true,
-                    square: true,
-                    triangle: true,
-                    diamond: true
+                    circle: false,
+                    square: false,
+                    triangle: false,
+                    diamond: false
                   }
-                }
+                },
+                typesFound: [],
+                graphData: {}
             }
         },
         computed: {
@@ -286,24 +298,26 @@
         methods: {
             async getData(){
                 this.loading = true;
+                this.legend.types = {
+                    circle: false,
+                    square: false,
+                    triangle: false,
+                    diamond: false
+                }
                 /* A maxPathLength of 1-4 may be specified (API's default is 2).
                  Higher values may make the resulting graph rather large... */
                 graphQuery.queryParam = {id: parseInt(this.$route.params.id), maxPathLength: this.max_path_length};
                 const response = await graphClient.executeQuery(graphQuery);
-                /* istanbul ignore next */
-                if (!this.initialized && response.fairsharingGraph.nodes.length > 50 && this.max_path_length > 1){
-                  this.max_path_length--;
-                }
-                else {
-                  this.drawGraph(response.fairsharingGraph)
-                  this.loading = false;
-                  this.initialized = true;
-                }
+                this.graphData = response.fairsharingGraph
+                this.drawGraph(true)
+                this.loading = false;
+                this.initialized = true;
 
             },
-            drawGraph(graphData){
-                let raw_nodes = graphData.nodes,
-                    raw_edges = graphData.edges,
+            drawGraph(start=false){
+                this.typesFound = [];
+                let raw_nodes = this.graphData.nodes,
+                    raw_edges = this.graphData.edges,
                     tree = {},
                     nodes_processed = [],
                     edges = [],
@@ -315,10 +329,8 @@
                     children: {}
                   }
                 })
-                raw_edges.forEach(edge => {
-                  tree[edge[0]].children[edge[1]] = edge
-                })
-                this.processNode(edges, tree, tree[Object.keys(tree)[0]], Object.keys(tree)[0], nodes, nodes_processed)
+                raw_edges.forEach(edge => { tree[edge[0]].children[edge[1]] = edge })
+                this.processNode(edges, tree, Object.keys(tree)[0], nodes, nodes_processed, start);
                 this.legend.relations = {}
                 edges.forEach(edge => {
                   if (Object.keys(this.relations_colors).includes(edge[2].toLowerCase())) {
@@ -328,23 +340,27 @@
                     }
                   }
                 })
-                this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = graphData.linkLength;
-                this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = graphData.maxIterations;
+                this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = this.graphData.linkLength;
+                this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = this.graphData.maxIterations;
                 this.options.series[0].data = edges;
                 this.options.series[0].nodes = nodes;
                 this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
-
             },
-            processNode(edges, tree, node, nodeID, outputNodes, nodes_processed){
+            processNode(edges, tree, nodeID, outputNodes, nodes_processed, start){
+              let node = tree[nodeID]
+              /* istanbul ignore else */
               if (!nodes_processed.includes(nodeID)) {
                 outputNodes.push(node.content)
                 nodes_processed.push(nodeID)
                 Object.keys(node.children).forEach(childName => {
                   const child = node.children[childName],
-                  childNode = tree[childName]
-                  if (this.legend.types[childNode.marker]) {
+                        childNode = tree[childName]
+                  if (start) this.legend.types[childNode.marker] = true;
+                  /* istanbul ignore else */
+                  if (!this.typesFound.includes(childNode.marker)) this.typesFound.push(childNode.marker)
+                  if (this.legend.types[childNode.marker] || start) {
                     edges.push(child)
-                    this.processNode(edges, tree, childNode, childName, outputNodes, nodes_processed)
+                    this.processNode(edges, tree, childName, outputNodes, nodes_processed, false)
                   }
                 })
               }

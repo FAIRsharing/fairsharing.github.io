@@ -848,7 +848,7 @@
              let vectItem = {
                name: nameMap[item.key],
                y: item.doc_count,
-               url: '/#/search?fairsharingRegistry='+item.key
+               url: '/search?fairsharingRegistry='+item.key
              };//window.location.hostname+
              this.chartRegistries.data.push(vectItem);
            });
@@ -879,7 +879,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/search?fairsharingRegistry='+text+'&subjects='+item.key;
+                       location.href = '/search?fairsharingRegistry='+text+'&subjects='+item.key;
                      }
                    }
                },
@@ -925,7 +925,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/search?countries='+item.key+searchText;
+                       location.href = '/search?countries='+item.key+searchText;
                      }
                    }
                },
@@ -964,7 +964,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/search?fairsharingRegistry='+text+'&taxonomies='+item.key;
+                       location.href = '/search?fairsharingRegistry='+text+'&taxonomies='+item.key;
                      }
                    }
                },
@@ -1026,7 +1026,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/search?fairsharingRegistry='+text+'&licences='+item.key;
+                       location.href = '/search?fairsharingRegistry='+text+'&licences='+item.key;
                      }
                    }
                },
@@ -1051,7 +1051,7 @@
              let vectItem = {
                name: nameMap[item.key],
                y: item.doc_count,
-               url: '/#/search?fairsharingRegistry='+text+"&isMaintained="+item.key_as_string
+               url: '/search?fairsharingRegistry='+text+"&isMaintained="+item.key_as_string
              };//window.location.hostname+
              chartField.data.push(vectItem);
            });
@@ -1082,7 +1082,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/'+data[key].id;
+                       location.href = '/'+data[key].id;
                      }
                    }
                },
@@ -1110,7 +1110,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/'+item.id;
+                       location.href = '/'+item.id;
                      }
                    }
                },
@@ -1174,7 +1174,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/organisations/'+data[key].id;
+                       location.href = '/organisations/'+data[key].id;
                      }
                    }
                },

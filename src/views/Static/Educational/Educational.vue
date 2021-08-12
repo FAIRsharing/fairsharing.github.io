@@ -96,7 +96,7 @@
               >
                 <!-- This html is from a safe source -->
                 <!-- eslint-disable vue/no-v-html -->
-                <a :href="`#/educational#${child_item.anchorLink}`">
+                <a :href="`/educational#${child_item.anchorLink}`">
                   <h4
                     :id="child_item.anchorLink"
                     class="text-h6"

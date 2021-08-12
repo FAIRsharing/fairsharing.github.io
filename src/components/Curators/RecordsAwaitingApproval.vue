@@ -85,7 +85,7 @@
                   wrapper-class=""
                 />
               </v-avatar>
-              <a :href="'#/' + props.item.id">
+              <a :href="'/' + props.item.id">
                 {{ props.item.recordName }}
               </a>
             </td>
@@ -94,7 +94,7 @@
                 {{ props.item.lastEditor }}
               </div>
               <div v-else>
-                <a :href="'#/users/' + props.item.idLastEditor">
+                <a :href="'/users/' + props.item.idLastEditor">
                   {{ props.item.lastEditor }}
                 </a>
               </div>
@@ -147,7 +147,7 @@
                     v-on="on"
                   >
                     <a
-                      :href="'#/' + props.item.id+ '/edit'"
+                      :href="'/' + props.item.id+ '/edit'"
                       style="padding-left: 12px;"
                     >
                       Edit
@@ -163,7 +163,7 @@
                 {{ props.item.creator }}
               </div>
               <div v-else>
-                <a :href="'#/users/' + props.item.idCreator">
+                <a :href="'/users/' + props.item.idCreator">
                   {{ props.item.creator }}
                 </a>
               </div>

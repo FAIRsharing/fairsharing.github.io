@@ -34,7 +34,7 @@
               >
                 <v-btn
                   class="text-center teal white--text px-2"
-                  href="#/users/resendConfirmation"
+                  href="/users/resendConfirmation"
                   @click="()=>{$emit('ClosePopup', true)}"
                 >
                   Resend me the confirmation email

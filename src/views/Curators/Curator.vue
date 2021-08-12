@@ -76,7 +76,7 @@
                         wrapper-class=""
                       />
                     </v-avatar>
-                    <a :href="'#/' + props.item.id">
+                    <a :href="'/' + props.item.id">
                       {{ props.item.recordNameID }}
                     </a>
                   </td>
@@ -91,7 +91,7 @@
                       {{ props.item.creator }}
                     </div>
                     <div v-else>
-                      <a :href="'#/users/' + props.item.idCreator">
+                      <a :href="'/users/' + props.item.idCreator">
                         {{ props.item.creator }}
                       </a>
                     </div>
@@ -142,7 +142,7 @@
                         wrapper-class=""
                       />
                     </v-avatar>
-                    <a :href="'#/' + props.item.id">
+                    <a :href="'/' + props.item.id">
                       {{ props.item.recordNameID }}
                     </a>
                   </td>
@@ -154,7 +154,7 @@
                       {{ props.item.creator }}
                     </div>
                     <div v-else>
-                      <a :href="'#/users/' + props.item.idCreator">
+                      <a :href="'/users/' + props.item.idCreator">
                         {{ props.item.creator }}
                       </a>
                     </div>

@@ -183,14 +183,14 @@
       "description": "Standards and/or databases recommended by journal or funder data policies.",
       "icon": "recommended",
       "buttonTitle": "find",
-      "link": ""
+      "link": "/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard"
     },
     "secondColumn":{
       "title": "Collections",
       "description": "Standards and/or databases grouped by domain, species or organisation.",
       "icon": "collections",
       "buttonTitle": "discover",
-      "link": ""
+      "link": "/search?fairsharingRegistry=collection&page=1"
     },
     "thirdColumn":{
       "title": "Educational",

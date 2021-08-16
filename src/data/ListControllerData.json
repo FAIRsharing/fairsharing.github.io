@@ -1,0 +1,5 @@
+{
+  "gridList":  "Shows result in a grid way",
+  "stackList":  "Shows result in a stack way",
+  "sort":  "Sorts result based on different fields"
+}

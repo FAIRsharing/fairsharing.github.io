@@ -89,29 +89,38 @@
             <h3 class="text-h5 mb-2">
               {{ title_key }}
             </h3>
-            <ul>
-              <li
+            <v-expansion-panels
+              v-model="selectedExpansion[title_key]"
+              hover
+              accordion
+              class="my-5"
+            >
+              <v-expansion-panel
                 v-for="(child_item,child_index) in item"
                 :key="child_item.title+'_'+child_index"
               >
-                <!-- This html is from a safe source -->
-                <!-- eslint-disable vue/no-v-html -->
-                <a :href="`#/educational#${child_item.anchorLink}`">
-                  <h4
-                    :id="child_item.anchorLink"
-                    class="text-h6"
-                    v-html="child_item.title"
+                <v-expansion-panel-header>
+                  <!-- This html is from a safe source -->
+                  <!-- eslint-disable vue/no-v-html -->
+                  <a :href="`#/educational#${child_item.anchorLink}`">
+                    <h4
+                      :id="child_item.anchorLink"
+                      class="text-h6"
+                      v-html="child_item.title"
+                    />
+                  </a>
+                  <!-- This html is from a safe source -->
+                  <!-- eslint-disable vue/no-v-html -->
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <p
+                    class="ma-0"
+                    :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+                    v-html="child_item.desc"
                   />
-                </a>
-                <!-- This html is from a safe source -->
-                <!-- eslint-disable vue/no-v-html -->
-                <p
-                  class="ma-0"
-                  :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-                  v-html="child_item.desc"
-                />
-              </li>
-            </ul>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
           </li>
         </ul>
       </li>
@@ -126,7 +135,8 @@
       data: () => {
         return {
           education: education,
-          applyCss: false
+          applyCss: false,
+          selectedExpansion:{}
         }
       },
       watch: {
@@ -143,6 +153,22 @@
       async created() {
         await this.$nextTick();
         this.applyCss = true
+        Object.keys(this.education).forEach(item => {
+          Object.keys(this.education[item]).forEach(obj => {
+            let foundHash = this.education[item][obj].find(it => `#${it.anchorLink}` === this.$route.hash)
+            if (foundHash) {
+              let arr = Object.keys(this.education[item]).map((ob, index) => {
+                return {
+                  'index': index,
+                  'value': ob.toString().split('.', 1).toString()
+                }
+              })
+              const faqNumber = this.$route.hash.split('-', 1).toString().substr(4, 2)
+              let key = Object.keys(this.education[item])[arr.find(item => item.value === faqNumber).index]
+              this.selectedExpansion[key] = foundHash.index * 1
+            }
+          })
+        })
         // update the UI padding and margin after DOM is fully loaded.
       }
     }
@@ -182,5 +208,9 @@ mark {
 
 P {
   white-space: break-spaces;
+}
+
+.v-expansion-panel-header {
+  min-height: 0;
 }
 </style>

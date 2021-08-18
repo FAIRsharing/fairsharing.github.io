@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
-//import { hackSearch } from '@/router/hackSearch'
+import { hackSearch } from '@/router/hackSearch'
 
 import {
     Home,

@@ -2,11 +2,10 @@
   <main :class="applyCss?'pa-15 mb-10':''">
     <!--  main_title_2 -->
     <!-- eslint-disable vue/no-v-html -->
-    <h1>Community: adopters, activities and governance</h1>
-    <h2>
+    <h1 class="mb-5">
       FAIRsharing is a community-driven resource with a growing number of users and collaborators,
       all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
-    </h2>
+    </h1>
 
     <!-- Adopters, activities, Governance tabs-->
     <v-container class="my-10">
@@ -56,50 +55,48 @@
       </v-row>
     </v-container>
 
-    <p
-      :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
-    </p>
-
-    <!--  External Links  -->
-    <v-row
-      class="mt-2"
-    >
-      <v-col
-        v-for="(item,index) in externalLinks"
-        :key="index+'_'+item.titleLink"
-        cols="12"
-        md="12"
-        lg="4"
-        :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
-      >
-        <a
-          :href="item.titleLink"
-          target="_blank"
-        >
-          <p
-            :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-          >
-            {{ item.title }}
-          </p>
-        </a>
-        <p
-          :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-        >
-          {{ item.text }}
-        </p>
-      </v-col>
-    </v-row>
-
-    <!--  content  -->
-
-
     <!-- Adopters   -->
     <section id="adopters">
-      <h3 class="text-h4 mb-4">
+      <h3 class="text-h4 mb-4 mt-5">
         Adopters
       </h3>
+
+      <p
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
+      </p>
+
+      <!--  External Links  -->
+      <v-row
+        class="my-2"
+      >
+        <v-col
+          v-for="(item,index) in externalLinks"
+          :key="index+'_'+item.titleLink"
+          cols="12"
+          md="12"
+          lg="4"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+        >
+          <a
+            :href="item.titleLink"
+            target="_blank"
+          >
+            <p
+              :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            >
+              {{ item.title }}
+            </p>
+          </a>
+          <p
+            :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+          >
+            {{ item.text }}
+          </p>
+        </v-col>
+      </v-row>
+
       <p
         :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
@@ -150,102 +147,61 @@
         We cannot list all of our adopters, but we've listed here some publishers that use FAIRsharing to define and refine their data policy.
       </b>
       <!--Adopter table-->
-      <v-simple-table class="mb-16 mt-2">
-        <template #default>
-          <thead>
-            <tr>
-              <th
-                v-for="(tab,index) in tables.adopterTable.tabs"
-                :key="`${tab}_${index}`"
-                class="text-left white--text"
-                bgcolor="#27aae1"
-              >
-                <b class="text-capitalize text-h6">{{ tab }}</b>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item,index) in tables.adopterTable.data"
-              :key="`${item.adopter}_${index}`"
-            >
-              <td
-                class="text-left border-bottom"
-              >
-                <v-img
-                  v-if="item.image"
-                  max-width="250px"
-                  max-height="250px"
-                  :src="item.image"
-                  height="120"
-                  contain
-                  style="filter: grayscale(1);"
-                />
-              </td>
-              <td
-                v-if="item.adopter"
-                class="border-bottom border-left"
-              >
-                {{ item.adopter }}
-              </td>
-              <td class="border-bottom border-left">
-                <router-link
-                  v-if="item.associatedLink"
-                  target="_blank"
-                  :to="item.associatedLink"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                </router-link>
-                <a
-                  v-if="item.externalLink"
-                  :href="item.externalLink"
-                  target="_blank"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-
-      <!--Global Organisation table-->
+      <v-row
+        class="mt-2 ml-0"
+      >
+        <v-col
+          v-for="(item,index) in tables.adopterTable.data"
+          :key="index+'_'+item.adopter"
+          cols="12"
+          md="12"
+          lg="4"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+        >
+          <v-img
+            v-if="item.image"
+            max-width="250px"
+            max-height="250px"
+            :src="item.image"
+            height="120"
+            contain
+            style="filter: grayscale(1);"
+          />
+        </v-col>
+      </v-row>
       <p class="text-h6 mt-16">
         Other Organisations
       </p>
-      <ul
-        style="display: flex; flex-wrap: wrap; list-style-type: none;"
+      <v-row
+        class="mt-2 ml-0"
       >
-        <li
+        <v-col
           v-for="(item,index) in tables.globalOrganisationTable.data"
           :key="`${item.adopter}_${index}`"
-          class="text-center pa-10"
+          :class="['pa-5 links full-width',{'max-width-24-percent':$vuetify.breakpoint.mdAndUp}]"
+          cols="12"
+          md="12"
+          lg="4"
         >
-          <a
-            v-if="item.externalLink"
-            :href="item.externalLink"
-            target="_blank"
-          >
-            <v-img
-              v-if="item.image"
-              max-width="250px"
-              max-height="250px"
-              :src="item.image"
-              height="120"
-              contain
-              style="filter: grayscale(1);"
-            />
-
-          </a>
-        </li>
-      </ul>
+          <v-img
+            v-if="item.image"
+            max-width="250px"
+            max-height="250px"
+            :src="item.image"
+            height="120"
+            contain
+            style="filter: grayscale(1);"
+          />
+        </v-col>
+      </v-row>
     </section>
+
+    <!--  content  -->
+
 
     <!-- Activities   -->
     <section id="activities">
-      <h3 class="text-h4 mb-4">
+      <h3 class="text-h4 my-4">
         Activities
       </h3>
       <p
@@ -293,8 +249,8 @@
               style="filter: grayscale(1);"
             />
           </v-avatar>
-          <a
-            class="text-center lato-font-bold mt-2 ma-0"
+          <p
+            class="text-center primary--text lato-font-bold mt-2 ma-0"
             style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
             v-html="$sanitize(profileItem.name)"
           />

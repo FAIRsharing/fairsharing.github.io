@@ -5,7 +5,7 @@ import Vuetify from "vuetify"
 const vuetify = new Vuetify();
 let $route = {
     name: "Community",
-    hash:'#governance'
+    hash:'#faq9-3'
 };
 
 describe("Privacy.vue", function(){

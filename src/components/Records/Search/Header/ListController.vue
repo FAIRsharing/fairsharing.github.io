@@ -16,6 +16,7 @@
           <template #activator="{ on }">
             <div v-on="on">
               <v-tooltip top>
+                <!-- eslint-disable-next-line  vue/no-template-shadow -->
                 <template #activator="{ on }">
                   <v-icon
                     large
@@ -30,6 +31,7 @@
                 </template>
                 <span>{{ listControllerData.sort }}</span>
               </v-tooltip>
+              <!-- eslint-enable-next-line  vue/no-template-shadow -->
             </div>
           </template>
           <sorting />

@@ -119,6 +119,7 @@ export default {
           {}
       );
       let title = "Search";
+      /* istanbul ignore else */
       if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
         if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
           title = flipRecordTypes[this.$route.query.fairsharingRegistry];
@@ -212,6 +213,7 @@ export default {
       if (Object.keys(this.recordTypes).includes(this.$route.name)) {
         let fairsharingRegistry = this.recordTypes[this.$route.name];
         let query = this.$route.query;
+        /* istanbul ignore else */
         if (query && query !== {}) {
           query.fairsharingRegistry = fairsharingRegistry;
           try {
@@ -241,6 +243,7 @@ export default {
         await _module.fetchRecords(this.getParameters());
       }
       catch (e) {
+        /* istanbul ignore next */
         this.errors = e.message;
       }
       this.isLoading = false;

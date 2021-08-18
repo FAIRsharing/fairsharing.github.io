@@ -95,11 +95,10 @@
   &lt;main :class="applyCss?'pa-15 mb-10':''">
     &lt;!--  main_title_2 -->
     &lt;!-- eslint-disable vue/no-v-html -->
-    &lt;h1>Community: adopters, activities and governance&lt;/h1>
-    &lt;h2>
+    &lt;h1 class="mb-5">
       FAIRsharing is a community-driven resource with a growing number of users and collaborators,
       all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
-    &lt;/h2>
+    &lt;/h1>
 
     &lt;!-- Adopters, activities, Governance tabs-->
     &lt;v-container class="my-10">
@@ -149,50 +148,48 @@
       &lt;/v-row>
     &lt;/v-container>
 
-    &lt;p
-      :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
-    &lt;/p>
-
-    &lt;!--  External Links  -->
-    &lt;v-row
-      class="mt-2"
-    >
-      &lt;v-col
-        v-for="(item,index) in externalLinks"
-        :key="index+'_'+item.titleLink"
-        cols="12"
-        md="12"
-        lg="4"
-        :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
-      >
-        &lt;a
-          :href="item.titleLink"
-          target="_blank"
-        >
-          &lt;p
-            :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-          >
-            {{ item.title }}
-          &lt;/p>
-        &lt;/a>
-        &lt;p
-          :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-        >
-          {{ item.text }}
-        &lt;/p>
-      &lt;/v-col>
-    &lt;/v-row>
-
-    &lt;!--  content  -->
-
-
     &lt;!-- Adopters   -->
     &lt;section id="adopters">
-      &lt;h3 class="text-h4 mb-4">
+      &lt;h3 class="text-h4 mb-4 mt-5">
         Adopters
       &lt;/h3>
+
+      &lt;p
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
+      &lt;/p>
+
+      &lt;!--  External Links  -->
+      &lt;v-row
+        class="my-2"
+      >
+        &lt;v-col
+          v-for="(item,index) in externalLinks"
+          :key="index+'_'+item.titleLink"
+          cols="12"
+          md="12"
+          lg="4"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+        >
+          &lt;a
+            :href="item.titleLink"
+            target="_blank"
+          >
+            &lt;p
+              :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            >
+              {{ item.title }}
+            &lt;/p>
+          &lt;/a>
+          &lt;p
+            :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+          >
+            {{ item.text }}
+          &lt;/p>
+        &lt;/v-col>
+      &lt;/v-row>
+
       &lt;p
         :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
@@ -243,102 +240,61 @@
         We cannot list all of our adopters, but we've listed here some publishers that use FAIRsharing to define and refine their data policy.
       &lt;/b>
       &lt;!--Adopter table-->
-      &lt;v-simple-table class="mb-16 mt-2">
-        &lt;template #default>
-          &lt;thead>
-            &lt;tr>
-              &lt;th
-                v-for="(tab,index) in tables.adopterTable.tabs"
-                :key="`${tab}_${index}`"
-                class="text-left white--text"
-                bgcolor="#27aae1"
-              >
-                &lt;b class="text-capitalize text-h6">{{ tab }}&lt;/b>
-              &lt;/th>
-            &lt;/tr>
-          &lt;/thead>
-          &lt;tbody>
-            &lt;tr
-              v-for="(item,index) in tables.adopterTable.data"
-              :key="`${item.adopter}_${index}`"
-            >
-              &lt;td
-                class="text-left border-bottom"
-              >
-                &lt;v-img
-                  v-if="item.image"
-                  max-width="250px"
-                  max-height="250px"
-                  :src="item.image"
-                  height="120"
-                  contain
-                  style="filter: grayscale(1);"
-                />
-              &lt;/td>
-              &lt;td
-                v-if="item.adopter"
-                class="border-bottom border-left"
-              >
-                {{ item.adopter }}
-              &lt;/td>
-              &lt;td class="border-bottom border-left">
-                &lt;router-link
-                  v-if="item.associatedLink"
-                  target="_blank"
-                  :to="item.associatedLink"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                &lt;/router-link>
-                &lt;a
-                  v-if="item.externalLink"
-                  :href="item.externalLink"
-                  target="_blank"
-                  class="underline-effect"
-                >
-                  {{ item.associated }}
-                &lt;/a>
-              &lt;/td>
-            &lt;/tr>
-          &lt;/tbody>
-        &lt;/template>
-      &lt;/v-simple-table>
-
-      &lt;!--Global Organisation table-->
+      &lt;v-row
+        class="mt-2 ml-0"
+      >
+        &lt;v-col
+          v-for="(item,index) in tables.adopterTable.data"
+          :key="index+'_'+item.adopter"
+          cols="12"
+          md="12"
+          lg="4"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+        >
+          &lt;v-img
+            v-if="item.image"
+            max-width="250px"
+            max-height="250px"
+            :src="item.image"
+            height="120"
+            contain
+            style="filter: grayscale(1);"
+          />
+        &lt;/v-col>
+      &lt;/v-row>
       &lt;p class="text-h6 mt-16">
         Other Organisations
       &lt;/p>
-      &lt;ul
-        style="display: flex; flex-wrap: wrap; list-style-type: none;"
+      &lt;v-row
+        class="mt-2 ml-0"
       >
-        &lt;li
+        &lt;v-col
           v-for="(item,index) in tables.globalOrganisationTable.data"
           :key="`${item.adopter}_${index}`"
-          class="text-center pa-10"
+          :class="['pa-5 links full-width',{'max-width-24-percent':$vuetify.breakpoint.mdAndUp}]"
+          cols="12"
+          md="12"
+          lg="4"
         >
-          &lt;a
-            v-if="item.externalLink"
-            :href="item.externalLink"
-            target="_blank"
-          >
-            &lt;v-img
-              v-if="item.image"
-              max-width="250px"
-              max-height="250px"
-              :src="item.image"
-              height="120"
-              contain
-              style="filter: grayscale(1);"
-            />
-
-          &lt;/a>
-        &lt;/li>
-      &lt;/ul>
+          &lt;v-img
+            v-if="item.image"
+            max-width="250px"
+            max-height="250px"
+            :src="item.image"
+            height="120"
+            contain
+            style="filter: grayscale(1);"
+          />
+        &lt;/v-col>
+      &lt;/v-row>
     &lt;/section>
+
+    &lt;!--  content  -->
+
 
     &lt;!-- Activities   -->
     &lt;section id="activities">
-      &lt;h3 class="text-h4 mb-4">
+      &lt;h3 class="text-h4 my-4">
         Activities
       &lt;/h3>
       &lt;p
@@ -386,8 +342,8 @@
               style="filter: grayscale(1);"
             />
           &lt;/v-avatar>
-          &lt;a
-            class="text-center lato-font-bold mt-2 ma-0"
+          &lt;p
+            class="text-center primary--text lato-font-bold mt-2 ma-0"
             style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
             v-html="$sanitize(profileItem.name)"
           />

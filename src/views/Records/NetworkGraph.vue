@@ -37,17 +37,37 @@
                     fluid
                     class="pb-0 mt-0"
                   >
-                    <v-row class="pl-2">
-                      <div class="square mb-3 mr-5" /> Database
+                    <v-row class="pl-2 flex align-center mb-1">
+                      <v-img
+                        contain
+                        height="35px"
+                        :src="$vuetify.icons.values['repository'].icon"
+                      />
+                      Database
                     </v-row>
-                    <v-row class="pl-2">
-                      <div class="circle mb-3 mr-5" /> Standard
+                    <v-row class="pl-2 flex align-center mb-1">
+                      <v-img
+                        contain
+                        height="35px"
+                        :src="$vuetify.icons.values['model_and_format'].icon"
+                      />
+                      Standard
                     </v-row>
-                    <v-row class="pl-2">
-                      <div class="triangle mb-3 mr-5" /> Policy
+                    <v-row class="pl-2 flex align-center mb-1">
+                      <v-img
+                        contain
+                        height="35px"
+                        :src="$vuetify.icons.values['journal_publisher'].icon"
+                      />
+                      Policy
                     </v-row>
-                    <v-row class="pl-2">
-                      <div class="diamond mb-3 mr-3" /> Collection
+                    <v-row class="pl-2 flex align-center mb-1">
+                      <v-img
+                        contain
+                        height="35px"
+                        :src="$vuetify.icons.values['collection'].icon"
+                      />
+                      Collection
                     </v-row>
                   </v-container>
                   <span>Click on any point to re-draw the graph with that point as the centre.</span>

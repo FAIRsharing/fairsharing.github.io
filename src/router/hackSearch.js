@@ -3,6 +3,8 @@
  * as links which were generated on the old system may appear in old (or not so old) papers, on other sites etc.
  * If anyone complains they've clicked on a link to FAIRsharing that "doesn't work" then it may be found to be one
  * of these, and might perhaps require the specific terms be added to the lookup tables here.
+ * Unfortunately it seems difficult to test and results in:
+ * Timeout - Async callback was not invoked within the 5000ms timeout specified by jest.setTimeout.Timeout
  */
 
 
@@ -31,7 +33,7 @@ export function hackSearch(query) {
             delete query[key];
             modified = true;
         }
-        // The key is needs to be replaced.
+        // The key is outdated and needs to be replaced with the latest.
         if (Object.keys(lookupKeys).includes(key)) {
             let newKey = lookupKeys[key];
             if (Object.keys(lookupValues).includes(value)) {

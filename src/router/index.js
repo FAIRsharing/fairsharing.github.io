@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from '@/store'
-import { hackSearch } from '@/router/hackSearch'
+//import { hackSearch } from '@/router/hackSearch'
 
 import {
     Home,
@@ -89,6 +89,8 @@ let routes = [
         name: "search",
         path: "/search",
         component: Records,
+        /* istanbul ignore next */
+        // TODO: Find a means to test this function; see hackSearch.js for details.
         beforeEnter(to, from, next) {
             let [query, modified] = hackSearch(to.query);
             if (modified) {

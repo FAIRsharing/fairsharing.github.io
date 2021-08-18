@@ -8,7 +8,8 @@ const sinon = require("sinon");
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-const vuetify = new Vuetify();
+import icons from "@/plugins/icons";
+const vuetify = new Vuetify({'icons':icons});
 
 const router = new VueRouter();
 const $router = { push: jest.fn() };

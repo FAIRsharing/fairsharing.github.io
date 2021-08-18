@@ -1,5 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-main>
+  <main>
     <v-container
       v-if="queryTriggered"
       fluid
@@ -142,16 +142,21 @@
       </v-row>
 
       <!--  CuratorsNotes   -->
-      <CuratorNotes class="ma-4 mb-7" />
+      <CuratorNotes
+        id="curatorNotes"
+        class="ma-4 mb-7"
+      />
 
       <Tombstone
         v-if="currentRecord['fairsharingRecord'] && currentRecord['fairsharingRecord'].metadata.tombstone"
+        id="tombStone"
         :record="currentRecord['fairsharingRecord']"
       />
       <!--  Content  -->
       <div v-if="currentRecord['fairsharingRecord'] && !error && !currentRecord['fairsharingRecord'].metadata.tombstone">
         <!-- Top Block -->
         <GeneralInfo
+          id="generalInfo"
           :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
@@ -164,6 +169,7 @@
               <component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.leftBlock"
+                :id="block"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
@@ -175,6 +181,7 @@
               <component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.rightBlock"
+                :id="block"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
@@ -185,16 +192,19 @@
         <!-- Bottom Block -->
         <Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          id="publications"
           class="mb-8 ma-4"
         />
         <!-- Additional Information -->
         <AdditionalInfo
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          id="additionalInfo"
           class="mb-8 ma-4"
         />
         <!-- Search Collection -->
         <SearchCollection
           v-if="currentRecord.fairsharingRecord.registry==='Collection'"
+          id="searchCollection"
           class="mb-10 ma-4"
         />
       </div>
@@ -230,6 +240,7 @@
         <v-card-text class="pt-2">
           <RecordHistory
             v-if="!history.loading"
+            id="recordHistory"
             :history="currentRecordHistory.history"
             :legacy-logs="currentRecordHistory.legacyLogs"
           />
@@ -238,7 +249,7 @@
       </v-card>
     </v-dialog>
     <!-- eslint-enable vue/no-v-html -->
-  </v-main>
+  </main>
 </template>
 
 <script>
@@ -347,6 +358,8 @@ export default {
       await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons();
+      await this.$nextTick();
+      await this.$scrollTo(this.$route.hash || 'body')
     },
     async userIsLoggedIn() {
       await this.canEditRecord();
@@ -364,6 +377,9 @@ export default {
       await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons()
+      await this.$nextTick();
+      await this.$scrollTo(this.$route.hash || 'body')
+    // update the UI padding and margin after DOM is fully loaded.
   },
   methods: {
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
@@ -700,3 +716,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+ul,li {
+  padding: 0;
+}
+</style>

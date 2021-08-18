@@ -1,11 +1,11 @@
 import { hackSearch } from '@/router/hackSearch'
 import {shallowMount, createLocalVue} from "@vue/test-utils";
-import App from "@/App.vue"
+//import App from "@/App.vue"
 const sinon = require("sinon");
-import Vue from "vue";
+//import Vue from "vue";
 import VueRouter from "vue-router";
-import routes from "@/router/routes.js";
-import { Records } from "@/router/routes.js";
+//import routes from "@/router/routes.js";
+//import { Records } from "@/router/routes.js";
 
 const localVue = createLocalVue()
 localVue.use(VueRouter)
@@ -27,17 +27,4 @@ describe("hackSearch", () => {
         expect(hackSearch(query)).toStrictEqual([{}, true]);
     });
 
-    it("hacks the search parameters before searching", async () => {
-        jest.mock("@/views/Records/Records.vue", () => ({
-            name: "Records",
-            render: h => h("div")
-        }))
-        const router = new VueRouter({ routes })
-        const wrapper = shallowMount(App, { localVue, router })
-
-        router.push("/search")
-
-        expect(wrapper.find(Records).exists()).toBe(true)
-
-    });
 });

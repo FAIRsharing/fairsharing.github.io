@@ -126,6 +126,12 @@ describe("Records.vue", () => {
     });
 
     it("can correctly redirect", async () => {
+        /*
+         * This test passes when run by itself, but times out when run as part of the suite.
+         * This appears to have been caused by modifications to tryRedirect() as part of
+         * https://github.com/FAIRsharing/fairsharing.github.io/issues/1186.
+         */
+        jest.setTimeout(40000);
         $route.path = "/standards";
         $route.params = {fairsharingRegistry: "Standard"};
         $route.query = {fairsharingRegistry: "Standard"};

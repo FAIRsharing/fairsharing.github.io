@@ -23,6 +23,33 @@ let graphMock = {
     "fairsharingGraph": {
         "nodes": [
             {
+                "id": "fake data 1",
+                "record_id": 1410,
+                "marker": {
+                    "symbol": "square",
+                    "radius": 20,
+                    "fillColor": "red"
+                }
+            },
+            {
+                "id": "fake data 2",
+                "record_id": 1410,
+                "marker": {
+                    "symbol": "triangle",
+                    "radius": 20,
+                    "fillColor": "red"
+                }
+            },
+            {
+                "id": "fake data 3",
+                "record_id": 1410,
+                "marker": {
+                    "symbol": "diamond",
+                    "radius": 20,
+                    "fillColor": "red"
+                }
+            },
+            {
                 "id": "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
                 "record_id": 1410,
                 "marker": {

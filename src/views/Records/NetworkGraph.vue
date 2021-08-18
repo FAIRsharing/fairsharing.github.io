@@ -257,11 +257,30 @@
                 this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = response.fairsharingGraph.maxIterations;
 
                 this.options.series[0].data = data;
-                this.options.series[0].nodes = nodes;
-                this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
 
-                this.loading = false;
-            }
+              this.options.series[0].nodes = nodes;
+              this.changeSymbols()
+              this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
+              this.loading = false;
+            },
+          changeSymbols() {
+            this.options.series[0].nodes.map(object => {
+              switch (object.marker.symbol) {
+                case "square" :
+                  object.marker.symbol = "url(/assets/NetworkGraph/db-icon.png)"
+                  break
+                case "circle":
+                  object.marker.symbol = "url(/assets/NetworkGraph/standard.png)"
+                  break
+                case "triangle":
+                  object.marker.symbol = "url(/assets/NetworkGraph/policy.png)"
+                  break
+                case "diamond":
+                  object.marker.symbol = "url(/assets/NetworkGraph/collection-icon.png)"
+                  break
+              }
+            })
+          }
         }
     }
 </script>

@@ -1,11 +1,6 @@
 import { hackSearch } from '@/router/hackSearch'
-import {shallowMount, createLocalVue} from "@vue/test-utils";
-//import App from "@/App.vue"
-const sinon = require("sinon");
-//import Vue from "vue";
+import {createLocalVue} from "@vue/test-utils";
 import VueRouter from "vue-router";
-//import routes from "@/router/routes.js";
-//import { Records } from "@/router/routes.js";
 
 const localVue = createLocalVue()
 localVue.use(VueRouter)

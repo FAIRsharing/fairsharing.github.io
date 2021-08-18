@@ -267,42 +267,7 @@
 </script>
 
 <style>
-.square {
-  height: 25px;
-  width: 25px;
-  background-color: #51b0ff;
+.v-responsive {
+  flex: initial;
 }
-.circle {
-  height: 25px;
-  width: 25px;
-  background-color: #51b0ff;
-  border-radius: 50%;
-}
-.triangle {
-  width: 0;
-  height: 0;
-  border-left: 12.5px solid transparent;
-  border-right: 12.5px solid transparent;
-  border-bottom: 25px solid #51b0ff;
-}
-.diamond {
-  width: 0;
-  height: 0;
-  border: 16px solid transparent;
-  border-bottom-color: #51b0ff;
-  position: relative;
-  top: -16px;
-  left:-3px;
-}
-.diamond:after {
-  content: '';
-  position: absolute;
-  left: -16px;
-  top: 16px;
-  width: 0;
-  height: 0;
-  border: 16px solid transparent;
-  border-top-color: #51b0ff;
-}
-
 </style>

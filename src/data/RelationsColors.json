@@ -1,0 +1,11 @@
+{
+  "related to": "#8b8b00",
+  "profiles": "#d8d800",
+  "extends": "#8b4600",
+  "deprecates": "#d80000",
+  "collects": "#46008b",
+  "recommends": "#008b00",
+  "implements": "#3f0000",
+  "shares data with": "#00008b",
+  "shares code with": "#008b8b"
+}

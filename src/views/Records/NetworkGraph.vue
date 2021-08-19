@@ -316,8 +316,8 @@
             },
             drawGraph(start=false){
                 this.typesFound = [];
-                let raw_nodes = this.graphData.nodes,
-                    raw_edges = this.graphData.edges,
+                let raw_nodes = [...this.graphData.nodes],
+                    raw_edges = [...this.graphData.edges],
                     tree = {},
                     nodes_processed = [],
                     edges = [],
@@ -342,8 +342,8 @@
                 })
                 this.options.plotOptions.networkgraph.layoutAlgorithm.linkLength = this.graphData.linkLength;
                 this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = this.graphData.maxIterations;
-                this.options.series[0].data = edges;
                 this.options.series[0].nodes = nodes;
+                this.options.series[0].data = edges;
                 this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
             },
             processNode(edges, tree, nodeID, outputNodes, nodes_processed, start){

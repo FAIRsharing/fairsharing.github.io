@@ -5,6 +5,10 @@ import GraphTest from "@/views/Records/NetworkGraph.vue";
 import Vuetify from "vuetify"
 import GraphClient from "@/lib/GraphClient/GraphClient";
 const sinon = require("sinon");
+import Networkgraph from 'highcharts/modules/networkgraph'
+import Highcharts from 'highcharts'
+Networkgraph(Highcharts);
+
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -93,6 +97,9 @@ describe("NetworkGraph.vue", function() {
 
     // TODO: Mock properties in options {}.
     beforeEach(async () => {
+        const div = document.createElement('div')
+        div.setAttribute("id", "networkGraph");
+        document.body.appendChild(div)
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         graphStub.returns(graphMock);
         wrapper = await shallowMount(GraphTest, {

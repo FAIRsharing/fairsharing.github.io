@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/Home/Home.vue</title>
+	<title>FAIRsharing.org Source: router/hackSearch.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,127 +86,86 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/Home/Home.vue</h1>
+		<h1 class="page-title">Source: router/hackSearch.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-main>
-    &lt;v-container
-      fluid
-      class="text-center pa-0"
-    >
-      &lt;Carousel />
-      &lt;InfoBlock class="mb-12" />
-      &lt;SearchBlock />
-      &lt;CategoryBlock class="mt-12" />
-      &lt;CommunityCarousel class="mt-12 mb-12" />
-    &lt;/v-container>
-    &lt;!-- This html is from a safe source -->
-    &lt;!-- eslint-disable vue/no-v-html -->
-    &lt;script
-      type="application/ld+json"
-      v-html="JSONLD"
-    />
-    &lt;!-- eslint-enable vue/no-v-html -->
-  &lt;/v-main>
-&lt;/template>
-
-&lt;script>
-import Carousel from "@/components/Home/Carousel";
-import InfoBlock from "@/components/Home/InfoBlock";
-import SearchBlock from "@/components/Home/SearchBlock";
-import CategoryBlock from "@/components/Home/CategoryBlock";
-import CommunityCarousel from "@/components/Home/CommunityCarousel";
-
-/** Component to handle the front page (landing page)
- *
+            class="sunlight-highlight-javascript linenums">/*
+ * The purpose of this file is to intercept search parameters before they are passed to the API. It's necessary
+ * as links which were generated on the old system may appear in old (or not so old) papers, on other sites etc.
+ * If anyone complains they've clicked on a link to FAIRsharing that "doesn't work" then it may be found to be one
+ * of these, and might perhaps require the specific terms be added to the lookup tables here.
+ * Unfortunately it seems difficult to test and results in:
+ * Timeout - Async callback was not invoked within the 5000ms timeout specified by jest.setTimeout.Timeout
  */
-export default {
-  name: "Home",
-  components:{CommunityCarousel, Carousel, InfoBlock, SearchBlock, CategoryBlock },
-  computed: {
-    JSONLD: () => {
-      return JSON.stringify(  {
-        "@context": "http://schema.org",
-        "@type": "DataCatalog",
-        "identifier":"https://identifiers.org/MIR:00000364",
-        "name": "FAIRsharing.org",
-        "description": "A manually curated, informative and educational resource on data and metadata standards, inter-related to databases/data repositories and funder and journal publisher data policies from across disciplines. FAIRsharing is an ELIXIR-UK node resource and has an active role in the RDA and Force11 data initiatives.",
-        "url": "https://fairsharing.org/",
-        "dataset": [
-          {
-            "@type" : "Dataset",
-            "name" : "Metadata Standard",
-            "description" : "A manually curated registry of standards, split into three types - Terminology Artifacts (ontologies, e.g. Gene Ontology), Models and Formats (conceptual schema, formats, data models, e.g. FASTA), and Reporting Guidelines (e.g. the ARRIVE guidelines for in vivo animal testing). These are linked to the databases that implement them and the funder and journal publisher data policies that recommend or endorse their use.",
-            "identifier": "https://www.fairsharing.org/bsg-sXXXXXX",
-            "url" : "https://fairsharing.org/standards",
-            "keywords" : "Standards, Metadata, Formats, Ontologies, Terminology Artifacts, Reporting Guidelines",
-            "includedInDataCatalog" : "https://www.fairsharing.org"
-          },
-          {
-            "@type" : "Dataset",
-            "name" : "Database",
-            "description": "A manually curated registry of databases/data repositories, conforming to the BioDBcore standard (from the Life Sciences). These are linked to the standards that they use and the funder and journal publisher data policies that recommend or endorse their use.",
-            "identifier": "https://www.fairsharing.org/bsg-dXXXXXX",
-            "url": "https://fairsharing.org/databases",
-            "keywords": "Database, Data repository",
-            "includedInDataCatalog" : "https://www.fairsharing.org"
-          },
-          {
-            "@type" : "Dataset",
-            "name" : "Data Policy",
-            "description": "A manually curated registry of data policies from research funders, journal publishers, societies, and other organisations. These are linked to the databases and standards that they recommend for use",
-            "identifier": "https://www.fairsharing.org/bsg-pXXXXXX",
-            "url": "https://fairsharing.org/policies",
-            "keywords": "Data policy, journal, funder, society"
-          }
-        ],
-        "keywords": "registry, life science, natural science, social science, ",
-        "provider":
-            [
-              {
-                "@type":"Person",
-                "name": "FAIRsharing.org support",
-                "email": "contact@fairsharing.org"
-              },
-              {
-                "@type":"Organization",
-                "name": "Oxford e-Research Centre, University of Oxford",
-                "url": "http://www.oerc.ox.ac.uk/"
-              },
-              {
-                "@type":"Organization",
-                "name": "ELIXIR-UK",
-                "url": "http://www.elixir-uk.org"
-              },
-              {
-                "alternateName": ["FAIRsharing.org Registry", "BioSharing.org"]
-              }
-            ],
-        "license": {
-          "@type": "CreativeWork",
-          "name": "Creative Commons CC BY-SA 4.0 Attribution",
-          "url": "https://creativecommons.org/licenses/by-sa/4.0/"
-        },
-        "publication":[
-          {
-            "@type":"PublicationEvent",
-            "name": "BioSharing: curated and crowd-sourced metadata standards, databases and data policies in the life sciences.",
-            "url": "https://academic.oup.com/database/article-lookup/doi/10.1093/database/baw075"
-          }
-        ]
 
-      });
+
+/**
+ * Convert a prop from the old system into that used by the new. Useful when old search links
+ * have been deployed elsewhere in the internet or in print (as long as we know about them).
+ * @returns  String - new form of the old prop
+ */
+export function hackSearch(query) {
+    let modified = false;
+    const lookupKeys = {
+        content: 'fairsharingRegistry'
+    };
+    const lookupValues = {
+        biodbcore: 'database'
     }
-  },
-  destroyed() {
-    this.$scrollTo('body',0,{});
-  }
-};
-&lt;/script>
-</pre>
+    Object.keys(query).forEach(function(key) {
+        let value = query[key];
+        // Delete keys with empty values.
+        if (!value) {
+            delete query[key];
+            modified = true;
+        }
+        // This key is no longer used in the system:
+        if (key === 'search_state') {
+            delete query[key];
+            modified = true;
+        }
+        // The key is outdated and needs to be replaced with the latest.
+        if (Object.keys(lookupKeys).includes(key)) {
+            let newKey = lookupKeys[key];
+            if (Object.keys(lookupValues).includes(value)) {
+                query[newKey] = lookupValues[value];
+            }
+            else {
+                query[newKey] = value;
+            }
+            // Delete old key.
+            delete query[key];
+            modified = true;
+        }
+        // The key's OK but the value may need replacing.
+        else {
+            if (Object.keys(lookupValues).includes(value)) {
+                query[key] = lookupValues[value];
+                modified = true;
+            }
+        }
+    });
+    return [query, modified];
+
+}
+
+
+/*
+Fixed:
+https://fairsharing.org/search/?q=genomics&amp;content=biodbcore
+https://fairsharing.org/search/?q=transcriptomics&amp;content=biodbcore
+https://fairsharing.org/search/?q=genomics&amp;content=standard&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=proteomics&amp;content=biodbcore&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=proteomics&amp;content=standard&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=metabolomics&amp;content=biodbcore&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=metabolomics&amp;content=standard&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+
+Covered by something else:
+https://fairsharing.org/standards/?q=transcriptomics
+
+ */</pre>
     </article>
 </section>
 

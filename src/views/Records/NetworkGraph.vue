@@ -131,7 +131,6 @@
           </v-card-text>
           <Loaders />
         </v-card>
-
         <div id="networkGraph" />
       </v-col>
     </v-row>

@@ -131,22 +131,19 @@
           </v-card-text>
           <Loaders />
         </v-card>
-        <highcharts
-          v-else
-          ref="chartComponent"
-          :options="options"
-        />
+
+        <div id="networkGraph" />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-    import {Chart} from 'highcharts-vue'
     import GraphClient from '@/lib/GraphClient/GraphClient.js'
     import graphQuery from '@/lib/GraphClient/queries/getGraphRelations.json'
     import Loaders from "../../components/Navigation/Loaders";
     import relationColors from "@/data/RelationsColors.json"
+    import Highcharts from "highcharts"
 
     const graphClient = new GraphClient();
 
@@ -154,7 +151,6 @@
         name: "NetworkGraph",
         components: {
           Loaders,
-            highcharts: Chart,
         },
         data () {
           let _module = this;
@@ -177,11 +173,11 @@
                         height: '62.8%',
                         plotBorderWidth: 0,
                         plotShadow: true,
-                        renderTo: 'container',
+                        renderTo: 'networkGraph',
                         marginBottom: 2,
                         marginTop: 0,
                         plotBackgroundColor: "#FFFFFF",
-                        animation: false
+                        animation: false,
                     },
                     title: {
                         text: 'FAIRsharing',
@@ -259,8 +255,7 @@
                             }
                           }
                         },
-                    }],
-                    nodes: null
+                    }]
                 },
                 relations: null,
                 relations_colors: relationColors,
@@ -274,7 +269,8 @@
                   }
                 },
                 typesFound: [],
-                graphData: {}
+                graphData: {},
+                chart: null
             }
         },
         computed: {
@@ -315,10 +311,9 @@
 
             },
             drawGraph(start=false){
-                this.loading = true;
                 this.typesFound = [];
-                let raw_nodes = [...this.graphData.nodes],
-                    raw_edges = [...this.graphData.edges],
+                let raw_nodes = this.graphData.nodes,
+                    raw_edges = this.graphData.edges,
                     tree = {},
                     nodes_processed = [],
                     edges = [],
@@ -346,7 +341,8 @@
                 this.options.series[0].nodes = nodes;
                 this.options.series[0].data = edges;
                 this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
-                this.loading = false;
+                this.chart = new Highcharts.chart(this.options)
+
             },
             processNode(edges, tree, nodeID, outputNodes, nodes_processed, start){
               let node = tree[nodeID]

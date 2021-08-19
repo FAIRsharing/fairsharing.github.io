@@ -55,7 +55,7 @@
                         inset
                         class="field mx-3 switch mt-0 pt-0"
                         :disabled="!typesFound.includes('circle')"
-                        @change="drawGraph($event)"
+                        @change="drawGraph($event, false)"
                       />
                       <div class="circle mb-3 mr-5" /> Standard
                     </v-row>
@@ -315,6 +315,7 @@
 
             },
             drawGraph(start=false){
+                this.loading = true;
                 this.typesFound = [];
                 let raw_nodes = [...this.graphData.nodes],
                     raw_edges = [...this.graphData.edges],
@@ -345,6 +346,7 @@
                 this.options.series[0].nodes = nodes;
                 this.options.series[0].data = edges;
                 this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
+                this.loading = false;
             },
             processNode(edges, tree, nodeID, outputNodes, nodes_processed, start){
               let node = tree[nodeID]

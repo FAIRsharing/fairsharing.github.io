@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FAIRsharing.org Source: views/Static/Community/Community.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.yeti.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">FAIRsharing.org</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Static.html">Static</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Curator.html">Curator</a></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-NewRecord.html">NewRecord</a></li><li><a href="module-Pagination.html">Pagination</a></li><li><a href="module-PublicProfile.html">PublicProfile</a></li><li><a href="module-Signup.html">Signup</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExternalRESTClients.html">ExternalRESTClients</a></li><li><a href="GraphQLClient.html">GraphQLClient</a></li><li><a href="RESTClient.html">RESTClient</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: views/Static/Community/Community.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;main :class="applyCss?'pa-15 mb-10':''">
+    &lt;!--  main_title_2 -->
+    &lt;!-- eslint-disable vue/no-v-html -->
+    &lt;h1 class="mb-5">
+      FAIRsharing is a community-driven resource with a growing number of users and collaborators,
+      all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
+    &lt;/h1>
+
+    &lt;!-- Adopters, activities, Governance tabs-->
+    &lt;v-container class="my-10">
+      &lt;v-row
+        class="block-category"
+      >
+        &lt;v-col
+          v-for="(tab,index) in contentTabs"
+          :key="tab.name+'_'+index"
+          cols="12"
+          sm="12"
+          md="4"
+          lg="4"
+        >
+          &lt;v-card
+            class="mx-auto block-category__card cursor-pointer"
+            max-width="350"
+            height="300"
+            @click="jumpToAnchor(tab.name.toLowerCase())"
+          >
+            &lt;div class="white--text d-flex flex-column justify-center block-category__card__gradient">
+              &lt;div
+                style="height: 136px"
+                class="d-flex justify-center"
+              >
+                &lt;v-icon
+                  size="80"
+                  color="white"
+                  style="opacity: .7"
+                >
+                  {{ $vuetify.icons.values[tab.icon].icon }}
+                &lt;/v-icon>
+              &lt;/div>
+              &lt;v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">
+                {{ tab.name }}
+              &lt;/v-card-title>
+            &lt;/div>
+            &lt;v-card-text
+              class="text--primary text-justify"
+            >
+              &lt;p class="text-center">
+                {{ tab.description }}
+              &lt;/p>
+            &lt;/v-card-text>
+          &lt;/v-card>
+        &lt;/v-col>
+      &lt;/v-row>
+    &lt;/v-container>
+
+    &lt;!-- Adopters   -->
+    &lt;section id="adopters">
+      &lt;h3 class="text-h4 mb-4 mt-5">
+        Adopters
+      &lt;/h3>
+
+      &lt;p
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
+      &lt;/p>
+
+      &lt;!--  External Links  -->
+      &lt;v-row
+        class="my-2"
+      >
+        &lt;v-col
+          v-for="(item,index) in externalLinks"
+          :key="index+'_'+item.titleLink"
+          cols="12"
+          md="12"
+          lg="4"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+        >
+          &lt;a
+            :href="item.titleLink"
+            target="_blank"
+          >
+            &lt;p
+              :class="['mb-0 lato-font-medium lato-text-sm underline-effect',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            >
+              {{ item.title }}
+            &lt;/p>
+          &lt;/a>
+          &lt;p
+            :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+          >
+            {{ item.text }}
+          &lt;/p>
+        &lt;/v-col>
+      &lt;/v-row>
+
+      &lt;p
+        :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Anyone can use FAIRsharing. Adopters, however, use FAIRsharing specifically to:
+      &lt;/p>
+      &lt;ul>
+        &lt;li>&lt;b class="mr-4">i:&lt;/b>Educate their users/community on the variety of existing standards, repositories and policies, and actively encourage them to submit/claim records, where relevant;&lt;/li>
+        &lt;li>
+          &lt;b class="mr-3">ii:&lt;/b>Recommend resources by registering their data policy, and then link it to standards and/or databases
+          &lt;router-link
+            to="/search?isRecommended=true"
+            target="_blank"
+            class="underline-effect"
+          >
+            recommended
+          &lt;/router-link> in the policy; and/or
+        &lt;/li>
+        &lt;li>
+          &lt;b class="mr-2">iii:&lt;/b>Create a &lt;router-link
+            to="/collections"
+            target="_blank"
+            class="underline-effect"
+          >
+            Collection
+          &lt;/router-link> by pulling together a list of standards and/or databases around a given domain of interest relevant to them.
+        &lt;/li>
+      &lt;/ul>
+      &lt;p
+        :class="['mb-0 mt-2 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        If you wish to create a new metadata record on FAIRsharing, you can find &lt;router-link to="/new">
+          instructions
+        &lt;/router-link> here.
+      &lt;/p>
+      &lt;p
+        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure programmes, societies and other organizations or projects that in turn serve and guide individual researchers or other stakeholders on research data management matters.
+      &lt;/p>
+      &lt;p
+        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Adopters display a FAIRsharing logo on their websites with a link from their website to our homepage.
+      &lt;/p>
+      &lt;b
+        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        We cannot list all of our adopters, but we've listed here some publishers that use FAIRsharing to define and refine their data policy.
+      &lt;/b>
+      &lt;!--Adopter table-->
+      &lt;v-row
+        class="mt-2 ml-0"
+      >
+        &lt;v-col
+          v-for="(item,index) in tables.adopterTable.data"
+          :key="index+'_'+item.adopter"
+          cols="12"
+          md="12"
+          lg="4"
+          :class="['pa-5 links',{'max-width-32-percent':$vuetify.breakpoint.mdAndUp}]"
+        >
+          &lt;v-img
+            v-if="item.image"
+            max-width="250px"
+            max-height="250px"
+            :src="item.image"
+            height="120"
+            contain
+            style="filter: grayscale(1);"
+          />
+        &lt;/v-col>
+      &lt;/v-row>
+      &lt;p class="text-h6 mt-16">
+        Other Organisations
+      &lt;/p>
+      &lt;v-row
+        class="mt-2 ml-0"
+      >
+        &lt;v-col
+          v-for="(item,index) in tables.globalOrganisationTable.data"
+          :key="`${item.adopter}_${index}`"
+          :class="['pa-5 links full-width',{'max-width-24-percent':$vuetify.breakpoint.mdAndUp}]"
+          cols="12"
+          md="12"
+          lg="4"
+        >
+          &lt;v-img
+            v-if="item.image"
+            max-width="250px"
+            max-height="250px"
+            :src="item.image"
+            height="120"
+            contain
+            style="filter: grayscale(1);"
+          />
+        &lt;/v-col>
+      &lt;/v-row>
+    &lt;/section>
+
+    &lt;!--  content  -->
+
+
+    &lt;!-- Activities   -->
+    &lt;section id="activities">
+      &lt;h3 class="text-h4 my-4">
+        Activities
+      &lt;/h3>
+      &lt;p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        FAIRsharing is not just a registry. The team behind FAIRsharing is involved in a number of FAIR-enabling activities, delivering guidance, tools and services with and for a variety of stakeholders. As these activities mature, we will implement or connect them in/to the FAIRsharing resource itself.
+      &lt;/p>
+      &lt;p
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Some of these activities are part of funded projects and of national or international consortia, while others are volunteer efforts that fall under a variety of umbrella organisations, such as working groups (WG) and learned societies.
+      &lt;/p>
+      &lt;b
+        :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Our activities are classified using the three GO-FAIR pillar structures (change, build, train) and are outlined here.
+      &lt;/b>
+      &lt;!--Activities table-->
+      &lt;ActivitiesStaticTable class="mb-16 mt-2" />
+    &lt;/section>
+
+
+    &lt;!-- Governance   -->
+    &lt;section id="governance">
+      &lt;h3 class="text-h4 mb-4">
+        Governance
+      &lt;/h3>
+      &lt;!--   Meet the team   -->
+      &lt;h4 class="text-h5 mb-2">
+        {{ meettheteam.title }}
+      &lt;/h4>
+      &lt;p
+        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        v-html="$sanitize(meettheteam.description)"
+      />
+      &lt;ul class="d-flex flex-wrap pl-0">
+        &lt;li
+          v-for="(profileItem,index) in meettheteam.profiles"
+          :key="`${profileItem}_${index}`"
+          :class="['text-center width-250 height-400 mb-10',$vuetify.breakpoint.mdAndDown?'mx-auto':'']"
+        >
+          &lt;v-avatar size="160">
+            &lt;v-img
+              :src="profileItem.profileImg"
+              style="filter: grayscale(1);"
+            />
+          &lt;/v-avatar>
+          &lt;p
+            class="text-center primary--text lato-font-bold mt-2 ma-0"
+            style="font-size: 1.5rem;min-height: 80px;display: flex;flex-direction: column;"
+            v-html="$sanitize(profileItem.name)"
+          />
+          &lt;i class="small d-block height-75">
+            {{ profileItem.role }}
+          &lt;/i>
+          &lt;div class="text-center mt-2 d-flex justify-center">
+            &lt;span
+              v-for="(socialItem,socialIndex) in profileItem.social"
+              :key="`${socialItem}_${socialIndex}`"
+            >
+              &lt;a
+                class="pr-2"
+                :href="socialItem.link.includes('@')?`mailto:${socialItem.link}`:socialItem.link"
+                target="_blank"
+              >
+                &lt;Icon
+                  class="mr-1"
+                  :item="socialItem.icon"
+                  :height="25"
+                  size="30"
+                  wrapper-class=""
+                />
+              &lt;/a>
+            &lt;/span>
+          &lt;/div>
+        &lt;/li>
+      &lt;/ul>
+      &lt;!--  Advisory Board   -->
+      &lt;div
+        v-for="(governanceItem,key,index) in governance"
+        :key="Object.keys(governanceItem)[index]+'_'+'index'"
+      >
+        &lt;div class="mb-10">
+          &lt;h4 class="text-h5 mb-8">
+            {{ key }}
+          &lt;/h4>
+          &lt;div
+            v-for="(item,itemIndex) in governanceItem"
+            :key="item.title+'_'+itemIndex"
+            class="ml-8"
+          >
+            &lt;div class="mb-5">
+              &lt;h4 class="text-h5">
+                {{ item.title }}
+              &lt;/h4>
+              &lt;ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
+                &lt;li
+                  v-for="(itemData,itemDataIndex) in item.data"
+                  :key="itemData+'_'+itemDataIndex"
+                  class="mb-1"
+                >
+                  &lt;p
+                    class="ma-0"
+                    v-html="$sanitize(itemData)"
+                  />
+                &lt;/li>
+              &lt;/ul>
+            &lt;/div>
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+    &lt;/section>
+
+    &lt;!-- eslint-enable vue/no-v-html -->
+  &lt;/main>
+&lt;/template>
+
+&lt;script>
+/**
+* All static pages will be handle through this namespace
+* @namespace Static
+*/
+import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+import {externalLinks, contentTabs, tables, governance, meettheteam} from "@/data/communityPageData.json"
+import Icon from "@/components/Icon";
+
+/** This component handles the sign-up/register page
+* @memberOf Static
+* @name Community
+* @type module
+* @instance
+* */
+export default {
+  name: "Community",
+  components: {Icon, ActivitiesStaticTable},
+  title: "This will be the community page",
+  data: () => {
+    return {
+      applyCss: false,
+      currentAnchor:'',
+      externalLinks,
+      contentTabs,
+      tables,
+      governance,
+      meettheteam,
+      Icon
+    }
+  },
+  watch: {
+    $route: {
+      deep:true,
+      handler() {
+        this.applyCss = false
+        this.$nextTick(() => {
+          this.applyCss = true
+        })
+      }
+    }
+  },
+  created() {
+    this.$nextTick(() => {
+      // update the UI padding and margin after DOM is fully loaded.
+      this.applyCss = true
+    })
+  },
+  methods: {
+    jumpToAnchor(selectedAnchor) {
+      if (selectedAnchor !== this.currentAnchor) {
+        this.$router.push({hash: `${selectedAnchor}`});
+        this.currentAnchor = selectedAnchor;
+      }
+    }
+  }
+}
+&lt;/script>
+
+&lt;style scoped lang="scss">
+.links {
+  border: 1px #d4d4d4 solid;
+  margin: 2px;
+}
+
+.block-category {
+  &amp;__card {
+    transition: all .2ms ease;
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -webkit-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -moz-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+    -o-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
+
+    &amp;:hover {
+      transform: scale(1.05);
+      -moz-transform: scale(1.05);
+      -webkit-transform: scale(1.05);
+      -o-transform: scale(1.05);
+    }
+
+    &amp;__gradient {
+      height: 200px;
+      background: rgb(171, 171, 171);
+      background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -webkit-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -o-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+      background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
+    }
+  }
+}
+
+.v-divider {
+  margin: 8px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #ECF0F1 !important;
+}
+
+.border-left {
+  border-left: 1px solid #ECF0F1 !important;
+}
+
+a:hover {
+  div {
+    transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+  }
+}
+td {
+  font-size: 1rem!important;
+}
+
+.column-count {
+  column-count:2;
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+}
+
+
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
+	
+		on Thu Aug 19th 2021
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

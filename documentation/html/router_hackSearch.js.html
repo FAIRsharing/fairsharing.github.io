@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Record/Collections.vue</title>
+	<title>FAIRsharing.org Source: router/hackSearch.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,177 +86,86 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Record/Collections.vue</h1>
+		<h1 class="page-title">Source: router/hackSearch.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  &lt;v-card
-    v-if="!tabsDataExist"
-    class="pa-4 d-flex flex-column"
-    outlined
-    color="bg_record_card"
-    tile
-    elevation="3"
-  >
-    &lt;SectionTitle title="Collections &amp;amp; Recommendations" />
-    &lt;div class="d-flex flex-column ml-2 min-height-40">
-      &lt;div class="d-flex flex-wrap mt-5">
-        &lt;!--  search autocomplete    -->
-        &lt;v-autocomplete
-          v-if="!tabsDataExist"
-          v-model="selectedValues"
-          :disabled="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length&lt;5"
-          :items="getValues"
-          solo
-          :attach="true"
-          dense
-          clearable
-          prepend-inner-icon="fa-search"
-          :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
-          item-text="name"
-          item-value="name"
-        >
-          &lt;template #item="data">
-            &lt;span class="filterValueName">
-              {{ data.item.name }}
-            &lt;/span>
-          &lt;/template>
-        &lt;/v-autocomplete>
-      &lt;/div>
-      &lt;!--  tabs    -->
-      &lt;v-tabs
-        v-if="!tabsDataExist"
-        v-model="tabsData.selectedTab"
-        :show-arrows="$vuetify.breakpoint.mdAndDown"
-        background-color="transparent"
-        grow
-        color="accent3"
-        slider-color="accent3"
-        class="mb-5"
-        :hide-slider="tabsData.tabs[Object.keys(tabsData.tabs)[tabsData.selectedTab]].data.length===0"
-      >
-        &lt;v-tab
-          v-for="(tabName,tabIndex) in Object.keys(tabsData.tabs)"
-          :key="tabName+'_'+tabIndex"
-          :disabled="tabsData.tabs[tabName].data.length===0"
-          @change="selectedValues=null"
-        >
-          {{ cleanString(tabName) }} ({{ tabsData.tabs[tabName].count }})
-        &lt;/v-tab>
-      &lt;/v-tabs>
-      &lt;!--  tab content  -->
-      &lt;v-tabs-items
-        v-if="!tabsDataExist"
-        v-model="tabsData.selectedTab"
-        :class="['transparent',tabsDataExist]"
-      >
-        &lt;v-tab-item
-          v-for="(tabItem,tabItemIndex) in filterList"
-          :key="tabItem+'_'+tabItemIndex"
-        >
-          &lt;v-virtual-scroll
-            :items="tabItem.data"
-            height="400"
-            item-height="130"
-            class="ma-4 overflow-x-hidden"
-          >
-            &lt;template #default="{ item,index }">
-              &lt;router-link
-                :to="'/'+item.id"
-                @click.native="()=>$scrollTo('body',0,{})"
-              >
-                &lt;v-card
-                  :key="item.id + '_' + index"
-                  class="pa-4 d-flex flex-column v-card-hover mx-2 height-120"
-                  flat
-                  outlined
-                >
-                  &lt;div class="d-flex align-center">
-                    &lt;record-status
-                      :record="item"
-                      :show-status="false"
-                    />
-                    &lt;div class="ml-10 underline-effect text-ellipses-height-2lines line-height-20">
-                      {{ item.name }}
-                    &lt;/div>
-                  &lt;/div>
-                  &lt;p class="grey--text  relation-style text-ellipses-height-2lines line-height-14 pr-5">
-                    {{ item.name }}
-                    &lt;v-tooltip top>
-                      &lt;template #activator="{ on }">
-                        &lt;span
-                          class="red--text mouse-info"
-                          v-on="on"
-                        >
-                          {{ item.recordAssocLabel }}
-                        &lt;/span>
-                      &lt;/template>
-                      &lt;span>{{ relationDefinition[item.recordAssocLabel] }}&lt;/span>
-                    &lt;/v-tooltip>
-                    {{ item.subject }}
-                  &lt;/p>
-                &lt;/v-card>
-              &lt;/router-link>
-            &lt;/template>
-          &lt;/v-virtual-scroll>
-        &lt;/v-tab-item>
-      &lt;/v-tabs-items>
-    &lt;/div>
-  &lt;/v-card>
-&lt;/template>
+            class="sunlight-highlight-javascript linenums">/*
+ * The purpose of this file is to intercept search parameters before they are passed to the API. It's necessary
+ * as links which were generated on the old system may appear in old (or not so old) papers, on other sites etc.
+ * If anyone complains they've clicked on a link to FAIRsharing that "doesn't work" then it may be found to be one
+ * of these, and might perhaps require the specific terms be added to the lookup tables here.
+ * Unfortunately it seems difficult to test and results in:
+ * Timeout - Async callback was not invoked within the 5000ms timeout specified by jest.setTimeout.Timeout
+ */
 
-&lt;script>
-import SectionTitle from '@/components/Records/Record/SectionTitle';
-import {mapState} from "vuex";
-import stringUtils from "@/utils/stringUtils"
-import RecordStatus from "@/components/Records/Shared/RecordStatus";
-import recordTabUtils from "@/utils/recordTabUtils";
-import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
 
-export default {
-  name: "Collections",
-  components: {
-    RecordStatus,
-    SectionTitle,
-  },
-  mixins:[stringUtils,recordTabUtils],
-  data: () => {
-    return {
-      relationDefinition: recordRelationShipsDefinitions,
-      selectedValues: null,
-      tabsData: {
-        selectedTab: 0,
-        tabs: {
-          in_policies: {relation: 'recommends', data: [], count:0},
-          in_collections: {relation: 'collects', data: [], count:0},
-        }
-      }
+/**
+ * Convert a prop from the old system into that used by the new. Useful when old search links
+ * have been deployed elsewhere in the internet or in print (as long as we know about them).
+ * @returns  String - new form of the old prop
+ */
+export function hackSearch(query) {
+    let modified = false;
+    const lookupKeys = {
+        content: 'fairsharingRegistry'
+    };
+    const lookupValues = {
+        biodbcore: 'database'
     }
-  },
-  computed: {
-    ...mapState("record", ["currentRecord"]),
-  },
-  methods: {
-    /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
-    prepareTabsData() {
-      const _module = this;
-      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
-        Object.keys(_module.tabsData.tabs).forEach(tabName => {
-          _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
-          _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
-        })
-      }
-      else {
-        return false
-      }
-    },
-  }
+    Object.keys(query).forEach(function(key) {
+        let value = query[key];
+        // Delete keys with empty values.
+        if (!value) {
+            delete query[key];
+            modified = true;
+        }
+        // This key is no longer used in the system:
+        if (key === 'search_state') {
+            delete query[key];
+            modified = true;
+        }
+        // The key is outdated and needs to be replaced with the latest.
+        if (Object.keys(lookupKeys).includes(key)) {
+            let newKey = lookupKeys[key];
+            if (Object.keys(lookupValues).includes(value)) {
+                query[newKey] = lookupValues[value];
+            }
+            else {
+                query[newKey] = value;
+            }
+            // Delete old key.
+            delete query[key];
+            modified = true;
+        }
+        // The key's OK but the value may need replacing.
+        else {
+            if (Object.keys(lookupValues).includes(value)) {
+                query[key] = lookupValues[value];
+                modified = true;
+            }
+        }
+    });
+    return [query, modified];
+
 }
-&lt;/script>
-</pre>
+
+
+/*
+Fixed:
+https://fairsharing.org/search/?q=genomics&amp;content=biodbcore
+https://fairsharing.org/search/?q=transcriptomics&amp;content=biodbcore
+https://fairsharing.org/search/?q=genomics&amp;content=standard&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=proteomics&amp;content=biodbcore&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=proteomics&amp;content=standard&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=metabolomics&amp;content=biodbcore&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=metabolomics&amp;content=standard&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+
+Covered by something else:
+https://fairsharing.org/standards/?q=transcriptomics
+
+ */</pre>
     </article>
 </section>
 

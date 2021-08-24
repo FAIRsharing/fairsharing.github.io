@@ -140,7 +140,7 @@
             }
         },
         computed: {
-            ...mapState('records', ["totalPages", "loading","currentPage"]),
+            ...mapState('records', ["totalPages", "loading", "currentPage"]),
         },
         methods: {
             changeListType: function (listType) {

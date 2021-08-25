@@ -21,10 +21,10 @@ describe('Actions/Mutations', () => {
         restClientStub = sinon.stub(Client.prototype, "executeQuery");
     });
     afterEach(() => {
-        // jest.clearAllMocks();
-        // getStub.restore();
-        // restClientStub.restore();
-        // graphStub.restore();
+        jest.clearAllMocks();
+        getStub.restore();
+        restClientStub.restore();
+        graphStub.restore();
     });
 
     it("Login: testing no user and valid token", async () => {

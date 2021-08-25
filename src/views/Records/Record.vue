@@ -378,7 +378,7 @@ export default {
       await this.checkClaimStatus();
       await this.getMenuButtons()
       await this.$nextTick();
-      await this.$scrollTo(this.$route.hash || 'body')
+      //await this.$scrollTo(this.$route.hash || 'body')
     // update the UI padding and margin after DOM is fully loaded.
   },
   methods: {

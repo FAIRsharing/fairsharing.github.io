@@ -169,7 +169,7 @@
               <component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.leftBlock"
-                :id="block"
+                :id="block.toLowerCase()"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
@@ -181,7 +181,7 @@
               <component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.rightBlock"
-                :id="block"
+                :id="block.toLowerCase()"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />

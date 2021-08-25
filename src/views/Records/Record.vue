@@ -27,7 +27,6 @@
           </v-alert>
 
           <v-alert
-            v-if="user().is_curator && needsReviewing()"
             dense
             type="warning"
             class="mb-2 flex-grow-1"
@@ -52,11 +51,9 @@
           </v-alert>
 
           <div
-            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
             class="d-flex flex-column"
           >
             <v-alert
-              v-if="user().is_curator && currentRecord.fairsharingRecord['isHidden']"
               dense
               type="info"
               class="mb-2 flex-grow-1"

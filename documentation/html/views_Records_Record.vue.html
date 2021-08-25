@@ -120,7 +120,6 @@
           &lt;/v-alert>
 
           &lt;v-alert
-            v-if="user().is_curator &amp;&amp; needsReviewing()"
             dense
             type="warning"
             class="mb-2 flex-grow-1"
@@ -145,11 +144,9 @@
           &lt;/v-alert>
 
           &lt;div
-            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
             class="d-flex flex-column"
           >
             &lt;v-alert
-              v-if="user().is_curator &amp;&amp; currentRecord.fairsharingRecord['isHidden']"
               dense
               type="info"
               class="mb-2 flex-grow-1"

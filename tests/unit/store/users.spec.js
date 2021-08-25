@@ -11,7 +11,6 @@ describe('Actions/Mutations', () => {
     let getStub;
     let restClientStub;
     let graphStub;
-    let b;
 
     beforeEach(() => {
         // jest.spyOn(Storage.prototype, 'setItem');
@@ -421,30 +420,7 @@ describe('Actions/Mutations', () => {
         })
     });
 
-    it("Can correctly validate a user token", async() => {
-        restClientStub.returns({data: {success: true}});
-        let state = {
-            state: {user: () => {
-                return {credentials:{ token: 123}}
-            }}
-        };
-        await actions.validateUserToken(state);
-        expect(actions.commit).toHaveBeenCalledTimes(0);
-        restClientStub.restore();
 
-        restClientStub = sinon.stub(Client.prototype, 'executeQuery');
-        restClientStub.returns({data: {success: false}});
-        state.state.user = () => {
-            return {credentials:{ token: 123}}
-        };
-        await actions.validateUserToken(state);
-        expect(actions.commit).toHaveBeenCalledWith("users/logout");
-        expect(actions.commit).toHaveBeenCalledWith("users/setError", {
-            field: "getUser",
-            message: {success: false}
-        });
-        restClientStub.restore();
-    });
 
 
 });

@@ -11,6 +11,7 @@ describe('Actions/Mutations', () => {
     let getStub;
     let restClientStub;
     let graphStub;
+    let b;
 
     beforeEach(() => {
         // jest.spyOn(Storage.prototype, 'setItem');

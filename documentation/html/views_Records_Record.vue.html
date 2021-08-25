@@ -471,7 +471,10 @@ export default {
       await this.checkClaimStatus();
       await this.getMenuButtons()
       await this.$nextTick();
-      //await this.$scrollTo(this.$route.hash || 'body')
+    try {
+      await this.$scrollTo(this.$route.hash || 'body')
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
     // update the UI padding and margin after DOM is fully loaded.
   },
   methods: {

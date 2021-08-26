@@ -169,7 +169,7 @@
               <component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.leftBlock"
-                :id="block"
+                :id="block.toLowerCase()"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
@@ -181,7 +181,7 @@
               <component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.rightBlock"
-                :id="block"
+                :id="block.toLowerCase()"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
@@ -378,7 +378,12 @@ export default {
       await this.checkClaimStatus();
       await this.getMenuButtons()
       await this.$nextTick();
+    try {
       await this.$scrollTo(this.$route.hash || 'body')
+      // eslint-disable-next-line no-empty
+    } catch (e) {
+      // This serves to prevent warnings when tests are run on Github (trying to scroll with no DOM etc.).  #1201
+    }
     // update the UI padding and margin after DOM is fully loaded.
   },
   methods: {

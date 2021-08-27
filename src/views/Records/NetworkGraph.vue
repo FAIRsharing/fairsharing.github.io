@@ -18,20 +18,6 @@
             <v-container fluid>
               <v-row no-gutters>
                 <v-col cols="12">
-                  <v-autocomplete
-                    v-model="max_path_length"
-                    class="mt-2 px-2"
-                    :items="depth"
-                    label="Select the depth of the graph"
-                    outlined
-                    hint="Setting to greater than 2 is not recommended."
-                    persistent-hint
-                  />
-                </v-col>
-              </v-row>
-              <v-divider />
-              <v-row no-gutters>
-                <v-col cols="12">
                   The graph's centre is shown in <span class="red--text">red.</span> The registry of each record is as follows:
                 </v-col>
                 <v-col cols="12">
@@ -157,7 +143,6 @@
                 loading: false,
                 initialized: false,
                 depth: [1, 2, 3],
-                max_path_length: 1,
                 options: {
                     exporting: {
                         sourceWidth: 1502,
@@ -281,9 +266,6 @@
           async currentRoute() {
             await this.getData();
           },
-          async max_path_length() {
-            await this.getData();
-          }
         },
         async mounted() {
             this.$nextTick(async function () {
@@ -301,7 +283,7 @@
                 }
                 /* A maxPathLength of 1-4 may be specified (API's default is 2).
                  Higher values may make the resulting graph rather large... */
-                graphQuery.queryParam = {id: parseInt(this.$route.params.id), maxPathLength: this.max_path_length};
+                graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
                 const response = await graphClient.executeQuery(graphQuery);
                 this.graphData = response.fairsharingGraph
                 this.drawGraph(true)

@@ -324,7 +324,14 @@
                     children: {}
                   }
                 })
-                raw_edges.forEach(edge => { tree[edge[0]].children[edge[1]] = edge })
+                // TODO: Remove this debugging code.
+                /*
+                console.log(JSON.stringify(raw_edges));
+                raw_edges.forEach(edge => {
+                  console.log("Edge 0: " + edge[0] + ", Edge 1: " + edge[1]);
+                });
+                */
+                raw_edges.forEach(edge => { tree[edge[0]].children[edge[1]] = edge }); // ?????
                 this.processNode(edges, tree, Object.keys(tree)[0], nodes, nodes_processed, start);
                 this.legend.relations = {}
                 edges.forEach(edge => {

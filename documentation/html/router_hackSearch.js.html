@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: views/CreateRecord/NewRecord.vue</title>
+	<title>FAIRsharing.org Source: router/hackSearch.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,162 +86,86 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: views/CreateRecord/NewRecord.vue</h1>
+		<h1 class="page-title">Source: router/hackSearch.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-container
-    id="createRecord"
-    fluid
-  >
-    &lt;v-form
-      id="createRecord"
-      ref="createRecord"
-      v-model="formValid"
-    >
-      &lt;v-row>
-        &lt;v-col cols="12">
-          &lt;v-card v-if="loaded">
-            &lt;v-card-title class="primary white--text">
-              &lt;h3 class="white--text">
-                Creating a new FAIRsharing record
-              &lt;/h3>
-            &lt;/v-card-title>
-            &lt;v-card-text
-              v-if="message.error"
-              class="pt-4"
-            >
-              &lt;v-alert type="error">
-                {{ message.value }}&lt;v-icon class="px-3">
-                  fa-arrow-right
-                &lt;/v-icon> {{ message.value.response.data }}
-              &lt;/v-alert>
-            &lt;/v-card-text>
-            &lt;v-card-text class="pt-3">
-              &lt;v-container fluid>
-                &lt;v-row>
-                  &lt;base-fields />
-                &lt;/v-row>
-              &lt;/v-container>
-            &lt;/v-card-text>
-            &lt;v-card-actions>
-              &lt;v-btn
-                class="primary"
-                :disabled="!formValid"
-                @click="createRecord()"
-              >
-                Create Record
-              &lt;/v-btn>
-            &lt;/v-card-actions>
-          &lt;/v-card>
+            class="sunlight-highlight-javascript linenums">/*
+ * The purpose of this file is to intercept search parameters before they are passed to the API. It's necessary
+ * as links which were generated on the old system may appear in old (or not so old) papers, on other sites etc.
+ * If anyone complains they've clicked on a link to FAIRsharing that "doesn't work" then it may be found to be one
+ * of these, and might perhaps require the specific terms be added to the lookup tables here.
+ * Unfortunately it seems difficult to test and results in:
+ * Timeout - Async callback was not invoked within the 5000ms timeout specified by jest.setTimeout.Timeout
+ */
 
-          &lt;v-fade-transition>
-            &lt;v-overlay
-              v-if="!loaded"
-              :absolute="false"
-              opacity="0.8"
-            >
-              &lt;loaders />
-            &lt;/v-overlay>
-          &lt;/v-fade-transition>
-        &lt;/v-col>
-      &lt;/v-row>
-    &lt;/v-form>
-  &lt;/v-container>
-&lt;/template>
 
-&lt;script>
-    import { mapState, mapActions, mapGetters } from "vuex"
-    import RESTClient from "@/lib/Client/RESTClient.js"
-    import status from "@/data/status.json"
-    import BaseFields from "../../components/Editor/GeneralInformation/BaseFields";
-    import Loaders from "../../components/Navigation/Loaders";
-
-    let restClient = new RESTClient();
-
-    /** Component to generate the new record page and its buttons to redirect to new collection, standard, policy and database
-     *
-     */
-    export default {
-      name: "NewRecordPage",
-      components: {Loaders, BaseFields},
-      data(){
-          return {
-            record: {},
-            recordsTypes: [],
-            formValid: false,
-            loaded: false,
-            message: {
-              error: false,
-              value: null
-            }
-          }
-        },
-        computed: {
-            ...mapState('users', ["user"]),
-            ...mapGetters('record', ['getSection'])
-        },
-        async mounted(){
-          this.$nextTick(async function () {
-            this.loaded = false;
-            this.resetRecord();
-            await this.getData();
-            this.loaded = true;
-            this.$store.commit("record/setCreatingNewRecord");
-          });
-        },
-        methods: {
-          ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
-          ...mapActions("record", ["resetRecord"]),
-          async getData(){
-            await this.getCountries();
-            await this.getRecordTypes();
-            await this.getTags();
-          },
-          async createRecord(){
-            this.message = {
-              error: false,
-              value: null
-            };
-            let record = JSON.parse(JSON.stringify(this.getSection("generalInformation").data));
-            record.record_type_id = record.type.id;
-            record.metadata.status = status;
-            record.country_ids = record.countries.map(obj => obj.id);
-            record.metadata.status = record.status;
-
-            delete record.status;
-            delete record.countries;
-            delete record.type;
-            let new_record = await restClient.createRecord(record, this.user().credentials.token);
-            if (!new_record.error) {
-              this.$router.push({
-                path: new_record.data.id + "/edit"
-              });
+/**
+ * Convert a prop from the old system into that used by the new. Useful when old search links
+ * have been deployed elsewhere in the internet or in print (as long as we know about them).
+ * @returns  String - new form of the old prop
+ */
+export function hackSearch(query) {
+    let modified = false;
+    const lookupKeys = {
+        content: 'fairsharingRegistry'
+    };
+    const lookupValues = {
+        biodbcore: 'database'
+    }
+    Object.keys(query).forEach(function(key) {
+        let value = query[key];
+        // Delete keys with empty values.
+        if (!value) {
+            delete query[key];
+            modified = true;
+        }
+        // This key is no longer used in the system:
+        if (key === 'search_state') {
+            delete query[key];
+            modified = true;
+        }
+        // The key is outdated and needs to be replaced with the latest.
+        if (Object.keys(lookupKeys).includes(key)) {
+            let newKey = lookupKeys[key];
+            if (Object.keys(lookupValues).includes(value)) {
+                query[newKey] = lookupValues[value];
             }
             else {
-              this.message = {
-                error: true,
-                value: new_record.error
-              }
+                query[newKey] = value;
             }
-          }
-        },
-    }
-&lt;/script>
+            // Delete old key.
+            delete query[key];
+            modified = true;
+        }
+        // The key's OK but the value may need replacing.
+        else {
+            if (Object.keys(lookupValues).includes(value)) {
+                query[key] = lookupValues[value];
+                modified = true;
+            }
+        }
+    });
+    return [query, modified];
 
-&lt;style scoped>
-.v-autocomplete__content .v-subheader {
-  font-size: 2rem;
-  text-transform: capitalize;
 }
 
-#autocompleteSelect .v-list-item {
-  min-height: 0 !important;
-}
-&lt;/style>
-</pre>
+
+/*
+Fixed:
+https://fairsharing.org/search/?q=genomics&amp;content=biodbcore
+https://fairsharing.org/search/?q=transcriptomics&amp;content=biodbcore
+https://fairsharing.org/search/?q=genomics&amp;content=standard&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=proteomics&amp;content=biodbcore&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=proteomics&amp;content=standard&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=metabolomics&amp;content=biodbcore&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+https://fairsharing.org/search/?q=metabolomics&amp;content=standard&amp;name=&amp;taxonomies=&amp;organisations=&amp;shortname=&amp;description=&amp;supportlinks=&amp;licenses=&amp;countries=&amp;maintainers=&amp;expanded_onto_domains=&amp;expanded_onto_disciplines=&amp;user_defined_tags=&amp;record_id=&amp;miriam_id=&amp;search_state=hidden
+
+Covered by something else:
+https://fairsharing.org/standards/?q=transcriptomics
+
+ */</pre>
     </article>
 </section>
 

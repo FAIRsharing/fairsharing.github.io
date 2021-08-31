@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -215,7 +215,7 @@ for usage by the Vue components.</p>
 		<ul class="dummy">
 			<li>
 				<a href="store_recordSearch.js.html">store/recordSearch.js</a>,
-				 <a href="store_recordSearch.js.html#sunlight-1-line-151">line 151</a>
+				 <a href="store_recordSearch.js.html#sunlight-1-line-152">line 152</a>
 			</li>
 		</ul>
 	</dd>
@@ -448,7 +448,7 @@ builds the filtering system to be used by advanced search functions.</p>
 		<ul class="dummy">
 			<li>
 				<a href="store_introspector.js.html">store/introspector.js</a>,
-				 <a href="store_introspector.js.html#sunlight-1-line-109">line 109</a>
+				 <a href="store_introspector.js.html#sunlight-1-line-111">line 111</a>
 			</li>
 		</ul>
 	</dd>
@@ -518,7 +518,7 @@ builds the filtering system to be used by advanced search functions.</p>
 		<ul class="dummy">
 			<li>
 				<a href="store_introspector.js.html">store/introspector.js</a>,
-				 <a href="store_introspector.js.html#sunlight-1-line-156">line 156</a>
+				 <a href="store_introspector.js.html#sunlight-1-line-158">line 158</a>
 			</li>
 		</ul>
 	</dd>
@@ -599,7 +599,7 @@ builds the filtering system to be used by advanced search functions.</p>
 		<ul class="dummy">
 			<li>
 				<a href="store_recordSearch.js.html">store/recordSearch.js</a>,
-				 <a href="store_recordSearch.js.html#sunlight-1-line-126">line 126</a>
+				 <a href="store_recordSearch.js.html#sunlight-1-line-127">line 127</a>
 			</li>
 		</ul>
 	</dd>
@@ -834,7 +834,7 @@ builds the filtering system to be used by advanced search functions.</p>
 		<ul class="dummy">
 			<li>
 				<a href="store_introspector.js.html">store/introspector.js</a>,
-				 <a href="store_introspector.js.html#sunlight-1-line-111">line 111</a>
+				 <a href="store_introspector.js.html#sunlight-1-line-113">line 113</a>
 			</li>
 		</ul>
 	</dd>
@@ -858,6 +858,106 @@ builds the filtering system to be used by advanced search functions.</p>
         <h3 class="subsection-title">Methods</h3>
 
         <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="hackSearch"><span class="type-signature"></span>hackSearch()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Convert a prop from the old system into that used by the new. Useful when old search links
+have been deployed elsewhere in the internet or in print (as long as we know about them).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="router_hackSearch.js.html">router/hackSearch.js</a>,
+				 <a href="router_hackSearch.js.html#sunlight-1-line-16">line 16</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>String - new form of the old prop</p>
+</div>
+
+
+
+
+        
+
+    
+</dd>
+
+        
             
 <hr>
 <dt>
@@ -1846,7 +1946,7 @@ builds the filtering system to be used by advanced search functions.</p>
 		<ul class="dummy">
 			<li>
 				<a href="store_introspector.js.html">store/introspector.js</a>,
-				 <a href="store_introspector.js.html#sunlight-1-line-139">line 139</a>
+				 <a href="store_introspector.js.html#sunlight-1-line-141">line 141</a>
 			</li>
 		</ul>
 	</dd>
@@ -1968,7 +2068,7 @@ builds the filtering system to be used by advanced search functions.</p>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on Thu Aug 26th 2021
+		on Tue Aug 31st 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -126,14 +126,11 @@ describe("NetworkGraph.vue", function() {
         wrapper.vm.drawGraph()
     });
 
-    it("reloads page when route or max_path_length change", async () => {
+    it("reloads page when route changes", async () => {
         expect(getData).toHaveBeenCalledTimes(0);
         expect(wrapper.vm.currentRoute).toEqual(1234);
-        expect(wrapper.vm.max_path_length).toEqual(1);
-        wrapper.vm.max_path_length = 3;
-        expect(getData).toHaveBeenCalledTimes(1);
         $route.params.id = 10;
-        expect(getData).toHaveBeenCalledTimes(2);
+        expect(getData).toHaveBeenCalledTimes(1);
         expect(wrapper.vm.currentRoute).toEqual(10);
     })
 });

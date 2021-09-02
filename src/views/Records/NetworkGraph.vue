@@ -18,20 +18,6 @@
             <v-container fluid>
               <v-row no-gutters>
                 <v-col cols="12">
-                  <v-autocomplete
-                    v-model="max_path_length"
-                    class="mt-2 px-2"
-                    :items="depth"
-                    label="Select the depth of the graph"
-                    outlined
-                    hint="Setting to greater than 2 is not recommended."
-                    persistent-hint
-                  />
-                </v-col>
-              </v-row>
-              <v-divider />
-              <v-row no-gutters>
-                <v-col cols="12">
                   The graph's centre is shown in <span class="red--text">red.</span> The registry of each record is as follows:
                 </v-col>
                 <v-col cols="12">
@@ -80,7 +66,7 @@
                       <div class="diamond mb-3 mr-3" /> Collection
                     </v-row>
                   </v-container>
-                  <span>Click on any point to re-draw the graph with that point as the centre.</span>
+                  <span>Click on any point to re-draw the graph with that point as the centre. Click on the centre to view the record.</span>
                 </v-col>
               </v-row>
               <v-divider />
@@ -89,7 +75,7 @@
                   cols="12"
                   class="mt-0 pt-0 mb-0"
                 >
-                  <h4>Records Relationships</h4>
+                  <h4>Record Relationships</h4>
                 </v-col>
                 <v-col
                   v-for="(relationName, relationColor, relationIndex) in legend.relations"
@@ -157,7 +143,8 @@
                 loading: false,
                 initialized: false,
                 depth: [1, 2, 3],
-                max_path_length: 1,
+                registry: "unknown",
+                type: "unknown",
                 options: {
                     exporting: {
                         sourceWidth: 1502,
@@ -169,7 +156,8 @@
                     },
                     chart: {
                         type: 'networkgraph',
-                        height: '62.8%',
+                        //height: '62.8%',
+                        height: '82.8%',
                         plotBorderWidth: 0,
                         plotShadow: true,
                         renderTo: 'networkGraph',
@@ -179,7 +167,7 @@
                         animation: false,
                     },
                     title: {
-                        text: 'FAIRsharing',
+                        text: 'FAIRsharing Network Graph',
                         align: 'left',
                         verticalAlign: 'top',
                         y: 30,
@@ -220,7 +208,12 @@
                         events: {
                           click: /* istanbul ignore next */  async function(event) {
                             // Avoid redundant navigation to self...
-                            if (parseInt(_module.$route.params.id) !== parseInt(event.point.record_id)) {
+                            if (parseInt(_module.$route.params.id) == parseInt(event.point.record_id)) {
+                              _module.$router.push({
+                                path: "/" +  event.point.record_id
+                              })
+                            }
+                            else {
                               _module.$router.push({
                                 path: "/graph/" +  event.point.record_id
                               })
@@ -281,9 +274,6 @@
           async currentRoute() {
             await this.getData();
           },
-          async max_path_length() {
-            await this.getData();
-          }
         },
         async mounted() {
             this.$nextTick(async function () {
@@ -301,16 +291,21 @@
                 }
                 /* A maxPathLength of 1-4 may be specified (API's default is 2).
                  Higher values may make the resulting graph rather large... */
-                graphQuery.queryParam = {id: parseInt(this.$route.params.id), maxPathLength: this.max_path_length};
+                graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
                 const response = await graphClient.executeQuery(graphQuery);
-                this.graphData = response.fairsharingGraph
+                this.graphData = response.fairsharingGraph;
+                this.registry = this.graphData.registry;
+                this.type = this.graphData.type;
                 this.drawGraph(true)
                 this.loading = false;
                 this.initialized = true;
 
             },
             drawGraph(start=false){
+                let _module = this;
                 this.typesFound = [];
+                // TODO: This re-drawing of the graph could be moved to the server.
+                // Its purpose is to re-draw when some nodes are removed, making sure that children are also removed.
                 let raw_nodes = this.graphData.nodes,
                     raw_edges = this.graphData.edges,
                     tree = {},
@@ -324,7 +319,7 @@
                     children: {}
                   }
                 })
-                raw_edges.forEach(edge => { tree[edge[0]].children[edge[1]] = edge })
+                raw_edges.forEach(edge => { tree[edge[0]].children[edge[1]] = edge });
                 this.processNode(edges, tree, Object.keys(tree)[0], nodes, nodes_processed, start);
                 this.legend.relations = {}
                 edges.forEach(edge => {
@@ -339,7 +334,8 @@
                 this.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations = this.graphData.maxIterations;
                 this.options.series[0].nodes = nodes;
                 this.options.series[0].data = edges;
-                this.options.subtitle.text = this.options.series[0].nodes[0].id + ' Network Graph';
+                const rtype = "<br/>(" + _module.registry + "/" + _module.type + ")";
+                this.options.subtitle.text = this.options.series[0].nodes[0].id + rtype;
                 this.chart = new Highcharts.chart(this.options)
 
             },

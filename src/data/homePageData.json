@@ -16,14 +16,14 @@
     },
     {
       "link": "somewhereelse/",
-      "image": "assets/Home/Tabs/trainer.svg",
+      "image": "assets/Home/Tabs/journal.svg",
       "header": "Journal editors & publishers",
       "description": "Create and maintain an interrelated list of citable standards, databases and repositories to recommend to your authors, users or their community, and revise this recommendation over time...",
       "title": "Journal Publishers"
     },
     {
       "link": "alink/",
-      "image": "assets/Home/Tabs/journal.svg",
+      "image": "assets/Home/Tabs/trainer.svg",
       "header": "Research data facilitators, librarians, trainers",
       "description": "Use FAIRsharing to provide a foundation on which to create or enrich educational lectures, training and teaching material, and to plug into data management planning tools...",
       "title": "Librarians & Trainers"

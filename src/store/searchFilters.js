@@ -1,6 +1,7 @@
 import filterMapping from "@/data/FiltersLabelMapping.json"
 import GraphQLClient from "@/lib/GraphClient/GraphClient.js"
 import query from "@/lib/GraphClient/queries/getFilters.json";
+import queryMessages from "@/lib/GraphClient/queries/getMessages.json";
 import {isEqual} from 'lodash'
 import buttonOptions from '@/data/ButtonOptions.json'
 
@@ -9,6 +10,7 @@ const graphClient = new GraphQLClient();
 export const mutations = {
     setFilters(state, data) {
         state.filtersStatistic = data['searchFairsharingRecords']['aggregations'];
+        state.publicMessages = data['searchFairsharingRecords']['messages'];
         state.rawFilters = buildFilters(state.filtersStatistic);
         state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName !== 'status'));
     },
@@ -73,6 +75,8 @@ export const actions = {
     async assembleFilters(){
         this.commit("searchFilters/setLoadingStatus", true);
         let data = await graphClient.executeQuery(query);
+        let messageData = await graphClient.executeQuery(queryMessages);
+        data['searchFairsharingRecords']['messages'] = messageData.messages;
         this.commit('searchFilters/setFilters', data);
         this.commit('searchFilters/setFilterButtons');
         this.commit("searchFilters/setLoadingStatus", false);
@@ -106,7 +110,8 @@ let filtersStore = {
         filters: [],
         filtersStatistic: [],
         filterButtons: [],
-        isLoadingFilters: false
+        isLoadingFilters: false,
+        publicMessages:[]
     },
     mutations: mutations,
     actions: actions,

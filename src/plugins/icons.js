@@ -158,7 +158,7 @@ const customIcons  = {
         },
         model_and_format: {
             type: "img",
-            icon: "assets/records/model_and_format.png",
+            icon: "assets/records/model_and_format.svg",
             tooltip: "Model and Format"
         },
         reporting_guideline: {

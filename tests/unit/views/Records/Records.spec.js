@@ -10,7 +10,6 @@ import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
 import VueScrollTo from "vue-scrollto";
-import GraphClient from "@/lib/GraphClient/GraphClient";
 
 const sinon = require("sinon");
 const axios = require("axios");
@@ -39,42 +38,13 @@ const $store = new Vuex.Store({
     },
 });
 
-let mocks = {
-    graphMock: null,
-    restMock: null,
-    canEditStub: null,
-    canClaimStub: null,
-    claimRecord: null,
-    restore: function(mockKey) {
-        this[mockKey].restore();
-    },
-    restoreAll: function(){
-        this.restore("graphMock");
-    },
-    setMock: function(mockKey, targetClass, targetMethod, returnedValue){
-        this[mockKey] = sinon.stub(targetClass, targetMethod);
-        this[mockKey].returns(returnedValue);
-    },
-    throwMock: function(mockKey, targetClass, targetMethod){
-        this[mockKey] = sinon.stub(targetClass, targetMethod).throws(new Error("error"));
-    }
-};
-
-
 describe("Records.vue", () => {
 
     let vuetify;
+    let stub = sinon.stub(Client.prototype, "executeQuery");
 
-    beforeAll(async () => {
-        mocks.setMock("graphMock",
-            GraphClient.prototype,
-            "executeQuery",
-            {searchFairsharingRecords: {records: [1]}}
-        );
-    });
-
-    afterAll( () => {
-        mocks.restoreAll();
+    beforeAll(() => {
+        stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
     });
 
     // Set up the wrapper
@@ -100,7 +70,6 @@ describe("Records.vue", () => {
     });
 
     it("can correctly raise an error", async () => {
-        Client.prototype.executeQuery.restore();
         sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
             data: {
                 errors: [
@@ -143,6 +112,40 @@ describe("Records.vue", () => {
         });
     });
 
+    it("react to path change", async () => {
+        $route.path = "/search";
+        $route.query = {};
+        expect(wrapper.vm.currentPath[0]).toBe("Search");
+        $route.path = "/standard";
+        expect(wrapper.vm.currentPath[0]).toBe("Standard");
+    });
+
+    it("can correctly redirect", async () => {
+        /*
+         * This test passes when run by itself, but times out when run as part of the suite.
+         * This appears to have been caused by modifications to tryRedirect() as part of
+         * https://github.com/FAIRsharing/fairsharing.github.io/issues/1186.
+         */
+        jest.setTimeout(40000);
+        $route.path = "/standards";
+        $route.params = {fairsharingRegistry: "Standard"};
+        $route.query = {fairsharingRegistry: "Standard"};
+        const $router = {
+            push: jest.fn(),
+        };
+        let localWrapper = await shallowMount(Records, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify
+        });
+        await localWrapper.vm.tryRedirect();
+        expect($router.push).toHaveBeenCalledTimes(2);
+        $route.name = "test";
+        $route.params = {fairsharingRegistry: "123"};
+        $route.query = {fairsharingRegistry: "123"};
+        await localWrapper.vm.tryRedirect();
+        expect($router.push).toHaveBeenCalledTimes(2);
+    });
 
     it("can onScroll function work properly", () => {
 

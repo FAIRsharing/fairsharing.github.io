@@ -51,6 +51,10 @@ describe("Records.vue", () => {
         Client.prototype.executeQuery.restore();
     });
 
+    afterEach(() => {
+        stub.restore()
+    })
+
     // Set up the wrapper
     let wrapper;
     beforeEach(async () => {

@@ -10,6 +10,7 @@ import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
 import VueScrollTo from "vue-scrollto";
+import GraphClient from "@/lib/GraphClient/GraphClient";
 
 const sinon = require("sinon");
 const axios = require("axios");
@@ -38,16 +39,42 @@ const $store = new Vuex.Store({
     },
 });
 
+let mocks = {
+    graphMock: null,
+    restMock: null,
+    canEditStub: null,
+    canClaimStub: null,
+    claimRecord: null,
+    restore: function(mockKey) {
+        this[mockKey].restore();
+    },
+    restoreAll: function(){
+        this.restore("graphMock");
+    },
+    setMock: function(mockKey, targetClass, targetMethod, returnedValue){
+        this[mockKey] = sinon.stub(targetClass, targetMethod);
+        this[mockKey].returns(returnedValue);
+    },
+    throwMock: function(mockKey, targetClass, targetMethod){
+        this[mockKey] = sinon.stub(targetClass, targetMethod).throws(new Error("error"));
+    }
+};
+
+
 describe("Records.vue", () => {
 
     let vuetify;
-    let stub = sinon.stub(Client.prototype, "executeQuery");
 
-    stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
+    beforeAll(async () => {
+        mocks.setMock("graphMock",
+            GraphClient.prototype,
+            "executeQuery",
+            {searchFairsharingRecords: {records: [1]}}
+        );
+    });
 
-    afterAll(() => {
-        Client.prototype.executeQuery.restore();
-        stub.restore()
+    afterAll( () => {
+        mocks.restoreAll();
     });
 
     // Set up the wrapper

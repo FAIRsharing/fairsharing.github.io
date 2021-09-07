@@ -99,6 +99,50 @@ describe("Records.vue", () => {
         expect(wrapper.vm.currentPath[0]).toBe("Standard");
     });
 
+    it("can correctly raise an error", async () => {
+        Client.prototype.executeQuery.restore();
+        sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
+            data: {
+                errors: [
+                    {message: "Error"}
+                ]
+            }
+        });
+        await expect(wrapper.vm.getData()).rejects;
+        axios.post.restore();
+    });
+
+    it("can get the records", async () => {
+        $route.query = {
+            "test": "abc",
+            "test2": ["abcdef"],
+            "test3": "abc, def",
+            "test4": 123,
+            "test5": true
+        };
+        let returnedVal = {
+            data: {
+                data: fakeIntrospection.data
+            },
+            headers: {
+                maintenance: "false"
+            }
+        };
+        sinon.stub(Client.prototype, "getData").withArgs(sinon.match.any).returns(returnedVal);
+        await wrapper.vm.$store.dispatch("introspection/fetchParameters");
+        Client.prototype.getData.restore();
+        const path = wrapper.vm.currentPath;
+        const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
+        expect(queryParameters).toStrictEqual({
+            fairsharingRegistry: "Standard",
+            test: 'abc',
+            test2: 'abcdef',
+            test3: ['abc', ' def'],
+            test4: 123,
+            test5: true
+        });
+    });
+
 
     it("can onScroll function work properly", () => {
 

@@ -60,7 +60,7 @@ async function bootstrapApp() {
         await store.dispatch('users/login');
         await store.dispatch("introspection/fetchParameters");
         await store.dispatch("searchFilters/assembleFilters");
-        await store.dispatch("messages/setMessages");
+        // await store.dispatch("messages/setMessages");
     }
     catch {
         store.commit("introspection/setMaintenanceMode");

@@ -43,12 +43,18 @@ describe("Records.vue", () => {
     let vuetify;
     let stub = sinon.stub(Client.prototype, "executeQuery");
 
-    beforeAll(() => {
+    beforeAll(async () => {
         stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
     });
 
     afterAll(() => {
+        try {
         Client.prototype.executeQuery.restore();
+        }
+            // eslint-disable-next-line no-empty
+        catch (e){
+
+        }
     });
 
     // Set up the wrapper

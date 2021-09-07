@@ -1,6 +1,5 @@
 module.exports = {
     preset: "@vue/cli-plugin-unit-jest",
-    testEnvironment: "jest-environment-jsdom-fifteen",
     collectCoverage: true,
     coverageReporters: [
         "lcov"

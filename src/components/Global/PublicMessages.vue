@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="publicMessages.length"
+    v-if="publicMessages.length && !loading"
     class="my-2"
   >
     <v-alert
@@ -8,7 +8,7 @@
       :key="messageObj.message+'_'+index"
       dense
       type="warning"
-      class="mb-2 flex-grow-1"
+      class="mb-2 mx-2 flex-grow-1"
     >
       {{ `${messageObj.updatedAt}: ${messageObj.message} ` }}
     </v-alert>
@@ -21,7 +21,7 @@ import {mapState} from "vuex";
 export default {
   name: "PublicMessages",
   computed: {
-    ...mapState('searchFilters', ["publicMessages"])
+    ...mapState('messages', ["publicMessages","loading"])
   }
 }
 </script>

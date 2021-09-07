@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils"
 import PublicMessages from "@/components/Global/PublicMessages"
 import Vuetify from 'vuetify'
 import Vuex from "vuex";
-import searchFilters from "@/store/searchFilters.js";
+import messages from "@/store/messages.js";
 const vuetify = new Vuetify();
 const localVue = createLocalVue();
 
@@ -10,7 +10,7 @@ localVue.use(Vuex);
 
 const $store = new Vuex.Store({
     modules: {
-        searchFilters: searchFilters
+        messages: messages
     }
 });
 

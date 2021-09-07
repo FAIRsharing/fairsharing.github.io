@@ -29,7 +29,7 @@ describe("PublicMessages.vue", () => {
     })
 
     it("can be check moment method", () => {
-        const momentifiedDate = wrapper.vm.moment('2021-08-26T14:24:46Z');
+        const momentifiedDate = wrapper.vm.momentify('2021-08-26T14:24:46Z');
         expect(momentifiedDate).toBe('Thursday, August 26th 2021, 15:24')
     });
 

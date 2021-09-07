@@ -10,7 +10,7 @@
       type="warning"
       class="mb-0 mx-2 flex-grow-1"
     >
-      {{ `${moment(messageObj.updatedAt)}: ${messageObj.message} ` }}
+      {{ `${moment(messageObj.updatedAt)}: ${messageObj.message}` }}
     </v-alert>
   </div>
 </template>

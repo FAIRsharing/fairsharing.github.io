@@ -17,12 +17,20 @@ const $store = new Vuex.Store({
 });
 
 describe("PublicMessages.vue", () => {
+    let wrapper;
+
     it("can be instantiated", () => {
-        const wrapper = shallowMount(PublicMessages, {
+            wrapper = shallowMount(PublicMessages, {
             localVue,
             vuetify,
             mocks:{$store}
         });
         expect(wrapper.name()).toMatch("PublicMessages");
     })
+
+    it("can be check moment method", () => {
+        const momentifiedDate = wrapper.vm.moment('2021-08-26T14:24:46Z');
+        expect(momentifiedDate).toBe('Thursday, August 26th 2021, 15:24')
+    });
+
 });

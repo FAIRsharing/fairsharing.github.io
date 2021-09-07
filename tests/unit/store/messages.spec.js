@@ -8,9 +8,6 @@ describe('Mutations & Actions', () => {
     const returnedVal = MessagesData;
     let state = {};
     let stub;
-    stub = sinon.stub(GraphClient.prototype, "executeQuery");
-    stub.returns(returnedVal);
-
     actions.commit = jest.fn();
 
     beforeEach(() => {
@@ -18,6 +15,8 @@ describe('Mutations & Actions', () => {
             loading: false,
             publicMessages:[],
         };
+        stub = sinon.stub(GraphClient.prototype, "executeQuery");
+        stub.returns(returnedVal);
     });
     afterEach(()=>{
         stub.restore();

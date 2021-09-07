@@ -47,10 +47,6 @@ describe("Records.vue", () => {
         stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
     });
 
-    afterAll(() => {
-        Client.prototype.executeQuery.restore();
-    });
-
     afterEach(() => {
         stub.restore()
     })

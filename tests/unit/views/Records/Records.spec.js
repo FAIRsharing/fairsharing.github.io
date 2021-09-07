@@ -47,10 +47,6 @@ describe("Records.vue", () => {
         stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
     });
 
-    afterAll(() => {
-        Client.prototype.executeQuery.restore();
-    });
-
     // Set up the wrapper
     let wrapper;
     beforeEach(async () => {
@@ -74,7 +70,6 @@ describe("Records.vue", () => {
     });
 
     it("can correctly raise an error", async () => {
-        Client.prototype.executeQuery.restore();
         sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
             data: {
                 errors: [

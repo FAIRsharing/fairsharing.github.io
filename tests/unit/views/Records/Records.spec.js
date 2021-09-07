@@ -74,7 +74,6 @@ describe("Records.vue", () => {
     });
 
     it("can correctly raise an error", async () => {
-        Client.prototype.executeQuery.restore();
         sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
             data: {
                 errors: [

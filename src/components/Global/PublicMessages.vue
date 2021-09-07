@@ -10,7 +10,7 @@
       type="warning"
       class="mb-0 mx-2 flex-grow-1"
     >
-      {{ `${moment(messageObj.updatedAt)}: ${messageObj.message}` }}
+      {{ `${momentify(messageObj.updatedAt)}: ${messageObj.message}` }}
     </v-alert>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
     ...mapState('messages', ["publicMessages", "loading"])
   },
   methods: {
-    moment(date) {
+    momentify(date) {
       return moment(date).format('dddd, MMMM Do YYYY, H:mm');
     }
   }

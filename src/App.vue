@@ -21,6 +21,7 @@
     <Jumbotron
       :content="getJumbotronData()"
     />
+    <PublicMessages />
     <router-view class="min-height-70vh" />
     <Footer />
   </v-app>
@@ -33,10 +34,11 @@
     import Footer from "@/components/Navigation/Footer";
     import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
     import jumbotronData from "@/data/jumbotronData.json"
+    import PublicMessages from "@/components/Global/PublicMessages";
 
     export default {
         name: "App2",
-        components: {NavigationDrawer, Footer, Header, Jumbotron},
+        components: {PublicMessages, NavigationDrawer, Footer, Header, Jumbotron},
         data() {
           return {
             title: null,

@@ -1,0 +1,8 @@
+{
+  "queryName": "messages",
+  "queryParam": null,
+  "fields": [
+    "message",
+    "updatedAt"
+  ]
+}

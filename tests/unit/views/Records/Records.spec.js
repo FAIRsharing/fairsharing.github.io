@@ -47,10 +47,6 @@ describe("Records.vue", () => {
         stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
     });
 
-    afterEach(() => {
-        stub.restore()
-    })
-
     // Set up the wrapper
     let wrapper;
     beforeEach(async () => {

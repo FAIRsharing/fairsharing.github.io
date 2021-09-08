@@ -215,6 +215,7 @@
       type="application/ld+json"
       v-html="JSONLD"
     />
+    <!-- eslint-enable vue/no-v-html -->
     <v-dialog
       v-model="history.show"
       fullscreen
@@ -248,7 +249,6 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <!-- eslint-enable vue/no-v-html -->
   </main>
 </template>
 

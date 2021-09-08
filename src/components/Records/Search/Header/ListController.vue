@@ -97,7 +97,7 @@
                     v-on="on"
                     @click="changeListType('columnList')"
                   >
-                    fa-th-list
+                    fa-th
                   </v-icon>
                 </template>
                 <span>{{ listControllerData.gridList }}</span>

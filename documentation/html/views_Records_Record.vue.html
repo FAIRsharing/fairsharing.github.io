@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -92,7 +92,7 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  &lt;v-main>
+  &lt;main>
     &lt;v-container
       v-if="queryTriggered"
       fluid
@@ -235,16 +235,21 @@
       &lt;/v-row>
 
       &lt;!--  CuratorsNotes   -->
-      &lt;CuratorNotes class="ma-4 mb-7" />
+      &lt;CuratorNotes
+        id="curatorNotes"
+        class="ma-4 mb-7"
+      />
 
       &lt;Tombstone
         v-if="currentRecord['fairsharingRecord'] &amp;&amp; currentRecord['fairsharingRecord'].metadata.tombstone"
+        id="tombStone"
         :record="currentRecord['fairsharingRecord']"
       />
       &lt;!--  Content  -->
       &lt;div v-if="currentRecord['fairsharingRecord'] &amp;&amp; !error &amp;&amp; !currentRecord['fairsharingRecord'].metadata.tombstone">
         &lt;!-- Top Block -->
         &lt;GeneralInfo
+          id="generalInfo"
           :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
           @requestOwnership="requestOwnership"
@@ -257,6 +262,7 @@
               &lt;component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.leftBlock"
+                :id="block.toLowerCase()"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
@@ -268,6 +274,7 @@
               &lt;component
                 :is="block"
                 v-for="(block,index) in currentDynamicBlock.rightBlock"
+                :id="block.toLowerCase()"
                 :key="block"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
@@ -278,16 +285,19 @@
         &lt;!-- Bottom Block -->
         &lt;Publications
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          id="publications"
           class="mb-8 ma-4"
         />
         &lt;!-- Additional Information -->
         &lt;AdditionalInfo
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+          id="additionalInfo"
           class="mb-8 ma-4"
         />
         &lt;!-- Search Collection -->
         &lt;SearchCollection
           v-if="currentRecord.fairsharingRecord.registry==='Collection'"
+          id="searchCollection"
           class="mb-10 ma-4"
         />
       &lt;/div>
@@ -298,6 +308,7 @@
       type="application/ld+json"
       v-html="JSONLD"
     />
+    &lt;!-- eslint-enable vue/no-v-html -->
     &lt;v-dialog
       v-model="history.show"
       fullscreen
@@ -323,6 +334,7 @@
         &lt;v-card-text class="pt-2">
           &lt;RecordHistory
             v-if="!history.loading"
+            id="recordHistory"
             :history="currentRecordHistory.history"
             :legacy-logs="currentRecordHistory.legacyLogs"
           />
@@ -330,8 +342,7 @@
         &lt;/v-card-text>
       &lt;/v-card>
     &lt;/v-dialog>
-    &lt;!-- eslint-enable vue/no-v-html -->
-  &lt;/v-main>
+  &lt;/main>
 &lt;/template>
 
 &lt;script>
@@ -440,6 +451,8 @@ export default {
       await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons();
+      await this.$nextTick();
+      await this.$scrollTo(this.$route.hash || 'body')
     },
     async userIsLoggedIn() {
       await this.canEditRecord();
@@ -457,6 +470,14 @@ export default {
       await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons()
+      await this.$nextTick();
+    try {
+      await this.$scrollTo(this.$route.hash || 'body')
+      // eslint-disable-next-line no-empty
+    } catch (e) {
+      // This serves to prevent warnings when tests are run on Github (trying to scroll with no DOM etc.).  #1201
+    }
+    // update the UI padding and margin after DOM is fully loaded.
   },
   methods: {
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
@@ -793,6 +814,11 @@ export default {
   },
 }
 &lt;/script>
+&lt;style scoped>
+ul,li {
+  padding: 0;
+}
+&lt;/style>
 </pre>
     </article>
 </section>
@@ -838,7 +864,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on Tue Jul 27th 2021
+		on Wed Sep 8th 2021
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

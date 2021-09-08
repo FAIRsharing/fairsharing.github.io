@@ -10,6 +10,8 @@
     <SectionTitle title="General Information" />
     <!-- Deprecation Reason -->
     <DeprecationReason />
+    <!-- Replaced By record -->
+    <ReplacedByRecord />
     <!-- Title and DOI -->
     <DOITitle />
     <!--  other data  -->
@@ -80,10 +82,12 @@ import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
 import {mapState} from "vuex";
 import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
 import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason";
+import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord";
 
 export default {
   name: "GeneralInfo",
   components: {
+    ReplacedByRecord,
     DeprecationReason,
     ReferenceURL,
     Maintainers,

@@ -47,7 +47,7 @@ export const mutations = {
             }
         });
     },
-    setLoadingStatus(state, status){
+    setLoadingStatus(state, status) {
         state.isLoadingFilters = status;
     },
     resetFilterButtons(state, itemParentIndex) {
@@ -106,7 +106,7 @@ let filtersStore = {
         filters: [],
         filtersStatistic: [],
         filterButtons: [],
-        isLoadingFilters: false
+        isLoadingFilters: false,
     },
     mutations: mutations,
     actions: actions,

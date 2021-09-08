@@ -7,7 +7,7 @@ import introspection from "./introspector.js"
 import users from './users.js'
 import uiController from "./uiController";
 import editor from "./editor"
-
+import messages from "./messages"
 
 Vue.use(Vuex);
 
@@ -20,7 +20,8 @@ export default new Vuex.Store({
         introspection: introspection,
         users: users,
         uiController: uiController,
-        editor: editor
+        editor: editor,
+        messages: messages,
     }
 })
 

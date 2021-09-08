@@ -5,6 +5,8 @@
     "nodes",
     "edges",
     "linkLength",
-    "maxIterations"
+    "maxIterations",
+    "registry",
+    "type"
   ]
 }

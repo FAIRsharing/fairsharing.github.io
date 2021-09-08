@@ -74,8 +74,9 @@ export const getters = {
         let queryParameters = {};
         Object.keys(params[1]).forEach(function (param) {
             let expectedTypeObject = null;
-            if(state.searchQueryParameters.args===undefined) return;
+            if(state.searchQueryParameters.args === undefined) return;
             let currentParam = state.searchQueryParameters.args.filter(arg => arg.name === param)[0];
+            if(currentParam === undefined) return;
             expectedTypeObject = currentParam.type;
             if (expectedTypeObject.kind !== "LIST") {
                 queryParameters[param] = parseParam(expectedTypeObject, params[1][param]);
@@ -95,6 +96,7 @@ export const getters = {
                 }
             }
         });
+        /* istanbul ignore else */
         if (params[0] !== "Search") {
             queryParameters["fairsharingRegistry"] = params[0];
         }

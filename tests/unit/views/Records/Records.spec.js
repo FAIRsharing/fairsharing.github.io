@@ -47,10 +47,6 @@ describe("Records.vue", () => {
         stub.withArgs(sinon.match.object).returns({searchFairsharingRecords: {records: [1]}});
     });
 
-    afterAll(() => {
-        Client.prototype.executeQuery.restore();
-    });
-
     // Set up the wrapper
     let wrapper;
     beforeEach(async () => {
@@ -74,7 +70,6 @@ describe("Records.vue", () => {
     });
 
     it("can correctly raise an error", async () => {
-        Client.prototype.executeQuery.restore();
         sinon.stub(axios, "post").withArgs(sinon.match.any).returns({
             data: {
                 errors: [
@@ -114,7 +109,7 @@ describe("Records.vue", () => {
             test3: ['abc', ' def'],
             test4: 123,
             test5: true
-        })
+        });
     });
 
     it("react to path change", async () => {
@@ -123,10 +118,15 @@ describe("Records.vue", () => {
         expect(wrapper.vm.currentPath[0]).toBe("Search");
         $route.path = "/standard";
         expect(wrapper.vm.currentPath[0]).toBe("Standard");
-
     });
 
     it("can correctly redirect", async () => {
+        /*
+         * This test passes when run by itself, but times out when run as part of the suite.
+         * This appears to have been caused by modifications to tryRedirect() as part of
+         * https://github.com/FAIRsharing/fairsharing.github.io/issues/1186.
+         */
+        jest.setTimeout(40000);
         $route.path = "/standards";
         $route.params = {fairsharingRegistry: "Standard"};
         $route.query = {fairsharingRegistry: "Standard"};

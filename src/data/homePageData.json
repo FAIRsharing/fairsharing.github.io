@@ -183,14 +183,14 @@
       "description": "Standards and/or databases recommended by journal or funder data policies.",
       "icon": "recommended",
       "buttonTitle": "find",
-      "link": ""
+      "link": "/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard"
     },
     "secondColumn":{
       "title": "Collections",
       "description": "Standards and/or databases grouped by domain, species or organisation.",
       "icon": "collections",
       "buttonTitle": "discover",
-      "link": ""
+      "link": "/search?fairsharingRegistry=collection&page=1"
     },
     "thirdColumn":{
       "title": "Educational",
@@ -199,5 +199,123 @@
       "buttonTitle": "learn",
       "link": "/educational"
     }
+  },
+  "blockLogos":
+  {
+    "singleImageSlider": [
+      {
+        "image": "assets/Community/LogoImageSingle/elife.jpg",
+        "adopter": "eLIFE",
+        "associated": "Policy",
+        "associatedLink": "/FAIRsharing.F0QmCP"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/elsevier.jpg",
+        "adopter": "Elsevier",
+        "associated": "Recommendation",
+        "associatedLink": "/bsg-c000041"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/embopress.jpg",
+        "adopter": "EMBO Press",
+        "associated": "Recommendation",
+        "associatedLink": "/bsg-c000014"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/facultyof1000.jpg",
+        "adopter": "Faculty of 1000",
+        "associated": "Recommendation",
+        "associatedLink": "/bsg-c000010"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/gigaScience.jpg",
+        "adopter": "GigaScience",
+        "associated": "Recommendation",
+        "associatedLink": "/bsg-c000036"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/plos.jpg",
+        "adopter": "Public Library of Science (PLOS)",
+        "associated": "Recommendation",
+        "associatedLink": "/bsg-c000009"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/biomed.jpg",
+        "adopter": "Springer Nature BioMed Central",
+        "associated": "Recommendation",
+        "associatedLink": "/bsg-c000007"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/scientificData.jpg",
+        "adopter": "Springer Nature Scientific Data",
+        "associated": "Recommendation",
+        "associatedLink": "/bsg-c000001"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/taylor.jpg",
+        "adopter": "Taylor and Francis",
+        "associated": "Recommendation",
+        "associatedLink": "/bsg-c000059"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/wellcome.jpg",
+        "adopter": "Wellcome Open Research",
+        "associated": "Recommendation",
+        "associatedLink": "/bsg-c000031"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/willy.jpg",
+        "adopter": "Wiley",
+        "associated": "Policy",
+        "associatedLink": "/FAIRsharing.xwnZRC"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/peerj.jpg",
+        "adopter": "PeerJ",
+        "associated": "Policy",
+        "associatedLink": "/FAIRsharing.GWDS6L"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/hindawo.jpg",
+        "adopter": "Hindawi",
+        "associated": "Policy",
+        "associatedLink": "/FAIRsharing.6kP2Dv"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/cambridgeUniPress.jpg",
+        "adopter": "Cambridge University Press"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/oxfordPress.jpg",
+        "adopter": "Oxford University Press"
+      },
+      {
+        "image": "assets/Community/LogoImageSingle/royalSociety.jpg",
+        "adopter": "The Royal Society Publishing"
+      }
+    ] ,
+    "multipleImageSlider": [
+      {
+        "image": "assets/Community/LogoImageGroup/logo-group1.jpg"
+      },
+      {
+        "image": "assets/Community/LogoImageGroup/logo-group2.jpg"
+      },
+      {
+        "image": "assets/Community/LogoImageGroup/logo-group3.jpg"
+      },
+      {
+        "image": "assets/Community/LogoImageGroup/logo-group4.jpg"
+      },
+      {
+        "image": "assets/Community/LogoImageGroup/logo-group5.jpg"
+      },
+      {
+        "image": "assets/Community/LogoImageGroup/logo-group6.jpg"
+      },
+      {
+        "image": "assets/Community/LogoImageGroup/logo-group7.jpg"
+      }
+    ]
   }
 }

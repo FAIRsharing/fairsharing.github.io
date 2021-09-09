@@ -229,7 +229,7 @@ const customIcons  = {
         },
         home_db: {
             type: "img",
-            icon: "assets/Home/BlockInfo/home-db-icon.svg"
+            icon: "assets/Home/BlockInfo/home-db.svg"
         },
         home_policies: {
             type: "img",

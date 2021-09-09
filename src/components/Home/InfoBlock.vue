@@ -20,8 +20,9 @@
               class="d-flex justify-center"
             >
               <v-img
+                class="mt-5"
                 contain
-                height="130px"
+                height="100px"
                 :src="$vuetify.icons.values['home_standard'].icon"
               />
             </div>
@@ -139,8 +140,9 @@
               class="d-flex justify-center"
             >
               <v-img
+                class="mt-5"
                 contain
-                height="130px"
+                height="100px"
                 :src="$vuetify.icons.values['home_policies'].icon"
               />
             </div>
@@ -235,10 +237,6 @@ export default {
     &__gradiant {
       height: 200px;
       background: rgb(171, 171, 171);
-      background: linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
-      background: -webkit-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
-      background: -o-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
-      background: -ms-linear-gradient(50deg, rgb(204, 204, 204) 0%, rgb(135, 135, 135) 100%);
     }
   }
 }

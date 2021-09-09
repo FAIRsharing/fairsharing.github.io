@@ -18,7 +18,7 @@
     </v-icon>
     <v-img
       v-else-if="$vuetify.icons.values[item].type === 'img'"
-      :class="{'mt-4': wrapperClass !== ''}"
+      :class="{'mt-0': wrapperClass !== ''}"
       contain
       :height="height"
       :width="height"
@@ -44,14 +44,14 @@
 <style scoped>
   .icon-container {
     position: absolute;
-    top: -45px;
+    top: -25px;
     background: white;
     border: #b3b3b3 dotted 3px;
     border-radius: 50% !important;
     -moz-border-radius: 50% !important;
     -webkit-border-radius: 50% !important;
-    width: 85px;
-    height: 85px;
+    width: 45px;
+    height: 45px;
     cursor: help;
   }
   .alt-container {

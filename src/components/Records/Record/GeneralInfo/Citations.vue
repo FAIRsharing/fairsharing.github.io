@@ -14,7 +14,10 @@
           tile
           elevation="3"
         >
-          <Icon item="howToCite" />
+          <Icon
+            item="howToCite"
+            size="10"
+          />
           <v-card-title class="pa-0 text--primary card-title-customize">
             How to cite this record
           </v-card-title>
@@ -68,7 +71,10 @@
           tile
           elevation="3"
         >
-          <Icon item="PublicationCitation" />
+          <Icon
+            item="PublicationCitation"
+            size="10"
+          />
           <v-card-title class="pa-0 card-title-customize">
             Publication for citation
           </v-card-title>

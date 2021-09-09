@@ -768,6 +768,11 @@ export default {
       let d = new Date();
       var pastYear = d.getFullYear() - 1;
       d.setFullYear(pastYear);
+      // The reason why reviews may appear null in production is unclear...
+      /* istanbul ignore if */
+      if (!_module.currentRecord['fairsharingRecord']['reviews']) {
+        return need;
+      }
       // Will always be 0 if user is not a curator, so the check for showing the button (above
       // also checks for their curator status.
       if (_module.currentRecord['fairsharingRecord']['reviews'].length === 0) {

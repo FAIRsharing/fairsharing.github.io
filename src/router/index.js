@@ -381,7 +381,7 @@ export async function afterEach(to) {
 const router = new VueRouter({
     routes,
     scrollBehavior,
-    mode: "history"
+    mode: process.env.VUE_APP_MODE // "history" or "hash"
 });
 
 export function scrollBehavior(to) {

@@ -118,77 +118,77 @@ const customIcons  = {
         },
         collection: {
             type: "img",
-            icon: "assets/records/collection-icon.png",
+            icon: "assets/records/collection-icon.svg",
             tooltip: "Collection"
         },
         journal: {
             type: "img",
-            icon: "assets/records/policy.png",
+            icon: "assets/records/policy.svg",
             tooltip: "Journal"
         },
-        identifier_schema:{
+        identifier_schema: {
             type: "img",
-            icon: "assets/records/identifier_schema.png",
+            icon: "assets/records/identifier_schema.svg",
             tooltip: "Identifier Schema"
         },
         society: {
             type: "img",
-            icon: "assets/records/policy.png",
+            icon: "assets/records/policy.svg",
             tooltip: "Society"
         },
         funder: {
             type: "img",
-            icon: "assets/records/policy.png",
+            icon: "assets/records/policy.svg",
             tooltip: "Funder"
         },
         project: {
             type: "img",
-            icon: "assets/records/policy.png",
+            icon: "assets/records/policy.svg",
             tooltip: "Project"
         },
         institution: {
             type: "img",
-            icon: "assets/records/policy.png",
+            icon: "assets/records/policy.svg",
             tooltip: "Institution"
         },
         terminology_artefact: {
             type: "img",
-            icon: "assets/records/terminology_artifact.png",
+            icon: "assets/records/terminology_artifact.svg",
             tooltip: "Terminology Artefact"
         },
         model_and_format: {
             type: "img",
-            icon: "assets/records/model_and_format.png",
+            icon: "assets/records/model_and_format.svg",
             tooltip: "Model and Format"
         },
         reporting_guideline: {
             type: "img",
-            icon: "assets/records/reporting_guidelines.png",
+            icon: "assets/records/reporting_guidelines.svg",
             tooltip: "Reporting Guideline"
         },
         metric: {
             type: "img",
-            icon: "assets/records/std-metric.png",
+            icon: "assets/records/std-metric.svg",
             tooltip: "Metric"
         },
         repository: {
             type: "img",
-            icon: "assets/records/db-icon.png",
+            icon: "assets/records/db-icon.svg",
             tooltip: "Repository"
         },
         journal_publisher: {
             type: "img",
-            icon: "assets/records/policy.png",
+            icon: "assets/records/policy.svg",
             tooltip: "Journal Publisher"
         },
         knowledgebase: {
             type: "img",
-            icon: "assets/records/db-icon.png",
+            icon: "assets/records/db-icon.svg",
             tooltip: "Knowledge Base"
         },
         knowledgebase_and_repository: {
             type: "img",
-            icon: "assets/records/db-icon.png",
+            icon: "assets/records/db-icon.svg",
             tooltip: "Knowledge Base & repository"
         },
         DOI: {
@@ -229,7 +229,7 @@ const customIcons  = {
         },
         home_db: {
             type: "img",
-            icon: "assets/Home/BlockInfo/home-db.svg"
+            icon: "assets/Home/BlockInfo/home-db-icon.svg"
         },
         home_policies: {
             type: "img",

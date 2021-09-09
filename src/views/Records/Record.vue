@@ -355,9 +355,11 @@ export default {
   watch: {
     async currentRoute() {
       await this.getData();
-      await this.canEditRecord();
-      await this.checkClaimStatus();
-      await this.getMenuButtons();
+      if (!this.error) {
+        await this.canEditRecord();
+        await this.checkClaimStatus();
+        await this.getMenuButtons();
+      }
       await this.$nextTick();
       await this.$scrollTo(this.$route.hash || 'body')
     },
@@ -374,9 +376,11 @@ export default {
   async mounted() {
       this.client = new Client();
       await this.getData();
-      await this.canEditRecord();
-      await this.checkClaimStatus();
-      await this.getMenuButtons()
+      if (!this.error) {
+        await this.canEditRecord();
+        await this.checkClaimStatus();
+        await this.getMenuButtons()
+      }
       await this.$nextTick();
     try {
       await this.$scrollTo(this.$route.hash || 'body')

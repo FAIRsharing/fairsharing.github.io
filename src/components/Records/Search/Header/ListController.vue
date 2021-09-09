@@ -48,7 +48,10 @@
         width="100%"
         type="list-item"
       >
-        <Pagination :total-pages="totalPages" />
+        <Pagination
+          :total-pages="totalPages"
+          :current-page="currentPage"
+        />
       </v-skeleton-loader>
       <div
         v-else
@@ -94,7 +97,7 @@
                     v-on="on"
                     @click="changeListType('columnList')"
                   >
-                    fa-th-list
+                    fa-th
                   </v-icon>
                 </template>
                 <span>{{ listControllerData.gridList }}</span>
@@ -137,7 +140,7 @@
             }
         },
         computed: {
-            ...mapState('records', ["totalPages", "loading"]),
+            ...mapState('records', ["totalPages", "loading", "currentPage"]),
         },
         methods: {
             changeListType: function (listType) {

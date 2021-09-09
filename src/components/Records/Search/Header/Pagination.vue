@@ -8,7 +8,6 @@
 
 <script>
     import {throttle} from 'lodash';
-    import {mapState} from "vuex";
 
     /** Component to handle the advanced search filters for the searchFairsharingRecords query.
      * @vue-prop {Number} [totalPages = 0] - the total number of pages to display
@@ -21,6 +20,10 @@
                 type: Number,
                 default: 0
             },
+            currentPage: {
+                type:Number,
+                default: 1
+            }
         },
         data() {
             return {
@@ -30,9 +33,6 @@
                 page: 1
             }
         },
-      computed:{
-        ...mapState("records", ["currentPage"]),
-      },
       watch: {
             '$route.name': function () {
                 this.currentPageLocal = 1;

@@ -98,6 +98,7 @@ export const actions = {
         }
         catch {
             // Loading complete, but no data returned...
+            /* istanbul ignore next */
             this.commit('records/setRecords', {"records":[]});
         }
     },

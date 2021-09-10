@@ -217,7 +217,7 @@ const customIcons  = {
         },
         collections: {
             type: "img",
-            icon: "assets/Home/BlockCategories/collections.png"
+            icon: "assets/Home/BlockInfo/collection-icon.svg"
         },
         educational: {
             type: "icon",

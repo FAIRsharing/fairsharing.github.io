@@ -204,93 +204,93 @@
   {
     "singleImageSlider": [
       {
-        "image": "assets/Community/LogoImageSingle/elife.jpg",
+        "image": "assets/Community/elife.jpg",
         "adopter": "eLIFE",
         "associated": "Policy",
         "associatedLink": "/FAIRsharing.F0QmCP"
       },
       {
-        "image": "assets/Community/LogoImageSingle/elsevier.jpg",
+        "image": "assets/Community/elsevier.png",
         "adopter": "Elsevier",
         "associated": "Recommendation",
         "associatedLink": "/bsg-c000041"
       },
       {
-        "image": "assets/Community/LogoImageSingle/embopress.jpg",
+        "image": "assets/Community/embo_logo.png",
         "adopter": "EMBO Press",
         "associated": "Recommendation",
         "associatedLink": "/bsg-c000014"
       },
       {
-        "image": "assets/Community/LogoImageSingle/facultyof1000.jpg",
+        "image": "assets/Community/logo_faculty_1000.png",
         "adopter": "Faculty of 1000",
         "associated": "Recommendation",
         "associatedLink": "/bsg-c000010"
       },
       {
-        "image": "assets/Community/LogoImageSingle/gigaScience.jpg",
+        "image": "assets/Community/logo_giga_science.png",
         "adopter": "GigaScience",
         "associated": "Recommendation",
         "associatedLink": "/bsg-c000036"
       },
       {
-        "image": "assets/Community/LogoImageSingle/plos.jpg",
+        "image": "assets/Community/PLOS_LOGO_black.png",
         "adopter": "Public Library of Science (PLOS)",
         "associated": "Recommendation",
         "associatedLink": "/bsg-c000009"
       },
       {
-        "image": "assets/Community/LogoImageSingle/biomed.jpg",
+        "image": "assets/Community/biomed.png",
         "adopter": "Springer Nature BioMed Central",
         "associated": "Recommendation",
         "associatedLink": "/bsg-c000007"
       },
       {
-        "image": "assets/Community/LogoImageSingle/scientificData.jpg",
+        "image": "assets/Community/scientificData.png",
         "adopter": "Springer Nature Scientific Data",
         "associated": "Recommendation",
         "associatedLink": "/bsg-c000001"
       },
       {
-        "image": "assets/Community/LogoImageSingle/taylor.jpg",
+        "image": "assets/Community/taylor_francis.png",
         "adopter": "Taylor and Francis",
         "associated": "Recommendation",
         "associatedLink": "/bsg-c000059"
       },
       {
-        "image": "assets/Community/LogoImageSingle/wellcome.jpg",
+        "image": "assets/Community/wellcome_bw.png",
         "adopter": "Wellcome Open Research",
         "associated": "Recommendation",
         "associatedLink": "/bsg-c000031"
       },
       {
-        "image": "assets/Community/LogoImageSingle/willy.jpg",
+        "image": "assets/Community/willy.jpg",
         "adopter": "Wiley",
         "associated": "Policy",
         "associatedLink": "/FAIRsharing.xwnZRC"
       },
       {
-        "image": "assets/Community/LogoImageSingle/peerj.jpg",
+        "image": "assets/Community/peerj.png",
         "adopter": "PeerJ",
         "associated": "Policy",
         "associatedLink": "/FAIRsharing.GWDS6L"
       },
       {
-        "image": "assets/Community/LogoImageSingle/hindawo.jpg",
+        "image": "assets/Community/hindawi.png",
         "adopter": "Hindawi",
         "associated": "Policy",
         "associatedLink": "/FAIRsharing.6kP2Dv"
       },
       {
-        "image": "assets/Community/LogoImageSingle/cambridgeUniPress.jpg",
+        "image": "assets/Community/cambridge_university_press.png",
         "adopter": "Cambridge University Press"
       },
       {
-        "image": "assets/Community/LogoImageSingle/oxfordPress.jpg",
+        "image": "assets/Community/oxford_university_press.png",
         "adopter": "Oxford University Press"
       },
       {
-        "image": "assets/Community/LogoImageSingle/royalSociety.jpg",
+        "image": "assets/Community/royal_society.png",
         "adopter": "The Royal Society Publishing"
       }
     ] ,

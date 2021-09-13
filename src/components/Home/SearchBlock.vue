@@ -25,7 +25,6 @@ export default {
 <style scoped>
 #container-back {
   background: rgb(37, 52, 66);
-  background: linear-gradient(180deg, rgb(37, 52, 66) 0%, rgb(15, 103, 139) 100%);
 }
 
 section {

@@ -21,7 +21,10 @@
           tile
           elevation="3"
         >
-          <Icon :item="item.icon" />
+          <Icon
+            :item="item.icon"
+            size="10"
+          />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ key | capitalize }}
           </v-card-title>

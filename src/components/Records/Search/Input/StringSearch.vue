@@ -123,7 +123,6 @@ export default {
     },
     searchStringHomePage() {
       const _module = this;
-      if (_module.searchTerm) {
         if (_module.selectedRegistries.length === _module.registries.length) {
           _module.$router.push({
             path: "/search",
@@ -148,7 +147,6 @@ export default {
           });
           _module.searchTerm = null;
         }
-      }
     }
   }
 }

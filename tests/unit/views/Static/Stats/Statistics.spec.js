@@ -59,7 +59,7 @@ describe("Statistics.vue", () => {
       expect(wrapper.vm.chartMaintainer["policy"].title).toBe("Policy records that have maintainers");
       expect(wrapper.vm.chartMaintainer["standard"].data[0].name).toBe("No");
       expect(wrapper.vm.chartMaintainer["database"].data[1].y).toBe(27);
-      expect(wrapper.vm.chartMaintainer["policy"].data[1].url).toBe('/#/search?fairsharingRegistry=policy&isMaintained=false');
+      expect(wrapper.vm.chartMaintainer["policy"].data[1].url).toBe('/search?fairsharingRegistry=policy&isMaintained=false');
 
       expect(wrapper.vm.chartLinkPie['database'].data.length).toBe(5);
       expect(wrapper.vm.chartLinkPie['database'].data[3].name).toBe("11-100");

@@ -848,7 +848,7 @@
              let vectItem = {
                name: nameMap[item.key],
                y: item.doc_count,
-               url: '/#/search?fairsharingRegistry='+item.key
+               url: '/search?fairsharingRegistry='+item.key
              };//window.location.hostname+
              this.chartRegistries.data.push(vectItem);
            });
@@ -879,7 +879,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/search?fairsharingRegistry='+text+'&subjects='+item.key;
+                       location.href = '/search?fairsharingRegistry='+text+'&subjects='+item.key;
                      }
                    }
                },
@@ -925,7 +925,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/search?countries='+item.key+searchText;
+                       location.href = '/search?countries='+item.key+searchText;
                      }
                    }
                },
@@ -964,7 +964,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/search?fairsharingRegistry='+text+'&taxonomies='+item.key;
+                       location.href = '/search?fairsharingRegistry='+text+'&taxonomies='+item.key;
                      }
                    }
                },
@@ -995,12 +995,12 @@
            "creative commons cc0 1.0 universal (cc0 1.0) public domain dedication": "CC0 1.0",
            "creative commons attribution 3.0 unported (cc by 3.0)": "CC BY 3.0",
            "iso privacy and copyright": "ISO Privacy and Copyright",
-           "apache license 2.0" :"Apache License 2.0","w3c document license": "W3C Document License",
-           "bsd-3-clause license (modified bsd license) (new bsd license)":"Modified BSD License",
+           "apache license 2.0" :"Apache Licence 2.0","w3c document license": "W3C Document Licence",
+           "bsd-3-clause license (modified bsd license) (new bsd license)":"Modified BSD Licence",
            "embl-ebi terms of use": "EMBL-EBI Terms of Use",
            "creative commons attribution-sharealike 3.0 unported (cc by-sa 3.0)": "CC BY-SA 3.0",
            "creative commons attribution-sharealike 4.0 international (cc by-sa 4.0)": "CC BY-SA 4.0",
-           "umls metathesaurus license": "UMLS Metathesaurus License","gnu general public license (gpl) 3.0":"GPL 3.0",
+           "umls metathesaurus license": "UMLS Metathesaurus Licence","gnu general public license (gpl) 3.0":"GPL 3.0",
            "creative commons attribution-noncommercial-noderivatives 4.0 international (cc by-nc-nd 4.0)": "CC BY-ND 4.0",
            "creative commons attribution-noncommercial-sharealike 3.0 unported (cc by-nc-sa 3.0)": "CC BY-NC-SA 3.0",
            "ogc document notice": "OGC Document Notice","creative commons attribution 2.0 generic (cc by 2.0)": "CC BY 2.0",
@@ -1026,7 +1026,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/search?fairsharingRegistry='+text+'&licences='+item.key;
+                       location.href = '/search?fairsharingRegistry='+text+'&licences='+item.key;
                      }
                    }
                },
@@ -1051,7 +1051,7 @@
              let vectItem = {
                name: nameMap[item.key],
                y: item.doc_count,
-               url: '/#/search?fairsharingRegistry='+text+"&isMaintained="+item.key_as_string
+               url: '/search?fairsharingRegistry='+text+"&isMaintained="+item.key_as_string
              };//window.location.hostname+
              chartField.data.push(vectItem);
            });
@@ -1082,7 +1082,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/'+data[key].id;
+                       location.href = '/'+data[key].id;
                      }
                    }
                },
@@ -1110,7 +1110,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/'+item.id;
+                       location.href = '/'+item.id;
                      }
                    }
                },
@@ -1174,7 +1174,7 @@
                point: {
                    events: {
                      click: /* istanbul ignore next */ function() {
-                       location.href = '/#/organisations/'+data[key].id;
+                       location.href = '/organisations/'+data[key].id;
                      }
                    }
                },

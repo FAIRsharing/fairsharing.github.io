@@ -27,13 +27,13 @@
           </v-alert>
 
           <v-alert
-            v-if="user().is_curator && needsReviewing()"
+            v-if="user().is_curator && needsReviewing() && !error"
             dense
             type="warning"
             class="mb-2 flex-grow-1"
           >
             <span>This record is in need of periodic curator review. </span>
-            <span v-if="currentRecord['fairsharingRecord']['reviews'].length === 0">
+            <span v-if="!reviewsPresent()">
               There has not been any review to date.
             </span>
             <span v-else>
@@ -355,9 +355,11 @@ export default {
   watch: {
     async currentRoute() {
       await this.getData();
-      await this.canEditRecord();
-      await this.checkClaimStatus();
-      await this.getMenuButtons();
+      if (!this.error) {
+        await this.canEditRecord();
+        await this.checkClaimStatus();
+        await this.getMenuButtons();
+      }
       await this.$nextTick();
       await this.$scrollTo(this.$route.hash || 'body')
     },
@@ -374,9 +376,11 @@ export default {
   async mounted() {
       this.client = new Client();
       await this.getData();
-      await this.canEditRecord();
-      await this.checkClaimStatus();
-      await this.getMenuButtons()
+      if (!this.error) {
+        await this.canEditRecord();
+        await this.checkClaimStatus();
+        await this.getMenuButtons()
+      }
       await this.$nextTick();
     try {
       await this.$scrollTo(this.$route.hash || 'body')
@@ -675,10 +679,8 @@ export default {
       let d = new Date();
       var pastYear = d.getFullYear() - 1;
       d.setFullYear(pastYear);
-      // Will always be 0 if user is not a curator, so the check for showing the button (above
-      // also checks for their curator status.
-      if (_module.currentRecord['fairsharingRecord']['reviews'].length === 0) {
-        need = true;
+      if (!_module.reviewsPresent()){
+        return !_module.reviewsPresent();
       }
       else {
         // Creating a date from the string returned by the API.
@@ -691,6 +693,16 @@ export default {
         })
       }
       return need;
+    },
+    reviewsPresent() {
+      const _module = this;
+      if (!_module.currentRecord['fairsharingRecord']['reviews']) {
+        return false;
+      }
+      if(_module.currentRecord['fairsharingRecord']['reviews'].length === 0) {
+        return false;
+      }
+      return true;
     },
     async reviewRecord() {
       // Post a review to the server.

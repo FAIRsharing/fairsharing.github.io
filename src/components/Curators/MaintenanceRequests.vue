@@ -50,12 +50,12 @@
                   wrapper-class=""
                 />
               </v-avatar>
-              <a :href="'#/' + props.item.id">
+              <a :href="'/' + props.item.id">
                 {{ props.item.recordName }}
               </a>
             </td>
             <td>
-              <a :href="'#/users/' + props.item.userId">
+              <a :href="'/users/' + props.item.userId">
                 {{ props.item.userName }}
               </a>
             </td>

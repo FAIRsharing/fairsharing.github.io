@@ -455,4 +455,20 @@ describe("Record.vue", function() {
         mocks.restore("graphMock");
     });
 
+    it("returns correct answer if no reviews present", async () => {
+        record.state.currentRecord.fairsharingRecord = {
+            maintainers: [{username: 123}],
+            metadata: {}
+        };
+        wrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router,
+            attachToDocument:[element,element2]
+        });
+        expect(wrapper.vm.reviewsPresent()).toBe(false);
+
+    });
+
 });

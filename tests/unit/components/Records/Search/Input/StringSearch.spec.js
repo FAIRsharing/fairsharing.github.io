@@ -63,11 +63,11 @@ describe("StringSearch.vue", () => {
 
         wrapper.vm.searchTerm = '';
         wrapper.vm.searchStringHomePage();
-        expect($router.push).toHaveBeenCalledTimes(1);
+        expect($router.push).toHaveBeenCalledTimes(2);
 
         wrapper.vm.searchTerm = 'testStringHome';
         wrapper.vm.searchStringHomePage();
-        expect($router.push).toHaveBeenCalledTimes(2);
+        expect($router.push).toHaveBeenCalledTimes(3);
         expect($router.push).toHaveBeenCalledWith({
             path: "/search",
             query: {q: "testStringHome"}
@@ -76,7 +76,7 @@ describe("StringSearch.vue", () => {
         wrapper2.vm.searchTerm = 'testStringHome';
         wrapper2.vm.selectedRegistries = [{label: 'standards', value: 'standard'}];
         wrapper2.vm.searchStringHomePage();
-        expect($router.push).toHaveBeenCalledTimes(3);
+        expect($router.push).toHaveBeenCalledTimes(4);
         expect($router.push).toHaveBeenCalledWith({
             path: "/search",
             query: {q: "testStringHome", fairsharingRegistry: "standard", searchAnd: false}

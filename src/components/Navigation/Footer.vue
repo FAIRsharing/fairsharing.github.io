@@ -63,7 +63,7 @@
         />
       </span>
     </div>
-    <!--  License and copy right  -->
+    <!--  Licence and copy right  -->
     <v-row
       class="d-flex flex-row justify-center align-center mb-2"
     >

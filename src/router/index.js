@@ -202,8 +202,8 @@ let routes = [
         component: Timeline,
     },
     {
-        name: "License",
-        path: "/license",
+        name: "Licence",
+        path: "/licence",
         component: Licence,
     },
     {

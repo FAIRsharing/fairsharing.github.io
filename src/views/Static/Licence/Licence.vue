@@ -2,7 +2,7 @@
   <main class="pa-15 mb-10">
     <!--  main_title -->
     <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-      Data sharing license and attribution, via the web and API
+      Data sharing licence and attribution, via the web and API
     </h1>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -10,7 +10,7 @@
       Except where otherwise noted, content on this site is licensed under a <a
         href="https://creativecommons.org/licenses/by-sa/4.0/legalcode"
         target="_blank"
-      >Creative Commons Attribution and Share-alike (CC-BY-SA) International 4.0</a> license.
+      >Creative Commons Attribution and Share-alike (CC-BY-SA) International 4.0</a> licence.
     </p>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -63,7 +63,7 @@
 </template>
 <script>
 export default {
-  name: "License"
+  name: "Licence"
 }
 </script>
 <style scoped>

@@ -1,20 +1,20 @@
 import {shallowMount} from "@vue/test-utils";
-import License from "@/views/Static/License/License"
+import Licence from "@/views/Static/Licence/Licence"
 import Vuetify from "vuetify"
 
 const vuetify = new Vuetify();
 
-describe("License.vue", function(){
+describe("Licence.vue", function(){
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(License, {
+        wrapper = shallowMount(Licence, {
             vuetify,
             stubs: ['router-link']
         })
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("License");
+        expect(wrapper.name()).toMatch("Licence");
     });
 });

@@ -7,6 +7,7 @@ import GraphClient from "@/lib/GraphClient/GraphClient";
 const sinon = require("sinon");
 import Networkgraph from 'highcharts/modules/networkgraph'
 import Highcharts from 'highcharts'
+import icons from "@/plugins/icons";
 Networkgraph(Highcharts);
 
 

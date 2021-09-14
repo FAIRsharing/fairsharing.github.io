@@ -42,6 +42,15 @@ let $store = new Vuex.Store({
     };
 const router = new VueRouter(),
     $router = { push: jest.fn() };
+//-- making a mock div element
+const element = document.createElement('div')
+element.id = 'hashtag'
+document.body.appendChild(element)
+
+//-- making a mock div element
+const element2 = document.createElement('div')
+element2.id = 'a'
+document.body.appendChild(element2)
 
 // Preparing mocks
 let mocks = {
@@ -138,6 +147,7 @@ describe("Record.vue", function() {
             localVue,
             vuetify,
             router,
+            attachToDocument:[element,element2]
         });
     });
 
@@ -455,6 +465,7 @@ describe("Record.vue", function() {
             localVue,
             vuetify,
             router,
+            attachToDocument:[element,element2]
         });
         expect(wrapper.vm.reviewsPresent()).toBe(false);
 

@@ -127,11 +127,11 @@ describe("NetworkGraph.vue", function() {
         wrapper.vm.drawGraph()
     });
 
-    it("reloads page when route changes",  () => {
-        expect(getData).toHaveBeenCalledTimes(0);
+    it("reloads page when route changes",  async () => {
+        expect(await wrapper.vm.getData).toHaveBeenCalledTimes(0);
         expect(wrapper.vm.currentRoute).toEqual(1234);
         $route.params.id = 10;
-        expect(getData).toHaveBeenCalledTimes(1);
+        expect(await wrapper.vm.getData).toHaveBeenCalledTimes(1);
         expect(wrapper.vm.currentRoute).toEqual(10);
     })
 });

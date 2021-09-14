@@ -54,7 +54,7 @@ let graphMock = {
                 "id": "Fourth",
                 "record_id": 160,
                 "marker": {
-                    "symbol": "??",
+                    "symbol": "triangle",
                     "radius": 10
                 }
             }

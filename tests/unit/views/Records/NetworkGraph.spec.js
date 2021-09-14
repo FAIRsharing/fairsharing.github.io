@@ -107,7 +107,8 @@ describe("NetworkGraph.vue", function() {
             localVue,
             vuetify,
             router,
-            mocks: { $router, $route }
+            mocks: { $router, $route },
+            attachToDocument:[div]
         });
         getData = jest.spyOn(wrapper.vm, "getData");
     });

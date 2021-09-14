@@ -12,7 +12,7 @@ Networkgraph(Highcharts);
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
-const vuetify = new Vuetify();
+const vuetify = new Vuetify({'icons':icons});
 
 const router = new VueRouter();
 const $router = { push: jest.fn() };

@@ -33,7 +33,14 @@
                         :disabled="!typesFound.includes('square')"
                         @change="drawGraph($event)"
                       />
-                      <div class="square mb-3 mr-5" /> Database
+                      <div class="img-holder">
+                        <v-img
+                          contain
+                          height="30px"
+                          :src="'/'+$vuetify.icons.values['home_db'].icon"
+                        />
+                      </div>
+                      Databases
                     </v-row>
                     <v-row class="pl-2">
                       <v-switch
@@ -43,7 +50,14 @@
                         :disabled="!typesFound.includes('circle')"
                         @change="drawGraph($event, false)"
                       />
-                      <div class="circle mb-3 mr-5" /> Standard
+                      <div class="img-holder">
+                        <v-img
+                          contain
+                          height="30px"
+                          :src="'/'+$vuetify.icons.values['home_standard'].icon"
+                        />
+                      </div>
+                      Standards
                     </v-row>
                     <v-row class="pl-2">
                       <v-switch
@@ -53,7 +67,14 @@
                         :disabled="!typesFound.includes('triangle')"
                         @change="drawGraph($event)"
                       />
-                      <div class="triangle mb-3 mr-5" /> Policy
+                      <div class="img-holder">
+                        <v-img
+                          contain
+                          height="30px"
+                          :src="'/'+$vuetify.icons.values['home_policies'].icon"
+                        />
+                      </div>
+                      Policies
                     </v-row>
                     <v-row class="pl-2">
                       <v-switch
@@ -63,7 +84,14 @@
                         :disabled="!typesFound.includes('diamond')"
                         @change="drawGraph($event)"
                       />
-                      <div class="diamond mb-3 mr-3" /> Collection
+                      <div class="img-holder">
+                        <v-img
+                          contain
+                          height="30px"
+                          :src="'/'+$vuetify.icons.values['collections'].icon"
+                        />
+                      </div>
+                      Collections
                     </v-row>
                   </v-container>
                   <span>Click on any point to re-draw the graph with that point as the centre. Click on the centre to view the record.</span>
@@ -446,6 +474,10 @@
   text-align: center;
   border: 1px solid #ccc;
   box-shadow: 3px 3px 6px #ccc;
+}
+
+.img-holder {
+  width: 80px;
 }
 
 </style>

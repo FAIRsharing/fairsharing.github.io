@@ -153,7 +153,7 @@ const customIcons  = {
         },
         terminology_artefact: {
             type: "img",
-            icon: "assets/records/terminology_artifact.svg",
+            icon: "assets/records/terminology_artefact.svg",
             tooltip: "Terminology Artefact"
         },
         model_and_format: {

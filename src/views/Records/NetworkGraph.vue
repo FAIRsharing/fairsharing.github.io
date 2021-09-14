@@ -208,7 +208,7 @@
                         events: {
                           click: /* istanbul ignore next */  async function(event) {
                             // Avoid redundant navigation to self...
-                            if (parseInt(_module.$route.params.id) == parseInt(event.point.record_id)) {
+                            if (parseInt(_module.$route.params.id) === parseInt(event.point.record_id)) {
                               _module.$router.push({
                                 path: "/" +  event.point.record_id
                               })
@@ -301,6 +301,49 @@
                 this.initialized = true;
 
             },
+            updateNodeSymbol(node) {
+              const DEFAULT_SIZE = 30
+              switch (node.marker.symbol) {
+                //database
+                case "square":
+                  node.marker = {
+                    symbol: "url(/assets/records/db-icon.svg)",
+                    width: DEFAULT_SIZE,
+                    height: DEFAULT_SIZE
+                  }
+                    break;
+                case "circle":
+                  //standard
+                  node.marker = {
+                    symbol: `url(/assets/records/${node.type}.svg)`,
+                    width: DEFAULT_SIZE,
+                    height: DEFAULT_SIZE
+                  }
+                  break;
+                case "triangle":
+                  //policy
+                  node.marker = {
+                    symbol: "url(/assets/records/policy-icon.svg)",
+                    width: DEFAULT_SIZE,
+                    height: DEFAULT_SIZE
+                  }
+                  break;
+                case "diamond":
+                  //collection
+                  node.marker = {
+                    symbol: "url(/assets/records/collection-icon.svg)",
+                    width: DEFAULT_SIZE,
+                    height: DEFAULT_SIZE
+                  }
+                  break;
+              }
+              // return the updated node
+              return {
+                content: node,
+                marker: node.marker.symbol,
+                children: {}
+              }
+            },
             drawGraph(start=false){
                 let _module = this;
                 this.typesFound = [];
@@ -313,11 +356,7 @@
                     edges = [],
                     nodes = []
                 raw_nodes.forEach(node => {
-                  tree[node.id] = {
-                    content: node,
-                    marker: node.marker.symbol,
-                    children: {}
-                  }
+                  tree[node.id] = this.updateNodeSymbol(node)
                 })
                 raw_edges.forEach(edge => { tree[edge[0]].children[edge[1]] = edge });
                 this.processNode(edges, tree, Object.keys(tree)[0], nodes, nodes_processed, start);

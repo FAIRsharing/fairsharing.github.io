@@ -468,13 +468,7 @@ export default {
   },
   async mounted() {
       this.client = new Client();
-      try {
-        await this.getData();
-      }
-      catch(e) {
-        // This serves to prevent warnings when tests are run on Github
-        // (https://github.com/FAIRsharing/fairsharing.github.io/pull/1231/checks?check_run_id=3609116455)
-      }
+      await this.getData();
       if (!this.error) {
         await this.canEditRecord();
         await this.checkClaimStatus();

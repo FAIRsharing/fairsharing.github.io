@@ -15,6 +15,7 @@ import Export from 'highcharts/modules/exporting'
 import VueCodeHighlight from 'vue-code-highlight';
 import VueSanitize from "vue-sanitize";
 import Particles from "particles.vue";
+import VueGtag from "vue-gtag";
 import "vue-code-highlight/themes/prism-twilight.css";
 import "vue-code-highlight/themes/window.css";
 import 'prism-es6/components/prism-ruby.min';
@@ -33,7 +34,6 @@ Vue.directive('linkified', linkify)
 import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
-import 'vue-gtag'
 
 import 'vue-json-pretty/lib/styles.css'
 

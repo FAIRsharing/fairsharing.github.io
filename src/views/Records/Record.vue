@@ -354,19 +354,29 @@ export default {
   },
   watch: {
     async currentRoute() {
-      await this.getData();
-      if (!this.error) {
+      try {
+        await this.getData();
+        if (!this.error) {
+          await this.canEditRecord();
+          await this.checkClaimStatus();
+          await this.getMenuButtons();
+        }
+        await this.$nextTick();
+        await this.$scrollTo(this.$route.hash || 'body')
+      }
+      catch (e) {
+        this.error = e.message;
+      }
+    },
+    async userIsLoggedIn() {
+      try {
         await this.canEditRecord();
         await this.checkClaimStatus();
         await this.getMenuButtons();
       }
-      await this.$nextTick();
-      await this.$scrollTo(this.$route.hash || 'body')
-    },
-    async userIsLoggedIn() {
-      await this.canEditRecord();
-      await this.checkClaimStatus();
-      await this.getMenuButtons();
+      catch (e) {
+        this.error = e.message;
+      }
     }
   },
   destroyed() {

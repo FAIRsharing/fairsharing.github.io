@@ -375,7 +375,13 @@ export default {
   },
   async mounted() {
       this.client = new Client();
-      await this.getData();
+      try {
+        await this.getData();
+      }
+      catch(e) {
+        // This serves to prevent warnings when tests are run on Github
+        // (https://github.com/FAIRsharing/fairsharing.github.io/pull/1231/checks?check_run_id=3609116455)
+      }
       if (!this.error) {
         await this.canEditRecord();
         await this.checkClaimStatus();
@@ -385,7 +391,8 @@ export default {
     try {
       await this.$scrollTo(this.$route.hash || 'body')
       // eslint-disable-next-line no-empty
-    } catch (e) {
+    }
+    catch (e) {
       // This serves to prevent warnings when tests are run on Github (trying to scroll with no DOM etc.).  #1201
     }
     // update the UI padding and margin after DOM is fully loaded.

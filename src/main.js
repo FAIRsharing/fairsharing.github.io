@@ -58,9 +58,6 @@ Vue.use(VueGtag, {
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 router.afterEach(async(to) => await afterEach(to));
 
-
-
-
 async function bootstrapApp() {
     try {
         await store.dispatch('users/login');

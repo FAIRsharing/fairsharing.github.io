@@ -147,7 +147,6 @@ describe("Record.vue", function() {
             localVue,
             vuetify,
             router,
-            attachToDocument:[element,element2]
         });
     });
 
@@ -455,12 +454,12 @@ describe("Record.vue", function() {
         mocks.restore("graphMock");
     });
 
-    it("returns correct answer if no reviews present",  () => {
+    it("returns correct answer if no reviews present", async () => {
         record.state.currentRecord.fairsharingRecord = {
             maintainers: [{username: 123}],
             metadata: {}
         };
-        wrapper =  shallowMount(Record, {
+        wrapper = await shallowMount(Record, {
             mocks: {$route, $store, $router},
             localVue,
             vuetify,

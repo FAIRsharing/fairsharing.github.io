@@ -51,9 +51,15 @@ Vue.use(VueMeta, {refreshOnceOnNavigation: true});
 Vue.use(VueCodeHighlight);
 Vue.use(Particles);
 Vue.use(VueSanitize);
+Vue.use(VueGtag, {
+    config: { id:  process.env.VUE_APP_ANALYTICS_ID }
+});
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 router.afterEach(async(to) => await afterEach(to));
+
+
+
 
 async function bootstrapApp() {
     try {

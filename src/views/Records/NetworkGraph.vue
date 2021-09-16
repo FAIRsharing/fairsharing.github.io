@@ -351,7 +351,7 @@
                 case "policy":
                   //policy
                   node.marker = {
-                    symbol: "url(/assets/records/policy-icon.svg)",
+                    symbol: "url(/assets/records/policy.svg)",
                     width: DEFAULT_SIZE,
                     height: DEFAULT_SIZE
                   }

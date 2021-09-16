@@ -33,7 +33,8 @@ let graphMock = {
                     "symbol": "circle",
                     "radius": 20,
                     "fillColor": "red"
-                }
+                },
+                "registry":"standard"
             },
             {
                 "id": "Virtual Observatory Data Modeling Languages",
@@ -41,7 +42,8 @@ let graphMock = {
                 "marker": {
                     "symbol": "square",
                     "radius": 10
-                }
+                },
+                "registry":"database"
             },
             {
                 "id": "Third",
@@ -49,7 +51,8 @@ let graphMock = {
                 "marker": {
                     "symbol": "diamond",
                     "radius": 10
-                }
+                },
+                "registry":"policy"
             },
             {
                 "id": "Fourth",
@@ -57,7 +60,8 @@ let graphMock = {
                 "marker": {
                     "symbol": "triangle",
                     "radius": 10
-                }
+                },
+                "registry":"collection"
             }
         ],
         "edges": [

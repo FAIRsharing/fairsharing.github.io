@@ -27,10 +27,10 @@
                   >
                     <v-row class="pl-2">
                       <v-switch
-                        v-model="legend.types.square"
+                        v-model="legend.types.database"
                         inset
                         class="field mx-3 switch mt-0 pt-0"
-                        :disabled="!typesFound.includes('square')"
+                        :disabled="!typesFound.includes('database')"
                         @change="drawGraph($event)"
                       />
                       <div class="img-holder">
@@ -44,10 +44,10 @@
                     </v-row>
                     <v-row class="pl-2">
                       <v-switch
-                        v-model="legend.types.circle"
+                        v-model="legend.types.standard"
                         inset
                         class="field mx-3 switch mt-0 pt-0"
-                        :disabled="!typesFound.includes('circle')"
+                        :disabled="!typesFound.includes('standard')"
                         @change="drawGraph($event, false)"
                       />
                       <div class="img-holder">
@@ -61,10 +61,10 @@
                     </v-row>
                     <v-row class="pl-2">
                       <v-switch
-                        v-model="legend.types.triangle"
+                        v-model="legend.types.policy"
                         inset
                         class="field mx-3 switch mt-0 pt-0"
-                        :disabled="!typesFound.includes('triangle')"
+                        :disabled="!typesFound.includes('policy')"
                         @change="drawGraph($event)"
                       />
                       <div class="img-holder">
@@ -78,10 +78,10 @@
                     </v-row>
                     <v-row class="pl-2">
                       <v-switch
-                        v-model="legend.types.diamond"
+                        v-model="legend.types.collection"
                         inset
                         class="field mx-3 switch mt-0 pt-0"
-                        :disabled="!typesFound.includes('diamond')"
+                        :disabled="!typesFound.includes('collection')"
                         @change="drawGraph($event)"
                       />
                       <div class="img-holder">
@@ -282,10 +282,10 @@
                 legend: {
                   relations: {},
                   types: {
-                    circle: false,
-                    square: false,
-                    triangle: false,
-                    diamond: false
+                    standard: false,
+                    policy: false,
+                    database: false,
+                    collection: false
                   }
                 },
                 typesFound: [],
@@ -312,10 +312,10 @@
             async getData(){
                 this.loading = true;
                 this.legend.types = {
-                    circle: false,
-                    square: false,
-                    triangle: false,
-                    diamond: false
+                    standard: false,
+                    policy: false,
+                    database: false,
+                    collection: false
                 }
                 /* A maxPathLength of 1-4 may be specified (API's default is 2).
                  Higher values may make the resulting graph rather large... */
@@ -331,16 +331,16 @@
             },
             updateNodeSymbol(node) {
               const DEFAULT_SIZE = 30
-              switch (node.marker.symbol) {
+              switch (node.registry) {
                 //database
-                case "square":
+                case "database":
                   node.marker = {
                     symbol: "url(/assets/records/db-icon.svg)",
                     width: DEFAULT_SIZE,
                     height: DEFAULT_SIZE
                   }
                     break;
-                case "circle":
+                case "standard":
                   //standard
                   node.marker = {
                     symbol: `url(/assets/records/${node.type}.svg)`,
@@ -348,7 +348,7 @@
                     height: DEFAULT_SIZE
                   }
                   break;
-                case "triangle":
+                case "policy":
                   //policy
                   node.marker = {
                     symbol: "url(/assets/records/policy-icon.svg)",
@@ -356,7 +356,7 @@
                     height: DEFAULT_SIZE
                   }
                   break;
-                case "diamond":
+                case "collection":
                   //collection
                   node.marker = {
                     symbol: "url(/assets/records/collection-icon.svg)",
@@ -369,7 +369,7 @@
               return {
                 content: node,
                 marker: node.marker.symbol,
-                children: {}
+                children: {},
               }
             },
             drawGraph(start=false){
@@ -415,10 +415,10 @@
                 Object.keys(node.children).forEach(childName => {
                   const child = node.children[childName],
                         childNode = tree[childName]
-                  if (start) this.legend.types[childNode.marker] = true;
+                  if (start) this.legend.types[childNode.content.registry] = true;
                   /* istanbul ignore else */
-                  if (!this.typesFound.includes(childNode.marker)) this.typesFound.push(childNode.marker)
-                  if (this.legend.types[childNode.marker] || start) {
+                  if (!this.typesFound.includes(childNode.content.registry)) this.typesFound.push(childNode.content.registry)
+                  if (this.legend.types[childNode.content.registry] || start) {
                     edges.push(child)
                     this.processNode(edges, tree, childName, outputNodes, nodes_processed, false)
                   }

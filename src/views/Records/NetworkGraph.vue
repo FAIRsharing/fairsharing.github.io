@@ -329,7 +329,7 @@
                 this.initialized = true;
 
             },
-            updateNodeSymbol(node) {
+            updateNodeSymbol(node,index) {
               const DEFAULT_SIZE = 30
               switch (node.registry) {
                 //database
@@ -339,7 +339,7 @@
                     width: DEFAULT_SIZE,
                     height: DEFAULT_SIZE
                   }
-                    break;
+                  break;
                 case "standard":
                   //standard
                   node.marker = {
@@ -365,6 +365,14 @@
                   }
                   break;
               }
+              // If its the main central node make its marker red circle.
+              if (index === 0) {
+                node.marker = {
+                  lineWidth: 15,
+                  lineColor: "#ff0000",
+                  fillColor: "#ff0000",
+                }
+              }
               // return the updated node
               return {
                 content: node,
@@ -383,8 +391,8 @@
                     nodes_processed = [],
                     edges = [],
                     nodes = []
-                raw_nodes.forEach(node => {
-                  tree[node.id] = this.updateNodeSymbol(node)
+                raw_nodes.forEach((node,index) => {
+                  tree[node.id] = this.updateNodeSymbol(node,index)
                 })
                 raw_edges.forEach(edge => { tree[edge[0]].children[edge[1]] = edge });
                 this.processNode(edges, tree, Object.keys(tree)[0], nodes, nodes_processed, start);

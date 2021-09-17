@@ -229,6 +229,7 @@
                         sourceWidth: 1502,
                         sourceHeight: 1600,
                         scale: 1,
+                        filename: 'FAIRsharing-network-graph'
                     },
                     tooltip: {
                       enabled: false

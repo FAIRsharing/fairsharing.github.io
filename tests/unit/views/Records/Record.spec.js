@@ -146,8 +146,7 @@ describe("Record.vue", function() {
             mocks: {$route, $store, $router},
             localVue,
             vuetify,
-            router,
-            attachToDocument:[element,element2]
+            router
         });
     });
 
@@ -452,7 +451,6 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '2050-01-01T123456' }];
         expect(wrapper.vm.needsReviewing()).toBe(false);
         expect(wrapper.vm.reviewSuccess).toBe(true);
-        mocks.restore("graphMock");
     });
 
     it("returns correct answer if no reviews present", async () => {
@@ -464,8 +462,7 @@ describe("Record.vue", function() {
             mocks: {$route, $store, $router},
             localVue,
             vuetify,
-            router,
-            attachToDocument:[element,element2]
+            router
         });
         expect(wrapper.vm.reviewsPresent()).toBe(false);
 

@@ -4,7 +4,7 @@
     "content": [
       {
         "title": "The FAIRsharing team",
-        "url": "/team",
+        "url": "/communities#governance",
         "urlType": "internal"
       },
       {
@@ -29,12 +29,6 @@
         "icon": "fa fa-envelope"
       },
       {
-        "title": "Facebook",
-        "url": "https://www.facebook.com/fairsharing",
-        "urlType": "external",
-        "icon": "fab fa-facebook"
-      },
-      {
         "title": "Twitter",
         "url": "https://www.twitter.com/fairsharing_org",
         "urlType": "external",
@@ -52,7 +46,7 @@
       },
       {
         "title": "Blog",
-        "url": "",
+        "url": "https://blog.fairsharing.org",
         "urlType": "external"
       },
       {
@@ -73,11 +67,6 @@
       {
         "title": "Community",
         "url": "/communities",
-        "urlType": "internal"
-      },
-      {
-        "title": "Timeline",
-        "url": "",
         "urlType": "internal"
       },
       {

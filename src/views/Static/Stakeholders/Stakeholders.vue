@@ -22,6 +22,7 @@
       v-for="(item,index) in stakeholdersData.stakeholders_data"
       :key="index"
     >
+      <a :id="item.anchor" />
       <h3 class="text-h6 text-xl-h5 mb-2">
         {{ item.title }}
       </h3>

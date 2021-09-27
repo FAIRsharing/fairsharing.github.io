@@ -40,11 +40,6 @@
     "header": "About FAIRsharing",
     "content": [
       {
-        "title": "About us",
-        "url": "",
-        "urlType": "internal"
-      },
-      {
         "title": "Blog",
         "url": "https://blog.fairsharing.org",
         "urlType": "external"

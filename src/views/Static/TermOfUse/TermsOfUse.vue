@@ -40,7 +40,7 @@
         class="underline-effect"
         target="_blank"
         :href="TermsOfUse.privacy_statements"
-      >{{ TermsOfUse.privacy_statements }}</a>.
+      >{{ getHostname() }}{{ TermsOfUse.privacy_statements }}</a>.
     </div>
     <div>
       <p
@@ -51,7 +51,7 @@
         class="underline-effect"
         target="_blank"
         :href="TermsOfUse.api_usage"
-      >{{ TermsOfUse.api_usage }}</a>.
+      >{{ getHostname() }}{{ TermsOfUse.api_usage }}</a>.
     </div>
   </main>
 </template>
@@ -62,7 +62,12 @@ import {termsOfUse} from '@/data/TermsofUseData.json'
       name: "TermsOfUse",
       data: () => {
         return {
-          TermsOfUse :termsOfUse
+          TermsOfUse: termsOfUse
+        }
+      },
+      methods: {
+        getHostname() {
+          return process.env.VUE_APP_HOSTNAME;
         }
       }
     }

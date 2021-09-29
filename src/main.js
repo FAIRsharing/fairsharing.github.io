@@ -15,6 +15,7 @@ import Export from 'highcharts/modules/exporting'
 import VueCodeHighlight from 'vue-code-highlight';
 import VueSanitize from "vue-sanitize";
 import Particles from "particles.vue";
+import VueGtag from "vue-gtag";
 import "vue-code-highlight/themes/prism-twilight.css";
 import "vue-code-highlight/themes/window.css";
 import 'prism-es6/components/prism-ruby.min';
@@ -51,6 +52,9 @@ Vue.use(VueMeta, {refreshOnceOnNavigation: true});
 Vue.use(VueCodeHighlight);
 Vue.use(Particles);
 Vue.use(VueSanitize);
+Vue.use(VueGtag, {
+    config: { id:  process.env.VUE_APP_ANALYTICS_ID }
+});
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 router.afterEach(async(to) => await afterEach(to));

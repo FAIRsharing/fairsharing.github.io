@@ -106,7 +106,7 @@
                     <h4
                       :id="child_item.anchorLink"
                       class="text-h6"
-                      v-html="child_item.title"
+                      v-html="$sanitize(child_item.title)"
                     />
                   </a>
                   <!-- This html is from a safe source -->
@@ -116,7 +116,7 @@
                   <p
                     class="ma-0"
                     :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-                    v-html="child_item.desc"
+                    v-html="$sanitize(child_item.desc)"
                   />
                 </v-expansion-panel-content>
               </v-expansion-panel>

@@ -1,8 +1,12 @@
-import { shallowMount } from "@vue/test-utils";
+import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Educational from "@/views/Static/Educational/Educational"
 import Vuetify from "vuetify"
+import VueSanitize from "vue-sanitize";
 
 const vuetify = new Vuetify();
+const localVue = createLocalVue();
+localVue.use(VueSanitize)
+
 let $route = {
     name: "Community",
     hash:'#faq9-3'
@@ -13,6 +17,7 @@ describe("Privacy.vue", function(){
 
     beforeEach(() => {
         wrapper = shallowMount(Educational, {
+            localVue,
             vuetify,
             mocks: {$route},
             stubs: ['router-link']

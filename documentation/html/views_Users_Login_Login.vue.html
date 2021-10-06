@@ -205,6 +205,13 @@
                   &lt;router-link to="/accounts/signup">
                     &lt;span @click="()=>{$emit('ClosePopup', true)}">Create a new account&lt;/span>
                   &lt;/router-link>
+                  &lt;v-divider />
+                  &lt;a
+                     href="https://fairsharing.gitbook.io/fairsharing/#accessing-fairsharing-through-3rd-party-accounts"
+                     target="_blank"
+                  >
+                    &lt;span @click="()=>{$emit('ClosePopup', true)}">Can't login with ORCID?&lt;/span>
+                  &lt;/a>
                 &lt;/v-card-text>
 
                 &lt;v-card-actions class="mt-2 justify-center">

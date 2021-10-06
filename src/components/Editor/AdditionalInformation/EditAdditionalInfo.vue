@@ -137,7 +137,7 @@
                 </v-card-title>
                 <v-card-text>
                   <FieldInput
-                    v-for="(prop, propName, propIndex) in field.properties"
+                    v-for="(prop, propName, propIndex) in sortObject(field.properties)"
                     :key="'prop_' + propIndex"
                     :field-name="fieldName"
                     :field-props="prop"
@@ -469,6 +469,9 @@ export default {
         fields: null,
         template: null
       }
+    },
+    sortObject(obj) {
+      return Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
     }
   }
 }

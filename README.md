@@ -1,4 +1,4 @@
-![Project Status](https://img.shields.io/badge/Status-pre--alpha-critical)
+![Project Status](https://img.shields.io/badge/Status-beta-warning)
 [![Actions Status](https://github.com/FAIRsharing/fairsharing.github.io/workflows/CI/badge.svg)](https://github.com/FAIRsharing/fairsharing.github.io/actions)
 [![Coverage Status](https://coveralls.io/repos/github/FAIRsharing/fairsharing.github.io/badge.svg?branch=master)](https://coveralls.io/github/FAIRsharing/fairsharing.github.io?branch=master)
 [![Actions Status](https://github.com/FAIRsharing/fairsharing.github.io/workflows/Doc/badge.svg)](https://fairsharing.github.io/documentation/html/)

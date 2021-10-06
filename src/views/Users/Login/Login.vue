@@ -112,6 +112,10 @@
                   <router-link to="/accounts/signup">
                     <span @click="()=>{$emit('ClosePopup', true)}">Create a new account</span>
                   </router-link>
+                  <v-divider />
+                  <a href="https://fairsharing.gitbook.io/fairsharing/#accessing-fairsharing-through-3rd-party-accounts" target="_blank">
+                    <span @click="()=>{$emit('ClosePopup', true)}">Can't login with ORCID?</span>
+                  </a>
                 </v-card-text>
 
                 <v-card-actions class="mt-2 justify-center">

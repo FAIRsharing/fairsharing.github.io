@@ -3,6 +3,9 @@ import Vuex from "vuex"
 import VueRouter from "vue-router"
 import LoginFailure from "@/views/Users/Login/LoginFailure.vue"
 import usersStore from "@/store/users.js";
+import Vuetify from "vuetify"
+
+const vuetify = new Vuetify();
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -33,6 +36,7 @@ describe("Login.vue", ()=> {
         wrapper = await shallowMount(LoginFailure, {
             localVue,
             router,
+            vuetify,
             mocks: {$store, $route, $router}
         });
         const title = "LoginFailure";

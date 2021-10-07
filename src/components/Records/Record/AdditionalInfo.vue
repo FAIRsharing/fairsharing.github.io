@@ -38,8 +38,8 @@
     >
       <b class="width-200">Data Preservation Policy</b>
       <div
-          v-if="Object.keys(getField('metadata').data_preservation_policy).includes('name') && getField('metadata').data_preservation_policy.name.length && getField('metadata').data_preservation_policy.name"
-          class="d-flex flex-row align-center min-height-40"
+        v-if="Object.keys(getField('metadata').data_preservation_policy).includes('name') && getField('metadata').data_preservation_policy.name.length && getField('metadata').data_preservation_policy.name"
+        class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">Name</b>
         <div class="d-flex full-width ml-md-12 ml-13">
@@ -49,15 +49,15 @@
         </div>
       </div>
       <div
-          v-if="Object.keys(getField('metadata').data_preservation_policy).includes('url') && getField('metadata').data_preservation_policy.url.length && getField('metadata').data_preservation_policy.url"
-          class="d-flex flex-row align-center min-height-40"
+        v-if="Object.keys(getField('metadata').data_preservation_policy).includes('url') && getField('metadata').data_preservation_policy.url.length && getField('metadata').data_preservation_policy.url"
+        class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
-              class="underline-effect"
-              :href="getField('metadata').data_preservation_policy.url"
-              target="_blank"
+            class="underline-effect"
+            :href="getField('metadata').data_preservation_policy.url"
+            target="_blank"
           >
             {{ getField('metadata').data_preservation_policy.url }}
           </a>
@@ -71,8 +71,8 @@
     >
       <b class="text-h6">Access Points</b>
       <div
-          v-for="(access_point,index) in getField('metadata').access_points"
-          :key="access_point+''+index"
+        v-for="(access_point,index) in getField('metadata').access_points"
+        :key="access_point+''+index"
       >
         <div
           v-if="access_point.name"
@@ -96,15 +96,15 @@
         </div>
 
         <div
-            v-if="access_point.url"
-            class="d-flex flex-row align-center min-height-40"
+          v-if="access_point.url"
+          class="d-flex flex-row align-center min-height-40"
         >
           <b class="width-200">URL</b>
           <div class="d-flex full-width ml-md-12 ml-13">
             <a
-                class="underline-effect"
-                :href="access_point.url"
-                target="_blank"
+              class="underline-effect"
+              :href="access_point.url"
+              target="_blank"
             >
               {{ access_point.url }}
             </a>
@@ -161,15 +161,15 @@
         </div>
       </div>
       <div
-          v-if="Object.keys(getField('metadata').data_curation).includes('url') && getField('metadata').data_curation.url.length && getField('metadata').data_curation.url"
-          class="d-flex flex-row align-center min-height-40"
+        v-if="Object.keys(getField('metadata').data_curation).includes('url') && getField('metadata').data_curation.url.length && getField('metadata').data_curation.url"
+        class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
-              class="underline-effect"
-              :href="getField('metadata').data_curation.url"
-              target="_blank"
+            class="underline-effect"
+            :href="getField('metadata').data_curation.url"
+            target="_blank"
           >
             {{ getField('metadata').data_curation.url }}
           </a>
@@ -194,15 +194,15 @@
         </div>
       </div>
       <div
-          v-if="Object.keys(getField('metadata').dataset_metrics).includes('url') && getField('metadata').dataset_metrics.url.length && getField('metadata').dataset_metrics.url"
-          class="d-flex flex-row align-center min-height-40"
+        v-if="Object.keys(getField('metadata').dataset_metrics).includes('url') && getField('metadata').dataset_metrics.url.length && getField('metadata').dataset_metrics.url"
+        class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
-              class="underline-effect"
-              :href="getField('metadata').dataset_metrics.url"
-              target="_blank"
+            class="underline-effect"
+            :href="getField('metadata').dataset_metrics.url"
+            target="_blank"
           >
             {{ getField('metadata').dataset_metrics.url }}
           </a>
@@ -227,15 +227,15 @@
         </div>
       </div>
       <div
-          v-if="Object.keys(getField('metadata').data_deposition_condition).includes('url') && getField('metadata').data_deposition_condition.url.length && getField('metadata').data_deposition_condition.url"
-          class="d-flex flex-row align-center min-height-40"
+        v-if="Object.keys(getField('metadata').data_deposition_condition).includes('url') && getField('metadata').data_deposition_condition.url.length && getField('metadata').data_deposition_condition.url"
+        class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
-              class="underline-effect"
-              :href="getField('metadata').data_deposition_condition.url"
-              target="_blank"
+            class="underline-effect"
+            :href="getField('metadata').data_deposition_condition.url"
+            target="_blank"
           >
             {{ getField('metadata').data_deposition_condition.url }}
           </a>
@@ -260,15 +260,15 @@
         </div>
       </div>
       <div
-          v-if="Object.keys(getField('metadata').data_access_condition).includes('url') && getField('metadata').data_access_condition.url.length && getField('metadata').data_access_condition.url"
-          class="d-flex flex-row align-center min-height-40"
+        v-if="Object.keys(getField('metadata').data_access_condition).includes('url') && getField('metadata').data_access_condition.url.length && getField('metadata').data_access_condition.url"
+        class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
-              class="underline-effect"
-              :href="getField('metadata').data_access_condition.url"
-              target="_blank"
+            class="underline-effect"
+            :href="getField('metadata').data_access_condition.url"
+            target="_blank"
           >
             {{ getField('metadata').data_access_condition.url }}
           </a>
@@ -293,15 +293,15 @@
         </div>
       </div>
       <div
-          v-if="Object.keys(getField('metadata').resource_sustainability).includes('url') && getField('metadata').resource_sustainability.url.length && getField('metadata').resource_sustainability.url"
-          class="d-flex flex-row align-center min-height-40"
+        v-if="Object.keys(getField('metadata').resource_sustainability).includes('url') && getField('metadata').resource_sustainability.url.length && getField('metadata').resource_sustainability.url"
+        class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
-              class="underline-effect"
-              :href="getField('metadata').resource_sustainability.url"
-              target="_blank"
+            class="underline-effect"
+            :href="getField('metadata').resource_sustainability.url"
+            target="_blank"
           >
             {{ getField('metadata').resource_sustainability.url }}
           </a>
@@ -315,27 +315,27 @@
     >
       <b class="text-h6">Certifications and Community Badges</b>
       <div
-          v-for="(certification, index) in getField('metadata').certifications_and_community_badges"
-          :key="certification + '' + index"
+        v-for="(certification, index) in getField('metadata').certifications_and_community_badges"
+        :key="certification + '' + index"
       >
         <div
-            v-if="certification.name"
-            class="d-flex flex-row align-center min-height-40"
+          v-if="certification.name"
+          class="d-flex flex-row align-center min-height-40"
         >
           <b class="width-200">Name</b>
           <div class="d-flex full-width ml-md-12 ml-13">
             {{ certification.name }}
           </div>
-        </div >
+        </div>
         <div
-            v-if="certification.url"
-            class="d-flex flex-row align-center min-height-40"
+          v-if="certification.url"
+          class="d-flex flex-row align-center min-height-40"
         >
           <b class="width-200">URL</b>
           <div class="d-flex full-width ml-md-12 ml-13">
             {{ certification.url }}
           </div>
-        </div >
+        </div>
         <v-divider v-if="getField('metadata').certifications_and_community_badges.length-1!==index" />
       </div>
     </div>

@@ -106,11 +106,11 @@
 
                 <v-card-text class="text-center py-1">
                   <router-link to="/accounts/forgotPassword">
-                    <span @click="()=>{$emit('ClosePopup', true)}">Forgot your password ?</span>
+                    <span @click="()=>{$emit('ClosePopup', true)}">Forgotten your password?</span>
                   </router-link>
                   <v-divider />
                   <router-link to="/accounts/signup">
-                    <span @click="()=>{$emit('ClosePopup', true)}">Create a new account</span>
+                    <span @click="()=>{$emit('ClosePopup', true)}">Need to create a new account?</span>
                   </router-link>
                   <v-divider />
                   <a

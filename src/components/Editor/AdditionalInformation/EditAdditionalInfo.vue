@@ -19,6 +19,17 @@
           >
             <v-col cols="12">
               <div>
+                <v-tooltip
+                  bottom
+                  class="d-inline-block mr-2"
+                >
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ getFields('array')[fieldName]['description'] }}
+                </v-tooltip>
                 <b class="body-1 blue--text"> {{ cleanString(fieldName).toUpperCase() }} </b>
 
                 <v-tooltip

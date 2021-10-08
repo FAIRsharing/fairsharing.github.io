@@ -34,7 +34,7 @@
               </td>
               <td :class="section.color + ' lighten-2'">
                 <v-chip-group
-                  class="pl-2 text-capitalize"
+                  class="pl-2"
                   column
                 >
                   <v-chip

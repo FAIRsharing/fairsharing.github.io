@@ -4,9 +4,11 @@ import Record from "@/store/recordData.js"
 import CuratorNotes from "@/components/Records/Record/CuratorNotes"
 import Vuetify from "vuetify"
 import users from "@/store/users";
+import VueSanitize from "vue-sanitize";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
+localVue.use(VueSanitize);
 const vuetify = new Vuetify();
 
 const $store = new Vuex.Store({
@@ -31,5 +33,9 @@ describe("CuratorNotes.vue", function(){
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("CuratorNotes");
     });
+
+    it("can add newlines", () => {
+        expect(wrapper.vm.prepareNotes("this\nthat")).toEqual("this<br />that");
+    })
 
 });

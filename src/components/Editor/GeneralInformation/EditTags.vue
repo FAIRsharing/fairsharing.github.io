@@ -192,9 +192,9 @@
               <template #[`item.label`]="{ item }">
                 <v-chip
                   :class="colors[item.model]"
-                  class="white--text noBreak text-capitalize"
+                  class="white--text noBreak"
                 >
-                  {{ item.label }}
+                  {{ capitaliseText(item.label, item.model) }}
                 </v-chip>
               </template>
               <template #[`item.synonyms`]="{ item }">
@@ -219,11 +219,13 @@
 <script>
     import { mapGetters, mapState, mapActions } from "vuex"
     import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip.vue";
+    import recordsCardUtils from "@/utils/recordsCardUtils";
     import NewTags from "./NewTags";
 
     export default {
         name: "EditTags",
         components: {NewTags, KeywordTooltip},
+        mixins: [recordsCardUtils],
         data(){
             return {
                 formValid: false,

@@ -26,9 +26,10 @@
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
       You can create an account by going to the <a
-        href="https://fairsharing.org"
+        :href="getHostname()"
         class="underline-effect"
       >FAIRsharing site</a>, clicking the "login" button and then choosing "create new account". You can also create an account by signing in with ORCID, Twitter or Github, but if you do you'll need to reset your password (click on the "Forgot your password?" link) before you can use the API.
+      You will in all cases need to <a href="/profiles/edit">edit your user profile</a> to add an organisation to which you belong.
     </p>
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
@@ -1026,6 +1027,11 @@ export default {
           ]
         }
       }
+    }
+  },
+  methods: {
+    getHostname() {
+      return process.env.VUE_APP_HOSTNAME;
     }
   }
 }

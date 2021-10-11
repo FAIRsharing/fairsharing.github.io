@@ -176,39 +176,6 @@
         </div>
       </div>
     </div>
-    <!--  dataset_metrics  -->
-    <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.dataset_metrics && getField('metadata').dataset_metrics && checkDataAvailableCurrentRecord(getField('metadata').dataset_metrics)"
-      class="pa-4 data-holder mb-4"
-    >
-      <b class="text-h6">Dataset Metrics</b>
-      <div
-        v-if="Object.keys(getField('metadata').dataset_metrics).includes('metrics') && getField('metadata').dataset_metrics.metrics.length && getField('metadata').dataset_metrics.metrics && getField('metadata').dataset_metrics.metrics!=='no'"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">Metrics</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <p class="ma-0">
-            {{ getField('metadata').dataset_metrics.metrics }}
-          </p>
-        </div>
-      </div>
-      <div
-        v-if="Object.keys(getField('metadata').dataset_metrics).includes('url') && getField('metadata').dataset_metrics.url.length && getField('metadata').dataset_metrics.url"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">URL</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <a
-            class="underline-effect"
-            :href="getField('metadata').dataset_metrics.url"
-            target="_blank"
-          >
-            {{ getField('metadata').dataset_metrics.url }}
-          </a>
-        </div>
-      </div>
-    </div>
     <!--  data_deposition_condition  -->
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_deposition_condition && getField('metadata').data_deposition_condition && checkDataAvailableCurrentRecord(getField('metadata').data_deposition_condition)"

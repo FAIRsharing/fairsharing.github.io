@@ -95,52 +95,47 @@
                     </v-row>
                     <v-divider />
                     <v-row class="pl-2">
-                      <div class="img-holder2">
-                        <v-img
-                          contain
+                      <div class="img-holder">
+                        <img
                           height="30px"
                           :src="'/'+$vuetify.icons.values['terminology_artefact'].icon"
-                        />
+                        >
                       </div>
                       Terminology Artefact
                     </v-row>
                     <v-row class="mt-2 pl-2">
-                      <div class="img-holder2">
-                        <v-img
-                          contain
+                      <div class="img-holder">
+                        <img
                           height="30px"
                           :src="'/'+$vuetify.icons.values['model_and_format'].icon"
-                        />
+                        >
                       </div>
                       Model/Format
                     </v-row>
                     <v-row class="mt-2 pl-2">
-                      <div class="img-holder2">
-                        <v-img
-                          contain
+                      <div class="img-holder">
+                        <img
                           height="30px"
                           :src="'/'+$vuetify.icons.values['identifier_schema'].icon"
-                        />
+                        >
                       </div>
                       Identifier Schema
                     </v-row>
                     <v-row class="mt-2 pl-2">
-                      <div class="img-holder2">
-                        <v-img
-                          contain
+                      <div class="img-holder">
+                        <img
                           height="30px"
                           :src="'/'+$vuetify.icons.values['reporting_guideline'].icon"
-                        />
+                        >
                       </div>
                       Reporting Guideline
                     </v-row>
                     <v-row class="my-2 pl-2">
-                      <div class="img-holder2">
-                        <v-img
-                          contain
+                      <div class="img-holder">
+                        <img
                           height="30px"
                           :src="'/'+$vuetify.icons.values['metric'].icon"
-                        />
+                        >
                       </div>
                       Metric
                     </v-row>
@@ -537,6 +532,7 @@
 }
 
 .img-holder {
+  margin-left: 1rem;
   width: 80px;
 }
 

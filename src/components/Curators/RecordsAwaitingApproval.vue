@@ -413,7 +413,8 @@
               let preparedRecord = {
                 approved: true,
                 skip_approval: true,
-                processing_notes: null
+                processing_notes: null,
+                create_review: true
               };
               let data = {
                 record: preparedRecord,

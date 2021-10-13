@@ -240,6 +240,7 @@
                         marginTop: 0,
                         plotBackgroundColor: "#FFFFFF",
                         animation: false,
+                        allowHTML: true,
                     },
                     title: {
                         text: 'FAIRsharing Network Graph',
@@ -382,7 +383,7 @@
                 //database
                 case "database":
                   node.marker = {
-                    symbol: "url(/assets/records/db-icon.svg)",
+                    symbol: `url(${this.getHostname()}assets/records/db-icon.svg)`,
                     width: DEFAULT_SIZE,
                     height: DEFAULT_SIZE
                   }
@@ -390,7 +391,7 @@
                 case "standard":
                   //standard
                   node.marker = {
-                    symbol: `url(/assets/records/${node.type}.svg)`,
+                    symbol: `url(${this.getHostname()}assets/records/${node.type}.svg)`,
                     width: DEFAULT_SIZE,
                     height: DEFAULT_SIZE
                   }
@@ -398,7 +399,7 @@
                 case "policy":
                   //policy
                   node.marker = {
-                    symbol: "url(/assets/records/policy.svg)",
+                    symbol: `url(${this.getHostname()}assets/records/policy.svg)`,
                     width: DEFAULT_SIZE,
                     height: DEFAULT_SIZE
                   }
@@ -406,7 +407,7 @@
                 case "collection":
                   //collection
                   node.marker = {
-                    symbol: "url(/assets/records/collection-icon.svg)",
+                    symbol: `url(${this.getHostname()}assets/records/collection-icon.svg)`,
                     width: DEFAULT_SIZE,
                     height: DEFAULT_SIZE
                   }
@@ -426,6 +427,9 @@
                 marker: node.marker.symbol,
                 children: {},
               }
+            },
+            getHostname() {
+              return process.env.VUE_APP_HOSTNAME;
             },
             drawGraph(start=false){
                 let _module = this;

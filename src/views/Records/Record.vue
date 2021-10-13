@@ -385,7 +385,8 @@ export default {
     try {
       await this.$scrollTo(this.$route.hash || 'body')
       // eslint-disable-next-line no-empty
-    } catch (e) {
+    }
+    catch (e) {
       // This serves to prevent warnings when tests are run on Github (trying to scroll with no DOM etc.).  #1201
     }
     // update the UI padding and margin after DOM is fully loaded.

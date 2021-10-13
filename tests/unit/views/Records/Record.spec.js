@@ -146,7 +146,7 @@ describe("Record.vue", function() {
             mocks: {$route, $store, $router},
             localVue,
             vuetify,
-            router,
+            router
         });
     });
 
@@ -462,7 +462,7 @@ describe("Record.vue", function() {
             mocks: {$route, $store, $router},
             localVue,
             vuetify,
-            router,
+            router
         });
         expect(wrapper.vm.reviewsPresent()).toBe(false);
 

@@ -10,7 +10,9 @@
     <!-- Curator Notes -->
     <SectionTitle title="Curator Notes" />
     <p class="mt-2">
-      {{ currentRecord['fairsharingRecord'].curatorNotes }}
+      <!-- eslint-disable vue/no-v-html -->
+      <span v-html="prepareNotes(currentRecord['fairsharingRecord'].curatorNotes)" />
+      <!-- eslint-enable vue/no-v-html -->
     </p>
   </v-card>
 </template>
@@ -25,6 +27,11 @@ export default {
   computed: {
     ...mapState('record', ["currentRecord"]),
     ...mapState('users', ["user"]),
+  },
+  methods: {
+    prepareNotes(notes) {
+      return this.$sanitize(notes.replace(/(?:\r\n|\r|\n)/g, "<br>"));
+    }
   }
 }
 </script>

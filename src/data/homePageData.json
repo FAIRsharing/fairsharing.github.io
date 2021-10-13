@@ -180,7 +180,7 @@
   "blockCategories": {
     "firstColumn":{
       "title": "Recommendations",
-      "description": "Standards and/or databases recommended by journal or funder data policies.",
+      "description": "Standards and/or databases recommended by organisational data policies.",
       "icon": "recommended",
       "buttonTitle": "find",
       "link": "/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard"

@@ -377,7 +377,7 @@
         label="hide record"
       >
         <template #label>
-          <span class="v-label-white">select to hide the record</span>
+          <span class="v-label-white">Hidden if selected.</span>
         </template>
       </v-checkbox>
     </v-col>

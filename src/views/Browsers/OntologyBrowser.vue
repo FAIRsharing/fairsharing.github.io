@@ -83,11 +83,16 @@
                     >
                       <v-card-title
                         class="justify-center"
+                        :class="$vuetify.breakpoint.smAndDown ? `d-grid` : `d-flex`"
                       >
-                        <v-chip :class="`${color} white--text text-h4 largeChips mb-2`">
+                        <v-chip
+                          class="white--text text-h4 largeChips mb-2"
+                          :class="color"
+                        >
                           {{ selectedItem.name }}
                         </v-chip>
-                        <v-spacer />
+                        <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
+                        <br v-else>
                         <div
                           :class="`${color} white--text`"
                           class="d-flex justify-center align-center hits largeHits"
@@ -239,4 +244,5 @@ export default {
 .col {
   flex-basis: initial !important;
 }
+
 </style>

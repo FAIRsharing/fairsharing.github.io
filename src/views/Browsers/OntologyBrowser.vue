@@ -189,9 +189,7 @@ export default {
           hits: term.hits,
           content: term.content || this.content
         })
-        if (term.children) {
-          termArray = termArray.concat(this.flattenTree(term.children))
-        }
+        if (term.children) termArray = termArray.concat(this.flattenTree(term.children))
       }
       return termArray
     },
@@ -218,11 +216,6 @@ export default {
   border-color: #712727 !important
 }
 
-
-.border-right {
-  border-right: 1px solid #ccc;
-}
-
 .hits {
   width: 40px;
   height: 40px;
@@ -242,6 +235,9 @@ export default {
 @media (min-width: 1264px) {
   .tree {
     height: 54vh;
+  }
+  .border-right {
+    border-right: 1px solid #ccc;
   }
 }
 

@@ -368,6 +368,20 @@
       </v-expand-transition>
     </v-col>
 
+    <!-- isHidden -->
+    <v-col cols="12">
+      <v-checkbox
+        v-if="user().is_curator"
+        v-model="fields.isHidden"
+        class="d-inline-block mr-2"
+        label="hide record"
+      >
+        <template #label>
+          <span class="v-label-white">select to hide the record</span>
+        </template>
+      </v-checkbox>
+    </v-col>
+
     <database-warning />
   </v-row>
 </template>

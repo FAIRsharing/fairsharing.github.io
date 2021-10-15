@@ -118,7 +118,10 @@
           <Loaders />
         </v-card>
         <div id="networkGraph">
-          <v-card height="100%">
+          <v-card
+            v-if="noData"
+            height="100%"
+          >
             <v-card-title class="blue white--text">
               No graph data found!
             </v-card-title>

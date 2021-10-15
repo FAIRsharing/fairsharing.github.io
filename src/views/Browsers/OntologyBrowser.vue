@@ -44,7 +44,7 @@
                       :color="color"
                       :search="search"
                       :open.sync="open"
-                      :active.sync="active"
+                      :active.sync="activeItem"
                       class="tree pb-3 pr-3"
                       hoverable
                     >
@@ -77,7 +77,7 @@
                     xl="9"
                   >
                     <v-card
-                      v-if="active.length > 0 && getItem(active[0])"
+                      v-if="activeItem.length > 0 && getItem(activeItem[0])"
                       class="pa-5"
                       flat
                     >
@@ -132,7 +132,7 @@ export default {
       tree: fakeItems,
       search: null,
       open: [],
-      active: [],
+      activeItem: [],
       flattenedTree: [],
       selectedItem: null,
       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore" +

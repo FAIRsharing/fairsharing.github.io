@@ -25,7 +25,7 @@
             xl="1"
             class="d-flex align-center"
           >
-            <div>
+            <div class="text-center">
               <h2
                 style="max-width: 150px"
                 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25"

@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Applications :",
+    "name": "Applications",
     "hits": 123,
     "children": [
       { "id": 2, "name": "Calendar : app", "hits": 3 },
@@ -12,16 +12,16 @@
   },
   {
     "id": 5,
-    "name": "Documents :",
+    "name": "Documents",
     "hits": 1230,
     "children": [
       {
         "id": 6,
-        "name": "vuetify :",
+        "name": "vuetify",
         "children": [
           {
             "id": 7,
-            "name": "src :",
+            "name": "src",
             "children": [
               { "id": 8, "name": "index : ts" },
               { "id": 9, "name": "bootstrap : ts", "hits": 5 }
@@ -31,11 +31,11 @@
       },
       {
         "id": 10,
-        "name": "material2 :",
+        "name": "material2",
         "children": [
           {
             "id": 11,
-            "name": "src :",
+            "name": "src",
             "children": [
               { "id": 12, "name": "v-btn : ts" },
               { "id": 13, "name": "v-card : ts" },
@@ -48,7 +48,7 @@
   },
   {
     "id": 15,
-    "name": "Downloads :",
+    "name": "Downloads",
     "hits": 200,
     "children": [
       { "id": 16, "name": "October : pdf" },
@@ -58,11 +58,11 @@
   },
   {
     "id": 19,
-    "name": "Videos :",
+    "name": "Videos",
     "children": [
       {
         "id": 20,
-        "name": "Tutorials :",
+        "name": "Tutorials",
         "children": [
           {
             "id": 21,

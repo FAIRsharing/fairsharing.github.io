@@ -10,7 +10,7 @@
           :class="['text-center',{'ellipse-width-80':!fullWidth}]"
           v-on="on"
         >
-          {{ keyword.label }}
+          {{ capitaliseText(keyword.label, 'other') }}
         </div>
       </template>
       <div class="tooltip">
@@ -39,7 +39,7 @@
       </div>
     </v-tooltip>
     <div v-else>
-      {{ keyword.label }}
+      {{ capitaliseText(keyword.label, 'taxonomy') }}
     </div>
   </div>
 </template>

@@ -372,9 +372,7 @@
 
             async assignCurator(idRecord, idUser, nameUser){
               const _module = this;
-              let preparedRecord = {
-                skip_approval: true
-              };
+              let preparedRecord = { };
               if (nameUser === 'none'){
                 preparedRecord.curator_id = null;
               }else{
@@ -413,7 +411,8 @@
               let preparedRecord = {
                 approved: true,
                 skip_approval: true,
-                processing_notes: null
+                processing_notes: null,
+                create_review: true
               };
               let data = {
                 record: preparedRecord,

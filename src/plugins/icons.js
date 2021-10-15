@@ -153,7 +153,7 @@ const customIcons  = {
         },
         terminology_artefact: {
             type: "img",
-            icon: "assets/records/terminology_artifact.svg",
+            icon: "assets/records/terminology_artefact.svg",
             tooltip: "Terminology Artefact"
         },
         model_and_format: {
@@ -163,12 +163,12 @@ const customIcons  = {
         },
         reporting_guideline: {
             type: "img",
-            icon: "assets/records/reporting_guidelines.svg",
+            icon: "assets/records/reporting_guideline.svg",
             tooltip: "Reporting Guideline"
         },
         metric: {
             type: "img",
-            icon: "assets/records/std-metric.svg",
+            icon: "assets/records/metric.svg",
             tooltip: "Metric"
         },
         repository: {

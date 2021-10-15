@@ -19,6 +19,17 @@
           >
             <v-col cols="12">
               <div>
+                <v-tooltip
+                  bottom
+                  class="d-inline-block mr-2"
+                >
+                  <template #activator="{ on }">
+                    <v-icon v-on="on">
+                      fa-question-circle
+                    </v-icon>
+                  </template>
+                  {{ getFields('array')[fieldName]['description'] }}
+                </v-tooltip>
                 <b class="body-1 blue--text"> {{ cleanString(fieldName).toUpperCase() }} </b>
 
                 <v-tooltip
@@ -122,11 +133,22 @@
                 height="100%"
               >
                 <v-card-title>
+                  <v-tooltip
+                    bottom
+                    class="d-inline-block mr-2"
+                  >
+                    <template #activator="{ on }">
+                      <v-icon v-on="on">
+                        fa-question-circle
+                      </v-icon>
+                    </template>
+                    {{ getFields('object')[fieldName]['description'] }}
+                  </v-tooltip>
                   <b class="body-1 blue--text"> {{ cleanString(fieldName).toUpperCase() }}: </b>
                 </v-card-title>
                 <v-card-text>
                   <FieldInput
-                    v-for="(prop, propName, propIndex) in field.properties"
+                    v-for="(prop, propName, propIndex) in sortObject(field.properties)"
                     :key="'prop_' + propIndex"
                     :field-name="fieldName"
                     :field-props="prop"
@@ -138,7 +160,8 @@
             </v-col>
           </v-row>
           <v-divider v-if="Object.keys(getFields('object')).length > 0" />
-          <v-row v-if="Object.keys(getFields('string')).length > 0">
+          <v-row v-if="Object.keys(getFields('enum')).length > 0">
+            <!-- there are currently no fields with type: enum -->
             <v-col cols="12">
               <b class="body-1 blue--text"> BASE FIELDS: </b>
             </v-col>
@@ -157,6 +180,9 @@
                 :field-props="field"
               />
             </v-col>
+          </v-row>
+          <v-divider v-if="Object.keys(getFields('enum')).length > 0" />
+          <v-row v-if="Object.keys(getFields('string')).length > 0">
             <v-col
               v-for="(field, fieldName, fieldIndex) in getFields('string')"
               :key="'stringField_' + fieldIndex"
@@ -336,12 +362,11 @@ export default {
       let output = {};
       if (this.allowedFields && this.allowedFields.properties){
         Object.keys(this.allowedFields.properties).forEach((fieldName) => {
-
           if (this.allowedFields.properties[fieldName].type === type
           && !this.allowedFields.properties[fieldName].enum) {
             output[fieldName] = this.allowedFields.properties[fieldName]
           }
-          else if (type === 'enum' && this.allowedFields.properties[fieldName].enum){
+          else if (type === 'string' && this.allowedFields.properties[fieldName].enum){
               let expected = new Set(["yes", "no"]);
               let fieldEnum = new Set(this.allowedFields.properties[fieldName].enum);
               if (isEqual(expected, fieldEnum)) {
@@ -455,6 +480,9 @@ export default {
         fields: null,
         template: null
       }
+    },
+    sortObject(obj) {
+      return Object.keys(obj).sort().reduce((res, key) => (res[key] = obj[key], res), {});
     }
   }
 }

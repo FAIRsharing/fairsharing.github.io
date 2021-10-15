@@ -15,7 +15,12 @@
               >
                 <v-row no-gutters>
                   <v-col
-                    cols="3"
+                    xs="12"
+                    sm="12"
+                    md="4"
+                    lg="3"
+                    xl="3"
+                    col="12"
                     class="border-right"
                   >
                     <div
@@ -40,7 +45,7 @@
                       :search="search"
                       :open.sync="open"
                       :active.sync="active"
-                      class="tree pb-3"
+                      class="tree pb-3 pr-3"
                       hoverable
                     >
                       <template #label="{ item, active }">
@@ -62,14 +67,24 @@
                     </v-treeview>
                   </v-col>
 
-                  <v-col cols="9">
+                  <v-col
+                    id="termDisplay"
+                    col="12"
+                    xs="12"
+                    sm="12"
+                    md="8"
+                    lg="9"
+                    xl="9"
+                  >
                     <v-card
                       v-if="active.length > 0 && getItem(active[0])"
                       class="pa-5"
                       flat
                     >
-                      <v-card-title>
-                        <v-chip :class="`${color} white--text text-h3 largeChips`">
+                      <v-card-title
+                        class="justify-center"
+                      >
+                        <v-chip :class="`${color} white--text text-h4 largeChips mb-2`">
                           {{ selectedItem.name }}
                         </v-chip>
                         <v-spacer />
@@ -82,8 +97,15 @@
                       </v-card-title>
                       <v-divider />
                       <v-card-text>
-                          {{ selectedItem.content }}
+                        {{ selectedItem.content }}
                       </v-card-text>
+                    </v-card>
+                    <v-card
+                      v-else
+                      class="pa-5"
+                      flat
+                    >
+                      <v-card-text>Select a term to display the details</v-card-text>
                     </v-card>
                   </v-col>
                 </v-row>
@@ -132,9 +154,8 @@ export default {
     },
     ...mapState("editor", ["colors"]),
   },
-  mounted() {
-    this.flattenedTree = this.terms(this.tree);
-  },
+  watch: { selectedItem() { this.$scrollTo("#termDisplay") }},
+  mounted() { this.flattenedTree = this.terms(this.tree) },
   methods: {
     terms(tree) {
       let termArray = [];
@@ -192,8 +213,20 @@ export default {
 }
 
 .tree {
-  height: 54vh;
   overflow-y: scroll;
+}
+
+@media (min-width: 1264px) {
+  .tree {
+    height: 54vh;
+  }
+}
+
+@media (max-width: 1263px) {
+  .tree {
+    max-height: 40vh;
+    border-bottom: 1px solid #ccc;
+  }
 }
 
 .largeChips {
@@ -201,5 +234,9 @@ export default {
   border-radius: 40px;
   padding-left: 40px;
   padding-right: 40px;
+}
+
+.col {
+  flex-basis: initial !important;
 }
 </style>

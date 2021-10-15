@@ -10,7 +10,7 @@
         <v-chip
           v-for="item in getField('subjects')"
           :key="item.label"
-          class="mr-2 mb-2 text-capitalize"
+          class="mr-2 mb-2"
           :color="getChipColor(item)"
           text-color="white"
           @click="returnToSearch('subjects', item.label)"
@@ -32,7 +32,7 @@
         <v-chip
           v-for="item in getField('domains')"
           :key="item.label"
-          class="mr-2 mb-2 text-capitalize"
+          class="mr-2 mb-2"
           :color="getChipColor(item)"
           text-color="white"
           @click="returnToSearch('domains', item.label)"
@@ -54,7 +54,7 @@
         <v-chip
           v-for="item in getField('taxonomies')"
           :key="item.label"
-          class="mr-2 mb-2 text-capitalize"
+          class="mr-2 mb-2"
           text-color="white"
           :color="getChipColor(item)"
           @click="returnToSearch('taxonomies', item.label)"

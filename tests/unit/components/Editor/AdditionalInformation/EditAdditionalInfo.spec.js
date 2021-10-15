@@ -177,6 +177,17 @@ describe("EditAdditionalInfo.vue", function() {
         wrapper.vm.fields.dataset_citation = "no";
         wrapper.vm.submitChanges(wrapper.vm.fields);
         expect($store.state.record.sections.additionalInformation.changes).toBe(1);
-
     })
+
+    it('sorts object fields so URL is shown last', () => {
+        wrapper = shallowMount(EditAdditionalInfo, {
+            localVue,
+            router,
+            mocks: {$store, $route, $router},
+            stubs: {'router-link': true, 'v-form': editAdditionalInfo}
+        });
+        expect(wrapper.vm.sortObject(
+            {url: 'fun', name: 'more fun'}
+            )).toStrictEqual({name: 'more fun', url: 'fun'})
+    });
 });

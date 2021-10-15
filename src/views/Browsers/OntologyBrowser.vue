@@ -29,7 +29,7 @@
                     >
                       <v-autocomplete
                         v-model="search"
-                        :items="terms(tree)"
+                        :items="flattenTree(tree)"
                         :label="`Search ${selectedOntology}`"
                         outlined
                         hide-details
@@ -76,42 +76,47 @@
                     lg="9"
                     xl="9"
                   >
-                    <v-card
-                      v-if="activeItem.length > 0 && getItem(activeItem[0])"
-                      class="pa-5"
-                      flat
-                    >
-                      <v-card-title
-                        class="justify-center"
-                        :class="$vuetify.breakpoint.smAndDown ? `d-grid` : `d-flex`"
+                    <div v-if="!loadingItem">
+                      <v-card
+                        v-if="activeItem.length > 0 && getItem(activeItem[0])"
+                        class="pa-5"
+                        flat
                       >
-                        <v-chip
-                          class="white--text text-h4 largeChips mb-2"
-                          :class="color"
+                        <v-card-title
+                          class="justify-center"
+                          :class="$vuetify.breakpoint.smAndDown ? `d-grid` : `d-flex`"
                         >
-                          {{ selectedItem.name }}
-                        </v-chip>
-                        <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
-                        <br v-else>
-                        <div
-                          :class="`${color} white--text`"
-                          class="d-flex justify-center align-center hits largeHits"
-                        >
-                          {{ selectedItem.hits ? selectedItem.hits : 0 }}
-                        </div>
-                      </v-card-title>
-                      <v-divider />
-                      <v-card-text>
-                        {{ selectedItem.content }}
-                      </v-card-text>
-                    </v-card>
-                    <v-card
-                      v-else
-                      class="pa-5"
-                      flat
-                    >
-                      <v-card-text>Select a term to display the details</v-card-text>
-                    </v-card>
+                          <v-chip
+                            class="white--text text-h4 largeChips mb-2"
+                            :class="color"
+                          >
+                            {{ selectedItem.name }}
+                          </v-chip>
+                          <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
+                          <br v-else>
+                          <div
+                            :class="`${color} white--text`"
+                            class="d-flex justify-center align-center hits largeHits"
+                          >
+                            {{ selectedItem.hits ? selectedItem.hits : 0 }}
+                          </div>
+                        </v-card-title>
+                        <v-divider />
+                        <v-card-text>
+                          {{ selectedItem.content }}
+                        </v-card-text>
+                      </v-card>
+                      <v-card
+                        v-else
+                        class="pa-5"
+                        flat
+                      >
+                        <v-card-text>Select a term to display the details</v-card-text>
+                      </v-card>
+                    </div>
+                    <div v-else>
+                      <Loaders />
+                    </div>
                   </v-col>
                 </v-row>
               </v-container>
@@ -127,10 +132,11 @@
 import { mapState } from "vuex";
 import NotFound from "@/views/Errors/404"
 import fakeItems from "./mockItems.json"
+import Loaders from "@/components/Navigation/Loaders";
 
 export default {
   name: "OntologyBrowser",
-  components: {NotFound},
+  components: {Loaders, NotFound},
   data(){
     return {
       allowedOntologies: ['domain', 'subject'],
@@ -140,6 +146,7 @@ export default {
       activeItem: [],
       flattenedTree: [],
       selectedItem: null,
+      loadingItem: false,
       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore" +
           " et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut " +
           "aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum " +
@@ -159,10 +166,20 @@ export default {
     },
     ...mapState("editor", ["colors"]),
   },
-  watch: { selectedItem() { this.$scrollTo("#termDisplay") }},
-  mounted() { this.flattenedTree = this.terms(this.tree) },
+  watch: {
+    selectedItem(newTerm) {
+      if (newTerm) {
+        this.loadingItem = true;
+        setTimeout(() => {
+          this.$scrollTo("#termDisplay")
+          this.loadingItem = false
+        }, 2000)
+
+      }
+    }},
+  mounted() { this.flattenedTree = this.flattenTree(this.tree) },
   methods: {
-    terms(tree) {
+    flattenTree(tree) {
       let termArray = [];
       for (const term of tree) {
         termArray.push({
@@ -172,7 +189,7 @@ export default {
           content: term.content || this.content
         })
         if (term.children) {
-          termArray = termArray.concat(this.terms(term.children))
+          termArray = termArray.concat(this.flattenTree(term.children))
         }
       }
       return termArray

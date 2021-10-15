@@ -36,7 +36,8 @@ import {
     Maintenance,
     APIDoc,
     EditPublicProfile,
-    UsersList
+    UsersList,
+    OntologyBrowser
 }
     from "./routes.js"
 
@@ -152,8 +153,6 @@ let routes = [
             }
         }
     },
-
-
 
     /* OTHER MODES */
     {
@@ -313,6 +312,7 @@ let routes = [
             isSuperCurator(to, from, next, store);
         }
     },
+
     // CURATORS
     {
         name: "Curator",
@@ -323,6 +323,14 @@ let routes = [
             // isCurator(to, from, next, store);
         }
     },
+
+    // Ontology Browser
+    {
+        name: "Ontology Browser",
+        path: "/browse/:id",
+        component: OntologyBrowser
+    },
+
     /*
     Careful, this has to be the very last base path  !!!!
     This component"s page title is handled in the component itself as it needs the :id param
@@ -381,7 +389,7 @@ export async function afterEach(to) {
 const router = new VueRouter({
     routes,
     scrollBehavior,
-    mode: process.env.VUE_APP_MODE // "history" or "hash"
+    mode: process.env.VUE_APP_MODE ? process.env.VUE_APP_MODE : "hash" // "history" or "hash"
 });
 
 export function scrollBehavior(to) {

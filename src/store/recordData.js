@@ -258,7 +258,7 @@ let recordStore = {
         async updateGeneralInformation({ state, commit}, options) {
             commit("resetMessage", "generalInformation");
             let {
-                type, countries, userDefinedTags, domains, subjects, taxonomies, status, curator_notes,isHidden,
+                type, countries, userDefinedTags, domains, subjects, taxonomies, status, curator_notes, isHidden,
                 ...record
             } = JSON.parse(JSON.stringify(state.sections.generalInformation.data)),
                 newTags = [],

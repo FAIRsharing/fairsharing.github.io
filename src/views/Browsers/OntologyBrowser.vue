@@ -35,6 +35,7 @@
                         hide-details
                         :color="color"
                         item-text="name"
+                        clearable
                       />
                       <v-divider class="mb-2" />
                     </div>

@@ -15,6 +15,47 @@
       >{{ status.toUpperCase() }}</b>
     </div>
 
+    <div
+      v-if="recommended !== null"
+      class="d-flex flex-column justify-center align-center"
+    >
+      <div
+        class="led mr-0"
+        :class="{'green': recommended, 'red': !recommended, 'small': small}"
+      />
+      <b :class="recommended ? 'green--text' : 'red--text'">
+        <span v-if="recommended">Yes</span>
+        <span v-else>No</span>
+      </b>
+    </div>
+
+    <div
+      v-if="recordStatus !== null"
+      class="d-flex flex-column justify-center align-center"
+    >
+      <div
+        class="led d-inline-block mr-0"
+        :class="{
+          'green': recordStatus === 'ready',
+          'red': recordStatus === 'deprecated',
+          'orange': recordStatus === 'in_development',
+          'grey': recordStatus === 'uncertain',
+          'small': small
+        }"
+      />
+      <b
+        v-if="!small"
+        :class="{
+          'green--text': recordStatus === 'ready',
+          'red--text': recordStatus === 'deprecated',
+          'orange--text': recordStatus === 'in_development',
+          'grey--text': recordStatus === 'uncertain',
+        }"
+        class="text-center"
+      >
+        {{ cleanString(recordStatus) }}
+      </b>
+    </div>
 
     <div
       v-if="approved !== null"
@@ -43,14 +84,18 @@
 </template>
 
 <script>
-    export default {
-        name: "StatusPills",
-        props: {
-            status: {type: String, default: null},
-            approved: {type: Boolean, default: null},
-            small: {type: Boolean, default: false}
-        }
+import stringUtils from "@/utils/stringUtils";
+export default {
+    name: "StatusPills",
+    mixins: [stringUtils],
+    props: {
+        status: {type: String, default: null},
+        approved: {type: Boolean, default: null},
+        small: {type: Boolean, default: false},
+        recommended: {type: Boolean, default: null},
+        recordStatus: {type: String, default: null}
     }
+}
 </script>
 
 <style scoped>

@@ -6,7 +6,8 @@
     "children": [
       { "id": 2, "name": "Social Psychology", "hits": 3 },
       { "id": 3, "name": "Social And Behavioural Science", "hits": 20  },
-      { "id": 4, "name": "Social Science", "hits": 100 }
+      { "id": 4, "name": "Social Science", "hits": 100 },
+      { "id": 26, "name": "Humanities and social sciences", "hits": 3 }
     ],
     "content": "This is the name of the application. The root of the directory olds all files"
   },

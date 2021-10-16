@@ -106,18 +106,12 @@
                           <h4 :class="`${color}--text mb-4 text-decoration-underline text-h4`">
                             Records with this {{ selectedOntology }}:
                           </h4>
-                          <div class="inputGroup">
-                            <v-select
-                              v-model="pagination.perPage"
-                              :items="[10, 20, 50, 100]"
-                              outlined
-                              label="Records per page"
-                            />
-                          </div>
                           <BrowserDisplay
                             v-if="content"
                             :records="content.records"
                             :selected-ontology="selectedOntology"
+                            :pagination="pagination"
+                            :total-pages="content.totalPages"
                           />
                         </v-card-text>
                       </v-card>
@@ -189,21 +183,19 @@ export default {
   watch: {
     async selectedItem(newTerm) {
       if (newTerm) {
-        this.loadingItem = true;
         this.pagination = {
           perPage: 50,
           page: 1
         }
-        await this.findRecords(newTerm.name.trim())
-        this.loadingItem = false
+        await this.findRecords()
         this.$scrollTo("#termDisplay")
       }
     },
-    async 'pagination.perPage'(){
-      this.loadingItem = true;
-      await this.findRecords(this.selectedItem.name.trim());
-      this.loadingItem = false
-    }
+    async 'pagination.perPage'() {
+      this.pagination.page = 1
+      await this.findRecords()
+    },
+    async 'pagination.page'() { await this.findRecords() }
   },
   mounted() { this.flattenedTree = this.flattenTree(this.tree) },
   methods: {
@@ -224,10 +216,13 @@ export default {
       if (term) this.selectedItem = term
       return !!term
     },
-    async findRecords(term){
-      query.queryParam = { subjects: term, ...this.pagination }
+    async findRecords(){
+      this.loadingItem = true;
+      query.queryParam = { subjects: this.selectedItem.name.trim(), ...this.pagination }
       const response = await client.executeQuery(query)
       this.content = response.searchFairsharingRecords
+      console.log(this.content)
+      this.loadingItem = false
     }
   }
 }
@@ -285,10 +280,6 @@ export default {
 
 .col {
   flex-basis: initial !important;
-}
-
-.inputGroup .v-input {
-  width: 130px;
 }
 
 </style>

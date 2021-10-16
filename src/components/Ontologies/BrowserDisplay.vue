@@ -14,13 +14,13 @@
         <v-icon
           class="mr-10"
           :disabled="pagination.page ===1"
-          @click="pagination.page += -1"
+          @click="setPage(-1)"
         >
           fa-chevron-left
         </v-icon>
         <v-icon
           :disabled="pagination.page === totalPages"
-          @click="pagination.page += 1"
+          @click="setPage(1)"
         >
           fa-chevron-right
         </v-icon>
@@ -122,8 +122,13 @@ export default {
     }
   },
   computed: {
-    min(){
+    min() {
       return ((this.pagination.page - 1) * this.pagination.perPage) + 1
+    },
+  },
+  methods: {
+    setPage(offset) {
+      this.pagination.page += offset
     }
   }
 }

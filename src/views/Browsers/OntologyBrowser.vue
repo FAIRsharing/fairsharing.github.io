@@ -221,7 +221,6 @@ export default {
       query.queryParam = { subjects: this.selectedItem.name.trim(), ...this.pagination }
       const response = await client.executeQuery(query)
       this.content = response.searchFairsharingRecords
-      console.log(this.content)
       this.loadingItem = false
     }
   }

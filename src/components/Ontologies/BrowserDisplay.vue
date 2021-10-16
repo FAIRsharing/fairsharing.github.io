@@ -1,11 +1,38 @@
 <template>
-  <div class="fixedHeight">
+  <div>
+    <div class="inputGroup d-flex flex-row align-center pr-5 mb-5">
+      <v-spacer />
+      <span class="mr-5"> Row per page:</span>
+      <v-select
+        v-model="pagination.perPage"
+        :items="[10, 20, 50, 100]"
+        style="flex-grow: 0"
+        class="mr-5"
+      />
+      <span class="mx-10"> {{ min }} - {{ min + pagination.perPage -1 }}</span>
+      <div class="pager ml-5">
+        <v-icon
+          class="mr-10"
+          :disabled="pagination.page ===1"
+          @click="pagination.page += -1"
+        >
+          fa-chevron-left
+        </v-icon>
+        <v-icon
+          :disabled="pagination.page === totalPages"
+          @click="pagination.page += 1"
+        >
+          fa-chevron-right
+        </v-icon>
+      </div>
+    </div>
     <v-data-table
       :items="records"
       :headers="headers"
       :disable-pagination="true"
       :hide-default-footer="true"
       text-center
+      class="fixedHeight d-block"
     >
       <template
         v-if="records.length > 0"
@@ -17,9 +44,9 @@
             :key="`record_${itemKey}`"
           >
             <td class="cell">
-              <div
+              <a
                 class="d-flex align-center cursor-pointer"
-                @click="goTo(item.id)"
+                :href="`/#/${item.id}`"
               >
                 <v-avatar
                   size="30"
@@ -32,7 +59,7 @@
                   />
                 </v-avatar>
                 {{ item.name }}
-              </div>
+              </a>
             </td>
             <td class="cell">
               <div class="d-flex justify-center align-center flex-column">
@@ -79,14 +106,10 @@ export default {
   components: { Icon, StatusPills },
   mixins: [stringUtils],
   props: {
-    selectedOntology: {
-      required: true,
-      type: String
-    },
-    records: {
-      required: true,
-      type: Array
-    }
+    selectedOntology: { required: true, type: String },
+    records: { required: true, type: Array },
+    pagination: { type: Object, required: true },
+    totalPages: { type: Number, required: true}
   },
   data(){
     return {
@@ -98,9 +121,9 @@ export default {
       ]
     }
   },
-  methods: {
-    goTo(id){
-      this.$router.push({path: `/${id}`})
+  computed: {
+    min(){
+      return ((this.pagination.page - 1) * this.pagination.perPage) + 1
     }
   }
 }
@@ -114,5 +137,9 @@ export default {
     min-height: 40vh;
     max-height: 50vh;
     overflow-y: scroll;
+  }
+
+  .inputGroup .v-input {
+    width: 70px;
   }
 </style>

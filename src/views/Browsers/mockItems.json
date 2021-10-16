@@ -1,45 +1,30 @@
 [
   {
     "id": 1,
-    "name": "Applications",
+    "name": " Humanities ",
     "hits": 123,
     "children": [
-      { "id": 2, "name": "Calendar : app", "hits": 3 },
-      { "id": 3, "name": "Chrome : app", "hits": 20  },
-      { "id": 4, "name": "Webstorm : app", "hits": 100 }
+      { "id": 2, "name": "Social Psychology", "hits": 3 },
+      { "id": 3, "name": "Social And Behavioural Science", "hits": 20  },
+      { "id": 4, "name": "Social Science", "hits": 100 }
     ],
     "content": "This is the name of the application. The root of the directory olds all files"
   },
   {
     "id": 5,
-    "name": "Documents",
+    "name": "Geophysics",
     "hits": 1230,
     "children": [
       {
         "id": 6,
-        "name": "vuetify",
+        "name": "Matter Physics",
         "children": [
           {
             "id": 7,
-            "name": "src",
+            "name": "Condensed Matter Physics",
             "children": [
-              { "id": 8, "name": "index : ts" },
-              { "id": 9, "name": "bootstrap : ts", "hits": 5 }
-            ]
-          }
-        ]
-      },
-      {
-        "id": 10,
-        "name": "material2",
-        "children": [
-          {
-            "id": 11,
-            "name": "src",
-            "children": [
-              { "id": 12, "name": "v-btn : ts" },
-              { "id": 13, "name": "v-card : ts" },
-              { "id": 14, "name": "v-window : ts" }
+              { "id": 8, "name": "Experimental Condensed Matter Physics" },
+              { "id": 9, "name": "Theoretical Condensed Matter Physics", "hits": 5 }
             ]
           }
         ]
@@ -48,43 +33,43 @@
   },
   {
     "id": 15,
-    "name": "Downloads",
+    "name": "Genomics",
     "hits": 200,
     "children": [
-      { "id": 16, "name": "October : pdf" },
-      { "id": 17, "name": "November : pdf" },
-      { "id": 18, "name": "Tutorial : html" }
+      { "id": 16, "name": "Metagenomics" },
+      { "id": 17, "name": "Toxicogenomics" },
+      { "id": 18, "name": "Phylogenomics" }
     ]
   },
   {
     "id": 19,
-    "name": "Videos",
+    "name": "Biology",
     "children": [
       {
         "id": 20,
-        "name": "Tutorials",
+        "name": "Human Biology",
         "children": [
           {
             "id": 21,
-            "name": "Basic layouts : mp4"
+            "name": "Developmental Neurobiology"
           },
           {
             "id": 22,
-            "name": "Advanced techniques : mp4"
+            "name": "Molecular Neuroscience"
           },
           {
             "id": 23,
-            "name": "All about app : dir"
+            "name": "Synthetic Biology"
           }
         ]
       },
       {
         "id": 24,
-        "name": "Intro : mov"
+        "name": "Applied Microbiology"
       },
       {
         "id": 25,
-        "name": "Conference introduction : avi"
+        "name": "Plant Cell Biology"
       }
     ]
   }

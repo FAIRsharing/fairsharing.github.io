@@ -6,7 +6,7 @@
         <v-col cols="12">
           <v-card>
             <v-card-title class="primary white--text">
-              Welcome to the {{ selectedOntology }} browser
+              Welcome to the {{ selectedOntology }}s browser
             </v-card-title>
             <v-card-text class="pa-0 ma-0">
               <v-container
@@ -67,7 +67,6 @@
                       </template>
                     </v-treeview>
                   </v-col>
-
                   <v-col
                     id="termDisplay"
                     col="12"
@@ -104,7 +103,7 @@
                         </v-card-title>
                         <v-divider />
                         <v-card-text>
-                          {{ selectedItem.content }}
+                          {{ content.records }}
                         </v-card-text>
                       </v-card>
                       <v-card
@@ -131,9 +130,13 @@
 
 <script>
 import { mapState } from "vuex";
-import NotFound from "@/views/Errors/404"
-import fakeItems from "./mockItems.json"
+import NotFound from "@/views/Errors/404";
 import Loaders from "@/components/Navigation/Loaders";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import query from "@/lib/GraphClient/queries/ontologyBrowser.json";
+import fakeItems from "./mockItems.json"
+
+const client = new GraphClient()
 
 export default {
   name: "OntologyBrowser",
@@ -148,11 +151,7 @@ export default {
       flattenedTree: [],
       selectedItem: null,
       loadingItem: false,
-      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore" +
-          " et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut " +
-          "aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum " +
-          "dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia " +
-          "deserunt mollit anim id est laborum."
+      content: ""
     }
   },
   computed: {
@@ -168,16 +167,15 @@ export default {
     ...mapState("editor", ["colors"]),
   },
   watch: {
-    selectedItem(newTerm) {
+    async selectedItem(newTerm) {
       if (newTerm) {
         this.loadingItem = true;
-        setTimeout(() => {
-          this.$scrollTo("#termDisplay")
-          this.loadingItem = false
-        }, 2000)
-
+        await this.findRecords(newTerm.name.trim())
+        this.loadingItem = false
+        this.$scrollTo("#termDisplay")
       }
-    }},
+    }
+  },
   mounted() { this.flattenedTree = this.flattenTree(this.tree) },
   methods: {
     flattenTree(tree) {
@@ -186,8 +184,7 @@ export default {
         termArray.push({
           id: term.id,
           name: term.name,
-          hits: term.hits,
-          content: term.content || this.content
+          hits: term.hits
         })
         if (term.children) termArray = termArray.concat(this.flattenTree(term.children))
       }
@@ -195,11 +192,13 @@ export default {
     },
     getItem(id) {
       let term = this.flattenedTree.filter( obj => obj.id === id)[0]
-      if (term) {
-        this.selectedItem = term
-        return !!term
-      }
-      return false
+      if (term) this.selectedItem = term
+      return !!term
+    },
+    async findRecords(term){
+      query.queryParam = { subjects: term }
+      const response = await client.executeQuery(query)
+      this.content = response.searchFairsharingRecords
     }
   }
 }

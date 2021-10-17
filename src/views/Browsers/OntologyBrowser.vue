@@ -120,7 +120,10 @@
                         class="pa-5"
                         flat
                       >
-                        <v-card-text>Select a term to display the details</v-card-text>
+                        <v-card-text>
+                          <OntologyStats :tree="tree" />
+                          Select a term to display the details
+                        </v-card-text>
                       </v-card>
                     </div>
                   </v-col>
@@ -148,6 +151,7 @@ import { mapState } from "vuex";
 import NotFound from "@/views/Errors/404";
 import Loaders from "@/components/Navigation/Loaders";
 import BrowserDisplay from "@/components/Ontologies/BrowserDisplay"
+import OntologyStats from "@/components/Ontologies/OntologyStats"
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import query from "@/lib/GraphClient/queries/ontologyBrowser.json";
 import fakeItems from "./mockItems.json"
@@ -156,7 +160,7 @@ const client = new GraphClient()
 
 export default {
   name: "OntologyBrowser",
-  components: {Loaders, NotFound, BrowserDisplay},
+  components: {Loaders, NotFound, BrowserDisplay, OntologyStats},
   data(){
     return {
       allowedOntologies: ['domain', 'subject'],

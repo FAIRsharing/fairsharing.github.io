@@ -31,7 +31,7 @@ export default {
           borderColor: '#DD7920',
           backgroundColor: '#FCEFE4',
           margin: [40, 20, 40, 20],
-          height: 400
+          height: 600
         },
         title: {
           text: 'Subject ontology drilldown',
@@ -86,8 +86,9 @@ export default {
     barOptions(){
       let options = JSON.parse(JSON.stringify(this.options))
       options.chart.type = 'column'
-      options.chart.margin = [60, 40, 40, 40]
+      options.chart.margin = [80, 40, 40, 40]
       options.chart.options3d.enabled = false
+      options.drilldown.drillUpButton = {position: {y: -40}}
       return options
     }
   },

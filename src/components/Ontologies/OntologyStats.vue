@@ -95,7 +95,6 @@ export default {
             drilldown.data.push(this.prepareDrilldown(node))
         }
       }
-      console.log(drilldown)
       this.options.drilldown.series.push(drilldown)
       return drilldown
     },

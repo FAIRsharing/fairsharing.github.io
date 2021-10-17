@@ -19,7 +19,7 @@
                     sm="12"
                     md="12"
                     lg="5"
-                    xl="4"
+                    xl="3"
                     col="12"
                     class="border-right"
                   >
@@ -73,7 +73,7 @@
                     sm="12"
                     md="12"
                     lg="7"
-                    xl="8"
+                    xl="9"
                     col="12"
                   >
                     <div v-if="!loadingItem">
@@ -120,8 +120,11 @@
                         class="pa-5"
                         flat
                       >
-                        <v-card-title :class="`${color}--text text-h3 text-decoration-underline mb-2`">
-                          Subject Ontology statistics:
+                        <v-card-title
+                          :class="`${color}--text`"
+                          class="text-h3 text-decoration-underline mb-2 align-center text-center justify-center"
+                        >
+                          Subject Ontology statistics
                         </v-card-title>
                         <v-card-text>
                           <OntologyStats :tree="tree" />

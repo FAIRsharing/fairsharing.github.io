@@ -12,6 +12,8 @@ import Networkgraph from 'highcharts/modules/networkgraph'
 import Variablepie from 'highcharts/modules/variable-pie'
 import More from 'highcharts/highcharts-more'
 import Export from 'highcharts/modules/exporting'
+import Drilldown from 'highcharts/modules/drilldown'
+import options3D from 'highcharts/highcharts-3d'
 import VueCodeHighlight from 'vue-code-highlight';
 import VueSanitize from "vue-sanitize";
 import Particles from "particles.vue";
@@ -42,6 +44,8 @@ Variablepie(Highcharts);
 More(Highcharts);
 Export(Highcharts);
 Networkgraph(Highcharts);
+Drilldown(Highcharts);
+options3D(Highcharts);
 
 Vue.config.productionTip = false;
 Vue.use(HighchartsVue);

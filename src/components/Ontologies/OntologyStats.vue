@@ -1,8 +1,11 @@
 <template>
-  <div>
-    Ontology Stats graphs
-    <highcharts :options="options" />
-  </div>
+  <v-container fluid>
+    <v-row>
+      <v-col xl="6">
+        <highcharts :options="options" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -21,10 +24,21 @@ export default {
             enabled: true,
             alpha: 45,
             beta: 0
-          }
+          },
+          borderWidth: 2,
+          borderColor: '#DD7920',
+          backgroundColor: '#FCEFE4',
+          margin: [40, 20, 40, 20],
+          height: 400
         },
         title: {
-          text: ''
+          text: 'Subject ontology drilldown',
+          style: {
+            color: '#DD7920'
+          }
+        },
+        subtitle: {
+          text: 'Click a term to drilldown the children terms'
         },
         accessibility: {
           announceNewData: {
@@ -38,7 +52,7 @@ export default {
           series: {
             dataLabels: {
               enabled: true,
-              format: '{point.name}: {point.y:.1f}%'
+              format: '{point.name}'
             },
             depth: 35
           }

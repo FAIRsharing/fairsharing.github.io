@@ -30,5 +30,5 @@ export const Privacy =  () => import(/* webpackChunkName: "privacy-chunk" */ '@/
 export const New = () => import(/* webpackChunkName: "new-chunk" */ '@/views/Static/New/New');
 export const Graph =  () => import(/* webpackChunkName: "graphtest-chunk" */ '@/views/Records/NetworkGraph');
 export const Maintenance =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Errors/Maintenance');
-export const APIDoc =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Static/APIDoc/APIDoc');
-export const OntologyBrowser =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Browsers/OntologyBrowser');
+export const APIDoc =  () => import(/* webpackChunkName: "apiDoc-chunk" */ '@/views/Static/APIDoc/APIDoc');
+export const OntologyBrowser =  () => import(/* webpackChunkName: "ontologyBrowser-chunk" */ '@/views/Browsers/OntologyBrowser');

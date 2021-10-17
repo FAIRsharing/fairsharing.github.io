@@ -120,9 +120,11 @@
                         class="pa-5"
                         flat
                       >
+                        <v-card-title :class="`${color}--text text-h3 text-decoration-underline mb-2`">
+                          Subject Ontology statistics:
+                        </v-card-title>
                         <v-card-text>
                           <OntologyStats :tree="tree" />
-                          Select a term to display the details
                         </v-card-text>
                       </v-card>
                     </div>

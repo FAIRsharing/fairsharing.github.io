@@ -2,7 +2,10 @@
   <v-container fluid>
     <v-row>
       <v-col xl="6">
-        <highcharts :options="options" />
+        <highcharts :options="pieOptions" />
+      </v-col>
+      <v-col xl="6">
+        <highcharts :options="barOptions" />
       </v-col>
     </v-row>
   </v-container>
@@ -19,11 +22,10 @@ export default {
     return {
       options: {
         chart: {
-          type: 'pie',
-          options3d: {
-            enabled: true,
+          options3d:  {
             alpha: 45,
-            beta: 0
+            beta: 0,
+            enabled: true
           },
           borderWidth: 2,
           borderColor: '#DD7920',
@@ -73,6 +75,20 @@ export default {
         }
       },
       totalSize: 0
+    }
+  },
+  computed: {
+    pieOptions(){
+      let options = JSON.parse(JSON.stringify(this.options))
+      options.chart.type = 'pie'
+      return options
+    },
+    barOptions(){
+      let options = JSON.parse(JSON.stringify(this.options))
+      options.chart.type = 'column'
+      options.chart.margin = [60, 40, 40, 40]
+      options.chart.options3d.enabled = false
+      return options
     }
   },
   mounted() { this.$nextTick(() => { this.prepareData() }) },

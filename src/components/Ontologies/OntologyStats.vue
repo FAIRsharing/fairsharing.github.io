@@ -1,10 +1,22 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col xl="6">
+      <v-col
+        xs="12"
+        sm="12"
+        md="12"
+        lg="6"
+        xl="6"
+      >
         <highcharts :options="pieOptions" />
       </v-col>
-      <v-col xl="6">
+      <v-col
+        xs="12"
+        sm="12"
+        md="12"
+        lg="6"
+        xl="6"
+      >
         <highcharts :options="barOptions" />
       </v-col>
     </v-row>
@@ -81,6 +93,7 @@ export default {
     pieOptions(){
       let options = JSON.parse(JSON.stringify(this.options))
       options.chart.type = 'pie'
+      options.chart.height = this.$vuetify.breakpoint.lgAndUp ? 600 : 300
       return options
     },
     barOptions(){
@@ -88,6 +101,7 @@ export default {
       options.chart.type = 'column'
       options.chart.margin = [80, 40, 40, 40]
       options.chart.options3d.enabled = false
+      options.chart.height = this.$vuetify.breakpoint.lgAndUp ? 600 : 300
       options.drilldown.drillUpButton = {position: {y: -40}}
       return options
     }

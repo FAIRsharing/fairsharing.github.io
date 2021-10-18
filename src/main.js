@@ -14,6 +14,7 @@ import More from 'highcharts/highcharts-more'
 import Export from 'highcharts/modules/exporting'
 import Drilldown from 'highcharts/modules/drilldown'
 import options3D from 'highcharts/highcharts-3d'
+import Sunburst from 'highcharts/modules/sunburst'
 import VueCodeHighlight from 'vue-code-highlight';
 import VueSanitize from "vue-sanitize";
 import Particles from "particles.vue";
@@ -46,6 +47,7 @@ Export(Highcharts);
 Networkgraph(Highcharts);
 Drilldown(Highcharts);
 options3D(Highcharts);
+Sunburst(Highcharts);
 
 Vue.config.productionTip = false;
 Vue.use(HighchartsVue);

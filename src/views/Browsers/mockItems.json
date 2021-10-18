@@ -1,31 +1,42 @@
 [
   {
     "id": 1,
-    "name": " Humanities ",
-    "hits": 123,
+    "name": "Humanities",
+    "description": "Humanities is the branch of learning concerned with human culture; the academic subjects collectively comprising this branch of learning, as history, literature, ancient and modern languages, law, philosophy, art, and music. [OED, AL 12.6.2019]",
+    "recordsCount": 123,
+    "descendantsCount": 4,
     "children": [
-      { "id": 2, "name": "Social Psychology", "hits": 3 },
-      { "id": 3, "name": "Social And Behavioural Science", "hits": 20  },
-      { "id": 4, "name": "Social Science", "hits": 100 },
-      { "id": 26, "name": "Humanities and social sciences", "hits": 3 }
-    ],
-    "content": "This is the name of the application. The root of the directory olds all files"
+      { "id": 2, "name": "Social Psychology", "recordsCount": 3 },
+      { "id": 3, "name": "Social And Behavioural Science", "recordsCount": 20  },
+      { "id": 4, "name": "Social Science", "recordsCount": 100 },
+      {
+        "id": 26,
+        "name": "Humanities and social sciences",
+        "recordsCount": 3,
+        "description": "Humanities and Social Sciences is a broad multi-disciplinary research area incorporating both the Humanities and the Social Sciences. One differentiator for these two closely-related subjects is that humanities are predominately interested in studying the specifics and the 'unique', while social sciences are mainly interested in the general / population level. [Adapted from https://www.thebritishacademy.ac.uk/blog/what-social-science, AL 17.6.2019]"
+      }
+    ]
   },
   {
     "id": 5,
     "name": "Geophysics",
-    "hits": 1230,
+    "recordsCount": 1230,
+    "descendantsCount": 4,
     "children": [
       {
         "id": 6,
         "name": "Matter Physics",
+        "recordsCount": 500,
+        "descendantsCount": 3,
         "children": [
           {
             "id": 7,
             "name": "Condensed Matter Physics",
+            "recordsCount": 131,
+            "descendantsCount": 2,
             "children": [
               { "id": 8, "name": "Experimental Condensed Matter Physics" },
-              { "id": 9, "name": "Theoretical Condensed Matter Physics", "hits": 5 }
+              { "id": 9, "name": "Theoretical Condensed Matter Physics", "recordsCount": 5 }
             ]
           }
         ]
@@ -35,7 +46,8 @@
   {
     "id": 15,
     "name": "Genomics",
-    "hits": 200,
+    "recordsCount": 200,
+    "descendantsCount": 3,
     "children": [
       { "id": 16, "name": "Metagenomics" },
       { "id": 17, "name": "Toxicogenomics" },
@@ -45,33 +57,28 @@
   {
     "id": 19,
     "name": "Biology",
+    "recordsCount": 800,
+    "descendantsCount": 6,
     "children": [
       {
         "id": 20,
         "name": "Human Biology",
+        "recordsCount": 300,
+        "descendantsCount": 3,
         "children": [
-          {
-            "id": 21,
-            "name": "Developmental Neurobiology"
-          },
-          {
-            "id": 22,
-            "name": "Molecular Neuroscience"
-          },
-          {
-            "id": 23,
-            "name": "Synthetic Biology"
-          }
+          { "id": 21, "name": "Developmental Neurobiology", "recordsCount": 12 },
+          { "id": 22, "name": "Molecular Neuroscience", "recordsCount": 36  },
+          { "id": 23, "name": "Synthetic Biology", "recordsCount": 36 }
         ]
       },
-      {
-        "id": 24,
-        "name": "Applied Microbiology"
-      },
-      {
-        "id": 25,
-        "name": "Plant Cell Biology"
-      }
+      { "id": 24, "name": "Applied Microbiology", "recordsCount": 667 },
+      { "id": 25, "name": "Plant Cell Biology", "recordsCount": 20 }
     ]
+  },
+  {
+    "id": 26,
+    "name": "test",
+    "recordCount": 200,
+    "descendantsCount": 0
   }
 ]

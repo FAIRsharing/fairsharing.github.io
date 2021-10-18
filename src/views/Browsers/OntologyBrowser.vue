@@ -61,7 +61,7 @@
                             :class="active ? `white ${color}--text ${color}--border` : `${color} white--text`"
                             class="d-flex justify-center align-center hits"
                           >
-                            {{ item.hits ? item.hits : 0 }}
+                            {{ item.recordsCount ? item.recordsCount : 0 }}
                           </div>
                         </div>
                       </template>
@@ -98,9 +98,12 @@
                             :class="`${color} white--text`"
                             class="d-flex justify-center align-center hits largeHits"
                           >
-                            {{ selectedItem.hits ? selectedItem.hits : 0 }}
+                            {{ selectedItem.recordsCount ? selectedItem.recordsCount : 0 }}
                           </div>
                         </v-card-title>
+                        <v-card-text>
+                          {{ selectedItem.description }}. It contains {{ selectedItem.descendantsCount }} descendants.
+                        </v-card-text>
                         <v-divider />
                         <v-card-text>
                           <h4 :class="`${color}--text mb-4 text-decoration-underline text-h4`">
@@ -214,7 +217,9 @@ export default {
         termArray.push({
           id: term.id,
           name: term.name,
-          hits: term.hits
+          recordsCount: term['recordsCount'] || 0,
+          description: term.description || "There is no description for this item",
+          descendantsCount: term['descendantsCount'] || 0
         })
         if (term.children) termArray = termArray.concat(this.flattenTree(term.children))
       }

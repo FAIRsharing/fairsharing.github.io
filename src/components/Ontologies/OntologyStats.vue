@@ -43,6 +43,18 @@
 </template>
 
 <script>
+import Highcharts from 'highcharts'
+
+Highcharts.setOptions({
+  colors: [
+    '#aec7e8', '#ffbb78',
+    '#98df8a', '#ff9896',
+    '#c5b0d5',
+    '#f7b6d2',
+    '#dbdb8d', '#9edae5'
+  ]
+})
+
 export default {
   name: "OntologyStats",
   props: { tree: { required: true, type: Array }},
@@ -157,13 +169,6 @@ export default {
           height: this.$vuetify.breakpoint.lgAndUp ? 865 : 300,
           margin: [80, 40, 40, 40]
         },
-        colors: [
-          '#aec7e8', '#ffbb78',
-          '#98df8a', '#ff9896',
-          '#c5b0d5',
-          '#f7b6d2',
-          '#dbdb8d', '#9edae5'
-        ],
         title: this.options.title,
         subtitle: this.options.subtitle,
         series: [

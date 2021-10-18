@@ -11,11 +11,10 @@
       @click.stop="toggleDrawerLeft"
     />
     <router-link to="/">
-      <v-img
-        src="assets/fairsharing-logo.svg"
-        height="70"
-        contain
-      />
+      <img
+        src="/assets/fairsharing-logo.svg"
+        alt="FAIRsharing logo"
+      >
     </router-link>
     <div
       class="d-flex justify-end align-center custom-width"

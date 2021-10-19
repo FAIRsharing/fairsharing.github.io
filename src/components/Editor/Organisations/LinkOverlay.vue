@@ -70,16 +70,19 @@
                     </v-list-item-content>
                   </template>
                 </v-autocomplete>
-                <v-btn
-                  fab
-                  small
-                  class="green white--text mt-2 ml-2"
-                  @click="menus.show = 'organisation'"
-                >
-                  <v-icon small>
-                    fa-plus
-                  </v-icon>
-                </v-btn>
+                <div class="mt-2 ml-2">
+                  <v-btn
+                    fab
+                    small
+                    class="green white--text"
+                    @click="menus.show = 'organisation'"
+                  >
+                    <v-icon small>
+                      fa-plus
+                    </v-icon>
+                  </v-btn>
+                  <span class="ml-2">Add New</span>
+                </div>
               </v-card>
               <v-card
                 v-if="menus.show === 'organisation'"

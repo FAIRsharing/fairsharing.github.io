@@ -137,6 +137,7 @@ export default {
       let _client = this,
           options = JSON.parse(JSON.stringify(this.options))
       options.chart.type = 'pie'
+      options.title.text = 'Subject browser: Number of descendants for each term'
       options.chart.height = this.$vuetify.breakpoint.lgAndUp ? 420 : 300
       options.series[0].data = this.pieData.data;
       options.drilldown.series = this.pieData.drilldownData.map((node) => {
@@ -155,10 +156,18 @@ export default {
       let _client = this,
           options = JSON.parse(JSON.stringify(this.options))
       options.chart.type = 'column'
+      options.title.text = 'Subject browser: Number of records for each term'
+      options.xAxis = { visible: false}
+      options.yAxis =  {
+          tickInterval: 0.1,
+          type: 'logarithmic'
+      }
       options.chart.options3d.enabled = false
+      options.chart.margin = [80, 30, 50, 80]
       options.chart.height = this.$vuetify.breakpoint.lgAndUp ? 420 : 300
       options.drilldown.drillUpButton = {position: {y: -40}}
       options.series[0].data = this.barData.data;
+      options.series[0].showInLegend = false
       options.drilldown.series = this.barData.drilldownData.map((node) => {
         return {
           name: node.name,

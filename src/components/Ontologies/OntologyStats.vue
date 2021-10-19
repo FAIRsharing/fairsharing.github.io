@@ -318,8 +318,8 @@ export default {
     processEndOfTree(node){
       if (node.descendantsCount === 0) {
         let currentTerm = decodeURIComponent(this.$route.query.term) || null
-        if (currentTerm && currentTerm !== node.id) {
-          this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(node.id)}})
+        if (currentTerm && currentTerm !== node.name) {
+          this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(node.name)}})
         }
       }
     }

@@ -190,9 +190,12 @@ export default {
     selectedOntology () { return this.$route.params.id },
     error () { return !this.allowedOntologies.includes(this.selectedOntology) },
     color () { return this.colors[this.selectedOntology] },
-    term () { return this.flattenedTree.find((node) => {
-        let term = decodeURIComponent(this.$route.query['term']) || null
-        if (term) return node.name.toLowerCase() === term.toLowerCase()
+    term () {
+      return this.flattenedTree.find((currentNode) => {
+        if (this.$route.query['term']) {
+          let term = decodeURIComponent(this.$route.query['term']) || null
+          if (term) return currentNode.name.toLowerCase() === term.toLowerCase()
+        }
     })},
     ...mapState("editor", ["colors"]),
   },
@@ -217,8 +220,10 @@ export default {
     },
     async term(newVal){
       if (newVal) {
+        let parents = this.findParents(newVal, []);
         this.activeItem = [newVal.id]
         await this.findRecords()
+        this.open = parents
       }
       else {
         this.selectedItem = null;
@@ -233,9 +238,10 @@ export default {
   },
   mounted() { this.flattenedTree = this.flattenTree(this.tree) },
   methods: {
-    flattenTree(tree, parents = []) {
+    flattenTree(tree, parents = null) {
       let termArray = [];
       for (const term of tree) {
+        if (!parents) parents = []
         termArray.push({
           id: term.id,
           name: term.name,
@@ -244,13 +250,16 @@ export default {
           descendantsCount: term['descendantsCount'] || 0,
           parents: parents
         })
-        parents.push(term.id)
-        if (term.children) termArray = termArray.concat(this.flattenTree(term.children))
+        if (term.children) {
+          let newParents = []
+          newParents.push(term.id)
+          termArray = termArray.concat(this.flattenTree(term.children, newParents))
+        }
       }
       return termArray
     },
     getItem(id) {
-      let term = this.flattenedTree.filter( obj => obj.id === id)[0]
+      let term = this.flattenedTree.find( obj => obj.id === id)
       if (term) this.selectedItem = term
       return !!term
     },
@@ -260,6 +269,14 @@ export default {
       const response = await client.executeQuery(query)
       this.content = response.searchFairsharingRecords
       this.loadingItem = false
+    },
+    findParents(currentNode, output){
+      if (currentNode.parents && currentNode.parents.length > 0) {
+        output = output.concat(currentNode.parents)
+        let parentNode = this.flattenedTree.find(item => item.id === currentNode.parents[0]) || null
+        if (parentNode) output = output.concat(this.findParents(parentNode, output))
+      }
+      return [...new Set(output)];
     }
   }
 }

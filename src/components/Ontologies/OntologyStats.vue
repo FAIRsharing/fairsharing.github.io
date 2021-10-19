@@ -70,7 +70,7 @@ export default {
           borderWidth: 2,
           borderColor: '#DD7920',
           backgroundColor: '#FCEFE4',
-          margin: [40, 20, 40, 20],
+          margin: [80, 40, 40, 40],
           height: 600
         },
         title: {
@@ -123,51 +123,60 @@ export default {
           name: 'Subjects'
         }
       ],
-      pieData: [],
-      barData: [],
-      drilldownData: []
+      pieData: {
+        data: [],
+        drilldownData: []
+      },
+      barData: {
+        data: [],
+        drilldownData: []
+      }
     }
   },
   computed: {
     pieOptions () {
-      let options = JSON.parse(JSON.stringify(this.options))
+      let _client = this,
+          options = JSON.parse(JSON.stringify(this.options))
       options.chart.type = 'pie'
       options.chart.height = this.$vuetify.breakpoint.lgAndUp ? 420 : 300
-      options.series[0].data = this.pieData;
-      options.drilldown.series = this.drilldownData.map((node) => {
+      options.series[0].data = this.pieData.data;
+      options.drilldown.series = this.pieData.drilldownData.map((node) => {
         return {
           name: node.name,
           id: node.id,
           data: node.data,
-          y: node.pieY
+          y: node.y
         }
       })
+      options.plotOptions.series.point = { events: { click: function () { _client.processEndOfTree(this) }}}
+      options.drilldown.drillUpButton = {position: {y: -40}}
       return options
     },
     barOptions () {
-      let options = JSON.parse(JSON.stringify(this.options))
+      let _client = this,
+          options = JSON.parse(JSON.stringify(this.options))
       options.chart.type = 'column'
-      options.chart.margin = [80, 40, 40, 40]
       options.chart.options3d.enabled = false
       options.chart.height = this.$vuetify.breakpoint.lgAndUp ? 420 : 300
       options.drilldown.drillUpButton = {position: {y: -40}}
-      options.series[0].data = this.barData;
-      options.drilldown.series = this.drilldownData.map((node) => {
+      options.series[0].data = this.barData.data;
+      options.drilldown.series = this.barData.drilldownData.map((node) => {
         return {
           name: node.name,
           id: node.id,
           data: node.data,
-          y: node.barY
+          y: node.y
         }
       })
+      options.plotOptions.series.point = { events: { click: function () { _client.processEndOfTree(this) }}}
       return options
     },
     sunburstOptions () {
+      let _client = this;
       return {
         chart: {
           ...this.options.chart,
           height: this.$vuetify.breakpoint.lgAndUp ? 865 : 300,
-          margin: [80, 40, 40, 40]
         },
         title: this.options.title,
         subtitle: this.options.subtitle,
@@ -177,6 +186,7 @@ export default {
               data: this.sunburstData,
               allowDrillToNode: true,
               cursor: 'pointer',
+              color: 'transparent',
               dataLabels: {
                 format: '{point.name}',
                 filter: {
@@ -196,17 +206,29 @@ export default {
                       operator: '>',
                       value: 64
                     }
+                  },
+                  levelSize: {
+                    unit: 'pixels',
+                    value: 65
                   }
                 },
                 {
                   level: 2,
-                  colorByPoint: true
+                  colorByPoint: true,
+                  levelSize: {
+                    unit: 'pixels',
+                    value: 140
+                  }
                 },
                 {
                   level: 3,
                   colorVariation: {
                     key: 'brightness',
                     to: -0.5
+                  },
+                  levelSize: {
+                    unit: 'pixels',
+                    value: 80
                   }
                 },
                 {
@@ -214,6 +236,10 @@ export default {
                   colorVariation: {
                     key: 'brightness',
                     to: 0.5
+                  },
+                  levelSize: {
+                    unit: 'pixels',
+                    value: 60
                   }
                 },
                 {
@@ -221,16 +247,14 @@ export default {
                   colorVariation: {
                     key: 'brightness',
                     to: 0.5
+                  },
+                  levelSize: {
+                    unit: 'pixels',
+                    value: 60
                   }
                 }
               ],
-              point: {
-                events: {
-                  click: function() {
-                    if (!this.node.childrenTotal) window.alert('END OF TREE REACHED')
-                  }
-                }
-              },
+              point: { events: { click: function () { _client.processEndOfTree(this) }}},
               tooltip: {
                 pointFormat: '{point.name} : {point.descendantsCount}'
               }
@@ -239,7 +263,7 @@ export default {
       }
     }
   },
-  mounted() { this.$nextTick(() => { this.prepareData() }) },
+  created() { this.prepareData() },
   methods: {
     prepareData(){
       let pieData = [],
@@ -249,36 +273,50 @@ export default {
         this.totalRecords += category.recordsCount
       }
       for (let node of this.tree) {
-        const newNode = { name: node.name, drilldown: node.name, value: 1, descendantsCount: node.descendantsCount }
-        pieData.push({ ...newNode, y: this.getYValue(node) });
+        const newNode = {
+          name: node.name,
+          drilldown: node.descendantsCount > 0 ? node.name : null,
+          value: 1,
+          descendantsCount: node.descendantsCount,
+        }
+        pieData.push({ ...newNode, y: this.getYValue(node, 'size') });
         barData.push({ ...newNode, y: this.getYValue(node, "hits") })
         this.prepareDrilldown(node)
       }
-      this.pieData = pieData
-      this.barData = barData
+      this.pieData.data = pieData
+      this.barData.data = barData
     },
     prepareDrilldown(cat, parent = 'Subjects'){
-      let newNode = { name: cat.name, id: cat.name, descendantsCount: cat.descendantsCount || 0 }
-      let drilldown = {
-        ...newNode,
-        data: [],
-        pieY: this.getYValue(cat),
-        barY: this.getYValue(cat, 'hits')
-      };
+      let newNode = {
+        name: cat.name,
+        id: cat.name,
+        descendantsCount: cat.descendantsCount || 0,
+        y: this.getYValue(cat, 'hits'),
+        data: []
+      }
+      let barDrilldown = { ...newNode },
+          pieDrilldown = { ...newNode, y: this.getYValue(cat, 'size') };
+
       if (cat.children) {
         this.sunburstData.push({ ...newNode, parent: parent })
-        drilldown.drilldown = cat.name
+        pieDrilldown.drilldown = barDrilldown.drilldown = cat.name
         for (let node of cat.children) {
-            drilldown.data.push(this.prepareDrilldown(node, cat.name))
+            const drilldownData = this.prepareDrilldown(node, cat.name)
+            pieDrilldown.data.push(drilldownData.pieDrilldown);
+            barDrilldown.data.push(drilldownData.barDrilldown);
         }
       }
       else this.sunburstData.push({ ...newNode, parent: parent, value: 1 })
-      this.drilldownData.push(drilldown)
-      return drilldown
+      this.pieData.drilldownData.push(pieDrilldown);
+      this.barData.drilldownData.push(barDrilldown)
+      return {pieDrilldown, barDrilldown}
     },
     getYValue(node, computeType = "size"){
-      if (computeType === "hits") return node.recordsCount || 1
-      if (computeType === "size") return (node.descendantsCount * 100) / this.totalDescendants
+      if (computeType === "hits") return node.recordsCount || 0
+      if (computeType === "size") return node.descendantsCount || 0
+    },
+    processEndOfTree(node){
+      if (node.descendantsCount === 0) window.alert("END OF TREE REACHED")
     }
   }
 }

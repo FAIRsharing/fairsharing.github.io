@@ -190,28 +190,50 @@ export default {
     selectedOntology () { return this.$route.params.id },
     error () { return !this.allowedOntologies.includes(this.selectedOntology) },
     color () { return this.colors[this.selectedOntology] },
+    term () { return this.flattenedTree.find((node) => {
+        let term = decodeURIComponent(this.$route.query['term']) || null
+        if (term) return node.name.toLowerCase() === term.toLowerCase()
+    })},
     ...mapState("editor", ["colors"]),
   },
   watch: {
+    async 'pagination.perPage'() {
+      this.pagination.page = 1
+      await this.findRecords()
+    },
+    async 'pagination.page'() { await this.findRecords() },
     async selectedItem(newTerm) {
       if (newTerm) {
         this.pagination = {
           perPage: 50,
           page: 1
         }
-        await this.findRecords()
+        let currentTerm = decodeURIComponent(this.$route.query.term) || null
+        if (currentTerm && currentTerm !== newTerm.name) {
+          await this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(newTerm.name)}})
+        }
         this.$scrollTo("#termDisplay")
       }
     },
-    async 'pagination.perPage'() {
-      this.pagination.page = 1
-      await this.findRecords()
+    async term(newVal){
+      if (newVal) {
+        this.activeItem = [newVal.id]
+        await this.findRecords()
+      }
+      else {
+        this.selectedItem = null;
+        this.activeItem = []
+      }
     },
-    async 'pagination.page'() { await this.findRecords() }
+    async activeItem(newVal, oldVal){
+      if ((newVal.length > 0 || oldVal.length > 0) && this.activeItem.length === 0) {
+        await this.$router.push({path: this.$route.path})
+      }
+    }
   },
   mounted() { this.flattenedTree = this.flattenTree(this.tree) },
   methods: {
-    flattenTree(tree) {
+    flattenTree(tree, parents = []) {
       let termArray = [];
       for (const term of tree) {
         termArray.push({
@@ -219,8 +241,10 @@ export default {
           name: term.name,
           recordsCount: term['recordsCount'] || 0,
           description: term.description || "There is no description for this item",
-          descendantsCount: term['descendantsCount'] || 0
+          descendantsCount: term['descendantsCount'] || 0,
+          parents: parents
         })
+        parents.push(term.id)
         if (term.children) termArray = termArray.concat(this.flattenTree(term.children))
       }
       return termArray
@@ -232,7 +256,7 @@ export default {
     },
     async findRecords(){
       this.loadingItem = true;
-      query.queryParam = { subjects: this.selectedItem.name.trim(), ...this.pagination }
+      query.queryParam = { subjects: this.term.name.trim(), ...this.pagination }
       const response = await client.executeQuery(query)
       this.content = response.searchFairsharingRecords
       this.loadingItem = false

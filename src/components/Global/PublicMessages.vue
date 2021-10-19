@@ -8,7 +8,7 @@
       :key="messageObj.message+'_'+index"
       dense
       type="warning"
-      class="mb-0 mx-2 flex-grow-1"
+      class="mb-2 mx-2 flex-grow-1"
     >
       {{ `${moment(messageObj.updatedAt)}: ${messageObj.message}` }}
     </v-alert>

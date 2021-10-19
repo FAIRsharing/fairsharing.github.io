@@ -267,20 +267,22 @@ export default {
     prepareData(){
       let pieData = [],
           barData = []
-      for (let category of this.tree) {
-        this.totalDescendants += category.descendantsCount
-        this.totalRecords += category.recordsCount
+      for (let currentNode of this.tree) {
+        this.totalDescendants += currentNode.descendantsCount
+        this.totalRecords += currentNode.recordsCount
       }
-      for (let node of this.tree) {
+      for (let currentNode of this.tree) {
         const newNode = {
-          name: node.name,
-          drilldown: node.descendantsCount > 0 ? node.name : null,
+          name: currentNode.name,
+          drilldown: currentNode.descendantsCount > 0 ? currentNode.name : null,
           value: 1,
-          descendantsCount: node.descendantsCount,
+          descendantsCount: currentNode.descendantsCount,
         }
-        pieData.push({ ...newNode, y: this.getYValue(node, 'size') });
-        barData.push({ ...newNode, y: this.getYValue(node, "hits") })
-        this.prepareDrilldown(node)
+        pieData.push({ ...newNode, y: this.getYValue(currentNode, 'size') });
+        barData.push({ ...newNode, y: this.getYValue(currentNode, "hits") });
+        let drilldownData = this.prepareDrilldown(currentNode)
+        this.pieData.drilldownData.push(drilldownData.pieDrilldown)
+        this.barData.drilldownData.push(drilldownData.barDrilldown)
       }
       this.pieData.data = pieData
       this.barData.data = barData
@@ -290,29 +292,28 @@ export default {
         name: cat.name,
         id: cat.name,
         descendantsCount: cat.descendantsCount || 0,
-        y: this.getYValue(cat, 'hits'),
         data: []
       }
-      let barDrilldown = { ...newNode },
-          pieDrilldown = { ...newNode, y: this.getYValue(cat, 'size') };
+      let barDrilldown = { ...JSON.parse(JSON.stringify(newNode)), y: this.getYValue(cat, 'hits') },
+          pieDrilldown = { ...JSON.parse(JSON.stringify(newNode)), y: this.getYValue(cat, 'size') };
 
       if (cat.children) {
-        this.sunburstData.push({ ...newNode, parent: parent })
+        this.sunburstData.push({ ...JSON.parse(JSON.stringify(newNode)), parent: parent })
         pieDrilldown.drilldown = barDrilldown.drilldown = cat.name
         for (let node of cat.children) {
             const drilldownData = this.prepareDrilldown(node, cat.name)
             pieDrilldown.data.push(drilldownData.pieDrilldown);
+            this.pieData.drilldownData.push(drilldownData.pieDrilldown);
             barDrilldown.data.push(drilldownData.barDrilldown);
+            this.barData.drilldownData.push(drilldownData.barDrilldown);
         }
       }
-      else this.sunburstData.push({ ...newNode, parent: parent, value: 1 })
-      this.pieData.drilldownData.push(pieDrilldown);
-      this.barData.drilldownData.push(barDrilldown)
+      else this.sunburstData.push({ ...JSON.parse(JSON.stringify(newNode)), parent: parent, value: 1 })
       return {pieDrilldown, barDrilldown}
     },
     getYValue(node, computeType = "size"){
       if (computeType === "hits") return node.recordsCount || 0
-      if (computeType === "size") return node.descendantsCount || 0
+      if (computeType === "size") return node.descendantsCount || 1
     },
     processEndOfTree(node){
       if (node.descendantsCount === 0) {

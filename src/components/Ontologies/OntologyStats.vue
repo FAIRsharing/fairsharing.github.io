@@ -316,7 +316,12 @@ export default {
       if (computeType === "size") return node.descendantsCount || 0
     },
     processEndOfTree(node){
-      if (node.descendantsCount === 0) window.alert("END OF TREE REACHED")
+      if (node.descendantsCount === 0) {
+        let currentTerm = decodeURIComponent(this.$route.query.term) || null
+        if (currentTerm && currentTerm !== node.id) {
+          this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(node.id)}})
+        }
+      }
     }
   }
 }

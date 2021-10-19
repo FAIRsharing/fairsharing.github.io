@@ -21,9 +21,9 @@
     >
       <div
         class="led mr-0"
-        :class="{'green': recommended, 'red': !recommended, 'small': small}"
+        :class="{'green': recommended, 'grey': !recommended, 'small': small}"
       />
-      <b :class="recommended ? 'green--text' : 'red--text'">
+      <b :class="recommended ? 'green--text' : 'grey--text'">
         <span v-if="recommended">Yes</span>
         <span v-else>No</span>
       </b>

@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO MAKE RECOMMENDED NO BUTTON GREY INSTEAD OF RED -->
   <v-container fluid>
     <v-row>
       <v-col

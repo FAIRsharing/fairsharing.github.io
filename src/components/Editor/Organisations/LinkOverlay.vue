@@ -212,6 +212,68 @@
                 </v-autocomplete>
               </v-card>
             </div>
+            <!-- countries -->
+            <v-col
+              xl="4"
+              lg="12"
+              md="12"
+              sm="12"
+              xs="12"
+              cols="12"
+            >
+              <v-autocomplete
+                v-model="editOrganisationLink.data.organisation.countries"
+                label="Countries"
+                :items="countries"
+                item-text="name"
+                item-value="name"
+                multiple
+                outlined
+                return-object
+              >
+                <template #prepend>
+                  <v-tooltip
+                    bottom
+                    max-width="300px"
+                    class="text-justify"
+                  >
+                    <template #activator="{ on }">
+                      <v-icon v-on="on">
+                        fa-question-circle
+                      </v-icon>
+                    </template>
+                    {{ tooltips['countries'] }}
+                  </v-tooltip>
+                </template>
+
+                <!-- autocomplete selected -->
+                <template #selection="data">
+                  <v-chip
+                    class="blue white--text removeStyle"
+                    close
+                    @click:close="removeCountry(data.item)"
+                  >
+                    {{ data.item.name }}
+                  </v-chip>
+                </template>
+
+                <!-- autocomplete data -->
+                <template #item="data">
+                  <country-flag
+                    v-if="data.item.code !== null"
+                    :country="data.item.code"
+                    size="normal"
+                  />
+                  <img
+                    v-else
+                    src="@/assets/placeholders/country.png"
+                    class="ml-4 mr-3"
+                  >
+                  <div> {{ data.item.name }} </div>
+                </template>
+              </v-autocomplete>
+            </v-col>
+
 
             <!-- GRANT -->
             <div v-if="editOrganisationLink.data.relation === 'funds'">
@@ -337,13 +399,15 @@
 
 <script>
     import Vue from "vue"
-    import { mapState } from "vuex"
+    import {mapGetters, mapState} from "vuex"
     import { isRequired, isUrl } from "@/utils/rules.js"
     import RestClient from "@/lib/Client/RESTClient.js"
+    import CountryFlag from "vue-country-flag";
     const restClient = new RestClient();
 
     export default {
       name: "LinkOverlay",
+      components: {CountryFlag},
       data(){
         return {
           formValid: false,
@@ -373,6 +437,14 @@
         ...mapState("users", ["user"]),
         ...mapState("record", ["editOrganisationLink", "sections"]),
         ...mapState("editor", ["organisations", "organisationsTypes", "grants", "organisationsRelations"]),
+        ...mapState("editor", [
+          "countries",
+          "years",
+          "tooltips",
+          "recordTypes",
+          "status"
+        ]),
+        ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
         organisationLinks() {
           return this.sections["organisations"].data;
         }
@@ -409,6 +481,11 @@
         }
       },
       methods: {
+        removeCountry(country){
+          this.editOrganisationLink.data.organisation.countries = this.editOrganisationLink.data.organisation.countries.filter(obj =>
+              obj.label !== country.name && obj.id !== country.id
+          );
+        },
         hideMenu(){
           this.menus.show = false;
           this.editOrganisationLink.data = {};
@@ -470,6 +547,7 @@
             Vue.set(this.organisationLinks, this.editOrganisationLink.id, data);
           }
           else Vue.set(this.organisationLinks, this.organisationLinks.length, data);
+          console.log(this.organisationLinks)
           this.editOrganisationLink.showOverlay = false;
         }
       }

@@ -24,6 +24,7 @@
                   <v-col cols="12 py-0 mb-2">
                     Record's current organisations:
                   </v-col>
+                  {{ organisationLinks }}
                   <v-col
                     v-for="(link, linkIndex) in organisationLinks"
                     :key="'orgaLink_' + linkIndex"
@@ -208,7 +209,7 @@
           }
         },
         methods: {
-          ...mapActions("editor", ["getOrganisations", "getOrganisationsTypes", "getGrants"]),
+          ...mapActions("editor", ["getOrganisations", "getOrganisationsTypes", "getGrants","getCountries"]),
           ...mapActions("record", ["updateOrganisations"]),
           ...mapGetters("record", ["getSection"]),
           removeRelation(id){
@@ -220,7 +221,8 @@
               await Promise.all([
                 this.getOrganisationsTypes(),
                 this.getOrganisations(),
-                this.getGrants()
+                this.getGrants(),
+                this.getCountries()
               ]);
               this.loading = false;
               this.initialized = true;

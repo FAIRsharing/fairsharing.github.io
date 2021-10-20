@@ -8,14 +8,6 @@
     "name",
     "homepage",
     "types",
-    "urlForLogo",
-    {
-      "name": "countries",
-      "fields": [
-        "code",
-        "id",
-        "name"
-      ]
-    }
+    "urlForLogo"
   ]
 }

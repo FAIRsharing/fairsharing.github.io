@@ -372,7 +372,7 @@ let recordStore = {
                     is_lead: obj.isLead,
                     country_ids: obj.organisation.countries ? obj.organisation.countries.map(country => country.id) : []
                 };
-                console.log(query)
+                console.log('que',query)
                 if (Object.prototype.hasOwnProperty.call(obj, 'id')) updateItems.push({query: query, id: obj.id});
                 else createItems.push(query);
             });

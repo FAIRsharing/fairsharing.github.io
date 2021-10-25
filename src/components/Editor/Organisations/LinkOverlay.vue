@@ -160,6 +160,63 @@
                             chips
                           />
                         </v-col>
+                        <!-- countries -->
+                        <v-col
+                          cols="12"
+                          class="pb-0"
+                        >
+                          <v-autocomplete
+                            v-model="menus.newOrganisation.data.country_ids"
+                            label="Countries"
+                            :items="countries"
+                            item-text="name"
+                            item-value="name"
+                            multiple
+                            outlined
+                            return-object
+                          >
+                            <template #prepend>
+                              <v-tooltip
+                                bottom
+                                max-width="300px"
+                                class="text-justify"
+                              >
+                                <template #activator="{ on }">
+                                  <v-icon v-on="on">
+                                    fa-question-circle
+                                  </v-icon>
+                                </template>
+                                {{ tooltips['countries'] }}
+                              </v-tooltip>
+                            </template>
+
+                            <!-- autocomplete selected -->
+                            <template #selection="data">
+                              <v-chip
+                                class="blue white--text removeStyle"
+                                close
+                                @click:close="removeCountry(data.item)"
+                              >
+                                {{ data.item.name }}
+                              </v-chip>
+                            </template>
+
+                            <!-- autocomplete data -->
+                            <template #item="data">
+                              <country-flag
+                                v-if="data.item.code !== null"
+                                :country="data.item.code"
+                                size="normal"
+                              />
+                              <img
+                                v-else
+                                src="@/assets/placeholders/country.png"
+                                class="ml-4 mr-3"
+                              >
+                              <div> {{ data.item.name }} </div>
+                            </template>
+                          </v-autocomplete>
+                        </v-col>
                       </v-row>
                     </v-container>
                   </v-form>
@@ -212,69 +269,6 @@
                 </v-autocomplete>
               </v-card>
             </div>
-            <!-- countries -->
-            <v-col
-              xl="4"
-              lg="12"
-              md="12"
-              sm="12"
-              xs="12"
-              cols="12"
-            >
-              <v-autocomplete
-                v-model="editOrganisationLink.data.organisation.countries"
-                label="Countries"
-                :items="countries"
-                item-text="name"
-                item-value="name"
-                multiple
-                outlined
-                return-object
-              >
-                <template #prepend>
-                  <v-tooltip
-                    bottom
-                    max-width="300px"
-                    class="text-justify"
-                  >
-                    <template #activator="{ on }">
-                      <v-icon v-on="on">
-                        fa-question-circle
-                      </v-icon>
-                    </template>
-                    {{ tooltips['countries'] }}
-                  </v-tooltip>
-                </template>
-
-                <!-- autocomplete selected -->
-                <template #selection="data">
-                  <v-chip
-                    class="blue white--text removeStyle"
-                    close
-                    @click:close="removeCountry(data.item)"
-                  >
-                    {{ data.item.name }}
-                  </v-chip>
-                </template>
-
-                <!-- autocomplete data -->
-                <template #item="data">
-                  <country-flag
-                    v-if="data.item.code !== null"
-                    :country="data.item.code"
-                    size="normal"
-                  />
-                  <img
-                    v-else
-                    src="@/assets/placeholders/country.png"
-                    class="ml-4 mr-3"
-                  >
-                  <div> {{ data.item.name }} </div>
-                </template>
-              </v-autocomplete>
-            </v-col>
-
-
             <!-- GRANT -->
             <div v-if="editOrganisationLink.data.relation === 'funds'">
               <v-card
@@ -482,7 +476,7 @@
       },
       methods: {
         removeCountry(country){
-          this.editOrganisationLink.data.organisation.countries = this.editOrganisationLink.data.organisation.countries.filter(obj =>
+          this.menus.newOrganisation.data.country_ids = this.menus.newOrganisation.data.country_ids.filter(obj =>
               obj.label !== country.name && obj.id !== country.id
           );
         },
@@ -502,6 +496,7 @@
           }
           let organisation_type_ids = JSON.parse(JSON.stringify(organisationInput.organisation_type_ids));
           organisationInput.organisation_type_ids = organisationInput.organisation_type_ids.map(obj => obj.id);
+          organisationInput.country_ids = organisationInput.country_ids ? organisationInput.country_ids.map(country => country.id) : []
           let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
           if (!data.error) {
             let newOrganisation = {
@@ -509,7 +504,7 @@
               name: data.name,
               homepage: data.homepage,
               types: organisation_type_ids.map(obj => obj.name),
-              urlForLogo: data['url_for_logo']
+              urlForLogo: data['url_for_logo'],
             };
             this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
             Vue.set(this.organisations, this.organisations.length, newOrganisation);
@@ -547,7 +542,6 @@
             Vue.set(this.organisationLinks, this.editOrganisationLink.id, data);
           }
           else Vue.set(this.organisationLinks, this.organisationLinks.length, data);
-          console.log(this.organisationLinks)
           this.editOrganisationLink.showOverlay = false;
         }
       }

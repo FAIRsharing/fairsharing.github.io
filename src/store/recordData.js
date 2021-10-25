@@ -230,7 +230,6 @@ let recordStore = {
                 client.setHeader(options.token);
             }
             let data = await client.executeQuery(recordQuery);
-            console.log(data)
             client.initalizeHeader()
             if (!data["fairsharingRecord"]['metadata']['contacts']) {
                 data["fairsharingRecord"]['metadata']['contacts'] = [];
@@ -369,10 +368,8 @@ let recordStore = {
                     organisation_id: obj.organisation.id,
                     relation: obj.relation,
                     grant_id: (obj.grant) ? obj.grant.id : null,
-                    is_lead: obj.isLead,
-                    country_ids: obj.organisation.countries ? obj.organisation.countries.map(country => country.id) : []
+                    is_lead: obj.isLead
                 };
-                console.log('que',query)
                 if (Object.prototype.hasOwnProperty.call(obj, 'id')) updateItems.push({query: query, id: obj.id});
                 else createItems.push(query);
             });

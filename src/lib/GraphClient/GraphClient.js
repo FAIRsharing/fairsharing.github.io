@@ -62,7 +62,6 @@ class GraphQLClient {
 
         // Handle query parameters
         if (query.queryParam) {
-            console.log('has query param')
             queryString += "(";
             Object.keys(query.queryParam).forEach(function(key){
                 if (typeof query.queryParam[key] === "boolean" || typeof query.queryParam[key] === "number"){
@@ -86,18 +85,6 @@ class GraphQLClient {
         if (query.fields){
             queryString += "{";
             query.fields.forEach(function(field){
-                if(query.queryName==='organisationLinks')
-                {
-                    if (field.name === 'grant') {
-                        console.log('grant')
-                    }
-                    if (field.name === 'organisation') {
-                        console.log('organisation')
-                    }
-                    if (field.name === 'countries') {
-                        console.log('countries')
-                    }
-                }
                 if (typeof field === "string"){
                     queryString += ` ${field}`;
                 }
@@ -116,12 +103,10 @@ class GraphQLClient {
                     else {
                         queryString += ` ${field.name}{`;
                         field.fields.forEach(function(subField){
-                            console.log('subField',subField)
                               if (typeof subField === "string"){
                                   queryString += `${subField} `;
                               }
                               else {
-                                  console.log('subfield',client.buildQuery(subField))
                                   queryString += `${client.buildQuery(subField)}`;
                               }
                         });

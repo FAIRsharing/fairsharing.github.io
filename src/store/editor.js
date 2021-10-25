@@ -145,7 +145,6 @@ let editorStore = {
         },
         async getOrganisations(state){
             let organisations = await graphClient.executeQuery(getOrganisationsQuery);
-            console.log(organisations)
             state.commit("setOrganisations", organisations['searchOrganisations'])
         },
         async getOrganisationsTypes(state){

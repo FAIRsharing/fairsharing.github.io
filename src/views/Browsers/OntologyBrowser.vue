@@ -218,7 +218,7 @@ export default {
     },
     search(newTerm) { this.openTerms(this.getAncestors()(newTerm, "id", "name")) }
   },
-  async mounted() { await this.fetchTerms() },
+  async mounted() { console.log(); await this.fetchTerms() },
   methods: {
     searchTerm(term){
       this.resetPagination()
@@ -233,7 +233,10 @@ export default {
   },
   metaInfo: {
     meta: [
-      { property: 'og:image', content: 'assets/openGraph/ontologyBrowser.png' }
+      { property: 'og:image', content: `${window.location.origin}/assets/openGraph/ontologyBrowser.png` },
+      { name: 'description', content: 'Subjects Ontology Browser (SRAO)' },
+      { name: 'keywords', content: "SRAO, Subjects, Ontology, Browser, FAIRsharing"},
+      { name: 'author', content: 'https://github.com/terazus'}
     ]
   }
 }

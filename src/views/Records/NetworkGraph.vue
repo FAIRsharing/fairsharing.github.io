@@ -117,7 +117,31 @@
           </v-card-text>
           <Loaders />
         </v-card>
-        <div id="networkGraph" />
+        <div id="networkGraph">
+          <v-card
+            v-if="noData"
+            height="100%"
+          >
+            <v-card-title class="blue white--text">
+              No graph data found!
+            </v-card-title>
+            <v-card-text class="pt-3">
+              <v-container fluid>
+                <v-row no-gutters>
+                  <v-col cols="12">
+                    <p>No data were found showing links between this record and others. This could be because:</p>
+                    <ul style="list-style-type: square;">
+                      <li>The record has just been created and the graph data are still being generated.</li>
+                      <li>This record has no links to other records.</li>
+                      <li>Something went wrong.</li>
+                    </ul>
+                    <p>If you need assistance, please <a href="mailto:contact@fairsharing.org">contact us</a>.</p>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -141,6 +165,7 @@
           let _module = this;
             return {
                 loading: false,
+                noData: false,
                 initialized: false,
                 depth: [1, 2, 3],
                 registry: "unknown",
@@ -294,13 +319,24 @@
                  Higher values may make the resulting graph rather large... */
                 graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
                 const response = await graphClient.executeQuery(graphQuery);
-                this.graphData = response.fairsharingGraph;
-                this.registry = this.graphData.registry;
-                this.type = this.graphData.type;
-                this.drawGraph(true)
-                this.loading = false;
-                this.initialized = true;
-
+                //if (Object.entries(this.graphData).length === 0 || this.graphData.edges.length === 0) {
+                if (response.fairsharingGraph === undefined ||
+                    response.fairsharingGraph.edges === undefined ||
+                    response.fairsharingGraph.edges.length === 0) {
+                  this.loading = false;
+                  this.noData = true;
+                  this.registry = "N/A";
+                  this.type = "N/A";
+                  this.initialized = true;
+                }
+                else {
+                  this.graphData = response.fairsharingGraph;
+                  this.registry = this.graphData.registry;
+                  this.type = this.graphData.type;
+                  this.drawGraph(true)
+                  this.loading = false;
+                  this.initialized = true;
+                }
             },
             drawGraph(start=false){
                 let _module = this;

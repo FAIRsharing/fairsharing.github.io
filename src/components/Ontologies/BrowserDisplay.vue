@@ -4,22 +4,22 @@
       <v-spacer />
       <span class="mr-5"> Row per page:</span>
       <v-select
-        v-model="pagination.perPage"
+        v-model="perPage"
         :items="[10, 20, 50, 100]"
         style="flex-grow: 0"
         class="mr-5"
       />
-      <span class="mx-10"> {{ min }} - {{ min + pagination.perPage -1 }}</span>
+      <span class="mx-10"> {{ min }} - {{ min + perPage -1 }}</span>
       <div class="pager ml-5">
         <v-icon
           class="mr-10"
-          :disabled="pagination.page ===1"
+          :disabled="currentPage === 1"
           @click="setPage(-1)"
         >
           fa-chevron-left
         </v-icon>
         <v-icon
-          :disabled="pagination.page === totalPages"
+          :disabled="currentPage === totalPages"
           @click="setPage(1)"
         >
           fa-chevron-right
@@ -72,11 +72,6 @@
                 <StatusPills :record-status="item.status" />
               </div>
             </td>
-            <td class="cell">
-              <div class="d-flex justify-center align-center">
-                <StatusPills :recommended="item.isRecommended" />
-              </div>
-            </td>
           </tr>
         </tbody>
       </template>
@@ -97,6 +92,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions, mapState } from 'vuex'
 import Icon from "@/components/Icon";
 import StatusPills from "@/components/Users/Profiles/Private/StatusPills"
 import stringUtils from "@/utils/stringUtils";
@@ -106,30 +102,34 @@ export default {
   components: { Icon, StatusPills },
   mixins: [stringUtils],
   props: {
-    selectedOntology: { required: true, type: String },
-    records: { required: true, type: Array },
-    pagination: { type: Object, required: true },
-    totalPages: { type: Number, required: true}
+    selectedOntology: { required: true, type: String }
   },
   data(){
     return {
       headers: [
         { text: "Record name", value: "name", align: "center" },
         { text: "Record registry and type", value: "registry", align: "center" },
-        { text: "Record status", value: "status", align: "center" },
-        { text: "Recommended", value: "isRecommended", align: "center"}
+        { text: "Record status", value: "status", align: "center" }
       ]
     }
   },
   computed: {
-    min() {
-      return ((this.pagination.page - 1) * this.pagination.perPage) + 1
+    min() { return ((this.currentPage - 1) * this.perPage) + 1 },
+    currentPage() { return this.getCurrentPage() },
+    perPage: {
+      get () {
+        return this.getPerPage()
+      },
+      set(val) {
+        this.changePerPage(val)
+      }
     },
+    ...mapState("ontologyBrowser", ["records", "totalPages"])
   },
   methods: {
-    setPage(offset) {
-      this.pagination.page += offset
-    }
+    async setPage(offset) { await this.fetchNewPage(offset) },
+    ...mapGetters("ontologyBrowser", ["getPerPage", "getCurrentPage"]),
+    ...mapActions("ontologyBrowser", ["fetchNewPage", "changePerPage"])
   }
 }
 </script>

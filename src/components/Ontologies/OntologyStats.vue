@@ -1,337 +1,158 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col
-        xs="12"
-        sm="12"
-        md="12"
-        lg="12"
-        xl="5"
-      >
-        <v-container
-          fluid
-          class="pa-0"
-        >
-          <v-row>
-            <v-col cols="12">
-              <highcharts :options="pieOptions" />
-            </v-col>
-            <v-col cols="12">
-              <highcharts :options="barOptions" />
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-col>
-      <v-col
-        xs="12"
-        sm="12"
-        md="12"
-        lg="12"
-        xl="7"
-      >
-        <v-container class="pa-0">
-          <v-row>
-            <v-col cols="12">
-              <highcharts :options="sunburstOptions" />
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-col>
-    </v-row>
-  </v-container>
+  <highcharts
+    v-if="!loadingData"
+    :options="sunburstOptions"
+  />
 </template>
 
 <script>
-import Highcharts from 'highcharts'
-
-Highcharts.setOptions({
-  colors: [
-    '#aec7e8', '#ffbb78',
-    '#98df8a', '#ff9896',
-    '#c5b0d5',
-    '#f7b6d2',
-    '#dbdb8d', '#9edae5'
-  ]
-})
+import { mapState, mapActions, mapGetters } from "vuex"
 
 export default {
   name: "OntologyStats",
-  props: { tree: { required: true, type: Array }},
   data() {
     return {
       options: {
         chart: {
-          options3d:  {
-            alpha: 45,
-            beta: 0,
-            enabled: true
-          },
-          borderWidth: 2,
+          borderWidth: 0,
           borderColor: '#DD7920',
-          backgroundColor: '#FCEFE4',
+          backgroundColor: '#F9F9F9',
           margin: [80, 40, 40, 40],
-          height: 600
+          height: this.$vuetify.breakpoint.lgAndUp ? 1132 : 300
         },
         title: {
           text: 'Subject ontology drilldown',
-          style: {
-            color: '#DD7920'
-          }
+          style: { color: '#DD7920' }
         },
-        subtitle: {
-          text: 'Click a term to drilldown the children terms'
-        },
-        accessibility: {
-          announceNewData: {
-            enabled: true
-          },
-          point: {
-            valueSuffix: '%'
-          }
-        },
-        plotOptions: {
-          series: {
-            dataLabels: {
-              enabled: true,
-              format: '{point.name}'
-            },
-            depth: 35
-          }
-        },
-        tooltip: {
-          headerFormat: '',
-          pointFormat: '<span style="color:{point.color}">{point.name}</span>'
-        },
+        subtitle: { text: 'Click a term to drilldown the children terms' },
         series: [
           {
-            name: "Subjects",
-            colorByPoint: true,
-            data: []
-          }
-        ],
-        drilldown: {
-          series: []
-        }
-      },
-      totalDescendants: 0,
-      totalRecords: 0,
-      sunburstData: [
-        {
-          id: 'Subjects',
-          parent: '',
-          name: 'Subjects'
-        }
-      ],
-      pieData: {
-        data: [],
-        drilldownData: []
-      },
-      barData: {
-        data: [],
-        drilldownData: []
-      }
-    }
-  },
-  computed: {
-    pieOptions () {
-      let _client = this,
-          options = JSON.parse(JSON.stringify(this.options))
-      options.chart.type = 'pie'
-      options.title.text = 'Subject browser: Number of descendants for each term'
-      options.chart.height = this.$vuetify.breakpoint.lgAndUp ? 420 : 300
-      options.series[0].data = this.pieData.data;
-      options.drilldown.series = this.pieData.drilldownData.map((node) => {
-        return {
-          name: node.name,
-          id: node.id,
-          data: node.data,
-          y: node.y
-        }
-      })
-      options.plotOptions.series.point = { events: { click: function () { _client.processEndOfTree(this) }}}
-      options.drilldown.drillUpButton = {position: {y: -40}}
-      return options
-    },
-    barOptions () {
-      let _client = this,
-          options = JSON.parse(JSON.stringify(this.options))
-      options.chart.type = 'column'
-      options.title.text = 'Subject browser: Number of records for each term'
-      options.xAxis = { visible: false}
-      options.yAxis =  {
-          tickInterval: 0.1,
-          type: 'logarithmic'
-      }
-      options.chart.options3d.enabled = false
-      options.chart.margin = [80, 30, 50, 80]
-      options.chart.height = this.$vuetify.breakpoint.lgAndUp ? 420 : 300
-      options.drilldown.drillUpButton = {position: {y: -40}}
-      options.series[0].data = this.barData.data;
-      options.series[0].showInLegend = false
-      options.drilldown.series = this.barData.drilldownData.map((node) => {
-        return {
-          name: node.name,
-          id: node.id,
-          data: node.data,
-          y: node.y
-        }
-      })
-      options.plotOptions.series.point = { events: { click: function () { _client.processEndOfTree(this) }}}
-      return options
-    },
-    sunburstOptions () {
-      let _client = this;
-      return {
-        chart: {
-          ...this.options.chart,
-          height: this.$vuetify.breakpoint.lgAndUp ? 865 : 300,
-        },
-        title: this.options.title,
-        subtitle: this.options.subtitle,
-        series: [
-            {
-              type: 'sunburst',
-              data: this.sunburstData,
-              allowDrillToNode: true,
-              cursor: 'pointer',
-              color: 'transparent',
-              dataLabels: {
-                format: '{point.name}',
-                filter: {
-                  property: 'innerArcLength',
-                  operator: '>',
-                  value: 16
-                },
-                rotationMode: 'circular'
+            colors: [
+              'white', '#1aadce', '#492970', '#910000',
+              'white', 'white', 'white', '#8bbc21'
+            ],
+            type: 'sunburst',
+            allowDrillToNode: true,
+            cursor: 'pointer',
+            color: 'transparent',
+            dataLabels: {
+              format: '{point.name}',
+              filter: {
+                property: 'innerArcLength',
+                operator: '>',
+                value: 16
               },
-              levels: [
-                {
-                  level: 1,
-                  levelIsConstant: false,
-                  dataLabels: {
-                    filter: {
-                      property: 'outerArcLength',
-                      operator: '>',
-                      value: 64
-                    }
-                  },
-                  levelSize: {
-                    unit: 'pixels',
-                    value: 65
+              rotationMode: 'circular'
+            },
+            levels: [
+              {
+                level: 1,
+                levelIsConstant: false,
+                dataLabels: {
+                  filter: {
+                    property: 'outerArcLength',
+                    operator: '>',
+                    value: 64
                   }
                 },
-                {
-                  level: 2,
-                  colorByPoint: true,
-                  levelSize: {
-                    unit: 'pixels',
-                    value: 140
-                  }
-                },
-                {
-                  level: 3,
-                  colorVariation: {
-                    key: 'brightness',
-                    to: -0.5
-                  },
-                  levelSize: {
-                    unit: 'pixels',
-                    value: 80
-                  }
-                },
-                {
-                  level: 4,
-                  colorVariation: {
-                    key: 'brightness',
-                    to: 0.5
-                  },
-                  levelSize: {
-                    unit: 'pixels',
-                    value: 60
-                  }
-                },
-                {
-                  level: 5,
-                  colorVariation: {
-                    key: 'brightness',
-                    to: 0.5
-                  },
-                  levelSize: {
-                    unit: 'pixels',
-                    value: 60
-                  }
+                levelSize: {
+                  value: 2.3
                 }
-              ],
-              point: { events: { click: function () { _client.processEndOfTree(this) }}},
-              tooltip: {
-                pointFormat: '{point.name} : {point.descendantsCount}'
+              },
+              {
+                level: 2,
+                colorByPoint: true,
+                levelSize: {
+                  value: 3
+                }
+              },
+              {
+                level: 3,
+                colorVariation: {
+                  key: 'brightness',
+                  to: -0.5
+                },
+                levelSize: {
+                  value: 3
+                }
+              },
+              {
+                level: 4,
+                colorVariation: {
+                  key: 'brightness',
+                  to: 0.2
+                },
+                levelSize: {
+                  value: 3
+                }
+              },
+              {
+                level: 5,
+                colorVariation: {
+                  key: 'brightness',
+                  to: 0.5
+                },
+                levelSize: {
+                  value: 2
+                }
+              },
+              {
+                level: 6,
+                colorVariation: {
+                  key: 'brightness',
+                  to: 0.2
+                }
+              },
+              {
+                level: 7,
+                colorVariation: {
+                  key: 'brightness',
+                  to: 0.5
+                }
+              },
+              {
+                level: 8,
+                colorVariation: {
+                  key: 'brightness',
+                  to: 0.5
+                }
               }
+            ],
+            tooltip: {
+              pointFormat: '{point.name} : ' +
+                  '<br> Children terms: {point.descendants_count}' +
+                  '<br> Number of records: {point.records_count}'
             }
+          }
         ]
       }
     }
   },
-  created() { this.prepareData() },
+  computed: {
+    sunburstOptions () {
+      const _client = this;
+      let options = { ..._client.options }
+      options.series[0].data = _client.sunburstData
+      options.series[0].point = { events: { click: function () { _client.processEndOfTree(this) }}}
+      return options
+    },
+    ...mapState("ontologyBrowser", ["sunburstData", "loadingData", "tree"])
+  },
   methods: {
-    prepareData(){
-      let pieData = [],
-          barData = []
-      for (let currentNode of this.tree) {
-        this.totalDescendants += currentNode.descendantsCount
-        this.totalRecords += currentNode.recordsCount
-      }
-      for (let currentNode of this.tree) {
-        const newNode = {
-          name: currentNode.name,
-          drilldown: currentNode.descendantsCount > 0 ? currentNode.name : null,
-          value: 1,
-          descendantsCount: currentNode.descendantsCount,
-        }
-        pieData.push({ ...newNode, y: this.getYValue(currentNode, 'size') });
-        barData.push({ ...newNode, y: this.getYValue(currentNode, "hits") });
-        let drilldownData = this.prepareDrilldown(currentNode)
-        this.pieData.drilldownData.push(drilldownData.pieDrilldown)
-        this.barData.drilldownData.push(drilldownData.barDrilldown)
-      }
-      this.pieData.data = pieData
-      this.barData.data = barData
-    },
-    prepareDrilldown(cat, parent = 'Subjects'){
-      let newNode = {
-        name: cat.name,
-        id: cat.name,
-        descendantsCount: cat.descendantsCount || 0,
-        data: []
-      }
-      let barDrilldown = { ...JSON.parse(JSON.stringify(newNode)), y: this.getYValue(cat, 'hits') },
-          pieDrilldown = { ...JSON.parse(JSON.stringify(newNode)), y: this.getYValue(cat, 'size') };
-
-      if (cat.children) {
-        this.sunburstData.push({ ...JSON.parse(JSON.stringify(newNode)), parent: parent })
-        pieDrilldown.drilldown = barDrilldown.drilldown = cat.name
-        for (let node of cat.children) {
-            const drilldownData = this.prepareDrilldown(node, cat.name)
-            pieDrilldown.data.push(drilldownData.pieDrilldown);
-            this.pieData.drilldownData.push(drilldownData.pieDrilldown);
-            barDrilldown.data.push(drilldownData.barDrilldown);
-            this.barData.drilldownData.push(drilldownData.barDrilldown);
-        }
-      }
-      else this.sunburstData.push({ ...JSON.parse(JSON.stringify(newNode)), parent: parent, value: 1 })
-      return {pieDrilldown, barDrilldown}
-    },
-    getYValue(node, computeType = "size"){
-      if (computeType === "hits") return node.recordsCount || 0
-      if (computeType === "size") return node.descendantsCount || 1
-    },
     processEndOfTree(node){
-      if (node.descendantsCount === 0) {
+      if (node.descendants_count === 0) {
         let currentTerm = decodeURIComponent(this.$route.query.term) || null
         if (currentTerm && currentTerm !== node.name) {
           this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(node.name)}})
         }
       }
-    }
+      else {
+        let ancestors = this.getAncestors()(node.identifier).concat(node.id)
+        this.openTerms(ancestors)
+      }
+    },
+    ...mapActions("ontologyBrowser", ["openTerms"]),
+    ...mapGetters("ontologyBrowser", ["getAncestors"])
   }
 }
 </script>

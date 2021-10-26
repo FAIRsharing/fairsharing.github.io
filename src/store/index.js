@@ -8,20 +8,22 @@ import users from './users.js'
 import uiController from "./uiController";
 import editor from "./editor"
 import messages from "./messages"
+import ontologyBrowser from "./ontologyBrowser"
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     namespaced: true,
     modules: {
-        searchFilters: searchFilters,
-        records: records,
-        record: record,
-        introspection: introspection,
-        users: users,
-        uiController: uiController,
-        editor: editor,
-        messages: messages,
+        searchFilters,
+        records,
+        record,
+        introspection,
+        users,
+        uiController,
+        editor,
+        messages,
+        ontologyBrowser: ontologyBrowser
     }
 })
 

@@ -395,45 +395,62 @@
     import Icon from "@/components/Icon"
 
     export default {
-        name: "BaseFields",
-        components: {DatabaseWarning, CountryFlag, StatusPills, Icon},
-        data(){
-            return {
-                rules: {
-                    isRequired: function(){return isRequired()},
-                    isUrl: function(){return isUrl()},
-                    isLongEnough: function(val){return isLongEnough(val)},
-                }
-            }
+      name: "BaseFields",
+      components: {DatabaseWarning, CountryFlag, StatusPills, Icon},
+      data(){
+          return {
+              rules: {
+                  isRequired: function(){return isRequired()},
+                  isUrl: function(){return isUrl()},
+                  isLongEnough: function(val){return isLongEnough(val)},
+              },
+              stored_name: null
+          }
+      },
+      computed: {
+          ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
+          ...mapState("editor", [
+              "countries",
+              "years",
+              "tooltips",
+              "recordTypes",
+              "status"
+          ]),
+          ...mapState('users', ['user']),
+          fields(){
+            return this.getSection("generalInformation").data;
+          }
+      },
+      watch: {
+        fields: {
+          deep: true,
+          handler(newValue) {
+            this.stored_name = newValue.metadata.name;
+          }
         },
-        computed: {
-            ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
-            ...mapState("editor", [
-                "countries",
-                "years",
-                "tooltips",
-                "recordTypes",
-                "status"
-            ]),
-            ...mapState('users', ['user']),
-            fields(){
-              return this.getSection("generalInformation").data;
+        stored_name: {
+          async handler() {
+            // Enquire of the server as to whether any similar names exist:
+            if (this.stored_name.trim().length >= 3) {
+              // TODO: Run a query here. I don't think there's any need to store results.
             }
-        },
-        methods: {
-          removeCountry(country){
-              this.fields.countries = this.fields.countries.filter(obj =>
-                  obj.label !== country.name && obj.id !== country.id
-              );
-          },
-          typeChangeDisabled(){
-            let _module = this;
-            if (_module.getCreatingNewRecord) {
-              return false;
-            }
-            return !_module.user().is_curator;
           }
         }
+      },
+      methods: {
+        removeCountry(country){
+            this.fields.countries = this.fields.countries.filter(obj =>
+                obj.label !== country.name && obj.id !== country.id
+            );
+        },
+        typeChangeDisabled(){
+          let _module = this;
+          if (_module.getCreatingNewRecord) {
+            return false;
+          }
+          return !_module.user().is_curator;
+        }
+      }
     }
 </script>
 

@@ -136,6 +136,9 @@ export default {
                   '</div>'
             }
           }
+        },
+        exporting: {
+          filename: 'SRAO-Sunburst'
         }
       }
     }

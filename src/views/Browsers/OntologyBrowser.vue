@@ -5,9 +5,6 @@
       <v-row v-else>
         <v-col cols="12">
           <v-card>
-            <v-card-title class="primary white--text">
-              Welcome to the {{ selectedOntology }}s browser
-            </v-card-title>
             <v-card-text class="pa-0 ma-0">
               <v-container
                 fluid
@@ -24,12 +21,13 @@
                     class="border-right"
                   >
                     <div
+                      v-if="tree.length > 0"
                       id="searchOntology"
                       class="px-2 mt-2"
                     >
                       <v-autocomplete
                         v-model="search"
-                        :items="flattenTree(tree)"
+                        :items="flattenedTree"
                         :label="`Search ${selectedOntology}s`"
                         outlined
                         hide-details
@@ -41,27 +39,29 @@
                     </div>
                     <v-treeview
                       :items="tree"
-                      activatable
                       :color="color"
                       :search="search"
                       :open.sync="open"
-                      :active.sync="activeItem"
                       class="tree pb-3 px-3"
                       hoverable
                     >
-                      <template #label="{ item, active }">
-                        <div class="d-flex flex-row justify-center align-center">
+                      <template #label="{ item }">
+                        <div
+                          class="d-flex flex-row justify-center align-center cursor-pointer"
+                          @click="searchTerm(item)"
+                        >
                           <v-chip
-                            :class="!active ? `white ${color}--text ${color}--border` : `${color} white--text`"
+                            :class="!activeTerms.includes(item.identifier) ? `white ${color}--text ${color}--border` : `${color} white--text`"
+                            class="cursor-pointer"
                           >
                             {{ item.name }}
                           </v-chip>
                           <v-spacer />
                           <div
-                            :class="active ? `white ${color}--text ${color}--border` : `${color} white--text`"
+                            :class="activeTerms.includes(item.identifier) ? `white ${color}--text ${color}--border` : `${color} white--text`"
                             class="d-flex justify-center align-center hits"
                           >
-                            {{ item.recordsCount ? item.recordsCount : 0 }}
+                            {{ item.records_count ? item.records_count : 0 }}
                           </div>
                         </div>
                       </template>
@@ -75,10 +75,11 @@
                     lg="7"
                     xl="9"
                     col="12"
+                    class="py-0 my-0"
                   >
-                    <div v-if="!loadingItem">
+                    <div v-if="!loadingData && tree.length > 0">
                       <v-card
-                        v-if="activeItem.length > 0 && getItem(activeItem[0])"
+                        v-if="selectedTerm"
                         class="pa-5"
                         flat
                       >
@@ -90,7 +91,7 @@
                             class="white--text text-h4 largeChips mb-2"
                             :class="color"
                           >
-                            {{ selectedItem.name }}
+                            {{ selectedTerm.name }}
                           </v-chip>
                           <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
                           <br v-else>
@@ -98,11 +99,27 @@
                             :class="`${color} white--text`"
                             class="d-flex justify-center align-center hits largeHits"
                           >
-                            {{ selectedItem.recordsCount ? selectedItem.recordsCount : 0 }}
+                            {{ selectedTerm.records_count ? selectedTerm.records_count : 0 }}
                           </div>
                         </v-card-title>
                         <v-card-text>
-                          {{ selectedItem.description }}. It contains {{ selectedItem.descendantsCount }} descendants.
+                          {{ selectedTerm.description }}
+                          It contains {{ selectedTerm.descendants_count }} descendants terms.
+                          <div
+                            v-if="ancestors.length > 0"
+                            class="mt-3"
+                          >
+                            <b class="text-decoration-underline">Ancestors:</b> <br>
+                            <v-chip
+                              v-for="(ancestor, ancestorKey) in ancestors"
+                              :key="'ancestor_' + ancestorKey"
+                              :class="`${color}--text ${color}--border`"
+                              class="white mr-2 mt-1"
+                              @click="goToTerm(ancestor)"
+                            >
+                              {{ ancestor }}
+                            </v-chip>
+                          </div>
                         </v-card-text>
                         <v-divider />
                         <v-card-text>
@@ -110,27 +127,18 @@
                             Records with this {{ selectedOntology }}:
                           </h4>
                           <BrowserDisplay
-                            v-if="content"
-                            :records="content.records"
+                            v-if="records"
                             :selected-ontology="selectedOntology"
-                            :pagination="pagination"
-                            :total-pages="content.totalPages"
                           />
                         </v-card-text>
                       </v-card>
                       <v-card
                         v-else
-                        class="pa-5"
+                        class="pa-0"
                         flat
                       >
-                        <v-card-title
-                          :class="`${color}--text`"
-                          class="text-h3 text-decoration-underline mb-2 align-center text-center justify-center"
-                        >
-                          Subject Ontology statistics
-                        </v-card-title>
-                        <v-card-text>
-                          <OntologyStats :tree="tree" />
+                        <v-card-text class="pa-0">
+                          <OntologyStats />
                         </v-card-text>
                       </v-card>
                     </div>
@@ -144,7 +152,7 @@
     </v-container>
     <v-fade-transition>
       <v-overlay
-        v-if="loadingItem"
+        v-if="loadingData"
         :absolute="false"
         opacity="0.8"
       >
@@ -155,16 +163,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import NotFound from "@/views/Errors/404";
 import Loaders from "@/components/Navigation/Loaders";
 import BrowserDisplay from "@/components/Ontologies/BrowserDisplay"
 import OntologyStats from "@/components/Ontologies/OntologyStats"
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import query from "@/lib/GraphClient/queries/ontologyBrowser.json";
-import fakeItems from "./mockItems.json"
-
-const client = new GraphClient()
 
 export default {
   name: "OntologyBrowser",
@@ -172,18 +175,7 @@ export default {
   data(){
     return {
       allowedOntologies: ['domain', 'subject'],
-      tree: fakeItems,
-      search: null,
-      open: [],
-      activeItem: [],
-      flattenedTree: [],
-      selectedItem: null,
-      loadingItem: false,
-      content: null,
-      pagination: {
-        perPage: 50,
-        page: 1
-      }
+      search: null
     }
   },
   computed: {
@@ -196,88 +188,48 @@ export default {
           let term = decodeURIComponent(this.$route.query['term']) || null
           if (term) return currentNode.name.toLowerCase() === term.toLowerCase()
         }
-    })},
+      })
+    },
+    open: {
+      get() { return this.openedTerms },
+      set(val) { this.openTerms(val) }
+    },
+    ancestors() { return this.getAncestors()(this.selectedTerm.identifier, 'name') },
     ...mapState("editor", ["colors"]),
+    ...mapState("ontologyBrowser", [
+      "tree",
+      "records",
+      "loadingData",
+      "flattenedTree",
+      "pagination",
+      "activeTerms",
+      "selectedTerm",
+      "openedTerms"
+    ]),
   },
   watch: {
-    async 'pagination.perPage'() {
-      this.pagination.page = 1
-      await this.findRecords()
-    },
-    async 'pagination.page'() { await this.findRecords() },
-    async selectedItem(newTerm) {
-      if (newTerm) {
-        this.pagination = {
-          perPage: 50,
-          page: 1
-        }
-        let currentTerm = decodeURIComponent(this.$route.query.term) || null
-        if (currentTerm && currentTerm !== newTerm.name) {
-          await this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(newTerm.name)}})
-        }
-        this.$scrollTo("#termDisplay")
-      }
-    },
-    async term(newVal){
+    async term(newVal) {
       if (newVal) {
-        let parents = this.findParents(newVal, []);
-        this.activeItem = [newVal.id]
-        await this.findRecords()
+        let parents = [...new Set(this.getAncestors()(newVal.identifier))];
+        await this.activateTerms(newVal)
         this.open = parents
       }
-      else {
-        this.selectedItem = null;
-        this.activeItem = []
-      }
+      else await this.activateTerms()
     },
-    async activeItem(newVal, oldVal){
-      if ((newVal.length > 0 || oldVal.length > 0) && this.activeItem.length === 0) {
-        await this.$router.push({path: this.$route.path})
-      }
-    }
+    search(newTerm) { this.openTerms(this.getAncestors()(newTerm, "id", "name")) }
   },
-  mounted() { this.flattenedTree = this.flattenTree(this.tree) },
+  async mounted() { await this.fetchTerms() },
   methods: {
-    flattenTree(tree, parents = null) {
-      let termArray = [];
-      for (const term of tree) {
-        if (!parents) parents = []
-        termArray.push({
-          id: term.id,
-          name: term.name,
-          recordsCount: term['recordsCount'] || 0,
-          description: term.description || "There is no description for this item",
-          descendantsCount: term['descendantsCount'] || 0,
-          parents: parents
-        })
-        if (term.children) {
-          let newParents = []
-          newParents.push(term.id)
-          termArray = termArray.concat(this.flattenTree(term.children, newParents))
-        }
-      }
-      return termArray
+    searchTerm(term){
+      this.resetPagination()
+      if (this.activeTerms.includes(term.identifier)) this.$router.push({path: this.$route.path})
+      else this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(term.name)}})
     },
-    getItem(id) {
-      let term = this.flattenedTree.find( obj => obj.id === id)
-      if (term) this.selectedItem = term
-      return !!term
+    goToTerm(term) {
+      this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(term)}})
     },
-    async findRecords(){
-      this.loadingItem = true;
-      query.queryParam = { subjects: this.term.name.trim(), ...this.pagination }
-      const response = await client.executeQuery(query)
-      this.content = response.searchFairsharingRecords
-      this.loadingItem = false
-    },
-    findParents(currentNode, output){
-      if (currentNode.parents && currentNode.parents.length > 0) {
-        output = output.concat(currentNode.parents)
-        let parentNode = this.flattenedTree.find(item => item.id === currentNode.parents[0]) || null
-        if (parentNode) output = output.concat(this.findParents(parentNode, output))
-      }
-      return [...new Set(output)];
-    }
+    ...mapActions("ontologyBrowser", ["fetchTerms", "fetchRecords", "resetPagination", "activateTerms", "openTerms"]),
+    ...mapGetters("ontologyBrowser", ["getAncestors"])
   }
 }
 </script>
@@ -311,7 +263,7 @@ export default {
 
 @media (min-width: 1264px) {
   .tree {
-    height: 73vh;
+    height: 78.8vh;
   }
   .border-right {
     border-right: 1px solid #ccc;
@@ -334,6 +286,10 @@ export default {
 
 .col {
   flex-basis: initial !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
 }
 
 </style>

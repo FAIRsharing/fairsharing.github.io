@@ -230,6 +230,11 @@ export default {
     },
     ...mapActions("ontologyBrowser", ["fetchTerms", "fetchRecords", "resetPagination", "activateTerms", "openTerms"]),
     ...mapGetters("ontologyBrowser", ["getAncestors"])
+  },
+  metaInfo: {
+    meta: [
+      { property: 'og:image', content: 'assets/openGraph/ontologyBrowser.png' }
+    ]
   }
 }
 </script>

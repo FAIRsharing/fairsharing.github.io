@@ -27,8 +27,9 @@ export default {
         subtitle: { text: 'Click a term to drilldown the children terms' },
         series: [
           {
+            turboThreshold: 2000,
             colors: [
-              'white', '#1aadce', '#492970', '#910000',
+              'white', '#1aadce', 'white', '#910000',
               'white', 'white', 'white', '#8bbc21'
             ],
             type: 'sunburst',
@@ -117,14 +118,25 @@ export default {
                   to: 0.5
                 }
               }
-            ],
-            tooltip: {
-              pointFormat: '{point.name} : ' +
-                  '<br> Children terms: {point.descendants_count}' +
-                  '<br> Number of records: {point.records_count}'
+            ]
+          }
+        ],
+        tooltip: {
+          useHTML: true,
+          backgroundColor: "white",
+          formatter: function() {
+            const point = this.point
+            if (point.name === "Subjects") return false
+            else {
+              return '<div class="HC-tooltip">' +
+                  '<h3 style="color:' + point.color +'">' + point.name + ': </h3>' +
+                  '<b> Description: </b>' + point.description +
+                  '<hr> Children terms:' + point.descendants_count +
+                  '<br> Number of records:' + point.records_count +
+                  '</div>'
             }
           }
-        ]
+        }
       }
     }
   },
@@ -157,6 +169,12 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  .HC-tooltip {
+    width: 350px;
+    word-break: break-word;
+    white-space: normal;
+    font-size: 14px;
+    text-align: justify;
+  }
 </style>

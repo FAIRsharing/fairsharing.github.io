@@ -218,7 +218,7 @@ export default {
     },
     search(newTerm) { this.openTerms(this.getAncestors()(newTerm, "id", "name")) }
   },
-  async mounted() { console.log(); await this.fetchTerms() },
+  async mounted() { await this.fetchTerms() },
   methods: {
     searchTerm(term){
       this.resetPagination()

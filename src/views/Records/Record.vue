@@ -728,6 +728,11 @@ export default {
           title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
         }
       }
+      else {
+        return {
+          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.name
+        }
+      }
     } catch (e) {
       //error
     }

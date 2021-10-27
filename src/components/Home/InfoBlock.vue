@@ -199,14 +199,24 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("searchFilters", ["getFiltersStatisticCount"])
+    ...mapGetters("searchFilters", ["getFiltersStatisticCount", "getDatabaseCount"])
   },
   mounted() {
     Object.keys(this.blockInfo).forEach(node => {
       this.blockInfo[node].total.count = this.getFiltersStatisticCount(this.blockInfo[node].total.option);
-      this.blockInfo[node]['items'].forEach((item, index) => {
-        this.blockInfo[node]['items'][index].count = this.getFiltersStatisticCount(item.option);
-      })
+      // Please refer to ticket:
+      // https://github.com/FAIRsharing/fairsharing.github.io/issues/1288
+      if (node === 'database') {
+        // Make a call to the special database count here, and use this to update blockinfo for databases only.
+        this.blockInfo[node]['items'].forEach((item, index) => {
+          this.blockInfo[node]['items'][index].count = this.getDatabaseCount[item.option.key];
+        });
+      }
+      else {
+        this.blockInfo[node]['items'].forEach((item, index) => {
+          this.blockInfo[node]['items'][index].count = this.getFiltersStatisticCount(item.option);
+        })
+      }
       this.blockInfo[node]['items'].sort(function (a, b) {
         return b.count - a.count
       });

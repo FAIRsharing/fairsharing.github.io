@@ -1,0 +1,9 @@
+{
+  "queryName": "duplicateCheck",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "name",
+    "homepage"
+  ]
+}

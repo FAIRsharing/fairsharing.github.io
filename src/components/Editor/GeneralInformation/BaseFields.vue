@@ -123,6 +123,60 @@
       </v-autocomplete>
     </v-col>
 
+    <!-- Duplicate warning box to go here -->
+    <!-- curator notes -->
+    <v-col cols="12">
+      <v-expand-transition>
+        <v-card
+          v-if="possibleDuplicates.length > 0"
+          class="mx-auto deep-orange darken-4 mb-5"
+          dark
+        >
+          <v-card-title>
+            <v-icon
+              large
+              left
+            >
+              mdi-twitter
+            </v-icon>
+            <span class="text-h5 font-weight-bold">
+              This record may duplicate an existing FAIRsharing record!
+            </span>
+          </v-card-title>
+          <v-card-text class="text-h6 font-weight-light">
+            <p>
+              Please see below for details on records we have detected that may be similar to yours:
+            </p>
+            <ul>
+              <li
+                v-for="(dup, dupIndex) in possibleDuplicates"
+                :key="'dup_' + dupIndex"
+              >
+                <a
+                  :href="'/' + dup.id"
+                  target="_blank"
+                >
+                  {{ dup.name }}
+                </a>
+                <span v-if="dup.abbreviation">
+                  ({{ dup.abbreviation }}) /
+                </span>
+                <span v-else>
+                  /
+                </span>
+                <a
+                  :href="dup.homepage"
+                  target="_blank"
+                >
+                  {{ dup.homepage }}
+                </a>
+              </li>
+            </ul>
+          </v-card-text>
+        </v-card>
+      </v-expand-transition>
+    </v-col>
+
     <!-- countries -->
     <v-col
       xl="4"
@@ -419,7 +473,6 @@
               "status",
               "possibleDuplicates"
           ]),
-          ...mapActions("editor", ["getPossibleDuplicates"]),
           ...mapState('users', ['user']),
           fields(){
             return this.getSection("generalInformation").data;
@@ -453,6 +506,7 @@
         }
       },
       methods: {
+        ...mapActions("editor", ["getPossibleDuplicates"]),
         removeCountry(country){
             this.fields.countries = this.fields.countries.filter(obj =>
                 obj.label !== country.name && obj.id !== country.id
@@ -470,21 +524,27 @@
           // run the dup check query, using stored_name, stored_abbreviation or stored_homepage; any that
           // are over three characters in length.
           let fieldsToQuery = [];
-          [_module.stored_name, _module.stored_abbreviation, _module.stored_homepage].forEach(function(val) {
-            if (val === null) {
+          // These are only queried if they are at least 6 characters...
+          [_module.stored_name, _module.stored_abbreviation].forEach(function(val) {
+            if (val === null || val === undefined) {
               return;
             }
             if (val.trim().length >= 6) {
               fieldsToQuery.push(val);
             }
           });
+          // ...whereas any length URL will do if it is valid.
+          let urlCheck = _module.rules.isUrl();
+          /* istanbul ignore next */
+          if (urlCheck(_module.stored_homepage)) {
+            fieldsToQuery.push(_module.stored_homepage)
+          }
+          /* istanbul ignore if */
           if (fieldsToQuery.length === 0) {
             return;
           }
           // Now send the query.
-          console.log("SENDING: " + JSON.stringify(fieldsToQuery));
           await _module.getPossibleDuplicates({fields: fieldsToQuery});
-          console.log("DUPS: " + JSON.stringify(_module.possibleDuplicates));
         }
       }
     }

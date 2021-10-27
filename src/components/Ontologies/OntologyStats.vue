@@ -24,9 +24,14 @@ export default {
           text: 'Subject ontology drilldown',
           style: { color: '#DD7920' }
         },
-        subtitle: { text: 'Click a term to drilldown the children terms' },
+        subtitle: {
+          text: 'Clicking a term will drilldown the children terms and adjust the levels in the left panel. ' +
+              'If a term has no children it will display information about that term.',
+          style: { fontSize: "18px" }
+        },
         series: [
           {
+            stickyTracking: false,
             turboThreshold: 2000,
             colors: [
               'white', '#1aadce', 'white', '#910000',
@@ -122,6 +127,7 @@ export default {
           }
         ],
         tooltip: {
+          followPointer: true,
           useHTML: true,
           backgroundColor: "white",
           formatter: function() {

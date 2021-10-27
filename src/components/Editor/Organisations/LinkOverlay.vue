@@ -486,17 +486,17 @@
           this.editOrganisationLink.id = null;
           this.editOrganisationLink.showOverlay = false;
         },
-        async createNewOrganisation() {
+        createNewOrganisation: async function () {
           this.menus.newOrganisation.loading = true;
           this.menus.newOrganisation.error = false;
           let organisationInput = JSON.parse(JSON.stringify(this.menus.newOrganisation.data));
-          if (this.menus.newOrganisation.logoData){
+          if (this.menus.newOrganisation.logoData) {
             organisationInput.logo = this.menus.newOrganisation.logoData;
             organisationInput.logo.data = organisationInput.logo.data.replace("data:image/png;base64,", "");
           }
           let organisation_type_ids = JSON.parse(JSON.stringify(organisationInput.organisation_type_ids));
           organisationInput.organisation_type_ids = organisationInput.organisation_type_ids.map(obj => obj.id);
-          organisationInput.country_ids = organisationInput.country_ids ? organisationInput.country_ids.map(country => country.id) : []
+          organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id)
           let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
           if (!data.error) {
             let newOrganisation = {
@@ -510,8 +510,7 @@
             Vue.set(this.organisations, this.organisations.length, newOrganisation);
             this.menus.show = null;
             this.menus.newOrganisation.data = {};
-          }
-          else {
+          } else {
             this.menus.newOrganisation.error = data.error;
           }
           this.menus.newOrganisation.loading = false;

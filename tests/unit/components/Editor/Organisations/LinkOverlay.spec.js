@@ -114,7 +114,8 @@ describe("Edit -> LinkOverlay.vue", function() {
         wrapper.vm.menus.newOrganisation.data = {
             name: "test",
             homepage: "https://example.com/test",
-            organisation_type_ids: [{id:1, name: "?"}]
+            organisation_type_ids: [{id:1, name: "?"}],
+            country_ids: [{id:1}]
         };
         await wrapper.vm.createNewOrganisation();
         expect(wrapper.vm.menus.newOrganisation.error).toBe("I am an error");

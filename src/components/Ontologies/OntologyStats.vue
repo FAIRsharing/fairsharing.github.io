@@ -154,13 +154,13 @@ export default {
       const _client = this;
       let options = { ..._client.options }
       options.series[0].data = _client.sunburstData
-      options.series[0].point = { events: { click: function () { _client.processEndOfTree(this) }}}
+      options.series[0].point = { events: { click: function () { _client.processClickEvent(this) }}}
       return options
     },
     ...mapState("ontologyBrowser", ["sunburstData", "loadingData", "tree"])
   },
   methods: {
-    processEndOfTree(node){
+    processClickEvent(node){
       if (node.descendants_count === 0) {
         let currentTerm = decodeURIComponent(this.$route.query.term) || null
         if (currentTerm && currentTerm !== node.name) {
@@ -168,8 +168,12 @@ export default {
         }
       }
       else {
-        let ancestors = this.getAncestors()(node.identifier).concat(node.id)
-        this.openTerms(ancestors)
+        const drilldown = node['innerArcLength'] === 0
+        if (node.name !== "Subject") {
+          let ancestors = this.getAncestors()(node.identifier)
+          if (drilldown) ancestors = ancestors.concat(node.id)
+          this.openTerms(ancestors)
+        }
       }
     },
     ...mapActions("ontologyBrowser", ["openTerms"]),

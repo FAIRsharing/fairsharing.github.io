@@ -387,7 +387,7 @@
 </template>
 
 <script>
-    import { mapState, mapGetters } from "vuex"
+    import { mapState, mapGetters, mapActions } from "vuex"
     import CountryFlag from 'vue-country-flag'
     import StatusPills from "@/components/Records/Shared/StatusPills";
     import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
@@ -404,7 +404,9 @@
                   isUrl: function(){return isUrl()},
                   isLongEnough: function(val){return isLongEnough(val)},
               },
-              stored_name: null
+              stored_name: null,
+              stored_abbreviation: null,
+              stored_homepage: null
           }
       },
       computed: {
@@ -414,26 +416,39 @@
               "years",
               "tooltips",
               "recordTypes",
-              "status"
+              "status",
+              "possibleDuplicates"
           ]),
+          ...mapActions("editor", ["getPossibleDuplicates"]),
           ...mapState('users', ['user']),
           fields(){
             return this.getSection("generalInformation").data;
           }
       },
       watch: {
+        // The purpose of these watchers is to flip out and send a message to the
+        // server as the user types in the name, abbreviation and homepage boxes.
         fields: {
           deep: true,
           handler(newValue) {
             this.stored_name = newValue.metadata.name;
+            this.stored_abbreviation = newValue.metadata.abbreviation;
+            this.stored_homepage = newValue.metadata.homepage;
           }
         },
         stored_name: {
           async handler() {
-            // Enquire of the server as to whether any similar names exist:
-            if (this.stored_name.trim().length >= 3) {
-              // TODO: Run a query here. I don't think there's any need to store results.
-            }
+            await this.checkForDups();
+          }
+        },
+        stored_abbreviation: {
+          async handler() {
+            await this.checkForDups();
+          }
+        },
+        stored_homepage: {
+          async handler() {
+            await this.checkForDups();
           }
         }
       },
@@ -449,6 +464,27 @@
             return false;
           }
           return !_module.user().is_curator;
+        },
+        async checkForDups() {
+          const _module = this;
+          // run the dup check query, using stored_name, stored_abbreviation or stored_homepage; any that
+          // are over three characters in length.
+          let fieldsToQuery = [];
+          [_module.stored_name, _module.stored_abbreviation, _module.stored_homepage].forEach(function(val) {
+            if (val === null) {
+              return;
+            }
+            if (val.trim().length >= 6) {
+              fieldsToQuery.push(val);
+            }
+          });
+          if (fieldsToQuery.length === 0) {
+            return;
+          }
+          // Now send the query.
+          console.log("SENDING: " + JSON.stringify(fieldsToQuery));
+          await _module.getPossibleDuplicates({fields: fieldsToQuery});
+          console.log("DUPS: " + JSON.stringify(_module.possibleDuplicates));
         }
       }
     }

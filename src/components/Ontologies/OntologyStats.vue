@@ -54,53 +54,27 @@ export default {
               {
                 level: 1,
                 levelIsConstant: false,
-                dataLabels: {
-                  filter: {
-                    property: 'outerArcLength',
-                    operator: '>',
-                    value: 64
-                  }
-                },
-                levelSize: {
-                  value: 2.3
-                }
+                dataLabels: { filter: { property: 'outerArcLength', operator: '>', value: 64 } },
+                levelSize: { value: 2.3  }
               },
               {
                 level: 2,
                 colorByPoint: true,
-                levelSize: {
-                  value: 3
-                }
+                levelSize: { value: 3  }
               },
               {
                 level: 3,
-                colorVariation: {
-                  key: 'brightness',
-                  to: -0.5
-                },
-                levelSize: {
-                  value: 3
-                }
+                colorVariation: {  key: 'brightness', to: -0.5 },
+                levelSize: { value: 3 }
               },
               {
                 level: 4,
-                colorVariation: {
-                  key: 'brightness',
-                  to: 0.2
-                },
-                levelSize: {
-                  value: 3
-                }
+                colorVariation: { key: 'brightness', to: 0.2 },
+                levelSize: { value: 3 }
               },
               {
-                level: 5,
-                colorVariation: {
-                  key: 'brightness',
-                  to: 0.5
-                },
-                levelSize: {
-                  value: 2
-                }
+                level: 5, colorVariation: { key: 'brightness', to: 0.5 },
+                levelSize: { value: 2 }
               },
               {
                 level: 6,
@@ -127,6 +101,7 @@ export default {
           }
         ],
         tooltip: {
+          hideDelay: 1,
           followPointer: true,
           useHTML: true,
           backgroundColor: "white",
@@ -168,10 +143,9 @@ export default {
         }
       }
       else {
-        const drilldown = node['innerArcLength'] === 0
         if (node.name !== "Subject") {
           let ancestors = this.getAncestors()(node.identifier)
-          if (drilldown) ancestors = ancestors.concat(node.id)
+          if (node['innerArcLength'] === 0) ancestors = ancestors.concat(node.id)
           this.openTerms(ancestors)
         }
       }

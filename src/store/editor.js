@@ -191,9 +191,7 @@ let editorStore = {
             commit("setAvailableRecords", data.searchFairsharingRecords.records);
         },
         async getPossibleDuplicates({commit}, options) {
-            console.log("OPTIONS: " + JSON.stringify(options));
             getDuplicates.queryParam = {fields: options.fields}
-            console.log("PARAMS: " + JSON.stringify(getDuplicates.queryParam));
             let data = await graphClient.executeQuery(getDuplicates);
             commit("setPossibleDuplicates", data.duplicateCheck);
         },

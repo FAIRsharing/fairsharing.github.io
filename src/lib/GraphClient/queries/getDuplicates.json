@@ -4,6 +4,7 @@
   "fields": [
     "id",
     "name",
+    "abbreviation",
     "homepage"
   ]
 }

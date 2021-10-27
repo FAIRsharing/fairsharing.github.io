@@ -5,10 +5,14 @@ import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
 import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
+import sinon from "sinon";
+import GraphClient from "@/lib/GraphClient/GraphClient";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
+
+let graphStub;
 
 recordStore.state.sections = {
     generalInformation: {
@@ -39,6 +43,7 @@ let wrapper;
 describe('Editor -> BaseFields.vue', () => {
 
     beforeAll( () => {
+
         wrapper = shallowMount(BaseFields, {
             localVue,
             vuetify,
@@ -68,6 +73,46 @@ describe('Editor -> BaseFields.vue', () => {
         };
         recordStore.state.newRecord = false;
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);
+    });
+
+    it("can check for duplicates", async () => {
+        // Nothing should happen on the first few of these
+        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({ duplicateCheck: []})
+        wrapper.vm.stored_homepage = "http://wibble.com";
+        await wrapper.vm.checkForDups();
+        expect(wrapper.vm.possibleDuplicates).toStrictEqual([]);
+
+        wrapper.vm.stored_name = "small";
+        wrapper.vm.stored_abbreviation = "small";
+        wrapper.vm.stored_homepage = "dodgy";
+        await wrapper.vm.checkForDups();
+        expect(wrapper.vm.possibleDuplicates).toStrictEqual([]);
+        graphStub.restore();
+
+        // Here's a working query.
+        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
+            duplicateCheck: [
+                {
+                    id: 1,
+                    name: "Possible Duplicate Record",
+                    abbreviation: "PDR",
+                    homepage: "https://www.nhm.ac.uk/discover/what-is-a-coprolite.html"
+                }
+            ]
+
+        });
+        wrapper.vm.stored_name = "thisisalongname";
+        await wrapper.vm.checkForDups();
+        expect(wrapper.vm.possibleDuplicates).toStrictEqual(
+            [
+                {
+                    "id":1,
+                    "name":"Possible Duplicate Record",
+                    "abbreviation":"PDR",
+                    "homepage":"https://www.nhm.ac.uk/discover/what-is-a-coprolite.html"
+                }
+            ]
+        )
     });
 
 });

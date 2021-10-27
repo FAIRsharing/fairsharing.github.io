@@ -96,10 +96,6 @@ export const getters = {
                 }
             }
         });
-        /* istanbul ignore else */
-        if (params[0] !== "Search") {
-            queryParameters["fairsharingRegistry"] = params[0];
-        }
         return queryParameters;
     }
 };

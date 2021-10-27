@@ -72,16 +72,14 @@
                 </v-autocomplete>
                 <div class="mt-2 ml-2">
                   <v-btn
-                    fab
-                    small
                     class="green white--text"
                     @click="menus.show = 'organisation'"
                   >
                     <v-icon small>
                       fa-plus
                     </v-icon>
+                    <span class="ml-1">Add New</span>
                   </v-btn>
-                  <span class="ml-2">Add New</span>
                 </div>
               </v-card>
               <v-card

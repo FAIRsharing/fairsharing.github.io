@@ -543,6 +543,56 @@ puts response.read_body
     >
       Each query has an optional parameter of <mark>q:</mark> if omitted then all records will be returned. Otherwise, a search will be performed as with <mark>/search/fairsharing_records</mark> (this latter is paginated - see earlier for pagination parameters).
     </p>
+
+    <h3 class="text-h6 text-xl-h5 mt-4 mb-2">
+      fairsharing_record search fields
+    </h3>
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      The following fields may be used when performing a POST to /search/fairsharing_records
+    </p>
+
+    <ul>
+      <li>q</li>
+      <li>status</li>
+      <li>fairsharing_registry</li>
+      <li>record_type</li>
+      <li>countries</li>
+      <li>subjects</li>
+      <li>domains</li>
+      <li>taxonomies</li>
+      <li>user_defined_tags</li>
+      <li>is_recommended*</li>
+      <li>is_approved*</li>
+      <li>is_maintained*</li>
+    </ul>
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      "q" is a general search term and will be used to search across all records. The other terms will be used to restrict
+      results to those with an exact match. Anything marked with "*" takes either "true" or "false".
+    </p>
+
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Example:
+    </p>
+
+    <vue-code-highlight
+      class="code-container mt-2 mb-4"
+      language="ruby"
+    >
+      <pre>
+        curl --location --request POST 'https://api.fairsharing.org/search/fairsharing_records?q=ADHD&fairsharing_registry=database&countries=china'
+        --header 'Accept: application/json'
+        --header 'Content-Type: application/json'
+        --header 'Authorization: Bearer your_jwt_goes_here'
+      </pre>
+    </vue-code-highlight>
+
+
     <h3 class="text-h6 text-xl-h5 mt-4 mb-2">
       Complex parameters
     </h3>

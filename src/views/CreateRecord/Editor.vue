@@ -220,6 +220,7 @@
     async mounted() {
       this.$nextTick(async () => {
         await this.getData();
+        this.$store.commit("editor/clearPossibleDuplicates");
         this.$store.commit("record/setEditingRecord");
       })
     },

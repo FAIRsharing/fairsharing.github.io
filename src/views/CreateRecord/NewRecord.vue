@@ -30,8 +30,8 @@
               <v-container fluid>
                 <v-row>
                   <base-fields
-                      @submission="setSubmitAnyway()"
-                      @clearing="tryAgain()"
+                    @submission="setSubmitAnyway()"
+                    @clearing="tryAgain()"
                   />
                 </v-row>
               </v-container>

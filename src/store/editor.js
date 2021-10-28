@@ -100,6 +100,7 @@ let editorStore = {
             state.organisationsTypes = null;
             state.grants = null;
             state.availablePublications = [];
+            state.possibleDuplicates = [];
         },
         setAvailableRecords(state, records){
             state.availableRecords = records;
@@ -112,6 +113,9 @@ let editorStore = {
         },
         setPossibleDuplicates(state, records) {
             state.possibleDuplicates = records;
+        },
+        clearPossibleDuplicates(state) {
+            state.possibleDuplicates = [];
         }
     },
     actions: {

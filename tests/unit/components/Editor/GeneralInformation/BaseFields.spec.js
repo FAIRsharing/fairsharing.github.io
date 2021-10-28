@@ -1,6 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
+import VueRouter from "vue-router";
 import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
 import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
@@ -38,21 +39,29 @@ const $store = new Vuex.Store({
     }
 });
 
+const $route = {
+    path: "/create"
+};
+const router = new VueRouter();
+const $router = { push: jest.fn() };
+
 let wrapper;
 
 describe('Editor -> BaseFields.vue', () => {
 
-    beforeAll( () => {
+    beforeAll(() => {
 
         wrapper = shallowMount(BaseFields, {
             localVue,
             vuetify,
-            mocks: {$store}
+            router,
+            mocks: {$store, $route, $router}
         });
     });
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("BaseFields");
+        expect(wrapper.vm.$route.path).toEqual('/create');
     });
 
     it("can remove a country", () => {
@@ -75,44 +84,12 @@ describe('Editor -> BaseFields.vue', () => {
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);
     });
 
-    it("can check for duplicates", async () => {
-        // Nothing should happen on the first few of these
-        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({ duplicateCheck: []})
-        wrapper.vm.stored_homepage = "http://wibble.com";
-        await wrapper.vm.checkForDups();
-        expect(wrapper.vm.possibleDuplicates).toStrictEqual([]);
-
-        wrapper.vm.stored_name = "small";
-        wrapper.vm.stored_abbreviation = "small";
-        wrapper.vm.stored_homepage = "dodgy";
-        await wrapper.vm.checkForDups();
-        expect(wrapper.vm.possibleDuplicates).toStrictEqual([]);
-        graphStub.restore();
-
-        // Here's a working query.
-        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-            duplicateCheck: [
-                {
-                    id: 1,
-                    name: "Possible Duplicate Record",
-                    abbreviation: "PDR",
-                    homepage: "https://www.nhm.ac.uk/discover/what-is-a-coprolite.html"
-                }
-            ]
-
-        });
-        wrapper.vm.stored_name = "thisisalongname";
-        await wrapper.vm.checkForDups();
-        expect(wrapper.vm.possibleDuplicates).toStrictEqual(
-            [
-                {
-                    "id":1,
-                    "name":"Possible Duplicate Record",
-                    "abbreviation":"PDR",
-                    "homepage":"https://www.nhm.ac.uk/discover/what-is-a-coprolite.html"
-                }
-            ]
-        )
+    it("sets the submitAnyway flag", () => {
+        expect(wrapper.vm.submitAnywayDisabled).toBe(false);
+        wrapper.vm.submitAnyway();
+        expect(wrapper.vm.submitAnywayDisabled).toBe(true);
     });
+
+
 
 });

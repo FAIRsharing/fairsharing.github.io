@@ -145,7 +145,7 @@
           </v-card-title>
           <v-card-text class="text-h6 font-weight-light">
             <p>
-              Please see below for details on records we have detected that may be similar to yours:
+              Please see below for details of records we have detected that may be similar to yours:
             </p>
             <ul>
               <li
@@ -173,6 +173,21 @@
               </li>
             </ul>
           </v-card-text>
+          <v-card-actions>
+            <v-btn
+              class="white black--text"
+              :disabled="submitAnywayDisabled"
+              @click="submitAnyway"
+            >
+              I know what I'm doing...
+            </v-btn>
+            <v-btn
+              class="black white--text"
+              @click="tryAgain"
+            >
+              Clear and retry
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-expand-transition>
     </v-col>
@@ -441,7 +456,7 @@
 </template>
 
 <script>
-    import { mapState, mapGetters, mapActions } from "vuex"
+    import { mapState, mapGetters } from "vuex"
     import CountryFlag from 'vue-country-flag'
     import StatusPills from "@/components/Records/Shared/StatusPills";
     import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
@@ -458,9 +473,7 @@
                   isUrl: function(){return isUrl()},
                   isLongEnough: function(val){return isLongEnough(val)},
               },
-              stored_name: null,
-              stored_abbreviation: null,
-              stored_homepage: null
+              submitAnywayDisabled: false
           }
       },
       computed: {
@@ -478,35 +491,7 @@
             return this.getSection("generalInformation").data;
           }
       },
-      watch: {
-        // The purpose of these watchers is to flip out and send a message to the
-        // server as the user types in the name, abbreviation and homepage boxes.
-        fields: {
-          deep: true,
-          handler(newValue) {
-            this.stored_name = newValue.metadata.name;
-            this.stored_abbreviation = newValue.metadata.abbreviation;
-            this.stored_homepage = newValue.metadata.homepage;
-          }
-        },
-        stored_name: {
-          async handler() {
-            await this.checkForDups();
-          }
-        },
-        stored_abbreviation: {
-          async handler() {
-            await this.checkForDups();
-          }
-        },
-        stored_homepage: {
-          async handler() {
-            await this.checkForDups();
-          }
-        }
-      },
       methods: {
-        ...mapActions("editor", ["getPossibleDuplicates"]),
         removeCountry(country){
             this.fields.countries = this.fields.countries.filter(obj =>
                 obj.label !== country.name && obj.id !== country.id
@@ -519,32 +504,15 @@
           }
           return !_module.user().is_curator;
         },
-        async checkForDups() {
-          const _module = this;
-          // run the dup check query, using stored_name, stored_abbreviation or stored_homepage; any that
-          // are over three characters in length.
-          let fieldsToQuery = [];
-          // These are only queried if they are at least 6 characters...
-          [_module.stored_name, _module.stored_abbreviation].forEach(function(val) {
-            if (val === null || val === undefined) {
-              return;
-            }
-            if (val.trim().length >= 6) {
-              fieldsToQuery.push(val);
-            }
-          });
-          // ...whereas any length URL will do if it is valid.
-          let urlCheck = _module.rules.isUrl();
-          /* istanbul ignore next */
-          if (urlCheck(_module.stored_homepage)) {
-            fieldsToQuery.push(_module.stored_homepage)
-          }
-          /* istanbul ignore if */
-          if (fieldsToQuery.length === 0) {
-            return;
-          }
-          // Now send the query.
-          await _module.getPossibleDuplicates({fields: fieldsToQuery});
+        submitAnyway() {
+          this.submitAnywayDisabled = true;
+          this.$emit('submission');
+        },
+        tryAgain() {
+          this.fields.metadata.homepage = null;
+          this.fields.metadata.name = null;
+          this.fields.metadata.abbreviation = null;
+          this.$emit('clearing');
         }
       }
     }

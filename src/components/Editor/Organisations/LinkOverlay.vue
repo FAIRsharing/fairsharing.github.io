@@ -70,16 +70,17 @@
                     </v-list-item-content>
                   </template>
                 </v-autocomplete>
-                <v-btn
-                  fab
-                  small
-                  class="green white--text mt-2 ml-2"
-                  @click="menus.show = 'organisation'"
-                >
-                  <v-icon small>
-                    fa-plus
-                  </v-icon>
-                </v-btn>
+                <div class="mt-2 ml-2">
+                  <v-btn
+                    class="green white--text"
+                    @click="menus.show = 'organisation'"
+                  >
+                    <v-icon small>
+                      fa-plus
+                    </v-icon>
+                    <span class="ml-1">Add New</span>
+                  </v-btn>
+                </div>
               </v-card>
               <v-card
                 v-if="menus.show === 'organisation'"
@@ -157,6 +158,63 @@
                             chips
                           />
                         </v-col>
+                        <!-- countries -->
+                        <v-col
+                          cols="12"
+                          class="pb-0"
+                        >
+                          <v-autocomplete
+                            v-model="menus.newOrganisation.data.country_ids"
+                            label="Countries"
+                            :items="countries"
+                            item-text="name"
+                            item-value="name"
+                            multiple
+                            outlined
+                            return-object
+                          >
+                            <template #prepend>
+                              <v-tooltip
+                                bottom
+                                max-width="300px"
+                                class="text-justify"
+                              >
+                                <template #activator="{ on }">
+                                  <v-icon v-on="on">
+                                    fa-question-circle
+                                  </v-icon>
+                                </template>
+                                {{ tooltips['countries'] }}
+                              </v-tooltip>
+                            </template>
+
+                            <!-- autocomplete selected -->
+                            <template #selection="data">
+                              <v-chip
+                                class="blue white--text removeStyle"
+                                close
+                                @click:close="removeCountry(data.item)"
+                              >
+                                {{ data.item.name }}
+                              </v-chip>
+                            </template>
+
+                            <!-- autocomplete data -->
+                            <template #item="data">
+                              <country-flag
+                                v-if="data.item.code !== null"
+                                :country="data.item.code"
+                                size="normal"
+                              />
+                              <img
+                                v-else
+                                src="@/assets/placeholders/country.png"
+                                class="ml-4 mr-3"
+                              >
+                              <div> {{ data.item.name }} </div>
+                            </template>
+                          </v-autocomplete>
+                        </v-col>
                       </v-row>
                     </v-container>
                   </v-form>
@@ -209,7 +267,6 @@
                 </v-autocomplete>
               </v-card>
             </div>
-
             <!-- GRANT -->
             <div v-if="editOrganisationLink.data.relation === 'funds'">
               <v-card
@@ -334,13 +391,15 @@
 
 <script>
     import Vue from "vue"
-    import { mapState } from "vuex"
+    import {mapGetters, mapState} from "vuex"
     import { isRequired, isUrl } from "@/utils/rules.js"
     import RestClient from "@/lib/Client/RESTClient.js"
+    import CountryFlag from "vue-country-flag";
     const restClient = new RestClient();
 
     export default {
       name: "LinkOverlay",
+      components: {CountryFlag},
       data(){
         return {
           formValid: false,
@@ -370,6 +429,14 @@
         ...mapState("users", ["user"]),
         ...mapState("record", ["editOrganisationLink", "sections"]),
         ...mapState("editor", ["organisations", "organisationsTypes", "grants", "organisationsRelations"]),
+        ...mapState("editor", [
+          "countries",
+          "years",
+          "tooltips",
+          "recordTypes",
+          "status"
+        ]),
+        ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
         organisationLinks() {
           return this.sections["organisations"].data;
         }
@@ -406,22 +473,28 @@
         }
       },
       methods: {
+        removeCountry(country){
+          this.menus.newOrganisation.data.country_ids = this.menus.newOrganisation.data.country_ids.filter(obj =>
+              obj.label !== country.name && obj.id !== country.id
+          );
+        },
         hideMenu(){
           this.menus.show = false;
           this.editOrganisationLink.data = {};
           this.editOrganisationLink.id = null;
           this.editOrganisationLink.showOverlay = false;
         },
-        async createNewOrganisation() {
+        createNewOrganisation: async function () {
           this.menus.newOrganisation.loading = true;
           this.menus.newOrganisation.error = false;
           let organisationInput = JSON.parse(JSON.stringify(this.menus.newOrganisation.data));
-          if (this.menus.newOrganisation.logoData){
+          if (this.menus.newOrganisation.logoData) {
             organisationInput.logo = this.menus.newOrganisation.logoData;
             organisationInput.logo.data = organisationInput.logo.data.replace("data:image/png;base64,", "");
           }
           let organisation_type_ids = JSON.parse(JSON.stringify(organisationInput.organisation_type_ids));
           organisationInput.organisation_type_ids = organisationInput.organisation_type_ids.map(obj => obj.id);
+          organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id)
           let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
           if (!data.error) {
             let newOrganisation = {
@@ -429,14 +502,13 @@
               name: data.name,
               homepage: data.homepage,
               types: organisation_type_ids.map(obj => obj.name),
-              urlForLogo: data['url_for_logo']
+              urlForLogo: data['url_for_logo'],
             };
             this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
             Vue.set(this.organisations, this.organisations.length, newOrganisation);
             this.menus.show = null;
             this.menus.newOrganisation.data = {};
-          }
-          else {
+          } else {
             this.menus.newOrganisation.error = data.error;
           }
           this.menus.newOrganisation.loading = false;

@@ -55,6 +55,12 @@ describe("Edit -> LinkOverlay.vue", function() {
         expect(wrapper.vm.organisationLinks).toStrictEqual([{id: 1, organisation: {name: "abc", id: 1}}]);
     });
 
+    it("can check removeCountry", () => {
+        wrapper.vm.menus.newOrganisation.data.country_ids = [{id:1,label:'b'}]
+        wrapper.vm.removeCountry({id:1,label:'b'})
+        expect(wrapper.vm.menus.newOrganisation.data.country_ids).toStrictEqual([]);
+    });
+
     it("can react to change in logo", () => {
         const fileContents       = 'data:image/png;base64,TEST1';
         const readAsDataURL      = jest.fn();
@@ -108,7 +114,8 @@ describe("Edit -> LinkOverlay.vue", function() {
         wrapper.vm.menus.newOrganisation.data = {
             name: "test",
             homepage: "https://example.com/test",
-            organisation_type_ids: [{id:1, name: "?"}]
+            organisation_type_ids: [{id:1, name: "?"}],
+            country_ids: [{id:1}]
         };
         await wrapper.vm.createNewOrganisation();
         expect(wrapper.vm.menus.newOrganisation.error).toBe("I am an error");

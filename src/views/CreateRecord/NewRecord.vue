@@ -91,7 +91,8 @@
             rules: {
               isUrl: function(){return isUrl()}
             },
-            submitAnyway: false
+            submitAnyway: false,
+            recordCreated: false
           }
         },
         computed: {
@@ -159,6 +160,7 @@
             delete record.countries;
             delete record.type;
             let new_record = await restClient.createRecord(record, this.user().credentials.token);
+            this.recordCreated = true;
             if (!new_record.error) {
               this.$router.push({
                 path: new_record.data.id + "/edit"

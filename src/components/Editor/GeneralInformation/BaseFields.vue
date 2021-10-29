@@ -133,12 +133,6 @@
           dark
         >
           <v-card-title>
-            <v-icon
-              large
-              left
-            >
-              mdi-twitter
-            </v-icon>
             <span class="text-h5 font-weight-bold">
               This record may duplicate an existing FAIRsharing record!
             </span>

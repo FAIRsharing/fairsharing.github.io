@@ -133,6 +133,7 @@ describe("CreateRecord.vue", function() {
     });
 
     it("can check for duplicates", async () => {
+        graphStub.returns({ duplicateCheck: []})
         // Nothing should happen on the first few of these
         let fake_record = {
             metadata: {

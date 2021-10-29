@@ -86,6 +86,8 @@ describe("CreateRecord.vue", function() {
     });
 
     it("can create records", async () => {
+        let checkForDups = jest.spyOn(wrapper.vm, "checkForDups");
+        wrapper.vm.recordCreated = false;
         recordStore.state.sections.generalInformation.data.countries = [{id: 123}];
         restStub = sinon.stub(RestClient.prototype, "executeQuery");
         restStub.returns({
@@ -96,12 +98,28 @@ describe("CreateRecord.vue", function() {
                 }
             }
         });
-        graphStub.restore();
-        graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({ duplicateCheck: []})
+        graphStub.withArgs(getDuplicates).returns({ duplicateCheck: []})
         await wrapper.vm.createRecord();
+        expect(checkForDups).toHaveBeenCalledTimes(1);
         expect($router.push).toHaveBeenCalledWith({path: "1234/edit"});
+
+        editorStore.state.possibleDuplicates = [];
+        wrapper.vm.submitAnyway = true;
+        await wrapper.vm.createRecord();
+        expect(checkForDups).toHaveBeenCalledTimes(1);
+        expect(wrapper.vm.recordCreated).toBe(true);
+
+        editorStore.state.possibleDuplicates = [{record: 'another record'}];
+        graphStub.withArgs(getDuplicates).returns({ duplicateCheck: [{record: 'another record'}]})
+        wrapper.vm.submitAnyway = false;
+        wrapper.vm.recordCreated = false;
+        await wrapper.vm.createRecord();
+        expect(checkForDups).toHaveBeenCalledTimes(2);
+        expect(wrapper.vm.recordCreated).toBe(false);
+
         restStub.restore();
 
+        wrapper.vm.submitAnyway = true;
         restStub = sinon.stub(RestClient.prototype, "executeQuery");
         restStub.returns({
             data: {
@@ -114,7 +132,6 @@ describe("CreateRecord.vue", function() {
         restStub.restore();
     });
 
-    // TODO: This check causes bizarre failures in other test files.
     it("can check for duplicates", async () => {
         // Nothing should happen on the first few of these
         let fake_record = {
@@ -122,6 +139,17 @@ describe("CreateRecord.vue", function() {
                 name: "Name of the Record",
                 abbreviation: "NOTR",
                 homepage: "http://wibble.com"
+            }
+        };
+        graphStub.withArgs(getDuplicates).returns({ duplicateCheck: []})
+        await wrapper.vm.checkForDups(fake_record);
+        expect(wrapper.vm.possibleDuplicates).toStrictEqual([]);
+
+        fake_record = {
+            metadata: {
+                name: "N",
+                abbreviation: null,
+                homepage: null
             }
         };
         graphStub.withArgs(getDuplicates).returns({ duplicateCheck: []})
@@ -142,6 +170,7 @@ describe("CreateRecord.vue", function() {
             ]
 
         });
+        editorStore.state.possibleDuplicates = [{record: "a record"}];
         await wrapper.vm.checkForDups(fake_record);
         expect(wrapper.vm.message.error).toBe(false);
 
@@ -149,12 +178,16 @@ describe("CreateRecord.vue", function() {
     });
 
     it("sets the disableSubmit variable correctly", () => {
-        editorStore.possibleDuplicates = [{record: "a record"}];
+        editorStore.state.possibleDuplicates = [{record: "a record"}];
         wrapper.vm.submitAnyway = false;
         expect(wrapper.vm.disableSubmit()).toBe(true);
-        wrapper.vm.submitAnyway = true;
+        wrapper.vm.setSubmitAnyway();
+        expect(wrapper.vm.submitAnyway).toBe(true);
         expect(wrapper.vm.disableSubmit()).toBe(false);
-
+        wrapper.vm.tryAgain();
+        expect(wrapper.vm.submitAnyway).toBe(false);
+        expect(wrapper.vm.possibleDuplicates.length).toEqual(0);
     });
+
 
 });

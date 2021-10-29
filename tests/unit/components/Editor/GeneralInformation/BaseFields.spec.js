@@ -6,14 +6,11 @@ import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
 import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
-import sinon from "sinon";
-import GraphClient from "@/lib/GraphClient/GraphClient";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
-let graphStub;
 
 recordStore.state.sections = {
     generalInformation: {

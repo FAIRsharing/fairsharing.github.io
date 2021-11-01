@@ -207,6 +207,9 @@
           },
           disableSubmit() {
             let _module = this;
+            if (!_module.formValid) {
+              return true;
+            }
             if (_module.possibleDuplicates.length > 0) {
               if (_module.submitAnyway) {
                 return false;

@@ -184,7 +184,7 @@
               if (val === null) {
                 return;
               }
-              if (val.trim().length >= 6) {
+              if (val.trim().length >= 3) {
                 fieldsToQuery.push(val);
               }
             });

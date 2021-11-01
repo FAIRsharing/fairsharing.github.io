@@ -186,7 +186,6 @@ export default {
         if(this.testEnvironment) throw new Error("an error occurred while fetching data")
         this.scrollTo();
         let returnedQuery = this.buildQueryParameters(this.currentPath);
-        delete returnedQuery['fairsharingRegistry'];
         this.showFiltersSM = false;
         await this.fetchCollectionRecords(returnedQuery);
       }
@@ -230,7 +229,6 @@ export default {
           });
           this.errors = false;
           returnedQuery = this.buildQueryParameters(this.currentPath);
-          delete returnedQuery['fairsharingRegistry'];
           await this.initializeCollectionRecords(this.collectionIDs);
         }
         else {

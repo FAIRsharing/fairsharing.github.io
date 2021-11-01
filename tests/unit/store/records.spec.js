@@ -79,11 +79,11 @@ describe('Mutation & Actions & Getters', () => {
     });
 
     it("can check getFilters getters", () => {
-        let BuiltFacet = getters.getFilter(state)('grants');
-        expect(BuiltFacet.filterName).toBe('grants')
+        let BuiltFacet = getters.getFilter(state)('countries');
+        expect(BuiltFacet.filterName).toBe('countries')
 
         state.facets = [];
-        BuiltFacet = getters.getFilter(state)('grants');
+        BuiltFacet = getters.getFilter(state)('countries');
         expect(BuiltFacet.filterName).toBe(undefined)
     });
 

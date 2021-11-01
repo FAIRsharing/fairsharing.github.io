@@ -178,6 +178,7 @@ describe("CreateRecord.vue", function() {
 
     it("sets the disableSubmit variable correctly", () => {
         editorStore.state.possibleDuplicates = [{record: "a record"}];
+        wrapper.vm.formValid = true;
         wrapper.vm.submitAnyway = false;
         expect(wrapper.vm.disableSubmit()).toBe(true);
         wrapper.vm.setSubmitAnyway();

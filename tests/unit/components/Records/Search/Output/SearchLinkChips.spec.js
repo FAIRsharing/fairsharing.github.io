@@ -94,4 +94,9 @@ describe("SearchLinkChips.vue", function () {
         expect(wrapper.vm.getChipColor(chip)).toEqual('tags_color');
     });
 
+    it("capitalises words properly", () => {
+       expect(wrapper.vm.capitaliseText('this that', 'taxonomy')).toEqual('This that');
+       expect(wrapper.vm.capitaliseText('this that', 'other')).toEqual('This That');
+    });
+
 });

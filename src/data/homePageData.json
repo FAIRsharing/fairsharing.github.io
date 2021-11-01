@@ -102,7 +102,7 @@
       "items": [
         {
           "title": "Natural Science",
-          "searchQuery": "search?subjects=natural science",
+          "searchQuery": "search?fairsharingRegistry=Database&subjects=natural science",
           "option": {
             "filterName": "subjects",
             "key": "natural science"
@@ -111,7 +111,7 @@
         },
         {
           "title": "Engineering Science",
-          "searchQuery": "search?subjects=engineering science",
+          "searchQuery": "search?fairsharingRegistry=Database&subjects=engineering science",
           "option": {
             "filterName": "subjects",
             "key": "engineering science"
@@ -120,7 +120,7 @@
         },
         {
           "title": "Humanities",
-          "searchQuery": "search?subjects=humanities",
+          "searchQuery": "search?fairsharingRegistry=Database&subjects=humanities",
           "option": {
             "filterName": "subjects",
             "key": "humanities"
@@ -129,7 +129,7 @@
         },
         {
           "title": "Social Science",
-          "searchQuery": "search?subjects=social science",
+          "searchQuery": "search?fairsharingRegistry=Database&subjects=social science",
           "option": {
             "filterName": "subjects",
             "key": "social science"
@@ -180,7 +180,7 @@
   "blockCategories": {
     "firstColumn":{
       "title": "Recommendations",
-      "description": "Standards and/or databases recommended by journal or funder data policies.",
+      "description": "Standards and/or databases recommended by organisational data policies.",
       "icon": "recommended",
       "buttonTitle": "find",
       "link": "/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard"

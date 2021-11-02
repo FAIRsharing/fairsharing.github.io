@@ -45,7 +45,7 @@ describe("Routes", () => {
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [
-            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile","UsersList","Login","Register","Record"
+            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile", "UsersList", "Login", "Register", "Record"
         ];
 
         router.options.routes.forEach(function(route){

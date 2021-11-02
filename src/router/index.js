@@ -349,7 +349,10 @@ let routes = [
     {
         name: "Record",
         path: "/:id",
-        component: Record
+        component: Record,
+        beforeEnter(to, from, next) {
+            hasExtraSlash(to, from, next);
+        }
     },
     /* ERROR HANDLING */
     {
@@ -401,6 +404,13 @@ export async function beforeEach(to, from, next, store) {
     }
     next();
 
+}
+
+export function hasExtraSlash(to, from, next) {
+    if (to.path[to.path.length - 1] === '/') {
+        next({path: to.path.substring(0, to.path.length - 1)});
+    }
+    next();
 }
 
 export function isLoggedIn(to, from, next, store) {

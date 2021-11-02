@@ -45,7 +45,7 @@ describe("Routes", () => {
     it("routing variables are correctly set", () => {
 
         const beforeEachTester = [
-            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile","UsersList","Login","Register"
+            "User", "Edit profile", "New_content", "Edit Content", "Curator", "Maintenance", "EditPublicProfile","UsersList","Login","Register","Record"
         ];
 
         router.options.routes.forEach(function(route){
@@ -55,6 +55,8 @@ describe("Routes", () => {
             if (beforeEachTester.indexOf(route.name) > -1){
                 const next = jest.fn();
                 route.beforeEnter({path: {}}, undefined, next);
+                route.beforeEnter({path: '/1/'}, undefined, next);
+                expect(next).toHaveBeenCalled();
             }
         });
     });

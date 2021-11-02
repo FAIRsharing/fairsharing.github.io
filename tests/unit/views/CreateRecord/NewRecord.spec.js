@@ -189,6 +189,10 @@ describe("CreateRecord.vue", function() {
         wrapper.vm.tryAgain();
         expect(wrapper.vm.submitAnyway).toBe(false);
         expect(wrapper.vm.possibleDuplicates.length).toEqual(0);
+        editorStore.state.possibleDuplicates = [];
+        wrapper.vm.formValid = true;
+        wrapper.vm.submitAnyway = false;
+        expect(wrapper.vm.disableSubmit()).toBe(false);
     });
 
 

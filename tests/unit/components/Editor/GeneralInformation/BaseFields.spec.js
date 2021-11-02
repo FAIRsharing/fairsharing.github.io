@@ -87,6 +87,16 @@ describe('Editor -> BaseFields.vue', () => {
         expect(wrapper.vm.submitAnywayDisabled).toBe(true);
     });
 
+    it("runs the tryAgain method", () => {
+        wrapper.vm.fields.metadata.homepage = "aaaa";
+        wrapper.vm.fields.metadata.name = "aaaa";
+        wrapper.vm.fields.metadata.abbreviation = "aaaa";
+        wrapper.vm.tryAgain();
+        expect(wrapper.vm.fields.metadata.homepage).toBe(null);
+        expect(wrapper.vm.fields.metadata.name).toBe(null);
+        expect(wrapper.vm.fields.metadata.abbreviation).toBe(null);
+    });
+
 
 
 });

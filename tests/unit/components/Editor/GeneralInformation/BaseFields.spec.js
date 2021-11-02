@@ -1,6 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuex from "vuex"
 import Vuetify from "vuetify"
+import VueRouter from "vue-router";
 import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
 import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
@@ -9,6 +10,7 @@ import userStore from "@/store/users.js"
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
+
 
 recordStore.state.sections = {
     generalInformation: {
@@ -34,20 +36,29 @@ const $store = new Vuex.Store({
     }
 });
 
+const $route = {
+    path: "/create"
+};
+const router = new VueRouter();
+const $router = { push: jest.fn() };
+
 let wrapper;
 
 describe('Editor -> BaseFields.vue', () => {
 
-    beforeAll( () => {
+    beforeAll(() => {
+
         wrapper = shallowMount(BaseFields, {
             localVue,
             vuetify,
-            mocks: {$store}
+            router,
+            mocks: {$store, $route, $router}
         });
     });
 
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("BaseFields");
+        expect(wrapper.vm.$route.path).toEqual('/create');
     });
 
     it("can remove a country", () => {
@@ -69,5 +80,23 @@ describe('Editor -> BaseFields.vue', () => {
         recordStore.state.newRecord = false;
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);
     });
+
+    it("sets the submitAnyway flag", () => {
+        expect(wrapper.vm.submitAnywayDisabled).toBe(false);
+        wrapper.vm.submitAnyway();
+        expect(wrapper.vm.submitAnywayDisabled).toBe(true);
+    });
+
+    it("runs the tryAgain method", () => {
+        wrapper.vm.fields.metadata.homepage = "aaaa";
+        wrapper.vm.fields.metadata.name = "aaaa";
+        wrapper.vm.fields.metadata.abbreviation = "aaaa";
+        wrapper.vm.tryAgain();
+        expect(wrapper.vm.fields.metadata.homepage).toBe(null);
+        expect(wrapper.vm.fields.metadata.name).toBe(null);
+        expect(wrapper.vm.fields.metadata.abbreviation).toBe(null);
+    });
+
+
 
 });

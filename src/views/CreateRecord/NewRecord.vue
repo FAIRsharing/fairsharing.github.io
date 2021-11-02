@@ -29,14 +29,17 @@
             <v-card-text class="pt-3">
               <v-container fluid>
                 <v-row>
-                  <base-fields />
+                  <base-fields
+                    @submission="setSubmitAnyway()"
+                    @clearing="tryAgain()"
+                  />
                 </v-row>
               </v-container>
             </v-card-text>
             <v-card-actions>
               <v-btn
                 class="primary"
-                :disabled="!formValid"
+                :disabled="disableSubmit()"
                 @click="createRecord()"
               >
                 Create Record
@@ -65,6 +68,7 @@
     import status from "@/data/status.json"
     import BaseFields from "../../components/Editor/GeneralInformation/BaseFields";
     import Loaders from "../../components/Navigation/Loaders";
+    import { isUrl } from "@/utils/rules.js"
 
     let restClient = new RESTClient();
 
@@ -83,11 +87,17 @@
             message: {
               error: false,
               value: null
-            }
+            },
+            rules: {
+              isUrl: function(){return isUrl()}
+            },
+            submitAnyway: false,
+            recordCreated: false
           }
         },
         computed: {
             ...mapState('users', ["user"]),
+            ...mapState('editor', ['possibleDuplicates']),
             ...mapGetters('record', ['getSection'])
         },
         async mounted(){
@@ -96,11 +106,18 @@
             this.resetRecord();
             await this.getData();
             this.loaded = true;
+            this.$store.commit("editor/clearPossibleDuplicates");
             this.$store.commit("record/setCreatingNewRecord");
           });
         },
         methods: {
-          ...mapActions("editor", ["getCountries", "getRecordTypes", "getTags"]),
+          ...mapActions("editor",
+              ["getCountries",
+               "getRecordTypes",
+               "getTags",
+               "getPossibleDuplicates",
+               "cleanEditorStore"
+              ]),
           ...mapActions("record", ["resetRecord"]),
           async getData(){
             await this.getCountries();
@@ -112,7 +129,28 @@
               error: false,
               value: null
             };
+
             let record = JSON.parse(JSON.stringify(this.getSection("generalInformation").data));
+            // The user has not specified to ignore the warning of duplicate records.
+            // So, a check is made to see if the server reports any possibilities
+            if (!this.submitAnyway) {
+              record = await this.checkForDups(record);
+            }
+
+            if (this.submitAnyway) {
+              if (this.possibleDuplicates.length > 0) {
+                record.dups_suspected = true;
+              }
+              else {
+                record.dups_suspected = false;
+              }
+            }
+            else {
+              if (this.possibleDuplicates.length > 0) {
+                return;
+              }
+            }
+
             record.record_type_id = record.type.id;
             record.metadata.status = status;
             record.country_ids = record.countries.map(obj => obj.id);
@@ -122,6 +160,7 @@
             delete record.countries;
             delete record.type;
             let new_record = await restClient.createRecord(record, this.user().credentials.token);
+            this.recordCreated = true;
             if (!new_record.error) {
               this.$router.push({
                 path: new_record.data.id + "/edit"
@@ -133,8 +172,62 @@
                 value: new_record.error
               }
             }
+          },
+          async checkForDups(record) {
+            const _module = this;
+            // run the dup check query, using stored_name, stored_abbreviation or stored_homepage; any that
+            // are over three characters in length.
+            let fieldsToQuery = [];
+            // These are only queried if they are at least 6 characters...
+            [record.metadata.name, record.metadata.abbreviation].forEach(function(val) {
+              /* istanbul ignore else */
+              if (val === null) {
+                return;
+              }
+              if (val.trim().length >= 3) {
+                fieldsToQuery.push(val);
+              }
+            });
+            // ...whereas any length URL will do if it is valid.
+            let urlCheck = _module.rules.isUrl();
+            /* istanbul ignore next */
+            if (urlCheck(record.metadata.homepage)) {
+              fieldsToQuery.push(record.metadata.homepage)
+            }
+            /* istanbul ignore if */
+            if (fieldsToQuery.length === 0) {
+              return;
+            }
+            // Now send the query.
+            await _module.getPossibleDuplicates({fields: fieldsToQuery});
+            if (_module.possibleDuplicates.length > 0) {
+              record.dups_suspected = true;
+            }
+            return record;
+          },
+          disableSubmit() {
+            let _module = this;
+            if (!_module.formValid) {
+              return true;
+            }
+            if (_module.possibleDuplicates.length > 0) {
+              if (_module.submitAnyway) {
+                return false;
+              }
+              else {
+                return true;
+              }
+            }
+            return false;
+          },
+          setSubmitAnyway() {
+            this.submitAnyway = true;
+          },
+          tryAgain() {
+            this.submitAnyway = false;
+            this.$store.commit("editor/clearPossibleDuplicates");
           }
-        },
+        }
     }
 </script>
 

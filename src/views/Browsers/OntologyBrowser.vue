@@ -1,152 +1,146 @@
 <template>
   <main>
-    <v-container fluid>
+    <v-container
+      fluid
+      class="py-0 mb-10"
+    >
       <NotFound v-if="error" />
-      <v-row v-else>
-        <v-col cols="12">
-          <v-card>
-            <v-card-text class="pa-0 ma-0">
-              <v-container
-                fluid
-                class="pa-0 ma-0"
+      <v-row
+        v-else
+        no-gutters
+      >
+        <v-col
+          id="ontologyBrowser"
+          xs="12"
+          sm="12"
+          md="12"
+          lg="5"
+          xl="3"
+          col="12"
+          class="border-right"
+        >
+          <div
+            v-if="tree.length > 0"
+            id="searchOntology"
+            class="px-2 mt-2"
+          >
+            <v-autocomplete
+              v-model="search"
+              :items="flattenedTree"
+              :label="`Search ${selectedOntology}s`"
+              outlined
+              hide-details
+              :color="color"
+              item-text="name"
+              clearable
+            />
+            <v-divider class="mb-2" />
+          </div>
+          <v-treeview
+            :items="tree"
+            :color="color"
+            :search="search"
+            :open.sync="open"
+            class="tree pb-3 px-3"
+            hoverable
+          >
+            <template #label="{ item }">
+              <div
+                class="d-flex flex-row justify-center align-center cursor-pointer"
+                @click="searchTerm(item)"
               >
-                <v-row no-gutters>
-                  <v-col
-                    xs="12"
-                    sm="12"
-                    md="12"
-                    lg="5"
-                    xl="3"
-                    col="12"
-                    class="border-right"
+                <v-chip
+                  :class="!activeTerms.includes(item.identifier) ? `white ${color}--text ${color}--border` : `${color} white--text`"
+                  class="cursor-pointer"
+                >
+                  {{ item.name }}
+                </v-chip>
+                <v-spacer />
+                <div
+                  :class="activeTerms.includes(item.identifier) ? `white ${color}--text ${color}--border` : `${color} white--text`"
+                  class="d-flex justify-center align-center hits"
+                >
+                  {{ item.records_count ? item.records_count : 0 }}
+                </div>
+              </div>
+            </template>
+          </v-treeview>
+        </v-col>
+        <v-col
+          id="termDisplay"
+          xs="12"
+          sm="12"
+          md="12"
+          lg="7"
+          xl="9"
+          col="12"
+          class="py-0 my-0"
+        >
+          <div v-if="!loadingData && tree.length > 0">
+            <v-card
+              v-if="selectedTerm"
+              class="pa-5"
+              flat
+            >
+              <v-card-title
+                class="justify-center"
+                :class="$vuetify.breakpoint.smAndDown ? `d-grid` : `d-flex`"
+              >
+                <v-chip
+                  class="white--text text-h4 largeChips mb-2"
+                  :class="color"
+                >
+                  {{ selectedTerm.name }}
+                </v-chip>
+                <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
+                <br v-else>
+                <div
+                  :class="`${color} white--text`"
+                  class="d-flex justify-center align-center hits largeHits"
+                >
+                  {{ selectedTerm.records_count ? selectedTerm.records_count : 0 }}
+                </div>
+              </v-card-title>
+              <v-card-text>
+                {{ selectedTerm.description }}
+                It contains {{ selectedTerm.descendants_count }} descendants terms.
+                <div
+                  v-if="ancestors.length > 0"
+                  class="mt-3"
+                >
+                  <b class="text-decoration-underline">Ancestors:</b> <br>
+                  <v-chip
+                    v-for="(ancestor, ancestorKey) in ancestors"
+                    :key="'ancestor_' + ancestorKey"
+                    :class="`${color}--text ${color}--border`"
+                    class="white mr-2 mt-1"
+                    @click="goToTerm(ancestor)"
                   >
-                    <div
-                      v-if="tree.length > 0"
-                      id="searchOntology"
-                      class="px-2 mt-2"
-                    >
-                      <v-autocomplete
-                        v-model="search"
-                        :items="flattenedTree"
-                        :label="`Search ${selectedOntology}s`"
-                        outlined
-                        hide-details
-                        :color="color"
-                        item-text="name"
-                        clearable
-                      />
-                      <v-divider class="mb-2" />
-                    </div>
-                    <v-treeview
-                      :items="tree"
-                      :color="color"
-                      :search="search"
-                      :open.sync="open"
-                      class="tree pb-3 px-3"
-                      hoverable
-                    >
-                      <template #label="{ item }">
-                        <div
-                          class="d-flex flex-row justify-center align-center cursor-pointer"
-                          @click="searchTerm(item)"
-                        >
-                          <v-chip
-                            :class="!activeTerms.includes(item.identifier) ? `white ${color}--text ${color}--border` : `${color} white--text`"
-                            class="cursor-pointer"
-                          >
-                            {{ item.name }}
-                          </v-chip>
-                          <v-spacer />
-                          <div
-                            :class="activeTerms.includes(item.identifier) ? `white ${color}--text ${color}--border` : `${color} white--text`"
-                            class="d-flex justify-center align-center hits"
-                          >
-                            {{ item.records_count ? item.records_count : 0 }}
-                          </div>
-                        </div>
-                      </template>
-                    </v-treeview>
-                  </v-col>
-                  <v-col
-                    id="termDisplay"
-                    xs="12"
-                    sm="12"
-                    md="12"
-                    lg="7"
-                    xl="9"
-                    col="12"
-                    class="py-0 my-0"
-                  >
-                    <div v-if="!loadingData && tree.length > 0">
-                      <v-card
-                        v-if="selectedTerm"
-                        class="pa-5"
-                        flat
-                      >
-                        <v-card-title
-                          class="justify-center"
-                          :class="$vuetify.breakpoint.smAndDown ? `d-grid` : `d-flex`"
-                        >
-                          <v-chip
-                            class="white--text text-h4 largeChips mb-2"
-                            :class="color"
-                          >
-                            {{ selectedTerm.name }}
-                          </v-chip>
-                          <v-spacer v-if="$vuetify.breakpoint.smAndUp" />
-                          <br v-else>
-                          <div
-                            :class="`${color} white--text`"
-                            class="d-flex justify-center align-center hits largeHits"
-                          >
-                            {{ selectedTerm.records_count ? selectedTerm.records_count : 0 }}
-                          </div>
-                        </v-card-title>
-                        <v-card-text>
-                          {{ selectedTerm.description }}
-                          It contains {{ selectedTerm.descendants_count }} descendants terms.
-                          <div
-                            v-if="ancestors.length > 0"
-                            class="mt-3"
-                          >
-                            <b class="text-decoration-underline">Ancestors:</b> <br>
-                            <v-chip
-                              v-for="(ancestor, ancestorKey) in ancestors"
-                              :key="'ancestor_' + ancestorKey"
-                              :class="`${color}--text ${color}--border`"
-                              class="white mr-2 mt-1"
-                              @click="goToTerm(ancestor)"
-                            >
-                              {{ ancestor }}
-                            </v-chip>
-                          </div>
-                        </v-card-text>
-                        <v-divider />
-                        <v-card-text>
-                          <h4 :class="`${color}--text mb-4 text-decoration-underline text-h4`">
-                            Records with this {{ selectedOntology }}:
-                          </h4>
-                          <BrowserDisplay
-                            v-if="records"
-                            :selected-ontology="selectedOntology"
-                          />
-                        </v-card-text>
-                      </v-card>
-                      <v-card
-                        v-else
-                        class="pa-0"
-                        flat
-                      >
-                        <v-card-text class="pa-0">
-                          <OntologyStats />
-                        </v-card-text>
-                      </v-card>
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-          </v-card>
+                    {{ ancestor }}
+                  </v-chip>
+                </div>
+              </v-card-text>
+              <v-divider />
+              <v-card-text>
+                <h4 :class="`${color}--text mb-4 text-decoration-underline text-h4`">
+                  Records with this {{ selectedOntology }}:
+                </h4>
+                <BrowserDisplay
+                  v-if="records"
+                  :selected-ontology="selectedOntology"
+                />
+              </v-card-text>
+            </v-card>
+            <v-card
+              v-else
+              class="pa-0"
+              flat
+            >
+              <v-card-text class="pa-0">
+                <OntologyStats />
+              </v-card-text>
+            </v-card>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -265,20 +259,21 @@ export default {
   font-size: 22px;
 }
 
-.tree {
-  overflow-y: scroll;
+#ontologyBrowser, #termDisplay {
+  display: flex;
+  flex-direction: column;
 }
 
-@media (min-width: 1264px) {
-  .tree {
-    height: 78.8vh;
-  }
-  .border-right {
-    border-right: 1px solid #ccc;
-  }
+.tree {
+  overflow-y: scroll;
+  flex-grow: 1;
+  height: 70vh;
 }
 
 @media (max-width: 1263px) {
+  #ontologyBrowser {
+    height: auto;
+  }
   .tree {
     max-height: 40vh;
     border-bottom: 1px solid #ccc;

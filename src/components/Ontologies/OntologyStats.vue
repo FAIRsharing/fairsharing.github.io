@@ -17,12 +17,11 @@ export default {
           borderWidth: 0,
           borderColor: '#DD7920',
           backgroundColor: '#F9F9F9',
-          margin: [80, 40, 40, 40],
-          height: this.$vuetify.breakpoint.lgAndUp ? 1132 : 300
+          height: this.getWidth()
         },
         title: {
-          text: 'Subject ontology drilldown',
-          style: { color: '#DD7920' }
+          text: 'Subject Browser',
+          style: { color: '#DD7920', fontSize: '26px' }
         },
         subtitle: {
           text: 'Clicking a term will drilldown the children terms and adjust the levels in the left panel. ' +
@@ -110,17 +109,12 @@ export default {
             if (point.name === "Subjects") return false
             else {
               return '<div class="HC-tooltip">' +
-                  '<h3 style="color:' + point.color +'">' + point.name + ': </h3>' +
-                  '<b> Description: </b>' + point.description +
-                  '<hr> Children terms:' + point.descendants_count +
-                  '<br> Number of records:' + point.records_count +
+                  '<h3 style="color: black">' + point.name + '</h3>' +
                   '</div>'
             }
           }
         },
-        exporting: {
-          filename: 'SRAO-Sunburst'
-        }
+        exporting: { filename: 'SRAO-Sunburst' }
       }
     }
   },
@@ -150,6 +144,10 @@ export default {
         }
       }
     },
+    getWidth(){
+      if (this.$vuetify.breakpoint.xlOnly) return "60%"
+      return "100%"
+    },
     ...mapActions("ontologyBrowser", ["openTerms"]),
     ...mapGetters("ontologyBrowser", ["getAncestors"])
   }
@@ -158,9 +156,7 @@ export default {
 
 <style>
   .HC-tooltip {
-    width: 350px;
-    word-break: break-word;
-    white-space: normal;
+    min-width: 100px;
     font-size: 14px;
     text-align: justify;
   }

@@ -74,7 +74,17 @@ export const actions = {
         commit("setPerPage", perPage)
         dispatch("fetchRecords", state.selectedTerm.name)
     },
-    openTerms({commit}, tabs) { commit("setOpenedTerms", tabs) }
+    openTerms({commit}, tabs) { commit("setOpenedTerms", tabs) },
+    leavePage({commit}) {
+        commit('resetTree');
+        commit('resetFlattenedTree');
+        commit('resetRecords');
+        commit('resetPagination');
+        commit('resetActiveTerms');
+        commit('resetSelectedTerm');
+        commit("resetSunburstData");
+        commit("setOpenedTerms", [])
+    }
 }
 
 export const mutations = {

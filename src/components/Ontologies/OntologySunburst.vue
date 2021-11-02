@@ -9,7 +9,7 @@
 import { mapState, mapActions, mapGetters } from "vuex"
 
 export default {
-  name: "OntologyStats",
+  name: "OntologySunburst",
   data() {
     return {
       options: {
@@ -108,9 +108,7 @@ export default {
             const point = this.point
             if (point.name === "Subjects") return false
             else {
-              return '<div class="HC-tooltip">' +
-                  '<h3 style="color: black">' + point.name + '</h3>' +
-                  '</div>'
+              return '<div class="HC-tooltip">' + point.name  + '</div>'
             }
           }
         },
@@ -157,7 +155,7 @@ export default {
 <style>
   .HC-tooltip {
     min-width: 100px;
-    font-size: 14px;
     text-align: justify;
+    font-size: 20px ;
   }
 </style>

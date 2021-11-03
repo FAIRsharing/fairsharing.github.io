@@ -151,9 +151,12 @@ export default {
   },
   watch: {
     async term(newVal) {
-      let parents = [...new Set(this.getAncestors()(newVal.identifier))];
-      await this.activateTerms(newVal)
-      this.open = parents
+      if (newVal) {
+        let parents = [...new Set(this.getAncestors()(newVal.identifier))];
+        await this.activateTerms(newVal)
+        this.open = parents
+      }
+      else await this.activateTerms()
     },
     search(newTerm) { this.openTerms(this.getAncestors()(newTerm, "id", "name")) }
   },

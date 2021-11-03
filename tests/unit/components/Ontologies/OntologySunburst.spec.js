@@ -58,8 +58,4 @@ describe("OntologyBrowser.vue", function() {
         expect(wrapper.vm.getTooltip({name: "Subjects"})).toBeFalsy()
         expect(wrapper.vm.getTooltip({name: "Biology"})).toBe('<div class="HC-tooltip">Biology</div>')
     })
-
-    it("can process a click event", async() => {
-        
-    })
 })

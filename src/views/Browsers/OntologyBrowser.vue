@@ -129,8 +129,7 @@ export default {
     term () {
       return this.flattenedTree.find((currentNode) => {
         if (this.$route.query['term']) {
-          let term = decodeURIComponent(this.$route.query['term']) || null
-          if (term) return currentNode.name.toLowerCase() === term.toLowerCase()
+          return currentNode.name.toLowerCase() === decodeURIComponent(this.$route.query['term']).toLowerCase()
         }
       })
     },
@@ -152,12 +151,9 @@ export default {
   },
   watch: {
     async term(newVal) {
-      if (newVal) {
-        let parents = [...new Set(this.getAncestors()(newVal.identifier))];
-        await this.activateTerms(newVal)
-        this.open = parents
-      }
-      else await this.activateTerms()
+      let parents = [...new Set(this.getAncestors()(newVal.identifier))];
+      await this.activateTerms(newVal)
+      this.open = parents
     },
     search(newTerm) { this.openTerms(this.getAncestors()(newTerm, "id", "name")) }
   },
@@ -178,14 +174,6 @@ export default {
       "leavePage"
     ]),
     ...mapGetters("ontologyBrowser", ["getAncestors"])
-  },
-  metaInfo: {
-    meta: [
-      { property: 'og:image', content: `${window.location.origin}/assets/openGraph/ontologyBrowser.png` },
-      { name: 'description', content: 'Subjects Ontology Browser (SRAO)' },
-      { name: 'keywords', content: "SRAO, Subjects, Ontology, Browser, FAIRsharing"},
-      { name: 'author', content: 'https://github.com/terazus'}
-    ]
   }
 }
 </script>

@@ -58,19 +58,17 @@
 
 <script>
 import {termsOfUse} from '@/data/TermsofUseData.json'
-    export default {
-      name: "TermsOfUse",
-      data: () => {
-        return {
-          TermsOfUse: termsOfUse
-        }
-      },
-      methods: {
-        getHostname() {
-          return process.env.VUE_APP_HOSTNAME;
-        }
-      }
+import getHostname from "@/utils/generalUtils";
+
+export default {
+  name: "TermsOfUse",
+  mixins: [getHostname],
+  data: () => {
+    return {
+      TermsOfUse: termsOfUse
     }
+  }
+}
 </script>
 
 <style scoped lang="scss">

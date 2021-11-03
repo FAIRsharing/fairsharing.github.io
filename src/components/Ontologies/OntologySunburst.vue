@@ -103,14 +103,7 @@ export default {
           hideDelay: 1,
           followPointer: true,
           useHTML: true,
-          backgroundColor: "white",
-          formatter: function() {
-            const point = this.point
-            if (point.name === "Subjects") return false
-            else {
-              return '<div class="HC-tooltip">' + point.name  + '</div>'
-            }
-          }
+          backgroundColor: "white"
         },
         exporting: { filename: 'SRAO-Sunburst' }
       }
@@ -122,12 +115,13 @@ export default {
       let options = { ..._client.options }
       options.series[0].data = _client.sunburstData
       options.series[0].point = { events: { click: function () { _client.processClickEvent(this) }}}
+      options.tooltip.formatter = function() { return _client.getTooltip(this.point) }
       return options
     },
     ...mapState("ontologyBrowser", ["sunburstData", "loadingData", "tree"])
   },
   methods: {
-    processClickEvent(node){
+    processClickEvent(node) {
       if (node.descendants_count === 0) {
         let currentTerm = decodeURIComponent(this.$route.query.term) || null
         if (currentTerm && currentTerm !== node.name) {
@@ -142,9 +136,9 @@ export default {
         }
       }
     },
-    getWidth(){
-      if (this.$vuetify.breakpoint.xlOnly) return "60%"
-      return "100%"
+    getWidth() { return (this.$vuetify.breakpoint.xlOnly) ? "60%" : "100%" },
+    getTooltip(point) {
+      return (point.name === "Subjects") ? false : '<div class="HC-tooltip">' + point.name  + '</div>'
     },
     ...mapActions("ontologyBrowser", ["openTerms"]),
     ...mapGetters("ontologyBrowser", ["getAncestors"])

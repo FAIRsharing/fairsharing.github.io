@@ -34,7 +34,7 @@ const customIcons  = {
         },
         funds: {
             type: 'img',
-            icon: 'assets/icons/fund-icon.png'
+            icon: '/assets/icons/fund-icon.png'
         },
         collaborates_on: {
             type: 'icon',
@@ -110,7 +110,7 @@ const customIcons  = {
         },
         tess_links_to_training_materials: {
             type: 'img',
-            icon: 'assets/icons/elixir-tess.png'
+            icon: '/assets/icons/elixir-tess.png'
         },
         support_email: {
             type: 'icon',
@@ -118,86 +118,86 @@ const customIcons  = {
         },
         collection: {
             type: "img",
-            icon: "assets/records/collection-icon.svg",
+            icon: "/assets/records/collection-icon.svg",
             tooltip: "Collection"
         },
         journal: {
             type: "img",
-            icon: "assets/records/policy.svg",
+            icon: "/assets/records/policy.svg",
             tooltip: "Journal"
         },
         identifier_schema: {
             type: "img",
-            icon: "assets/records/identifier_schema.svg",
+            icon: "/assets/records/identifier_schema.svg",
             tooltip: "Identifier Schema"
         },
         society: {
             type: "img",
-            icon: "assets/records/policy.svg",
+            icon: "/assets/records/policy.svg",
             tooltip: "Society"
         },
         funder: {
             type: "img",
-            icon: "assets/records/policy.svg",
+            icon: "/assets/records/policy.svg",
             tooltip: "Funder"
         },
         project: {
             type: "img",
-            icon: "assets/records/policy.svg",
+            icon: "/assets/records/policy.svg",
             tooltip: "Project"
         },
         institution: {
             type: "img",
-            icon: "assets/records/policy.svg",
+            icon: "/assets/records/policy.svg",
             tooltip: "Institution"
         },
         terminology_artefact: {
             type: "img",
-            icon: "assets/records/terminology_artefact.svg",
+            icon: "/assets/records/terminology_artefact.svg",
             tooltip: "Terminology Artefact"
         },
         model_and_format: {
             type: "img",
-            icon: "assets/records/model_and_format.svg",
+            icon: "/assets/records/model_and_format.svg",
             tooltip: "Model and Format"
         },
         reporting_guideline: {
             type: "img",
-            icon: "assets/records/reporting_guideline.svg",
+            icon: "/assets/records/reporting_guideline.svg",
             tooltip: "Reporting Guideline"
         },
         metric: {
             type: "img",
-            icon: "assets/records/metric.svg",
+            icon: "/assets/records/metric.svg",
             tooltip: "Metric"
         },
         repository: {
             type: "img",
-            icon: "assets/records/db-icon.svg",
+            icon: "/assets/records/db-icon.svg",
             tooltip: "Repository"
         },
         journal_publisher: {
             type: "img",
-            icon: "assets/records/policy.svg",
+            icon: "/assets/records/policy.svg",
             tooltip: "Journal Publisher"
         },
         knowledgebase: {
             type: "img",
-            icon: "assets/records/db-icon.svg",
+            icon: "/assets/records/db-icon.svg",
             tooltip: "Knowledge Base"
         },
         knowledgebase_and_repository: {
             type: "img",
-            icon: "assets/records/db-icon.svg",
+            icon: "/assets/records/db-icon.svg",
             tooltip: "Knowledge Base & repository"
         },
         DOI: {
             type: "img",
-            icon: "assets/icons/DOI_logo.svg"
+            icon: "/assets/icons/DOI_logo.svg"
         },
         Orcid: {
             type: "img",
-            icon: "assets/icons/ORCID_iD.svg"
+            icon: "/assets/icons/ORCID_iD.svg"
         },
         mailing_list: {
             type: "icon",
@@ -217,7 +217,7 @@ const customIcons  = {
         },
         collections: {
             type: "img",
-            icon: "assets/Home/BlockInfo/collection-icon.svg"
+            icon: "/assets/Home/BlockInfo/collection-icon.svg"
         },
         educational: {
             type: "icon",
@@ -225,15 +225,15 @@ const customIcons  = {
         },
         home_standard: {
             type: "img",
-            icon: "assets/Home/BlockInfo/home-standards.svg"
+            icon: "/assets/Home/BlockInfo/home-standards.svg"
         },
         home_db: {
             type: "img",
-            icon: "assets/Home/BlockInfo/home-db.svg"
+            icon: "/assets/Home/BlockInfo/home-db.svg"
         },
         home_policies: {
             type: "img",
-            icon: "assets/Home/BlockInfo/home-policies.svg"
+            icon: "/assets/Home/BlockInfo/home-policies.svg"
         },
         other: {
             type: "icon",

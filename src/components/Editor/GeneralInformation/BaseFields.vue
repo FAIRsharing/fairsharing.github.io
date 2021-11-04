@@ -123,6 +123,69 @@
       </v-autocomplete>
     </v-col>
 
+    <!-- Duplicate warning box to go here -->
+    <!-- curator notes -->
+    <v-col cols="12">
+      <v-expand-transition>
+        <v-card
+          v-if="possibleDuplicates.length > 0"
+          class="mx-auto deep-orange darken-4 mb-5"
+          dark
+        >
+          <v-card-title>
+            <span class="text-h5 font-weight-bold">
+              This record may duplicate an existing FAIRsharing record!
+            </span>
+          </v-card-title>
+          <v-card-text class="text-h6 font-weight-light">
+            <p>
+              Please see below for details of records we have detected that may be similar to yours:
+            </p>
+            <ul>
+              <li
+                v-for="(dup, dupIndex) in possibleDuplicates"
+                :key="'dup_' + dupIndex"
+              >
+                <a
+                  :href="'/' + dup.id"
+                  target="_blank"
+                >
+                  {{ dup.name }}
+                </a>
+                <span v-if="dup.abbreviation">
+                  ({{ dup.abbreviation }}) /
+                </span>
+                <span v-else>
+                  /
+                </span>
+                <a
+                  :href="dup.homepage"
+                  target="_blank"
+                >
+                  {{ dup.homepage }}
+                </a>
+              </li>
+            </ul>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              class="white black--text"
+              :disabled="submitAnywayDisabled"
+              @click="submitAnyway"
+            >
+              I know what I'm doing...
+            </v-btn>
+            <v-btn
+              class="black white--text"
+              @click="tryAgain"
+            >
+              Clear and retry
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-expand-transition>
+    </v-col>
+
     <!-- countries -->
     <v-col
       xl="4"
@@ -368,6 +431,20 @@
       </v-expand-transition>
     </v-col>
 
+    <!-- isHidden -->
+    <v-col cols="12">
+      <v-checkbox
+        v-if="user().is_curator"
+        v-model="fields.isHidden"
+        class="d-inline-block mr-2"
+        label="hide record"
+      >
+        <template #label>
+          <span class="v-label-white">Hidden if selected.</span>
+        </template>
+      </v-checkbox>
+    </v-col>
+
     <database-warning />
   </v-row>
 </template>
@@ -381,45 +458,57 @@
     import Icon from "@/components/Icon"
 
     export default {
-        name: "BaseFields",
-        components: {DatabaseWarning, CountryFlag, StatusPills, Icon},
-        data(){
-            return {
-                rules: {
-                    isRequired: function(){return isRequired()},
-                    isUrl: function(){return isUrl()},
-                    isLongEnough: function(val){return isLongEnough(val)},
-                }
-            }
-        },
-        computed: {
-            ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
-            ...mapState("editor", [
-                "countries",
-                "years",
-                "tooltips",
-                "recordTypes",
-                "status"
-            ]),
-            ...mapState('users', ['user']),
-            fields(){
-              return this.getSection("generalInformation").data;
-            }
-        },
-        methods: {
-          removeCountry(country){
-              this.fields.countries = this.fields.countries.filter(obj =>
-                  obj.label !== country.name && obj.id !== country.id
-              );
-          },
-          typeChangeDisabled(){
-            let _module = this;
-            if (_module.getCreatingNewRecord) {
-              return false;
-            }
-            return !_module.user().is_curator;
+      name: "BaseFields",
+      components: {DatabaseWarning, CountryFlag, StatusPills, Icon},
+      data(){
+          return {
+              rules: {
+                  isRequired: function(){return isRequired()},
+                  isUrl: function(){return isUrl()},
+                  isLongEnough: function(val){return isLongEnough(val)},
+              },
+              submitAnywayDisabled: false
           }
+      },
+      computed: {
+          ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
+          ...mapState("editor", [
+              "countries",
+              "years",
+              "tooltips",
+              "recordTypes",
+              "status",
+              "possibleDuplicates"
+          ]),
+          ...mapState('users', ['user']),
+          fields(){
+            return this.getSection("generalInformation").data;
+          }
+      },
+      methods: {
+        removeCountry(country){
+            this.fields.countries = this.fields.countries.filter(obj =>
+                obj.label !== country.name && obj.id !== country.id
+            );
+        },
+        typeChangeDisabled(){
+          let _module = this;
+          if (_module.getCreatingNewRecord) {
+            return false;
+          }
+          return !_module.user().is_curator;
+        },
+        submitAnyway() {
+          this.submitAnywayDisabled = true;
+          this.$emit('submission');
+        },
+        tryAgain() {
+          this.fields.metadata.homepage = null;
+          this.fields.metadata.name = null;
+          this.fields.metadata.abbreviation = null;
+          this.$emit('clearing');
         }
+      }
     }
 </script>
 

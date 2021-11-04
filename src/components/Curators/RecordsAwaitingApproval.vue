@@ -354,8 +354,7 @@
                 general: null
               };
               let preparedRecord = {
-                processing_notes: "",
-                skip_approval: true
+                processing_notes: ""
               };
               preparedRecord.processing_notes = notesText;
               let data = {
@@ -372,9 +371,7 @@
 
             async assignCurator(idRecord, idUser, nameUser){
               const _module = this;
-              let preparedRecord = {
-                skip_approval: true
-              };
+              let preparedRecord = { };
               if (nameUser === 'none'){
                 preparedRecord.curator_id = null;
               }else{

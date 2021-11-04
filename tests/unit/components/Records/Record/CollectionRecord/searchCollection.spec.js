@@ -160,7 +160,6 @@ describe("SearchCollection.vue", function(){
 
             let queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](wrapper.vm.currentPath);
             expect(queryParameters).toStrictEqual({
-                fairsharingRegistry: "Collection",
                 page: "2"
             })
 

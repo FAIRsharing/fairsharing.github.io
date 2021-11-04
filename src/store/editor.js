@@ -9,6 +9,7 @@ import getGrantsQuery from "@/lib/GraphClient/queries/Organisations/getGrants.js
 import getPublicationsQuery from "@/lib/GraphClient/queries/getPublications.json"
 import getRecordsQuery from "@/lib/GraphClient/queries/editor/getRecordsSummary.json"
 import getLicencesQuery from "@/lib/GraphClient/queries/getLicences.json"
+import getDuplicates from "@/lib/GraphClient/queries/getDuplicates.json"
 import descriptionData from "@/data/fieldsDescription.json"
 import supportLinksTypes from "@/data/SupportLinksTypes.json"
 import status from "@/data/status.json"
@@ -58,6 +59,7 @@ let editorStore = {
         ],
         accessPointTypes: ["REST", "SOAP", "SPARQL", "Other"],
         availableRecords: [],
+        possibleDuplicates: [],
         relationsTypes: [],
         allowedFields: {}
     },
@@ -98,6 +100,7 @@ let editorStore = {
             state.organisationsTypes = null;
             state.grants = null;
             state.availablePublications = [];
+            state.possibleDuplicates = [];
         },
         setAvailableRecords(state, records){
             state.availableRecords = records;
@@ -107,6 +110,12 @@ let editorStore = {
         },
         setAllowedFields(state, fields){
             state.allowedFields = fields;
+        },
+        setPossibleDuplicates(state, records) {
+            state.possibleDuplicates = records;
+        },
+        clearPossibleDuplicates(state) {
+            state.possibleDuplicates = [];
         }
     },
     actions: {
@@ -184,6 +193,11 @@ let editorStore = {
             getRecordsQuery.queryParam.excludeId = options.excludeId;
             let data = await graphClient.executeQuery(getRecordsQuery);
             commit("setAvailableRecords", data.searchFairsharingRecords.records);
+        },
+        async getPossibleDuplicates({commit}, options) {
+            getDuplicates.queryParam = {fields: options.fields}
+            let data = await graphClient.executeQuery(getDuplicates);
+            commit("setPossibleDuplicates", data.duplicateCheck);
         },
         async getAvailableRelationsTypes({commit}){
             let types = await restClient.getRelationsTypes();

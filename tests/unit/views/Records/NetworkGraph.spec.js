@@ -128,6 +128,7 @@ describe("NetworkGraph.vue", function() {
         expect(wrapper.vm.options.series[0].nodes.length).toBe(4)
         wrapper.vm.legend.types.square = false;
         await wrapper.vm.getData();
+        expect(wrapper.vm.noData).toBe(false);
         expect(wrapper.vm.options.series[0].nodes.length).toBe(4)
         wrapper.vm.drawGraph()
     });
@@ -139,4 +140,17 @@ describe("NetworkGraph.vue", function() {
         expect(getData).toHaveBeenCalledTimes(1);
         expect(wrapper.vm.currentRoute).toEqual(10);
     })
+
+    it("sets noData when there's no data", async () => {
+        graphMock = {};
+        graphStub.returns(graphMock);
+        wrapper = await shallowMount(GraphTest, {
+            localVue,
+            vuetify,
+            router,
+            mocks: { $router, $route }
+        });
+        await wrapper.vm.getData();
+        expect(wrapper.vm.noData).toBe(true);
+    });
 });

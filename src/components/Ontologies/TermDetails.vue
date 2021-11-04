@@ -178,7 +178,7 @@ export default {
   components: { Icon, StatusPills },
   mixins: [stringUtils],
   props: { selectedOntology: { required: true, type: String }},
-  data(){
+  data () {
     return {
       headers: [
         { text: "Record name", value: "name", align: "center" },
@@ -188,23 +188,23 @@ export default {
     }
   },
   computed: {
-    min() { return ((this.currentPage - 1) * this.perPage) + 1 },
-    currentPage() { return this.getCurrentPage() },
+    min () { return ((this.currentPage - 1) * this.perPage) + 1 },
+    currentPage () { return this.getCurrentPage() },
     color () { return this.colors[this.selectedOntology] },
-    ancestors() { return this.getAncestors()(this.selectedTerm.identifier, 'name') },
+    ancestors () { return this.getAncestors()(this.selectedTerm.identifier, 'name') },
     perPage: {
       get () { return this.getPerPage() },
-      set(val) { this.changePerPage(val) }
+      set (val) { this.changePerPage(val) }
     },
     ...mapState("ontologyBrowser", ["records", "totalPages", "selectedTerm"]),
     ...mapState("editor", ["colors"])
   },
   methods: {
-    async setPage(offset) { await this.fetchNewPage(offset) },
-    goToSearch(){ this.$router.push(
-        { name: 'search', query: { subjects: encodeURIComponent(this.selectedTerm.name) }}
+    async setPage (offset) { await this.fetchNewPage(offset) },
+    goToSearch () {
+      this.$router.push({ name: 'search', query: { subjects: encodeURIComponent(this.selectedTerm.name) }}
     )},
-    goToTerm(term) {
+    goToTerm (term) {
       this.$router.push({ path: this.$route.path, query: {term: encodeURIComponent(term) }})
     },
     ...mapGetters("ontologyBrowser", ["getPerPage", "getCurrentPage", "getAncestors"]),

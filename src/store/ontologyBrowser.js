@@ -92,8 +92,6 @@ export const mutations = {
     resetTree(state) { state.tree = [] },
     setFlattenedTree(state, tree) { state.flattenedTree = tree },
     resetFlattenedTree(state) { state.flattenedTree = [] },
-    setError(state, error) { state.error = error },
-    resetError(state) { state.error = false },
     setRecords(state, records) { state.records = records },
     resetRecords(state) { state.records= [] },
     setLoadingData(state, loading) { state.loadingData = loading},
@@ -157,6 +155,7 @@ export const processTree = function(
             descendants_count: term.descendants_count || 0,
             records_count: term.records_count || 0
         })
+        /* istanbul ignore else */
         if (term.children) {
             const newAncestors = ancestors.concat([term.identifier])
             processTree(term.children, newAncestors, flattenedTree, newNode.id, sunburst)

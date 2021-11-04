@@ -103,7 +103,6 @@ describe("Records.vue", () => {
         const path = wrapper.vm.currentPath;
         const queryParameters = await wrapper.vm.$store.getters["introspection/buildQueryParameters"](path);
         expect(queryParameters).toStrictEqual({
-            fairsharingRegistry: "Standard",
             test: 'abc',
             test2: 'abcdef',
             test3: ['abc', ' def'],

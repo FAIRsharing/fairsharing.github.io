@@ -151,6 +151,7 @@ export default {
   },
   watch: {
     async term(newVal) {
+      /* istanbul ignore else */
       if (newVal) {
         let parents = [...new Set(this.getAncestors()(newVal.identifier))];
         await this.activateTerms(newVal)

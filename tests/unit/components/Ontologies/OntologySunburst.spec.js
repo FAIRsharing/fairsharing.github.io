@@ -58,4 +58,52 @@ describe("OntologyBrowser.vue", function() {
         expect(wrapper.vm.getTooltip({name: "Subjects"})).toBeFalsy()
         expect(wrapper.vm.getTooltip({name: "Biology"})).toBe('<div class="HC-tooltip">Biology</div>')
     })
+
+    it("can process click events", () => {
+        wrapper.vm.$route.query = {term: 'test'}
+        const node = {
+            name: "test",
+            descendants_count: 0,
+            identifier: 2,
+            id: 1
+        }
+        wrapper.vm.processClickEvent(node);
+        expect($router.push).not.toHaveBeenCalled()
+
+        wrapper.vm.$route.query = {}
+        wrapper.vm.processClickEvent(node)
+        expect($router.push).toHaveBeenCalledWith({"path": "/browse/", "query": {"term": "test"}})
+
+        node.descendants_count = 1
+        wrapper.vm.$route.query = {term: 'test'}
+        node.name = "Subject"
+        wrapper.vm.processClickEvent(node)
+        expect($store.state.ontologyBrowser.openedTerms).toEqual([])
+
+        node.name = 'biology'
+        wrapper.vm.processClickEvent(node)
+        expect($store.state.ontologyBrowser.openedTerms).toEqual([
+            ' - Natural Science',
+            '287 - Life Science',
+            '287245 - Biology',
+            '287245351 - Botany'
+        ])
+
+        node.innerArcLength = 0
+        wrapper.vm.processClickEvent(node)
+        expect($store.state.ontologyBrowser.openedTerms).toEqual([
+            ' - Natural Science',
+            '287 - Life Science',
+            '287245 - Biology',
+            '287245351 - Botany',
+            1
+        ])
+
+        node.descendants_count = 0
+        wrapper.vm.processClickEvent(node)
+        expect($router.push).toHaveBeenCalledWith({path: '/browse/', query: {term: 'biology'}})
+
+
+
+    })
 })

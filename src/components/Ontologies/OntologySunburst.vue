@@ -114,7 +114,9 @@ export default {
       const _client = this;
       let options = { ..._client.options }
       options.series[0].data = _client.sunburstData
+      /* istanbul ignore next */
       options.series[0].point = { events: { click: function () { _client.processClickEvent(this) }}}
+      /* istanbul ignore next */
       options.tooltip.formatter = function() { return _client.getTooltip(this.point) }
       return options
     },
@@ -123,8 +125,8 @@ export default {
   methods: {
     processClickEvent(node) {
       if (node.descendants_count === 0) {
-        let currentTerm = decodeURIComponent(this.$route.query.term) || null
-        if (currentTerm && currentTerm !== node.name) {
+        let currentTerm = this.$route.query.term ? decodeURIComponent(this.$route.query.term) : null
+        if (!currentTerm || currentTerm !== node.name) {
           this.$router.push({path: this.$route.path, query: {term: encodeURIComponent(node.name)}})
         }
       }

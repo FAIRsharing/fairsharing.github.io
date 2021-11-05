@@ -37,7 +37,7 @@
                         <v-img
                           contain
                           height="30px"
-                          :src="'/'+$vuetify.icons.values['home_db'].icon"
+                          :src="$vuetify.icons.values['home_db'].icon"
                         />
                       </div>
                       Databases
@@ -54,7 +54,7 @@
                         <v-img
                           contain
                           height="30px"
-                          :src="'/'+$vuetify.icons.values['home_standard'].icon"
+                          :src="$vuetify.icons.values['home_standard'].icon"
                         />
                       </div>
                       Standards
@@ -71,7 +71,7 @@
                         <v-img
                           contain
                           height="30px"
-                          :src="'/'+$vuetify.icons.values['home_policies'].icon"
+                          :src="$vuetify.icons.values['home_policies'].icon"
                         />
                       </div>
                       Policies
@@ -88,7 +88,7 @@
                         <v-img
                           contain
                           height="30px"
-                          :src="'/'+$vuetify.icons.values['collections'].icon"
+                          :src="$vuetify.icons.values['collections'].icon"
                         />
                       </div>
                       Collections
@@ -98,7 +98,7 @@
                       <div class="img-holder">
                         <img
                           height="30px"
-                          :src="'/'+$vuetify.icons.values['terminology_artefact'].icon"
+                          :src="$vuetify.icons.values['terminology_artefact'].icon"
                         >
                       </div>
                       Terminology Artefact
@@ -107,7 +107,7 @@
                       <div class="img-holder">
                         <img
                           height="30px"
-                          :src="'/'+$vuetify.icons.values['model_and_format'].icon"
+                          :src="$vuetify.icons.values['model_and_format'].icon"
                         >
                       </div>
                       Model/Format
@@ -116,7 +116,7 @@
                       <div class="img-holder">
                         <img
                           height="30px"
-                          :src="'/'+$vuetify.icons.values['identifier_schema'].icon"
+                          :src="$vuetify.icons.values['identifier_schema'].icon"
                         >
                       </div>
                       Identifier Schema
@@ -125,7 +125,7 @@
                       <div class="img-holder">
                         <img
                           height="30px"
-                          :src="'/'+$vuetify.icons.values['reporting_guideline'].icon"
+                          :src="$vuetify.icons.values['reporting_guideline'].icon"
                         >
                       </div>
                       Reporting Guideline
@@ -134,7 +134,7 @@
                       <div class="img-holder">
                         <img
                           height="30px"
-                          :src="'/'+$vuetify.icons.values['metric'].icon"
+                          :src="$vuetify.icons.values['metric'].icon"
                         >
                       </div>
                       Metric

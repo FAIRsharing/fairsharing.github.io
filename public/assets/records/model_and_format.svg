@@ -1,1 +1,49 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28.83 28.83"><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><circle cx="14.41" cy="14.41" r="14.41" style="fill:#616160"/><path d="M24.61,4.22A14.42,14.42,0,0,1,4.22,24.61" style="fill:#999;opacity:0.46"/><path d="M21.4,22.65a.43.43,0,0,1-.45.41H8.69a.43.43,0,0,1-.45-.41V6.18a.43.43,0,0,1,.45-.41H21a.43.43,0,0,1,.45.41Z" style="fill:#fff"/><path d="M21.4,22.65a.43.43,0,0,1-.45.41H8.69a.43.43,0,0,1-.45-.41V6.18a.43.43,0,0,1,.45-.41H21a.43.43,0,0,1,.45.41Z" style="fill:#fff"/><g style="opacity:0.5"><rect x="9.57" y="9.13" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><g style="opacity:0.5"><rect x="9.57" y="11.36" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><g style="opacity:0.5"><rect x="9.57" y="13.58" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><g style="opacity:0.5"><rect x="9.57" y="15.81" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><g style="opacity:0.5"><rect x="9.57" y="18.03" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><rect x="13.53" y="9.13" width="3.06" height="1.54" style="fill:#c8cbcf"/><rect x="13.53" y="11.36" width="3.06" height="1.54" style="fill:#c8cbcf"/><rect x="13.53" y="13.58" width="3.06" height="1.54" style="fill:#c8cbcf"/><rect x="13.53" y="15.81" width="3.06" height="1.54" style="fill:#c8cbcf"/><rect x="13.53" y="18.03" width="3.06" height="1.54" style="fill:#c8cbcf"/><g style="opacity:0.5"><rect x="17.48" y="9.13" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><g style="opacity:0.5"><rect x="17.48" y="11.36" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><g style="opacity:0.5"><rect x="17.48" y="13.58" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><g style="opacity:0.5"><rect x="17.48" y="15.81" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><g style="opacity:0.5"><rect x="17.48" y="18.03" width="3.06" height="1.54" style="fill:#c8cbcf"/></g><path d="M20.41,17.24V15.17H17a.21.21,0,0,1-.2-.21V13a.21.21,0,0,1,.2-.2h3.39V10.7c0-.11.08-.15.16-.08l4.17,3.23a.14.14,0,0,1,0,.24l-4.17,3.22c-.08.07-.16,0-.16-.07" style="fill:#fff;stroke:#c8cbcf;stroke-miterlimit:10;stroke-width:0.25px"/></g></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28.83 28.83">
+    <g id="Layer_2" data-name="Layer 2">
+        <g id="Layer_1-2" data-name="Layer 1">
+            <circle cx="14.41" cy="14.41" r="14.41" fill="#616160"/>
+            <path d="M24.61,4.22A14.42,14.42,0,0,1,4.22,24.61" fill="#999" opacity="0.46"/>
+            <path d="M21.4,22.65a.43.43,0,0,1-.45.41H8.69a.43.43,0,0,1-.45-.41V6.18a.43.43,0,0,1,.45-.41H21a.43.43,0,0,1,.45.41Z"
+                  fill="#fff"/>
+            <path d="M21.4,22.65a.43.43,0,0,1-.45.41H8.69a.43.43,0,0,1-.45-.41V6.18a.43.43,0,0,1,.45-.41H21a.43.43,0,0,1,.45.41Z"
+                  fill="#fff"/>
+            <g opacity="0.5">
+                <rect x="9.57" y="9.13" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <g opacity="0.5">
+                <rect x="9.57" y="11.36" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <g opacity="0.5">
+                <rect x="9.57" y="13.58" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <g opacity="0.5">
+                <rect x="9.57" y="15.81" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <g opacity="0.5">
+                <rect x="9.57" y="18.03" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <rect x="13.53" y="9.13" width="3.06" height="1.54" fill="#c8cbcf"/>
+            <rect x="13.53" y="11.36" width="3.06" height="1.54" fill="#c8cbcf"/>
+            <rect x="13.53" y="13.58" width="3.06" height="1.54" fill="#c8cbcf"/>
+            <rect x="13.53" y="15.81" width="3.06" height="1.54" fill="#c8cbcf"/>
+            <rect x="13.53" y="18.03" width="3.06" height="1.54" fill="#c8cbcf"/>
+            <g opacity="0.5">
+                <rect x="17.48" y="9.13" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <g opacity="0.5">
+                <rect x="17.48" y="11.36" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <g opacity="0.5">
+                <rect x="17.48" y="13.58" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <g opacity="0.5">
+                <rect x="17.48" y="15.81" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <g opacity="0.5">
+                <rect x="17.48" y="18.03" width="3.06" height="1.54" fill="#c8cbcf"/>
+            </g>
+            <path d="M20.41,17.24V15.17H17a.21.21,0,0,1-.2-.21V13a.21.21,0,0,1,.2-.2h3.39V10.7c0-.11.08-.15.16-.08l4.17,3.23a.14.14,0,0,1,0,.24l-4.17,3.22c-.08.07-.16,0-.16-.07"
+                  fill="#fff" stroke="#c8cbcf" stroke-miterlimit="10" stroke-width="0.25px"/>
+        </g>
+    </g>
+</svg>

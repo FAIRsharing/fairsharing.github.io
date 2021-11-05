@@ -10,7 +10,9 @@
     {
       "queryName": "domains",
       "fields": [
-        {"$ref": "keywords"},
+        {
+          "$ref": "keywords"
+        },
         "inFairsharing"
       ]
     }
@@ -19,7 +21,9 @@
     {
       "queryName": "subjects",
       "fields": [
-        {"$ref": "keywords"}
+        {
+          "$ref": "keywords"
+        }
       ]
     }
   ],
@@ -32,11 +36,29 @@
         "isLead",
         {
           "name": "grant",
-          "fields": ["name", "id"]
+          "fields": [
+            "name",
+            "id"
+          ]
         },
         {
           "name": "organisation",
-          "fields": ["name", "id", "homepage", "types", "urlForLogo"]
+          "fields": [
+            "name",
+            "id",
+            "homepage",
+            "types",
+            "urlForLogo",
+            {
+              "queryName": "countries",
+              "name": "countries",
+              "fields": [
+                "code",
+                "id",
+                "name"
+              ]
+            }
+          ]
         }
       ]
     }
@@ -53,7 +75,9 @@
     {
       "queryName": "recordsInCuration",
       "fields": [
-        {"$ref": "summary"}
+        {
+          "$ref": "summary"
+        }
       ]
     }
   ],
@@ -61,7 +85,9 @@
     {
       "queryName": "createdRecords",
       "fields": [
-        {"$ref": "summary"}
+        {
+          "$ref": "summary"
+        }
       ]
     }
   ],
@@ -69,7 +95,9 @@
     {
       "queryName": "maintainedRecords",
       "fields": [
-        {"$ref": "summary"}
+        {
+          "$ref": "summary"
+        }
       ]
     }
   ],
@@ -77,7 +105,9 @@
     {
       "queryName": "watchedRecords",
       "fields": [
-        {"$ref": "summary"}
+        {
+          "$ref": "summary"
+        }
       ]
     }
   ]

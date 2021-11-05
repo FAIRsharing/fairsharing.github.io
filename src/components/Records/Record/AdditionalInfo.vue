@@ -33,7 +33,7 @@
 
     <!--  data_preservation_policy  -->
     <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_preservation_policy && getField('metadata').data_preservation_policy!=='' && getField('metadata').data_preservation_policy"
+      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_preservation_policy && getField('metadata').data_preservation_policy && checkDataAvailableCurrentRecord(getField('metadata').data_preservation_policy)"
       class="pa-4 data-holder mb-4"
     >
       <b class="width-200">Data Preservation Policy</b>

@@ -1,0 +1,7 @@
+{
+  "queryName": "frontPageDatabases",
+  "queryParam": null,
+  "fields": [
+    "data"
+  ]
+}

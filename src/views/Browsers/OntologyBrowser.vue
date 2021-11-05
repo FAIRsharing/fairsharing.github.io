@@ -57,7 +57,7 @@
                 </v-chip>
                 <v-spacer />
                 <div
-                  :class="activeTerms.includes(item.identifier) ? `white ${color}--text ${color}--border` : `${color} white--text`"
+                  :class="activeTerms.includes(item.identifier) ? `${color} white--text`:`white ${color}--text ${color}--border`"
                   class="d-flex justify-center align-center hits"
                 >
                   {{ item.records_count ? item.records_count : 0 }}

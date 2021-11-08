@@ -54,7 +54,7 @@ name: "Carousel",
       setTimeout(() => {
         this.tabsData.selectedTab = (this.tabsData.selectedTab < this.tabsData.tabs.length -1) ? this.tabsData.selectedTab + 1 : 0;
         this.cycleTabs()
-      }, 5000);
+      }, 8000);
     }
   }
 }

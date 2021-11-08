@@ -201,10 +201,13 @@
 
           <v-col cols="6">
             <v-card
-              class="d-flex flex-column rounded-0"
+              class="d-flex flex-column rounded-0 overflow-y-hidden overflow-x-auto"
               height="100%"
             >
-              <v-card-title class="primary white--text py-3">
+              <v-card-title
+                class="primary white--text py-3"
+                style="min-width: 500px"
+              >
                 Records related to this organisation
               </v-card-title>
 
@@ -215,6 +218,7 @@
                 :items-per-page="perPage"
                 :footer-props="footer"
                 calculate-widths
+                style="min-width: 500px"
               >
                 <template #[`item.name`]="{ item }">
                   <div class="d-flex justify-start align-center">
@@ -492,5 +496,9 @@ export default {
 </script>
 
 <style scoped>
-
+.card-class {
+  min-width: 500px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
 </style>

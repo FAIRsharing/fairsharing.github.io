@@ -33,8 +33,8 @@ export default {
             stickyTracking: false,
             turboThreshold: 2000,
             colors: [
-              'white', '#1aadce', 'white', '#910000',
-              'white', 'white', 'white', '#8bbc21'
+              'white', this.$vuetify.theme.themes.light.subject_topLevel_1, 'white', this.$vuetify.theme.themes.light.subject_topLevel_2,
+              'white', 'white', 'white', this.$vuetify.theme.themes.light.subject_topLevel_3
             ],
             type: 'sunburst',
             allowDrillToNode: true,

@@ -32,7 +32,11 @@
         />
 
         <v-row>
-          <v-col cols="6">
+          <v-col
+            cols="12"
+            sm="12"
+            md="6"
+          >
             <v-card
               class="d-flex flex-column rounded-0"
               height="100%"
@@ -199,14 +203,18 @@
             </v-card>
           </v-col>
 
-          <v-col cols="6">
+          <v-col
+            cols="12"
+            sm="12"
+            md="6"
+          >
             <v-card
               class="d-flex flex-column rounded-0 overflow-y-hidden overflow-x-auto"
               height="100%"
             >
               <v-card-title
                 class="primary white--text py-3"
-                style="min-width: 500px"
+                style="min-width: 600px"
               >
                 Records related to this organisation
               </v-card-title>
@@ -218,7 +226,7 @@
                 :items-per-page="perPage"
                 :footer-props="footer"
                 calculate-widths
-                style="min-width: 500px"
+                style="min-width: 600px"
               >
                 <template #[`item.name`]="{ item }">
                   <div class="d-flex justify-start align-center">
@@ -290,7 +298,11 @@
         </v-row>
         
         <v-row>
-          <v-col cols="6">
+          <v-col
+            cols="12"
+            sm="12"
+            md="6"
+          >
             <v-card
               class="d-flex flex-column rounded-0"
               height="100%"

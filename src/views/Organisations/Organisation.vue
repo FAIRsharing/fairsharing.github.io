@@ -221,6 +221,7 @@
 
               <v-data-table
                 class="organisationRecordsTable"
+                mobile-breakpoint="0"
                 :items="organisation.organisationLinks"
                 :headers="headers"
                 :items-per-page="perPage"

@@ -134,7 +134,8 @@
             >
               <a
                 class="d-flex align-center cursor-pointer"
-                :href="`/#/${item.id}`"
+                :href="`/${item.id}`"
+
               >
                 <v-avatar
                   size="30"

@@ -105,7 +105,12 @@ export default {
           useHTML: true,
           backgroundColor: "white"
         },
-        exporting: { filename: 'SRAO-Sunburst' }
+        exporting: {
+          sourceWidth: 1500,
+          sourceHeight: 1600,
+          scale: 1,
+          filename: 'SRAO-Sunburst'
+        }
       }
     }
   },

@@ -23,10 +23,10 @@ describe("Carousel", function(){
         wrapper.vm.tabsData.selectedTab = 6;
         wrapper.vm.cycleTabs();
         jest.advanceTimersByTime(5000);
-        expect(wrapper.vm.tabsData.selectedTab).toBe(0);
+        expect(wrapper.vm.tabsData.selectedTab).toBe(6);
         wrapper.vm.cycleTabs();
         jest.advanceTimersByTime(5000);
-        expect(wrapper.vm.tabsData.selectedTab).toBe(2);
+        expect(wrapper.vm.tabsData.selectedTab).toBe(0);
     })
 
 });

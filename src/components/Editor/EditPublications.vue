@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card id="editPublications">
     <v-card-title class="grey lighten-4 blue--text">
-      Edit Publications
+      Add/Remove Publications
     </v-card-title>
     <Alerts target="publications" />
     <v-card-text>
@@ -9,15 +9,6 @@
         fluid
         class="pb-0"
       >
-        <v-row>
-          <v-alert
-            width="100%"
-            type="info"
-            dismissible
-          >
-            <b>Note:</b> Only curators can edit saved publications. Please contact us if you have an issue.
-          </v-alert>
-        </v-row>
         <v-row>
           <v-col
             v-for="(publication, pubIndex) in publications"
@@ -97,12 +88,22 @@
             </v-card>
           </v-col>
         </v-row>
+        <v-divider />
+        <v-row>
+          <v-alert
+            width="100%"
+            type="info"
+            dismissible
+          >
+            Please use the search bar below to check if we already have your publication in FAIRsharing.
+            If not, you can add it using the buttons below.
+          </v-alert>
+        </v-row>
       </v-container>
-      <v-divider />
       <v-text-field
         v-model="search"
         append-icon="fa-search"
-        label="Search through publications"
+        label="Search existing publications"
         outlined
         hide-details
       />
@@ -115,48 +116,42 @@
         class="elevation-1"
         show-select
         :items-per-page="9"
+      />
+      <div class="noPublications">
+        <v-btn
+          class="green white--text my-3"
+          :loading="loadingPub"
+          @click="getDOI()"
+        >
+          Import from DOI
+        </v-btn>
+        <v-btn
+          class="green white--text my-3 ml-3"
+          :loading="loadingPub"
+          @click="getPMID()"
+        >
+          Import from PUBMED ID
+        </v-btn>
+        <v-btn
+          class="green white--text my-3 ml-3"
+          :loading="loadingPub"
+          @click="createNewPublication()"
+        >
+          Create new publication
+        </v-btn>
+      </div>
+      <v-alert
+        v-if="errors.doi"
+        type="error"
       >
-        <template slot="no-results">
-          <div class="noPublications">
-            <div class="noTerm mt-3">
-              No publications found. Would you like to create a new publication or import it from a DOI or a PubMed ID?
-            </div>
-            <v-btn
-              class="green white--text my-3"
-              :loading="loadingPub"
-              @click="getDOI()"
-            >
-              Import from DOI
-            </v-btn>
-            <v-btn
-              class="green white--text my-3 ml-3"
-              :loading="loadingPub"
-              @click="getPMID()"
-            >
-              Import from PUBMED ID
-            </v-btn>
-            <v-btn
-              class="green white--text my-3 ml-3"
-              :loading="loadingPub"
-              @click="createNewPublication()"
-            >
-              Create new publication
-            </v-btn>
-          </div>
-          <v-alert
-            v-if="errors.doi"
-            type="error"
-          >
-            DOI not found !
-          </v-alert>
-          <v-alert
-            v-if="errors.pmid"
-            type="error"
-          >
-            PubMed ID not found !
-          </v-alert>
-        </template>
-      </v-data-table>
+        DOI not found !
+      </v-alert>
+      <v-alert
+        v-if="errors.pmid"
+        type="error"
+      >
+        PubMed ID not found !
+      </v-alert>
     </v-card-text>
     <v-card-actions>
       <v-btn

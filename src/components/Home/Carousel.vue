@@ -52,6 +52,7 @@ name: "Carousel",
   methods: {
     cycleTabs(){
       setTimeout(() => {
+        /* istanbul ignore next */
         this.tabsData.selectedTab = (this.tabsData.selectedTab < this.tabsData.tabs.length -1) ? this.tabsData.selectedTab + 1 : 0;
         this.cycleTabs()
       }, 8000);

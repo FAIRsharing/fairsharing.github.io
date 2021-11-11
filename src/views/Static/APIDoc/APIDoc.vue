@@ -935,10 +935,12 @@ puts response.read_body
 
 <script>
 import {component as VueCodeHighlight} from 'vue-code-highlight';
+import getHostname from "@/utils/generalUtils";
 
 export default {
   name: "APIDoc",
   components:{VueCodeHighlight},
+  mixins: [getHostname],
   data: () => {
     return {
       tables: {
@@ -1077,11 +1079,6 @@ export default {
           ]
         }
       }
-    }
-  },
-  methods: {
-    getHostname() {
-      return process.env.VUE_APP_HOSTNAME;
     }
   }
 }

@@ -335,6 +335,7 @@
     import ExternalClient from "@/lib/Client/ExternalClients.js"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
     import { cleanString } from "@/utils/stringUtils"
+    import getHostname from "@/utils/generalUtils"
     import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
 
     let client = new ExternalClient();
@@ -346,7 +347,7 @@
     export default {
       name: "User",
       components: {ViewOrganisations, RecordsTable, Loaders, UserProfileMenu},
-      mixins: [cleanString],
+      mixins: [cleanString, getHostname],
       data: () => {
         return {
             copyButtonStatus: false,
@@ -434,9 +435,6 @@
           copyURL() {
             this.copyButtonStatus = true;
             return this.getHostname() + 'users/' + this.user().id;
-          },
-          getHostname() {
-            return process.env.VUE_APP_HOSTNAME;
           }
       }
     }

@@ -115,6 +115,7 @@ export default {
         _module.$router.push({
           path: "/search",
           query: {
+            ..._module.$route.query,
             q: _module.searchTerm
           }
         });

@@ -9,7 +9,6 @@
         fluid
         class="pb-0"
       >
-
         <v-row>
           <v-col
             v-for="(publication, pubIndex) in publications"
@@ -92,9 +91,9 @@
         <v-divider />
         <v-row>
           <v-alert
-              width="100%"
-              type="info"
-              dismissible
+            width="100%"
+            type="info"
+            dismissible
           >
             Please use the search bar below to check if we already have your publication in FAIRsharing.
             If not, you can add it using the buttons below.
@@ -117,40 +116,39 @@
         class="elevation-1"
         show-select
         :items-per-page="9"
-      >
-      </v-data-table>
+      />
       <div class="noPublications">
         <v-btn
-            class="green white--text my-3"
-            :loading="loadingPub"
-            @click="getDOI()"
+          class="green white--text my-3"
+          :loading="loadingPub"
+          @click="getDOI()"
         >
           Import from DOI
         </v-btn>
         <v-btn
-            class="green white--text my-3 ml-3"
-            :loading="loadingPub"
-            @click="getPMID()"
+          class="green white--text my-3 ml-3"
+          :loading="loadingPub"
+          @click="getPMID()"
         >
           Import from PUBMED ID
         </v-btn>
         <v-btn
-            class="green white--text my-3 ml-3"
-            :loading="loadingPub"
-            @click="createNewPublication()"
+          class="green white--text my-3 ml-3"
+          :loading="loadingPub"
+          @click="createNewPublication()"
         >
           Create new publication
         </v-btn>
       </div>
       <v-alert
-          v-if="errors.doi"
-          type="error"
+        v-if="errors.doi"
+        type="error"
       >
         DOI not found !
       </v-alert>
       <v-alert
-          v-if="errors.pmid"
-          type="error"
+        v-if="errors.pmid"
+        type="error"
       >
         PubMed ID not found !
       </v-alert>

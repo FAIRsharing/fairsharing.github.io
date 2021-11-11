@@ -27,6 +27,9 @@ describe("Carousel", function(){
         wrapper.vm.cycleTabs();
         jest.advanceTimersByTime(5000);
         expect(wrapper.vm.tabsData.selectedTab).toBe(0);
+        wrapper.vm.tabsData.selectedTab = 3;
+        wrapper.vm.cycleTabs();
+        expect(wrapper.vm.tabsData.selectedTab).toBe(3);
     })
 
 });

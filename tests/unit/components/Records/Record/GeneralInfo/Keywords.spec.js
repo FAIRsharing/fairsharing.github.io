@@ -49,7 +49,7 @@ describe("Keywords.vue", function(){
 
     it("returns to the search page when a chip is clicked", () => {
         wrapper.vm.returnToSearch('subjects', 'citizens');
-        expect($router.push).toHaveBeenCalledWith({path: '/search?subjects=citizens'})
+        expect($router.push).toHaveBeenCalledWith({"name": "search", "query": { "subjects": "citizens" }});
     });
 
 });

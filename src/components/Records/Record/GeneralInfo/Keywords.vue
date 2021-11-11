@@ -106,7 +106,12 @@ export default {
   },
   methods: {
     returnToSearch(field, item) {
-      this.$router.push({path: `/search?${field}=${item}`})
+      let query = {};
+      query[field] = encodeURIComponent(item);
+      this.$router.push({
+        name: 'search',
+        query: query
+      });
     }
   }
 }

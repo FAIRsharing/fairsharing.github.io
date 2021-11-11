@@ -85,14 +85,14 @@
               </a>
             </v-btn>
             <v-btn
-                v-if="checkLinkValue(publication.url)"
-                text
-                outlined
-                small
+              v-if="checkLinkValue(publication.url)"
+              text
+              outlined
+              small
             >
               <a
-                  :href="publication.url"
-                  target="_blank"
+                :href="publication.url"
+                target="_blank"
               >
                 Publication Link
               </a>

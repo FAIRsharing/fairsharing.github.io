@@ -18,7 +18,10 @@
               show-home-search
               placeholder="search through all content"
             />
-            <div class="vertical-divider" />
+            <div
+              v-if="$vuetify.breakpoint.lgAndUp"
+              :class="$vuetify.breakpoint.width>1893?'vertical-divider':'vertical-divider-sm'"
+            />
           </v-col>
           <v-col
             cols="12"
@@ -32,6 +35,7 @@
               height="400"
               contain
               alt="browse by subject"
+              class="ml-md-15"
             />
             <v-btn
               color="primary"
@@ -74,7 +78,14 @@ section {
   width: .1rem;
   height: 100%;
   background: #809bb5;
-  margin-left: 10rem;
+  margin-left: 14rem;
+}
+
+.vertical-divider-sm {
+  width: .1rem;
+  height: 100%;
+  background: #809bb5;
+  margin-left: 9rem;
 }
 
 .home-search-bt {

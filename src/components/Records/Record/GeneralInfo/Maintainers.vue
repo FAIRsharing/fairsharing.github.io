@@ -54,17 +54,16 @@
             {{ maintainer.username }}
           </router-link>
           <a
-            v-if="maintainer.orcid"  
-            class="mr-2 underline-effect"
+            v-if="maintainer.orcid"
+            class="mr-2"
             :href="`https://orcid.org/${maintainer.orcid}`"
+            target="_blank"
           >
-            <img
-              alt="ORCID logo"
-              src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png"
-              width="16"
-              height="16"
-            >
-            {{ `https://orcid.org/${maintainer.orcid}` }}
+            <Icon
+              :height="27"
+              item="Orcid"
+              wrapper-class=""
+            />
           </a>
         </div>
         <span class="mr-1">{{ index !== getField('maintainers').length - 1 ? ',' : '' }}</span>
@@ -75,8 +74,10 @@
 
 <script>
 import {mapGetters, mapState} from "vuex";
+import Icon from "@/components/Icon";
 export default {
   name: "Maintainers",
+  components: {Icon},
   props: {
     canClaim: {
       type: Boolean,

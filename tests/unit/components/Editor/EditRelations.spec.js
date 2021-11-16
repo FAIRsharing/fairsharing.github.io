@@ -191,6 +191,7 @@ describe("EditRelationships.vue", function() {
         restStub.returns({
             data: {error: "I am an error" }
         });
+        wrapper.vm.addItem();
         await wrapper.vm.saveRecord(true);
         expect(wrapper.vm.message.error).toBe(true);
         expect(wrapper.vm.message.value).toBe("I am an error")

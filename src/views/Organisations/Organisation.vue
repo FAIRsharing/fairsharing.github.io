@@ -238,7 +238,10 @@
                         wrapper-class=""
                       />
                     </v-avatar>
-                    <div class="mt-1 ml-3 alignLeft">
+                    <div
+                      class="mt-1 ml-3 alignLeft text-left"
+                      style="max-width: 300px"
+                    >
                       {{ item.fairsharingRecord.name | cleanString }}
                     </div>
                   </div>

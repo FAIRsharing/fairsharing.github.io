@@ -214,7 +214,7 @@
             >
               <v-card-title
                 class="primary white--text py-3"
-                style="min-width: 600px"
+                style="min-width: 720px"
               >
                 Records related to this organisation
               </v-card-title>
@@ -227,7 +227,7 @@
                 :items-per-page="perPage"
                 :footer-props="footer"
                 calculate-widths
-                style="min-width: 600px"
+                style="min-width: 720px"
               >
                 <template #[`item.name`]="{ item }">
                   <div class="d-flex justify-start align-center">

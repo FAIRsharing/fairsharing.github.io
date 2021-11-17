@@ -33,6 +33,13 @@
               {{ getField('abbreviation')+';' }}
             </span>{{ getField('name') }},
 
+            <span v-if="getField('id')">
+              <b>
+                FAIRsharing ID:
+                <router-link :to="`${getField('id')}`">{{ getHostname()+getField('id') }}</router-link>
+              </b>,
+            </span>
+            
             <span v-if="getField('doi')">
               <b>
                 DOI:
@@ -120,11 +127,12 @@ import {mapGetters} from "vuex";
 import Icon from "@/components/Icon"
 import {truncate} from "@/utils/stringUtils"
 import moment from "moment";
+import getHostname from "@/utils/generalUtils";
 
 export default {
   name: "Citations",
   components: { Icon },
-  mixins: [ truncate ],
+  mixins: [ truncate,getHostname ],
   data: () => {
     return {
       currentDate: new Date()

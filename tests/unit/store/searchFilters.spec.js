@@ -11,13 +11,7 @@ describe('searchFilters store methods', () => {
             "aggregations": RecordsData.aggregations
         }
     };
-    const databaseCount = {
-        "frontPageDatabases": {
-            "data": {
-                "natural science": 10
-            }
-        }
-    }
+
     let state = {
         rawFilters: [],
         filters: [],
@@ -55,11 +49,6 @@ describe('searchFilters store methods', () => {
     it("can check setFilters mutations", () => {
         mutations.setFilters(state, returnedVal);
         expect(state.rawFilters.length).toBeGreaterThan(0)
-    });
-
-    it("can check setDatabaseCount mutations", () => {
-        mutations.setDatabaseCount(state, databaseCount);
-        expect(state.databaseCount).toStrictEqual(databaseCount.frontPageDatabases.data);
     });
 
     it("can check the setFilterButtons mutations", () => {
@@ -123,7 +112,7 @@ describe('searchFilters store methods', () => {
         expect(actions.commit).toHaveBeenCalledWith("searchFilters/setLoadingStatus", true);
         expect(actions.commit).toHaveBeenCalledWith("searchFilters/setFilterButtons");
         expect(actions.commit).toHaveBeenCalledWith("searchFilters/setLoadingStatus", false);
-        expect(actions.commit).toHaveBeenCalledTimes(7);
+        expect(actions.commit).toHaveBeenCalledTimes(6);
         stub.restore();
     });
 

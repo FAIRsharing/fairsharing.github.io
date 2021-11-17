@@ -70,15 +70,15 @@
                       class="body-1"
                     >
                       <v-list-item-content
-                        v-if="fieldName !== 'preferences'"
+                        v-if="fieldName !== 'preferences' && fieldName!=='orcid'"
                         class="py-0 d-block"
                       >
                         <b class="blue--text">{{ fieldName | cleanString }}: </b>
-                        <span v-if="field"> {{ field }} </span>
-                        <span v-else> None </span>
+                        <span v-if="field && fieldName!=='orcid'"> {{ field }} </span>
+                        <span> None </span>
                       </v-list-item-content>
                       <v-list-item-content
-                        v-else
+                        v-else-if="fieldName==='preferences'"
                         class="py-2"
                       >
                         <b class="blue--text">{{ fieldName | cleanString }}: </b>
@@ -90,6 +90,30 @@
                             {{ prefName | cleanString }}: {{ booleanToString(pref) }}
                           </li>
                         </ul>
+                      </v-list-item-content>
+                      <v-list-item-content
+                        v-else-if="fieldName==='orcid'"
+                        class="d-block py-0"
+                      >
+                        <div class="d-flex align-center">
+                          <b
+                            class="blue--text"
+                            style="margin-right: 0.2rem"
+                          >{{ fieldName | cleanString }}: </b>
+                          <a
+                            v-if="field"
+                            class="d-flex align-center underline-effect"
+                            :href="`https://orcid.org/${field}`"
+                            target="_blank"
+                          >
+                            <Icon
+                              :height="20"
+                              item="Orcid"
+                              wrapper-class=""
+                            />
+                            <span class="ml-1">{{ field }}</span>
+                          </a>
+                        </div>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
@@ -230,6 +254,7 @@
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
     import { cleanString } from "@/utils/stringUtils"
     import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
+    import Icon from "@/components/Icon";
 
     let client = new ExternalClient();
 
@@ -239,7 +264,7 @@
 
     export default {
       name: "PublicProfile",
-      components: {ViewOrganisations, RecordsTable, Loaders, NotFound, UserProfileMenu},
+      components: {ViewOrganisations, RecordsTable, Loaders, NotFound, UserProfileMenu, Icon},
       mixins: [cleanString],
       data: () => {
         return {

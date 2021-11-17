@@ -75,7 +75,7 @@
                       >
                         <b class="blue--text">{{ fieldName | cleanString }}: </b>
                         <span v-if="field && fieldName!=='orcid'"> {{ field }} </span>
-                        <span> None </span>
+                        <span v-else> None </span>
                       </v-list-item-content>
                       <v-list-item-content
                         v-else-if="fieldName==='preferences'"

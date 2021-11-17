@@ -126,14 +126,14 @@
       language="javascript"
     >
       <pre>
-curl --location --request POST 'https://api.fairsharing.org/users/sign_in'
---header 'Accept: application/json'
---header 'Content-Type: application/json'
+curl --location --request POST 'https://api.fairsharing.org/users/sign_in' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
 --data-raw '{"user": {"login":"your_username","password":"your_secret_password"} }'
 
-curl --location --request GET 'https://api.fairsharing.org/fairsharing_records/1'
---header 'Accept: application/json'
---header 'Content-Type: application/json'
+curl --location --request GET 'https://api.fairsharing.org/fairsharing_records/1' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
 --header 'Authorization: Bearer your_jwt_goes_here'
  </pre>
     </vue-code-highlight>
@@ -161,16 +161,16 @@ headers = {
 
 response = requests.request("POST", url, headers=headers, data=payload)
 
-print(response.text)
-
 # Get the JWT from the response.text to use in the next part.
+data = response.json()
+jwt = data['jwt']
 
 url = "https://api.fairsharing.org/fairsharing_records/1"
 
 headers = {
   'Accept': 'application/json',
   'Content-Type': 'application/json',
-  'Authorization': 'Bearer your_token_goes_here',
+  'Authorization': "Bearer {0}".format(jwt),
 }
 
 response = requests.request("GET", url, headers=headers)
@@ -202,10 +202,11 @@ request["Accept"] = "application/json"
 request["Content-Type"] = "application/json"
 request.body = "{\"user\": {\"login\":\"your_username\",\"password\":\"your_password\"} }"
 
-response = http.request(request)
-puts response.read_body
 
 # Get the JWT from the response body to use in the next part.
+response = http.request(request)
+jwt = response.read_body['jwt']
+
 
 url = URI("https://api.fairsharing.org/fairsharing_records/1")
 
@@ -213,12 +214,59 @@ http = Net::HTTP.new(url.host, url.port);
 request = Net::HTTP::Get.new(url)
 request["Accept"] = "application/json"
 request["Content-Type"] = "application/json"
-request["Authorization"] = "Bearer your_token_goes_here"
+request["Authorization"] = "Bearer #{jwt}"
 
 response = http.request(request)
 puts response.read_body
 </pre>
     </vue-code-highlight>
+
+    <p
+      :class="['mb-4 font-weight-bold lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      R (user contributed)
+    </p>
+
+
+    <vue-code-highlight
+      class="code-container mt-2 mb-4"
+      language="ruby"
+    >
+      <pre>
+#1. load packages
+library(RCurl)
+library(jsonlite)
+library(tidyverse)
+library(data.table)
+
+#2. get jwt
+url&lt;-'https://api.fairsharing.org/users/sign_in'
+request&lt;-POST(url,
+              add_headers(
+                "Content-Type"="application/json",
+                "Accept"="application/json"),
+              body="{\"user\": {\"login\":\"XXX@gmail.com\",\"password\":\"XXX\"} }")
+con&lt;-jsonlite::fromJSON(rawToChar(request$content))
+auth&lt;-con$jwt
+
+#3. set query
+query_url&lt;-"https://api.fairsharing.org/search/fairsharing_records?fairsharing_registry=database&countries=china&page[number]=1&page[size]=3600"
+
+get_res&lt;-POST(
+  query_url,
+  add_headers(
+    "Content-Type"="application/json",
+    "Accept"="application/json",
+    "Authorization"=paste0("Bearer ",auth,sep="")
+  )
+)
+
+query_con&lt;-fromJSON(rawToChar(get_res$content))
+#4. see results
+data&lt;-query_con$data
+      </pre>
+    </vue-code-highlight>
+
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       Available queries

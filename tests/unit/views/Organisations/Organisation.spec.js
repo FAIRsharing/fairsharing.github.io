@@ -9,6 +9,7 @@ import GraphClient from "@/lib/GraphClient/GraphClient.js"
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
+
 let $route = {
     path: "/organisations/1",
     params: {id: 1}
@@ -94,6 +95,25 @@ describe("Organisation", () => {
         expect(wrapper.vm.showOverlay ).toBe(false);
         wrapper.vm.goToEdit(12);
         expect($router.push).toHaveBeenCalledWith({path: "/12/edit"})
+    });
+
+    it("can open the record page", async () => {
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            router,
+            mocks: {$route, $router},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        const mockedOpen = jest.fn();
+        const originalOpen = window.open;
+        window.open = mockedOpen;
+
+        // Tests
+        wrapper.vm.goToRecord(12);
+        expect(mockedOpen).toBeCalled();
+
+        // Cleanup
+        window.open = originalOpen;
     });
 
     it("can generate the correct URL for the logo", async () => {

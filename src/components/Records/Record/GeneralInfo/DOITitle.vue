@@ -9,6 +9,7 @@
           <h3>{{ getField('name') }}</h3>
           <b
             v-if="getField('abbreviation')"
+            style="font-size: 16px"
             class="ml-2"
           >({{ getField('abbreviation') }})</b>
         </div>

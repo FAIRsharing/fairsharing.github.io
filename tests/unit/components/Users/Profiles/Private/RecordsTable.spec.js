@@ -1,5 +1,6 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import {shallowMount, createLocalVue, RouterLinkStub} from "@vue/test-utils"
 import RecordTable from "@/components/Users/Profiles/Private/RecordsTable"
+import Organisation from "@/views/Organisations/Organisation";
 const localVue = createLocalVue();
 const $router = { push: jest.fn() };
 
@@ -61,6 +62,22 @@ describe('RecordsTable.vue', () => {
         expect(wrapper.vm.showOverlay ).toBe(false);
         wrapper.vm.goToEdit(12);
         expect($router.push).toHaveBeenCalledWith({path: "/12/edit"})
+    });
+
+    it("can open the record page", async () => {
+        wrapper = shallowMount(RecordTable, {
+            localVue,
+            propsData: {
+                source: "maintenanceRequests"
+            },
+            mocks: {$router}
+        });
+        const mockedOpen = jest.fn();
+        const originalOpen = window.open;
+        window.open = mockedOpen;
+        wrapper.vm.goToRecord(12);
+        expect(mockedOpen).toBeCalled();
+        window.open = originalOpen;
     });
 
 });

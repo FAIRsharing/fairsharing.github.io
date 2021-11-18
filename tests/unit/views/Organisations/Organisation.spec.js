@@ -107,12 +107,8 @@ describe("Organisation", () => {
         const mockedOpen = jest.fn();
         const originalOpen = window.open;
         window.open = mockedOpen;
-
-        // Tests
         wrapper.vm.goToRecord(12);
         expect(mockedOpen).toBeCalled();
-
-        // Cleanup
         window.open = originalOpen;
     });
 

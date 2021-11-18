@@ -285,6 +285,10 @@
                         <v-list-item-avatar><v-icon>fas fa-eye</v-icon></v-list-item-avatar>
                         <v-list-item-content><v-list-item-title> Preview record </v-list-item-title></v-list-item-content>
                       </v-list-item>
+                      <v-list-item @click="goToRecord(item.fairsharingRecord.id)">
+                        <v-list-item-avatar><v-icon>fas fa-newspaper</v-icon></v-list-item-avatar>
+                        <v-list-item-content><v-list-item-title> Go to record </v-list-item-title></v-list-item-content>
+                      </v-list-item>
                       <v-list-item
                         v-if="user().is_curator"
                         @click="goToEdit(item.fairsharingRecord.id)"
@@ -502,6 +506,9 @@ export default {
     previewRecord(id) {
       this.targetID = id;
       this.showOverlay = true;
+    },
+    goToRecord(id) {
+      window.open("/" + id, '_blank');
     },
     hideOverlay(){
       this.showOverlay = false;

@@ -401,10 +401,13 @@ export default {
     ...mapActions("editor", ["getAllowedFields"]),
     async initializeData () {
       const excludedTypes = ['associated_tools','data_processes']
-      const allAllowedTypes = Object.keys(this.allowedFields.properties).filter(key => !excludedTypes.includes(key));
-      for (const key of allAllowedTypes) {
-        if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
-          await this.checkDataAvailable(this.getField('metadata')[key]);
+      /* istanbul ignore else */
+      if (this.allowedFields.properties !== undefined) {
+        const allAllowedTypes = Object.keys(this.allowedFields.properties).filter(key => !excludedTypes.includes(key));
+        for (const key of allAllowedTypes) {
+          if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
+            await this.checkDataAvailable(this.getField('metadata')[key]);
+          }
         }
       }
     },

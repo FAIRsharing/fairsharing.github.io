@@ -36,9 +36,7 @@
             <span v-if="getField('id')">
               <b>
                 FAIRsharing ID:
-                <a
-                  :href="`${getField('id')}`"
-                >{{ getURL() }}</a>
+                <router-link :to="`${getField('id')}`">{{ getURL() }}</router-link>
               </b>,
             </span>
             
@@ -148,7 +146,7 @@ export default {
       return moment(date).format('dddd, MMMM Do YYYY, H:mm');
     },
     getURL() {
-      return this.getHostname()+''+this.getField('id').toString()
+      return process.env.VUE_APP_HOSTNAME + this.getField('id').toString()
     }
   }
 }

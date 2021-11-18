@@ -88,7 +88,7 @@
             class="primary white--text"
             @click="goToSearch()"
           >
-            Refine search results
+            Access All Search Options
           </v-btn>
           <v-spacer />
           <div class="perPageSelector flex-row d-flex align-center">

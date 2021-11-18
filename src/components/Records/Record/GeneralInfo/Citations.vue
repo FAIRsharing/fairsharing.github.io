@@ -146,7 +146,7 @@ export default {
       return moment(date).format('dddd, MMMM Do YYYY, H:mm');
     },
     getURL() {
-      return this.getHostname()+this.getField('id')
+      return this.getHostname()+''+this.getField('id').toString()
     }
   }
 }

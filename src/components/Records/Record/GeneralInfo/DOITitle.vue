@@ -15,6 +15,7 @@
         <div class="d-flex align-center mt-2">
           <div class="width-35">
             <Icon
+              v-if="getField('registry')!=='Collection'"
               item="DOI"
               heigh="30"
               wrapper-class=""
@@ -49,7 +50,7 @@
               <span v-else> URL copied </span>
             </v-tooltip>
           </div>
-          <span v-else>
+          <span v-else-if="getField('registry')!=='Collection'">
             Awaiting DOI
           </span>
         </div>

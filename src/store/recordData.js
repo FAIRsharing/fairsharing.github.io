@@ -169,9 +169,11 @@ let recordStore = {
         updateAdditionalInformation(state, additionalInformation) {
             let record = {};
             Object.keys(additionalInformation.record).forEach(field => {
-                record[field] = additionalInformation.record[field];
-                state.sections.generalInformation.data.metadata[field] = JSON.parse(JSON.stringify(record[field]));
-                state.sections.generalInformation.initialData.metadata[field] = JSON.parse(JSON.stringify(record[field]));
+                if (additionalInformation.fields.includes(field)) {
+                    record[field] = additionalInformation.record[field];
+                    state.sections.generalInformation.data.metadata[field] = JSON.parse(JSON.stringify(record[field]));
+                    state.sections.generalInformation.initialData.metadata[field] = JSON.parse(JSON.stringify(record[field]));
+                }
             });
             state.sections.additionalInformation.data = record;
             state.sections.additionalInformation.initialData = JSON.parse(JSON.stringify(record));

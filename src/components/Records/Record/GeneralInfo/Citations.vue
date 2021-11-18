@@ -36,7 +36,7 @@
             <span v-if="getField('id')">
               <b>
                 FAIRsharing ID:
-                <router-link :to="`${getField('id')}`">{{ process.env.VUE_APP_HOSTNAME }}</router-link>
+                <router-link :to="`${getField('id')}`">{{ getURL() }}</router-link>
               </b>,
             </span>
             
@@ -132,7 +132,7 @@ import getHostname from "@/utils/generalUtils";
 export default {
   name: "Citations",
   components: { Icon },
-  mixins: [ truncate,getHostname ],
+  mixins: [ getHostname,truncate ],
   data: () => {
     return {
       currentDate: new Date()
@@ -145,6 +145,9 @@ export default {
     moment (date) {
       return moment(date).format('dddd, MMMM Do YYYY, H:mm');
     },
+    getURL() {
+      return this.getHostname()+''+this.getField('id').toString()
+    }
   }
 }
 </script>

@@ -104,16 +104,17 @@
                       >
                         <template #prepend>
                           <v-tooltip top>
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                               <v-icon
                                 v-bind="attrs"
+                                class="mt-2"
                                 v-on="on"
                                 @click="newOrganisation.show = true"
                               >
                                 fa-plus-circle
                               </v-icon>
                             </template>
-                            <span>Create a new organisation</span>
+                            <span style="z-index: 5">Create a new organisation</span>
                           </v-tooltip>
                         </template>
                       </v-autocomplete>
@@ -126,12 +127,10 @@
                   <a href="mailto:contact@fairsharing.org?subject=FAIRsharing user profile modification">
                     get in touch</a>.
                 </p>
-
                 <p v-if="!user().metadata.orcid">
                   <b>We strongly recommend including your ORCID ID to provide extra information for the FAIRsharing
                     community about you and the resources you develop.</b>
                 </p>
-
                 <!-- ACTIONS -->
                 <v-row>
                   <v-col cols="12">
@@ -161,12 +160,18 @@
         <v-card
           class="elevation-0 lighten-3 grey mb-10 pb-3 px-3"
           style="border: 2px dashed grey !important; border-radius:5px;max-width: 1200px"
-          width="1200px"
+          width="800px"
         >
           <v-card-title class="mb-4">
             Create a new organisation
           </v-card-title>
           <v-card-text>
+            <v-alert
+              v-if="newOrganisation.error"
+              type="error"
+            >
+              {{ newOrganisation.error }}
+            </v-alert>
             <v-form
               id="createNewOrganisation"
               ref="createNewOrganisation"
@@ -174,14 +179,14 @@
             >
               <v-text-field
                 v-model="newOrganisation.data.name"
-                label="Record name"
+                label="Organisation name"
                 outlined
                 :rules="[rules.isRequired()]"
                 class="mb-2"
               />
               <v-text-field
                 v-model="newOrganisation.data.homepage"
-                label="Record homepage"
+                label="Organisation homepage"
                 outlined
                 :rules="[rules.isRequired(), rules.isURL()]"
                 class="mb-2"
@@ -194,7 +199,6 @@
                 outlined
                 item-text="name"
                 item-value="id"
-                return-object
                 label="Select the organisation type(s)"
                 :rules="[rules.isRequired(), rules.isLongEnough(1)]"
                 chips
@@ -206,6 +210,8 @@
             <v-btn
               class="success"
               :disabled="!newOrganisation.formValid"
+              :loading="newOrganisation.loading"
+              @click="createOrganisation()"
             >
               Save new organisation
             </v-btn>
@@ -337,7 +343,9 @@ export default {
           organisation_type_ids: []
         },
         formValid: true,
-        show: false
+        show: false,
+        loading: false,
+        error: false
       },
       rules: {
         isRequired: ()=> isRequired(),
@@ -403,6 +411,28 @@ export default {
     },
     async getProfileTypes() {
       this.data.profileTypes = await restClient.getProfileTypes();
+    },
+    async createOrganisation() {
+      this.newOrganisation.loading = true
+      this.newOrganisation.error = false
+      let data = await restClient.createOrganisation(this.newOrganisation.data, this.user().credentials.token);
+      if (!data.error) {
+        this.data.organisations.push({id: data.id, name: data.name})
+        this.newOrganisation = {
+          data: {
+            name: null,
+            homepage: null,
+            organisation_type_ids: []
+          },
+          formValid: true,
+          show: false,
+          loading: false,
+          error: false
+        }
+        this.userOrganisations.push({id: data.id, name: data.name})
+      }
+      else this.newOrganisation.error = data.error.response.data
+      this.newOrganisation.loading = false
     }
   },
 }

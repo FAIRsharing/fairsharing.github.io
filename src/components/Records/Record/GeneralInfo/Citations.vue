@@ -36,7 +36,7 @@
             <span v-if="getField('id')">
               <b>
                 FAIRsharing ID:
-                <router-link :to="`${getField('id')}`">{{ hostName+getField('id') }}</router-link>
+                <router-link :to="`${getField('id')}`">{{ getURL() }}</router-link>
               </b>,
             </span>
             
@@ -127,7 +127,7 @@ import {mapGetters} from "vuex";
 import Icon from "@/components/Icon"
 import {truncate} from "@/utils/stringUtils"
 import moment from "moment";
-import getHostname from "@/utils/generalUtils"
+import getHostname from "@/utils/generalUtils";
 
 export default {
   name: "Citations",
@@ -140,13 +140,13 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
-    hostName(){
-      return this.getHostname();
-    }
   },
   methods:{
     moment (date) {
       return moment(date).format('dddd, MMMM Do YYYY, H:mm');
+    },
+    getURL() {
+      return this.getHostname()+this.getField('id')
     }
   }
 }

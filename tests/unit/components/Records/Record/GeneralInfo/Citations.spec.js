@@ -39,4 +39,11 @@ describe("Citations.vue", function(){
         expect(wrapper.name()).toMatch("Citations");
     });
 
+    it("can get current host", () => {
+        process.env.VUE_APP_HOSTNAME = 'localHost:8080'
+        wrapper.vm.getURL();
+        expect(process.env.VUE_APP_HOSTNAME).toMatch("localHost:8080");
+    });
+
+
 });

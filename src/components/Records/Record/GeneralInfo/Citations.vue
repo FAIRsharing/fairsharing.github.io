@@ -36,7 +36,10 @@
             <span v-if="getField('id')">
               <b>
                 FAIRsharing ID:
-                <router-link :to="`${getField('id')}`">{{ getURL() }}</router-link>
+                <router-link
+                  :to="`${getField('id')}`"
+                  v-text="getURL()"
+                />
               </b>,
             </span>
             

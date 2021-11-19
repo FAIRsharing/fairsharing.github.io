@@ -20,8 +20,14 @@
     ]
   },
   "secondBlock": {
-    "header": "Contact Us",
+    "header": "Contacts and News",
     "content": [
+      {
+        "title": "Blog",
+        "url": "https://blog.fairsharing.org",
+        "urlType": "external",
+        "icon": "fa fa-blog"
+      },
       {
         "title": "Email us for all enquiries",
         "url": "mailto:contact@fairsharing.org?subject=FAIRsharing Issue",
@@ -37,13 +43,8 @@
     ]
   },
   "thirdBlock": {
-    "header": "About FAIRsharing",
+    "header": "About Us",
     "content": [
-      {
-        "title": "Blog",
-        "url": "https://blog.fairsharing.org",
-        "urlType": "external"
-      },
       {
         "title": "How to cite us",
         "url": "https://www.nature.com/articles/s41587-019-0080-8",

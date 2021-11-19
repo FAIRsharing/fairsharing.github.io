@@ -42,7 +42,8 @@ export default {
      */
     getFilteredLabel: function () {
       let filterLabels = {
-        q: "Query string"
+        q: "Query string",
+        userDefinedTags: "User defined tags"
       };
       Object.keys(filterMapping["autocomplete"]).forEach((filterName) => {
         let field = filterMapping["autocomplete"][filterName];

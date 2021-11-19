@@ -378,11 +378,11 @@ export default {
   async created(){
     this.loading = true
     await Promise.all([
-      this.getUser(),
-      this.getUserMeta(),
-      this.getProfileTypes(),
-      this.getOrganisations(),
-      this.getOrganisationsTypes()
+      this.getUser(), // REST & GQL -- OK
+      this.getUserMeta(), // REST -- OK
+      this.getProfileTypes(), // REST -- OK
+      this.getOrganisations(),  // GQL
+      this.getOrganisationsTypes() // GQL
     ])
     this.data.organisations = this.organisations
     this.userOrganisations = this.user().records.organisations

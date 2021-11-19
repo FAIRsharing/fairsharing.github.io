@@ -214,7 +214,7 @@
             >
               <v-card-title
                 class="primary white--text py-3"
-                style="min-width: 600px"
+                style="min-width: 720px"
               >
                 Records related to this organisation
               </v-card-title>
@@ -227,7 +227,7 @@
                 :items-per-page="perPage"
                 :footer-props="footer"
                 calculate-widths
-                style="min-width: 600px"
+                style="min-width: 720px"
               >
                 <template #[`item.name`]="{ item }">
                   <div class="d-flex justify-start align-center">
@@ -238,7 +238,10 @@
                         wrapper-class=""
                       />
                     </v-avatar>
-                    <div class="mt-1 ml-3 alignLeft">
+                    <div
+                      class="mt-1 ml-3 alignLeft text-left"
+                      style="max-width: 300px"
+                    >
                       {{ item.fairsharingRecord.name | cleanString }}
                     </div>
                   </div>
@@ -281,6 +284,10 @@
                       <v-list-item @click="previewRecord(item.fairsharingRecord.id)">
                         <v-list-item-avatar><v-icon>fas fa-eye</v-icon></v-list-item-avatar>
                         <v-list-item-content><v-list-item-title> Preview record </v-list-item-title></v-list-item-content>
+                      </v-list-item>
+                      <v-list-item @click="goToRecord(item.fairsharingRecord.id)">
+                        <v-list-item-avatar><v-icon>fas fa-newspaper</v-icon></v-list-item-avatar>
+                        <v-list-item-content><v-list-item-title> Go to record </v-list-item-title></v-list-item-content>
                       </v-list-item>
                       <v-list-item
                         v-if="user().is_curator"
@@ -499,6 +506,9 @@ export default {
     previewRecord(id) {
       this.targetID = id;
       this.showOverlay = true;
+    },
+    goToRecord(id) {
+      window.open("/" + id, '_blank');
     },
     hideOverlay(){
       this.showOverlay = false;

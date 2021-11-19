@@ -53,7 +53,7 @@
             </strong>
           </div>
 
-          <div class="d-flex flex-row mt-2 align-center">
+          <div class="d-flex flex-row mt-2 align-center flex-wrap">
             <!-- pubmed -->
             <v-btn
               v-if="checkLinkValue(publication.pubmedId)"
@@ -76,6 +76,7 @@
               text
               outlined
               small
+              class="mr-4"
             >
               <a
                 :href="'https://doi.org/' + publication.doi"
@@ -89,6 +90,7 @@
               text
               outlined
               small
+              :class="{'mt-2':$vuetify.breakpoint.width<540}"
             >
               <a
                 :href="publication.url"

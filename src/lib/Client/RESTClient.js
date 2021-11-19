@@ -507,15 +507,18 @@ class RESTClient {
      * @returns {Promise}
      */
     async saveRelations(options){
-        const request = {
-            method: 'put',
-            baseURL: this.baseURL + '/fairsharing_records/' + options.target,
-            headers: this.auth_headers(options.token),
-            data: {fairsharing_record: {record_associations_attributes: options.relations}}
+        if (options.relations.length > 0) {
+            const request = {
+                method: 'put',
+                baseURL: this.baseURL + '/fairsharing_records/' + options.target,
+                headers: this.auth_headers(options.token),
+                data: {fairsharing_record: {record_associations_attributes: options.relations}}
 
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+            };
+            let response = await this.executeQuery(request);
+            return response.data;
+        }
+        return {};
     }
 
     /**
@@ -524,15 +527,18 @@ class RESTClient {
      * @returns {Promise}
      */
     async deleteRelations(options){
-        const request = {
-            method: 'put',
-            baseURL: this.baseURL + '/fairsharing_records/' + options.target,
-            headers: this.auth_headers(options.token),
-            data: {fairsharing_record: {record_associations_attributes: options.relations}}
+        if (options.relations.length > 0) {
+            const request = {
+                method: 'put',
+                baseURL: this.baseURL + '/fairsharing_records/' + options.target,
+                headers: this.auth_headers(options.token),
+                data: {fairsharing_record: {record_associations_attributes: options.relations}}
 
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+            };
+            let response = await this.executeQuery(request);
+            return response.data;
+        }
+        return {};
     }
 
     /* ORGANISATIONS AND GRANTS */

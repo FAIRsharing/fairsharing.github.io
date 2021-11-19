@@ -1,7 +1,6 @@
 import filterMapping from "@/data/FiltersLabelMapping.json"
 import GraphQLClient from "@/lib/GraphClient/GraphClient.js"
 import query from "@/lib/GraphClient/queries/getFilters.json";
-import dbQuery from "@/lib/GraphClient/queries/getFrontPageDatabases.json";
 import {blockInfo} from "@/data/homePageData.json"
 import {isEqual} from 'lodash'
 import buttonOptions from '@/data/ButtonOptions.json'
@@ -13,9 +12,6 @@ export const mutations = {
         state.filtersStatistic = data['searchFairsharingRecords']['aggregations'];
         state.rawFilters = buildFilters(state.filtersStatistic);
         state.filters = state.rawFilters.filter(item => (item.type !== 'Boolean' && item.filterName !== 'status'));
-    },
-    setDatabaseCount(state, data) {
-        state.databaseCount = data['frontPageDatabases']['data']
     },
     setFilterButtons(state) {
         state.filterButtons.push({
@@ -84,9 +80,6 @@ export const actions = {
         blockInfo['database']['items'].forEach((item) => {
             keys.push(item.option.key)
         });
-        dbQuery.queryParam = {subjects: keys}
-        let dbData = await graphClient.executeQuery(dbQuery);
-        this.commit('searchFilters/setDatabaseCount', dbData);
 
         let data = await graphClient.executeQuery(query);
         this.commit('searchFilters/setFilters', data);
@@ -107,10 +100,7 @@ export const getters = {
     },
     getFiltersStatisticCount: (state) => (option) => {
         return state.filtersStatistic[option.filterName].buckets.find(item => item.key === option.key)['doc_count'];
-    },
-    getDatabaseCount: (state) => {
-        return state.databaseCount;
-    },
+    }
 };
 
 /**

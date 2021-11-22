@@ -164,6 +164,15 @@
             "key": "society"
           },
           "count": 0
+        },
+        {
+          "title": "Project",
+          "searchQuery": "/search?recordType=project",
+          "option": {
+            "filterName": "record_type",
+            "key": "project"
+          },
+          "count": 0
         }
       ]
     }

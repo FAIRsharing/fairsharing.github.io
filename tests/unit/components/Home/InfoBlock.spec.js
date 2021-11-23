@@ -26,7 +26,8 @@ searchFiltersStore.state.filtersStatistic = {
             {key: 'reporting_guideline', doc_count: 15}, {key: 'identifier_schema', doc_count: 15},
             {key: 'funder', doc_count: 15}, {key: 'journal', doc_count: 15}, {key: 'society', doc_count: 15},
             {key: 'repository', doc_count: 10}, {key: 'knowledgebase', doc_count: 11},
-            {key: 'knowledgebase_and_repository', doc_count: 12}
+            {key: 'knowledgebase_and_repository', doc_count: 12},
+            {key: 'project', doc_count: 6}
         ]
     },
     subjects: {

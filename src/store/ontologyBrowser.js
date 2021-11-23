@@ -132,33 +132,35 @@ export const processTree = function(
     sunburst = []
 ) {
     for (const term of tree) {
-        term.identifier = term.id;
-        term.id = ancestors.join('') + " - " + term.name
-        const newNode = {
-            name: term.name,
-            descendants_count: term.descendants_count || 0,
-            records_count: term.records_count || 0,
-            ancestors: ancestors,
-            parent: parent,
-            value: 1,
-            identifier: term.identifier,
-            id: term.id,
-            description: term.description
-        }
-        sunburst.push(newNode)
-        flattenedTree.push({
-            id: term.id,
-            identifier: term.identifier,
-            name: term.name,
-            ancestors: ancestors,
-            description: term.description,
-            descendants_count: term.descendants_count || 0,
-            records_count: term.records_count || 0
-        })
-        /* istanbul ignore else */
-        if (term.children) {
-            const newAncestors = ancestors.concat([term.identifier])
-            processTree(term.children, newAncestors, flattenedTree, newNode.id, sunburst)
+        if (term.name.toLowerCase() !== "subject agnostic") {
+            term.identifier = term.id;
+            term.id = ancestors.join('') + " - " + term.name
+            const newNode = {
+                name: term.name,
+                descendants_count: term.descendants_count || 0,
+                records_count: term.records_count || 0,
+                ancestors: ancestors,
+                parent: parent,
+                value: 1,
+                identifier: term.identifier,
+                id: term.id,
+                description: term.description
+            }
+            sunburst.push(newNode)
+            flattenedTree.push({
+                id: term.id,
+                identifier: term.identifier,
+                name: term.name,
+                ancestors: ancestors,
+                description: term.description,
+                descendants_count: term.descendants_count || 0,
+                records_count: term.records_count || 0
+            })
+            /* istanbul ignore else */
+            if (term.children) {
+                const newAncestors = ancestors.concat([term.identifier])
+                processTree(term.children, newAncestors, flattenedTree, newNode.id, sunburst)
+            }
         }
     }
     return {flattenedTree, sunburst}

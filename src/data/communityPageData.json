@@ -1,6 +1,11 @@
 {
   "externalLinks": [
     {
+      "title": "“Horizon Europe Programme Guide\" 2021",
+      "titleLink": "https://www.google.com/url?q=https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/guidance/programme-guide_horizon_en.pdf&sa=D&source=docs&ust=1637767434422000&usg=AOvVaw36eKFEtUXEg58M1RFU8RSk",
+      "text": " Funder: EU Horizon Europe - Funding Programme\nDiscipline: All "
+    },
+    {
       "title": "“EOSC Strategic Research and Innovation Agenda\" 2021",
       "titleLink": "https://www.eosc.eu/sites/default/files/EOSC-SRIA-V1.0_15Feb2021.pdf",
       "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
@@ -18,11 +23,6 @@
     {
       "title": "“Six Recommendations for implementation of FAIR practice” 2020",
       "titleLink": "https://doi.org/10.2777/986252",
-      "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
-    },
-    {
-      "title": "“Country Sheets Analysis” 2020",
-      "titleLink": "https://doi.org/10.2777/568900",
       "text": " Funder: EU European Open Science Cloud - EOSC\nDiscipline: All "
     },
     {
@@ -246,7 +246,7 @@
   },
   "meettheteam": {
     "title": "Meet The Team",
-  "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk#people' class='underline-effect' target='_blank'>Data Readiness Group</a> and DOI generation is provided by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>, at the University of Oxford.\n",
+  "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk#people' class='underline-effect' target='_blank'>Data Readiness Group</a>, at University of the Oxford, supported by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>  for DOI generation and access to the ORCID member-only API.\n",
     "profiles": [
       {
         "name": "Allyson Lister",

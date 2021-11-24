@@ -145,7 +145,7 @@ export const processTree = function(
             id: term.id,
             description: term.description
         }
-        sunburst.push(newNode)
+        if (term.name.toLowerCase() !== "subject agnostic") sunburst.push(newNode)
         flattenedTree.push({
             id: term.id,
             identifier: term.identifier,

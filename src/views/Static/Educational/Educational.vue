@@ -33,9 +33,9 @@
     </p>
     <div class="d-flex justify-center">
       <img
-        src="assets/Educational/educational.png"
+        src="/assets/Educational/educational.svg"
         alt="educational"
-        :width="$vuetify.breakpoint.lgAndDown?'60%':'50%'"
+        :width="$vuetify.breakpoint.lgAndDown?'70%':'60%'"
       >
     </div>
     <p

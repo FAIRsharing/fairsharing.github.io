@@ -535,6 +535,7 @@ let recordStore = {
             }
             if (!error){
                 recordRelationsQuery.queryParam = {id: options.source};
+                client.setHeader(options.token);
                 let relations = await client.executeQuery(recordRelationsQuery);
                 commit('setRelations', relations['fairsharingRecord'].recordAssociations);
             }

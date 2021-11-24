@@ -3,8 +3,13 @@
     <!--  main_title_2 -->
     <!-- eslint-disable vue/no-v-html -->
     <h1 class="mb-5">
-      FAIRsharing is a community-driven resource with a growing number of users and collaborators,
-      all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
+      FAIRsharing is a community-driven resource with users and collaborators across all disciplines.
+      We work together with our stakeholders to enable the <a
+        href="https://www.nature.com/articles/sdata201618"
+        target="_blank"
+        class="underline-effect"
+      >FAIR Principles</a> by promoting the value and the use of standards,
+      databases and policies.
     </h1>
 
     <!-- Adopters, activities, Governance tabs-->
@@ -107,8 +112,7 @@
         <li>
           <b class="mr-3">ii:</b>Recommend resources by registering their data policy, and then link it to standards and/or databases
           <router-link
-            to="/search?isRecommended=true"
-            target="_blank"
+            to="/policies"
             class="underline-effect"
           >
             recommended

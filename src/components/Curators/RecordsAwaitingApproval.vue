@@ -209,9 +209,17 @@
               :disabled="dialogs.disableButton === true"
               color="blue darken-1"
               text
-              @click="confirmApproval()"
+              @click="confirmApprovalSetHidden()"
             >
               OK
+            </v-btn>
+            <v-btn
+              :disabled="dialogs.disableButton === true"
+              color="blue darken-1"
+              text
+              @click="confirmApproval()"
+            >
+              OK & KEEP HIDDEN
             </v-btn>
             <v-spacer />
           </v-card-actions>
@@ -411,6 +419,33 @@
                 approved: true,
                 skip_approval: true,
                 processing_notes: null,
+                create_review: true
+              };
+              let data = {
+                record: preparedRecord,
+                id: _module.dialogs.recordID,
+                token: _module.user().credentials.token
+              };
+              await _module.updateRecord(data);
+              if (_module.recordUpdate.error){
+                _module.error.general = _module.recordUpdate.message;
+                _module.error.recordID = _module.dialogs.recordID;
+              }
+              else {
+                const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
+                _module.approvalRequiredProcessed.splice(index, 1);
+              }
+              _module.dialogs.approveChanges = false;
+            },
+
+            async confirmApprovalSetHidden() {
+              const _module = this;
+              _module.dialogs.disableButton = true;
+              let preparedRecord = {
+                approved: true,
+                skip_approval: true,
+                processing_notes: null,
+                hidden: false,
                 create_review: true
               };
               let data = {

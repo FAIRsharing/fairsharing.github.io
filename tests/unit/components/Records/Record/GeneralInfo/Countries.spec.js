@@ -16,6 +16,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
     subjects:[],
     domains:[],
     taxonomies:[],
+    countries: [],
     userDefinedTags:[{label:'a'}],
 };
 const $store = new Vuex.Store({
@@ -31,12 +32,26 @@ describe("Countries.vue", function(){
         wrapper = shallowMount(Countries, {
             localVue,
             vuetify,
-            mocks: {$store}
+            mocks: {$store},
+            stubs: ['router-link']
         })
     });
 
-    it("can be initiated", () => {
+    it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("Countries");
+    });
+
+    it("can sort countries", () => {
+        Record.state.currentRecord["fairsharingRecord"]["countries"] = [
+            {name: 'Nantierre', id: 2, code: 'NT'},
+            {name: 'Welfland', id: 1, code: 'WL'}
+        ];
+        expect(wrapper.vm.sortCountries()).toStrictEqual([
+                {name: 'Welfland', id: 1, code: 'WL'},
+                {name: 'Nantierre', id: 2, code: 'NT'}
+            ]
+        );
+
     });
 
 });

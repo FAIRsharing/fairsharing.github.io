@@ -33,15 +33,12 @@ export default {
             stickyTracking: false,
             turboThreshold: 2000,
             colors: [
-              this.$vuetify.theme.themes.light.subject_topLevel_3,
-              this.$vuetify.theme.themes.light.subject_topLevel_1,
-              this.$vuetify.theme.themes.light.subject_topLevel_2,
-              this.$vuetify.theme.themes.light.subject_topLevel_3,
-              this.$vuetify.theme.themes.light.subject_topLevel_3,
-              this.$vuetify.theme.themes.light.subject_topLevel_2,
-              this.$vuetify.theme.themes.light.subject_topLevel_2,
-              this.$vuetify.theme.themes.light.subject_topLevel_3,
-              this.$vuetify.theme.themes.light.subject_topLevel_2
+              "white",
+              this.$vuetify.theme.themes.light.subject_topLevel_3, // here
+              "white", "white",
+              this.$vuetify.theme.themes.light.subject_topLevel_1, // here
+              "white", "white", "white",
+              this.$vuetify.theme.themes.light.subject_topLevel_2 // here
             ],
             type: 'sunburst',
             allowDrillToNode: true,

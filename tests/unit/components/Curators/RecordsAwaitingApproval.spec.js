@@ -144,6 +144,16 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
       expect(wrapper.vm.dialogs.approveChanges).toBe(false);
       expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);
 
+
+      restStub.restore();
+      wrapper.vm.dialogs.recordID = 102;
+      restStub = sinon.stub(Client.prototype, "executeQuery");
+      restStub.returns({data: {error: {response: {data: "error"}}}});
+      await wrapper.vm.confirmApprovalSetHidden();
+      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
+      expect(wrapper.vm.dialogs.approveChanges).toBe(false);
+      expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);
+
       // TODO: Check that the DB is correctly updated
     });
 

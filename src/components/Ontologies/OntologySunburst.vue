@@ -36,9 +36,12 @@ export default {
               this.$vuetify.theme.themes.light.subject_topLevel_3,
               this.$vuetify.theme.themes.light.subject_topLevel_1,
               this.$vuetify.theme.themes.light.subject_topLevel_2,
-              'white', 'white', 'white', 'white',
               this.$vuetify.theme.themes.light.subject_topLevel_3,
-              "white"
+              this.$vuetify.theme.themes.light.subject_topLevel_3,
+              this.$vuetify.theme.themes.light.subject_topLevel_2,
+              this.$vuetify.theme.themes.light.subject_topLevel_2,
+              this.$vuetify.theme.themes.light.subject_topLevel_3,
+              this.$vuetify.theme.themes.light.subject_topLevel_2
             ],
             type: 'sunburst',
             allowDrillToNode: true,

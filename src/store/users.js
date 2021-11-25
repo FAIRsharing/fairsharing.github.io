@@ -244,7 +244,13 @@ export const actions = {
             username: userResponse.username,
             id: userResponse.id,
             jwt: user.jwt,
-            expiry: user.expiry
+            expiry: userResponse.expiry,
+            is_curator: userResponse.is_curator,
+            is_super_curator: userResponse.is_super_curator,
+            third_party: userResponse.third_party,
+            role: userResponse.role,
+            profile_type: userResponse.profile_type,
+            watched_records: userResponse.watched_records
         })
     },
     async logout(state){

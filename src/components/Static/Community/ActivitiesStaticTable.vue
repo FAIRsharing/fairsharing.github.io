@@ -75,7 +75,7 @@
             <a
               href="https://doi.org/10.5438/z32p-wj46"
               target="_blank"
-            >Agreement between FAIRsharing and Datacite;</a>
+            ><b>Agreement</b> between FAIRsharing and Datacite;</a>
             <a
               href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
               target="_blank"
@@ -213,9 +213,9 @@
           </td>
           <td>
             <a
-              href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
+              href="https://www.nih-cfde.org/"
               target="_blank"
-            >GO-FAIR StRePo</a>
+            >USA NIH Commons Fund Data Ecosystem.</a>
           </td>
         </tr>
         <tr>
@@ -230,96 +230,80 @@
           </td>
           <td>
             <a
-              href="https://www.eosc.eu/metadata-data-quality"
+              href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
               target="_blank"
-            >EOSC FAIR Metrics and Data Quality Task Force;</a>
-            <a
-              href="https://www.rd-alliance.org/groups/fair-data-maturity-model-wg"
-              target="_blank"
-            >
-              RDA FAIR Maturity Model WG;</a>
-            <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
-              target="_blank"
-            >RDA FAIRsharing WG.</a>
+            >GO-FAIR StRePo IN</a>
           </td>
         </tr>
 
         <tr>
           <td>
             <a id="activity_7">
-              <b>6</b>
+              <b>6. Contribute to research and knowledge graphs, and data discovery</b>
             </a>
           </td>
           <td>
-            Through a collaboration with <a
-              href="https://www.go-fair.org"
+            FAIRsharing works with OpenAIRE to interconnect its content with other information in the <a
+              href="https://www.openaire.eu/"
               target="_blank"
-            >GO-FAIR</a>, FAIRsharing contributed to a prototype set of universal machine-actionable measurable metrics, registered in the FAIRsharing registry of standards: <a
-              href="https://doi.org/10.1038/sdata.2018.118"
-              target="_blank"
-            >publication.</a>
+            >OpenAIRE</a> Research Graphs, providing greater knowledge to researchers and other stakeholders, and contributing to data discovery.
           </td>
           <td>
             <a
-              href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
+              href="https://www.openaire.eu/enriching-science-fairsharing-and-openaire-amke-sign-a-memorandum-of-understanding"
               target="_blank"
-            >GO-FAIR StRePo</a>
+            ><b>Agreement</b> between FAIRsharing team and OpenAIRE collaboration;</a>
+            <a
+              href="https://by-covid.org/"
+              target="_blank"
+            >
+              EU Horizon Europe BY-COVID,
+            </a>
+            and
+            <a
+              href="https://www.oerc.ox.ac.uk/news/by-covid-project-launched-to-address-pandemic-preparedness/"
+              target="_blank"
+            >
+              news item.
+            </a>
           </td>
         </tr>
 
         <tr>
           <td rowspan="2">
             <a id="activity_8">
-              <b>7</b>
+              <b>7. Power tools for data stewardship and data management plans</b>
             </a>
           </td>
           <td>
-            We are working with OpenAIRE to interconnect information on repositories and standards with other data to provide greater knowledge to researchers and other stakeholders.
+            FAIRsharing content powers the <a
+              href="https://ds-wizard.org/"
+              target="_blank"
+            >Data Stewardship Wizard (DSW)</a>, a software to create, plan, collaborate, and bring your data management plans to life.
           </td>
           <td>
-            FAIRsharing team and <a
-              href="https://www.openaire.eu/"
-              target="_blank"
-            >OpenAIRE</a>
-
             <a
-              href="https://www.openaire.eu/enriching-science-fairsharing-and-openaire-amke-sign-a-memorandum-of-understanding"
+              href="https://docs.google.com/document/d/1IDbtueAI6-uD7egRfM0hb0pRedSavtc95-fT3A9UB-g/edit?usp=sharing"
               target="_blank"
             >
-              <img
-                src="/assets/Community/mou.png"
-
-                alt="Memorandum of Understanding"
-                height="50px"
-              >
+              <b>Agreement</b> between FAIRsharing and DSW.
             </a>
           </td>
         </tr>
         <tr>
           <td>
-            Through a participation in <a
-              href="https://www.rd-alliance.org/"
+            FAIRsharing content powers the <a
+              href="https://dmponline.dcc.ac.uk/"
               target="_blank"
-            >RDA</a> and <a
-              href="https://www.eosc.eu"
-              target="_blank"
-            >EOSC</a> groups, FAIRsharing works with the community to improve the definition and the implementation of FAIR maturity indicators and methodologies.
+            >DMPonline</a>, a software to create, review, and share data management plans.
           </td>
           <td>
             <a
-              href="https://www.eosc.eu/metadata-data-quality"
-              target="_blank"
-            >EOSC FAIR Metrics and Data Quality Task Force;</a>
-            <a
-              href="https://www.rd-alliance.org/groups/fair-data-maturity-model-wg"
+              href="https://www.dcc.ac.uk/news/collaboration-between-dmponline-and-fairsharing"
               target="_blank"
             >
-              RDA FAIR Maturity Model WG;</a>
-            <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
-              target="_blank"
-            >RDA FAIRsharing WG.</a>
+              <b>Agreement</b> between FAIRsharing and DMPonline.
+            </a>
           </td>
         </tr>
 
@@ -334,45 +318,84 @@
         <tr>
           <td>
             <a id="activity_9">
-              <b>8. Future-proofing the FAIRsharing technical architecture</b>
+              <b>8. Define FAIR competencies, skills, and terminologies</b>
             </a>
           </td>
           <td>
-            To adapt and improve the FAIRsharing data model to accurate reflect and respond to community
-            requirements. To update and refactor FAIRsharing code to facilitate improved data visualisation
-            and access and to respond to user requirements.
+            Through a collaboration with <a
+              href="https://codata.org/"
+              target="_blank"
+            >CODATA</a>, <a
+              href="https://elixir-europe.org/"
+              target="_blank"
+            >ELIXIR</a> and others, FAIRsharing works to contribute to <a
+              href="https://terms4fairskills.github.io/"
+              target="_blank"
+            >terms4FAIRskills</a>, a terminology to describe the competencies associated with making data FAIR.
           </td>
           <td>
-            FAIRsharing team and International Advisory Board
+            <a
+              href="https://www.go-fair.org/implementation-networks/overview/"
+              target="_blank"
+            >GO-FAIR Training;</a>
+            <a
+              href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
+              target="_blank"
+            >GO-FAIR StRePo IN;</a>
+            <a
+              href="http://www.codata.org/"
+              target="_blank"
+            >CODATA,</a>
+            <a
+              href="https://www.fairsfair.eu/"
+              target="_blank"
+            >FAIRsFAIR;</a>
+            <a
+              href="https://twitter.com/EoscLife"
+              target="_blank"
+            >EU INFRA EOSC-Life</a>
           </td>
         </tr>
         <tr>
           <td rowspan="2">
             <a id="activity_10">
-              <b>9. FAIR assessment tools</b>
+              <b>9. Build guidance and training material on standards, databases and policies</b>
             </a>
           </td>
           <td>
-            <b>FAIRshake:</b> a prototype software to assess the FAIRness of bioinformatics tools, analyses,
-            and biological datasets against a variety of different metrics that can be uploaded in the tool.
-            FAIRsharing is a core element of this work.
+            Through a participation in the <a
+              href="https://www.ukrn.org/"
+              target="_blank"
+            >UK Reproducibility Network (UKRN)</a> FAIRsharing focuses on reproducibility through the lens of the FAIR into this national peer-led Network, with local (e.g. Reproducible Research Oxford, RROx) and international chapters.
           </td>
           <td>
-            FAIRsharing team and the <a href="https://commonfund.nih.gov/commons">NIH Data Commons teams</a>
+            <a
+              href="https://www.ukrn.org/2021/09/15/major-funding-boost-for-uks-open-research-agenda/"
+              target="_blank"
+            >UKRN</a> and <a
+              href="https://ox.ukrn.org/"
+              target="_blank"
+            >RROx;</a> <a
+              href="https://www.oerc.ox.ac.uk/news/uk-reproducibility-network-including-oxford-data-readiness-group-awarded-major-national-funding/"
+              target="_blank"
+            >news item.</a>
           </td>
         </tr>
         <tr>
           <td>
-            <b>FAIR Evaluator:</b> a software to register and execute tests of compliance with the
-            published FAIR Metrics. FAIRsharing is a core element of this work.
-            <a href="https://doi.org/10.1101/418376">
-              Pre-print of this work.
-            </a>
+            Through a participation in the <a
+              href="https://elixiruknode.org/fair-data-stewardship-training-project/"
+              target="_blank"
+            >FAIR  Data Stewardship Training Project</a> FAIRsharing contributes towards capacity building and the professionalisation of data stewardship in UK universities and research institutes, into this national <a
+              href="https://elixiruknode.org/"
+              target="_blank"
+            >ELIXIR-UK</a> led project.
           </td>
           <td>
-            <a href="https://www.go-fair.org/implementation-networks/overview/opedas/">GO-FAIR OPEDAS IN</a>;
-            <a href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/">GO-FAIR StRePo IN</a>;
-            <a href="http://fairmetrics.org/">FAIR Metrics WG</a>
+            <a
+              href="https://elixiruknode.org/fair-data-stewardship-training-project/"
+              target="_blank"
+            >News item.</a>
           </td>
         </tr>
       </tbody>

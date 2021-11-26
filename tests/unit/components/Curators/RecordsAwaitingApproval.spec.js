@@ -134,19 +134,30 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
       expect(wrapper.vm.dialogs.approveChanges).toBe(false);
       expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(101);
       expect(wrapper.vm.error.recordID).toBe(101);
+
+      restStub.restore();
+      wrapper.vm.dialogs.recordID = 101;
+      restStub = sinon.stub(Client.prototype, "executeQuery");
+      restStub.returns({data: {error: false}});
+      await wrapper.vm.confirmApprovalSetHidden();
+      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
+      expect(wrapper.vm.dialogs.approveChanges).toBe(false);
+      expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);
+
+
+      restStub.restore();
+      wrapper.vm.dialogs.recordID = 102;
+      restStub = sinon.stub(Client.prototype, "executeQuery");
+      restStub.returns({data: {error: {response: {data: "error"}}}});
+      await wrapper.vm.confirmApprovalSetHidden();
+      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
+      expect(wrapper.vm.dialogs.approveChanges).toBe(false);
+      expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);
+
       // TODO: Check that the DB is correctly updated
     });
 
     it("can delete a record", async () => {
-      //Correct deleted
-      wrapper.vm.dialogs.recordID = 101;
-      restStub.restore();
-      restStub = sinon.stub(Client.prototype, "executeQuery");
-      restStub.returns({data: {error: false}});
-      await wrapper.vm.confirmDelete();
-      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
-      expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
-      expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);
       //There is an error in the client query
       restStub.restore();
       wrapper.vm.dialogs.recordID = 102;
@@ -157,6 +168,16 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
       expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
       expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);
       expect(wrapper.vm.error.recordID).toBe(102);
+
+
+      //Correct deleted
+      wrapper.vm.dialogs.recordID = 102;
+      restStub.restore();
+      restStub = sinon.stub(Client.prototype, "executeQuery");
+      restStub.returns({data: {error: false}});
+      await wrapper.vm.confirmDelete();
+      expect(wrapper.vm.approvalRequiredProcessed.length).toBe(0);
+      expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
 
       // TODO: Check that the DB is correctly updated
 

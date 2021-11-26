@@ -13,7 +13,7 @@
         None found
       </p>
       <router-link
-        v-for="(country,index) in getField('countries')"
+        v-for="(country,index) in sortCountries()"
         :key="country.id"
         :to="`/search?countries=${country.name}`"
         class="underline-effect"
@@ -49,6 +49,16 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+  },
+  methods: {
+    sortCountries() {
+      if (this.getField('countries').length === 0) {
+        return this.getField('countries');
+      }
+      let countries = JSON.parse(JSON.stringify(this.getField('countries')));
+      return countries.sort((a, b) => a.id - b.id);
+    }
   }
+
 }
 </script>

@@ -4,15 +4,14 @@
       <thead>
         <tr style="background: #27aae1;color: white">
           <th>Activities</th>
-          <th>Brief description and links</th>
-          <th>Umbrella organisation</th>
-          <th>Related funded projects</th>
+          <th>Brief description</th>
+          <th>Related Groups and Projects</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td
-            colspan="4"
+            colspan="3"
             class="extra-header-row"
           >
             <a id="activity_1">
@@ -23,252 +22,256 @@
         <tr>
           <td rowspan="2">
             <a id="activity_2">
-              <b>1. FAIR maturity indicators, metrics and models</b>
+              <b>1. Classify and align research data policies across publishers and funders</b>
             </a>
           </td>
           <td>
-            A core set of 14 universal <b>machine-actionable measurable FAIR Metrics</b> covering the
-            FAIR principles, a <b>questionnaire for manual assessment</b>, and a <b>template form</b> to
-            create new metrics.
-            <a href="https://doi.org/10.1038/sdata.2018.118">
-              Publication on these metrics</a> and the
-            <a href="https://fairsharing.org/standards/?q=&amp;selected_facets=type_exact:metric">
-              FAIRsharing Collection of metrics
-            </a>.
+            FAIRsharing works within the <a
+              href="https://www.rd-alliance.org/"
+              target="_blank"
+            >RDA</a> community to align data policies via the use of standardized templates, which will be implemented in the FAIRsharing registry of policies.
           </td>
           <td>
-            <a href="https://www.go-fair.org/implementation-networks/overview/opedas/">GO-FAIR OPEDAS IN</a>;
-            <a href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/">GO-FAIR StRePo</a>;
-            <a href="http://fairmetrics.org/">FAIR Metrics WG</a>
-          </td>
-          <td>
-          <!-- empty -->
+            <a
+              target="_blank"
+              href="https://www.rd-alliance.org/groups/data-policy-standardisation-and-implementation-ig"
+            >RDA Policy IG</a>,
+            <a
+              target="_blank"
+              href="https://www.rd-alliance.org/groups/research-funders-and-stakeholders-open-research-and-data-management-policies-and-practices-ig"
+            >RDA Funders IG,</a>
+            and <a
+              target="_blank"
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+            >RDA FAIRsharing WG</a>
           </td>
         </tr>
         <tr>
           <td>
-            Discussion forum to improve the interoperability of existing and emerging
-            <b>FAIR assessment methodologies</b>.
+            FAIRsharing works with the <a
+              href="https://cos.io/"
+              target="_blank"
+            >Center for Open Science (COS)</a> to use TOP to standardize the classification of data policies in the FAIRsharing registry of policies.
           </td>
           <td>
             <a href="https://www.rd-alliance.org/groups/fair-data-maturity-model-wg">RDA FAIR Maturity
               Model WG</a> bringing together other RDA groups, including the
             <a href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html">RDA FAIRsharing WG</a>.
           </td>
-          <td>
-          <!-- empty -->
-          </td>
         </tr>
         <tr>
           <td>
             <a id="activity_3">
-              <b>2. Cross-publishers common criteria for repository selection</b>
+              <b>2. Moderate cross-publishers discussion on repositories</b>
             </a>
           </td>
           <td>
-            Through a collaboration with Datacite, we are working with a number of journal publishers
-            (PLOS, Springer Nature, F1000, Hindawi, Wiley, Taylor and Francis, Elsevier, EMBO Press, eLife,
-            GigaScience and Cambridge University Press) to identify a common set of criteria for selecting
-            and recommending data repositories (and associated standards) that will be implemented in
-            FAIRsharing. Read our <a
-              href="https://osf.io/m2bce"
+            Through a collaboration with <a
+              href="https://blog.datacite.org/data-repository-selection-which-criteria-matter/"
               target="_blank"
-            >pre-print</a>
-            providing a summary of the work.
-
-
-            <p>In addition, please see the following blogs that discuss this work:</p>
-            <ul>
-              <li>
-                <a
-                  href="https://www.cambridge.org/core/blog/2019/12/10/openresearch-selecting-a-data-repository-criteria-that-matter/"
-                  target="_blank"
-                >
-                  Cambridge University Press</a>
-              </li>
-              <li>
-                <a href="https://blog.datacite.org/data-repository-selection-which-criteria-matter/">
-                  Datacite</a>
-              </li>
-              <li>
-                <a
-                  href="https://elifesciences.org/inside-elife/7b9ba7ef/elife-latest-criteria-for-data-repository-selection"
-                  target="_blank"
-                >
-                  eLife</a>
-              </li>
-              <li>
-                <a
-                  href="https://www.elsevier.com/connect/share-your-thoughts-to-make-data-sharing-simpler-and-more-efficient"
-                  target="_blank"
-                >
-                  Elsevier</a>
-              </li>
-              <li>
-                <a
-                  href="https://blog.f1000.com/2019/11/29/data-repository-selection-criteria-that-matter-request-for-comments/"
-                  target="_blank"
-                >
-                  F1000 Research</a>
-              </li>
-              <li>
-                <a
-                  href="http://gigasciencejournal.com/blog/fairsharing-data-repository-selection/"
-                  target="_blank"
-                >
-                  GigaScience</a>
-              </li>
-              <li>
-                <a
-                  href="https://about.hindawi.com/blog/data-repository-selection-criteria-that-matter-request-for-comments/"
-                  target="_blank"
-                >
-                  Hindawi</a>
-              </li>
-              <li>
-                <a
-                  href="https://blogs.plos.org/plos/2019/11/request-for-comments-on-data-repository-selection-criteria-that-matter/"
-                  target="_blank"
-                >
-                  PLOS</a>
-              </li>
-              <li>
-                <a
-                  href="https://researchdata.springernature.com/users/69696-varsha-khodiyar/posts/57690-data-repository-selection-request-for-comments"
-                  target="_blank"
-                >
-                  Springer Nature</a>
-              </li>
-              <li>
-                <a
-                  href="https://librarianresources.taylorandfrancis.com/data-repository-selection-criteria-that-matter/"
-                  target="_blank"
-                >
-                  Taylor and Francis</a>
-              </li>
-              <li>
-                <a
-                  href="https://www.wiley.com/network/researchers/latest-content/data-repository-selection-criteria-that-matter-we-want-to-hear-from-you"
-                  target="_blank"
-                >
-                  Wiley</a>
-              </li>
-            </ul>
-
-            <p>
-              Your feedback on these criteria is welcomed. Please use the
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSfFCYtsDqN5-QjtpdT9MM4OWbodPa1CmRSmVdr2mLkDznYQng/viewform"
-                target="_blank"
-              >
-                following form
-              </a>
-              no later than January 31st January 2020.
-            </p>
+            >Datacite</a>, FAIRsharing moderated a discussion among a number of journal publishers reduce the inconsistency provided in publisher's advice to researchers and increase repository use, which remains far from optimal: <a href="https://doi.org/10.5281/zenodo.4683794">final report.</a>
           </td>
           <td>
-            FAIRsharing team and <a href="https://datacite.org/">Datacite</a>
-          &nbsp;
             <a
               href="https://doi.org/10.5438/z32p-wj46"
               target="_blank"
-            >
-              <img
-                src="/assets/Community/mou.png"
-                alt="Memorandum of Understanding"
-                height="50px"
-              >
-            </a>
-          </td>
-          <td>
-          <!-- empty -->
+            >Agreement between FAIRsharing and Datacite;</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >RDA FAIRsharing WG;</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >                PLOS, Springer Nature,</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >Hindawi,</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >Wiley,</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >Taylor and Francis,</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >Elsevier,</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >eLife,</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >GigaScience;</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >Cambridge University Press,</a>
+            EMBO Press, Oxford University Press)
           </td>
         </tr>
         <tr>
           <td>
             <a id="activity_4">
-              <b>3. Journal data policies and the TOP guidelines</b>
+              <b>3. Register and improve publishers’ data policies to mandate deposition of COVID-19 data</b>
             </a>
           </td>
           <td>
-            We are working with Jisc and the Center for Open Science (COS) to <b>disseminate information
-              about open science policies</b> (including preprints &amp; open data journal/funder policies)
-            and to <b>standardize classification of these policies</b> in the hope of encouraging change.
-          </td>
-          <td>
-            FAIRsharing team,
-            <a href="https://cos.io/">COS</a>
-          &nbsp;
-            <a
-              href="https://osf.io/zaumk/"
+            FAIRsharing works within the <a
+              href="https://oaspa.org/covid-19-publishers-open-letter-of-intent-rapid-review/"
               target="_blank"
-            >
-              <img
-                src="/assets/Community/mou.png"
-                alt="Memorandum of Understanding"
-                height="50px"
-              >
-            </a>
+            >COVID-19 Rapid Review Initiative</a>(C19RRI) to ensure the policies of the participating publishers were publicly <a
+              href="https://beta.fairsharing.org/3494"
+              target="_blank"
+            >registered</a> and mandated Data Availability Statements (DAS): <a
+              href="https://oaspa.org/guest-post-covid-19-rapid-review-initiative-an-update-to-our-statement-of-intent/"
+              target="_blank"
+            >interim report.</a>
           </td>
           <td>
-          <!-- empty -->
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a id="activity_5">
-              <b>4. Standardized templates for journal data policies</b>
-            </a>
-          </td>
-          <td>
-            Working within the RDA community and collaborating with a number of journal publishers to
-            help <b>define common frameworks for publisher data policies</b> and <b>increase adoption of
-              (standardized) research data policies</b> by all stakeholders and in particular journal
-            publishers.
-          </td>
-          <td>
-            <a href="https://www.rd-alliance.org/groups/data-policy-standardisation-and-implementation-ig">
-              RDA Standardisation and Implementation IG</a>
-            and
-            <a href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html">
-              RDA FAIRsharing WG</a>
-          </td>
-          <td>
-          <!-- empty -->
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a id="activity_6">
-              <b>5. UK Reproducibility Network</b>
-            </a>
-          </td>
-          <td>
-            The UK Reproducibility Network (UKRN) is a peer-led consortium that aims to ensure the UK retains its place as a centre for world-leading research.
-            This will be done by investigating the factors that contribute to robust research, promoting training activities, and disseminating best practice, and working with stakeholders to ensure coordination of efforts across the sector.
-            UKRN works across disciplines, ranging from the arts and humanities to the physical sciences, with a particular focus on the biomedical sciences. FAIRsharing is a key stakeholder of UKRN and Reproducible Research Oxford (RROx), the Oxford local network of UKRN
-          </td>
-          <td>
-            <a href="https://www.bristol.ac.uk/psychology/research/ukrn/">UKRN</a>
-            and
-            <a href="https://ox.ukrn.org/">RROx</a>
-          </td>
-          <td>
-          <!-- empty -->
+            <a
+              href="https://oaspa.org/covid-19-publishers-open-letter-of-intent-rapid-review/"
+              target="_blank"
+            >C19RRI’</a>s publishers and scholarly communications organisations
           </td>
         </tr>
         <tr>
           <td
-            colspan="4"
+            colspan="3"
             class="extra-header-row"
           >
             BUILD - focussing on the technology needed to enable FAIR
           </td>
         </tr>
         <tr>
+          <td rowspan="2">
+            <a id="activity_5">
+              <b>4. Define and register FAIR maturity indicators and metrics</b>
+            </a>
+          </td>
+          <td>
+            Through a collaboration with <a
+              href="https://www.go-fair.org"
+              target="_blank"
+            >GO-FAIR</a>, FAIRsharing contributed to a prototype set of universal machine-actionable measurable metrics, registered in the FAIRsharing registry of standards: <a
+              href="https://doi.org/10.1038/sdata.2018.118"
+              target="_blank"
+            >publication.</a>
+          </td>
+          <td>
+            <a
+              href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
+              target="_blank"
+            >GO-FAIR StRePo</a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Through a participation in <a
+              href="https://www.rd-alliance.org/"
+              target="_blank"
+            >RDA</a> and <a
+              href="https://www.eosc.eu"
+              target="_blank"
+            >EOSC</a> groups, FAIRsharing works with the community to improve the definition and the implementation of FAIR maturity indicators and methodologies.
+          </td>
+          <td>
+            <a
+              href="https://www.eosc.eu/metadata-data-quality"
+              target="_blank"
+            >EOSC FAIR Metrics and Data Quality Task Force;</a>
+            <a
+              href="https://www.rd-alliance.org/groups/fair-data-maturity-model-wg"
+              target="_blank"
+            >
+              RDA FAIR Maturity Model WG;</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >RDA FAIRsharing WG.</a>
+          </td>
+        </tr>
+        <tr>
+          <td rowspan="2">
+            <a id="activity_6">
+              <b>5. UK Reproducibility Network</b>
+            </a>
+          </td>
+          <td>
+            Through a collaboration with <a
+              href="https://www.go-fair.org"
+              target="_blank"
+            >GO-FAIR</a>, FAIRsharing contributed to a prototype set of universal machine-actionable measurable metrics, registered in the FAIRsharing registry of standards: <a
+              href="https://doi.org/10.1038/sdata.2018.118"
+              target="_blank"
+            >publication.</a>
+          </td>
+          <td>
+            <a
+              href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
+              target="_blank"
+            >GO-FAIR StRePo</a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Through a participation in <a
+              href="https://www.rd-alliance.org/"
+              target="_blank"
+            >RDA</a> and <a
+              href="https://www.eosc.eu"
+              target="_blank"
+            >EOSC</a> groups, FAIRsharing works with the community to improve the definition and the implementation of FAIR maturity indicators and methodologies.
+          </td>
+          <td>
+            <a
+              href="https://www.eosc.eu/metadata-data-quality"
+              target="_blank"
+            >EOSC FAIR Metrics and Data Quality Task Force;</a>
+            <a
+              href="https://www.rd-alliance.org/groups/fair-data-maturity-model-wg"
+              target="_blank"
+            >
+              RDA FAIR Maturity Model WG;</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >RDA FAIRsharing WG.</a>
+          </td>
+        </tr>
+
+        <tr>
           <td>
             <a id="activity_7">
-              <b>6. Research graphs</b>
+              <b>6</b>
+            </a>
+          </td>
+          <td>
+            Through a collaboration with <a
+              href="https://www.go-fair.org"
+              target="_blank"
+            >GO-FAIR</a>, FAIRsharing contributed to a prototype set of universal machine-actionable measurable metrics, registered in the FAIRsharing registry of standards: <a
+              href="https://doi.org/10.1038/sdata.2018.118"
+              target="_blank"
+            >publication.</a>
+          </td>
+          <td>
+            <a
+              href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
+              target="_blank"
+            >GO-FAIR StRePo</a>
+          </td>
+        </tr>
+
+        <tr>
+          <td rowspan="2">
+            <a id="activity_8">
+              <b>7</b>
             </a>
           </td>
           <td>
@@ -292,25 +295,40 @@
               >
             </a>
           </td>
-          <td />
         </tr>
         <tr>
           <td>
-            <a id="activity_8">
-              <b>7. Domain and subject terminologies for data classification</b>
-            </a>
+            Through a participation in <a
+              href="https://www.rd-alliance.org/"
+              target="_blank"
+            >RDA</a> and <a
+              href="https://www.eosc.eu"
+              target="_blank"
+            >EOSC</a> groups, FAIRsharing works with the community to improve the definition and the implementation of FAIR maturity indicators and methodologies.
           </td>
           <td>
-            We have developed and maintain two terminologies: the <a href="https://github.com/FAIRsharing/subject-ontology">Subject Resource Application Ontology
-              (SRAO)</a> describing subject areas / academic disciplines and the <a href="https://github.com/FAIRsharing/domain-ontology">Domain Resource Application
-              Ontology (DRAO)</a> describing cross-discipline research domains. These are used by the FAIRsharing
-            curators and the users to describe and classify standards, repositories and polices.
+            <a
+              href="https://www.eosc.eu/metadata-data-quality"
+              target="_blank"
+            >EOSC FAIR Metrics and Data Quality Task Force;</a>
+            <a
+              href="https://www.rd-alliance.org/groups/fair-data-maturity-model-wg"
+              target="_blank"
+            >
+              RDA FAIR Maturity Model WG;</a>
+            <a
+              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              target="_blank"
+            >RDA FAIRsharing WG.</a>
           </td>
-          <td>
-            FAIRsharing team
-          </td>
-          <td>
-            <a href="https://wellcome.ac.uk/funding/people-and-projects/grants-awarded/the-fairsharing-service-supporting-research-lifecycle">Wellcome Trust</a>
+        </tr>
+
+        <tr>
+          <td
+            colspan="3"
+            class="extra-header-row"
+          >
+            TRAIN - focussing on FAIR awareness and skills development
           </td>
         </tr>
         <tr>
@@ -327,9 +345,6 @@
           <td>
             FAIRsharing team and International Advisory Board
           </td>
-          <td>
-            <a href="https://wellcome.ac.uk/funding/people-and-projects/grants-awarded/the-fairsharing-service-supporting-research-lifecycle">Wellcome Trust</a>
-          </td>
         </tr>
         <tr>
           <td rowspan="2">
@@ -345,9 +360,6 @@
           <td>
             FAIRsharing team and the <a href="https://commonfund.nih.gov/commons">NIH Data Commons teams</a>
           </td>
-          <td>
-            <a href="https://commonfund.nih.gov/commons">NIH FAIR Data Commons Consortium</a>
-          </td>
         </tr>
         <tr>
           <td>
@@ -362,121 +374,6 @@
             <a href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/">GO-FAIR StRePo IN</a>;
             <a href="http://fairmetrics.org/">FAIR Metrics WG</a>
           </td>
-          <td>
-          <!-- empty -->
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a id="activity_11">
-              <b>10. Connecting FAIRsharing to data stewardship and data management plans tools</b>
-            </a>
-          </td>
-          <td>
-            We have a MoU with the <a href="https://ds-wizard.org/">Data Stewardship Wizard</a>to provide metadata information on
-            databases, standards and data policies to inform and drive instances of the Data
-            Stewardship Wizard.
-          </td>
-          <td>
-            <a href="https://www.go-fair.org/implementation-networks/overview/">GO-FAIR Build</a>;
-            <a href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/">GO-FAIR StRePo IN</a>
-          </td>
-          <td>
-          <!-- empty -->
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a id="activity_12">
-              <b>11. Data FAIRification</b>
-            </a>
-          </td>
-          <td>
-            We are developing a <b>FAIR Cookbook</b>, a process with examples of methods and tools needed
-            to increase the level of FAIRness of biomedical datasets, as part of a public-private
-            consortium under the Innovative Medicine Initiative (IMI) programme.
-            Details of this work and participants
-            <a
-              href="https://docs.google.com/document/d/1QV_TZMJJp7QF1RwIklwVZTqy_3kcP9oA-tkdKqExegc/edit?usp=sharing"
-              target="_blank"
-            >
-              here</a>.
-          </td>
-          <td>
-            FAIRsharing team
-          </td>
-          <td>
-            <a href="https://fairplus-project.eu/about/how-project-organised">IMI FAIRplus</a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a id="activity_13">
-              <b>12. Metadata standards for machines</b>
-            </a>
-          </td>
-          <td>
-            We are investigating how to maximize the <b>‘computability’ of these data/metadata standards</b>
-            , which are essential to measure the level of compliance of a given dataset (or other digital
-            object) against the relevant metadata descriptors. These machine-readable standards will
-            provide the necessary quantitative and verifiable measures of the degree by which a digital
-            object meet these reporting guidelines.  Our work will also feed into a larger GO-FAIR driven
-            effort, as described in this <a href="http://arxiv.org/abs/1902.11162">preprint</a>.
-          </td>
-          <td>
-            FAIRsharing team, <a href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/">GO-FAIR StRePo IN</a>;
-            <a href="https://www.go-fair.org/implementation-networks/overview/opedas/">GO-FAIR OPEDAS IN</a>
-          </td>
-          <td>
-            (partly) <a href="https://commonfund.nih.gov/commons">NIH Data Commons</a>
-          </td>
-        </tr>
-        <tr>
-          <td
-            colspan="4"
-            class="extra-header-row"
-          >
-            TRAIN - focussing on FAIR awareness and skills development
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a id="activity_14">
-              <b>13. Guidance to stakeholders</b>
-            </a>
-          </td>
-          <td>
-            We are developing <b>FAIRassist</b>, a tool to navigate and select standards, repositories and
-            other digital objects to guide researchers, data managers and other data producers and consumers
-            to improve the FAIRness of their data.
-          </td>
-          <td>
-            FAIRsharing team
-          </td>
-          <td>
-            <a href="https://twitter.com/EoscLife">EU INFRA EOSC-Life</a>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <a id="activity_15">
-              <b>14. FAIR competencies and curricula</b>
-            </a>
-          </td>
-          <td>
-            Working with the community, including GO-FAIR, CODATA, the RDA and others, we are building
-            infrastructure in training and teaching to enable both a competency or skills framework and
-            a generic teaching curriculum.
-          </td>
-          <td>
-            <a href="https://www.go-fair.org/implementation-networks/overview/">GO-FAIR Training</a>;
-            <a href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/">GO-FAIR StRePo IN</a>;
-            <a href="http://www.codata.org/">CODATA</a>, <a href="https://twitter.com/fairsfair_eu">FAIRsFAIR</a>;
-            <a href="https://terms4fairskills.github.io/">terms4FAIRskills</a>
-          </td>
-          <td>
-          <!-- empty -->
-          </td>
         </tr>
       </tbody>
     </table>
@@ -489,7 +386,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+a {
+  &:hover, &:focus {
+    text-decoration: underline!important;
+    outline: 0;
+  }
+}
 .communities-table {
   border: 1px solid #ECF0F1;
   border-collapse: collapse;

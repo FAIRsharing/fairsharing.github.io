@@ -199,7 +199,7 @@
         <tr>
           <td rowspan="2">
             <a id="activity_6">
-              <b>5. UK Reproducibility Network</b>
+              <b>5. Power FAIR assessment and evaluation tools</b>
             </a>
           </td>
           <td>

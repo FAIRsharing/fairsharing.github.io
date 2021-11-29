@@ -96,7 +96,7 @@
           </a>
           <i
             :class="['mb-0 word-break lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-            v-html="item.text"
+            v-html="$sanitize(item.text)"
           />
         </v-col>
       </v-row>

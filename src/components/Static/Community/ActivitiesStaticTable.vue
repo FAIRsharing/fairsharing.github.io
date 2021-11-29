@@ -14,9 +14,12 @@
             colspan="3"
             class="extra-header-row"
           >
-            <a id="activity_1">
+            <p
+              id="activity_1"
+              class="text-center ma-0 pa-0"
+            >
               CHANGE - focusing on priorities, policies and incentives for implementing FAIR
-            </a>
+            </p>
           </td>
         </tr>
         <tr>
@@ -203,11 +206,11 @@
             </a>
           </td>
           <td>
-            Through a collaboration with <a
-              href="https://www.go-fair.org"
+            FAIRsharing content powers <a
+              href="https://fairshake.cloud/"
               target="_blank"
-            >GO-FAIR</a>, FAIRsharing contributed to a prototype set of universal machine-actionable measurable metrics, registered in the FAIRsharing registry of standards: <a
-              href="https://doi.org/10.1038/sdata.2018.118"
+            >FAIRshake</a>, software to assess the FAIRness of bioinformatics tools, analyses, and biological datasets against a variety of different metrics: <a
+              href="https://doi.org/10.1016/j.cels.2019.09.011"
               target="_blank"
             >publication.</a>
           </td>
@@ -220,13 +223,13 @@
         </tr>
         <tr>
           <td>
-            Through a participation in <a
-              href="https://www.rd-alliance.org/"
+            FAIRsharing content powers the <a
+              href="https://fairsharing.github.io/FAIR-Evaluator-FrontEnd/#!/"
               target="_blank"
-            >RDA</a> and <a
-              href="https://www.eosc.eu"
+            >FAIR Evaluator</a>, software to register and execute tests of compliance with the published FAIR Metrics: <a
+              href="https://doi.org/10.1038/s41597-019-0184-5"
               target="_blank"
-            >EOSC</a> groups, FAIRsharing works with the community to improve the definition and the implementation of FAIR maturity indicators and methodologies.
+            >publication.</a>
           </td>
           <td>
             <a
@@ -279,7 +282,7 @@
             FAIRsharing content powers the <a
               href="https://ds-wizard.org/"
               target="_blank"
-            >Data Stewardship Wizard (DSW)</a>, a software to create, plan, collaborate, and bring your data management plans to life.
+            >Data Stewardship Wizard (DSW)</a>, software to create, plan, collaborate, and bring your data management plans to life.
           </td>
           <td>
             <a
@@ -295,7 +298,7 @@
             FAIRsharing content powers the <a
               href="https://dmponline.dcc.ac.uk/"
               target="_blank"
-            >DMPonline</a>, a software to create, review, and share data management plans.
+            >DMPonline</a>, software to create, review, and share data management plans.
           </td>
           <td>
             <a

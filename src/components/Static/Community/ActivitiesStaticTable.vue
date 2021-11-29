@@ -96,7 +96,7 @@
               target="_blank"
             >F1000 Research, </a>
             <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              href="https://www.wiley.com/network/researchers/latest-content/data-repository-selection-criteria-that-matter-we-want-to-hear-from-you"
               target="_blank"
             >Wiley, </a>
             <a

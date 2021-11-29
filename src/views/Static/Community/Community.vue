@@ -94,11 +94,10 @@
               {{ item.title }}
             </p>
           </a>
-          <p
-            :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-          >
-            {{ item.text }}
-          </p>
+          <i
+            :class="['mb-0 word-break lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            v-html="item.text"
+          />
         </v-col>
       </v-row>
 
@@ -447,5 +446,8 @@ td {
   -webkit-column-count: 2;
 }
 
+.word-break {
+  white-space: break-spaces;
+}
 
 </style>

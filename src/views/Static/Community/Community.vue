@@ -12,6 +12,18 @@
       databases and policies.
     </h1>
 
+    <p class="text-h5">
+      How to cite us: use the DOI for the <a
+        href="https://doi.org/10.25504/FAIRsharing.2abjs5"
+        target="_blank"
+        class="underline-effect"
+      >FAIRsharing record</a>, or our <a
+        href="https://doi.org/10.1038/s41587-019-0080-8"
+        target="_blank"
+        class="underline-effect"
+      >publication.</a>
+    </p>
+
     <!-- Adopters, activities, Governance tabs-->
     <v-container class="my-10">
       <v-row

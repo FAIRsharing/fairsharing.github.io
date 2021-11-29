@@ -35,7 +35,7 @@
           </div>
           <v-card-text
             v-if="blockInfo.standard.items.length<5"
-            class="text--primary text-justify"
+            class="text--primary text-justify height-190"
           >
             <router-link
               v-for="(item,index) in blockInfo.standard.items"
@@ -94,7 +94,7 @@
           </div>
           <v-card-text
             v-if="blockInfo.database.items.length<5"
-            class="text--primary text-justify"
+            class="text--primary text-justify height-190"
           >
             <router-link
               v-for="(item,index) in blockInfo.database.items"

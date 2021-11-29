@@ -78,41 +78,45 @@
             <a
               href="https://doi.org/10.5438/z32p-wj46"
               target="_blank"
-            ><b>Agreement</b> between FAIRsharing and Datacite;</a>
+            ><b>Agreement</b> between FAIRsharing and Datacite; </a>
             <a
               href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
               target="_blank"
-            >RDA FAIRsharing WG;</a>
+            >RDA FAIRsharing WG; </a>
+            <a
+              href="https://blogs.plos.org/plos/2019/11/request-for-comments-on-data-repository-selection-criteria-that-matter/"
+              target="_blank"
+            >                PLOS, Springer Nature, </a>
+            <a
+              href="https://about.hindawi.com/blog/data-repository-selection-criteria-that-matter-request-for-comments/"
+              target="_blank"
+            >Hindawi, </a>
+            <a
+              href="https://blog.f1000.com/2019/11/29/data-repository-selection-criteria-that-matter-request-for-comments/"
+              target="_blank"
+            >F1000 Research, </a>
             <a
               href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
               target="_blank"
-            >                PLOS, Springer Nature,</a>
+            >Wiley, </a>
             <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              href="https://librarianresources.taylorandfrancis.com/data-repository-selection-criteria-that-matter/"
               target="_blank"
-            >Hindawi,</a>
+            >Taylor and Francis, </a>
             <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              href="https://www.elsevier.com/connect/share-your-thoughts-to-make-data-sharing-simpler-and-more-efficient"
               target="_blank"
-            >Wiley,</a>
+            >Elsevier, </a>
             <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              href="https://elifesciences.org/inside-elife/7b9ba7ef/elife-latest-criteria-for-data-repository-selection"
               target="_blank"
-            >Taylor and Francis,</a>
+            >eLife, </a>
             <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              href="http://gigasciencejournal.com/blog/fairsharing-data-repository-selection/"
               target="_blank"
-            >Elsevier,</a>
+            >GigaScience; </a>
             <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
-              target="_blank"
-            >eLife,</a>
-            <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
-              target="_blank"
-            >GigaScience;</a>
-            <a
-              href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html"
+              href="https://www.cambridge.org/core/blog/2019/12/10/openresearch-selecting-a-data-repository-criteria-that-matter/"
               target="_blank"
             >Cambridge University Press,</a>
             EMBO Press, Oxford University Press)
@@ -340,19 +344,19 @@
             <a
               href="https://www.go-fair.org/implementation-networks/overview/"
               target="_blank"
-            >GO-FAIR Training;</a>
+            >GO-FAIR Training; </a>
             <a
               href="https://www.go-fair.org/implementation-networks/overview/fair-strepo/"
               target="_blank"
-            >GO-FAIR StRePo IN;</a>
+            >GO-FAIR StRePo IN; </a>
             <a
               href="http://www.codata.org/"
               target="_blank"
-            >CODATA,</a>
+            >CODATA, </a>
             <a
               href="https://www.fairsfair.eu/"
               target="_blank"
-            >FAIRsFAIR;</a>
+            >FAIRsFAIR; </a>
             <a
               href="https://twitter.com/EoscLife"
               target="_blank"

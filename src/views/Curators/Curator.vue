@@ -348,7 +348,8 @@
                   recordName: `${rec.name} (${rec.id})`,
                   id: rec.id,
                   type: rec.type,
-                  processingNotes: rec.processingNotes
+                  processingNotes: rec.processingNotes,
+                  hidden: false
                 }
                 if (rec.creator){
                   object.creator = rec.creator.username.substring(0,10);
@@ -360,6 +361,10 @@
                   object.priority = "Priority";
                 }else{
                   object.priority = "";
+                }
+                const index = dataCuration.hiddenRecords.findIndex((element) => element.id === rec.id);
+                if (index>=0){
+                  object.hidden = true;
                 }
                 if (rec.lastEditor){
                   object.lastEditor = rec.lastEditor.username;

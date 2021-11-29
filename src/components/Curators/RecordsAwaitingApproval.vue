@@ -126,7 +126,7 @@
                 color="blue"
                 dark
                 left
-                @click.stop="approveChangesMenu(props.item.recordName,props.item.id)"
+                @click.stop="approveChangesMenu(props.item.recordName,props.item.id,props.item.hidden)"
               >
                 far fa-check-circle
               </v-icon>
@@ -206,6 +206,16 @@
               Cancel
             </v-btn>
             <v-btn
+              v-if="dialogs.recordHidden === false"
+              :disabled="dialogs.disableButton === true"
+              color="blue darken-1"
+              text
+              @click="confirmApproval()"
+            >
+              OK
+            </v-btn>
+            <v-btn
+              v-if="dialogs.recordHidden === true"
               :disabled="dialogs.disableButton === true"
               color="blue darken-1"
               text
@@ -214,7 +224,8 @@
               OK
             </v-btn>
             <v-btn
-              :disabled="dialogs.disableButton === true"
+              v-if="dialogs.recordHidden === true"
+              :disabled="dialogs.disableButton === true && dialogs.recordHidden === false"
               color="blue darken-1"
               text
               @click="confirmApproval()"
@@ -322,6 +333,7 @@
                 approveChanges: false,
                 recordName: "",
                 recordID: "",
+                recordHidden: false,
                 deleteRecord: false,
                 disableDelButton: true,
                 disableButton: false
@@ -399,11 +411,12 @@
               _module.approvalRequiredProcessed[index].curator=nameUser.substring(0,6);
             },
 
-            approveChangesMenu(recordName, recordID){
+            approveChangesMenu(recordName, recordID, recordHidden){
               const _module = this;
               _module.dialogs.disableButton = false;
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
+              _module.dialogs.recordHidden = recordHidden;
               _module.dialogs.approveChanges = true;
             },
 

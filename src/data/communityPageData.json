@@ -246,7 +246,7 @@
   },
   "meettheteam": {
     "title": "Meet The Team",
-  "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk#people' class='underline-effect' target='_blank'>Data Readiness Group</a>, at University of the Oxford, supported by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>  for DOI generation and access to the ORCID member-only API.\n",
+  "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk#people' class='underline-effect' target='_blank'>Data Readiness Group</a>, at the University of Oxford, supported by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>  for DOI generation and access to the ORCID member-only API.\n",
     "profiles": [
       {
         "name": "Allyson Lister",

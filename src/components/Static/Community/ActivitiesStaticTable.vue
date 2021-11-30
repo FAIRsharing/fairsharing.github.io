@@ -86,7 +86,9 @@
             <a
               href="https://blogs.plos.org/plos/2019/11/request-for-comments-on-data-repository-selection-criteria-that-matter/"
               target="_blank"
-            >                PLOS, Springer Nature, </a>
+            >                PLOS, </a>
+            <a href="https://researchdata.springernature.com/users/69696-varsha-khodiyar/posts/57690-data-repository-selection-request-for-comments">
+              Springer Nature, </a>
             <a
               href="https://about.hindawi.com/blog/data-repository-selection-criteria-that-matter-request-for-comments/"
               target="_blank"

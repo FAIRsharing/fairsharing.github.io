@@ -96,9 +96,26 @@
     &lt;!--  main_title_2 -->
     &lt;!-- eslint-disable vue/no-v-html -->
     &lt;h1 class="mb-5">
-      FAIRsharing is a community-driven resource with a growing number of users and collaborators,
-      all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
+      FAIRsharing is a community-driven resource with users and collaborators across all disciplines.
+      We work together with our stakeholders to enable the &lt;a
+        href="https://www.nature.com/articles/sdata201618"
+        target="_blank"
+        class="underline-effect"
+      >FAIR Principles&lt;/a> by promoting the value and the use of standards,
+      databases and policies.
     &lt;/h1>
+
+    &lt;p class="text-h5">
+      How to cite us: use the DOI for the &lt;a
+        href="https://doi.org/10.25504/FAIRsharing.2abjs5"
+        target="_blank"
+        class="underline-effect"
+      >FAIRsharing record&lt;/a>, or our &lt;a
+        href="https://doi.org/10.1038/s41587-019-0080-8"
+        target="_blank"
+        class="underline-effect"
+      >publication.&lt;/a>
+    &lt;/p>
 
     &lt;!-- Adopters, activities, Governance tabs-->
     &lt;v-container class="my-10">
@@ -182,11 +199,10 @@
               {{ item.title }}
             &lt;/p>
           &lt;/a>
-          &lt;p
-            :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-          >
-            {{ item.text }}
-          &lt;/p>
+          &lt;i
+            :class="['mb-0 word-break lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            v-html="$sanitize(item.text)"
+          />
         &lt;/v-col>
       &lt;/v-row>
 
@@ -200,8 +216,7 @@
         &lt;li>
           &lt;b class="mr-3">ii:&lt;/b>Recommend resources by registering their data policy, and then link it to standards and/or databases
           &lt;router-link
-            to="/search?isRecommended=true"
-            target="_blank"
+            to="/policies"
             class="underline-effect"
           >
             recommended
@@ -536,6 +551,9 @@ td {
   -webkit-column-count: 2;
 }
 
+.word-break {
+  white-space: break-spaces;
+}
 
 &lt;/style>
 </pre>

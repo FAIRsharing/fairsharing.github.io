@@ -57,9 +57,10 @@
             >Center for Open Science (COS)</a> to use TOP to standardize the classification of data policies in the FAIRsharing registry of policies.
           </td>
           <td>
-            <a href="https://www.rd-alliance.org/groups/fair-data-maturity-model-wg">RDA FAIR Maturity
-              Model WG</a> bringing together other RDA groups, including the
-            <a href="https://www.rd-alliance.org/group/biosharing-registry-connecting-data-policies-standards-databases-life-sciences.html">RDA FAIRsharing WG</a>.
+            <a
+              href="https://osf.io/zaumk/"
+              target="_blank"
+            ><b>Agreement</b> between FAIRsharing and COS.</a>
           </td>
         </tr>
         <tr>

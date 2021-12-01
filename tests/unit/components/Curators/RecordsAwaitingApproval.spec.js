@@ -59,9 +59,10 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
     });
 
     it("can use methods that only change properties", () => {
-        wrapper.vm.approveChangesMenu("Record3 (99)", 99);
+        wrapper.vm.approveChangesMenu("Record3 (99)", 99,true);
         expect(wrapper.vm.dialogs.recordName).toMatch("Record3 (99)");
         expect(wrapper.vm.dialogs.recordID).toBe(99);
+        expect(wrapper.vm.dialogs.recordHidden).toBe(true);
         expect(wrapper.vm.dialogs.approveChanges).toBe(true);
         wrapper.vm.closeApproveChangesMenu ();
         expect(wrapper.vm.dialogs.approveChanges).toBe(false);

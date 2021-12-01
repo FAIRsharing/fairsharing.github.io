@@ -37,8 +37,10 @@
 
 <script>
 import {stakeholders} from '@/data/stakeholdersData.json'
+import getHostname from "@/utils/generalUtils";
     export default {
       name: "Stakeholders",
+      mixins: [ getHostname ],
       data: () => {
         return {
           stakeholdersData: stakeholders,

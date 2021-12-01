@@ -430,7 +430,8 @@
             records.forEach(item => {
               let object = {
                 recordNameID: `${item.name} (${item.id})`,
-                type: item.type
+                type: item.type,
+                id: item.id
               };
               object.createdAt = formatDate(item.createdAt);
               if (item.creator){
@@ -471,7 +472,8 @@
             records.forEach(item => {
               let object = {
                 recordNameID: `${item.name} (${item.id})`,
-                type: item.type
+                type: item.type,
+                id: item.id
               };
               object.createdAt = formatDate(item.createdAt);
               if (item.curator){

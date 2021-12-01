@@ -348,7 +348,8 @@
                   recordName: `${rec.name} (${rec.id})`,
                   id: rec.id,
                   type: rec.type,
-                  processingNotes: rec.processingNotes
+                  processingNotes: rec.processingNotes,
+                  hidden: false
                 }
                 if (rec.creator){
                   object.creator = rec.creator.username.substring(0,10);
@@ -360,6 +361,10 @@
                   object.priority = "Priority";
                 }else{
                   object.priority = "";
+                }
+                const index = dataCuration.hiddenRecords.findIndex((element) => element.id === rec.id);
+                if (index>=0){
+                  object.hidden = true;
                 }
                 if (rec.lastEditor){
                   object.lastEditor = rec.lastEditor.username;
@@ -425,7 +430,8 @@
             records.forEach(item => {
               let object = {
                 recordNameID: `${item.name} (${item.id})`,
-                type: item.type
+                type: item.type,
+                id: item.id
               };
               object.createdAt = formatDate(item.createdAt);
               if (item.creator){
@@ -466,7 +472,8 @@
             records.forEach(item => {
               let object = {
                 recordNameID: `${item.name} (${item.id})`,
-                type: item.type
+                type: item.type,
+                id: item.id
               };
               object.createdAt = formatDate(item.createdAt);
               if (item.curator){

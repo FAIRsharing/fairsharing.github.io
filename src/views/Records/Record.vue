@@ -591,7 +591,7 @@ export default {
         try {
           const claim = await client.canClaim(recordID, _module.user().credentials.token);
           if (claim.error) {
-            if (claim.error.response.data.existing && claim.error.response.data.status==='pending') {
+            if (claim.error.response.data.existing && claim.error.response.data.status === 'pending') {
               let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
               if (maintainer.length === 0) {
                 _module.alreadyClaimed = true;

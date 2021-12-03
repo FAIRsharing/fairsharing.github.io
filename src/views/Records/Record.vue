@@ -600,7 +600,8 @@ export default {
             }
             else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
             _module.canClaim = false;
-          }else {
+          } 
+          else {
             // show modal here
             _module.canClaim = !claim.existing;
           }

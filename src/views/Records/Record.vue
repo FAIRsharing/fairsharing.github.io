@@ -578,6 +578,7 @@ export default {
         // show modal here
         _module.canClaim = false;
         _module.claimedTriggered = true;
+        _module.alreadyClaimed = true;
       }
     },
     /**

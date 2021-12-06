@@ -82,7 +82,7 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.recordsCreatedCuratorsLastWeek[2].createdAt).toBe(auxString);
 
       expect(wrapper.vm.recordsInCuration.length).toBe(2);
-      expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12)");
+      expect(wrapper.vm.recordsInCuration[1].recordNameID).toBe("Frog French databases (12345)");
       //Hidden records, date is formatted
       expect(wrapper.vm.hiddenRecords.length).toBe(2);
       date = new Date("1425,01,01");

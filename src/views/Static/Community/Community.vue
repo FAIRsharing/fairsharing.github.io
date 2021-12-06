@@ -3,9 +3,26 @@
     <!--  main_title_2 -->
     <!-- eslint-disable vue/no-v-html -->
     <h1 class="mb-5">
-      FAIRsharing is a community-driven resource with a growing number of users and collaborators,
-      all working to enable the FAIR Principles and to make standards, databases and policies FAIR.
+      FAIRsharing is a community-driven resource with users and collaborators across all disciplines.
+      We work together with our stakeholders to enable the <a
+        href="https://www.nature.com/articles/sdata201618"
+        target="_blank"
+        class="underline-effect"
+      >FAIR Principles</a> by promoting the value and the use of standards,
+      databases and policies.
     </h1>
+
+    <p class="text-h5">
+      How to cite us: use the DOI for the <a
+        href="https://doi.org/10.25504/FAIRsharing.2abjs5"
+        target="_blank"
+        class="underline-effect"
+      >FAIRsharing record</a>, or our <a
+        href="https://doi.org/10.1038/s41587-019-0080-8"
+        target="_blank"
+        class="underline-effect"
+      >publication.</a>
+    </p>
 
     <!-- Adopters, activities, Governance tabs-->
     <v-container class="my-10">
@@ -89,11 +106,10 @@
               {{ item.title }}
             </p>
           </a>
-          <p
-            :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-          >
-            {{ item.text }}
-          </p>
+          <i
+            :class="['mb-0 word-break lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+            v-html="$sanitize(item.text)"
+          />
         </v-col>
       </v-row>
 
@@ -107,8 +123,7 @@
         <li>
           <b class="mr-3">ii:</b>Recommend resources by registering their data policy, and then link it to standards and/or databases
           <router-link
-            to="/search?isRecommended=true"
-            target="_blank"
+            to="/policies"
             class="underline-effect"
           >
             recommended
@@ -443,5 +458,8 @@ td {
   -webkit-column-count: 2;
 }
 
+.word-break {
+  white-space: break-spaces;
+}
 
 </style>

@@ -126,7 +126,7 @@
                 color="blue"
                 dark
                 left
-                @click.stop="approveChangesMenu(props.item.recordName,props.item.id)"
+                @click.stop="approveChangesMenu(props.item.recordName,props.item.id,props.item.hidden)"
               >
                 far fa-check-circle
               </v-icon>
@@ -206,12 +206,31 @@
               Cancel
             </v-btn>
             <v-btn
+              v-if="dialogs.recordHidden === false"
               :disabled="dialogs.disableButton === true"
               color="blue darken-1"
               text
               @click="confirmApproval()"
             >
               OK
+            </v-btn>
+            <v-btn
+              v-if="dialogs.recordHidden === true"
+              :disabled="dialogs.disableButton === true"
+              color="blue darken-1"
+              text
+              @click="confirmApprovalSetHidden()"
+            >
+              OK
+            </v-btn>
+            <v-btn
+              v-if="dialogs.recordHidden === true"
+              :disabled="dialogs.disableButton === true && dialogs.recordHidden === false"
+              color="blue darken-1"
+              text
+              @click="confirmApproval()"
+            >
+              OK & KEEP HIDDEN
             </v-btn>
             <v-spacer />
           </v-card-actions>
@@ -314,6 +333,7 @@
                 approveChanges: false,
                 recordName: "",
                 recordID: "",
+                recordHidden: false,
                 deleteRecord: false,
                 disableDelButton: true,
                 disableButton: false
@@ -391,11 +411,12 @@
               _module.approvalRequiredProcessed[index].curator=nameUser.substring(0,6);
             },
 
-            approveChangesMenu(recordName, recordID){
+            approveChangesMenu(recordName, recordID, recordHidden){
               const _module = this;
               _module.dialogs.disableButton = false;
               _module.dialogs.recordName = recordName;
               _module.dialogs.recordID = recordID;
+              _module.dialogs.recordHidden = recordHidden;
               _module.dialogs.approveChanges = true;
             },
 
@@ -411,6 +432,33 @@
                 approved: true,
                 skip_approval: true,
                 processing_notes: null,
+                create_review: true
+              };
+              let data = {
+                record: preparedRecord,
+                id: _module.dialogs.recordID,
+                token: _module.user().credentials.token
+              };
+              await _module.updateRecord(data);
+              if (_module.recordUpdate.error){
+                _module.error.general = _module.recordUpdate.message;
+                _module.error.recordID = _module.dialogs.recordID;
+              }
+              else {
+                const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
+                _module.approvalRequiredProcessed.splice(index, 1);
+              }
+              _module.dialogs.approveChanges = false;
+            },
+
+            async confirmApprovalSetHidden() {
+              const _module = this;
+              _module.dialogs.disableButton = true;
+              let preparedRecord = {
+                approved: true,
+                skip_approval: true,
+                processing_notes: null,
+                hidden: false,
                 create_review: true
               };
               let data = {

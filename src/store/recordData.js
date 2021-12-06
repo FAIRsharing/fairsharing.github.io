@@ -389,6 +389,7 @@ let recordStore = {
                 }
             });
             recordOrganisationsQuery.queryParam = {id: state.currentRecord.fairsharingRecord.id};
+            client.setHeader(userToken);
             let organisations = await client.executeQuery(recordOrganisationsQuery);
             commit('updateOrganisationsLinks', organisations.fairsharingRecord.organisationLinks);
         },
@@ -481,6 +482,7 @@ let recordStore = {
             });
 
             recordDataAccessQuery.queryParam = {id: state.currentRecord.fairsharingRecord.id};
+            client.setHeader(options.token);
             let dataAccess = await client.executeQuery(recordDataAccessQuery);
             commit('setDataAccess', dataAccess.fairsharingRecord);
         },
@@ -535,6 +537,7 @@ let recordStore = {
             }
             if (!error){
                 recordRelationsQuery.queryParam = {id: options.source};
+                client.setHeader(options.token);
                 let relations = await client.executeQuery(recordRelationsQuery);
                 commit('setRelations', relations['fairsharingRecord'].recordAssociations);
             }

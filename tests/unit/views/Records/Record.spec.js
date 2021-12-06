@@ -306,7 +306,7 @@ describe("Record.vue", function() {
         mocks.setMock("canClaimStub",
             RESTClient.prototype,
             "canClaim",
-            {error: {response: {data: {existing: true}}}}
+            {error: {response: {data: {existing: true, status:'pending'}}}}
         );
         await wrapper.vm.checkClaimStatus();
         expect(wrapper.vm.alreadyClaimed).toBe(false);

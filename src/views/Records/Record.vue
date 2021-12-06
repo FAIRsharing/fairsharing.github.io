@@ -65,6 +65,24 @@
             </v-alert>
 
 
+            <v-alert
+              v-if="ownershipApproved"
+              dense
+              type="success"
+              class="mb-1 flex-grow-1"
+            >
+              <span>Your request to maintain this record has been approved.</span>
+            </v-alert>
+
+            <v-alert
+              v-else-if="(!ownershipApproved && !alreadyClaimed) && !alreadyNotClaimed"
+              dense
+              type="error"
+              class="mb-2 flex-grow-1"
+            >
+              <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
+            </v-alert>
+
 
             <v-alert
               v-if="alreadyClaimed"
@@ -72,7 +90,7 @@
               type="warning"
               class="mb-1 flex-grow-1"
             >
-              <span> You have already requested to maintain this record.  We will be getting back to you between 48 and 72h.</span>
+              <span>You have already submitted an ownership request for this record. We will get back to you within a few working days.</span>
             </v-alert>
             <v-snackbar
               v-model="claimedTriggered"
@@ -306,6 +324,8 @@ export default {
       canEdit: false,
       canClaim: false,
       alreadyClaimed: false,
+      alreadyNotClaimed:false,
+      ownershipApproved: false,
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
@@ -558,6 +578,7 @@ export default {
         // show modal here
         _module.canClaim = false;
         _module.claimedTriggered = true;
+        _module.alreadyClaimed = true;
       }
     },
     /**
@@ -571,16 +592,21 @@ export default {
         try {
           const claim = await client.canClaim(recordID, _module.user().credentials.token);
           if (claim.error) {
-            if (claim.error.response.data.existing) {
+            if (claim.error.response.data.existing && claim.error.response.data.status === 'pending') {
               let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
               if (maintainer.length === 0) {
                 _module.alreadyClaimed = true;
               }
             }
+            else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
             _module.canClaim = false;
-          } else {
+          } 
+          else {
             // show modal here
             _module.canClaim = !claim.existing;
+          }
+          if(!claim.error) {
+            _module.alreadyNotClaimed = true;
           }
         }
         catch (e) {

@@ -10,14 +10,14 @@
     {
       "link": "stakeholders#developers",
       "image": "assets/Home/Tabs/developer.svg",
-      "header": "Developers & curators of resources",
-      "description": "Make your standard, database or repository discoverable, increasing exposure and credit outside your immediate community and promoting adoption...",
+      "header": "Developers & curators of resources and tools",
+      "description": "Increase the discoverability and adoption of your resource by adding it in FAIRsharing; if you are a tool developer, access FAIRsharing content via its API to power your system.....",
       "title": "Developers & Curators"
     },
     {
       "link": "stakeholders#editors",
       "image": "assets/Home/Tabs/journal.svg",
-      "header": "Journal editors & publishers",
+      "header": "Journal publishers & organisations with data policies",
       "description": "Create and maintain an interrelated list of citable standards, databases and repositories to recommend to your authors, users or their community, and revise this recommendation over time...",
       "title": "Journal Publishers"
     },

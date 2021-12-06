@@ -167,6 +167,7 @@ describe("Record.vue", function() {
         expect(anotherWrapper.name()).toMatch("Record");
         expect(anotherWrapper.vm.getTitle).toBe('FAIRsharing | 123');
         expect(anotherWrapper.vm.currentRoute).toBe(123);
+        expect(anotherWrapper.vm.error).toBe(null);
     });
 
     it("Testing currentRoute & getTitle with a DOI style", () => {
@@ -305,7 +306,7 @@ describe("Record.vue", function() {
         mocks.setMock("canClaimStub",
             RESTClient.prototype,
             "canClaim",
-            {error: {response: {data: {existing: true}}}}
+            {error: {response: {data: {existing: true, status:'pending'}}}}
         );
         await wrapper.vm.checkClaimStatus();
         expect(wrapper.vm.alreadyClaimed).toBe(false);
@@ -388,7 +389,9 @@ describe("Record.vue", function() {
         mocks.restore("graphMock");
         mocks.setMock("graphMock",
             GraphClient.prototype,
-            "executeQuery");
+            "executeQuery",
+            {fairsharing_record:  record.state.currentRecord.fairsharingRecord}
+        );
         mocks.restore("restMock");
         mocks.setMock("restMock",
             RESTClient.prototype,
@@ -406,6 +409,7 @@ describe("Record.vue", function() {
 
         await wrapper.vm.getData();
         expect(wrapper.vm.reviewFail).toBe(false);
+        //expect(wrapper.vm.error).toBe(null);
         wrapper.vm.getMenuButtons();
         await wrapper.vm.buttons[6].method();
         expect(reviewRecord).toHaveBeenCalled();

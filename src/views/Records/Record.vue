@@ -8,6 +8,8 @@
       <div v-if="error">
         <NotFound />
       </div>
+      
+      <upload-images />
 
       <!--   Action Menu & Alert   -->
       <v-row
@@ -290,12 +292,14 @@ import SearchCollection from "@/components/Records/Record/CollectionRecord/Searc
 import Tombstone from "../Errors/Tombstone";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
 import CuratorNotes from "@/components/Records/Record/CuratorNotes";
+import UploadImages from "@/components/UploadImages/UploadImages";
 
 const client = new RestClient();
 
 export default {
   name: "Record",
   components: {
+    UploadImages,
     CuratorNotes,
     AdditionalInfo,
     Tombstone,

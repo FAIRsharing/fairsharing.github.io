@@ -747,13 +747,15 @@ class RESTClient {
          return response.data;
      }
 
-    async uploadImages(url, formData, config) {
+    async uploadImages(formData, config) {
         let _client = this;
+        _client.headers = {...this.headers,"Content-Type": "multipart/form-data"}
         const request = {
-            method: "post",
-            baseURL: _client.baseURL + url,
+            method: "put",
+            baseURL: this.baseURL + "/fairsharing_records/" + formData.id,
+            headers: this.auth_headers(formData.token),
+            data: {fairsharing_record:formData},
             config: config,
-            data: formData
         };
         let response = await _client.executeQuery(request);
         return response.data;

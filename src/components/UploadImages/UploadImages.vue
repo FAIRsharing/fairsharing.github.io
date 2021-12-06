@@ -96,6 +96,7 @@
 
 <script>
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
+import {mapGetters, mapState} from "vuex";
 export default {
   name: "UploadImages",
   data() {
@@ -106,7 +107,19 @@ export default {
       fileInfos: [],
     };
   },
-  methods: {
+  computed: {
+    ...mapState('users', ["user"]),
+    ...mapGetters('record', ['getField']),
+  },
+  async mounted() {
+    const _module = this;
+    let data = {
+      id: _module.getField('id'),
+      token: _module.user().credentials.token
+    }
+    await UploadService.setFormData(data)
+  },
+    methods: {
     selectFiles(files) {
       this.progressInfos = [];
       this.selectedFiles = files;

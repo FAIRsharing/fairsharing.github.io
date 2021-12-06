@@ -3,15 +3,21 @@ import RESTClient from "@/lib/Client/RESTClient.js"
 let restClient = new RESTClient();
 
 class UploadFilesService {
+
+    async setFormData(data) {
+        this.formData = data;
+        console.log(this.formData)
+    }
+
     upload(file, onUploadProgress) {
-        let formData = new FormData();
+        //encode to base 64
+        file = btoa(file)
 
-        formData.append("file", file);
 
-        return restClient.uploadImages("/upload", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            },
+        this.formData = {...this.formData, logo: file}
+        console.log(this.formData)
+
+        return restClient.uploadImages(this.formData, {
             onUploadProgress
         });
     }

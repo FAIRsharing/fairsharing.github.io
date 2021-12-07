@@ -752,9 +752,11 @@ class RESTClient {
         _client.headers = {...this.headers,"Content-Type": "multipart/form-data"}
         const request = {
             method: "put",
-            baseURL: this.baseURL + "/fairsharing_records/" + formData.id,
-            headers: this.auth_headers(formData.token),
-            data: {fairsharing_record:formData},
+            baseURL: this.baseURL + "/fairsharing_records/" + formData.get("id"),
+            headers: this.auth_headers(formData.get("token")),
+            data: {fairsharing_record:{logo:{
+                filename:formData.get("logo").name,
+                    }}},
             config: config,
         };
         let response = await _client.executeQuery(request);

@@ -1,23 +1,5 @@
 <template>
   <div>
-    <div v-if="progressInfos">
-      <div
-        v-for="(progressInfo, index) in progressInfos"
-        :key="index"
-        class="mb-2"
-      >
-        <span>{{ progressInfo.fileName }}</span>
-        <v-progress-linear
-          v-model="progressInfo.percentage"
-          color="light-blue"
-          height="25"
-          reactive
-        >
-          <strong>{{ progressInfo.percentage }} %</strong>
-        </v-progress-linear>
-      </div>
-    </div>
-
     <v-row
       no-gutters
       justify="center"
@@ -25,6 +7,7 @@
     >
       <v-col cols="8">
         <v-file-input
+            v-model="selectedFiles"
           accept="image/*"
           multiple
           show-size
@@ -101,8 +84,7 @@ export default {
   name: "UploadImages",
   data() {
     return {
-      selectedFiles: undefined,
-      progressInfos: [],
+      selectedFiles: null,
       message: "",
       fileInfos: [],
     };
@@ -121,34 +103,19 @@ export default {
   },
     methods: {
     selectFiles(files) {
-      this.progressInfos = [];
       this.selectedFiles = files;
     },
-    uploadFiles() {
+     uploadFiles() {
       this.message = "";
       for (let i = 0; i < this.selectedFiles.length; i++) {
-        this.upload(i, this.selectedFiles[i]);
+         this.upload(i, this.selectedFiles[i]);
       }
-    },
-    upload(idx, file) {
-      this.progressInfos[idx] = { percentage: 0, fileName: file.name };
-
-      UploadService.upload(file, (event) => {
-        this.progressInfos[idx].percentage = Math.round(100 * event.loaded / event.total);
-      })
-          .then((response) => {
-            let prevMessage = this.message ? this.message + "\n" : "";
-            this.message = prevMessage + response.data.message;
-
-            return UploadService.getFiles();
-          })
-          .then((files) => {
-            this.fileInfos = files.data;
-          })
-          .catch(() => {
-            this.progressInfos[idx].percentage = 0;
-            this.message = "Could not upload the file:" + file.name;
-          });
+      this.selectedFiles = null
+     },
+     async upload(idx, file) {
+       const response = await UploadService.upload(file)
+       this.fileInfos = response.data.urlForLogo || [];
+       console.log(response)
     }
   },
 }

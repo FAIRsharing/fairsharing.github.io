@@ -11,25 +11,11 @@ class UploadFilesService {
     async setFormData(data) {
         this.formData.append("id",data.id)
         this.formData.append("token",data.token)
-        console.log(this.formData)
     }
 
-    upload(file, onUploadProgress) {
-
-        console.log(file)
+    async upload(file) {
         this.formData.append("logo",file)
-
-        // //encode to base 64
-        // file = btoa(file)
-        console.log(this.formData)
-
-        return restClient.uploadImages(this.formData, {
-            onUploadProgress
-        });
-    }
-
-    getFiles() {
-        return restClient.downloadImages("/files");
+        return await restClient.uploadImages(this.formData);
     }
 }
 

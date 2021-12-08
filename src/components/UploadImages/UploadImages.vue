@@ -5,11 +5,14 @@
       justify="center"
       align="center"
     >
-      <v-col cols="8">
+      <v-col
+        cols="12"
+        sm="12"
+        md="11"
+      >
         <v-file-input
-            v-model="selectedFiles"
+          v-model="selectedFiles"
           accept="image/*"
-          multiple
           show-size
           label="Select Images"
           @change="selectFiles"
@@ -17,7 +20,9 @@
       </v-col>
 
       <v-col
-        cols="4"
+        cols="12"
+        sm="12"
+        md="1"
         class="pl-2"
       >
         <v-btn
@@ -30,8 +35,9 @@
           <v-icon
             right
             dark
+            small
           >
-            mdi-cloud-upload
+            fa-upload
           </v-icon>
         </v-btn>
       </v-col>

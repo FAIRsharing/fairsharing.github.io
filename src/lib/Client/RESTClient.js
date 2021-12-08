@@ -755,8 +755,8 @@ class RESTClient {
             headers: this.auth_headers(formData.get("token")),
             data: {fairsharing_record:{logo:{
                 filename:formData.get("logo").name,
-                        // //encode to base 64
-                        data:btoa(formData.get("logo")),
+                // //encode to base 64
+                data:btoa(formData.get("logo")),
                 content_type:formData.get("logo").type,
                     }}},
         };

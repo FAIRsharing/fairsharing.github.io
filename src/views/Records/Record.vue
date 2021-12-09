@@ -64,24 +64,54 @@
               <span>This record is hidden!</span>
             </v-alert>
 
-
-            <v-alert
-              v-if="ownershipApproved"
-              dense
-              type="success"
-              class="mb-1 flex-grow-1"
+            <transition
+              name="fade"
+              mode="in-out"
+              appear
             >
-              <span>Your request to maintain this record has been approved.</span>
-            </v-alert>
+              <div v-if="queryTriggered">
+                <div v-if="!queryTriggered">
+                  <v-alert
+                    v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!alreadyNotClaimed && !error))"
+                    dense
+                    type="error"
+                    class="mb-2 flex-grow-1"
+                  >
+                    <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
+                  </v-alert>
 
-            <v-alert
-              v-else-if="(!ownershipApproved && !alreadyClaimed) && !alreadyNotClaimed"
-              dense
-              type="error"
-              class="mb-2 flex-grow-1"
-            >
-              <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
-            </v-alert>
+                  <div v-else-if="queryTriggered && !ownershipApproved">
+                    <v-alert
+                      v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!alreadyNotClaimed && !error))"
+                      dense
+                      type="error"
+                      class="mb-2 flex-grow-1"
+                    >
+                      <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
+                    </v-alert>
+                  </div>
+                </div>
+                <div v-else-if="!error">
+                  <span v-if="!alreadyClaimed && ownershipApproved && alreadyNotClaimed && error" />
+                  <v-alert
+                    v-else-if="!ownershipApproved && !alreadyClaimed && !alreadyNotClaimed"
+                    dense
+                    type="error"
+                    class="mb-2 flex-grow-1"
+                  >
+                    <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
+                  </v-alert>
+                  <v-alert
+                    v-else-if="ownershipApproved"
+                    dense
+                    type="success"
+                    class="mb-1 flex-grow-1"
+                  >
+                    <span>Your request to maintain this record has been approved.</span>
+                  </v-alert>
+                </div>
+              </div>
+            </transition>
 
 
             <v-alert
@@ -766,6 +796,14 @@ export default {
 }
 </script>
 <style scoped>
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+  transition-delay: 1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 ul,li {
   padding: 0;
 }

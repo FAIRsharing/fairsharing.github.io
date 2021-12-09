@@ -86,7 +86,7 @@
                                   {{ entry['date'] | moment(dateFormat) }} &mdash;
                                   {{ entry['event'] }}
                                   <span v-if="entry['user']">
-                                  &mdash; {{ entry['user'] }}
+                                    &mdash; {{ entry['user'] }}
                                   </span>
                                 </span>
                               </h3>

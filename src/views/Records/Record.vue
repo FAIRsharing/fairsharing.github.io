@@ -625,17 +625,20 @@ export default {
             if (claim.error.response.data.existing && claim.error.response.data.status === 'pending') {
               let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
               if (maintainer.length === 0) {
+              //alreadyClaimed: this is the situation where the current record has been already claimed by user to be maintained.
                 _module.alreadyClaimed = true;
               }
             }
             else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
             _module.canClaim = false;
-          } 
+          }
           else {
             // show modal here
             _module.canClaim = !claim.existing;
           }
           if(!claim.error) {
+            //alreadyNotClaimed: this is the situation where the current record is not requested to be maintained by user
+            console.log(claim.error)
             _module.alreadyNotClaimed = true;
           }
         }

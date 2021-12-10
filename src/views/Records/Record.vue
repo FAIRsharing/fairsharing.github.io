@@ -638,7 +638,6 @@ export default {
           }
           if(!claim.error) {
             //alreadyNotClaimed: this is the situation where the current record is not requested to be maintained by user
-            console.log(claim.error)
             _module.alreadyNotClaimed = true;
           }
         }

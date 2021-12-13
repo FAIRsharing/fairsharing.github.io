@@ -70,7 +70,9 @@
               appear
             >
               <div v-if="queryTriggered">
+                <!--  Although queryTriggered is checked again in the below divs but still this line check whether page is fully loaded to show the content and its needed     -->
                 <div v-if="!queryTriggered">
+                  <!--    here its when async queryTriggered value is not set so we show red banner by default -->
                   <v-alert
                     v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!alreadyNotClaimed && !error))"
                     dense
@@ -81,6 +83,7 @@
                   </v-alert>
 
                   <div v-else-if="queryTriggered && !ownershipApproved">
+                    <!--    here we update the ownership request banner when query is triggered and its value is set and also the request has been rejected. -->
                     <v-alert
                       v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!alreadyNotClaimed && !error))"
                       dense
@@ -92,7 +95,9 @@
                   </div>
                 </div>
                 <div v-else-if="!error">
+                  <!--    here we check if there is any error first when query has  been triggered(after query is triggered) . -->
                   <span v-if="!alreadyClaimed && ownershipApproved && alreadyNotClaimed && error" />
+                  <!--    here code checks if the ownership has been rejected (after query is triggered)  -->
                   <v-alert
                     v-else-if="!ownershipApproved && !alreadyClaimed && !alreadyNotClaimed"
                     dense
@@ -101,6 +106,7 @@
                   >
                     <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
                   </v-alert>
+                  <!--    here code checks if the ownership has been approved (after query is triggered)  -->
                   <v-alert
                     v-else-if="ownershipApproved"
                     dense

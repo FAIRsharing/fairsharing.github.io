@@ -117,7 +117,7 @@
                     let changes = 0;
                     if (this.initialized){
                         if (newVal.status !== "deprecated"){
-                          this.currentFields.deprecation_reason = "";
+                          this.currentFields.deprecation_reason = null;
                         }
                         const differences = diff(newVal, this.initialFields);
                         Object.keys(differences).forEach(difference => {

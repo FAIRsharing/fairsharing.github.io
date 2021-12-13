@@ -338,6 +338,39 @@
                   this.initialized = true;
                 }
             },
+            async updateNodeSymbol(node,index) {
+              // const DEFAULT_SIZE = 30
+/*
+              switch (node.registry) {
+                // let record_status = reqding each node id and get its status
+                case record_status:
+                  node.marker = {
+                    symbol: node.marker.symbol,
+                    fillColor: 'green',
+                    width: DEFAULT_SIZE,
+                    height: DEFAULT_SIZE
+                  }
+                  break;
+              }
+*/
+              // If its the main central node make its marker red circle.
+              if (index === 0) {
+                node.marker = {
+                  lineWidth: 15,
+                  lineColor: "#ff0000",
+                  fillColor: "#ff0000",
+                }
+              }
+              // return the updated node
+              return {
+                content: node,
+                marker: node.marker.symbol,
+                children: {},
+              }
+            },
+            getHostname() {
+              return process.env.VUE_APP_HOSTNAME;
+            },
             drawGraph(start=false){
                 let _module = this;
                 this.typesFound = [];
@@ -349,12 +382,8 @@
                     nodes_processed = [],
                     edges = [],
                     nodes = []
-                raw_nodes.forEach(node => {
-                  tree[node.id] = {
-                    content: node,
-                    marker: node.marker.symbol,
-                    children: {}
-                  }
+                raw_nodes.forEach((node,index) => {
+                  tree[node.id] = this.updateNodeSymbol(node,index)
                 })
                 raw_edges.forEach(edge => { tree[edge[0]].children[edge[1]] = edge });
                 this.processNode(edges, tree, Object.keys(tree)[0], nodes, nodes_processed, start);

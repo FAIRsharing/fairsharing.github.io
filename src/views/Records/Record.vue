@@ -74,7 +74,7 @@
                 <div v-if="!queryTriggered">
                   <!--    here its when async queryTriggered value is not set so we show red banner by default -->
                   <v-alert
-                    v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!alreadyNotClaimed && !error))"
+                    v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!noClaimRegistered && !error))"
                     dense
                     type="error"
                     class="mb-2 flex-grow-1"
@@ -85,7 +85,7 @@
                   <div v-else-if="queryTriggered && !ownershipApproved">
                     <!--    here we update the ownership request banner when query is triggered and its value is set and also the request has been rejected. -->
                     <v-alert
-                      v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!alreadyNotClaimed && !error))"
+                      v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!noClaimRegistered && !error))"
                       dense
                       type="error"
                       class="mb-2 flex-grow-1"
@@ -96,10 +96,10 @@
                 </div>
                 <div v-else-if="!error">
                   <!--    here we check if there is any error first when query has  been triggered(after query is triggered) . -->
-                  <span v-if="!alreadyClaimed && ownershipApproved && alreadyNotClaimed && error" />
+                  <span v-if="!alreadyClaimed && ownershipApproved && noClaimRegistered && error" />
                   <!--    here code checks if the ownership has been rejected (after query is triggered)  -->
                   <v-alert
-                    v-else-if="!ownershipApproved && !alreadyClaimed && !alreadyNotClaimed"
+                    v-else-if="!ownershipApproved && !alreadyClaimed && !noClaimRegistered"
                     dense
                     type="error"
                     class="mb-2 flex-grow-1"
@@ -360,7 +360,7 @@ export default {
       canEdit: false,
       canClaim: false,
       alreadyClaimed: false,
-      alreadyNotClaimed:false,
+      noClaimRegistered:false,
       ownershipApproved: false,
       claimedTriggered: false,
       reviewSuccess: false,
@@ -643,8 +643,8 @@ export default {
             _module.canClaim = !claim.existing;
           }
           if(!claim.error) {
-            //alreadyNotClaimed: this is the situation where the current record is not requested to be maintained by user
-            _module.alreadyNotClaimed = true;
+            //noClaimRegistered: this is the situation where the current record is not requested to be maintained by user
+            _module.noClaimRegistered = true;
           }
         }
         catch (e) {

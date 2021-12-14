@@ -27,6 +27,9 @@
                 required
                 outlined
               />
+              <p>
+                Forgotten your password, or never set it? Click <a href="/accounts/forgotPassword">here</a>.
+              </p>
 
               <v-text-field
                 v-model="password"
@@ -54,11 +57,6 @@
               </v-btn>
             </v-form>
           </v-card-text>
-
-          <v-card-text>
-            Forgotten your password, or never set it? Click <a href="/accounts/forgotPassword">here</a>.
-          </v-card-text>
-
         </v-card>
       </v-col>
     </v-row>

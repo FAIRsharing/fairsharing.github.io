@@ -28,7 +28,9 @@
                 outlined
               />
               <p>
-                Forgotten your password, or never set it? Click <a href="/accounts/forgotPassword">here</a>.
+                Forgotten your password, or never set it? Click <router-link to="/accounts/forgotPassword">
+                  here
+                </router-link>.
               </p>
 
               <v-text-field

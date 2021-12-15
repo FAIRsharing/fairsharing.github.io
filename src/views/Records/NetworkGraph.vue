@@ -70,6 +70,38 @@
                 </v-col>
               </v-row>
               <v-divider />
+              <!-- Color definition meaning in NetworkGraph -->
+              <p class="ma-0">
+                Color definition and meaning in NetworkGraph
+              </p>
+              <v-row no-gutters>
+                <v-container
+                  fluid
+                  class="pl-4"
+                >
+                  <b
+                    class="ready_color white--text d-flex align-center justify-center status_style mb-2"
+                  >
+                    ready
+                  </b>
+                  <b
+                    class="deprecated_color white--text d-flex align-center justify-center status_style mb-2"
+                  >
+                    deprecated
+                  </b>
+                  <b
+                    class="uncertain_color white--text d-flex align-center justify-center status_style mb-2"
+                  >
+                    uncertain
+                  </b>
+                  <b
+                    class="dev_color white--text d-flex align-center justify-center status_style"
+                  >
+                    in Development
+                  </b>
+                </v-container>
+              </v-row>
+              <v-divider />
               <v-row v-if="initialized">
                 <v-col
                   cols="12"
@@ -493,4 +525,8 @@
   box-shadow: 3px 3px 6px #ccc;
 }
 
+.status_style {
+  height: 25px;
+  width: 100px;
+}
 </style>

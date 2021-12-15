@@ -440,7 +440,7 @@
             if (!this.labelsFilter) return this.associations;
             let searchTerm = this.searchAssociations || "";
             return this.associations.filter(obj => {
-              if (obj.linkedRecord.name.includes(searchTerm)
+              if (obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase())
                       && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
                 return obj;
               }

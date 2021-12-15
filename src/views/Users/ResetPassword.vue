@@ -27,6 +27,11 @@
                 required
                 outlined
               />
+              <p>
+                Forgotten your password, or never set it? Click <router-link to="/accounts/forgotPassword">
+                  here
+                </router-link>.
+              </p>
 
               <v-text-field
                 v-model="password"

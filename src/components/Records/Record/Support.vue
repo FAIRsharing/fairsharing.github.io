@@ -81,10 +81,19 @@
                   v-if="subItem.contact_orcid"
                   class="d-flex flex-wrap"
                 >
-                  <span class="min-width-60">Orcid ID:</span>
-                  <strong>
-                    {{ subItem.contact_orcid }}
-                  </strong>
+                  Orcid ID: <Icon
+                    :height="17"
+                    item="Orcid"
+                    wrapper-class="pl-1 pr-1"
+                  />
+                  <span
+                    class="min-width-60"
+                    style="white-space:nowrap"
+                  >
+                    <strong>
+                      <a :href="'http://orcid.org/' + subItem.contact_orcid">{{ subItem.contact_orcid }}</a>
+                    </strong>
+                  </span>
                 </div>
               </div>
             </v-card>

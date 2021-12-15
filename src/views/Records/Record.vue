@@ -64,24 +64,60 @@
               <span>This record is hidden!</span>
             </v-alert>
 
-
-            <v-alert
-              v-if="ownershipApproved"
-              dense
-              type="success"
-              class="mb-1 flex-grow-1"
+            <transition
+              name="fade"
+              mode="in-out"
+              appear
             >
-              <span>Your request to maintain this record has been approved.</span>
-            </v-alert>
+              <div v-if="queryTriggered">
+                <!--  Although queryTriggered is checked again in the below divs but still this line check whether page is fully loaded to show the content and its needed     -->
+                <div v-if="!queryTriggered">
+                  <!--    here its when async queryTriggered value is not set so we show red banner by default -->
+                  <v-alert
+                    v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!noClaimRegistered && !error))"
+                    dense
+                    type="error"
+                    class="mb-2 flex-grow-1"
+                  >
+                    <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
+                  </v-alert>
 
-            <v-alert
-              v-else-if="(!ownershipApproved && !alreadyClaimed) && !alreadyNotClaimed"
-              dense
-              type="error"
-              class="mb-2 flex-grow-1"
-            >
-              <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
-            </v-alert>
+                  <div v-else-if="queryTriggered && !ownershipApproved">
+                    <!--    here we update the ownership request banner when query is triggered and its value is set and also the request has been rejected. -->
+                    <v-alert
+                      v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!noClaimRegistered && !error))"
+                      dense
+                      type="error"
+                      class="mb-2 flex-grow-1"
+                    >
+                      <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
+                    </v-alert>
+                  </div>
+                </div>
+                <div v-else-if="!error">
+                  <!--    here we check if there is any error first when query has  been triggered(after query is triggered) . -->
+                  <span v-if="!alreadyClaimed && ownershipApproved && noClaimRegistered && error" />
+                  <!--    here code checks if the ownership has been rejected (after query is triggered)  -->
+                  <v-alert
+                    v-else-if="!ownershipApproved && !alreadyClaimed && !noClaimRegistered"
+                    dense
+                    type="error"
+                    class="mb-2 flex-grow-1"
+                  >
+                    <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
+                  </v-alert>
+                  <!--    here code checks if the ownership has been approved (after query is triggered)  -->
+                  <v-alert
+                    v-else-if="ownershipApproved"
+                    dense
+                    type="success"
+                    class="mb-1 flex-grow-1"
+                  >
+                    <span>Your request to maintain this record has been approved.</span>
+                  </v-alert>
+                </div>
+              </div>
+            </transition>
 
 
             <v-alert
@@ -324,7 +360,7 @@ export default {
       canEdit: false,
       canClaim: false,
       alreadyClaimed: false,
-      alreadyNotClaimed:false,
+      noClaimRegistered:false,
       ownershipApproved: false,
       claimedTriggered: false,
       reviewSuccess: false,
@@ -595,18 +631,20 @@ export default {
             if (claim.error.response.data.existing && claim.error.response.data.status === 'pending') {
               let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
               if (maintainer.length === 0) {
+              //alreadyClaimed: this is the situation where the current record has been already claimed by user to be maintained.
                 _module.alreadyClaimed = true;
               }
             }
             else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
             _module.canClaim = false;
-          } 
+          }
           else {
             // show modal here
             _module.canClaim = !claim.existing;
           }
           if(!claim.error) {
-            _module.alreadyNotClaimed = true;
+            //noClaimRegistered: this is the situation where the current record is not requested to be maintained by user
+            _module.noClaimRegistered = true;
           }
         }
         catch (e) {
@@ -766,6 +804,14 @@ export default {
 }
 </script>
 <style scoped>
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+  transition-delay: 1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 ul,li {
   padding: 0;
 }

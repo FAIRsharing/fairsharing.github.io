@@ -124,6 +124,7 @@ export default {
         }
       },
      async uploadFiles() {
+      if (!this.selectedFiles) return
       this.message = "";
       for (let i = 0; i < this.selectedFiles.length; i++) {
          await this.upload(i, this.selectedFiles[i]);
@@ -132,8 +133,22 @@ export default {
      },
      async upload(idx, file) {
        const response = await UploadService.upload(file)
-       this.fileInfos = response.data.urlForLogo || [];
-    }
+       this.updateImageList(response);
+    },
+     updateImageList(response) {
+          // handling multiple images
+        if (isArray(response.data.attributes['url-for-logo'])) {
+          this.fileInfos = response.data.attributes['url-for-logo']
+        }
+        else if(response.data.attributes['url-for-logo']){
+          // handling single image
+          this.fileInfos[0] = {url: response.data.attributes['url-for-logo'].replace("api", "dev-api"), name: 'logo'};
+        }
+        else  {
+          // no image returned so reset the fileInfos
+          this.fileInfos = []
+        }
+      }
   },
 }
 </script>

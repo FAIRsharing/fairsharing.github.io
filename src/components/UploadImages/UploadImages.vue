@@ -14,6 +14,7 @@
           v-model="selectedFiles"
           accept="image/*"
           show-size
+          :multiple="multipleUpload"
           label="Select Images"
           @change="selectFiles"
         />
@@ -86,8 +87,13 @@
 <script>
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import {mapGetters, mapState} from "vuex";
+import {isArray} from "lodash";
+
 export default {
   name: "UploadImages",
+  props:{
+    multipleUpload: {type: Boolean, default: false}
+  },
   data() {
     return {
       selectedFiles: null,
@@ -108,20 +114,25 @@ export default {
     await UploadService.setFormData(data)
   },
     methods: {
-    selectFiles(files) {
-      this.selectedFiles = files;
-    },
-     uploadFiles() {
+      selectFiles: function (files) {
+        if (isArray(files)) {
+          this.selectedFiles = files;
+        }
+        else {
+          this.selectedFiles = []
+          this.selectedFiles[0] = files;
+        }
+      },
+     async uploadFiles() {
       this.message = "";
       for (let i = 0; i < this.selectedFiles.length; i++) {
-         this.upload(i, this.selectedFiles[i]);
+         await this.upload(i, this.selectedFiles[i]);
       }
       this.selectedFiles = null
      },
      async upload(idx, file) {
        const response = await UploadService.upload(file)
        this.fileInfos = response.data.urlForLogo || [];
-       console.log(response)
     }
   },
 }

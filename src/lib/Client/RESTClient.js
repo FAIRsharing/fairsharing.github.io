@@ -1,5 +1,5 @@
 import axios from "axios"
-
+import {toBase64} from "@/utils/generalUtils"
 class RESTClient {
 
     /**
@@ -756,7 +756,7 @@ class RESTClient {
             data: {fairsharing_record:{logo:{
                 filename:formData.get("logo").name,
                 // //encode to base 64
-                data:btoa(formData.get("logo")),
+                data:await toBase64(formData.get("logo")),
                 content_type:formData.get("logo").type,
                     }}},
         };

@@ -338,21 +338,42 @@
                   this.initialized = true;
                 }
             },
-            async updateNodeSymbol(node,index) {
-              // const DEFAULT_SIZE = 30
-/*
-              switch (node.registry) {
-                // let record_status = reqding each node id and get its status
-                case record_status:
+             updateNodeSymbol(node,index) {
+              const DEFAULT_LINE_WIDTH = 10
+              switch (node.status) {
+                case 'ready':
                   node.marker = {
                     symbol: node.marker.symbol,
-                    fillColor: 'green',
-                    width: DEFAULT_SIZE,
-                    height: DEFAULT_SIZE
+                    fillColor: this.$vuetify.theme.themes.light.ready_color,
+                    lineColor: this.$vuetify.theme.themes.light.ready_color,
+                    lineWidth: DEFAULT_LINE_WIDTH,
+                  }
+                  break;
+                case 'in_development':
+                  node.marker = {
+                    symbol: node.marker.symbol,
+                    fillColor: this.$vuetify.theme.themes.light.dev_color,
+                    lineColor: this.$vuetify.theme.themes.light.dev_color,
+                    lineWidth: DEFAULT_LINE_WIDTH,
+                  }
+                  break;
+                case 'deprecated':
+                  node.marker = {
+                    symbol: node.marker.symbol,
+                    fillColor: this.$vuetify.theme.themes.light.deprecated_color,
+                    lineColor: this.$vuetify.theme.themes.light.deprecated_color,
+                    lineWidth: DEFAULT_LINE_WIDTH,
+                  }
+                  break;
+                case 'uncertain':
+                  node.marker = {
+                    symbol: node.marker.symbol,
+                    fillColor: this.$vuetify.theme.themes.light.uncertain_color,
+                    lineColor: this.$vuetify.theme.themes.light.uncertain_color,
+                    lineWidth: DEFAULT_LINE_WIDTH,
                   }
                   break;
               }
-*/
               // If its the main central node make its marker red circle.
               if (index === 0) {
                 node.marker = {
@@ -367,9 +388,6 @@
                 marker: node.marker.symbol,
                 children: {},
               }
-            },
-            getHostname() {
-              return process.env.VUE_APP_HOSTNAME;
             },
             drawGraph(start=false){
                 let _module = this;

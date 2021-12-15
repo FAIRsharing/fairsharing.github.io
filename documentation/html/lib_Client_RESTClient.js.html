@@ -92,7 +92,7 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">import axios from "axios"
-
+import {toBase64} from "@/utils/generalUtils"
 class RESTClient {
 
     /**
@@ -839,6 +839,33 @@ class RESTClient {
          let response = await _client.executeQuery(request);
          return response.data;
      }
+
+    async uploadImages(formData) {
+        let _client = this;
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + "/fairsharing_records/" + formData.get("id"),
+            headers: this.auth_headers(formData.get("token")),
+            data: {fairsharing_record:{logo:{
+                filename:formData.get("logo").name,
+                // //encode to base 64
+                data:await toBase64(formData.get("logo")),
+                content_type:formData.get("logo").type,
+                    }}},
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+     }
+
+    async downloadImages(url) {
+        let _client = this;
+        const request = {
+            method: "get",
+            baseURL: _client.baseURL + url,
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
 
 }
 

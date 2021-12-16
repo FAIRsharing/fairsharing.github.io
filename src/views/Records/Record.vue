@@ -11,7 +11,7 @@
       
       <upload-images
         :credential-info="{id:getField('id'),token:user().credentials.token}"
-        :current-record-logo="getField('urlForLogo')"
+        :initial-images="getField('urlForLogo')"
       />
 
       <!--   Action Menu & Alert   -->

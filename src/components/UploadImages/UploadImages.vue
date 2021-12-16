@@ -107,13 +107,16 @@
 <script>
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import {isArray} from "lodash";
+import getHostname from "@/utils/generalUtils";
 
 export default {
   name: "UploadImages",
+  mixins: [ getHostname ],
   props:{
     multipleUpload: {type: Boolean, default: false},
     linearProgressBar: {type: Boolean, default: true},
     credentialInfo: {type: Object, default: null},
+    currentRecordLogo: {type: String, default: null},
   },
   data() {
     return {
@@ -125,16 +128,30 @@ export default {
     };
   },
   async mounted() {
-    // if the credential is needed for upload process then set the formData default credential data
+    // if the credential is needed for upload process then set the formData default credential data / can be ignored in case we did not need and included any credential prop
     await this.setFormCredential();
+    // set current record url-for-logo using props so this can be decoupled from the context / can be ignored if currentRecordLogo is not passed as prop.
+    this.setDefaultImageList();
   },
     methods: {
+      setDefaultImageList() {
+        const API_ENDPOINT = 'https://api.fairsharing.org';
+        if (this.currentRecordLogo) {
+          let response = {
+            data: {
+              attributes: {
+                'url-for-logo': API_ENDPOINT + this.currentRecordLogo
+              }
+            }
+          }
+          this.updateImageList(response)
+        }
+      },
       async setFormCredential() {
-        const _module = this;
-        if (_module.credentialInfo) {
+        if (this.credentialInfo) {
           let data = {
-            id: _module.credentialInfo.id,
-            token: _module.credentialInfo.token
+            id: this.credentialInfo.id,
+            token: this.credentialInfo.token
           }
           await UploadService.setFormData(data)
         }
@@ -172,7 +189,7 @@ export default {
         }
         else if(response.data.attributes['url-for-logo']){
           // handling single image
-          this.fileInfos[0] = {url: response.data.attributes['url-for-logo'].replace("api", "dev-api"), name: 'logo'};
+          this.fileInfos.push({url: response.data.attributes['url-for-logo'].replace("api", "dev-api"), name: 'logo'});
         }
         else  {
           // no image returned so reset the fileInfos

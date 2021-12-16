@@ -9,7 +9,10 @@
         <NotFound />
       </div>
       
-      <upload-images :credential-info="{id:getField('id'),token:user().credentials.token}" />
+      <upload-images
+        :credential-info="{id:getField('id'),token:user().credentials.token}"
+        :current-record-logo="getField('urlForLogo')"
+      />
 
       <!--   Action Menu & Alert   -->
       <v-row

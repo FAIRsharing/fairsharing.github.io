@@ -72,33 +72,41 @@
               <v-divider />
               <!-- Color definition meaning in NetworkGraph -->
               <p class="ma-0">
-                Color definition and meaning in NetworkGraph
+                Record Status
               </p>
               <v-row no-gutters>
                 <v-container
                   fluid
                   class="pl-4"
                 >
-                  <b
-                    class="ready_color white--text d-flex align-center justify-center status_style mb-2"
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    color="ready_color"
+                    style="width: 150px;"
                   >
                     ready
-                  </b>
-                  <b
-                    class="deprecated_color white--text d-flex align-center justify-center status_style mb-2"
+                  </v-chip>
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    color="deprecated_color"
+                    style="width: 150px;"
                   >
                     deprecated
-                  </b>
-                  <b
-                    class="uncertain_color white--text d-flex align-center justify-center status_style mb-2"
+                  </v-chip>
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    color="uncertain_color"
+                    style="width: 150px;"
                   >
                     uncertain
-                  </b>
-                  <b
-                    class="dev_color white--text d-flex align-center justify-center status_style"
+                  </v-chip>
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style"
+                    color="dev_color"
+                    style="width: 150px;"
                   >
-                    in Development
-                  </b>
+                    In Development
+                  </v-chip>
                 </v-container>
               </v-row>
               <v-divider />

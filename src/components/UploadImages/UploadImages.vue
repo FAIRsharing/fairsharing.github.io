@@ -1,5 +1,24 @@
 <template>
   <div>
+    <!--  progressBar  -->
+    <div v-if="progressInfos && linearProgressBar">
+      <div
+        v-for="(progressInfo, index) in progressInfos"
+        :key="index"
+        class="mb-2"
+      >
+        <span>{{ progressInfo.fileName }}</span>
+        <v-progress-linear
+          :value="progressInfo.percentage"
+          color="light-blue"
+          height="25"
+          striped
+        >
+          <strong>{{ progressInfo.percentage }} %</strong>
+        </v-progress-linear>
+      </div>
+    </div>
+    
     <v-row
       no-gutters
       justify="center"
@@ -30,6 +49,7 @@
           color="success"
           dark
           small
+          :loading="loading"
           @click="uploadFiles"
         >
           Upload
@@ -92,13 +112,16 @@ import {isArray} from "lodash";
 export default {
   name: "UploadImages",
   props:{
-    multipleUpload: {type: Boolean, default: false}
+    multipleUpload: {type: Boolean, default: false},
+    linearProgressBar: {type: Boolean, default: true}
   },
   data() {
     return {
       selectedFiles: null,
       message: "",
       fileInfos: [],
+      loading: false,
+      progressInfos: []
     };
   },
   computed: {
@@ -132,8 +155,13 @@ export default {
       this.selectedFiles = null
      },
      async upload(idx, file) {
-       const response = await UploadService.upload(file)
+      this.loading = true
+       this.progressInfos[idx] = { percentage: 0, fileName: file.name };
+       const response = await UploadService.upload(file,(event)=>{
+         this.progressInfos[idx].percentage = Math.round(100 * event.loaded / event.total);
+       })
        this.updateImageList(response);
+        this.loading = false
     },
      updateImageList(response) {
           // handling multiple images

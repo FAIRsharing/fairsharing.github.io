@@ -765,16 +765,6 @@ class RESTClient {
         return response.data;
      }
 
-    async downloadImages(url) {
-        let _client = this;
-        const request = {
-            method: "get",
-            baseURL: _client.baseURL + url,
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
-    }
-
 }
 
 export default RESTClient;

@@ -18,7 +18,7 @@
         </v-progress-linear>
       </div>
     </div>
-    
+
     <v-row
       no-gutters
       justify="center"
@@ -106,14 +106,14 @@
 
 <script>
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
-import {mapGetters, mapState} from "vuex";
 import {isArray} from "lodash";
 
 export default {
   name: "UploadImages",
   props:{
     multipleUpload: {type: Boolean, default: false},
-    linearProgressBar: {type: Boolean, default: true}
+    linearProgressBar: {type: Boolean, default: true},
+    credentialInfo: {type: Object, default: null},
   },
   data() {
     return {
@@ -124,19 +124,21 @@ export default {
       progressInfos: []
     };
   },
-  computed: {
-    ...mapState('users', ["user"]),
-    ...mapGetters('record', ['getField']),
-  },
   async mounted() {
-    const _module = this;
-    let data = {
-      id: _module.getField('id'),
-      token: _module.user().credentials.token
-    }
-    await UploadService.setFormData(data)
+    // if the credential is needed for upload process then set the formData default credential data
+    await this.setFormCredential();
   },
     methods: {
+      async setFormCredential() {
+        const _module = this;
+        if (_module.credentialInfo) {
+          let data = {
+            id: _module.credentialInfo.id,
+            token: _module.credentialInfo.token
+          }
+          await UploadService.setFormData(data)
+        }
+      },
       selectFiles: function (files) {
         if (isArray(files)) {
           this.selectedFiles = files;

@@ -107,11 +107,9 @@
 <script>
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import {isArray} from "lodash";
-import getHostname from "@/utils/generalUtils";
 
 export default {
   name: "UploadImages",
-  mixins: [ getHostname ],
   props:{
     multipleUpload: {type: Boolean, default: false},
     linearProgressBar: {type: Boolean, default: true},

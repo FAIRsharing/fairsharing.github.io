@@ -747,7 +747,7 @@ class RESTClient {
          return response.data;
      }
 
-    async uploadImages(formData) {
+    async uploadImages(formData,onUploadProgress) {
         let _client = this;
         const request = {
             method: "put",
@@ -759,6 +759,7 @@ class RESTClient {
                 data:await toBase64(formData.get("logo")),
                 content_type:formData.get("logo").type,
                     }}},
+            onUploadProgress
         };
         let response = await _client.executeQuery(request);
         return response.data;

@@ -13,9 +13,9 @@ class UploadFilesService {
         this.formData.append("token",data.token)
     }
 
-    async upload(file) {
+    async upload(file, onUploadProgress) {
         this.formData.append("logo",file)
-        return await restClient.uploadImages(this.formData);
+        return await restClient.uploadImages(this.formData,onUploadProgress);
     }
 }
 

@@ -431,6 +431,15 @@
       </v-expand-transition>
     </v-col>
 
+    <!-- Upload logo -->
+    <v-col cols="12">
+      Logo:
+      <upload-images
+        :credential-info="{id:getField('id'),token:user().credentials.token}"
+        :initial-images="getField('urlForLogo')"
+      />
+    </v-col>
+    
     <!-- isHidden -->
     <v-col cols="12">
       <v-checkbox
@@ -456,10 +465,11 @@
     import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
     import DatabaseWarning from "./DatabaseWarning";
     import Icon from "@/components/Icon"
+    import UploadImages from "@/components/UploadImages/UploadImages";
 
     export default {
       name: "BaseFields",
-      components: {DatabaseWarning, CountryFlag, StatusPills, Icon},
+      components: {UploadImages, DatabaseWarning, CountryFlag, StatusPills, Icon},
       data(){
           return {
               rules: {
@@ -471,7 +481,7 @@
           }
       },
       computed: {
-          ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
+          ...mapGetters("record", ["getSection", "getCreatingNewRecord","getField"]),
           ...mapState("editor", [
               "countries",
               "years",

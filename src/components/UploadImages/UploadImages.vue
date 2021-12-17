@@ -78,9 +78,6 @@
             :key="index"
           >
             <v-list-item-content>
-              <v-list-item-title class="mb-3">
-                <a :href="file.url">{{ file.name }}</a>
-              </v-list-item-title>
               <v-list-item-subtitle>
                 <img
                   :src="file.url"
@@ -183,6 +180,7 @@ export default {
         }
         else if(response.data.attributes['url-for-logo']){
           // handling single image
+          this.fileInfos = []
           this.fileInfos.push({url: response.data.attributes['url-for-logo'].replace("api", "dev-api"), name: 'logo'});
         }
         else  {

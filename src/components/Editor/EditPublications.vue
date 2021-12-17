@@ -562,12 +562,12 @@
               id: this.$route.params.id
             });
             this.loading = false;
+            this.$store.commit("record/setChanges", {
+              section: "publications",
+              value: 0
+            })
             if (!redirect) {
               this.$scrollTo("#mainHeader");
-              this.$store.commit("record/setChanges", {
-                section: "publications",
-                value: 0
-              })
             }
             if (redirect && !this.message.error){
               await this.$router.push({path: '/' + this.$route.params.id})

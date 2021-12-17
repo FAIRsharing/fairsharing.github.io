@@ -41,8 +41,8 @@
 
 <script>
 import Icon from "@/components/Icon"
-import { LightenDarkenColor } from 'lighten-darken-color';
 // Lighten or darken the color using javascript
+import { LightenDarkenColor } from '@/utils/generalUtils';
 
 export default {
   name: "RecordStatus",
@@ -57,22 +57,22 @@ export default {
         ready: {
           title: 'R',
           tooltip: 'Ready',
-          backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.ready_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.ready_color,70)})`
+          backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.ready_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.ready_color,50)})`
         },
         deprecated: {
           title: 'D',
           tooltip: 'Deprecated',
-          backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.deprecated_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.deprecated_color,70)})`
+          backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.deprecated_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.deprecated_color,50)})`
         },
         uncertain: {
           title: 'U',
           tooltip: 'Uncertain',
-          backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.uncertain_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.uncertain_color,70)})`
+          backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.uncertain_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.uncertain_color,50)})`
         },
         in_development: {
           title: 'Dev',
           tooltip: 'In Development',
-          backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.dev_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.dev_color,70)})`
+          backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.dev_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.dev_color,50)})`
         },
         undefined: {
           title: '?',

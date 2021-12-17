@@ -131,7 +131,7 @@ describe("Edit -> GeneralInformation.vue", function() {
         wrapper.vm.currentFields.status = "deprecated";
         expect(wrapper.vm.currentFields.deprecation_reason).toBe("abc");
         wrapper.vm.currentFields.status = "uncertain";
-        expect(wrapper.vm.currentFields.deprecation_reason).toBe("");
+        expect(wrapper.vm.currentFields.deprecation_reason).toBeFalsy();
         wrapper.vm.currentFields.type.name = "collection";
         expect(wrapper.vm.currentFields.status).toBe("uncertain");
         wrapper.vm.currentFields.type.name = "collection"; // For coverage purposes...
@@ -179,7 +179,7 @@ describe("Edit -> GeneralInformation.vue", function() {
         await wrapper.vm.saveRecord(true);
         expect($router.push).toHaveBeenCalledWith({path: "/123"});
         expect($router.push).toHaveBeenCalledTimes(1);
-        expect(wrapper.vm.currentFields.metadata.deprecation_reason).toEqual("");
+        expect(wrapper.vm.currentFields.metadata.deprecation_reason).toBeFalsy();
         wrapper.vm.currentFields.status = "deprecated"
         wrapper.vm.currentFields.metadata.deprecation_reason = "should not be deleted" // now it's deprecated this should remain
         await wrapper.vm.saveRecord(true);

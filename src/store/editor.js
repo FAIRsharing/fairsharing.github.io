@@ -46,6 +46,7 @@ let editorStore = {
             "maintains",
             "funds",
             "collaborates_on",
+            "associated_with",
             "undefined"
         ],
         grants: null,

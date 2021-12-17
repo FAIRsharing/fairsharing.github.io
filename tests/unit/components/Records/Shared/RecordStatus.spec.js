@@ -1,8 +1,14 @@
 import {shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
 import RecordStatus from "@/components/Records/Shared/RecordStatus.vue"
+import light from '@/plugins/theme'
 
-let vuetify = new Vuetify();
+
+let vuetify = new Vuetify({
+    theme: {
+        themes: {light}
+    }
+});
 
 describe("RecordStatus.vue", function () {
     let wrapper;

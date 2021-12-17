@@ -2,7 +2,7 @@ import generalUtils, {LightenDarkenColor} from "@/utils/generalUtils.js";
 
 describe("generalUtils.js", function(){
 
-    it("can check vvv", function () {
+it("can check getHostName method",function(){
         process.env.VUE_APP_HOSTNAME = 'https://api.fairsharing.org'
         expect(generalUtils.methods.getHostname()).toBe("https://api.fairsharing.org");
     })

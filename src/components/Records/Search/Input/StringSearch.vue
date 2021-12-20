@@ -128,7 +128,7 @@ export default {
           _module.$router.push({
             path: "/search",
             query: {
-              q: _module.searchTerm
+              q: _module.searchTerm?_module.searchTerm:undefined
             }
           });
           _module.searchTerm = null;
@@ -141,7 +141,7 @@ export default {
           _module.$router.push({
             path: "/search",
             query: {
-              q: _module.searchTerm,
+              q: _module.searchTerm?_module.searchTerm:undefined,
               fairsharingRegistry: selectedRegistriesValues.toString(),
               searchAnd:false
             }

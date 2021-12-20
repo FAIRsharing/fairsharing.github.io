@@ -125,12 +125,19 @@ export default {
     searchStringHomePage() {
       const _module = this;
         if (_module.selectedRegistries.length === _module.registries.length) {
-          _module.$router.push({
-            path: "/search",
-            query: {
-              q: _module.searchTerm
-            }
-          });
+          if(_module.searchTerm?.length){
+            _module.$router.push({
+              path: "/search",
+              query: {
+                q: _module.searchTerm
+              }
+            });
+          }
+          else {
+            _module.$router.push({
+              path: "/search"
+            });
+          }
           _module.searchTerm = null;
         }
         else {

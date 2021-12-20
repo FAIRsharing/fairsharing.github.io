@@ -125,19 +125,12 @@ export default {
     searchStringHomePage() {
       const _module = this;
         if (_module.selectedRegistries.length === _module.registries.length) {
-          if(_module.searchTerm?.length){
-            _module.$router.push({
-              path: "/search",
-              query: {
-                q: _module.searchTerm
-              }
-            });
-          }
-          else {
-            _module.$router.push({
-              path: "/search"
-            });
-          }
+          _module.$router.push({
+            path: "/search",
+            query: {
+              q: _module.searchTerm?_module.searchTerm:undefined
+            }
+          });
           _module.searchTerm = null;
         }
         else {
@@ -148,7 +141,7 @@ export default {
           _module.$router.push({
             path: "/search",
             query: {
-              q: _module.searchTerm,
+              q: _module.searchTerm?_module.searchTerm:undefined,
               fairsharingRegistry: selectedRegistriesValues.toString(),
               searchAnd:false
             }

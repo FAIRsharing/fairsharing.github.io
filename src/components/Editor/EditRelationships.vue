@@ -44,6 +44,7 @@
                       xl="3"
                       class="text-center"
                     >
+                      <!-- switch for unattached records -->
                       <v-switch
                         v-model="searchFilters[filterName]"
                         inset
@@ -162,6 +163,7 @@
                       xl="3"
                       class="text-center"
                     >
+                      <!-- switches for records that are already linked -->
                       <v-switch
                         v-model="labelsFilter[filterName]"
                         inset
@@ -207,7 +209,7 @@
                     <v-btn
                       icon
                       class="red white--text"
-                      @click="removeItem(index)"
+                      @click="removeItem(association)"
                     >
                       <v-icon small>
                         fa-trash
@@ -529,8 +531,16 @@
               })
             });
           },
-          removeItem(id){
-            this.sections.relations.data.recordAssociations.splice(id, 1);
+          removeItem(selected){
+            //this.sections.relations.data.recordAssociations.splice(id, 1);
+            let newData = this.sections.relations.data.recordAssociations.filter( (item) => {
+                if (item.linkedRecord.id == selected.linkedRecord.id &&
+                    item.recordAssocLabelId == selected.recordAssocLabelId) {
+                  return false;
+                }
+                return true;
+            });
+            this.sections.relations.data.recordAssociations = newData;
           },
           showOverlay(target){
             this.showRelationsPanel = true;

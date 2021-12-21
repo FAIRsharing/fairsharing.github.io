@@ -70,6 +70,46 @@
                 </v-col>
               </v-row>
               <v-divider />
+              <!-- Color definition meaning in NetworkGraph -->
+              <p class="ma-0">
+                Record Status
+              </p>
+              <v-row no-gutters>
+                <v-container
+                  fluid
+                  class="pl-4"
+                >
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    color="ready_color"
+                    style="width: 150px;"
+                  >
+                    ready
+                  </v-chip>
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    color="deprecated_color"
+                    style="width: 150px;"
+                  >
+                    deprecated
+                  </v-chip>
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    color="uncertain_color"
+                    style="width: 150px;"
+                  >
+                    uncertain
+                  </v-chip>
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style"
+                    color="dev_color"
+                    style="width: 150px;"
+                  >
+                    In Development
+                  </v-chip>
+                </v-container>
+              </v-row>
+              <v-divider />
               <v-row v-if="initialized">
                 <v-col
                   cols="12"
@@ -338,6 +378,57 @@
                   this.initialized = true;
                 }
             },
+             updateNodeSymbol(node,index) {
+              const DEFAULT_LINE_WIDTH = 10
+              switch (node.status) {
+                case 'ready':
+                  node.marker = {
+                    symbol: node.marker.symbol,
+                    fillColor: this.$vuetify.theme.themes.light.ready_color,
+                    lineColor: this.$vuetify.theme.themes.light.ready_color,
+                    lineWidth: DEFAULT_LINE_WIDTH,
+                  }
+                  break;
+                case 'in_development':
+                  node.marker = {
+                    symbol: node.marker.symbol,
+                    fillColor: this.$vuetify.theme.themes.light.dev_color,
+                    lineColor: this.$vuetify.theme.themes.light.dev_color,
+                    lineWidth: DEFAULT_LINE_WIDTH,
+                  }
+                  break;
+                case 'deprecated':
+                  node.marker = {
+                    symbol: node.marker.symbol,
+                    fillColor: this.$vuetify.theme.themes.light.deprecated_color,
+                    lineColor: this.$vuetify.theme.themes.light.deprecated_color,
+                    lineWidth: DEFAULT_LINE_WIDTH,
+                  }
+                  break;
+                case 'uncertain':
+                  node.marker = {
+                    symbol: node.marker.symbol,
+                    fillColor: this.$vuetify.theme.themes.light.uncertain_color,
+                    lineColor: this.$vuetify.theme.themes.light.uncertain_color,
+                    lineWidth: DEFAULT_LINE_WIDTH,
+                  }
+                  break;
+              }
+              // If its the main central node make its marker red circle.
+              if (index === 0) {
+                node.marker = {
+                  lineWidth: 15,
+                  lineColor: "#ff0000",
+                  fillColor: "#ff0000",
+                }
+              }
+              // return the updated node
+              return {
+                content: node,
+                marker: node.marker.symbol,
+                children: {},
+              }
+            },
             drawGraph(start=false){
                 let _module = this;
                 this.typesFound = [];
@@ -349,12 +440,8 @@
                     nodes_processed = [],
                     edges = [],
                     nodes = []
-                raw_nodes.forEach(node => {
-                  tree[node.id] = {
-                    content: node,
-                    marker: node.marker.symbol,
-                    children: {}
-                  }
+                raw_nodes.forEach((node,index) => {
+                  tree[node.id] = this.updateNodeSymbol(node,index)
                 })
                 raw_edges.forEach(edge => { tree[edge[0]].children[edge[1]] = edge });
                 this.processNode(edges, tree, Object.keys(tree)[0], nodes, nodes_processed, start);
@@ -446,4 +533,8 @@
   box-shadow: 3px 3px 6px #ccc;
 }
 
+.status_style {
+  height: 25px;
+  width: 100px;
+}
 </style>

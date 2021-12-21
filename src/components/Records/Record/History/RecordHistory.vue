@@ -75,24 +75,20 @@
                           :key="'entry_' + entryIndex"
                         >
                           <v-expansion-panel-header>
-                            <div v-if="entry['updated_at']">
+                            <div v-if="entry['date']">
                               <h3 class="my-3">
                                 <v-icon
                                   class="mr-3"
                                 >
                                   far fa-calendar-check
                                 </v-icon>
-                                <span style="position:relative; top:3px;">{{ entry['updated_at'][1] | moment(dateFormat) }}</span>
-                              </h3>
-                            </div>
-                            <div v-if="entry.changes">
-                              <h3 class="my-3">
-                                <v-icon
-                                  class="mr-3"
-                                >
-                                  far fa-calendar-check
-                                </v-icon>
-                                <span style="position:relative; top:3px;">{{ entry.changes['updated_at'][1] | moment(dateFormat) }}</span>
+                                <span style="position:relative; top:3px;">
+                                  {{ entry['date'] | moment(dateFormat) }} &mdash;
+                                  {{ entry['event'] }}
+                                  <span v-if="entry['user']">
+                                    &mdash; {{ entry['user'] }}
+                                  </span>
+                                </span>
                               </h3>
                             </div>
                           </v-expansion-panel-header>

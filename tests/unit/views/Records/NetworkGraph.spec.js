@@ -28,6 +28,7 @@ let graphMock = {
             {
                 "id": "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
                 "record_id": 1410,
+                "status":"ready",
                 "marker": {
                     "symbol": "circle",
                     "radius": 20,
@@ -37,6 +38,7 @@ let graphMock = {
             {
                 "id": "Virtual Observatory Data Modeling Languages",
                 "record_id": 1412,
+                "status":"in_development",
                 "marker": {
                     "symbol": "square",
                     "radius": 10
@@ -44,6 +46,7 @@ let graphMock = {
             },
             {
                 "id": "Third",
+                "status":"uncertain",
                 "record_id": 140,
                 "marker": {
                     "symbol": "diamond",
@@ -52,9 +55,10 @@ let graphMock = {
             },
             {
                 "id": "Fourth",
+                "status":"deprecated",
                 "record_id": 160,
                 "marker": {
-                    "symbol": "??",
+                    "symbol": "triangle",
                     "radius": 10
                 }
             }

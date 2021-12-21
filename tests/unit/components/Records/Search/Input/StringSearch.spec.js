@@ -81,6 +81,11 @@ describe("StringSearch.vue", () => {
             path: "/search",
             query: {q: "testStringHome", fairsharingRegistry: "standard", searchAnd: false}
         });
+        wrapper2.vm.searchTerm = undefined;
+        wrapper2.vm.selectedRegistries = [{label: 'standards', value: 'standard'}];
+        wrapper2.vm.searchStringHomePage();
+        expect($router.push).toHaveBeenCalledTimes(5);
+
     });
 
 });

@@ -16,18 +16,24 @@ it("can check getHostName method",function(){
         expect(LightenDarkenColor('#AAAA00',50)).toBe("#ffff00");
     })
 
-    it("can check toBase64 function", function () {
-        const fileContents       = 'data:image/png;base64,TEST1';
-        const readAsDataURL      = jest.fn().mockImplementation(function () {
-            this.onload = jest.fn();
-        });
+    it("can check toBase64 function", async function () {
+        const dummy = {
+            readAsDataURL: jest.fn(),
+            onload: () => new Promise((resolve) => {
+                resolve()
+            }),
+            onerror:()=>new Promise((reject)=>{
+                reject(new Error("reject 1"));
+            }),
+            result: 'vv'
+        }
+        window.FileReader = jest.fn(() => dummy)
+        toBase64({name: 'as.jpg'})
+        await dummy.onload()
+        await dummy.onerror('a')
+        await expect(toBase64({})).rejects
+        expect(dummy.readAsDataURL).toHaveBeenCalledTimes(2);
 
-        const addEventListener   = jest.fn((_, evtHandler) => { evtHandler({
-            target: {result: fileContents}} )});
-        const dummyFileReader    = {addEventListener, readAsDataURL, result: fileContents};
-        window.FileReader        = jest.fn(() => dummyFileReader);
-
-        expect(toBase64({name:'as.jpg'})).toBe("#fff333");
     })
 
 

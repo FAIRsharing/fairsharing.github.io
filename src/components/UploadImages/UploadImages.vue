@@ -121,17 +121,16 @@ export default {
   },
     methods: {
       setDefaultImageList() {
-        const API_ENDPOINT = 'https://api.fairsharing.org';
-        // if its an array as default images to show then map it with extra API endpoint/map part is tailored for this app can be changed on different situation
+        // if its an array as default images to show then map it with extra API(VUE_APP_API_ENDPOINT) endpoint/map part is tailored for this app can be changed on different situation
         if (isArray(this.initialImages)) {
-          this.initialImages.map(imageItem => imageItem.url = API_ENDPOINT + imageItem.url)
+          this.initialImages.map(imageItem => imageItem.url = process.env.VUE_APP_API_ENDPOINT + imageItem.url)
         }
 
         if (this.initialImages) {
           let response = {
             data: {
               attributes: {
-                'url-for-logo': API_ENDPOINT + this.initialImages
+                'url-for-logo': this.initialImages
               }
             }
           }
@@ -181,7 +180,10 @@ export default {
         else if(response.data.attributes['url-for-logo']){
           // handling single image
           this.fileInfos = []
-          this.fileInfos.push({url: response.data.attributes['url-for-logo'].replace("api", "dev-api"), name: 'logo'});
+          this.fileInfos.push({
+            url: `${process.env.VUE_APP_API_ENDPOINT}${response.data.attributes['url-for-logo']}`,
+            name: 'logo'
+          });
         }
         else  {
           // no image returned so reset the fileInfos

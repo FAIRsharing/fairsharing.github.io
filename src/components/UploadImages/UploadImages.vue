@@ -31,11 +31,14 @@
         md="11"
       >
         <v-file-input
+          ref="fileInput"
           v-model="selectedFiles"
           accept="image/*"
           show-size
           :multiple="multipleUpload"
           label="Select Images"
+          hint="the image size must be below 2mb"
+          :rules="[rules.isAllowedSize()]"
           @change="selectFiles"
         />
       </v-col>
@@ -96,6 +99,7 @@
 <script>
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import {isArray} from "lodash";
+import {isAllowedSize} from "@/utils/rules.js"
 
 export default {
   name: "UploadImages",
@@ -107,6 +111,9 @@ export default {
   },
   data() {
     return {
+      rules: {
+        isAllowedSize: ()=> isAllowedSize(),
+      },
       selectedFiles: null,
       fileInfos: [],
       loading: false,
@@ -156,11 +163,12 @@ export default {
         }
       },
      async uploadFiles() {
-      if (!this.selectedFiles) return
+      if (!this.selectedFiles || this.$refs.fileInput.hasError) return
       for (let i = 0; i < this.selectedFiles.length; i++) {
          await this.upload(i, this.selectedFiles[i]);
       }
       this.selectedFiles = null
+      this.$refs.fileInput.reset()
      },
      async upload(idx, file) {
       this.loading = true

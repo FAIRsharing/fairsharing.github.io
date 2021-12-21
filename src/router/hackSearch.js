@@ -52,6 +52,9 @@ export function hackSearch(query) {
                 query[key] = lookupValues[value];
                 modified = true;
             }
+            else {
+                modified = false;
+            }
         }
     });
     return [query, modified];

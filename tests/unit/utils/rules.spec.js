@@ -5,7 +5,8 @@ import {
     isUrl,
     isLongEnough,
     isOrcid,
-    isImage
+    isImage,
+    isAllowedSize
 } from "@/utils/rules.js"
 
 describe('Form validation rules', () => {
@@ -59,4 +60,14 @@ describe('Form validation rules', () => {
             type: "notImage"
         })).toBe("File type should be PNG or JPEG");
     });
+    it("can test if file size is allowed", () => {
+        let test = isAllowedSize();
+        expect(test(null)).toBe(false);
+        expect(test([{size:2000},{size:300}])).toBe(undefined);
+        expect(test([{size:2000},{size:40000000000}])).toBe(undefined);
+        expect(test([{size:400000000000},{size:40000000000}])).toBe(undefined);
+        expect(test([{size:2000}])).toBe(true);
+        expect(test([{size:50000000000}])).toBe("Logo size should be less than 2 MB!");
+    });
+
 });

@@ -34,4 +34,22 @@ export const toBase64 = file => new Promise((resolve, reject) => {
     reader.onerror = error => reject(error);
 });
 
+/*export const toBase64 = async (file) => {
+    const reader = new FileReader();
+    const res = null;
+    reader.addEventListener("load", async function () {
+        // convert image file to base64 string
+         await returnImageResponse(reader.result.toString().split(',')[1]);
+    }, false);
+    reader.readAsDataURL(file);
+    res = await reader.result
+    return res
+}
+
+async function returnImageResponse(response) {
+    console.log('res',response)
+    if (response)
+        return {data: response}
+}*/
+
 export default generalUtils;

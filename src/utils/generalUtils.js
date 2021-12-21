@@ -27,29 +27,12 @@ export function LightenDarkenColor(color, percent) {
     return "#"+RR+GG+BB;
 }
 
-export const toBase64 = file => new Promise((resolve, reject) => {
+export const toBase64 = file =>
+    new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result.toString().split(',')[1]);
     reader.onerror = error => reject(error);
 });
-
-/*export const toBase64 = async (file) => {
-    const reader = new FileReader();
-    const res = null;
-    reader.addEventListener("load", async function () {
-        // convert image file to base64 string
-         await returnImageResponse(reader.result.toString().split(',')[1]);
-    }, false);
-    reader.readAsDataURL(file);
-    res = await reader.result
-    return res
-}
-
-async function returnImageResponse(response) {
-    console.log('res',response)
-    if (response)
-        return {data: response}
-}*/
 
 export default generalUtils;

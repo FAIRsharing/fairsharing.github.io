@@ -27,4 +27,11 @@ export function LightenDarkenColor(color, percent) {
     return "#"+RR+GG+BB;
 }
 
+export const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result.toString().split(',')[1]);
+    reader.onerror = error => reject(error);
+});
+
 export default generalUtils;

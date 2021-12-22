@@ -1,14 +1,14 @@
 <template>
   <div>
     <UploadImagePresentation
+      ref="ImageUpload"
       linear-progress-bar
       :progress-infos="progressInfos"
       :selected-files="selectedFiles"
       :select-files="selectFiles"
-      :upload-files="uploadFiles"
       :loading="loading"
       :file-infos="fileInfos"
-      multiple-upload
+      @uploadFiles="uploadFiles"
     />
   </div>
 </template>
@@ -20,6 +20,7 @@ import UploadImagePresentation from "@/components/UploadImages/UploadImagePresen
 
 export default {
   name: "UploadImages",
+  // this component takes care of all the logic such as upload and download files
   components: {UploadImagePresentation},
   props:{
     credentialInfo: {type: Object, default: null},
@@ -54,7 +55,7 @@ export default {
               }
             }
           }
-          this.updateImageList(response)
+          this.downloadFiles(response)
         }
       },
       async setFormCredential() {
@@ -75,13 +76,14 @@ export default {
           this.selectedFiles[0] = files;
         }
       },
-     async uploadFiles() {
-      // if (!this.selectedFiles || this.$refs.fileInput.hasError) return
+     async uploadFiles(hasError) {
+      if (!this.selectedFiles || hasError) return
       for (let i = 0; i < this.selectedFiles.length; i++) {
          await this.upload(i, this.selectedFiles[i]);
       }
       this.selectedFiles = null
-      // this.$refs.fileInput.reset()
+      // calling afterUpdate from the ImageUpload component to clear the error. this line is necessary in all cases
+      await this.$refs.ImageUpload.afterUpload();
      },
      async upload(idx, file) {
       this.loading = true
@@ -89,11 +91,11 @@ export default {
        const response = await UploadService.upload(file,(event)=>{
          this.progressInfos[idx].percentage = Math.round(100 * event.loaded / event.total);
        })
-       this.updateImageList(response);
-        this.loading = false
+       this.loading = false
+       await this.downloadFiles(response);
     },
-     updateImageList(response) {
-          // this part cannot be more decoupled and its tailored for fairsharing application
+     async downloadFiles(response) {
+          // this part is tailored for fairsharing application and its logic can be changed according to requirements
           // handling multiple images
         if (isArray(response.data.attributes['url-for-logo'])) {
           this.fileInfos = response.data.attributes['url-for-logo']

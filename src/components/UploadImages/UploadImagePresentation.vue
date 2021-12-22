@@ -52,7 +52,7 @@
           dark
           small
           :loading="loading"
-          @click="uploadFiles"
+          @click="callUpload"
         >
           Upload
           <v-icon
@@ -76,7 +76,7 @@
         <v-list-item-group color="primary">
           <v-list-item
             v-for="(file, index) in fileInfos"
-            :key="index"
+            :key="file.size+''+index"
           >
             <v-list-item-content>
               <v-list-item-subtitle>
@@ -99,6 +99,7 @@ import {isAllowedSize} from "@/utils/rules";
 
 export default {
   name: "UploadImagePresentation",
+  // this component only is responsible for presentation and must not include any logic
   props: {
     multipleUpload: {type: Boolean, default: false},
     loading: {type: Boolean, default: false},
@@ -110,10 +111,6 @@ export default {
       type: Function,
       default: () => {}
     },
-    uploadFiles: {
-      type: Function,
-      default: () => {}
-    },
   },
   data() {
     return {
@@ -122,6 +119,19 @@ export default {
       },
     };
   },
+  computed:{
+    hasError() {
+      return this.$refs.fileInput.hasError
+    }
+  },
+  methods:{
+    callUpload() {
+      this.$emit('uploadFiles',this.hasError)
+    },
+    async afterUpload(){
+      await this.$refs.fileInput.reset()
+    }
+  }
 }
 </script>
 

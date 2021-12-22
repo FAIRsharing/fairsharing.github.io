@@ -437,6 +437,9 @@
       <upload-images
         :credential-info="{id:getField('id'),token:user().credentials.token}"
         :initial-images="getField('urlForLogo')"
+        :upload-service-name="'uploadLogo'"
+        :base-api-endpoint="getAPIEndPoint()"
+        :allowed-file-size-mb="3"
       />
     </v-col>
     
@@ -466,10 +469,12 @@
     import DatabaseWarning from "./DatabaseWarning";
     import Icon from "@/components/Icon"
     import UploadImages from "@/components/UploadImages/UploadImages";
+    import getAPIEndPoint from "@/utils/generalUtils";
 
     export default {
       name: "BaseFields",
       components: {UploadImages, DatabaseWarning, CountryFlag, StatusPills, Icon},
+      mixins: [getAPIEndPoint],
       data(){
           return {
               rules: {

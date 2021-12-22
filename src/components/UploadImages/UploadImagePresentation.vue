@@ -7,7 +7,7 @@
         :key="index"
         class="mb-2"
       >
-        <span>{{ progressInfo.fileName }}</span>
+        <span v-if="false">{{ progressInfo.fileName }}</span>
         <v-progress-linear
           :value="progressInfo.percentage"
           color="light-blue"
@@ -107,7 +107,12 @@ export default {
     progressInfos: {type: Array, default:()=> []},
     fileInfos: {type: Array, default:()=> []},
     selectedFiles: {type: Array, default:null},
+    allowedFileSizeMb: {type: Number, required: true},
     selectFiles: {
+      type: Function,
+      default: () => {}
+    },
+    downloadFiles: {
       type: Function,
       default: () => {}
     },
@@ -115,7 +120,7 @@ export default {
   data() {
     return {
       rules: {
-        isAllowedSize: ()=> isAllowedSize(3),
+        isAllowedSize: ()=> isAllowedSize(this.allowedFileSizeMb),
       },
     };
   },
@@ -130,11 +135,10 @@ export default {
     },
     async afterUpload(){
       await this.$refs.fileInput.reset()
-    }
+    },
   }
 }
 </script>
-
 <style scoped>
 
 </style>

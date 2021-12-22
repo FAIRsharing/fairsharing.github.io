@@ -2,6 +2,9 @@ const generalUtils = {
     methods: {
         getHostname() {
             return process.env.VUE_APP_HOSTNAME;
+        },
+        getAPIEndPoint() {
+            return process.env.VUE_APP_API_ENDPOINT;
         }
     }
 }

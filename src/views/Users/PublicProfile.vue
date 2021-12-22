@@ -204,7 +204,6 @@
               </v-card>
             </v-col>
 
-            <!-- TODO: EditsTable to go here -->
             <v-col
               cols="12"
               xl="4"

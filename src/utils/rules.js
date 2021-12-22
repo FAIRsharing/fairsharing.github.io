@@ -88,7 +88,7 @@ export function isAllowedSize() {
                     return false
                 }
             })
-            if (finalVal.includes(false)) return "One or some of your selected images' size is more than 3 MB!"
+            return !finalVal.includes(false) || "One or some of your selected images' size is more than 3 MB!"
         }
         else {
             // if its a single image

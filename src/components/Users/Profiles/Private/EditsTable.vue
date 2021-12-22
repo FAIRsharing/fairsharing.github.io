@@ -69,7 +69,6 @@
           </v-list>
         </v-menu>
       </template>
-
     </v-data-table>
 
     <!-- PREVIEW RECORD -->

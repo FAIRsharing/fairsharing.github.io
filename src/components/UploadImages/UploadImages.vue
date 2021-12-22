@@ -8,6 +8,8 @@
       :select-files="selectFiles"
       :loading="loading"
       :file-infos="fileInfos"
+      :download-files="downloadFiles"
+      :allowed-file-size-mb="allowedFileSizeMb"
       @uploadFiles="uploadFiles"
     />
   </div>
@@ -25,6 +27,9 @@ export default {
   props:{
     credentialInfo: {type: Object, default: null},
     initialImages: {type: [String , Array], default: null},
+    uploadServiceName: {type: String, required: true},
+    allowedFileSizeMb: {type: Number, required: true},
+    baseApiEndpoint: {type: String, required: true},
   },
   data() {
     return {
@@ -35,85 +40,66 @@ export default {
     };
   },
   async mounted() {
-    // if the credential is needed for upload process then set the formData default credential data / can be ignored in case we did not need and included any credential prop
+    // if the credential is needed for upload process then set the formData default credential data / can be ignored in case we did not need credential for uploading
     await this.setFormCredential();
-    // set current record url-for-logo using initialImages props so this can be decoupled from the context / can be ignored if initialImages is not passed as prop.
-    this.setDefaultImageList();
+    // this method is used to  either call an api endpoint  or get file or list of files from store and update the list of presentation component.
+    await this.downloadFiles()
   },
-    methods: {
-      setDefaultImageList() {
-        // if its an array as default images to show then map it with extra API(VUE_APP_API_ENDPOINT) endpoint/map part is tailored for this app can be changed on different situation
-        if (isArray(this.initialImages)) {
-          this.initialImages.map(imageItem => imageItem.url = process.env.VUE_APP_API_ENDPOINT + imageItem.url)
+  methods: {
+    async setFormCredential() {
+      if (this.credentialInfo) {
+        let data = {
+          id: this.credentialInfo.id,
+          token: this.credentialInfo.token
         }
-
-        if (this.initialImages) {
-          let response = {
-            data: {
-              attributes: {
-                'url-for-logo': this.initialImages
-              }
-            }
-          }
-          this.downloadFiles(response)
-        }
-      },
-      async setFormCredential() {
-        if (this.credentialInfo) {
-          let data = {
-            id: this.credentialInfo.id,
-            token: this.credentialInfo.token
-          }
-          await UploadService.setFormData(data)
-        }
-      },
-      selectFiles: function (files) {
-        if (isArray(files)) {
-          this.selectedFiles = files;
-        }
-        else {
-          this.selectedFiles = []
-          this.selectedFiles[0] = files;
-        }
-      },
-     async uploadFiles(hasError) {
+        await UploadService.setFormData(data)
+      }
+    },
+    selectFiles(files) {
+      if (isArray(files)) {
+        this.selectedFiles = files;
+      } else {
+        this.selectedFiles = []
+        this.selectedFiles[0] = files;
+      }
+    },
+    async uploadFiles(hasError) {
       if (!this.selectedFiles || hasError) return
       for (let i = 0; i < this.selectedFiles.length; i++) {
-         await this.upload(i, this.selectedFiles[i]);
+        await this.upload(i, this.selectedFiles[i]);
       }
       this.selectedFiles = null
       // calling afterUpdate from the ImageUpload component to clear the error. this line is necessary in all cases
       await this.$refs.ImageUpload.afterUpload();
-     },
-     async upload(idx, file) {
-      this.loading = true
-       this.progressInfos[idx] = { percentage: 0, fileName: file.name };
-       const response = await UploadService.upload(file,(event)=>{
-         this.progressInfos[idx].percentage = Math.round(100 * event.loaded / event.total);
-       })
-       this.loading = false
-       await this.downloadFiles(response);
     },
-     async downloadFiles(response) {
-          // this part is tailored for fairsharing application and its logic can be changed according to requirements
-          // handling multiple images
-        if (isArray(response.data.attributes['url-for-logo'])) {
-          this.fileInfos = response.data.attributes['url-for-logo']
-        }
-        else if(response.data.attributes['url-for-logo']){
-          // handling single image
-          this.fileInfos = []
-          this.fileInfos.push({
-            url: `${process.env.VUE_APP_API_ENDPOINT}${response.data.attributes['url-for-logo']}`,
-            name: 'logo'
-          });
-        }
-        else  {
-          // no image returned so reset the fileInfos
-          this.fileInfos = []
-        }
+    async upload(idx, file) {
+      this.loading = true
+      this.progressInfos[idx] = {percentage: 0, fileName: file.name};
+      const response = await UploadService[this.uploadServiceName](file, (event) => {
+        this.progressInfos[idx].percentage = Math.round(100 * event.loaded / event.total);
+      })
+      this.loading = false
+      await this.downloadFiles(response);
+    },
+    async downloadFiles(response = null) {
+      // response is defined for those API that immediately response back the updated data
+      // if there is an initial image or images then add it to list
+      this.fileInfos = []
+      // connect your data either from store or a get response from an endpoint and assign it to filesSource.
+      let filesSource = this.initialImages;
+      // currentImages can be filled with any other source of data either array of images or one string of image / in case there is a response it will fill with response back from update operation
+      let currentImages = response ? response : filesSource
+      if (!currentImages) return
+      if (isArray(currentImages)) {
+        this.fileInfos = currentImages
+      } else {
+        this.fileInfos.push({
+          url: `${this.baseApiEndpoint}${currentImages}`,
+          name: 'logo'
+        });
       }
-  },
+    }
+  }
 }
 </script>
 

@@ -9,21 +9,30 @@ class UploadFilesService {
     }
 
     async setFormData(data) {
-        // can be passed or added any type of data we need to include before uploading the files
+        // can be passed or added any type of data we need to include before uploading the files like credentials
         this.formData.append("id",data.id)
         this.formData.append("token",data.token)
     }
 
-    async upload(file, onUploadProgress) {
-        // tailored specially for uploading files and showing progress of upload
+    async uploadLogo(file, onUploadProgress) {
+        // tailored specially for uploading files and showing progress of upload as logo
         if (this.formData.get('logo')) {
             this.formData.set("logo", file)
         }
         else {
             this.formData.append("logo", file)
         }
-        return await restClient.uploadImages(this.formData,onUploadProgress);
+        return await restClient.uploadLogo(this.formData,onUploadProgress);
     }
+
+    /*
+        // example of other upload classes that can be passed to UploadImage component as upload-service-name
+        async uploadFilesToMyEndpoint(file, onUploadProgress) {
+            // put your code to upload to other endpoint here
+            for example sending as multiple-form data
+        }
+    */
+
 }
 
 export default new UploadFilesService();

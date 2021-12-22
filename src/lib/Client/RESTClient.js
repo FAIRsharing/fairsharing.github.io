@@ -747,7 +747,7 @@ class RESTClient {
          return response.data;
      }
 
-    async uploadImages(formData,onUploadProgress) {
+    async uploadLogo(formData,onUploadProgress) {
         let _client = this;
         const request = {
             method: "put",
@@ -762,7 +762,8 @@ class RESTClient {
             onUploadProgress
         };
         let response = await _client.executeQuery(request);
-        return response.data;
+        // here the data returned always should be either an array of images or one string of image
+        return response.data.data.attributes['url-for-logo'];
      }
 
 }

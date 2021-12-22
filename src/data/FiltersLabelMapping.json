@@ -30,6 +30,11 @@
             "filterLabel": "Subjects",
             "type": "String"
         },
+        "user_defined_tags": {
+            "filterName": "userDefinedTags",
+            "filterLabel": "User defined tags",
+            "type": "String"
+        },
         "fairsharing_registry": {
             "filterName": "fairsharingRegistry",
             "filterLabel": "Registry",
@@ -50,11 +55,6 @@
             "filterLabel": "Output status",
             "type": "String"
         },
-        "is_approved": {
-            "filterName": "isApproved",
-            "filterLabel": "Approved",
-            "type": "Boolean"
-        },
         "is_maintained": {
             "filterName": "isMaintained",
             "filterLabel": "Maintained",
@@ -66,13 +66,13 @@
         "recordType",
         "subjects",
         "domains",
-        "taxonomies",
+        "user_defined_tags",
         "licences",
         "organisations",
         "countries",
+        "taxonomies",
         "isRecommended",
         "status",
-        "isApproved",
         "isMaintained"
     ]
 }

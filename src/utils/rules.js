@@ -79,16 +79,20 @@ export function isImage(){
  * @returns {function(*): (boolean|string)}
  */
 export function isAllowedSize() {
-        return value => {
-            if (!value) return false
-            // if its an array of image
-            if (value.length > 1) {
-                value.some(imageItem => {
-                    return (imageItem.size < 3000000) || "Logo size should be less than 2 MB!"
-                })
-            } else {
-                // if its a single image
-                return (!value[0] || value[0].size < 3000000) || "Logo size should be less than 2 MB!"
-            }
+    return value => {
+        if (!value) return false
+        // if its an array of image
+        if (value.length > 1) {
+            let finalVal = value.map(imageItem => {
+                if (imageItem.size > 3000000) {
+                    return false
+                }
+            })
+            if (finalVal.includes(false)) return "One or some of your selected images' size is more than 3 MB!"
         }
+        else {
+            // if its a single image
+            return (!value[0] || value[0].size < 3000000) || "image size should be less than 3 MB!"
+        }
+    }
 }

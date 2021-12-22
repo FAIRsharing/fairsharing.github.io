@@ -301,6 +301,7 @@ export const actions = {
         }
     },
     async getPublicUser(state, userId) {
+        graphClient.setHeader(state.state.user().credentials.token);
         getPublicUserQuery.queryParam.id = parseInt(userId);
         return await graphClient.executeQuery(getPublicUserQuery);
     },

@@ -91,11 +91,13 @@ export default {
       let currentImages = response ? response : filesSource
       if (!currentImages) return
       if (isArray(currentImages)) {
-        this.fileInfos = currentImages
+        this.fileInfos = currentImages.map(image=>{
+          return {url:`${this.baseApiEndpoint}${image}`,name:image.name}
+        })
       } else {
         this.fileInfos.push({
           url: `${this.baseApiEndpoint}${currentImages}`,
-          name: 'logo'
+          name: 'fileName'
         });
       }
     }

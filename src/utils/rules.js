@@ -78,21 +78,22 @@ export function isImage(){
  * Assess if the given file has the correct allowed size
  * @returns {function(*): (boolean|string)}
  */
-export function isAllowedSize() {
+export function isAllowedSize(allowedSize) {
+    // allowedSize is based on MB
     return value => {
         if (!value) return false
         // if its an array of image
         if (value.length > 1) {
             let finalVal = value.map(imageItem => {
-                if (imageItem.size > 3000000) {
+                if (imageItem.size > (1000000 * allowedSize)) {
                     return false
                 }
             })
-            return !finalVal.includes(false) || "One or some of your selected images' size is more than 3 MB!"
+            return !finalVal.includes(false) || `One or some of your selected images' size is more than ${allowedSize} MB!`
         }
         else {
             // if its a single image
-            return (!value[0] || value[0].size < 3000000) || "image size should be less than 3 MB!"
+            return (!value[0] || value[0].size < (1000000 * allowedSize)) || `image size should be less than ${allowedSize} MB!`
         }
     }
 }

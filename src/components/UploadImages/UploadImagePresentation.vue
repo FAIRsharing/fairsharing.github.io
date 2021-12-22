@@ -115,7 +115,7 @@ export default {
   data() {
     return {
       rules: {
-        isAllowedSize: ()=> isAllowedSize(),
+        isAllowedSize: ()=> isAllowedSize(3),
       },
     };
   },

@@ -26,6 +26,24 @@
           ]
         }
       ]
+    },
+    {
+      "name": "editEvents",
+      "fields": [
+        "id",
+        "createdAt",
+        "editEvent",
+        "editType",
+        {
+          "queryName": "fairsharingRecord",
+          "fields": [
+            "id",
+            "name",
+            "type"
+          ]
+        }
+
+      ]
     }
   ]
 }

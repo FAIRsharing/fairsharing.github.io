@@ -203,24 +203,24 @@
             </v-col>
 
             <v-col
-                cols="12"
-                xl="4"
-                lg="6"
-                md="6"
-                sm="12"
-                xs="12"
-                class="pt-0"
+              cols="12"
+              xl="4"
+              lg="6"
+              md="6"
+              sm="12"
+              xs="12"
+              class="pt-0"
             >
               <v-card
-                  height="100%"
-                  class="d-flex flex-column rounded-0"
+                height="100%"
+                class="d-flex flex-column rounded-0"
               >
                 <v-card-title class="primary white--text py-3">
                   Record Edits
                 </v-card-title>
                 <v-card-text
-                    class="pa-0"
-                    style="flex-grow: 1"
+                  class="pa-0"
+                  style="flex-grow: 1"
                 >
                   <EditsTable
                     :edits="user().metadata.editEvents"

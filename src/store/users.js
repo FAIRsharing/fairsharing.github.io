@@ -301,7 +301,9 @@ export const actions = {
         }
     },
     async getPublicUser(state, userId) {
-        graphClient.setHeader(state.state.user().credentials.token);
+        if (state.state.user().credentials !== undefined) {
+            graphClient.setHeader(state.state.user().credentials.token);
+        }
         getPublicUserQuery.queryParam.id = parseInt(userId);
         return await graphClient.executeQuery(getPublicUserQuery);
     },

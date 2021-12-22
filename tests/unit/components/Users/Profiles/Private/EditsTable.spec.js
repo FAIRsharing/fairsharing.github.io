@@ -11,7 +11,18 @@ describe('EditsTable.vue', () => {
         wrapper = shallowMount(EditsTable, {
             localVue,
             propsData: {
-                edits: [],
+                edits: [
+                    {
+                        fairsharingRecord: {
+                            id: 1,
+                            name: "Wibble",
+                            type: "repository",
+                        },
+                        createdAt: "Wed, 24 Nov 2021 13:14:55.571216000 UTC +00:00",
+                        editType: "edits",
+                        editEvent: "update"
+                    }
+                ],
             }
         });
         const title = "EditsTable";
@@ -45,6 +56,17 @@ describe('EditsTable.vue', () => {
         wrapper.vm.goToRecord(12);
         expect(mockedOpen).toBeCalled();
         window.open = originalOpen;
+    });
+
+    it("formats fields as required", () => {
+        wrapper = shallowMount(EditsTable, {
+            localVue,
+            propsData: {
+                edits: [ ],
+            }
+        });
+        expect(wrapper.vm.moment('2021-12-20T10:38:58Z')).toEqual("Monday, December 20th 2021, 10:38");
+        expect(wrapper.vm.noData).toEqual("This user has not edited any records.");
     });
 
 });

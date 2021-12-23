@@ -61,13 +61,11 @@ describe('Form validation rules', () => {
         })).toBe("File type should be PNG or JPEG");
     });
     it("can test if file size is allowed", () => {
-        let test = isAllowedSize();
+        let test = isAllowedSize(3);
         expect(test(null)).toBe(false);
-        expect(test([{size:2000},{size:300}])).toBe(undefined);
-        expect(test([{size:2000},{size:40000000000}])).toBe(undefined);
-        expect(test([{size:400000000000},{size:40000000000}])).toBe(undefined);
+        expect(test([{size:2000},{size:40000000000}])).toBe("One or some of your selected files' size is more than 3 MB!");
         expect(test([{size:2000}])).toBe(true);
-        expect(test([{size:50000000000}])).toBe("Logo size should be less than 2 MB!");
+        expect(test([{size:50000000000}])).toBe("file size should be less than 3 MB!");
     });
 
 });

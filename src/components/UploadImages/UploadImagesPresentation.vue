@@ -98,7 +98,7 @@
 import {isAllowedSize} from "@/utils/rules";
 
 export default {
-  name: "UploadImagePresentation",
+  name: "UploadImagesPresentation",
   // this component only is responsible for presentation and must not include any logic
   props: {
     multipleUpload: {type: Boolean, default: false},

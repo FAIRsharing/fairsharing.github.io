@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UploadImagePresentation
+    <UploadImagesPresentation
       ref="FileUpload"
       linear-progress-bar
       :progress-infos="progressInfos"
@@ -19,12 +19,12 @@
 <script>
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import {isArray} from "lodash";
-import UploadImagePresentation from "@/components/UploadImages/UploadImagePresentation";
+import UploadImagesPresentation from "@/components/UploadImages/UploadImagesPresentation";
 
 export default {
   name: "UploadImages",
   // this component takes care of all the logic such as upload and download files
-  components: {UploadImagePresentation},
+  components: {UploadImagesPresentation},
   props:{
     credentialInfo: {type: Object, default: null},
     initialImages: {type: [String , Array], default: null},

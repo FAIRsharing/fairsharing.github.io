@@ -1,7 +1,7 @@
 <template>
   <div>
     <UploadImagePresentation
-      ref="ImageUpload"
+      ref="FileUpload"
       linear-progress-bar
       :progress-infos="progressInfos"
       :selected-files="selectedFiles"
@@ -10,6 +10,7 @@
       :file-infos="fileInfos"
       :download-files="downloadFiles"
       :allowed-file-size-mb="allowedFileSizeMb"
+      :mime-type="mimeType"
       @uploadFiles="uploadFiles"
     />
   </div>
@@ -30,6 +31,7 @@ export default {
     uploadServiceName: {type: String, required: true},
     allowedFileSizeMb: {type: Number, required: true},
     baseApiEndpoint: {type: String, required: true},
+    mimeType: {type: String, required: true},
   },
   data() {
     return {
@@ -47,6 +49,7 @@ export default {
   },
   methods: {
     async setFormCredential() {
+      // write the code for credentials here ..
       if (this.credentialInfo) {
         let data = {
           id: this.credentialInfo.id,
@@ -69,8 +72,8 @@ export default {
         await this.upload(i, this.selectedFiles[i]);
       }
       this.selectedFiles = null
-      // calling afterUpdate from the ImageUpload component to clear the error. this line is necessary in all cases
-      await this.$refs.ImageUpload.afterUpload();
+      // calling afterUpdate from the FileUpload component to clear the error. this line is necessary in all cases
+      await this.$refs.FileUpload.afterUpload();
     },
     async upload(idx, file) {
       this.loading = true
@@ -90,6 +93,7 @@ export default {
       // currentImages can be filled with any other source of data either array of images or one string of image / in case there is a response it will fill with response back from update operation
       let currentImages = response ? response : filesSource
       if (!currentImages) return
+      // Image addresses needs to be relative and the endpoint MUST be passed as prop its either string image or array of image url
       if (isArray(currentImages)) {
         this.fileInfos = currentImages.map(image=>{
           return {url:`${this.baseApiEndpoint}${image}`,name:image.name}

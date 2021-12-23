@@ -5,24 +5,31 @@ let restClient = new RESTClient();
 class UploadFilesService {
 
     constructor() {
+        // it is a singleton class so once created it will be remained in the memory
+        if (UploadFilesService._instance){
+            return UploadFilesService._instance
+        }
+        UploadFilesService._instance = this;
         this.formData = new FormData();
     }
 
     async setFormData(data) {
+        let _upload = this;
         // can be passed or added any type of data we need to include before uploading the files like credentials
-        this.formData.append("id",data.id)
-        this.formData.append("token",data.token)
+        _upload.formData.append("id",data.id)
+        _upload.formData.append("token",data.token)
     }
 
-    async uploadLogo(file, onUploadProgress) {
+    async uploadLogo(file) {
+        let _upload = this;
         // tailored specially for uploading files and showing progress of upload as logo
-        if (this.formData.get('logo')) {
-            this.formData.set("logo", file)
+        if (_upload.formData.get('logo')) {
+            _upload.formData.set("logo", file)
         }
         else {
-            this.formData.append("logo", file)
+            _upload.formData.append("logo", file)
         }
-        return await restClient.uploadLogo(this.formData,onUploadProgress);
+        return await restClient.uploadLogo(this.formData);
     }
 
     /*
@@ -35,4 +42,4 @@ class UploadFilesService {
 
 }
 
-export default new UploadFilesService();
+export default UploadFilesService;

@@ -747,19 +747,18 @@ class RESTClient {
          return response.data;
      }
 
-    async uploadLogo(formData,onUploadProgress) {
+    async uploadLogo(formData) {
         let _client = this;
         const request = {
             method: "put",
-            baseURL: this.baseURL + "/fairsharing_records/" + formData.get("id"),
-            headers: this.auth_headers(formData.get("token")),
+            baseURL: _client.baseURL + "/fairsharing_records/" + formData.get("id"),
+            headers: _client.auth_headers(formData.get("token")),
             data: {fairsharing_record:{logo:{
                 filename:formData.get("logo").name,
                 // //encode to base 64
                 data:await toBase64(formData.get("logo")),
                 content_type:formData.get("logo").type,
                     }}},
-            onUploadProgress
         };
         let response = await _client.executeQuery(request);
         // here the data returned always should be either an array of images or one string of image

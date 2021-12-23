@@ -7,7 +7,7 @@
         :key="index"
         class="mb-2"
       >
-        <span v-if="false">{{ progressInfo.fileName }}</span>
+        <span>{{ progressInfo.fileName }}</span>
         <v-progress-linear
           :value="progressInfo.percentage"
           color="light-blue"
@@ -72,8 +72,12 @@
       class="mx-auto"
     >
       <v-list>
-        <v-subheader>List of Images</v-subheader>
-        <v-list-item-group color="primary">
+        <v-subheader>List of Files</v-subheader>
+        <!--   Images list     -->
+        <v-list-item-group
+          v-if="mimeType.includes('image')"
+          color="primary"
+        >
           <v-list-item
             v-for="(file, index) in fileInfos"
             :key="file.size+''+index"
@@ -89,6 +93,24 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
+
+        <!--   PDF list     -->
+        <v-list-item-group
+          v-if="mimeType.includes('pdf')"
+          color="primary"
+        >
+          <v-list-item
+            v-for="(file, index) in fileInfos"
+            :key="file.size+''+index"
+          >
+            <v-list-item-content>
+              <v-list-item-subtitle>
+                {{ file.url }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+        <!--   Can be extended for more input types   -->
       </v-list>
     </v-card>
   </div>

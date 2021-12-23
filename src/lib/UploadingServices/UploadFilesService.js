@@ -21,6 +21,30 @@ class UploadFilesService {
         return await restClient.uploadLogo(this.formData);
     }
 
+    async uploadMultipleFilesPerRequest(files) {
+        await this.resetFormDataFromFiles()
+        // can upload multiple files in one request
+        for (let i = 0; i < files.length; i++) {
+            this.formData.append('files[' + i + ']', files[i])
+        }
+
+        // write the code to send multiple files in one request and calling an endpoint perhaps..
+        // for test purpose I have returned an array  of items
+        return files.map((file, index) => {
+            return {url: 'url' + index, name: file.name}
+        })
+
+    }
+
+    async resetFormDataFromFiles() {
+        // by doing the below line, the formData deletes all the previous 'files' keys
+        for (let key in JSON.parse(JSON.stringify(Object.fromEntries(this.formData)))) {
+            if (key.includes('files')) {
+                this.formData.delete(key);
+            }
+        }
+    }
+
     /*
         // example of other upload classes that can be passed to UploadImage component as upload-service-name
         async uploadFilesToMyEndpoint(file, onUploadProgress) {

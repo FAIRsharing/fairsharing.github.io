@@ -442,6 +442,16 @@
         :allowed-file-size-mb="3"
         mime-type="image/jpeg,image/gif,image/png"
       />
+      <v-divider />
+      <upload-images
+        :credential-info="{id:getField('id'),token:user().credentials.token}"
+        :upload-service-name="'uploadMultipleFilesPerRequest'"
+        :base-api-endpoint="getAPIEndPoint()"
+        :allowed-file-size-mb="2"
+        mime-type="image/jpeg,image/gif,image/png"
+        multiple-upload
+        multiple-files-per-request
+      />
     </v-col>
     
     <!-- isHidden -->

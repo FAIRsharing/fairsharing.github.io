@@ -2,7 +2,7 @@
   <div>
     <UploadImagesPresentation
       ref="FileUpload"
-      linear-progress-bar
+      :linear-progress-bar="linearProgressBar"
       :progress-infos="progressInfos"
       :selected-files="selectedFiles"
       :select-files="selectFiles"
@@ -11,6 +11,7 @@
       :download-files="downloadFiles"
       :allowed-file-size-mb="allowedFileSizeMb"
       :mime-type="mimeType"
+      :multiple-upload="multipleUpload"
       @uploadFiles="uploadFiles"
     />
   </div>
@@ -33,6 +34,8 @@ export default {
     baseApiEndpoint: {type: String, required: true},
     mimeType: {type: String, required: true},
     multipleUpload: {type: Boolean, default: false},
+    linearProgressBar: {type: Boolean, default: true},
+    multipleFilesPerRequest: {type: Boolean, default: false},
   },
   data() {
     return {
@@ -69,17 +72,34 @@ export default {
     },
     async uploadFiles(hasError) {
       if (!this.selectedFiles || hasError) return
-      for (let i = 0; i < this.selectedFiles.length; i++) {
-        await this.upload(i, this.selectedFiles[i]);
+      // if we need to upload multiple file with one request
+      if (this.multipleUpload && this.multipleFilesPerRequest) {
+        await this.upload_multiple_files_once(this.selectedFiles);
+      }
+      // if we need to upload one file per request or more but one by one with having multiple request per file
+      else {
+        for (let i = 0; i < this.selectedFiles.length; i++) {
+          await this.upload(i, this.selectedFiles[i]);
+        }
       }
       this.selectedFiles = null
       // calling afterUpdate from the FileUpload component to clear the error. this line is necessary in all cases
       await this.$refs.FileUpload.afterUpload();
     },
+    async upload_multiple_files_once(files) {
+      this.loading = true
+      this.progressInfos[0] = {percentage: 0};
+      const response = await UploadService[this.uploadServiceName](files)
+      // this.uploadServiceName which is a function of a method must be implemented the way to accept array of files
+      this.progressInfos[0].percentage = 100;
+      this.loading = false
+      await this.downloadFiles(response);
+    },
     async upload(idx, file) {
       this.loading = true
       this.progressInfos[idx] = {percentage: 0, fileName: file.name};
       const response = await UploadService[this.uploadServiceName](file)
+      // this.uploadServiceName which is a function of a method must be implemented the way to accept one file per request
       this.progressInfos[idx].percentage = 100;
       this.loading = false
       await this.downloadFiles(response);

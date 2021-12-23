@@ -440,6 +440,7 @@
         :upload-service-name="'uploadLogo'"
         :base-api-endpoint="getAPIEndPoint()"
         :allowed-file-size-mb="3"
+        mime-type="image/jpeg,image/gif,image/png"
       />
     </v-col>
     

@@ -89,11 +89,11 @@ export function isAllowedSize(allowedSize) {
                     return false
                 }
             })
-            return !finalVal.includes(false) || `One or some of your selected images' size is more than ${allowedSize} MB!`
+            return !finalVal.includes(false) || `One or some of your selected files' size is more than ${allowedSize} MB!`
         }
         else {
             // if its a single image
-            return (!value[0] || value[0].size < (1000000 * allowedSize)) || `image size should be less than ${allowedSize} MB!`
+            return (!value[0] || value[0].size < (1000000 * allowedSize)) || `file size should be less than ${allowedSize} MB!`
         }
     }
 }

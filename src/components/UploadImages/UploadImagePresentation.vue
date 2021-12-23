@@ -32,11 +32,11 @@
         <v-file-input
           ref="fileInput"
           :value="selectedFiles"
-          accept="image/*"
+          :accept="mimeType"
           show-size
           :multiple="multipleUpload"
           label="Select Images"
-          hint="the image size must be below 2mb"
+          hint="the file size must be below 2mb"
           :rules="[rules.isAllowedSize()]"
           @change="selectFiles"
         />
@@ -108,6 +108,7 @@ export default {
     fileInfos: {type: Array, default:()=> []},
     selectedFiles: {type: Array, default:null},
     allowedFileSizeMb: {type: Number, required: true},
+    mimeType: {type: String, required: true},
     selectFiles: {
       type: Function,
       default: () => {}

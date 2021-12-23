@@ -123,22 +123,4 @@ describe("RESTClient", () =>{
         expect(client.auth_headers('fun_token')['Authorization']).toEqual('Bearer fun_token');
     });
 
-    it("uploadLogo", async () => {
-/*
-        const dummy = {
-            readAsDataURL: jest.fn(),
-            onload: () => new Promise((resolve) => {
-                resolve()
-            }),
-            onerror:()=>new Promise((reject)=>{
-                reject(new Error("reject 1"));
-            }),
-            result: 'vv',
-            get:()=>'res'
-        }
-        window.FileReader = jest.fn(() => dummy)
-        let resp = await client.uploadLogo({get:()=>{}});
-*/
-    });
-
 });

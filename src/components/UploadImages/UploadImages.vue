@@ -32,6 +32,7 @@ export default {
     allowedFileSizeMb: {type: Number, required: true},
     baseApiEndpoint: {type: String, required: true},
     mimeType: {type: String, required: true},
+    multipleUpload: {type: Boolean, default: false},
   },
   data() {
     return {

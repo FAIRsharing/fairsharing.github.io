@@ -5,17 +5,14 @@ const sinon = require("sinon");
 
 describe("UpdateFilesService", () => {
     let client;
-    let dataStub = {data: "testData"};
-    let clientStub = {data: "a.jpg"};
-    let stub = sinon.stub(UploadService, "uploadLogo");
+    let clientStub = {data: {data: {attributes: {}}}};
     let stub2 = sinon.stub(RestClient.prototype, "executeQuery");
     beforeAll( () => {
-        stub.withArgs(sinon.match.any).returns(dataStub);
         stub2.withArgs(sinon.match.any).returns(clientStub);
         client = new RestClient();
     });
     afterAll(() => {
-            stub.restore();
+            stub2.restore();
     });
 
     it("can be instantiated as a singleton", function(){
@@ -30,28 +27,8 @@ describe("UpdateFilesService", () => {
     });
 
     it("uploadLogo", async () => {
-        await UploadService.formData.append('logo',{name:'a.jpg'});
-        console.log(UploadService.formData)
-        const resp = await UploadService.uploadLogo(null);
-        console.log(resp)
+        const mFile = new File(['attributes'], 'go.jpg');
+        await UploadService.uploadLogo(mFile);
     })
-
-    it("uploadLogo", async () => {
-        /*
-                const dummy = {
-                    readAsDataURL: jest.fn(),
-                    onload: () => new Promise((resolve) => {
-                        resolve()
-                    }),
-                    onerror:()=>new Promise((reject)=>{
-                        reject(new Error("reject 1"));
-                    }),
-                    result: 'vv',
-                    get:()=>'res'
-                }
-                window.FileReader = jest.fn(() => dummy)
-                let resp = await client.uploadLogo({get:()=>{}});
-        */
-    });
 
 })

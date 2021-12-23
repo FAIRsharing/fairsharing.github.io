@@ -16,12 +16,8 @@ class UploadFilesService {
 
     async uploadLogo(file) {
         // tailored specially for uploading files and showing progress of upload as logo
-        if (this.formData.get('logo')) {
-            this.formData.set("logo", file)
-        }
-        else {
-            this.formData.append("logo", file)
-        }
+        this.formData.delete('logo')
+        this.formData.append("logo", file)
         return await restClient.uploadLogo(this.formData);
     }
 

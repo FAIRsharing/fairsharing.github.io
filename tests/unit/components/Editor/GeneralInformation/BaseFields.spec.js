@@ -27,6 +27,7 @@ recordStore.state.sections = {
 
 recordStore.state.newRecord = false;
 userStore.state.user().is_curator = false;
+userStore.state.user().credentials.token = 'a token';
 
 const $store = new Vuex.Store({
     modules: {
@@ -68,14 +69,14 @@ describe('Editor -> BaseFields.vue', () => {
 
     it("disables type field except for new records and curators", () => {
         userStore.state.user = function(){
-            return { is_curator: false }
+            return { is_curator: false, credentials:{token:'a token'} }
         };
         expect(wrapper.vm.typeChangeDisabled()).toBe(true);
         recordStore.state.newRecord = true;
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);
 
         userStore.state.user = function(){
-            return { is_curator: true }
+            return { is_curator: true, credentials:{token:'a token'} }
         };
         recordStore.state.newRecord = false;
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);

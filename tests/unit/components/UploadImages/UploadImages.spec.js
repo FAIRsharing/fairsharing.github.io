@@ -27,7 +27,7 @@ describe('UploadImages.vue', () => {
 
     beforeAll( async () => {
         mocks.setMock("uploadMock",
-            UploadService.prototype,
+            UploadService,
             "uploadLogo",
             "a.jpg"
         );
@@ -81,6 +81,7 @@ describe('UploadImages.vue', () => {
 
     it("can check upload method functionality", async() => {
         await wrapper.vm.upload(0,{name:''})
+        expect(wrapper.vm.fileInfos.length).not.toBe(0)
     })
 
     it("can be instantiated without credentials", () => {

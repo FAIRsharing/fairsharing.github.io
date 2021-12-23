@@ -42,7 +42,6 @@ export default {
     };
   },
   async mounted() {
-    this.uploadService = new UploadService();
     // if the credential is needed for upload process then set the formData default credential data / can be ignored in case we did not need credential for uploading
     await this.setFormCredential();
     // this method is used to  either call an api endpoint  or get file or list of files from store and update the list of presentation component.
@@ -56,7 +55,7 @@ export default {
           id: this.credentialInfo.id,
           token: this.credentialInfo.token
         }
-        await this.uploadService.setFormData(data)
+        await UploadService.setFormData(data)
       }
     },
     selectFiles(files) {
@@ -79,7 +78,7 @@ export default {
     async upload(idx, file) {
       this.loading = true
       this.progressInfos[idx] = {percentage: 0, fileName: file.name};
-      let response = await this.uploadService[this.uploadServiceName](file)
+      const response = await UploadService[this.uploadServiceName](file)
       this.progressInfos[idx].percentage = 100;
       this.loading = false
       await this.downloadFiles(response);

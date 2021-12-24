@@ -434,7 +434,7 @@
     <!-- Upload logo -->
     <v-col cols="12">
       Logo:
-      <upload-images
+      <upload-files
         :credential-info="{id:getField('id'),token:user().credentials.token}"
         :initial-images="getField('urlForLogo')"
         :upload-service-name="'uploadLogo'"
@@ -443,7 +443,7 @@
         mime-type="image/jpeg,image/gif,image/png"
       />
       <v-divider />
-      <upload-images
+      <upload-files
         :credential-info="{id:getField('id'),token:user().credentials.token}"
         :upload-service-name="'uploadMultipleFilesPerRequest'"
         :base-api-endpoint="getAPIEndPoint()"
@@ -479,12 +479,12 @@
     import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
     import DatabaseWarning from "./DatabaseWarning";
     import Icon from "@/components/Icon"
-    import UploadImages from "@/components/UploadImages/UploadImages";
+    import UploadFiles from "@/components/UploadFiles/UploadFiles";
     import getAPIEndPoint from "@/utils/generalUtils";
 
     export default {
       name: "BaseFields",
-      components: {UploadImages, DatabaseWarning, CountryFlag, StatusPills, Icon},
+      components: {UploadFiles, DatabaseWarning, CountryFlag, StatusPills, Icon},
       mixins: [getAPIEndPoint],
       data(){
           return {

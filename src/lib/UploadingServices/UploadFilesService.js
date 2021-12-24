@@ -34,8 +34,9 @@ class UploadFilesService {
             this.formData.append('files[' + i + ']', files[i])
         }
 
-        // write the code to send multiple files in one request and calling an endpoint perhaps..
-        // for test purpose I have returned an array  of items
+        // write your code for sending multiple files in one request to call API endpoint
+        // ......
+        // for test purpose I have returned an array of items
         return files.map((file, index) => {
             return {url: 'url' + index, name: file.name}
         })

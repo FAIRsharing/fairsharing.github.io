@@ -1,5 +1,5 @@
 import {shallowMount} from "@vue/test-utils";
-import UploadImages from "@/components/UploadImages/UploadImages"
+import UploadFiles from "@/components/UploadFiles/UploadFiles"
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import sinon from "sinon";
 
@@ -24,7 +24,7 @@ let mocks = {
 };
 
 
-describe('UploadImages.vue', () => {
+describe('UploadFiles.vue', () => {
     let wrapper;
     let wrapper2;
     let wrapper3;
@@ -47,7 +47,7 @@ describe('UploadImages.vue', () => {
 
 
     it("can be instantiated", () => {
-        wrapper = shallowMount(UploadImages,
+        wrapper = shallowMount(UploadFiles,
             {
                 propsData: {
                     credentialInfo: {id: 1, token: 'myToken'},
@@ -62,7 +62,7 @@ describe('UploadImages.vue', () => {
         wrapper.vm.$refs['FileUpload'] = {
             afterUpload: jest.fn()
         };
-        expect(wrapper.name()).toMatch("UploadImages");
+        expect(wrapper.name()).toMatch("UploadFiles");
     });
 
     it("can check selectFiles method functionality", () => {
@@ -94,7 +94,7 @@ describe('UploadImages.vue', () => {
     })
 
     it("can be instantiated without credentials", () => {
-         wrapper2 = shallowMount(UploadImages,
+         wrapper2 = shallowMount(UploadFiles,
             {
                 propsData: {
                     credentialInfo: null,
@@ -109,12 +109,12 @@ describe('UploadImages.vue', () => {
         wrapper2.vm.$refs['FileUpload'] = {
             afterUpload: jest.fn()
         };
-        expect(wrapper2.name()).toMatch("UploadImages");
+        expect(wrapper2.name()).toMatch("UploadFiles");
     });
 
 
     it("can be instantiated to test multiple upload in one request", () => {
-         wrapper3 = shallowMount(UploadImages,
+         wrapper3 = shallowMount(UploadFiles,
             {
                 propsData: {
                     credentialInfo: null,
@@ -131,7 +131,7 @@ describe('UploadImages.vue', () => {
         wrapper3.vm.$refs['FileUpload'] = {
             afterUpload: jest.fn()
         };
-        expect(wrapper3.name()).toMatch("UploadImages");
+        expect(wrapper3.name()).toMatch("UploadFiles");
     });
 
     it("can check selectFiles to test multiple files in one request functionality", () => {

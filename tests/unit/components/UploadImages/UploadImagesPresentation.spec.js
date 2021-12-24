@@ -1,12 +1,12 @@
 import {shallowMount} from "@vue/test-utils";
-import UploadImagesPresentation from "@/components/UploadImages/UploadImagesPresentation"
+import UploadFilesPresentation from "@/components/UploadFiles/UploadFilesPresentation"
 
 
-describe('UploadImagesPresentation.vue', () => {
+describe('UploadFilesPresentation.vue', () => {
     let wrapper;
 
     it("can be instantiated", async () => {
-        wrapper = shallowMount(UploadImagesPresentation,
+        wrapper = shallowMount(UploadFilesPresentation,
             {
                 propsData: {
                     credentialInfo: {id: 1, token: 'myToken'},
@@ -32,7 +32,7 @@ describe('UploadImagesPresentation.vue', () => {
             reset: jest.fn()
         };
         await wrapper.vm.afterUpload()
-        expect(wrapper.name()).toMatch("UploadImages");
+        expect(wrapper.name()).toMatch("UploadFilesPresentation");
     });
 
 });

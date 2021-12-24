@@ -65,7 +65,8 @@ export default {
     selectFiles(files) {
       if (isArray(files)) {
         this.selectedFiles = files;
-      } else {
+      }
+      else {
         this.selectedFiles = []
         this.selectedFiles[0] = files;
       }

@@ -6,11 +6,13 @@ import sinon from "sinon";
 // Preparing mocks
 let mocks = {
     uploadMock: null,
+    uploadMultipleFilesPerRequestMock: null,
     restore: function(mockKey) {
         this[mockKey].restore();
     },
     restoreAll: function(){
         this.restore("uploadMock");
+        this.restore("uploadMultipleFilesPerRequestMock");
     },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
         this[mockKey] = sinon.stub(targetClass, targetMethod);
@@ -24,13 +26,20 @@ let mocks = {
 
 describe('UploadImages.vue', () => {
     let wrapper;
-
+    let wrapper2;
+    let wrapper3;
     beforeAll( async () => {
         mocks.setMock("uploadMock",
             UploadService,
             "uploadLogo",
             "a.jpg"
         );
+        mocks.setMock("uploadMultipleFilesPerRequestMock",
+            UploadService,
+            "uploadMultipleFilesPerRequest",
+            ["a.jpg","b.jpg"]
+        );
+
     });
     afterAll( () => {
         mocks.restoreAll();
@@ -85,7 +94,7 @@ describe('UploadImages.vue', () => {
     })
 
     it("can be instantiated without credentials", () => {
-        const wrapper2 = shallowMount(UploadImages,
+         wrapper2 = shallowMount(UploadImages,
             {
                 propsData: {
                     credentialInfo: null,
@@ -104,7 +113,38 @@ describe('UploadImages.vue', () => {
     });
 
 
+    it("can be instantiated to test multiple upload in one request", () => {
+         wrapper3 = shallowMount(UploadImages,
+            {
+                propsData: {
+                    credentialInfo: null,
+                    initialImages: null,
+                    uploadServiceName: "uploadMultipleFilesPerRequest",
+                    allowedFileSizeMb: 3,
+                    baseApiEndpoint: "https://fairsharing-api.org/",
+                    mimeType: "image/*",
+                    multipleUpload: true,
+                    multipleFilesPerRequest: true,
+                }
+            }
+        );
+        wrapper3.vm.$refs['FileUpload'] = {
+            afterUpload: jest.fn()
+        };
+        expect(wrapper3.name()).toMatch("UploadImages");
+    });
 
+    it("can check selectFiles to test multiple files in one request functionality", () => {
+        wrapper3.vm.selectFiles([{img:'blablah'},{img:'aasd'}])
+        expect(wrapper3.vm.selectedFiles.length).toBe(2);
+        wrapper3.vm.selectFiles('image.jpg')
+        expect(wrapper3.vm.selectedFiles.length).toBe(1);
+    })
+
+    it("can check uploadFiles with multiple files in one request functionality", async() => {
+        await wrapper3.vm.uploadFiles(false)
+        expect(wrapper.vm.selectedFiles).toBe(null)
+    })
 
 
 });

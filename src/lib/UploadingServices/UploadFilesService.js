@@ -22,7 +22,13 @@ class UploadFilesService {
     }
 
     async uploadMultipleFilesPerRequest(files) {
-        await this.resetFormDataFromFiles()
+        // by doing the below line, the formData deletes all the previous 'files' keys
+        for (let key in JSON.parse(JSON.stringify(Object.fromEntries(this.formData)))) {
+            if (key.includes('files')) {
+                this.formData.delete(key);
+            }
+        }
+
         // can upload multiple files in one request
         for (let i = 0; i < files.length; i++) {
             this.formData.append('files[' + i + ']', files[i])
@@ -34,15 +40,6 @@ class UploadFilesService {
             return {url: 'url' + index, name: file.name}
         })
 
-    }
-
-    async resetFormDataFromFiles() {
-        // by doing the below line, the formData deletes all the previous 'files' keys
-        for (let key in JSON.parse(JSON.stringify(Object.fromEntries(this.formData)))) {
-            if (key.includes('files')) {
-                this.formData.delete(key);
-            }
-        }
     }
 
     /*

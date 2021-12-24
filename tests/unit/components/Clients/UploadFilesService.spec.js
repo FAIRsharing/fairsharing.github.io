@@ -29,6 +29,19 @@ describe("UpdateFilesService", () => {
     it("uploadLogo", async () => {
         const mFile = new File(['attributes'], 'go.jpg');
         await UploadService.uploadLogo(mFile);
+        expect(UploadService.formData.has('logo')).toBe(true)
     })
+
+    it("uploadMultipleFilesPerRequest", async () => {
+        const mFile = new File(['url'], 'go.jpg');
+        const mFile2 = new File(['url'], 'go.jpg');
+        let files = [mFile,mFile2]
+        await UploadService.uploadMultipleFilesPerRequest(files);
+        expect(UploadService.formData.has('files[1]')).toBe(true)
+        files = [mFile]
+        await UploadService.uploadMultipleFilesPerRequest(files);
+        expect(UploadService.formData.has('files[1]')).toBe(false)
+    })
+
 
 })

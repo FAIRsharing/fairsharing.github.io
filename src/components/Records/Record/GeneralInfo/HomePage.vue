@@ -3,11 +3,14 @@
     <b class="width-200">Homepage</b>
     <div class="d-flex full-width ml-md-12 ml-13">
       <a
-        v-if="getField('homepage')"
+        v-if="getField('homepage') && !getField('metadata').reference_url"
         :href="getField('homepage')"
         target="_blank"
         class="underline-effect"
       >{{ getField('homepage') }}</a>
+      <span v-else-if="getField('homepage') && getField('metadata').reference_url">
+        Not available
+      </span>
       <NoneFound
         v-else
         :string-field="getField('homepage')"

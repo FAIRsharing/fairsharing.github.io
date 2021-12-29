@@ -30,7 +30,7 @@
     }
 
     .ribbon span {
-        font-size: .54rem;
+        font-size: .8rem;
         font-weight: bold;
         color: #FFF;
         text-transform: uppercase;

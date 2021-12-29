@@ -8,6 +8,8 @@
   >
     <!-- General Info -->
     <SectionTitle title="General Information" />
+    <!-- Record ribbon showing registry type -->
+    <Ribbon :title="currentRecord['fairsharingRecord'].registry" />
     <!-- Deprecation Reason -->
     <DeprecationReason />
     <!-- Replaced By record -->
@@ -83,10 +85,12 @@ import {mapState} from "vuex";
 import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
 import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason";
 import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord";
+import Ribbon from "@/components/Records/Shared/Ribbon";
 
 export default {
   name: "GeneralInfo",
   components: {
+    Ribbon,
     ReplacedByRecord,
     DeprecationReason,
     ReferenceURL,

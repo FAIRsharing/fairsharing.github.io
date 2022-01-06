@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/recordData.js"
 import Vuetify from "vuetify"
-import Contacts from "@/components/Records/Record/GeneralInfo/Contacts";
+import ContactsData from "@/components/Records/Record/GeneralInfo/ContactsData";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -21,12 +21,12 @@ const $store = new Vuex.Store({
         record:Record
     }});
 
-describe("Contacts.vue", function(){
+describe("ContactsData.vue", function(){
     let wrapper;
 
     // TODO: Mock properties in options {}.
     beforeEach(() => {
-        wrapper = shallowMount(Contacts, {
+        wrapper = shallowMount(ContactsData, {
             localVue,
             vuetify,
             mocks: {$store}
@@ -34,7 +34,7 @@ describe("Contacts.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Contacts");
+        expect(wrapper.name()).toMatch("ContactsData");
     });
 
 });

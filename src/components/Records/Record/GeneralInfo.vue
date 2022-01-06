@@ -9,9 +9,9 @@
     <!-- General Info -->
     <SectionTitle title="General Information" />
     <!-- Deprecation Reason -->
-    <DeprecationReason />
+    <DeprecationReason v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
     <!-- Replaced By record -->
-    <ReplacedByRecord />
+    <ReplacedByRecord v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
     <!-- Title and DOI -->
     <DOITitle />
     <!--  other data  -->
@@ -23,23 +23,27 @@
       <!--Description-->
       <Description />
       <!--Home Page-->
-      <HomePage />
+      <HomePage v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Reference URL-->
-      <ReferenceURL v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
+      <ReferenceURL v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Year of Creation-->
-      <YearOfCreation />
+      <YearOfCreation v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Maintainers-->
       <Maintainers
+        v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
         :can-claim="canClaim"
         @requestOwnership="callRequestOwnership"
       />
       <!--Developed Countries-->
-      <Countries />
+      <Countries v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Keywords-->
-      <Keywords />
+      <Keywords v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
 
       <!-- Duplicate link to graph (see also action menu) -->
-      <div class="d-flex flex-row">
+      <div
+        v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
+        class="d-flex flex-row"
+      >
         <router-link :to="`/graph/${currentRecord['fairsharingRecord'].id}`">
           <v-btn
             class="my-5"
@@ -58,9 +62,9 @@
       </div>
 
       <!--How to cite & publication for record named Citations-->
-      <Citations />
+      <Citations v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--updates and creation date-->
-      <UpdateCreateDetail />
+      <UpdateCreateDetail v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
     </div>
     <section />
   </v-card>

@@ -8,7 +8,7 @@
         <div class="d-flex flex-row align-center">
           <h3>{{ getField('name') }}</h3>
           <b
-            v-if="getField('abbreviation')"
+            v-if="getField('abbreviation') && getField('registry')!=='Collection'"
             style="font-size: 16px"
             class="ml-2"
           >({{ getField('abbreviation') }})</b>
@@ -24,7 +24,7 @@
             />
           </div>
           <div
-            v-if="getField('doi')"
+            v-if="getField('doi') && getField('registry')!=='Collection'"
             class="d-flex flex-row"
           >
             <a

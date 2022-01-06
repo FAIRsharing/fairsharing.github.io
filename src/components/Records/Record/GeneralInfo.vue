@@ -38,8 +38,8 @@
         :can-claim="canClaim"
         @requestOwnership="callRequestOwnership"
       />
-      <!--Contacts-->
-      <Contacts v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
+      <!--ContactsData-->
+      <ContactsData v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
       <!--Developed Countries-->
       <Countries v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Keywords-->
@@ -90,14 +90,14 @@ import {mapGetters, mapState} from "vuex";
 import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
 import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason";
 import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord";
-import Contacts from "@/components/Records/Record/GeneralInfo/Contacts";
+import ContactsData from "@/components/Records/Record/GeneralInfo/ContactsData";
 import Organisations from "@/components/Records/Record/Organisations";
 
 export default {
   name: "GeneralInfo",
   components: {
     Organisations,
-    Contacts,
+    ContactsData,
     ReplacedByRecord,
     DeprecationReason,
     ReferenceURL,

@@ -9,9 +9,9 @@
     <!-- General Info -->
     <SectionTitle title="General Information" />
     <!-- Deprecation Reason -->
-    <DeprecationReason v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
+    <DeprecationReason />
     <!-- Replaced By record -->
-    <ReplacedByRecord v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
+    <ReplacedByRecord />
     <!-- Title and DOI -->
     <DOITitle />
     <!--  other data  -->
@@ -22,28 +22,28 @@
       <Registry />
       <!--Description-->
       <Description />
+      <!--Organisations-->
+      <!-- <organisations/> must be added here    -->
       <!--Home Page-->
-      <HomePage v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
+      <HomePage />
       <!--Reference URL-->
-      <ReferenceURL v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
+      <ReferenceURL v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
       <!--Year of Creation-->
       <YearOfCreation v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Maintainers-->
       <Maintainers
-        v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
         :can-claim="canClaim"
         @requestOwnership="callRequestOwnership"
       />
+      <!--Contacts-->
+      <Contacts />
       <!--Developed Countries-->
       <Countries v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Keywords-->
-      <Keywords v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
+      <Keywords />
 
       <!-- Duplicate link to graph (see also action menu) -->
-      <div
-        v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
-        class="d-flex flex-row"
-      >
+      <div class="d-flex flex-row">
         <router-link :to="`/graph/${currentRecord['fairsharingRecord'].id}`">
           <v-btn
             class="my-5"
@@ -62,9 +62,9 @@
       </div>
 
       <!--How to cite & publication for record named Citations-->
-      <Citations v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
+      <Citations />
       <!--updates and creation date-->
-      <UpdateCreateDetail v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
+      <UpdateCreateDetail />
     </div>
     <section />
   </v-card>
@@ -87,10 +87,12 @@ import {mapState} from "vuex";
 import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
 import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason";
 import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord";
+import Contacts from "@/components/Records/Record/GeneralInfo/Contacts";
 
 export default {
   name: "GeneralInfo",
   components: {
+    Contacts,
     ReplacedByRecord,
     DeprecationReason,
     ReferenceURL,

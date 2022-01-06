@@ -39,7 +39,7 @@
   </div>
   <div
     v-else
-    class="align-center d-flex flex-row "
+    class="align-center d-flex flex-row mb-2"
   >
     <b class="width-200">Contacts</b>
     <span class="ma-0 full-width ml-md-12 ml-13">None</span>

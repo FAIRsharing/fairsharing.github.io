@@ -1,5 +1,8 @@
 <template>
-  <div class="d-flex flex-row mt-8">
+  <div
+    v-if="getField('publications') && getField('publications').length || currentRecord['fairsharingRecord'].registry!=='Collection'"
+    class="d-flex flex-row mt-8"
+  >
     <v-row>
       <!--How to cite this record-->
       <v-col
@@ -124,7 +127,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapState} from "vuex";
 import Icon from "@/components/Icon"
 import {truncate} from "@/utils/stringUtils"
 import moment from "moment";
@@ -140,6 +143,7 @@ export default {
     }
   },
   computed: {
+    ...mapState("record", ["currentRecord"]),
     ...mapGetters("record", ["getField"]),
   },
   methods:{

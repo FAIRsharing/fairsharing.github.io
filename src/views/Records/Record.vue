@@ -99,7 +99,7 @@
                   <span v-if="!alreadyClaimed && ownershipApproved && noClaimRegistered && error" />
                   <!--    here code checks if the ownership has been rejected (after query is triggered)  -->
                   <v-alert
-                    v-else-if="!ownershipApproved && !alreadyClaimed && !noClaimRegistered"
+                    v-else-if="!ownershipApproved && !alreadyClaimed && !noClaimRegistered && showBanner"
                     dense
                     type="error"
                     class="mb-2 flex-grow-1"
@@ -652,8 +652,8 @@ export default {
               const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
               const expiryDate = new Date(temp[_module.getField("id")]);
               let now = new Date();
-              const DAY = 1;
-              const isExpired = expiryDate.getTime() + (DAY * 60 * 60 * 60 * 1000) < now.getTime();
+              const DAY = 2;
+              const isExpired = expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) < now.getTime();
               if (isExpired) {
                 _module.showBanner = false;
               }

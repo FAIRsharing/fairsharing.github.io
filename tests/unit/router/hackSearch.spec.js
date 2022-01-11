@@ -17,9 +17,11 @@ describe("hackSearch", () => {
         query = {content: 'database'};
         expect(hackSearch(query)).toStrictEqual([{fairsharingRegistry: 'database'}, true]);
         query = {search_state: 'hidden'};
-        expect(hackSearch(query)).toStrictEqual([{}, true]);
+        expect(hackSearch(query)).toStrictEqual([{}, false]);
+        query = {a:undefined};
+        expect(hackSearch(query)).toStrictEqual([{}, false]);
         query = {clue: ''};
-        expect(hackSearch(query)).toStrictEqual([{}, true]);
+        expect(hackSearch(query)).toStrictEqual([{}, false]);
     });
 
 });

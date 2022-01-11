@@ -316,12 +316,54 @@
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"
                   :key="itemData+'_'+itemDataIndex"
-                  class="mb-1"
+                  :class="['mb-1',{'d-flex':isArray(itemData)===true && $vuetify.breakpoint.lgAndUp}]"
                 >
-                  <p
-                    class="ma-0"
-                    v-html="$sanitize(itemData)"
-                  />
+                  <div
+                    v-if="!isArray(itemData)"
+                    class="d-flex mb-2"
+                  >
+                    <p
+                      class="ma-0"
+                      v-html="$sanitize(itemData.text)"
+                    />
+                    <a
+                      class="ml-2 pr-2"
+                      :href="itemData.link.toString().includes('@')?`mailto:${itemData.link}`:itemData.link"
+                      target="_blank"
+                    >
+                      <Icon
+                        class="mr-1"
+                        item="Orcid"
+                        :height="25"
+                        size="30"
+                        wrapper-class=""
+                      />
+                    </a>
+                  </div>
+                  <div
+                    v-for="(itemDataArray,itemDataArrayIndex) in itemData"
+                    v-else
+                    :key="itemDataArray.link+'_'+itemDataArrayIndex"
+                    class="d-flex mb-2"
+                  >
+                    <p
+                      class="ma-0"
+                      v-html="$sanitize(itemDataArray.text)"
+                    />
+                    <a
+                      class="ml-2 pr-2"
+                      :href="itemDataArray.link.toString().includes('@')?`mailto:${itemDataArray.link}`:itemDataArray.link"
+                      target="_blank"
+                    >
+                      <Icon
+                        class="mr-1"
+                        item="Orcid"
+                        :height="25"
+                        size="30"
+                        wrapper-class=""
+                      />
+                    </a>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -342,7 +384,7 @@
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import {externalLinks, contentTabs, tables, governance, meettheteam} from "@/data/communityPageData.json"
 import Icon from "@/components/Icon";
-
+import {isArray} from "lodash";
 /** This component handles the sign-up/register page
 * @memberOf Static
 * @name Community
@@ -388,6 +430,9 @@ export default {
         this.$router.push({hash: `${selectedAnchor}`});
         this.currentAnchor = selectedAnchor;
       }
+    },
+    isArray(input){
+      return isArray(input)
     }
   }
 }

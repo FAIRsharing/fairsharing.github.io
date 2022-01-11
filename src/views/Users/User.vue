@@ -206,6 +206,33 @@
               cols="12"
               xl="4"
               lg="6"
+              md="6"
+              sm="12"
+              xs="12"
+              class="pt-0"
+            >
+              <v-card
+                height="100%"
+                class="d-flex flex-column rounded-0"
+              >
+                <v-card-title class="primary white--text py-3">
+                  Record Edits
+                </v-card-title>
+                <v-card-text
+                  class="pa-0"
+                  style="flex-grow: 1"
+                >
+                  <EditsTable
+                    :edits="user().metadata.editEvents"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-col>
+
+            <v-col
+              cols="12"
+              xl="4"
+              lg="6"
               md="12"
               sm="12"
               xs="12"
@@ -334,6 +361,7 @@
     import Loaders from "@/components/Navigation/Loaders";
     import ExternalClient from "@/lib/Client/ExternalClients.js"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
+    import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
     import { cleanString } from "@/utils/stringUtils"
     import getHostname from "@/utils/generalUtils"
     import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
@@ -346,13 +374,25 @@
 
     export default {
       name: "User",
-      components: {ViewOrganisations, RecordsTable, Loaders, UserProfileMenu},
+      components: {ViewOrganisations, RecordsTable, EditsTable, Loaders, UserProfileMenu},
       mixins: [cleanString, getHostname],
       data: () => {
         return {
             copyButtonStatus: false,
             panel: 0,
-            hideFields: ["role_id", "deactivated", "id", "created_at", "updated_at", "username"],
+            hideFields: [
+              "role_id",
+              "deactivated",
+              "id",
+              "created_at",
+              "updated_at",
+              "username",
+              "watched_records",
+              "expiry",
+              "is_curator",
+              "is_super_curator",
+              "editEvents"
+            ],
             loading: false,
             publications: [],
             activeTab: 0

@@ -175,6 +175,7 @@
                 </v-card-actions>
               </v-card>
             </v-col>
+
             <v-col
               cols="12"
               xl="4"
@@ -198,6 +199,33 @@
                   <RecordsTable
                     :records="userData.user.maintainedRecords"
                     source="publicMaintainedRecords"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-col>
+
+            <v-col
+              cols="12"
+              xl="4"
+              lg="6"
+              md="6"
+              sm="12"
+              xs="12"
+              class="pt-0"
+            >
+              <v-card
+                height="100%"
+                class="d-flex flex-column rounded-0"
+              >
+                <v-card-title class="primary white--text py-3">
+                  Record Edits
+                </v-card-title>
+                <v-card-text
+                  class="pa-0"
+                  style="flex-grow: 1"
+                >
+                  <EditsTable
+                    :edits="userData.user.editEvents"
                   />
                 </v-card-text>
               </v-card>
@@ -252,6 +280,7 @@
     import ExternalClient from "@/lib/Client/ExternalClients.js"
     import NotFound from "@/views/Errors/404"
     import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
+    import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
     import { cleanString } from "@/utils/stringUtils"
     import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
     import Icon from "@/components/Icon";
@@ -264,7 +293,7 @@
 
     export default {
       name: "PublicProfile",
-      components: {ViewOrganisations, RecordsTable, Loaders, NotFound, UserProfileMenu, Icon},
+      components: {ViewOrganisations, RecordsTable, EditsTable, Loaders, NotFound, UserProfileMenu, Icon},
       mixins: [cleanString],
       data: () => {
         return {
@@ -287,6 +316,7 @@
           let userMeta = JSON.parse(JSON.stringify(this.userData.user));
           delete userMeta["maintainedRecords"];
           delete userMeta["organisations"];
+          delete userMeta["editEvents"];
           return userMeta;
         },
       },

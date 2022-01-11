@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="getField('publications') && getField('publications').length || currentRecord['fairsharingRecord'].registry!=='Collection'"
     class="d-flex flex-row mt-8"
   >
     <v-row>

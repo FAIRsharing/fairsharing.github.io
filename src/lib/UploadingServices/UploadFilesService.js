@@ -9,15 +9,16 @@ class UploadFilesService {
     }
 
     async setFormData(data) {
-        // can be passed or added any type of data we need to include before uploading the files like credentials
-        this.formData.append("id",data.id)
-        this.formData.append("token",data.token)
+        // can be passed or added any type of data we need to include BEFORE uploading the files like credentials
+        for (const [key, value] of Object.entries(data)) {
+            this.formData.append(key, String(value))
+        }
     }
 
-    async uploadLogo(file) {
-        // tailored specially for uploading files and showing progress of upload as logo
-        this.formData.delete('logo')
-        this.formData.append("logo", file)
+    async uploadOneFilePerRequest(file,key="file") {
+        this.formData.delete(key)
+        this.formData.append(key, file)
+        // the below line is tailored specially for uploading files for FAIRsharing app.
         return await restClient.uploadLogo(this.formData);
     }
 
@@ -29,27 +30,18 @@ class UploadFilesService {
             }
         }
 
-        // can upload multiple files in one request
+        // can add multiple files in one request
         for (let i = 0; i < files.length; i++) {
             this.formData.append('files[' + i + ']', files[i])
         }
 
         // write your code for sending multiple files in one request to call API endpoint
-        // ......
         // for test purpose I have returned an array of items
         return files.map((file, index) => {
             return {url: 'url' + index, name: file.name}
         })
 
     }
-
-    /*
-        // example of other upload classes that can be passed to UploadImage component as upload-service-name
-        async uploadFilesToMyEndpoint(file, onUploadProgress) {
-            // put your code to upload to other endpoint here
-            for example sending as multiple-form data
-        }
-    */
 
 }
 

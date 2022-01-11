@@ -12,6 +12,8 @@
       :allowed-file-size-mb="allowedFileSizeMb"
       :mime-type="mimeType"
       :multiple-upload="multipleUpload"
+      :title="title"
+      :input-label="inputLabel"
       @uploadFiles="uploadFiles"
     />
   </div>
@@ -36,6 +38,9 @@ export default {
     multipleUpload: {type: Boolean, default: false},
     linearProgressBar: {type: Boolean, default: true},
     multipleFilesPerRequest: {type: Boolean, default: false},
+    fileKeyName: {type: String, default: null},
+    title: {type: String, default: null},
+    inputLabel: {type: String, default: 'Select File'},
   },
   data() {
     return {
@@ -88,6 +93,7 @@ export default {
       await this.$refs.FileUpload.afterUpload();
     },
     async upload_multiple_files_once(files) {
+      this.progressInfos = []
       this.loading = true
       this.progressInfos[0] = {percentage: 0};
       const response = await UploadService[this.uploadServiceName](files)
@@ -98,8 +104,9 @@ export default {
     },
     async upload(idx, file) {
       this.loading = true
+      this.progressInfos = []
       this.progressInfos[idx] = {percentage: 0, fileName: file.name};
-      const response = await UploadService[this.uploadServiceName](file)
+      const response = await UploadService[this.uploadServiceName](file,this.fileKeyName)
       // this.uploadServiceName which is a function of a method must be implemented the way to accept one file per request
       this.progressInfos[idx].percentage = 100;
       this.loading = false

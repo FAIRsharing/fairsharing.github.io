@@ -26,13 +26,15 @@ describe("UpdateFilesService", () => {
         expect(UploadService.formData.get('token')).toBe("tokenB");
     });
 
-    it("uploadLogo", async () => {
+    it("can check uploadOneFilePerRequest method", async () => {
         const mFile = new File(['attributes'], 'go.jpg');
-        await UploadService.uploadLogo(mFile);
+        await UploadService.uploadOneFilePerRequest(mFile,'logo');
         expect(UploadService.formData.has('logo')).toBe(true)
+        await UploadService.uploadOneFilePerRequest(mFile);
+        expect(UploadService.formData.has('file')).toBe(true)
     })
 
-    it("uploadMultipleFilesPerRequest", async () => {
+    it("can check  uploadMultipleFilesPerRequest method", async () => {
         const mFile = new File(['url'], 'go.jpg');
         const mFile2 = new File(['url'], 'go.jpg');
         let files = [mFile,mFile2]

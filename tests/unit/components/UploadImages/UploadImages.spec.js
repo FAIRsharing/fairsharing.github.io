@@ -5,13 +5,13 @@ import sinon from "sinon";
 
 // Preparing mocks
 let mocks = {
-    uploadMock: null,
+    uploadOneFilePerRequestMock: null,
     uploadMultipleFilesPerRequestMock: null,
     restore: function(mockKey) {
         this[mockKey].restore();
     },
     restoreAll: function(){
-        this.restore("uploadMock");
+        this.restore("uploadOneFilePerRequestMock");
         this.restore("uploadMultipleFilesPerRequestMock");
     },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
@@ -29,9 +29,9 @@ describe('UploadFiles.vue', () => {
     let wrapper2;
     let wrapper3;
     beforeAll( async () => {
-        mocks.setMock("uploadMock",
+        mocks.setMock("uploadOneFilePerRequestMock",
             UploadService,
-            "uploadLogo",
+            "uploadOneFilePerRequest",
             "a.jpg"
         );
         mocks.setMock("uploadMultipleFilesPerRequestMock",
@@ -52,7 +52,7 @@ describe('UploadFiles.vue', () => {
                 propsData: {
                     credentialInfo: {id: 1, token: 'myToken'},
                     initialImages: ['/hoseinmirian.jpg'],
-                    uploadServiceName: "uploadLogo",
+                    uploadServiceName: "uploadOneFilePerRequest",
                     allowedFileSizeMb: 3,
                     baseApiEndpoint: "https://fairsharing-api.org/",
                     mimeType: "image/*",
@@ -99,7 +99,7 @@ describe('UploadFiles.vue', () => {
                 propsData: {
                     credentialInfo: null,
                     initialImages: null,
-                    uploadServiceName: "uploadLogo",
+                    uploadServiceName: "uploadOneFilePerRequest",
                     allowedFileSizeMb: 3,
                     baseApiEndpoint: "https://fairsharing-api.org/",
                     mimeType: "image/*",

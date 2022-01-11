@@ -437,10 +437,12 @@
       <upload-files
         :credential-info="{id:getField('id'),token:user().credentials.token}"
         :initial-images="getField('urlForLogo')"
-        :upload-service-name="'uploadLogo'"
+        :upload-service-name="'uploadOneFilePerRequest'"
         :base-api-endpoint="getAPIEndPoint()"
         :allowed-file-size-mb="3"
         mime-type="image/jpeg,image/gif,image/png"
+        file-key-name="logo"
+        title="logo"
       />
       <v-divider />
       <upload-files
@@ -449,6 +451,8 @@
         :base-api-endpoint="getAPIEndPoint()"
         :allowed-file-size-mb="2"
         mime-type="image/jpeg,image/gif,image/png"
+        title="list of files"
+        input-label="Select Files"
         multiple-upload
         multiple-files-per-request
       />

@@ -35,8 +35,8 @@
           :accept="mimeType"
           show-size
           :multiple="multipleUpload"
-          label="Select Images"
-          hint="the file size must be below 2mb"
+          :label="inputLabel"
+          :hint="`each file size must be below ${allowedFileSizeMb} mb`"
           :rules="[rules.isAllowedSize()]"
           @change="selectFiles"
         />
@@ -72,7 +72,7 @@
       class="mx-auto"
     >
       <v-list>
-        <v-subheader>List of Files</v-subheader>
+        <v-subheader>{{ title }}</v-subheader>
         <!--   Images list     -->
         <v-list-item-group
           v-if="mimeType.includes('image')"
@@ -131,6 +131,8 @@ export default {
     selectedFiles: {type: Array, default:null},
     allowedFileSizeMb: {type: Number, required: true},
     mimeType: {type: String, required: true},
+    title: {type: String, default: null},
+    inputLabel: {type: String, default: 'Select File'},
     selectFiles: {
       type: Function,
       default: () => {}

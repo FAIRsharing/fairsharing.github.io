@@ -108,7 +108,7 @@
                   </v-alert>
                   <!--    here code checks if the ownership has been approved (after query is triggered)  -->
                   <v-alert
-                    v-else-if="ownershipApproved"
+                    v-else-if="ownershipApproved && showBanner"
                     dense
                     type="success"
                     class="mb-1 flex-grow-1"
@@ -307,7 +307,7 @@
 </template>
 
 <script>
-import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import Client from '@/lib/GraphClient/GraphClient.js'
 import RestClient from "@/lib/Client/RESTClient.js"
 import stringUtils from '@/utils/stringUtils';
@@ -365,6 +365,7 @@ export default {
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
+      showBanner:false,
       buttons: [],
       history: {
         show: false,
@@ -636,6 +637,29 @@ export default {
               }
             }
             else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
+
+            // assign expiring date for approval banner---
+            _module.showBanner = true;
+            let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
+            if (!bannerExpiryDate[_module.getField("id")]) {
+              bannerExpiryDate = {
+                ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
+                [_module.getField("id")]: new Date()
+              }
+              localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
+            }
+            else {
+              const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
+              const expiryDate = new Date(temp[_module.getField("id")]);
+              let now = new Date();
+              const DAY = 1;
+              const isExpired = expiryDate.getTime() + (DAY * 60 * 60 * 60 * 1000) < now.getTime();
+              if (isExpired) {
+                _module.showBanner = false;
+              }
+            }
+            // end of expiring date for approval banner---
+
             _module.canClaim = false;
           }
           else {

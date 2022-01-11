@@ -168,7 +168,7 @@ export default {
   computed: {
     ...mapGetters("record", ["getField"]),
     jointOrganisations(){
-      return this.getRelations('maintains').concat(this.getRelations('collaborates_on'));
+      return this.getRelations('maintains').concat(this.getRelations('collaborates_on').concat(this.getRelations('associated_with')));
     }
   },
   methods: {

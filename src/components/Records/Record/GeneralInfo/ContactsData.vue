@@ -11,7 +11,7 @@
     >
       <div
         style="min-height: 40px"
-        class="d-flex align-center mr-2"
+        class="d-flex align-center ml-2"
       >
         <b
           v-if="contact.contact_name"

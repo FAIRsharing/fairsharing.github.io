@@ -5,11 +5,11 @@
   >
     <b
       v-if="reverseRecordAssociationExist"
-      class="width-200"
+      class="width-15-percent-flex"
     >This record is replaced by: </b>
     <b
       v-if="recordAssociationExist"
-      class="width-200"
+      class="width-15-percent-flex"
     > This record replaces or incorporates the following deprecated resources: </b>
     
     <div

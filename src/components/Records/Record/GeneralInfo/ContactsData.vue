@@ -1,17 +1,15 @@
 <template>
   <div
     v-if="getField('metadata').contacts && getField('metadata').contacts.length"
-    class="d-flex align-center"
+    class="d-flex align-center flex-wrap"
   >
-    <b style="width: 210px">Contacts</b>
-    <div
-      v-for="(contact,index) in getField('metadata').contacts"
-      :key="contact+'_'+index"
-      class="ma-0"
-    >
+    <b class="width-15-percent-flex">Contacts</b>
+    <div class="d-flex flex-wrap ml-md-12 ml-13">
       <div
+        v-for="(contact,index) in getField('metadata').contacts"
+        :key="contact+'_'+index"
         style="min-height: 40px"
-        class="d-flex align-center ml-2"
+        class="d-flex align-center"
       >
         <b
           v-if="contact.contact_name"
@@ -41,7 +39,7 @@
     v-else
     class="align-center d-flex flex-row mb-2"
   >
-    <b class="width-200">Contacts</b>
+    <b class="width-15-percent-flex">Contacts</b>
     <span class="ma-0 full-width ml-md-12 ml-13">None</span>
   </div>
 </template>

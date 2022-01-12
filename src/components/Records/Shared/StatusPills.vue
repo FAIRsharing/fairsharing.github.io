@@ -1,6 +1,6 @@
 <template>
   <v-avatar
-    :style="statusStyles[status].background"
+    :style="statusStyles[status].backColor"
     size="48"
   >
     <span class="white--text">
@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { LightenDarkenColor } from '@/utils/generalUtils';
+
     export default {
         name: "StatusPills",
         props: {
@@ -20,39 +22,26 @@
                 statusStyles: {
                     ready: {
                         label: 'R',
-                        background: 'background: linear-gradient(#599C0F, lightgreen)'
+                        backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.ready_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.ready_color,50)})`
                     },
                     deprecated: {
                         label: 'D',
-                        background: 'background: linear-gradient(#707070, #C6C6C6)'
+                        backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.deprecated_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.deprecated_color,50)})`
                     },
                     uncertain: {
                         label: 'U',
-                        background: 'background: linear-gradient(#ADA3A3, #D6CCCC)'
+                        backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.uncertain_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.uncertain_color,50)})`
                     },
                     in_development: {
                         label: 'Dev',
-                        background: 'background: linear-gradient(#CB9221, #F5CE80)'
+                        backColor: `background: linear-gradient(${this.$vuetify.theme.themes.light.dev_color}, ${LightenDarkenColor(this.$vuetify.theme.themes.light.dev_color,50)})`
                     },
                     undefined: {
                         label: '?',
-                        background: 'background: linear-gradient(red, red)'
+                        backColor: 'background: linear-gradient(red, red)'
                     },
                 },
             }
         }
     }
 </script>
-
-<style scoped>
-    .circle {
-        padding:10px;
-        width:50px;
-        height:50px;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        display: table-cell;
-        vertical-align: middle;
-    }
-</style>

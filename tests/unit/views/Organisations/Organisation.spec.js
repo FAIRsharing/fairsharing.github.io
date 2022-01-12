@@ -72,6 +72,22 @@ describe("Organisation", () => {
         expect(wrapper.vm.currentRoute).toEqual(1);
     });
 
+    it("redirects to the search page for filtering", async() => {
+        graphStub.restore();
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            router,
+            mocks: {$route, $router},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        await wrapper.vm.getOrganisation();
+        wrapper.vm.filterRecords();
+        expect($router.push).toHaveBeenCalledWith({
+            name: "search",
+            query: {organisations: "100-talent%20program%20of%20chinese%20academy%20of%20sciences"}
+        });
+    });
+
     it("doesn't display if the organistion is not set in the response", async () => {
         graphStub.restore();
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
@@ -143,4 +159,5 @@ describe("Organisation", () => {
         $route.params.id = 10;
         expect(wrapper.vm.currentRoute).toEqual(10);
     });
+
 });

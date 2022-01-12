@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="getField('homepage')!==getField('metadata').reference_url"
+    v-if="getField('homepage') !== getField('metadata').reference_url"
     class="d-flex flex-row mt-4 align-center min-height-40"
   >
     <b class="width-200">Reference URL</b>

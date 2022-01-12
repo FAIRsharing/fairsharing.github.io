@@ -21,7 +21,7 @@
     v-else
     class="d-flex flex-row mt-4 align-center min-height-40"
   >
-    <b class="width-200">Reference URL</b>
+    <b class="width-15-percent-flex">Reference URL</b>
     <div class="d-flex full-width ml-md-12 ml-13">
       Not Available
     </div>

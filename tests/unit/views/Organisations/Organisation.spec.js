@@ -21,37 +21,38 @@ describe("Organisation", () => {
 
     let wrapper;
     let graphStub;
+    let organisation = {
+        id: 1,
+        name: "4DN Data Coordination and Integration Center",
+        alternativeNames: [],
+        homepage: "http://dcic.4dnucleome.org/",
+        types: [
+            "Consortium"
+        ],
+        urlForLogo: "/logo12345678",
+        childOrganisations: [],
+        parentOrganisations: [],
+        organisationLinks: [
+            {
+                id: 6057,
+                isLead: true,
+                relation: "maintains",
+                fairsharingRecord: {
+                    id: 872,
+                    name: "Pairs file format",
+                    abbreviation: ".pairs",
+                    type: "model_and_format",
+                    registry: "Standard",
+                    status: "ready"
+                },
+                "grant": null
+            }
+        ]
+    }
 
     beforeAll(() => {
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-            organisation: {
-                id: 1,
-                name: "4DN Data Coordination and Integration Center",
-                alternativeNames: [],
-                homepage: "http://dcic.4dnucleome.org/",
-                types: [
-                    "Consortium"
-                ],
-                urlForLogo: "/logo12345678",
-                childOrganisations: [],
-                parentOrganisations: [],
-                organisationLinks: [
-                    {
-                        id: 6057,
-                        isLead: true,
-                        relation: "maintains",
-                        fairsharingRecord: {
-                            id: 872,
-                            name: "Pairs file format",
-                            abbreviation: ".pairs",
-                            type: "model_and_format",
-                            registry: "Standard",
-                            status: "ready"
-                        },
-                        "grant": null
-                    }
-                ]
-            }
+            organisation: organisation
         });
     });
 
@@ -81,10 +82,11 @@ describe("Organisation", () => {
             stubs: {RouterLink: RouterLinkStub}
         });
         await wrapper.vm.getOrganisation();
+        wrapper.vm.organisation = organisation;
         wrapper.vm.filterRecords();
         expect($router.push).toHaveBeenCalledWith({
             name: "search",
-            query: {organisations: "100-talent%20program%20of%20chinese%20academy%20of%20sciences"}
+            query: {organisations: encodeURIComponent(organisation.name.toLowerCase())}
         });
     });
 

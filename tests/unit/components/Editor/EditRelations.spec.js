@@ -99,7 +99,12 @@ describe("EditRelationships.vue", function() {
         };
         recordStore.state.sections.relations.data.recordAssociations.push(pushItem);
         expect(recordStore.state.sections.relations.changes).toBe(1);
-        wrapper.vm.removeItem(1);
+        wrapper.vm.removeItem({
+            linkedRecord: {
+                id: 456
+            },
+            recordAssocLabelId: 1
+        });
         expect(recordStore.state.sections.relations.changes).toBe(0);
     });
 
@@ -136,7 +141,12 @@ describe("EditRelationships.vue", function() {
             recordAssocLabel: wrapper.vm.addingRelation.recordAssocLabel
         });
         jest.clearAllMocks();
-        wrapper.vm.removeItem(1);
+        wrapper.vm.removeItem({
+            linkedRecord: {
+                id: wrapper.vm.addingRelation.linkedRecord.id
+            },
+            recordAssocLabelId: wrapper.vm.addingRelation.recordAssocLabel.id
+        });
     });
 
     it('can pop a preview overlay', () => {
@@ -174,7 +184,12 @@ describe("EditRelationships.vue", function() {
             recordAssocLabel: wrapper.vm.addingRelation.recordAssocLabel
         });
         jest.clearAllMocks();
-        wrapper.vm.removeItem(0);
+        wrapper.vm.removeItem({
+            linkedRecord: {
+                id: wrapper.vm.addingRelation.linkedRecord.id
+            },
+            recordAssocLabelId: wrapper.vm.addingRelation.recordAssocLabel.id
+        });
         graphStub.restore();
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         graphStub.returns({

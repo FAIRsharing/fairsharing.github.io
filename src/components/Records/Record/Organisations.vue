@@ -108,7 +108,7 @@
     v-else-if="inlineStyle && getField('organisations') && getField('organisations').length"
     class="d-flex flex-row mt-4 align-center"
   >
-    <b class="width-200">Organisations</b>
+    <b class="width-15-percent-flex">Organisations</b>
     <p
       v-if="jointOrganisations && jointOrganisations.length"
       class="ma-0 full-width ml-md-12 ml-13"
@@ -138,7 +138,7 @@
     v-else
     class="d-flex flex-row mt-4 align-center"
   >
-    <b class="width-200">Organisations</b>
+    <b class="width-15-percent-flex">Organisations</b>
     <p class="ma-0 full-width ml-md-12 ml-13">
       Not applicable
     </p>

@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex mt-4 ml-0">
-    <div class="align-self-center width-200">
+    <div class="align-self-center width-15-percent-flex">
       <record-status :record="currentRecord['fairsharingRecord']" />
     </div>
-    <div class="align-self-center full-width ml-15">
+    <div class="align-self-center full-width ml-13">
       <div class="d-flex flex-column">
         <div class="d-flex flex-row align-center">
           <h3>{{ getField('name') }}</h3>

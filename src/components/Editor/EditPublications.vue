@@ -380,7 +380,7 @@
                 initialPublications.forEach((pub) => {
                   let isFound = this.publications.filter(obj => obj.id === pub.id)[0];
                   if (!isFound){
-                    changes =+ 1;
+                    changes += 1;
                   }
                 });
                 // UPDATE//ADD

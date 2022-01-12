@@ -19,7 +19,7 @@ localVue.use(VueScrollTo);
 
 let relations = [{
     id: 123,
-    linkedRecord: {id: 111, name: "yes", registry: "collection"},
+    linkedRecord: {id: 111, name: "yes", registry: "collection", abbreviation: "yes"},
     recordAssocLabel: "?",
     recordAssocLabelId: 1,
 
@@ -93,7 +93,7 @@ describe("EditRelationships.vue", function() {
         expect(wrapper.vm.availableRecords).toStrictEqual([{id: 1, isActive: true}]);
         let pushItem = {
             "id":123,
-            "linkedRecord":{"id":456,"name":"no","registry":"collection"},
+            "linkedRecord":{"id":456,"name":"no","registry":"collection", abbreviation: "no"},
             "recordAssocLabel":"?",
             "recordAssocLabelId":1
         };
@@ -270,5 +270,7 @@ describe("EditRelationships.vue", function() {
         wrapper.vm.addItem();
         expect(wrapper.vm.duplicateRelationship).toBe(true);
     });
+
+
 
 });

@@ -442,9 +442,23 @@
             if (!this.labelsFilter) return this.associations;
             let searchTerm = this.searchAssociations || "";
             return this.associations.filter(obj => {
-              if (obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase())
-                      && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
-                return obj;
+              // Some linkedRecords have a null abbreviation, and so cannot be searched as requested in:
+              // https://github.com/FAIRsharing/fairsharing.github.io/issues/1459
+              // If it is null, compare the search string only against the name...
+              if (obj.linkedRecord.abbreviation == null) {
+                if (obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
+                  return obj;
+                }
+              }
+              // ...otherwise, compare against both name and abbreviation.
+              else {
+                /* istanbul ignore next */
+                if ((obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    obj.linkedRecord.abbreviation.toLowerCase().includes(searchTerm.toLowerCase()) )
+                    && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
+                  return obj;
+                }
               }
             });
           },

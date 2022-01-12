@@ -472,21 +472,4 @@ describe("Record.vue", function() {
 
     });
 
-    it("hide banner if its expired", async () => {
-        record.state.currentRecord.fairsharingRecord = {
-            maintainers: [{username: 123}],
-            metadata: {}
-        };
-        const wrapper5 = await shallowMount(Record, {
-            mocks: {$route, $store, $router},
-            localVue,
-            vuetify,
-            router
-        });
-        wrapper5.vm.testEnv=true;
-        // wrapper5.vm.checkClaimStatus()
-        // expect(wrapper5.vm.reviewsPresent()).toBe(false);
-
-    });
-
 });

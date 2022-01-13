@@ -87,6 +87,7 @@ describe("RelatedContent.vue", function(){
         wrapper.vm.prepareTabsData();
         expect(wrapper.vm.tabsData.tabs['other_related_records'].data).toStrictEqual([
             {
+                "abbreviation": undefined,
                 "id": 2,
                 "linkType": "linkedRecord",
                 "name": "b name",
@@ -96,6 +97,7 @@ describe("RelatedContent.vue", function(){
                 "type": "repository"
             },
             {
+                "abbreviation": undefined,
                 "id": 4,
                 "linkType": "linkedRecord",
                 "name": "a name 4",
@@ -113,6 +115,14 @@ describe("RelatedContent.vue", function(){
         expect(wrapper.vm.prepareTabsData()).toBe(false)
     });
 
-
+    it("can filter searches on name and abbreviation", () => {
+        let item = {name: "one", abbreviation: null}
+        expect(wrapper.vm.nameAbbrFilter(item, "one")).toBe(true);
+        expect(wrapper.vm.nameAbbrFilter(item, "two")).toBe(false);
+        item = {name: "a_very_long_string", abbreviation: 'small'}
+        expect(wrapper.vm.nameAbbrFilter(item, "very")).toBe(true);
+        expect(wrapper.vm.nameAbbrFilter(item, "small")).toBe(true);
+        expect(wrapper.vm.nameAbbrFilter(item, "item")).toBe(false);
+    });
 
 });

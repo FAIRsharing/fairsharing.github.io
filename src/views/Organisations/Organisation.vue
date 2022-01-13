@@ -217,6 +217,16 @@
                 style="min-width: 720px"
               >
                 Records related to this organisation
+                <!-- filter records on search page -->
+                <v-col class="text-right">
+                  <v-btn
+                    color="white"
+                    small
+                    @click="filterRecords"
+                  >
+                    Filter Records
+                  </v-btn>
+                </v-col>
               </v-card-title>
 
               <v-data-table
@@ -510,9 +520,16 @@ export default {
     goToRecord(id) {
       window.open("/" + id, '_blank');
     },
-    hideOverlay(){
+    hideOverlay() {
       this.showOverlay = false;
       this.targetID = null;
+    },
+    filterRecords() {
+      const params = {organisations: encodeURIComponent(this.organisation.name.toLowerCase()) }
+      this.$router.push({
+        name: 'search',
+        query: params
+      });
     }
   }
 }

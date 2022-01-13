@@ -24,6 +24,7 @@
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
           item-text="name"
           item-value="name"
+          :filter="nameAbbrFilter"
         >
           <template #item="data">
             <span class="filterValueName">
@@ -170,6 +171,19 @@ export default {
         return false
       }
     },
+    nameAbbrFilter(item, queryText) {
+      const search = queryText.toLowerCase()
+      const name = item.name.toLowerCase();
+
+      if (item.abbreviation == null) {
+        let answer = name.indexOf(search) > -1
+        return answer;
+      }
+      else {
+        let answer = (name.indexOf(search) > -1 || item.abbreviation.toLowerCase().indexOf(search) > -1)
+        return answer;
+      }
+    }
   }
 }
 </script>

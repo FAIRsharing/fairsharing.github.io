@@ -1,6 +1,6 @@
 <template>
   <v-card
-    v-if="getField('organisations').length!==0 && (getField('organisations')!==undefined && getField('organisations')!==null)"
+    v-if="!inlineStyle && getField('organisations').length!==0 && (getField('organisations')!==undefined && getField('organisations')!==null)"
     class="pa-4 d-flex flex-column"
     outlined
     color="bg_record_card"
@@ -103,6 +103,46 @@
       </div>
     </div>
   </v-card>
+  <!--  if its an inline style run the below code -->
+  <div
+    v-else-if="inlineStyle && getField('organisations') && getField('organisations').length"
+    class="d-flex flex-row mt-4 align-center"
+  >
+    <b class="width-15-percent-flex">Organisations</b>
+    <p
+      v-if="jointOrganisations && jointOrganisations.length"
+      class="ma-0 full-width ml-md-12 ml-13"
+    >
+      <a
+        v-for="(item,index) in jointOrganisations"
+        :key="item.organisation.name+'_'+index"
+        :href="item.organisation.homepage"
+        target="_blank"
+        class="underline-effect"
+      >
+        {{ item.organisation.name }}
+        <span
+          v-if="jointOrganisations.length-1!==index"
+          style="color: black!important;"
+        >,</span>
+      </a>
+    </p>
+    <p
+      v-else
+      class="ma-0 full-width ml-md-12 ml-13"
+    >
+      Not applicable
+    </p>
+  </div>
+  <div
+    v-else
+    class="d-flex flex-row mt-4 align-center"
+  >
+    <b class="width-15-percent-flex">Organisations</b>
+    <p class="ma-0 full-width ml-md-12 ml-13">
+      Not applicable
+    </p>
+  </div>
 </template>
 
 <script>
@@ -117,13 +157,19 @@ export default {
     Icon,
     SectionTitle
   },
+  props: {
+    inlineStyle: {default: false, type: Boolean}
+  },
   data() {
     return {
       relations: organisationRelations
     }
   },
   computed: {
-    ...mapGetters("record", ["getField"])
+    ...mapGetters("record", ["getField"]),
+    jointOrganisations(){
+      return this.getRelations('maintains').concat(this.getRelations('collaborates_on').concat(this.getRelations('associated_with')));
+    }
   },
   methods: {
     getRelations(relName) {

@@ -99,7 +99,7 @@
                   <span v-if="!alreadyClaimed && ownershipApproved && noClaimRegistered && error" />
                   <!--    here code checks if the ownership has been rejected (after query is triggered)  -->
                   <v-alert
-                    v-else-if="!ownershipApproved && !alreadyClaimed && !noClaimRegistered"
+                    v-else-if="!ownershipApproved && !alreadyClaimed && !noClaimRegistered && showBanner"
                     dense
                     type="error"
                     class="mb-2 flex-grow-1"
@@ -108,7 +108,7 @@
                   </v-alert>
                   <!--    here code checks if the ownership has been approved (after query is triggered)  -->
                   <v-alert
-                    v-else-if="ownershipApproved"
+                    v-else-if="ownershipApproved && showBanner"
                     dense
                     type="success"
                     class="mb-1 flex-grow-1"
@@ -126,7 +126,7 @@
               type="warning"
               class="mb-1 flex-grow-1"
             >
-              <span>You have already submitted an ownership request for this record. We will get back to you within a few working days.</span>
+              <span>Your ownership request for this record has been submitted. We will get back to you within a few working days.</span>
             </v-alert>
             <v-snackbar
               v-model="claimedTriggered"
@@ -307,7 +307,7 @@
 </template>
 
 <script>
-import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import Client from '@/lib/GraphClient/GraphClient.js'
 import RestClient from "@/lib/Client/RESTClient.js"
 import stringUtils from '@/utils/stringUtils';
@@ -365,6 +365,7 @@ export default {
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
+      showBanner:false,
       buttons: [],
       history: {
         show: false,
@@ -636,6 +637,27 @@ export default {
               }
             }
             else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
+
+            // assign expiring date for approval banner---
+            _module.showBanner = true;
+            let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
+            if (!bannerExpiryDate[_module.getField("id")]) {
+              bannerExpiryDate = {
+                ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
+                [_module.getField("id")]: new Date()
+              }
+              localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
+            }
+            else {
+              const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
+              const expiryDate = new Date(temp[_module.getField("id")]);
+              let now = new Date();
+              const DAY = 2;
+              // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
+              _module.showBanner = !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) < now.getTime());
+            }
+            // end of expiring date for approval banner---
+
             _module.canClaim = false;
           }
           else {

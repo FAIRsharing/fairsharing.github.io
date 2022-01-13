@@ -2,9 +2,9 @@
   <div>
     <UploadFilesPresentation
       ref="FileUpload"
+      v-model="selectedFiles"
       :linear-progress-bar="linearProgressBar"
       :progress-infos="progressInfos"
-      :selected-files="selectedFiles"
       :select-files="selectFiles"
       :loading="loading"
       :file-infos="fileInfos"
@@ -51,6 +51,8 @@ export default {
     };
   },
   async mounted() {
+    // initialize the selected model data to pass validation.
+    this.selectFiles([])
     // if the credential is needed for upload process then set the formData default credential data / can be ignored in case we did not need credential for uploading
     await this.setFormCredential();
     // this method is used to  either call an api endpoint  or get file or list of files from store and update the list of presentation component.

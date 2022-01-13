@@ -126,7 +126,7 @@
               type="warning"
               class="mb-1 flex-grow-1"
             >
-              <span>You have already submitted an ownership request for this record. We will get back to you within a few working days.</span>
+              <span>Your ownership request for this record has been submitted. We will get back to you within a few working days.</span>
             </v-alert>
             <v-snackbar
               v-model="claimedTriggered"
@@ -654,7 +654,7 @@ export default {
               let now = new Date();
               const DAY = 1;
               // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
-              _module.showBanner = !(expiryDate.getTime() + (DAY * 60 * 1000) < now.getTime());
+              _module.showBanner = !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) < now.getTime());
             }
             // end of expiring date for approval banner---
 

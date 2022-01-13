@@ -12,14 +12,14 @@
         class="d-flex align-center"
       >
         <a
-          class="ml-2 pr-1 underline-effect"
+          v-if="contact.contact_name"
+          :class="[{'ml-1':index!==0},'pr-0 underline-effect']"
           :href="contact.contact_email.toString().includes('@')?`mailto:${contact.contact_email}`:contact.contact_email"
           target="_blank"
         >
-          <b
-            v-if="contact.contact_name"
+          <span
             class="mr-1"
-          >{{ contact.contact_name }}</b>
+          >{{ contact.contact_name }}</span>
         </a>
         <a
           v-if="contact.contact_orcid"

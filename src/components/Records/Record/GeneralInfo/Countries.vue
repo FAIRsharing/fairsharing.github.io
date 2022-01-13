@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-row mt-4 min-height-40">
-    <b class="width-200">Countries developing this resource</b>
+    <b class="width-15-percent-flex">Countries developing this resource</b>
     <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
       <NoneFound
         v-if="!getField('countries')"

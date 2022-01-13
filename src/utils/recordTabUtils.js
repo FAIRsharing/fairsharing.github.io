@@ -48,6 +48,7 @@ const recordTabUtils = {
                         object.id = item[prop].id;
                         object.registry = item[prop].registry;
                         object.name = item[prop].name;
+                        object.abbreviation = item[prop].abbreviation;
                         object.subject = _module.currentRecord['fairsharingRecord'].name;
                         object.type = item[prop].type;
                         object.linkType = prop;

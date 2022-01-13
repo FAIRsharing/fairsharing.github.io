@@ -44,6 +44,7 @@
                       xl="3"
                       class="text-center"
                     >
+                      <!-- switch for unattached records -->
                       <v-switch
                         v-model="searchFilters[filterName]"
                         inset
@@ -162,6 +163,7 @@
                       xl="3"
                       class="text-center"
                     >
+                      <!-- switches for records that are already linked -->
                       <v-switch
                         v-model="labelsFilter[filterName]"
                         inset
@@ -207,7 +209,7 @@
                     <v-btn
                       icon
                       class="red white--text"
-                      @click="removeItem(index)"
+                      @click="removeItem(association)"
                     >
                       <v-icon small>
                         fa-trash
@@ -440,9 +442,23 @@
             if (!this.labelsFilter) return this.associations;
             let searchTerm = this.searchAssociations || "";
             return this.associations.filter(obj => {
-              if (obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase())
-                      && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
-                return obj;
+              // Some linkedRecords have a null abbreviation, and so cannot be searched as requested in:
+              // https://github.com/FAIRsharing/fairsharing.github.io/issues/1459
+              // If it is null, compare the search string only against the name...
+              if (obj.linkedRecord.abbreviation == null) {
+                if (obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
+                  return obj;
+                }
+              }
+              // ...otherwise, compare against both name and abbreviation.
+              else {
+                /* istanbul ignore next */
+                if ((obj.linkedRecord.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    obj.linkedRecord.abbreviation.toLowerCase().includes(searchTerm.toLowerCase()) )
+                    && this.labelsFilter[obj.linkedRecord.registry.toLowerCase()] === true){
+                  return obj;
+                }
               }
             });
           },
@@ -529,8 +545,16 @@
               })
             });
           },
-          removeItem(id){
-            this.sections.relations.data.recordAssociations.splice(id, 1);
+          removeItem(selected){
+            //this.sections.relations.data.recordAssociations.splice(id, 1);
+            let newData = this.sections.relations.data.recordAssociations.filter( (item) => {
+                if (item.linkedRecord.id == selected.linkedRecord.id &&
+                    item.recordAssocLabelId == selected.recordAssocLabelId) {
+                  return false;
+                }
+                return true;
+            });
+            this.sections.relations.data.recordAssociations = newData;
           },
           showOverlay(target){
             this.showRelationsPanel = true;

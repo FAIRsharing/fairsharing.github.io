@@ -2,7 +2,7 @@
   <div>
     <!--Domains-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-200">Subjects</b>
+      <b class="width-15-percent-flex">Subjects</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('subjects').length">
           None
@@ -24,7 +24,7 @@
     </div>
     <!--Subjects-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-200">Domains</b>
+      <b class="width-15-percent-flex">Domains</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('domains').length">
           None
@@ -46,7 +46,7 @@
     </div>
     <!--Taxonomic Range-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-200">Taxonomic Range</b>
+      <b class="width-15-percent-flex">Taxonomic Range</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('taxonomies').length">
           None
@@ -68,7 +68,7 @@
     </div>
     <!--User Defined Tags-->
     <div class="d-flex flex-row mt-4 min-height-40">
-      <b class="width-200">User Defined Tags</b>
+      <b class="width-15-percent-flex">User Defined Tags</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('userDefinedTags').length">
           None

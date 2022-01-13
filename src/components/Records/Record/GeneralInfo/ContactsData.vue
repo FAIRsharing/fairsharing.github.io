@@ -11,14 +11,16 @@
         style="min-height: 40px"
         class="d-flex align-center"
       >
-        <b
-          v-if="contact.contact_name"
-          class="mr-1"
-        >{{ contact.contact_name }}</b>
-        <span
-          v-if="contact.contact_email"
-          class="mr-1"
-        >{{ contact.contact_email }}</span>
+        <a
+          class="ml-2 pr-1 underline-effect"
+          :href="contact.contact_email.toString().includes('@')?`mailto:${contact.contact_email}`:contact.contact_email"
+          target="_blank"
+        >
+          <b
+            v-if="contact.contact_name"
+            class="mr-1"
+          >{{ contact.contact_name }}</b>
+        </a>
         <a
           v-if="contact.contact_orcid"
           :href="`https://orcid.org/${contact.contact_orcid}`"

@@ -92,13 +92,13 @@
                         isDisabled: false,
                         action: async function(){
                           _module.$router.push({
-                            path: "/users/password/edit"
+                            path: _module.resetPasswordPath()
                           })
                         }
                     },
                     {
                         name: "Logout",
-                        isDisabled: false,
+                        isDisabled: !_module.user().isLoggedIn,
                         action: async function(){
                             await _module.logoutUser()
                         }
@@ -139,6 +139,14 @@
         disableUserList: function () {
           const _module = this;
           return !_module.user().is_super_curator
+        },
+        resetPasswordPath: function() {
+          if (this.user().isLoggedIn) {
+            return "/users/password/edit"
+          }
+          else {
+            return "/accounts/forgotPassword"
+          }
         }
       }
     }

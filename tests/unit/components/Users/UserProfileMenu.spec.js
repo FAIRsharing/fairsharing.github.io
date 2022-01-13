@@ -81,7 +81,7 @@ describe("UserProfileMenu.vue", () => {
 
     it("can reset user pwd", async () => {
         await wrapper.vm.menuItems.filter(obj => obj.name === 'Reset Password')[0].action();
-        expect(wrapper.vm.$route.path).toBe("/users/password/edit");
+        expect(wrapper.vm.$route.path).toBe("/accounts/forgotPassword");
     });
 
     it("can redirect to user edit profile or editPublicProfile", async () => {
@@ -220,6 +220,21 @@ describe("UserProfileMenu.vue", () => {
             mocks: {$store}
         });
         expect(wrapper.vm.disableEdit()).toBe(false);
+    });
+
+    it("supplies correct password reset URL", () => {
+        userStore.state.user = function(){
+            return {
+                isLoggedIn: false
+            }
+        }
+        expect(wrapper.vm.resetPasswordPath()).toEqual("/accounts/forgotPassword");
+        userStore.state.user = function(){
+            return {
+                isLoggedIn: true
+            }
+        }
+        expect(wrapper.vm.resetPasswordPath()).toEqual("/users/password/edit");
     });
 
 });

@@ -31,7 +31,7 @@
       >
         <v-file-input
           ref="fileInput"
-          :value="selectedFiles"
+          :value="value"
           :accept="mimeType"
           show-size
           :multiple="multipleUpload"
@@ -128,7 +128,7 @@ export default {
     linearProgressBar: {type: Boolean, default: true},
     progressInfos: {type: Array, default:()=> []},
     fileInfos: {type: Array, default:()=> []},
-    selectedFiles: {type: Array, default:null},
+    value: {type: Array, default:null},
     allowedFileSizeMb: {type: Number, required: true},
     mimeType: {type: String, required: true},
     title: {type: String, default: null},
@@ -160,7 +160,7 @@ export default {
     },
     async afterUpload(){
       await this.$refs.fileInput.reset()
-    },
+    }
   }
 }
 </script>

@@ -16,6 +16,29 @@
       :input-label="inputLabel"
       @uploadFiles="uploadFiles"
     />
+    <div class="d-flex flex-column">
+      <div class="d-flex mb-2">
+        <div
+          v-for="(file,index) in previewImage"
+          :key="file.name+'_'+index"
+        >
+          <v-img
+            :src="file"
+            :alt="file.name"
+            width="80px"
+            height="80px"
+            cover
+            class="mr-2"
+          />
+        </div>
+      </div>
+      <input
+        ref="fileInput"
+        type="file"
+        multiple
+        @input="pickFile"
+      >
+    </div>
   </div>
 </template>
 
@@ -47,7 +70,10 @@ export default {
       selectedFiles: null,
       fileInfos: [],
       loading: false,
-      progressInfos: []
+      progressInfos: [],
+      previewImage: [],
+      ImagesForUpload:[],
+      loadingPreview:false
     };
   },
   async mounted() {
@@ -59,6 +85,40 @@ export default {
     await this.downloadFiles()
   },
   methods: {
+    async readMultipleFiles(files) {
+      let reader = new FileReader();
+      const temp = []
+      const trimmedTemp = []
+
+      async function readFile(index) {
+        if (index >= files.length) return;
+        let file = files[index];
+        reader.onload = e => {
+          // get file content
+          temp.push(e.target.result)
+          trimmedTemp.push(e.target.result.toString().split(',')[1])
+          // do sth with bin
+          readFile(index + 1)
+        }
+        reader.readAsDataURL(file);
+      }
+
+      await readFile(0);
+      this.previewImage = temp;
+      this.ImagesForUpload = trimmedTemp;
+    },
+    pickFile() {
+      let input = this.$refs.fileInput
+      let files = input.files
+      this.previewImage = []
+      this.ImagesForUpload = []
+      if (!files) return;
+      let temp = [];
+      for (const [key, value] of Object.entries(files)) {
+        temp[key] = value
+      }
+      this.readMultipleFiles(temp)
+    },
     async setFormCredential() {
       // write the code for credentials here ..
       if (this.credentialInfo) {
@@ -140,5 +200,11 @@ export default {
 </script>
 
 <style scoped>
-
+.imagePreviewWrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 0 10px;
+  background-size: cover;
+  background-position: center center;
+}
 </style>

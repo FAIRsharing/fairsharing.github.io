@@ -84,11 +84,13 @@
           >
             <v-list-item-content>
               <v-list-item-subtitle>
-                <img
+                <v-img
                   :src="file.url"
                   :alt="file.name"
+                  width="80px"
                   height="80px"
-                >
+                  cover
+                />
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -164,6 +166,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-
-</style>

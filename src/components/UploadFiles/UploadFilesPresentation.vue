@@ -27,7 +27,7 @@
       <v-col
         cols="12"
         sm="12"
-        md="11"
+        :md="hasPreview?12:11"
       >
         <v-file-input
           ref="fileInput"
@@ -44,10 +44,11 @@
       <v-col
         cols="12"
         sm="12"
-        md="1"
+        :md="hasPreview?12:1"
         class="pl-2"
       >
         <v-btn
+          v-if="!hasPreview"
           color="success"
           dark
           small
@@ -69,9 +70,10 @@
     <!--  Showing default single Image or list of Images  -->
     <v-card
       v-if="fileInfos.length > 0"
-      class="mx-auto"
+      class="mx-auto mt-1"
     >
       <v-list>
+        <b class="ml-2">{{ multipleUpload?'Uploaded Files':'Uploaded File' }}</b>
         <v-subheader>{{ title }}</v-subheader>
         <!--   Images list     -->
         <v-list-item-group
@@ -127,6 +129,7 @@ export default {
   props: {
     multipleUpload: {type: Boolean, default: false},
     loading: {type: Boolean, default: false},
+    hasPreview: {type: Boolean, default: true},
     linearProgressBar: {type: Boolean, default: true},
     progressInfos: {type: Array, default:()=> []},
     fileInfos: {type: Array, default:()=> []},

@@ -1,23 +1,15 @@
 <template>
-  <div>
-    <UploadFilesPresentation
-      ref="FileUpload"
-      v-model="selectedFiles"
-      :linear-progress-bar="linearProgressBar"
-      :progress-infos="progressInfos"
-      :select-files="selectFiles"
-      :loading="loading"
-      :file-infos="fileInfos"
-      :download-files="downloadFiles"
-      :allowed-file-size-mb="allowedFileSizeMb"
-      :mime-type="mimeType"
-      :multiple-upload="multipleUpload"
-      :title="title"
-      :input-label="inputLabel"
-      @uploadFiles="uploadFiles"
-    />
-    <div class="d-flex flex-column">
-      <div class="d-flex mb-2">
+  <div class="upload-border">
+    <!-- Preview of the image or anything can be listed here   -->
+    <div
+      v-if="hasPreview"
+      class="d-flex flex-column my-5"
+    >
+      <b class="mb-2">Preview:</b>
+      <div
+        v-if="previewImage && previewImage.length"
+        class="d-flex mb-2"
+      >
         <div
           v-for="(file,index) in previewImage"
           :key="file.name+'_'+index"
@@ -32,13 +24,31 @@
           />
         </div>
       </div>
-      <input
-        ref="fileInput"
-        type="file"
-        multiple
-        @input="pickFile"
+      <div
+        v-else
+        class="info--text"
       >
+        preview images will be listed here ...
+      </div>
     </div>
+    <!-- It takes care of the presentation of the upload input   -->
+    <UploadFilesPresentation
+      ref="FileUpload"
+      v-model="selectedFiles"
+      :linear-progress-bar="linearProgressBar"
+      :progress-infos="progressInfos"
+      :select-files="hasPreview?selectFilesForPreview:selectFiles"
+      :loading="loading"
+      :file-infos="fileInfos"
+      :download-files="downloadFiles"
+      :allowed-file-size-mb="allowedFileSizeMb"
+      :mime-type="mimeType"
+      :multiple-upload="multipleUpload"
+      :has-preview="hasPreview"
+      :title="title"
+      :input-label="inputLabel"
+      @uploadFiles="uploadFiles"
+    />
   </div>
 </template>
 
@@ -63,6 +73,7 @@ export default {
     multipleFilesPerRequest: {type: Boolean, default: false},
     fileKeyName: {type: String, default: null},
     title: {type: String, default: null},
+    hasPreview: {type: Boolean, default: true},
     inputLabel: {type: String, default: 'Select File'},
   },
   data() {
@@ -107,9 +118,10 @@ export default {
       this.previewImage = temp;
       this.ImagesForUpload = trimmedTemp;
     },
-    pickFile() {
-      let input = this.$refs.fileInput
-      let files = input.files
+    selectFilesForPreview(files) {
+      this.selectFiles(files);
+      // let input = this.$refs.fileInput
+      // let files = input.files
       this.previewImage = []
       this.ImagesForUpload = []
       if (!files) return;
@@ -200,11 +212,11 @@ export default {
 </script>
 
 <style scoped>
-.imagePreviewWrapper {
-  width: 80px;
-  height: 80px;
-  margin: 0 0 10px;
-  background-size: cover;
-  background-position: center center;
+.upload-border {
+  padding: 2rem 2rem 2rem;
+  border: #b8b8b8 dashed 1px;
+  border-radius: 1%;
+  -moz-border-radius: 1%;
+  -webkit-border-radius: 1%;
 }
 </style>

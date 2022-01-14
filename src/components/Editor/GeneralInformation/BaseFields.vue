@@ -431,9 +431,8 @@
       </v-expand-transition>
     </v-col>
 
-    <!-- Upload logo -->
+    <!-- Upload -->
     <v-col cols="12">
-      Logo:
       <upload-files
         :credential-info="{id:getField('id'),token:user().credentials.token}"
         :initial-images="getField('urlForLogo')"

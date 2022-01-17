@@ -442,6 +442,7 @@
         mime-type="image/jpeg,image/gif,image/png"
         file-key-name="logo"
         title="logo"
+        @passDataToParent="changeLogoData"
       />
     </v-col>
     <!-- isHidden -->
@@ -502,6 +503,10 @@
           }
       },
       methods: {
+        changeLogoData(images){
+          // this function can be used to always get the all data from upload Images
+          this.fields.logo = images;
+        },
         removeCountry(country){
             this.fields.countries = this.fields.countries.filter(obj =>
                 obj.label !== country.name && obj.id !== country.id

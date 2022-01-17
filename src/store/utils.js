@@ -84,7 +84,8 @@ export function initEditorSections(data, sectionsNames){
                     obj.label = obj.label.toLowerCase();
                     return obj;
                 }),
-                is_dataset: false
+                is_dataset: false,
+                logo: []
             },
             additionalInformation: {
                 ...JSON.parse(JSON.stringify(data.metadata)),

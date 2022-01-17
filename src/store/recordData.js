@@ -8,6 +8,7 @@ import recordOrganisationsQuery from "../lib/GraphClient/queries/getRecordOrgani
 import recordDataAccessQuery from "../lib/GraphClient/queries/editor/getRecordDataAccess.json"
 import recordRelationsQuery from "../lib/GraphClient/queries/editor/getRecordRelations.json"
 import { initEditorSections } from "./utils.js"
+import {toBase64} from "@/utils/generalUtils";
 
 let client = new Client();
 let restClient = new RESTClient();
@@ -289,6 +290,14 @@ let recordStore = {
                   return tag.error;
               }
             });
+
+            // only we need the first image for uploading a logo [0]
+            const logo = state.sections.generalInformation.data['logo'][0]
+            record.logo = {
+                filename: logo.filename,
+                data: await toBase64(logo.data),
+                content_type: logo.type,
+            }
             record.country_ids  = countries.map(obj => obj.id);
             if (type.id) record.record_type_id = type.id;
             record.metadata.status = status;

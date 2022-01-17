@@ -7,16 +7,15 @@
     >
       <b class="mb-2">Preview:</b>
       <div
-        v-if="previewImage && previewImage.length"
+        v-if="previewImages && previewImages.length"
         class="d-flex mb-2"
       >
         <div
-          v-for="(file,index) in previewImage"
-          :key="file.name+'_'+index"
+          v-for="(file,index) in previewImages"
+          :key="index"
         >
           <v-img
             :src="file"
-            :alt="file.name"
             width="80px"
             height="80px"
             cover
@@ -57,6 +56,26 @@ import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import {isArray} from "lodash";
 import UploadFilesPresentation from "@/components/UploadFiles/UploadFilesPresentation";
 
+/*let temp = []
+let uploadTemp = [];
+
+export const readFilesRecursive = (index,files) =>
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      let file = files[index];
+      if (index >= files.length) return
+      reader.onload = () => {
+        temp[index] = reader.result;
+        uploadTemp[index] = {filename: file.name, content_type: file.type, data: file}
+          resolve({
+            temp,
+            uploadTemp
+          })
+        readFilesRecursive(index + 1, files)
+      };
+      reader.readAsDataURL(file);
+    });*/
+
 export default {
   name: "UploadFiles",
   // this component takes care of all the logic such as upload and download files
@@ -82,9 +101,8 @@ export default {
       fileInfos: [],
       loading: false,
       progressInfos: [],
-      previewImage: [],
-      ImagesForUpload:[],
-      loadingPreview:false
+      previewImages: [],
+      imagesForUpload:[],
     };
   },
   async mounted() {
@@ -96,7 +114,7 @@ export default {
     await this.downloadFiles()
   },
   methods: {
-    async readMultipleFiles(files) {
+    async readMultipleFilesRecursive(files) {
       let reader = new FileReader();
       const temp = []
       const trimmedTemp = []
@@ -107,29 +125,31 @@ export default {
         reader.onload = e => {
           // get file content
           temp.push(e.target.result)
-          trimmedTemp.push(e.target.result.toString().split(',')[1])
-          // do sth with bin
+          trimmedTemp[index] =  {filename: file.name, content_type: file.type, data: file}
+          // recall read data
           readFile(index + 1)
         }
         reader.readAsDataURL(file);
       }
 
       await readFile(0);
-      this.previewImage = temp;
-      this.ImagesForUpload = trimmedTemp;
+
+      this.previewImages = temp;
+      this.imagesForUpload = trimmedTemp;
+      this.$emit("passDataToParent",this.imagesForUpload)
     },
-    selectFilesForPreview(files) {
+    async selectFilesForPreview(files) {
       this.selectFiles(files);
       // let input = this.$refs.fileInput
       // let files = input.files
-      this.previewImage = []
-      this.ImagesForUpload = []
+      this.previewImages = []
+      this.imagesForUpload = []
       if (!files) return;
       let temp = [];
       for (const [key, value] of Object.entries(files)) {
         temp[key] = value
       }
-      this.readMultipleFiles(temp)
+      await this.readMultipleFilesRecursive(temp)
     },
     async setFormCredential() {
       // write the code for credentials here ..

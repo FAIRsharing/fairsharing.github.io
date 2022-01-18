@@ -20,7 +20,8 @@ recordStore.state.sections = {
                 {label: 'UK', id: 2}
             ],
             metadata: {},
-            type: {name: 'test'}
+            type: {name: 'test'},
+            logo:[]
         }
     }
 };
@@ -98,6 +99,9 @@ describe('Editor -> BaseFields.vue', () => {
         expect(wrapper.vm.fields.metadata.abbreviation).toBe(null);
     });
 
-
+    it("can call changeLogoData", () => {
+        wrapper.vm.changeLogoData({name:'file.jpg'});
+        expect(wrapper.vm.fields.logo).toStrictEqual({"name": "file.jpg"});
+    });
 
 });

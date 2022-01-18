@@ -134,5 +134,12 @@ describe('Mutation & Actions & Getters', () => {
         expect(state.totalPages).toBe(null);
     });
 
+    it("can throw error when inappropriate data provided ",async ()=>{
+        stub.restore();
+        stub.withArgs(sinon.match.any).returns(new Error("error"));
+        await actions.initializeCollectionRecords(state, null);
+        await actions.fetchCollectionRecords(state, {});
+        await expect(sinon.stub(Client.prototype, "executeQuery")).rejects;
+    })
 
 });

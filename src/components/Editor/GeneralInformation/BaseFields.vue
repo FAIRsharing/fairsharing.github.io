@@ -442,6 +442,7 @@
         mime-type="image/jpeg,image/gif,image/png"
         file-key-name="logo"
         title="logo"
+        multiple-upload
         @passDataToParent="changeLogoData"
       />
     </v-col>
@@ -471,7 +472,7 @@
     import DatabaseWarning from "./DatabaseWarning";
     import Icon from "@/components/Icon"
     import UploadFiles from "@/components/UploadFiles/UploadFiles";
-    import getAPIEndPoint from "@/utils/generalUtils";
+    import getAPIEndPoint, {toBase64} from "@/utils/generalUtils";
 
     export default {
       name: "BaseFields",
@@ -503,9 +504,15 @@
           }
       },
       methods: {
-        changeLogoData(images){
-          // this function can be used to always get the all data from upload Images
+        async changeLogoData(images) {
+          // this function can be used to always get the all data from upload Images / tailored for FAIRsharing app
           this.fields.logo = images;
+          const logo = this.fields.logo[0]
+          this.fields.logo = {
+            filename: logo.filename,
+            data: await toBase64(logo.data),
+            content_type: logo.content_type,
+          }
         },
         removeCountry(country){
             this.fields.countries = this.fields.countries.filter(obj =>

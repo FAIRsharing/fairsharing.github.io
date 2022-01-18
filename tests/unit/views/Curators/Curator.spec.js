@@ -96,7 +96,7 @@ describe("Curator.vue", () => {
         data: "[El1|f1_1|f1_2|f1_3,El2|f2_1|f2_2|f2_3]"
     });
     await wrapper.vm.obtainFileRecordsWODois();
-    expect(wrapper.vm.downloadContent).toBe("data:text/json;charset=utf-8,%5BEl1%7Cf1_1%7Cf1_2%7Cf1_3%0D%0AEl2%7Cf2_1%7Cf2_2%7Cf2_3%5D");
+    expect(wrapper.vm.downloadContent).toBe("data:text/json;charset=utf-8,%5BEl1%7Cf1_1%7Cf1_2%7Cf1_3%2CEl2%7Cf2_1%7Cf2_2%7Cf2_3%5D");
   });
 
   it("can process errors", async () => {

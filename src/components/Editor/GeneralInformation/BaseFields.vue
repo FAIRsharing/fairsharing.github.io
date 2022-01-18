@@ -436,13 +436,10 @@
       <upload-files
         :credential-info="{id:getField('id'),token:user().credentials.token}"
         :initial-images="getField('urlForLogo')"
-        :upload-service-name="'uploadOneFilePerRequest'"
-        :base-api-endpoint="getAPIEndPoint()"
         :allowed-file-size-mb="3"
         mime-type="image/jpeg,image/gif,image/png"
         file-key-name="logo"
         title="logo"
-        multiple-upload
         @passDataToParent="changeLogoData"
       />
     </v-col>

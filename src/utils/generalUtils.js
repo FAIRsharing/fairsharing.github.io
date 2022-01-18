@@ -38,13 +38,4 @@ export const toBase64 = async (file) =>
     reader.onerror = error => reject(error);
 });
 
-/*export const toBase64 =  (file) => {
-    let reader = new FileReader();
-    reader.addEventListener('load', (e) => {
-        return e.result.toString().split(',')[1]
-    })
-    reader.readAsDataURL(file);
-}*/
-
-
 export default generalUtils;

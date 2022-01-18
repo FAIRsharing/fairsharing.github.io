@@ -116,12 +116,6 @@
                 handler(newVal){
                     let changes = 0;
                     if (this.initialized){
-                      console.log('new',newVal.logo)
-                      console.log('init',this.initialFields.logo)
-                      console.log('compare',newVal.logo !== this.initialFields.logo)
-                        if (newVal.logo !== this.initialFields.logo) {
-                          changes += 1;
-                        }
                         if (newVal.status !== "deprecated"){
                           this.currentFields.deprecation_reason = null;
                         }

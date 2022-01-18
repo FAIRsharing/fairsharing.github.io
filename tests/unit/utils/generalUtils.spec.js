@@ -21,7 +21,11 @@ describe("generalUtils.js", function(){
         expect(LightenDarkenColor('#AAAA00',50)).toBe("#ffff00");
     })
 
-    it("can check toBase64 function", async function () {
+    it("can check toBase64 function",  function () {
+        const blob = new Blob(['image/jpg']);
+        const mFile = new File([blob], 'img.jpeg', {
+            type: 'image/jpeg',
+        });
         const dummy = {
             readAsDataURL: jest.fn(),
             onload: () => new Promise((resolve) => {
@@ -33,15 +37,11 @@ describe("generalUtils.js", function(){
             result: 'vv'
         }
         window.FileReader = jest.fn(() => dummy)
-        toBase64({name: 'as.jpg'})
-        await dummy.onload()
-        await dummy.onerror('a')
-        await expect(toBase64({})).rejects
+        toBase64(mFile)
+        dummy.onload()
+        dummy.onerror('a')
+        expect(toBase64({})).rejects
         expect(dummy.readAsDataURL).toHaveBeenCalledTimes(2);
-
     })
-
-
-
 
 })

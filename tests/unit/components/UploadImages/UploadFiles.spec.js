@@ -2,6 +2,7 @@ import {shallowMount} from "@vue/test-utils";
 import UploadFiles from "@/components/UploadFiles/UploadFiles"
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import sinon from "sinon";
+import {toBase64} from "@/utils/generalUtils";
 
 // Preparing mocks
 let mocks = {
@@ -144,7 +145,19 @@ describe('UploadFiles.vue', () => {
     it("can check uploadFiles with multiple files in one request functionality", async() => {
         await wrapper3.vm.uploadFiles(false)
         expect(wrapper.vm.selectedFiles).toBe(null)
+        await wrapper3.vm.selectFilesForPreview(null)
+        const blob = new Blob(['image/jpg']);
+        const mFile = new File([blob], 'img.jpeg', {
+            type: 'image/jpeg',
+        });
+        const fileContents       = 'data:image/png;base64,TEST1';
+        const readAsDataURL      = jest.fn();
+        const addEventListener   = jest.fn((_, evtHandler) => { evtHandler({
+            target: {result: fileContents}} )});
+        const dummyFileReader    = {addEventListener, readAsDataURL, result: fileContents};
+        window.FileReader        = jest.fn(() => dummyFileReader);
+        await wrapper3.vm.selectFilesForPreview([mFile,mFile])
+        await expect(wrapper.vm.selectedFiles).toBe(null)
     })
-
 
 });

@@ -56,26 +56,6 @@ import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import {isArray} from "lodash";
 import UploadFilesPresentation from "@/components/UploadFiles/UploadFilesPresentation";
 
-/*let temp = []
-let uploadTemp = [];
-
-export const readFilesRecursive = (index,files) =>
-    new Promise((resolve) => {
-      const reader = new FileReader();
-      let file = files[index];
-      if (index >= files.length) return
-      reader.onload = () => {
-        temp[index] = reader.result;
-        uploadTemp[index] = {filename: file.name, content_type: file.type, data: file}
-          resolve({
-            temp,
-            uploadTemp
-          })
-        readFilesRecursive(index + 1, files)
-      };
-      reader.readAsDataURL(file);
-    });*/
-
 export default {
   name: "UploadFiles",
   // this component takes care of all the logic such as upload and download files
@@ -114,28 +94,31 @@ export default {
     await this.downloadFiles()
   },
   methods: {
-    async readMultipleFilesRecursive(files) {
-      let reader = new FileReader();
-      const temp = []
-      const trimmedTemp = []
-
-      async function readFile(index) {
-        if (index >= files.length) return;
-        let file = files[index];
-        reader.onload = e => {
+    promiseFunc(index,files) {
+      let temp= this.previewImages;
+      let uploadTemp= this.imagesForUpload;
+      return new Promise((resolve) => {
+      const reader = new FileReader();
+      let file = files[index];
+      if (index >= files.length) return
+        reader.addEventListener('load',(e)=>{
           // get file content
           temp.push(e.target.result)
-          trimmedTemp[index] =  {filename: file.name, content_type: file.type, data: file}
+          uploadTemp[index] =  {filename: file.name, content_type: file.type, data: file}
           // recall read data
-          readFile(index + 1)
-        }
-        reader.readAsDataURL(file);
-      }
-
-      await readFile(0);
-
-      this.previewImages = temp;
-      this.imagesForUpload = trimmedTemp;
+          resolve({
+            temp,
+            uploadTemp
+          })
+          this.promiseFunc(index + 1, files)
+        })
+      reader.readAsDataURL(file);
+    })
+    },
+    async readMultipleFilesRecursive(files) {
+      let {temp,uploadTemp} = await this.promiseFunc(0, files)
+      this.previewImages = temp
+      this.imagesForUpload = uploadTemp
       this.$emit("passDataToParent",this.imagesForUpload)
     },
     async selectFilesForPreview(files) {

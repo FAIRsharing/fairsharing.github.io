@@ -1,11 +1,12 @@
 <template>
   <div class="upload-border">
+    <span class="logo-title">Logo</span>
     <!-- Preview of the image or anything can be listed here   -->
     <div
       v-if="hasPreview"
-      class="d-flex flex-column my-5"
+      class="d-flex flex-column m-1"
     >
-      <b class="mb-2">Preview:</b>
+      <b class="mb-2">Update this resource's logo:</b>
       <div
         v-if="previewImages && previewImages.length"
         class="d-flex mb-2"
@@ -22,12 +23,6 @@
             class="mr-2"
           />
         </div>
-      </div>
-      <div
-        v-else
-        class="info--text"
-      >
-        preview images will be listed here ...
       </div>
     </div>
     <!-- It takes care of the presentation of the upload input   -->
@@ -94,7 +89,7 @@ export default {
     await this.downloadFiles()
   },
   methods: {
-    promiseFunc(index,files) {
+    async promiseFunc(index,files) {
       let temp= this.previewImages;
       let uploadTemp= this.imagesForUpload;
       return new Promise((resolve) => {
@@ -123,8 +118,6 @@ export default {
     },
     async selectFilesForPreview(files) {
       this.selectFiles(files);
-      // let input = this.$refs.fileInput
-      // let files = input.files
       this.previewImages = []
       this.imagesForUpload = []
       if (!files) return;
@@ -214,12 +207,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .upload-border {
-  padding: 2rem 2rem 2rem;
+  position:relative;
+  padding: 1rem 1rem 1rem;
   border: #b8b8b8 dashed 1px;
   border-radius: 1%;
   -moz-border-radius: 1%;
   -webkit-border-radius: 1%;
+
+  .logo-title {
+    @include absTopLeft;
+    background:white;
+    height:10px;
+  }
 }
 </style>

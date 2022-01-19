@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <!-- name -->
+    <!-- Upload (Logo) -->
     <v-col
       xl="3"
       lg="6"
@@ -9,6 +9,29 @@
       xs="12"
       cols="12"
     >
+      <upload-files
+        style="min-height: 315px"
+        :credential-info="{id:getField('id'),token:user().credentials.token}"
+        :initial-images="getField('urlForLogo')"
+        :upload-service-name="''"
+        :base-api-endpoint="getAPIEndPoint()"
+        :allowed-file-size-mb="3"
+        mime-type="image/jpeg,image/gif,image/png"
+        file-key-name="logo"
+        title="logo"
+        @passDataToParent="changeLogoData"
+      />
+    </v-col>
+
+    <v-col
+      xl="3"
+      lg="6"
+      md="12"
+      sm="12"
+      xs="12"
+      cols="12"
+    >
+      <!-- name -->
       <v-text-field
         v-model="fields.metadata.name"
         label="Record Name"
@@ -26,17 +49,7 @@
           </v-tooltip>
         </template>
       </v-text-field>
-    </v-col>
-
-    <!-- abbreviation -->
-    <v-col
-      xl="3"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
+      <!-- abbreviation -->
       <v-text-field
         v-model="fields.metadata.abbreviation"
         label="Abbreviation"
@@ -57,17 +70,7 @@
           </v-tooltip>
         </template>
       </v-text-field>
-    </v-col>
-
-    <!-- homepage -->
-    <v-col
-      xl="3"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
+      <!-- homepage -->
       <v-text-field
         v-model="fields.metadata.homepage"
         label="Homepage"
@@ -89,17 +92,7 @@
           </v-tooltip>
         </template>
       </v-text-field>
-    </v-col>
-
-    <!-- creation year -->
-    <v-col
-      xl="3"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
+      <!-- creation year -->
       <v-autocomplete
         v-model="fields.metadata.year_creation"
         label="Year of creation"
@@ -125,7 +118,10 @@
 
     <!-- Duplicate warning box to go here -->
     <!-- curator notes -->
-    <v-col cols="12">
+    <v-col
+      v-if="possibleDuplicates.length > 0"
+      cols="12"
+    >
       <v-expand-transition>
         <v-card
           v-if="possibleDuplicates.length > 0"
@@ -353,7 +349,10 @@
     </v-col>
 
     <!-- deprecation reasons -->
-    <v-col cols="12">
+    <v-col
+      v-if="fields.status === 'deprecated'"
+      cols="12"
+    >
       <v-expand-transition>
         <v-textarea
           v-if="fields.status === 'deprecated'"
@@ -431,20 +430,6 @@
       </v-expand-transition>
     </v-col>
 
-    <!-- Upload -->
-    <v-col cols="12">
-      <upload-files
-        :credential-info="{id:getField('id'),token:user().credentials.token}"
-        :initial-images="getField('urlForLogo')"
-        :upload-service-name="''"
-        :base-api-endpoint="getAPIEndPoint()"
-        :allowed-file-size-mb="3"
-        mime-type="image/jpeg,image/gif,image/png"
-        file-key-name="logo"
-        title="logo"
-        @passDataToParent="changeLogoData"
-      />
-    </v-col>
     <!-- isHidden -->
     <v-col cols="12">
       <v-checkbox

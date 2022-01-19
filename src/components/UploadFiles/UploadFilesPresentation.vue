@@ -36,7 +36,7 @@
           show-size
           :multiple="multipleUpload"
           :label="inputLabel"
-          :hint="`each file size must be below ${allowedFileSizeMb} mb`"
+          :hint="`images must be less than ${allowedFileSizeMb} MB`"
           :rules="[rules.isAllowedSize()]"
           @change="selectFiles"
         />

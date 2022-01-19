@@ -2,7 +2,7 @@
   <v-row>
     <!-- Upload (Logo) -->
     <v-col
-      xl="3"
+      xl="4"
       lg="6"
       md="12"
       sm="12"
@@ -10,7 +10,7 @@
       cols="12"
     >
       <upload-files
-        style="min-height: 315px"
+        style="min-height: 226px"
         :credential-info="{id:getField('id'),token:user().credentials.token}"
         :initial-images="getField('urlForLogo')"
         :upload-service-name="''"
@@ -24,7 +24,7 @@
     </v-col>
 
     <v-col
-      xl="3"
+      xl="4"
       lg="6"
       md="12"
       sm="12"
@@ -92,28 +92,6 @@
           </v-tooltip>
         </template>
       </v-text-field>
-      <!-- creation year -->
-      <v-autocomplete
-        v-model="fields.metadata.year_creation"
-        label="Year of creation"
-        :items="years()"
-        outlined
-      >
-        <template #prepend>
-          <v-tooltip
-            bottom
-            max-width="300px"
-            class="text-justify"
-          >
-            <template #activator="{ on }">
-              <v-icon v-on="on">
-                fa-question-circle
-              </v-icon>
-            </template>
-            {{ tooltips['year'] }}
-          </v-tooltip>
-        </template>
-      </v-autocomplete>
     </v-col>
 
     <!-- Duplicate warning box to go here -->
@@ -182,7 +160,6 @@
       </v-expand-transition>
     </v-col>
 
-    <!-- countries -->
     <v-col
       xl="4"
       lg="12"
@@ -191,6 +168,29 @@
       xs="12"
       cols="12"
     >
+      <!-- creation year -->
+      <v-autocomplete
+        v-model="fields.metadata.year_creation"
+        label="Year of creation"
+        :items="years()"
+        outlined
+      >
+        <template #prepend>
+          <v-tooltip
+            bottom
+            max-width="300px"
+            class="text-justify"
+          >
+            <template #activator="{ on }">
+              <v-icon v-on="on">
+                fa-question-circle
+              </v-icon>
+            </template>
+            {{ tooltips['year'] }}
+          </v-tooltip>
+        </template>
+      </v-autocomplete>
+      <!-- countries -->
       <v-autocomplete
         v-model="fields.countries"
         label="Countries"
@@ -242,17 +242,7 @@
           <div> {{ data.item.name }} </div>
         </template>
       </v-autocomplete>
-    </v-col>
-
-    <!-- registry -->
-    <v-col
-      xl="4"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
+      <!-- registry -->
       <v-autocomplete
         ref="editRecordType"
         v-model="fields.type"
@@ -302,15 +292,8 @@
       </v-autocomplete>
     </v-col>
 
-    <!-- status -->
-    <v-col
-      xl="4"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
+    <v-col cols="12">
+      <!-- status -->
       <v-autocomplete
         v-model="fields.status"
         label="Status"

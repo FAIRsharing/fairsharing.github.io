@@ -13,6 +13,13 @@
     transform: translate(-50%, -50%);
 }
 
+@mixin absTopLeft {
+    position: absolute;
+    top: -5px;
+    left: 5%;
+    transform: translate(-50%, -50%);
+}
+
 @mixin sticky-flex {
     position: -webkit-sticky; /* for Safari */
     position: sticky;

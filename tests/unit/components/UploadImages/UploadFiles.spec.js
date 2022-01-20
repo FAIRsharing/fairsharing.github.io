@@ -2,7 +2,6 @@ import {shallowMount} from "@vue/test-utils";
 import UploadFiles from "@/components/UploadFiles/UploadFiles"
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import sinon from "sinon";
-import {toBase64} from "@/utils/generalUtils";
 
 // Preparing mocks
 let mocks = {
@@ -158,6 +157,8 @@ describe('UploadFiles.vue', () => {
         window.FileReader        = jest.fn(() => dummyFileReader);
         await wrapper3.vm.selectFilesForPreview([mFile,mFile])
         await expect(wrapper.vm.selectedFiles).toBe(null)
+        wrapper3.vm.clearInput()
+        await expect(wrapper.vm.imagesForUpload).toStrictEqual([])
     })
 
 });

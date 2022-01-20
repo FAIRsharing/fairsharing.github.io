@@ -19,11 +19,13 @@ describe('UploadFilesPresentation.vue', () => {
                     linearProgressBar: true,
                     selectFiles: ()=>{},
                     downloadFiles: ()=>{},
+                    clearInput:() => {}
                 }
             }
         );
         wrapper.vm.$options.props.selectFiles.default.call()
         wrapper.vm.$options.props.downloadFiles.default.call()
+        wrapper.vm.$options.props.clearInput.default.call()
         wrapper.vm.$refs['FileUpload'] = {
             afterUpload: jest.fn()
         };

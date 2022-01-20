@@ -101,7 +101,10 @@ describe('Editor -> BaseFields.vue', () => {
 
     it("can call changeLogoData", () => {
         wrapper.vm.changeLogoData({name:'file.jpg'});
-        expect(wrapper.vm.fields.logo).toStrictEqual({"name": "file.jpg"});
+        expect(wrapper.vm.fields.logo).toStrictEqual({});
+        wrapper.vm.changeLogoData([{}]);
+        expect(wrapper.vm.fields.logo).toStrictEqual([{}]);
+
     });
 
 });

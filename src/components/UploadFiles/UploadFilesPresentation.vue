@@ -39,6 +39,7 @@
           :hint="`images must be less than ${allowedFileSizeMb} MB`"
           :rules="[rules.isAllowedSize()]"
           @change="selectFiles"
+          @click:clear="clearInput"
         />
       </v-col>
       <v-col
@@ -89,9 +90,9 @@
                 <v-img
                   :src="file.url"
                   :alt="file.name"
-                  width="80px"
-                  height="80px"
-                  cover
+                  max-width="100px"
+                  max-height="100%"
+                  contain
                 />
               </v-list-item-subtitle>
             </v-list-item-content>
@@ -139,6 +140,10 @@ export default {
     title: {type: String, default: null},
     inputLabel: {type: String, default: 'Select File'},
     selectFiles: {
+      type: Function,
+      default: () => {}
+    },
+    clearInput: {
       type: Function,
       default: () => {}
     },

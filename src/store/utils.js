@@ -85,6 +85,7 @@ export function initEditorSections(data, sectionsNames){
                     return obj;
                 }),
                 is_dataset: false,
+                logo:{}
             },
             additionalInformation: {
                 ...JSON.parse(JSON.stringify(data.metadata)),

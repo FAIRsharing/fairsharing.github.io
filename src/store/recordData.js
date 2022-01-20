@@ -1,5 +1,5 @@
 import Vue from "vue"
-import { isEqual } from "lodash"
+import {isEmpty, isEqual} from "lodash"
 import Client from "../lib/GraphClient/GraphClient.js"
 import RESTClient from "@/lib/Client/RESTClient.js"
 import recordQuery from "../lib/GraphClient/queries/getRecord.json"
@@ -260,7 +260,7 @@ let recordStore = {
         async updateGeneralInformation({ state, commit}, options) {
             commit("resetMessage", "generalInformation");
             let {
-                type, countries, userDefinedTags, domains, subjects, taxonomies, status, curator_notes, isHidden,
+                type, countries, userDefinedTags, domains, subjects, taxonomies, status, curator_notes, isHidden,logo,
                 ...record
             } = JSON.parse(JSON.stringify(state.sections.generalInformation.data)),
                 newTags = [],
@@ -290,6 +290,7 @@ let recordStore = {
               }
             });
 
+            isEmpty(logo) ? delete record['logo'] : record.logo = logo
             record.country_ids  = countries.map(obj => obj.id);
             if (type.id) record.record_type_id = type.id;
             record.metadata.status = status;

@@ -17,9 +17,9 @@
         >
           <v-img
             :src="file"
-            width="80px"
-            height="80px"
-            cover
+            max-width="100px"
+            max-height="100%"
+            contain
             class="mr-2"
           />
         </div>
@@ -35,6 +35,7 @@
       :loading="loading"
       :file-infos="fileInfos"
       :download-files="downloadFiles"
+      :clear-input="clearInput"
       :allowed-file-size-mb="allowedFileSizeMb"
       :mime-type="mimeType"
       :multiple-upload="multipleUpload"
@@ -145,6 +146,10 @@ export default {
         this.selectedFiles = []
         this.selectedFiles[0] = files;
       }
+    },
+    clearInput() {
+      this.imagesForUpload = []
+      this.$emit("passDataToParent", this.imagesForUpload)
     },
     async uploadFiles(hasError) {
       if (!this.selectedFiles || hasError) return

@@ -112,29 +112,6 @@
       ]
     },
     {
-      "name": "recordsWithoutDois",
-      "fields": [
-        "id",
-        "name",
-        "createdAt",
-        "updatedAt",
-        {
-          "queryName": "creator",
-          "fields": [
-            "id",
-            "username"
-          ]
-        },
-        {
-          "queryName": "lastEditor",
-          "fields": [
-            "id",
-            "username"
-          ]
-        }
-      ]
-    },
-    {
       "name": "hiddenRecords",
       "fields": [
         "id",

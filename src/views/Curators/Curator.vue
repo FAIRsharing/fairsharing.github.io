@@ -494,11 +494,11 @@
           },
           async obtainFileRecordsWODois(){
             let data = await restClient.getRecordsWoDOIs(this.user().credentials.token);
-            this.downloadContent = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data)
+            let content = JSON.stringify(data)
                 .replace(/^\[(.+)\]$/,'$1')
-                .split(',')
-                .join('\r\n')
-                .replace(/['"]+/g, ''));
+                .replace(/","/g,'"\r\n"')
+                .replace(/['"]+/g, '');
+            this.downloadContent = "data:text/json;charset=utf-8," + encodeURIComponent(content);
           }
       }
     }

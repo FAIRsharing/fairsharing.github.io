@@ -13,7 +13,7 @@
           >
             <span v-if="!answered">Before you begin...</span>
             <span v-else>
-              FAIRsharing does not allow the uploading of experimental data!
+              FAIRsharing does not allow the uploading of dataset records!
             </span>
           </v-card-title>
           <v-card-text class="pt-4">
@@ -23,8 +23,7 @@
                   Please take a moment to answer the following question.
                 </h2>
                 <div>
-                  Are you intending to upload experimental results to FAIRsharing,
-                  e.g as a prerequisite for submitting an article to a journal?
+                  Is your record for a dataset?
                 </div>
               </div>
               <div v-if="answered">
@@ -34,7 +33,9 @@
                   are not used to describe or store experimental data.
                   For more information, please see the 'Adding Database Records'
                   section within our new record documentation. <br>
-                  FAIRsharing can help you find a repository for you to store your data via our Wizard or Advanced Search pages. If you are still unsure as to how to proceed then you may contact us.
+                  FAIRsharing can help you find a repository for you to store your data via our Wizard or Advanced
+                  Search pages.
+                  If you are still unsure as to how to proceed then you may contact us.
                 </div>
               </div>
             </v-slide-x-transition>

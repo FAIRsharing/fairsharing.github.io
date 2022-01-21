@@ -303,6 +303,49 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogs.deleteRecord"
+      max-width="700px"
+    >
+      <v-card>
+        <v-card-title
+          class="headline"
+        >
+          Are you sure you want to
+          <font
+            style="color:red; padding-left: 5px; padding-right: 5px;"
+          >
+            DELETE
+          </font>
+          this record?
+          <ul style="list-style-type:none;">
+            <li>
+              {{ dialogs.recordName }}
+            </li>
+          </ul>
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            :disabled="dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="closeDeleteMenu()"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="confirmDelete()"
+          >
+            OK
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </main>
 </template>
 
@@ -371,7 +414,14 @@ export default {
         show: false,
         loading: false
       },
-      tombstone: false
+      tombstone: false,
+      dialogs: {
+        recordName: "",
+        recordID: "",
+        deleteRecord: false,
+        disableDelButton: true,
+        disableButton: false
+      },
     }
   },
   computed: {
@@ -576,7 +626,53 @@ export default {
           }
         )
       }
+      if (_module.user().is_super_curator) {
+        initial_buttons.push(
+          {
+            name: function () {
+              return "Delete this record"
+            },
+            isDisabled: function () {
+              return !_module.user().is_super_curator;
+            },
+            method: /* istanbul ignore next */ async function () {
+              _module.deleteRecordMenu(
+                  _module.currentRecord['fairsharingRecord'].name,
+                  _module.currentRecord['fairsharingRecord'].id,
+              );
+            }
+          }
+        )
+      }
       this.buttons = initial_buttons;
+    },
+    async confirmDelete(){
+      const _module = this;
+      _module.dialogs.disableButton = true;
+      let data = await client.deleteRecord(_module.dialogs.recordID, this.user().credentials.token);
+      if (data.error){
+        _module.error = "error deleting record";
+      }
+      else{
+        // Redirect to current record to show it has gone...
+        this.$router.go();
+      }
+      _module.dialogs.deleteRecord = false;
+    },
+    deleteRecordMenu(recordName, recordID){
+      const _module = this;
+      _module.dialogs.disableButton = false;
+      _module.dialogs.disableDelButton = true
+      _module.dialogs.recordName = recordName;
+      _module.dialogs.recordID = recordID;
+      _module.dialogs.deleteRecord = true;
+      /* istanbul ignore next */ setTimeout(function () {
+        _module.dialogs.disableDelButton = false;
+      }, 5000);
+    },
+    closeDeleteMenu () {
+      this.dialogs.disableButton = true;
+      this.dialogs.deleteRecord = false;
     },
     goToEdit(){
       let _module = this;

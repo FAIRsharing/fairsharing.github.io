@@ -12,7 +12,7 @@
       <upload-files
         style="min-height: 226px"
         :credential-info="{id:getField('id'),token:user().credentials.token}"
-        :initial-images="getField('urlForLogo')"
+        :initial-images="$route.name==='New_content'?[]:getField('urlForLogo')"
         :upload-service-name="''"
         :base-api-endpoint="getAPIEndPoint()"
         :allowed-file-size-mb="3"

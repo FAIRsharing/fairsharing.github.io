@@ -1,8 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
-    class="pa-4 d-flex flex-column"
+    :class="['pa-4 d-flex flex-column bg-color',{'collection-style':currentRecord.fairsharingRecord.registry==='Collection'}]"
     outlined
-    color="bg_record_card"
     tile
     elevation="3"
   >
@@ -70,6 +69,13 @@
       <UpdateCreateDetail />
     </div>
     <section />
+    <!-- Special visual identifier only for the collection type   -->
+    <span
+      v-if="currentRecord.fairsharingRecord.registry==='Collection'"
+      class="emphasize-registry"
+    >
+      <b>Collection</b>
+    </span>
   </v-card>
 </template>
 
@@ -131,3 +137,27 @@ export default {
   }
 }
 </script>
+<style>
+.emphasize-registry {
+  background: linear-gradient(#006055, #66a7a7);
+  background: -moz-linear-gradient(#006055, #66a7a7);
+  background: -webkit-linear-gradient(#006055, #66a7a7);
+  background: -ms-linear-gradient(#006055, #66a7a7);
+  background: -o-linear-gradient(#006055, #66a7a7);
+  position: absolute;
+  right: 1rem;
+  top: 0;
+  padding: 15px;
+  color: white;
+  border-radius: 0 0 15px 15px!important;
+  -moz-border-radius: 0 0 15px 15px!important;
+  -webkit-border-radius: 0 0 15px 15px!important;
+}
+
+.collection-style {
+  border: 2px solid #006055!important;
+}
+.bg-color {
+  background:#f9f9f9!important;
+}
+</style>

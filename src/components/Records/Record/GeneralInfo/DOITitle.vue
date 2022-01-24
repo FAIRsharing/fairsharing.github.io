@@ -7,6 +7,7 @@
       <div class="d-flex flex-column">
         <div class="d-flex flex-row align-center">
           <v-img
+            v-if="currentRecord['fairsharingRecord'].urlForLogo"
             :src="getAPIEndPoint()+currentRecord['fairsharingRecord'].urlForLogo"
             max-width="100px"
             max-height="100%"

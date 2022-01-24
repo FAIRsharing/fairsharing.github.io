@@ -6,6 +6,13 @@
     <div class="align-self-center full-width ml-13">
       <div class="d-flex flex-column">
         <div class="d-flex flex-row align-center">
+          <v-img
+            :src="getAPIEndPoint()+currentRecord['fairsharingRecord'].urlForLogo"
+            max-width="100px"
+            max-height="100%"
+            contain
+            class="mr-2"
+          />
           <h3>{{ getField('name') }}</h3>
           <b
             v-if="getField('abbreviation') && getField('registry')!=='Collection'"
@@ -64,6 +71,7 @@
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import {mapGetters, mapState} from "vuex";
 import Icon from "@/components/Icon";
+import getAPIEndPoint from "@/utils/generalUtils";
 
 export default {
   name: "DOITitle",
@@ -71,6 +79,7 @@ export default {
     Icon,
     RecordStatus
   },
+  mixins: [getAPIEndPoint],
   data() {
     return {
       copyButtonStatus: false,

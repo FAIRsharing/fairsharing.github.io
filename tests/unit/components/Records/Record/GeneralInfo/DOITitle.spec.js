@@ -46,5 +46,11 @@ describe("DOITitle.vue", function(){
         expect(wrapper.vm.copyButtonStatus).toBe(true);
     });
 
+    it("can check setImageAfterLoading", () => {
+        const fakeImage = {width: '200', height: '100'}
+        wrapper.vm.setImageAfterLoading(fakeImage)
+        expect(wrapper.vm.finalImageWidth).toBe('300px');
+    });
+
 });
 

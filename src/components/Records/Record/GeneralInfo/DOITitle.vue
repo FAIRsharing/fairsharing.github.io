@@ -8,9 +8,8 @@
         <div class="d-flex flex-row align-center">
           <v-img
             v-if="currentRecord['fairsharingRecord'].urlForLogo"
-            :src="getAPIEndPoint()+currentRecord['fairsharingRecord'].urlForLogo"
-            max-width="100px"
-            max-height="100%"
+            :src="newImg.src"
+            :max-width="finalImageWidth"
             contain
             class="mr-2"
           />
@@ -84,13 +83,30 @@ export default {
   data() {
     return {
       copyButtonStatus: false,
+      finalImageWidth:'100px',
+      newImg:{src:''}
     }
   },
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState("record", ["currentRecord"]),
   },
+  async mounted() {
+    const promiseImageLoader = () => new Promise(resolve => {
+      let newImg = new Image();
+      resolve(newImg)
+      newImg.src = this.getAPIEndPoint() + this.currentRecord['fairsharingRecord'].urlForLogo;
+    })
+    let image = await promiseImageLoader()
+    this.setImageAfterLoading(image)
+  },
   methods: {
+    setImageAfterLoading(image) {
+      if (image.width > image.height) {
+        this.finalImageWidth = '300px'
+      }
+      this.newImg.src = image.src
+    },
     generateDoiLink(doi) {
       return `https://doi.org/${doi}`
     },

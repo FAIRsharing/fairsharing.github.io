@@ -10,6 +10,7 @@
     <!-- Search Box -->
     <string-search
       v-if="showSearchBox"
+      add-search-terms
       placeholder="Search through all data."
     />
 

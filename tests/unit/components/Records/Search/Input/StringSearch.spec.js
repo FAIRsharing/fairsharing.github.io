@@ -35,6 +35,7 @@ describe("StringSearch.vue", () => {
         })
     });
 
+
     it("can check responsiveHeight", () => {
         vuetify.framework.breakpoint.mdAndDown = true;
         expect(wrapper.vm.responsiveHeight).toStrictEqual({
@@ -87,5 +88,22 @@ describe("StringSearch.vue", () => {
         expect($router.push).toHaveBeenCalledTimes(5);
 
     });
+
+    it("appends terms when relevant prop is set", () => {
+        wrapper = shallowMount(StringSearch, {
+            propsData: {
+                addSearchTerms: true
+            },
+            mocks: {$router,$route},
+            vuetify
+        });
+        wrapper.vm.searchTerm = 'testString';
+        wrapper.vm.searchString();
+        expect($router.push).toHaveBeenCalledWith({
+            path: "/search",
+            query: {q: "testString"}
+        })
+    });
+
 
 });

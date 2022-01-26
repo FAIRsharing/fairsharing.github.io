@@ -23,16 +23,28 @@ const $store = new Vuex.Store({
 describe("DOITitle.vue", function(){
     let wrapper;
 
-    // TODO: Mock properties in options {}.
-    beforeEach(() => {
-        wrapper = shallowMount(DOITitle, {
+
+     beforeAll(()=>{
+/*
+         const blob = new Blob(['image/jpg']);
+         const mFile = new File([blob], 'img.jpeg', {
+             type: 'image/jpeg',
+         });
+         const fileContents       = {width:'100',height:'200'};
+         const readAsDataURL      = jest.fn();
+         const addEventListener   = jest.fn((_, evtHandler) => { evtHandler({
+             target: fileContents} )});
+         const dummyFileReader    = {addEventListener, readAsDataURL, target: fileContents};
+         window.FileReader        = jest.fn(() => dummyFileReader);
+*/
+     })
+
+    it("can be instantiated", async () => {
+        wrapper = await shallowMount(DOITitle, {
             localVue,
             vuetify,
             mocks: {$store}
         })
-    });
-
-    it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("DOITitle");
     });
 
@@ -46,9 +58,10 @@ describe("DOITitle.vue", function(){
         expect(wrapper.vm.copyButtonStatus).toBe(true);
     });
 
-    it("can check setImageAfterLoading", () => {
+    it("can check setImageAfterLoading", async () => {
+
         const fakeImage = {width: '200', height: '100'}
-        wrapper.vm.setImageAfterLoading(fakeImage)
+        await wrapper.vm.setImageAfterLoading(fakeImage)
         expect(wrapper.vm.finalImageWidth).toBe('300px');
     });
 

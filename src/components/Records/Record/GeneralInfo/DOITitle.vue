@@ -94,14 +94,16 @@ export default {
   async mounted() {
     const promiseImageLoader = () => new Promise(resolve => {
       let newImg = new Image();
-      resolve(newImg)
+      newImg.addEventListener('load', (e) => {
+        resolve(e.target)
+      })
       newImg.src = this.getAPIEndPoint() + this.currentRecord['fairsharingRecord'].urlForLogo;
     })
     let image = await promiseImageLoader()
-    this.setImageAfterLoading(image)
+    await this.setImageAfterLoading(image)
   },
   methods: {
-    setImageAfterLoading(image) {
+    async setImageAfterLoading(image) {
       if (image.width > image.height) {
         this.finalImageWidth = '300px'
       }

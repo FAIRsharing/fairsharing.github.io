@@ -1,14 +1,37 @@
 <template>
   <v-row>
-    <!-- name -->
     <v-col
-      xl="3"
+      xl="4"
       lg="6"
       md="12"
       sm="12"
       xs="12"
       cols="12"
     >
+      <!-- Upload (Logo) -->
+      <upload-files
+        style="min-height: 226px"
+        :credential-info="{id:getField('id'),token:user().credentials.token}"
+        :initial-images="$route.name==='New_content'?[]:getField('urlForLogo')"
+        :upload-service-name="''"
+        :base-api-endpoint="getAPIEndPoint()"
+        :allowed-file-size-mb="3"
+        mime-type="image/jpeg,image/gif,image/png"
+        file-key-name="logo"
+        title="logo"
+        @passDataToParent="changeLogoData"
+      />
+    </v-col>
+
+    <v-col
+      xl="4"
+      lg="6"
+      md="12"
+      sm="12"
+      xs="12"
+      cols="12"
+    >
+      <!-- name -->
       <v-text-field
         v-model="fields.metadata.name"
         label="Record Name"
@@ -26,17 +49,7 @@
           </v-tooltip>
         </template>
       </v-text-field>
-    </v-col>
-
-    <!-- abbreviation -->
-    <v-col
-      xl="3"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
+      <!-- abbreviation -->
       <v-text-field
         v-model="fields.metadata.abbreviation"
         label="Abbreviation"
@@ -57,17 +70,7 @@
           </v-tooltip>
         </template>
       </v-text-field>
-    </v-col>
-
-    <!-- homepage -->
-    <v-col
-      xl="3"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
+      <!-- homepage -->
       <v-text-field
         v-model="fields.metadata.homepage"
         label="Homepage"
@@ -91,41 +94,12 @@
       </v-text-field>
     </v-col>
 
-    <!-- creation year -->
-    <v-col
-      xl="3"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
-      <v-autocomplete
-        v-model="fields.metadata.year_creation"
-        label="Year of creation"
-        :items="years()"
-        outlined
-      >
-        <template #prepend>
-          <v-tooltip
-            bottom
-            max-width="300px"
-            class="text-justify"
-          >
-            <template #activator="{ on }">
-              <v-icon v-on="on">
-                fa-question-circle
-              </v-icon>
-            </template>
-            {{ tooltips['year'] }}
-          </v-tooltip>
-        </template>
-      </v-autocomplete>
-    </v-col>
-
     <!-- Duplicate warning box to go here -->
     <!-- curator notes -->
-    <v-col cols="12">
+    <v-col
+      v-if="possibleDuplicates.length > 0"
+      cols="12"
+    >
       <v-expand-transition>
         <v-card
           v-if="possibleDuplicates.length > 0"
@@ -186,7 +160,6 @@
       </v-expand-transition>
     </v-col>
 
-    <!-- countries -->
     <v-col
       xl="4"
       lg="12"
@@ -195,6 +168,29 @@
       xs="12"
       cols="12"
     >
+      <!-- creation year -->
+      <v-autocomplete
+        v-model="fields.metadata.year_creation"
+        label="Year of creation"
+        :items="years()"
+        outlined
+      >
+        <template #prepend>
+          <v-tooltip
+            bottom
+            max-width="300px"
+            class="text-justify"
+          >
+            <template #activator="{ on }">
+              <v-icon v-on="on">
+                fa-question-circle
+              </v-icon>
+            </template>
+            {{ tooltips['year'] }}
+          </v-tooltip>
+        </template>
+      </v-autocomplete>
+      <!-- countries -->
       <v-autocomplete
         v-model="fields.countries"
         label="Countries"
@@ -246,17 +242,7 @@
           <div> {{ data.item.name }} </div>
         </template>
       </v-autocomplete>
-    </v-col>
-
-    <!-- registry -->
-    <v-col
-      xl="4"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
+      <!-- registry -->
       <v-autocomplete
         ref="editRecordType"
         v-model="fields.type"
@@ -306,15 +292,8 @@
       </v-autocomplete>
     </v-col>
 
-    <!-- status -->
-    <v-col
-      xl="4"
-      lg="6"
-      md="12"
-      sm="12"
-      xs="12"
-      cols="12"
-    >
+    <v-col cols="12">
+      <!-- status -->
       <v-autocomplete
         v-model="fields.status"
         label="Status"
@@ -353,7 +332,10 @@
     </v-col>
 
     <!-- deprecation reasons -->
-    <v-col cols="12">
+    <v-col
+      v-if="fields.status === 'deprecated'"
+      cols="12"
+    >
       <v-expand-transition>
         <v-textarea
           v-if="fields.status === 'deprecated'"
@@ -456,10 +438,13 @@
     import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
     import DatabaseWarning from "./DatabaseWarning";
     import Icon from "@/components/Icon"
+    import UploadFiles from "@/components/UploadFiles/UploadFiles";
+    import getAPIEndPoint, {toBase64} from "@/utils/generalUtils";
 
     export default {
       name: "BaseFields",
-      components: {DatabaseWarning, CountryFlag, StatusPills, Icon},
+      components: {UploadFiles, DatabaseWarning, CountryFlag, StatusPills, Icon},
+      mixins: [getAPIEndPoint],
       data(){
           return {
               rules: {
@@ -471,7 +456,7 @@
           }
       },
       computed: {
-          ...mapGetters("record", ["getSection", "getCreatingNewRecord"]),
+          ...mapGetters("record", ["getSection", "getCreatingNewRecord","getField"]),
           ...mapState("editor", [
               "countries",
               "years",
@@ -486,6 +471,21 @@
           }
       },
       methods: {
+        async changeLogoData(images) {
+          // this function can be used to always get the all data from upload Images / tailored for FAIRsharing app
+          if (images && images.length) {
+            this.fields.logo = images;
+            const logo = this.fields.logo[0]
+            this.fields.logo = {
+              filename: logo.filename,
+              data: await toBase64(logo.data),
+              content_type: logo.content_type,
+            }
+          }
+          else {
+            this.fields.logo = {}
+          }
+        },
         removeCountry(country){
             this.fields.countries = this.fields.countries.filter(obj =>
                 obj.label !== country.name && obj.id !== country.id

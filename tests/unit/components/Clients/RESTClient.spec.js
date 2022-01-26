@@ -122,4 +122,5 @@ describe("RESTClient", () =>{
     it("can set authentication headers correctly", () => {
         expect(client.auth_headers('fun_token')['Authorization']).toEqual('Bearer fun_token');
     });
+
 });

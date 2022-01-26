@@ -5,7 +5,8 @@ import {
     isUrl,
     isLongEnough,
     isOrcid,
-    isImage
+    isImage,
+    isAllowedSize
 } from "@/utils/rules.js"
 
 describe('Form validation rules', () => {
@@ -59,4 +60,12 @@ describe('Form validation rules', () => {
             type: "notImage"
         })).toBe("File type should be PNG or JPEG");
     });
+    it("can test if file size is allowed", () => {
+        let test = isAllowedSize(3);
+        expect(test(null)).toBe(false);
+        expect(test([{size:2000},{size:40000000000}])).toBe("One or some of your selected files' size is more than 3 MB!");
+        expect(test([{size:2000}])).toBe(true);
+        expect(test([{size:50000000000}])).toBe("file size should be less than 3 MB!");
+    });
+
 });

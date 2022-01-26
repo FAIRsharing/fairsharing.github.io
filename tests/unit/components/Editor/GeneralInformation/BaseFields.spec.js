@@ -20,13 +20,15 @@ recordStore.state.sections = {
                 {label: 'UK', id: 2}
             ],
             metadata: {},
-            type: {name: 'test'}
+            type: {name: 'test'},
+            logo:[]
         }
     }
 };
 
 recordStore.state.newRecord = false;
 userStore.state.user().is_curator = false;
+userStore.state.user().credentials.token = 'a token';
 
 const $store = new Vuex.Store({
     modules: {
@@ -68,14 +70,14 @@ describe('Editor -> BaseFields.vue', () => {
 
     it("disables type field except for new records and curators", () => {
         userStore.state.user = function(){
-            return { is_curator: false }
+            return { is_curator: false, credentials:{token:'a token'} }
         };
         expect(wrapper.vm.typeChangeDisabled()).toBe(true);
         recordStore.state.newRecord = true;
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);
 
         userStore.state.user = function(){
-            return { is_curator: true }
+            return { is_curator: true, credentials:{token:'a token'} }
         };
         recordStore.state.newRecord = false;
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);
@@ -97,6 +99,12 @@ describe('Editor -> BaseFields.vue', () => {
         expect(wrapper.vm.fields.metadata.abbreviation).toBe(null);
     });
 
+    it("can call changeLogoData", () => {
+        wrapper.vm.changeLogoData({name:'file.jpg'});
+        expect(wrapper.vm.fields.logo).toStrictEqual({});
+        wrapper.vm.changeLogoData([{}]);
+        expect(wrapper.vm.fields.logo).toStrictEqual([{}]);
 
+    });
 
 });

@@ -11,7 +11,7 @@
     <string-search
       v-if="showSearchBox"
       add-search-terms
-      placeholder="Search through all data."
+      placeholder="Search through current results."
     />
 
     <hr

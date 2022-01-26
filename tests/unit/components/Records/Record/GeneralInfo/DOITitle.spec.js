@@ -25,18 +25,12 @@ describe("DOITitle.vue", function(){
 
 
      beforeAll(()=>{
-/*
-         const blob = new Blob(['image/jpg']);
-         const mFile = new File([blob], 'img.jpeg', {
-             type: 'image/jpeg',
-         });
          const fileContents       = {width:'100',height:'200'};
          const readAsDataURL      = jest.fn();
          const addEventListener   = jest.fn((_, evtHandler) => { evtHandler({
              target: fileContents} )});
          const dummyFileReader    = {addEventListener, readAsDataURL, target: fileContents};
-         window.FileReader        = jest.fn(() => dummyFileReader);
-*/
+         window.Image        = jest.fn(() => dummyFileReader);
      })
 
     it("can be instantiated", async () => {
@@ -59,7 +53,6 @@ describe("DOITitle.vue", function(){
     });
 
     it("can check setImageAfterLoading", async () => {
-
         const fakeImage = {width: '200', height: '100'}
         await wrapper.vm.setImageAfterLoading(fakeImage)
         expect(wrapper.vm.finalImageWidth).toBe('300px');

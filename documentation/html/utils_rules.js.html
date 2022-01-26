@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -166,7 +166,30 @@ export function isImage(){
         return (!value || accept.indexOf(value.type) > -1) || "File type should be PNG or JPEG"
     }
 }
-</pre>
+
+/**
+ * Assess if the given file has the correct allowed size
+ * @returns {function(*): (boolean|string)}
+ */
+export function isAllowedSize(allowedSize) {
+    // allowedSize is based on MB
+    return value => {
+        if (!value) return false
+        // if its an array of image
+        if (value.length > 1) {
+            let finalVal = value.map(imageItem => {
+                if (imageItem.size > (1000000 * allowedSize)) {
+                    return false
+                }
+            })
+            return !finalVal.includes(false) || `One or some of your selected files' size is more than ${allowedSize} MB!`
+        }
+        else {
+            // if its a single image
+            return (!value[0] || value[0].size &lt; (1000000 * allowedSize)) || `file size should be less than ${allowedSize} MB!`
+        }
+    }
+}</pre>
     </article>
 </section>
 

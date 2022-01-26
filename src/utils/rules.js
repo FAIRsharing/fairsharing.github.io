@@ -73,3 +73,27 @@ export function isImage(){
         return (!value || accept.indexOf(value.type) > -1) || "File type should be PNG or JPEG"
     }
 }
+
+/**
+ * Assess if the given file has the correct allowed size
+ * @returns {function(*): (boolean|string)}
+ */
+export function isAllowedSize(allowedSize) {
+    // allowedSize is based on MB
+    return value => {
+        if (!value) return false
+        // if its an array of image
+        if (value.length > 1) {
+            let finalVal = value.map(imageItem => {
+                if (imageItem.size > (1000000 * allowedSize)) {
+                    return false
+                }
+            })
+            return !finalVal.includes(false) || `One or some of your selected files' size is more than ${allowedSize} MB!`
+        }
+        else {
+            // if its a single image
+            return (!value[0] || value[0].size < (1000000 * allowedSize)) || `file size should be less than ${allowedSize} MB!`
+        }
+    }
+}

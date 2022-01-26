@@ -18,6 +18,7 @@
     "isHidden",
     "isApproved",
     "curatorNotes",
+    "urlForLogo",
     {
       "name": "reviews",
       "fields": [

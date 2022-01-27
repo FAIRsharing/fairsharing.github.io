@@ -213,6 +213,7 @@
           id="generalInfo"
           :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
+          :back-color="getRecordCardBackground"
           @requestOwnership="requestOwnership"
         />
         <!-- Dynamic Block -->
@@ -425,6 +426,24 @@ export default {
     }
   },
   computed: {
+    getRecordCardBackground() {
+      let finalCardBackColor
+      switch (this.currentRecord.fairsharingRecord.registry) {
+        case 'Standard':
+          finalCardBackColor = this.$vuetify.theme.themes.light.bg_standard_record_card;
+          break;
+        case 'Database':
+          finalCardBackColor = this.$vuetify.theme.themes.light.bg_database_record_card;
+          break;
+        case 'Policy':
+          finalCardBackColor = this.$vuetify.theme.themes.light.bg_policy_record_card;
+          break;
+        case 'Collection':
+          finalCardBackColor = this.$vuetify.theme.themes.light.bg_collection_record_card;
+          break;
+      }
+      return finalCardBackColor
+    },
     JSONLD () {
       return this.$sanitize(JSON.stringify(this.getField("schemaOrg")));
     },

@@ -11,7 +11,7 @@ import users from "@/store/users.js";
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
 import VueSanitize from "vue-sanitize";
-import Client from "@/lib/Client/RESTClient";
+import light from "@/plugins/theme";
 
 // Initializing context for mounting
 const localVue = createLocalVue();
@@ -27,6 +27,7 @@ users.state.user = function(){ return {
     watchedRecords: [1]
 }};
 record.state.currentRecord.fairsharingRecord = {
+    registry:"Standard",
     maintainers: [{username: 123}],
     reviews: []
 };
@@ -104,7 +105,8 @@ describe("Record.vue", function() {
                 subjects: [],
                 taxonomies: [],
                 userDefinedTags: [],
-                reviews: []
+                reviews: [],
+                registry:"Standard",
             }
         };
 
@@ -135,7 +137,15 @@ describe("Record.vue", function() {
             framework: {},
             name: 'md'
         }
-        vuetify = new Vuetify();
+
+        vuetify = new Vuetify({
+            theme: {
+                themes: {light},
+                options: {
+                    customProperties: true,
+                },
+            },
+        });
         vuetify.framework.breakpoint = breakpoint;
     });
     afterAll( () => {
@@ -463,7 +473,7 @@ describe("Record.vue", function() {
     it("returns correct answer if no reviews present", async () => {
         record.state.currentRecord.fairsharingRecord = {
             maintainers: [{username: 123}],
-            metadata: {}
+            metadata: {},
         };
         wrapper = await shallowMount(Record, {
             mocks: {$route, $store, $router},
@@ -532,6 +542,33 @@ describe("Record.vue", function() {
         expect(wrapper.vm.dialogs.recordID).toEqual(1);
         expect(wrapper.vm.dialogs.deleteRecord).toBe(true);
 
+    });
+
+    it("returns correct background color based on registry types", async () => {
+        record.state.currentRecord.fairsharingRecord = {
+            maintainers: [{username: 123}],
+            metadata: {},
+            registry:"Database"
+        };
+        wrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+
+        record.state.currentRecord.fairsharingRecord = {
+            maintainers: [{username: 123}],
+            metadata: {},
+            registry:"Policy",
+        };
+
+        record.state.currentRecord.fairsharingRecord = {
+            maintainers: [{username: 123}],
+            metadata: {},
+            registry:"Collection",
+        };
+        expect(wrapper.vm.getRecordCardBackground).toBe("#fff2e9");
     });
 
 });

@@ -104,15 +104,29 @@
                   <p
                     class="ma-0 mr-2"
                   >
-                    {{ publication.title }}
-                    {{ $vuetify.breakpoint.lgAndUp?truncate(publication.authors,100):truncate(publication.authors,30) }}
+                    <b>{{ publication.title }}</b>:
+                    {{ $vuetify.breakpoint.lgAndUp?truncate(publication.authors,500):truncate(publication.authors,150) }}
                     ({{ publication.year }})
                     <a
-                      v-if="citation.pubmed_id"
-                      :href="`https://pubmed.ncbi.nlm.nih.gov/${citation.pubmed_id}`"
+                      v-if="citation.doi"
+                      :href="`https://doi.org/${citation.doi}`"
                       target="_blank"
                     >
                       {{ citation.doi }}
+                    </a>
+                    <a
+                      v-if="citation.pubmed_id && !citation.doi"
+                      :href="`https://pubmed.ncbi.nlm.nih.gov/${citation.pubmed_id}`"
+                      target="_blank"
+                    >
+                      {{ citation.pubmed_id }}
+                    </a>
+                    <a
+                        v-if="!citation.pubmed_id && !citation.doi && citation.url"
+                        :href="citation.url"
+                        target="_blank"
+                    >
+                      {{ citation.url }}
                     </a>
                   </p>
                 </span>

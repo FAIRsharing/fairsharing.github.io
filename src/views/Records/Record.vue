@@ -199,6 +199,7 @@
       <CuratorNotes
         id="curatorNotes"
         class="ma-4 mb-7"
+        :back-color="getRecordCardBackground"
       />
 
       <Tombstone
@@ -226,6 +227,7 @@
                 v-for="(block,index) in currentDynamicBlock.leftBlock"
                 :id="block.toLowerCase()"
                 :key="block"
+                :back-color="getRecordCardBackground"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
             </div>
@@ -238,6 +240,7 @@
                 v-for="(block,index) in currentDynamicBlock.rightBlock"
                 :id="block.toLowerCase()"
                 :key="block"
+                :back-color="getRecordCardBackground"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
             </div>
@@ -249,12 +252,14 @@
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
           id="publications"
           class="mb-8 ma-4"
+          :back-color="getRecordCardBackground"
         />
         <!-- Additional Information -->
         <AdditionalInfo
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
           id="additionalInfo"
           class="mb-8 ma-4"
+          :back-color="getRecordCardBackground"
         />
         <!-- Search Collection -->
         <SearchCollection

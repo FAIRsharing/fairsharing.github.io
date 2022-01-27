@@ -3,7 +3,7 @@
     v-if="!inlineStyle && getField('organisations').length!==0 && (getField('organisations')!==undefined && getField('organisations')!==null)"
     class="pa-4 d-flex flex-column"
     outlined
-    color="bg_record_card"
+    :color="backColor"
     tile
     elevation="3"
   >
@@ -158,7 +158,11 @@ export default {
     SectionTitle
   },
   props: {
-    inlineStyle: {default: false, type: Boolean}
+    inlineStyle: {default: false, type: Boolean},
+    backColor:{
+      default:null,
+      type: String,
+    }
   },
   data() {
     return {

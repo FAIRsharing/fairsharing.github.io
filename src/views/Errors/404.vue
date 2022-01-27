@@ -1,12 +1,22 @@
 <template>
-  <div>
-    <h1 class="text-center mt-5 blue--text">
-      Error 404: <br>
-    </h1>
-    <h3 class="text-center mb-5 blue--text">
-      This page couldn't be found !
-    </h3>
-  </div>
+  <v-row
+    style="height:50vh"
+    class="d-flex align-center"
+  >
+    <v-col
+      cols="12"
+      lg="4"
+      md="12"
+      sm="12"
+      class="mx-auto d-flex justify-center"
+    >
+      <v-img
+        src="assets/Errors/404.png"
+        contain
+        width="500px"
+      />
+    </v-col>
+  </v-row>
 </template>
 
 <script>

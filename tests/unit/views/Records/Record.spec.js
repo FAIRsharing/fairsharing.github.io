@@ -568,7 +568,7 @@ describe("Record.vue", function() {
             metadata: {},
             registry:"Collection",
         };
-        expect(wrapper.vm.getRecordCardBackground).toBe("#fff2e9");
+        expect(wrapper.vm.getRecordCardBackground).toBe("#e9f7ff");
     });
 
 });

@@ -73,7 +73,7 @@ async function bootstrapApp() {
         await store.dispatch("messages/setMessages");
     }
     catch {
-        // store.commit("introspection/setMaintenanceMode");
+        store.commit("introspection/setMaintenanceMode");
     }
 }
 

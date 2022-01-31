@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -409,12 +409,54 @@
                 &lt;li
                   v-for="(itemData,itemDataIndex) in item.data"
                   :key="itemData+'_'+itemDataIndex"
-                  class="mb-1"
+                  :class="['mb-1',{'d-flex':isArray(itemData)===true &amp;&amp; $vuetify.breakpoint.lgAndUp}]"
                 >
-                  &lt;p
-                    class="ma-0"
-                    v-html="$sanitize(itemData)"
-                  />
+                  &lt;div
+                    v-if="!isArray(itemData)"
+                    class="d-flex mb-2"
+                  >
+                    &lt;p
+                      class="ma-0"
+                      v-html="$sanitize(itemData.text)"
+                    />
+                    &lt;a
+                      class="ml-2 pr-2"
+                      :href="itemData.link.toString().includes('@')?`mailto:${itemData.link}`:itemData.link"
+                      target="_blank"
+                    >
+                      &lt;Icon
+                        class="mr-1"
+                        item="Orcid"
+                        :height="25"
+                        size="30"
+                        wrapper-class=""
+                      />
+                    &lt;/a>
+                  &lt;/div>
+                  &lt;div
+                    v-for="(itemDataArray,itemDataArrayIndex) in itemData"
+                    v-else
+                    :key="itemDataArray.link+'_'+itemDataArrayIndex"
+                    class="d-flex mb-2"
+                  >
+                    &lt;p
+                      class="ma-0"
+                      v-html="$sanitize(itemDataArray.text)"
+                    />
+                    &lt;a
+                      class="ml-2 pr-2"
+                      :href="itemDataArray.link.toString().includes('@')?`mailto:${itemDataArray.link}`:itemDataArray.link"
+                      target="_blank"
+                    >
+                      &lt;Icon
+                        class="mr-1"
+                        item="Orcid"
+                        :height="25"
+                        size="30"
+                        wrapper-class=""
+                      />
+                    &lt;/a>
+                  &lt;/div>
                 &lt;/li>
               &lt;/ul>
             &lt;/div>
@@ -435,7 +477,7 @@
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import {externalLinks, contentTabs, tables, governance, meettheteam} from "@/data/communityPageData.json"
 import Icon from "@/components/Icon";
-
+import {isArray} from "lodash";
 /** This component handles the sign-up/register page
 * @memberOf Static
 * @name Community
@@ -481,6 +523,9 @@ export default {
         this.$router.push({hash: `${selectedAnchor}`});
         this.currentAnchor = selectedAnchor;
       }
+    },
+    isArray(input){
+      return isArray(input)
     }
   }
 }
@@ -599,9 +644,9 @@ td {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a>
 	
-		on Fri Dec 17th 2021
+		on Mon Jan 31st 2022
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

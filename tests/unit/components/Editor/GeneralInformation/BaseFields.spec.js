@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils"
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueRouter from "vue-router";
@@ -20,13 +20,15 @@ recordStore.state.sections = {
                 {label: 'UK', id: 2}
             ],
             metadata: {},
-            type: {name: 'test'}
+            type: {name: 'test'},
+            logo:[]
         }
     }
 };
 
 recordStore.state.newRecord = false;
 userStore.state.user().is_curator = false;
+userStore.state.user().credentials.token = 'a token';
 
 const $store = new Vuex.Store({
     modules: {
@@ -68,14 +70,14 @@ describe('Editor -> BaseFields.vue', () => {
 
     it("disables type field except for new records and curators", () => {
         userStore.state.user = function(){
-            return { is_curator: false }
+            return { is_curator: false, credentials:{token:'a token'} }
         };
         expect(wrapper.vm.typeChangeDisabled()).toBe(true);
         recordStore.state.newRecord = true;
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);
 
         userStore.state.user = function(){
-            return { is_curator: true }
+            return { is_curator: true, credentials:{token:'a token'} }
         };
         recordStore.state.newRecord = false;
         expect(wrapper.vm.typeChangeDisabled()).toBe(false);
@@ -97,6 +99,22 @@ describe('Editor -> BaseFields.vue', () => {
         expect(wrapper.vm.fields.metadata.abbreviation).toBe(null);
     });
 
-
+    // TODO: More information needed about what this test is supposed to be doing.
+    it("can call changeLogoData", async () => {
+        let blob = new Blob(["alongstringofdata"], {type: 'text/plain'});
+        let data = {
+            filename: 'testfile.jpg',
+            data: blob,
+            content_type: "image/png"
+        }
+        await wrapper.vm.changeLogoData([data]);
+        expect(wrapper.vm.fields.logo).toStrictEqual({
+            filename: 'testfile.jpg',
+            data: "alongstringofdata",
+            content_type: "image/png"
+        });
+        await wrapper.vm.changeLogoData([]);
+        expect(wrapper.vm.fields.logo).toStrictEqual({});
+    });
 
 });

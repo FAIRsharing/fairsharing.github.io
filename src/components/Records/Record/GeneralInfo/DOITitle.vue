@@ -1,14 +1,21 @@
 <template>
   <div class="d-flex mt-4 ml-0">
-    <div class="align-self-center width-200">
+    <div class="align-self-center width-15-percent-flex">
       <record-status :record="currentRecord['fairsharingRecord']" />
     </div>
-    <div class="align-self-center full-width ml-15">
+    <div class="align-self-center full-width ml-13">
       <div class="d-flex flex-column">
         <div class="d-flex flex-row align-center">
+          <v-img
+            v-if="currentRecord['fairsharingRecord'].urlForLogo"
+            :src="newImg.src"
+            :max-width="finalImageWidth"
+            contain
+            class="mr-2"
+          />
           <h3>{{ getField('name') }}</h3>
           <b
-            v-if="getField('abbreviation')"
+            v-if="getField('abbreviation') && getField('registry')!=='Collection'"
             style="font-size: 16px"
             class="ml-2"
           >({{ getField('abbreviation') }})</b>
@@ -24,7 +31,7 @@
             />
           </div>
           <div
-            v-if="getField('doi')"
+            v-if="getField('doi') && getField('registry')!=='Collection'"
             class="d-flex flex-row"
           >
             <a
@@ -64,6 +71,7 @@
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import {mapGetters, mapState} from "vuex";
 import Icon from "@/components/Icon";
+import getAPIEndPoint from "@/utils/generalUtils";
 
 export default {
   name: "DOITitle",
@@ -71,16 +79,36 @@ export default {
     Icon,
     RecordStatus
   },
+  mixins: [getAPIEndPoint],
   data() {
     return {
       copyButtonStatus: false,
+      finalImageWidth:'100px',
+      newImg:{src:''}
     }
   },
   computed: {
     ...mapGetters("record", ["getField"]),
     ...mapState("record", ["currentRecord"]),
   },
+  async mounted() {
+    const promiseImageLoader = () => new Promise(resolve => {
+      let newImg = new Image();
+      newImg.addEventListener('load', (e) => {
+        resolve(e.target)
+      })
+      newImg.src = this.getAPIEndPoint() + this.currentRecord['fairsharingRecord'].urlForLogo;
+    })
+    let image = await promiseImageLoader()
+    await this.setImageAfterLoading(image)
+  },
   methods: {
+    async setImageAfterLoading(image) {
+      if (image.width > image.height) {
+        this.finalImageWidth = '300px'
+      }
+      this.newImg.src = image.src
+    },
     generateDoiLink(doi) {
       return `https://doi.org/${doi}`
     },

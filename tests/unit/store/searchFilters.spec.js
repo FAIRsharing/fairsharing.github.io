@@ -85,7 +85,7 @@ describe('searchFilters store methods', () => {
     it("can check getFilters getters", () => {
         const builtData = getters.getFilters(state);
         expect(builtData[0]).toHaveProperty('filterName');
-        expect(builtData.length).toBe(8)
+        expect(builtData.length).toBe(9)
     });
 
     it("can check getFiltersStatisticCount getters", () => {

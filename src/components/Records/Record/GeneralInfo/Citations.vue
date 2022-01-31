@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex flex-row mt-8">
+  <div
+    class="d-flex flex-row mt-8"
+  >
     <v-row>
       <!--How to cite this record-->
       <v-col
@@ -102,15 +104,29 @@
                   <p
                     class="ma-0 mr-2"
                   >
-                    {{ publication.title }}
-                    {{ $vuetify.breakpoint.lgAndUp?truncate(publication.authors,100):truncate(publication.authors,30) }}
+                    <b>{{ publication.title }}</b>:
+                    {{ $vuetify.breakpoint.lgAndUp?truncate(publication.authors,500):truncate(publication.authors,150) }}
                     ({{ publication.year }})
                     <a
-                      v-if="citation.pubmed_id"
-                      :href="`https://pubmed.ncbi.nlm.nih.gov/${citation.pubmed_id}`"
+                      v-if="citation.doi"
+                      :href="`https://doi.org/${citation.doi}`"
                       target="_blank"
                     >
                       {{ citation.doi }}
+                    </a>
+                    <a
+                      v-if="citation.pubmed_id && !citation.doi"
+                      :href="`https://pubmed.ncbi.nlm.nih.gov/${citation.pubmed_id}`"
+                      target="_blank"
+                    >
+                      {{ citation.pubmed_id }}
+                    </a>
+                    <a
+                      v-if="!citation.pubmed_id && !citation.doi && citation.url"
+                      :href="citation.url"
+                      target="_blank"
+                    >
+                      {{ citation.url }}
                     </a>
                   </p>
                 </span>
@@ -124,7 +140,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters, mapState} from "vuex";
 import Icon from "@/components/Icon"
 import {truncate} from "@/utils/stringUtils"
 import moment from "moment";
@@ -140,6 +156,7 @@ export default {
     }
   },
   computed: {
+    ...mapState("record", ["currentRecord"]),
     ...mapGetters("record", ["getField"]),
   },
   methods:{

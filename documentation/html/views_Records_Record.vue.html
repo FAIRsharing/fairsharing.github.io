@@ -54,7 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
+					<li><a href="global.html#buildFacets">buildFacets</a></li><li><a href="global.html#buildFilters">buildFilters</a></li><li><a href="global.html#filtersStore">filtersStore</a></li><li><a href="global.html#hackSearch">hackSearch</a></li><li><a href="global.html#hasValue">hasValue</a></li><li><a href="global.html#introspectionStore">introspectionStore</a></li><li><a href="global.html#isAllowedSize">isAllowedSize</a></li><li><a href="global.html#isEmail">isEmail</a></li><li><a href="global.html#isImage">isImage</a></li><li><a href="global.html#isLongEnough">isLongEnough</a></li><li><a href="global.html#isOrcid">isOrcid</a></li><li><a href="global.html#isRequired">isRequired</a></li><li><a href="global.html#isUrl">isUrl</a></li><li><a href="global.html#paramsAreExpired">paramsAreExpired</a></li><li><a href="global.html#parseParam">parseParam</a></li><li><a href="global.html#recordsStore">recordsStore</a></li><li><a href="global.html#recordStore">recordStore</a></li><li><a href="global.html#states">states</a></li>
 				</ul>
 			</li>
 			
@@ -192,7 +192,7 @@
                   &lt;span v-if="!alreadyClaimed &amp;&amp; ownershipApproved &amp;&amp; noClaimRegistered &amp;&amp; error" />
                   &lt;!--    here code checks if the ownership has been rejected (after query is triggered)  -->
                   &lt;v-alert
-                    v-else-if="!ownershipApproved &amp;&amp; !alreadyClaimed &amp;&amp; !noClaimRegistered"
+                    v-else-if="!ownershipApproved &amp;&amp; !alreadyClaimed &amp;&amp; !noClaimRegistered &amp;&amp; showBanner"
                     dense
                     type="error"
                     class="mb-2 flex-grow-1"
@@ -201,7 +201,7 @@
                   &lt;/v-alert>
                   &lt;!--    here code checks if the ownership has been approved (after query is triggered)  -->
                   &lt;v-alert
-                    v-else-if="ownershipApproved"
+                    v-else-if="ownershipApproved &amp;&amp; showBanner"
                     dense
                     type="success"
                     class="mb-1 flex-grow-1"
@@ -219,7 +219,7 @@
               type="warning"
               class="mb-1 flex-grow-1"
             >
-              &lt;span>You have already submitted an ownership request for this record. We will get back to you within a few working days.&lt;/span>
+              &lt;span>Your ownership request for this record has been submitted. We will get back to you within a few working days.&lt;/span>
             &lt;/v-alert>
             &lt;v-snackbar
               v-model="claimedTriggered"
@@ -396,11 +396,54 @@
         &lt;/v-card-text>
       &lt;/v-card>
     &lt;/v-dialog>
+    &lt;v-dialog
+      v-model="dialogs.deleteRecord"
+      max-width="700px"
+    >
+      &lt;v-card>
+        &lt;v-card-title
+          class="headline"
+        >
+          Are you sure you want to
+          &lt;font
+            style="color:red; padding-left: 5px; padding-right: 5px;"
+          >
+            DELETE
+          &lt;/font>
+          this record?
+          &lt;ul style="list-style-type:none;">
+            &lt;li>
+              {{ dialogs.recordName }}
+            &lt;/li>
+          &lt;/ul>
+        &lt;/v-card-title>
+        &lt;v-card-actions>
+          &lt;v-spacer />
+          &lt;v-btn
+            :disabled="dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="closeDeleteMenu()"
+          >
+            Cancel
+          &lt;/v-btn>
+          &lt;v-btn
+            :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="confirmDelete()"
+          >
+            OK
+          &lt;/v-btn>
+          &lt;v-spacer />
+        &lt;/v-card-actions>
+      &lt;/v-card>
+    &lt;/v-dialog>
   &lt;/main>
 &lt;/template>
 
 &lt;script>
-import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import Client from '@/lib/GraphClient/GraphClient.js'
 import RestClient from "@/lib/Client/RESTClient.js"
 import stringUtils from '@/utils/stringUtils';
@@ -458,12 +501,20 @@ export default {
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
+      showBanner:false,
       buttons: [],
       history: {
         show: false,
         loading: false
       },
-      tombstone: false
+      tombstone: false,
+      dialogs: {
+        recordName: "",
+        recordID: "",
+        deleteRecord: false,
+        disableDelButton: true,
+        disableButton: false
+      },
     }
   },
   computed: {
@@ -668,7 +719,53 @@ export default {
           }
         )
       }
+      if (_module.user().is_super_curator) {
+        initial_buttons.push(
+          {
+            name: function () {
+              return "Delete this record"
+            },
+            isDisabled: function () {
+              return !_module.user().is_super_curator;
+            },
+            method: /* istanbul ignore next */ async function () {
+              _module.deleteRecordMenu(
+                  _module.currentRecord['fairsharingRecord'].name,
+                  _module.currentRecord['fairsharingRecord'].id,
+              );
+            }
+          }
+        )
+      }
       this.buttons = initial_buttons;
+    },
+    async confirmDelete(){
+      const _module = this;
+      _module.dialogs.disableButton = true;
+      let data = await client.deleteRecord(_module.dialogs.recordID, this.user().credentials.token);
+      if (data.error){
+        _module.error = "error deleting record";
+      }
+      else{
+        // Redirect to current record to show it has gone...
+        this.$router.go();
+      }
+      _module.dialogs.deleteRecord = false;
+    },
+    deleteRecordMenu(recordName, recordID){
+      const _module = this;
+      _module.dialogs.disableButton = false;
+      _module.dialogs.disableDelButton = true
+      _module.dialogs.recordName = recordName;
+      _module.dialogs.recordID = recordID;
+      _module.dialogs.deleteRecord = true;
+      /* istanbul ignore next */ setTimeout(function () {
+        _module.dialogs.disableDelButton = false;
+      }, 5000);
+    },
+    closeDeleteMenu () {
+      this.dialogs.disableButton = true;
+      this.dialogs.deleteRecord = false;
     },
     goToEdit(){
       let _module = this;
@@ -729,6 +826,27 @@ export default {
               }
             }
             else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
+
+            // assign expiring date for approval banner---
+            _module.showBanner = true;
+            let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
+            if (!bannerExpiryDate[_module.getField("id")]) {
+              bannerExpiryDate = {
+                ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
+                [_module.getField("id")]: new Date()
+              }
+              localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
+            }
+            else {
+              const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
+              const expiryDate = new Date(temp[_module.getField("id")]);
+              let now = new Date();
+              const DAY = 2;
+              // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
+              _module.showBanner = !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) &lt; now.getTime());
+            }
+            // end of expiring date for approval banner---
+
             _module.canClaim = false;
           }
           else {
@@ -952,9 +1070,9 @@ ul,li {
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a>
 	
-		on Fri Dec 17th 2021
+		on Mon Jan 31st 2022
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

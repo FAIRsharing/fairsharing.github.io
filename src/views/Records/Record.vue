@@ -99,7 +99,7 @@
                   <span v-if="!alreadyClaimed && ownershipApproved && noClaimRegistered && error" />
                   <!--    here code checks if the ownership has been rejected (after query is triggered)  -->
                   <v-alert
-                    v-else-if="!ownershipApproved && !alreadyClaimed && !noClaimRegistered"
+                    v-else-if="!ownershipApproved && !alreadyClaimed && !noClaimRegistered && showBanner"
                     dense
                     type="error"
                     class="mb-2 flex-grow-1"
@@ -108,7 +108,7 @@
                   </v-alert>
                   <!--    here code checks if the ownership has been approved (after query is triggered)  -->
                   <v-alert
-                    v-else-if="ownershipApproved"
+                    v-else-if="ownershipApproved && showBanner"
                     dense
                     type="success"
                     class="mb-1 flex-grow-1"
@@ -126,7 +126,7 @@
               type="warning"
               class="mb-1 flex-grow-1"
             >
-              <span>You have already submitted an ownership request for this record. We will get back to you within a few working days.</span>
+              <span>Your ownership request for this record has been submitted. We will get back to you within a few working days.</span>
             </v-alert>
             <v-snackbar
               v-model="claimedTriggered"
@@ -303,11 +303,54 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogs.deleteRecord"
+      max-width="700px"
+    >
+      <v-card>
+        <v-card-title
+          class="headline"
+        >
+          Are you sure you want to
+          <font
+            style="color:red; padding-left: 5px; padding-right: 5px;"
+          >
+            DELETE
+          </font>
+          this record?
+          <ul style="list-style-type:none;">
+            <li>
+              {{ dialogs.recordName }}
+            </li>
+          </ul>
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            :disabled="dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="closeDeleteMenu()"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="confirmDelete()"
+          >
+            OK
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </main>
 </template>
 
 <script>
-import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import Client from '@/lib/GraphClient/GraphClient.js'
 import RestClient from "@/lib/Client/RESTClient.js"
 import stringUtils from '@/utils/stringUtils';
@@ -365,12 +408,20 @@ export default {
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
+      showBanner:false,
       buttons: [],
       history: {
         show: false,
         loading: false
       },
-      tombstone: false
+      tombstone: false,
+      dialogs: {
+        recordName: "",
+        recordID: "",
+        deleteRecord: false,
+        disableDelButton: true,
+        disableButton: false
+      },
     }
   },
   computed: {
@@ -575,7 +626,53 @@ export default {
           }
         )
       }
+      if (_module.user().is_super_curator) {
+        initial_buttons.push(
+          {
+            name: function () {
+              return "Delete this record"
+            },
+            isDisabled: function () {
+              return !_module.user().is_super_curator;
+            },
+            method: /* istanbul ignore next */ async function () {
+              _module.deleteRecordMenu(
+                  _module.currentRecord['fairsharingRecord'].name,
+                  _module.currentRecord['fairsharingRecord'].id,
+              );
+            }
+          }
+        )
+      }
       this.buttons = initial_buttons;
+    },
+    async confirmDelete(){
+      const _module = this;
+      _module.dialogs.disableButton = true;
+      let data = await client.deleteRecord(_module.dialogs.recordID, this.user().credentials.token);
+      if (data.error){
+        _module.error = "error deleting record";
+      }
+      else{
+        // Redirect to current record to show it has gone...
+        this.$router.go();
+      }
+      _module.dialogs.deleteRecord = false;
+    },
+    deleteRecordMenu(recordName, recordID){
+      const _module = this;
+      _module.dialogs.disableButton = false;
+      _module.dialogs.disableDelButton = true
+      _module.dialogs.recordName = recordName;
+      _module.dialogs.recordID = recordID;
+      _module.dialogs.deleteRecord = true;
+      /* istanbul ignore next */ setTimeout(function () {
+        _module.dialogs.disableDelButton = false;
+      }, 5000);
+    },
+    closeDeleteMenu () {
+      this.dialogs.disableButton = true;
+      this.dialogs.deleteRecord = false;
     },
     goToEdit(){
       let _module = this;
@@ -636,6 +733,27 @@ export default {
               }
             }
             else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
+
+            // assign expiring date for approval banner---
+            _module.showBanner = true;
+            let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
+            if (!bannerExpiryDate[_module.getField("id")]) {
+              bannerExpiryDate = {
+                ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
+                [_module.getField("id")]: new Date()
+              }
+              localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
+            }
+            else {
+              const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
+              const expiryDate = new Date(temp[_module.getField("id")]);
+              let now = new Date();
+              const DAY = 2;
+              // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
+              _module.showBanner = !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) < now.getTime());
+            }
+            // end of expiring date for approval banner---
+
             _module.canClaim = false;
           }
           else {

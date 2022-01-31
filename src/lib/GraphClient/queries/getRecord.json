@@ -18,6 +18,7 @@
     "isHidden",
     "isApproved",
     "curatorNotes",
+    "urlForLogo",
     {
       "name": "reviews",
       "fields": [
@@ -135,7 +136,7 @@
       "fields": [
         {
           "queryName": "linkedRecord",
-          "fields": ["name", "id", "registry", "type"]
+          "fields": ["name", "abbreviation", "id", "registry", "type"]
         },
         "recordAssocLabel",
         "recordAssocLabelId",
@@ -147,7 +148,7 @@
       "fields": [
         {
           "queryName": "fairsharingRecord",
-          "fields": ["name", "id", "registry", "type"]
+          "fields": ["name", "abbreviation", "id", "registry", "type"]
         },
         "recordAssocLabel"
       ]

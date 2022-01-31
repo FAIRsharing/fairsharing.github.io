@@ -3,7 +3,7 @@
     v-if="(allowedFields.properties && anyDataAvailable.includes(true) )|| getField('metadata').deprecation_reason"
     class="pa-4 d-flex flex-column"
     outlined
-    color="bg_record_card"
+    :color="backColor"
     tile
     elevation="3"
   >
@@ -381,6 +381,12 @@ import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBo
 export default {
   name: "AdditionalInfo",
   components: {DatasetBoolean, SectionTitle},
+  props: {
+    backColor:{
+      default:null,
+      type: String,
+    }
+  },
   data: () => {
     return {
       anyDataAvailable:[]

@@ -3,7 +3,7 @@
     v-if="getField('metadata')['associated_tools']!==undefined && getField('metadata')['associated_tools']!==null"
     class="pa-4 d-flex flex-column"
     outlined
-    color="bg_record_card"
+    :color="backColor"
     tile
     elevation="3"
   >
@@ -60,6 +60,12 @@ export default {
   components: {
     SectionTitle,
     Icon
+  },
+  props:{
+    backColor:{
+      default:null,
+      type: String,
+    }
   },
   computed: {
     ...mapGetters("record", ["getField"]),

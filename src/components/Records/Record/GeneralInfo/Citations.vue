@@ -122,9 +122,9 @@
                       {{ citation.pubmed_id }}
                     </a>
                     <a
-                        v-if="!citation.pubmed_id && !citation.doi && citation.url"
-                        :href="citation.url"
-                        target="_blank"
+                      v-if="!citation.pubmed_id && !citation.doi && citation.url"
+                      :href="citation.url"
+                      target="_blank"
                     >
                       {{ citation.url }}
                     </a>

@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount } from "@vue/test-utils"
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 import Vuex from "vuex"
 import Vuetify from "vuetify"
 import VueRouter from "vue-router";
@@ -99,12 +99,22 @@ describe('Editor -> BaseFields.vue', () => {
         expect(wrapper.vm.fields.metadata.abbreviation).toBe(null);
     });
 
-    it("can call changeLogoData", () => {
-        wrapper.vm.changeLogoData({name:'file.jpg'});
+    // TODO: More information needed about what this test is supposed to be doing.
+    it("can call changeLogoData", async () => {
+        let blob = new Blob(["alongstringofdata"], {type: 'text/plain'});
+        let data = {
+            filename: 'testfile.jpg',
+            data: blob,
+            content_type: "image/png"
+        }
+        await wrapper.vm.changeLogoData([data]);
+        expect(wrapper.vm.fields.logo).toStrictEqual({
+            filename: 'testfile.jpg',
+            data: "alongstringofdata",
+            content_type: "image/png"
+        });
+        await wrapper.vm.changeLogoData([]);
         expect(wrapper.vm.fields.logo).toStrictEqual({});
-        wrapper.vm.changeLogoData([{}]);
-        expect(wrapper.vm.fields.logo).toStrictEqual([{}]);
-
     });
 
 });

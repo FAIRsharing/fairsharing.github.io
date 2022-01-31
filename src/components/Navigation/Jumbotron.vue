@@ -3,7 +3,7 @@
     v-if="content"
     class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock"
     :style="['z-index: 2', {
-      backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 200%),url(' + 'assets/Home/BlockHero/pattern3.jpg',
+      backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 200%),url(' + '/assets/Home/BlockHero/pattern3.jpg',
       backgroundRepeat: 'repeat',
       backgroundBlendMode: 'multiply',
     }]"

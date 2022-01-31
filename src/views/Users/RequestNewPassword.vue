@@ -29,6 +29,9 @@
           <v-card-text>
             <v-form
               id="requestNewPassword"
+              ref="requestNewPassword"
+              v-model="formValid"
+              @submit="sendEmail()"
             >
               <!-- account -->
               <v-text-field
@@ -36,9 +39,11 @@
                 label="Email address of the account"
                 required
                 outlined
+                :rules="[rules.isRequired(), rules.isEmail()]"
               />
               <v-btn
                 :loading="loading"
+                :disabled="!formValid"
                 @click="sendEmail()"
               >
                 Request new password
@@ -53,6 +58,7 @@
 
 <script>
     import Client from "@/lib/Client/RESTClient.js"
+    import { isRequired, isEmail } from "@/utils/rules.js"
 
     const client = new Client();
 
@@ -64,11 +70,17 @@
             formData: {},
             success: false,
             triggered: false,
-            loading: false
+            loading: false,
+            formValid: false,
+            rules: {
+              isRequired: () => isRequired(),
+              isEmail: () => isEmail()
+            }
           }
         },
         methods: {
           sendEmail: async function(){
+            if (!this.formValid) return null
             this.loading = true;
             this.triggered = false;
             let response = await client.requestResetPwd(this.formData.email);

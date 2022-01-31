@@ -11,7 +11,6 @@ import users from "@/store/users.js";
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
 import VueSanitize from "vue-sanitize";
-import Client from "@/lib/Client/RESTClient";
 
 // Initializing context for mounting
 const localVue = createLocalVue();

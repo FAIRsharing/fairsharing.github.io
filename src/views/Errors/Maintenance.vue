@@ -1,22 +1,13 @@
 <template>
-  <v-row
-    style="height:50vh"
-    class="d-flex align-center"
-  >
-    <v-col
-      cols="12"
-      lg="4"
-      md="12"
-      sm="12"
-      class="mx-auto d-flex justify-center"
-    >
-      <v-img
-        src="assets/Errors/500.png"
-        contain
-        width="500px"
-      />
-    </v-col>
-  </v-row>
+  <div>
+    <h1 class="text-center mt-5 blue--text">
+      Maintenance Mode
+    </h1>
+    <h3 class="text-center mb-5 blue--text">
+      The site is currently down for maintenance and we hope to restore normal service as soon as possible.
+      Please accept our apologies for any inconvenience.
+    </h3>
+  </div>
 </template>
 
 <script>

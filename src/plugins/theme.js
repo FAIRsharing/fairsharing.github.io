@@ -29,5 +29,5 @@ export default {
     bg_standard_record_card: '#f9f9f9',
     bg_database_record_card: '#f9f9f9',
     bg_policy_record_card: '#f9f9f9',
-    bg_collection_record_card: '#e9f1f7',
+    bg_collection_record_card: '#f0f5f9',
 }

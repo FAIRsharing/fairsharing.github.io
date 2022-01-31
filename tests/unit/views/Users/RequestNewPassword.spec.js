@@ -36,8 +36,13 @@ describe('ConfirmAccount.vue', () => {
         wrapper.vm.formData = {
           email: "123@test.com"
         };
+        wrapper.vm.formValid = true
         await wrapper.vm.sendEmail();
         expect(wrapper.vm.message).toMatch("Hello");
         expect(wrapper.vm.success).toBe(true);
+
+        wrapper.vm.formValid = false
+        let response = await wrapper.vm.sendEmail()
+        expect(response).toBeFalsy()
     });
 });

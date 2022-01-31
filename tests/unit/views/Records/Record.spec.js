@@ -13,6 +13,7 @@ import VueScrollTo from "vue-scrollto";
 import VueSanitize from "vue-sanitize";
 import light from "@/plugins/theme";
 
+
 // Initializing context for mounting
 const localVue = createLocalVue();
 localVue.use(Vuex);

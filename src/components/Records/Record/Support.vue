@@ -3,7 +3,7 @@
     v-if="(getField('metadata')['contacts'] && getField('metadata')['contacts'].length) || (getField('metadata')['support_links'] && getField('metadata')['support_links'].length)"
     class="pa-4 d-flex flex-column"
     outlined
-    color="bg_record_card"
+    :color="backColor"
     tile
     elevation="3"
   >
@@ -119,6 +119,12 @@ export default {
     SectionTitle
   },
   mixins: [clearString, IconsMixin],
+  props:{
+    backColor:{
+      default:null,
+      type: String,
+    }
+  },
   computed: {
     ...mapGetters("record", ["getField"]),
   },

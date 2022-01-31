@@ -21,37 +21,38 @@ describe("Organisation", () => {
 
     let wrapper;
     let graphStub;
+    let organisation = {
+        id: 1,
+        name: "4DN Data Coordination and Integration Center",
+        alternativeNames: [],
+        homepage: "http://dcic.4dnucleome.org/",
+        types: [
+            "Consortium"
+        ],
+        urlForLogo: "/logo12345678",
+        childOrganisations: [],
+        parentOrganisations: [],
+        organisationLinks: [
+            {
+                id: 6057,
+                isLead: true,
+                relation: "maintains",
+                fairsharingRecord: {
+                    id: 872,
+                    name: "Pairs file format",
+                    abbreviation: ".pairs",
+                    type: "model_and_format",
+                    registry: "Standard",
+                    status: "ready"
+                },
+                "grant": null
+            }
+        ]
+    }
 
     beforeAll(() => {
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns({
-            organisation: {
-                id: 1,
-                name: "4DN Data Coordination and Integration Center",
-                alternativeNames: [],
-                homepage: "http://dcic.4dnucleome.org/",
-                types: [
-                    "Consortium"
-                ],
-                urlForLogo: "/logo12345678",
-                childOrganisations: [],
-                parentOrganisations: [],
-                organisationLinks: [
-                    {
-                        id: 6057,
-                        isLead: true,
-                        relation: "maintains",
-                        fairsharingRecord: {
-                            id: 872,
-                            name: "Pairs file format",
-                            abbreviation: ".pairs",
-                            type: "model_and_format",
-                            registry: "Standard",
-                            status: "ready"
-                        },
-                        "grant": null
-                    }
-                ]
-            }
+            organisation: organisation
         });
     });
 
@@ -70,6 +71,23 @@ describe("Organisation", () => {
         expect(wrapper.name()).toMatch(title);
         expect(wrapper.vm.organisation.id).toEqual(1);
         expect(wrapper.vm.currentRoute).toEqual(1);
+    });
+
+    it("redirects to the search page for filtering", async() => {
+        graphStub.restore();
+        wrapper = await shallowMount(Organisation, {
+            localVue,
+            router,
+            mocks: {$route, $router},
+            stubs: {RouterLink: RouterLinkStub}
+        });
+        await wrapper.vm.getOrganisation();
+        wrapper.vm.organisation = organisation;
+        wrapper.vm.filterRecords();
+        expect($router.push).toHaveBeenCalledWith({
+            name: "search",
+            query: {organisations: encodeURIComponent(organisation.name.toLowerCase())}
+        });
     });
 
     it("doesn't display if the organistion is not set in the response", async () => {
@@ -143,4 +161,5 @@ describe("Organisation", () => {
         $route.params.id = 10;
         expect(wrapper.vm.currentRoute).toEqual(10);
     });
+
 });

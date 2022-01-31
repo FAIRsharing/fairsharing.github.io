@@ -42,6 +42,8 @@ let $store = new Vuex.Store({
     };
 const router = new VueRouter(),
     $router = { push: jest.fn() };
+
+$router.go = jest.fn();
 //-- making a mock div element
 const element = document.createElement('div')
 element.id = 'hashtag'
@@ -469,6 +471,65 @@ describe("Record.vue", function() {
             router
         });
         expect(wrapper.vm.reviewsPresent()).toBe(false);
+
+    });
+
+    it("can delete a record", async () => {
+        // The button appears
+        $store.state.users.user = function (){return {
+            isLoggedIn: true,
+            is_super_curator: true,
+            credentials: {token: 123, username: 123},
+            watchedRecords: []
+        }};
+        wrapper.vm.getMenuButtons();
+        expect(wrapper.vm.buttons[6].name()).toEqual("Delete this record");
+        expect(wrapper.vm.buttons[6].isDisabled()).toBe(false);
+
+
+        //There is an error in the client query
+        wrapper.vm.dialogs.recordID = 102;
+        mocks.setMock("deleteMock",
+            RESTClient.prototype,
+            "deleteRecord", {
+               error: {
+                   response: {data: "error"}
+               }
+
+            }
+        );
+        await wrapper.vm.confirmDelete();
+        expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
+
+        //Correct deleted
+        wrapper.vm.dialogs.recordID = 102;
+        mocks.restore('deleteMock');
+        mocks.setMock("deleteMock",
+            RESTClient.prototype,
+            "deleteRecord",
+            {
+                data: {
+                    error: {
+                        response: {data: {error: false}}
+                    }
+                }
+            }
+        );
+        await wrapper.vm.confirmDelete();
+        expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
+        expect($router.go).toHaveBeenCalled();
+
+        // Other functions
+        wrapper.vm.closeDeleteMenu();
+        expect(wrapper.vm.dialogs.disableButton).toBe(true);
+        expect(wrapper.vm.dialogs.deleteRecord).toBe(false);
+
+        wrapper.vm.deleteRecordMenu("one", 1)
+        expect(wrapper.vm.dialogs.disableButton).toBe(false);
+        expect(wrapper.vm.dialogs.disableDelButton).toBe(true);
+        expect(wrapper.vm.dialogs.recordName).toEqual("one");
+        expect(wrapper.vm.dialogs.recordID).toEqual(1);
+        expect(wrapper.vm.dialogs.deleteRecord).toBe(true);
 
     });
 

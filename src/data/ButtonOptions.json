@@ -100,14 +100,14 @@
         "title": "Uncertain",
         "active": false,
         "filterName": "status",
-        "apiIndex": 2,
+        "apiIndex": 3,
         "tooltip": "Show only those resources where we are unsure of their status"
       },
       {
         "title": "In Dev.",
         "active": false,
         "filterName": "status",
-        "apiIndex": 3,
+        "apiIndex": 2,
         "tooltip": "Show only those resources that are currently in development and not yet ready for use"
       }
     ],

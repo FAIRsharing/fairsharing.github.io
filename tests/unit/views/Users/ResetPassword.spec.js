@@ -42,6 +42,7 @@ describe('ResetPassword.vue', () => {
         wrapper = await shallowMount(ResetPassword, {
             localVue,
             router,
+            stubs: ['router-link'],
             mocks: {$store}
         });
         const title = "ResetPassword";
@@ -59,6 +60,7 @@ describe('ResetPassword.vue', () => {
         };
         wrapper = await shallowMount(ResetPassword, {
             mocks: {$route, $store, $router},
+            stubs: ['router-link'],
             secondLocalVue,
             router
         });

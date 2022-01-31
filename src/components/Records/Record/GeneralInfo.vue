@@ -22,19 +22,26 @@
       <Registry />
       <!--Description-->
       <Description />
+      <!--Organisations-->
+      <Organisations
+        v-if="currentRecord.fairsharingRecord.registry==='Collection'"
+        inline-style
+      />
       <!--Home Page-->
       <HomePage />
       <!--Reference URL-->
       <ReferenceURL v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
       <!--Year of Creation-->
-      <YearOfCreation />
+      <YearOfCreation v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Maintainers-->
       <Maintainers
         :can-claim="canClaim"
         @requestOwnership="callRequestOwnership"
       />
+      <!--ContactsData-->
+      <ContactsData v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
       <!--Developed Countries-->
-      <Countries />
+      <Countries v-if="currentRecord.fairsharingRecord.registry!=='Collection'" />
       <!--Keywords-->
       <Keywords />
 
@@ -79,14 +86,18 @@ import Countries from "@/components/Records/Record/GeneralInfo/Countries";
 import Citations from "@/components/Records/Record/GeneralInfo/Citations";
 import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail";
 import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
-import {mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
 import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason";
 import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord";
+import ContactsData from "@/components/Records/Record/GeneralInfo/ContactsData";
+import Organisations from "@/components/Records/Record/Organisations";
 
 export default {
   name: "GeneralInfo",
   components: {
+    Organisations,
+    ContactsData,
     ReplacedByRecord,
     DeprecationReason,
     ReferenceURL,
@@ -111,6 +122,7 @@ export default {
   },
   computed: {
     ...mapState('record', ["currentRecord"]),
+    ...mapGetters("record", ["getField"])
   },
   methods: {
     callRequestOwnership() {

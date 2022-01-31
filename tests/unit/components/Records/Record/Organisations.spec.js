@@ -59,7 +59,8 @@ describe("Organisations.vue", function () {
         wrapper = shallowMount(Organisations, {
             localVue,
             vuetify,
-            mocks: {$store}
+            mocks: {$store},
+            propsData:{inlineStyle:true}
         });
     });
 

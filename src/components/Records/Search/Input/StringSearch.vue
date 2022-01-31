@@ -78,7 +78,8 @@ export default {
   name: "StringSearch",
   props: {
     placeholder: {default: null, type: String},
-    showHomeSearch: {default: false, type: Boolean}
+    showHomeSearch: {default: false, type: Boolean},
+    addSearchTerms: {default: false, type: Boolean},
   },
   data() {
     return {
@@ -112,12 +113,21 @@ export default {
     searchString() {
       const _module = this;
       if (_module.searchTerm) {
-        _module.$router.push({
-          path: "/search",
-          query: {
+        let query;
+        if (_module.addSearchTerms) {
+          query = {
             ..._module.$route.query,
             q: _module.searchTerm
           }
+        }
+        else {
+          query = {
+            q: _module.searchTerm
+          }
+        }
+        _module.$router.push({
+          path: "/search",
+          query: query
         });
         _module.searchTerm = null;
       }
@@ -128,7 +138,7 @@ export default {
           _module.$router.push({
             path: "/search",
             query: {
-              q: _module.searchTerm
+              q: _module.searchTerm?_module.searchTerm:undefined
             }
           });
           _module.searchTerm = null;
@@ -141,7 +151,7 @@ export default {
           _module.$router.push({
             path: "/search",
             query: {
-              q: _module.searchTerm,
+              q: _module.searchTerm?_module.searchTerm:undefined,
               fairsharingRegistry: selectedRegistriesValues.toString(),
               searchAnd:false
             }

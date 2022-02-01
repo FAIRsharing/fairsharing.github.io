@@ -2,7 +2,7 @@
   <v-card
     class="pa-4 d-flex flex-column"
     outlined
-    color="bg_record_card"
+    :color="backColor"
     tile
     elevation="3"
   >
@@ -117,7 +117,11 @@ export default {
   props: {
     canClaim: {
       type: Boolean,
-      default: true
+      default: true,
+    },
+    backColor:{
+      default:null,
+      type: String,
     }
   },
   computed: {

@@ -3,7 +3,7 @@
     v-if="currentRecord['fairsharingRecord'].curatorNotes && user().is_curator"
     class="pa-4 d-flex flex-column"
     outlined
-    color="bg_record_card"
+    :color="backColor"
     tile
     elevation="3"
   >
@@ -24,6 +24,12 @@ import SectionTitle from "@/components/Records/Record/SectionTitle";
 export default {
   name: "CuratorNotes",
   components: {SectionTitle},
+  props: {
+    backColor:{
+      default:null,
+      type: String,
+    }
+  },
   computed: {
     ...mapState('record', ["currentRecord"]),
     ...mapState('users', ["user"]),

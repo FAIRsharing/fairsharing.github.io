@@ -63,7 +63,6 @@ export const actions = {
         }
         if (data.headers['maintenance'] === "true") this.commit("introspection/setMaintenanceMode");
         if (data.headers['read-only'] === "true") this.commit("introspection/setReadOnlyMode");
-
         // temp!
         // this.commit("introspection/setMaintenanceMode");
         // this.commit("introspection/setReadOnlyMode");

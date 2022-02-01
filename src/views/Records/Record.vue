@@ -199,6 +199,7 @@
       <CuratorNotes
         id="curatorNotes"
         class="ma-4 mb-7"
+        :back-color="getRecordCardBackground"
       />
 
       <Tombstone
@@ -213,6 +214,7 @@
           id="generalInfo"
           :class="['ma-4',{'mb-10':currentRecord.fairsharingRecord.registry==='Collection'}]"
           :can-claim="canClaim"
+          :back-color="getRecordCardBackground"
           @requestOwnership="requestOwnership"
         />
         <!-- Dynamic Block -->
@@ -225,6 +227,7 @@
                 v-for="(block,index) in currentDynamicBlock.leftBlock"
                 :id="block.toLowerCase()"
                 :key="block"
+                :back-color="getRecordCardBackground"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
             </div>
@@ -237,6 +240,7 @@
                 v-for="(block,index) in currentDynamicBlock.rightBlock"
                 :id="block.toLowerCase()"
                 :key="block"
+                :back-color="getRecordCardBackground"
                 :class="['ma-4',index===currentDynamicBlock.rightBlock.length-1?'mb-4':'mb-8']"
               />
             </div>
@@ -248,12 +252,14 @@
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
           id="publications"
           class="mb-8 ma-4"
+          :back-color="getRecordCardBackground"
         />
         <!-- Additional Information -->
         <AdditionalInfo
           v-if="currentRecord.fairsharingRecord.registry!=='Collection'"
           id="additionalInfo"
           class="mb-8 ma-4"
+          :back-color="getRecordCardBackground"
         />
         <!-- Search Collection -->
         <SearchCollection
@@ -425,6 +431,24 @@ export default {
     }
   },
   computed: {
+    getRecordCardBackground() {
+      let finalCardBackColor
+      switch (this.currentRecord.fairsharingRecord.registry) {
+        case 'Standard':
+          finalCardBackColor = this.$vuetify.theme.themes.light.bg_standard_record_card;
+          break;
+        case 'Database':
+          finalCardBackColor = this.$vuetify.theme.themes.light.bg_database_record_card;
+          break;
+        case 'Policy':
+          finalCardBackColor = this.$vuetify.theme.themes.light.bg_policy_record_card;
+          break;
+        case 'Collection':
+          finalCardBackColor = this.$vuetify.theme.themes.light.bg_collection_record_card;
+          break;
+      }
+      return finalCardBackColor
+    },
     JSONLD () {
       return this.$sanitize(JSON.stringify(this.getField("schemaOrg")));
     },

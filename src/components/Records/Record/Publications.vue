@@ -3,7 +3,7 @@
     v-if="getField('publications').length!==0 && (getField('publications')!==undefined && getField('publications')!==null)"
     class="pa-4 d-flex flex-column"
     outlined
-    color="bg_record_card"
+    :color="backColor"
     tile
     elevation="3"
   >
@@ -117,6 +117,12 @@
             SectionTitle
         },
         mixins: [stringUtils],
+        props: {
+          backColor:{
+            default:null,
+            type: String,
+          }
+        },
         computed: {
             ...mapGetters("record", ["getField"])
         },

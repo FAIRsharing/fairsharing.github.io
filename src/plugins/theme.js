@@ -25,5 +25,9 @@ export default {
     subject_topLevel_4:'#c6c6c6',
 
     // more customized color for various usage in the app:
-    bg_record_card: '#f9f9f9'
+    bg_record_card: '#f9f9f9',
+    bg_standard_record_card: '#f9f9f9',
+    bg_database_record_card: '#f9f9f9',
+    bg_policy_record_card: '#f9f9f9',
+    bg_collection_record_card: '#f0f5f9',
 }

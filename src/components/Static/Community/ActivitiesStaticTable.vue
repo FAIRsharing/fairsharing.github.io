@@ -136,7 +136,7 @@
               href="https://oaspa.org/covid-19-publishers-open-letter-of-intent-rapid-review/"
               target="_blank"
             >COVID-19 Rapid Review Initiative</a>(C19RRI) to ensure the policies of the participating publishers were publicly <a
-              href="https://beta.fairsharing.org/3494"
+              href="https://fairsharing.org/3494"
               target="_blank"
             >registered</a> and mandated Data Availability Statements (DAS): <a
               href="https://oaspa.org/guest-post-covid-19-rapid-review-initiative-an-update-to-our-statement-of-intent/"

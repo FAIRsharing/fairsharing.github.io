@@ -459,6 +459,7 @@
                             obj => obj['external-id-type'] = "doi"
                         )[0];
                         url = null;
+                        /* istanbul ignore if */
                         if (DOI) {
                           url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
                         }

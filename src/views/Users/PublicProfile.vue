@@ -356,12 +356,9 @@
                             obj => obj['external-id-type'] = "doi"
                         )[0];
                         // See ORCIDpub.json
-                        /* istanbul ignore else */
+                        url = null;
                         if (DOI) {
                           url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
-                        }
-                        else {
-                          url = null;
                         }
                       }
                       return {

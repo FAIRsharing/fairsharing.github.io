@@ -357,6 +357,7 @@
                         )[0];
                         // See ORCIDpub.json
                         url = null;
+                        /* istanbul ignore next */
                         if (DOI) {
                           url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
                         }

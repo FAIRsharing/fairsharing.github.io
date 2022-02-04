@@ -13,7 +13,8 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === "production" ? "error" : "off",
     'vue/multi-word-component-names': ['error', {
         'ignores': ['default']
-    }]
+    }],
+    'vue/multi-word-component-names': "off"
   },
   parser: "vue-eslint-parser",
   parserOptions: {

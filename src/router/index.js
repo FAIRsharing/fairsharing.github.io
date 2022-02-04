@@ -37,7 +37,8 @@ import {
     APIDoc,
     EditPublicProfile,
     UsersList,
-    OntologyBrowser
+    OntologyBrowser,
+    ServerError
 }
     from "./routes.js"
 
@@ -364,6 +365,12 @@ let routes = [
         name: "Error 404",
         path: "/error/404",
         component: NotFound
+    },
+    /* ERROR HANDLING */
+    {
+        name: "Error 500",
+        path: "/error/500",
+        component: ServerError
     },
     /* REDIRECTION */
     {

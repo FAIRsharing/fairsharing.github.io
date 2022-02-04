@@ -48,7 +48,7 @@ class GraphQLClient {
             data:  queryString,
             headers: client.headers
         };
-        return await axios(fullQuery);
+        return axios(fullQuery);
     }
 
     /**

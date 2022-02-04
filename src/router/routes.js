@@ -1,5 +1,6 @@
 export const Home = () => import(/* webpackChunkName: "home-chunk" */ '@/views/Home/Home.vue');
-export const NotFound = () => import(/* webpackChunkName: "home-chunk" */  "@/views/Errors/404");
+export const NotFound = () => import(/* webpackChunkName: "notFound-chunk" */  "@/views/Errors/404");
+export const ServerError = () => import(/* webpackChunkName: "serverError-chunk" */  "@/views/Errors/500");
 export const Record =  () => import(/* webpackChunkName: "record-chunk" */ '@/views/Records/Record');
 export const Records =  () => import(/* webpackChunkName: "records-chunk" */ '@/views/Records/Records');
 export const NewRecord = () => import(/* webpackChunkName: "newRecord-chunk" */ '@/views/CreateRecord/NewRecord');

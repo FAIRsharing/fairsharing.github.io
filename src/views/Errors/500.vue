@@ -11,7 +11,7 @@
       class="mx-auto d-flex justify-center"
     >
       <v-img
-        src="/assets/Errors/404.png"
+        src="/assets/Errors/500.png"
         contain
         width="500px"
       />
@@ -21,11 +21,15 @@
 
 <script>
     export default {
-        name: "Error404",
+        name: "Error500",
         metaInfo() {
-          return {
-            title: "FAIRsharing | Not Found"
-          }
+            return {
+                title: "FAIRsharing | Server Error"
+            }
         }
     }
 </script>
+
+<style scoped>
+
+</style>

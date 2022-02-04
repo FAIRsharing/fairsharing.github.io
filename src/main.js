@@ -72,8 +72,13 @@ async function bootstrapApp() {
         await store.dispatch("searchFilters/assembleFilters");
         await store.dispatch("messages/setMessages");
     }
-    catch {
-        store.commit("introspection/setMaintenanceMode");
+    catch(error) {
+        if (error.response.status === 503) {
+            store.commit("introspection/setMaintenanceMode");
+        }
+        else {
+            await router.replace('/error/500')
+        }
     }
 }
 

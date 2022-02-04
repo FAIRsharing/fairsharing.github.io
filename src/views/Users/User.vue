@@ -458,6 +458,7 @@
                         let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
                             obj => obj['external-id-type'] = "doi"
                         )[0];
+                        /* istanbul ignore else */
                         if (DOI) {
                           url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
                         }

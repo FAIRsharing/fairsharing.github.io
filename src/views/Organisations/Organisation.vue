@@ -198,6 +198,27 @@
                       </ul>
                     </v-list-item-content>
                   </v-list-item>
+
+                  <!-- RorLink -->
+                  <v-list-item
+                    :key="'organisation_rorLink'"
+                    class="body-1"
+                  >
+                    <v-list-item-content
+                      class="py-0 d-block"
+                    >
+                      <b class="blue--text">ROR ID: </b>
+                      <span v-if="organisation.rorLink">
+                        <a
+                          :href="organisation.rorLink"
+                        >
+                          {{ organisation.rorLink }}
+                        </a>
+                      </span>
+                      <span v-else> None </span>
+                    </v-list-item-content>
+                  </v-list-item>
+
                 </v-list>
               </v-card-text>
             </v-card>
@@ -314,7 +335,7 @@
             </v-card>
           </v-col>
         </v-row>
-        
+
         <v-row>
           <v-col
             cols="12"
@@ -400,8 +421,8 @@
             </v-card>
           </v-col>
         </v-row>
-          
-          
+
+
 
         <!-- PREVIEW RECORD -->
         <v-dialog v-model="showOverlay">

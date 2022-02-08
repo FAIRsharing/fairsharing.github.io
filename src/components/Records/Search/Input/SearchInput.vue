@@ -11,6 +11,7 @@
     <string-search
       v-if="showSearchBox"
       add-search-terms
+      :search-path="searchPath"
       placeholder="Search through current results."
     />
 
@@ -51,7 +52,8 @@ export default {
   name: "SearchInput",
   components: {StringSearch, FilterButtons, FilterAutocomplete},
   props:{
-    showSearchBox: {default: true, type: Boolean}
+    showSearchBox: {default: true, type: Boolean},
+    searchPath: {default: '/search', type: String}
   },
   data() {
     return {

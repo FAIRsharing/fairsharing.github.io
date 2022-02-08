@@ -11,7 +11,10 @@
       lg="4"
       xl="4"
     >
-      <SearchInput :show-search-box="false" />
+      <SearchInput
+        :show-search-box="true"
+        :search-path="'/' + currentRecord['fairsharingRecord'].id"
+      />
     </v-col>
     <v-col
       id="topElement"

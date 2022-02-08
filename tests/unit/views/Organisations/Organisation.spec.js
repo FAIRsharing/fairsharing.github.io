@@ -26,6 +26,7 @@ describe("Organisation", () => {
         name: "4DN Data Coordination and Integration Center",
         alternativeNames: [],
         homepage: "http://dcic.4dnucleome.org/",
+        rorLink: "https://roro.roror.ror",
         types: [
             "Consortium"
         ],

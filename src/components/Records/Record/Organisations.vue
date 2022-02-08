@@ -116,7 +116,7 @@
       <a
         v-for="(item,index) in jointOrganisations"
         :key="item.organisation.name+'_'+index"
-        :href="item.organisation.homepage"
+        :href="'/organisations/' + item.organisation.id"
         target="_blank"
         class="underline-effect"
       >

@@ -5,7 +5,7 @@ import Vuetify from "vuetify"
 const $router = {
     push: jest.fn()
 };
-let $route = { path: "/", query:{} };
+let $route = { path: "/search", query:{} };
 
 let vuetify = new Vuetify();
 

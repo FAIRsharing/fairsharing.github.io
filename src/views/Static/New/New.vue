@@ -33,17 +33,17 @@
         <li
           v-for="(item,index) in newData.firstBlock.items"
           :key="item.icon+'_'+index"
-          :class="['d-flex flex-column text-center mb-4',$vuetify.breakpoint.smAndDown?'ma-auto':'mr-auto']"
-          style="max-width:300px;min-height:200px"
+          :class="['d-flex flex-column text-center',$vuetify.breakpoint.smAndDown?'ma-auto':'mr-auto']"
+          style="width:400px;min-height:200px"
         >
           <Icon
             :item="item.icon"
             :height="50"
             size="50"
-            wrapper-class=""
+            wrapper-class="mb-1"
           />
           <b class="text-h5">{{ item.title }}</b>
-          <p class="text-body-1 text-justify">
+          <p class="text-body-1 text-justify px-5">
             {{ item.description }}
           </p>
         </li>

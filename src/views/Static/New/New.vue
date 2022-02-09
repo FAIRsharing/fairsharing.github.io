@@ -22,24 +22,32 @@
       >
         {{ item.header }}
       </h2>
-      <p
+      <!--      <p
         v-if="item.textBefore"
         :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
         v-html="$sanitize(item.textBefore)"
-      />
-      <ul v-if="item.bulletPoints">
+      />-->
+    </div>
+    <div v-if="newData.firstBlock">
+      <ul class="d-flex flex-wrap">
         <li
-          v-for="(bulletPoint,bulletPoint_index) in item.bulletPoints"
-          :key="bulletPoint_index"
-          class="mb-2"
-          v-html="$sanitize(bulletPoint)"
-        />
+          v-for="(item,index) in newData.firstBlock.items"
+          :key="item.icon+'_'+index"
+          :class="['d-flex flex-column text-center mb-4',$vuetify.breakpoint.smAndDown?'ma-auto':'mr-auto']"
+          style="max-width:300px;min-height:200px"
+        >
+          <Icon
+            :item="item.icon"
+            :height="50"
+            size="50"
+            wrapper-class=""
+          />
+          <b class="text-h5">{{ item.title }}</b>
+          <p class="text-body-1 text-justify">
+            {{ item.description }}
+          </p>
+        </li>
       </ul>
-      <p
-        v-if="item.textAfter"
-        :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-        v-html="$sanitize(item.textAfter)"
-      />
     </div>
     <v-btn
       color="primary"
@@ -53,18 +61,14 @@
 
 <script>
 import newData from '@/data/NewStaticPageData.json'
+import Icon from "@/components/Icon";
 export default {
   name: "New",
+  components: {Icon},
   data: () => {
     return {
-      newData
+      newData,
     }
   }
 }
 </script>
-
-<style scoped>
-P {
-  white-space: break-spaces;
-}
-</style>

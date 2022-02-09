@@ -80,6 +80,7 @@ export default {
     placeholder: {default: null, type: String},
     showHomeSearch: {default: false, type: Boolean},
     addSearchTerms: {default: false, type: Boolean},
+    searchPath: {default: '/search', type: String}
   },
   data() {
     return {
@@ -114,6 +115,9 @@ export default {
       const _module = this;
       if (_module.searchTerm) {
         let query;
+        // For ticket #1505 using _module.$route.path allows this
+        // component to trigger a search on the same page, instead of going
+        // to search from a collection's page.
         if (_module.addSearchTerms) {
           query = {
             ..._module.$route.query,
@@ -126,7 +130,7 @@ export default {
           }
         }
         _module.$router.push({
-          path: "/search",
+          path: _module.searchPath,
           query: query
         });
         _module.searchTerm = null;

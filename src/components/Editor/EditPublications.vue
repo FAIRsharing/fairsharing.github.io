@@ -439,7 +439,7 @@
               this.errors.doi = true;
             }
             else {
-              this.newPublication.journal = data['container-title-short'];
+              this.newPublication.journal = data['container-title-short'] || data['container-title'];
               this.newPublication.doi = data['DOI'];
               this.newPublication.title = data.title;
               this.newPublication.url = data['URL'];

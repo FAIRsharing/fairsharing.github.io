@@ -439,6 +439,7 @@
               this.errors.doi = true;
             }
             else {
+              /* istanbul ignore next */
               this.newPublication.journal = data['container-title-short'] || data['container-title'];
               this.newPublication.doi = data['DOI'];
               this.newPublication.title = data.title;

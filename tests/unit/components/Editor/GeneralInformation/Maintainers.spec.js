@@ -41,6 +41,10 @@ describe('Editor -> Maintainers.vue', () => {
         data: [{name: "Terazus"}]
     });
 
+    afterAll(() => {
+        restStub.restore();
+    })
+
     beforeEach(() => {
         wrapper = shallowMount(Maintainers, {
             localVue,

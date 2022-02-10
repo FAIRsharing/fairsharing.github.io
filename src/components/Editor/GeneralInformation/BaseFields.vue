@@ -95,7 +95,6 @@
     </v-col>
 
     <!-- Duplicate warning box to go here -->
-    <!-- curator notes -->
     <v-col
       v-if="possibleDuplicates.length > 0"
       cols="12"

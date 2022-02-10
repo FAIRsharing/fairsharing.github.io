@@ -76,10 +76,10 @@
               :loading="loading"
               loading-text="Loading... Please wait"
             >
-              <template #item.username="{ item }">
+              <template v-slot:[`item.username`]="{ item }">
                 {{ item.username }}
               </template>
-              <template #item.id="{ item }">
+              <template v-slot:[`item.id`]="{ item }">
                 <router-link
                   class="underline-effect"
                   :to="`/users/${item.id}`"
@@ -87,7 +87,7 @@
                   {{ `https://fairsharing.org/users/${item.id}` }}
                 </router-link>
               </template>
-              <template #item.add="{ item }">
+              <template v-slot:[`item.add`]="{ item }">
                 <v-icon
                   :disabled="isAlreadyMaintainer(item)"
                   @click="addItem(item)"

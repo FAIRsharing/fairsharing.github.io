@@ -3,6 +3,7 @@ node_modules
 docTemp
 /dist
 /source/index.html
+package-lock.json
 
 # local env files
 .env.local

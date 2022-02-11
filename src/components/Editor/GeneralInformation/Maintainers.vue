@@ -188,11 +188,7 @@ export default {
       return !this.initialMaintainer.filter(obj => isEqual(obj, term))[0];
     },
     isAlreadyMaintainer(item) {
-      let _module = this;
-      if (_module.maintainers.some(m => m.id === item.id)) {
-        return true;
-      }
-      return false;
+      return this.maintainers.some(m => m.id === item.id);
     }
   }
 

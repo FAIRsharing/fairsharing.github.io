@@ -353,7 +353,8 @@ let recordStore = {
         async updateGeneralInformation({ state, commit}, options) {
             commit("resetMessage", "generalInformation");
             let {
-                type, countries, userDefinedTags, domains, subjects, taxonomies, status, curator_notes, isHidden,logo,
+                type, countries, userDefinedTags, domains, subjects, taxonomies, status, curator_notes, isHidden,
+                    logo, maintainers,
                 ...record
             } = JSON.parse(JSON.stringify(state.sections.generalInformation.data)),
                 newTags = [],
@@ -392,6 +393,7 @@ let recordStore = {
             record.domain_ids = domains.map(obj => obj.id);
             record.subject_ids = subjects.map(obj => obj.id);
             record.taxonomy_ids = taxonomies.map(obj => obj.id);
+            record.maintainer_ids = maintainers.map(obj => obj.id);
             record.user_defined_tag_ids = tags.concat(oldTags.filter(function (el) {return el != null;}));
             let response = await restClient.updateRecord({
                   record: record,

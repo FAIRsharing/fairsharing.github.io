@@ -18,6 +18,13 @@
         <v-container fluid>
           <base-fields />
           <v-row>
+            <!-- edit maintainers -->
+            <v-col
+              v-if="user().is_super_curator"
+              cols="12"
+            >
+              <Maintainers />
+            </v-col>
             <!-- contact points -->
             <v-col cols="12">
               <Contact />
@@ -72,6 +79,7 @@
 <script>
     import { mapGetters, mapActions, mapState, mapMutations } from "vuex"
     import Contact from "./Contact";
+    import Maintainers from "./Maintainers";
     import EditTags from "./EditTags";
     import BaseFields from "./BaseFields";
     import Loaders from "@/components/Navigation/Loaders";
@@ -81,7 +89,7 @@
 
     export default {
         name: "GeneralInformation",
-        components: {Alerts, Loaders, BaseFields, EditTags, Contact },
+        components: {Alerts, Loaders, BaseFields, EditTags, Contact, Maintainers },
         data(){
             return {
                 initialized: false,

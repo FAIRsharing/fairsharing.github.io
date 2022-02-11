@@ -26,7 +26,7 @@ const stringUtils = {
 export const cleanString = {
     filters: {
         cleanString: function(str){
-            return str.replace(/_/g, " ").replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
+            return str.replace(/_/g, " ").replace(/([A-Z])/g, '$1').replace(/^./, function(str){ return str.toUpperCase(); });
         }
     }
 };

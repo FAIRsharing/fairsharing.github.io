@@ -78,6 +78,7 @@ const formValidation = {
 
 const article = {
     "container-title-short": "Science",
+    "container-title": "Very Science Indeed",
     "DOI": "10.1126/science.2781282",
     "title": "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
     "URL": "https://doi.org/10.1126%2Fscience.2781282",

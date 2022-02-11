@@ -178,7 +178,6 @@ a {
 }
 
 .card-text-customize {
-  max-height: 120px;
   min-height: 120px;
   overflow: hidden
 }

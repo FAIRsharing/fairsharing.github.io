@@ -142,7 +142,10 @@
       <p
         :class="['mb-0 mt-2 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
-        If you wish to create a new metadata record on FAIRsharing, you can find <router-link to="/new">
+        If you wish to create a new metadata record on FAIRsharing, you can find <router-link
+          to="/new"
+          class="underline-effect"
+        >
           instructions
         </router-link> here.
       </p>

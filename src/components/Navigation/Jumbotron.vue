@@ -48,6 +48,7 @@ export default {
             value: 'transparent'
           }
         },
+        fullScreen: { enable: false },
         fpsLimit: 60,
         particles: {
           color: {

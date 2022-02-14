@@ -4,6 +4,7 @@ docTemp
 /dist
 /source/index.html
 package-lock.json
+coverage
 
 # local env files
 .env.local

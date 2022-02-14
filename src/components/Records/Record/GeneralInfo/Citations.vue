@@ -105,7 +105,7 @@
                     class="ma-0 mr-2"
                   >
                     <b>{{ publication.title }}</b>:
-                    {{ $vuetify.breakpoint.lgAndUp?truncate(publication.authors,500):truncate(publication.authors,150) }}
+                    {{ $vuetify.breakpoint.lgAndUp?truncate(publication.authors,600):truncate(publication.authors,150) }}
                     ({{ publication.year }})
                     <a
                       v-if="citation.doi"

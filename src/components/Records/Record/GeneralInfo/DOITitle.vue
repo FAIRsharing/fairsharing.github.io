@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     async setImageAfterLoading(image) {
-      if (image.width > image.height) {
+      if (image.width > image.height * 2) {
         this.finalImageWidth = '300px'
       }
       this.newImg.src = image.src

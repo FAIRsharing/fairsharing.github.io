@@ -300,7 +300,13 @@
         >
           <b class="width-200">URL</b>
           <div class="d-flex full-width ml-md-12 ml-13">
-            {{ certification.url }}
+            <a
+              class="underline-effect"
+              :href="certification.url"
+              target="_blank"
+            >
+              {{ certification.url }}
+            </a>
           </div>
         </div>
         <v-divider v-if="getField('metadata').certifications_and_community_badges.length-1!==index" />

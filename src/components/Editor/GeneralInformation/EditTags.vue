@@ -122,12 +122,12 @@
                     <v-list-item>
                       <v-list-item-action>
                         <v-switch
-                          v-model="showTypes.domain"
+                          v-model="showTypes.taxonomy"
                           inset
-                          :color="colors.domain"
+                          :color="colors.taxonomy"
                         />
                       </v-list-item-action>
-                      <v-list-item-title>Show domains</v-list-item-title>
+                      <v-list-item-title>Show taxonomic range</v-list-item-title>
                     </v-list-item>
                     <v-divider class="my-1" />
                     <v-list-item>
@@ -144,12 +144,12 @@
                     <v-list-item>
                       <v-list-item-action>
                         <v-switch
-                          v-model="showTypes.taxonomy"
+                          v-model="showTypes.domain"
                           inset
-                          :color="colors.taxonomy"
+                          :color="colors.domain"
                         />
                       </v-list-item-action>
-                      <v-list-item-title>Show taxonomic range</v-list-item-title>
+                      <v-list-item-title>Show domains</v-list-item-title>
                     </v-list-item>
                     <v-divider class="my-1" />
                     <v-list-item>

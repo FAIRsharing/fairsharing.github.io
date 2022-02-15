@@ -53,7 +53,7 @@ describe("DOITitle.vue", function(){
     });
 
     it("can check setImageAfterLoading", async () => {
-        const fakeImage = {width: '200', height: '100'}
+        const fakeImage = {width: '300', height: '100'}
         await wrapper.vm.setImageAfterLoading(fakeImage)
         expect(wrapper.vm.finalImageWidth).toBe('300px');
     });

@@ -73,7 +73,7 @@ async function bootstrapApp() {
         await store.dispatch("messages/setMessages");
     }
     catch(error) {
-        if (error.response.status === 503) {
+        if (error.response && error.response.status === 503) {
             store.commit("introspection/setMaintenanceMode");
         }
         else {

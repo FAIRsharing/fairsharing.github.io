@@ -193,21 +193,22 @@
                           class="red--text mouse-info"
                           v-on="on"
                         >
-                          {{ item.recordAssocLabel[indexLabel] }} &lt;span
-                            v-if="indexLabel === item.recordAssocLabel.length-1 &amp;&amp; item.recordAssocLabel.length!==1"
+                          {{ label }}
+                          &lt;span
+                            v-if="indexLabel !== 0 &amp;&amp; item.recordAssocLabel.length!==1"
                             style="color: black!important"
                           >and&lt;/span>
                         &lt;/span>
                       &lt;/template>
                       &lt;span
-                        v-for="(label,indexHint) in item.recordAssocLabel"
-                        :key="label+'_'+indexHint"
+                        v-for="(label2,indexHint) in item.recordAssocLabel"
+                        :key="label2+'_'+indexHint"
                       >
-                        &lt;span>{{ relationDefinition[label] }}
+                        &lt;span>{{ indexHint !== 0 &amp;&amp; item.recordAssocLabel.length>1?relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]].toLowerCase():relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]] }}
                           &lt;span
                             v-if="indexHint !== item.recordAssocLabel.length-1 &amp;&amp; item.recordAssocLabel.length!==1"
-                            style="color: white!important"
-                          >and &lt;/span>
+                            style="color: white!important;margin: -2px!important;"
+                          >; &lt;/span>
                         &lt;/span>
                       &lt;/span>
                     &lt;/v-tooltip>
@@ -270,17 +271,23 @@ export default {
           if (tabName !== 'other_related_records') {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
                 .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
+            //---- finding duplicate items and merge them into one and add join their recordAssocLabel labels.
             let temp = []
-            _module.tabsData.tabs[tabName].data.forEach((item, index) => {
+            let duplicatedItemIndexes = []
+            _module.tabsData.tabs[tabName].data.forEach((item,index) => {
               if (!temp.includes(item.id)) {
                 temp.push(item.id)
               }
               else {
                 let duplicatedItemIndex = temp.findIndex(it => it === item.id)
-                _module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel.push(item.recordAssocLabel[0])
-                _module.tabsData.tabs[tabName].data.splice(index, 1);
+                duplicatedItemIndexes.push(index)
+                _module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel= [item.recordAssocLabel[0],..._module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel]
               }
             })
+
+            //--remove the duplicates.
+            _module.tabsData.tabs[tabName].data = _module.tabsData.tabs[tabName].data.filter((item,index) =>!duplicatedItemIndexes.includes(index))
+            //---- end of finding duplicate items ...
           }
           else {
             const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])

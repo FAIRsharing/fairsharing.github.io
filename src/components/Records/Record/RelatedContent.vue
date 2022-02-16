@@ -180,18 +180,20 @@ export default {
                 .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
             //---- finding duplicate items and merge them into one and add join their recordAssocLabel labels.
             let temp = []
-            _module.tabsData.tabs[tabName].data.forEach((item, index) => {
+            let duplicatedItemIndexes = []
+            _module.tabsData.tabs[tabName].data.forEach((item,index) => {
               if (!temp.includes(item.id)) {
                 temp.push(item.id)
               }
               else {
                 let duplicatedItemIndex = temp.findIndex(it => it === item.id)
-                console.log(_module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel)
+                duplicatedItemIndexes.push(index)
                 _module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel= [item.recordAssocLabel[0],..._module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel]
-                // _module.tabsData.tabs[tabName].data.splice(index, 1);
               }
             })
 
+            //--remove the duplicates.
+            _module.tabsData.tabs[tabName].data = _module.tabsData.tabs[tabName].data.filter((item,index) =>!duplicatedItemIndexes.includes(index))
             //---- end of finding duplicate items ...
           }
           else {

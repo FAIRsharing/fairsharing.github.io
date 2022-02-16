@@ -40,13 +40,12 @@ const recordTabUtils = {
             let recordAssociations = []
             let joinedArrays = associations.concat(reverseAssociations);
             const properties = ['fairsharingRecord', 'linkedRecord'];
-            joinedArrays.forEach((item,index) => {
-                let object = {};
+            joinedArrays.forEach((item) => {
+                let object = {recordAssocLabel:[]};
                 properties.forEach(prop => {
                     if (Object.prototype.hasOwnProperty.call(item, prop)) {
-                        object.recordAssocLabel = _module.cleanString(item.recordAssocLabel);
+                        object.recordAssocLabel[0] = _module.cleanString(item.recordAssocLabel);
                         object.id = item[prop].id;
-                        object.uniqueID = index;
                         object.registry = item[prop].registry;
                         object.name = item[prop].name;
                         object.abbreviation = item[prop].abbreviation;

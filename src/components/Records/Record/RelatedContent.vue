@@ -100,17 +100,18 @@
                           class="red--text mouse-info"
                           v-on="on"
                         >
-                          {{ item.recordAssocLabel[indexLabel] }} <span
-                            v-if="indexLabel === item.recordAssocLabel.length-1 && item.recordAssocLabel.length!==1"
+                          {{ label }}
+                          <span
+                            v-if="indexLabel !== 0 && item.recordAssocLabel.length!==1"
                             style="color: black!important"
                           >and</span>
                         </span>
                       </template>
                       <span
-                        v-for="(label,indexHint) in item.recordAssocLabel"
-                        :key="label+'_'+indexHint"
+                        v-for="(label2,indexHint) in item.recordAssocLabel"
+                        :key="label2+'_'+indexHint"
                       >
-                        <span>{{ relationDefinition[label] }}
+                        <span>{{ indexHint !== 0 && item.recordAssocLabel.length>1?relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]].toLowerCase():relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]] }}
                           <span
                             v-if="indexHint !== item.recordAssocLabel.length-1 && item.recordAssocLabel.length!==1"
                             style="color: white!important"
@@ -177,6 +178,7 @@ export default {
           if (tabName !== 'other_related_records') {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
                 .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
+            //---- finding duplicate items and merge them into one and add join their recordAssocLabel labels.
             let temp = []
             _module.tabsData.tabs[tabName].data.forEach((item, index) => {
               if (!temp.includes(item.id)) {
@@ -184,10 +186,13 @@ export default {
               }
               else {
                 let duplicatedItemIndex = temp.findIndex(it => it === item.id)
-                _module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel.push(item.recordAssocLabel[0])
-                _module.tabsData.tabs[tabName].data.splice(index, 1);
+                console.log(_module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel)
+                _module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel= [item.recordAssocLabel[0],..._module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel]
+                // _module.tabsData.tabs[tabName].data.splice(index, 1);
               }
             })
+
+            //---- end of finding duplicate items ...
           }
           else {
             const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])

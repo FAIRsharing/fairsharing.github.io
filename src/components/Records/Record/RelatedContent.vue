@@ -114,7 +114,7 @@
                         <span>{{ indexHint !== 0 && item.recordAssocLabel.length>1?relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]].toLowerCase():relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]] }}
                           <span
                             v-if="indexHint !== item.recordAssocLabel.length-1 && item.recordAssocLabel.length!==1"
-                            style="color: white!important;margin: -2px!important;"
+                            style="color: white!important;margin-left: -2px!important;"
                           >; </span>
                         </span>
                       </span>

@@ -20,11 +20,10 @@
           :attach="true"
           dense
           clearable
-          return-object
           prepend-inner-icon="fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
           item-text="name"
-          item-value="uniqueID"
+          item-value="name"
           :filter="nameAbbrFilter"
         >
           <template #item="data">
@@ -96,13 +95,28 @@
                     <v-tooltip top>
                       <template #activator="{ on }">
                         <span
+                          v-for="(label,indexLabel) in item.recordAssocLabel"
+                          :key="label+'_'+indexLabel"
                           class="red--text mouse-info"
                           v-on="on"
                         >
-                          {{ item.recordAssocLabel }}
+                          {{ item.recordAssocLabel[indexLabel] }} <span
+                            v-if="indexLabel === item.recordAssocLabel.length-1 && item.recordAssocLabel.length!==1"
+                            style="color: black!important"
+                          >and</span>
                         </span>
                       </template>
-                      <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
+                      <span
+                        v-for="(label,indexHint) in item.recordAssocLabel"
+                        :key="label+'_'+indexHint"
+                      >
+                        <span>{{ relationDefinition[label] }}
+                          <span
+                            v-if="indexHint !== item.recordAssocLabel.length-1 && item.recordAssocLabel.length!==1"
+                            style="color: white!important"
+                          >and </span>
+                        </span>
+                      </span>
                     </v-tooltip>
                     {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
                   </p>
@@ -154,16 +168,6 @@ export default {
   computed: {
     ...mapState("record", ["currentRecord"]),
   },
-  watch: {
-    selectedValues() {
-      if(!this.selectedValues){
-        this.prepareTabsData()
-        this.getFirstActiveTab()
-        return
-      }
-      this.tabsData.tabs[Object.keys(this.tabsData.tabs)[this.tabsData.selectedTab]].data = this.tabsData.tabs[Object.keys(this.tabsData.tabs)[this.tabsData.selectedTab]].data.filter(item => item.uniqueID === this.selectedValues.uniqueID)
-    }
-  },
   methods: {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
@@ -173,6 +177,17 @@ export default {
           if (tabName !== 'other_related_records') {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
                 .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
+            let temp = []
+            _module.tabsData.tabs[tabName].data.forEach((item, index) => {
+              if (!temp.includes(item.id)) {
+                temp.push(item.id)
+              }
+              else {
+                let duplicatedItemIndex = temp.findIndex(it => it === item.id)
+                _module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel.push(item.recordAssocLabel[0])
+                _module.tabsData.tabs[tabName].data.splice(index, 1);
+              }
+            })
           }
           else {
             const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])

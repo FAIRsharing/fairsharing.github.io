@@ -20,10 +20,11 @@
           :attach="true"
           dense
           clearable
+          return-object
           prepend-inner-icon="fa-search"
           :placeholder="`Search through ${cleanString(Object.keys(tabsData.tabs)[tabsData.selectedTab])}`"
           item-text="name"
-          item-value="name"
+          item-value="uniqueID"
           :filter="nameAbbrFilter"
         >
           <template #item="data">
@@ -152,6 +153,16 @@ export default {
   },
   computed: {
     ...mapState("record", ["currentRecord"]),
+  },
+  watch: {
+    selectedValues() {
+      if(!this.selectedValues){
+        this.prepareTabsData()
+        this.getFirstActiveTab()
+        return
+      }
+      this.tabsData.tabs[Object.keys(this.tabsData.tabs)[this.tabsData.selectedTab]].data = this.tabsData.tabs[Object.keys(this.tabsData.tabs)[this.tabsData.selectedTab]].data.filter(item => item.uniqueID === this.selectedValues.uniqueID)
+    }
   },
   methods: {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/

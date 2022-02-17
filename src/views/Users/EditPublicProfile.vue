@@ -69,7 +69,7 @@
           @submit.prevent="valid ? updatePublicProfile() : valid=false"
         >
           <v-card-title class="primary white--text">
-            <h2> Edit Public profile of User ID: {{ $route.params.id }}</h2>
+            <h2> Edit Public profile of User ID: {{ $route.params.id }} </h2>
           </v-card-title>
           <v-container
             fluid
@@ -222,18 +222,14 @@ export default {
           label: "First Name",
           hint: null,
           type: "input",
-          rules: [
-            isRequired()
-          ]
+          rules: []
         },
         {
           name: "last_name",
           label: "Last Name",
           hint: null,
           type: "input",
-          rules: [
-            isRequired()
-          ]
+          rules: []
         },
         {
           name: "homepage",

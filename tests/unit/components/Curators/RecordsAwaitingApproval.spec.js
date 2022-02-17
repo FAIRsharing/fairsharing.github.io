@@ -140,7 +140,7 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
       wrapper.vm.dialogs.recordID = 101;
       restStub = sinon.stub(Client.prototype, "executeQuery");
       restStub.returns({data: {error: false}});
-      await wrapper.vm.confirmApprovalSetHidden();
+      await wrapper.vm.confirmApproval();
       expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
       expect(wrapper.vm.dialogs.approveChanges).toBe(false);
       expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);
@@ -150,7 +150,7 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
       wrapper.vm.dialogs.recordID = 102;
       restStub = sinon.stub(Client.prototype, "executeQuery");
       restStub.returns({data: {error: {response: {data: "error"}}}});
-      await wrapper.vm.confirmApprovalSetHidden();
+      await wrapper.vm.confirmApproval();
       expect(wrapper.vm.approvalRequiredProcessed.length).toBe(1);
       expect(wrapper.vm.dialogs.approveChanges).toBe(false);
       expect(wrapper.vm.approvalRequiredProcessed[0].id).toBe(102);

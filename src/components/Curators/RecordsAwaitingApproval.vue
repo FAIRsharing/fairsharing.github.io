@@ -206,32 +206,24 @@
               Cancel
             </v-btn>
             <v-btn
-              v-if="dialogs.recordHidden === false"
-              :disabled="dialogs.disableButton === true"
               color="blue darken-1"
               text
               @click="confirmApproval()"
             >
               OK
             </v-btn>
-            <v-btn
-              v-if="dialogs.recordHidden === true"
-              :disabled="dialogs.disableButton === true"
-              color="blue darken-1"
-              text
-              @click="confirmApprovalSetHidden()"
-            >
-              OK
-            </v-btn>
-            <v-btn
-              v-if="dialogs.recordHidden === true"
-              :disabled="dialogs.disableButton === true && dialogs.recordHidden === false"
-              color="blue darken-1"
-              text
-              @click="confirmApproval()"
-            >
-              OK & KEEP HIDDEN
-            </v-btn>
+            <v-spacer />
+            <v-switch
+              v-model="dialogs.createReview"
+              color="green"
+              label="Create Review"
+              class="pr-3"
+            />
+            <v-switch
+              v-model="dialogs.recordHidden"
+              color="purple"
+              label="Hide record"
+            />
             <v-spacer />
           </v-card-actions>
         </v-card>
@@ -336,7 +328,8 @@
                 recordHidden: false,
                 deleteRecord: false,
                 disableDelButton: true,
-                disableButton: false
+                disableButton: false,
+                createReview: false
               },
               error: {
                 recordID: null,
@@ -432,7 +425,8 @@
                 approved: true,
                 skip_approval: true,
                 processing_notes: null,
-                create_review: true
+                create_review: _module.dialogs.createReview,
+                hidden: _module.dialogs.recordHidden
               };
               let data = {
                 record: preparedRecord,
@@ -449,33 +443,7 @@
                 _module.approvalRequiredProcessed.splice(index, 1);
               }
               _module.dialogs.approveChanges = false;
-            },
-
-            async confirmApprovalSetHidden() {
-              const _module = this;
-              _module.dialogs.disableButton = true;
-              let preparedRecord = {
-                approved: true,
-                skip_approval: true,
-                processing_notes: null,
-                hidden: false,
-                create_review: true
-              };
-              let data = {
-                record: preparedRecord,
-                id: _module.dialogs.recordID,
-                token: _module.user().credentials.token
-              };
-              await _module.updateRecord(data);
-              if (_module.recordUpdate.error){
-                _module.error.general = _module.recordUpdate.message;
-                _module.error.recordID = _module.dialogs.recordID;
-              }
-              else {
-                const index = _module.approvalRequiredProcessed.findIndex((element) => element.id === _module.dialogs.recordID);
-                _module.approvalRequiredProcessed.splice(index, 1);
-              }
-              _module.dialogs.approveChanges = false;
+              _module.dialogs.createReview = false;
             },
 
             async confirmDelete(){

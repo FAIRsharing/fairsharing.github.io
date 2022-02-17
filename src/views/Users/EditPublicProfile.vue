@@ -11,7 +11,7 @@
     </v-alert>
 
     <v-alert
-      v-else
+      v-if="messages().getPublicUser.message"
       class="white--text"
       type="error"
     >
@@ -344,7 +344,7 @@ export default {
       this.loading = true;
       await this.deletePublicUser(this.$route.params.id);
       this.loading = false;
-      this.$scrollTo('body',1000,{})
+      this.$router.go();
     },
     isDisabled(name) {
       const _module = this;

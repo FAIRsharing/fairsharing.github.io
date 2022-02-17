@@ -213,14 +213,15 @@
               OK
             </v-btn>
             <v-spacer />
-            <v-checkbox
+            <v-switch
               v-model="dialogs.createReview"
+              color="green"
               label="Create Review"
               class="pr-3"
             />
             <v-switch
               v-model="dialogs.recordHidden"
-              color="red"
+              color="purple"
               label="Hide record"
             />
             <v-spacer />

@@ -3,8 +3,22 @@
     class="mb-10"
     fluid
   >
+    <v-alert
+      v-if="!currentPublicUser.username"
+      type="error"
+    >
+      No user found with id {{ $route.params.id }}.
+    </v-alert>
+
+    <v-alert
+      v-else
+      class="white--text"
+      type="error"
+    >
+      {{ messages().getPublicUser.message }}
+    </v-alert>
+
     <v-row
-      v-if="!messages().getPublicUser.message"
       class="justify-center"
     >
       <v-col
@@ -48,7 +62,9 @@
           </v-alert>
         </div>
 
+
         <v-form
+          v-if="currentPublicUser.username"
           v-model="valid"
           @submit.prevent="valid ? updatePublicProfile() : valid=false"
         >
@@ -119,13 +135,7 @@
         </v-form>
       </v-col>
     </v-row>
-    <v-alert
-      v-else
-      class="white--text"
-      type="error"
-    >
-      {{ messages().getPublicUser.message }}
-    </v-alert>
+
     <v-dialog
       v-model="dialog"
       max-width="290"
@@ -154,6 +164,7 @@
       </v-card>
     </v-dialog>
     <v-card
+      v-if="currentPublicUser.username"
       height="100%"
       class="d-flex flex-column rounded-0 mb-10"
     >
@@ -337,6 +348,7 @@ export default {
     },
     isDisabled(name) {
       const _module = this;
+      /* istanbul ignore if */
       if (name === 'username') {
         return true;
       }

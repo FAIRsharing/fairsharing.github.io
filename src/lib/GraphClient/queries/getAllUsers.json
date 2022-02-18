@@ -1,0 +1,9 @@
+{
+  "queryName": "allUsers",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "username",
+    "email"
+  ]
+}

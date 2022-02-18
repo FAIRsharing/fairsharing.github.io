@@ -12,6 +12,7 @@ import RestClient from "@/lib/Client/RESTClient.js"
 import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
 import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
 import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
+import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json"
 const sinon = require("sinon");
 const VueScrollTo = require('vue-scrollto');
 const localVue = createLocalVue();
@@ -114,6 +115,11 @@ describe("Edit -> GeneralInformation.vue", function() {
                 {label: "abc", id: 1, model: "domain"}
             ]
         });
+        graphStub.withArgs(allUsersQuery).returns({
+            allUsers: [
+                {id: 1, username: 'one', email: 'one@one.com'}
+            ]
+        })
         wrapper = await shallowMount(GeneralInfo, {
             localVue,
             vuetify,

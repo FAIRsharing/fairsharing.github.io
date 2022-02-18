@@ -4,7 +4,8 @@ import Vuetify from "vuetify"
 import Vuex from "vuex";
 import usersStore from "@/store/users";
 import sinon from "sinon";
-import Client from "@/lib/Client/RESTClient";
+import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
+import GraphClient from "@/lib/GraphClient/GraphClient";
 
 const vuetify = new Vuetify();
 const localVue = createLocalVue();
@@ -17,11 +18,20 @@ const $store = new Vuex.Store({
 
 describe("UsersList.vue", function () {
     let wrapper;
-    let restStub;
 
-    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-        data: [{name: "Terazus"}]
-    });
+    let graphStub;
+
+    graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
+    graphStub.withArgs(allUsersQuery).returns({
+        allUsers: [
+            {id: 1, username: 'one', email: 'one@one.com'}
+        ]
+    })
+
+    afterAll(() => {
+        graphStub.restore();
+    })
+
 
     beforeEach( () => {
         wrapper =  shallowMount(UsersList, {

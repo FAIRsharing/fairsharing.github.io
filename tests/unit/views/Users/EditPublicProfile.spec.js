@@ -34,6 +34,7 @@ let $store = new Vuex.Store({
         users: userStore
     }
 });
+$router.go = jest.fn();
 
 describe("EditPublicProfile.vue", function () {
     let wrapper,restStub;
@@ -82,9 +83,10 @@ describe("EditPublicProfile.vue", function () {
         expect(wrapper.vm.loading).toBe(false);
     });
 
-    it("can check updatePublicProfile method", async () => {
+    it("can delete a user", async () => {
         await wrapper.vm.deleteAccount()
         expect(wrapper.vm.loading).toBe(false);
+        expect($router.go).toHaveBeenCalled();
     });
 
     it("disables the email edit field for third party users", () => {

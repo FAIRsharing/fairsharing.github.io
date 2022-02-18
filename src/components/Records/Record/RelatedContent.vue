@@ -95,13 +95,29 @@
                     <v-tooltip top>
                       <template #activator="{ on }">
                         <span
+                          v-for="(label,indexLabel) in item.recordAssocLabel"
+                          :key="label+'_'+indexLabel"
                           class="red--text mouse-info"
                           v-on="on"
                         >
-                          {{ item.recordAssocLabel }}
+                          {{ label }}
+                          <span
+                            v-if="indexLabel !== 0 && item.recordAssocLabel.length!==1"
+                            style="color: black!important"
+                          >and</span>
                         </span>
                       </template>
-                      <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
+                      <span
+                        v-for="(label2,indexHint) in item.recordAssocLabel"
+                        :key="label2+'_'+indexHint"
+                      >
+                        <span>{{ indexHint !== 0 && item.recordAssocLabel.length>1?relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]].toLowerCase():relationDefinition[item.recordAssocLabel[item.recordAssocLabel.length-1-indexHint]] }}
+                          <span
+                            v-if="indexHint !== item.recordAssocLabel.length-1 && item.recordAssocLabel.length!==1"
+                            style="color: white!important;margin-left: -2px!important;"
+                          >; </span>
+                        </span>
+                      </span>
                     </v-tooltip>
                     {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
                   </p>
@@ -162,6 +178,23 @@ export default {
           if (tabName !== 'other_related_records') {
             _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
                 .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
+            //---- finding duplicate items and merge them into one and add join their recordAssocLabel labels.
+            let temp = []
+            let duplicatedItemIndexes = []
+            _module.tabsData.tabs[tabName].data.forEach((item,index) => {
+              if (!temp.includes(item.id)) {
+                temp.push(item.id)
+              }
+              else {
+                let duplicatedItemIndex = temp.findIndex(it => it === item.id)
+                duplicatedItemIndexes.push(index)
+                _module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel= [item.recordAssocLabel[0],..._module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel]
+              }
+            })
+
+            //--remove the duplicates.
+            _module.tabsData.tabs[tabName].data = _module.tabsData.tabs[tabName].data.filter((item,index) =>!duplicatedItemIndexes.includes(index))
+            //---- end of finding duplicate items ...
           }
           else {
             const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
@@ -193,3 +226,4 @@ export default {
   }
 }
 </script>
+

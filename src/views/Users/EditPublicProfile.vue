@@ -3,8 +3,22 @@
     class="mb-10"
     fluid
   >
+    <v-alert
+      v-if="!currentPublicUser.username"
+      type="error"
+    >
+      No user found with id {{ $route.params.id }}.
+    </v-alert>
+
+    <v-alert
+      v-if="messages().getPublicUser.message"
+      class="white--text"
+      type="error"
+    >
+      {{ messages().getPublicUser.message }}
+    </v-alert>
+
     <v-row
-      v-if="!messages().getPublicUser.message"
       class="justify-center"
     >
       <v-col
@@ -48,12 +62,14 @@
           </v-alert>
         </div>
 
+
         <v-form
+          v-if="currentPublicUser.username"
           v-model="valid"
           @submit.prevent="valid ? updatePublicProfile() : valid=false"
         >
           <v-card-title class="primary white--text">
-            <h2> Edit Public profile of User ID: {{ $route.params.id }}</h2>
+            <h2> Edit Public profile of User ID: {{ $route.params.id }} </h2>
           </v-card-title>
           <v-container
             fluid
@@ -119,13 +135,7 @@
         </v-form>
       </v-col>
     </v-row>
-    <v-alert
-      v-else
-      class="white--text"
-      type="error"
-    >
-      {{ messages().getPublicUser.message }}
-    </v-alert>
+
     <v-dialog
       v-model="dialog"
       max-width="290"
@@ -154,6 +164,7 @@
       </v-card>
     </v-dialog>
     <v-card
+      v-if="currentPublicUser.username"
       height="100%"
       class="d-flex flex-column rounded-0 mb-10"
     >
@@ -211,18 +222,14 @@ export default {
           label: "First Name",
           hint: null,
           type: "input",
-          rules: [
-            isRequired()
-          ]
+          rules: []
         },
         {
           name: "last_name",
           label: "Last Name",
           hint: null,
           type: "input",
-          rules: [
-            isRequired()
-          ]
+          rules: []
         },
         {
           name: "homepage",
@@ -333,10 +340,11 @@ export default {
       this.loading = true;
       await this.deletePublicUser(this.$route.params.id);
       this.loading = false;
-      this.$scrollTo('body',1000,{})
+      this.$router.go();
     },
     isDisabled(name) {
       const _module = this;
+      /* istanbul ignore if */
       if (name === 'username') {
         return true;
       }

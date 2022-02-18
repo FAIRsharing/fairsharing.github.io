@@ -427,7 +427,13 @@ export default {
       if (this.$route.params.id) {
         let userId = this.$route.params.id;
         let {user} = await this.getPublicUser(userId);
-        this.userOrganisations = user.organisations;
+        /* istanbul ignore else */
+        if (user) {
+          this.userOrganisations = user.organisations;
+        }
+        else {
+          this.userOrganisations = [];
+        }
       }
       // if it is the Private Profile route
       else {

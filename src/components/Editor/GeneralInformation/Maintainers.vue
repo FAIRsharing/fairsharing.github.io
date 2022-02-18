@@ -153,7 +153,6 @@ export default {
     }
   },
   async mounted() {
-    // TODO: This takes rather a long time and a GraphQL load=false query might be needed instead.
     this.loading = true;
     await this.getUsersList();
     this.loading = false;

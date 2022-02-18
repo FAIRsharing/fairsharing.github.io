@@ -2,6 +2,7 @@ import RESTClient from "@/lib/Client/RESTClient.js"
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import { initStateMessages, initUserDataState, validateToken } from "./utils.js"
 import getUserQuery from "@/lib/GraphClient/queries/getUserMeta.json"
+import getAllUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json"
 import getPublicUserQuery from "@/lib/GraphClient/queries/getPublicUserMeta.json"
 
 let client = new RESTClient();
@@ -309,8 +310,10 @@ export const actions = {
     },
     async getUsersList(state) {
         try {
-            let usersListData = await client.getUsersList(state.state.user().credentials.token);
-            this.commit('users/setUsersList', usersListData);
+            graphClient.setHeader(state.state.user().credentials.token);
+            let usersListData = await graphClient.executeQuery(getAllUsersQuery);
+            //let usersListData = await client.getUsersList(state.state.user().credentials.token);
+            this.commit('users/setUsersList', usersListData['allUsers']);
         }
         catch (e) {
             this.commit("users/setError", {

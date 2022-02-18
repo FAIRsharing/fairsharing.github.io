@@ -114,6 +114,7 @@ describe("Edit -> GeneralInformation.vue", function() {
                 {label: "abc", id: 1, model: "domain"}
             ]
         });
+
         wrapper = await shallowMount(GeneralInfo, {
             localVue,
             vuetify,

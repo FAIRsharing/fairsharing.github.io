@@ -162,6 +162,7 @@
             this.$nextTick(async function () {
                 this.initialized = false;
                 await this.getData();
+
                 this.initialized = true;
             });
         },

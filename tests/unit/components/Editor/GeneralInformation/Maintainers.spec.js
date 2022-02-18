@@ -5,7 +5,6 @@ import Maintainers from "@/components/Editor/GeneralInformation/Maintainers.vue"
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
 import sinon from "sinon";
-import Client from "@/lib/Client/RESTClient";
 import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
 import GraphClient from "@/lib/GraphClient/GraphClient";
 
@@ -37,12 +36,8 @@ const $store = new Vuex.Store({
 let wrapper;
 
 describe('Editor -> Maintainers.vue', () => {
-    let restStub;
     let graphStub;
 
-    restStub = sinon.stub(Client.prototype, "executeQuery").returns({
-        data: [{name: "Terazus"}]
-    });
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
     graphStub.withArgs(allUsersQuery).returns({
         allUsers: [
@@ -51,7 +46,7 @@ describe('Editor -> Maintainers.vue', () => {
     })
 
     afterAll(() => {
-        restStub.restore();
+        graphStub.restore();
     })
 
     beforeEach(() => {

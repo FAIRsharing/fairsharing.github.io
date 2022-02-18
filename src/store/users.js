@@ -312,7 +312,6 @@ export const actions = {
         try {
             graphClient.setHeader(state.state.user().credentials.token);
             let usersListData = await graphClient.executeQuery(getAllUsersQuery);
-            //let usersListData = await client.getUsersList(state.state.user().credentials.token);
             this.commit('users/setUsersList', usersListData['allUsers']);
         }
         catch (e) {

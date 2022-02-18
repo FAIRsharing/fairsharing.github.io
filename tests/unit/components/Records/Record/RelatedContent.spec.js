@@ -31,6 +31,15 @@ Record.state.currentRecord["fairsharingRecord"] = {
         },
         {
             linkedRecord: {
+                id: 3,
+                name: "a name 3",
+                registry: "Database",
+                type: "journal"
+            },
+            recordAssocLabel: "related to"
+        },
+        {
+            linkedRecord: {
                 id: 4,
                 name: "a name 4",
                 registry: "Collection",
@@ -86,27 +95,32 @@ describe("RelatedContent.vue", function(){
         Record.state.currentRecord["fairsharingRecord"].registry = 'Collection'
         wrapper.vm.prepareTabsData();
         expect(wrapper.vm.tabsData.tabs['other_related_records'].data).toStrictEqual([
-            {
-                "abbreviation": undefined,
-                "id": 2,
-                "linkType": "linkedRecord",
-                "name": "b name",
-                "recordAssocLabel": "related to",
-                "registry": "Policy",
-                "subject": "standard",
-                "type": "repository"
-            },
-            {
-                "abbreviation": undefined,
-                "id": 4,
-                "linkType": "linkedRecord",
-                "name": "a name 4",
-                "recordAssocLabel": "collects",
-                "registry": "Collection",
-                "subject": "standard",
-                "type": "collection"
-            }
-        ])
+                {
+                    "abbreviation": undefined,
+                    "id": 2,
+                    "linkType": "linkedRecord",
+                    "name": "b name",
+                    "recordAssocLabel": [
+                        "related to"
+                    ],
+                    "registry": "Policy",
+                    "subject": "standard",
+                    "type": "repository"
+                },
+                {
+                    "abbreviation": undefined,
+                    "id": 4,
+                    "linkType": "linkedRecord",
+                    "name": "a name 4",
+                    "recordAssocLabel": [
+                        "collects"
+                    ],
+                    "registry": "Collection",
+                    "subject": "standard",
+                    "type": "collection"
+                }
+            ]
+        )
     });
 
     it("can check if there are no record recordAssociations or reverseRecordAssociations", () => {

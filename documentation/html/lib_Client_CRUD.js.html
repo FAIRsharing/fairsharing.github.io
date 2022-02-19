@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: store/recordSearch.js</title>
+	<title>FAIRsharing.org Source: lib/Client/CRUD.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,181 +86,95 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: store/recordSearch.js</h1>
+		<h1 class="page-title">Source: lib/Client/CRUD.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">import Client from "@/lib/GraphClient/GraphClient.js"
-import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
-import filterMapping from "@/data/FiltersLabelMapping.json"
+            class="sunlight-highlight-javascript linenums">import axios from "axios";
 
-let client = new Client();
+class CRUD {
 
-export const mutations = {
-    setCollectionIdsParam(state, collectionIDs) {
-        state.params['ids'] = collectionIDs
-    },
-    setRecords(state, data) {
-        state.records = data['records'];
-        state.facets = buildFacets(data["aggregations"]);
-        state.totalPages = data["totalPages"];
-        state.perPage = data["perPage"];
-        state.currentPage = data["currentPage"];
-        state.hits = data["totalCount"];
-    },
-    resetRecords(state) {
-        recordsQuery.queryParam = null;
-        state.records = [];
-    },
-    resetPages(state) {
-        state.hits = null;
-        state.perPage = null;
-        state.currentPage = 1;
-        state.totalPages = null;
-    },
-    setLoadingStatus(state, status) {
-        state.loading = status;
-    },
-    cleanRecordsStore(state) {
-        state.params = {ids:[]};
-        state.collectionIDs = [];
-        state.records = [];
-        state.facets = [];
-        state.hits = null;
-        state.loading = false;
-        state.totalPages = null;
-        state.perPage = null;
-        state.currentPage = 1;
+    constructor(initOptions) {
+        let {baseURL, headers} = initOptions
+        this.baseURL = baseURL
+        this.headers = headers
     }
-};
-export const actions = {
-    async initializeCollectionRecords(state,collectionIDs) {
-        this.commit("records/setCollectionIdsParam", collectionIDs);
-        this.commit("records/setLoadingStatus", true);
-        this.commit("records/resetRecords");
-        this.commit("records/resetPages");
-        recordsQuery.queryParam = state.state.params;
-        let data;
-        try {
-            data = await client.executeQuery(recordsQuery);
-            this.commit('records/setRecords', data["searchFairsharingRecords"]);
-            this.commit("records/setLoadingStatus", false);
-        }
-        catch {
-            // Loading complete, but no data returned...
-            this.commit('records/setRecords', {"records":[]});
-        }
 
-    },
-    async fetchCollectionRecords(state, params) {
-        this.commit("records/setLoadingStatus", true);
-        this.commit("records/resetRecords");
-        this.commit("records/resetPages");
-
-        //initialize params state
-        state.state.params = {ids: [...state.state.params.ids]}
-
-        Object.keys(params).forEach(key => {
-            state.state.params[key] = params[key]
-        })
-        recordsQuery.queryParam = state.state.params;
-        let data;
-        try {
-            data = await client.executeQuery(recordsQuery);
-            this.commit('records/setRecords', data["searchFairsharingRecords"]);
-            this.commit("records/setLoadingStatus", false);
-        }
-        catch {
-            // Loading complete, but no data returned...
-            this.commit('records/setRecords', {"records":[]});
-        }
-    },
-    async fetchRecords(state, params) {
-        this.commit("records/setLoadingStatus", true);
-        this.commit("records/resetRecords");
-        this.commit("records/resetPages");
-        if (Object.keys(params).length > 0) {
-            recordsQuery.queryParam = params;
-        }
-        let data;
-        try {
-            data = await client.executeQuery(recordsQuery);
-            this.commit('records/setRecords', data["searchFairsharingRecords"]);
-            this.commit("records/setLoadingStatus", false);
-        }
-        catch {
-            // Loading complete, but no data returned...
-            /* istanbul ignore next */
-            this.commit('records/setRecords', {"records":[]});
-        }
-    },
-    resetRecords() {
-        this.commit("records/resetRecords");
+    /**
+     * Method to add authorisation to the headers.
+     * @param jwt - the user's json web token
+     * @return {JSON} - headers with authorisation field added
+     */
+    set_auth_headers(jwt) {
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        headers['Authorization'] = 'Bearer ' + jwt;
+        this.headers = headers;
     }
-};
-export const getters = {
-    getFilter: (state) => (facetName) => {
-        if (state.facets.length > 0) {
-            let currentFacet = JSON.parse(JSON.stringify(state.facets.find(facet => facet.filterName === facetName)));
-            currentFacet['values'] = currentFacet['buckets'];
-            return currentFacet;
-        }
-        return [];
-    },
-    getRecordsLength: (state) => {
-        return state.records.length;
+
+    unset_auth_headers() {
+        let headers = JSON.parse(JSON.stringify(this.headers));
+        delete headers['Authorization'];
+        this.headers = headers;
     }
-};
 
-/**
- * The records store handles the requests related to records (searchFairsharingRecords and fairsharingRecord).
- * @type {Object}
- */
-let recordsStore = {
-    namespaced: true,
-    state: {
-        params: {ids: []},
-        collectionIDs: [],
-        records: [],
-        facets: [],
-        hits: null,
-        loading: false,
-        totalPages: null,
-        perPage: null,
-        currentPage: 1
-    },
-    mutations: mutations,
-    actions: actions,
-    getters: getters
-};
-export default recordsStore;
-
-/**
- * Given an object containing the raw facets coming from the client and a mapping object , build the ready to use facets
- * for usage by the Vue components.
- * @param {Object} rawFacets - the aggregation object coming from the API response as data['aggregations']
- * @returns {Array} output - the array of ready to use facets containing a name, a label and values
- */
-export const buildFacets = function (rawFacets) {
-    let output = [];
-    const mapper = filterMapping["autocomplete"];
-
-    Object.keys(rawFacets).forEach(function (facetName) {
-        if (Object.prototype.hasOwnProperty.call(mapper, facetName)) {
-            let localFacet = mapper[facetName];
-            rawFacets[facetName]["buckets"].forEach(function (bucket) {
-                if (Object.prototype.hasOwnProperty.call(bucket, "key_as_string")) {
-                    bucket["key"] = bucket["key_as_string"];
-                }
-            });
-            localFacet['buckets'] = rawFacets[facetName]['buckets'];
-            output.push(localFacet);
+    async executeQuery(query) {
+        try {
+            return await axios(query);
         }
-    });
-    return output;
-};
-</pre>
+        catch (e) {
+            return ({data: {error: e}});
+        }
+    }
+
+    async create(url, data) {
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + url,
+            data: data,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async update(url, data) {
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + url,
+            data: data,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async delete(url) {
+        const request = {
+            method: "delete",
+            baseURL: this.baseURL + url,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async get(url, query = undefined) {
+        let baseURL = `${this.baseURL}${url}`;
+        if (query) {
+            baseURL = `${this.baseURL}${url}?${query}`;
+        }
+        const request = {
+            method: "get",
+            baseURL: baseURL,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+}
+
+export default CRUD;</pre>
     </article>
 </section>
 

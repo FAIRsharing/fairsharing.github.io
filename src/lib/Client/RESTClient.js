@@ -1,37 +1,27 @@
-import axios from "axios"
 import {toBase64} from "@/utils/generalUtils"
-class RESTClient {
+import CRUD from "@/lib/Client/CRUD";
 
+class RESTClient extends CRUD {
     /**
      * The RESTClient is a singleton class that handles the connection and data exchange from the back-end
      * REST API.
      */
-    constructor(){
-        if (RESTClient._instance){
+    constructor() {
+        super({
+            baseURL: process.env.VUE_APP_API_ENDPOINT, headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Cache-Control": "no-cache",
+                "X-Client-Id": "process.env.VUE_APP_CLIENT_ID"
+            }
+        });
+        if (RESTClient._instance) {
             return RESTClient._instance
         }
         RESTClient._instance = this;
-        this.baseURL = process.env.VUE_APP_API_ENDPOINT;
-        this.headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Cache-Control": "no-cache"
-        };
-        this.headers['X-Client-Id'] = process.env.VUE_APP_CLIENT_ID;
     }
 
     /* USERS: all methods below related to handling user authentication */
-
-    /**
-     * Method to add authorisation to the headers.
-     * @param jwt - the user's json web token
-     * @return {JSON} - headers with authorisation field added
-     */
-   auth_headers(jwt) {
-        let headers = JSON.parse(JSON.stringify(this.headers));
-        headers['Authorization'] = 'Bearer ' + jwt;
-        return headers;
-    }
 
     /**
      * Method to log in the user
@@ -39,22 +29,14 @@ class RESTClient {
      * @param password - password of the user
      * @return {Promise} - the response of the server
      */
-    async login(username, password){
-        const endpoint = "/users/sign_in";
+    async login(username, password) {
         const body = {
             user: {
                 login: username,
                 password: password
             }
         };
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + endpoint,
-            data: body,
-            headers: this.headers
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        return await this.create("/users/sign_in", body)
     }
 
     /**
@@ -62,14 +44,9 @@ class RESTClient {
      * @param {String} jwt - the user token to expire.
      * @returns {Promise}
      */
-    async logout(jwt){
-        const request = {
-            method: "delete",
-            baseURL: this.baseURL + "/users/sign_out",
-            headers: this.auth_headers(jwt)
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async logout(jwt) {
+        this.set_auth_headers(jwt)
+        return await this.delete("users/sign_out")
     }
 
     /**
@@ -77,15 +54,8 @@ class RESTClient {
      * @param {Object} userLogin - the user account to create
      * @returns {Promise} response - server response
      */
-    async createAccount(userLogin){
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/users",
-            data: {user: userLogin},
-            headers: this.headers
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async createAccount(userLogin) {
+        return await this.create("/users",{user: userLogin})
     }
 
     /**
@@ -93,14 +63,8 @@ class RESTClient {
      * @param {String} token - the account token to validate
      * @returns {Promise}
      */
-    async confirmAccount(token){
-        const request = {
-            method: "get",
-            baseURL: this.baseURL + "/users/confirmation?confirmation_token=" + token,
-            headers: this.headers,
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async confirmAccount(token) {
+        return await this.get(`/users/confirmation?confirmation_token=${token}`)
     }
 
     /**
@@ -108,17 +72,10 @@ class RESTClient {
      * @param {String} email to send the link to
      * @returns {Promise}
      */
-    async requestResetPwd(email){
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/users/password",
-            headers: this.headers,
-            data: {
-                user: {email: email}
-            }
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async requestResetPwd(email) {
+        return await this.create("/users/password", {
+            user: {email: email}
+        })
     }
 
     /**
@@ -127,14 +84,7 @@ class RESTClient {
      * @returns {Promise}
      */
     async resendConfirmation(user) {
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/users/confirmation",
-            headers: this.headers,
-            data: {user: user}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        return await this.create("/users/confirmation", {user: user})
     }
 
     /**
@@ -142,15 +92,8 @@ class RESTClient {
      * @param {Object} user - contains the new pwd, repeated pwd and token.
      * @returns {Promise}
      */
-    async resetPassword(user){
-        const request = {
-            method: "put",
-            baseURL: this.baseURL + "/users/password",
-            headers: this.headers,
-            data: {user: user}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async resetPassword(user) {
+        return await this.update("/users/password", {user: user})
     }
 
     /**
@@ -159,15 +102,9 @@ class RESTClient {
      * @param {Object} user - contains the current, new and repeated new password
      * @returns {Promise}
      */
-    async resetPasswordWithoutToken(jwt, user){
-        const request = {
-            method: "put",
-            baseURL: this.baseURL + "/users/",
-            headers: this.auth_headers(jwt),
-            data: {user: user}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async resetPasswordWithoutToken(jwt, user) {
+        this.set_auth_headers(jwt)
+        return await this.update("/users/", {user: user})
     }
 
     /**
@@ -175,16 +112,8 @@ class RESTClient {
      * @param {String} password - the password to test
      * @returns {Promise}
      */
-    async verifyPassword(password){
-        let headers = JSON.parse(JSON.stringify(this.headers));
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/users/check_password",
-            headers: headers,
-            data: {password: password}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async verifyPassword(password) {
+        return await this.create("/users/check_password", {password: password})
     }
 
     /**
@@ -192,14 +121,9 @@ class RESTClient {
      * @param jwt
      * @returns {Promise}
      */
-    async getUser(jwt){
-        const request = {
-            method: "get",
-            baseURL: this.baseURL + "/users/edit",
-            headers: this.auth_headers(jwt)
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async getUser(jwt) {
+        this.set_auth_headers(jwt)
+        return await this.get("/users/edit")
     }
 
     /**
@@ -208,14 +132,9 @@ class RESTClient {
      * @param id
      * @returns {Promise}
      */
-    async getPublicUser(jwt,id){
-        const request = {
-            method: "get",
-            baseURL: this.baseURL + `/user_admin/${id}`,
-            headers: this.auth_headers(jwt)
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async getPublicUser(jwt, id) {
+        this.set_auth_headers(jwt)
+        return await this.get(`/user_admin/${id}`)
     }
 
     /**
@@ -223,14 +142,9 @@ class RESTClient {
      * @param jwt
      * @returns {Promise}
      */
-    async getUsersList(jwt){
-        const request = {
-            method: "get",
-            baseURL: this.baseURL + "/user_admin/",
-            headers: this.auth_headers(jwt)
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async getUsersList(jwt) {
+        this.set_auth_headers(jwt)
+        return await this.get("/user_admin/")
     }
 
     /**
@@ -240,14 +154,8 @@ class RESTClient {
      * @returns {Promise}
      */
     async editUser(newUser, jwt){
-        const request = {
-            method: "put",
-            baseURL: this.baseURL + "/users",
-            headers: this.auth_headers(jwt),
-            data: {user: newUser}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        this.set_auth_headers(jwt)
+        return await this.update("/users",{user: newUser})
     }
     /**
      * Edit the current logged in user profile
@@ -256,14 +164,8 @@ class RESTClient {
      * @returns {Promise}
      */
     async editPublicUser(newUser, jwt){
-        const request = {
-            method: "put",
-            baseURL: this.baseURL + `/user_admin/${newUser.id}` ,
-            headers: this.auth_headers(jwt),
-            data: {user: newUser}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        this.set_auth_headers(jwt)
+        return await this.update(`/user_admin/${newUser.id}`,{user: newUser})
     }
     /**
      * Delete the user
@@ -271,28 +173,18 @@ class RESTClient {
      * @param {String} jwt - JWT of the logged in user
      * @returns {Promise}
      */
-    async deletePublicUser(userID, jwt){
-        const request = {
-            method: "delete",
-            baseURL: this.baseURL + `/user_admin/${userID}` ,
-            headers: this.auth_headers(jwt),
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async deletePublicUser(userID, jwt) {
+        this.set_auth_headers(jwt)
+        return await this.delete(`/user_admin/${userID}`)
     }
     /**
      * Verify that the given JWT is still valid
      * @param {String} jwt - the token to validate
      * @returns {Promise}
      */
-    async validateToken(jwt){
-        const request = {
-            method: "get",
-            baseURL: this.baseURL + "/users/valid",
-            headers: this.auth_headers(jwt)
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async validateToken(jwt) {
+        this.set_auth_headers(jwt)
+        return await this.get("/users/valid")
     }
 
 
@@ -304,15 +196,9 @@ class RESTClient {
      * @param {String} jwt - JWT of the logged in user
      * @returns {Promise}
      */
-    async createRecord(record, jwt){
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/fairsharing_records",
-            headers: this.auth_headers(jwt),
-            data: {fairsharing_record: record}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async createRecord(record, jwt) {
+        this.set_auth_headers(jwt)
+        return await this.create("/fairsharing_records", {fairsharing_record: record})
     }
 
     /**
@@ -321,15 +207,9 @@ class RESTClient {
      * and the user token
      * @returns {Promise}
      */
-    async updateRecord(record){
-        const request = {
-            method: "put",
-            baseURL: this.baseURL + "/fairsharing_records/" + record.id,
-            headers: this.auth_headers(record.token),
-            data: {fairsharing_record: record.record}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async updateRecord(record) {
+        this.set_auth_headers(record.token)
+        return await this.update(`/fairsharing_records/${record.id}`, {fairsharing_record: record.record})
     }
 
     /**
@@ -338,14 +218,9 @@ class RESTClient {
      * @param {String} userToken - JWT of the logged in user
      * @returns {Promise}
      */
-    async canEdit(recordID, userToken){
-        const request = {
-            method: "get",
-            baseURL: this.baseURL + "/fairsharing_records/can_edit/" + recordID,
-            headers: this.auth_headers(userToken),
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async canEdit(recordID, userToken) {
+        this.set_auth_headers(userToken)
+        return await this.get(`/fairsharing_records/can_edit/${recordID}`)
     }
 
     /**
@@ -355,14 +230,8 @@ class RESTClient {
      * @returns {Promise}
      */
     async claimRecord(recordID, userToken) {
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/maintenance_requests",
-            headers: this.auth_headers(userToken),
-            data: {maintenance_request: {fairsharing_record_id: recordID}}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        this.set_auth_headers(userToken)
+        return await this.create("/maintenance_requests", {maintenance_request: {fairsharing_record_id: recordID}})
     }
 
     /**
@@ -372,13 +241,8 @@ class RESTClient {
      * @returns {Promise}
      */
     async canClaim(recordID, userToken) {
-        const request = {
-            method: "get",
-            baseURL: this.baseURL + "/maintenance_requests/existing/" + recordID,
-            headers: this.auth_headers(userToken),
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        this.set_auth_headers(userToken)
+        return await this.get(`/maintenance_requests/existing/${recordID}`)
     }
 
     /**
@@ -388,14 +252,8 @@ class RESTClient {
      * @returns {Promise}
      */
     async reviewRecord(recordID, userToken) {
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/record_reviews",
-            headers: this.auth_headers(userToken),
-            data: {record_review: {fairsharing_record_id: recordID}}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        this.set_auth_headers(userToken)
+        return await this.create("/record_reviews", {record_review: {fairsharing_record_id: recordID}})
     }
 
     /* USER DEFINED TAGS */
@@ -406,15 +264,9 @@ class RESTClient {
      * @param {String} token - the user JWT
      * @returns {Promise}
      */
-    async createNewUserDefinedTag(term, token){
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/user_defined_tags",
-            headers: this.auth_headers(token),
-            data: {user_defined_tag: {label:term}}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async createNewUserDefinedTag(term, token) {
+        this.set_auth_headers(token)
+        return await this.create("/user_defined_tags", {user_defined_tag: {label: term}})
     }
 
 
@@ -426,16 +278,9 @@ class RESTClient {
      * @param {String} token - the user token
      * @returns {Promise}
      */
-    async createLicenceLink(licenceLink, token){
-        let _client = this;
-        const request = {
-            method: "post",
-            baseURL: _client.baseURL + "/licence_links",
-            headers: this.auth_headers(token),
-            data: {licence_link: licenceLink}
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async createLicenceLink(licenceLink, token) {
+        this.set_auth_headers(token)
+        return await this.create("/licence_links", {licence_link: licenceLink})
     }
 
     /**
@@ -444,15 +289,9 @@ class RESTClient {
      * @param {String} token - the user token
      * @returns {Promise}
      */
-    async deleteLicenceLink(id, token){
-        let _client = this;
-        const request = {
-            method: "delete",
-            baseURL: _client.baseURL + "/licence_links/" + id,
-            headers: this.auth_headers(token),
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async deleteLicenceLink(id, token) {
+        this.set_auth_headers(token)
+        return await this.delete(`/licence_links/${id}`)
     }
 
     /**
@@ -461,43 +300,22 @@ class RESTClient {
      * @param {String} token the user token
      * @returns {Promise}
      */
-    async updateLicenceLink(licenceLink, token){
-        let _client = this;
-        const request = {
-            method: "put",
-            baseURL: _client.baseURL + "/licence_links/" + licenceLink.id,
-            headers: this.auth_headers(token),
-            data: {licence_link: licenceLink}
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async updateLicenceLink(licenceLink, token) {
+        this.set_auth_headers(token)
+        return await this.update(`/licence_links/${licenceLink.id}`, {licence_link: licenceLink})
     }
 
 
     /* PUBLICATIONS */
 
-    async createPublication(publication, token){
-        let _client = this;
-        const request = {
-            method: "post",
-            baseURL: _client.baseURL + "/publications",
-            headers: this.auth_headers(token),
-            data: { publication: publication }
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async createPublication(publication, token) {
+        this.set_auth_headers(token)
+        return await this.create("/publications", {publication: publication})
     }
 
-    async editPublication(publication, token){
-        let _client = this;
-        const request = {
-            method: "put",
-            baseURL: _client.baseURL + "/publications/" + publication.id,
-            headers: this.auth_headers(token),
-            data: { publication: publication }
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async editPublication(publication, token) {
+        this.set_auth_headers(token)
+        return await this.update(`/publications/${publication.id}`, {publication: publication})
     }
 
     /* RELATIONSHIPS BETWEEN RECORDS */
@@ -506,17 +324,10 @@ class RESTClient {
      * @param {Object} options - the options to pass as {token: String, relations: Array}
      * @returns {Promise}
      */
-    async saveRelations(options){
+    async saveRelations(options) {
         if (options.relations.length > 0) {
-            const request = {
-                method: 'put',
-                baseURL: this.baseURL + '/fairsharing_records/' + options.target,
-                headers: this.auth_headers(options.token),
-                data: {fairsharing_record: {record_associations_attributes: options.relations}}
-
-            };
-            let response = await this.executeQuery(request);
-            return response.data;
+            this.set_auth_headers(options.token)
+            return await this.update(`/fairsharing_records/${options.target}`, {fairsharing_record: {record_associations_attributes: options.relations}})
         }
         return {};
     }
@@ -526,17 +337,10 @@ class RESTClient {
      * @param {Object} options - the options to pass as {token: String, relations: Array}
      * @returns {Promise}
      */
-    async deleteRelations(options){
+    async deleteRelations(options) {
         if (options.relations.length > 0) {
-            const request = {
-                method: 'put',
-                baseURL: this.baseURL + '/fairsharing_records/' + options.target,
-                headers: this.auth_headers(options.token),
-                data: {fairsharing_record: {record_associations_attributes: options.relations}}
-
-            };
-            let response = await this.executeQuery(request);
-            return response.data;
+            this.set_auth_headers(options.token)
+            return await this.update(`/fairsharing_records/${options.target}`, {fairsharing_record: {record_associations_attributes: options.relations}})
         }
         return {};
     }
@@ -548,16 +352,9 @@ class RESTClient {
      * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async createOrganisation(organisation, userToken){
-        let _client = this;
-        const request = {
-            method: "post",
-            baseURL: _client.baseURL + "/organisations",
-            headers: this.auth_headers(userToken),
-            data: { organisation: organisation }
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async createOrganisation(organisation, userToken) {
+        this.set_auth_headers(userToken)
+        return await this.create(`/organisations`, {organisation: organisation})
     }
 
     /**
@@ -566,16 +363,9 @@ class RESTClient {
      * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async createGrant(grant, userToken){
-        let _client = this;
-        const request = {
-            method: "post",
-            baseURL: _client.baseURL + "/grants",
-            headers: this.auth_headers(userToken),
-            data: { grant: grant }
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async createGrant(grant, userToken) {
+        this.set_auth_headers(userToken)
+        return await this.create(`/grants`, {grant: grant})
     }
 
     /**
@@ -584,16 +374,9 @@ class RESTClient {
      * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async createOrganisationLink(organisationLink, userToken){
-        let _client = this;
-        const request = {
-            method: "post",
-            baseURL: _client.baseURL + "/organisation_links",
-            headers: this.auth_headers(userToken),
-            data: { organisation_link: organisationLink }
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async createOrganisationLink(organisationLink, userToken) {
+        this.set_auth_headers(userToken)
+        return await this.create(`/organisation_links`, {organisation_link: organisationLink})
     }
 
     /**
@@ -603,16 +386,9 @@ class RESTClient {
      * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async updateOrganisationLink(organisationLink, linkID, userToken){
-        let _client = this;
-        const request = {
-            method: "put",
-            baseURL: _client.baseURL + "/organisation_links/" + linkID,
-            headers: this.auth_headers(userToken),
-            data: { organisation_link: organisationLink }
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async updateOrganisationLink(organisationLink, linkID, userToken) {
+        this.set_auth_headers(userToken)
+        return await this.update(`/organisation_links/${linkID}`, {organisation_link: organisationLink})
     }
 
     /**
@@ -621,15 +397,9 @@ class RESTClient {
      * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async deleteOrganisationLink(linkID, userToken){
-        let _client = this;
-        const request = {
-            method: "delete",
-            baseURL: _client.baseURL + "/organisation_links/" + linkID,
-            headers: this.auth_headers(userToken),
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async deleteOrganisationLink(linkID, userToken) {
+        this.set_auth_headers(userToken)
+        return await this.delete(`/organisation_links/${linkID}`)
     }
 
     /**
@@ -639,14 +409,8 @@ class RESTClient {
      * @returns {Promise}
      */
     async extraMetadataFields(type, userToken) {
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/fairsharing_records/metadata_fields",
-            headers: this.auth_headers(userToken),
-            data: {type: type}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        this.set_auth_headers(userToken)
+        return await this.create(`/fairsharing_records/metadata_fields`, {type: type})
     }
 
     /* METHODS FOR CURATION */
@@ -657,16 +421,9 @@ class RESTClient {
      * @param {String} userToken - the user jwt
      * @returns {Promise}
      */
-    async updateStatusMaintenanceRequest(maintenanceRequest, newStatus, userToken){
-        let _client = this;
-        const request = {
-            method: "put",
-            baseURL: _client.baseURL + "/maintenance_requests/" + maintenanceRequest,
-            headers: this.auth_headers(userToken),
-            data: { maintenance_request: {status: newStatus}}
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async updateStatusMaintenanceRequest(maintenanceRequest, newStatus, userToken) {
+        this.set_auth_headers(userToken)
+        return await this.update(`/maintenance_requests/${maintenanceRequest}`, {maintenance_request: {status: newStatus}})
     }
 
     /**
@@ -675,15 +432,9 @@ class RESTClient {
      * @param {String} token - the user token
      * @returns {Promise}
      */
-    async deleteRecord(id, token){
-        let _client = this;
-        const request = {
-            method: "delete",
-            baseURL: _client.baseURL + "/fairsharing_records/" + id,
-            headers: this.auth_headers(token),
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async deleteRecord(id, token) {
+        this.set_auth_headers(token)
+        return await this.delete(`/fairsharing_records/${id}`)
     }
 
     /**
@@ -691,28 +442,16 @@ class RESTClient {
      * @returns {Promise}
      */
     /* EDITOR DATA */
-    async getRelationsTypes(){
-        let _client = this;
-        const request = {
-            method: "get",
-            baseURL: _client.baseURL + "/record_associations/allowed"
-        };
-        let response = await _client.executeQuery(request);
-        return response.data;
+    async getRelationsTypes() {
+        return await this.get(`/record_associations/allowed`)
     }
 
     /**
      * Get the list of available profile types for a user.
      * @returns {Promise}
      */
-    async getProfileTypes(){
-        const request = {
-            method: "get",
-            baseURL: this.baseURL + "/users/profile_types",
-            headers: this.headers,
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+    async getProfileTypes() {
+        return await this.get(`/users/profile_types`)
     }
 
     /* EXTRA METHODS */
@@ -722,48 +461,34 @@ class RESTClient {
      * @param query
      * @returns {Promise<*>}
      */
-    async executeQuery(query) {
-        try {
-            return await axios(query);
-        }
-        catch(e){
-            return({data: {error: e}});
-        }
-    }
+
 
     /**
      * Get records without DOIS
-     * @param {String} token - the user token that needs to be a curator
+     * @param {String} userToken - the user token that needs to be a curator
      * @returns {Promise}
      */
-     async getRecordsWoDOIs(userToken){
-         let _client = this;
-         const request = {
-             method: "get",
-             baseURL: _client.baseURL + "/files/no_dois",
-             headers: this.auth_headers(userToken),
-         };
-         let response = await _client.executeQuery(request);
-         return response.data;
-     }
+    async getRecordsWoDOIs(userToken) {
+        this.set_auth_headers(userToken)
+        return await this.get(`/files/no_dois`)
+    }
 
     async uploadLogo(formData) {
-        let _client = this;
-        const request = {
-            method: "put",
-            baseURL: _client.baseURL + "/fairsharing_records/" + formData.get("id"),
-            headers: _client.auth_headers(formData.get("token")),
-            data: {fairsharing_record:{logo:{
-                filename:formData.get("logo").name,
-                // //encode to base 64
-                data:await toBase64(formData.get("logo")),
-                content_type:formData.get("logo").type,
-                    }}},
+        this.set_auth_headers(formData.get("token"))
+        const logoData = {
+            fairsharing_record: {
+                logo: {
+                    filename: formData.get("logo").name,
+                    // //encode to base 64
+                    data: await toBase64(formData.get("logo")),
+                    content_type: formData.get("logo").type,
+                }
+            }
         };
-        let response = await _client.executeQuery(request);
+        const response = await this.update(`/fairsharing_records/${formData.get("id")}`, logoData)
         // here the data returned always should be either an array of images or one string of image
         return response.data.data.attributes['url-for-logo'];
-     }
+    }
 
 }
 

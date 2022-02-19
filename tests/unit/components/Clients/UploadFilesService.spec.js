@@ -5,7 +5,7 @@ const sinon = require("sinon");
 
 describe("UpdateFilesService", () => {
     let client;
-    let clientStub = {data: {data: {attributes: {}}}};
+    let clientStub = {data: {data:{data: {attributes: {}}}}};
     let stub2 = sinon.stub(RestClient.prototype, "executeQuery");
     beforeAll( () => {
         stub2.withArgs(sinon.match.any).returns(clientStub);

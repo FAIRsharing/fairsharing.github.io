@@ -19,11 +19,11 @@ class CRUD {
         this.headers = headers;
     }
 
-    unset_auth_headers() {
-        let headers = JSON.parse(JSON.stringify(this.headers));
-        delete headers['Authorization'];
-        this.headers = headers;
-    }
+    /*    unset_auth_headers() {
+            let headers = JSON.parse(JSON.stringify(this.headers));
+            delete headers['Authorization'];
+            this.headers = headers;
+     }*/
 
     async executeQuery(query) {
         try {
@@ -66,11 +66,8 @@ class CRUD {
         return response.data;
     }
 
-    async get(url, query = undefined) {
+    async get(url) {
         let baseURL = `${this.baseURL}${url}`;
-        if (query) {
-            baseURL = `${this.baseURL}${url}?${query}`;
-        }
         const request = {
             method: "get",
             baseURL: baseURL,

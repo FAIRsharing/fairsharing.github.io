@@ -39,7 +39,7 @@
             cols="12"
             sm="12"
             md="4"
-            lg="4"
+            lg="3"
           >
             <v-card
               class="mx-auto block-category__card"

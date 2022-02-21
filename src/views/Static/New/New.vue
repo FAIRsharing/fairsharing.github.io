@@ -55,7 +55,7 @@
                     class="mt-5"
                     contain
                     height="100px"
-                    :src="$vuetify.icons.values['home_standard'].icon"
+                    :src="$vuetify.icons.values[item.icon].icon"
                   />
                 </div>
                 <v-card-title class="d-inline text-h4 text-center text-md-h5 text-lg-h4">

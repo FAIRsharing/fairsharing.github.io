@@ -8,6 +8,7 @@
       backgroundBlendMode: 'multiply',
     }]"
   >
+    <!-- eslint-disable vue/no-v-html -->
     <Particles
       id="particles"
       :options="options"
@@ -27,9 +28,9 @@
           'lato-text-sm': $vuetify.breakpoint.smAndDown
         }
       ]"
-    >
-      {{ content.subtitle }}
-    </h3>
+      v-html="content.subtitle"
+    />
+    <!-- eslint-enable vue/no-v-html -->
   </section>
 </template>
 

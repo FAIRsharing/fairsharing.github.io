@@ -158,42 +158,40 @@
           <Loaders />
         </v-card>
         <!-- BACK BUTTON -->
-        <v-card>
-          <v-btn
-            class="ml-2 my-2 white"
-            @click.prevent="$router.back()"
+        <v-btn
+          class="ml-2 my-2 white"
+          @click.prevent="$router.back()"
+        >
+          <v-icon :class="`primary--text`">
+            fa-arrow-left
+          </v-icon>
+          <span :class="`primary--text ml-3`"> GO BACK </span>
+        </v-btn>
+        <div id="networkGraph">
+          <v-card
+            v-if="noData"
+            height="100%"
           >
-            <v-icon :class="`primary--text`">
-              fa-arrow-left
-            </v-icon>
-            <span :class="`primary--text ml-3`"> GO BACK </span>
-          </v-btn>
-          <div id="networkGraph">
-            <v-card
-              v-if="noData"
-              height="100%"
-            >
-              <v-card-title class="blue white--text">
-                No graph data found!
-              </v-card-title>
-              <v-card-text class="pt-3">
-                <v-container fluid>
-                  <v-row no-gutters>
-                    <v-col cols="12">
-                      <p>No data were found showing links between this record and others. This could be because:</p>
-                      <ul style="list-style-type: square;">
-                        <li>The record has just been created and the graph data are still being generated.</li>
-                        <li>This record has no links to other records.</li>
-                        <li>Something went wrong.</li>
-                      </ul>
-                      <p>If you need assistance, please <a href="mailto:contact@fairsharing.org">contact us</a>.</p>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-            </v-card>
-          </div>
-        </v-card>
+            <v-card-title class="blue white--text">
+              No graph data found!
+            </v-card-title>
+            <v-card-text class="pt-3">
+              <v-container fluid>
+                <v-row no-gutters>
+                  <v-col cols="12">
+                    <p>No data were found showing links between this record and others. This could be because:</p>
+                    <ul style="list-style-type: square;">
+                      <li>The record has just been created and the graph data are still being generated.</li>
+                      <li>This record has no links to other records.</li>
+                      <li>Something went wrong.</li>
+                    </ul>
+                    <p>If you need assistance, please <a href="mailto:contact@fairsharing.org">contact us</a>.</p>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </div>
       </v-col>
     </v-row>
   </v-container>

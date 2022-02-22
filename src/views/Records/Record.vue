@@ -154,9 +154,11 @@
               </span>
             </v-snackbar>
           </div>
+          <!-- Menu component -->
           <record-menu
             v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error"
-            :update-parent-value="updateStates"
+            :buttons="buttons"
+            :read-only-mode="readOnlyMode"
           />
         </v-col>
       </v-row>
@@ -430,6 +432,10 @@ export default {
     ...mapState('record', ["currentRecord", "currentRecordHistory"]),
     ...mapState('users', ["user", "messages"]),
     ...mapGetters("record", ["getField"]),
+    ...mapState('introspection', ["readOnlyMode"]),
+    userIsLoggedIn(){
+      return this.user().isLoggedIn;
+    },
     getTitle() {
       return 'FAIRsharing | ' + this.currentRoute;
     },
@@ -490,9 +496,6 @@ export default {
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
     ...mapActions('users', ['updateWatchedRecords']),
     ...mapMutations('users', ['changeWatched']),
-    updateStates(property, value) {
-      this[property] = value
-    },
     async getMenuButtons() {
       let _module = this;
       this.buttons = []
@@ -598,44 +601,50 @@ export default {
       ];
       if (_module.user().is_curator && _module.needsReviewing()) {
         initial_buttons.push(
-          {
-            name: function () {
-              return "Review this record"
-            },
-            isDisabled: function () {
-              // Only to be seen by logged-in curators.
-              // So, this line shouldn't really be encountered...
-              /* istanbul ignore if */
-              if (!_module.userIsLoggedIn) {
-                return true;
+            {
+              name: function () {
+                return "Review this record"
+              },
+              isDisabled: function () {
+                // Only to be seen by logged-in curators.
+                // So, this line shouldn't really be encountered...
+                /* istanbul ignore if */
+                if (!_module.userIsLoggedIn) {
+                  return true;
+                }
+                return !_module.user().is_curator;
+              },
+              method: async function () {
+                await _module.reviewRecord();
               }
-              return !_module.user().is_curator;
-            },
-            method: async function () {
-              await _module.reviewRecord();
             }
-          }
         )
       }
       if (_module.user().is_super_curator) {
         initial_buttons.push(
-          {
-            name: function () {
-              return "Delete this record"
-            },
-            isDisabled: function () {
-              return !_module.user().is_super_curator;
-            },
-            method: /* istanbul ignore next */ async function () {
-              _module.deleteRecordMenu(
-                  _module.currentRecord['fairsharingRecord'].name,
-                  _module.currentRecord['fairsharingRecord'].id,
-              );
+            {
+              name: function () {
+                return "Delete this record"
+              },
+              isDisabled: function () {
+                return !_module.user().is_super_curator;
+              },
+              method: /* istanbul ignore next */ async function () {
+                _module.deleteRecordMenu(
+                    _module.currentRecord['fairsharingRecord'].name,
+                    _module.currentRecord['fairsharingRecord'].id,
+                );
+              }
             }
-          }
         )
       }
       this.buttons = initial_buttons;
+    },
+    updateStates(property, value) {
+      this[property] = value
+    },
+    callMyMethod(name, value = null) {
+      this[name](value)
     },
     async confirmDelete(){
       const _module = this;

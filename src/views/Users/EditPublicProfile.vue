@@ -88,13 +88,24 @@
                     :label="formData[field.name]?'Switch off to deactivate user account':field.label"
                   />
                 </div>
-                <div v-if="field.type === 'select'">
+                <div v-if="field.type === 'select' && field.name !== 'role'">
                   <v-select
                     v-model="formData[field.name]"
                     outlined
                     :label="field.label"
                     :items="data[field.data]"
                     :rules="field.rules"
+                  />
+                </div>
+                <div v-if="field.name === 'role'">
+                  <v-select
+                    v-model="role"
+                    outlined
+                    :label="field.label"
+                    :items="data[field.data]"
+                    :rules="field.rules"
+                    item-text="name"
+                    item-value="id"
                   />
                 </div>
                 <div v-if="field.type === 'input'">
@@ -198,7 +209,8 @@ export default {
       loading: false,
       dialog: false,
       data: {
-        profileTypes: []
+        profileTypes: [],
+        userRoles: []
       },
       fields: [
         {
@@ -263,6 +275,16 @@ export default {
           data: "profileTypes"
         },
         {
+          name: "role",
+          label: "Role",
+          hint: null,
+          type: "select",
+          rules: [
+            isRequired()
+          ],
+          data: "userRoles"
+        },
+        {
           name: "preferences_hide",
           label: "Hide your email address on public pages.",
           hint: null,
@@ -298,11 +320,20 @@ export default {
     }
   },
   computed: {
-    ...mapState('users',['currentPublicUser','messages']),
+    ...mapState('users',['currentPublicUser','messages', 'user']),
+    roleNames: function() {
+      let data = [];
+      this.data.userRoles.forEach(function(role) {
+        data.push(role.name);
+      })
+      return data;
+    }
   },
   async created() {
     await this.getPublicUserForModification(this.$route.params.id);
     this.data.profileTypes = await restClient.getProfileTypes();
+    this.data.userRoles = await restClient.getUserRoles(this.user().credentials.token);
+    console.log(JSON.stringify(this.currentPublicUser));
     if (this.currentPublicUser.preferences) {
       this.formData.username = this.currentPublicUser.username;
       this.formData.id = this.$route.params.id;
@@ -313,6 +344,7 @@ export default {
       this.formData.last_name = this.currentPublicUser.last_name;
       this.formData.homepage = this.currentPublicUser.homepage;
       this.formData.profile_type = this.currentPublicUser.profile_type;
+      this.formData.role = this.currentPublicUser.role;
       this.formData.orcid = this.currentPublicUser.orcid;
       this.formData.twitter = this.currentPublicUser.twitter;
       this.formData.deactivated = !this.currentPublicUser.deactivated;

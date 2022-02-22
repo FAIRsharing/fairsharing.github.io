@@ -111,7 +111,8 @@ export const mutations = {
             profile_type: user.profile_type,
             preferences: user.preferences,
             deactivated: user.deactivated,
-            third_party: user.third_party
+            third_party: user.third_party,
+            role: user.role
         }
     },
     setUserMeta(state, metadata){

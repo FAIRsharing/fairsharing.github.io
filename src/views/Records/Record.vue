@@ -154,44 +154,10 @@
               </span>
             </v-snackbar>
           </div>
-          <div
+          <record-menu
             v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error"
-            class="text-right"
-          >
-            <v-menu
-              offset-y
-              :disabled="readOnlyMode"
-            >
-              <template #activator="{ on, attrs }">
-                <v-btn
-                  class="mt-1"
-                  color="primary"
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  Actions
-                  <v-icon
-                    small
-                    right
-                  >
-                    fa-chevron-down
-                  </v-icon>
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item
-                  v-for="(button, index) in buttons"
-                  :key="button.name()+'_'+button.isDisabled()+'_'+ index"
-                  :disabled="button.isDisabled()"
-                  @click="button.method()"
-                >
-                  <v-list-item-title>
-                    {{ button.name() }}
-                  </v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </div>
+            :update-parent-value="updateStates"
+          />
         </v-col>
       </v-row>
 
@@ -375,12 +341,14 @@ import SearchCollection from "@/components/Records/Record/CollectionRecord/Searc
 import Tombstone from "../Errors/Tombstone";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
 import CuratorNotes from "@/components/Records/Record/CuratorNotes";
+import RecordMenu from "@/components/Records/Record/RecordMenu";
 
 const client = new RestClient();
 
 export default {
   name: "Record",
   components: {
+    RecordMenu,
     CuratorNotes,
     AdditionalInfo,
     Tombstone,
@@ -462,10 +430,6 @@ export default {
     ...mapState('record', ["currentRecord", "currentRecordHistory"]),
     ...mapState('users', ["user", "messages"]),
     ...mapGetters("record", ["getField"]),
-    ...mapState('introspection', ["readOnlyMode"]),
-    userIsLoggedIn(){
-      return this.user().isLoggedIn;
-    },
     getTitle() {
       return 'FAIRsharing | ' + this.currentRoute;
     },
@@ -526,6 +490,9 @@ export default {
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
     ...mapActions('users', ['updateWatchedRecords']),
     ...mapMutations('users', ['changeWatched']),
+    updateStates(property, value) {
+      this[property] = value
+    },
     async getMenuButtons() {
       let _module = this;
       this.buttons = []

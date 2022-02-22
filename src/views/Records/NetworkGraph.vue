@@ -235,7 +235,7 @@
                         //height: '62.8%',
                         height: '82.8%',
                         plotBorderWidth: 0,
-                        plotShadow: true,
+                        plotShadow: false,
                         renderTo: 'networkGraph',
                         marginBottom: 2,
                         marginTop: 0,

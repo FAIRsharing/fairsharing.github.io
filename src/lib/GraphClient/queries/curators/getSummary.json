@@ -4,6 +4,15 @@
   "fields": [
     "needsReview",
     {
+      "name": "messages",
+      "fields": [
+        "id",
+        "message",
+        "updatedAt",
+        "createdAt"
+      ]
+    },
+    {
       "name": "curatorList",
       "fields": [
         "username",

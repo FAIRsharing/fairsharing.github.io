@@ -721,6 +721,7 @@ class RESTClient {
      * @param {String} token - the user token
      */
     async getUserRoles(userToken){
+        console.log("GET ROLES");
         const request = {
             method: "get",
             baseURL: this.baseURL + "/user_roles",

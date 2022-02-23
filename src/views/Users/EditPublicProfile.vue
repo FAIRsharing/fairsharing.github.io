@@ -4,14 +4,14 @@
     fluid
   >
     <v-alert
-      v-if="!currentPublicUser.username"
+      v-if="!currentPublicUser.username && !pageLoad"
       type="error"
     >
       No user found with id {{ $route.params.id }}.
     </v-alert>
 
     <v-alert
-      v-if="messages().getPublicUser.message"
+      v-if="messages().getPublicUser.message && !pageLoad"
       class="white--text"
       type="error"
     >
@@ -88,24 +88,14 @@
                     :label="formData[field.name]?'Switch off to deactivate user account':field.label"
                   />
                 </div>
-                <div v-if="field.type === 'select' && field.name !== 'role'">
+                <div v-if="field.type === 'select'">
                   <v-select
                     v-model="formData[field.name]"
                     outlined
                     :label="field.label"
                     :items="data[field.data]"
                     :rules="field.rules"
-                  />
-                </div>
-                <div v-if="field.name === 'role'">
-                  <v-select
-                    v-model="role"
-                    outlined
-                    :label="field.label"
-                    :items="data[field.data]"
-                    :rules="field.rules"
                     item-text="name"
-                    item-value="id"
                   />
                 </div>
                 <div v-if="field.type === 'input'">
@@ -207,6 +197,7 @@ export default {
     return {
       valid: false,
       loading: false,
+      pageLoad: true,
       dialog: false,
       data: {
         profileTypes: [],
@@ -315,25 +306,20 @@ export default {
         profile_type: null,
         orcid: null,
         twitter: null,
-        deactivated:null
+        deactivated:null,
+        role: null
       }
     }
   },
   computed: {
-    ...mapState('users',['currentPublicUser','messages', 'user']),
-    roleNames: function() {
-      let data = [];
-      this.data.userRoles.forEach(function(role) {
-        data.push(role.name);
-      })
-      return data;
-    }
+    ...mapState('users',['currentPublicUser','messages', 'user'])
   },
-  async created() {
+  async mounted() {
     await this.getPublicUserForModification(this.$route.params.id);
     this.data.profileTypes = await restClient.getProfileTypes();
+    console.log("PT0: " + JSON.stringify(this.data.profileTypes));
     this.data.userRoles = await restClient.getUserRoles(this.user().credentials.token);
-    console.log(JSON.stringify(this.currentPublicUser));
+    console.log("UR0: " + JSON.stringify(this.data.userRoles));
     if (this.currentPublicUser.preferences) {
       this.formData.username = this.currentPublicUser.username;
       this.formData.id = this.$route.params.id;
@@ -349,6 +335,7 @@ export default {
       this.formData.twitter = this.currentPublicUser.twitter;
       this.formData.deactivated = !this.currentPublicUser.deactivated;
     }
+    this.pageLoad = false;
   },
   beforeDestroy() {
     this.cleanStore();
@@ -363,10 +350,15 @@ export default {
         hide_email: this.formData.preferences_hide,
         email_updates: this.formData.preferences_send
       };
-      data.deactivated = !data.deactivated
+      data.deactivated = !data.deactivated;
+      console.log("UR1: " + JSON.stringify(this.data.userRoles));
+      console.log("FD1: " + JSON.stringify(this.formData));
+      let role_id = this.data.userRoles.filter(role => this.formData.role === role.name)[0].id;
+      data.role_id = role_id;
       await this.updatePublicUser(data);
       this.loading = false;
-      await this.$router.push({path: `/users/${this.$route.params.id}`})
+      this.$router.go();
+      //await this.$router.push({path: `/users/${this.$route.params.id}`})
     },
     async deleteAccount() {
       this.loading = true;

@@ -17,143 +17,14 @@
         <v-col
           cols="12"
         >
-          <v-alert
-            v-if="!currentRecord.fairsharingRecord['isApproved'] && !error"
-            dense
-            type="info"
-            class="mb-2 flex-grow-1"
-          >
-            <span>This record is awaiting review by FAIRsharing curators</span>
-          </v-alert>
+          <!-- alerts         -->
+          <record-alert
+            v-for="(alert,key,index) in alerts"
+            :key="key+'_'+alert.message+'_'+index"
+            :type="alert.type"
+            :message="alert.message"
+          />
 
-          <v-alert
-            v-if="user().is_curator && needsReviewing() && !error"
-            dense
-            type="warning"
-            class="mb-2 flex-grow-1"
-          >
-            <span>This record is in need of periodic curator review. </span>
-            <span v-if="!reviewsPresent()">
-              There has not been any review to date.
-            </span>
-            <span v-else>
-              The last review was on {{ currentRecord['fairsharingRecord']['reviews'][0]['createdAt'].split(/T/)[0] }}
-              by {{ currentRecord['fairsharingRecord']['reviews'][0]['user']['username'] }}.
-            </span>
-          </v-alert>
-
-          <v-alert
-            v-if="isWatching()"
-            dense
-            type="info"
-            class="mb-2 flex-grow-1"
-          >
-            <span>You are watching this record for changes</span>
-          </v-alert>
-
-          <div
-            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
-            class="d-flex flex-column"
-          >
-            <v-alert
-              v-if="user().is_curator && currentRecord.fairsharingRecord['isHidden']"
-              dense
-              type="info"
-              class="mb-2 flex-grow-1"
-            >
-              <span>This record is hidden!</span>
-            </v-alert>
-
-            <transition
-              name="fade"
-              mode="in-out"
-              appear
-            >
-              <div v-if="queryTriggered">
-                <!--  Although queryTriggered is checked again in the below divs but still this line check whether page is fully loaded to show the content and its needed     -->
-                <div v-if="!queryTriggered">
-                  <!--    here its when async queryTriggered value is not set so we show red banner by default -->
-                  <v-alert
-                    v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!noClaimRegistered && !error))"
-                    dense
-                    type="error"
-                    class="mb-2 flex-grow-1"
-                  >
-                    <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
-                  </v-alert>
-
-                  <div v-else-if="queryTriggered && !ownershipApproved">
-                    <!--    here we update the ownership request banner when query is triggered and its value is set and also the request has been rejected. -->
-                    <v-alert
-                      v-if="(!alreadyClaimed) && ((!ownershipApproved && !alreadyClaimed) && (!noClaimRegistered && !error))"
-                      dense
-                      type="error"
-                      class="mb-2 flex-grow-1"
-                    >
-                      <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
-                    </v-alert>
-                  </div>
-                </div>
-                <div v-else-if="!error">
-                  <!--    here we check if there is any error first when query has  been triggered(after query is triggered) . -->
-                  <span v-if="!alreadyClaimed && ownershipApproved && noClaimRegistered && error" />
-                  <!--    here code checks if the ownership has been rejected (after query is triggered)  -->
-                  <v-alert
-                    v-else-if="!ownershipApproved && !alreadyClaimed && !noClaimRegistered && showBanner"
-                    dense
-                    type="error"
-                    class="mb-2 flex-grow-1"
-                  >
-                    <span>Your claiming request has been declined. Please get in touch with us if you have any questions.</span>
-                  </v-alert>
-                  <!--    here code checks if the ownership has been approved (after query is triggered)  -->
-                  <v-alert
-                    v-else-if="ownershipApproved && showBanner"
-                    dense
-                    type="success"
-                    class="mb-1 flex-grow-1"
-                  >
-                    <span>Your request to maintain this record has been approved.</span>
-                  </v-alert>
-                </div>
-              </div>
-            </transition>
-
-
-            <v-alert
-              v-if="alreadyClaimed"
-              dense
-              type="warning"
-              class="mb-1 flex-grow-1"
-            >
-              <span>Your ownership request for this record has been submitted. We will get back to you within a few working days.</span>
-            </v-alert>
-            <v-snackbar
-              v-model="claimedTriggered"
-              color="success"
-              class="text-body"
-            >
-              Thank you for claiming this record. We will be getting back to you between 48 and 72h.
-            </v-snackbar>
-            <v-snackbar
-              v-model="reviewSuccess"
-              color="success"
-              class="text-body text-center"
-            >
-              <span class="text-center">
-                Thank you for reviewing this record.
-              </span>
-            </v-snackbar>
-            <v-snackbar
-              v-model="reviewFail"
-              color="warning"
-              class="text-body"
-            >
-              <span class="text-center">
-                Sorry, it was not possibly to save a review for this record.
-              </span>
-            </v-snackbar>
-          </div>
           <!-- Menu component -->
           <record-menu
             v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error"
@@ -344,12 +215,14 @@ import Tombstone from "../Errors/Tombstone";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
 import CuratorNotes from "@/components/Records/Record/CuratorNotes";
 import RecordMenu from "@/components/Records/Record/RecordMenu";
+import RecordAlert from "@/components/Records/Record/RecordAlert";
+import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
 
 const client = new RestClient();
-
 export default {
   name: "Record",
   components: {
+    RecordAlert,
     RecordMenu,
     CuratorNotes,
     AdditionalInfo,
@@ -381,6 +254,7 @@ export default {
       alreadyClaimed: false,
       noClaimRegistered:false,
       ownershipApproved: false,
+      ownershipApprovalStatus:null,
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
@@ -391,6 +265,7 @@ export default {
         loading: false
       },
       tombstone: false,
+      alerts:{},
       dialogs: {
         recordName: "",
         recordID: "",
@@ -483,6 +358,7 @@ export default {
         await this.getMenuButtons()
       }
       await this.$nextTick();
+      await this.checkAlerts();
     try {
       await this.$scrollTo(this.$route.hash || 'body')
       // eslint-disable-next-line no-empty
@@ -493,6 +369,17 @@ export default {
     // update the UI padding and margin after DOM is fully loaded.
   },
   methods: {
+    async checkAlerts() {
+        this.alerts = new AlertBuilder(this.currentRecord, this.user())
+            .isAwaitingApproval()
+            .isWatching(this.isWatching())
+            .isNeedingReview(this.needsReviewing())
+            .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
+            .isAlreadyClaimed(this.alreadyClaimed)
+            .isHidden()
+            .isOwnerShipApproved(this.ownershipApprovalStatus)
+            .getAlerts();
+    },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
     ...mapActions('users', ['updateWatchedRecords']),
     ...mapMutations('users', ['changeWatched']),
@@ -732,7 +619,8 @@ export default {
                 _module.alreadyClaimed = true;
               }
             }
-            else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
+
+            _module.ownershipApprovalStatus = claim.error.response.data.status;
 
             // assign expiring date for approval banner---
             _module.showBanner = true;

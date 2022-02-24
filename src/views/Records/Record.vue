@@ -25,6 +25,15 @@
             :message="alert.message"
           />
 
+          <!--  snackbars        -->
+          <record-snackbar
+            v-for="(snackbar,index) in snackbars"
+            :key="snackbar.message+'_'+index"
+            :message="snackbar.message"
+            :type="snackbar.type"
+            :model="convertStringToLocalVar(snackbar.model)"
+          />
+
           <!-- Menu component -->
           <record-menu
             v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error"
@@ -217,11 +226,13 @@ import CuratorNotes from "@/components/Records/Record/CuratorNotes";
 import RecordMenu from "@/components/Records/Record/RecordMenu";
 import RecordAlert from "@/components/Records/Record/RecordAlert";
 import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
+import RecordSnackbar from "@/components/Records/Record/RecordSnackBar";
 
 const client = new RestClient();
 export default {
   name: "Record",
   components: {
+    RecordSnackbar,
     RecordAlert,
     RecordMenu,
     CuratorNotes,
@@ -266,6 +277,23 @@ export default {
       },
       tombstone: false,
       alerts:{},
+      snackbars: [
+        {
+          model: "claimedTriggered",
+          type: "success",
+          message: "Thank you for claiming this record. We will be getting back to you between 48 and 72h."
+        },
+        {
+          model: "reviewSuccess",
+          type: "success",
+          message: "Thank you for reviewing this record."
+        },
+        {
+          model: "reviewFail",
+          type: "warning",
+          message: "Sorry, it was not possibly to save a review for this record."
+        }
+      ],
       dialogs: {
         recordName: "",
         recordID: "",
@@ -450,6 +478,7 @@ export default {
               else {
                 _module.changeWatchRecord(true);
               }
+              _module.checkAlerts();
             }
           }
         },
@@ -526,6 +555,9 @@ export default {
         )
       }
       this.buttons = initial_buttons;
+    },
+    convertStringToLocalVar(stringVarName){
+      return this[stringVarName]
     },
     updateStates(property, value) {
       this[property] = value

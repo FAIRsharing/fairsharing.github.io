@@ -96,7 +96,6 @@ describe("Curator.vue", () => {
 
     it("can add messages", async () => {
         wrapper.vm.systemMessages = [{id: 1, message: "message"}];
-        restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {message: "success"}
         });
@@ -134,7 +133,6 @@ describe("Curator.vue", () => {
         expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
 
         expect(wrapper.vm.systemMessages.length).toEqual(1);
-        restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {error: "error"}
         });
@@ -157,7 +155,6 @@ describe("Curator.vue", () => {
 
     it("can save edited messages", async() => {
         wrapper.vm.systemMessages = [{id: 1, message: "message"}, {id: 2, message: "another message"}];
-        restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {message: "success"}
         });

@@ -269,7 +269,6 @@ export default {
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
-      showBanner:false,
       buttons: [],
       history: {
         show: false,
@@ -371,6 +370,7 @@ export default {
       await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons();
+      await this.checkAlerts();
     }
   },
   destroyed() {
@@ -401,11 +401,11 @@ export default {
         this.alerts = new AlertBuilder(this.currentRecord, this.user())
             .isAwaitingApproval()
             .isWatching(this.isWatching())
-            .isNeedingReview(this.needsReviewing())
+            .isNeedingReview()
             .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
             .isAlreadyClaimed(this.alreadyClaimed)
             .isHidden()
-            .isOwnerShipApproved(this.ownershipApprovalStatus)
+            .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired())
             .getAlerts();
     },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
@@ -478,7 +478,6 @@ export default {
               else {
                 _module.changeWatchRecord(true);
               }
-              _module.checkAlerts();
             }
           }
         },
@@ -632,6 +631,7 @@ export default {
         _module.claimedTriggered = true;
         _module.alreadyClaimed = true;
       }
+      await _module.checkAlerts();
     },
     /**
      * Method to set the canClaim status for this record.
@@ -654,26 +654,10 @@ export default {
 
             _module.ownershipApprovalStatus = claim.error.response.data.status;
 
-            // assign expiring date for approval banner---
-            _module.showBanner = true;
-            let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
-            if (!bannerExpiryDate[_module.getField("id")]) {
-              bannerExpiryDate = {
-                ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
-                [_module.getField("id")]: new Date()
-              }
-              localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
+            // assign expiring date for approval/rejection banner---
+            if (_module.ownershipApprovalStatus === 'approved' || _module.ownershipApprovalStatus === 'rejected') {
+              this.setBannerExpiry();
             }
-            else {
-              const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
-              const expiryDate = new Date(temp[_module.getField("id")]);
-              let now = new Date();
-              const DAY = 2;
-              // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
-              _module.showBanner = !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) < now.getTime());
-            }
-            // end of expiring date for approval banner---
-
             _module.canClaim = false;
           }
           else {
@@ -763,6 +747,7 @@ export default {
       if (response.modification === 'success'){
         _module.changeWatched(records);
       }
+      await _module.checkAlerts();
       this.loading = false;
     },
     /**
@@ -776,11 +761,31 @@ export default {
       return  this.currentRecord['fairsharingRecord'].id
           && this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
     },
+    setBannerExpiry() {
+      const _module = this;
+      let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
+      if (!bannerExpiryDate[_module.getField("id")]) {
+        bannerExpiryDate = {
+          ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
+          [_module.getField("id")]: new Date()
+        }
+        localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
+      }
+    },
+    isBannerExpired() {
+      const _module = this;
+      const DAY = 2;
+      const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
+      const expiryDate = new Date(temp[_module.getField("id")]);
+      let now = new Date();
+      // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
+      return  !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) < now.getTime());
+    },
     needsReviewing() {
       const _module = this;
       let need = true;
       let d = new Date();
-      var pastYear = d.getFullYear() - 1;
+      let pastYear = d.getFullYear() - 1;
       d.setFullYear(pastYear);
       if (!_module.reviewsPresent()){
         return !_module.reviewsPresent();
@@ -821,6 +826,7 @@ export default {
       }
       // Re-display the menu.
       await this.getMenuButtons();
+      await this.checkAlerts();
     }
   },
   metaInfo() {

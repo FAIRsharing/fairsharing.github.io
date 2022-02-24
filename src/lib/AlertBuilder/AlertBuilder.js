@@ -9,11 +9,12 @@ class AlertBuilder {
     isUserLoggedIn() {
         return this.currentUser.isLoggedIn
     }
+
     //-- end of private methods
 
     //-- global banners for all users even without authentication
-    isAwaitingApproval(extraCondition = true) {
-        if (!this.currentRecord.fairsharingRecord['isApproved'] && extraCondition) {
+    isAwaitingApproval() {
+        if (!this.currentRecord.fairsharingRecord['isApproved']) {
             this.alerts['isAwaitingApproval'] = {
                 type: "info",
                 message: "This record is awaiting review by FAIRsharing curators"
@@ -21,20 +22,21 @@ class AlertBuilder {
         }
         return this;
     }
+
     isWatching(isWatching) {
         if (isWatching) {
             this.alerts['isWatching'] = {type: "info", message: "You are watching this record for changes"}
         }
         return this;
     }
+
     //--end of global banners for all users even without authentication
     //-----------------------------------------------------------------
 
 
-
     //-- banners only for curators and super curators
-    isOwnerShipApproved(OwnershipApprovalStatus) {
-        if (OwnershipApprovalStatus === 'pending' || !this.isUserLoggedIn() || !OwnershipApprovalStatus) return this;
+    isOwnerShipApproved(OwnershipApprovalStatus, isAlertExpired = false) {
+        if (OwnershipApprovalStatus === 'pending' || !OwnershipApprovalStatus || !isAlertExpired) return this;
         this.alerts['isOwnerShipApproved'] = {
             type: "error",
             message: "Your claiming request has been declined. Please get in touch with us if you have any questions."
@@ -47,25 +49,25 @@ class AlertBuilder {
         }
         return this;
     }
-    isNeedingReview(needsReviewing = true) {
-        if (this.currentUser.is_curator && needsReviewing) {
+
+    isNeedingReview() {
+        if (this.currentUser.is_curator) {
             this.alerts['isNeedingReview'] = {
                 type: "warning",
-                message: "This record is awaiting review by FAIRsharing curators"
+                message: "This record is in need of periodic curator review.There has not been any review to date."
             }
         }
         return this;
     }
-    isNeedingReviewAndBeenReviewed(isReviewPresent = false, needsReviewing = true) {
-        if (this.currentUser.is_curator && needsReviewing) {
-            this.alerts['isNeedingReview'].message = `This record is in need of periodic curator review. There has not been any review to date.`
-            if (isReviewPresent) {
-                this.alerts['isNeedingReview'].message = `This record is in need of periodic curator review. The last review was on ${this.currentRecord['fairsharingRecord']['reviews'][0]['createdAt'].split(/T/)[0]}
+
+    isNeedingReviewAndBeenReviewed(isReviewPresent = false) {
+        if (this.currentUser.is_curator && isReviewPresent) {
+            this.alerts['isNeedingReview'].message = `This record is in need of periodic curator review. The last review was on ${this.currentRecord['fairsharingRecord']['reviews'][0]['createdAt'].split(/T/)[0]}
       by ${this.currentRecord['fairsharingRecord']['reviews'][0]['user']['username']}.`
-            }
         }
         return this;
     }
+
     isAlreadyClaimed(isAlreadyClaimed) {
         if (isAlreadyClaimed) {
             this.alerts['isAlreadyClaimed'] = {
@@ -75,6 +77,7 @@ class AlertBuilder {
         }
         return this;
     }
+
     isHidden() {
         if (this.currentUser.is_curator && this.currentRecord.fairsharingRecord['isHidden']) {
             this.alerts['isHidden'] = {
@@ -84,6 +87,7 @@ class AlertBuilder {
         }
         return this;
     }
+
     //--end of banners only for curators and super curators
     //-----------------------------------------------------------------
 

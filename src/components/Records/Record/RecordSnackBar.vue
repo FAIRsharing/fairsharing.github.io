@@ -1,6 +1,6 @@
 <template>
   <v-snackbar
-    v-model="model"
+    :value="model"
     :color="type"
     class="text-body"
   >

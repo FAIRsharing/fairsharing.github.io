@@ -118,6 +118,15 @@
             :message="alert.message"
           />
 
+          &lt;!--  snackbars        -->
+          &lt;record-snackbar
+            v-for="(snackbar,index) in snackbars"
+            :key="snackbar.message+'_'+index"
+            :message="snackbar.message"
+            :type="snackbar.type"
+            :model="convertStringToLocalVar(snackbar.model)"
+          />
+
           &lt;!-- Menu component -->
           &lt;record-menu
             v-if="currentRecord.fairsharingRecord['isHidden']!==undefined &amp;&amp; !error"
@@ -310,11 +319,13 @@ import CuratorNotes from "@/components/Records/Record/CuratorNotes";
 import RecordMenu from "@/components/Records/Record/RecordMenu";
 import RecordAlert from "@/components/Records/Record/RecordAlert";
 import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
+import RecordSnackbar from "@/components/Records/Record/RecordSnackBar";
 
 const client = new RestClient();
 export default {
   name: "Record",
   components: {
+    RecordSnackbar,
     RecordAlert,
     RecordMenu,
     CuratorNotes,
@@ -351,7 +362,6 @@ export default {
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
-      showBanner:false,
       buttons: [],
       history: {
         show: false,
@@ -359,6 +369,23 @@ export default {
       },
       tombstone: false,
       alerts:{},
+      snackbars: [
+        {
+          model: "claimedTriggered",
+          type: "success",
+          message: "Thank you for claiming this record. We will be getting back to you between 48 and 72h."
+        },
+        {
+          model: "reviewSuccess",
+          type: "success",
+          message: "Thank you for reviewing this record."
+        },
+        {
+          model: "reviewFail",
+          type: "warning",
+          message: "Sorry, it was not possibly to save a review for this record."
+        }
+      ],
       dialogs: {
         recordName: "",
         recordID: "",
@@ -436,6 +463,7 @@ export default {
       await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons();
+      await this.checkAlerts();
     }
   },
   destroyed() {
@@ -466,11 +494,11 @@ export default {
         this.alerts = new AlertBuilder(this.currentRecord, this.user())
             .isAwaitingApproval()
             .isWatching(this.isWatching())
-            .isNeedingReview(this.needsReviewing())
+            .isNeedingReview()
             .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
             .isAlreadyClaimed(this.alreadyClaimed)
             .isHidden()
-            .isOwnerShipApproved(this.ownershipApprovalStatus)
+            .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired())
             .getAlerts();
     },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
@@ -620,6 +648,9 @@ export default {
       }
       this.buttons = initial_buttons;
     },
+    convertStringToLocalVar(stringVarName){
+      return this[stringVarName]
+    },
     updateStates(property, value) {
       this[property] = value
     },
@@ -693,6 +724,7 @@ export default {
         _module.claimedTriggered = true;
         _module.alreadyClaimed = true;
       }
+      await _module.checkAlerts();
     },
     /**
      * Method to set the canClaim status for this record.
@@ -715,26 +747,10 @@ export default {
 
             _module.ownershipApprovalStatus = claim.error.response.data.status;
 
-            // assign expiring date for approval banner---
-            _module.showBanner = true;
-            let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
-            if (!bannerExpiryDate[_module.getField("id")]) {
-              bannerExpiryDate = {
-                ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
-                [_module.getField("id")]: new Date()
-              }
-              localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
+            // assign expiring date for approval/rejection banner---
+            if (_module.ownershipApprovalStatus === 'approved' || _module.ownershipApprovalStatus === 'rejected') {
+              this.setBannerExpiry();
             }
-            else {
-              const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
-              const expiryDate = new Date(temp[_module.getField("id")]);
-              let now = new Date();
-              const DAY = 2;
-              // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
-              _module.showBanner = !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) &lt; now.getTime());
-            }
-            // end of expiring date for approval banner---
-
             _module.canClaim = false;
           }
           else {
@@ -824,6 +840,7 @@ export default {
       if (response.modification === 'success'){
         _module.changeWatched(records);
       }
+      await _module.checkAlerts();
       this.loading = false;
     },
     /**
@@ -837,11 +854,31 @@ export default {
       return  this.currentRecord['fairsharingRecord'].id
           &amp;&amp; this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
     },
+    setBannerExpiry() {
+      const _module = this;
+      let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
+      if (!bannerExpiryDate[_module.getField("id")]) {
+        bannerExpiryDate = {
+          ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
+          [_module.getField("id")]: new Date()
+        }
+        localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
+      }
+    },
+    isBannerExpired() {
+      const _module = this;
+      const DAY = 2;
+      const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
+      const expiryDate = new Date(temp[_module.getField("id")]);
+      let now = new Date();
+      // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
+      return  !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) &lt; now.getTime());
+    },
     needsReviewing() {
       const _module = this;
       let need = true;
       let d = new Date();
-      var pastYear = d.getFullYear() - 1;
+      let pastYear = d.getFullYear() - 1;
       d.setFullYear(pastYear);
       if (!_module.reviewsPresent()){
         return !_module.reviewsPresent();
@@ -882,6 +919,7 @@ export default {
       }
       // Re-display the menu.
       await this.getMenuButtons();
+      await this.checkAlerts();
     }
   },
   metaInfo() {
@@ -960,7 +998,7 @@ ul,li {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a>
 	
-		on Wed Feb 23rd 2022
+		on Thu Feb 24th 2022
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

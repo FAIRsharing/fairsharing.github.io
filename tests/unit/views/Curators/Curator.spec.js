@@ -9,7 +9,9 @@ import Curator from "@/views/Curators/Curator.vue"
 import dataDashboard from "../../../fixtures/curationDashboardData.json"
 import Vuetify from "vuetify"
 import axios from 'axios'
+import fetchMock from "fetch-mock";
 
+fetchMock.mock('http://127.0.0.1:80', 200);
 axios.defaults.adapter = require('axios/lib/adapters/http');
 
 const spies = {
@@ -131,6 +133,7 @@ describe("Curator.vue", () => {
         wrapper.vm.dialogs.addMessage = true;
         wrapper.vm.closeAddMessageMenu();
         expect(wrapper.vm.dialogs.addMessage).toBe(false);
+
     });
 
     it("can delete messages", async () => {

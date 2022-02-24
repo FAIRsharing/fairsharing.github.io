@@ -701,11 +701,17 @@
           },
           async obtainFileRecordsWODois(){
             let data = await restClient.getRecordsWoDOIs(this.user().credentials.token);
-            let content = JSON.stringify(data)
-                .replace(/^\[(.+)\]$/,'$1')
-                .replace(/","/g,'"\r\n"')
-                .replace(/['"]+/g, '');
-            this.downloadContent = "data:text/json;charset=utf-8," + encodeURIComponent(content);
+            if (data) {
+              let content = JSON.stringify(data)
+                  .replace(/^\[(.+)\]$/,'$1')
+                  .replace(/","/g,'"\r\n"')
+                  .replace(/['"]+/g, '');
+              this.downloadContent = "data:text/json;charset=utf-8," + encodeURIComponent(content);
+            }
+            else {
+              this.downloadContent = "data:text/json;charset=utf-8," + "";
+            }
+
           },
           showAddMessage() {
             const _module = this;

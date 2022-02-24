@@ -225,7 +225,9 @@
           </v-card-text>
         </v-card>
         <!-- System messages -->
-        <v-card>
+        <v-card
+          v-if="user().role === 'super_curator' || user().role === 'developer'"
+        >
           <v-card-text v-if="systemMessages">
             <v-card-title
               id="system-messages"

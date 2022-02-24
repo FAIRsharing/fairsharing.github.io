@@ -12,6 +12,12 @@ import axios from 'axios'
 
 axios.defaults.adapter = require('axios/lib/adapters/http');
 
+const spies = {
+  get: jest.spyOn(axios, 'get'),
+  patch: jest.spyOn(axios, 'patch'),
+  post: jest.spyOn(axios, 'post')
+}
+
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -57,6 +63,9 @@ describe("Curator.vue", () => {
   afterEach(() => {
       restStub.restore();
       graphStub.restore();
+      expect(spies.get).not.toHaveBeenCalled();
+      expect(spies.patch).not.toHaveBeenCalled();
+      expect(spies.post).not.toHaveBeenCalled();
   });
 
   it("can be mounted", async () => {
@@ -96,6 +105,7 @@ describe("Curator.vue", () => {
 
     it("can add messages", async () => {
         wrapper.vm.systemMessages = [{id: 1, message: "message"}];
+        restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {message: "success"}
         });
@@ -133,6 +143,7 @@ describe("Curator.vue", () => {
         expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
 
         expect(wrapper.vm.systemMessages.length).toEqual(1);
+        restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {error: "error"}
         });
@@ -155,6 +166,7 @@ describe("Curator.vue", () => {
 
     it("can save edited messages", async() => {
         wrapper.vm.systemMessages = [{id: 1, message: "message"}, {id: 2, message: "another message"}];
+        restStub.restore();
         restStub = sinon.stub(Client.prototype, "executeQuery").returns({
             data: {message: "success"}
         });

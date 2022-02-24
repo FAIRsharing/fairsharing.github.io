@@ -3,7 +3,7 @@
     v-if="publicMessages.length && !loading"
     class="my-1"
   >
-    <!-- eslint-enable vue/no-v-html -->
+    <!-- eslint-disable vue/no-v-html -->
     <v-alert
       v-for="(messageObj,index) in publicMessages"
       :key="messageObj.message+'_'+index"
@@ -12,6 +12,7 @@
       class="mb-2 mx-2 flex-grow-1"
       v-html="`${moment(messageObj.updatedAt)}: ${messageObj.message}`"
     />
+    <!-- eslint-enable vue/no-v-html -->
   </div>
 </template>
 

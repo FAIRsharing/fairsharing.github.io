@@ -34,7 +34,7 @@ class AlertBuilder {
 
     //-- banners only for curators and super curators
     isOwnerShipApproved(OwnershipApprovalStatus) {
-        if (OwnershipApprovalStatus === 'pending' || !this.isUserLoggedIn()) return this;
+        if (OwnershipApprovalStatus === 'pending' || !this.isUserLoggedIn() || !OwnershipApprovalStatus) return this;
         this.alerts['isOwnerShipApproved'] = {
             type: "error",
             message: "Your claiming request has been declined. Please get in touch with us if you have any questions."

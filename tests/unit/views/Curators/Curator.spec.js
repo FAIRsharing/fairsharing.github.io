@@ -8,6 +8,9 @@ import usersStore from "@/store/users";
 import Curator from "@/views/Curators/Curator.vue"
 import dataDashboard from "../../../fixtures/curationDashboardData.json"
 import Vuetify from "vuetify"
+import axios from 'axios'
+
+axios.defaults.adapter = require('axios/lib/adapters/http');
 
 
 const localVue = createLocalVue();

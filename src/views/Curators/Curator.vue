@@ -486,7 +486,10 @@
           },
           loading: false,
           downloadContent: null,
-          downloadReviewContent: null
+          downloadReviewContent: null,
+          error: {
+            general: null
+          }
         }
       },
       computed: {
@@ -716,7 +719,7 @@
               _module.error.general = response.error;
             }
             else {
-              this.systemMessages.push({
+              _module.systemMessages.push({
                 id: response.id,
                 message: response.message,
                 created_at: formatDate(response.created_at),
@@ -759,7 +762,6 @@
           },
           async saveEditedMessage(id, message) {
             let _module = this;
-            console.log("Would update " + id + " to '" + message + "' !");
             let data = {
               id: id,
               message: message
@@ -769,6 +771,11 @@
               _module.error.general = response.error;
             }
             else {
+              _module.systemMessages.forEach(function(m) {
+                if (m.id === id) {
+                  m.message = message;
+                }
+              });
               await store.dispatch("messages/setMessages");
             }
           }

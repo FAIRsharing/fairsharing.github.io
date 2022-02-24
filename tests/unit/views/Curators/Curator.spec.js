@@ -9,17 +9,8 @@ import Curator from "@/views/Curators/Curator.vue"
 import dataDashboard from "../../../fixtures/curationDashboardData.json"
 import Vuetify from "vuetify"
 import axios from 'axios'
-import fetchMock from "fetch-mock";
 
-fetchMock.mock('http://127.0.0.1:80', 200);
 axios.defaults.adapter = require('axios/lib/adapters/http');
-
-const spies = {
-  get: jest.spyOn(axios, 'get'),
-  patch: jest.spyOn(axios, 'patch'),
-  post: jest.spyOn(axios, 'post')
-}
-
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -59,15 +50,6 @@ describe("Curator.vue", () => {
         mocks: {$store, $router}
     });
     done();
-  });
-
-
-  afterEach(() => {
-      restStub.restore();
-      graphStub.restore();
-      expect(spies.get).not.toHaveBeenCalled();
-      expect(spies.patch).not.toHaveBeenCalled();
-      expect(spies.post).not.toHaveBeenCalled();
   });
 
   it("can be mounted", async () => {

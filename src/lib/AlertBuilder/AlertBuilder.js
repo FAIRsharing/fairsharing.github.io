@@ -5,13 +5,6 @@ class AlertBuilder {
         this.alerts = {}
     }
 
-    //-- private method
-    isUserLoggedIn() {
-        return this.currentUser.isLoggedIn
-    }
-
-    //-- end of private methods
-
     //-- global banners for all users even without authentication
     isAwaitingApproval() {
         if (!this.currentRecord.fairsharingRecord['isApproved']) {
@@ -23,6 +16,12 @@ class AlertBuilder {
         return this;
     }
 
+    //--end of global banners for all users even without authentication
+    //-----------------------------------------------------------------
+
+
+    //-- banners only for curators and super curators
+
     isWatching(isWatching) {
         if (isWatching) {
             this.alerts['isWatching'] = {type: "info", message: "You are watching this record for changes"}
@@ -30,11 +29,6 @@ class AlertBuilder {
         return this;
     }
 
-    //--end of global banners for all users even without authentication
-    //-----------------------------------------------------------------
-
-
-    //-- banners only for curators and super curators
     isOwnerShipApproved(OwnershipApprovalStatus, isAlertExpired = false) {
         if (OwnershipApprovalStatus === 'pending' || !OwnershipApprovalStatus || !isAlertExpired) return this;
         this.alerts['isOwnerShipApproved'] = {

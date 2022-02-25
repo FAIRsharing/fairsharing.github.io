@@ -1,6 +1,6 @@
 <template>
   <section
-    v-if="content"
+    v-if="getJumbotronData"
     class="px-md-10 pa-5 d-flex flex-column justify-center heroBlock"
     :style="['z-index: 2', {
       backgroundImage: 'linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 200%),url(' + '/assets/Home/BlockHero/pattern3.jpg',
@@ -8,6 +8,7 @@
       backgroundBlendMode: 'multiply',
     }]"
   >
+    <!-- eslint-disable vue/no-v-html -->
     <Particles
       id="particles"
       :options="options"
@@ -16,7 +17,7 @@
       class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium white--text"
       style="z-index: 2"
     >
-      {{ content.title }}
+      {{ getJumbotronData.title }}
     </h1>
     <h3
       :class="[
@@ -27,19 +28,17 @@
           'lato-text-sm': $vuetify.breakpoint.smAndDown
         }
       ]"
-    >
-      {{ content.subtitle }}
-    </h3>
+      v-html="getJumbotronData.subtitle"
+    />
+    <!-- eslint-enable vue/no-v-html -->
   </section>
 </template>
 
 <script>
+import jumbotronData from "@/data/jumbotronData.json";
 
 export default {
   name: "Jumbotron",
-  props: {
-    content: {default: null, type: Object},
-  },
   data:() => {
     return {
       options: {
@@ -91,7 +90,20 @@ export default {
           }
         },
         detectRetina: true
+      },
+      jumbotronData
+    }
+  },
+  computed: {
+    getJumbotronData(){
+      if (this.$route.name) {
+        let route = this.$route.name;
+        if (route === "search" && Object.keys(this.$route.query).includes("fairsharingRegistry")) {
+          route = this.$route.query.fairsharingRegistry
+        }
+        return jumbotronData[route.toLowerCase()] || null
       }
+      return null
     }
   }
 }

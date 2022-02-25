@@ -384,9 +384,9 @@ export default {
         await this.canEditRecord();
         await this.checkClaimStatus();
         await this.getMenuButtons()
+        await this.checkAlerts();
       }
       await this.$nextTick();
-      await this.checkAlerts();
     try {
       await this.$scrollTo(this.$route.hash || 'body')
       // eslint-disable-next-line no-empty
@@ -398,6 +398,9 @@ export default {
   },
   methods: {
     async checkAlerts() {
+      try {
+        // here order of calling functions matters in presentation first we stack blue alerts(no-auth needed ones)
+        // and then curators alerts(auth-needed orange ones) so blue ones stack, then orange and then red/green [approval/rejection] ones
         this.alerts = new AlertBuilder(this.currentRecord, this.user())
             .isAwaitingApproval()
             .isWatching(this.isWatching())
@@ -407,6 +410,9 @@ export default {
             .isHidden()
             .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired())
             .getAlerts();
+      }
+      // eslint-disable-next-line no-empty
+      catch {}
     },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
     ...mapActions('users', ['updateWatchedRecords']),
@@ -558,12 +564,12 @@ export default {
     convertStringToLocalVar(stringVarName){
       return this[stringVarName]
     },
-    updateStates(property, value) {
+/*    updateStates(property, value) {
       this[property] = value
     },
     callMyMethod(name, value = null) {
       this[name](value)
-    },
+    },*/
     async confirmDelete(){
       const _module = this;
       _module.dialogs.disableButton = true;
@@ -656,7 +662,7 @@ export default {
 
             // assign expiring date for approval/rejection banner---
             if (_module.ownershipApprovalStatus === 'approved' || _module.ownershipApprovalStatus === 'rejected') {
-              this.setBannerExpiry();
+              _module.setBannerExpiry();
             }
             _module.canClaim = false;
           }
@@ -747,8 +753,8 @@ export default {
       if (response.modification === 'success'){
         _module.changeWatched(records);
       }
-      await _module.checkAlerts();
       this.loading = false;
+      await _module.checkAlerts();
     },
     /**
      * Test if the user is watching the current record

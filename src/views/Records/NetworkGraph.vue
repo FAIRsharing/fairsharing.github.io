@@ -157,6 +157,16 @@
           </v-card-text>
           <Loaders />
         </v-card>
+        <!-- BACK BUTTON -->
+        <v-btn
+          class="ml-2 my-2 white"
+          @click.prevent="$router.back()"
+        >
+          <v-icon :class="`primary--text`">
+            fa-arrow-left
+          </v-icon>
+          <span :class="`primary--text ml-3`"> GO BACK </span>
+        </v-btn>
         <div id="networkGraph">
           <v-card
             v-if="noData"
@@ -225,7 +235,7 @@
                         //height: '62.8%',
                         height: '82.8%',
                         plotBorderWidth: 0,
-                        plotShadow: true,
+                        plotShadow: false,
                         renderTo: 'networkGraph',
                         marginBottom: 2,
                         marginTop: 0,

@@ -2,8 +2,9 @@ import {createLocalVue, shallowMount} from "@vue/test-utils";
 import New from "@/views/Static/New/New"
 import Vuetify from "vuetify"
 import VueSanitize from "vue-sanitize";
+import icons from "@/plugins/icons";
 
-const vuetify = new Vuetify();
+const vuetify = new Vuetify({'icons':icons});
 const localVue = createLocalVue();
 localVue.use(VueSanitize)
 

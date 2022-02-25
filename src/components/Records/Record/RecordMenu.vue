@@ -40,16 +40,6 @@
 export default {
   name: "RecordMenu",
   props: {
-    updateParentValue: {
-      type: Function,
-      default: () => {
-      }
-    },
-    callParentMethod: {
-      type: Function,
-      default: () => {
-      }
-    },
     buttons: {
       type: Array, default: () => {
       }

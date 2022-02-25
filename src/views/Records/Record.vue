@@ -384,9 +384,9 @@ export default {
         await this.canEditRecord();
         await this.checkClaimStatus();
         await this.getMenuButtons()
-        await this.checkAlerts();
       }
       await this.$nextTick();
+      await this.checkAlerts();
     try {
       await this.$scrollTo(this.$route.hash || 'body')
       // eslint-disable-next-line no-empty
@@ -564,12 +564,15 @@ export default {
     convertStringToLocalVar(stringVarName){
       return this[stringVarName]
     },
-/*    updateStates(property, value) {
-      this[property] = value
-    },
-    callMyMethod(name, value = null) {
-      this[name](value)
-    },*/
+    /*
+        useful methods for communicating from child to parent // please keep these as reference
+        updateStates(property, value) {
+          this[property] = value
+        },
+        callMyMethod(name, value = null) {
+          this[name](value)
+        },
+     */
     async confirmDelete(){
       const _module = this;
       _module.dialogs.disableButton = true;

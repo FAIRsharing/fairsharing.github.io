@@ -132,5 +132,29 @@
       "text": "Created by",
       "value": "creator"
     }
+  ],
+  "systemMessages": [
+    {
+      "text": "ID",
+      "value": "id"
+    },
+    {
+      "text": "Text",
+      "value": "message"
+    },
+    {
+      "text": "Created at",
+      "value": "created_at"
+    },
+    {
+      "text": "Updated at",
+      "value": "updated_at"
+    },
+    {
+      "text": "Delete",
+      "value": "actions",
+      "sortable": false,
+      "width": 130
+    }
   ]
 }

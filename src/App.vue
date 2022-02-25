@@ -18,9 +18,7 @@
       The site currently only allows viewing of records and editing is disabled. We hope to restore normal service
       as soon as possible. Please accept our apologies for any inconvenience
     </v-alert>
-    <Jumbotron
-      :content="getJumbotronData()"
-    />
+    <Jumbotron />
     <PublicMessages />
     <router-view class="min-height-70vh" />
     <Footer />
@@ -33,7 +31,6 @@
     import {mapState} from 'vuex';
     import Footer from "@/components/Navigation/Footer";
     import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
-    import jumbotronData from "@/data/jumbotronData.json"
     import PublicMessages from "@/components/Global/PublicMessages";
 
     export default {
@@ -48,18 +45,6 @@
         computed: {
             ...mapState('uiController', ["UIGeneralStatus"]),
             ...mapState('introspection', ["readOnlyMode"]),
-        },
-        methods: {
-          getJumbotronData(){
-            if (this.$route.name) {
-              let route = this.$route.name;
-              if (route === "search" && Object.keys(this.$route.query).includes("fairsharingRegistry")) {
-                route = this.$route.query.fairsharingRegistry
-              }
-              return jumbotronData[route.toLowerCase()] || null
-            }
-            return null
-          }
         }
     }
 </script>

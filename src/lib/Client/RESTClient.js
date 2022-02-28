@@ -715,6 +715,7 @@ class RESTClient {
         return response.data;
     }
 
+<<<<<<< HEAD
     /**
      * Get the list of available roles for a user.
      * @returns {Promise}
@@ -725,6 +726,57 @@ class RESTClient {
         const request = {
             method: "get",
             baseURL: this.baseURL + "/user_roles",
+            headers: this.auth_headers(userToken)
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /* SYSTEM MESSAGES */
+    /**
+     * Update the given message
+     * @param {Object} message - the message to update containing the ID to target and the new values
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async updateMessage(message, userToken){
+        const request = {
+            method: "put",
+            baseURL: this.baseURL + "/messages/" + message.id,
+            headers: this.auth_headers(userToken),
+            data: {message: message}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Update the given message
+     * @param {Object} message - the message to create
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async createMessage(message, userToken){
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/messages/",
+            headers: this.auth_headers(userToken),
+            data: {message: message}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Update the given message
+     * @param {String} messageId - the ID of the message to delete
+     * @param {String} userToken - the user jwt
+     * @returns {Promise}
+     */
+    async deleteMessage(messageId, userToken){
+        const request = {
+            method: "delete",
+            baseURL: this.baseURL + "/messages/" + messageId,
             headers: this.auth_headers(userToken)
         };
         let response = await this.executeQuery(request);

@@ -8,7 +8,9 @@ import usersStore from "@/store/users";
 import Curator from "@/views/Curators/Curator.vue"
 import dataDashboard from "../../../fixtures/curationDashboardData.json"
 import Vuetify from "vuetify"
+import axios from 'axios'
 
+axios.defaults.adapter = require('axios/lib/adapters/http');
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -20,6 +22,7 @@ const $store = new Vuex.Store({
     modules: {
         users: usersStore
     },
+    dispatch: jest.fn()
 });
 
 const router = new VueRouter();
@@ -47,12 +50,6 @@ describe("Curator.vue", () => {
         mocks: {$store, $router}
     });
     done();
-  });
-
-
-  afterEach(() => {
-      restStub.restore();
-      graphStub.restore();
   });
 
   it("can be mounted", async () => {
@@ -90,6 +87,84 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.hiddenRecords[1].createdAt).toBe(auxString);
   });
 
+    it("can add messages", async () => {
+        wrapper.vm.systemMessages = [{id: 1, message: "message"}];
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {message: "success"}
+        });
+        expect(wrapper.vm.systemMessages.length).toEqual(1);
+        wrapper.vm.showAddMessage();
+        expect(wrapper.vm.dialogs.addMessage).toBe(true);
+        wrapper.vm.dialogs.newMessage = "a new message";
+        await wrapper.vm.addMessage();
+        expect(wrapper.vm.systemMessages.length).toEqual(2);
+        expect(wrapper.vm.dialogs.addMessage).toBe(false);
+        expect(wrapper.vm.dialogs.newMessage).toBe(null);
+
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {error: "error"}
+        });
+        wrapper.vm.dialogs.newMessage = "this will fail";
+        await wrapper.vm.addMessage();
+        expect(wrapper.vm.systemMessages.length).toEqual(2);
+        expect(wrapper.vm.dialogs.addMessage).toBe(false);
+        expect(wrapper.vm.dialogs.newMessage).toBe(null);
+
+        wrapper.vm.dialogs.addMessage = true;
+        wrapper.vm.closeAddMessageMenu();
+        expect(wrapper.vm.dialogs.addMessage).toBe(false);
+
+    });
+
+    it("can delete messages", async () => {
+        wrapper.vm.systemMessages = [{id: 1, message: "message"}];
+        wrapper.vm.deleteMessage(1);
+        expect(wrapper.vm.dialogs.messageId).toBe(1);
+        expect(wrapper.vm.dialogs.deleteMessage).toBe(true);
+        wrapper.vm.closeDeleteMessageMenu()
+        expect(wrapper.vm.dialogs.messageId).toBe(null);
+        expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
+
+        expect(wrapper.vm.systemMessages.length).toEqual(1);
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {error: "error"}
+        });
+        wrapper.vm.deleteMessage(1);
+        await wrapper.vm.confirmDeleteMessage();
+        expect(wrapper.vm.systemMessages.length).toEqual(1);
+
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {message: "success"}
+        });
+        wrapper.vm.deleteMessage(1);
+        expect(wrapper.vm.dialogs.messageId).toEqual(1);
+        expect(wrapper.vm.systemMessages.length).toEqual(1);
+        await wrapper.vm.confirmDeleteMessage();
+        expect(wrapper.vm.systemMessages.length).toEqual(0);
+        expect(wrapper.vm.dialogs.deleteMessage).toBe(false);
+        expect(wrapper.vm.dialogs.messageId).toBe(null);
+    })
+
+    it("can save edited messages", async() => {
+        wrapper.vm.systemMessages = [{id: 1, message: "message"}, {id: 2, message: "another message"}];
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {message: "success"}
+        });
+        await wrapper.vm.saveEditedMessage(1, 'changed message');
+        expect(wrapper.vm.systemMessages[0].message).toEqual('changed message')
+        restStub.restore();
+        restStub = sinon.stub(Client.prototype, "executeQuery").returns({
+            data: {error: "error"}
+        });
+        await wrapper.vm.saveEditedMessage(1, 'changed message');
+        expect(wrapper.vm.systemMessages[0].message).toEqual('changed message')
+    });
+
   it("can download a file with records without DOIs", async () => {
     restStub.restore();
     restStub = sinon.stub(Client.prototype, "executeQuery").returns({
@@ -113,5 +188,7 @@ describe("Curator.vue", () => {
       expect(wrapper.vm.approvalRequired.length).toBe(0);
       expect(wrapper.vm.hiddenRecords.length).toBe(0);
   });
+
+
 
 });

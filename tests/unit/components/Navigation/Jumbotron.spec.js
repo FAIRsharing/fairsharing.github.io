@@ -14,6 +14,7 @@ describe("Jumbotron.vue", function(){
 
     beforeEach(() => {
         wrapper = shallowMount(Jumbotron, {
+            localVue,
             vuetify,
             mocks: { $route},
             stubs: ['router-link', 'router-view']
@@ -34,6 +35,7 @@ describe("Jumbotron.vue", function(){
         };
         wrapper = shallowMount(Jumbotron, {
             vuetify,
+            localVue,
             mocks: { $route},
             stubs: ['router-link', 'router-view']
         });
@@ -47,6 +49,7 @@ describe("Jumbotron.vue", function(){
         };
         wrapper = shallowMount(Jumbotron, {
             vuetify,
+            localVue,
             mocks: { $route},
             stubs: ['router-link', 'router-view']
         });
@@ -60,6 +63,7 @@ describe("Jumbotron.vue", function(){
         };
         wrapper = shallowMount(Jumbotron, {
             vuetify,
+            localVue,
             mocks: { $route},
             stubs: ['router-link', 'router-view']
         });

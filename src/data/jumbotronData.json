@@ -58,5 +58,9 @@
   "community": {
     "title": "Community: adopters, activities and governance",
     "subtitle": "FAIRsharing is a community-driven resource with a growing number of users and collaborators, all working to enable the FAIR Principles and to make standards, databases and policies FAIR."
+  },
+  "new": {
+    "title": "Adding content in FAIRsharing",
+    "subtitle": "The <a href='https://fairsharing.org/communities#governance' target='_blank' class='underline-effect font-weight-black white--text'>FAIRsharing Team</a> curates and integrates descriptions of community resources, such as standards and databases, progressively linking both to policies. However, we know that the maintainers of these resources know best. So if you find that the resource you lead or work for has an incomplete or incorrect description, you can either <a href='https://fairsharing.gitbook.io/fairsharing/#claiming-a-record' target='_blank' class='underline-effect font-weight-black white--text'>claim and edit existing record(s)</a> or continue reading to get started with a new record submission, if your resource is missing."
   }
 }

@@ -1,0 +1,117 @@
+<template>
+  <div
+    v-if="currentField && currentField.length > 0"
+    class="pa-4 mt-4 data-holder"
+  >
+    <b class="text-h6">{{ title }}</b>
+    <div
+      v-for="(item,index) in currentField"
+      :key="item.name+'_'+index"
+    >
+      <!--  Name    -->
+      <div
+        v-if="item.name"
+        class="d-flex flex-row align-center min-height-40"
+      >
+        <b class="width-200">Name</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          {{ item.name }}
+        </div>
+      </div>
+
+      <!--  Type    -->
+      <div
+        v-if="item.type"
+        class="d-flex flex-row align-center min-height-40"
+      >
+        <b class="width-200">Type</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          <p class="ma-0">
+            {{ item.type }}
+          </p>
+        </div>
+      </div>
+
+      <!--  URL    -->
+      <div
+        v-if="item.url"
+        class="d-flex flex-row align-center min-height-40"
+      >
+        <b class="width-200">URL</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          <a
+            v-if="item.url"
+            class="underline-effect"
+            :href="item.url"
+            target="_blank"
+          >
+            {{ item.url }}
+          </a>
+        </div>
+      </div>
+
+      <!--  Portal    -->
+      <div
+        v-if="item.portal"
+        class="d-flex flex-row align-center min-height-40"
+      >
+        <b class="width-200">Portal</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          <p class="ma-0">
+            {{ item.portal }}
+          </p>
+        </div>
+      </div>
+
+      <!--  ExampleURL    -->
+      <div
+        v-if="item.example_url"
+        class="d-flex flex-row align-center min-height-40"
+      >
+        <b class="width-200">Example URL</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          <a
+            class="underline-effect"
+            target="_blank"
+            :href="item.example_url"
+          >
+            {{ item.example_url }}
+          </a>
+        </div>
+      </div>
+
+      <!--  DocumentationURL   -->
+      <div
+        v-if="item.documentation_url"
+        class="d-flex flex-row align-center min-height-40"
+      >
+        <b class="width-200">Documentation URL</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          <a
+            class="underline-effect"
+            target="_blank"
+            :href="item.documentation_url"
+          >
+            {{ item.documentation_url }}
+          </a>
+        </div>
+      </div>
+
+      <v-divider v-if="currentField.length-1!==index" />
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "DatasetArray",
+  props: {
+    title: {default: null, type: String},
+    currentField: {default: () => [], type: Array}
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

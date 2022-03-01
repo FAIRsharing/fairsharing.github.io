@@ -1,6 +1,6 @@
 <template>
   <v-card
-    v-if="(allowedFields.properties && anyDataAvailable.includes(true) )|| getField('metadata').deprecation_reason"
+    v-if="allowedFields.properties|| getField('metadata').deprecation_reason"
     class="pa-4 d-flex flex-column"
     outlined
     :color="backColor"
@@ -64,7 +64,10 @@
         </div>
       </div>
     </div>
-    <!--  access_points  -->
+
+    <!-- access_point deprecated -->
+    <!--
+    &lt;!&ndash;  access_points  &ndash;&gt;
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.access_points && getField('metadata').access_points && checkDataAvailableCurrentRecord(getField('metadata').access_points)"
       class="pa-4 data-holder mb-4"
@@ -143,6 +146,8 @@
         <v-divider v-if="getField('metadata').access_points.length-1!==index" />
       </div>
     </div>
+-->
+
     <!--  data_curation  -->
     <div
       v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.data_curation && getField('metadata').data_curation && checkDataAvailableCurrentRecord(getField('metadata').data_curation)"
@@ -344,38 +349,12 @@
       </div>
     </div>
     <!--  cross_references  -->
-    <div
-      v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties.cross_references && getField('metadata').cross_references && checkDataAvailableCurrentRecord(getField('metadata').cross_references)"
-      class="pa-4 mt-4 data-holder"
-    >
-      <b class="text-h6">Cross References</b>
-      <div
-        v-for="(crossRefObj,index) in getField('metadata').cross_references"
-        :key="crossRefObj+''+index"
-      >
-        <div class="d-flex flex-row align-center min-height-40">
-          <b class="width-200">Name</b>
-          <div class="d-flex full-width ml-md-12 ml-13">
-            <a
-              class="underline-effect"
-              :href="crossRefObj.url"
-              target="_blank"
-            >
-              {{ crossRefObj.name }}
-            </a>
-          </div>
-        </div>
-        <div class="d-flex flex-row align-center min-height-40">
-          <b class="width-200">Portal</b>
-          <div class="d-flex full-width ml-md-12 ml-13">
-            <p class="ma-0">
-              {{ crossRefObj.portal }}
-            </p>
-          </div>
-        </div>
-        <v-divider v-if="getField('metadata').cross_references.length-1!==index" />
-      </div>
-    </div>
+    <dataset-array
+      v-for="(item,key,index) in finalData"
+      :key="item.name+'_'+index+'_'+key"
+      :title="key"
+      :current-field="getField('metadata')[key]"
+    />
   </v-card>
 </template>
 
@@ -383,10 +362,11 @@
 import {mapActions, mapGetters, mapState} from "vuex";
 import SectionTitle from "@/components/Records/Record/SectionTitle";
 import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean";
+import DatasetArray from "@/components/Records/Record/AdditionalInfo/DatasetArray";
 
 export default {
   name: "AdditionalInfo",
-  components: {DatasetBoolean, SectionTitle},
+  components: {DatasetArray, DatasetBoolean, SectionTitle},
   props: {
     backColor:{
       default:null,
@@ -395,6 +375,8 @@ export default {
   },
   data: () => {
     return {
+      finalData:{},
+      tempData:{},
       anyDataAvailable:[]
     }
   },
@@ -408,6 +390,8 @@ export default {
       type: this.getRecordType
     });
     await this.initializeData()
+    await this.$nextTick()
+    this.finalData = this.tempData;
   },
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
@@ -418,15 +402,21 @@ export default {
         const allAllowedTypes = Object.keys(this.allowedFields.properties).filter(key => !excludedTypes.includes(key));
         for (const key of allAllowedTypes) {
           if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
-            await this.checkDataAvailable(this.getField('metadata')[key]);
+            this.setAvailableData(this.getField('metadata')[key],key);
           }
         }
       }
     },
-    async checkDataAvailable(selectedNode) {
-        Object.keys(selectedNode).forEach(key => {
-        if (Object.keys(selectedNode[key]).length) {
-          this.anyDataAvailable.push(true);
+    setAvailableData(selectedNode, key) {
+      Object.keys(selectedNode).forEach((item) => {
+        if (Object.keys(selectedNode[item]).length) {
+          if (Object.keys(this.tempData).includes(key)) {
+            this.tempData[key].push(selectedNode[item])
+          }
+          else {
+            this.tempData[key] = []
+            this.tempData[key].push(selectedNode[item])
+          }
         }
       })
     },

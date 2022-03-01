@@ -13,7 +13,7 @@
         v-if="item.name"
         class="d-flex flex-row align-center min-height-40"
       >
-        <b class="width-200">Name</b>
+        <b class="width-200">{{ getUpdatedNameTitle() }}</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           {{ item.name }}
         </div>
@@ -24,7 +24,7 @@
         v-if="item.type"
         class="d-flex flex-row align-center min-height-40"
       >
-        <b class="width-200">Type</b>
+        <b class="width-200">{{ getUpdatedTypeTitle() }}</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <p class="ma-0">
             {{ item.type }}
@@ -40,7 +40,6 @@
         <b class="width-200">URL</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
-            v-if="item.url"
             class="underline-effect"
             :href="item.url"
             target="_blank"
@@ -97,7 +96,6 @@
         </div>
       </div>
 
-
       <!--  cos_top_guidelines  -->
       <!--  cos_top_guidelines.ranking    -->
       <div
@@ -135,10 +133,36 @@ import stringUtils from '@/utils/stringUtils'
 
 export default {
   name: "DatasetArray",
-  mixins: [ stringUtils ],
+  mixins: [stringUtils],
   props: {
     title: {default: null, type: String},
-    currentField: {default: () => [], type: Array}
+    currentField: {default: () => [], type: Array},
+    currentKey: {default: null, type: String}
+  },
+  computed: {
+    getCurrentKey() {
+      return this.currentKey;
+    }
+  },
+  methods: {
+    getUpdatedTypeTitle() {
+      switch (this.getCurrentKey) {
+        case "data_curation":
+          return "Steps"
+        case "data_deposition_condition":
+          return "Restrictions"
+        default:
+          return "Type"
+      }
+    },
+    getUpdatedNameTitle(){
+      switch (this.getCurrentKey) {
+        case "resource_sustainability":
+          return "Plan"
+        default:
+          return "Name"
+      }
+    }
   }
 }
 </script>

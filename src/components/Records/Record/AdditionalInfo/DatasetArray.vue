@@ -3,7 +3,7 @@
     v-if="currentField && currentField.length > 0"
     class="pa-4 mt-4 data-holder"
   >
-    <b class="text-h6">{{ title }}</b>
+    <b class="text-h6 text-capitalize">{{ cleanString(title) }}</b>
     <div
       v-for="(item,index) in currentField"
       :key="item.name+'_'+index"
@@ -97,14 +97,45 @@
         </div>
       </div>
 
+
+      <!--  cos_top_guidelines  -->
+      <!--  cos_top_guidelines.ranking    -->
+      <div
+        v-if="item.ranking"
+        class="d-flex flex-row align-center min-height-40"
+      >
+        <b class="width-200">TOP Level Data Transparency</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          <p class="ma-0">
+            {{ item.ranking }}
+          </p>
+        </div>
+      </div>
+      <!--  cos_top_guidelines.comments    -->
+      <div
+        v-if="item.comment"
+        class="d-flex flex-row align-center min-height-40"
+      >
+        <b class="width-200">TOP qualifying comments</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          <p class="ma-0">
+            {{ item.comment }}
+          </p>
+        </div>
+      </div>
+
+
       <v-divider v-if="currentField.length-1!==index" />
     </div>
   </div>
 </template>
 
 <script>
+import stringUtils from '@/utils/stringUtils'
+
 export default {
   name: "DatasetArray",
+  mixins: [ stringUtils ],
   props: {
     title: {default: null, type: String},
     currentField: {default: () => [], type: Array}

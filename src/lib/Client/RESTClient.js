@@ -462,14 +462,8 @@ class RESTClient extends CRUD {
      * @returns {Promise}
      */
     async updateMessage(message, userToken){
-        const request = {
-            method: "put",
-            baseURL: this.baseURL + "/messages/" + message.id,
-            headers: this.auth_headers(userToken),
-            data: {message: message}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        this.set_auth_headers(userToken)
+        return await this.update(`/messages/${message.id}`, {message: message})
     }
 
     /**
@@ -479,14 +473,8 @@ class RESTClient extends CRUD {
      * @returns {Promise}
      */
     async createMessage(message, userToken){
-        const request = {
-            method: "post",
-            baseURL: this.baseURL + "/messages/",
-            headers: this.auth_headers(userToken),
-            data: {message: message}
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        this.set_auth_headers(userToken)
+        return await this.create(`/messages/`, {message: message})
     }
 
     /**
@@ -496,13 +484,8 @@ class RESTClient extends CRUD {
      * @returns {Promise}
      */
     async deleteMessage(messageId, userToken){
-        const request = {
-            method: "delete",
-            baseURL: this.baseURL + "/messages/" + messageId,
-            headers: this.auth_headers(userToken)
-        };
-        let response = await this.executeQuery(request);
-        return response.data;
+        this.set_auth_headers(userToken)
+        return await this.delete(`/messages/${messageId}`)
     }
 
 

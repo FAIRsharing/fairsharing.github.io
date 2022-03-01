@@ -17,7 +17,6 @@
     <DatasetBoolean field-name="data_versioning" />
     <!--  dataset_versioning  -->
     <DatasetBoolean field-name="data_access_for_pre_publication_review" />
-
     <!--  deprecation_reason (one of a kind)  -->
     <div
       v-if="getField('metadata').deprecation_reason"
@@ -31,22 +30,13 @@
         </p>
       </div>
     </div>
-
-    <!--  data_curation  -->
-    <!-- todo  Steps instead of type -->
-
-    <!--  data_deposition_condition  -->
-    <!-- todo  Restrictions instead of type -->
-
-    <!--  resource_sustainability  -->
-    <!--  todo it should have Plan instead of name . needs a prop to be passed to component-->
-    <!--  dynamically reading all allowed additionalInfo fields and its items  todo its an object-->
-
+    <!--  dynamically reading all allowed additionalInfo fields and its items -->
     <dataset-array
       v-for="(item,key,index) in finalData"
       :key="item.name+'_'+index+'_'+key"
       :title="key"
       :current-field="finalData[key]"
+      :current-key="key"
     />
   </v-card>
 </template>

@@ -715,7 +715,6 @@ class RESTClient {
         return response.data;
     }
 
-<<<<<<< HEAD
     /**
      * Get the list of available roles for a user.
      * @returns {Promise}

@@ -1,6 +1,10 @@
-import { shallowMount } from "@vue/test-utils";
+import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Jumbotron from "@/components/Navigation/Jumbotron"
 import Vuetify from "vuetify"
+import VueSanitize from "vue-sanitize";
+
+const localVue = createLocalVue();
+localVue.use(VueSanitize)
 
 const vuetify = new Vuetify();
 let $route = { path: "/", name: "Home"};
@@ -10,6 +14,7 @@ describe("Jumbotron.vue", function(){
 
     beforeEach(() => {
         wrapper = shallowMount(Jumbotron, {
+            localVue,
             vuetify,
             mocks: { $route},
             stubs: ['router-link', 'router-view']
@@ -30,6 +35,7 @@ describe("Jumbotron.vue", function(){
         };
         wrapper = shallowMount(Jumbotron, {
             vuetify,
+            localVue,
             mocks: { $route},
             stubs: ['router-link', 'router-view']
         });
@@ -43,6 +49,7 @@ describe("Jumbotron.vue", function(){
         };
         wrapper = shallowMount(Jumbotron, {
             vuetify,
+            localVue,
             mocks: { $route},
             stubs: ['router-link', 'router-view']
         });
@@ -56,6 +63,7 @@ describe("Jumbotron.vue", function(){
         };
         wrapper = shallowMount(Jumbotron, {
             vuetify,
+            localVue,
             mocks: { $route},
             stubs: ['router-link', 'router-view']
         });

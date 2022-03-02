@@ -413,6 +413,7 @@ export default {
       }
       // eslint-disable-next-line no-empty
       catch {}
+      // eslint-disable-next-line no-console
       console.log("ALERTS: " + JSON.stringify(this.alerts));
     },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),

@@ -110,29 +110,181 @@
         &lt;v-col
           cols="12"
         >
-          &lt;!-- alerts         -->
-          &lt;record-alert
-            v-for="(alert,key,index) in alerts"
-            :key="key+'_'+alert.message+'_'+index"
-            :type="alert.type"
-            :message="alert.message"
-          />
+          &lt;v-alert
+            v-if="!currentRecord.fairsharingRecord['isApproved'] &amp;&amp; !error"
+            dense
+            type="info"
+            class="mb-2 flex-grow-1"
+          >
+            &lt;span>This record is awaiting review by FAIRsharing curators&lt;/span>
+          &lt;/v-alert>
 
-          &lt;!--  snackbars        -->
-          &lt;record-snackbar
-            v-for="(snackbar,index) in snackbars"
-            :key="snackbar.message+'_'+index"
-            :message="snackbar.message"
-            :type="snackbar.type"
-            :model="convertStringToLocalVar(snackbar.model)"
-          />
+          &lt;v-alert
+            v-if="user().is_curator &amp;&amp; needsReviewing() &amp;&amp; !error"
+            dense
+            type="warning"
+            class="mb-2 flex-grow-1"
+          >
+            &lt;span>This record is in need of periodic curator review. &lt;/span>
+            &lt;span v-if="!reviewsPresent()">
+              There has not been any review to date.
+            &lt;/span>
+            &lt;span v-else>
+              The last review was on {{ currentRecord['fairsharingRecord']['reviews'][0]['createdAt'].split(/T/)[0] }}
+              by {{ currentRecord['fairsharingRecord']['reviews'][0]['user']['username'] }}.
+            &lt;/span>
+          &lt;/v-alert>
 
-          &lt;!-- Menu component -->
-          &lt;record-menu
+          &lt;v-alert
+            v-if="isWatching()"
+            dense
+            type="info"
+            class="mb-2 flex-grow-1"
+          >
+            &lt;span>You are watching this record for changes&lt;/span>
+          &lt;/v-alert>
+
+          &lt;div
+            v-if="alreadyClaimed || claimedTriggered || user().is_curator"
+            class="d-flex flex-column"
+          >
+            &lt;v-alert
+              v-if="user().is_curator &amp;&amp; currentRecord.fairsharingRecord['isHidden']"
+              dense
+              type="info"
+              class="mb-2 flex-grow-1"
+            >
+              &lt;span>This record is hidden!&lt;/span>
+            &lt;/v-alert>
+
+            &lt;transition
+              name="fade"
+              mode="in-out"
+              appear
+            >
+              &lt;div v-if="queryTriggered">
+                &lt;!--  Although queryTriggered is checked again in the below divs but still this line check whether page is fully loaded to show the content and its needed     -->
+                &lt;div v-if="!queryTriggered">
+                  &lt;!--    here its when async queryTriggered value is not set so we show red banner by default -->
+                  &lt;v-alert
+                    v-if="(!alreadyClaimed) &amp;&amp; ((!ownershipApproved &amp;&amp; !alreadyClaimed) &amp;&amp; (!noClaimRegistered &amp;&amp; !error))"
+                    dense
+                    type="error"
+                    class="mb-2 flex-grow-1"
+                  >
+                    &lt;span>Your claiming request has been declined. Please get in touch with us if you have any questions.&lt;/span>
+                  &lt;/v-alert>
+
+                  &lt;div v-else-if="queryTriggered &amp;&amp; !ownershipApproved">
+                    &lt;!--    here we update the ownership request banner when query is triggered and its value is set and also the request has been rejected. -->
+                    &lt;v-alert
+                      v-if="(!alreadyClaimed) &amp;&amp; ((!ownershipApproved &amp;&amp; !alreadyClaimed) &amp;&amp; (!noClaimRegistered &amp;&amp; !error))"
+                      dense
+                      type="error"
+                      class="mb-2 flex-grow-1"
+                    >
+                      &lt;span>Your claiming request has been declined. Please get in touch with us if you have any questions.&lt;/span>
+                    &lt;/v-alert>
+                  &lt;/div>
+                &lt;/div>
+                &lt;div v-else-if="!error">
+                  &lt;!--    here we check if there is any error first when query has  been triggered(after query is triggered) . -->
+                  &lt;span v-if="!alreadyClaimed &amp;&amp; ownershipApproved &amp;&amp; noClaimRegistered &amp;&amp; error" />
+                  &lt;!--    here code checks if the ownership has been rejected (after query is triggered)  -->
+                  &lt;v-alert
+                    v-else-if="!ownershipApproved &amp;&amp; !alreadyClaimed &amp;&amp; !noClaimRegistered &amp;&amp; showBanner"
+                    dense
+                    type="error"
+                    class="mb-2 flex-grow-1"
+                  >
+                    &lt;span>Your claiming request has been declined. Please get in touch with us if you have any questions.&lt;/span>
+                  &lt;/v-alert>
+                  &lt;!--    here code checks if the ownership has been approved (after query is triggered)  -->
+                  &lt;v-alert
+                    v-else-if="ownershipApproved &amp;&amp; showBanner"
+                    dense
+                    type="success"
+                    class="mb-1 flex-grow-1"
+                  >
+                    &lt;span>Your request to maintain this record has been approved.&lt;/span>
+                  &lt;/v-alert>
+                &lt;/div>
+              &lt;/div>
+            &lt;/transition>
+
+
+            &lt;v-alert
+              v-if="alreadyClaimed"
+              dense
+              type="warning"
+              class="mb-1 flex-grow-1"
+            >
+              &lt;span>Your ownership request for this record has been submitted. We will get back to you within a few working days.&lt;/span>
+            &lt;/v-alert>
+            &lt;v-snackbar
+              v-model="claimedTriggered"
+              color="success"
+              class="text-body"
+            >
+              Thank you for claiming this record. We will be getting back to you between 48 and 72h.
+            &lt;/v-snackbar>
+            &lt;v-snackbar
+              v-model="reviewSuccess"
+              color="success"
+              class="text-body text-center"
+            >
+              &lt;span class="text-center">
+                Thank you for reviewing this record.
+              &lt;/span>
+            &lt;/v-snackbar>
+            &lt;v-snackbar
+              v-model="reviewFail"
+              color="warning"
+              class="text-body"
+            >
+              &lt;span class="text-center">
+                Sorry, it was not possibly to save a review for this record.
+              &lt;/span>
+            &lt;/v-snackbar>
+          &lt;/div>
+          &lt;div
             v-if="currentRecord.fairsharingRecord['isHidden']!==undefined &amp;&amp; !error"
-            :buttons="buttons"
-            :read-only-mode="readOnlyMode"
-          />
+            class="text-right"
+          >
+            &lt;v-menu
+              offset-y
+              :disabled="readOnlyMode"
+            >
+              &lt;template #activator="{ on, attrs }">
+                &lt;v-btn
+                  class="mt-1"
+                  color="primary"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  Actions
+                  &lt;v-icon
+                    small
+                    right
+                  >
+                    fa-chevron-down
+                  &lt;/v-icon>
+                &lt;/v-btn>
+              &lt;/template>
+              &lt;v-list>
+                &lt;v-list-item
+                  v-for="(button, index) in buttons"
+                  :key="button.name()+'_'+button.isDisabled()+'_'+ index"
+                  :disabled="button.isDisabled()"
+                  @click="button.method()"
+                >
+                  &lt;v-list-item-title>
+                    {{ button.name() }}
+                  &lt;/v-list-item-title>
+                &lt;/v-list-item>
+              &lt;/v-list>
+            &lt;/v-menu>
+          &lt;/div>
         &lt;/v-col>
       &lt;/v-row>
 
@@ -316,18 +468,12 @@ import SearchCollection from "@/components/Records/Record/CollectionRecord/Searc
 import Tombstone from "../Errors/Tombstone";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
 import CuratorNotes from "@/components/Records/Record/CuratorNotes";
-import RecordMenu from "@/components/Records/Record/RecordMenu";
-import RecordAlert from "@/components/Records/Record/RecordAlert";
-import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
-import RecordSnackbar from "@/components/Records/Record/RecordSnackBar";
 
 const client = new RestClient();
+
 export default {
   name: "Record",
   components: {
-    RecordSnackbar,
-    RecordAlert,
-    RecordMenu,
     CuratorNotes,
     AdditionalInfo,
     Tombstone,
@@ -358,34 +504,16 @@ export default {
       alreadyClaimed: false,
       noClaimRegistered:false,
       ownershipApproved: false,
-      ownershipApprovalStatus:null,
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
+      showBanner:false,
       buttons: [],
       history: {
         show: false,
         loading: false
       },
       tombstone: false,
-      alerts:{},
-      snackbars: [
-        {
-          model: "claimedTriggered",
-          type: "success",
-          message: "Thank you for claiming this record. We will be getting back to you between 48 and 72h."
-        },
-        {
-          model: "reviewSuccess",
-          type: "success",
-          message: "Thank you for reviewing this record."
-        },
-        {
-          model: "reviewFail",
-          type: "warning",
-          message: "Sorry, it was not possibly to save a review for this record."
-        }
-      ],
       dialogs: {
         recordName: "",
         recordID: "",
@@ -463,7 +591,6 @@ export default {
       await this.canEditRecord();
       await this.checkClaimStatus();
       await this.getMenuButtons();
-      await this.checkAlerts();
     }
   },
   destroyed() {
@@ -479,7 +606,6 @@ export default {
         await this.getMenuButtons()
       }
       await this.$nextTick();
-      await this.checkAlerts();
     try {
       await this.$scrollTo(this.$route.hash || 'body')
       // eslint-disable-next-line no-empty
@@ -490,25 +616,6 @@ export default {
     // update the UI padding and margin after DOM is fully loaded.
   },
   methods: {
-    async checkAlerts() {
-      try {
-        // here order of calling functions matters in presentation first we stack blue alerts(no-auth needed ones)
-        // and then curators alerts(auth-needed orange ones) so blue ones stack, then orange and then red/green [approval/rejection] ones
-        this.alerts = new AlertBuilder(this.currentRecord, this.user())
-            .isAwaitingApproval()
-            .isWatching(this.isWatching())
-            .isNeedingReview()
-            .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
-            .isAlreadyClaimed(this.alreadyClaimed)
-            .isHidden()
-            .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired())
-            .getAlerts();
-      }
-      // eslint-disable-next-line no-empty
-      catch {}
-      // eslint-disable-next-line no-console
-      console.log("ALERTS: " + JSON.stringify(this.alerts));
-    },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
     ...mapActions('users', ['updateWatchedRecords']),
     ...mapMutations('users', ['changeWatched']),
@@ -617,57 +724,45 @@ export default {
       ];
       if (_module.user().is_curator &amp;&amp; _module.needsReviewing()) {
         initial_buttons.push(
-            {
-              name: function () {
-                return "Review this record"
-              },
-              isDisabled: function () {
-                // Only to be seen by logged-in curators.
-                // So, this line shouldn't really be encountered...
-                /* istanbul ignore if */
-                if (!_module.userIsLoggedIn) {
-                  return true;
-                }
-                return !_module.user().is_curator;
-              },
-              method: async function () {
-                await _module.reviewRecord();
+          {
+            name: function () {
+              return "Review this record"
+            },
+            isDisabled: function () {
+              // Only to be seen by logged-in curators.
+              // So, this line shouldn't really be encountered...
+              /* istanbul ignore if */
+              if (!_module.userIsLoggedIn) {
+                return true;
               }
+              return !_module.user().is_curator;
+            },
+            method: async function () {
+              await _module.reviewRecord();
             }
+          }
         )
       }
       if (_module.user().is_super_curator) {
         initial_buttons.push(
-            {
-              name: function () {
-                return "Delete this record"
-              },
-              isDisabled: function () {
-                return !_module.user().is_super_curator;
-              },
-              method: /* istanbul ignore next */ async function () {
-                _module.deleteRecordMenu(
-                    _module.currentRecord['fairsharingRecord'].name,
-                    _module.currentRecord['fairsharingRecord'].id,
-                );
-              }
+          {
+            name: function () {
+              return "Delete this record"
+            },
+            isDisabled: function () {
+              return !_module.user().is_super_curator;
+            },
+            method: /* istanbul ignore next */ async function () {
+              _module.deleteRecordMenu(
+                  _module.currentRecord['fairsharingRecord'].name,
+                  _module.currentRecord['fairsharingRecord'].id,
+              );
             }
+          }
         )
       }
       this.buttons = initial_buttons;
     },
-    convertStringToLocalVar(stringVarName){
-      return this[stringVarName]
-    },
-    /*
-        useful methods for communicating from child to parent // please keep these as reference
-        updateStates(property, value) {
-          this[property] = value
-        },
-        callMyMethod(name, value = null) {
-          this[name](value)
-        },
-     */
     async confirmDelete(){
       const _module = this;
       _module.dialogs.disableButton = true;
@@ -735,7 +830,6 @@ export default {
         _module.claimedTriggered = true;
         _module.alreadyClaimed = true;
       }
-      await _module.checkAlerts();
     },
     /**
      * Method to set the canClaim status for this record.
@@ -755,13 +849,28 @@ export default {
                 _module.alreadyClaimed = true;
               }
             }
+            else _module.ownershipApproved = !(claim.error.response.data.status === 'rejected');
 
-            _module.ownershipApprovalStatus = claim.error.response.data.status;
-
-            // assign expiring date for approval/rejection banner---
-            if (_module.ownershipApprovalStatus === 'approved' || _module.ownershipApprovalStatus === 'rejected') {
-              _module.setBannerExpiry();
+            // assign expiring date for approval banner---
+            _module.showBanner = true;
+            let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
+            if (!bannerExpiryDate[_module.getField("id")]) {
+              bannerExpiryDate = {
+                ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
+                [_module.getField("id")]: new Date()
+              }
+              localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
             }
+            else {
+              const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
+              const expiryDate = new Date(temp[_module.getField("id")]);
+              let now = new Date();
+              const DAY = 2;
+              // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
+              _module.showBanner = !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) &lt; now.getTime());
+            }
+            // end of expiring date for approval banner---
+
             _module.canClaim = false;
           }
           else {
@@ -852,7 +961,6 @@ export default {
         _module.changeWatched(records);
       }
       this.loading = false;
-      await _module.checkAlerts();
     },
     /**
      * Test if the user is watching the current record
@@ -865,31 +973,11 @@ export default {
       return  this.currentRecord['fairsharingRecord'].id
           &amp;&amp; this.user().watchedRecords.includes(this.currentRecord['fairsharingRecord'].id) || false;
     },
-    setBannerExpiry() {
-      const _module = this;
-      let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
-      if (!bannerExpiryDate[_module.getField("id")]) {
-        bannerExpiryDate = {
-          ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
-          [_module.getField("id")]: new Date()
-        }
-        localStorage.setItem("bannerExpiryDate", JSON.stringify(bannerExpiryDate));
-      }
-    },
-    isBannerExpired() {
-      const _module = this;
-      const DAY = 2;
-      const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
-      const expiryDate = new Date(temp[_module.getField("id")]);
-      let now = new Date();
-      // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
-      return  !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) &lt; now.getTime());
-    },
     needsReviewing() {
       const _module = this;
       let need = true;
       let d = new Date();
-      let pastYear = d.getFullYear() - 1;
+      var pastYear = d.getFullYear() - 1;
       d.setFullYear(pastYear);
       if (!_module.reviewsPresent()){
         return !_module.reviewsPresent();
@@ -930,7 +1018,6 @@ export default {
       }
       // Re-display the menu.
       await this.getMenuButtons();
-      await this.checkAlerts();
     }
   },
   metaInfo() {
@@ -1009,7 +1096,7 @@ ul,li {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a>
 	
-		on Wed Mar 2nd 2022
+		on Tue Mar 1st 2022
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

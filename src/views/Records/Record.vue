@@ -782,11 +782,10 @@ export default {
       }
     },
     isBannerExpired() {
-      const _module = this;
-      const DAY = 2;
-      const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
-      const expiryDate = new Date(temp[_module.getField("id")]);
       let now = new Date();
+      const DAY = 2;
+      const temp = JSON.parse(localStorage.getItem("bannerExpiryDate")) || {"1": now.getTime()};
+      const expiryDate = new Date(temp[Object.keys(temp)[0]]);
       // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
       return  !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) < now.getTime());
     },

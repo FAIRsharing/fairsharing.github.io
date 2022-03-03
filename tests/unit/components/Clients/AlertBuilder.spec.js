@@ -44,12 +44,17 @@ describe("AlertBuilder", () => {
     });
 
     it("can show isNeedingReview alert", () => {
-        resp = alertBuilder.isNeedingReview();
+        resp = alertBuilder.isNeedingReview(true);
         expect(Object.keys(resp.alerts).length).toBe(2);
         alertBuilder = new AlertBuilder(
             {fairsharingRecord: {isApproved: true}}
             , {is_curator: false});
-        resp = alertBuilder.isNeedingReview();
+        resp = alertBuilder.isNeedingReview(true);
+        expect(Object.keys(resp.alerts).length).toBe(0);
+        alertBuilder = new AlertBuilder(
+            {fairsharingRecord: {isApproved: true}}
+            , {is_curator: true});
+        resp = alertBuilder.isNeedingReview(false);
         expect(Object.keys(resp.alerts).length).toBe(0);
     });
 
@@ -63,7 +68,7 @@ describe("AlertBuilder", () => {
                     }
             }
             , {is_curator: true});
-        resp = alertBuilder.isNeedingReview();
+        resp = alertBuilder.isNeedingReview(true);
         resp = alertBuilder.isNeedingReviewAndBeenReviewed();
         expect(Object.keys(resp.alerts).length).toBe(1);
         resp = alertBuilder.isNeedingReviewAndBeenReviewed(true);

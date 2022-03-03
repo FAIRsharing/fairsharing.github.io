@@ -93,6 +93,8 @@ class AlertBuilder {
 
     // output all collected alerts
     getAlerts() {
+        // eslint-disable-next-line no-console
+        console.log("GETALERTS: " + JSON.stringify(this.alerts));
         return this.alerts;
     }
 }

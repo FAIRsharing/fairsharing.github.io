@@ -399,26 +399,20 @@ export default {
   methods: {
     async checkAlerts() {
       let _module = this;
-      try {
-        // here order of calling functions matters in presentation first we stack blue alerts(no-auth needed ones)
-        // and then curators alerts(auth-needed orange ones) so blue ones stack, then orange and then red/green [approval/rejection] ones
-        let alertBuilder  = new AlertBuilder(this.currentRecord, this.user())
-            .isAwaitingApproval()
-            .isWatching(this.isWatching())
-            .isNeedingReview()
-            .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
-            .isAlreadyClaimed(this.alreadyClaimed)
-            .isHidden()
-            .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
-        _module.alerts = alertBuilder.getAlerts();
-      }
-      // eslint-disable-next-line no-empty
-      catch(e) {
-        // eslint-disable-next-line no-console
-        console.log("ERROR: " + JSON.stringify(e));
-      }
+      // here order of calling functions matters in presentation first we stack blue alerts(no-auth needed ones)
+      // and then curators alerts(auth-needed orange ones) so blue ones stack,
+      // then orange and then red/green [approval/rejection] ones.
+      let alertBuilder  = new AlertBuilder(this.currentRecord, this.user())
+          .isAwaitingApproval()
+          .isWatching(this.isWatching())
+          .isNeedingReview()
+          .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
+          .isAlreadyClaimed(this.alreadyClaimed)
+          .isHidden()
+          .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
+      _module.alerts = alertBuilder.getAlerts();
       // eslint-disable-next-line no-console
-      console.log("ALERTS: " + JSON.stringify(this.alerts));
+      console.log("ALERTS: " + JSON.stringify(_module.alerts));
     },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
     ...mapActions('users', ['updateWatchedRecords']),

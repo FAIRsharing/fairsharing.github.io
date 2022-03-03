@@ -498,14 +498,12 @@ export default {
       let alertBuilder  = new AlertBuilder(this.currentRecord, this.user())
           .isAwaitingApproval()
           .isWatching(this.isWatching())
-          .isNeedingReview()
+          .isNeedingReview(this.needsReviewing())
           .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
           .isAlreadyClaimed(this.alreadyClaimed)
           .isHidden()
           .isOwnerShipApproved(this.ownershipApprovalStatus, this.isBannerExpired());
       _module.alerts = alertBuilder.getAlerts();
-      // eslint-disable-next-line no-console
-      console.log("ALERTS: " + JSON.stringify(_module.alerts));
     },
     ...mapActions('record', ['fetchRecord', 'fetchRecordHistory', 'fetchPreviewRecord']),
     ...mapActions('users', ['updateWatchedRecords']),
@@ -866,6 +864,7 @@ export default {
     setBannerExpiry() {
       const _module = this;
       let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
+      console.log("SET EXPIRY: " + _module.getField("id"));
       if (!bannerExpiryDate[_module.getField("id")]) {
         bannerExpiryDate = {
           ...JSON.parse(localStorage.getItem("bannerExpiryDate")),
@@ -876,11 +875,15 @@ export default {
     },
     isBannerExpired() {
       let now = new Date();
+      let id = this.getField("id");
       const DAY = 2;
-      const temp = JSON.parse(localStorage.getItem("bannerExpiryDate")) || {"1": now.getTime()};
-      const expiryDate = new Date(temp[Object.keys(temp)[0]]);
-      // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
-      return  !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) &lt; now.getTime());
+      const temp = JSON.parse(localStorage.getItem("bannerExpiryDate"));
+      if (temp) {
+        const expiryDate = new Date(temp[id]);
+        // very important line: instead of adding if its been expired I directly assigned to variable so test can be passed much easier.
+        return  !(expiryDate.getTime() + (DAY * 24 * 60 * 60 * 1000) &lt; now.getTime());
+      }
+      return true;
     },
     needsReviewing() {
       const _module = this;

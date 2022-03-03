@@ -773,7 +773,6 @@ export default {
     setBannerExpiry() {
       const _module = this;
       let bannerExpiryDate = {...JSON.parse(localStorage.getItem("bannerExpiryDate"))};
-      console.log("SET EXPIRY: " + _module.getField("id"));
       if (!bannerExpiryDate[_module.getField("id")]) {
         bannerExpiryDate = {
           ...JSON.parse(localStorage.getItem("bannerExpiryDate")),

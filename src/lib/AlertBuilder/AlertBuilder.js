@@ -3,16 +3,21 @@ class AlertBuilder {
         this.currentRecord = currentRecord;
         this.currentUser = currentUser;
         this.alerts = {}
+        // eslint-disable-next-line no-console
+        console.log("CONSTRUCTOR: " + JSON.stringify(this));
     }
 
     //-- global banners for all users even without authentication
     isAwaitingApproval() {
+        // eslint-disable-next-line no-console
+        console.log("APPROVAL: " + !this.currentRecord.fairsharingRecord['isApproved']);
         if (!this.currentRecord.fairsharingRecord['isApproved']) {
             this.alerts['isAwaitingApproval'] = {
                 type: "info",
                 message: "This record is awaiting review by FAIRsharing curators"
             }
         }
+        console.log("APPROVAL(2): " + JSON.stringify(this.alerts));
         return this;
     }
 

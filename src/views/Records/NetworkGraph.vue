@@ -160,12 +160,12 @@
         <!-- BACK BUTTON -->
         <v-btn
           class="ml-2 my-2 white"
-          @click.prevent="$router.back()"
+          :to="`/${$route.params.id}`"
         >
           <v-icon :class="`primary--text`">
             fa-arrow-left
           </v-icon>
-          <span :class="`primary--text ml-3`"> GO BACK </span>
+          <span :class="`primary--text ml-3`"> Go to Record </span>
         </v-btn>
         <div id="networkGraph">
           <v-card

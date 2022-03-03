@@ -792,7 +792,9 @@ export default {
           id: this.currentRoute,
           token: (_module.user().credentials) ? _module.user().credentials.token : null
         });
-        // this.currentRecord['fairsharingRecord'].metadata.tombstone = true; // UNCOMMENT ME TO TEST TOMBSTONE PAGE
+        // UNCOMMENT ME TO TEST TOMBSTONE PAGE
+        // Or, set tombstone to true on a record, if using a local server.
+        // this.currentRecord['fairsharingRecord'].metadata.tombstone = true;
       }
       catch (e) {
         this.error = e.message;

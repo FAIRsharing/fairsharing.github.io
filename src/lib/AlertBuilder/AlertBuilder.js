@@ -17,6 +17,7 @@ class AlertBuilder {
                 message: "This record is awaiting review by FAIRsharing curators"
             }
         }
+        // eslint-disable-next-line no-console
         console.log("APPROVAL(2): " + JSON.stringify(this.alerts));
         return this;
     }

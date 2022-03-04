@@ -494,7 +494,10 @@
           }
           let organisation_type_ids = JSON.parse(JSON.stringify(organisationInput.organisation_type_ids));
           organisationInput.organisation_type_ids = organisationInput.organisation_type_ids.map(obj => obj.id);
-          organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id)
+          /* istanbul ignore else */
+          if (organisationInput.country_ids) {
+            organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id);
+          }
           let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
           if (!data.error) {
             let newOrganisation = {

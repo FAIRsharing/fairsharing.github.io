@@ -3,7 +3,7 @@
     v-if="currentField && currentField.length > 0"
     class="pa-4 mt-4 data-holder"
   >
-    <b class="text-h6 text-capitalize">{{ setCOS_title(cleanString(title)) }}</b>
+    <b class="text-h6 text-capitalize">{{ setTitle(cleanString(title)) }}</b>
     <div
       v-for="(item,index) in currentField"
       :key="item.name+'_'+index"

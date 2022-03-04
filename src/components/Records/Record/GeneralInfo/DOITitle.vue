@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex mt-4 ml-0">
+  <div class="d-flex flex-wrap mt-4 ml-0">
     <div class="align-self-center width-15-percent-flex">
       <record-status :record="currentRecord['fairsharingRecord']" />
     </div>
-    <div class="align-self-center full-width ml-13">
+    <div class="align-self-center mt-2 mt-sm-0 ml-5 ml-sm-8 ml-md-13">
       <div class="d-flex flex-column">
         <div class="d-flex flex-row align-center">
           <v-img
@@ -63,6 +63,18 @@
           </span>
         </div>
       </div>
+    </div>
+    <div class="ml-md-auto d-flex align-center">
+      <v-progress-circular
+        :rotate="360"
+        :size="80"
+        :width="10"
+        :value="0"
+        color="gray"
+        class="mr-1"
+      >
+        {{ 0 }}
+      </v-progress-circular>
     </div>
   </div>
 </template>

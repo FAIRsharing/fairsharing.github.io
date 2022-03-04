@@ -28,7 +28,7 @@ describe("DatasetArray.vue", function () {
         wrapper.setProps({currentKey: "resource_sustainability"})
         expect(wrapper.vm.getUpdatedNameTitle()).toMatch("Plan");
         let title = "cos top guidelines"
-        expect(wrapper.vm.setCOS_title(title)).toMatch("COS TOP Guidelines");
+        expect(wrapper.vm.setTitle(title)).toMatch("COS TOP Guidelines");
         title = "anything else"
         expect(wrapper.vm.setCOS_title(title)).toMatch("anything else");
     });

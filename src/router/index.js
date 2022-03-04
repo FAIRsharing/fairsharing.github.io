@@ -154,6 +154,12 @@ let routes = [
             }
         }
     },
+    /* See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1561 */
+    {
+        name: 'iso20691',
+        path: '/collection/ISOCD20691CollectionDRAFT',
+        redirect: '/3533'
+    },
 
     /* OTHER MODES */
     {

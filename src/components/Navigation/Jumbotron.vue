@@ -19,7 +19,8 @@
     >
       {{ getJumbotronData.title }}
     </h1>
-    <h3
+    <p
+      id="subtitle"
       :class="[
         'lato-font-medium my-4 primary--text px-1 font-weight-thin text-center',
         {
@@ -28,7 +29,7 @@
           'lato-text-sm': $vuetify.breakpoint.smAndDown
         }
       ]"
-      v-html="getJumbotronData.subtitle"
+      v-html="$sanitize(getJumbotronData.subtitle)"
     />
     <!-- eslint-enable vue/no-v-html -->
   </section>
@@ -124,4 +125,10 @@ section {
     left:0;
     top:100px;
   }
+
+  #subtitle a {
+    color: white;
+    text-decoration: underline;
+  }
+
 </style>

@@ -30,6 +30,7 @@ describe("App.vue", () => {
             mocks: {$store, $route},
             stubs: ['router-link', 'router-view']
         });
+        wrapper.vm.loading = false
         expect(wrapper.name()).toMatch(title);
     });
 

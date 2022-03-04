@@ -1,5 +1,11 @@
 <template>
   <v-app id="app">
+    <div
+      v-if="loading"
+      style="height:100vh; color: white"
+    >
+      loading-hidden
+    </div>
     <v-navigation-drawer
       v-if="$vuetify.breakpoint.mdAndDown"
       v-model="UIGeneralStatus.drawerVisibilityState"
@@ -39,13 +45,20 @@
         data() {
           return {
             title: null,
+            loading:true,
             subtitle: null
           }
         },
-        computed: {
-            ...mapState('uiController', ["UIGeneralStatus"]),
-            ...mapState('introspection', ["readOnlyMode"]),
-        }
+      computed: {
+        ...mapState('uiController', ["UIGeneralStatus"]),
+        ...mapState('introspection', ["readOnlyMode"]),
+      },
+      /* istanbul ignore next */
+      async updated() {
+        // very important line of code which prevents layout shifting which is considered as one negative point for SEO
+        await this.$nextTick()
+        this.loading = false;
+      }
     }
 </script>
 

@@ -145,7 +145,7 @@ export default {
     }
   },
   methods: {
-    setCOS_title(title) {
+    setTitle(title) {
       if (title === "cos top guidelines")
         return "COS TOP Guidelines"
       else {

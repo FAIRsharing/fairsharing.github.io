@@ -53,6 +53,7 @@
         ...mapState('uiController', ["UIGeneralStatus"]),
         ...mapState('introspection', ["readOnlyMode"]),
       },
+      /* istanbul ignore next */
       async updated() {
         // very important line of code which prevents layout shifting which is considered as one negative point for SEO
         await this.$nextTick()

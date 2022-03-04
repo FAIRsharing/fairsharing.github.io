@@ -32,7 +32,6 @@ export default {
   methods: {
     checkBadges() {
       let badgeBuilder = new BadgeBuilder(this.currentRecord['fairsharingRecord'])
-      this.badges = badgeBuilder
       .hasLicence()
       .hasMaintainer()
       .hasStatus()
@@ -42,8 +41,8 @@ export default {
       .hasAPI()
       .hasPID()
       .hasCertificate()
-      .getBadges();
 
+      this.badges = badgeBuilder.getBadges();
       console.log(this.badges)
     },
   }

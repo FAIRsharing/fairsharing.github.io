@@ -30,7 +30,7 @@ describe("DatasetArray.vue", function () {
         let title = "cos top guidelines"
         expect(wrapper.vm.setTitle(title)).toMatch("COS TOP Guidelines");
         title = "anything else"
-        expect(wrapper.vm.setCOS_title(title)).toMatch("anything else");
+        expect(wrapper.vm.setTitle(title)).toMatch("anything else");
     });
 
 });

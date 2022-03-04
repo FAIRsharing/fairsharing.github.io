@@ -65,16 +65,7 @@
       </div>
     </div>
     <div class="ml-md-auto d-flex align-center">
-      <v-progress-circular
-        :rotate="360"
-        :size="80"
-        :width="10"
-        :value="0"
-        color="gray"
-        class="mr-1"
-      >
-        {{ 0 }}
-      </v-progress-circular>
+      <info-badge :current-record="currentRecord" />
     </div>
   </div>
 </template>
@@ -84,10 +75,12 @@ import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import {mapGetters, mapState} from "vuex";
 import Icon from "@/components/Icon";
 import getAPIEndPoint from "@/utils/generalUtils";
+import InfoBadge from "@/components/Records/Record/GeneralInfo/Badge/InfoBadge";
 
 export default {
   name: "DOITitle",
   components: {
+    InfoBadge,
     Icon,
     RecordStatus
   },

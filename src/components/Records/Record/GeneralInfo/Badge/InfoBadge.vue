@@ -12,19 +12,40 @@
 </template>
 
 <script>
+import BadgeBuilder from "@/lib/BadgeBuilder/BadgeBuilder";
+
 export default {
   name: "InfoBadge",
   components: {},
+  props: {
+    currentRecord: {default: null, type: Object}
+  },
   data() {
     return {
-      
+      badges: {}
     }
   },
-  computed:{
-    
+  computed: {},
+  mounted() {
+    this.checkBadges()
   },
-  methods:{
-    
+  methods: {
+    checkBadges() {
+      let badgeBuilder = new BadgeBuilder(this.currentRecord['fairsharingRecord'])
+      this.badges = badgeBuilder
+      .hasLicence()
+      .hasMaintainer()
+      .hasStatus()
+      .hasStandard()
+      .hasDatabase()
+      .hasPolicy()
+      .hasAPI()
+      .hasPID()
+      .hasCertificate()
+      .getBadges();
+
+      console.log(this.badges)
+    },
   }
 }
 </script>

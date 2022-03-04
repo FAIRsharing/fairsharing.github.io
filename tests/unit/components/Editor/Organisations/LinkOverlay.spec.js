@@ -117,6 +117,7 @@ describe("Edit -> LinkOverlay.vue", function() {
             organisation_type_ids: [{id:1, name: "?"}],
             country_ids: [{id:1}]
         };
+        wrapper.vm.menus.newOrganisation.data.country_ids = [];
         await wrapper.vm.createNewOrganisation();
         expect(wrapper.vm.menus.newOrganisation.error).toBe("I am an error");
         wrapper.vm.menus.newOrganisation.logoData = null;

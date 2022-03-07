@@ -31,7 +31,7 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
-                    icon: "icon",
+                    icon: "facebook",
                     textHover: "This is hover text for standard",
                     progressHover: "This is hover text for standard"
                 }
@@ -73,7 +73,7 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
-                    icon: "icon",
+                    icon: "facebook",
                     textHover: "This is hover text for database",
                     progressHover: "This is hover text for database"
                 }
@@ -100,7 +100,7 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
-                    icon: "icon",
+                    icon: "facebook",
                     textHover: "This is hover text for policy",
                     progressHover: "This is hover text for policy"
                 }
@@ -125,7 +125,7 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
-                    icon: "icon",
+                    icon: "licences",
                     textHover: "This is hover text for licence",
                     progressHover: "This is hover text for licence"
                 }
@@ -148,7 +148,7 @@ class BadgeBuilder {
             if (input) {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
-                    progress: 100,
+                    progress: 0,
                     progressHover: "This is hover text for ready status"
                 }
             }
@@ -185,7 +185,7 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
-                    icon: "icon",
+                    icon: "facebook",
                     textHover: "This is hover text for maintenance",
                     progressHover: "This is hover text for maintenance"
                 }
@@ -212,7 +212,7 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
-                    icon: "icon",
+                    icon: "facebook",
                     textHover: "This is hover text for API",
                     progressHover: "This is hover text for API"
                 }
@@ -240,7 +240,7 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
-                    icon: "icon",
+                    icon: "facebook",
                     textHover: "This is hover text for PID",
                     progressHover: "This is hover text for PID"
                 }
@@ -267,7 +267,7 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
-                    icon: "icon",
+                    icon: "facebook",
                     textHover: "This is hover text for certificate",
                     progressHover: "This is hover text for certificate"
                 }

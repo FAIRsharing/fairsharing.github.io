@@ -1,41 +1,64 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <div
-    v-if="recordType"
-    :class="showStatus?'circle-container':'circle-container-dashed'"
-  >
-    <v-tooltip
-      right
-      nudge-right="15"
+  <div>
+    <div
+      v-if="recordType && !showOnlyStatus"
+      :class="showStatus?'circle-container':'circle-container-dashed'"
     >
-      <template #activator="{ on }">
-        <v-avatar
-          size="80"
-          :alt="getRecordStatus.title"
-          v-on="on"
-        >
-          <Icon
-            :item="record.type"
-            wrapper-class=""
-            :height="80"
-          />
-        </v-avatar>
-      </template>
-      <span v-if="recordType[record.type]">{{ recordType[record.type].tooltip }}</span>
-    </v-tooltip>
+      <v-tooltip
+        right
+        nudge-right="15"
+      >
+        <template #activator="{ on }">
+          <v-avatar
+            size="80"
+            :alt="getRecordStatus.title"
+            v-on="on"
+          >
+            <Icon
+              :item="record.type"
+              wrapper-class=""
+              :height="80"
+            />
+          </v-avatar>
+        </template>
+        <span v-if="recordType[record.type]">{{ recordType[record.type].tooltip }}</span>
+      </v-tooltip>
 
-    <v-tooltip
-      v-if="showStatus"
-      right
+      <v-tooltip
+        v-if="showStatus"
+        right
+      >
+        <template #activator="{ on }">
+          <span
+            class="white--text headline circle"
+            :style="getRecordStatus.backColor"
+            v-on="on"
+          ><p>{{ getRecordStatus.title }}</p></span>
+        </template>
+        <span>{{ getRecordStatus.tooltip }}</span>
+      </v-tooltip>
+    </div>
+    <!-- if only shows status and nothing else   -->
+    <div
+      v-if="showOnlyStatus && showStatus"
+      class="circle-holder"
     >
-      <template #activator="{ on }">
-        <span
-          class="white--text headline circle"
-          :style="getRecordStatus.backColor"
-          v-on="on"
-        ><p>{{ getRecordStatus.title }}</p></span>
-      </template>
-      <span>{{ getRecordStatus.tooltip }}</span>
-    </v-tooltip>
+      <v-tooltip
+        v-if="showStatus"
+        right
+      >
+        <template #activator="{ on }">
+          <p
+            class="white--text headline circle text-center d-flex align-center justify-center"
+            :style="getRecordStatus.backColor"
+            v-on="on"
+          >
+            <span>{{ getRecordStatus.title }}</span>
+          </p>
+        </template>
+        <span>{{ getRecordStatus.tooltip }}</span>
+      </v-tooltip>
+    </div>
   </div>
 </template>
 
@@ -49,7 +72,8 @@ export default {
   components: {Icon},
   props: {
     record: {default: null, type: Object},
-    showStatus: {default: true, type: Boolean}
+    showStatus: {default: true, type: Boolean},
+    showOnlyStatus: {default: false, type: Boolean},
   },
   data() {
     return {
@@ -144,4 +168,25 @@ export default {
   height: 87px;
   cursor: help;
 }
+
+.circle-holder {
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  width: 86px;
+  height: 87px;
+  .circle {
+    position: absolute;
+    left: 24%;
+    top: 22%;
+    height: 45px;
+    width: 45px;
+    min-width: 40px;
+    border-radius: 40px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    cursor:help;
+  }
+}
+
 </style>

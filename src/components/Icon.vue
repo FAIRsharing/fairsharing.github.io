@@ -4,6 +4,7 @@
       v-if="!Object.keys($vuetify.icons.values).includes(item)"
       :large="size === 'large'"
       :small="size === 'small'"
+      :size="size"
       :color="color"
     >
       {{ $vuetify.icons.values[fallback].icon }}
@@ -12,6 +13,7 @@
       v-else-if="$vuetify.icons.values[item].type === 'icon'"
       :large="size === 'large'"
       :small="size === 'small'"
+      :size="size"
       :color="color"
     >
       {{ $vuetify.icons.values[item].icon }}

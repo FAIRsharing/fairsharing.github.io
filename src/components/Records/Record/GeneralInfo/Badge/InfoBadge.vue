@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div class="d-flex flex-wrap">
     <span
       v-for="(badge,key,index) in badges"
       :key="key+'_'+badge.icon+'_'+index"

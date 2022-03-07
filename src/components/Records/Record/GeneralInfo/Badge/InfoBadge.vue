@@ -13,12 +13,39 @@
           :color="badge.progressColor"
           class="mr-1"
         >
-          <Icon
+          <v-tooltip
+            bottom
+            nudge-bottom="30"
+            :open-on-hover="showProgressHover"
+          >
+            <template #activator="{ on }">
+              <div
+                v-on="on"
+              >
+                <div class="circle-transparent" />
+              </div>
+            </template>
+            {{ badge.progressHover }}
+          </v-tooltip>
+          <v-tooltip
             v-if="badge.icon"
-            :item="badge.icon"
-            size="38"
-            wrapper-class=""
-          />
+            top
+            :open-on-hover="showTextHover"
+          >
+            <template #activator="{ on }">
+              <div
+                v-on="on"
+              >
+                <Icon
+                  style="cursor:help"
+                  :item="badge.icon"
+                  size="38"
+                  wrapper-class=""
+                />
+              </div>
+            </template>
+            {{ badge.textHover }}
+          </v-tooltip>
           <record-status
             v-else
             :show-only-status="true"
@@ -45,7 +72,9 @@ export default {
   components: {Icon, RecordStatus},
   props: {
     currentRecord: {default: null, type: Object},
-    showProgress: {default: true, type: Boolean}
+    showProgress: {default: true, type: Boolean},
+    showProgressHover: {default: true, type: Boolean},
+    showTextHover: {default: true, type: Boolean}
   },
   data() {
     return {
@@ -75,7 +104,6 @@ export default {
       .hasPID()
       .hasCertificate()
       .getBadges()
-      console.log(this.badges)
     },
   }
 }
@@ -83,4 +111,14 @@ export default {
 
 <style scoped>
 
+.circle-transparent {
+  position:absolute;
+  border-radius: 50%;
+  top:0;
+  left:0;
+  width: 86px;
+  height: 87px;
+  cursor: help;
+  border: 10px solid transparent;
+}
 </style>

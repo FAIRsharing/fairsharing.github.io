@@ -33,7 +33,7 @@ class BadgeBuilder {
                     progress: 0,
                     icon: "model_and_format",
                     textHover: "This is hover text for standard",
-                    progressHover: "This is hover text for standard"
+                    progressHover: "This is progress text for standard"
                 }
             }
 
@@ -44,7 +44,7 @@ class BadgeBuilder {
                     progress: 20,
                     icon: "icon",
                     textHover: "This is hover text for standard",
-                    progressHover: "This is hover text for this conditon"
+                    progressHover: "This is progress text for this conditon"
                 }
             }*/
 
@@ -75,7 +75,7 @@ class BadgeBuilder {
                     progress: 0,
                     icon: "repository",
                     textHover: "This is hover text for database",
-                    progressHover: "This is hover text for database"
+                    progressHover: "This is progress text for database"
                 }
             }
 
@@ -102,7 +102,7 @@ class BadgeBuilder {
                     progress: 0,
                     icon: "journal",
                     textHover: "This is hover text for policy",
-                    progressHover: "This is hover text for policy"
+                    progressHover: "This is progress text for policy"
                 }
             }
             // write level 2 and so on...
@@ -127,7 +127,7 @@ class BadgeBuilder {
                     progress: 0,
                     icon: "licences",
                     textHover: "This is hover text for licence",
-                    progressHover: "This is hover text for licence"
+                    progressHover: "This is progress text for licence"
                 }
             }
             return finalBadgeObjectBasedOnLevel
@@ -149,7 +149,7 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
-                    progressHover: "This is hover text for ready status"
+                    progressHover: "this indicator shows that a record is at what status"
                 }
             }
 
@@ -160,7 +160,7 @@ class BadgeBuilder {
                                 progressColor: "green",
                                 progress: 100,
                                 icon: "icon",
-                                progressHover: "This is hover text for ready status"
+                                progressHover: "This is progress text for ready status"
                             }
                         }
             */
@@ -187,7 +187,7 @@ class BadgeBuilder {
                     progress: 0,
                     icon: "user",
                     textHover: "This is hover text for maintenance",
-                    progressHover: "This is hover text for maintenance"
+                    progressHover: "This is progress text for maintenance"
                 }
             }
 
@@ -214,7 +214,7 @@ class BadgeBuilder {
                     progress: 0,
                     icon: "api",
                     textHover: "This is hover text for API",
-                    progressHover: "This is hover text for API"
+                    progressHover: "This is progress text for API"
                 }
             }
 
@@ -242,7 +242,7 @@ class BadgeBuilder {
                     progress: 0,
                     icon: "identifier_schema",
                     textHover: "This is hover text for PID",
-                    progressHover: "This is hover text for PID"
+                    progressHover: "This is progress text for PID"
                 }
             }
 
@@ -269,7 +269,7 @@ class BadgeBuilder {
                     progress: 0,
                     icon: "certificate",
                     textHover: "This is hover text for certificate",
-                    progressHover: "This is hover text for certificate"
+                    progressHover: "This is progress text for certificate"
                 }
             }
 

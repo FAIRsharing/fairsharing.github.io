@@ -24,7 +24,7 @@
           <Icon
             :item="key"
             fallback="other_involvement"
-            size="10"
+            size="20"
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
             {{ value }}

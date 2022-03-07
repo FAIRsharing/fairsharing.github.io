@@ -1,25 +1,51 @@
 <template>
-  <v-progress-circular
-    :rotate="360"
-    :size="85"
-    :width="10"
-    :value="0"
-    color="gray"
-    class="mr-1"
-  >
-    {{ 0 }}
-  </v-progress-circular>
+  <div class="d-flex">
+    <span
+      v-for="(badge,key,index) in badges"
+      :key="key+'_'+badge.icon+'_'+index"
+    >
+      <span class="d-flex flex-column align-center">
+        <v-progress-circular
+          :rotate="360"
+          :size="85"
+          :width="10"
+          :value="badge.progress"
+          :color="badge.progressColor"
+          class="mr-1"
+        >
+          <Icon
+            v-if="badge.icon"
+            :item="badge.icon"
+            size="45"
+            wrapper-class=""
+          />
+          <record-status
+            v-else
+            :show-only-status="true"
+            :record="currentRecord['fairsharingRecord']"
+          />
+        </v-progress-circular>
+        <b
+          v-if="showProgress"
+          :class="[`${badge.progressColor}--text`]"
+        >{{ badge.progress }}</b>
+      </span>
+    </span>
+  </div>
 </template>
 
 <script>
 import BadgeBuilder from "@/lib/BadgeBuilder/BadgeBuilder";
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import {prepareAssociations} from "@/utils/recordTabUtils";
+import Icon from "@/components/Icon"
 
 export default {
   name: "InfoBadge",
-  components: {},
+  components: {Icon, RecordStatus},
   props: {
-    currentRecord: {default: null, type: Object}
+    currentRecord: {default: null, type: Object},
+    showProgress: {default: true, type: Boolean}
   },
   data() {
     return {

@@ -55,7 +55,7 @@ class AlertBuilder {
     }
 
     isNeedingReviewAndBeenReviewed(isReviewPresent = false) {
-        if (this.currentUser.is_curator && isReviewPresent) {
+        if (this.currentUser.is_curator && isReviewPresent && this.alerts.isNeedingReview) {
             this.alerts['isNeedingReview'].message = `This record is in need of periodic curator review. The last review was on ${this.currentRecord['fairsharingRecord']['reviews'][0]['createdAt'].split(/T/)[0]}
       by ${this.currentRecord['fairsharingRecord']['reviews'][0]['user']['username']}.`
         }

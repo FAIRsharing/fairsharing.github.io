@@ -18,7 +18,7 @@ class BadgeBuilder {
     // hasStandard function is commented with all information for the extending this class
     hasStandard() {
         // define internal criteria rules to generate proper object for badge... (encapsulating logic here in its function)
-        const getStandardLevel =  (input) => {
+        const getStandardLevel = (input) => {
             const standardsLength = input.length
             let finalBadgeObjectBasedOnLevel = {}
 
@@ -62,8 +62,9 @@ class BadgeBuilder {
         }
         return this;
     }
+
     hasDatabase() {
-        const getDatabaseLevel =  (input) => {
+        const getDatabaseLevel = (input) => {
             const databasesLength = input.length
             let finalBadgeObjectBasedOnLevel = {}
 
@@ -90,8 +91,9 @@ class BadgeBuilder {
         }
         return this;
     }
+
     hasPolicy() {
-        const getPolicyLevel =  (input) => {
+        const getPolicyLevel = (input) => {
             const policiesLength = input.length
             let finalBadgeObjectBasedOnLevel = {};
             const hasAtLeastOnePolicy = input.some(item => item.registry.toLowerCase() === "policy");
@@ -115,6 +117,7 @@ class BadgeBuilder {
         }
         return this;
     }
+
     hasLicence() {
         const getLicenceLevel = (input) => {
             const licencesLength = input.length
@@ -140,6 +143,7 @@ class BadgeBuilder {
         }
         return this;
     }
+
     hasStatus() {
         const getStatusLevel = (input) => {
             let finalBadgeObjectBasedOnLevel = {}
@@ -174,6 +178,7 @@ class BadgeBuilder {
         }
         return this;
     }
+
     hasMaintainer() {
         const getMaintainerLevel = (input) => {
             const maintainersLength = input.length
@@ -201,17 +206,45 @@ class BadgeBuilder {
         }
         return this;
     }
+
     hasAPI() {
+        const getAPILevel = (input) => {
+            const APILength = input.length
+            let finalBadgeObjectBasedOnLevel = {}
+            // check level 1
+            if (APILength >= 1) {
+                finalBadgeObjectBasedOnLevel = {
+                    progressColor: "gray",
+                    progress: 0,
+                    icon: "icon",
+                    textHover: "This is hover text for API",
+                    progressHover: "This is hover text for API"
+                }
+            }
+
+            return finalBadgeObjectBasedOnLevel
+        }
+        if (this.currentRecord.metadata.access_points && this.currentRecord.metadata.access_points.length) {
+            const currentLevelObject = getAPILevel(this.currentRecord.metadata.access_points);
+            this.createBadgeObject(
+                "hasAPI",
+                currentLevelObject
+            )
+        }
+
         return this;
     }
-    hasPID(){
+
+    hasPID() {
         return this;
     }
-    hasCertificate(){
+
+    hasCertificate() {
         return this;
     }
+
     getBadges() {
-    // output all collected badges
+        // output all collected badges
         return this.badges;
     }
 

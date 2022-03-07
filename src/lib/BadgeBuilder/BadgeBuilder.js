@@ -53,7 +53,6 @@ class BadgeBuilder {
             // finally, after all level checks, the final overwritten object will be returned...
             return finalBadgeObjectBasedOnLevel
         }
-
         if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
             const currentLevelObject = getStandardLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject(
@@ -82,7 +81,6 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-
         if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
             const currentLevelObject = getDatabaseLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject(
@@ -134,7 +132,6 @@ class BadgeBuilder {
             }
             return finalBadgeObjectBasedOnLevel
         }
-
         if (this.currentRecord.licences && this.currentRecord.licences.length) {
             const currentLevelObject = getLicenceLevel(this.currentRecord.licences);
             this.createBadgeObject(
@@ -196,7 +193,6 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-
         if (this.currentRecord.maintainers && this.currentRecord.maintainers.length) {
             const currentLevelObject = getMaintainerLevel(this.currentRecord.maintainers);
             this.createBadgeObject(
@@ -231,7 +227,6 @@ class BadgeBuilder {
                 currentLevelObject
             )
         }
-
         return this;
     }
 
@@ -239,8 +234,9 @@ class BadgeBuilder {
         const getPIDLevel = (input) => {
             const PIDLength = input.length
             let finalBadgeObjectBasedOnLevel = {}
+            const hasAtLeastOnePID = input.some(item => item.type.toLowerCase() === "identifier_schema");
             // check level 1
-            if (PIDLength >= 1) {
+            if (PIDLength >= 1 && hasAtLeastOnePID) {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
@@ -252,14 +248,13 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.metadata.cross_references && this.currentRecord.metadata.cross_references.length) {
-            const currentLevelObject = getPIDLevel(this.currentRecord.metadata.cross_references);
+        if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
+            const currentLevelObject = getPIDLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject(
                 "hasPID",
                 currentLevelObject
             )
         }
-
         return this;
     }
 
@@ -287,7 +282,6 @@ class BadgeBuilder {
                 currentLevelObject
             )
         }
-
         return this;
     }
 
@@ -296,7 +290,6 @@ class BadgeBuilder {
         return this.badges;
     }
 
-//   todo - hasPolicy, hasAPI, hasPID, hasCertificate
 }
 
 export default BadgeBuilder;

@@ -16,7 +16,7 @@
           <Icon
             v-if="badge.icon"
             :item="badge.icon"
-            size="45"
+            size="38"
             wrapper-class=""
           />
           <record-status
@@ -26,7 +26,7 @@
           />
         </v-progress-circular>
         <b
-          v-if="showProgress"
+          v-if="showProgress && badge.progress>0"
           :class="[`${badge.progressColor}--text`]"
         >{{ badge.progress }}</b>
       </span>

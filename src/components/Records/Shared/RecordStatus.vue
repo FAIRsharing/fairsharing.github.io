@@ -177,10 +177,10 @@ export default {
   height: 87px;
   .circle {
     position: absolute;
-    left: 24%;
-    top: 22%;
-    height: 45px;
-    width: 45px;
+    left: 26%;
+    top: 25%;
+    height: 42px;
+    width: 42px;
     min-width: 40px;
     border-radius: 40px;
     -moz-border-radius: 40px;

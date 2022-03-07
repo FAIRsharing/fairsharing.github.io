@@ -236,10 +236,58 @@ class BadgeBuilder {
     }
 
     hasPID() {
+        const getPIDLevel = (input) => {
+            const PIDLength = input.length
+            let finalBadgeObjectBasedOnLevel = {}
+            // check level 1
+            if (PIDLength >= 1) {
+                finalBadgeObjectBasedOnLevel = {
+                    progressColor: "gray",
+                    progress: 0,
+                    icon: "icon",
+                    textHover: "This is hover text for PID",
+                    progressHover: "This is hover text for PID"
+                }
+            }
+
+            return finalBadgeObjectBasedOnLevel
+        }
+        if (this.currentRecord.metadata.cross_references && this.currentRecord.metadata.cross_references.length) {
+            const currentLevelObject = getPIDLevel(this.currentRecord.metadata.cross_references);
+            this.createBadgeObject(
+                "hasPID",
+                currentLevelObject
+            )
+        }
+
         return this;
     }
 
     hasCertificate() {
+        const getCertificateLevel = (input) => {
+            const certificateLength = input.length
+            let finalBadgeObjectBasedOnLevel = {}
+            // check level 1
+            if (certificateLength >= 1) {
+                finalBadgeObjectBasedOnLevel = {
+                    progressColor: "gray",
+                    progress: 0,
+                    icon: "icon",
+                    textHover: "This is hover text for certificate",
+                    progressHover: "This is hover text for certificate"
+                }
+            }
+
+            return finalBadgeObjectBasedOnLevel
+        }
+        if (this.currentRecord.metadata.certifications_and_community_badges && this.currentRecord.metadata.certifications_and_community_badges.length) {
+            const currentLevelObject = getCertificateLevel(this.currentRecord.metadata.certifications_and_community_badges);
+            this.createBadgeObject(
+                "hasCertificate",
+                currentLevelObject
+            )
+        }
+
         return this;
     }
 

@@ -25,8 +25,9 @@ class BadgeBuilder {
             // please place the order of level checks from low to high: for example, first check with the lowest condition like if (length<1) then check(length<2) and so on...
             // starting level checking sequentially...
 
+            const hasAtLeastOneStandard = input.some(item => item.registry.toLowerCase() === "standard");
             // check level 1
-            if (standardsLength >= 1) {
+            if (standardsLength >= 1 && hasAtLeastOneStandard) {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
@@ -53,8 +54,8 @@ class BadgeBuilder {
             return finalBadgeObjectBasedOnLevel
         }
 
-        if (this.currentRecord.recordAssociations && this.currentRecord.recordAssociations.length) {
-            const currentLevelObject = getStandardLevel(this.currentRecord.recordAssociations);
+        if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
+            const currentLevelObject = getStandardLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject(
                 "hasStandard",
                 currentLevelObject)
@@ -66,8 +67,9 @@ class BadgeBuilder {
             const databasesLength = input.length
             let finalBadgeObjectBasedOnLevel = {}
 
+            const hasAtLeastOneDatabase = input.some(item => item.registry.toLowerCase() === "database");
             // check level 1
-            if (databasesLength >= 1) {
+            if (databasesLength >= 1 && hasAtLeastOneDatabase) {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
@@ -80,15 +82,15 @@ class BadgeBuilder {
             return finalBadgeObjectBasedOnLevel
         }
 
-        if (this.currentRecord.reverseRecordAssociations && this.currentRecord.reverseRecordAssociations.length) {
-            const currentLevelObject = getDatabaseLevel(this.currentRecord.reverseRecordAssociations);
+        if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
+            const currentLevelObject = getDatabaseLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject(
                 "hasDatabase",
                 currentLevelObject)
         }
         return this;
     }
-    hasPolicy(associations) {
+    hasPolicy() {
         const getPolicyLevel =  (input) => {
             const policiesLength = input.length
             let finalBadgeObjectBasedOnLevel = {};
@@ -107,8 +109,8 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        if (associations && associations.length) {
-            const currentLevelObject = getPolicyLevel(associations);
+        if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
+            const currentLevelObject = getPolicyLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject("hasPolicy", currentLevelObject)
         }
         return this;
@@ -199,7 +201,7 @@ class BadgeBuilder {
         }
         return this;
     }
-    hasAPI(){
+    hasAPI() {
         return this;
     }
     hasPID(){

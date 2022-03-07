@@ -1,7 +1,7 @@
 <template>
   <v-progress-circular
     :rotate="360"
-    :size="80"
+    :size="85"
     :width="10"
     :value="0"
     color="gray"
@@ -13,6 +13,7 @@
 
 <script>
 import BadgeBuilder from "@/lib/BadgeBuilder/BadgeBuilder";
+import {prepareAssociations} from "@/utils/recordTabUtils";
 
 export default {
   name: "InfoBadge",
@@ -22,7 +23,8 @@ export default {
   },
   data() {
     return {
-      badges: {}
+      badges: {},
+      associations: null
     }
   },
   computed: {},
@@ -30,19 +32,22 @@ export default {
     this.checkBadges()
   },
   methods: {
+    mergedAssociations() {
+      return prepareAssociations(this, this.currentRecord['fairsharingRecord'].recordAssociations,
+          this.currentRecord['fairsharingRecord'].reverseRecordAssociations)
+    },
     checkBadges() {
-      let badgeBuilder = new BadgeBuilder(this.currentRecord['fairsharingRecord'])
+      this.badges = new BadgeBuilder(this.currentRecord['fairsharingRecord'])
       .hasLicence()
       .hasMaintainer()
       .hasStatus()
       .hasStandard()
       .hasDatabase()
-      .hasPolicy()
+      .hasPolicy(this.mergedAssociations())
       .hasAPI()
       .hasPID()
       .hasCertificate()
-
-      this.badges = badgeBuilder.getBadges();
+      .getBadges()
       console.log(this.badges)
     },
   }

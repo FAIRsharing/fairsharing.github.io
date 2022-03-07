@@ -45,7 +45,7 @@
     >
       <v-tooltip
         v-if="showStatus"
-        right
+        top
       >
         <template #activator="{ on }">
           <p

@@ -6,10 +6,12 @@ class BadgeBuilder {
 
     //----> private functions to create badge object
     createBadgeObject(badgeName, ...props) {
-        this.badges[badgeName] = {}
-        Object.keys(...props).forEach(key => {
-            this.badges[badgeName][key] = props[0][key]
-        })
+        if (Object.keys(...props).length !== 0) {
+            this.badges[badgeName] = {}
+            Object.keys(...props).forEach(key => {
+                this.badges[badgeName][key] = props[0][key]
+            })
+        }
     }
     //----> end of private functions
 
@@ -86,13 +88,13 @@ class BadgeBuilder {
         }
         return this;
     }
-    hasPolicy() {
+    hasPolicy(associations) {
         const getPolicyLevel =  (input) => {
             const policiesLength = input.length
-            let finalBadgeObjectBasedOnLevel = {}
-
+            let finalBadgeObjectBasedOnLevel = {};
+            const hasAtLeastOnePolicy = input.some(item => item.registry.toLowerCase() === "policy");
             // check level 1
-            if (policiesLength >= 1) {
+            if (policiesLength >= 1 && hasAtLeastOnePolicy) {
                 finalBadgeObjectBasedOnLevel = {
                     progressColor: "gray",
                     progress: 0,
@@ -101,15 +103,13 @@ class BadgeBuilder {
                     progressHover: "This is hover text for policy"
                 }
             }
+            // write level 2 and so on...
 
             return finalBadgeObjectBasedOnLevel
         }
-        // todo - policy needs to be read from somewhere....
-        if (this.currentRecord.reverseRecordAssociations && this.currentRecord.reverseRecordAssociations.length) {
-            const currentLevelObject = getPolicyLevel(this.currentRecord.reverseRecordAssociations);
-            this.createBadgeObject(
-                "hasPolicy",
-                currentLevelObject)
+        if (associations && associations.length) {
+            const currentLevelObject = getPolicyLevel(associations);
+            this.createBadgeObject("hasPolicy", currentLevelObject)
         }
         return this;
     }

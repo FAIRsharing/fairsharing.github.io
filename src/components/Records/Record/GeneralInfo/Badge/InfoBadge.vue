@@ -29,6 +29,7 @@ export default {
   },
   computed: {},
   mounted() {
+    this.currentRecord['fairsharingRecord']['mergedAssociations'] = this.mergedAssociations()
     this.checkBadges()
   },
   methods: {
@@ -43,7 +44,7 @@ export default {
       .hasStatus()
       .hasStandard()
       .hasDatabase()
-      .hasPolicy(this.mergedAssociations())
+      .hasPolicy()
       .hasAPI()
       .hasPID()
       .hasCertificate()

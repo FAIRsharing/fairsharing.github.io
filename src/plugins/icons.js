@@ -72,6 +72,10 @@ const customIcons  = {
             type: 'icon',
             icon: 'fa-certificate'
         },
+        certificate: {
+            type: 'icon',
+            icon: 'fa-ribbon'
+        },
         frequently_asked_questions_faqs: {
             type: 'icon',
             icon: 'fa-question-circle'
@@ -223,6 +227,10 @@ const customIcons  = {
             type: "icon",
             icon: "fa-graduation-cap"
         },
+        api: {
+            type: "icon",
+            icon: "fa-laptop-code"
+        },
         home_standard: {
             type: "img",
             icon: "/assets/Home/BlockInfo/home-standards.svg"
@@ -258,6 +266,10 @@ const customIcons  = {
         home: {
             type: "icon",
             icon: "fa-home"
+        },
+        user: {
+            type: "icon",
+            icon: "fa-user"
         }
     },
     iconfont: 'fa'

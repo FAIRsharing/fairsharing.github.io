@@ -45,7 +45,6 @@ class AlertBuilder {
     }
 
     isNeedingReview(needsReviewing) {
-        console.log(this.currentUser.is_curator && needsReviewing)
         if (this.currentUser.is_curator && needsReviewing) {
             this.alerts['isNeedingReview'] = {
                 type: "warning",

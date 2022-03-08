@@ -122,24 +122,24 @@ class BadgeBuilder {
                 finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_0
             }
 
-/*
-            // in case wanting to activate different level of status/ tested data works as expected.
-            if (input === "ready") {
-                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_1
-            }
+            /*
+                        // in case wanting to activate different level of status/ tested data works as expected.
+                        if (input === "ready") {
+                            finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_1
+                        }
 
-            if (input === "in_development") {
-                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_2
-            }
+                        if (input === "in_development") {
+                            finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_2
+                        }
 
-            if (input === "uncertain") {
-                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_3
-            }
+                        if (input === "uncertain") {
+                            finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_3
+                        }
 
-            if (input === "deprecated") {
-                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_4
-            }
-*/
+                        if (input === "deprecated") {
+                            finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_4
+                        }
+            */
 
             return finalBadgeObjectBasedOnLevel
         }

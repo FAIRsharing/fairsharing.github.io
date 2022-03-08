@@ -57,7 +57,7 @@
       "progressHover":"This means record is uncertain!"
     },
     "level_4": {
-      "progress":"25",
+      "progress":"100",
       "progressColor":"ready_color",
       "progressHover":"This means record is deprecated!"
     }

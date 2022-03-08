@@ -65,7 +65,11 @@
       </div>
     </div>
     <div class="ml-md-auto d-flex align-center">
-      <info-badge :current-record="currentRecord" />
+      <info-badge
+        :current-record="currentRecord"
+        :show-progress="false"
+        :show-progress-hover="false"
+      />
     </div>
   </div>
 </template>

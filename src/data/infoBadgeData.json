@@ -1,8 +1,8 @@
 {
   "standard": {
     "level_1": {
-      "progressColor": "gray",
-      "progress": 0,
+      "progress":"100",
+      "progressColor":"ready_color",
       "icon": "model_and_format",
       "textHover": "This is hover text for standard",
       "progressHover": "This is progress text for standard"
@@ -10,8 +10,8 @@
   },
   "database": {
     "level_1": {
-      "progressColor": "gray",
-      "progress": 0,
+      "progress":"100",
+      "progressColor":"ready_color",
       "icon": "repository",
       "textHover": "This is hover text for database",
       "progressHover": "This is progress text for database"
@@ -19,8 +19,8 @@
   },
   "policy": {
     "level_1": {
-      "progressColor": "gray",
-      "progress": 0,
+      "progress":"100",
+      "progressColor":"ready_color",
       "icon": "journal",
       "textHover": "This is hover text for policy",
       "progressHover": "This is progress text for policy"
@@ -28,8 +28,8 @@
   },
   "licences": {
     "level_1": {
-      "progressColor": "gray",
-      "progress": 0,
+      "progress":"100",
+      "progressColor":"ready_color",
       "icon": "licences",
       "textHover": "This is hover text for licence",
       "progressHover": "This is progress text for licence"
@@ -37,8 +37,8 @@
   },
   "status": {
     "level_0": {
+      "progress": "0",
       "progressColor": "gray",
-      "progress": 0,
       "progressHover": "This is level_0 progress text for status- not will be shown normally!"
     },
     "level_1": {
@@ -64,8 +64,8 @@
   },
   "maintainer": {
     "level_1": {
-      "progressColor": "gray",
-      "progress": 0,
+      "progress":"100",
+      "progressColor":"ready_color",
       "icon": "user",
       "textHover": "This is hover text for maintainer",
       "progressHover": "This is progress text for maintainer"
@@ -73,8 +73,8 @@
   },
   "api": {
     "level_1": {
-      "progressColor": "gray",
-      "progress": 0,
+      "progress":"100",
+      "progressColor":"ready_color",
       "icon": "api",
       "textHover": "This is hover text for api",
       "progressHover": "This is progress text for api"
@@ -82,8 +82,8 @@
   },
   "pid": {
     "level_1": {
-      "progressColor": "gray",
-      "progress": 0,
+      "progress":"100",
+      "progressColor":"ready_color",
       "icon": "identifier_schema",
       "textHover": "This is hover text for pid",
       "progressHover": "This is progress text for pid"
@@ -91,8 +91,8 @@
   },
   "certificate": {
     "level_1": {
-      "progressColor": "gray",
-      "progress": 0,
+      "progress":"100",
+      "progressColor":"ready_color",
       "icon": "certificate",
       "textHover": "This is hover text for certificate",
       "progressHover": "This is progress text for certificate"

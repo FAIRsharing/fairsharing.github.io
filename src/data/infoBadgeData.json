@@ -1,0 +1,81 @@
+{
+  "standard": {
+    "level_1": {
+      "progressColor": "gray",
+      "progress": 0,
+      "icon": "model_and_format",
+      "textHover": "This is hover text for standard",
+      "progressHover": "This is progress text for standard"
+    }
+  },
+  "database": {
+    "level_1": {
+      "progressColor": "gray",
+      "progress": 0,
+      "icon": "repository",
+      "textHover": "This is hover text for database",
+      "progressHover": "This is progress text for database"
+    }
+  },
+  "policy": {
+    "level_1": {
+      "progressColor": "gray",
+      "progress": 0,
+      "icon": "journal",
+      "textHover": "This is hover text for policy",
+      "progressHover": "This is progress text for policy"
+    }
+  },
+  "licences": {
+    "level_1": {
+      "progressColor": "gray",
+      "progress": 0,
+      "icon": "licences",
+      "textHover": "This is hover text for licence",
+      "progressHover": "This is progress text for licence"
+    }
+  },
+  "status": {
+    "level_1": {
+      "progressColor": "gray",
+      "progress": 0,
+      "progressHover": "This is progress text for status"
+    }
+  },
+  "maintainer": {
+    "level_1": {
+      "progressColor": "gray",
+      "progress": 0,
+      "icon": "user",
+      "textHover": "This is hover text for maintainer",
+      "progressHover": "This is progress text for maintainer"
+    }
+  },
+  "api": {
+    "level_1": {
+      "progressColor": "gray",
+      "progress": 0,
+      "icon": "api",
+      "textHover": "This is hover text for api",
+      "progressHover": "This is progress text for api"
+    }
+  },
+  "pid": {
+    "level_1": {
+      "progressColor": "gray",
+      "progress": 0,
+      "icon": "identifier_schema",
+      "textHover": "This is hover text for pid",
+      "progressHover": "This is progress text for pid"
+    }
+  },
+  "certificate": {
+    "level_1": {
+      "progressColor": "gray",
+      "progress": 0,
+      "icon": "certificate",
+      "textHover": "This is hover text for certificate",
+      "progressHover": "This is progress text for certificate"
+    }
+  }
+}

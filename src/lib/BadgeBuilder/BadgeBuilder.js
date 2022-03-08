@@ -1,3 +1,5 @@
+import infoBadgeData from "@/data/infoBadgeData.json"
+
 class BadgeBuilder {
     constructor(currentRecord) {
         this.currentRecord = currentRecord;
@@ -28,24 +30,12 @@ class BadgeBuilder {
             const hasAtLeastOneStandard = input.some(item => item.registry.toLowerCase() === "standard");
             // check level 1
             if (standardsLength >= 1 && hasAtLeastOneStandard) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "gray",
-                    progress: 0,
-                    icon: "model_and_format",
-                    textHover: "This is hover text for standard",
-                    progressHover: "This is progress text for standard"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.standard.level_1
             }
 
             // check level 2 --- needed in the future... can check different status and generate different badge objects...
             /*if (any condition) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "red",
-                    progress: 20,
-                    icon: "icon",
-                    textHover: "This is hover text for standard",
-                    progressHover: "This is progress text for this conditon"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.standard.level_2
             }*/
 
             // check level 3 and so on...
@@ -70,13 +60,7 @@ class BadgeBuilder {
             const hasAtLeastOneDatabase = input.some(item => item.registry.toLowerCase() === "database");
             // check level 1
             if (databasesLength >= 1 && hasAtLeastOneDatabase) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "gray",
-                    progress: 0,
-                    icon: "repository",
-                    textHover: "This is hover text for database",
-                    progressHover: "This is progress text for database"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.database.level_1
             }
 
             return finalBadgeObjectBasedOnLevel
@@ -97,13 +81,7 @@ class BadgeBuilder {
             const hasAtLeastOnePolicy = input.some(item => item.registry.toLowerCase() === "policy");
             // check level 1
             if (policiesLength >= 1 && hasAtLeastOnePolicy) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "gray",
-                    progress: 0,
-                    icon: "journal",
-                    textHover: "This is hover text for policy",
-                    progressHover: "This is progress text for policy"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.policy.level_1
             }
             // write level 2 and so on...
 
@@ -122,13 +100,7 @@ class BadgeBuilder {
             let finalBadgeObjectBasedOnLevel = {}
             // check level 1
             if (licencesLength >= 1) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "gray",
-                    progress: 0,
-                    icon: "licences",
-                    textHover: "This is hover text for licence",
-                    progressHover: "This is progress text for licence"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.licences.level_1
             }
             return finalBadgeObjectBasedOnLevel
         }
@@ -146,11 +118,7 @@ class BadgeBuilder {
             let finalBadgeObjectBasedOnLevel = {}
             // check level 1
             if (input) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "gray",
-                    progress: 0,
-                    progressHover: "this indicator shows that a record is at what status"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_1
             }
 
             // possible checks in the future
@@ -182,13 +150,7 @@ class BadgeBuilder {
             let finalBadgeObjectBasedOnLevel = {}
             // check level 1
             if (maintainersLength >= 1) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "gray",
-                    progress: 0,
-                    icon: "user",
-                    textHover: "This is hover text for maintenance",
-                    progressHover: "This is progress text for maintenance"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.maintainer.level_1
             }
 
             return finalBadgeObjectBasedOnLevel
@@ -209,13 +171,7 @@ class BadgeBuilder {
             let finalBadgeObjectBasedOnLevel = {}
             // check level 1
             if (APILength >= 1) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "gray",
-                    progress: 0,
-                    icon: "api",
-                    textHover: "This is hover text for API",
-                    progressHover: "This is progress text for API"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.api.level_1
             }
 
             return finalBadgeObjectBasedOnLevel
@@ -237,13 +193,7 @@ class BadgeBuilder {
             const hasAtLeastOnePID = input.some(item => item.type.toLowerCase() === "identifier_schema");
             // check level 1
             if (PIDLength >= 1 && hasAtLeastOnePID) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "gray",
-                    progress: 0,
-                    icon: "identifier_schema",
-                    textHover: "This is hover text for PID",
-                    progressHover: "This is progress text for PID"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.pid.level_1
             }
 
             return finalBadgeObjectBasedOnLevel
@@ -264,13 +214,7 @@ class BadgeBuilder {
             let finalBadgeObjectBasedOnLevel = {}
             // check level 1
             if (certificateLength >= 1) {
-                finalBadgeObjectBasedOnLevel = {
-                    progressColor: "gray",
-                    progress: 0,
-                    icon: "certificate",
-                    textHover: "This is hover text for certificate",
-                    progressHover: "This is progress text for certificate"
-                }
+                finalBadgeObjectBasedOnLevel = infoBadgeData.certificate.level_1
             }
 
             return finalBadgeObjectBasedOnLevel

@@ -43,7 +43,7 @@ class BadgeBuilder {
             // finally, after all level checks, the final overwritten object will be returned...
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
+        if (this.currentRecord.mergedAssociations) {
             const currentLevelObject = getStandardLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject(
                 "hasStandard",
@@ -65,7 +65,7 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
+        if (this.currentRecord.mergedAssociations) {
             const currentLevelObject = getDatabaseLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject(
                 "hasDatabase",
@@ -87,7 +87,7 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
+        if (this.currentRecord.mergedAssociations) {
             const currentLevelObject = getPolicyLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject("hasPolicy", currentLevelObject)
         }
@@ -104,7 +104,7 @@ class BadgeBuilder {
             }
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.licences && this.currentRecord.licences.length) {
+        if (this.currentRecord.licences) {
             const currentLevelObject = getLicenceLevel(this.currentRecord.licences);
             this.createBadgeObject(
                 "hasLicence",
@@ -117,29 +117,22 @@ class BadgeBuilder {
         const getStatusLevel = (input) => {
             let finalBadgeObjectBasedOnLevel = {}
 
-            // check level 0
-            if (input) {
-                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_0
+            // check level 1
+            if (input === "ready") {
+                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_1
             }
-
-            /*
-                        // in case wanting to activate different level of status/ tested data works as expected.
-                        if (input === "ready") {
-                            finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_1
-                        }
-
-                        if (input === "in_development") {
-                            finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_2
-                        }
-
-                        if (input === "uncertain") {
-                            finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_3
-                        }
-
-                        if (input === "deprecated") {
-                            finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_4
-                        }
-            */
+            // check level 2
+            if (input === "in_development") {
+                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_2
+            }
+            // check level 3
+            if (input === "uncertain") {
+                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_3
+            }
+            // check level 4
+            if (input === "deprecated") {
+                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_4
+            }
 
             return finalBadgeObjectBasedOnLevel
         }
@@ -163,7 +156,7 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.maintainers && this.currentRecord.maintainers.length) {
+        if (this.currentRecord.maintainers) {
             const currentLevelObject = getMaintainerLevel(this.currentRecord.maintainers);
             this.createBadgeObject(
                 "hasMaintainer",
@@ -184,7 +177,7 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.metadata.access_points && this.currentRecord.metadata.access_points.length) {
+        if (this.currentRecord.metadata.access_points) {
             const currentLevelObject = getAPILevel(this.currentRecord.metadata.access_points);
             this.createBadgeObject(
                 "hasAPI",
@@ -206,7 +199,7 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.mergedAssociations && this.currentRecord.mergedAssociations.length) {
+        if (this.currentRecord.mergedAssociations) {
             const currentLevelObject = getPIDLevel(this.currentRecord.mergedAssociations);
             this.createBadgeObject(
                 "hasPID",
@@ -227,7 +220,7 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.metadata.certifications_and_community_badges && this.currentRecord.metadata.certifications_and_community_badges.length) {
+        if (this.currentRecord.metadata.certifications_and_community_badges) {
             const currentLevelObject = getCertificateLevel(this.currentRecord.metadata.certifications_and_community_badges);
             this.createBadgeObject(
                 "hasCertificate",

@@ -39,26 +39,26 @@
     "level_0": {
       "progressColor": "gray",
       "progress": 0,
-      "progressHover": "This is level_0 progress text for status"
+      "progressHover": "This is level_0 progress text for status- not will be shown normally!"
     },
     "level_1": {
       "progress":"100",
-      "progressColor":"#599C0F",
+      "progressColor":"ready_color",
       "progressHover":"This means record is ready!"
     },
     "level_2": {
       "progress":"75",
-      "progressColor":"#CB9221",
+      "progressColor":"dev_color",
       "progressHover":"This means record is in development!"
     },
     "level_3": {
       "progress":"50",
-      "progressColor":"#ADA3A3",
+      "progressColor":"uncertain_color",
       "progressHover":"This means record is uncertain!"
     },
     "level_4": {
       "progress":"25",
-      "progressColor":"#8a3737",
+      "progressColor":"deprecated_color",
       "progressHover":"This means record is deprecated!"
     }
   },

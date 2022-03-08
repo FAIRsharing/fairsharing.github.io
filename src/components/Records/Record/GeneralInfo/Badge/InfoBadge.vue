@@ -79,10 +79,8 @@ export default {
   data() {
     return {
       badges: {},
-      associations: null
     }
   },
-  computed: {},
   mounted() {
     this.currentRecord['fairsharingRecord']['mergedAssociations'] = this.mergedAssociations()
     this.checkBadges()

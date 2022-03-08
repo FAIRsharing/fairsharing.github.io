@@ -7,7 +7,14 @@ class BadgeBuilder {
     }
 
     //----> private functions to create badge object (--> Private method in js starts with (#) <--)
-
+    #createBadgeObject(badgeName, ...props) {
+        if (Object.keys(...props).length !== 0) {
+            this.badges[badgeName] = {}
+            Object.keys(...props).forEach(key => {
+                this.badges[badgeName][key] = props[0][key]
+            })
+        }
+    }
     //----> end of private functions
 
     // hasStandard function is commented with all information for the extending this class
@@ -226,15 +233,6 @@ class BadgeBuilder {
     getBadges() {
         // output all collected badges
         return this.badges;
-    }
-
-    #createBadgeObject(badgeName, ...props) {
-        if (Object.keys(...props).length !== 0) {
-            this.badges[badgeName] = {}
-            Object.keys(...props).forEach(key => {
-                this.badges[badgeName][key] = props[0][key]
-            })
-        }
     }
 
 }

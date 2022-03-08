@@ -104,6 +104,7 @@ describe("RelatedContent.vue", function(){
                         "related to"
                     ],
                     "registry": "Policy",
+                    "recordAssociationLabel": "related to",
                     "subject": "standard",
                     "type": "repository"
                 },
@@ -111,6 +112,7 @@ describe("RelatedContent.vue", function(){
                     "abbreviation": undefined,
                     "id": 4,
                     "linkType": "linkedRecord",
+                    "recordAssociationLabel": "collects",
                     "name": "a name 4",
                     "recordAssocLabel": [
                         "collects"

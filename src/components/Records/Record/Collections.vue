@@ -97,10 +97,10 @@
                           class="red--text mouse-info"
                           v-on="on"
                         >
-                          {{ item.recordAssocLabel }}
+                          {{ item.recordAssociationLabel }}
                         </span>
                       </template>
-                      <span>{{ relationDefinition[item.recordAssocLabel] }}</span>
+                      <span>{{ relationDefinition[item.recordAssociationLabel] }}</span>
                     </v-tooltip>
                     {{ item.subject }}
                   </p>
@@ -158,7 +158,7 @@ export default {
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => item.recordAssocLabel === _module.tabsData.tabs[tabName].relation)
+              .filter(item => item.recordAssociationLabel === _module.tabsData.tabs[tabName].relation)
           _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
         })
       }

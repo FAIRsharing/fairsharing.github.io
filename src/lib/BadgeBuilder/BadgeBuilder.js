@@ -6,15 +6,8 @@ class BadgeBuilder {
         this.badges = {}
     }
 
-    //----> private functions to create badge object
-    createBadgeObject(badgeName, ...props) {
-        if (Object.keys(...props).length !== 0) {
-            this.badges[badgeName] = {}
-            Object.keys(...props).forEach(key => {
-                this.badges[badgeName][key] = props[0][key]
-            })
-        }
-    }
+    //----> private functions to create badge object (--> Private method in js starts with (#) <--)
+
     //----> end of private functions
 
     // hasStandard function is commented with all information for the extending this class
@@ -45,7 +38,7 @@ class BadgeBuilder {
         }
         if (this.currentRecord.mergedAssociations) {
             const currentLevelObject = getStandardLevel(this.currentRecord.mergedAssociations);
-            this.createBadgeObject(
+            this.#createBadgeObject(
                 "hasStandard",
                 currentLevelObject)
         }
@@ -67,7 +60,7 @@ class BadgeBuilder {
         }
         if (this.currentRecord.mergedAssociations) {
             const currentLevelObject = getDatabaseLevel(this.currentRecord.mergedAssociations);
-            this.createBadgeObject(
+            this.#createBadgeObject(
                 "hasDatabase",
                 currentLevelObject)
         }
@@ -89,7 +82,7 @@ class BadgeBuilder {
         }
         if (this.currentRecord.mergedAssociations) {
             const currentLevelObject = getPolicyLevel(this.currentRecord.mergedAssociations);
-            this.createBadgeObject("hasPolicy", currentLevelObject)
+            this.#createBadgeObject("hasPolicy", currentLevelObject)
         }
         return this;
     }
@@ -106,7 +99,7 @@ class BadgeBuilder {
         }
         if (this.currentRecord.licences) {
             const currentLevelObject = getLicenceLevel(this.currentRecord.licences);
-            this.createBadgeObject(
+            this.#createBadgeObject(
                 "hasLicence",
                 currentLevelObject)
         }
@@ -138,7 +131,7 @@ class BadgeBuilder {
         }
         if (this.currentRecord.status) {
             const currentLevelObject = getStatusLevel(this.currentRecord.status);
-            this.createBadgeObject(
+            this.#createBadgeObject(
                 "hasStatus",
                 currentLevelObject)
         }
@@ -158,7 +151,7 @@ class BadgeBuilder {
         }
         if (this.currentRecord.maintainers) {
             const currentLevelObject = getMaintainerLevel(this.currentRecord.maintainers);
-            this.createBadgeObject(
+            this.#createBadgeObject(
                 "hasMaintainer",
                 currentLevelObject
             )
@@ -179,7 +172,7 @@ class BadgeBuilder {
         }
         if (this.currentRecord.metadata.access_points) {
             const currentLevelObject = getAPILevel(this.currentRecord.metadata.access_points);
-            this.createBadgeObject(
+            this.#createBadgeObject(
                 "hasAPI",
                 currentLevelObject
             )
@@ -201,7 +194,7 @@ class BadgeBuilder {
         }
         if (this.currentRecord.mergedAssociations) {
             const currentLevelObject = getPIDLevel(this.currentRecord.mergedAssociations);
-            this.createBadgeObject(
+            this.#createBadgeObject(
                 "hasPID",
                 currentLevelObject
             )
@@ -222,7 +215,7 @@ class BadgeBuilder {
         }
         if (this.currentRecord.metadata.certifications_and_community_badges) {
             const currentLevelObject = getCertificateLevel(this.currentRecord.metadata.certifications_and_community_badges);
-            this.createBadgeObject(
+            this.#createBadgeObject(
                 "hasCertificate",
                 currentLevelObject
             )
@@ -233,6 +226,15 @@ class BadgeBuilder {
     getBadges() {
         // output all collected badges
         return this.badges;
+    }
+
+    #createBadgeObject(badgeName, ...props) {
+        if (Object.keys(...props).length !== 0) {
+            this.badges[badgeName] = {}
+            Object.keys(...props).forEach(key => {
+                this.badges[badgeName][key] = props[0][key]
+            })
+        }
     }
 
 }

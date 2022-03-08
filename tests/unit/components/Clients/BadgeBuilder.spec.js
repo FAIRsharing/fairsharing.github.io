@@ -7,7 +7,6 @@ describe("BadgeBuilder", () => {
     let resp;
     it("can be instantiated badgeBuilder", function () {
         badgeBuilder = new BadgeBuilder(badgeBuilderFakeData);
-        badgeBuilder.createBadgeObject("hasStandard", {})
         expect(typeof badgeBuilder).toBe("object");
     });
 

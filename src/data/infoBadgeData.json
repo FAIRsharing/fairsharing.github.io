@@ -43,22 +43,22 @@
     },
     "level_1": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "progressHover":"This means record is ready!"
     },
     "level_2": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "progressHover":"This means record is in development!"
     },
     "level_3": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "progressHover":"This means record is uncertain!"
     },
     "level_4": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "progressHover":"This means record is deprecated!"
     }
   },

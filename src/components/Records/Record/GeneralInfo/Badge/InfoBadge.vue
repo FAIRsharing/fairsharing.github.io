@@ -94,9 +94,9 @@ export default {
     },
     checkBadges() {
       this.badges = new BadgeBuilder(this.currentRecordLocal['fairsharingRecord'])
+      .hasStatus()
       .hasLicence()
       .hasMaintainer()
-      .hasStatus()
       .hasStandard()
       .hasDatabase()
       .hasPolicy()

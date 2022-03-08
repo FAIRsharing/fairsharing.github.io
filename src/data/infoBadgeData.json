@@ -36,10 +36,30 @@
     }
   },
   "status": {
-    "level_1": {
+    "level_0": {
       "progressColor": "gray",
       "progress": 0,
-      "progressHover": "This is progress text for status"
+      "progressHover": "This is level_0 progress text for status"
+    },
+    "level_1": {
+      "progress":"100",
+      "progressColor":"#599C0F",
+      "progressHover":"This means record is ready!"
+    },
+    "level_2": {
+      "progress":"75",
+      "progressColor":"#CB9221",
+      "progressHover":"This means record is in development!"
+    },
+    "level_3": {
+      "progress":"50",
+      "progressColor":"#ADA3A3",
+      "progressHover":"This means record is uncertain!"
+    },
+    "level_4": {
+      "progress":"25",
+      "progressColor":"#8a3737",
+      "progressHover":"This means record is deprecated!"
     }
   },
   "maintainer": {

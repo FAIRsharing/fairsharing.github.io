@@ -116,22 +116,30 @@ class BadgeBuilder {
     hasStatus() {
         const getStatusLevel = (input) => {
             let finalBadgeObjectBasedOnLevel = {}
-            // check level 1
+
+            // check level 0
             if (input) {
+                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_0
+            }
+
+/*
+            // in case wanting to activate different level of status/ tested data works as expected.
+            if (input === "ready") {
                 finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_1
             }
 
-            // possible checks in the future
-            /*
-                        if (input === "ready") {
-                            finalBadgeObjectBasedOnLevel = {
-                                progressColor: "green",
-                                progress: 100,
-                                icon: "icon",
-                                progressHover: "This is progress text for ready status"
-                            }
-                        }
-            */
+            if (input === "in_development") {
+                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_2
+            }
+
+            if (input === "uncertain") {
+                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_3
+            }
+
+            if (input === "deprecated") {
+                finalBadgeObjectBasedOnLevel = infoBadgeData.status.level_4
+            }
+*/
 
             return finalBadgeObjectBasedOnLevel
         }

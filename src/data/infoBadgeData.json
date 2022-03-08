@@ -2,7 +2,7 @@
   "standard": {
     "level_1": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "icon": "model_and_format",
       "textHover": "This is hover text for standard",
       "progressHover": "This is progress text for standard"
@@ -11,7 +11,7 @@
   "database": {
     "level_1": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "icon": "repository",
       "textHover": "This is hover text for database",
       "progressHover": "This is progress text for database"
@@ -20,7 +20,7 @@
   "policy": {
     "level_1": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "icon": "journal",
       "textHover": "This is hover text for policy",
       "progressHover": "This is progress text for policy"
@@ -29,7 +29,7 @@
   "licences": {
     "level_1": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "icon": "licences",
       "textHover": "This is hover text for licence",
       "progressHover": "This is progress text for licence"
@@ -38,7 +38,7 @@
   "status": {
     "level_0": {
       "progress": "0",
-      "progressColor": "gray",
+      "progressColor": "dark_gray",
       "progressHover": "This is level_0 progress text for status- not will be shown normally!"
     },
     "level_1": {
@@ -47,25 +47,25 @@
       "progressHover":"This means record is ready!"
     },
     "level_2": {
-      "progress":"75",
-      "progressColor":"dev_color",
+      "progress":"100",
+      "progressColor":"ready_color",
       "progressHover":"This means record is in development!"
     },
     "level_3": {
-      "progress":"50",
-      "progressColor":"uncertain_color",
+      "progress":"100",
+      "progressColor":"ready_color",
       "progressHover":"This means record is uncertain!"
     },
     "level_4": {
       "progress":"25",
-      "progressColor":"deprecated_color",
+      "progressColor":"ready_color",
       "progressHover":"This means record is deprecated!"
     }
   },
   "maintainer": {
     "level_1": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "icon": "user",
       "textHover": "This is hover text for maintainer",
       "progressHover": "This is progress text for maintainer"
@@ -74,7 +74,7 @@
   "api": {
     "level_1": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "icon": "api",
       "textHover": "This is hover text for api",
       "progressHover": "This is progress text for api"
@@ -83,7 +83,7 @@
   "pid": {
     "level_1": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "icon": "identifier_schema",
       "textHover": "This is hover text for pid",
       "progressHover": "This is progress text for pid"
@@ -92,7 +92,7 @@
   "certificate": {
     "level_1": {
       "progress":"100",
-      "progressColor":"ready_color",
+      "progressColor":"dark_gray",
       "icon": "certificate",
       "textHover": "This is hover text for certificate",
       "progressHover": "This is progress text for certificate"

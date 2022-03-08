@@ -1,0 +1,353 @@
+{
+  "status": "ready",
+  "licences": [
+    {
+      "id": 1,
+      "name": "licence"
+    }
+  ],
+  "maintainers": [
+    {
+      "id": 1,
+      "name": "maintainer"
+    }
+  ],
+  "metadata": {
+    "access_points": [
+      {
+        "id": 1
+      }
+    ],
+    "certifications_and_community_badges": [
+      {
+        "id": 1
+      }
+    ]
+  },
+  "mergedAssociations": [
+    {
+      "recordAssocLabel": [
+        "recommends"
+      ],
+      "id": 3353,
+      "registry": "Policy",
+      "name": "MNI Open Research",
+      "abbreviation": null,
+      "subject": "GenBank",
+      "type": "journal",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "related_to"
+      ],
+      "id": 1497,
+      "registry": "Standard",
+      "name": "Investigation Study Assay Tabular",
+      "abbreviation": "ISA-Tab",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "identifier_schema",
+      "linkType": "linkedRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "related_to"
+      ],
+      "id": 1414,
+      "registry": "Standard",
+      "name": "Minimum Information about a Molecular Interaction Causal Statement",
+      "abbreviation": "MI2CAST",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "reporting_guideline",
+      "linkType": "linkedRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "related_to"
+      ],
+      "id": 314,
+      "registry": "Standard",
+      "name": "Fission Yeast Phenotype Ontology",
+      "abbreviation": "FYPO",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "terminology_artefact",
+      "linkType": "linkedRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "related_to"
+      ],
+      "id": 458,
+      "registry": "Standard",
+      "name": "PRIDE XML Format",
+      "abbreviation": "PRIDE XML Format",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "model_and_format",
+      "linkType": "linkedRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "related_to"
+      ],
+      "id": 206,
+      "registry": "Standard",
+      "name": "FAANG metadata experiment specification standard",
+      "abbreviation": null,
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "reporting_guideline",
+      "linkType": "linkedRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "related_to"
+      ],
+      "id": 1495,
+      "registry": "Standard",
+      "name": "FAANG metadata sample specification standard",
+      "abbreviation": null,
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "reporting_guideline",
+      "linkType": "linkedRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "related_to"
+      ],
+      "id": 165,
+      "registry": "Standard",
+      "name": "Ontology for Parasite LifeCycle",
+      "abbreviation": "OPL",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "terminology_artefact",
+      "linkType": "linkedRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 1561,
+      "registry": "Database",
+      "name": "ChEMBL",
+      "abbreviation": "ChEMBL",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 1681,
+      "registry": "Database",
+      "name": "neXtProt",
+      "abbreviation": "neXtProt",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 1688,
+      "registry": "Database",
+      "name": "Stem Cell Discovery Engine",
+      "abbreviation": "SCDE",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "repository",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 1711,
+      "registry": "Database",
+      "name": "MetaboLights",
+      "abbreviation": "MTBLS",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "repository",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 1789,
+      "registry": "Database",
+      "name": "BRENDA",
+      "abbreviation": "BRENDA",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 1891,
+      "registry": "Database",
+      "name": "SABIO-RK Biochemical Reaction Kinetics Database",
+      "abbreviation": "SABIO-RK",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "repository",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 1949,
+      "registry": "Database",
+      "name": "The Global Proteome Machine Database",
+      "abbreviation": "gpmDB",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2028,
+      "registry": "Database",
+      "name": "Biological General Repository for Interaction Datasets",
+      "abbreviation": "BioGRID",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2220,
+      "registry": "Database",
+      "name": "ReMap",
+      "abbreviation": "ReMap",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2224,
+      "registry": "Database",
+      "name": "SIGnaling Network Open Resource",
+      "abbreviation": "SIGNOR",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2346,
+      "registry": "Database",
+      "name": "Immune Epitope Database",
+      "abbreviation": "IEDB",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2364,
+      "registry": "Database",
+      "name": "Target Central Resource Database",
+      "abbreviation": "TCRD",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2600,
+      "registry": "Database",
+      "name": "OBO Foundry",
+      "abbreviation": "OBO",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "repository",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2633,
+      "registry": "Database",
+      "name": "Bovine Genome Database",
+      "abbreviation": "BGD",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2716,
+      "registry": "Database",
+      "name": "BovineMine",
+      "abbreviation": "BovineMine",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2866,
+      "registry": "Database",
+      "name": "Chickspress",
+      "abbreviation": "Chickspress",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2869,
+      "registry": "Database",
+      "name": "miRwayDB",
+      "abbreviation": "miRwayDB",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2870,
+      "registry": "Database",
+      "name": "TISSUES",
+      "abbreviation": "TISSUES",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    },
+    {
+      "recordAssocLabel": [
+        "implements"
+      ],
+      "id": 2871,
+      "registry": "Database",
+      "name": "LEAFDATA",
+      "abbreviation": "LEAFDATA",
+      "subject": "BRENDA tissue / enzyme source",
+      "type": "knowledgebase",
+      "linkType": "fairsharingRecord"
+    }
+  ]
+}

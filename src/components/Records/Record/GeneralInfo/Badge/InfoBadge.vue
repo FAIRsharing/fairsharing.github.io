@@ -49,7 +49,7 @@
           <record-status
             v-else
             :show-only-status="true"
-            :record="currentRecord['fairsharingRecord']"
+            :record="currentRecordLocal['fairsharingRecord']"
           />
         </v-progress-circular>
         <b
@@ -79,19 +79,21 @@ export default {
   data() {
     return {
       badges: {},
+      currentRecordLocal:null
     }
   },
   mounted() {
-    this.currentRecord['fairsharingRecord']['mergedAssociations'] = this.mergedAssociations()
+    this.currentRecordLocal = this.currentRecord
+    this.currentRecordLocal['fairsharingRecord']['mergedAssociations'] = this.mergedAssociations()
     this.checkBadges()
   },
   methods: {
     mergedAssociations() {
-      return prepareAssociations(this, this.currentRecord['fairsharingRecord'].recordAssociations,
-          this.currentRecord['fairsharingRecord'].reverseRecordAssociations)
+      return prepareAssociations(this, this.currentRecordLocal['fairsharingRecord'].recordAssociations,
+          this.currentRecordLocal['fairsharingRecord'].reverseRecordAssociations)
     },
     checkBadges() {
-      this.badges = new BadgeBuilder(this.currentRecord['fairsharingRecord'])
+      this.badges = new BadgeBuilder(this.currentRecordLocal['fairsharingRecord'])
       .hasLicence()
       .hasMaintainer()
       .hasStatus()

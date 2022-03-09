@@ -197,10 +197,21 @@ export default {
             //---- end of finding duplicate items ...
           }
           else {
+            let reverseAssociation;
             const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
                 .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) )
-            const reverseAssociation = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].reverseRecordAssociations, [])
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssociationLabel) )
+            // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1580
+            if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
+              reverseAssociation = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].reverseRecordAssociations, [])
+                  .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) &&
+                      item.recordAssociationLabel !== 'extends' &&
+                      !_module.tabsData.tabs[tabName].relation.includes(item.recordAssociationLabel) )
+            }
+            else {
+              reverseAssociation = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].reverseRecordAssociations, [])
+                  .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) &&
+                      !_module.tabsData.tabs[tabName].relation.includes(item.recordAssociationLabel) )
+            }
             _module.tabsData.tabs[tabName].data = reverseAssociation.concat(Association)
           }
           _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;

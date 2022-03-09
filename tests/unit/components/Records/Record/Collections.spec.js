@@ -10,6 +10,7 @@ const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
     name:"standard",
+    registry: 'Standard',
     recordAssociations: [
         {
             linkedRecord: {
@@ -73,5 +74,12 @@ describe("Collections.vue", function(){
         delete Record.state.currentRecord.fairsharingRecord.reverseRecordAssociations
         expect(wrapper.vm.prepareTabsData()).toBe(false)
     });
+
+    it("treats policy records as special", () => {
+        expect(wrapper.vm.tabsData.tabs['in_policies'].relation).toStrictEqual(['recommends']);
+        Record.state.currentRecord["fairsharingRecord"].registry = 'Policy';
+        wrapper.vm.prepareTabsData();
+        expect(wrapper.vm.tabsData.tabs['in_policies'].relation).toStrictEqual(['recommends', 'extends']);
+    })
 
 });

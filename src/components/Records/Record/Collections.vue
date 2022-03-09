@@ -141,9 +141,10 @@ export default {
       selectedValues: null,
       tabsData: {
         selectedTab: 0,
+        // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1580
         tabs: {
-          in_policies: {relation: 'recommends', data: [], count:0},
-          in_collections: {relation: 'collects', data: [], count:0},
+          in_policies: {relation: ['recommends'], data: [], count:0},
+          in_collections: {relation: ['collects'], data: [], count:0},
         }
       }
     }
@@ -155,10 +156,14 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
+      // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1580
+      if (_module.currentRecord['fairsharingRecord'].registry === 'Policy') {
+        this.tabsData.tabs['in_policies'].relation.push('extends');
+      }
       if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
           _module.tabsData.tabs[tabName].data = _module.prepareAssociations([], _module.currentRecord['fairsharingRecord']['reverseRecordAssociations'])
-              .filter(item => item.recordAssociationLabel === _module.tabsData.tabs[tabName].relation)
+              .filter(item => _module.tabsData.tabs[tabName].relation.includes(item.recordAssociationLabel))
           _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
         })
       }

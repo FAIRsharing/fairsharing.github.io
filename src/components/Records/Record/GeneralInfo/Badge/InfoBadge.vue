@@ -17,6 +17,7 @@
             bottom
             nudge-bottom="30"
             :open-on-hover="showProgressHover"
+            :color="badge.progressColor"
           >
             <template #activator="{ on }">
               <div
@@ -44,10 +45,9 @@
                   wrapper-class=""
                 />
                 <!--   if the current badge is standard/policy/database then add a node icon over it               -->
-                
                 <div
                   v-if="key==='hasStandard' || key==='hasDatabase' || key==='hasPolicy'"
-                  style="position:absolute;border:1px gray solid;width:23px;height:23px;top: 55%;left: 50%;background:#ffffff;border-radius:50%;padding:10px;"
+                  class="extra-badge-holder"
                 >
                   <Icon
                     style="position:absolute;top:25%;left:20%;"
@@ -134,5 +134,17 @@ export default {
   height: 87px;
   cursor: help;
   border: 10px solid transparent;
+}
+
+.extra-badge-holder {
+  position: absolute;
+  border: 1px gray solid;
+  width: 23px;
+  height: 23px;
+  top: 55%;
+  left: 50%;
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 10px;
 }
 </style>

@@ -47,7 +47,7 @@
                 
                 <div
                   v-if="key==='hasStandard' || key==='hasDatabase' || key==='hasPolicy'"
-                  style="position:absolute;width:23px;height:23px;top: 55%;left: 50%;background:#27aae1;border-radius:50%;padding:10px;"
+                  style="position:absolute;border:1px gray solid;width:23px;height:23px;top: 55%;left: 50%;background:#ffffff;border-radius:50%;padding:10px;"
                 >
                   <Icon
                     style="position:absolute;top:25%;left:20%;"

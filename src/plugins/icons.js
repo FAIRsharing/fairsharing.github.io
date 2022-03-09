@@ -68,6 +68,10 @@ const customIcons  = {
             type: 'icon',
             icon: 'fa-sync'
         },
+        nodes: {
+            type: 'img',
+            icon: "/assets/icons/nodes.png",
+        },
         licences: {
             type: 'icon',
             icon: 'fa-certificate'

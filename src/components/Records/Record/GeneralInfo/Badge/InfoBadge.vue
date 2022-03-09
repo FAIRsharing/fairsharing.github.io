@@ -34,6 +34,7 @@
           >
             <template #activator="{ on }">
               <div
+                style="position:relative;"
                 v-on="on"
               >
                 <Icon
@@ -42,6 +43,19 @@
                   size="38"
                   wrapper-class=""
                 />
+                <!--   if the current badge is standard/policy/database then add a node icon over it               -->
+                
+                <div
+                  v-if="key==='hasStandard' || key==='hasDatabase' || key==='hasPolicy'"
+                  style="position:absolute;width:23px;height:23px;top: 55%;left: 50%;background:#27aae1;border-radius:50%;padding:10px;"
+                >
+                  <Icon
+                    style="position:absolute;top:25%;left:20%;"
+                    item="nodes"
+                    :height="15"
+                    wrapper-class=""
+                  />
+                </div>
               </div>
             </template>
             {{ badge.textHover }}

@@ -45,6 +45,7 @@ const recordTabUtils = {
                 properties.forEach(prop => {
                     if (Object.prototype.hasOwnProperty.call(item, prop)) {
                         object.recordAssocLabel[0] = _module.cleanString(item.recordAssocLabel);
+                        object.recordAssociationLabel = _module.cleanString(item.recordAssocLabel)
                         object.id = item[prop].id;
                         object.registry = item[prop].registry;
                         object.name = item[prop].name;

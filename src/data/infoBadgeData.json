@@ -4,7 +4,7 @@
       "progress":"100",
       "progressColor":"dark_gray",
       "icon": "model_and_format",
-      "textHover": "This is hover text for standard",
+      "textHover": "This record is related to at least one standard",
       "progressHover": "This is progress text for standard"
     }
   },
@@ -13,7 +13,7 @@
       "progress":"100",
       "progressColor":"dark_gray",
       "icon": "repository",
-      "textHover": "This is hover text for database",
+      "textHover": "This record is related to at least one database",
       "progressHover": "This is progress text for database"
     }
   },
@@ -22,7 +22,7 @@
       "progress":"100",
       "progressColor":"dark_gray",
       "icon": "journal",
-      "textHover": "This is hover text for policy",
+      "textHover": "This record is related to at least one policy",
       "progressHover": "This is progress text for policy"
     }
   },
@@ -31,7 +31,7 @@
       "progress":"100",
       "progressColor":"dark_gray",
       "icon": "licences",
-      "textHover": "This is hover text for licence",
+      "textHover": "At least one licence is described",
       "progressHover": "This is progress text for licence"
     }
   },
@@ -67,7 +67,7 @@
       "progress":"100",
       "progressColor":"dark_gray",
       "icon": "user",
-      "textHover": "This is hover text for maintainer",
+      "textHover": "This record has at least one maintainer",
       "progressHover": "This is progress text for maintainer"
     }
   },
@@ -76,7 +76,7 @@
       "progress":"100",
       "progressColor":"dark_gray",
       "icon": "api",
-      "textHover": "This is hover text for api",
+      "textHover": "At least one programmatic access point is described",
       "progressHover": "This is progress text for api"
     }
   },
@@ -85,7 +85,7 @@
       "progress":"100",
       "progressColor":"dark_gray",
       "icon": "identifier_schema",
-      "textHover": "This is hover text for pid",
+      "textHover": "This record is related to at least one identifier schema",
       "progressHover": "This is progress text for pid"
     }
   },
@@ -94,7 +94,7 @@
       "progress":"100",
       "progressColor":"dark_gray",
       "icon": "certificate",
-      "textHover": "This is hover text for certificate",
+      "textHover": "At least one certificate or community badge is described",
       "progressHover": "This is progress text for certificate"
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <v-card
-    v-if="(allowedFields.properties|| getField('metadata').deprecation_reason) && Object.keys(finalData).length"
+    v-if="(allowedFields.properties|| getField('metadata').deprecation_reason) && finalDataItemsHasLength"
     class="pa-4 d-flex flex-column"
     outlined
     :color="backColor"
@@ -61,6 +61,7 @@ export default {
     return {
       finalData:{},
       tempData:{},
+      finalDataItemsHasLength: true
     }
   },
   computed: {
@@ -74,6 +75,7 @@ export default {
     await this.initializeData()
     await this.$nextTick()
     this.finalData = this.tempData;
+    this.finalDataItemsHasLength = Object.keys(this.finalData).some(key => this.finalData[key].length>=1);
   },
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),

@@ -172,6 +172,7 @@
                             multiple
                             outlined
                             return-object
+                            :rules="[!(menus.newOrganisation.data.country_ids.length === 0)]"
                           >
                             <template #prepend>
                               <v-tooltip

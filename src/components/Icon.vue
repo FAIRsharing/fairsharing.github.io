@@ -2,16 +2,14 @@
   <div :class="[wrapperClass, 'd-flex justify-center']">
     <v-icon
       v-if="!Object.keys($vuetify.icons.values).includes(item)"
-      :large="size === 'large'"
-      :small="size === 'small'"
+      :size="size"
       :color="color"
     >
       {{ $vuetify.icons.values[fallback].icon }}
     </v-icon>
     <v-icon
       v-else-if="$vuetify.icons.values[item].type === 'icon'"
-      :large="size === 'large'"
-      :small="size === 'small'"
+      :size="size"
       :color="color"
     >
       {{ $vuetify.icons.values[item].icon }}
@@ -32,7 +30,7 @@
         name: "Icon",
         props: {
             item: {default: null, type: String},
-            size: {default: 'large', type: String},
+            size: {default: '10', type: String},
             fallback: {default: 'undefined', type: String},
             wrapperClass: {default: 'icon-container', type: String},
             height: {default: 45, type: Number},

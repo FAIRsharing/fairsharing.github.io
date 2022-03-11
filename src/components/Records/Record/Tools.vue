@@ -21,7 +21,7 @@
       >
         <Icon
           item="tools"
-          size="10"
+          size="20"
         />
 
         <v-card-title class="pa-0 text--primary card-title-customize">

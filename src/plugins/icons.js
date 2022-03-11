@@ -68,9 +68,17 @@ const customIcons  = {
             type: 'icon',
             icon: 'fa-sync'
         },
+        nodes: {
+            type: 'img',
+            icon: "/assets/icons/nodes.png",
+        },
         licences: {
             type: 'icon',
             icon: 'fa-certificate'
+        },
+        certificate: {
+            type: 'img',
+            icon: '/assets/icons/certificate-badge.svg'
         },
         frequently_asked_questions_faqs: {
             type: 'icon',
@@ -223,6 +231,10 @@ const customIcons  = {
             type: "icon",
             icon: "fa-graduation-cap"
         },
+        api: {
+            type: "icon",
+            icon: "fa-laptop-code"
+        },
         home_standard: {
             type: "img",
             icon: "/assets/Home/BlockInfo/home-standards.svg"
@@ -258,6 +270,10 @@ const customIcons  = {
         home: {
             type: "icon",
             icon: "fa-home"
+        },
+        user: {
+            type: "icon",
+            icon: "fa-user"
         }
     },
     iconfont: 'fa'

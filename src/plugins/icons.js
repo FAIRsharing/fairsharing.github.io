@@ -77,8 +77,8 @@ const customIcons  = {
             icon: 'fa-certificate'
         },
         certificate: {
-            type: 'icon',
-            icon: 'fa-ribbon'
+            type: 'img',
+            icon: '/assets/icons/certificate-badge.svg'
         },
         frequently_asked_questions_faqs: {
             type: 'icon',

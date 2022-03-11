@@ -30,4 +30,6 @@ export default {
     bg_database_record_card: '#f9f9f9',
     bg_policy_record_card: '#f9f9f9',
     bg_collection_record_card: '#f0f5f9',
+
+    dark_gray:'#727272'
 }

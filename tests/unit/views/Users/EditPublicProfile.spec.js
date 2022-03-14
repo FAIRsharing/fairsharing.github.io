@@ -64,6 +64,7 @@ describe("EditPublicProfile.vue", function () {
     afterAll(() => {
         restStubRole.restore();
         restStubProfile.restore();
+        restStubUser.restore();
     });
 
     beforeEach( async () => {

@@ -317,7 +317,6 @@ export default {
   async mounted() {
     await this.getPublicUserForModification(this.$route.params.id);
     this.data.profileTypes = await restClient.getProfileTypes();
-    this.data.userRoles = await restClient.getUserRoles(this.user().credentials.token);
     if (this.currentPublicUser.preferences) {
       this.formData.username = this.currentPublicUser.username;
       this.formData.id = this.$route.params.id;
@@ -343,6 +342,7 @@ export default {
     ...mapMutations('users', ['cleanStore']),
     async updatePublicProfile () {
       this.loading = true;
+      this.data.userRoles = await restClient.getUserRoles(this.user().credentials.token);
       let data = JSON.parse(JSON.stringify(this.formData));
       data.preferences = {
         hide_email: this.formData.preferences_hide,

@@ -874,7 +874,7 @@ data&lt;-query_con$data
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
-      As an alternative, you can use <mark>PUT /fairsharing_record/1</mark> with the following data structure:
+      As an alternative, you can use <mark>PUT /fairsharing_records/1</mark> with the following data structure:
     </p>
     <vue-code-highlight
       class="code-container mt-2 mb-4"
@@ -1025,14 +1025,14 @@ export default {
               id: 1
             },
             {
-              URL: '/fairsharing_record/1',
+              URL: '/fairsharing_records/1',
               verb: 'GET',
               parameters: 'Record ID',
               description: 'Gets a single FAIRsharing record by ID',
               id: 2
             },
             {
-              URL: '/fairsharing_record/1',
+              URL: '/fairsharing_records/1',
               verb: 'PUT',
               parameters: 'Record ID, FAIRsharing record object (see below)',
               description: 'Updates a single FAIRsharing record by ID',

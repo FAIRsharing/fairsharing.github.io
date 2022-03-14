@@ -18,7 +18,7 @@
         >
           <Icon
             item="howToCite"
-            size="10"
+            size="20"
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
             How to cite this record
@@ -83,7 +83,7 @@
         >
           <Icon
             item="PublicationCitation"
-            size="10"
+            size="20"
           />
           <v-card-title class="pa-0 card-title-customize">
             Publication for citation

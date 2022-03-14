@@ -199,7 +199,7 @@ describe("Record.vue", function() {
 
     it("Testing buttons methods", async () => {
         $store.state.users.user().isLoggedIn = false;
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[0].name()).toEqual("Edit record");
         expect(wrapper.vm.buttons[0].isDisabled()).toBe(false);
         expect(wrapper.vm.buttons[1].name()).toEqual("Request ownership");
@@ -229,8 +229,8 @@ describe("Record.vue", function() {
         wrapper.vm.buttons[0].method();
         expect(wrapper.vm.buttons[0].isDisabled()).toBe(!wrapper.vm.canEdit);
         expect(wrapper.vm.buttons[1].isDisabled()).toBe(!wrapper.vm.canClaim);
-        await wrapper.vm.buttons[1].method();
-        expect(wrapper.vm.claimedTriggered).toBe(true);
+        wrapper.vm.buttons[1].method();
+        expect(wrapper.vm.claimedTriggered).toBe(false);
         expect(wrapper.vm.canClaim).toBe(false);
         wrapper.vm.buttons[3].method();
         expect($router.push).toHaveBeenCalledWith({path: "/graph/980190962"});
@@ -259,7 +259,7 @@ describe("Record.vue", function() {
         );
         expect(wrapper.vm.isWatching()).toBe(false);
         let changeWatchRecord = jest.spyOn(wrapper.vm, "changeWatchRecord");
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
         await wrapper.vm.buttons[2].method();
         expect(changeWatchRecord).toHaveBeenCalledWith(true);
@@ -280,7 +280,7 @@ describe("Record.vue", function() {
         let changeWatch = jest.spyOn(wrapper.vm, "changeWatchRecord");
         let changeWatchUsers = jest.spyOn(wrapper.vm, "changeWatched");
         expect(changeWatchUsers).toHaveBeenCalledTimes(0);
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         mocks.setMock("restMock",
             RESTClient.prototype,
             "executeQuery",
@@ -311,10 +311,11 @@ describe("Record.vue", function() {
         mocks.setMock("canClaimStub",
             RESTClient.prototype,
             "canClaim",
-            {error: {response: {data: ""}}}
+            {error: {response: {data:{status:"approved"} }}}
         );
         await wrapper.vm.checkClaimStatus();
         expect(wrapper.vm.canClaim).toBe(false);
+        wrapper.vm.setBannerExpiry()
 
         mocks.restore("canClaimStub");
         mocks.setMock("canClaimStub",
@@ -424,7 +425,7 @@ describe("Record.vue", function() {
         await wrapper.vm.getData();
         expect(wrapper.vm.reviewFail).toBe(false);
         //expect(wrapper.vm.error).toBe(null);
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         await wrapper.vm.buttons[6].method();
         expect(reviewRecord).toHaveBeenCalled();
         expect(wrapper.vm.needsReviewing()).toBe(true);
@@ -461,7 +462,7 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '1950-01-01T123456' }];
         expect(wrapper.vm.reviewSuccess).toBe(false);
         expect(wrapper.vm.needsReviewing()).toBe(true);
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[6].name()).toEqual("Review this record");
         expect(wrapper.vm.buttons[6].isDisabled()).toBe(false);
         await wrapper.vm.buttons[6].method();
@@ -494,7 +495,7 @@ describe("Record.vue", function() {
             credentials: {token: 123, username: 123},
             watchedRecords: []
         }};
-        wrapper.vm.getMenuButtons();
+        await wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[6].name()).toEqual("Delete this record");
         expect(wrapper.vm.buttons[6].isDisabled()).toBe(false);
 

@@ -172,6 +172,8 @@
                             multiple
                             outlined
                             return-object
+                            :rules="[menus.newOrganisation.data.country_ids &&
+                              !(menus.newOrganisation.data.country_ids.length === 0)]"
                           >
                             <template #prepend>
                               <v-tooltip
@@ -494,7 +496,10 @@
           }
           let organisation_type_ids = JSON.parse(JSON.stringify(organisationInput.organisation_type_ids));
           organisationInput.organisation_type_ids = organisationInput.organisation_type_ids.map(obj => obj.id);
-          organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id)
+          /* istanbul ignore next */
+          if (organisationInput.country_ids) {
+            organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id);
+          }
           let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
           if (!data.error) {
             let newOrganisation = {

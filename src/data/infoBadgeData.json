@@ -1,0 +1,101 @@
+{
+  "standard": {
+    "level_1": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "icon": "model_and_format",
+      "textHover": "This record is related to at least one standard",
+      "progressHover": "This is progress text for standard"
+    }
+  },
+  "database": {
+    "level_1": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "icon": "repository",
+      "textHover": "This record is related to at least one database",
+      "progressHover": "This is progress text for database"
+    }
+  },
+  "policy": {
+    "level_1": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "icon": "journal",
+      "textHover": "This record is related to at least one policy",
+      "progressHover": "This is progress text for policy"
+    }
+  },
+  "licences": {
+    "level_1": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "icon": "licences",
+      "textHover": "At least one licence is described",
+      "progressHover": "This is progress text for licence"
+    }
+  },
+  "status": {
+    "level_0": {
+      "progress": "0",
+      "progressColor": "dark_gray",
+      "progressHover": "This is level_0 progress text for status- not will be shown normally!"
+    },
+    "level_1": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "progressHover":"This means record is ready!"
+    },
+    "level_2": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "progressHover":"This means record is in development!"
+    },
+    "level_3": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "progressHover":"This means record is uncertain!"
+    },
+    "level_4": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "progressHover":"This means record is deprecated!"
+    }
+  },
+  "maintainer": {
+    "level_1": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "icon": "user",
+      "textHover": "This record has at least one maintainer",
+      "progressHover": "This is progress text for maintainer"
+    }
+  },
+  "api": {
+    "level_1": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "icon": "api",
+      "textHover": "At least one programmatic access point is described",
+      "progressHover": "This is progress text for api"
+    }
+  },
+  "pid": {
+    "level_1": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "icon": "identifier_schema",
+      "textHover": "This record is related to at least one identifier schema",
+      "progressHover": "This is progress text for pid"
+    }
+  },
+  "certificate": {
+    "level_1": {
+      "progress":"100",
+      "progressColor":"dark_gray",
+      "icon": "certificate",
+      "textHover": "At least one certificate or community badge is described",
+      "progressHover": "This is progress text for certificate"
+    }
+  }
+}

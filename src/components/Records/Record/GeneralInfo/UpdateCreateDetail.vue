@@ -1,5 +1,10 @@
 <template>
   <div class="d-flex flex-row flex-wrap align-center mt-4 min-height-40">
+    <b class="mr-2">Record ID</b>
+    <p class="ma-0 mr-2 text-body-2">
+      {{ currentRecord['fairsharingRecord'].id }}
+    </p>
+    <span class="mr-2">|</span>
     <Icon
       item="createdAt"
       size="small"

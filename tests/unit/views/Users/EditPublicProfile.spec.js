@@ -45,26 +45,20 @@ describe("EditPublicProfile.vue", function () {
         restStubProfile = sinon.stub(Client.prototype, "getProfileTypes");
         restStubRole = sinon.stub(Client.prototype, "getUserRoles");
         restStubUser = sinon.stub(Client.prototype, "getPublicUser");
-        restStubProfile.returns({
-            data: [
-                "profile 1",
-                "profile 2"
-            ]
-        });
-        restStubRole.returns({
-            data: [
+        restStubProfile.returns([
+              "profile 1",
+              "profile 2"
+        ]);
+        restStubRole.returns([
                 {
                     id: 1,
                     name: 'user'
                 }
-            ]
-        });
+        ]);
         restStubUser.returns({
-            data: {
-                id: 1,
-                username: 'user',
-                email: 'user@user.com'
-            }
+              id: 1,
+              username: 'user',
+              email: 'user@user.com'
         });
     });
     afterAll(() => {
@@ -72,8 +66,8 @@ describe("EditPublicProfile.vue", function () {
         restStubProfile.restore();
     });
 
-    beforeEach( () => {
-        wrapper =  shallowMount(EditPublicProfile, {
+    beforeEach( async () => {
+        wrapper =  await shallowMount(EditPublicProfile, {
             vuetify,
             localVue,
             mocks:{$store,$route,$router}
@@ -86,7 +80,7 @@ describe("EditPublicProfile.vue", function () {
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("EditPublicProfile");
-        expect(wrapper.vm.pageLoad).toBe(true);
+        expect(wrapper.vm.pageLoad).toBe(false);
     });
 
     it("can check if there is no preference in the received data", () => {

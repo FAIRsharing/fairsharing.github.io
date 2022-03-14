@@ -317,9 +317,7 @@ export default {
   async mounted() {
     await this.getPublicUserForModification(this.$route.params.id);
     this.data.profileTypes = await restClient.getProfileTypes();
-    console.log("PT0: " + JSON.stringify(this.data.profileTypes));
     this.data.userRoles = await restClient.getUserRoles(this.user().credentials.token);
-    console.log("UR0: " + JSON.stringify(this.data.userRoles));
     if (this.currentPublicUser.preferences) {
       this.formData.username = this.currentPublicUser.username;
       this.formData.id = this.$route.params.id;
@@ -351,14 +349,11 @@ export default {
         email_updates: this.formData.preferences_send
       };
       data.deactivated = !data.deactivated;
-      console.log("UR1: " + JSON.stringify(this.data.userRoles));
-      console.log("FD1: " + JSON.stringify(this.formData));
       let role_id = this.data.userRoles.filter(role => this.formData.role === role.name)[0].id;
       data.role_id = role_id;
       await this.updatePublicUser(data);
       this.loading = false;
       this.$router.go();
-      //await this.$router.push({path: `/users/${this.$route.params.id}`})
     },
     async deleteAccount() {
       this.loading = true;

@@ -45,6 +45,7 @@ const recordTabUtils = {
                 properties.forEach(prop => {
                     if (Object.prototype.hasOwnProperty.call(item, prop)) {
                         object.recordAssocLabel[0] = _module.cleanString(item.recordAssocLabel);
+                        object.recordAssociationLabel = _module.cleanString(item.recordAssocLabel)
                         object.id = item[prop].id;
                         object.registry = item[prop].registry;
                         object.name = item[prop].name;
@@ -76,6 +77,31 @@ const recordTabUtils = {
         this.prepareTabsData();
         this.getFirstActiveTab();
     }
+}
+
+
+export const prepareAssociations = (context, associations, reverseAssociations) => {
+    let _module = context;
+    let recordAssociations = []
+    let joinedArrays = associations.concat(reverseAssociations);
+    const properties = ['fairsharingRecord', 'linkedRecord'];
+    joinedArrays.forEach((item) => {
+        let object = {recordAssocLabel: []};
+        properties.forEach(prop => {
+            if (Object.prototype.hasOwnProperty.call(item, prop)) {
+                object.recordAssocLabel[0] = item.recordAssocLabel;
+                object.id = item[prop].id;
+                object.registry = item[prop].registry;
+                object.name = item[prop].name;
+                object.abbreviation = item[prop].abbreviation;
+                object.subject = _module.currentRecord['fairsharingRecord'].name;
+                object.type = item[prop].type;
+                object.linkType = prop;
+            }
+        });
+        recordAssociations.push(object);
+    });
+    return recordAssociations;
 }
 
 export default recordTabUtils;

@@ -56,27 +56,40 @@ describe("AdditionalInfo.vue", function(){
     });
 
     it("can check if data is available", async () => {
-        let selectedNode = {item:[1,2]}
-        await wrapper.vm.checkDataAvailable(selectedNode)
-        expect(wrapper.vm.anyDataAvailable).toContainEqual(true);
-
-        selectedNode = {item:[]}
-        await wrapper.vm.checkDataAvailable(selectedNode)
-        expect(wrapper.vm.anyDataAvailable).toContainEqual(true);
-
-        selectedNode = {item:[1,2]}
-        let result = await wrapper.vm.checkDataAvailableCurrentRecord(selectedNode)
-        expect(result).toBe(true);
-        selectedNode = undefined
-        result = await wrapper.vm.checkDataAvailableCurrentRecord(selectedNode)
-        expect(result).toBe(false);
-        selectedNode = {metrics: 'someData',hasMetrics:'yes'}
-        result = await wrapper.vm.checkDataAvailableCurrentRecord(selectedNode)
-        expect(result).toBe(true);
-        selectedNode = {metrics: 'someData',hasMetrics:'no'}
-        result = await wrapper.vm.checkDataAvailableCurrentRecord(selectedNode)
-        expect(result).toBe(true);
-
+        await wrapper.vm.setAvailableData({a:''},'a')
+        expect(wrapper.vm.tempData).toStrictEqual({
+            "a": [
+                {
+                    "a": ""
+                }
+            ],
+            "dataset_deposition": []
+        });
+        let selectedNode = [{'a': 1}, {'b': 2}]
+        await wrapper.vm.setAvailableData(selectedNode,'a')
+        selectedNode = [{a:[]}]
+        await wrapper.vm.setAvailableData(selectedNode,'n')
+        selectedNode = [{}]
+        await wrapper.vm.setAvailableData(selectedNode,'a')
+        expect(wrapper.vm.tempData).toStrictEqual({
+            "a": [
+                {
+                    "a": ""
+                },
+                {
+                    "a": 1
+                },
+                {
+                    "b": 2
+                }
+            ],
+            "dataset_deposition": [],
+            "n": [
+                {
+                    "a": []
+                }
+            ]
+        });
     });
 
 });

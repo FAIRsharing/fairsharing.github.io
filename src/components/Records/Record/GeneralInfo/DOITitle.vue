@@ -1,9 +1,9 @@
 <template>
-  <div class="d-flex mt-4 ml-0">
+  <div class="d-flex flex-wrap mt-4 ml-0">
     <div class="align-self-center width-15-percent-flex">
       <record-status :record="currentRecord['fairsharingRecord']" />
     </div>
-    <div class="align-self-center full-width ml-13">
+    <div class="align-self-center mt-2 mt-sm-0 ml-5 ml-sm-8 ml-md-13">
       <div class="d-flex flex-column">
         <div class="d-flex flex-row align-center">
           <v-img
@@ -64,6 +64,13 @@
         </div>
       </div>
     </div>
+    <div class="ml-md-auto d-flex align-center">
+      <info-badge
+        :current-record="currentRecord"
+        :show-progress="false"
+        :show-progress-hover="false"
+      />
+    </div>
   </div>
 </template>
 
@@ -72,10 +79,12 @@ import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import {mapGetters, mapState} from "vuex";
 import Icon from "@/components/Icon";
 import getAPIEndPoint from "@/utils/generalUtils";
+import InfoBadge from "@/components/Records/Record/GeneralInfo/Badge/InfoBadge";
 
 export default {
   name: "DOITitle",
   components: {
+    InfoBadge,
     Icon,
     RecordStatus
   },

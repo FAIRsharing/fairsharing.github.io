@@ -81,8 +81,8 @@
         href="/licence"
         class="underline-effect"
       ><img
-        src="https://fairsharing.org/static/img/home/FAIRsharingCC-BY-SA.png"
-        alt="fairsharing"
+        src="/assets/home/Footer/FAIRsharingCC-BY-SA.png"
+        alt="fairsharing licence"
       ></a>
     </v-row>
   </v-row>

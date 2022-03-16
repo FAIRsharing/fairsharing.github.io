@@ -24,7 +24,7 @@
             <v-card
               class="mx-auto block-category__card"
               max-width="350"
-              height="320"
+              height="100%"
             >
               <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
                 <div
@@ -65,55 +65,30 @@
         <h2 class="text-h4 my-2">
           No datasets, please
         </h2>
-        <ul class="circles">
-          <li>
-            <span>
-              <strong> No files (excel, doc, csv, sql…), no data relating to an article publication:</strong>
-            </span>
-            <ul class="ticks">
-              <li>The resource should be an organised collection of data and datasets rather than just an individual dataset.</li>
-              <li>The resource is findable. Users can access the database via an active website and can also browse and/or search the database. In contrast, datasets are generally downloadable but not searchable, and therefore are not appropriate for FAIRsharing.</li>
-              <li>The resource is accessible. Irrespective of licence type, the resource is available to users via a dedicated website (even if a log in or payment is required).</li>
-            </ul>
-          </li>
-          <li>
-            <span>
-              <strong>Where should I store my dataset?</strong>
-            </span>
-            <ul class="arrows">
-              <li>
-                <span>
-                  If you would like to find a home for your data, try browsing our complete <a
-                    href="https://fairsharing.org/browse/subject"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >subject hierarchy</a> or searching our <a
-                    href="https://fairsharing.org/databases"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >database records</a> to find an appropriate database for your data type.
-                </span>
-              </li>
-              <li>
-                <span>
-                  Alternatively, you could look at our collection of  <a
-                    href="https://fairsharing.org/GeneralRepositoryComparison"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >Generalist Repositories</a> or browse all <a
-                    href="https://fairsharing.org/browse/subject?term=Subject%2520Agnostic"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >subject-agnostic records</a>, which may provide you with a location to store data from a wider range of research areas. If you are submitting to a particular journal, you can also search for that journal or its publisher; if they are registered with us, then their <a
-                    href="https://fairsharing.org/search?fairsharingRegistry=Policy"
-                    class="underline-effect font-weight-black white--text"
-                    target="_blank"
-                  >FAIRsharing data policy record(s)</a> may contain a list of recommended databases and/or standards.
-                </span>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        <b>Datasets</b>
+        <p style="font-size: 1.1rem!important">
+          FAIRsharing helps researchers find the right database in which to submit their data. However, we do not store data ourselves. If you would like to find a home for your data, try browsing our complete <a
+            href="https://fairsharing.org/browse/subject"
+            class="underline-effect font-weight-black white--text"
+            target="_blank"
+          >subject hierarchy</a> or searching our <a
+            href="https://fairsharing.org/databases"
+            class="underline-effect font-weight-black white--text"
+            target="_blank"
+          >database records</a> to find an appropriate database for your data type. Alternatively, you could look at our collection of <a
+            href="https://fairsharing.org/GeneralRepositoryComparison"
+            class="underline-effect font-weight-black white--text"
+            target="_blank"
+          >Generalist Repositories</a> or browse all <a
+            href="https://fairsharing.org/browse/subject?term=Subject%2520Agnostic"
+            class="underline-effect font-weight-black white--text"
+            target="_blank"
+          >subject-agnostic records</a>, which may provide you with a location to store data from a wider range of research areas. If you are submitting to a particular journal, you can also search for that journal or its publisher; if they are registered with us, then their <a
+            href="https://fairsharing.org/search?fairsharingRegistry=Policy"
+            class="underline-effect font-weight-black white--text"
+            target="_blank"
+          >FAIRsharing data policy record(s)</a> may contain a list of recommended databases and/or standards.
+        </p>
       </v-sheet>
       <v-sheet
         :class="['mb-5 pa-6',{'mx-25-percent':$vuetify.breakpoint.mdAndUp}]"
@@ -193,18 +168,5 @@ export default {
 }
 .v-divider {
   margin: 8px;
-}
-.circles {
-  list-style-type: "\2022";
-}
-.arrows {
- list-style-type: "\27A4";
-}
-.ticks {
- list-style-type: "\2713\0020";
-}
-li span {
-  position: relative;
-  left: 6px;
 }
 </style>

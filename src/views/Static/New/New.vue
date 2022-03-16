@@ -24,7 +24,7 @@
             <v-card
               class="mx-auto block-category__card"
               max-width="350"
-              height="320"
+              height="100%"
             >
               <div class="white--text d-flex flex-column justify-center block-category__card__gradiant">
                 <div

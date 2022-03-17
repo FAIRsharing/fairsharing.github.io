@@ -11,6 +11,7 @@ import users from "@/store/users.js";
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
 import VueSanitize from "vue-sanitize";
+import VueHead from "vue-head";
 import light from "@/plugins/theme";
 
 
@@ -18,8 +19,9 @@ import light from "@/plugins/theme";
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-localVue.use(VueScrollTo,{})
-localVue.use(VueSanitize)
+localVue.use(VueScrollTo,{});
+localVue.use(VueSanitize);
+localVue.use(VueHead);
 
 // Initializing store states and getters
 users.state.user = function(){ return {

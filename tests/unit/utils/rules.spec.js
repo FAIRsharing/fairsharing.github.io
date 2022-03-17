@@ -6,7 +6,8 @@ import {
     isLongEnough,
     isOrcid,
     isImage,
-    isAllowedSize
+    isAllowedSize,
+    isEmailOrUrl
 } from "@/utils/rules.js"
 
 describe('Form validation rules', () => {
@@ -21,6 +22,13 @@ describe('Form validation rules', () => {
         let tester = isEmail();
         expect(tester("test@test.com")).toBe(true);
         expect(tester("test")).toBe("Invalid e-mail.");
+    });
+
+    it("can check if it's an email or url", () => {
+        let tester = isEmailOrUrl();
+        expect(tester("test@test.com")).toBe(true);
+        expect(tester("test")).toBe("Invalid e-mail/url.");
+        expect(tester("wibble.com")).toBe(true);
     });
 
     it("can check if the field is present", () => {

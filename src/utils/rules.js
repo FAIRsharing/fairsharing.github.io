@@ -39,6 +39,19 @@ export function isUrl() {
 }
 
 /**
+* Assess email or email  patterns.
+* @returns {function(*): (boolean|string)}
+*/
+export function isEmailOrUrl(){
+   return value => {
+       const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+       const patternUrl = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi;
+       return pattern.test(value) || patternUrl.test(value) || 'Invalid e-mail/url.'
+   }
+}
+
+
+/**
  * Assess if the string is long enough.
  * @param {Number} length - the length to evaluate the string against.
  * @returns {function(*): (boolean|string)}

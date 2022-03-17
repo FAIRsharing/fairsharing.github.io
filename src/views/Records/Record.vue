@@ -257,6 +257,7 @@ export default {
   },
   data: () => {
     return {
+      recordID: null,
       error: null,
       queryTriggered: false,
       showScrollToTopButton: false,
@@ -302,6 +303,7 @@ export default {
       },
     }
   },
+
   computed: {
     getRecordCardBackground() {
       let finalCardBackColor
@@ -380,6 +382,8 @@ export default {
   async mounted() {
       this.client = new Client();
       await this.getData();
+      this.recordID = this.currentRecord.fairsharingRecord.id;
+      this.$emit('updateHead');
       if (!this.error) {
         await this.canEditRecord();
         await this.checkClaimStatus();
@@ -857,6 +861,19 @@ export default {
       //error
     }
   },
+  head: {
+    links: function() {
+      if (this.recordID) {
+        return [
+          {
+            rel: 'self',
+            type: "application/json",
+            href: process.env.VUE_APP_API_ENDPOINT + "/fairsharing_records/" + this.recordID
+          }
+        ]
+      }
+    }
+  }
 }
 </script>
 <style scoped>

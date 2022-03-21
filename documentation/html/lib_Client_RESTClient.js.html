@@ -802,7 +802,22 @@ class RESTClient {
         const request = {
             method: "get",
             baseURL: this.baseURL + "/users/profile_types",
-            headers: this.headers,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Get the list of available roles for a user.
+     * @returns {Promise}
+     * @param {String} token - the user token
+     */
+    async getUserRoles(userToken){
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/user_roles",
+            headers: this.auth_headers(userToken)
         };
         let response = await this.executeQuery(request);
         return response.data;

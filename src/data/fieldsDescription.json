@@ -6,7 +6,7 @@
     "description": "Free text summary of the resource and its purpose.",
     "countries": " The country or countries in which the resource was developed and/or is currently maintained. As you type, you will be presented with a list of matching values. If the country provided does not match our approved country list, you will be asked to change the value supplied.",
     "deprecation_reason": "An explanation as to why this resource is no longer considered suitable for use.",
-    "species": "The taxonomies covered by this resource. Please use latin names where possible. As you type, you will be presented with a list of matching values in a scrollable, drop-down menu. If you do not find an appropriate species, you may enter your own.",
+    "species": "The organismal taxonomies covered by this resource. Please use Latin names where possible; \"Not applicable\" (species are irrelevant) and \"All\" (all species accepted) are available. If you do not find the required species, contact us to have them added.",
     "subjects": "A discipline is a term describing a subject area / academic discipline used within FAIRsharing records by curators and the user community.",
     "domains": "A domain is a term describing a cross-discipline research domain used within FAIRsharing records by curators and the user community.",
     "userDefinedTags": "User-defined tags that have been created by the user but not yet incorporated into the FAIRsharing vocabularies. New user-defined tags will be added to your record automatically when a new tag is submitted from the Tag Input Field.",

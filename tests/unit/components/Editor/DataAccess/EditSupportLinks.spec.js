@@ -126,15 +126,15 @@ describe("Edit -> EditSupportLinks.vue", function() {
         expect(supportLinks[supportLinks.length -1].url.url).toBe("https://example.com/tess");
         wrapper.vm.edit.template = {
             id: 0,
-            type: "Other",
-            url: "https://example.com/other"
+            type: "Support email",
+            url: "tete.tt@ww.kds.ls"
         };
         wrapper.vm.edit.id = 0;
         wrapper.vm.submitLink();
         expect(supportLinks[0]).toStrictEqual({
             id: 0,
-            type: "Other",
-            url: "https://example.com/other"
+            type: "Support email",
+            url: "tete.tt@ww.kds.ls"
         })
     });
 

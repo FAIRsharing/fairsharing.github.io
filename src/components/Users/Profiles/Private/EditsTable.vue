@@ -8,7 +8,7 @@
       :footer-props="footer"
       calculate-widths
     >
-      <template #[`item.record`]="{ item }">
+      <template #[`item.fairsharingRecord.name`]="{ item }">
         <div class="d-flex justify-start align-center">
           <v-avatar size="30">
             <Icon
@@ -23,7 +23,7 @@
         </div>
       </template>
 
-      <template #[`item.event`]="{ item }">
+      <template #[`item.editEvent`]="{ item }">
         <div class="d-flex justify-start align-center">
           <div class="mt-1 ml-3 alignLeft">
             {{ item.editEvent }}
@@ -31,7 +31,7 @@
         </div>
       </template>
 
-      <template #[`item.type`]="{ item }">
+      <template #[`item.editType`]="{ item }">
         <div class="d-flex justify-start align-center">
           <div class="mt-1 ml-3 alignLeft">
             {{ item.editType }}
@@ -39,7 +39,7 @@
         </div>
       </template>
 
-      <template #[`item.date`]="{ item }">
+      <template #[`item.createdAt`]="{ item }">
         <div class="d-flex justify-start align-center">
           <div class="mt-1 ml-3 alignLeft">
             {{ moment(item.createdAt) }}
@@ -115,10 +115,10 @@ export default {
     ...mapState('users', ['user']),
     headers() {
       let headers = [
-        {text: 'Record', value: 'record', align: 'center'},
-        {text: 'Event', value: 'event', align: 'center'},
-        {text: 'Type', value: 'type', align: 'center'},
-        {text: 'Date', value: 'date', align: 'center'},
+        {text: 'Record', value: 'fairsharingRecord.name', align: 'center'},
+        {text: 'Event', value: 'editEvent', align: 'center'},
+        {text: 'Type', value: 'editType', align: 'center'},
+        {text: 'Date', value: 'createdAt', align: 'center'},
         {text: 'Actions', value: 'actions', align: 'center', sortable: 'false'}
       ];
       return headers;

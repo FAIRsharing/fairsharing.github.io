@@ -165,7 +165,15 @@
                   :rules="[rules.isRequired(), rules.isEmail()]"
                 />
                 <v-text-field
-                  v-if="rule === 'email' || rule === 'url'"
+                  v-if="rule === 'email/url'"
+                  v-model="edit.template.url.url"
+                  outlined
+                  placeholder="Enter an email or url"
+                  label="Support link email or url"
+                  :rules="[rules.isRequired(), rules.isEmailOrUrl()]"
+                />
+                <v-text-field
+                  v-if="rule === 'email' || rule === 'url' || rule === 'email/url'"
                   v-model="edit.template.url.title"
                   outlined
                   placeholder="Enter a resource name"
@@ -210,7 +218,7 @@
 <script>
     import { mapState } from "vuex"
     import { isEqual } from "lodash"
-    import { isRequired, isUrl, isEmail } from "@/utils/rules.js"
+    import { isRequired, isUrl, isEmail, isEmailOrUrl } from "@/utils/rules.js"
     import ExternalClient from "@/lib/Client/ExternalClients.js"
     import Icon from "@/components/Icon";
     import IconsMixin from "@/utils/iconsMixin.js"
@@ -232,7 +240,8 @@
             rules: {
               isRequired: () => {return isRequired()},
               isUrl: () => {return isUrl()},
-              isEmail: () => { return isEmail() }
+              isEmail: () => {return isEmail()},
+              isEmailOrUrl: () => {return isEmailOrUrl()}
             },
             tessRecords: [],
             search: null,

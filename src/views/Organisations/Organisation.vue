@@ -122,7 +122,7 @@
                     <v-list-item-content
                       class="py-0 d-block"
                     >
-                      <b class="blue--text">This organisation belongs to: </b>
+                      <b class="blue--text">This organisation is a member of: </b>
                       <ul>
                         <li
                           v-for="(parent, key) in organisation.parentOrganisations"
@@ -149,7 +149,7 @@
                     <v-list-item-content
                       class="py-0 d-block"
                     >
-                      <b class="blue--text">This organisation controls: </b>
+                      <b class="blue--text">This organisation has the following members: </b>
                       <ul>
                         <li
                           v-for="(child, key) in organisation.childOrganisations"

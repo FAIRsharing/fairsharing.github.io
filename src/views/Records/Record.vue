@@ -864,13 +864,32 @@ export default {
   head: {
     links: function() {
       if (this.recordID) {
-        return [
+        let results = [
           {
             rel: 'self',
             type: "application/json",
             href: process.env.VUE_APP_API_ENDPOINT + "/fairsharing_records/" + this.recordID
           }
         ]
+        let citeAs;
+        // Mysteriously not covered even if a doi value is provided in tests.
+        /* istanbul ignore if */
+        if (this.currentRecord.fairsharingRecord.doi) {
+          citeAs = {
+            rel: 'cite-as',
+            type: "application/html",
+            href: "doi.org/" + this.currentRecord.fairsharingRecord.doi
+          }
+        }
+        else {
+          citeAs = {
+            rel: 'cite-as',
+            type: "application/html",
+            href: process.env.VUE_APP_HOSTNAME + this.recordID
+          }
+        }
+        results.push(citeAs);
+        return results;
       }
     }
   }

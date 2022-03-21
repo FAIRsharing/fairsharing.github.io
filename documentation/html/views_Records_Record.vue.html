@@ -301,6 +301,7 @@ import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import Client from '@/lib/GraphClient/GraphClient.js'
 import RestClient from "@/lib/Client/RESTClient.js"
 import stringUtils from '@/utils/stringUtils';
+import getHostname from "@/utils/generalUtils";
 import GeneralInfo from "@/components/Records/Record/GeneralInfo";
 import Tools from '@/components/Records/Record/Tools';
 import DataConditions from '@/components/Records/Record/DataConditions';
@@ -344,7 +345,7 @@ export default {
     Support,
     NotFound
   },
-  mixins: [stringUtils],
+  mixins: [stringUtils, getHostname],
   props: {
     target: {type: Number, default: null}
   },
@@ -959,29 +960,25 @@ export default {
       if (this.recordID) {
         let results = [
           {
-            rel: 'self',
+            rel: 'describedby',
             type: "application/json",
             href: process.env.VUE_APP_API_ENDPOINT + "/fairsharing_records/" + this.recordID
           }
         ]
-        let citeAs;
+        let citeAsUrl;
         // Mysteriously not covered even if a doi value is provided in tests.
         /* istanbul ignore if */
         if (this.currentRecord.fairsharingRecord.doi) {
-          citeAs = {
-            rel: 'cite-as',
-            type: "application/html",
-            href: "https://doi.org/" + this.currentRecord.fairsharingRecord.doi
-          }
+          citeAsUrl = "https://doi.org/" + this.currentRecord.fairsharingRecord.doi;
         }
         else {
-          citeAs = {
-            rel: 'cite-as',
-            type: "application/html",
-            href: process.env.VUE_APP_HOSTNAME + this.recordID
-          }
+          citeAsUrl = this.getHostname() + this.recordID;
         }
-        results.push(citeAs);
+        results.push({
+          rel: 'cite-as',
+          type: "application/html",
+          href: citeAsUrl
+        });
         return results;
       }
     }

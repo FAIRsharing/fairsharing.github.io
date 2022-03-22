@@ -720,6 +720,9 @@ class RESTClient {
      * @returns {Promise}
      * @param {String} token - the user token
      */
+    // Coverage steadfastly refuses to see this even though it is mocked and called
+    // in a test (see EditPublicProfile.spec.js).
+    /* istanbul ignore next */
     async getUserRoles(userToken){
         const request = {
             method: "get",

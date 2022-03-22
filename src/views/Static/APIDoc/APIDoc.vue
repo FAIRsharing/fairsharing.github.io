@@ -699,7 +699,7 @@ data&lt;-query_con$data
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
-      The IDs for licence links can be seen in the licence-link field of your record, which you can get according to the initial example given earlier, e.g. a GET to <mark>/fairsharing_records/1</mark> (using your record's ID). This field will contain both the ID of the licence and the ID of the link (only the latter is needed).
+      The IDs for licence links can be seen in the licence_link field of your record, which you can get according to the initial example given earlier, e.g. a GET to <mark>/fairsharing_records/1</mark> (using your record's ID). This field will contain both the ID of the licence and the ID of the link (only the latter is needed).
     </p>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"

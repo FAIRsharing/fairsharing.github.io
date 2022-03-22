@@ -305,7 +305,7 @@ export default {
     }
   },
   head: {
-    links: function() {
+    link: function() {
       if (this.recordID) {
         let results = [
           {

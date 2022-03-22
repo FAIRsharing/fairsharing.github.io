@@ -304,7 +304,34 @@ export default {
       },
     }
   },
-
+  head: {
+    links: function() {
+      if (this.recordID) {
+        let results = [
+          {
+            rel: 'describedby',
+            type: "application/json",
+            href: process.env.VUE_APP_API_ENDPOINT + "/fairsharing_records/" + this.recordID
+          }
+        ]
+        let citeAsUrl;
+        // Mysteriously not covered even if a doi value is provided in tests.
+        /* istanbul ignore if */
+        if (this.currentRecord.fairsharingRecord.doi) {
+          citeAsUrl = "https://doi.org/" + this.currentRecord.fairsharingRecord.doi;
+        }
+        else {
+          citeAsUrl = this.getHostname() + this.recordID;
+        }
+        results.push({
+          rel: 'cite-as',
+          type: "application/html",
+          href: citeAsUrl
+        });
+        return results;
+      }
+    }
+  },
   computed: {
     getRecordCardBackground() {
       let finalCardBackColor
@@ -860,34 +887,6 @@ export default {
       }
     } catch (e) {
       //error
-    }
-  },
-  head: {
-    links: function() {
-      if (this.recordID) {
-        let results = [
-          {
-            rel: 'describedby',
-            type: "application/json",
-            href: process.env.VUE_APP_API_ENDPOINT + "/fairsharing_records/" + this.recordID
-          }
-        ]
-        let citeAsUrl;
-        // Mysteriously not covered even if a doi value is provided in tests.
-        /* istanbul ignore if */
-        if (this.currentRecord.fairsharingRecord.doi) {
-          citeAsUrl = "https://doi.org/" + this.currentRecord.fairsharingRecord.doi;
-        }
-        else {
-          citeAsUrl = this.getHostname() + this.recordID;
-        }
-        results.push({
-          rel: 'cite-as',
-          type: "application/html",
-          href: citeAsUrl
-        });
-        return results;
-      }
     }
   }
 }

@@ -208,6 +208,7 @@ import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import Client from '@/lib/GraphClient/GraphClient.js'
 import RestClient from "@/lib/Client/RESTClient.js"
 import stringUtils from '@/utils/stringUtils';
+import getHostname from "@/utils/generalUtils";
 import GeneralInfo from "@/components/Records/Record/GeneralInfo";
 import Tools from '@/components/Records/Record/Tools';
 import DataConditions from '@/components/Records/Record/DataConditions';
@@ -251,12 +252,13 @@ export default {
     Support,
     NotFound
   },
-  mixins: [stringUtils],
+  mixins: [stringUtils, getHostname],
   props: {
     target: {type: Number, default: null}
   },
   data: () => {
     return {
+      recordID: null,
       error: null,
       queryTriggered: false,
       showScrollToTopButton: false,
@@ -300,6 +302,34 @@ export default {
         disableDelButton: true,
         disableButton: false
       },
+    }
+  },
+  head: {
+    link: function() {
+      if (this.recordID) {
+        let results = [
+          {
+            rel: 'describedby',
+            type: "application/json",
+            href: process.env.VUE_APP_API_ENDPOINT + "/fairsharing_records/" + this.recordID
+          }
+        ]
+        let citeAsUrl;
+        // Mysteriously not covered even if a doi value is provided in tests.
+        /* istanbul ignore if */
+        if (this.currentRecord.fairsharingRecord.doi) {
+          citeAsUrl = "https://doi.org/" + this.currentRecord.fairsharingRecord.doi;
+        }
+        else {
+          citeAsUrl = this.getHostname() + this.recordID;
+        }
+        results.push({
+          rel: 'cite-as',
+          type: "application/html",
+          href: citeAsUrl
+        });
+        return results;
+      }
     }
   },
   computed: {
@@ -380,6 +410,8 @@ export default {
   async mounted() {
       this.client = new Client();
       await this.getData();
+      this.recordID = this.currentRecord.fairsharingRecord.id;
+      this.$emit('updateHead');
       if (!this.error) {
         await this.canEditRecord();
         await this.checkClaimStatus();
@@ -856,7 +888,7 @@ export default {
     } catch (e) {
       //error
     }
-  },
+  }
 }
 </script>
 <style scoped>

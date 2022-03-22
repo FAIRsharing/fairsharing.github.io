@@ -11,6 +11,7 @@ import users from "@/store/users.js";
 import sinon from "sinon";
 import VueScrollTo from "vue-scrollto";
 import VueSanitize from "vue-sanitize";
+import VueHead from "vue-head";
 import light from "@/plugins/theme";
 
 
@@ -18,8 +19,9 @@ import light from "@/plugins/theme";
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-localVue.use(VueScrollTo,{})
-localVue.use(VueSanitize)
+localVue.use(VueScrollTo,{});
+localVue.use(VueSanitize);
+localVue.use(VueHead);
 
 // Initializing store states and getters
 users.state.user = function(){ return {
@@ -30,7 +32,8 @@ users.state.user = function(){ return {
 record.state.currentRecord.fairsharingRecord = {
     registry:"Standard",
     maintainers: [{username: 123}],
-    reviews: []
+    reviews: [],
+    doi: "abc123"
 };
 record.getters = {getField: () => () => { return [{username: 123}]}};
 let $store = new Vuex.Store({
@@ -550,7 +553,8 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord = {
             maintainers: [{username: 123}],
             metadata: {},
-            registry:"Database"
+            registry:"Database",
+            doi: "abc123"
         };
         wrapper = await shallowMount(Record, {
             mocks: {$route, $store, $router},
@@ -568,7 +572,7 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord = {
             maintainers: [{username: 123}],
             metadata: {},
-            registry:"Collection",
+            registry:"Collection"
         };
         expect(wrapper.vm.getRecordCardBackground).toBe("#f0f5f9");
     });

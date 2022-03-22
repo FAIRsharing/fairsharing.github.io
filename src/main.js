@@ -19,6 +19,7 @@ import VueCodeHighlight from 'vue-code-highlight';
 import VueSanitize from "vue-sanitize";
 import Particles from "particles.vue";
 import VueGtag from "vue-gtag";
+import VueHead from 'vue-head';
 import "vue-code-highlight/themes/prism-twilight.css";
 import "vue-code-highlight/themes/window.css";
 import 'prism-es6/components/prism-ruby.min';
@@ -61,6 +62,7 @@ Vue.use(VueSanitize);
 Vue.use(VueGtag, {
     config: { id:  process.env.VUE_APP_ANALYTICS_ID }
 });
+Vue.use(VueHead);
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 router.afterEach(async(to) => await afterEach(to));

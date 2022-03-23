@@ -18,4 +18,6 @@ describe('ViewAwards', () => {
         expect(wrapper.vm.perPage).toBe(5)
     });
 
+    // No other functions exist to be tested...
+
 });

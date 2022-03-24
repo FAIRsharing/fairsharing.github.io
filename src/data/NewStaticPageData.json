@@ -1,6 +1,4 @@
 {
-  "header": "Adding content in FAIRsharing",
-  "firstDescription": "The <a href='/communities#governance' class='underline-effect' target='blank'>FAIRsharing Team</a> curates and integrates descriptions of community resources, such as standards and databases, progressively linking both to policies. However, we know that the maintainers of these resources know best. So if you find that the resource you lead or work for has an incomplete or incorrect description, you can either <a href='https://fairsharing.gitbook.io/fairsharing/#claiming-a-record' target='_blank' class='underline-effect'>claim and edit existing record(s)</a> or continue reading to get started with a new record submission, if your resource is missing.",
   "firstBlock": {
     "title": "What to add",
     "items": [

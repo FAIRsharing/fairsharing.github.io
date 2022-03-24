@@ -315,10 +315,6 @@
 
     let client = new ExternalClient();
 
-    /**
-     * @vue-data {Object} hideFields - an array of field to NOT display
-     * */
-
     export default {
       name: "PublicProfile",
       components: {ViewOrganisations, RecordsTable, EditsTable, Loaders, NotFound, UserProfileMenu, Icon, ViewAwards},
@@ -340,12 +336,15 @@
       computed: {
         ...mapState('users', ['user', "messages"]),
         ...mapState('editor', ['icons']),
+        // The deletes here achieve the same function as hideFields in User.vue
         getPublicUserMeta: function(){
           let userMeta = JSON.parse(JSON.stringify(this.userData.user));
           delete userMeta["maintainedRecords"];
           delete userMeta["organisations"];
           delete userMeta["editEvents"];
           delete userMeta["role"];
+          delete userMeta["awards"];
+          delete userMeta["thirdParty"];
           return userMeta;
         },
       },

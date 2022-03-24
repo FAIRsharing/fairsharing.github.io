@@ -257,6 +257,33 @@
                 </v-card-text>
               </v-card>
             </v-col>
+
+            <v-col
+              cols="12"
+              xl="4"
+              lg="6"
+              md="12"
+              sm="12"
+              xs="12"
+              class="pt-0"
+            >
+              <v-card
+                height="100%"
+                class="d-flex flex-column rounded-0"
+              >
+                <v-card-title class="primary white--text py-3">
+                  Awards
+                </v-card-title>
+                <v-card-text
+                  class="pa-0"
+                  style="flex-grow: 1"
+                >
+                  <ViewAwards
+                    :awards="userData.user.awards"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-col>
           </v-row>
         </v-container>
       </v-col>
@@ -283,6 +310,7 @@
     import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
     import { cleanString } from "@/utils/stringUtils"
     import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
+    import ViewAwards from "@/components/Users/Profiles/Private/ViewAwards";
     import Icon from "@/components/Icon";
 
     let client = new ExternalClient();
@@ -293,7 +321,7 @@
 
     export default {
       name: "PublicProfile",
-      components: {ViewOrganisations, RecordsTable, EditsTable, Loaders, NotFound, UserProfileMenu, Icon},
+      components: {ViewOrganisations, RecordsTable, EditsTable, Loaders, NotFound, UserProfileMenu, Icon, ViewAwards},
       mixins: [cleanString],
       data: () => {
         return {
@@ -317,6 +345,7 @@
           delete userMeta["maintainedRecords"];
           delete userMeta["organisations"];
           delete userMeta["editEvents"];
+          delete userMeta["role"];
           return userMeta;
         },
       },

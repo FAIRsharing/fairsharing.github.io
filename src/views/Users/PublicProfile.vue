@@ -317,6 +317,7 @@
           delete userMeta["maintainedRecords"];
           delete userMeta["organisations"];
           delete userMeta["editEvents"];
+          delete userMeta["role"];
           return userMeta;
         },
       },

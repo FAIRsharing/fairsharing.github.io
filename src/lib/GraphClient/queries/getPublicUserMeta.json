@@ -12,6 +12,7 @@
     "username",
     "twitter",
     "thirdParty",
+    "awards",
     "role",
     {"$ref": "maintainedRecords"},
     {

@@ -16,16 +16,16 @@
           target="blank"
         >
           FAIRsharing Team</a> curates and integrates
-        <b>descriptions</b> of community resources, such as standards and databases, progressively linking both to policies. However, the maintainers of these resources know best, and therefore we encourage you to help us keep the description of your resource up to date.
-        You can either <a
+        <b>descriptions</b> of community resources such as standards and databases, progressively linking both to policies. Our curation team keeps track of every record, but resource developers are the experts. We encourage you to take ownership of your resources' records and help us keep your standard, database or policy description up to date.
+        If we already describe your resource, <a
           href="https://fairsharing.gitbook.io/fairsharing/#claiming-a-record"
           target="_blank"
           class="underline-effect"
-        >claim</a> and <a
+        >claim</a> and then <a
           href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/how-to-update-a-record"
           target="_blank"
           class="underline-effect"
-        >edit</a> existing record(s) or, if your resource is missing, please continue reading to get started with a new record submission.
+        >update</a> it as necessary. If your resource is missing, please keep reading to start a new record submission.
       </p>
     </v-sheet>
     <div

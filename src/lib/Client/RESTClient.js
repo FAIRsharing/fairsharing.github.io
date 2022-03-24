@@ -709,7 +709,25 @@ class RESTClient {
         const request = {
             method: "get",
             baseURL: this.baseURL + "/users/profile_types",
-            headers: this.headers,
+            headers: this.headers
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
+     * Get the list of available roles for a user.
+     * @returns {Promise}
+     * @param {String} token - the user token
+     */
+    // Coverage steadfastly refuses to see this even though it is mocked and called
+    // in a test (see EditPublicProfile.spec.js).
+    /* istanbul ignore next */
+    async getUserRoles(userToken){
+        const request = {
+            method: "get",
+            baseURL: this.baseURL + "/user_roles",
+            headers: this.auth_headers(userToken)
         };
         let response = await this.executeQuery(request);
         return response.data;

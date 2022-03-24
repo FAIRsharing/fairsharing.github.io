@@ -4,14 +4,14 @@
     fluid
   >
     <v-alert
-      v-if="!currentPublicUser.username"
+      v-if="!currentPublicUser.username && !pageLoad"
       type="error"
     >
       No user found with id {{ $route.params.id }}.
     </v-alert>
 
     <v-alert
-      v-if="messages().getPublicUser.message"
+      v-if="messages().getPublicUser.message && !pageLoad"
       class="white--text"
       type="error"
     >
@@ -95,6 +95,7 @@
                     :label="field.label"
                     :items="data[field.data]"
                     :rules="field.rules"
+                    item-text="name"
                   />
                 </div>
                 <div v-if="field.type === 'input'">
@@ -196,9 +197,11 @@ export default {
     return {
       valid: false,
       loading: false,
+      pageLoad: true,
       dialog: false,
       data: {
-        profileTypes: []
+        profileTypes: [],
+        userRoles: []
       },
       fields: [
         {
@@ -263,6 +266,16 @@ export default {
           data: "profileTypes"
         },
         {
+          name: "role",
+          label: "Role",
+          hint: null,
+          type: "select",
+          rules: [
+            isRequired()
+          ],
+          data: "userRoles"
+        },
+        {
           name: "preferences_hide",
           label: "Hide your email address on public pages.",
           hint: null,
@@ -293,16 +306,19 @@ export default {
         profile_type: null,
         orcid: null,
         twitter: null,
-        deactivated:null
+        deactivated:null,
+        role: null
       }
     }
   },
   computed: {
-    ...mapState('users',['currentPublicUser','messages']),
+    ...mapState('users',['currentPublicUser','messages', 'user'])
   },
-  async created() {
+  async mounted() {
     await this.getPublicUserForModification(this.$route.params.id);
     this.data.profileTypes = await restClient.getProfileTypes();
+    this.data.userRoles = await restClient.getUserRoles(this.user().credentials.token);
+    /* istanbul ignore else */
     if (this.currentPublicUser.preferences) {
       this.formData.username = this.currentPublicUser.username;
       this.formData.id = this.$route.params.id;
@@ -313,10 +329,12 @@ export default {
       this.formData.last_name = this.currentPublicUser.last_name;
       this.formData.homepage = this.currentPublicUser.homepage;
       this.formData.profile_type = this.currentPublicUser.profile_type;
+      this.formData.role = this.currentPublicUser.role;
       this.formData.orcid = this.currentPublicUser.orcid;
       this.formData.twitter = this.currentPublicUser.twitter;
       this.formData.deactivated = !this.currentPublicUser.deactivated;
     }
+    this.pageLoad = false;
   },
   beforeDestroy() {
     this.cleanStore();
@@ -331,10 +349,12 @@ export default {
         hide_email: this.formData.preferences_hide,
         email_updates: this.formData.preferences_send
       };
-      data.deactivated = !data.deactivated
+      data.deactivated = !data.deactivated;
+      let role_id = this.data.userRoles.filter(role => this.formData.role === role.name)[0].id;
+      data.role_id = role_id;
       await this.updatePublicUser(data);
       this.loading = false;
-      await this.$router.push({path: `/users/${this.$route.params.id}`})
+      this.$router.go();
     },
     async deleteAccount() {
       this.loading = true;

@@ -21,10 +21,12 @@ userStore.state.user = function() {
             preferences: {
                 hide_email: true,
             },
-            profile_type: "profile 1"
+            profile_type: "profile 1",
+            role: 'user'
         },
         credentials: {
-            username: "username"
+            username: "username",
+            token: 123
         }
     }
 };
@@ -37,23 +39,36 @@ let $store = new Vuex.Store({
 $router.go = jest.fn();
 
 describe("EditPublicProfile.vue", function () {
-    let wrapper,restStub;
+    let wrapper, restStubProfile, restStubRole, restStubUser;
 
     beforeAll(() => {
-        restStub = sinon.stub(Client.prototype, "executeQuery");
-        restStub.returns({
-            data: [
-                "profile 1",
-                "profile 2"
-            ]
-        })
+        restStubProfile = sinon.stub(Client.prototype, "getProfileTypes");
+        restStubRole = sinon.stub(Client.prototype, "getUserRoles");
+        restStubUser = sinon.stub(Client.prototype, "getPublicUser");
+        restStubProfile.returns([
+              "profile 1",
+              "profile 2"
+        ]);
+        restStubRole.returns([
+                {
+                    id: 1,
+                    name: 'user'
+                }
+        ]);
+        restStubUser.returns({
+              id: 1,
+              username: 'user',
+              email: 'user@user.com'
+        });
     });
     afterAll(() => {
-        restStub.restore();
+        restStubRole.restore();
+        restStubProfile.restore();
+        restStubUser.restore();
     });
 
-    beforeEach( () => {
-        wrapper =  shallowMount(EditPublicProfile, {
+    beforeEach( async () => {
+        wrapper =  await shallowMount(EditPublicProfile, {
             vuetify,
             localVue,
             mocks:{$store,$route,$router}
@@ -66,6 +81,7 @@ describe("EditPublicProfile.vue", function () {
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("EditPublicProfile");
+        expect(wrapper.vm.pageLoad).toBe(false);
     });
 
     it("can check if there is no preference in the received data", () => {
@@ -73,14 +89,18 @@ describe("EditPublicProfile.vue", function () {
         const wrapper2 =  shallowMount(EditPublicProfile, {
             vuetify,
             localVue,
-            mocks:{$store,$route}
+            mocks:{$store, $route}
         })
         expect(wrapper2.name()).toMatch("EditPublicProfile");
     });
 
     it("can check updatePublicProfile method", async () => {
+        let updatePublicUser = jest.spyOn(wrapper.vm, "updatePublicUser");
+        wrapper.vm.formData.role = 'user';
         await wrapper.vm.updatePublicProfile()
+        expect(updatePublicUser).toHaveBeenCalled();
         expect(wrapper.vm.loading).toBe(false);
+        expect(wrapper.vm.pageLoad).toBe(false);
     });
 
     it("can delete a user", async () => {

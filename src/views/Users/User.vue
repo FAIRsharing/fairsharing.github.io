@@ -339,6 +339,33 @@
                 </v-card-text>
               </v-card>
             </v-col>
+
+            <v-col
+              cols="12"
+              xl="4"
+              lg="6"
+              md="12"
+              sm="12"
+              xs="12"
+              class="pt-0"
+            >
+              <v-card
+                height="100%"
+                class="d-flex flex-column rounded-0"
+              >
+                <v-card-title class="primary white--text py-3">
+                  Awards
+                </v-card-title>
+                <v-card-text
+                  class="pa-0"
+                  style="flex-grow: 1"
+                >
+                  <ViewAwards
+                    :awards="user().metadata.awards"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-col>
           </v-row>
         </v-container>
       </v-col>
@@ -365,6 +392,7 @@
     import { cleanString } from "@/utils/stringUtils"
     import getHostname from "@/utils/generalUtils"
     import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
+    import ViewAwards from "@/components/Users/Profiles/Private/ViewAwards";
 
     let client = new ExternalClient();
 
@@ -374,7 +402,7 @@
 
     export default {
       name: "User",
-      components: {ViewOrganisations, RecordsTable, EditsTable, Loaders, UserProfileMenu},
+      components: {ViewOrganisations, RecordsTable, EditsTable, Loaders, UserProfileMenu, ViewAwards},
       mixins: [cleanString, getHostname],
       data: () => {
         return {
@@ -391,7 +419,8 @@
               "expiry",
               "is_curator",
               "is_super_curator",
-              "editEvents"
+              "editEvents",
+              "awards"
             ],
             loading: false,
             publications: [],

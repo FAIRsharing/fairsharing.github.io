@@ -13,6 +13,7 @@
     "twitter",
     "thirdParty",
     "awards",
+    "role",
     {"$ref": "maintainedRecords"},
     {
       "name": "organisations",

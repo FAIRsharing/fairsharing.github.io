@@ -5,6 +5,29 @@
     <h1 class="text-h4">
       What to add
     </h1>
+    <v-sheet
+      class="my-5 mb-10 pa-6"
+      elevation="3"
+    >
+      <p style="font-size:1.2rem">
+        The <a
+          href="https://fairsharing.org/communities#governance"
+          class="underline-effect"
+          target="blank"
+        >
+          FAIRsharing Team</a> curates and integrates
+        <b>descriptions</b> of community resources such as standards and databases, progressively linking both to policies. Our curation team keeps track of every record, but resource developers are the experts. We encourage you to take ownership of your resources' records and help us keep your standard, database or policy description up to date.
+        If we already describe your resource, <a
+          href="https://fairsharing.gitbook.io/fairsharing/#claiming-a-record"
+          target="_blank"
+          class="underline-effect"
+        >claim</a> and then <a
+          href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/how-to-update-a-record"
+          target="_blank"
+          class="underline-effect"
+        >update</a> it as necessary. If your resource is missing, please keep reading to start a new record submission.
+      </p>
+    </v-sheet>
     <div
       v-if="newData.firstBlock"
       class="mt-2"

@@ -37,7 +37,7 @@
               :small="$vuetify.breakpoint.mdAndDown"
               :x-large="$vuetify.breakpoint.xlOnly"
               class="mr-1 mt-sm-1"
-              color="primary"
+              :color="item.color"
               :outlined="!item.active"
               :to="item.link"
             >
@@ -119,36 +119,42 @@ export default {
           label: "Standards",
           name: "Standard",
           link: "/standards",
+          color: "primary",
           active:false
         },
         {
           label: "Databases",
           name: "Database",
           link: "/databases",
+          color: "primary",
           active:false
         },
         {
           label: "Policies",
           name: "Policy",
           link: "/policies",
+          color: "primary",
           active:false
         },
         {
           label: "Collections",
           name: "Collection",
           link: "/collections",
+          color: "primary",
           active:false
         },
         {
           label: "Add content",
           name: "New",
           link: "/new",
+          color: "dark-grey",
           active:false
         },
         {
           label: "Stats",
           name: "Statistics",
           link: "/summary-statistics",
+          color: "dark-grey",
           active:false
         }
       ]
@@ -214,9 +220,3 @@ header {
     border-bottom: 3px dashed #253442;
 }
 </style>
-
-
-
-
-
-

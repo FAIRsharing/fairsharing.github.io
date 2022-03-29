@@ -121,11 +121,17 @@ describe("Edit -> LinkOverlay.vue", function() {
         await wrapper.vm.createNewOrganisation();
         expect(wrapper.vm.menus.newOrganisation.error).toBe("I am an error");
         wrapper.vm.menus.newOrganisation.logoData = null;
-        restStub.returns({data:{
-                id: 1,
-                name: "test",
-                types: [{name: "?"}]
-            }});
+        restStub.returns({
+            data: {
+                data: {
+                    id: 1,
+                    attributes: {
+                        name: "test"
+                    },
+                    types: [{name: "?"}]
+                }
+            }
+         });
         await wrapper.vm.createNewOrganisation();
         expect(wrapper.vm.organisations).toStrictEqual([{
             id: 1,
@@ -138,6 +144,7 @@ describe("Edit -> LinkOverlay.vue", function() {
     });
 
     it("can create a new grant", async () => {
+        restStub.restore();
         restStub = sinon.stub(RestClient.prototype, "executeQuery");
         restStub.returns({data:{
             error: "I am an error"

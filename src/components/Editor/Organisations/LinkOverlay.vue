@@ -503,11 +503,11 @@
           let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
           if (!data.error) {
             let newOrganisation = {
-              id: data.id,
-              name: data.name,
-              homepage: data.homepage,
+              id: data.data.id,
+              name: data.data.attributes.name,
+              homepage: data.data.attributes.homepage,
               types: organisation_type_ids.map(obj => obj.name),
-              urlForLogo: data['url_for_logo'],
+              urlForLogo: data.data.attributes.url_for_logo,
             };
             this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
             Vue.set(this.organisations, this.organisations.length, newOrganisation);

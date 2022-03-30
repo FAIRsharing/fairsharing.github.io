@@ -7,7 +7,7 @@ class AlertBuilder {
 
     //-- global banners for all users even without authentication
     isAwaitingApproval() {
-        if (!this.currentRecord.fairsharingRecord['isApproved']) {
+        if (this.currentRecord.fairsharingRecord['isApproved'] === false) {
             this.alerts['isAwaitingApproval'] = {
                 type: "info",
                 message: "This record is awaiting review by FAIRsharing curators"

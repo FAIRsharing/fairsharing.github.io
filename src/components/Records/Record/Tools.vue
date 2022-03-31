@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
-    v-if="getField('metadata')['associated_tools']!==undefined && getField('metadata')['associated_tools']!==null"
+    v-if="showTools()"
     class="pa-4 d-flex flex-column"
     outlined
     :color="backColor"
@@ -69,6 +69,16 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+  },
+  methods: {
+    showTools() {
+      const _module = this;
+      if (!Array.isArray(_module.getField('metadata')['associated_tools']) ||
+          !_module.getField('metadata')['associated_tools'].length) {
+        return false;
+      }
+      return true;
+    }
   }
 }
 </script>

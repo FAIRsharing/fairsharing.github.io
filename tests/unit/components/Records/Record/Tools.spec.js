@@ -10,7 +10,7 @@ const vuetify = new Vuetify();
 
 Record.state.currentRecord["fairsharingRecord"] = {
     metadata: {
-        associated_tools: [{}]
+        associated_tools: [{url: 'http://url.com', name: 'name'}]
     },
     taxonomies: [
         {label: "Turdus turdus"},
@@ -42,6 +42,12 @@ describe("Tools.vue", function () {
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("Tools");
+    });
+
+    it("doesn't display if there are no tools to display", () => {
+        expect(wrapper.vm.showTools()).toBe(true);
+        Record.state.currentRecord.fairsharingRecord.metadata.associated_tools = [];
+        expect(wrapper.vm.showTools()).toBe(false);
     });
 
 });

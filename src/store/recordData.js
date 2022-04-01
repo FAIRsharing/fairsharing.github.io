@@ -505,11 +505,16 @@ let recordStore = {
                     newAssociations.push(newAssociation);
                 }
                 else {
-                    oldAssociations.push(association.linkedRecord.id);
+                    // Using a combination of record_id and label_id as this should be unique.
+                    // Using only record_id produced:
+                    // https://github.com/FAIRsharing/fairsharing.github.io/issues/1620
+                    let id = association.linkedRecord.id + "_" + association.recordAssocLabelId;
+                    oldAssociations.push(id);
                 }
             });
             state.sections.relations.initialData.recordAssociations.forEach(oldAssociation => {
-                let id = oldAssociation.linkedRecord.id;
+                // Same unique ID as above.
+                let id = oldAssociation.linkedRecord.id + "_" + oldAssociation.recordAssocLabelId;
                 if (id && !oldAssociations.includes(id)) {
                     deleteAssociations.push({
                         id: oldAssociation.id,

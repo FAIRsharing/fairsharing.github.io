@@ -13,9 +13,9 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to 'https://fairsharing.org/...'
-2. Click on 'button X'
-3. Scroll down to 'section Y'
-4. See error
+2. Click on 'Delete X'
+3. Scroll down to 'section X'
+4. X has not been deleted. 
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.

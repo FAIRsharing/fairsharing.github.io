@@ -18,7 +18,7 @@
       :key="index_two"
     >
       <!-- eslint-disable vue/no-v-html -->
-      <p :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]">
+      <p :class="['mb-2 ml-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]">
         {{ index_two+1 }} . <b>{{ item.black_text }}</b>  {{ item.text }}
       </p>
     </div>

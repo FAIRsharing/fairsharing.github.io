@@ -22,6 +22,8 @@ export const Organisation = () =>  import(/* webpackChunkName: "Organisation-chu
 export const LoginFailure = () =>  import(/* webpackChunkName: "failedLogin-chunk" */ "@/views/Users/Login/LoginFailure");
 export const Stat =  () => import(/* webpackChunkName: "stat-chunk" */ '@/views/Static/Stats/Statistics.vue');
 export const Community =  () => import(/* webpackChunkName: "community-chunk" */ '@/views/Static/Community/Community');
+export const CommunityCuration =  () => import(/* webpackChunkName: "communityCuration-chunk" */ '@/views/Static/CommunityCuration/CommunityCuration');
+export const CommunityCodeOfConduct =  () => import(/* webpackChunkName: "CommunityCodeOfConduct-chunk" */ '@/views/Static/CommunityCodeOfConduct/CommunityCodeOfConduct');
 export const Stakeholders =  () => import(/* webpackChunkName: "stakeholders-chunk" */ '@/views/Static/Stakeholders/Stakeholders');
 export const Timeline =  () => import(/* webpackChunkName: "timeline-chunk" */ '@/views/Static/Timeline/Timeline');
 export const Licence =  () => import(/* webpackChunkName: "licence-chunk" */ '@/views/Static/Licence/Licence');

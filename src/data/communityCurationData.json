@@ -1,0 +1,86 @@
+{
+  "communityCuration":{
+    "first_section":{
+      "main_title": "What is the FAIRsharing Community Curation Programme?",
+      "text": "Do you have a broad and deep understanding of the standards and databases most relevant in your field? Would you like to promote your research community, and ensure that the resources within your community are findable, accessible, and exposed to data management tools, knowledge graphs and other research software? As a FAIRsharing community curator, you can help us help your community be more accurately and comprehensively represented with us. And in return, we have a lot to offer you."
+    },
+    "second_section":{
+      "main_title": "Who are our Community Curators?",
+      "text": "Our user community is diverse in breadth and scope, with a number of <a href='/stakeholders' class='underline-effect' target=blank>stakeholder groups</a>  across all areas of research and research support. In early 2022, we began with a few Early Adopters, who have contributed greatly to the initial success of the programme"
+    },
+    "third_section":{
+      "main_title": "What do Community Curators do?",
+      "text": "The Community Curator Programme creates a collaborative environment where domain experts are selected to oversee certain areas within the FAIRsharing registry in return for a number of professional benefits.",
+      "subsections": [
+        {
+          "title": "Curate for your Community",
+          "content": "Community Curators self-describe their area of expertise. Through their own knowledge and via engagement with the network of experts available on our Community Curator Slack channel, they will manage and curate records within their domain of interest to increase coverage and improve the content of FAIRsharing records. Community Curators work in concert with our existing maintainer community, supplementing their efforts as well as suggesting new maintainers for the in-house FAIRsharing curation team to contact. Each record has over 40 different descriptors, which allows an accurate summary of each resource to be curated within FAIRsharing. Of particular importance to our records is the curation of the ecosystem of resources within any given domain. FAIRsharing allows the connections among standards, databases and policies to be richly described, creating a dynamic network of relationships that can be navigated by our users."
+        },
+        {
+          "title": "Help your Community",
+          "content": "Record maintainers in FAIRsharing are experts in – and must be developers of – a particular standard, database or policy. They curate only those resources they are directly involved with. They form the core of our user community and create a network of collaboration that ensures our records are up to date, but more importantly promotes their resource to help it be more visible, more widely adopted and more cited.\nIn contrast, Community Curators update and manage across an ecosystem of records within their domains of interest. They are able to access all records in their discipline as well as create new ones. Community curators help their own research domains by creating records and collections that aid resource discovery and gap analysis as well as identifying targeted outreach and engagement activities."
+        },
+        {
+          "title": "Attribution for you and your organisations",
+          "content": "All organisations and users within FAIRsharing have their own profiles / homepages with us that describe not just your community, but also link back to all of the records that they are associated with. This ensures attribution for their work and the work of their community.\nCommunity Curators have their status and their domain of expertise listed in the Awards section within their user profiles. Further, as a trusted partner with ORCID, we are in the process of pushing this award to each Curator’s ORCID profile. Such ORCID Service items are awarded annually, as long as the Curator is active with us for at least part of the year."
+        },
+        {
+          "title": "Engagement",
+          "content": "Community Curators have their own Slack channel to provide a space for engagement and networking with a community of like-minded people. During the course of their tenure, Community Curators will be learning data curation at a resource-level of granularity, a skill that gives them knowledge not only about the landscape of standards and databases within their community, but how to accurately describe them.\nFinally, FAIRsharing will request feedback on new features such as new educational material, certification schemes, and design choices from our Community Curators first, providing them with a voice in the direction of the project."
+        }
+      ]
+    },
+    "fourth_section":
+    {
+      "main_title": "How do I get started?",
+      "text": "Make sure you have an account with us ()<a href='https://fairsharing.gitbook.io/fairsharing/' class='underline-effect' target=blank>here's how</a>). Then <a href='mailto:contact@fairsharing.org'>email us</a> with your account information and let us know your domain of interest. We’re looking to engage with Communities across all of the Natural Sciences, Engineering Sciences and Humanities & Social Sciences. We'll be in touch and, if successful, we’ll get you set up with the proper roles. "
+    },
+    "headers_table": [
+      {
+        "text": "Community Curator",
+        "value": "name",
+        "width": 60
+      },
+      {
+        "text": "Organisation",
+        "value": "organisation",
+        "width": 25
+      },
+      {
+        "text": "Scope",
+        "value": "scope",
+        "width": 30
+      }
+    ],
+    "community_curators": [
+      {
+        "name": "Kyle Copas",
+        "id": 5832,
+        "organisation": "GBIF",
+        "id_organisation": 1666,
+        "scope": "Biodiversity"
+      },
+      {
+        "name": "Annie Elkjær Ørum-Kristensen",
+        "id": 6182,
+        "organisation": "GBIF",
+        "id_organisation": 1666,
+        "scope": "Biodiversity"
+      },
+      {
+        "name": "Joe Miller",
+        "id": 6118,
+        "organisation": "GBIF",
+        "id_organisation": 1666,
+        "scope": "Biodiversity"
+      },
+      {
+        "name": "Lindsey Anderson",
+        "id": 5015,
+        "organisation": "PNNL",
+        "url_organisation": "https://www.pnnl.gov/",
+        "scope": "Omics"
+      }
+    ]
+  }
+}

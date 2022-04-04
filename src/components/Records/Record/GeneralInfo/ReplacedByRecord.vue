@@ -1,44 +1,44 @@
 <template>
-  <div
-    v-if="anyAssociationExist"
-    class="d-flex flex-row mt-4 min-height-40"
-  >
-    <b
-      v-if="reverseRecordAssociationExist"
-      class="width-15-percent-flex"
-    >This record is replaced by: </b>
-    <b
-      v-if="recordAssociationExist"
-      class="width-15-percent-flex"
-    > This record replaces or incorporates the following deprecated resources: </b>
-    
-    <div
-      v-if="reverseRecordAssociationExist"
-      class="d-flex full-width flex-column flex-wrap ml-md-14 ml-13"
+  <div>
+    <v-col
+      v-if="anyAssociationExist"
+      class="align-left"
+      cols="12"
     >
-      <router-link
-        v-for="(item,index) in getAllReverseRecordAssociations"
-        :key="item.id+'_'+index"
-        class="underline-effect"
-        :to="'/'+item.fairsharingRecord.id"
+      <div
+        v-if="reverseRecordAssociationExist"
       >
-        {{ item.fairsharingRecord.name }}
-      </router-link>
-    </div>
+        <b>This record is replaced by: </b>
+        <br>
 
-    <div
-      v-if="recordAssociationExist"
-      class="d-flex full-width flex-column flex-wrap ml-md-14 ml-13"
-    >
-      <router-link
-        v-for="(item,index) in getAllRecordAssociations"
-        :key="item.id+'_'+index"
-        class="underline-effect"
-        :to="'/'+item.linkedRecord.id"
+
+        <router-link
+          v-for="(item,index) in getAllReverseRecordAssociations"
+          :key="item.id+'_'+index"
+          class="underline-effect"
+          :to="'/'+item.fairsharingRecord.id"
+        >
+          {{ item.fairsharingRecord.name }}<br>
+        </router-link>
+      </div>
+
+
+      <div
+        v-if="recordAssociationExist"
       >
-        {{ item.linkedRecord.name }}
-      </router-link>
-    </div>
+        <b> This record replaces or incorporates the following deprecated resources: </b>
+        <br>
+
+        <router-link
+          v-for="(item,index) in getAllRecordAssociations"
+          :key="item.id+'_'+index"
+          class="underline-effect"
+          :to="'/'+item.linkedRecord.id"
+        >
+          {{ item.linkedRecord.name }}<br>
+        </router-link>
+      </div>
+    </v-col>
   </div>
 </template>
 

@@ -2,38 +2,33 @@
   "communityCuration":{
     "first_section":{
       "main_title": "What is the FAIRsharing Community Curation Programme?",
-      "text": "Do you have a broad and deep understanding of the standards and databases most relevant in your field? Would you like to promote your research community, and ensure that the resources within your community are findable, accessible, and exposed to data management tools, knowledge graphs and other research software? As a FAIRsharing community curator, you can help us help your community be more accurately and comprehensively represented with us. And in return, we have a lot to offer you."
+      "text": "Our Community Curators promote the standards and databases most relevant to their field or area of focus. They also promote their research community and ensure that the resources within their community are findable, accessible, and exposed to data management tools, knowledge graphs and other research software. As a FAIRsharing Community Curator, you can help us help your community be more accurately and comprehensively represented with us. And in return, we have a lot to offer you."
     },
     "second_section":{
-      "main_title": "Who are our Community Curators?",
+      "main_title": "Our Community Curators",
       "text": "Our user community is diverse in breadth and scope, with a number of <a href='/stakeholders' class='underline-effect' target=blank>stakeholder groups</a>  across all areas of research and research support. In early 2022, we began with a few Early Adopters, who have contributed greatly to the initial success of the programme"
     },
     "third_section":{
-      "main_title": "What do Community Curators do?",
-      "text": "The Community Curator Programme creates a collaborative environment where domain experts are selected to oversee certain areas within the FAIRsharing registry in return for a number of professional benefits.",
+      "main_title": "The Role of Community Curators",
+      "text": "The Community Curation Programme creates a collaborative environment where domain experts are selected to oversee certain areas within the FAIRsharing registry in return for a number of professional benefits.",
       "subsections": [
         {
           "title": "Curate for your Community",
-          "content": "Community Curators self-describe their area of expertise. Through their own knowledge and via engagement with the network of experts available on our Community Curator Slack channel, they will manage and curate records within their domain of interest to increase coverage and improve the content of FAIRsharing records. Community Curators work in concert with our existing maintainer community, supplementing their efforts as well as suggesting new maintainers for the in-house FAIRsharing curation team to contact. Each record has over 40 different descriptors, which allows an accurate summary of each resource to be curated within FAIRsharing. Of particular importance to our records is the curation of the ecosystem of resources within any given domain. FAIRsharing allows the connections among standards, databases and policies to be richly described, creating a dynamic network of relationships that can be navigated by our users."
+          "content": "Community Curators self-describe their area of expertise. Through their own knowledge and via engagement with the network of experts available on our Community Curation Slack channel, they will manage and curate records within their domain of interest to increase coverage and improve the content of FAIRsharing records. Community Curators work in concert with our existing maintainer community, supplementing their efforts as well as suggesting new maintainers for the in-house FAIRsharing curation team to contact. Each record has over 40 different descriptors, which allows an accurate summary of each resource to be curated within FAIRsharing. Of particular importance to our records is the curation of the ecosystem of resources within any given domain. FAIRsharing allows the connections among standards, databases and policies to be richly described, creating a dynamic network of relationships that can be navigated by our users. "
         },
         {
           "title": "Help your Community",
-          "content": "Record maintainers in FAIRsharing are experts in – and must be developers of – a particular standard, database or policy. They curate only those resources they are directly involved with. They form the core of our user community and create a network of collaboration that ensures our records are up to date, but more importantly promotes their resource to help it be more visible, more widely adopted and more cited.\nIn contrast, Community Curators update and manage across an ecosystem of records within their domains of interest. They are able to access all records in their discipline as well as create new ones. Community curators help their own research domains by creating records and collections that aid resource discovery and gap analysis as well as identifying targeted outreach and engagement activities."
+          "content": "Record maintainers in FAIRsharing are experts in – and must be developers of – a particular standard, database or policy. They curate only those resources they are directly involved with. They form the core of our user community and create a network of collaboration that ensures our records are up to date, but more importantly promotes their resource to help it be more visible, more widely adopted and more cited. In contrast, Community Curators update and manage across an ecosystem of records within their domains of interest. They are able to access all records in their discipline as well as create new ones. Community curators help their own research domains by creating records and collections that aid resource discovery and gap analysis as well as identifying targeted outreach and engagement activities."
         },
         {
           "title": "Attribution for you and your organisations",
-          "content": "All organisations and users within FAIRsharing have their own profiles / homepages with us that describe not just your community, but also link back to all of the records that they are associated with. This ensures attribution for their work and the work of their community.\nCommunity Curators have their status and their domain of expertise listed in the Awards section within their user profiles. Further, as a trusted partner with ORCID, we are in the process of pushing this award to each Curator’s ORCID profile. Such ORCID Service items are awarded annually, as long as the Curator is active with us for at least part of the year."
+          "content": "All organisations and users within FAIRsharing have their own profiles / homepages with us that describe not just your community, but also link back to all of the records that they are associated with. This ensures attribution for their work and the work of their community. Community Curators have their status and their domain of expertise listed in the Awards section within their user profiles. Further, as a trusted partner with ORCID, we are in the process of pushing this award to each Curator’s ORCID profile. Such ORCID Service items are awarded annually, as long as the Curator is active with us for at least part of the year."
         },
         {
           "title": "Engagement",
-          "content": "Community Curators have their own Slack channel to provide a space for engagement and networking with a community of like-minded people. During the course of their tenure, Community Curators will be learning data curation at a resource-level of granularity, a skill that gives them knowledge not only about the landscape of standards and databases within their community, but how to accurately describe them.\nFinally, FAIRsharing will request feedback on new features such as new educational material, certification schemes, and design choices from our Community Curators first, providing them with a voice in the direction of the project."
+          "content": "Make sure you have an account with us (<a href='https://fairsharing.gitbook.io/fairsharing/' class='underline-effect' target=blank>here's how</a>here's how</a>). Then Then <a href='mailto:contact@fairsharing.org'>email us</a> with your account information and let us know your domain of interest. We’re looking to engage with Communities across all of the Natural Sciences, Engineering Sciences and Humanities & Social Sciences. We'll be in touch and, if successful, we’ll get you set up with the proper roles."
         }
       ]
-    },
-    "fourth_section":
-    {
-      "main_title": "How do I get started?",
-      "text": "Make sure you have an account with us (<a href='https://fairsharing.gitbook.io/fairsharing/' class='underline-effect' target=blank>here's how</a>). Then <a href='mailto:contact@fairsharing.org'>email us</a> with your account information and let us know your domain of interest. We’re looking to engage with Communities across all of the Natural Sciences, Engineering Sciences and Humanities & Social Sciences. We'll be in touch and, if successful, we’ll get you set up with the proper roles. "
     },
     "headers_table": [
       {
@@ -57,29 +52,101 @@
         "name": "Kyle Copas",
         "id": 5832,
         "organisation": "GBIF",
-        "id_organisation": 1666,
-        "scope": "Biodiversity"
+        "id_organisation": 1166,
+        "scope": "Biodiversity",
+        "orcid": "0000-0002-6590-599X"
       },
       {
         "name": "Annie Elkjær Ørum-Kristensen",
         "id": 6182,
         "organisation": "GBIF",
-        "id_organisation": 1666,
-        "scope": "Biodiversity"
+        "id_organisation": 1166,
+        "scope": "Biodiversity",
+        "orcid": "0000-0002-8326-5789"
       },
       {
         "name": "Joe Miller",
         "id": 6118,
         "organisation": "GBIF",
-        "id_organisation": 1666,
-        "scope": "Biodiversity"
+        "id_organisation": 1166,
+        "scope": "Biodiversity",
+        "orcid": "0000-0002-5788-9010"
       },
       {
         "name": "Lindsey Anderson",
         "id": 5015,
         "organisation": "PNNL",
-        "url_organisation": "https://www.pnnl.gov/",
-        "scope": "Omics"
+        "id_organisation": 2284,
+        "scope": "Omics",
+        "orcid": "0000-0002-8741-7823"
+      }
+    ]
+  },
+  "communityCodeOfConductData":{
+    "main_title": "Code of Conduct",
+    "sections": [
+      {
+        "text": "The FAIRsharing Community Curation Programme is an engaged and respectful community made up of people from all over the world. Your involvement helps us to further our mission and to create an open platform that serves a broad range of communities, from research and research support, to policymakers, funders and societies/organisations."
+      },
+      {
+        "text": "Naturally, this implies diversity of ideas and perspectives on often complex problems. Disagreement and healthy discussion of conflicting viewpoints is welcome: the best solutions to hard problems rarely come from a single angle. Sometimes, we have a tendency to take disagreement personally and easily drift into behaviour that ultimately degrades a community. This is particularly acute with online communication across language and cultural gaps, where many cues of human behaviour are unavailable. We are outlining here a set of principles and processes to support a healthy community in the face of these challenges."
+      },
+      {
+        "text": "Fundamentally, we are committed to fostering a productive, harassment-free environment for everyone. Rather than considering this code an exhaustive list of things that you can’t do, take it in the spirit it is intended - a guide to make it easier to enrich all of us and the communities in which we participate."
+      },
+      {
+        "text": "Importantly: as a member of our community, you are also a steward of these values. Not all problems need to be resolved via formal processes, and often a quick, friendly but clear word on an online forum or in person can help resolve a misunderstanding and de-escalate things."
+      },
+      {
+        "text": "However, sometimes these informal processes may be inadequate: they fail to work, there is urgency or risk to someone, nobody is intervening publicly and you don’t feel comfortable speaking in public, etc. For these or other reasons, structured follow-up may be necessary and here we provide the means for that: we welcome reports by emailing <a href='mailto:contact@fairsharing.org'> contact@fairsharing.org</a> ."
+      },
+      {
+        "text": "This code applies equally to current and members, in all spaces managed by FAIRsharing. This includes the mailing lists, our GitHub organisations, our Slack channel, in-person events, and any other forums created by the project team. In addition, violations of this code outside these spaces may affect a person’s ability to participate within them."
+      }
+    ],
+    "commitments": [
+      {
+        "black_text": "Be friendly and patient.",
+        "text": ""
+      },
+      {
+        "black_text": "Be welcoming.",
+        "text": "We strive to be a community that welcomes and supports people of all backgrounds and identities. This includes, but is not limited to, members of any race, ethnicity, culture, national origin, color, immigration status, social and economic class, educational level, sex, sexual orientation, gender identity and expression, age, physical appearance, family status, technological or professional choices, academic discipline, religion, mental ability, and physical ability."
+      },
+      {
+        "black_text": "Be considerate.",
+        "text": "Your work will be used by other people, and you in turn will depend on the work of others. Any decision you take will affect users and colleagues, and you should take those consequences into account when making decisions. Remember that we’re a world-wide community. You may be communicating with someone with a different primary language or cultural background."
+      },
+      {
+        "black_text": "Be respectful.",
+        "text": "Not all of us will agree all the time, but disagreement is no excuse for poor behaviour or poor manners. We might all experience some frustration now and then, but we cannot allow that frustration to turn into a personal attack. It’s important to remember that a community where people feel uncomfortable or threatened is not a productive one."
+      },
+      {
+        "black_text": "Be careful in the words that you choose.",
+        "text": "Be kind to others. Do not insult or put down other community members. Harassment and other exclusionary behaviour are not acceptable."
+      },
+      {
+        "black_text": "Moderate your expectations.",
+        "text": "Please respect that community members choose how they spend their time in the project. A thoughtful question about your expectations is preferable to demands for another person’s time."
+      },
+      {
+        "black_text": "When we disagree, try to understand why.",
+        "text": "Disagreements, both social and technical, happen all the time and Jupyter is no exception. Try to understand where others are coming from, as seeing a question from their viewpoint may help find a new path forward. And don’t forget that it is human to err: blaming each other doesn’t get us anywhere, while we can learn from mistakes to find better solutions."
+      },
+      {
+        "black_text": "A simple apology can go a long way.",
+        "text": " It can often de-escalate a situation, and telling someone that you are sorry is an act of empathy that doesn’t automatically imply an admission of guilt."
+      }
+    ],
+    "reporting": [
+      {
+        "text": "If you believe someone is violating the code of conduct, please report this in a timely manner. Code of conduct violations reduce the value of the community for everyone and we take them seriously."
+      },
+      {
+        "text": "You can file a report by emailing <a href='mailto:contact@fairsharing.org'> contact@fairsharing.org</a>."
+      },
+      {
+        "text": "Original text courtesy of the <a href='http://web.archive.org/web/20141109123859/http://speakup.io/coc.html'> Speak Up!</a> and <a href='https://www.djangoproject.com/conduct'>Django</a> Projects, modified by <a href='https://fairsharing.org/'>FAIRsharing</a>. We are grateful to those projects for contributing these materials under open licensing terms for us to easily reuse."
       }
     ]
   }

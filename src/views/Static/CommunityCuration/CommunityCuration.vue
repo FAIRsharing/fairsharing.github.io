@@ -55,6 +55,7 @@
         </template>
       </v-data-table>
     </div>
+    <br/>
     <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       {{ communityCurationData.third_section.main_title }}
     </h1>

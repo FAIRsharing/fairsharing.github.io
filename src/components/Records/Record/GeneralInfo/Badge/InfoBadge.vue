@@ -14,6 +14,7 @@
           class="mr-1"
         >
           <v-tooltip
+            v-if="showProgressHover"
             bottom
             nudge-bottom="30"
             :open-on-hover="showProgressHover"
@@ -87,7 +88,7 @@ export default {
   props: {
     currentRecord: {default: null, type: Object},
     showProgress: {default: true, type: Boolean},
-    showProgressHover: {default: true, type: Boolean},
+    showProgressHover: {default: false, type: Boolean},
     showTextHover: {default: true, type: Boolean}
   },
   data() {

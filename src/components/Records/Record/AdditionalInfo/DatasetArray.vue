@@ -49,6 +49,17 @@
         </div>
       </div>
 
+      <!--  Notes    -->
+      <div
+        v-if="item.notes"
+        class="d-flex flex-row align-center min-height-80"
+      >
+        <b class="width-200">Notes</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          {{ item.notes }}
+        </div>
+      </div>
+
       <!--  Portal    -->
       <div
         v-if="item.portal"

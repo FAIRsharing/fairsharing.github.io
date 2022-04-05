@@ -1,9 +1,5 @@
 <template>
   <main class="pa-15 mb-10">
-    <!--  main_title -->
-    <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-      {{ communityCurationData.first_section.main_title }}
-    </h1>
     <!-- eslint-disable vue/no-v-html -->
     <p
       :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -37,18 +33,23 @@
               <a :href="'/users/' + props.item.id">
                 {{ props.item.name }}
               </a>
+              <v-avatar
+                v-if="props.item.orcid"
+                :height="17"
+              >
+                <a :href="'http://orcid.org/' + props.item.orcid">
+                  <Icon
+                    item="Orcid"
+                    :height="17"
+                    wrapper-class=""
+                  />
+                </a>
+              </v-avatar>
             </td>
             <td>
-              <div v-if="props.item.id_organisation">
-                <a :href="'/organisations/' + props.item.id_organisation">
-                  {{ props.item.organisation }}
-                </a>
-              </div>
-              <div v-else>
-                <a :href="props.item.url_organisation">
-                  {{ props.item.organisation }}
-                </a>
-              </div>
+              <a :href="'/organisations/' + props.item.id_organisation">
+                {{ props.item.organisation }}
+              </a>
             </td>
             <td>{{ props.item.scope }}</td>
           </tr>
@@ -78,27 +79,61 @@
         v-html="item.content"
       />
     </div>
+    <!-- eslint-enable vue/no-v-html -->
     <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-      {{ communityCurationData.fourth_section.main_title }}
+      {{ communityCodeOfConductData.main_title }}
     </h1>
-    <!-- eslint-disable vue/no-v-html -->
-    <p
-      :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      v-html="communityCurationData.fourth_section.text"
-    />
+    <div
+      v-for="(item,index) in communityCodeOfConductData.sections"
+      :key="'A'+ index"
+    >
+      <!-- eslint-disable vue/no-v-html -->
+      <p
+        :class="['mb-6 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        v-html="item.text"
+      />
+    </div>
+    <div
+      v-for="(item,index_two) in communityCodeOfConductData.commitments"
+      :key="index_two"
+    >
+      <!-- eslint-disable vue/no-v-html -->
+      <p :class="['mb-2 ml-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]">
+        {{ index_two+1 }} . <b>{{ item.black_text }}</b>  {{ item.text }}
+      </p>
+    </div>
+    <!-- eslint-enable vue/no-v-html -->
+    <h3 class="text-h6 text-xl-h5 mb-2 mt-4">
+      Reporting
+    </h3>
+    <div
+      v-for="(item,index) in communityCodeOfConductData.reporting"
+      :key="'B'+index"
+    >
+      <!-- eslint-disable vue/no-v-html -->
+      <p
+        :class="['mb-3 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        v-html="item.text"
+      />
+    </div>
     <!-- eslint-enable vue/no-v-html -->
   </main>
 </template>
 
 <script>
-import {communityCuration} from '@/data/communityCurationData.json'
+import {communityCuration, communityCodeOfConductData} from '@/data/communityCurationData.json';
+import Icon from "@/components/Icon";
 import getHostname from "@/utils/generalUtils";
     export default {
       name: "CommunityCuration",
+      components: {
+        Icon
+      },
       mixins: [ getHostname ],
       data: () => {
         return {
           communityCurationData: communityCuration,
+          communityCodeOfConductData: communityCodeOfConductData
         }
       }
     }

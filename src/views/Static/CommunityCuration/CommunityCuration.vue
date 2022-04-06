@@ -64,8 +64,10 @@
     >
       <v-expansion-panel>
         <v-expansion-panel-header>
-          <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-            {{ communityCurationData.third_section.main_title }}
+          <h1 class="text-h6 text-xl-h5 mb-2">
+            <strong>
+              {{ communityCurationData.third_section.main_title }}
+            </strong>
           </h1>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -93,8 +95,10 @@
       <!-- eslint-enable vue/no-v-html -->
       <v-expansion-panel>
         <v-expansion-panel-header>
-          <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-            {{ communityCurationData.fourth_section.main_title }}
+          <h1 class="text-h6 text-xl-h5 mb-2">
+            <strong>
+              {{ communityCurationData.fourth_section.main_title }}
+            </strong>
           </h1>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -108,8 +112,10 @@
       </v-expansion-panel>
       <v-expansion-panel>
         <v-expansion-panel-header>
-          <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-            {{ communityCodeOfConductData.main_title }}
+          <h1 class="text-h6 text-xl-h5 mb-2">
+            <strong>
+              {{ communityCodeOfConductData.main_title }}
+            </strong>
           </h1>
         </v-expansion-panel-header>
         <v-expansion-panel-content>

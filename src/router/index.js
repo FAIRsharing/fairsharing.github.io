@@ -25,6 +25,7 @@ import {
     LoginFailure,
     Stat,
     Community,
+    CommunityCuration,
     Stakeholders,
     Timeline,
     Licence,
@@ -196,6 +197,11 @@ let routes = [
         name: "Communities",
         path: "/communities",
         component: Community,
+    },
+    {
+        name: "CommunityCuration",
+        path: "/community_curation",
+        component: CommunityCuration,
     },
     {
         name: "Stakeholders",

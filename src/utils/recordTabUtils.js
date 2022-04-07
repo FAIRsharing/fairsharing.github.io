@@ -35,6 +35,10 @@ const recordTabUtils = {
     },
     methods: {
         /** Combines associations and reserveAssociations into a single array and prepare the data for the search table */
+        /*
+         * This results in a bit of a mess as it camouflages which direction a relationship goes.
+         * TODO: Refactor, somehow.
+         */
         prepareAssociations(associations, reverseAssociations) {
             let _module = this;
             let recordAssociations = []

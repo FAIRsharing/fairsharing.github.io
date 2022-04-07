@@ -7,5 +7,7 @@
   "recommends": "A standard or database can be recommended by a data policy",
   "implements": "This database implements a particular standard",
   "shares data with": "This database shares a portion of data with another database",
-  "shares code with": "This database shares a portion of code with another database"
+  "shares code with": "This database shares a portion of code with another database",
+  "accepts": "This database accepts data that follows a particular standard",
+  "outputs": "This database outputs data that follows a particular standard"
 }

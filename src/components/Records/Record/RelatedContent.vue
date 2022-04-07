@@ -95,8 +95,8 @@
                     <v-tooltip top>
                       <template #activator="{ on }">
                         <span
-                          v-for="(label,indexLabel) in item.recordAssocLabel"
-                          :key="label+'_'+indexLabel"
+                          v-for="(label, indexLabel) in item.recordAssocLabel"
+                          :key="label+'_'+ indexLabel"
                           class="red--text mouse-info"
                           v-on="on"
                         >
@@ -160,8 +160,7 @@ export default {
         selectedTab: 0,
         tabs: {
           related_standards: {registry: ["Standard"], data: [], count:0},
-          related_databases: {registry: ["Database"], data: [], count:0},
-          other_related_records: {relation:["collects","recommends"],registry: ["Collection","Policy"], data: [],count:0},
+          related_databases: {registry: ["Database"], data: [], count:0}
         }
       }
     }
@@ -173,36 +172,36 @@ export default {
     /** Dynamically sets data for each tabs based on the data received from recordAssociations and reverseAssociations*/
     prepareTabsData() {
       const _module = this;
-      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') || Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
+      if (Object.keys(_module.currentRecord['fairsharingRecord']).includes('recordAssociations') ||
+          Object.keys(_module.currentRecord['fairsharingRecord']).includes('reverseRecordAssociations')) {
         Object.keys(_module.tabsData.tabs).forEach(tabName => {
-          if (tabName !== 'other_related_records') {
-            _module.tabsData.tabs[tabName].data = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, _module.currentRecord['fairsharingRecord'].reverseRecordAssociations)
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
-            //---- finding duplicate items and merge them into one and add join their recordAssocLabel labels.
-            let temp = []
-            let duplicatedItemIndexes = []
-            _module.tabsData.tabs[tabName].data.forEach((item,index) => {
-              if (!temp.includes(item.id)) {
-                temp.push(item.id)
-              }
-              else {
-                let duplicatedItemIndex = temp.findIndex(it => it === item.id)
-                duplicatedItemIndexes.push(index)
-                _module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel= [item.recordAssocLabel[0],..._module.tabsData.tabs[tabName].data[duplicatedItemIndex].recordAssocLabel]
-              }
-            })
+          _module.tabsData.tabs[tabName].data = _module.prepareAssociations(
+              _module.currentRecord['fairsharingRecord'].recordAssociations,
+              _module.currentRecord['fairsharingRecord'].reverseRecordAssociations
+          ).filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry))
+          // This replacement code is rather clunky, as it performs an operation in three stages, but it is at
+          // least readable (well, by this non-javascript-programmer).
+          // 1. Create a hash with keys for each linked record ID of all the relations, containing an
+          // array of all relations.
+          let duplicates = {};
+          _module.tabsData.tabs[tabName].data.forEach((item) => {
+            if (!(item.id in duplicates)) {
+              duplicates[item.id] = [];
+            }
+            if (!duplicates[item.id].includes(item.recordAssociationLabel)) {
+              duplicates[item.id].push(item.recordAssociationLabel);
+            }
+          })
+          // 2. Update the tabs data with the duplicated labels.
+          _module.tabsData.tabs[tabName].data.forEach((item) => {
+            item.recordAssocLabel = duplicates[item.id];
+          })
+          // 3. Delete extraneous entries.
+          // Thanks, Stack Overflow!
+          // https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects#comment72641733_36744732
+          _module.tabsData.tabs[tabName].data = _module.tabsData.tabs[tabName].data.filter((thing, index, self) => self.findIndex(t => t.id === thing.id) === index);
 
-            //--remove the duplicates.
-            _module.tabsData.tabs[tabName].data = _module.tabsData.tabs[tabName].data.filter((item,index) =>!duplicatedItemIndexes.includes(index))
-            //---- end of finding duplicate items ...
-          }
-          else {
-            const Association = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].recordAssociations, [])
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) )
-            const reverseAssociation = _module.prepareAssociations(_module.currentRecord['fairsharingRecord'].reverseRecordAssociations, [])
-                .filter(item => _module.tabsData.tabs[tabName].registry.includes(item.registry) && !_module.tabsData.tabs[tabName].relation.includes(item.recordAssociationLabel) )
-            _module.tabsData.tabs[tabName].data = reverseAssociation.concat(Association)
-          }
+          // Duplicates removed, now do the count.
           _module.tabsData.tabs[tabName].count = _module.tabsData.tabs[tabName].data.length;
         });
       }

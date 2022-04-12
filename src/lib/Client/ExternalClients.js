@@ -18,8 +18,8 @@ class ExternalRESTClients {
         this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=";
         this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q=";
         this.orcidBaseURL = "https://pub.orcid.org/v2.0/";
+        this.zenodoURL = "https://zenodo.org/api/records/";
     }
-
     async getDOI(doi){
         let localHeaders = this.headers;
         localHeaders['Accept'] = 'application/json';
@@ -27,6 +27,22 @@ class ExternalRESTClients {
             url: this.doiBaseURL + doi,
             headers: localHeaders
         };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    async getDOIZenodo(doi){
+        let localHeaders = {
+            'access_token': ''
+          };
+        const request = {
+            url: this.zenodoURL+'?q='+encodeURIComponent(doi),
+            headers: localHeaders
+        };
+        if (doi.toLowerCase().includes("zenodo.")){
+          let vecS = doi.toLowerCase().split("zenodo.");
+          request.url = this.zenodoURL+vecS[vecS.length-1];
+        }
         let response = await this.executeQuery(request);
         return response.data;
     }

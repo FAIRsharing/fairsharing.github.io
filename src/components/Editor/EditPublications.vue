@@ -123,7 +123,7 @@
           :loading="loadingPub"
           @click="getDOI()"
         >
-          Import from DOI
+          Import from DOI / Zenodo
         </v-btn>
         <v-btn
           class="green white--text my-3 ml-3"
@@ -436,7 +436,36 @@
             let doi = (' ' + this.search).slice(1).trim(); // make a copy of the string and trim it
             let data = await pubClient.getDOI(doi);
             if (data.error){
-              this.errors.doi = true;
+              let data = await pubClient.getDOIZenodo(doi);
+              if (data.error){
+                this.errors.doi = true;
+              }
+              else{
+                let dataPublication;
+                if (Array.isArray(data)){
+                  dataPublication = data[0];
+                }else{
+                  dataPublication = data;
+                }
+                if(dataPublication.metadata.journal_title){
+                  this.newPublication.journal = dataPublication.metadata.journal_title;
+                }else{
+                  if(dataPublication.metadata.meeting){
+                    this.newPublication.journal = dataPublication.metadata.meeting.title;
+                  }
+                }
+                this.newPublication.doi = dataPublication.doi;
+                this.newPublication.title = dataPublication.metadata.title;
+                this.newPublication.url = dataPublication.links.doi;
+                this.newPublication.year = Number(dataPublication.metadata.publication_date.split("-")[0]);
+                let authors = [];
+                dataPublication.metadata.creators.forEach(function(a) {
+                  authors.push(a.name + "; ");
+                });
+                this.newPublication.authors = authors.join('');
+                this.newPublication.isCitation = false;
+                this.openEditor = true;
+              }
             }
             else {
               /* istanbul ignore next */

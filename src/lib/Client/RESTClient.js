@@ -817,6 +817,24 @@ class RESTClient {
          return response.data;
      }
 
+     /**
+      * Get Zenodo call
+      * @param {String} call
+      * @returns {Promise}
+      */
+      async getZenodoSearch(text){
+          let _client = this;
+          const request = {
+              method: "get",
+              baseURL: _client.baseURL + "/zenodo",
+              headers: this.headers,
+              data: {doi: text}
+          };
+          let response = await _client.executeQuery(request);
+          return response.data;
+      }
+
+
     async uploadLogo(formData) {
         let _client = this;
         const request = {

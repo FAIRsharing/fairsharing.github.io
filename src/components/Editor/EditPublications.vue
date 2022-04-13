@@ -436,7 +436,8 @@
             let doi = (' ' + this.search).slice(1).trim(); // make a copy of the string and trim it
             let data = await pubClient.getDOI(doi);
             if (data.error){
-              let data = await pubClient.getDOIZenodo(doi);
+              let data = await restClient.getZenodoSearch(doi);
+              console.log(data);//pubClient.getDOIZenodo(doi);
               if (data.error){
                 this.errors.doi = true;
               }

@@ -117,12 +117,23 @@
         </v-list-item-group>
         <!--   Can be extended for more input types   -->
       </v-list>
+      <v-card-actions>
+        <v-btn
+          class="primary"
+          :disabled="false"
+          small
+          @click="clearImages()"
+        >
+          Clear
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </div>
 </template>
 
 <script>
 import {isAllowedSize} from "@/utils/rules";
+import Vue from 'vue';
 
 export default {
   name: "UploadFilesPresentation",
@@ -145,7 +156,9 @@ export default {
     },
     clearInput: {
       type: Function,
-      default: () => {}
+      default: () => {
+        this.value = [];
+      }
     },
     downloadFiles: {
       type: Function,
@@ -162,6 +175,15 @@ export default {
   computed:{
     hasError() {
       return this.$refs.fileInput.hasError
+    },
+    imageFiles: {
+      // The get is not used at present.
+      get: function(){
+        return this.fileInfos;
+      },
+      set: function() {
+        Vue.set(this.fileInfos, 0, null);
+      }
     }
   },
   methods:{
@@ -170,6 +192,11 @@ export default {
     },
     async afterUpload(){
       await this.$refs.fileInput.reset()
+    },
+    clearImages(){
+      let deleteExisting = this.fileInfos.length > 0 ? true : false;
+      this.fileInfos.splice(0);
+      this.$emit('clearInput', deleteExisting);
     }
   }
 }

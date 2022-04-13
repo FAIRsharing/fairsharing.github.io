@@ -157,7 +157,9 @@ describe('UploadFiles.vue', () => {
         window.FileReader        = jest.fn(() => dummyFileReader);
         await wrapper3.vm.selectFilesForPreview([mFile,mFile])
         await expect(wrapper.vm.selectedFiles).toBe(null)
-        wrapper3.vm.clearInput()
+        wrapper3.vm.clearInput(false)
+        await expect(wrapper.vm.imagesForUpload).toStrictEqual([])
+        wrapper3.vm.clearInput(true)
         await expect(wrapper.vm.imagesForUpload).toStrictEqual([])
     })
 

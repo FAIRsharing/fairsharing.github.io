@@ -913,14 +913,15 @@ class RESTClient {
      /**
       * Get Zenodo call
       * @param {String} call
+      * @param {String} userToken - the user jwt
       * @returns {Promise}
       */
-      async getZenodoSearch(text){
+      async getZenodoSearch(text, userToken){
           let _client = this;
           const request = {
-              method: "get",
+              method: "post",
               baseURL: _client.baseURL + "/zenodo",
-              headers: this.headers,
+              headers: this.auth_headers(userToken),
               data: {doi: text}
           };
           let response = await _client.executeQuery(request);

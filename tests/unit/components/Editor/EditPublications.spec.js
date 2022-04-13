@@ -116,8 +116,24 @@ const article_zenodo_1 = {
 const article_zenodo_2 = {
     "metadata": {
       "meeting": {
-        "title": "Science"
+        "title": "Science2"
       },
+      "publication_date": "1989-3-12",
+      "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      "creators": [
+          {
+              "name": "Baulieu, E."
+          }
+      ]
+    },
+    "doi" : "10.1126/science.2781282",
+    "links" : {
+      "doi": "https://doi.org/10.1126%2Fscience.2781282"
+    },
+};
+
+const article_zenodo_3 = {
+    "metadata": {
       "publication_date": "1989-3-12",
       "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
       "creators": [
@@ -205,7 +221,7 @@ describe("EditPublications.vue", function() {
         restStub.restore();
     });
 
-    it("can get a DOI from zenodo", async () => {
+    it("can get a DOI from zenodo returning one element with journal title", async () => {
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
         const expectedArticle = {
@@ -225,8 +241,20 @@ describe("EditPublications.vue", function() {
         fetchStub.restore();
         restStub.restore();
 
-        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
-        fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+    });
+
+    it("can get a DOI from zenodo returning more than one element with meeting title", async () => {
+      fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+      fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+        const expectedArticle = {
+            authors: 'Baulieu, E.; ',
+            doi: '10.1126/science.2781282',
+            title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
+            journal: 'Science2',
+            url: 'https://doi.org/10.1126%2Fscience.2781282',
+            year: 1989,
+            isCitation: false,
+        };
         wrapper.vm.search = 'amIaDoi?';
         restStub = sinon.stub(RestClient.prototype, 'executeQuery');
         restStub.returns({data:[article_zenodo_2,article_zenodo_1]});
@@ -234,8 +262,28 @@ describe("EditPublications.vue", function() {
         expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
         fetchStub.restore();
         restStub.restore();
-
     });
+
+    it("can get a DOI from zenodo returning publication without journal", async () => {
+      fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+      fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+      const expectedArticle = {
+          authors: 'Baulieu, E.; ',
+          doi: '10.1126/science.2781282',
+          title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
+          url: 'https://doi.org/10.1126%2Fscience.2781282',
+          year: 1989,
+          isCitation: false,
+      };
+      wrapper.vm.search = 'amIaDoi?';
+      restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+      restStub.returns({data:article_zenodo_3});
+      await wrapper.vm.getDOI();
+      expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
+      fetchStub.restore();
+      restStub.restore();
+
+  });
 
     it("can get a PMID and process related errors", async () => {
         let returnedData = {

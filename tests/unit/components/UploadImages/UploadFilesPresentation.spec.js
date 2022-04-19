@@ -38,13 +38,15 @@ describe('UploadFilesPresentation.vue', () => {
         await wrapper.vm.afterUpload()
         expect(wrapper.name()).toMatch("UploadFilesPresentation");
 
-        expect(wrapper.vm.imageFiles).toStrictEqual([]);
-        Vue.set(wrapper.vm.fileInfos, 0, {this: 'that'});
-        expect(wrapper.vm.imageFiles).toStrictEqual([{this: 'that'}]);
+        expect(wrapper.vm.imageInfo).toStrictEqual([]);
         wrapper.vm.clearImages();
-        expect(wrapper.vm.imageFiles).toStrictEqual([]);
+        expect(wrapper.vm.imageInfo).toStrictEqual([]);
+        Vue.set(wrapper.vm.imageInfo, 0, {this: 'that'});
+        expect(wrapper.vm.imageInfo).toStrictEqual([{this: 'that'}]);
         wrapper.vm.clearImages();
-        expect(wrapper.vm.imageFiles).toStrictEqual([]);
+        expect(wrapper.vm.imageInfo).toStrictEqual([]);
+        wrapper.vm.clearImages();
+        expect(wrapper.vm.imageInfo).toStrictEqual([]);
     });
 
 

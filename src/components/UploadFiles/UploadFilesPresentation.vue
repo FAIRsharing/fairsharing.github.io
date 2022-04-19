@@ -70,7 +70,7 @@
 
     <!--  Showing default single Image or list of Images  -->
     <v-card
-      v-if="fileInfos.length > 0"
+      v-if="imageInfo.length > 0"
       class="mx-auto mt-1"
     >
       <v-list>
@@ -82,7 +82,7 @@
           color="primary"
         >
           <v-list-item
-            v-for="(file, index) in fileInfos"
+            v-for="(file, index) in imageInfo"
             :key="file.size+''+index"
           >
             <v-list-item-content>
@@ -105,7 +105,7 @@
           color="primary"
         >
           <v-list-item
-            v-for="(file, index) in fileInfos"
+            v-for="(file, index) in imageInfo"
             :key="file.size+''+index"
           >
             <v-list-item-content>
@@ -133,7 +133,6 @@
 
 <script>
 import {isAllowedSize} from "@/utils/rules";
-import Vue from 'vue';
 
 export default {
   name: "UploadFilesPresentation",
@@ -154,9 +153,11 @@ export default {
       type: Function,
       default: () => {}
     },
+    // It's not clear to me how this works. It's apparently related to the click:clear above,
+    // in that Vue will issue warnings there if this function is removed.
     clearInput: {
       type: Function,
-      default: () => {
+      default: /* istanbul ignore next */ () => {
         this.value = [];
       }
     },
@@ -170,21 +171,27 @@ export default {
       rules: {
         isAllowedSize: ()=> isAllowedSize(this.allowedFileSizeMb),
       },
+      imageInfo: []
     };
   },
   computed:{
     hasError() {
       return this.$refs.fileInput.hasError
     },
-    imageFiles: {
+    imageMod: {
       // The get is not used at present.
       get: function(){
-        return this.fileInfos;
+        return this.imageInfo || this.fileInfos;
       },
-      set: function() {
-        Vue.set(this.fileInfos, 0, null);
+      set: function(newValue) {
+        this.imageInfo = newValue;
       }
     }
+  },
+  mounted() {
+    // A copy is made of this prop so it can be mutated, specifically when a
+    // user wants to delete an existing logo on the record.
+    this.imageInfo = this.fileInfos;
   },
   methods:{
     callUpload() {
@@ -194,8 +201,8 @@ export default {
       await this.$refs.fileInput.reset()
     },
     clearImages(){
-      let deleteExisting = this.fileInfos.length > 0 ? true : false;
-      this.fileInfos.splice(0);
+      let deleteExisting = this.imageMod.length > 0;
+      this.imageMod = [];
       this.$emit('clearInput', deleteExisting);
     }
   }

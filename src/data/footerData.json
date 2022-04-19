@@ -51,18 +51,13 @@
         "urlType": "external"
       },
       {
+        "title": "Governance",
+        "url": "/communities#governance",
+        "urlType": "internal"
+      },
+      {
         "title": "Privacy Policy",
         "url": "/privacy",
-        "urlType": "internal"
-      },
-      {
-        "title": "Stakeholders",
-        "url": "/stakeholders",
-        "urlType": "internal"
-      },
-      {
-        "title": "Community",
-        "url": "/communities",
         "urlType": "internal"
       },
       {
@@ -79,10 +74,35 @@
         "title": "Terms of use",
         "url": "/terms",
         "urlType": "internal"
+      }
+    ]
+  },
+  "fourthBlock": {
+    "header": "Users and Contributors",
+    "content": [
+      {
+        "title": "Adopters",
+        "url": "/communities#adopters",
+        "urlType": "internal"
+      },
+      {
+        "title": "Curation Programme",
+        "url": "/community_curation",
+        "urlType": "internal"
       },
       {
         "title": "Educational",
         "url": "/educational",
+        "urlType": "internal"
+      },
+      {
+        "title": "Stakeholders",
+        "url": "/stakeholders",
+        "urlType": "internal"
+      },
+      {
+        "title": "Activities",
+        "url": "/communities#activities ",
         "urlType": "internal"
       }
     ]

@@ -171,7 +171,7 @@ export default {
       rules: {
         isAllowedSize: ()=> isAllowedSize(this.allowedFileSizeMb),
       },
-      imageInfo: []
+      imageInfo: [...this.fileInfos]
     };
   },
   computed:{
@@ -181,17 +181,12 @@ export default {
     imageMod: {
       // The get is not used at present.
       get: function(){
-        return this.imageInfo || this.fileInfos;
+        return this.imageInfo;
       },
       set: function(newValue) {
         this.imageInfo = newValue;
       }
     }
-  },
-  mounted() {
-    // A copy is made of this prop so it can be mutated, specifically when a
-    // user wants to delete an existing logo on the record.
-    this.imageInfo = this.fileInfos;
   },
   methods:{
     callUpload() {

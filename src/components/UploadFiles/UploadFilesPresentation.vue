@@ -39,7 +39,6 @@
           :hint="`images must be less than ${allowedFileSizeMb} MB`"
           :rules="[rules.isAllowedSize()]"
           @change="selectFiles"
-          @click:clear="clearInput"
         />
       </v-col>
       <v-col
@@ -70,7 +69,7 @@
 
     <!--  Showing default single Image or list of Images  -->
     <v-card
-      v-if="imageInfo.length > 0"
+      v-if="fileInfos.length > 0 && !cleared"
       class="mx-auto mt-1"
     >
       <v-list>
@@ -82,7 +81,7 @@
           color="primary"
         >
           <v-list-item
-            v-for="(file, index) in imageInfo"
+            v-for="(file, index) in fileInfos"
             :key="file.size+''+index"
           >
             <v-list-item-content>
@@ -153,14 +152,6 @@ export default {
       type: Function,
       default: () => {}
     },
-    // It's not clear to me how this works. It's apparently related to the click:clear above,
-    // in that Vue will issue warnings there if this function is removed.
-    clearInput: {
-      type: Function,
-      default: /* istanbul ignore next */ () => {
-        this.value = [];
-      }
-    },
     downloadFiles: {
       type: Function,
       default: () => {}
@@ -171,18 +162,15 @@ export default {
       rules: {
         isAllowedSize: ()=> isAllowedSize(this.allowedFileSizeMb),
       },
-      imageInfo: [...this.fileInfos]
+      imageInfo: [...this.fileInfos],
+      cleared: false
     };
   },
   computed:{
     hasError() {
-      return this.$refs.fileInput.hasError
+      return this.$refs.fileInput.hasError;
     },
     imageMod: {
-      // The get is not used at present.
-      get: function(){
-        return this.imageInfo;
-      },
       set: function(newValue) {
         this.imageInfo = newValue;
       }
@@ -193,12 +181,12 @@ export default {
       this.$emit('uploadFiles',this.hasError)
     },
     async afterUpload(){
-      await this.$refs.fileInput.reset()
+      await this.$refs.fileInput.reset();
     },
     clearImages(){
-      let deleteExisting = this.imageMod.length > 0;
+      this.$emit('clearInput', true);
       this.imageMod = [];
-      this.$emit('clearInput', deleteExisting);
+      this.cleared = true;
     }
   }
 }

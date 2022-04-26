@@ -171,6 +171,9 @@ export default {
       return this.$refs.fileInput.hasError;
     },
     imageMod: {
+      get: function() {
+        return this.imageInfo;
+      },
       set: function(newValue) {
         this.imageInfo = newValue;
       }

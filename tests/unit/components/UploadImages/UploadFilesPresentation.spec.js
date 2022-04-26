@@ -47,6 +47,7 @@ describe('UploadFilesPresentation.vue', () => {
         expect(wrapper.vm.imageInfo).toStrictEqual([]);
         wrapper.vm.clearImages();
         expect(wrapper.vm.imageInfo).toStrictEqual([]);
+        expect(wrapper.vm.imageMod).toStrictEqual(wrapper.vm.imageInfo);
     });
 
 

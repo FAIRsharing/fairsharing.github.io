@@ -22,6 +22,10 @@ class UploadFilesService {
         return await restClient.uploadLogo(this.formData);
     }
 
+    async clearLogoData(id, token) {
+        return await restClient.clearLogo(id, token);
+    }
+
     async uploadMultipleFilesPerRequest(files) {
         // by doing the below line, the formData deletes all the previous 'files' keys
         for (let key in JSON.parse(JSON.stringify(Object.fromEntries(this.formData)))) {

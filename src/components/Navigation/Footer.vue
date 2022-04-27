@@ -4,9 +4,9 @@
     <v-col
       v-for="(block,index) in footerData"
       :key="block.header+'_'+index"
-      :cols="$vuetify.breakpoint.xsOnly?'12':4"
-      lg="4"
-      md="4"
+      :cols="$vuetify.breakpoint.xsOnly?'12':3"
+      lg="3"
+      md="3"
       sm="12"
       xsm="12"
       class="flex-column align-center d-flex"

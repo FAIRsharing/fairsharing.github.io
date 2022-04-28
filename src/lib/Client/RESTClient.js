@@ -833,7 +833,24 @@ class RESTClient {
         let response = await _client.executeQuery(request);
         // here the data returned always should be either an array of images or one string of image
         return response.data.data.attributes['url-for-logo'];
-     }
+    }
+
+    async clearLogo(id, token) {
+        let _client = this;
+        const request = {
+            method: "put",
+            baseURL: _client.baseURL + "/fairsharing_records/" + id,
+            headers: _client.auth_headers(token),
+            data: {
+                fairsharing_record: {
+                    logo: {}
+                }
+            }
+        };
+        let response = await _client.executeQuery(request);
+        // here the data returned always should be either an array of images or one string of image
+        return response.data;
+    }
 
 }
 

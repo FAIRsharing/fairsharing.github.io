@@ -39,7 +39,6 @@
           :hint="`images must be less than ${allowedFileSizeMb} MB`"
           :rules="[rules.isAllowedSize()]"
           @change="selectFiles"
-          @click:clear="clearInput"
         />
       </v-col>
       <v-col
@@ -70,7 +69,7 @@
 
     <!--  Showing default single Image or list of Images  -->
     <v-card
-      v-if="fileInfos.length > 0"
+      v-if="fileInfos.length > 0 && !cleared"
       class="mx-auto mt-1"
     >
       <v-list>
@@ -105,7 +104,7 @@
           color="primary"
         >
           <v-list-item
-            v-for="(file, index) in fileInfos"
+            v-for="(file, index) in imageInfo"
             :key="file.size+''+index"
           >
             <v-list-item-content>
@@ -117,6 +116,16 @@
         </v-list-item-group>
         <!--   Can be extended for more input types   -->
       </v-list>
+      <v-card-actions>
+        <v-btn
+          class="primary"
+          :disabled="false"
+          small
+          @click="clearImages()"
+        >
+          Clear
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -143,10 +152,6 @@ export default {
       type: Function,
       default: () => {}
     },
-    clearInput: {
-      type: Function,
-      default: () => {}
-    },
     downloadFiles: {
       type: Function,
       default: () => {}
@@ -157,11 +162,21 @@ export default {
       rules: {
         isAllowedSize: ()=> isAllowedSize(this.allowedFileSizeMb),
       },
+      imageInfo: [...this.fileInfos],
+      cleared: false
     };
   },
   computed:{
     hasError() {
-      return this.$refs.fileInput.hasError
+      return this.$refs.fileInput.hasError;
+    },
+    imageMod: {
+      get: function() {
+        return this.imageInfo;
+      },
+      set: function(newValue) {
+        this.imageInfo = newValue;
+      }
     }
   },
   methods:{
@@ -169,7 +184,12 @@ export default {
       this.$emit('uploadFiles',this.hasError)
     },
     async afterUpload(){
-      await this.$refs.fileInput.reset()
+      await this.$refs.fileInput.reset();
+    },
+    clearImages(){
+      this.$emit('clearInput', true);
+      this.imageMod = [];
+      this.cleared = true;
     }
   }
 }

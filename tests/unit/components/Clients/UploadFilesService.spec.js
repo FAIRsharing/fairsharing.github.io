@@ -45,5 +45,10 @@ describe("UpdateFilesService", () => {
         expect(UploadService.formData.has('files[1]')).toBe(false)
     })
 
+    it("can run the clearLogoData method", async () => {
+        let answer = await UploadService.clearLogoData(1, 'tokenB');
+        expect(answer).toStrictEqual({"data":{"attributes":{}}});
+    })
+
 
 })

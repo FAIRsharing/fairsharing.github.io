@@ -204,6 +204,11 @@ let routes = [
         component: CommunityCuration,
     },
     {
+        name: "CommunityCurationBis",
+        path: "/communitycuration",
+        component: CommunityCuration,
+    },
+    {
         name: "Stakeholders",
         path: "/stakeholders",
         component: Stakeholders,

@@ -110,6 +110,7 @@ const article_zenodo_1 = {
     "links" : {
       "doi": "https://doi.org/10.1126%2Fscience.2781282"
     },
+    "upload_type" : "publication"
 };
 
 
@@ -129,7 +130,8 @@ const article_zenodo_2 = {
     "doi" : "10.1126/science.2781282",
     "links" : {
       "doi": "https://doi.org/10.1126%2Fscience.2781282"
-    },
+    }
+    "upload_type" : "publication"
 };
 
 const article_zenodo_3 = {

@@ -448,6 +448,14 @@
                   dataPublication = data;
                 }
                 if(dataPublication.metadata.upload_type==="publication"){
+                  this.newPublication ={
+                    journal: null,
+                    doi: null,
+                    title: null,
+                    url: null,
+                    year: null,
+                    authors: null
+                  }
                   if(dataPublication.metadata.journal_title){
                     this.newPublication.journal = dataPublication.metadata.journal_title;
                   }else{

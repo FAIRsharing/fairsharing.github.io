@@ -104,13 +104,13 @@ const article_zenodo_1 = {
           {
               "name": "Baulieu, E."
           }
-      ]
+      ],
+      "upload_type" : "publication"
     },
     "doi" : "10.1126/science.2781282",
     "links" : {
       "doi": "https://doi.org/10.1126%2Fscience.2781282"
-    },
-    "upload_type" : "publication"
+    }
 };
 
 
@@ -125,13 +125,13 @@ const article_zenodo_2 = {
           {
               "name": "Baulieu, E."
           }
-      ]
+      ],
+      "upload_type" : "publication"
     },
     "doi" : "10.1126/science.2781282",
     "links" : {
       "doi": "https://doi.org/10.1126%2Fscience.2781282"
     }
-    "upload_type" : "publication"
 };
 
 const article_zenodo_3 = {
@@ -142,12 +142,30 @@ const article_zenodo_3 = {
           {
               "name": "Baulieu, E."
           }
-      ]
+      ],
+      "upload_type" : "publication"
     },
     "doi" : "10.1126/science.2781282",
     "links" : {
       "doi": "https://doi.org/10.1126%2Fscience.2781282"
+    }
+};
+
+const article_zenodo_4 = {
+    "metadata": {
+      "publication_date": "1989-3-12",
+      "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      "creators": [
+          {
+              "name": "Baulieu, E."
+          }
+      ],
+      "upload_type" : "no_publication"
     },
+    "doi" : "10.1126/science.2781282",
+    "links" : {
+      "doi": "https://doi.org/10.1126%2Fscience.2781282"
+    }
 };
 
 describe("EditPublications.vue", function() {
@@ -221,6 +239,16 @@ describe("EditPublications.vue", function() {
         expect(wrapper.vm.errors.doi).toBe(true);
         fetchStub.restore();
         restStub.restore();
+
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+        wrapper.vm.search = 'amIaDoi?';
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data:article_zenodo_4});
+        await wrapper.vm.getDOI();
+        expect(wrapper.vm.errors.doi).toBe(true);
+        fetchStub.restore();
+        restStub.restore();
     });
 
     it("can get a DOI from zenodo returning one element with journal title", async () => {
@@ -276,6 +304,7 @@ describe("EditPublications.vue", function() {
           url: 'https://doi.org/10.1126%2Fscience.2781282',
           year: 1989,
           isCitation: false,
+          journal: null
       };
       wrapper.vm.search = 'amIaDoi?';
       restStub = sinon.stub(RestClient.prototype, 'executeQuery');

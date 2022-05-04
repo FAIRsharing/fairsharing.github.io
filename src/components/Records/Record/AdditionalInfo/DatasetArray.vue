@@ -32,6 +32,17 @@
         </div>
       </div>
 
+      <!--  AccessMethod   -->
+      <div
+        v-if="item.access_method"
+        class="d-flex flex-row align-center min-height-40"
+      >
+        <b class="width-200">Access Method</b>
+        <div class="d-flex full-width ml-md-12 ml-13">
+          {{ item.access_method }}
+        </div>
+      </div>
+
       <!--  URL    -->
       <div
         v-if="item.url"
@@ -132,7 +143,6 @@
           </p>
         </div>
       </div>
-
 
       <v-divider v-if="currentField.length-1!==index" />
     </div>

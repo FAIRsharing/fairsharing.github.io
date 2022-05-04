@@ -43,6 +43,7 @@
       :title="title"
       :input-label="inputLabel"
       @uploadFiles="uploadFiles"
+      @clearInput="clearInput"
     />
   </div>
 </template>
@@ -147,9 +148,12 @@ export default {
         this.selectedFiles[0] = files;
       }
     },
-    clearInput() {
-      this.imagesForUpload = []
-      this.$emit("passDataToParent", this.imagesForUpload)
+    async clearInput(deleteExisting) {
+      this.imagesForUpload = [];
+      this.$emit("passDataToParent", this.imagesForUpload);
+      if (deleteExisting) {
+        await UploadService.clearLogoData(this.credentialInfo.id, this.credentialInfo.token);
+      }
     },
     async uploadFiles(hasError) {
       if (!this.selectedFiles || hasError) return

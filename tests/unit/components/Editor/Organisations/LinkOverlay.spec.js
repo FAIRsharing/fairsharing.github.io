@@ -169,4 +169,8 @@ describe("Edit -> LinkOverlay.vue", function() {
         restStub.restore();
     });
 
+    it('can run a custom filter on autocompletes', () => {
+        expect(wrapper.vm.customFilter({name: "this", alternativeNames: []}, "that")).toBe(false);
+        expect(wrapper.vm.customFilter({name: "this", alternativeNames: []}, "this")).toBe(true);
+    });
 });

@@ -95,6 +95,79 @@ const article = {
     ],
 };
 
+const article_zenodo_1 = {
+    "metadata": {
+      "journal_title" : "Science",
+      "publication_date": "1989-3-12",
+      "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      "creators": [
+          {
+              "name": "Baulieu, E."
+          }
+      ],
+      "upload_type" : "publication"
+    },
+    "doi" : "10.1126/science.2781282",
+    "links" : {
+      "doi": "https://doi.org/10.1126%2Fscience.2781282"
+    }
+};
+
+
+const article_zenodo_2 = {
+    "metadata": {
+      "meeting": {
+        "title": "Science2"
+      },
+      "publication_date": "1989-3-12",
+      "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      "creators": [
+          {
+              "name": "Baulieu, E."
+          }
+      ],
+      "upload_type" : "publication"
+    },
+    "doi" : "10.1126/science.2781282",
+    "links" : {
+      "doi": "https://doi.org/10.1126%2Fscience.2781282"
+    }
+};
+
+const article_zenodo_3 = {
+    "metadata": {
+      "publication_date": "1989-3-12",
+      "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      "creators": [
+          {
+              "name": "Baulieu, E."
+          }
+      ],
+      "upload_type" : "publication"
+    },
+    "doi" : "10.1126/science.2781282",
+    "links" : {
+      "doi": "https://doi.org/10.1126%2Fscience.2781282"
+    }
+};
+
+const article_zenodo_4 = {
+    "metadata": {
+      "publication_date": "1989-3-12",
+      "title" : "Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor",
+      "creators": [
+          {
+              "name": "Baulieu, E."
+          }
+      ],
+      "upload_type" : "no_publication"
+    },
+    "doi" : "10.1126/science.2781282",
+    "links" : {
+      "doi": "https://doi.org/10.1126%2Fscience.2781282"
+    }
+};
+
 describe("EditPublications.vue", function() {
     let wrapper;
     beforeEach(() => {
@@ -128,7 +201,7 @@ describe("EditPublications.vue", function() {
         recordStore.state.sections.publications.error = false;
     });
 
-    it("can get a DOI and process related errors", async () => {
+    it("can get a DOI from https://dx.doi.org/", async () => {
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data:article});
         const expectedArticle = {
@@ -144,12 +217,104 @@ describe("EditPublications.vue", function() {
         await wrapper.vm.getDOI();
         expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
         fetchStub.restore();
+    });
+
+    it("When getting a DOI can process errors from calls", async () => {
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+        wrapper.vm.search = 'amIaDoi?';
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data: {message: "this is a message"}});
         await wrapper.vm.getDOI();
         expect(wrapper.vm.errors.doi).toBe(true);
         fetchStub.restore();
+        restStub.restore();
+
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+        wrapper.vm.search = 'amIaDoi?';
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data: []});
+        await wrapper.vm.getDOI();
+        expect(wrapper.vm.errors.doi).toBe(true);
+        fetchStub.restore();
+        restStub.restore();
+
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+        wrapper.vm.search = 'amIaDoi?';
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data:article_zenodo_4});
+        await wrapper.vm.getDOI();
+        expect(wrapper.vm.errors.doi).toBe(true);
+        fetchStub.restore();
+        restStub.restore();
     });
+
+    it("can get a DOI from zenodo returning one element with journal title", async () => {
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+        const expectedArticle = {
+            authors: 'Baulieu, E.; ',
+            doi: '10.1126/science.2781282',
+            title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
+            journal: 'Science',
+            url: 'https://doi.org/10.1126%2Fscience.2781282',
+            year: 1989,
+            isCitation: false,
+        };
+        wrapper.vm.search = 'amIaDoi?';
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data:article_zenodo_1});
+        await wrapper.vm.getDOI();
+        expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
+        fetchStub.restore();
+        restStub.restore();
+
+    });
+
+    it("can get a DOI from zenodo returning more than one element with meeting title", async () => {
+      fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+      fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+        const expectedArticle = {
+            authors: 'Baulieu, E.; ',
+            doi: '10.1126/science.2781282',
+            title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
+            journal: 'Science2',
+            url: 'https://doi.org/10.1126%2Fscience.2781282',
+            year: 1989,
+            isCitation: false,
+        };
+        wrapper.vm.search = 'amIaDoi?';
+        restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+        restStub.returns({data:[article_zenodo_2,article_zenodo_1]});
+        await wrapper.vm.getDOI();
+        expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
+        fetchStub.restore();
+        restStub.restore();
+    });
+
+    it("can get a DOI from zenodo returning publication without journal", async () => {
+      fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+      fetchStub.returns({data: {error: {response: { data: 'Im an error'}}}});
+      const expectedArticle = {
+          authors: 'Baulieu, E.; ',
+          doi: '10.1126/science.2781282',
+          title: 'Contragestion and other clinical applications of {RU} 486, an antiprogesterone at the receptor',
+          url: 'https://doi.org/10.1126%2Fscience.2781282',
+          year: 1989,
+          isCitation: false,
+          journal: null
+      };
+      wrapper.vm.search = 'amIaDoi?';
+      restStub = sinon.stub(RestClient.prototype, 'executeQuery');
+      restStub.returns({data:article_zenodo_3});
+      await wrapper.vm.getDOI();
+      expect(wrapper.vm.newPublication).toStrictEqual(expectedArticle);
+      fetchStub.restore();
+      restStub.restore();
+
+  });
 
     it("can get a PMID and process related errors", async () => {
         let returnedData = {

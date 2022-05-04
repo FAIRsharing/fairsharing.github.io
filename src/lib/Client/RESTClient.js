@@ -817,6 +817,25 @@ class RESTClient {
          return response.data;
      }
 
+     /**
+      * Get Zenodo call
+      * @param {String} call
+      * @param {String} userToken - the user jwt
+      * @returns {Promise}
+      */
+      async getZenodoSearch(text, userToken){
+          let _client = this;
+          const request = {
+              method: "post",
+              baseURL: _client.baseURL + "/zenodo",
+              headers: this.auth_headers(userToken),
+              data: {doi: text}
+          };
+          let response = await _client.executeQuery(request);
+          return response.data;
+      }
+
+
     async uploadLogo(formData) {
         let _client = this;
         const request = {

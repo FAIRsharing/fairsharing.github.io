@@ -309,18 +309,6 @@
         ]
       },
       {
-        "name": "Hossein Mirian",
-        "role": "Web Developer",
-        "profileImg": "assets/Community/profiles/hossein.jpg",
-        "social": [
-          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
-          {"link": "https://orcid.org/0000-0002-9305-7238", "icon": "Orcid"},
-          {"link": "https://www.linkedin.com/in/hossein-mirian", "icon": "linkedin"},
-          {"link": "https://github.com/hoseinmirian", "icon": "github"},
-          {"link": "hossein.mirian@oerc.ox.ac.uk", "icon": "contacts"}
-        ]
-      },
-      {
         "name": "Dominique Batista",
         "role": "Front End Manager",
         "profileImg": "assets/Community/profiles/dominique.jpg",

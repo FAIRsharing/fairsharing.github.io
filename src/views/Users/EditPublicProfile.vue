@@ -99,6 +99,9 @@
                   />
                 </div>
                 <div v-if="field.type === 'input'">
+                  <span v-if="field.name === 'orcid'">
+                    To set/change this field, the user should log in with ORCID.
+                  </span>
                   <v-text-field
                     v-model="formData[field.name]"
                     :label="field.label"
@@ -106,6 +109,7 @@
                     :type="field.type"
                     :disabled="isDisabled(field.name)"
                     :rules="field.rules"
+                    :hint="field.hint"
                     class="pa-0"
                   />
                 </div>
@@ -252,7 +256,7 @@ export default {
         {
           name: "orcid",
           label: "Orcid ID",
-          hint: null,
+          hint: "To change this field log in with ORCID",
           type: "input"
         },
         {
@@ -365,7 +369,7 @@ export default {
     isDisabled(name) {
       const _module = this;
       /* istanbul ignore if */
-      if (name === 'username') {
+      if (name === 'username' || name === 'orcid') {
         return true;
       }
       else if (name === 'email' && _module.currentPublicUser.third_party) {

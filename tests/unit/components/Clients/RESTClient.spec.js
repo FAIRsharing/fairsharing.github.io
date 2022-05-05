@@ -89,6 +89,11 @@ describe("RESTClient", () =>{
         expect(resp).toBe("testData");
     });
 
+    it("can get a zenodo search information", async () => {
+        let resp = await client.getZenodoSearch('doi_to_search', 'userToken');
+        expect(resp).toBe("testData");
+    });
+
     it("can edit a user", async () => {
         let resp = await client.editUser({},'userToken');
         expect(resp).toBe("testData");

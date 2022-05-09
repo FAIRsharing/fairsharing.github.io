@@ -166,7 +166,7 @@ describe("Routes", () => {
         let sitemap = router.options.routes.find((obj) => { return obj.name === 'sitemap'} );
         await sitemap.redirect();
         // process.env.VUE_APP_API_ENDPOINT
-        expect(window.location.assign).toHaveBeenCalledWith( process.env.VUE_APP_API_ENDPOINT + '/sitemap.xml.gz');
+        expect(window.location.assign).toHaveBeenCalledWith( process.env.VUE_APP_API_ENDPOINT + '/sitemap.xml');
 
     });
 

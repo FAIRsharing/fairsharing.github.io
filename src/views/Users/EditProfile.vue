@@ -70,6 +70,9 @@
                       />
                     </div>
                     <div v-else-if="field.type === 'input'">
+                      <span v-if="field.name === 'orcid'">
+                        To set/change this field, log in with ORCID.
+                      </span>
                       <v-text-field
                         v-model="formData[field.name]"
                         :label="field.label"
@@ -77,6 +80,7 @@
                         :type="field.type"
                         :disabled="isDisabled(field.name)"
                         :rules="field.rules"
+                        :hint="field.hint"
                         class="pa-0"
                       />
                     </div>
@@ -301,7 +305,7 @@ export default {
         {
           name: "orcid",
           label: "Orcid ID",
-          hint: null,
+          hint: "To change this field, log in with ORCID",
           type: "input"
         },
         {
@@ -407,7 +411,7 @@ export default {
       }
     },
     isDisabled(name) {
-      return name === 'username' || (name === 'email' && this.user().metadata.third_party);
+      return name === 'username' || name === 'orcid' || (name === 'email' && this.user().metadata.third_party);
     },
     async getProfileTypes() {
       this.data.profileTypes = await restClient.getProfileTypes();

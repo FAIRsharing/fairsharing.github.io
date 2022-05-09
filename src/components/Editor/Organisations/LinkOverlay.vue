@@ -36,6 +36,7 @@
                 <v-autocomplete
                   v-model="editOrganisationLink.data.organisation"
                   :items="organisations"
+                  :filter="customFilter"
                   item-text="name"
                   item-value="id"
                   outlined
@@ -475,12 +476,12 @@
         }
       },
       methods: {
-        removeCountry(country){
+        removeCountry(country) {
           this.menus.newOrganisation.data.country_ids = this.menus.newOrganisation.data.country_ids.filter(obj =>
               obj.label !== country.name && obj.id !== country.id
           );
         },
-        hideMenu(){
+        hideMenu() {
           this.menus.show = false;
           this.editOrganisationLink.data = {};
           this.editOrganisationLink.id = null;
@@ -518,11 +519,11 @@
           }
           this.menus.newOrganisation.loading = false;
         },
-        async createNewGrant(){
+        async createNewGrant() {
           this.menus.newGrant.loading = true;
           this.menus.newGrant.error = false;
           let data = await restClient.createGrant(this.menus.newGrant.data, this.user().credentials.token);
-          if (!data.error){
+          if (!data.error) {
             let newGrant = {
               name: data.name,
               description: data.description,
@@ -532,19 +533,23 @@
             Vue.set(this.grants, this.grants.length, newGrant);
             this.menus.show = null;
             this.menus.newGrant.data = {};
-          }
-          else {
-              this.menus.newGrant.error = data.error;
+          } else {
+            this.menus.newGrant.error = data.error;
           }
           this.menus.newGrant.loading = false;
         },
-        confirmModifications(){
+        confirmModifications() {
           let data = JSON.parse(JSON.stringify(this.editOrganisationLink.data));
-          if (this.editOrganisationLink.id > -1){
+          if (this.editOrganisationLink.id > -1) {
             Vue.set(this.organisationLinks, this.editOrganisationLink.id, data);
-          }
-          else Vue.set(this.organisationLinks, this.organisationLinks.length, data);
+          } else Vue.set(this.organisationLinks, this.organisationLinks.length, data);
           this.editOrganisationLink.showOverlay = false;
+        },
+        customFilter(item, queryText) {
+          const textToSearch = item.name + " " + item.alternativeNames.join(" ");
+          const searchText = queryText.toLowerCase();
+
+          return textToSearch.toLowerCase().indexOf(searchText) > -1
         }
       }
     }

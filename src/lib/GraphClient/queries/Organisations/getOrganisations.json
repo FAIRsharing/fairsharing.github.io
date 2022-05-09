@@ -8,6 +8,7 @@
     "name",
     "homepage",
     "types",
-    "urlForLogo"
+    "urlForLogo",
+    "alternativeNames"
   ]
 }

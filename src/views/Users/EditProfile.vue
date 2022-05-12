@@ -208,6 +208,45 @@
                 chips
                 deletable-chips
               />
+
+              <v-autocomplete
+                v-model="newOrganisation.data.country_ids"
+                label="Countries"
+                :items="countries"
+                item-text="name"
+                item-value="name"
+                multiple
+                outlined
+                return-object
+                :rules="[newOrganisation.data.country_ids &&
+                  !(newOrganisation.data.country_ids.length === 0)]"
+              >
+                <!-- autocomplete selected -->
+                <template #selection="data">
+                  <v-chip
+                    class="blue white--text removeStyle"
+                    close
+                    @click:close="removeCountry(data.item)"
+                  >
+                    {{ data.item.name }}
+                  </v-chip>
+                </template>
+
+                <!-- autocomplete data -->
+                <template #item="data">
+                  <country-flag
+                    v-if="data.item.code !== null"
+                    :country="data.item.code"
+                    size="normal"
+                  />
+                  <img
+                    v-else
+                    src="@/assets/placeholders/country.png"
+                    class="ml-4 mr-3"
+                  >
+                  <div> {{ data.item.name }} </div>
+                </template>
+              </v-autocomplete>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -236,11 +275,13 @@
 import { mapState, mapActions } from "vuex"
 import {isEmail, isLongEnough, isRequired, isUrl} from "@/utils/rules.js"
 import RESTClient from "@/lib/Client/RESTClient.js"
+import CountryFlag from "vue-country-flag";
 
 const restClient = new RESTClient();
 
 export default {
   name: "EditProfile",
+  components: {CountryFlag},
   data: () => {
     return {
       data: {
@@ -344,7 +385,8 @@ export default {
         data: {
           name: null,
           homepage: null,
-          organisation_type_ids: []
+          organisation_type_ids: [],
+          country_ids: [],
         },
         formValid: true,
         show: false,
@@ -360,7 +402,7 @@ export default {
   },
   computed: {
     ...mapState("users", ["user", "messages"]),
-    ...mapState('editor', ['organisations', 'organisationsTypes']),
+    ...mapState('editor', ['organisations', 'organisationsTypes', 'countries']),
     formData: function(){
       if (this.user().metadata.preferences) {
         return {
@@ -386,7 +428,8 @@ export default {
       this.getUserMeta(), // REST -- OK
       this.getProfileTypes(), // REST -- OK
       this.getOrganisations(),  // GQL
-      this.getOrganisationsTypes() // GQL
+      this.getOrganisationsTypes(), // GQL
+      this.getCountries()
     ])
     this.data.organisations = this.organisations
     this.userOrganisations = this.user().records.organisations
@@ -394,7 +437,7 @@ export default {
   },
   methods: {
     ...mapActions('users', ['getUserMeta', "updateUser", "setMessage", "getUser"]),
-    ...mapActions('editor', ['getOrganisations', 'getOrganisationsTypes']),
+    ...mapActions('editor', ['getOrganisations', 'getOrganisationsTypes', 'getCountries']),
     async updateProfile() {
       this.loading = true;
       let data = JSON.parse(JSON.stringify(this.formData));
@@ -417,26 +460,41 @@ export default {
       this.data.profileTypes = await restClient.getProfileTypes();
     },
     async createOrganisation() {
+      let organisationInput = JSON.parse(JSON.stringify(this.newOrganisation.data));
+      /* istanbul ignore else */
+      if (organisationInput.country_ids) {
+        organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id);
+      }
       this.newOrganisation.loading = true
       this.newOrganisation.error = false
-      let data = await restClient.createOrganisation(this.newOrganisation.data, this.user().credentials.token);
+      let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
       if (!data.error) {
-        this.data.organisations.push({id: data.id, name: data.name})
+        let created = {
+          id: data.data.id,
+          name: data.data.attributes.name
+        }
+        this.data.organisations.push(created)
         this.newOrganisation = {
           data: {
             name: null,
             homepage: null,
-            organisation_type_ids: []
+            organisation_type_ids: [],
+            country_ids: []
           },
           formValid: true,
           show: false,
           loading: false,
           error: false
         }
-        this.userOrganisations.push({id: data.id, name: data.name})
+        this.userOrganisations.push(created)
       }
       else this.newOrganisation.error = data.error.response.data
       this.newOrganisation.loading = false
+    },
+    removeCountry(country) {
+      this.newOrganisation.data.country_ids = this.newOrganisation.data.country_ids.filter(obj =>
+          obj.label !== country.name && obj.id !== country.id
+      );
     }
   },
 }

@@ -7,6 +7,7 @@ import GraphClient from "@/lib/GraphClient/GraphClient"
 import getUserQuery from "@/lib/GraphClient/queries/getUserMeta.json"
 import getOrganisationsQuery from "@/lib/GraphClient/queries/Organisations/getOrganisations.json"
 import getOrganisationsTypesQuery from "@/lib/GraphClient/queries/Organisations/getOrganisationTypes.json"
+import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
 import userStore from "@/store/users";
 import editorStore from "@/store/editor";
 
@@ -74,6 +75,11 @@ describe("EditPrivateProfile.vue", () => {
                 {id: 2, name: "org type 2"}
             ]
         })
+        graphStub.withArgs(countriesQuery).returns({
+            searchCountries: [
+                {label: "france", id: 33}
+            ]
+        });
     });
     afterAll(() => {
         profilesStub.restore();
@@ -141,20 +147,33 @@ describe("EditPrivateProfile.vue", () => {
 
     it("can create a new organisation", async () => {
         let createOrganisationStub = sinon.stub(Client.prototype, 'createOrganisation').returns({
-            id: 10,
-            name: "an organisation"
+            data: {
+                id: 10,
+                attributes: {
+                    name: "an organisation"
+                }
+            }
         })
         wrapper.vm.userOrganisations = []
+        wrapper.vm.newOrganisation.data.country_ids = [{id: 1, name: 'Duncruigh'}]
         await wrapper.vm.createOrganisation()
         expect(wrapper.vm.data.organisations[2]).toStrictEqual({id: 10, name: "an organisation"})
         expect(wrapper.vm.userOrganisations).toStrictEqual([{id: 10, name: "an organisation"}])
         expect(wrapper.vm.newOrganisation.error).toBeFalsy()
 
         createOrganisationStub.returns({
-            error: {response: {data: "An error"}}
+            error: { response: { data: "An error" }}
         })
         await wrapper.vm.createOrganisation()
         expect(wrapper.vm.newOrganisation.error).toBe('An error')
         createOrganisationStub.restore()
     })
+
+    it("can check removeCountry", () => {
+        wrapper.vm.newOrganisation.data.country_ids = [{id:1,label:'b'}];
+        wrapper.vm.removeCountry({id:1,label:'b'});
+        expect(wrapper.vm.newOrganisation.data.country_ids).toStrictEqual([]);
+    });
+
+
 });

@@ -92,7 +92,7 @@ describe('Editor -> Maintainers.vue', () => {
 
     it("can remove maintainers", () => {
         expect(wrapper.vm.maintainers.length).toEqual(2);
-        wrapper.vm.removeMaintainer(0);
+        wrapper.vm.removeMaintainer(100);
         expect(wrapper.vm.maintainers.length).toEqual(1);
     });
 

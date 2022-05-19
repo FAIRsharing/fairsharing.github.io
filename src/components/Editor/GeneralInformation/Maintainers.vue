@@ -24,7 +24,7 @@
                 class="ml-3 white--text"
                 v-bind="attrs"
                 small
-                @click="removeMaintainer(index)"
+                @click="removeMaintainer(maintainer['id'])"
                 v-on="on"
               >
                 fa-times-circle
@@ -169,8 +169,9 @@ export default {
         orcid: null
       };
     },
-    removeMaintainer(maintainerIndex){
-      this.maintainers.splice(maintainerIndex, maintainerIndex+1)
+    removeMaintainer(maintainerId){
+      let filtered = this.maintainers.filter(obj => obj.id !== maintainerId);
+      this.getSection('generalInformation').data.maintainers = filtered;
     },
     addItem(item){
       let _module = this;

@@ -373,6 +373,10 @@ describe("Record.vue", function() {
             "claimRecord",
             true);
         mocks.restore("restMock");
+
+        wrapper.vm.dialogs.claimRecord = true;
+        wrapper.vm.closeClaimMenu();
+        expect(wrapper.vm.dialogs.claimRecord).toBe(false);
     });
 
     it("getData can process errors", async () => {

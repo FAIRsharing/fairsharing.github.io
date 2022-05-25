@@ -213,7 +213,7 @@
           </p>
           <p class="claimtext">
             We encourage resource developers to claim ownership of their FAIRsharing record; doing so
-            will allows them to make updates and provides them with a visible means of attribution for their efforts.
+            allows them to make updates and provides them with a visible means of attribution for their efforts.
             However, please note that for this request to be approved, you must be associated with the institutions(s)
             that develop this resource.
           </p>
@@ -971,5 +971,6 @@ ul,li {
 
 .claimtext {
   word-break: keep-all;
+  font-size: 70%;
 }
 </style>

@@ -194,6 +194,50 @@
             text
             @click="confirmDelete()"
           >
+            Claim
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="dialogs.claimRecord"
+      max-width="700px"
+    >
+      <v-card>
+        <v-card-title
+          class="headline"
+        >
+          <p class="claimtext">
+            <b>Please confirm that you would like to request ownership of this record.</b>
+          </p>
+          <p class="claimtext">
+            We encourage resource developers to claim ownership of their FAIRsharing record; doing so
+            allows them to make updates and provides them with a visible means of attribution for their efforts.
+            However, please note that for this request to be approved, you must be associated with the institutions(s)
+            that develop this resource.
+          </p>
+          <p class="claimtext">
+            Please also see our <a href="https://fairsharing.gitbook.io/fairsharing/#claiming-a-record">
+              documentation on requesting ownership</a>.
+          </p>
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            :disabled="dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="closeClaimMenu()"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="requestOwnership()"
+          >
             OK
           </v-btn>
           <v-spacer />
@@ -300,7 +344,8 @@ export default {
         recordID: "",
         deleteRecord: false,
         disableDelButton: true,
-        disableButton: false
+        disableButton: false,
+        claimRecord: false
       },
     }
   },
@@ -469,7 +514,7 @@ export default {
             }
             return !_module.canClaim
           },
-          method: function(){
+          method: async function(){
             if (!_module.userIsLoggedIn){
               _module.$router.push({
                 path: "/accounts/login",
@@ -479,7 +524,10 @@ export default {
               })
             }
             else {
-              return _module.requestOwnership()
+              _module.claimRecordMenu(
+                  _module.currentRecord['fairsharingRecord'].name,
+                  _module.currentRecord['fairsharingRecord'].id,
+              );
             }
           }
         },
@@ -616,6 +664,17 @@ export default {
       }
       _module.dialogs.deleteRecord = false;
     },
+    claimRecordMenu(recordName, recordID) {
+      const _module = this;
+      _module.dialogs.disableButton = false;
+      _module.dialogs.disableDelButton = true
+      _module.dialogs.recordName = recordName;
+      _module.dialogs.recordID = recordID;
+      _module.dialogs.claimRecord = true;
+      /* istanbul ignore next */ setTimeout(function () {
+        _module.dialogs.disableDelButton = false;
+      }, 5000);
+    },
     deleteRecordMenu(recordName, recordID){
       const _module = this;
       _module.dialogs.disableButton = false;
@@ -630,6 +689,10 @@ export default {
     closeDeleteMenu () {
       this.dialogs.disableButton = true;
       this.dialogs.deleteRecord = false;
+    },
+    closeClaimMenu () {
+      this.dialogs.disableButton = true;
+      this.dialogs.claimRecord = false;
     },
     goToEdit(){
       let _module = this;
@@ -660,6 +723,7 @@ export default {
       let _module = this;
       const recordID =  _module.currentRecord['fairsharingRecord'].id;
       const claim = await client.claimRecord(recordID, _module.user().credentials.token);
+      /* istanbul ignore else */
       if (claim.error) {
         _module.error = "Sorry, your request to claim this record failed. Please contact us.";
         _module.canClaim = false;
@@ -671,6 +735,7 @@ export default {
         _module.alreadyClaimed = true;
       }
       await _module.checkAlerts();
+      _module.dialogs.claimRecord = false;
     },
     /**
      * Method to set the canClaim status for this record.
@@ -902,5 +967,10 @@ export default {
 }
 ul,li {
   padding: 0;
+}
+
+.claimtext {
+  word-break: keep-all;
+  font-size: 70%;
 }
 </style>

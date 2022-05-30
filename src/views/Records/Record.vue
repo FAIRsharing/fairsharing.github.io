@@ -244,6 +244,43 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="dialogs.stopMaintainRecord"
+      max-width="700px"
+    >
+      <v-card>
+        <v-card-title
+          class="headline"
+        >
+          <p class="claimtext">
+            <b>Please confirm that you would like to stop maintaining this record:</b>
+          </p>
+          <p class="claimtext">
+            <b>&ldquo;{{ dialogs.recordName }}&rdquo;</b>
+          </p>
+        </v-card-title>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            :disabled="dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="closeMaintainMenu()"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            :disabled="dialogs.disableDelButton === true || dialogs.disableButton === true"
+            color="blue darken-1"
+            text
+            @click="removeMaintainer()"
+          >
+            OK
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </main>
 </template>
 
@@ -315,6 +352,8 @@ export default {
       claimedTriggered: false,
       reviewSuccess: false,
       reviewFail: false,
+      stopMaintainSuccess: false,
+      stopMaintainFailure: false,
       buttons: [],
       history: {
         show: false,
@@ -337,6 +376,16 @@ export default {
           model: "reviewFail",
           type: "warning",
           message: "Sorry, it was not possibly to save a review for this record."
+        },
+        {
+          model: "stopMaintainSuccess",
+          type: "success",
+          message: "You have been removed as maintainer of this record."
+        },
+        {
+          model: "stopMaintainFailure",
+          type: "warning",
+          message: "You could not be removed as maintainer. Please email for assistance."
         }
       ],
       dialogs: {
@@ -345,7 +394,8 @@ export default {
         deleteRecord: false,
         disableDelButton: true,
         disableButton: false,
-        claimRecord: false
+        claimRecord: false,
+        stopMaintainRecord: false
       },
     }
   },
@@ -378,6 +428,10 @@ export default {
     }
   },
   computed: {
+    ...mapState('record', ["currentRecord", "currentRecordHistory"]),
+    ...mapState('users', ["user", "messages"]),
+    ...mapGetters("record", ["getField"]),
+    ...mapState('introspection', ["readOnlyMode"]),
     getRecordCardBackground() {
       let finalCardBackColor
       switch (this.currentRecord.fairsharingRecord.registry) {
@@ -406,15 +460,25 @@ export default {
       }
       return this.target || this.$route.params['id'];
     },
-    ...mapState('record', ["currentRecord", "currentRecordHistory"]),
-    ...mapState('users', ["user", "messages"]),
-    ...mapGetters("record", ["getField"]),
-    ...mapState('introspection', ["readOnlyMode"]),
     userIsLoggedIn(){
       return this.user().isLoggedIn;
     },
     getTitle() {
       return 'FAIRsharing | ' + this.currentRoute;
+    },
+    maintainsRecord() {
+      let _module = this;
+      if (!_module.userIsLoggedIn){
+        return false
+      }
+      // Is the current_user's ID in the array of maintainer objects?
+      if (typeof _module.currentRecord['fairsharingRecord']['maintainers'] === 'undefined') {
+        return false;
+      }
+      if (_module.currentRecord['fairsharingRecord']['maintainers'].length === 0) {
+        return false;
+      }
+      return _module.currentRecord['fairsharingRecord']['maintainers'].some(({ id }) => id === _module.user().id);
     },
     currentDynamicBlock() {
       if (this.$vuetify.breakpoint.name === 'md') {
@@ -512,7 +576,7 @@ export default {
             if (!_module.userIsLoggedIn){
               return false
             }
-            return !_module.canClaim
+            return !_module.canClaim;
           },
           method: async function(){
             if (!_module.userIsLoggedIn){
@@ -531,6 +595,7 @@ export default {
             }
           }
         },
+
         {
           name: () => {
             if (!_module.userIsLoggedIn){
@@ -637,6 +702,23 @@ export default {
             }
         )
       }
+      if (_module.maintainsRecord) {
+        let _module = this;
+        initial_buttons.push(
+            {
+              name: function() { return "Stop maintaining"},
+              isDisabled: function() {
+                return false;
+              },
+              method: async function () {
+                _module.stopMaintainRecordMenu(
+                    _module.currentRecord['fairsharingRecord'].name,
+                    _module.currentRecord['fairsharingRecord'].id,
+                );
+              }
+            },
+        )
+      }
       this.buttons = initial_buttons;
     },
     convertStringToLocalVar(stringVarName){
@@ -675,6 +757,17 @@ export default {
         _module.dialogs.disableDelButton = false;
       }, 5000);
     },
+    stopMaintainRecordMenu(recordName, recordID) {
+      const _module = this;
+      _module.dialogs.disableButton = false;
+      _module.dialogs.disableDelButton = true
+      _module.dialogs.recordName = recordName;
+      _module.dialogs.recordID = recordID;
+      _module.dialogs.stopMaintainRecord = true;
+      /* istanbul ignore next */ setTimeout(function () {
+        _module.dialogs.disableDelButton = false;
+      }, 5000);
+    },
     deleteRecordMenu(recordName, recordID){
       const _module = this;
       _module.dialogs.disableButton = false;
@@ -693,6 +786,10 @@ export default {
     closeClaimMenu () {
       this.dialogs.disableButton = true;
       this.dialogs.claimRecord = false;
+    },
+    closeMaintainMenu () {
+      this.dialogs.disableButton = true;
+      this.dialogs.stopMaintainRecord = false;
     },
     goToEdit(){
       let _module = this;
@@ -738,6 +835,31 @@ export default {
       _module.dialogs.claimRecord = false;
     },
     /**
+     * Method to remove current_user from the list of maintainers.
+     * @returns {undefined}
+     * */
+    async removeMaintainer() {
+      let _module = this;
+      const recordID =  _module.currentRecord['fairsharingRecord'].id;
+      // TODO: Write new function to remove claim.
+      const unclaim = await client.removeMaintainer(recordID, _module.user().credentials.token);
+      if (unclaim.error) {
+        _module.error = "Sorry, your request to be removed as a maintainer of this record failed. Please contact us.";
+        _module.stopMaintainFailure = true;
+      }
+      else {
+        // Display a toast here.
+        _module.stopMaintainSuccess = true;
+        // remove maintainer from local data
+        let newMaintainers = _module.currentRecord['fairsharingRecord']['maintainers'].filter(maintainer => {
+            return maintainer.id !== _module.user().id
+          }
+        )
+        _module.currentRecord['fairsharingRecord']['maintainers'] = newMaintainers;
+      }
+      _module.dialogs.stopMaintainRecord = false;
+    },
+    /**
      * Method to set the canClaim status for this record.
      * @returns {undefined}
      * */
@@ -751,7 +873,7 @@ export default {
             if (claim.error.response.data.existing && claim.error.response.data.status === 'pending') {
               let maintainer = _module.getField("maintainers").filter(maintainer => maintainer.username === _module.user().credentials.username);
               if (maintainer.length === 0) {
-              //alreadyClaimed: this is the situation where the current record has been already claimed by user to be maintained.
+                //alreadyClaimed: this is the situation where the current record has been already claimed by user to be maintained.
                 _module.alreadyClaimed = true;
               }
             }
@@ -973,4 +1095,5 @@ ul,li {
   word-break: keep-all;
   font-size: 70%;
 }
+
 </style>

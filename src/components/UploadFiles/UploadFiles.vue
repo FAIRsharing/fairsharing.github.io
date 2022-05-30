@@ -149,6 +149,9 @@ export default {
       }
     },
     async clearInput(deleteExisting) {
+      /* istanbul ignore if */
+      if (this.credentialInfo === null)
+        return;
       this.imagesForUpload = [];
       this.$emit("passDataToParent", this.imagesForUpload);
       if (deleteExisting) {

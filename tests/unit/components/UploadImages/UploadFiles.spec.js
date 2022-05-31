@@ -117,7 +117,7 @@ describe('UploadFiles.vue', () => {
          wrapper3 = shallowMount(UploadFiles,
             {
                 propsData: {
-                    credentialInfo: null,
+                    credentialInfo: {id: 1, token: 'myToken'},
                     initialImages: null,
                     uploadServiceName: "uploadMultipleFilesPerRequest",
                     allowedFileSizeMb: 3,

@@ -382,6 +382,26 @@ class RESTClient {
     }
 
     /**
+     * Remove an existing maintainer from a FairsharingRecord.
+     * @param {Integer} recordID - ID for the relevant FairsharingRecord.
+     * @param {String} userToken - JWT of the logged in user
+     * @returns {Promise}
+     */
+    // Coverage steadfastly refuses to see this even though it is mocked and called
+    // in a test (see Record.spec.js).
+    /* istanbul ignore next */
+    async removeMaintainer(recordID, userToken) {
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/maintenance_requests/remove",
+            headers: this.auth_headers(userToken),
+            data: {maintenance_request: {fairsharing_record_id: recordID}}
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
+    /**
      * Attempt to create a RecordReview for a user for a FairsharingRecord.
      * @param {Integer} recordID - ID for the relevant FairsharingRecord.
      * @param {String} userToken - JWT of the logged in user

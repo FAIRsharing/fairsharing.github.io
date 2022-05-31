@@ -86,7 +86,7 @@
                 color="blue"
                 dark
                 left
-                @click.stop="assignMaintenanceOwner(props.item.recordName,props.item.id,props.item.userNameID,props.item.requestID)"
+                @click.stop="assignMaintenanceOwner(props.item.recordName,props.item.id,props.item.userName,props.item.requestID)"
               >
                 far fa-check-circle
               </v-icon>
@@ -95,7 +95,7 @@
                 color="red"
                 dark
                 right
-                @click="rejectMaintenanceOwner(props.item.recordName,props.item.id,props.item.userNameID,props.item.requestID)"
+                @click="rejectMaintenanceOwner(props.item.recordName,props.item.id,props.item.userName,props.item.requestID)"
               >
                 fas fa-ban
               </v-icon>

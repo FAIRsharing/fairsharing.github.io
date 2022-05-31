@@ -26,6 +26,7 @@ localVue.use(VueHead);
 // Initializing store states and getters
 users.state.user = function(){ return {
     isLoggedIn: true,
+    id: 123,
     credentials: {token: 123, username: 123},
     watchedRecords: [1]
 }};
@@ -67,6 +68,7 @@ let mocks = {
     canEditStub: null,
     canClaimStub: null,
     claimRecord: null,
+    removeMaintainer: null,
     restore: function(mockKey) {
         this[mockKey].restore();
     },
@@ -76,6 +78,7 @@ let mocks = {
         this.restore("canEditStub");
         this.restore("canClaimStub");
         this.restore("claimRecord");
+        this.restore("removeMaintainer");
         this.restore("metadataFields");
     },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
@@ -131,6 +134,10 @@ describe("Record.vue", function() {
         mocks.setMock("claimRecord",
             RESTClient.prototype,
             "claimRecord",
+            true);
+        mocks.setMock("removeMaintainer",
+            RESTClient.prototype,
+            "removeMaintainer",
             true);
         mocks.setMock("metadataFields",
             RESTClient.prototype,
@@ -460,6 +467,7 @@ describe("Record.vue", function() {
         );
         $store.state.users.user = function (){return {
             isLoggedIn: true,
+            id: 123,
             credentials: {token: 123, username: 123},
             is_curator: true
         }};
@@ -477,6 +485,7 @@ describe("Record.vue", function() {
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '2050-01-01T123456' }];
         expect(wrapper.vm.needsReviewing()).toBe(false);
         expect(wrapper.vm.reviewSuccess).toBe(true);
+        expect(wrapper.vm.buttons[6].name()).toEqual("Review this record");
     });
 
     it("returns correct answer if no reviews present", async () => {
@@ -498,6 +507,7 @@ describe("Record.vue", function() {
         // The button appears
         $store.state.users.user = function (){return {
             isLoggedIn: true,
+            id: 123,
             is_super_curator: true,
             credentials: {token: 123, username: 123},
             watchedRecords: []
@@ -579,6 +589,64 @@ describe("Record.vue", function() {
             registry:"Collection"
         };
         expect(wrapper.vm.getRecordCardBackground).toBe("#f0f5f9");
+    });
+
+    it("returns state of record maintenance corectly", async () => {
+        record.state.currentRecord.fairsharingRecord = {
+            metadata: {},
+            registry: "Policy"
+        };
+        expect(wrapper.vm.maintainsRecord).toBe(false);
+        record.state.currentRecord.fairsharingRecord = {
+            maintainers: [],
+            metadata: {},
+            registry: "Policy"
+        };
+        expect(wrapper.vm.maintainsRecord).toBe(false);
+        record.state.currentRecord.fairsharingRecord = {
+            maintainers: [{id: 321}],
+            metadata: {},
+            registry: "Policy"
+        };
+        expect(wrapper.vm.maintainsRecord).toBe(false);
+        record.state.currentRecord.fairsharingRecord = {
+            maintainers: [{id: 123}, {id: 321}],
+            metadata: {},
+            registry: "Policy"
+        };
+        expect(wrapper.vm.maintainsRecord).toBe(true);
+
+        let stopReview = jest.spyOn(wrapper.vm, "stopMaintainRecordMenu");
+
+        await wrapper.vm.getData();
+        await wrapper.vm.getMenuButtons();
+        expect(wrapper.vm.buttons[7].name()).toEqual("Stop maintaining");
+        expect(wrapper.vm.buttons[7].isDisabled()).toBe(false);
+        await wrapper.vm.buttons[7].method();
+        expect(stopReview).toHaveBeenCalled();
+    })
+
+    it("can remove a maintainer from a record", async () => {
+        wrapper.vm.stopMaintainRecordMenu("test record", 100);
+        expect(wrapper.vm.dialogs.recordName).toEqual("test record");
+        expect(wrapper.vm.dialogs.recordID).toEqual(100);
+        expect(wrapper.vm.dialogs.stopMaintainRecord).toBe(true);
+        await wrapper.vm.removeMaintainer();
+        wrapper.vm.closeMaintainMenu();
+        expect(wrapper.vm.stopMaintainSuccess).toBe(true);
+
+        expect(wrapper.vm.dialogs.disableButton).toBe(true);
+        expect(wrapper.vm.dialogs.stopMaintainRecord).toBe(false);
+
+        mocks.restore("removeMaintainer");
+        mocks.setMock("removeMaintainer",
+            RESTClient.prototype,
+            "removeMaintainer",
+            {error: 'fail!' }
+        );
+        await wrapper.vm.removeMaintainer();
+        expect(wrapper.vm.stopMaintainFailure).toBe(true);
+
     });
 
 });

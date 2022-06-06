@@ -387,7 +387,12 @@
                         url = null;
                         /* istanbul ignore next */
                         if (DOI) {
-                          url = DOI['external-id-url'] ? DOI['external-id-url'].value : null
+                          if (DOI['external-id-url']) {
+                            url = DOI['external-id-url'].value
+                          }
+                          else if (DOI['external-id-value']) {
+                            url = "https://doi.org/" + DOI['external-id-value']
+                          }
                         }
                       }
                       return {

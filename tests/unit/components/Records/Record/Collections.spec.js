@@ -121,6 +121,17 @@ describe("Collections.vue", function(){
         expect(wrapper.name()).toMatch("Collections");
     });
 
+    it("runs prepareAssociations correctly", () => {
+        let result = wrapper.vm.prepareAssociations(
+            Record.state.currentRecord["fairsharingRecord"].recordAssociations,
+            Record.state.currentRecord["fairsharingRecord"].reverseRecordAssociations
+        );
+        expect(result[0]).toStrictEqual({"recordAssocLabel":["recommends"],"recordAssociationLabel":"recommends","id":1,"registry":"Standard","abbreviation":"an","type":"terminology_artifact","linkType":"linkedRecord","name":"a name","object":"policy","subject":"a name"});
+        expect(result.length).toEqual(7);
+    });
+
+
+
     it("search data is reactive when user changes text box value", () => {
         wrapper.vm.selectedValues = "a name 3"
         wrapper.vm.selectedValues = "not going to find me!"

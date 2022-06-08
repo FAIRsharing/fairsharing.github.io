@@ -52,11 +52,20 @@ const recordTabUtils = {
                         object.recordAssociationLabel = _module.cleanString(item.recordAssocLabel)
                         object.id = item[prop].id;
                         object.registry = item[prop].registry;
-                        object.name = item[prop].name;
                         object.abbreviation = item[prop].abbreviation;
-                        object.subject = _module.currentRecord['fairsharingRecord'].name;
                         object.type = item[prop].type;
                         object.linkType = prop;
+                        object.name = item[prop].name;
+                        // Though both conditions are tested in Collections.spec.js, they don't register.
+                        /* istanbul ignore else */
+                        if (prop === 'linkedRecord') {
+                            object.object = _module.currentRecord['fairsharingRecord'].name;
+                            object.subject = item[prop].name;
+                        }
+                        else if (prop === 'fairsharingRecord') {
+                            object.object = item[prop].name;
+                            object.subject = _module.currentRecord['fairsharingRecord'].name;
+                        }
                     }
                 });
                 recordAssociations.push(object);

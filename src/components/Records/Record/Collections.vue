@@ -90,7 +90,7 @@
                     </div>
                   </div>
                   <p class="grey--text  relation-style text-ellipses-height-2lines line-height-14 pr-5">
-                    {{ item.name }}
+                    {{ item.object }}
                     <v-tooltip top>
                       <template #activator="{ on }">
                         <span

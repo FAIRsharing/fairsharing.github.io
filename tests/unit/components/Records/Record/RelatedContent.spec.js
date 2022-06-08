@@ -50,7 +50,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
     ],
     reverseRecordAssociations: [
         {
-            linkedRecord: {
+            fairsharingRecord: {
                 id: 2,
                 name: "b name",
                 registry: "Policy",

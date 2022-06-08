@@ -87,8 +87,18 @@ export const actions = {
         this.commit("records/setLoadingStatus", true);
         this.commit("records/resetRecords");
         this.commit("records/resetPages");
+        // params['q'] needs to be sanitised here.
         if (Object.keys(params).length > 0) {
-            recordsQuery.queryParam = params;
+            if ('q' in params) {
+                // TODO: Is it worth preserving foreign characters as discussed here?
+                // https://stackoverflow.com/questions/22192458/how-to-remove-non-alphanumeric-characters-and-space-but-keep-foreign-language-i
+                const cleaned = params['q'].replace(/[^0-9a-z\s]/gi, '');
+                const newParams = { ...params, q: cleaned }
+                recordsQuery.queryParam = newParams;
+            }
+            else {
+                recordsQuery.queryParam = params;
+            }
         }
         let data;
         try {

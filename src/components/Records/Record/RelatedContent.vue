@@ -91,7 +91,7 @@
                     </div>
                   </div>
                   <p class="grey--text relation-style text-ellipses-height-2lines line-height-14 pr-5">
-                    {{ item.linkType==='fairsharingRecord'? item.name : item.subject }}
+                    {{ item.object }}
                     <v-tooltip top>
                       <template #activator="{ on }">
                         <span
@@ -119,7 +119,7 @@
                         </span>
                       </span>
                     </v-tooltip>
-                    {{ item.linkType==='fairsharingRecord'? item.subject : item.name }}
+                    {{ item.subject }}
                   </p>
                 </v-card>
               </router-link>.

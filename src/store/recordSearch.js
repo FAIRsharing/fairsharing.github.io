@@ -93,7 +93,16 @@ export const actions = {
         let data;
         try {
             data = await client.executeQuery(recordsQuery);
-            this.commit('records/setRecords', data["searchFairsharingRecords"]);
+            // See: https://github.com/FAIRsharing/FAIRsharing-API/issues/532
+            if (data['error'] === 'invalid query') {
+                this.commit('records/setRecords', {
+                    "aggregations": {"is_invalid":{"meta":{},"doc_count":1,"doc_count_error_upper_bound":1,"sum_other_doc_count":1,"buckets":[{"key":1,"key_as_string":"true","doc_count":1}]}},
+                    "records":[]
+                });
+            }
+            else {
+                this.commit('records/setRecords', data["searchFairsharingRecords"]);
+            }
             this.commit("records/setLoadingStatus", false);
         }
         catch {

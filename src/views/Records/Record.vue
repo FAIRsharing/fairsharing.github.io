@@ -958,21 +958,26 @@ export default {
     async changeWatchRecord(watch) {
       const _module = this;
       this.loading = true;
+      let operation;
       let records = _module.user().watchedRecords.slice();
       if (watch) {
-        records.push(_module.currentRecord['fairsharingRecord'].id)
+        operation = 'add';
+        records.push(_module.currentRecord['fairsharingRecord'].id);
       }
       else {
+        operation = 'remove';
         records = records.filter(function(value){
           return value !== _module.currentRecord['fairsharingRecord'].id;
         });
       }
-      let data = {
-        watched_record_ids: records
-      };
-      let response = await this.updateWatchedRecords(data);
+      let response = await this.updateWatchedRecords(
+          {
+            recordID: _module.currentRecord['fairsharingRecord'].id,
+            operation: operation
+          }
+      );
       // Refresh user data to reload followed record status.
-      if (response.modification === 'success'){
+      if (response.message.indexOf('success') !== -1){
         _module.changeWatched(records);
       }
       this.loading = false;

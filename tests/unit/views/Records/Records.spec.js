@@ -182,4 +182,10 @@ describe("Records.vue", () => {
         })
     });
 
+    it("responds to an invalid graphql query", async () => {
+        stub.withArgs(sinon.match.object).returns({error: 'invalid query'});
+        await wrapper.vm.fetchRecords({"q":"\"invalid query\""});
+        expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
+    })
+
 });

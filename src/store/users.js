@@ -398,8 +398,12 @@ export const actions = {
             this.commit("users/setError", {field: "updateProfile", message: e.message})
         }
     },
-    async updateWatchedRecords(state, user) {
-        let response = await client.editUser(user, state.state.user().credentials.token);
+    async updateWatchedRecords(state, data) {
+        let response = await client.changeWatcher(
+            data.recordID,
+            data.operation,
+            state.state.user().credentials.token
+        );
         return response;
     },
     async resetPwd(state, query){

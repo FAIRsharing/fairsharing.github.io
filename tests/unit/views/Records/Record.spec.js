@@ -263,7 +263,7 @@ describe("Record.vue", function() {
             "executeQuery",
             {
                 data: {
-                    modification: 'success'
+                    message: 'success'
                 }
             }
         );
@@ -281,6 +281,18 @@ describe("Record.vue", function() {
         }};
         expect(wrapper.vm.isWatching()).toBe(true);
         expect(wrapper.vm.buttons[2].name()).toEqual("Unwatch record");
+        await wrapper.vm.buttons[2].method();
+        expect(changeWatchRecord).toHaveBeenCalledWith(false);
+        mocks.restore("restMock");
+        mocks.setMock("restMock",
+            RESTClient.prototype,
+            "executeQuery",
+            {
+                data: {
+                    message: 'nothing'
+                }
+            }
+        );
         await wrapper.vm.buttons[2].method();
         expect(changeWatchRecord).toHaveBeenCalledWith(false);
         mocks.restore("restMock");

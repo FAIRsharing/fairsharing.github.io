@@ -28,13 +28,12 @@ describe('Actions/Mutations', () => {
     });
 
     it("Login: testing no user and valid token", async () => {
-        let now = new Date();
         getStub.withArgs("user").returns(JSON.stringify({
             credentials: {
                 username: "Terazus",
                 token: "123",
                 id: 1,
-                tokenValidity: now.getTime()
+                tokenValidity: '2050-01-01'
             }
         }));
         let state = {};
@@ -49,7 +48,7 @@ describe('Actions/Mutations', () => {
                 username: "Terazus",
                 token: "123",
                 id: 1,
-                tokenValidity: "100039"
+                tokenValidity: "1912-04-14"
             }
         }));
         await actions.login(state);

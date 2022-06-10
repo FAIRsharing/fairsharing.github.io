@@ -33,7 +33,7 @@ describe('Actions/Mutations', () => {
                 username: "Terazus",
                 token: "123",
                 id: 1,
-                tokenValidity: '2050-01-01'
+                tokenValidity: 2538467499
             }
         }));
         let state = {};
@@ -48,7 +48,7 @@ describe('Actions/Mutations', () => {
                 username: "Terazus",
                 token: "123",
                 id: 1,
-                tokenValidity: "1912-04-14"
+                tokenValidity: -1816434501
             }
         }));
         await actions.login(state);

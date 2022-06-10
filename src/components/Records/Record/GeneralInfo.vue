@@ -66,8 +66,13 @@
 
       <!--How to cite & publication for record named Citations-->
       <Citations />
+
       <!--updates and creation date-->
       <UpdateCreateDetail />
+
+      <!-- Info about any community creators involved with this record -->
+      <CommunityCuratorInfo />
+
     </div>
     <section />
   </v-card>
@@ -92,6 +97,7 @@ import DeprecationReason from "@/components/Records/Record/GeneralInfo/Deprecati
 import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord";
 import ContactsData from "@/components/Records/Record/GeneralInfo/ContactsData";
 import Organisations from "@/components/Records/Record/Organisations";
+import CommunityCuratorInfo from "@/components/Records/Record/GeneralInfo/CommunityCuratorInfo";
 
 export default {
   name: "GeneralInfo",
@@ -113,6 +119,7 @@ export default {
     DOITitle,
     Keywords,
     SectionTitle,
+    CommunityCuratorInfo
   },
   props: {
     canClaim: {

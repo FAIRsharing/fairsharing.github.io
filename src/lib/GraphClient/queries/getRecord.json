@@ -152,6 +152,14 @@
         },
         "recordAssocLabel"
       ]
+    },
+    {
+      "name": "communityCurators",
+      "fields": [
+        "id",
+        "username",
+        "orcid"
+      ]
     }
   ]
 }

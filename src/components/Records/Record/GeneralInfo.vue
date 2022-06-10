@@ -67,11 +67,11 @@
       <!--How to cite & publication for record named Citations-->
       <Citations />
 
-      <!--updates and creation date-->
-      <UpdateCreateDetail />
-
       <!-- Info about any community creators involved with this record -->
       <CommunityCuratorInfo />
+
+      <!--updates and creation date-->
+      <UpdateCreateDetail />
 
     </div>
     <section />

@@ -72,7 +72,6 @@
 
       <!--updates and creation date-->
       <UpdateCreateDetail />
-
     </div>
     <section />
   </v-card>

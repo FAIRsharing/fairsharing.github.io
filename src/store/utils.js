@@ -37,8 +37,10 @@ export const initUserDataState = function(){
 };
 
 export const validateToken = function(tokenExpiry){
-    let now = new Date();
-    return now.getTime() - tokenExpiry*1000 < 0;
+    const milliseconds = tokenExpiry * 1000;
+    const now = new Date();
+    const exp = new Date(milliseconds);
+    return now < exp;
 };
 
 export function initEditorSections(data, sectionsNames){

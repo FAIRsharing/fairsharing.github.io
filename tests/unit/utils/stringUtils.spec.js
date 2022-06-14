@@ -25,4 +25,9 @@ describe("stringUtils.js", function(){
         expect(stringUtils.methods.prettifyList("one,two")).toBe("one, two");
     });
 
+    it("prettifies a login error string", () => {
+        // This is an odd result; all is as expected in the browser, though.
+        expect(stringUtils.filters.pretty('{"this":"that"}')).toBe("\\this\\: \\that\\");
+    })
+
 })

@@ -19,6 +19,13 @@ const stringUtils = {
         capitalize(str) {
             if (!str) return "";
             return str.charAt(0).toUpperCase() + str.slice(1)
+        },
+        pretty (val) {
+            return JSON.stringify(val)
+                .replace(/,/g, '<br/>')          // commas -> newlines
+                .replace(/\{|\}|\[|\]/g, '')  // remove brackets
+                .replace(/"/g, '')            // remove quotes
+                .replace(/:/g, ": ")          // add a space after a colon
         }
     }
 };

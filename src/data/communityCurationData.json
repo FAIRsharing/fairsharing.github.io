@@ -83,6 +83,14 @@
         "id_organisation": 2284,
         "scope": "Omics",
         "orcid": "0000-0002-8741-7823"
+      },
+      {
+        "name": "Malin Sandström",
+        "id": 464,
+        "organisation": null,
+        "id_organisation": null,
+        "scope": "Neuroscience",
+        "orcid": "0000-0002-8464-2494"
       }
     ]
   },

@@ -8,8 +8,16 @@
         :type="message.type()"
         class="mb-0"
       >
-        <span v-if="!message.error">{{ message.value }}</span>
-        <span v-else>{{ message.value.response.data }}</span>
+        <span v-if="!message.error">
+          {{ message.value }}
+        </span>
+        <vue-json-pretty
+          v-else
+          :data="message.value.response.data"
+          :show-double-quotes="false"
+          :deep="5"
+          :highlight-mouseover-node="true"
+        />
       </v-alert>
     </v-card-text>
   </v-scroll-x-transition>
@@ -17,9 +25,11 @@
 
 <script>
     import { mapGetters } from "vuex"
+    import VueJsonPretty from 'vue-json-pretty';
 
     export default {
         name: "Alerts",
+        components: { VueJsonPretty },
         props: {
             target: {default: null, type: String},
         },
@@ -36,3 +46,12 @@
         }
     }
 </script>
+
+<style>
+.vjs-value__string {
+  color: #e6ee1b !important;
+}
+.vjs-value__boolean, .vjs-value__number {
+  color: #9ac2e5;
+}
+</style>

@@ -378,6 +378,12 @@ export default {
           hint: null,
           type: "checkbox"
         },
+        {
+          name: "preferences_orcid",
+          label: "Allow the crediting of my FAIRsharing curation to my ORCID profile.",
+          hint: null,
+          type: "checkbox"
+        },
       ],
       loading: false,
       userOrganisations: [],
@@ -410,6 +416,7 @@ export default {
           email: this.user().metadata.email,
           preferences_hide: this.user().metadata['preferences']['hide_email'],
           preferences_send: this.user().metadata['preferences']['email_updates'],
+          preferences_orcid: this.user().metadata['preferences']['push_to_orcid'],
           first_name: this.user().metadata.first_name,
           last_name: this.user().metadata.last_name,
           homepage: this.user().metadata.homepage,
@@ -444,6 +451,7 @@ export default {
       data.preferences = {
         hide_email: this.formData.preferences_hide,
         email_updates: this.formData.preferences_send,
+        push_to_orcid: this.formData.preferences_orcid,
       };
       data.organisation_ids = this.userOrganisations.map(item => item.id)
       await this.updateUser(data);

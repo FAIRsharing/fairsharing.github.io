@@ -2,7 +2,8 @@
   "communityCuration":{
     "first_section":{
       "main_title": "What is the FAIRsharing Community Curation Programme?",
-      "text": "Our Community Curators promote the standards and databases most relevant to their field or area of focus. They also promote their research community and ensure that the resources within their community are findable, accessible, and exposed to data management tools, knowledge graphs and other research software. As a FAIRsharing Community Curator, you can help us help your community be more accurately and comprehensively represented with us. And in return, we have a lot to offer you."
+      "text_1": "Under the auspices of RDA Europe and EOSC Future, <a href='https://fairsharing.org/'>FAIRsharing</a> is announcing our new Community Curation Programme. Our community curators promote the standards and databases most relevant to their research domain or area of focus. They also promote their research community and ensure that the resources within that community are findable, accessible, and exposed to data management tools, knowledge graphs and other research software. As a FAIRsharing Community Curator, you can help us help your community be more accurately and comprehensively represented with us. And in return, we have a lot to offer you.",
+      "text_2": "We are actively seeking community curators across <b>all subject areas</b> (Engineering, Natural Sciences, and Humanities and the Social Sciences). This work is linked to the <a href='https://eoscfuture-grants.eu/provider/research-data-alliance/rda-open-call-rda-eosc-future-domain-ambassadors-1'>RDA / EOSC Future Domain Ambassador</a> call, which is intended to create conduits of communication and outreach among the <a href='https://www.rd-alliance.org/'>RDA</a>, <a href='https://eoscfuture.eu/'>EOSC Future</a>, and the communities of which each ambassador is a part."
     },
     "second_section":{
       "main_title": "Our Community Curators",
@@ -32,7 +33,7 @@
     },
     "fourth_section":{
       "main_title": "Getting Started",
-      "text": "Make sure you have an account with us (<a href='https://fairsharing.gitbook.io/fairsharing/'>here's how</a>). Then <a href='mailto:contact@fairsharing.org'>email us</a> with your account information and let us know your domain of interest. We’re looking to engage with Communities across all of the Natural Sciences, Engineering Sciences and Humanities & Social Sciences. We'll be in touch and, if successful, we’ll get you set up with the proper roles."
+      "text": "Information on <a href='https://fairsharing.gitbook.io/fairsharing/community-curation/join-us'>joining us</a> is available within our <a href='https://fairsharing.gitbook.io/fairsharing/community-curation'>Community Curation documentation</a>. We’re looking to engage with communities across all of the Natural Sciences, Engineering Sciences and Humanities & Social Sciences. After <a href='https://fairsharing.gitbook.io/fairsharing/community-curation/join-us'>expressing your interest</a> in the programme, we'll be in touch and, if successful, we’ll get you set up with the proper roles."
     },
     "headers_table": [
       {

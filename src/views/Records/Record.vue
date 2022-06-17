@@ -194,7 +194,7 @@
             text
             @click="confirmDelete()"
           >
-            Claim
+            DELETE
           </v-btn>
           <v-spacer />
         </v-card-actions>

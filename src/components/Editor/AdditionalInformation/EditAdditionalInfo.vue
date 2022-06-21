@@ -431,6 +431,10 @@ export default {
         required: null,
         template: null
       }
+      // It appears that this isn't called when a field is edited; it's not clear why the watcher doesn't
+      // detect the change. So, it is explicitly called here.
+      // https://github.com/FAIRsharing/fairsharing.github.io/issues/1718
+      this.submitChanges(this.fields);
     },
     removeItem(fieldName, index){
       this.removeAdditionalInformationSubField({

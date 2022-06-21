@@ -3,7 +3,11 @@
     <!-- eslint-disable vue/no-v-html -->
     <p
       :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      v-html="communityCurationData.first_section.text"
+      v-html="communityCurationData.first_section.text_1"
+    />
+    <p
+      :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      v-html="communityCurationData.first_section.text_2"
     />
 
     <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">

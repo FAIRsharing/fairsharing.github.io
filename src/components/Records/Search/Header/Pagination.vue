@@ -21,7 +21,7 @@
                 default: 0
             },
             currentPage: {
-                type:Number,
+                type: Number,
                 default: 1
             }
         },
@@ -30,31 +30,42 @@
                 currentPageLocal: null,
                 allowPaginate: true,
                 disable: false,
-                page: 1
+                page: 100
             }
         },
       watch: {
             '$route.name': function () {
                 this.currentPageLocal = 1;
             },
-            '$route.query': function (newVal) {
+            '$route.query': {
+              handler: function (newVal) {
                 let _module = this;
                 if (!Object.prototype.hasOwnProperty.call(newVal, "page")) {
-                    _module.currentPageLocal = 1;
-                    _module.page = _module.currentPageLocal;
+                  _module.currentPageLocal = 1;
+                  _module.page = _module.currentPageLocal;
+                } else {
+                  _module.currentPageLocal = Number(newVal.page);
+                  _module.page = _module.currentPageLocal;
                 }
-                else {
-                    _module.currentPageLocal = Number(newVal.page);
-                    _module.page = _module.currentPageLocal;
-                }
+              },
+              immediate: true
             },
             'page': function (newPage) {
-                this.paginate(newPage);
+              this.paginate(newPage);
             }
         },
         created() {
-            this.currentPageLocal = this.currentPage;
-            this.page = this.currentPage;
+          let _module = this;
+          if (!Object.prototype.hasOwnProperty.call(_module.$route.query, "page")) {
+            _module.currentPageLocal = 1;
+            _module.page = _module.currentPageLocal;
+          }
+          else {
+            _module.currentPageLocal = Number(_module.$route.query.page);
+            _module.page = _module.currentPageLocal;
+          }
+            //this.currentPageLocal = this.currentPage;
+            //this.page = this.currentPage;
         },
         methods: {
             /**

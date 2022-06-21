@@ -64,8 +64,6 @@
             _module.currentPageLocal = Number(_module.$route.query.page);
             _module.page = _module.currentPageLocal;
           }
-            //this.currentPageLocal = this.currentPage;
-            //this.page = this.currentPage;
         },
         methods: {
             /**

@@ -30,7 +30,7 @@
                 currentPageLocal: null,
                 allowPaginate: true,
                 disable: false,
-                page: 100
+                page: 1
             }
         },
       watch: {

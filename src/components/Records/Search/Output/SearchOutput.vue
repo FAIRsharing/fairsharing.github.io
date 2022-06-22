@@ -64,11 +64,6 @@
                 :record="record"
               />
             </v-row>
-            <!--List Controller-->
-            <Pagination
-              :total-pages="totalPages"
-              class="my-5"
-            />
           </v-skeleton-loader>
         </article>
       </div>

@@ -144,7 +144,7 @@
       },
       {
         "black_text": "When we disagree, try to understand why.",
-        "text": "Disagreements, both social and technical, happen all the time and Jupyter is no exception. Try to understand where others are coming from, as seeing a question from their viewpoint may help find a new path forward. And don’t forget that it is human to err: blaming each other doesn’t get us anywhere, while we can learn from mistakes to find better solutions."
+        "text": "Disagreements, both social and technical, happen all the time and FAIRsharing is no exception. Try to understand where others are coming from, as seeing a question from their viewpoint may help find a new path forward. And don’t forget that it is human to err: blaming each other doesn’t get us anywhere, while we can learn from mistakes to find better solutions."
       },
       {
         "black_text": "A simple apology can go a long way.",
@@ -159,7 +159,7 @@
         "text": "You can file a report by emailing <a href='mailto:contact@fairsharing.org'> contact@fairsharing.org</a>."
       },
       {
-        "text": "Original text courtesy of the <a href='http://web.archive.org/web/20141109123859/http://speakup.io/coc.html'> Speak Up!</a> and <a href='https://www.djangoproject.com/conduct'>Django</a> Projects, modified by <a href='https://fairsharing.org/'>FAIRsharing</a>. We are grateful to those projects for contributing these materials under open licensing terms for us to easily reuse."
+        "text": "Original text courtesy of the <a href='http://web.archive.org/web/20141109123859/http://speakup.io/coc.html'> Speak Up!</a> and <a href='https://www.djangoproject.com/conduct'>Django</a> Projects, modified by <a href='https://jupyter.org/governance/conduct/code_of_conduct.html'>Project Jupyter</a> and in this instance by <a href='https://fairsharing.org/'>FAIRsharing</a>. We are grateful to those projects for contributing these materials under open licensing terms for us to easily reuse."
       }
     ]
   }

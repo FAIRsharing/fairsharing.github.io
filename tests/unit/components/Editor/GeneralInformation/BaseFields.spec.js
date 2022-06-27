@@ -11,6 +11,15 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
+// This is so the validation hacks work when testing.
+// See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1732
+const VueFormStub = {
+    render: () => {},
+    methods: {
+        validate: () => {}
+    }
+}
+
 
 recordStore.state.sections = {
     generalInformation: {
@@ -54,7 +63,8 @@ describe('Editor -> BaseFields.vue', () => {
             localVue,
             vuetify,
             router,
-            mocks: {$store, $route, $router}
+            mocks: {$store, $route, $router},
+            stubs: { 'v-form': VueFormStub }
         });
     });
 

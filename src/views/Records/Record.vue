@@ -171,7 +171,7 @@
           >
             DELETE
           </font>
-          this record?
+           (without DOI) or tombstone (with DOI) this record (Record name)?
           <ul style="list-style-type:none;">
             <li>
               {{ dialogs.recordName }}

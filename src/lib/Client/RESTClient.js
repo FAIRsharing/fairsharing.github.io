@@ -912,6 +912,27 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Get a file of search results from the server
+     * @param data - Data describing the search to be performed.
+     * @param {String} jwt - JWT of the logged in user
+     * @returns {Promise}
+     */
+    // TODO: This is ignored here due to problems testing SummaryDownload.vue's commenceDownload().
+    // Please refer to SummaryDownload.spec.js for more information.
+    // If you can fix it, please do.
+    /* istanbul ignore next */
+    async downloadSearch(data, jwt){
+        const request = {
+            method: "post",
+            baseURL: this.baseURL + "/files/search_download",
+            headers: this.auth_headers(jwt),
+            data: data
+        };
+        let response = await this.executeQuery(request);
+        return response.data;
+    }
+
 }
 
 export default RESTClient;

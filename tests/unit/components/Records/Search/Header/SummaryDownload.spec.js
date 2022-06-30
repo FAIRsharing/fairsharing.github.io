@@ -4,7 +4,6 @@ import Vuetify from "vuetify"
 import SummaryDownload from "@/components/Records/Search/Header/SummaryDownload.vue"
 import recordsStore from "@/store/recordSearch.js";
 
-const sinon = require("sinon");
 const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();

@@ -11,10 +11,10 @@
         <!-- eslint-disable-next-line  vue/no-template-shadow -->
         <template #activator="{ on }">
           <v-btn
+            :disabled="buttonDisabled"
             x-small
             class="info ml-5"
             v-on="on"
-            :disabled="buttonDisabled"
           >
             <a
               @click="commenceDownload()"

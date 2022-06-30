@@ -14,6 +14,7 @@
             x-small
             class="info ml-5"
             v-on="on"
+            :disabled="buttonDisabled"
           >
             <a
               @click="commenceDownload()"
@@ -45,6 +46,7 @@ export default {
     return {
       listControllerData: listControllerData,
       recordTypes: recordsLabels['recordTypes'],
+      buttonDisabled: false
     }
   },
   computed: {
@@ -73,6 +75,7 @@ export default {
     // Please refer to SummaryDownload.spec.js for comments on why this is ignored.
     /* istanbul ignore next */
     async commenceDownload() {
+      this.buttonDisabled = true;
       let params = this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
       params['search_url'] = this.getHostname().slice(0, -1) + this.$route.fullPath;
       let ts = Math.round((new Date()).getTime() / 1000);
@@ -86,6 +89,7 @@ export default {
       a.setAttribute('download', filename);
       a.click();
       a.remove();
+      this.buttonDisabled = false;
     }
   }
 }

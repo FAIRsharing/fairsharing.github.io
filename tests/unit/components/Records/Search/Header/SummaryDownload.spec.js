@@ -2,7 +2,6 @@ import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
 import Vuetify from "vuetify"
 import SummaryDownload from "@/components/Records/Search/Header/SummaryDownload.vue"
-import RestClient from "@/lib/Client/RESTClient.js";
 import recordsStore from "@/store/recordSearch.js";
 
 const sinon = require("sinon");
@@ -10,7 +9,6 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 const vuetify = new Vuetify();
 
-let restStub;
 
 const $store = new Vuex.Store({
     modules: {
@@ -44,16 +42,6 @@ const $route = {
 describe("SummaryDownload.vue", function () {
     let wrapper;
 
-    beforeAll(() => {
-        window.scrollTo = jest.fn();
-        restStub = sinon.stub(RestClient.prototype, "executeQuery");
-        restStub.returns({
-            data: ['this', 'that']
-        })
-    });
-    afterAll(() => {
-        restStub.restore();
-    });
 
     wrapper = shallowMount(SummaryDownload, {
         localVue,
@@ -68,6 +56,8 @@ describe("SummaryDownload.vue", function () {
     it('can calculate the current path', () => {
         expect(wrapper.vm.currentPath[0]).toBe("Standard");
     });
+
+    // TODO: Add another test for the download section which causes the TypeError shown above.
 
 
 });

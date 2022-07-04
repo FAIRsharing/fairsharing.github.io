@@ -252,7 +252,7 @@
     &lt;/v-dialog>
     &lt;v-dialog
       v-model="dialogs.deleteRecord"
-      max-width="700px"
+      max-width="650px"
     >
       &lt;v-card>
         &lt;v-card-title
@@ -264,7 +264,7 @@
           >
             DELETE
           &lt;/font>
-          this record?
+          (without DOI) or tombstone (with DOI) this record?
           &lt;ul style="list-style-type:none;">
             &lt;li>
               {{ dialogs.recordName }}

@@ -155,6 +155,12 @@ describe("Routes", () => {
         ).toStrictEqual(
             {"path":"/"}
         );
+        let raw_srao_file = router.options.routes.find((obj) => { return obj.name === 'raw_srao_file'} );
+        await raw_srao_file.redirect();
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/SRAO.owl');
+        let raw_srao_file_by_version = router.options.routes.find((obj) => { return obj.name === 'raw_srao_file_by_version'} );
+        await raw_srao_file_by_version.redirect();
+        expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl');
 
     });
 

@@ -140,6 +140,21 @@ let routes = [
             }
         }
     },
+    // Another redirection, from: https://github.com/FAIRsharing/fairsharing.github.io/issues/1741
+    {
+        name: 'raw_srao_file',
+        path: '/ontology/subject/SRAO.owl',
+        redirect: () => {
+            window.location.assign('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/SRAO.owl');
+        }
+    },
+    {
+        name: 'raw_srao_file_by_version',
+        path: '/ontology/subject/SRAO.owl/0.3.0',
+        redirect: () => {
+            window.location.assign('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl');
+        }
+    },
     {
         name: 'ontology',
         path: '/ontology/:name',

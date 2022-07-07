@@ -112,11 +112,13 @@
       </div>
     </div>
     <HitCount />
+    <SummaryDownload />
   </div>
 </template>
 
 <script>
     import HitCount from "./HitCount";
+    import SummaryDownload from "./SummaryDownload";
     import Pagination from "./Pagination";
     import Sorting from "./Sorting";
     import {mapState} from "vuex";
@@ -124,7 +126,7 @@
 
     export default {
         name: "ListController",
-        components: {HitCount, Pagination, Sorting},
+        components: {HitCount, SummaryDownload, Pagination, Sorting},
         props:{
           options:{
             type:Object,

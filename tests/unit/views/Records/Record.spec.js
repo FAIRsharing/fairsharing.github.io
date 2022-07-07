@@ -146,7 +146,7 @@ describe("Record.vue", function() {
         mocks.setMock("changeWatcher",
             RESTClient.prototype,
             "changeWatcher",
-            {"message": "this is fun"});
+            {"message": "success"});
         let breakpoint = {
             init: jest.fn(),
             framework: {},
@@ -273,6 +273,7 @@ describe("Record.vue", function() {
         );
         expect(wrapper.vm.isWatching()).toBe(false);
         let changeWatchRecord = jest.spyOn(wrapper.vm, "changeWatchRecord");
+        let changeWatchUsers = jest.spyOn(wrapper.vm, "changeWatched");
         await wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[2].name()).toEqual("Watch record");
         await wrapper.vm.buttons[2].method();
@@ -299,6 +300,7 @@ describe("Record.vue", function() {
         );
         await wrapper.vm.buttons[2].method();
         expect(changeWatchRecord).toHaveBeenCalledWith(false);
+        expect(changeWatchUsers).toHaveBeenCalledTimes(0);
         mocks.restore("restMock");
     });
 

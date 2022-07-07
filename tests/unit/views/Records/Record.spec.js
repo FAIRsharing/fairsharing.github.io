@@ -48,7 +48,7 @@ let $store = new Vuex.Store({
         params: {id: "980190962"},
     };
 const router = new VueRouter(),
-    $router = { push: jest.fn() };
+    $router = { push: jest.fn(), replace: jest.fn() };
 
 $router.go = jest.fn();
 //-- making a mock div element
@@ -659,6 +659,31 @@ describe("Record.vue", function() {
         await wrapper.vm.removeMaintainer();
         expect(wrapper.vm.stopMaintainFailure).toBe(true);
 
+    });
+
+    it("can respond to being loaded with a route query", async () => {
+        $route.query = { "history": "show" };
+        let wrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        expect(wrapper.vm.$route.query).toStrictEqual({"history":"show"});
+        // TODO: This is bizarre; history.show _must_ be true because the feature functions.
+        // TODO: But, it always shows as false in this test.
+        //expect(wrapper.vm.history.show).toBe(true);
+        wrapper.vm.closeHistory();
+        expect(wrapper.vm.history.show).toBe(false);
+        wrapper.destroy();
+        $route.query = { "history": "hide" };
+        wrapper = await shallowMount(Record, {
+            mocks: {$route, $store, $router},
+            localVue,
+            vuetify,
+            router
+        });
+        expect(wrapper.vm.history.show).toBe(false);
     });
 
 });

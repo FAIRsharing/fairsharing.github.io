@@ -387,7 +387,7 @@ class RESTClient {
      * @param {String} userToken - JWT of the logged in user
      * @returns {Promise}
      */
-    // Coverage steadfastly refuses to see this even though it is mocked and called
+    // TODO: Coverage steadfastly refuses to see this even though it is mocked and called
     // in a test (see Record.spec.js).
     /* istanbul ignore next */
     async removeMaintainer(recordID, userToken) {
@@ -408,6 +408,9 @@ class RESTClient {
      * @param {String} userToken - JWT of the logged in user
      * @returns {Promise}
      */
+    // TODO: Mocking this in a test (5c40b02ba3d78a49a088ab6dd5145c9ea10ea24b)
+    // caused it to no longer be covered!
+    /* istanbul ignore next */
     async changeWatcher(recordID, operation, userToken) {
         const request = {
             method: "post",

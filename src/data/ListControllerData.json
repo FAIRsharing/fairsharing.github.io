@@ -1,5 +1,6 @@
 {
   "gridList":  "Show results as a grid.",
   "stackList":  "Show results as a stack.",
-  "sort":  "Sort results by different fields."
+  "sort":  "Sort results by different fields.",
+  "download": "Download a summary of the records shown below."
 }

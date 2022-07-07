@@ -143,6 +143,10 @@ describe("Record.vue", function() {
             RESTClient.prototype,
             "extraMetadataFields",
             true);
+        mocks.setMock("changeWatcher",
+            RESTClient.prototype,
+            "changeWatcher",
+            {"message": "this is fun"});
         let breakpoint = {
             init: jest.fn(),
             framework: {},

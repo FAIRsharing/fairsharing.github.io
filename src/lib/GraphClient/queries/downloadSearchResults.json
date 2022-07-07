@@ -1,0 +1,7 @@
+{
+  "queryName": "downloadSearchResults",
+  "queryParam": null,
+  "fields": [
+    "fileData"
+  ]
+}

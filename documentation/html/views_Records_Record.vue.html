@@ -1090,6 +1090,7 @@ export default {
           }
       );
       // Refresh user data to reload followed record status.
+      /* istanbul ignore else */
       if (response.message.indexOf('success') !== -1){
         _module.changeWatched(records);
       }

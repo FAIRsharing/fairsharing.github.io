@@ -3,7 +3,7 @@
     v-if="hits"
     class="mt-2"
   >
-    <p class="text-center">
+    <p class="text-center mr-8">
       Displaying {{ x }}  to {{ y }} of {{ hits }}.
     </p>
   </div>

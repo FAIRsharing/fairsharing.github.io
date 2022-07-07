@@ -220,9 +220,6 @@ let recordStore = {
                 if (!state.sections.additionalInformation.data[additionalInformation.fieldName]){
                     Vue.set(state.sections.additionalInformation.data, additionalInformation.fieldName,[]);
                 }
-                console.log("ONE: " + JSON.stringify(state.sections.additionalInformation.data));
-                console.log("TWO: " + JSON.stringify(additionalInformation.fieldName));
-                console.log("THREE: " + JSON.stringify(additionalInformation.fieldValue));
                 Vue.set(state.sections.additionalInformation.data[additionalInformation.fieldName],
                     state.sections.additionalInformation.data[additionalInformation.fieldName].length,
                     additionalInformation.fieldValue

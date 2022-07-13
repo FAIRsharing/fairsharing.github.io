@@ -46,7 +46,7 @@ describe("UsersList.vue", function () {
     });
 
     afterAll(() => {
-        restStub.restore();
+        graphStub.restore();
     })
 
     it("can be instantiated", () => {

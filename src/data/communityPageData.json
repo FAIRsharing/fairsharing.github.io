@@ -327,6 +327,16 @@
           {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
           {"link": "https://orcid.org/0000-0003-3152-1194", "icon": "Orcid"}
         ]
+      },
+      {
+        "name": "Prakhyat Gailani",
+        "role": "Web Developer",
+        "profileImg": "assets/Community/profiles/prakhyat.jpg",
+        "social": [
+          {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
+          {"link": "https://github.com/prakhyatox", "icon": "github"},
+          {"link": "prakhyat.gailani@eng.ox.ac.uk", "icon": "contacts"}
+        ]
       }
     ]
   }

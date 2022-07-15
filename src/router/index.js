@@ -39,7 +39,8 @@ import {
     EditPublicProfile,
     UsersList,
     OntologyBrowser,
-    ServerError
+    ServerError,
+    OrganisationsList
 }
     from "./routes.js"
 
@@ -89,6 +90,12 @@ let routes = [
 
     },
     {
+        name: "Organisatons",
+        path: "/organisations",
+        component: OrganisationsList,
+
+    },
+    {
         name: "search",
         path: "/search",
         component: Records,
@@ -97,7 +104,7 @@ let routes = [
         beforeEnter(to, from, next) {
             let [query, modified] = hackSearch(to.query);
             if (modified) {
-                next({name: 'search', query: query});
+                next({ name: 'search', query: query });
             }
             else {
                 next();
@@ -421,7 +428,7 @@ routes.forEach(function (route) {
 
 export async function afterEach(to) {
     if (to.name !== "Record") {
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     }
 }
 
@@ -433,17 +440,17 @@ const router = new VueRouter({
 
 export function scrollBehavior(to) {
     if (to.hash) {
-        return {selector: to.hash}
+        return { selector: to.hash }
     }
     return false
 }
 
 export async function beforeEach(to, from, next, store) {
     if (to.path !== '/maintenance' && store.state.introspection.maintenanceMode) {
-        next({path: "maintenance"});
+        next({ path: "maintenance" });
     }
     document.title = (to.meta.title !== undefined) ? "FAIRsharing | " + to.meta.title : "FAIRsharing";
-    if (store.state.users.user().isLoggedIn){
+    if (store.state.users.user().isLoggedIn) {
         await store.dispatch('users/validateUserToken');
     }
     next();
@@ -458,7 +465,7 @@ export function isLoggedIn(to, from, next, store) {
         const target = to.path;
         next({
             name: "Login", // back to safety route //
-            query: {goTo: target}
+            query: { goTo: target }
         });
     }
 }
@@ -480,12 +487,12 @@ export function isSuperCurator(to, from, next, store) {
         const target = to.path;
         next({
             name: "Login", // back to safety route //
-            query: {goTo: target}
+            query: { goTo: target }
         });
     }
 }
 
-export function isMaintenanceMode(to, from, next, store){
+export function isMaintenanceMode(to, from, next, store) {
     if (!store.state.introspection.maintenanceMode) {
         next(from);
     }

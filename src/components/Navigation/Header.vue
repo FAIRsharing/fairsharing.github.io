@@ -41,7 +41,7 @@
               :outlined="!item.active"
               :to="item.link"
             >
-              <span :class="['white--text',{'primary--text':!item.active}]">{{ item.label }}</span>
+              <span :class="['white--text',{'primary--text': '!item.active'}]">{{ item.label }}</span>
             </v-btn>
           </li>
           <!-- LOGIN -->
@@ -82,7 +82,7 @@
             v-else
             :small="$vuetify.breakpoint.mdAndDown"
             :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1 accent3 pl-2"
+            class="mr-1 mt-sm-1 green"
             to="/accounts/profile"
           >
             <v-avatar>
@@ -93,7 +93,8 @@
                 fa-user-circle
               </v-icon>
             </v-avatar>
-            <span class="white--text ellipse-150">{{ user().credentials.username }}</span>
+            <!-- Removing the username as part of ticket #1731 in order to adjust Organisaton button in the navigation menu -->
+            <!-- <span class="white--text ellipse-150">{{ user().credentials.username }}</span> -->
           </v-btn>
         </ul>
       </nav>

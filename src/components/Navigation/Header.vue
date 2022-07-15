@@ -37,6 +37,7 @@
               :small="$vuetify.breakpoint.mdAndDown"
               :x-large="$vuetify.breakpoint.xlOnly"
               class="mr-1 mt-sm-1"
+              :class="{'px-2': $vuetify.breakpoint.lgAndDown}"
               :color="item.color"
               :outlined="!item.active"
               :to="item.link"
@@ -141,6 +142,13 @@ export default {
           label: "Collections",
           name: "Collection",
           link: "/collections",
+          color: "primary",
+          active:false
+        },
+        {
+          label: "Organisations",
+          name: "Organisation",
+          link: "/organisations",
           color: "primary",
           active:false
         },

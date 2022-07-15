@@ -34,3 +34,4 @@ export const Graph =  () => import(/* webpackChunkName: "graphtest-chunk" */ '@/
 export const Maintenance =  () => import(/* webpackChunkName: "maintenance-chunk" */ '@/views/Errors/Maintenance');
 export const APIDoc =  () => import(/* webpackChunkName: "apiDoc-chunk" */ '@/views/Static/APIDoc/APIDoc');
 export const OntologyBrowser =  () => import(/* webpackChunkName: "ontologyBrowser-chunk" */ '@/views/Browsers/OntologyBrowser');
+export const OrganisationsList = () =>  import(/* webpackChunkName: "organisationsList-chunk" */ "@/views/Organisations/OrganisationsList");

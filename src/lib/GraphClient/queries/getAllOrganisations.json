@@ -1,0 +1,10 @@
+{
+  "queryName": "allOrganisations",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "name",
+    "homepage",
+    "types"
+  ]
+}

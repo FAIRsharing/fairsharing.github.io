@@ -42,7 +42,7 @@
               :outlined="!item.active"
               :to="item.link"
             >
-              <span :class="['white--text',{'primary--text': '!item.active'}]">{{ item.label }}</span>
+              <span :class="['white--text',{'primary--text': !item.active}]">{{ item.label }}</span>
             </v-btn>
           </li>
           <!-- LOGIN -->
@@ -85,6 +85,7 @@
             :x-large="$vuetify.breakpoint.xlOnly"
             class="mr-1 mt-sm-1 green"
             to="/accounts/profile"
+            fab
           >
             <v-avatar>
               <v-icon
@@ -148,7 +149,7 @@ export default {
         {
           label: "Organisations",
           name: "Organisation",
-          link: "/organisations",
+          link: "/organisationsList",
           color: "primary",
           active:false
         },

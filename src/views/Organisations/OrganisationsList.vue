@@ -2,7 +2,7 @@
   <v-container class="my-10">
     <v-card>
       <v-card-title>
-        Organistions List
+        Organisations List
         <v-spacer />
         <v-text-field
           v-model="search"
@@ -65,12 +65,12 @@ export default {
 
   async mounted() {
     this.loading = true;
-    await this.getOrgnisationsList();
+    await this.getOrganisationsList();
     this.loading = false;
   },
 
   methods: {
-    async getOrgnisationsList() {
+    async getOrganisationsList() {
       const organisationsList = await graphClient.executeQuery(
         getAllOrganisationsQuery
       );

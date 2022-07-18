@@ -13,12 +13,14 @@
           outlined
         />
       </v-card-title>
+
       <v-data-table
         :headers="headers"
         :items="organisations"
         :search="search"
         :loading="loading"
         loading-text="Loading... Please wait"
+        :class="{'data-table-mobile': $vuetify.breakpoint.xs}"
       >
         <template #:item.types="{ item }">
           {{ item.types.join(', ') }}
@@ -82,7 +84,10 @@ export default {
 </script>
 
 <style scoped>
-/* #edit_hide_email label {
-  margin-bottom: 0 !important;
-} */
+.data-table-mobile >>> .v-data-table__mobile-row {
+  display: grid;
+  grid-template-columns: 1fr 228px;
+  font-size: 0.775rem;
+  height: auto;
+}
 </style>

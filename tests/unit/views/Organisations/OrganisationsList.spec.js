@@ -10,17 +10,16 @@ const vuetify = new Vuetify();
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
-describe("OrganisationsList.vue",
-    function () {
+describe("OrganisationsList.vue", () => {
         let wrapper;
+
+        const organisationsDataList = [{id: 1, name: 'one', homepage: 'http://abc.com'}]
 
         let graphStub;
 
         graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         graphStub.withArgs(allOrganisationsQuery).returns({
-            allUsers: [
-                {id: 1, name: 'one', homepage: 'http://abc.com', types: ['xyz']}
-            ]
+            allOrganisations: organisationsDataList
         })
 
         afterAll(() => {
@@ -28,8 +27,8 @@ describe("OrganisationsList.vue",
         })
 
 
-        beforeEach(() => {
-            wrapper = shallowMount(OrganisationsList, {
+        beforeEach(async () => {
+            wrapper = await shallowMount(OrganisationsList, {
                 vuetify,
                 localVue,
             })
@@ -45,6 +44,7 @@ describe("OrganisationsList.vue",
 
         it("can be instantiated", () => {
             expect(wrapper.name()).toMatch("OrganisationsList");
+            expect(wrapper.vm.organisations).toStrictEqual(organisationsDataList)
         });
 
     });

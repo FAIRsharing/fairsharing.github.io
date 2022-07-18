@@ -2,7 +2,7 @@
   <v-container class="my-10">
     <v-card>
       <v-card-title>
-        Users List
+        Organistions List
         <v-spacer />
         <v-text-field
           v-model="search"
@@ -10,19 +10,27 @@
           label="Search"
           single-line
           hide-details
+          outlined
         />
       </v-card-title>
       <v-data-table
         :headers="headers"
-        :items="usersList"
+        :items="organisations"
         :search="search"
         :loading="loading"
         loading-text="Loading... Please wait"
       >
-        <template #item.id="{ item }">
-          <router-link class="underline-effect" :to="`/users/${item.id}`">
-            {{ `https://fairsharing.org/users/${item.id}` }}
-          </router-link>
+        <template #:item.types="{ item }">
+          {{ item.types.join(', ') }}
+        </template>
+        <template #item.homepage="{ item }">
+          <a
+            target="_blank"
+            class="underline-effect"
+            :href="item.homepage"
+          >
+            {{ item.homepage }}
+          </a>
         </template>
       </v-data-table>
     </v-card>
@@ -30,46 +38,51 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from "vuex";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import getAllOrganisationsQuery from "@/lib/GraphClient/queries/getAllOrganisations.json";
 
+let graphClient = new GraphClient();
 export default {
   name: "OrganisationsList",
+
   data() {
     return {
-      search: "",
+      search: '',
       headers: [
         {
-          text: "username",
+          text: "Name",
           align: "start",
           sortable: false,
-          value: "username",
+          value: "name",
         },
-        { text: "email", value: "email", sortable: false },
-        { text: "Public Profile", value: "id", sortable: false },
+        { text: "Types", value: "types", sortable: false },
+        { text: "Homepage", value: "homepage", sortable: false },
       ],
       loading: false,
+      organisations: [],
     };
   },
-  computed: {
-    ...mapState("users", ["usersList"]),
-  },
+
   async mounted() {
     this.loading = true;
-    await this.getUsersList();
+    await this.getOrgnisationsList();
     this.loading = false;
   },
-  beforeDestroy() {
-    this.cleanStore();
-  },
+
   methods: {
-    ...mapActions("users", ["getUsersList"]),
-    ...mapMutations("users", ["cleanStore"]),
+    async getOrgnisationsList() {
+      const organisationsList = await graphClient.executeQuery(
+        getAllOrganisationsQuery
+      );
+
+      this.organisations = organisationsList.allOrganisations;
+    },
   },
 };
 </script>
 
 <style scoped>
-#edit_hide_email label {
+/* #edit_hide_email label {
   margin-bottom: 0 !important;
-}
+} */
 </style>

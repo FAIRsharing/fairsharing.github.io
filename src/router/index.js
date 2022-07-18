@@ -91,7 +91,7 @@ let routes = [
     },
     {
         name: "Organisatons",
-        path: "/organisations",
+        path: "/organisationsList",
         component: OrganisationsList,
 
     },

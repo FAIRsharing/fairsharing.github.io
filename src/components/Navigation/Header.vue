@@ -172,7 +172,7 @@ export default {
         {
           label: "Organisations",
           name: "Organisations",
-          link: "/organisationsList",
+          link: "/organisations",
           color: "primary",
           active: false,
           primary: false

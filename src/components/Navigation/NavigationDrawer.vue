@@ -95,8 +95,8 @@
                         active: false
                     },
                     {
-                        name: "Organisation",
-                        path: "organisationsList",
+                        name: "Organisations",
+                        path: "organisations",
                         query: {"fairsharingRegistry": undefined},
                         active:false
                     },

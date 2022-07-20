@@ -90,7 +90,7 @@ let routes = [
 
     },
     {
-        name: "Organisatons",
+        name: "Organisations",
         path: "/organisationsList",
         component: OrganisationsList,
 

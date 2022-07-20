@@ -12,7 +12,10 @@
       @click.stop="toggleDrawerLeft"
     />
     <!-- First Level Menu -->
-    <div class="navFirst d-flex" :class="{'full-width': $vuetify.breakpoint.mdAndDown}" >
+    <div
+      class="navFirst d-flex"
+      :class="{'full-width': $vuetify.breakpoint.mdAndDown}"
+    >
       <router-link to="/">
         <img
           src="/assets/fairsharing-logo.svg"
@@ -81,7 +84,7 @@
                   fa-user-circle
                 </v-icon>
               </v-avatar>
-               <span class="white--text ellipse-150">{{ user().credentials.username }}</span>
+              <span class="white--text ellipse-150">{{ user().credentials.username }}</span>
             </v-btn>
           </ul>
         </nav>
@@ -89,30 +92,29 @@
     </div>
     <!-- Second Level Menu -->
     <div
-        v-if="$vuetify.breakpoint.lgAndUp"
-        class="navSecond d-flex justify-space-around align-center full-width"
+      v-if="$vuetify.breakpoint.lgAndUp"
+      class="navSecond d-flex justify-space-around align-center full-width"
     >
-
       <nav class="full-width">
         <ul
-            v-if="$vuetify.breakpoint.lgAndUp"
-            class="d-flex flex-row align-center flex-wrap px-0 justify-space-around"
+          v-if="$vuetify.breakpoint.lgAndUp"
+          class="d-flex flex-row align-center flex-wrap px-0 justify-space-around"
         >
           <li
-              v-for="(item, itemIndex) in links"
-              :key="'navBarTopMenuItem_' + itemIndex"
+            v-for="(item, itemIndex) in links"
+            :key="'navBarTopMenuItem_' + itemIndex"
           >
             <v-btn
-                :small="$vuetify.breakpoint.mdAndDown"
-                :x-large="$vuetify.breakpoint.xlOnly"
-                class="mr-1 mt-sm-1 menuLinks"
-                :class="{'px-2': $vuetify.breakpoint.lgAndDown}"
-                :color="item.color"
-                :outlined="!item.active"
-                :to="item.link"
-                min-width= "184"
+              :small="$vuetify.breakpoint.mdAndDown"
+              :x-large="$vuetify.breakpoint.xlOnly"
+              class="mr-1 mt-sm-1 menuLinks"
+              :class="{'px-2': $vuetify.breakpoint.lgAndDown}"
+              :color="item.color"
+              :outlined="!item.active"
+              :to="item.link"
+              min-width="184"
             >
-              <span :class="['white--text',{'primary--text': !item.active}]">{{ item.label }}</span>
+              <span :class="['white--text',{'primary--text': !item.active}, {'accent3--text': item.primary && !item.active}]">{{ item.label }}</span>
             </v-btn>
           </li>
         </ul>
@@ -130,7 +132,7 @@ import {isEmpty} from "lodash";
 export default {
   name: "Header",
   components: {StringSearch, Login},
-  data() {
+  data: function () {
     return {
       closeMenuStatus: false,
       drawerLeft: false,
@@ -140,49 +142,56 @@ export default {
           name: "Standard",
           link: "/standards",
           color: "accent3",
-          active:false
+          active: false,
+          primary: true
         },
         {
           label: "Databases",
           name: "Database",
           link: "/databases",
           color: "accent3",
-          active:false
+          active: false,
+          primary: true
         },
         {
           label: "Policies",
           name: "Policy",
           link: "/policies",
           color: "accent3",
-          active:false
+          active: false,
+          primary: true
         },
         {
           label: "Collections",
           name: "Collection",
           link: "/collections",
           color: "primary",
-          active:false
+          active: false,
+          primary: false
         },
         {
           label: "Organisations",
-          name: "Organisation",
+          name: "Organisations",
           link: "/organisationsList",
           color: "primary",
-          active:false
+          active: false,
+          primary: false
         },
         {
           label: "Add content",
           name: "New",
           link: "/new",
           color: "primary",
-          active:false
+          active: false,
+          primary: false
         },
         {
           label: "Stats",
           name: "Statistics",
           link: "/summary-statistics",
           color: "primary",
-          active:false
+          active: false,
+          primary: false
         }
       ]
     }

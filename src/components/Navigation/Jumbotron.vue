@@ -12,6 +12,7 @@
     <Particles
       id="particles"
       :options="options"
+      :class="{'largeScreen': $vuetify.breakpoint.xlOnly}"
     />
     <h1
       class="text-center text-body-1 text-sm-h6 pt-2 text-md-h6 text-lg-h4 text-xl-h4 font-weight-medium white--text"
@@ -123,7 +124,11 @@ section {
     height: 250px !important;
     z-index: 1;
     left:0;
-    top:100px;
+    top:150px;
+  }
+
+  #particles.largeScreen canvas{
+    top:170px;
   }
 
   #subtitle a {

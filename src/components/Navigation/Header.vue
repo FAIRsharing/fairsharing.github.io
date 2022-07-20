@@ -2,102 +2,117 @@
   <v-app-bar
     id="mainHeader"
     short
-    height="100"
-    max-height="100"
+    height="150"
+    max-height="150"
     class="header-container"
+    :class="[{'largeScreen': $vuetify.breakpoint.xlOnly}, {'smallScreen': $vuetify.breakpoint.mdAndDown}]"
   >
     <v-app-bar-nav-icon
       v-if="$vuetify.breakpoint.mdAndDown"
       @click.stop="toggleDrawerLeft"
     />
-    <router-link to="/">
-      <img
-        src="/assets/fairsharing-logo.svg"
-        alt="FAIRsharing logo"
-      >
-    </router-link>
-    <div
-      class="d-flex justify-end align-center custom-width"
-    >
-      <string-search
-        v-if="$vuetify.breakpoint.sm || $vuetify.breakpoint.mdAndUp"
-        placeholder="search through all content"
-        :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'flex-grow-custom'"
-      />
-      <nav>
-        <ul
-          v-if="$vuetify.breakpoint.lgAndUp"
-          class="d-flex flex-row align-center flex-wrap px-0"
+    <div class="navFirst d-flex" :class="{'full-width': $vuetify.breakpoint.mdAndDown}" >
+      <router-link to="/">
+        <img
+          src="/assets/fairsharing-logo.svg"
+          alt="FAIRsharing logo"
         >
-          <li
-            v-for="(item, itemIndex) in links"
-            :key="'navBarTopMenuItem_' + itemIndex"
+      </router-link>
+      <div
+        class="d-flex justify-start align-center custom-width"
+      >
+        <string-search
+          v-if="$vuetify.breakpoint.sm || $vuetify.breakpoint.mdAndUp"
+          placeholder="search through all content"
+          :class="$vuetify.breakpoint.lgAndDown?'flex-grow-1':'full-width'"
+        />
+        <nav>
+          <ul
+            v-if="$vuetify.breakpoint.lgAndUp"
+            class="d-flex flex-row align-center flex-wrap px-0"
           >
+            <!-- LOGIN -->
+            <v-menu
+              v-if="!user().isLoggedIn"
+              offset-y
+              transition="slide-y-transition"
+              :close-on-content-click="closeMenuStatus"
+              class="mt-5"
+              max-height="90vh"
+            >
+              <template #activator="{ on }">
+                <v-btn
+                  :small="$vuetify.breakpoint.mdAndDown"
+                  :x-large="$vuetify.breakpoint.xlOnly"
+                  color="accent3 white--text"
+                  class="mr-1 mt-sm-1"
+                  dark
+                  v-on="on"
+                  @click="closePopup(false)"
+                >
+                  Login
+                  <v-icon
+                    class="ml-1"
+                    small
+                  >
+                    fa fa-sign-in-alt
+                  </v-icon>
+                </v-btn>
+              </template>
+              <Login
+                :redirect="false"
+                :pop-up="true"
+                @ClosePopup="closePopup"
+              />
+            </v-menu>
             <v-btn
+              v-else
               :small="$vuetify.breakpoint.mdAndDown"
               :x-large="$vuetify.breakpoint.xlOnly"
-              class="mr-1 mt-sm-1"
-              :class="{'px-2': $vuetify.breakpoint.lgAndDown}"
-              :color="item.color"
-              :outlined="!item.active"
-              :to="item.link"
+              class="mr-1 mt-sm-1 green"
+              to="/accounts/profile"
+            >
+              <v-avatar>
+                <v-icon
+                  dark
+                  color="white"
+                >
+                  fa-user-circle
+                </v-icon>
+              </v-avatar>
+               <span class="white--text ellipse-150">{{ user().credentials.username }}</span>
+            </v-btn>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div
+        v-if="$vuetify.breakpoint.lgAndUp"
+        class="navSecond d-flex justify-space-around align-center full-width"
+    >
+
+      <nav class="full-width">
+        <ul
+            v-if="$vuetify.breakpoint.lgAndUp"
+            class="d-flex flex-row align-center flex-wrap px-0 justify-space-around"
+        >
+          <li
+              v-for="(item, itemIndex) in links"
+              :key="'navBarTopMenuItem_' + itemIndex"
+          >
+            <v-btn
+                :small="$vuetify.breakpoint.mdAndDown"
+                :x-large="$vuetify.breakpoint.xlOnly"
+                class="mr-1 mt-sm-1 menuLinks"
+                :class="{'px-2': $vuetify.breakpoint.lgAndDown}"
+                :color="item.color"
+                :outlined="!item.active"
+                :to="item.link"
+                min-width= "184"
             >
               <span :class="['white--text',{'primary--text': !item.active}]">{{ item.label }}</span>
             </v-btn>
           </li>
-          <!-- LOGIN -->
-          <v-menu
-            v-if="!user().isLoggedIn"
-            offset-y
-            transition="slide-y-transition"
-            :close-on-content-click="closeMenuStatus"
-            class="mt-5"
-            max-height="90vh"
-          >
-            <template #activator="{ on }">
-              <v-btn
-                :small="$vuetify.breakpoint.mdAndDown"
-                :x-large="$vuetify.breakpoint.xlOnly"
-                color="accent3 white--text"
-                class="mr-1 mt-sm-1"
-                dark
-                v-on="on"
-                @click="closePopup(false)"
-              >
-                Login
-                <v-icon
-                  class="ml-1"
-                  small
-                >
-                  fa fa-sign-in-alt
-                </v-icon>
-              </v-btn>
-            </template>
-            <Login
-              :redirect="false"
-              :pop-up="true"
-              @ClosePopup="closePopup"
-            />
-          </v-menu>
-          <v-btn
-            v-else
-            :small="$vuetify.breakpoint.mdAndDown"
-            :x-large="$vuetify.breakpoint.xlOnly"
-            class="mr-1 mt-sm-1 green"
-            to="/accounts/profile"
-            fab
-          >
-            <v-avatar>
-              <v-icon
-                dark
-                color="white"
-              >
-                fa-user-circle
-              </v-icon>
-            </v-avatar>
-            <!-- Removing the username as part of ticket #1731 in order to adjust Organisaton button in the navigation menu -->
-            <!-- <span class="white--text ellipse-150">{{ user().credentials.username }}</span> -->
-          </v-btn>
         </ul>
       </nav>
     </div>
@@ -122,21 +137,21 @@ export default {
           label: "Standards",
           name: "Standard",
           link: "/standards",
-          color: "primary",
+          color: "accent3",
           active:false
         },
         {
           label: "Databases",
           name: "Database",
           link: "/databases",
-          color: "primary",
+          color: "accent3",
           active:false
         },
         {
           label: "Policies",
           name: "Policy",
           link: "/policies",
-          color: "primary",
+          color: "accent3",
           active:false
         },
         {
@@ -157,14 +172,14 @@ export default {
           label: "Add content",
           name: "New",
           link: "/new",
-          color: "dark-grey",
+          color: "primary",
           active:false
         },
         {
           label: "Stats",
           name: "Statistics",
           link: "/summary-statistics",
-          color: "dark-grey",
+          color: "primary",
           active:false
         }
       ]
@@ -218,15 +233,39 @@ header {
   padding-right: .5rem;
 }
 
-.flex-grow-custom {
-  width: 30%;
-}
-
 .custom-width {
   width: 94%;
 }
 
+
 .header-container {
-    border-bottom: 3px dashed #253442;
+  border-bottom: 3px dashed #253442;
 }
+
+
+.header-container::v-deep .v-toolbar__content {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.smallScreen {
+  height: 100px !important;
+  max-height: 100px !important;
+}
+
+.smallScreen::v-deep .v-toolbar__content {
+  height: 100px !important;
+  flex-direction: row;
+  align-items: center;
+}
+
+.largeScreen {
+  height: 170px !important;
+  max-height: 170px !important;
+}
+
+.largeScreen::v-deep .menuLinks {
+  min-width: 260px !important
+}
+
 </style>

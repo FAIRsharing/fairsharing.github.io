@@ -1,4 +1,4 @@
-import {createLocalVue, shallowMount} from "@vue/test-utils";
+import { createLocalVue, shallowMount } from "@vue/test-utils";
 import UsersList from "@/views/Users/UsersList"
 import Vuetify from "vuetify"
 import Vuex from "vuex";
@@ -24,7 +24,7 @@ describe("UsersList.vue", function () {
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
     graphStub.withArgs(allUsersQuery).returns({
         allUsers: [
-            {id: 1, username: 'one', email: 'one@one.com'}
+            { id: 1, username: 'one', email: 'one@one.com' }
         ]
     })
 
@@ -33,11 +33,11 @@ describe("UsersList.vue", function () {
     })
 
 
-    beforeEach( () => {
-        wrapper =  shallowMount(UsersList, {
+    beforeEach(() => {
+        wrapper = shallowMount(UsersList, {
             vuetify,
             localVue,
-            mocks: {$store},
+            mocks: { $store },
         })
     });
 
@@ -46,7 +46,7 @@ describe("UsersList.vue", function () {
     });
 
     afterAll(() => {
-        restStub.restore();
+        graphStub.restore();
     })
 
     it("can be instantiated", () => {

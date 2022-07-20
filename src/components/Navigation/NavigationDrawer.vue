@@ -36,7 +36,7 @@
       </v-btn>
       <v-btn
         v-else
-        class="mr-1 mt-10 accent3 pl-2"
+        class="mr-1 mt-10 green pl-2"
         to="/accounts/profile"
         width="100%"
       >
@@ -93,6 +93,12 @@
                         query: {"fairsharingRegistry": "Collection"},
                         path: "search",
                         active: false
+                    },
+                    {
+                        name: "Organisations",
+                        path: "organisations",
+                        query: {"fairsharingRegistry": undefined},
+                        active:false
                     },
                     {
                         name: "Add content",

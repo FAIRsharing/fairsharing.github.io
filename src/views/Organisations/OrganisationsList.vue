@@ -22,6 +22,13 @@
         loading-text="Loading... Please wait"
         :class="{'data-table-mobile': $vuetify.breakpoint.xs}"
       >
+        <template #[`item.name`]="{ item }">
+          <router-link
+              :to="`/organisations/${item.id}`"
+          >
+            {{ item.name }}
+          </router-link>
+        </template>
         <template #[`item.types`]="{ item }">
           {{ item.types.join(', ') }}
         </template>

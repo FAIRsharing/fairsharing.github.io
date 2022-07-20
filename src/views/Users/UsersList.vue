@@ -60,7 +60,6 @@ export default {
     this.loading = true;
     await this.getUsersList()
     this.loading = false;
-    console.log("this.getUsersList()::", this.getUsersList())
   },
   beforeDestroy() {
     this.cleanStore();

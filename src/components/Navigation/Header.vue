@@ -11,6 +11,7 @@
       v-if="$vuetify.breakpoint.mdAndDown"
       @click.stop="toggleDrawerLeft"
     />
+    <!-- First Level Menu -->
     <div class="navFirst d-flex" :class="{'full-width': $vuetify.breakpoint.mdAndDown}" >
       <router-link to="/">
         <img
@@ -86,6 +87,7 @@
         </nav>
       </div>
     </div>
+    <!-- Second Level Menu -->
     <div
         v-if="$vuetify.breakpoint.lgAndUp"
         class="navSecond d-flex justify-space-around align-center full-width"

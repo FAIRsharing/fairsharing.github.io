@@ -22,10 +22,10 @@
         loading-text="Loading... Please wait"
         :class="{'data-table-mobile': $vuetify.breakpoint.xs}"
       >
-        <template #:item.types="{ item }">
+        <template #[`item.types`]="{ item }">
           {{ item.types.join(', ') }}
         </template>
-        <template #item.homepage="{ item }">
+        <template #[`item.homepage`]="{ item }">
           <a
             target="_blank"
             class="underline-effect"

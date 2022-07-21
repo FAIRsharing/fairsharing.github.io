@@ -177,8 +177,9 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        if (this.currentRecord.metadata.access_points) {
-            const currentLevelObject = getAPILevel(this.currentRecord.metadata.access_points);
+        console.log(JSON.stringify(this.currentRecord.metadata));
+        if (this.currentRecord.metadata.data_processes_and_conditions) {
+            const currentLevelObject = getAPILevel(this.currentRecord.metadata.data_processes_and_conditions);
             this.#createBadgeObject(
                 "hasAPI",
                 currentLevelObject

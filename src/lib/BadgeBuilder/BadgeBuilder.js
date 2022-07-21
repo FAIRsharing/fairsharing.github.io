@@ -177,7 +177,6 @@ class BadgeBuilder {
 
             return finalBadgeObjectBasedOnLevel
         }
-        console.log(JSON.stringify(this.currentRecord.metadata));
         if (this.currentRecord.metadata.data_processes_and_conditions) {
             const currentLevelObject = getAPILevel(this.currentRecord.metadata.data_processes_and_conditions);
             this.#createBadgeObject(

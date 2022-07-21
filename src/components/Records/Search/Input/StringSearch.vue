@@ -19,7 +19,7 @@
 
       <!--  reusable search box  -->
       <v-btn
-        v-if="$vuetify.breakpoint.mdAndDown && !showHomeSearch"
+        v-if="!showHomeSearch"
         small
         color="primary"
         outlined

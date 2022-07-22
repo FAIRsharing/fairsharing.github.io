@@ -112,7 +112,9 @@
               :color="item.color"
               :outlined="!item.active"
               :to="item.link"
-              min-width="184"
+              width="100%"
+              min-width="167px"
+              max-width="184px"
             >
               <span :class="['white--text',{'primary--text': !item.active}, {'accent3--text': item.primary && !item.active}]">{{ item.label }}</span>
             </v-btn>

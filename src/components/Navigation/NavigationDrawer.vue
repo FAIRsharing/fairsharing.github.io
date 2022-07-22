@@ -10,11 +10,11 @@
     >
       <v-btn
         width="100%"
-        color="primary"
+        :color="button.color"
         :outlined="!button.active"
         @click="goTo(button)"
       >
-        <span :class="['white--text',{'primary--text':!button.active}]">{{ button.name }}</span>
+        <span :class="['white--text',{'primary--text':!button.active}, {'accent3--text': button.primary && !button.active}]">{{ button.name }}</span>
       </v-btn>
     </div>
     <div style="flex-grow: 1">
@@ -74,43 +74,57 @@
                         name: "Standards",
                         query: {"fairsharingRegistry": "Standard"},
                         path: "search",
-                        active: false
+                        color: "accent3",
+                        active: false,
+                        primary: true
                     },
                     {
                         name: "Databases",
                         query: {"fairsharingRegistry": "Database"},
                         path: "search",
-                        active: false
+                        color: "accent3",
+                        active: false,
+                        primary: true
                     },
                     {
                         name: "Policies",
                         query: {"fairsharingRegistry": "Policy"},
                         path: "search",
-                        active: false
+                        color: "accent3",
+                        active: false,
+                        primary: true
                     },
                     {
                         name: "Collections",
                         query: {"fairsharingRegistry": "Collection"},
                         path: "search",
-                        active: false
+                        color: "primary",
+                        active: false,
+                        primary: false
                     },
                     {
                         name: "Organisations",
                         path: "organisations",
                         query: {"fairsharingRegistry": undefined},
-                        active:false
+                        color: "primary",
+                        active:false,
+                        primary: false
                     },
                     {
                         name: "Add content",
                         path: "new",
                         query: undefined,
-                        active: false
+                        color: "primary",
+                        active: false,
+                        primary: false
                     },
                     {
                         name: "Stats",
                         path: "summary-statistics",
                         query: undefined,
-                        active: false
+                        color: "primary",
+                        active: false,
+                        primary: false
                     }
                 ]
             }

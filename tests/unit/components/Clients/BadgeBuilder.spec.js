@@ -119,12 +119,12 @@ describe("BadgeBuilder", () => {
         resp = badgeBuilder.hasAPI();
         expect(Object.keys(resp.badges).length).toBe(1);
         let changedData = JSON.parse(JSON.stringify(badgeBuilderFakeData))
-        delete changedData.metadata.access_points
+        delete changedData.metadata.data_processes_and_conditions
         badgeBuilder = new BadgeBuilder(changedData);
         resp = badgeBuilder.hasAPI();
         expect(Object.keys(resp.badges).length).toBe(0);
         changedData = JSON.parse(JSON.stringify(badgeBuilderFakeData))
-        changedData.metadata.access_points = []
+        changedData.metadata.data_processes_and_conditions = []
         badgeBuilder = new BadgeBuilder(changedData);
         resp = badgeBuilder.hasAPI();
         expect(Object.keys(resp.badges).length).toBe(0);

@@ -207,7 +207,6 @@
                     <v-list-item-content
                       class="py-0 d-block"
                     >
-                      <b class="blue--text">ROR ID: </b>
                       <span v-if="organisation.rorLink">
                         <img
                           src="/assets/icons/ror-icon-rbg-24.png"

@@ -41,7 +41,7 @@
     <!-- if only shows status and nothing else   -->
     <div
       v-if="showOnlyStatus && showStatus"
-      class="circle-holder"
+      :class="inEditForm ? 'circle-holder-editing' : 'circle-holder'"
     >
       <v-tooltip
         v-if="showStatus"
@@ -74,6 +74,7 @@ export default {
     record: {default: null, type: Object},
     showStatus: {default: true, type: Boolean},
     showOnlyStatus: {default: false, type: Boolean},
+    inEditForm: {default: false, type: Boolean},
   },
   data() {
     return {
@@ -188,5 +189,20 @@ export default {
     cursor:help;
   }
 }
+
+.circle-holder-editing {
+  padding-right: 8px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  .circle {
+    height: 36px;
+    width: 36px;
+    border-radius: 36px;
+    -moz-border-radius: 36px;
+    -webkit-border-radius: 36px;
+  }
+}
+
 
 </style>

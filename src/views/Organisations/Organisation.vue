@@ -209,6 +209,9 @@
                     >
                       <b class="blue--text">ROR ID: </b>
                       <span v-if="organisation.rorLink">
+                        <img
+                          src="/assets/icons/ror-icon-rbg-24.png"
+                        >
                         <a
                           :href="organisation.rorLink"
                         >

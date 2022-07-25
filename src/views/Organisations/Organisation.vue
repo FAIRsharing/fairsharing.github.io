@@ -217,7 +217,6 @@
                           {{ organisation.rorLink }}
                         </a>
                       </span>
-                      <span v-else> None </span>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>

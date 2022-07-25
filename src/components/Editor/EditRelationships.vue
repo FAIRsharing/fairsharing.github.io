@@ -97,6 +97,11 @@
                       </span>
                     </v-list-item-content>
                     <v-list-item-icon>
+                      <record-status
+                        :record="record"
+                        show-only-status="true"
+                        in-edit-form="true"
+                      />
                       <v-btn
                         icon
                         class="blue white--text mr-2"
@@ -398,6 +403,7 @@
     import { isEqual, capitalize } from "lodash"
     import stringUtils from '@/utils/stringUtils';
     import Record from "@/views/Records/Record";
+    import RecordStatus from "@/components/Records/Shared/RecordStatus";
     import Loaders from "../Navigation/Loaders";
     import Icon from "@/components/Icon";
     import Alerts from "./Alerts";
@@ -405,7 +411,7 @@
 
     export default {
         name: "EditRelationships",
-        components: {Alerts, Icon, Loaders, Record},
+        components: {Alerts, Icon, Loaders, Record, RecordStatus},
         mixins: [stringUtils],
         data(){
           return {

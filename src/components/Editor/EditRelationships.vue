@@ -99,27 +99,43 @@
                     <v-list-item-icon>
                       <record-status
                         :record="record"
-                        show-only-status="true"
-                        in-edit-form="true"
+                        :show-only-status="true"
+                        :in-edit-form="true"
                       />
-                      <v-btn
-                        icon
-                        class="blue white--text mr-2"
-                        @click="showPreviewOverlay(record)"
+                      <v-tooltip
+                        top
                       >
-                        <v-icon small>
-                          fas fa-eye
-                        </v-icon>
-                      </v-btn>
-                      <v-btn
-                        icon
-                        class="green white--text"
-                        @click="showOverlay(record)"
+                        <template #activator="{ on }">
+                          <v-btn
+                            icon
+                            class="blue white--text mr-2"
+                            v-on="on"
+                            @click="showPreviewOverlay(record)"
+                          >
+                            <v-icon small>
+                              fas fa-eye
+                            </v-icon>
+                          </v-btn>
+                        </template>
+                        View Record
+                      </v-tooltip>
+                      <v-tooltip
+                        top
                       >
-                        <v-icon small>
-                          fa-arrow-right
-                        </v-icon>
-                      </v-btn>
+                        <template #activator="{ on }">
+                          <v-btn
+                            icon
+                            class="green white--text"
+                            v-on="on"
+                            @click="showOverlay(record)"
+                          >
+                            <v-icon small>
+                              fa-arrow-right
+                            </v-icon>
+                          </v-btn>
+                        </template>
+                        Add
+                      </v-tooltip>
                     </v-list-item-icon>
                   </v-list-item>
                 </v-lazy>

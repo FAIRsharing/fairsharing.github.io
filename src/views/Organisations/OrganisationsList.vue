@@ -24,7 +24,7 @@
       >
         <template #[`item.name`]="{ item }">
           <router-link
-              :to="`/organisations/${item.id}`"
+            :to="`/organisations/${item.id}`"
           >
             {{ item.name }}
           </router-link>

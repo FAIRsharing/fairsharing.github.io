@@ -3,6 +3,20 @@
     id="recordEditor"
     fluid
   >
+    <v-alert
+      dense
+      fluid
+      type="info"
+      class="mb-0 flex-grow-1"
+    >
+      <span class="doclink">For more information on editing FAIRsharing records, please see our
+        <a
+          href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/how-to-update-a-record"
+          target="_blank"
+        >
+          user documentation</a>.
+      </span>
+    </v-alert>
     <!-- TODO: Loop through the buttons -->
     <!-- popup to confirm exit from editing -->
     <v-row>
@@ -300,6 +314,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.doclink a {
+  color: #0f5e66;
+  border-bottom: #0f5e66 0.125em solid;
 }
 
 </style>

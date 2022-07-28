@@ -101,6 +101,8 @@ describe("CreateRecord.vue", function() {
         graphStub.withArgs(getDuplicates).returns({ duplicateCheck: []})
         await wrapper.vm.createRecord();
         expect(checkForDups).toHaveBeenCalledTimes(1);
+        expect(wrapper.vm.recordCreated).toBe(true);
+        await wrapper.vm.redirectToEdit(wrapper.vm.newRecord);
         expect($router.push).toHaveBeenCalledWith({path: "1234/edit"});
 
         editorStore.state.possibleDuplicates = [];

@@ -39,6 +39,7 @@
             <v-card-actions>
               <v-btn
                 class="primary"
+                :loading="loading"
                 :disabled="disableSubmit()"
                 @click="createRecord()"
               >
@@ -59,6 +60,33 @@
         </v-col>
       </v-row>
     </v-form>
+    <v-dialog
+      v-model="recordCreated"
+      max-width="700px"
+    >
+      <v-card>
+        <v-card-title
+          class="headline"
+        >
+          <p>
+            <b>Success!</b>
+          </p>
+        </v-card-title>
+        <v-card-text>
+          Draft submission saved. Next, please complete curation on your record.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="redirectToEdit(newRecord)"
+          >
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -81,6 +109,7 @@
       data(){
           return {
             record: {},
+            newRecord: {},
             recordsTypes: [],
             formValid: false,
             loaded: false,
@@ -92,7 +121,8 @@
               isUrl: function(){return isUrl()}
             },
             submitAnyway: false,
-            recordCreated: false
+            recordCreated: false,
+            loading: false,
           }
         },
         computed: {
@@ -151,6 +181,8 @@
               }
             }
 
+            this.loading = true;
+
             record.record_type_id = record.type.id;
             record.metadata.status = status;
             record.country_ids = record.countries.map(obj => obj.id);
@@ -160,18 +192,22 @@
             delete record.countries;
             delete record.type;
             let new_record = await restClient.createRecord(record, this.user().credentials.token);
-            this.recordCreated = true;
-            if (!new_record.error) {
-              this.$router.push({
-                path: new_record.data.id + "/edit"
-              });
-            }
-            else {
+            if (new_record.error) {
               this.message = {
                 error: true,
                 value: new_record.error
               }
             }
+            else {
+              this.recordCreated = true;
+              this.newRecord = new_record;
+            }
+          },
+          redirectToEdit(record) {
+            this.recordCreated = false;
+            this.$router.push({
+              path: record.data.id + "/edit"
+            });
           },
           async checkForDups(record) {
             const _module = this;

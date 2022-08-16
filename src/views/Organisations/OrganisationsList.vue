@@ -21,6 +21,7 @@
         :loading="loading"
         loading-text="Loading... Please wait"
         :class="{'data-table-mobile': $vuetify.breakpoint.xs}"
+        :footer-props="{'items-per-page-options': [10, 20, 30, 40, 50]}"
       >
         <template #[`item.name`]="{ item }">
           <router-link

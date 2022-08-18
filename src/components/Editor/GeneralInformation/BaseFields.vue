@@ -431,6 +431,7 @@
       </v-col>
 
       <database-warning />
+      <!-- create record button -->
       <v-card-actions v-if="createMode">
         <v-btn
           class="primary"

@@ -178,23 +178,17 @@ describe("CreateRecord.vue", function() {
         graphStub.restore();
     });
 
-    it("sets the disableSubmit variable correctly", () => {
-        editorStore.state.possibleDuplicates = [{record: "a record"}];
-        wrapper.vm.formValid = false;
+    it("runs the setSubmitAnyway method", () => {
         wrapper.vm.submitAnyway = false;
-        expect(wrapper.vm.disableSubmit()).toBe(true);
-        wrapper.vm.formValid = true;
-        expect(wrapper.vm.disableSubmit()).toBe(true);
         wrapper.vm.setSubmitAnyway();
         expect(wrapper.vm.submitAnyway).toBe(true);
-        expect(wrapper.vm.disableSubmit()).toBe(false);
+    });
+
+    it("runs the tryAgain method", () => {
+        wrapper.vm.submitAnyway = false;
         wrapper.vm.tryAgain();
         expect(wrapper.vm.submitAnyway).toBe(false);
         expect(wrapper.vm.possibleDuplicates.length).toEqual(0);
-        editorStore.state.possibleDuplicates = [];
-        wrapper.vm.formValid = true;
-        wrapper.vm.submitAnyway = false;
-        expect(wrapper.vm.disableSubmit()).toBe(false);
     });
 
 

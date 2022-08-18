@@ -23,7 +23,7 @@ export function isEmail(){
  * @returns {function(*=): (boolean|string)}
  */
 export function isRequired(){
-    return value =>  !(!value || value.length === 0 || JSON.stringify(value) === '{}') || 'Required'
+    return value => !!value || 'Required.'
 }
 
 /**

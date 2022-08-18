@@ -34,8 +34,7 @@ describe('Form validation rules', () => {
     it("can check if the field is present", () => {
         let tester = isRequired();
         expect(tester(1)).toBe(true);
-        expect(tester()).toBe("Required");
-        expect(tester({})).toBe("Required");
+        expect(tester()).toBe("Required.")
     });
 
     it("can check if it's a URL", () => {

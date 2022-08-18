@@ -1,6 +1,7 @@
 <template>
   <v-form
     ref="form"
+    v-model="formValid"
     lazy-validation
   >
     <v-row>
@@ -255,7 +256,6 @@
           item-text="name"
           item-value="name"
           outlined
-          return-object
           :disabled="typeChangeDisabled()"
         >
           <!-- autocomplete selected -->
@@ -431,6 +431,16 @@
       </v-col>
 
       <database-warning />
+      <v-card-actions v-if="createMode">
+        <v-btn
+          class="primary"
+          :loading="loading"
+          :disabled="disableSubmit()"
+          @click="createNewRecord()"
+        >
+          Create Record
+        </v-btn>
+      </v-card-actions>
     </v-row>
   </v-form>
 </template>
@@ -449,6 +459,11 @@
       name: "BaseFields",
       components: {UploadFiles, DatabaseWarning, CountryFlag, StatusPills, Icon},
       mixins: [getAPIEndPoint],
+      props:{
+        createMode:{type: Boolean, default: false},
+        submitRecord:{type: Boolean, default: false},
+        loading:{type: Boolean, default: false}
+      },
       data(){
           return {
               rules: {
@@ -456,7 +471,8 @@
                   isUrl: function(){return isUrl()},
                   isLongEnough: function(val){return isLongEnough(val)},
               },
-              submitAnywayDisabled: false
+              submitAnywayDisabled: false,
+              formValid: false
           }
       },
       computed: {
@@ -514,6 +530,24 @@
           this.fields.metadata.name = null;
           this.fields.metadata.abbreviation = null;
           this.$emit('clearing');
+        },
+        disableSubmit() {
+          let _module = this;
+          if (!_module.formValid) {
+            return true;
+          }
+          if (_module.possibleDuplicates.length > 0) {
+            if (_module.submitRecord) {
+              return false;
+            }
+            else {
+              return true;
+            }
+          }
+          return false;
+        },
+        createNewRecord(){
+          this.$emit('createnewrecord');
         }
       }
     }

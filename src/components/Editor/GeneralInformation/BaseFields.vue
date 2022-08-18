@@ -256,6 +256,7 @@
           item-text="name"
           item-value="name"
           outlined
+          return-object
           :disabled="typeChangeDisabled()"
         >
           <!-- autocomplete selected -->

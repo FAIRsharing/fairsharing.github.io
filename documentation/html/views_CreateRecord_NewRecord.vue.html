@@ -123,22 +123,16 @@
               &lt;v-container fluid>
                 &lt;v-row>
                   &lt;base-fields
+                    :create-mode="true"
+                    :submit-record="submitAnyway"
+                    :loading="loading"
                     @submission="setSubmitAnyway()"
                     @clearing="tryAgain()"
+                    @createnewrecord="createRecord()"
                   />
                 &lt;/v-row>
               &lt;/v-container>
             &lt;/v-card-text>
-            &lt;v-card-actions>
-              &lt;v-btn
-                class="primary"
-                :loading="loading"
-                :disabled="disableSubmit()"
-                @click="createRecord()"
-              >
-                Create Record
-              &lt;/v-btn>
-            &lt;/v-card-actions>
           &lt;/v-card>
 
           &lt;v-fade-transition>
@@ -333,21 +327,6 @@
               record.dups_suspected = true;
             }
             return record;
-          },
-          disableSubmit() {
-            let _module = this;
-            if (!_module.formValid) {
-              return true;
-            }
-            if (_module.possibleDuplicates.length > 0) {
-              if (_module.submitAnyway) {
-                return false;
-              }
-              else {
-                return true;
-              }
-            }
-            return false;
           },
           setSubmitAnyway() {
             this.submitAnyway = true;

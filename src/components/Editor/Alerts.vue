@@ -19,7 +19,7 @@
           :highlight-mouseover-node="true"
         />
         <span v-if="message.error">
-          <br/>
+          <br>
           Need help with the message above?
           Please <a href="mailto:contact@fairsharing.org">email us</a> with the details.
         </span>

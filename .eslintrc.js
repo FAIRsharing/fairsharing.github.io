@@ -53,7 +53,7 @@ module.exports = {
   },
   parser: "vue-eslint-parser",
   parserOptions: {
-    parser: "@babel/eslint-parser"
+    parser: "babel-eslint"
   },
   overrides: [
     {

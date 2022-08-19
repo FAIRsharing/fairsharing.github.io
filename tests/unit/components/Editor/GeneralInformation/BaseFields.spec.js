@@ -64,7 +64,12 @@ describe('Editor -> BaseFields.vue', () => {
             vuetify,
             router,
             mocks: {$store, $route, $router},
-            stubs: { 'v-form': VueFormStub }
+            stubs: { 'v-form': VueFormStub },
+            propsData: {
+                createMode: false,
+                submitRecord:false,
+                loading:false
+            },
         });
     });
 
@@ -125,6 +130,19 @@ describe('Editor -> BaseFields.vue', () => {
         });
         await wrapper.vm.changeLogoData([]);
         expect(wrapper.vm.fields.logo).toStrictEqual({});
+    });
+
+    it("sets the disableSubmit variable correctly", () => {
+        editorStore.state.possibleDuplicates = [{record: "a record"}];
+        wrapper.vm.formValid = false;
+        wrapper.vm.submitRecord = false;
+        expect(wrapper.vm.disableSubmit()).toBe(true);
+        wrapper.vm.formValid = true;
+        expect(wrapper.vm.disableSubmit()).toBe(true);
+        editorStore.state.possibleDuplicates = [];
+        wrapper.vm.formValid = true;
+        wrapper.vm.submitRecord = false;
+        expect(wrapper.vm.disableSubmit()).toBe(false);
     });
 
 });

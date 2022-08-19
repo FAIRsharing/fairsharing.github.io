@@ -14,7 +14,7 @@ module.exports = {
     'vue/multi-word-component-names': "off",
     "vue/order-in-components": ["error", {
 	"order": [
-    	"el",
+	"el",
         "name",
         "key",
         "parent",

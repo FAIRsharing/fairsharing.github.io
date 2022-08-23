@@ -50,7 +50,7 @@
           class="primary"
           :disabled="!formValid"
           :loading="loading"
-          @click="saveRecord(false)"
+          @click="checkTypeChange(false)"
         >
           Save and continue
         </v-btn>
@@ -58,7 +58,7 @@
           :disabled="!formValid"
           :loading="loading"
           class="primary"
-          @click="saveRecord(true)"
+          @click="checkTypeChange(true)"
         >
           Save and exit
         </v-btn>
@@ -73,6 +73,49 @@
         <loaders />
       </v-overlay>
     </v-fade-transition>
+    <v-dialog
+      v-model="showTypeChanged"
+      max-width="700px"
+      persistent
+    >
+      <v-card>
+        <v-card-title
+          class="headline"
+        >
+          Record type has changed!
+        </v-card-title>
+        <v-card-text>
+          <p>
+            Are you sure you want to change this record from
+            a <b>{{ formatType(initialFields.type) }}</b>&nbsp;to a&nbsp;
+            <b>{{ formatType(currentFields.type) }}?</b>
+          </p>
+          <p>
+            Any metadata specific to&nbsp;<b>{{ formatType(initialFields.type) }}</b>&nbsp;will be deleted.
+          </p>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="blue darken-1"
+            text
+            persistent
+            @click="closeTypeChanged()"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="orange darken-1"
+            text
+            persistent
+            @click="submitWithChangedType()"
+          >
+            Confirm Change
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-form>
 </template>
 
@@ -94,7 +137,9 @@
             return {
                 initialized: false,
                 formValid: false,
-                loading: false
+                loading: false,
+                showTypeChanged: false,
+                redirect: false
             }
         },
         computed: {
@@ -175,7 +220,35 @@
                 await this.getRecordTypes();
                 await this.getTags();
             },
-            async saveRecord(redirect){
+            async checkTypeChange(redirect) {
+              let _module = this;
+              let initialType = this.formatType(_module.initialFields.type);
+              let currentType = this.formatType(_module.currentFields.type);
+
+              if (currentType === initialType) {
+                await _module.saveRecord(redirect, false);
+              }
+              else {
+                // Deal with the confirmation dialogue.
+                _module.showTypeChanged = true;
+                _module.redirect = redirect;
+              }
+
+            },
+            closeTypeChanged() {
+              this.showTypeChanged = false;
+            },
+            async submitWithChangedType() {
+              this.showTypeChanged = false;
+              await this.saveRecord(this.redirect, true);
+            },
+            formatType(type) {
+              if (type.name === undefined) {
+                return type;
+              }
+              return type.name;
+            },
+            async saveRecord(redirect, change){
               this.loading = true;
               // Non-deprecated records will need their deprecation reason to be cleared.
               if (this.currentFields.status !== 'deprecated') {
@@ -185,7 +258,8 @@
               if (this.currentFields.taxonomies.length > 0) {
                 await this.updateGeneralInformation({
                   token: this.user().credentials.token,
-                  id: this.$route.params.id
+                  id: this.$route.params.id,
+                  change: change
                 });
               }
               else {

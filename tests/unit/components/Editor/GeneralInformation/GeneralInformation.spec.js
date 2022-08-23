@@ -198,10 +198,10 @@ describe("Edit -> GeneralInformation.vue", function() {
         expect(wrapper.vm.currentFields.metadata.deprecation_reason).toBeFalsy();
         wrapper.vm.currentFields.status = "deprecated"
         wrapper.vm.currentFields.metadata.deprecation_reason = "should not be deleted" // now it's deprecated this should remain
-        await wrapper.vm.saveRecord(true);
+        await wrapper.vm.saveRecord(true, true);
         expect(wrapper.vm.currentFields.metadata.deprecation_reason).toEqual("should not be deleted");
         wrapper.vm.currentFields.type = {id: 789};
-        await wrapper.vm.saveRecord(false);
+        await wrapper.vm.saveRecord(false, false);
         expect($router.push).toHaveBeenCalledTimes(2);
         tagStub.restore();
         postStub.restore();
@@ -222,6 +222,14 @@ describe("Edit -> GeneralInformation.vue", function() {
         wrapper.vm.currentFields.taxonomies = [];
         await wrapper.vm.saveRecord(false);
         expect(wrapper.vm.message.error).toBe(true);
+    });
+
+    it("deals with type changes", async () => {
+        expect(wrapper.vm.formatType({name: 'wibble'})).toEqual('wibble');
+        expect(wrapper.vm.formatType('wibble')).toEqual('wibble');
+        wrapper.vm.currentFields.type = 'xyz';
+        await wrapper.vm.checkTypeChange();
+        expect(wrapper.vm.showTypeChanged).toBe(true);
     });
 
 

@@ -314,6 +314,9 @@ let recordStore = {
             record.taxonomy_ids = taxonomies.map(obj => obj.id);
             record.maintainer_ids = maintainers.map(obj => obj.id);
             record.user_defined_tag_ids = tags.concat(oldTags.filter(function (el) {return el != null;}));
+            if (options.change) {
+                record.remove_additional_properties = true
+            }
             let response = await restClient.updateRecord({
                   record: record,
                   token: options.token,

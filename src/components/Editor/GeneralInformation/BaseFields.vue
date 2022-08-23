@@ -474,7 +474,8 @@
                   isLongEnough: function(val){return isLongEnough(val)},
               },
               submitAnywayDisabled: false,
-              formValid: false
+              formValid: false,
+              initialType: ''
           }
       },
       computed: {

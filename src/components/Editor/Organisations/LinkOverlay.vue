@@ -101,12 +101,12 @@
                   </v-alert>
                 </v-card-text>
                 <v-card-text
-                    v-if="!validName"
-                    class="mb-0 pb-0"
+                  v-if="!validName"
+                  class="mb-0 pb-0"
                 >
                   <v-alert
-                      type="error"
-                      class="mb-0"
+                    type="error"
+                    class="mb-0"
                   >
                     Enter Valid Organisation Name
                   </v-alert>
@@ -142,7 +142,7 @@
                             return-object
                             label="Select an organisation"
                             :rules="[rules.isRequired()]"
-                            @change="selectOrganisation"
+                            @change="selectOrganisationFromList()"
                           />
                         </v-col>
                         <v-col
@@ -572,7 +572,6 @@
           }
           let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
           if (!data.error) {
-            console.log("data.data.attributes::", data.data.attributes)
             let newOrganisation = {
               id: data.data.id,
               name: data.data.attributes.name,
@@ -634,7 +633,6 @@
         async getOrganizations() {
           let orgName = (' ' + this.menus.newOrganisation.data.name).slice(1).trim()// make a copy of the string and trim it
           let data = await pubClient.getROROrganization(orgName);
-
           if (data.items && data.items.length) {
             this.enterName = false
             this.importROR = true
@@ -648,7 +646,7 @@
           }
         },
 
-        selectOrganisation() {
+        selectOrganisationFromList() {
           if (this.menus.newOrganisation.selectOrganisation && Object.keys(this.menus.newOrganisation.selectOrganisation).length) {
             /************  Organisation Name ************/
             this.menus.newOrganisation.data.name = this.menus.newOrganisation.selectOrganisation.name

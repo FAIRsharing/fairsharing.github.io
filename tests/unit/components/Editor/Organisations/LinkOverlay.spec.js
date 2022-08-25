@@ -248,21 +248,6 @@ describe("Edit -> LinkOverlay.vue", function() {
 
     });
 
-    it("can check clearForm", () => {
-        wrapper.vm.enterName = false
-        wrapper.vm.importROR = true
-        wrapper.vm.validName = false
-        wrapper.vm.menus.newOrganisation.data.name = 'xyz'
-        wrapper.vm.$refs['createNewOrganisation'] = {
-            reset: jest.fn()
-        };
-        wrapper.vm.clearForm()
-        expect(wrapper.vm.enterName).toBe(true)
-        expect(wrapper.vm.importROR).toBe(false)
-        expect(wrapper.vm.validName).toBe(true)
-        expect(wrapper.vm.menus.newOrganisation.data.name).toBe('')
-    });
-
     it("can select selectOrganisation", async () => {
         wrapper.vm.enterName = false;
         wrapper.vm.organisationsList = ["abc"]
@@ -288,5 +273,20 @@ describe("Edit -> LinkOverlay.vue", function() {
             "organisation_type_ids": "dummy",
             "country_ids":"dummy"
         });
+    });
+
+    it("can check clearForm", () => {
+        wrapper.vm.enterName = false
+        wrapper.vm.importROR = true
+        wrapper.vm.validName = false
+        wrapper.vm.menus.newOrganisation.data.name = 'xyz'
+        wrapper.vm.$refs['createNewOrganisation'] = {
+            reset: jest.fn()
+        };
+        wrapper.vm.clearForm()
+        expect(wrapper.vm.enterName).toBe(true)
+        expect(wrapper.vm.importROR).toBe(false)
+        expect(wrapper.vm.validName).toBe(true)
+        expect(wrapper.vm.menus.newOrganisation.data.name).toBe('')
     });
 });

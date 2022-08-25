@@ -18,6 +18,7 @@ class ExternalRESTClients {
         this.pmidBaseURL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=";
         this.tessBaseURL = "https://tess.elixir-europe.org/materials.json?q=";
         this.orcidBaseURL = "https://pub.orcid.org/v2.0/";
+        this.rorOrganisationsBaseURL = "https://api.ror.org/organizations?query=";
     }
 
     async getDOI(doi){
@@ -59,6 +60,17 @@ class ExternalRESTClients {
         };
         let response = await this.executeQuery(request);
         this.headers['Accept'] = 'application/x-bibtex';
+        return response.data;
+    }
+
+    async getROROrganisation(organisation){
+        let localHeaders = this.headers;
+        localHeaders['Accept'] = 'application/json';
+        const request = {
+            url: this.rorOrganisationsBaseURL + organisation,
+            headers: localHeaders
+        };
+        let response = await this.executeQuery(request);
         return response.data;
     }
 

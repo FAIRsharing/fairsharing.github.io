@@ -74,7 +74,7 @@
                 <div class="mt-2 ml-2">
                   <v-btn
                     class="green white--text"
-                    @click="menus.show = 'organisation'"
+                    @click="addNewOrganisation"
                   >
                     <v-icon small>
                       fa-plus
@@ -100,6 +100,28 @@
                     {{ menus.newOrganisation.error.response.data }}
                   </v-alert>
                 </v-card-text>
+                <v-card-text
+                  v-if="!validName"
+                  class="mb-0 pb-0"
+                >
+                  <v-alert
+                    type="error"
+                    class="mb-0"
+                  >
+                    No matching organisation found.
+                  </v-alert>
+                </v-card-text>
+                <v-card-text
+                  v-if="!enterName"
+                  class="mb-0 pb-0"
+                >
+                  <v-alert
+                    type="success"
+                    class="mb-0"
+                  >
+                    Select an organisation
+                  </v-alert>
+                </v-card-text>
                 <v-card-text>
                   <v-form
                     id="createNewOrganisation"
@@ -112,11 +134,26 @@
                           cols="12"
                           class="pb-0"
                         >
+                          <!-- Enter name of organisation -->
                           <v-text-field
+                            v-if="enterName"
                             v-model="menus.newOrganisation.data.name"
                             label="Organisation Name"
                             outlined
                             :rules="[rules.isRequired()]"
+                            @keydown="validName = true"
+                          />
+                          <v-autocomplete
+                            v-else
+                            v-model="menus.newOrganisation.selectOrganisation"
+                            :items="organisationsList"
+                            outlined
+                            item-text="name"
+                            item-value="id"
+                            return-object
+                            label="Select an organisation"
+                            :rules="[rules.isRequired()]"
+                            @change="selectOrganisationFromList()"
                           />
                         </v-col>
                         <v-col
@@ -142,9 +179,20 @@
                             item-text="name"
                             item-value="id"
                             return-object
-                            label="Select the organisation type(s)"
+                            label="Select an organisation type(s)"
                             :rules="[rules.isRequired()]"
-                          />
+                          >
+                            <!-- autocomplete selected -->
+                            <template #selection="data">
+                              <v-chip
+                                class="blue white--text removeStyle"
+                                close
+                                @click:close="removeType(data.item)"
+                              >
+                                {{ data.item.name }}
+                              </v-chip>
+                            </template>
+                          </v-autocomplete>
                         </v-col>
                         <v-col cols="12">
                           <v-file-input
@@ -196,7 +244,7 @@
                               <v-chip
                                 class="blue white--text removeStyle"
                                 close
-                                @click:close="removeCountry(data.item)"
+                                @click:close="removeCountry( data.item )"
                               >
                                 {{ data.item.name }}
                               </v-chip>
@@ -223,7 +271,22 @@
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
+                  <v-btn
+                    class="success"
+                    :disabled="importROR"
+                    :loading="menus.newOrganisation.loading"
+                    @click="getOrganisations()"
+                  >
+                    Import from ROR
+                  </v-btn>
                   <v-spacer />
+                  <v-btn
+                    color="warning"
+                    class="success"
+                    @click="clearForm()"
+                  >
+                    Clear Form
+                  </v-btn>
                   <v-btn
                     class="success"
                     :disabled="!menus.newOrganisation.formValid"
@@ -398,7 +461,9 @@
     import { isRequired, isUrl } from "@/utils/rules.js"
     import RestClient from "@/lib/Client/RESTClient.js"
     import CountryFlag from "vue-country-flag";
+    import PublicationClient from "@/lib/Client/ExternalClients.js"
     const restClient = new RestClient();
+    const pubClient = new PublicationClient();
 
     export default {
       name: "LinkOverlay",
@@ -409,11 +474,15 @@
           menus: {
             show: false,
             newOrganisation: {
-              data: {},
+              data: {
+                organisation_type_ids: [],
+                country_ids:[]
+              },
               loading: false,
               formValid: false,
               logoData: null,
-              error: false
+              error: false,
+              selectOrganisation:{}
             },
             newGrant: {
               data: {},
@@ -426,6 +495,11 @@
             isRequired: function(){return isRequired() },
             isURL: function(){ return isUrl() }
           },
+          organisationsList:[],
+          organisationsNameList: [],
+          enterName: true,
+          importROR: false,
+          validName: true
         }
       },
       computed: {
@@ -481,6 +555,11 @@
               obj.label !== country.name && obj.id !== country.id
           );
         },
+        removeType(type) {
+          this.menus.newOrganisation.data.organisation_type_ids = this.menus.newOrganisation.data.organisation_type_ids.filter(obj =>
+              obj.label !== type.name && obj.id !== type.id
+          );
+        },
         hideMenu() {
           this.menus.show = false;
           this.editOrganisationLink.data = {};
@@ -513,7 +592,10 @@
             this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
             Vue.set(this.organisations, this.organisations.length, newOrganisation);
             this.menus.show = null;
-            this.menus.newOrganisation.data = {};
+            this.menus.newOrganisation.data = {
+              organisation_type_ids: [],
+              country_ids: []
+            };
           } else {
             this.menus.newOrganisation.error = data.error;
           }
@@ -550,7 +632,78 @@
           const searchText = queryText.toLowerCase();
 
           return textToSearch.toLowerCase().indexOf(searchText) > -1
-        }
+        },
+
+        addNewOrganisation() {
+          this.menus.show = 'organisation'
+          this.enterName = true
+          this.importROR = false
+        },
+
+        async getOrganisations() {
+          this.menus.newOrganisation.loading = true;
+          let orgName = (' ' + this.menus.newOrganisation.data.name).slice(1).trim()// make a copy of the string and trim it
+          let data = await pubClient.getROROrganisation(orgName);
+          if (data.items && data.items.length) {
+            this.enterName = false
+            this.importROR = true
+            this.validName = true
+            this.organisationsList = data.items
+            this.organisationsNameList = data.items.map(item => item.name)
+          } else {
+            this.enterName = true
+            this.importROR = false
+            this.validName = false
+          }
+          this.menus.newOrganisation.loading = false;
+        },
+
+        selectOrganisationFromList() {
+          if (this.menus.newOrganisation.selectOrganisation && Object.keys(this.menus.newOrganisation.selectOrganisation).length) {
+            /************  Organisation Name ************/
+            this.menus.newOrganisation.data.name = this.menus.newOrganisation.selectOrganisation.name
+            /**************  Homepage Link **************/
+            this.menus.newOrganisation.data.homepage = this.menus.newOrganisation.selectOrganisation.links[0]
+            /***************  Type Select ***************/
+            this.selectTypes()
+            /*************  Country Select *************/
+            this.menus.newOrganisation.data.country_ids = this.countries.filter(country => country.name === this.menus.newOrganisation.selectOrganisation.country["country_name"])
+          }
+        },
+
+        selectTypes() {
+          const selectedType = this.menus.newOrganisation.selectOrganisation.types[0]
+          const matchedType = this.organisationsTypes.filter(type => type.name === this.menus.newOrganisation.selectOrganisation.types[0])
+          if (matchedType && matchedType.length) {
+            this.menus.newOrganisation.data.organisation_type_ids = matchedType
+          } else{
+            switch (selectedType) {
+              case 'Government':
+                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[0]]
+                break
+              case 'Nonprofit':
+                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[1]]
+                break
+              case 'Education':
+                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[2]]
+                break
+              case 'Healthcare':
+              case 'Archive':
+              case 'Facility':
+              case 'Other':
+              default:
+                this.menus.newOrganisation.data.organisation_type_ids = [this.organisationsTypes[8]]
+            }
+          }
+        },
+
+        clearForm() {
+          this.enterName = true
+          this.importROR = false
+          this.validName = true
+          this.menus.newOrganisation.data.name = ''
+          this.$refs.createNewOrganisation.reset()
+        },
       }
     }
 </script>

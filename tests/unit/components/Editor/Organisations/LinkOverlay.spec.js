@@ -204,7 +204,7 @@ describe("Edit -> LinkOverlay.vue", function() {
         expect(wrapper.vm.importROR).toBe(false)
     });
 
-    it("can getOrganizations List", async() => {
+    it("can getOrganisations List", async() => {
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data:organisation});
         const expectedOrganisation = [{
@@ -220,7 +220,7 @@ describe("Edit -> LinkOverlay.vue", function() {
         wrapper.vm.importROR = false
         wrapper.vm.validName = true
         wrapper.vm.menus.newOrganisation.data.name = 'Oxford'
-        await wrapper.vm.getOrganizations();
+        await wrapper.vm.getOrganisations();
         expect(wrapper.vm.enterName).toBe(false)
         expect(wrapper.vm.importROR).toBe(true)
         expect(wrapper.vm.validName).toBe(true)
@@ -230,7 +230,7 @@ describe("Edit -> LinkOverlay.vue", function() {
 
     });
 
-    it("cannot getOrganizations List", async() => {
+    it("cannot getOrganisations List", async() => {
         const fetchOrganisation = {}
         fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
         fetchStub.returns({data:fetchOrganisation});
@@ -239,7 +239,7 @@ describe("Edit -> LinkOverlay.vue", function() {
         wrapper.vm.importROR = false
         wrapper.vm.validName = true
         wrapper.vm.menus.newOrganisation.data.name = 'abc'
-        await wrapper.vm.getOrganizations();
+        await wrapper.vm.getOrganisations();
         expect(wrapper.vm.enterName).toBe(true)
         expect(wrapper.vm.importROR).toBe(false)
         expect(wrapper.vm.validName).toBe(false)

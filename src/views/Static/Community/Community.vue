@@ -81,7 +81,7 @@
       <p
         :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
-        A selection of official reports from funders and other organizations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
+        A selection of official reports from funders and other organisations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
       </p>
 
       <!--  External Links  -->
@@ -152,7 +152,7 @@
       <p
         :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
-        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure programmes, societies and other organizations or projects that in turn serve and guide individual researchers or other stakeholders on research data management matters.
+        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure programmes, societies and other organisations or projects that in turn serve and guide individual researchers or other stakeholders on research data management matters.
       </p>
       <p
         :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"

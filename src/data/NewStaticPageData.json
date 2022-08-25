@@ -15,12 +15,12 @@
       {
         "title": "Policies",
         "icon": "journal",
-        "description":"Data policy statements implemented by an organization such as a journal publisher, a project consortium, a funder or an institution."
+        "description":"Data policy statements implemented by an organisation such as a journal publisher, a project consortium, a funder or an institution."
       },
       {
         "title": "Collections",
         "icon": "collection",
-        "description":"Groups of records spanning these three registries according to specific criteria (common standards, organizations or a particular journal’s data policy)."
+        "description":"Groups of records spanning these three registries according to specific criteria (common standards, organisations or a particular journal’s data policy)."
       }
     ]
   }

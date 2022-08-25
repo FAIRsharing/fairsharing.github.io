@@ -119,7 +119,7 @@
                     type="success"
                     class="mb-0"
                   >
-                    Select An Organisation
+                    Select an organisation
                   </v-alert>
                 </v-card-text>
                 <v-card-text>
@@ -134,7 +134,7 @@
                           cols="12"
                           class="pb-0"
                         >
-                          <!-- Enter name of organization -->
+                          <!-- Enter name of organisation -->
                           <v-text-field
                             v-if="enterName"
                             v-model="menus.newOrganisation.data.name"
@@ -275,7 +275,7 @@
                     class="success"
                     :disabled="importROR"
                     :loading="menus.newOrganisation.loading"
-                    @click="getOrganizations()"
+                    @click="getOrganisations()"
                   >
                     Import from ROR
                   </v-btn>
@@ -554,7 +554,6 @@
           this.menus.newOrganisation.data.country_ids = this.menus.newOrganisation.data.country_ids.filter(obj =>
               obj.label !== country.name && obj.id !== country.id
           );
-          // Vue.set(this.menus.newOrganisation.data, 'country_ids', filtered)
         },
         removeType(type) {
           this.menus.newOrganisation.data.organisation_type_ids = this.menus.newOrganisation.data.organisation_type_ids.filter(obj =>
@@ -641,10 +640,10 @@
           this.importROR = false
         },
 
-        async getOrganizations() {
+        async getOrganisations() {
           this.menus.newOrganisation.loading = true;
           let orgName = (' ' + this.menus.newOrganisation.data.name).slice(1).trim()// make a copy of the string and trim it
-          let data = await pubClient.getROROrganization(orgName);
+          let data = await pubClient.getROROrganisation(orgName);
           if (data.items && data.items.length) {
             this.enterName = false
             this.importROR = true

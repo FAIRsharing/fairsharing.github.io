@@ -111,6 +111,17 @@
                     Enter Valid Organisation Name
                   </v-alert>
                 </v-card-text>
+                <v-card-text
+                  v-if="!enterName"
+                  class="mb-0 pb-0"
+                >
+                  <v-alert
+                    type="success"
+                    class="mb-0"
+                  >
+                    Select An Organisation
+                  </v-alert>
+                </v-card-text>
                 <v-card-text>
                   <v-form
                     id="createNewOrganisation"
@@ -631,6 +642,7 @@
         },
 
         async getOrganizations() {
+          this.menus.newOrganisation.loading = true;
           let orgName = (' ' + this.menus.newOrganisation.data.name).slice(1).trim()// make a copy of the string and trim it
           let data = await pubClient.getROROrganization(orgName);
           if (data.items && data.items.length) {
@@ -644,6 +656,7 @@
             this.importROR = false
             this.validName = false
           }
+          this.menus.newOrganisation.loading = false;
         },
 
         selectOrganisationFromList() {

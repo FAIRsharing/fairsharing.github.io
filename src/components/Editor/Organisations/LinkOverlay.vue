@@ -108,7 +108,7 @@
                     type="error"
                     class="mb-0"
                   >
-                    Enter Valid Organisation Name
+                    No matching organisation found.
                   </v-alert>
                 </v-card-text>
                 <v-card-text

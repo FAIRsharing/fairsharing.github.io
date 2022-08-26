@@ -6,6 +6,7 @@ import LinkOverlay from "@/components/Editor/Organisations/LinkOverlay.vue"
 import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
 import userStore from "@/store/users.js"
+import ExternalClient from "@/lib/Client/ExternalClients";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
@@ -36,9 +37,22 @@ const formValidation = {
     data(){return {}}
 };
 
+const organisation = {
+    "items":[{
+        "country":{
+            "country_code": "GB",
+            "country_name": "Great Britain"
+        },
+        "links":["http://www.obsmedical.com/"],
+        "name":"OBS Medical (United Kingdom)",
+        "types":["Company"],
+    }],
+};
+
 describe("Edit -> LinkOverlay.vue", function() {
     let wrapper;
     let restStub;
+    let fetchStub;
 
     beforeEach(async () => {
         wrapper = await shallowMount(LinkOverlay, {
@@ -172,5 +186,107 @@ describe("Edit -> LinkOverlay.vue", function() {
     it('can run a custom filter on autocompletes', () => {
         expect(wrapper.vm.customFilter({name: "this", alternativeNames: []}, "that")).toBe(false);
         expect(wrapper.vm.customFilter({name: "this", alternativeNames: []}, "this")).toBe(true);
+    });
+
+    it("can check removeType", () => {
+        wrapper.vm.menus.newOrganisation.data.organisation_type_ids = [{id:1,label:'typeA'}]
+        wrapper.vm.removeType({id:1,label:'typeA'})
+        expect(wrapper.vm.menus.newOrganisation.data.organisation_type_ids).toStrictEqual([]);
+    });
+
+    it("can check addNewOrganisation", () => {
+        wrapper.vm.menus.show = '';
+        wrapper.vm.enterName = false
+        wrapper.vm.importROR = true
+        wrapper.vm.addNewOrganisation()
+        expect(wrapper.vm.menus.show).toBe('organisation')
+        expect(wrapper.vm.enterName).toBe(true)
+        expect(wrapper.vm.importROR).toBe(false)
+    });
+
+    it("can getOrganisations List", async() => {
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data:organisation});
+        const expectedOrganisation = [{
+                "country":{
+                    "country_code": "GB",
+                    "country_name": "Great Britain"
+                },
+                "links":["http://www.obsmedical.com/"],
+                "name":"OBS Medical (United Kingdom)",
+                "types":["Company"],
+            }]
+        wrapper.vm.enterName = true
+        wrapper.vm.importROR = false
+        wrapper.vm.validName = true
+        wrapper.vm.menus.newOrganisation.data.name = 'Oxford'
+        await wrapper.vm.getOrganisations();
+        expect(wrapper.vm.enterName).toBe(false)
+        expect(wrapper.vm.importROR).toBe(true)
+        expect(wrapper.vm.validName).toBe(true)
+        expect(wrapper.vm.organisationsList).toStrictEqual(expectedOrganisation);
+        expect(wrapper.vm.organisationsNameList).toStrictEqual(["OBS Medical (United Kingdom)"])
+        fetchStub.restore();
+
+    });
+
+    it("cannot getOrganisations List", async() => {
+        const fetchOrganisation = {}
+        fetchStub = sinon.stub(ExternalClient.prototype, "executeQuery");
+        fetchStub.returns({data:fetchOrganisation});
+        const expectedOrganisation = []
+        wrapper.vm.enterName = true
+        wrapper.vm.importROR = false
+        wrapper.vm.validName = true
+        wrapper.vm.menus.newOrganisation.data.name = 'abc'
+        await wrapper.vm.getOrganisations();
+        expect(wrapper.vm.enterName).toBe(true)
+        expect(wrapper.vm.importROR).toBe(false)
+        expect(wrapper.vm.validName).toBe(false)
+        expect(wrapper.vm.organisationsList).toStrictEqual(expectedOrganisation);
+        fetchStub.restore();
+
+    });
+
+    it("can select selectOrganisation", async () => {
+        wrapper.vm.enterName = false;
+        wrapper.vm.organisationsList = ["abc"]
+        wrapper.vm.menus.newOrganisation.data = {
+            "name": "abc",
+            "homepage": "http://www.abc.com",
+            "organisation_type_ids": "dummy",
+            "country_ids":"dummy"
+        }
+        wrapper.vm.selectOrganisationFromList()
+        wrapper.vm.menus.newOrganisation.selectOrganisation = {
+            name: "abc",
+            links: ['http://www.abc.com'],
+            type: ['dummy'],
+            country:{
+                country_code: "DM",
+                country_name: "dummy"
+            }
+        }
+        expect(wrapper.vm.menus.newOrganisation.data).toStrictEqual({
+            "name": "abc",
+            "homepage": "http://www.abc.com",
+            "organisation_type_ids": "dummy",
+            "country_ids":"dummy"
+        });
+    });
+
+    it("can check clearForm", () => {
+        wrapper.vm.enterName = false
+        wrapper.vm.importROR = true
+        wrapper.vm.validName = false
+        wrapper.vm.menus.newOrganisation.data.name = 'xyz'
+        wrapper.vm.$refs['createNewOrganisation'] = {
+            reset: jest.fn()
+        };
+        wrapper.vm.clearForm()
+        expect(wrapper.vm.enterName).toBe(true)
+        expect(wrapper.vm.importROR).toBe(false)
+        expect(wrapper.vm.validName).toBe(true)
+        expect(wrapper.vm.menus.newOrganisation.data.name).toBe('')
     });
 });

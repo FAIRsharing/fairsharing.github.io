@@ -75,8 +75,6 @@ export const actions = {
         //initialize params state
         state.state.params = {ids: [...state.state.params.ids]}
 
-        console.log("OKP: " + JSON.stringify(Object.keys(params)));
-
         Object.keys(params).forEach(key => {
             state.state.params[key] = params[key]
         })

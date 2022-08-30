@@ -10,6 +10,7 @@ import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
 import VueScrollTo from "vue-scrollto";
+import userStore from "@/store/users";
 
 const sinon = require("sinon");
 const axios = require("axios");
@@ -17,7 +18,23 @@ const axios = require("axios");
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(VueMeta);
-localVue.use(VueScrollTo,{})
+localVue.use(VueScrollTo,{});
+
+userStore.state.user = function() {
+    return {
+        metadata: {
+            preferences: {
+                hide_email: true,
+            },
+            profile_type: "profile 1"
+        },
+        credentials: {
+            username: "username",
+            token: '123'
+        }
+    }
+};
+
 const $route = {
     name: "Standards",
     path: "standard",
@@ -34,7 +51,8 @@ const $store = new Vuex.Store({
     modules: {
         records: records,
         introspection: introspection,
-        uiController: uiController
+        uiController: uiController,
+        users: userStore
     },
 });
 
@@ -184,7 +202,7 @@ describe("Records.vue", () => {
 
     it("responds to an invalid graphql query", async () => {
         stub.withArgs(sinon.match.object).returns({error: 'invalid query'});
-        await wrapper.vm.fetchRecords({"q":"\"invalid query\""});
+        await wrapper.vm.fetchRecords({ params: {"q":"\"invalid query\""}, token: null });
         expect(wrapper.vm.$store.state.records.records).toStrictEqual([]);
     })
 

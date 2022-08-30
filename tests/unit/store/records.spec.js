@@ -106,7 +106,7 @@ describe('Mutation & Actions & Getters', () => {
     });
 
     it("can check initializeCollectionRecord actions", async () => {
-        await actions.fetchCollectionRecords(state, {page:"2"});
+        await actions.fetchCollectionRecords(state, {params: {page:"2"}, token: null});
         expect(actions.commit).toHaveBeenCalledTimes(19);
     });
 

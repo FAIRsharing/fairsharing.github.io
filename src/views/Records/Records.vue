@@ -113,6 +113,8 @@ export default {
   computed: {
     ...mapState('uiController', ['scrollStatus', 'stickToTop']),
     ...mapState('records', ['records']),
+    ...mapState('users', ['user']),
+
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
           (obj, [key, value]) => ({...obj, [value]: key}),
@@ -240,7 +242,11 @@ export default {
       const _module = this;
       try {
         this.showFiltersSM = false;
-        await _module.fetchRecords(this.getParameters());
+        let token = this.user().credentials.token;
+        await _module.fetchRecords({
+          params: this.getParameters(),
+          token: token
+        });
       }
       catch (e) {
         /* istanbul ignore next */

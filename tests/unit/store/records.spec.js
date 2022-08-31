@@ -37,16 +37,19 @@ describe('Mutation & Actions & Getters', () => {
     });
 
     it("can check fetchRecords actions", () => {
-        const params = {
-            fairsharingRegistry: "Standard",
-            isRecommended: true
+        const options = {
+            params: {
+                fairsharingRegistry: "Standard",
+                isRecommended: true
+            },
+            token: 'abc123'
         };
-        actions.fetchRecords(state, params);
+        actions.fetchRecords(state, options);
         expect(actions.commit).toHaveBeenCalledTimes(3);
 
         actions.commit = null;
         actions.commit = jest.fn();
-        actions.fetchRecords(state, {});
+        actions.fetchRecords(state, { params: {}, token: null });
         expect(actions.commit).toHaveBeenCalledTimes(3);
     });
 
@@ -103,7 +106,7 @@ describe('Mutation & Actions & Getters', () => {
     });
 
     it("can check initializeCollectionRecord actions", async () => {
-        await actions.fetchCollectionRecords(state, {page:"2"});
+        await actions.fetchCollectionRecords(state, {params: {page:"2"}, token: null});
         expect(actions.commit).toHaveBeenCalledTimes(19);
     });
 
@@ -138,7 +141,7 @@ describe('Mutation & Actions & Getters', () => {
         stub.restore();
         stub.withArgs(sinon.match.any).returns(new Error("error"));
         await actions.initializeCollectionRecords(state, null);
-        await actions.fetchCollectionRecords(state, {});
+        await actions.fetchCollectionRecords(state, {params: {q: 'this', a: 'that'}, token: 'wibble'});
         await expect(sinon.stub(Client.prototype, "executeQuery")).rejects;
     })
 

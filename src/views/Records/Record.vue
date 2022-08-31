@@ -566,7 +566,7 @@ export default {
       let alertBuilder  = new AlertBuilder(_module.currentRecord, this.user())
           .isAwaitingApproval()
           .isWatching(this.isWatching())
-          .isNeedingReview(this.needsReviewing())
+          .isNeedingReview(this.needsReviewing(), this.error)
           .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
           .isAlreadyClaimed(this.alreadyClaimed)
           .isHidden()
@@ -1043,9 +1043,6 @@ export default {
     },
     needsReviewing() {
       const _module = this;
-      if (_module.error) {
-        return false;
-      }
       let need = true;
       let d = new Date();
       let pastYear = d.getFullYear() - 1;

@@ -628,7 +628,13 @@
           this.editOrganisationLink.showOverlay = false;
         },
         customFilter(item, queryText) {
-          const textToSearch = item.name + " " + item.alternativeNames.join(" ");
+          let textToSearch = item.name;
+          // A newly-created organisation in memory may have no alternativeNames.
+          // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1799
+          /* istanbul ignore else */
+          if (item.alternativeNames) {
+           textToSearch = textToSearch + " " + item.alternativeNames.join(" ");
+          }
           const searchText = queryText.toLowerCase();
 
           return textToSearch.toLowerCase().indexOf(searchText) > -1

@@ -7,7 +7,10 @@
     :height="$vuetify.breakpoint.lgAndUp ? 250 : 'auto'"
     class="pa-4 d-flex flex-column full-width justify-space-between"
   >
-    <div class="counter-container d-flex flex-row justify-space-between">
+    <div
+      class="counter-container d-flex flex-row justify-space-between"
+      :class="{'py-1': $vuetify.breakpoint.mdAndDown}"
+    >
       <v-icon>
         fa fa-user
       </v-icon>
@@ -58,10 +61,10 @@ export default {
   },
 
   mounted() {
-    this.getStatisticsData();
+    this.getStatisticsCount();
   },
   methods: {
-    async getStatisticsData() {
+    async getStatisticsCount() {
       this.statsData = await restClient.getStatisticsData();
       this.updateStaticsData()
     },
@@ -77,32 +80,31 @@ export default {
           const increment = target / speed;
           if (count < target) {
             counter.innerText = Math.ceil(count + increment);
-
-            // if(Math.abs(Number(counter.innerText)) >= 1.0e+3) {
-            //   counter.innerText = Math.abs(Number(counter.innerText)) / 1.0e+3 + "K"
-            //   console.log("counter.innerText::", counter.innerText)
-            // }
             setTimeout(updateCounter, 1);
-
           } else {
-            counter.innerText = target;
+            counter.innerText = this.updateNumbers(target)
           }
         };
         updateCounter();
       });
     },
-  //    updateNumbers (labelValue) {
-  // // Nine Zeroes for Billions
-  //     return Math.abs(Number(labelValue)) >= 1.0e+9
-  //     ? Math.abs(Number(labelValue)) / 1.0e+9 + "B"
-  //     // Six Zeroes for Millions
-  //     : Math.abs(Number(labelValue)) >= 1.0e+6
-  //             ? Math.abs(Number(labelValue)) / 1.0e+6 + "M"
-  //         // Three Zeroes for Thousands
-  //         : Math.abs(Number(labelValue)) >= 1.0e+3
-  //             ? Math.abs(Number(labelValue)) / 1.0e+3 + "K"
-  //             : Math.abs(Number(labelValue));
-  //     }
+     updateNumbers (labelValue) {
+         // Nine Zeroes for Billions
+         if (labelValue >= 1.0e+9) {
+           return Math.abs(Number(labelValue)) / 1.0e+9 + "B"
+         }
+         // Six Zeroes for Millions
+         else if (labelValue >= 1.0e+6) {
+           return Math.abs(Number(labelValue)) / 1.0e+6 + "M"
+         }
+         // Three Zeroes for Thousands
+         else if (labelValue >= 1.0e+4) {
+           return Math.abs(Number(labelValue)) / 1.0e+3 + "K"
+         }
+         else{
+           return  labelValue
+         }
+      }
   }
 }
 

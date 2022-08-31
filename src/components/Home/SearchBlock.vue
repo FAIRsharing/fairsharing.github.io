@@ -27,7 +27,7 @@
           </v-col>
           <v-col
             cols="12"
-            sm=12
+            sm="12"
             md="12"
             lg="3"
             xl="2"
@@ -38,7 +38,10 @@
               <div class="vertical-line " />
             </v-lazy>
             <v-lazy v-else>
-              <div class="horizontal-line" :class="{'mobile-horizontal-line': $vuetify.breakpoint.xsOnly}"/>
+              <div
+                class="horizontal-line"
+                :class="{'mobile-horizontal-line': $vuetify.breakpoint.xsOnly}"
+              />
             </v-lazy>
             <v-lazy
               class="statistics-wrp full-width pa-1"

@@ -60,7 +60,9 @@ export const actions = {
         }
 
     },
-    async fetchCollectionRecords(state, params) {
+    async fetchCollectionRecords(state, options) {
+        let params = options.params;
+        let token = options.token;
         this.commit("records/setLoadingStatus", true);
         this.commit("records/resetRecords");
         this.commit("records/resetPages");
@@ -68,12 +70,18 @@ export const actions = {
         //initialize params state
         state.state.params = {ids: [...state.state.params.ids]}
 
+
         Object.keys(params).forEach(key => {
             state.state.params[key] = params[key]
         })
+
+
         recordsQuery.queryParam = state.state.params;
         let data;
         try {
+            if (token) {
+                client.setHeader(token);
+            }
             data = await client.executeQuery(recordsQuery);
             this.commit('records/setRecords', data["searchFairsharingRecords"]);
             this.commit("records/setLoadingStatus", false);
@@ -83,7 +91,9 @@ export const actions = {
             this.commit('records/setRecords', {"records":[]});
         }
     },
-    async fetchRecords(state, params) {
+    async fetchRecords(state, options) {
+        let params = options.params;
+        let token = options.token;
         this.commit("records/setLoadingStatus", true);
         this.commit("records/resetRecords");
         this.commit("records/resetPages");
@@ -102,6 +112,9 @@ export const actions = {
         }
         let data;
         try {
+            if (token) {
+                client.setHeader(token);
+            }
             data = await client.executeQuery(recordsQuery);
             // See: https://github.com/FAIRsharing/FAIRsharing-API/issues/532
             if (data['error'] === 'invalid query') {

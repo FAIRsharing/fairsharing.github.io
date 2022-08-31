@@ -494,6 +494,7 @@ describe("Record.vue", function() {
         await wrapper.vm.getData();
         record.state.currentRecord.fairsharingRecord['reviews'] = [{ user: {id: 123, username: '123'}, createdAt: '1950-01-01T123456' }];
         expect(wrapper.vm.reviewSuccess).toBe(false);
+        wrapper.vm.error = false;
         expect(wrapper.vm.needsReviewing()).toBe(true);
         await wrapper.vm.getMenuButtons();
         expect(wrapper.vm.buttons[6].name()).toEqual("Review this record");

@@ -10,6 +10,7 @@ import Client from "@/lib/GraphClient/GraphClient";
 import Record from "@/store/recordData";
 import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 import VueScrollTo from "vue-scrollto";
+import userStore from "@/store/users";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -25,12 +26,28 @@ const $route = {
     query: {}
 };
 
+userStore.state.user = function() {
+    return {
+        metadata: {
+            preferences: {
+                hide_email: true,
+            },
+            profile_type: "profile 1"
+        },
+        credentials: {
+            username: "username",
+            token: '123'
+        }
+    }
+};
+
 const $store = new Vuex.Store({
     modules: {
         record: record,
         records: records,
         introspection: introspection,
-        uiController: uiController
+        uiController: uiController,
+        users: userStore
     },
 });
 

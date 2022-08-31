@@ -70,9 +70,12 @@ export const actions = {
         //initialize params state
         state.state.params = {ids: [...state.state.params.ids]}
 
+
         Object.keys(params).forEach(key => {
             state.state.params[key] = params[key]
         })
+
+
         recordsQuery.queryParam = state.state.params;
         let data;
         try {

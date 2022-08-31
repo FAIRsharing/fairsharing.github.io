@@ -192,7 +192,7 @@ export default {
         let returnedQuery = this.buildQueryParameters(this.currentPath);
         this.showFiltersSM = false;
         await this.fetchCollectionRecords({
-          query: returnedQuery,
+          params: returnedQuery,
           token: this.user().credentials.token
         });
       }
@@ -247,7 +247,7 @@ export default {
       }
       try {
         await this.fetchCollectionRecords({
-          query: returnedQuery,
+          params: returnedQuery,
           token: this.user().credentials.token
         });
       }

@@ -44,8 +44,8 @@ class AlertBuilder {
         return this;
     }
 
-    isNeedingReview(needsReviewing) {
-        if (this.currentUser.is_curator && needsReviewing) {
+    isNeedingReview(needsReviewing, error) {
+        if (this.currentUser.is_curator && needsReviewing && !error) {
             this.alerts['isNeedingReview'] = {
                 type: "warning",
                 message: "This record is in need of periodic curator review.There has not been any review to date."

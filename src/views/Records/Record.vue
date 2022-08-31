@@ -966,6 +966,9 @@ export default {
       _module.canEdit = false;
       if (_module.user().isLoggedIn) {
         const recordID = _module.currentRecord['fairsharingRecord'].id;
+        if (!recordID) {
+          return false;
+        }
         const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
         _module.canEdit = !canEdit.error;
       }
@@ -1040,6 +1043,9 @@ export default {
     },
     needsReviewing() {
       const _module = this;
+      if (_module.error) {
+        return false;
+      }
       let need = true;
       let d = new Date();
       let pastYear = d.getFullYear() - 1;

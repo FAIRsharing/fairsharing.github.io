@@ -167,6 +167,7 @@ export default {
   computed: {
     ...mapState("record", ["currentRecord"]),
     ...mapState("records",["records","totalPages","currentPage","loading","facets"]),
+    ...mapState('users', ["user"]),
     ...mapGetters("records",["getRecordsLength"]),
     ...mapGetters('introspection', ['buildQueryParameters']),
     currentPath: function () {
@@ -190,7 +191,10 @@ export default {
         this.scrollTo();
         let returnedQuery = this.buildQueryParameters(this.currentPath);
         this.showFiltersSM = false;
-        await this.fetchCollectionRecords(returnedQuery);
+        await this.fetchCollectionRecords({
+          params: returnedQuery,
+          token: this.user().credentials.token
+        });
       }
       catch (e) {
         this.errors = e.message;
@@ -222,7 +226,7 @@ export default {
       this.isColumnList = listType;
     },
     async prepareCollectionData () {
-      let returnedQuery
+      let returnedQuery;
       try {
         if (Object.keys(this.currentRecord['fairsharingRecord']).includes('recordAssociations')) {
           const collections = this.prepareAssociations(this.currentRecord['fairsharingRecord']['recordAssociations'], [])
@@ -242,7 +246,10 @@ export default {
         this.errors = e.message;
       }
       try {
-        await this.fetchCollectionRecords(returnedQuery);
+        await this.fetchCollectionRecords({
+          params: returnedQuery,
+          token: this.user().credentials.token
+        });
       }
       catch (e) {
         this.errors = e.message;

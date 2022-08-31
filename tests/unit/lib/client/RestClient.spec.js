@@ -24,5 +24,24 @@ describe("RESTClient.js", function () {
     });
 
     // TODO: Perhaps test other functions here...
+    it("can get getStatisticsData", async () => {
+        let restStub = sinon.stub(Client.prototype, "getStatisticsData");
+
+        restStub.returns([
+            {
+                contributors: 1,
+                resources: 2,
+                views: 3
+            }
+        ]);
+        const client = new Client();
+        let response = await client.getStatisticsData();
+        expect(response).toStrictEqual([{
+            contributors: 1,
+            resources: 2,
+            views: 3
+        } ]);
+        restStub.restore();
+    });
 
 });

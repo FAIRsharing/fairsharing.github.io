@@ -566,7 +566,7 @@ export default {
       let alertBuilder  = new AlertBuilder(_module.currentRecord, this.user())
           .isAwaitingApproval()
           .isWatching(this.isWatching())
-          .isNeedingReview(this.needsReviewing())
+          .isNeedingReview(this.needsReviewing(), this.error)
           .isNeedingReviewAndBeenReviewed(this.reviewsPresent())
           .isAlreadyClaimed(this.alreadyClaimed)
           .isHidden()
@@ -966,6 +966,9 @@ export default {
       _module.canEdit = false;
       if (_module.user().isLoggedIn) {
         const recordID = _module.currentRecord['fairsharingRecord'].id;
+        if (!recordID) {
+          return false;
+        }
         const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
         _module.canEdit = !canEdit.error;
       }

@@ -62,11 +62,6 @@ export const actions = {
     },
     async fetchCollectionRecords(state, options) {
         let params = options.params;
-        // It's not clear why this is necessary.
-        /* istanbul ignore if */
-        if (!params) {
-            params = {};
-        }
         let token = options.token;
         this.commit("records/setLoadingStatus", true);
         this.commit("records/resetRecords");

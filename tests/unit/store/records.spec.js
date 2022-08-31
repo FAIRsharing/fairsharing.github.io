@@ -141,7 +141,7 @@ describe('Mutation & Actions & Getters', () => {
         stub.restore();
         stub.withArgs(sinon.match.any).returns(new Error("error"));
         await actions.initializeCollectionRecords(state, null);
-        await actions.fetchCollectionRecords(state, {q: 'this', a: 'that'});
+        await actions.fetchCollectionRecords(state, {params: {q: 'this', a: 'that'}, token: 'wibble'});
         await expect(sinon.stub(Client.prototype, "executeQuery")).rejects;
     })
 

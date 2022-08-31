@@ -670,6 +670,13 @@
             this.menus.newOrganisation.data.name = this.menus.newOrganisation.selectOrganisation.name
             /**************  Homepage Link **************/
             this.menus.newOrganisation.data.homepage = this.menus.newOrganisation.selectOrganisation.links[0]
+            /***************  ROR Link ***************/
+            this.menus.newOrganisation.data.ror_link = this.menus.newOrganisation.selectOrganisation.id
+            /***************  Alternative Names ***************/
+            this.menus.newOrganisation.data.alternative_names =
+                this.menus.newOrganisation.selectOrganisation.aliases.concat(
+                    this.menus.newOrganisation.selectOrganisation.acronyms
+                )
             /***************  Type Select ***************/
             this.selectTypes()
             /*************  Country Select *************/

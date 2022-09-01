@@ -50,7 +50,6 @@
                 {{ subItem.access_method }}
               </div>
             </div>
-
           </div>
           <!--  Type    -->
           <div

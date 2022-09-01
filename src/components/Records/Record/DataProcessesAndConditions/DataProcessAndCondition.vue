@@ -26,7 +26,7 @@
             <!--  Name    -->
             <div
               v-if="subItem.name"
-              class="d-flex flex-row align-stretch min-height-40"
+              class="d-flex flex-row align-center min-height-40"
             >
               <b class="width-200">Name</b>
               <div class="d-flex full-width ml-md-12 ml-13">
@@ -43,7 +43,7 @@
             <!--  AccessMethod   -->
             <div
               v-if="subItem.access_method"
-              class="d-flex flex-row align-stretch min-height-40"
+              class="d-flex flex-row align-center min-height-40"
             >
               <b class="width-200">Access Method</b>
               <div class="d-flex full-width ml-md-12 ml-13">

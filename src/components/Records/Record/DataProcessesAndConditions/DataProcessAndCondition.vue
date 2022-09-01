@@ -8,8 +8,8 @@
     elevation="3"
   >
     <Icon
-        item="maintains"
-        size="20"
+      item="maintains"
+      size="20"
     />
     <v-card-title class="pa-0 text--primary card-title-customize">
       Processes

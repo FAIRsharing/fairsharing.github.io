@@ -8,8 +8,8 @@
     tile
   >
     <Icon
-        item="createdAt"
-        size="20"
+      item="createdAt"
+      size="20"
     />
     <v-card-title class="pa-0 text--primary card-title-customize">
       Attributes and Conditions

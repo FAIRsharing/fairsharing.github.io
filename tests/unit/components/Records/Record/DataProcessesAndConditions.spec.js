@@ -13,6 +13,7 @@ Record.state.currentRecord["fairsharingRecord"] = {
     licenceLinks: [{id: 1, licence: {name: 'a licence', id: 1}, relation: 'undefined'}],
     metadata: {
         associated_tools: [{}],
+        certifications_and_community_badges: [{name: 'a community', url: 'www.somecommunity.com'}],
         data_processes_and_conditions: [{name: 'name1', type: 'data access', url: 'www.somewhere.com', access_method: 'access method'}]
     },
     taxonomies: [
@@ -50,7 +51,8 @@ describe("DataProcessesAndConditions.vue", function () {
     it("can be check the reaction of page if appropriate data not provided", () => {
         let mockData;
         expect(wrapper.vm.generateDataConditions()).toStrictEqual({
-            licences: {data: [{name: 'a licence',id:1}], icon: 'licences'}
+            certifications_and_community_badges: {data:[{name: 'a community', url: 'www.somecommunity.com'}], icon: 'certificate'},
+            licences: {data: [{name: 'a licence',id:1}], icon: 'licences'},
         })
 
         mockData = {

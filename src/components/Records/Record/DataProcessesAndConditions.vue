@@ -11,9 +11,10 @@
     <SectionTitle title="Data Processes And Conditions" />
     <!--  container  -->
     <div class="d-flex flex-column ml-2 min-height-40">
-      <div v-if="(getField('metadata')['data_processes_and_conditions'] && getField('metadata')['data_processes_and_conditions'].length) || (getField('licences').length && getField('licences'))">
+      <div v-if="(getField('metadata')['data_processes_and_conditions'] && getField('metadata')['data_processes_and_conditions'].length) || (getField('licences').length && getField('licences')) || (getField('metadata')['certifications_and_community_badges'] && getField('metadata')['certifications_and_community_badges'].length)">
         <!-- DataProcessAndCondition component -->
         <DataProcessAndCondition />
+        <!-- Licences component -->
         <v-card
           v-for="(item,key,index) in generateDataConditions()"
           :key="key+'_'+index"
@@ -28,7 +29,7 @@
             size="20"
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
-            {{ key | capitalize }}
+            {{ cleanString(key) | capitalize }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <v-card
@@ -97,21 +98,32 @@ export default {
   },
   methods: {
     generateDataConditions: function () {
-      let processedLicencesData = {};
-
+      let processedData = {};
+      const community_badges =  this.getField('metadata')['certifications_and_community_badges'];
       const licences = this.getField('licences');
+
+      // // adding community badges if available
+      if (community_badges) {
+        processedData['certifications_and_community_badges'] = {
+          data: [],
+          icon: 'certificate'
+        };
+        community_badges.forEach(community_badge => {
+          processedData['certifications_and_community_badges'].data.push(community_badge)
+        })
+      }
 
       // adding licenses if available
       if (licences.length) {
-        processedLicencesData['licences'] = {
+        processedData['licences'] = {
           data: [],
           icon: 'licences'
         };
         licences.forEach(licence => {
-          processedLicencesData['licences'].data.push(licence)
+          processedData['licences'].data.push(licence)
         })
       }
-      return processedLicencesData
+      return processedData
     },
     getLicenceRelation(licenceId) {
       return this.getField('licenceLinks').find(obj => obj.licence.id === licenceId).relation

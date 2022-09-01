@@ -14,6 +14,14 @@
       :current-item="finalData[key]"
       :current-key="key"
     />
+    <!--  dataset_versioning  -->
+    <DatasetBoolean field-name="data_versioning" />
+    <!--  dataset_contacts  -->
+    <DatasetBoolean field-name="data_contact_information" />
+    <!--  dataset_citation  -->
+    <DatasetBoolean field-name="citation_to_related_publications" />
+    <!--  dataset_versioning  -->
+    <DatasetBoolean field-name="data_access_for_pre_publication_review" />
   </v-card>
 </template>
 
@@ -22,11 +30,13 @@ import {mapActions, mapGetters, mapState} from "vuex";
 import clearString from '@/utils/stringUtils'
 import {isArray} from "lodash";
 import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray";
+import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean";
 
 export default {
   name: "OtherDataProcesses",
   components: {
-    OtherDatasetArray
+    OtherDatasetArray,
+    DatasetBoolean
   },
   mixins: [clearString],
 
@@ -51,7 +61,7 @@ export default {
     ...mapActions("editor", ["getAllowedFields"]),
 
     async getOtherData () {
-      const other_data_info = [ 'data_access_condition', 'data_curation', 'data_deposition_condition', 'data_preservation_policy'];
+      const other_data_info = [ 'data_access_condition', 'data_curation', 'resource_sustainability', 'data_deposition_condition', 'data_preservation_policy'];
       // adding data access condition if available
       if (this.allowedFields.properties !== undefined) {
         const otherDataTypes = Object.keys(this.allowedFields.properties).filter(key => other_data_info.includes(key));

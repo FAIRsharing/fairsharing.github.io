@@ -9,14 +9,7 @@
   >
     <!-- Additional Information -->
     <SectionTitle title="Additional Information" />
-    <!--  dataset_citation  -->
-    <DatasetBoolean field-name="citation_to_related_publications" />
-    <!--  dataset_contacts  -->
-    <DatasetBoolean field-name="data_contact_information" />
-    <!--  dataset_versioning  -->
-    <DatasetBoolean field-name="data_versioning" />
-    <!--  dataset_versioning  -->
-    <DatasetBoolean field-name="data_access_for_pre_publication_review" />
+
     <!--  deprecation_reason (one of a kind)  -->
     <div
       v-if="getField('metadata').deprecation_reason"
@@ -44,13 +37,12 @@
 <script>
 import {mapActions, mapGetters, mapState} from "vuex";
 import SectionTitle from "@/components/Records/Record/SectionTitle";
-import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean";
 import DatasetArray from "@/components/Records/Record/AdditionalInfo/DatasetArray";
 import {isArray} from "lodash";
 
 export default {
   name: "AdditionalInfo",
-  components: {DatasetArray, DatasetBoolean, SectionTitle},
+  components: {DatasetArray, SectionTitle},
   props: {
     backColor:{
       default:null,
@@ -80,7 +72,7 @@ export default {
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
     async initializeData () {
-      const excludedTypes = ['associated_tools','data_processes_and_conditions','data_versioning','citation_to_related_publications','data_contact_information','data_access_for_pre_publication_review', 'data_access_condition', 'data_curation', 'data_deposition_condition', 'data_preservation_policy']
+      const excludedTypes = ['associated_tools','data_processes_and_conditions','data_versioning','citation_to_related_publications','data_contact_information','data_access_for_pre_publication_review', 'data_access_condition', 'data_curation', 'data_deposition_condition', 'data_preservation_policy', 'resource_sustainability', 'certifications_and_community_badges']
       /* istanbul ignore else */
       if (this.allowedFields.properties !== undefined) {
         const allAllowedTypes = Object.keys(this.allowedFields.properties).filter(key => !excludedTypes.includes(key));

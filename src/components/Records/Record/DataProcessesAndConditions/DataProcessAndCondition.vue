@@ -31,11 +31,11 @@
               <b class="width-200">Name</b>
               <div class="d-flex full-width ml-md-12 ml-13">
                 <a
-                    class="underline-effect word-break"
-                    :href="subItem.url"
-                    target="_blank"
+                  class="underline-effect word-break"
+                  :href="subItem.url"
+                  target="_blank"
                 >
-                {{ subItem.name }}
+                  {{ subItem.name }}
                 </a>
               </div>
             </div>
@@ -51,22 +51,6 @@
               </div>
             </div>
 
-            <!--  URL    -->
-<!--            <div-->
-<!--              v-if="subItem.url"-->
-<!--              class="d-flex flex-row align-center min-height-40"-->
-<!--            >-->
-<!--              <b class="width-200">URL</b>-->
-<!--              <div class="d-flex full-width ml-md-12 ml-13">-->
-<!--                <a-->
-<!--                  class="underline-effect word-break"-->
-<!--                  :href="subItem.url"-->
-<!--                  target="_blank"-->
-<!--                >-->
-<!--                  {{ subItem.url }}-->
-<!--                </a>-->
-<!--              </div>-->
-<!--            </div>-->
           </div>
           <!--  Type    -->
           <div

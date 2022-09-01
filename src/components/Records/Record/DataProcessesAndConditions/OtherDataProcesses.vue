@@ -7,21 +7,30 @@
     color="white"
     tile
   >
-    <OtherDatasetArray
-      v-for="(item,key,index) in finalData"
-      :key="item.name+'_'+index+'_'+key"
-      :title="key"
-      :current-item="finalData[key]"
-      :current-key="key"
+    <Icon
+        item="createdAt"
+        size="20"
     />
-    <!--  dataset_versioning  -->
-    <DatasetBoolean field-name="data_versioning" />
-    <!--  dataset_contacts  -->
-    <DatasetBoolean field-name="data_contact_information" />
-    <!--  dataset_citation  -->
-    <DatasetBoolean field-name="citation_to_related_publications" />
-    <!--  dataset_versioning  -->
-    <DatasetBoolean field-name="data_access_for_pre_publication_review" />
+    <v-card-title class="pa-0 text--primary card-title-customize">
+      Attributes and Conditions
+    </v-card-title>
+    <div class="mt-0 pt-8">
+      <OtherDatasetArray
+        v-for="(item,key,index) in finalData"
+        :key="item.name+'_'+index+'_'+key"
+        :title="key"
+        :current-item="finalData[key]"
+        :current-key="key"
+      />
+      <!--  dataset_versioning  -->
+      <DatasetBoolean field-name="data_versioning" />
+      <!--  dataset_contacts  -->
+      <DatasetBoolean field-name="data_contact_information" />
+      <!--  dataset_citation  -->
+      <DatasetBoolean field-name="citation_to_related_publications" />
+      <!--  dataset_versioning  -->
+      <DatasetBoolean field-name="data_access_for_pre_publication_review" />
+    </div>
   </v-card>
 </template>
 
@@ -29,6 +38,7 @@
 import {mapActions, mapGetters, mapState} from "vuex";
 import clearString from '@/utils/stringUtils'
 import {isArray} from "lodash";
+import Icon from "@/components/Icon";
 import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray";
 import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean";
 
@@ -36,7 +46,8 @@ export default {
   name: "OtherDataProcesses",
   components: {
     OtherDatasetArray,
-    DatasetBoolean
+    DatasetBoolean,
+    Icon
   },
   mixins: [clearString],
 

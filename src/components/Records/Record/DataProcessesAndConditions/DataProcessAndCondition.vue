@@ -7,11 +7,18 @@
     tile
     elevation="3"
   >
+    <Icon
+        item="maintains"
+        size="20"
+    />
+    <v-card-title class="pa-0 text--primary card-title-customize">
+      Processes
+    </v-card-title>
     <!--  Container  -->
     <div
       v-for="(item,key,index) in generateProcessesData()"
       :key="key+'_'+index"
-      class="mt-0 d-flex flex-column"
+      class="mt-0 pt-8 d-flex flex-column"
     >
       <div
         v-for="(subItem,subIndex) in item.data"
@@ -149,10 +156,14 @@
 
 <script>
 import {mapGetters} from "vuex";
-import clearString from '@/utils/stringUtils'
+import clearString from '@/utils/stringUtils';
+import Icon from "@/components/Icon";
 
 export default {
   name: "DataProcessAndCondition",
+  components: {
+    Icon
+  },
   mixins: [clearString],
   props:{
     backColor:{

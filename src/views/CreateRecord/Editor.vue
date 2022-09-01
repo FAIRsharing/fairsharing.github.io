@@ -217,7 +217,7 @@
       }
     },
     computed: {
-      ...mapState('record', ['currentID', 'sections']),
+      ...mapState('record', ['currentID', 'sections', 'currentRecord']),
       ...mapGetters('record', ['getChanges', 'getAllChanges', 'getRecordType']),
       ...mapState('editor', ['allowedFields']),
       ...mapState('users', ['user']),
@@ -232,10 +232,17 @@
       }
     },
     async mounted() {
-      this.$nextTick(async () => {
+      const _module = this;
+      _module.$nextTick(async () => {
         await this.getData();
-        this.$store.commit("editor/clearPossibleDuplicates");
-        this.$store.commit("record/setEditingRecord");
+        _module.$store.commit("editor/clearPossibleDuplicates");
+        _module.$store.commit("record/setEditingRecord");
+        // Fix URL if it's a name not an ID.
+        let id = _module.$route.params.id;
+        if (!Number.isInteger(id)) {
+          id = _module.currentRecord['fairsharingRecord'].id;
+          await this.$router.push({path: '/' + id + '/edit'});
+        }
       })
     },
     beforeDestroy() {

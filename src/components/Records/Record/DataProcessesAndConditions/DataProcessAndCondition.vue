@@ -52,15 +52,15 @@
             </div>
             <!--  Example URL    -->
             <div
-                v-if="subItem.example_url"
-                class="d-flex flex-row align-stretch min-height-40"
+              v-if="subItem.example_url"
+              class="d-flex flex-row align-stretch min-height-40"
             >
               <b class="width-200">Example URL</b>
               <div class="d-flex full-width ml-md-12 ml-13">
                 <a
-                    class="underline-effect word-break"
-                    :href="subItem.example_url"
-                    target="_blank"
+                  class="underline-effect word-break"
+                  :href="subItem.example_url"
+                  target="_blank"
                 >
                   {{ subItem.example_url }}
                 </a>
@@ -68,16 +68,16 @@
             </div>
             <!-- Documentation URL    -->
             <div
-                v-if="subItem.documentation_url"
-                class="d-flex flex-row align-stretch min-height-40"
+              v-if="subItem.documentation_url"
+              class="d-flex flex-row align-stretch min-height-40"
             >
               <b class="width-200">Documentation URL
               </b>
               <div class="d-flex full-width ml-md-12 ml-13">
                 <a
-                    class="underline-effect word-break"
-                    :href="subItem.documentation_url"
-                    target="_blank"
+                  class="underline-effect word-break"
+                  :href="subItem.documentation_url"
+                  target="_blank"
                 >
                   {{ subItem.documentation_url }}
                 </a>

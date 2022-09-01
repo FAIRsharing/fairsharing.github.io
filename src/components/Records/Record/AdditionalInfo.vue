@@ -1,11 +1,11 @@
 <template>
   <v-card
-    v-if="(allowedFields.properties|| getField('metadata').deprecation_reason) && finalDataItemsHasLength"
-    class="pa-4 d-flex flex-column"
-    outlined
-    :color="backColor"
-    tile
-    elevation="3"
+      v-if="(allowedFields.properties|| getField('metadata').deprecation_reason) && finalDataItemsHasLength"
+      class="pa-4 d-flex flex-column"
+      outlined
+      :color="backColor"
+      tile
+      elevation="3"
   >
     <!-- Additional Information -->
     <SectionTitle title="Additional Information" />
@@ -19,9 +19,9 @@
     <DatasetBoolean field-name="data_access_for_pre_publication_review" />
     <!--  deprecation_reason (one of a kind)  -->
     <div
-      v-if="getField('metadata').deprecation_reason"
-      class="d-flex pa-4 data-holder flex-row mt-4 align-center min-height-40"
-      style="border:2px dotted darkorange"
+        v-if="getField('metadata').deprecation_reason"
+        class="d-flex pa-4 data-holder flex-row mt-4 align-center min-height-40"
+        style="border:2px dotted darkorange"
     >
       <b class="width-200">Dataset Deprecation reason</b>
       <div class="d-flex full-width ml-md-12 ml-13">
@@ -32,11 +32,11 @@
     </div>
     <!--  dynamically reading all allowed additionalInfo fields and its items -->
     <dataset-array
-      v-for="(item,key,index) in finalData"
-      :key="item.name+'_'+index+'_'+key"
-      :title="key"
-      :current-field="finalData[key]"
-      :current-key="key"
+        v-for="(item,key,index) in finalData"
+        :key="item.name+'_'+index+'_'+key"
+        :title="key"
+        :current-field="finalData[key]"
+        :current-key="key"
     />
   </v-card>
 </template>
@@ -80,7 +80,7 @@ export default {
   methods: {
     ...mapActions("editor", ["getAllowedFields"]),
     async initializeData () {
-      const excludedTypes = ['associated_tools','data_processes','data_versioning','citation_to_related_publications','data_contact_information','data_access_for_pre_publication_review']
+      const excludedTypes = ['associated_tools','data_processes_and_conditions','data_versioning','citation_to_related_publications','data_contact_information','data_access_for_pre_publication_review', 'data_access_condition', 'data_curation', 'data_deposition_condition', 'data_preservation_policy']
       /* istanbul ignore else */
       if (this.allowedFields.properties !== undefined) {
         const allAllowedTypes = Object.keys(this.allowedFields.properties).filter(key => !excludedTypes.includes(key));

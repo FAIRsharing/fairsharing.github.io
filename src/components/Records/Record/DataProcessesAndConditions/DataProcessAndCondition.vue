@@ -26,7 +26,7 @@
             <!--  Name    -->
             <div
               v-if="subItem.name"
-              class="d-flex flex-row align-center min-height-40"
+              class="d-flex flex-row align-stretch min-height-40"
             >
               <b class="width-200">Name</b>
               <div class="d-flex full-width ml-md-12 ml-13">
@@ -43,11 +43,44 @@
             <!--  AccessMethod   -->
             <div
               v-if="subItem.access_method"
-              class="d-flex flex-row align-center min-height-40"
+              class="d-flex flex-row align-stretch min-height-40"
             >
               <b class="width-200">Access Method</b>
               <div class="d-flex full-width ml-md-12 ml-13">
                 {{ subItem.access_method }}
+              </div>
+            </div>
+            <!--  Example URL    -->
+            <div
+                v-if="subItem.example_url"
+                class="d-flex flex-row align-stretch min-height-40"
+            >
+              <b class="width-200">Example URL</b>
+              <div class="d-flex full-width ml-md-12 ml-13">
+                <a
+                    class="underline-effect word-break"
+                    :href="subItem.example_url"
+                    target="_blank"
+                >
+                  {{ subItem.example_url }}
+                </a>
+              </div>
+            </div>
+            <!-- Documentation URL    -->
+            <div
+                v-if="subItem.documentation_url"
+                class="d-flex flex-row align-stretch min-height-40"
+            >
+              <b class="width-200">Documentation URL
+              </b>
+              <div class="d-flex full-width ml-md-12 ml-13">
+                <a
+                    class="underline-effect word-break"
+                    :href="subItem.documentation_url"
+                    target="_blank"
+                >
+                  {{ subItem.documentation_url }}
+                </a>
               </div>
             </div>
           </div>

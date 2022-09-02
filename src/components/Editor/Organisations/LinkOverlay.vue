@@ -271,14 +271,20 @@
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn
-                    class="success"
-                    :disabled="importROR"
-                    :loading="menus.newOrganisation.loading"
-                    @click="getOrganisations()"
-                  >
-                    Import from ROR
-                  </v-btn>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-btn
+                        class="success"
+                        :disabled="importROR"
+                        :loading="menus.newOrganisation.loading"
+                        v-on="on"
+                        @click="getOrganisations()"
+                      >
+                        Import from ROR
+                      </v-btn>
+                    </template>
+                    {{ tooltips['ror_import'] }}
+                  </v-tooltip>
                   <v-spacer />
                   <v-btn
                     color="warning"

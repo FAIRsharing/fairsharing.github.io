@@ -11,11 +11,13 @@
       class="full-width min-width-200 max-width-200"
     >
       <a
+        v-if="currentItem.url"
         class="underline-effect"
         :href="currentItem.url"
         target="_blank"
       >{{ currentItem.name }}
       </a>
+      <span v-else>{{ currentItem.name }}</span>
     </div>
 
     <!--  Type    -->
@@ -24,11 +26,13 @@
       class="full-width min-width-200 max-width-200"
     >
       <a
+        v-if="currentItem.url"
         class="underline-effect"
         :href="currentItem.url"
         target="_blank"
       >{{ currentItem.type }}
       </a>
+      <span v-else>{{ currentItem.type }}</span>
     </div>
 
     <!--  URLs    -->

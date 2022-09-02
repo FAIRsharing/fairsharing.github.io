@@ -1,6 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
-    v-if="Object.keys(getField('metadata')).includes('data_processes') || (getField('licences') && getField('licences').length)"
+    v-if="Object.keys(getField('metadata')).includes('data_processes_and_conditions') || (getField('licences') && getField('licences').length)"
     class="pa-4 d-flex flex-column"
     outlined
     :color="backColor"
@@ -8,10 +8,13 @@
     elevation="3"
   >
     <!-- Data Conditions -->
-    <SectionTitle title="Data Conditions" />
+    <SectionTitle title="Data Processes And Conditions" />
     <!--  container  -->
     <div class="d-flex flex-column ml-2 min-height-40">
-      <div v-if="(getField('metadata')['data_processes'] && getField('metadata')['data_processes'].length) || (getField('licences').length && getField('licences'))">
+      <div v-if="(getField('metadata')['data_processes_and_conditions'] && getField('metadata')['data_processes_and_conditions'].length) || (getField('licences').length && getField('licences')) || (getField('metadata')['certifications_and_community_badges'] && getField('metadata')['certifications_and_community_badges'].length)">
+        <!-- DataProcessAndCondition component -->
+        <DataProcessAndCondition />
+        <!-- Licences component -->
         <v-card
           v-for="(item,key,index) in generateDataConditions()"
           :key="key+'_'+index"
@@ -26,7 +29,7 @@
             size="20"
           />
           <v-card-title class="pa-0 text--primary card-title-customize">
-            {{ key | capitalize }}
+            {{ cleanString(key) | capitalize }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
             <v-card
@@ -58,6 +61,10 @@
           </v-card-text>
         </v-card>
       </div>
+      <!-- Other data items component -->
+      <div v-if="(getField('metadata')['data_access_condition'] && Object.keys('data_access_condition').length) || (getField('metadata')['data_curation'] && Object.keys('data_curation').length) ||(getField('metadata')['data_deposition_condition'] && Object.keys('data_deposition_condition').length) ||(getField('metadata')['data_preservation_policy'] && Object.keys('data_preservation_policy').length)">
+        <OtherDataProcesses />
+      </div>
     </div>
     <section />
   </v-card>
@@ -68,12 +75,16 @@ import {mapGetters} from "vuex";
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import clearString from '@/utils/stringUtils'
 import Icon from "@/components/Icon";
+import OtherDataProcesses from "@/components/Records/Record/DataProcessesAndConditions/OtherDataProcesses";
+import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition";
 
 export default {
-  name: "DataConditions",
+  name: "DataProcessesAndConditions",
   components: {
     SectionTitle,
-    Icon
+    Icon,
+    OtherDataProcesses,
+    DataProcessAndCondition,
   },
   mixins: [clearString],
   props:{
@@ -85,42 +96,38 @@ export default {
   computed: {
     ...mapGetters("record", ["getField"]),
   },
-  methods:{
-    generateDataConditions() {
-      let processedDataConditions = {};
-      const data_processes =  this.getField('metadata')['data_processes'];
+  methods: {
+    generateDataConditions: function () {
+      let processedData = {};
+      const community_badges =  this.getField('metadata')['certifications_and_community_badges'];
       const licences = this.getField('licences');
-      // initializing object's key and data dynamically based on any number of types coming from API
-      if (data_processes) {
-        data_processes.forEach(item => {
-          if (!Object.prototype.hasOwnProperty.call(processedDataConditions, item.type)) {
-            processedDataConditions[item.type] = {
-              data: [],
-              icon: null
-            }
-          }
-        });
-        // assigning data and icon to the different types came from API.
-        data_processes.forEach(item => {
-          processedDataConditions[item.type].icon = item.type.replace(/\s/g, '_');
-          processedDataConditions[item.type].data.push(item)
+
+      // // adding community badges if available
+      if (community_badges) {
+        processedData['certifications_and_community_badges'] = {
+          data: [],
+          icon: 'certificate'
+        };
+        community_badges.forEach(community_badge => {
+          processedData['certifications_and_community_badges'].data.push(community_badge)
         })
       }
+
       // adding licenses if available
       if (licences.length) {
-        processedDataConditions['licences'] = {
-          data:[],
-          icon:'licences'
+        processedData['licences'] = {
+          data: [],
+          icon: 'licences'
         };
         licences.forEach(licence => {
-          processedDataConditions['licences'].data.push(licence)
+          processedData['licences'].data.push(licence)
         })
       }
-      return processedDataConditions
+      return processedData
     },
     getLicenceRelation(licenceId) {
-      return this.getField('licenceLinks').find(obj=>obj.licence.id === licenceId).relation
-    }
-  }
+      return this.getField('licenceLinks').find(obj => obj.licence.id === licenceId).relation
+    },
+  },
 }
 </script>

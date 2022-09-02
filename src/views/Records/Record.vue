@@ -292,7 +292,7 @@ import stringUtils from '@/utils/stringUtils';
 import getHostname from "@/utils/generalUtils";
 import GeneralInfo from "@/components/Records/Record/GeneralInfo";
 import Tools from '@/components/Records/Record/Tools';
-import DataConditions from '@/components/Records/Record/DataConditions';
+import DataProcessesAndConditions from '@/components/Records/Record/DataProcessesAndConditions';
 import Publications from '@/components/Records/Record/Publications';
 import Support from '@/components/Records/Record/Support';
 import NotFound from "@/views/Errors/404"
@@ -328,7 +328,7 @@ export default {
     Organisations,
     GeneralInfo,
     Tools,
-    DataConditions,
+    DataProcessesAndConditions,
     Publications,
     Support,
     NotFound
@@ -484,11 +484,11 @@ export default {
       if (this.$vuetify.breakpoint.name === 'md') {
         return {
           leftBlock: ["Collections", "RelatedContent", "Support"],
-          rightBlock: ["DataConditions", "Tools", "Organisations"]
+          rightBlock: ["DataProcessesAndConditions", "Tools", "Organisations"]
         }
       } else {
         return {
-          leftBlock: ["Collections", "Support", "DataConditions"],
+          leftBlock: ["Collections", "Support", "DataProcessesAndConditions"],
           rightBlock: ["RelatedContent", "Tools", "Organisations"]
         }
       }

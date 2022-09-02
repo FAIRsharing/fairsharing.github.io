@@ -79,7 +79,9 @@ export default {
 
         for (const key of otherDataTypes) {
           if (Object.prototype.hasOwnProperty.call(this.getField('metadata'), key)) {
-            this.setAvailableData(this.getField('metadata')[key], key);
+            if (Object.keys(this.getField('metadata')[key]).length) {
+              this.setAvailableData(this.getField('metadata')[key], key);
+            }
           }
         }
       }

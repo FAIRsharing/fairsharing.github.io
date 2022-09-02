@@ -915,6 +915,20 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Get statistics data without users
+     * @returns {Promise}
+     */
+    async getStatisticsData(){
+        let _client = this;
+        const request = {
+            method: "get",
+            baseURL: _client.baseURL + "/homepage_stats",
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
 }
 
 export default RESTClient;

@@ -59,9 +59,11 @@
 
 <script>
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
+
 export default {
   name: "SearchBlock",
-  components: {StringSearch}
+  components: {StringSearch
+  }
 }
 </script>
 

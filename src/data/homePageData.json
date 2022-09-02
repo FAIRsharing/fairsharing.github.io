@@ -317,5 +317,22 @@
         "image": "assets/Community/LogoImageGroup/logo-group7.jpg"
       }
     ]
+  },
+  "statisticsData": {
+    "firstColumn":{
+      "title": "Contributors",
+      "description": "Our community of resource developers and curators",
+      "icon": "recommended"
+    },
+    "secondColumn":{
+      "title": "Records",
+      "description": "Describing standards, databases and policies for humans and machines",
+      "icon": "collections"
+    },
+    "thirdColumn":{
+      "title": "Views",
+      "description": "Community usage since 2018",
+      "icon": "educational"
+    }
   }
 }

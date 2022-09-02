@@ -272,7 +272,7 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                       <v-btn
                         class="success"
                         :disabled="importROR"

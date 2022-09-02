@@ -102,6 +102,7 @@
       &lt;SearchBlock />
       &lt;CategoryBlock class="mt-12" />
       &lt;CommunityCarousel class="mt-12 mb-12" />
+      &lt;StatisticsBlock class="my-12" />
     &lt;/v-container>
     &lt;!-- This html is from a safe source -->
     &lt;!-- eslint-disable vue/no-v-html -->
@@ -119,13 +120,14 @@ import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
 import CategoryBlock from "@/components/Home/CategoryBlock";
 import CommunityCarousel from "@/components/Home/CommunityCarousel";
+import StatisticsBlock from "@/components/Home/StatisticsBlock";
 
 /** Component to handle the front page (landing page)
  *
  */
 export default {
   name: "Home",
-  components:{CommunityCarousel, Carousel, InfoBlock, SearchBlock, CategoryBlock },
+  components:{CommunityCarousel, Carousel, InfoBlock, SearchBlock, CategoryBlock, StatisticsBlock },
   computed: {
     JSONLD: () => {
       return JSON.stringify(  {

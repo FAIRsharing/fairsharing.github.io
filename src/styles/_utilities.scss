@@ -91,6 +91,11 @@
   height: 1px!important;
   opacity: 0.4!important;
 }
+
+.word-break {
+  word-break: break-all;
+}
+
 // end of utility classes
 
 
@@ -117,6 +122,14 @@
 
 .max-width-24-percent {
   max-width: 23.9%;
+}
+
+.max-width-200 {
+  max-width: 200px;
+}
+
+.max-width-500 {
+  max-width: 500px;
 }
 
 .min-width-60 {
@@ -205,6 +218,10 @@ width: 25%;
 
 .width-200 {
   width: 200px;
+}
+
+.width-100 {
+  width:100px;
 }
 
 .width-15-percent-flex {

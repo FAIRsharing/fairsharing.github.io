@@ -5,6 +5,11 @@ import Vuex from "vuex"
 import RestClient from "@/lib/Client/RESTClient.js"
 const sinon = require("sinon");
 
+import { JSDOM } from 'jsdom';
+const dom = new JSDOM();
+global.document = dom.window.document;
+global.window = dom.window;
+
 const localVue = createLocalVue();
 localVue.use(Vuex)
 const vuetify = new Vuetify();

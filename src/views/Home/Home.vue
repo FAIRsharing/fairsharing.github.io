@@ -9,7 +9,9 @@
       <SearchBlock />
       <CategoryBlock class="mt-12" />
       <CommunityCarousel class="mt-12 mb-12" />
+      <v-lazy>
       <StatisticsBlock class="my-12" />
+      </v-lazy>
     </v-container>
     <!-- This html is from a safe source -->
     <!-- eslint-disable vue/no-v-html -->

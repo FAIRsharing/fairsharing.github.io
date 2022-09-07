@@ -8,18 +8,18 @@
         lg="4"
       >
         <v-card
-          class="mx-auto block-category__card"
+          class="mx-auto block-category__card d-flex flex-column"
           max-width="350"
-          height="350px"
+          height="100%"
         >
           <v-card-title
             class="d-inline counter text-h2 font-weight-bold"
             :data-target="statsData.contributors"
           />
-          <v-card-subtitle class="text--primary height-90 text-h6 font-weight-bold">
+          <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold">
             {{ statisticsData.firstColumn.title }}
           </v-card-subtitle>
-          <v-card-text class="text--primary height-90">
+          <v-card-text class="text--primary">
             {{ statisticsData.firstColumn.description }}
           </v-card-text>
         </v-card>
@@ -31,18 +31,18 @@
         lg="4"
       >
         <v-card
-          class="mx-auto block-category__card"
+          class="mx-auto block-category__card d-flex flex-column"
           max-width="350"
-          height="350px"
+          height="100%"
         >
           <v-card-title
             class="d-inline counter text-h2 font-weight-bold"
             :data-target="statsData.resources"
           />
-          <v-card-subtitle class="text--primary height-90 text-h6 font-weight-bold">
+          <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold">
             {{ statisticsData.secondColumn.title }}
           </v-card-subtitle>
-          <v-card-text class="text--primary height-90">
+          <v-card-text class="text--primary">
             {{ statisticsData.secondColumn.description }}
           </v-card-text>
         </v-card>
@@ -54,18 +54,18 @@
         lg="4"
       >
         <v-card
-          class="mx-auto block-category__card"
+          class="mx-auto block-category__card d-flex flex-column"
           max-width="350"
-          height="350px"
+          height="100%"
         >
           <v-card-title
             class="d-inline counter text-h2 font-weight-bold"
             :data-target="statsData.views"
           />
-          <v-card-subtitle class="text--primary height-90 text-h6 font-weight-bold">
+          <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold">
             {{ statisticsData.thirdColumn.title }}
           </v-card-subtitle>
-          <v-card-text class="text--primary height-90">
+          <v-card-text class="text--primary">
             {{ statisticsData.thirdColumn.description }}
           </v-card-text>
         </v-card>

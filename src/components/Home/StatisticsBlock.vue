@@ -105,7 +105,7 @@ export default {
       this.updateStaticsData()
     },
     updateStaticsData() {
-      const counters = document.querySelectorAll(".counter");
+      const counters = this.$el.querySelectorAll(".counter");
       const speed = 200;
 
       counters.forEach((counter) => {

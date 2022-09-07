@@ -29,7 +29,7 @@ describe("StatisticsBlock.vue", function(){
                 error: "I am an error"
             }});
         wrapper.vm.statsData = {
-            contributors: "xa",
+            contributors: "xaa",
             resources: "?",
             views: 1
         };

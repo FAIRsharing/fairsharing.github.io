@@ -127,15 +127,15 @@ export default {
     updateNumbers (labelValue) {
       // Nine Zeroes for Billions
       if (labelValue >= 1.0e+9) {
-        return Math.abs(Number(labelValue)) / 1.0e+9 + "B"
+        return Math.round(Number(labelValue) / 1.0e+9) + "B"
       }
       // Six Zeroes for Millions
       else if (labelValue >= 1.0e+6) {
-        return Math.abs(Number(labelValue)) / 1.0e+6 + "M"
+        return Math.round(Number(labelValue) / 1.0e+6) + "M"
       }
       // Three Zeroes for Thousands
       else if (labelValue >= 1.0e+4) {
-        return Math.abs(Number(labelValue)) / 1.0e+3 + "K"
+        return Math.round(Number(labelValue) / 1.0e+3) + "K"
       }
       else{
         return  labelValue

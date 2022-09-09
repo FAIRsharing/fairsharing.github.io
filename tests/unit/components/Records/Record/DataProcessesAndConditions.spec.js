@@ -1,7 +1,7 @@
 import {shallowMount, createLocalVue} from "@vue/test-utils";
 import Vuex from "vuex";
 import Record from "@/store/recordData.js"
-import DataConditions from "@/components/Records/Record/DataConditions.vue"
+import DataProcessesAndConditions from "@/components/Records/Record/DataProcessesAndConditions.vue"
 import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
@@ -13,7 +13,8 @@ Record.state.currentRecord["fairsharingRecord"] = {
     licenceLinks: [{id: 1, licence: {name: 'a licence', id: 1}, relation: 'undefined'}],
     metadata: {
         associated_tools: [{}],
-        data_processes: [{name: 'name1', type: 'data access', url: 'www.somewhere.com'}]
+        certifications_and_community_badges: [{name: 'a community', url: 'www.somecommunity.com'}],
+        data_processes_and_conditions: [{name: 'name1', type: 'data access', url: 'www.somewhere.com', access_method: 'access method'}]
     },
     taxonomies: [
         {label: "Turdus turdus"},
@@ -32,11 +33,11 @@ const $store = new Vuex.Store({
     }
 });
 
-describe("DataConditions.vue", function () {
+describe("DataProcessesAndConditions.vue", function () {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallowMount(DataConditions, {
+        wrapper = shallowMount(DataProcessesAndConditions, {
             localVue,
             vuetify,
             mocks: {$store},
@@ -44,18 +45,15 @@ describe("DataConditions.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("DataConditions");
+        expect(wrapper.name()).toMatch("DataProcessesAndConditions");
     });
 
     it("can be check the reaction of page if appropriate data not provided", () => {
         let mockData;
         expect(wrapper.vm.generateDataConditions()).toStrictEqual({
-                'data access': {
-                    data: [{name: 'name1', type: 'data access', url: 'www.somewhere.com'}],
-                    icon: 'data_access'
-                },
-                licences: {data: [{name: 'a licence',id:1}], icon: 'licences'}
-            })
+            certifications_and_community_badges: {data:[{name: 'a community', url: 'www.somecommunity.com'}], icon: 'certificate'},
+            licences: {data: [{name: 'a licence',id:1}], icon: 'licences'},
+        })
 
         mockData = {
             fairsharingRecord: {
@@ -79,12 +77,7 @@ describe("DataConditions.vue", function () {
         mockData = {
             fairsharingRecord: {
                 licences: [],
-                metadata: {
-                    data_processes: [
-                        {name: 'name1', type: 'data access', url: 'www.somewhere.com'},
-                        {name: 'name2', type: 'data access', url: 'www.somewhere.com'},
-                        {name: 'name3', type: 'data curation', url: 'www.somewhere3.com'}]
-                },
+                metadata: {},
                 taxonomies: [
                     {label: "asasd turdus"},
                 ],
@@ -98,33 +91,7 @@ describe("DataConditions.vue", function () {
             }
         }
         $store.commit("record/setCurrentRecord", mockData)
-        expect(wrapper.vm.generateDataConditions()).toStrictEqual({
-            "data access": {
-                "data": [
-                    {
-                        "name": "name1",
-                        "type": "data access",
-                        "url": "www.somewhere.com"
-                    },
-                    {
-                        "name": "name2",
-                        "type": "data access",
-                        "url": "www.somewhere.com"
-                    }
-                ],
-                "icon": "data_access"
-            },
-            "data curation": {
-                "data": [
-                    {
-                        "name": "name3",
-                        "type": "data curation",
-                        "url": "www.somewhere3.com"
-                    }
-                ],
-                "icon": "data_curation"
-            }
-        })
+        expect(wrapper.vm.generateDataConditions()).toStrictEqual({})
 
     });
 

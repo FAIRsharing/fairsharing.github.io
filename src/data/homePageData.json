@@ -317,5 +317,19 @@
         "image": "assets/Community/LogoImageGroup/logo-group7.jpg"
       }
     ]
-  }
+  },
+  "statisticsData": {
+    "firstColumn":{
+      "title": "Records",
+      "description": "Descriptions of standards, databases and policies"
+    },
+    "secondColumn":{
+      "title": "Contributors",
+      "description": "Our community of record maintainers and curators"
+    },
+    "thirdColumn":{
+      "title": "Views",
+      "description": "Page visits since 2015"
+    }
+  }  
 }

@@ -14,10 +14,9 @@
         >
           <v-card-title
             class="d-inline counter text-h2 font-weight-bold"
-            :data-target="statsData.contributors"
-            :style="{ backgroundImage: 'linear-gradient(100deg, rgb(5, 6, 8) 0%, rgb(21, 60, 84) 40%, rgb(24, 71, 105) 85%, rgb(6, 12, 18) 97%, rgb(1, 18, 30) 99%), url(' + 'assets/Home/BlockStatistics/contributors.jpg'}"
+            :data-target="statsData.resources"
           />
-          <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold pa-4">
+          <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold">
             {{ statisticsData.firstColumn.title }}
           </v-card-subtitle>
           <v-card-text class="text--primary">
@@ -38,10 +37,9 @@
         >
           <v-card-title
             class="d-inline counter text-h2 font-weight-bold"
-            :data-target="statsData.resources"
-            :style="{ backgroundImage: 'url(' + 'assets/Home/BlockStatistics/records.jpg'}"
+            :data-target="statsData.contributors"
           />
-          <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold pa-4">
+          <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold">
             {{ statisticsData.secondColumn.title }}
           </v-card-subtitle>
           <v-card-text class="text--primary">
@@ -63,9 +61,8 @@
           <v-card-title
             class="d-inline counter text-h2 font-weight-bold"
             :data-target="statsData.views"
-            :style="{ backgroundImage: 'url(' + 'assets/Home/BlockStatistics/views.jpg'}"
           />
-          <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold pa-4">
+          <v-card-subtitle class="text--primary mt-0 text-h6 font-weight-bold">
             {{ statisticsData.thirdColumn.title }}
           </v-card-subtitle>
           <v-card-text class="text--primary">
@@ -154,12 +151,6 @@ export default {
   text-align: center;
   margin: 0 auto;
   color: white;
-}
-.counter {
-  color: white;
-  height: 150px;
-  background-size:cover;
-  background-blend-mode:lighten
 }
 
 </style>

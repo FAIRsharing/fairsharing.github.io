@@ -320,19 +320,16 @@
   },
   "statisticsData": {
     "firstColumn":{
-      "title": "Contributors",
-      "description": "Our community of resource developers and curators",
-      "icon": "recommended"
+      "title": "Records",
+      "description": "Descriptions of standards, databases and policies"
     },
     "secondColumn":{
-      "title": "Records",
-      "description": "Describing standards, databases and policies for humans and machines",
-      "icon": "collections"
+      "title": "Contributors",
+      "description": "Our community of record maintainers and curators"
     },
     "thirdColumn":{
       "title": "Views",
-      "description": "Community usage since 2015",
-      "icon": "educational"
+      "description": "Page visits since 2015"
     }
   }  
 }

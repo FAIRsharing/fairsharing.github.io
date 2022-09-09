@@ -27,8 +27,10 @@ describe('Form validation rules', () => {
     it("can check if it's an email or url", () => {
         let tester = isEmailOrUrl();
         expect(tester("test@test.com")).toBe(true);
-        expect(tester("test")).toBe("Invalid e-mail/url.");
+        expect(tester("test")).toBe("Invalid e-mail/URL.");
         expect(tester("wibble.com")).toBe(true);
+        expect(tester("hardcore.science")).toBe(true);
+        expect(tester("this.isfartoolong")).toBe("Invalid e-mail/URL.");
     });
 
     it("can check if the field is present", () => {
@@ -43,6 +45,8 @@ describe('Form validation rules', () => {
         expect(tester('a string')).toEqual("Invalid URL.");
         expect(tester('wibble.com')).toBe(true);
         expect(tester('')).toBe(true);
+        expect(tester("hardcore.science")).toBe(true);
+        expect(tester("this.isfartoolong")).toBe("Invalid URL.");
     });
 
     it("can check if a user has typed enough", () => {

@@ -26,7 +26,11 @@
                 height="200px"
                 cover
               >
-                <v-card-title v-text="card.name" />
+                <v-card-title>
+                  <h5 style="word-break: initial">
+                    {{ card.name }}
+                  </h5>
+                </v-card-title>
               </v-img>
 
               <v-card-text
@@ -62,7 +66,7 @@
                     {{ 'fab fa-orcid' }}
                   </v-icon>
                   <span
-                    class="text-truncate"
+                    class="text-truncate text-capitalize full-width"
                     :style=" $vuetify.breakpoint.xs ? 'max-width: 166px': 'max-width: 236px'"
                   > Meet {{ card.name }}</span>
                 </v-btn>
@@ -110,13 +114,5 @@ export default {
 
 <style scoped>
 
-.text-truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-  max-width: 236px;
-  text-transform: capitalize;
-}
 
 </style>

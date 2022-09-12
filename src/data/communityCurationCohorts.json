@@ -1,0 +1,49 @@
+{
+  "2022": [
+    {
+      "name": "Kyle Copas",
+      "id": 5832,
+      "organisation": "GBIF",
+      "id_organisation": 1166,
+      "scope": "Biodiversity",
+      "orcid": "0000-0002-6590-599X",
+      "logo": ""
+    },
+    {
+      "name": "Annie Elkjær Ørum-Kristensen",
+      "id": 6182,
+      "organisation": "GBIF",
+      "id_organisation": 1166,
+      "scope": "Biodiversity",
+      "orcid": "0000-0002-8326-5789",
+      "logo": ""
+    },
+    {
+      "name": "Joe Miller",
+      "id": 6118,
+      "organisation": "GBIF",
+      "id_organisation": 1166,
+      "scope": "Biodiversity",
+      "orcid": "0000-0002-5788-9010",
+      "logo": ""
+    },
+    {
+      "name": "Lindsey Anderson",
+      "id": 5015,
+      "organisation": "PNNL",
+      "id_organisation": 2284,
+      "scope": "Omics",
+      "orcid": "0000-0002-8741-7823",
+      "logo": ""
+    },
+    {
+      "name": "Malin Sandström",
+      "id": 464,
+      "organisation": null,
+      "id_organisation": null,
+      "scope": "Neuroscience",
+      "orcid": "0000-0002-8464-2494",
+      "logo": ""
+    }
+  ]
+}

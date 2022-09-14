@@ -6,8 +6,11 @@
       "organisation": "GBIF",
       "id_organisation": 1166,
       "scope": "Biodiversity",
+      "early_adopter" : true,
       "orcid": "0000-0002-6590-599X",
-      "logo": ""
+      "twitter": "kylecopas",
+      "linkedIn" : "kylecopas",
+      "logo": "/assets/Community/profiles/prakhyat.jpg"
     },
     {
       "name": "Annie Elkjær Ørum-Kristensen",
@@ -15,8 +18,11 @@
       "organisation": "GBIF",
       "id_organisation": 1166,
       "scope": "Biodiversity",
+      "early_adopter" : true,
       "orcid": "0000-0002-8326-5789",
-      "logo": ""
+      "twitter": "",
+      "linkedIn" : "",
+      "logo": "/assets/Community/profiles/delphine.jpg"
     },
     {
       "name": "Joe Miller",
@@ -24,8 +30,11 @@
       "organisation": "GBIF",
       "id_organisation": 1166,
       "scope": "Biodiversity",
+      "early_adopter" : true,
       "orcid": "0000-0002-5788-9010",
-      "logo": ""
+      "twitter": "",
+      "linkedIn" : "",
+      "logo": "/assets/Community/profiles/daniel.jpg"
     },
     {
       "name": "Lindsey Anderson",
@@ -33,8 +42,11 @@
       "organisation": "PNNL",
       "id_organisation": 2284,
       "scope": "Omics",
+      "early_adopter" : true,
       "orcid": "0000-0002-8741-7823",
-      "logo": ""
+      "twitter": "",
+      "linkedIn" : "",
+      "logo": "/assets/Community/profiles/philippe.jpg"
     },
     {
       "name": "Malin Sandström",
@@ -42,7 +54,10 @@
       "organisation": null,
       "id_organisation": null,
       "scope": "Neuroscience",
+      "early_adopter" : true,
       "orcid": "0000-0002-8464-2494",
+      "twitter": "",
+      "linkedIn" : "",
       "logo": ""
     }
   ]

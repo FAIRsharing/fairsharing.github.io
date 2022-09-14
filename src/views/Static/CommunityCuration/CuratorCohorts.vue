@@ -8,29 +8,50 @@
         <v-row dense>
           <v-col
             v-for="card in currentCohort"
-            :key="card.title"
+            :key="card.id"
             cols="12"
             sm="12"
             md="4"
             lg="3"
-            class="my-md-4 my-xl-12"
+            xl="2"
           >
             <v-card
-              max-width="300px"
-              class="mx-auto"
+              class="full-width"
             >
               <v-img
-                :src="card.logo? card.logo : profilePlaceholder"
+                :src="card.logo ? card.logo : profilePlaceholder"
                 class="white--text align-end"
                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                height="200px"
                 cover
+                aspect-ratio="1"
               >
+                <v-card-actions>
+                  <v-btn
+                      icon
+                      @click="show = !show"
+                  >
+                    <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                  </v-btn>
+                </v-card-actions>
                 <v-card-title>
-                  <h5 style="word-break: initial">
+                  <h4 style="word-break: initial">
                     {{ card.name }}
-                  </h5>
+                  </h4>
                 </v-card-title>
+                <v-card-subtitle
+                  v-if="card.early_adopter"
+                >
+                  <v-chip
+                    class="ma-0"
+                    color="pink"
+                    label
+                    text-color="white"
+                    append-icon="mdi-label"
+                    small
+                  >
+                    Early Adopter
+                  </v-chip>
+                </v-card-subtitle>
               </v-img>
 
               <v-card-text
@@ -47,23 +68,24 @@
               </v-card-text>
 
               <v-card-actions
-                v-if="card.orcid"
+                v-if="card.id"
+                class="pa-0 full-width"
               >
                 <v-btn
                   elevation="2"
                   dark
-                  color="success"
-                  :href="`https://orcid.org/${card.orcid}`"
+                  color="primary"
+                  :href="`/users/${card.id}`"
                   rel="external"
                   target="_blank"
-                  max-width="284px"
-                  class="full-width"
+                  class="full-width py-6"
+                  tile
                 >
                   <v-icon
                     left
                     class="mr-2"
                   >
-                    {{ 'fab fa-orcid' }}
+                    {{ 'fa fa-user-circle' }}
                   </v-icon>
                   <span
                     class="text-truncate text-capitalize full-width"
@@ -75,9 +97,6 @@
           </v-col>
         </v-row>
       </v-container>
-      <pre>
-        {{ currentCohort }}
-      </pre>
     </div>
   </main>
 </template>

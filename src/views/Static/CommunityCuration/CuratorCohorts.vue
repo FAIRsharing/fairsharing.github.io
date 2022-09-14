@@ -25,14 +25,63 @@
                 cover
                 aspect-ratio="1"
               >
-                <v-card-actions>
+                <v-card-actions style="position: absolute; top: 0; right: 0">
                   <v-btn
-                      icon
-                      @click="show = !show"
+                    icon
+                    :class="card.show_more ? 'showMore' : 'showLess'"
+                    @click="card.show_more = !card.show_more"
                   >
-                    <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                    <v-icon
+                      class="toggleIcon"
+                      color="white"
+                      dense
+                    />
                   </v-btn>
                 </v-card-actions>
+                <div class="socialLinks"
+                :class="{'hide': !card.show_more}"
+                >
+                  <v-list-item class="align-baseline">
+                    <v-list-item-content >
+                      <v-list-item dark v-if="card.orcid">
+                        <a
+                          :href="`https://orcid.org/${card.orcid}`"
+                          target="_blank"
+                        >
+                          <v-icon
+                            left
+                            class="mr-2"
+                          >
+                            {{ 'fab fa-orcid' }}
+                          </v-icon>Orcid</a>
+                      </v-list-item>
+                      <v-list-item dark v-if="card.twitter">
+                        <a
+                          :href="`https://twitter.com/${card.twitter}`"
+                          target="_blank"
+                        ><v-icon
+                          left
+                          class="mr-2"
+                        >
+                          {{ 'fab fa-twitter' }}
+                        </v-icon>@{{card.twitter}}</a>
+                      </v-list-item>
+                      <v-list-item dark v-if="card.linkedin">
+                        <a
+                          :href="`https://linkedin.com/in/${card.linkedin}`"
+                          target="_blank"
+                          text-decoration="underline"
+                        ><v-icon
+                          left
+                          class="mr-2"
+                        >
+                          {{ 'fab fa-linkedin' }}
+                        </v-icon>LinkedIn</a>
+                      </v-list-item>
+                    </v-list-item-content>
+                  </v-list-item>
+                </div>
+
                 <v-card-title>
                   <h4 style="word-break: initial">
                     {{ card.name }}
@@ -46,7 +95,6 @@
                     color="pink"
                     label
                     text-color="white"
-                    append-icon="mdi-label"
                     small
                   >
                     Early Adopter
@@ -112,11 +160,11 @@ export default {
   components: { NotFound },
   data: () => {
     return {
-      communityCurationCohorts: communityCurationCohorts,
+      communityCurationCohorts,
       currentCohort: [],
       year: 0,
       error: false,
-      profilePlaceholder: profilePlaceholder
+      profilePlaceholder,
     }
   },
   async mounted() {
@@ -131,7 +179,69 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
+.showLess {
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    border: 27px solid transparent;
+    border-top: 27px solid var(--v-primary-base);
+    border-right: 27px solid var(--v-primary-base);
+  }
+}
 
+.toggleIcon {
+  .showMore & {
+    transform: rotate(45deg);
+  }
+  z-index: 2;
+  opacity: 0.9;
+  width:18px !important;
+  height:18px !important;
+  &:before {
+    content: "";
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    opacity: 1;
+    background-color: #fff;
+    transform: translateY(-50%);
+  }
+  &:after {
+    content: "";
+    width: 2px;
+    height: 100%;
+    position: absolute;
+    border-radius: 0;
+    left: 50%;
+    opacity: 1;
+    background-color: #fff;
+    transform: translateX(-50%);
+  }
+}
+
+.socialLinks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--v-primary-base);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.9;
+  transition: all 0.4s;
+  a {
+    color: white;
+  }
+}
+.hide {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transform:translate(50%, 0);
+}
 </style>

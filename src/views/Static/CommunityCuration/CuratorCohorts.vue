@@ -7,15 +7,22 @@
       <v-container fluid>
         <v-row dense>
           <v-col
+<<<<<<< HEAD
               cols="12"
               md="10"
               sm="12"
+=======
+            cols="12"
+            md="10"
+            sm="12"
+>>>>>>> d828446b5 (updating curators block)
           >
             <h1 class="header">
               Community Curators for {{ year }}
             </h1>
           </v-col>
           <v-col
+<<<<<<< HEAD
               cols="12"
               md="2"
               sm="12"
@@ -27,11 +34,25 @@
                 outlined
                 dense
                 @change="selectYear()"
+=======
+            cols="12"
+            md="2"
+            sm="12"
+          >
+            <v-select
+              v-model="year"
+              :items="yearList"
+              label="Year"
+              outlined
+              dense
+              @change="selectYear()"
+>>>>>>> d828446b5 (updating curators block)
             />
           </v-col>
         </v-row>
         <v-row dense>
           <v-col
+<<<<<<< HEAD
               v-for="card in currentCohort"
               :key="card.id"
               cols="12"
@@ -39,6 +60,15 @@
               md="4"
               lg="3"
               xl="2"
+=======
+            v-for="card in currentCohort"
+            :key="card.id"
+            cols="12"
+            sm="12"
+            md="4"
+            lg="3"
+            xl="2"
+>>>>>>> d828446b5 (updating curators block)
           >
             <v-card
                 class="full-width"
@@ -74,9 +104,15 @@
                           dark
                       >
                         <a
+<<<<<<< HEAD
                             :href="`https://orcid.org/${card.orcid}`"
                             target="_blank"
                             class="d-flex align-center"
+=======
+                          :href="`https://orcid.org/${card.orcid}`"
+                          target="_blank"
+                          class="d-flex align-center"
+>>>>>>> d828446b5 (updating curators block)
                         >
                           <v-icon
                               left
@@ -90,9 +126,15 @@
                           dark
                       >
                         <a
+<<<<<<< HEAD
                             :href="`https://twitter.com/${card.twitter}`"
                             target="_blank"
                             class="d-flex align-center"
+=======
+                          :href="`https://twitter.com/${card.twitter}`"
+                          target="_blank"
+                          class="d-flex align-center"
+>>>>>>> d828446b5 (updating curators block)
                         ><v-icon
                             left
                             class="mr-2"
@@ -105,10 +147,17 @@
                           dark
                       >
                         <a
+<<<<<<< HEAD
                             :href="`https://linkedin.com/in/${card.linkedin}`"
                             target="_blank"
                             text-decoration="underline"
                             class="d-flex align-center"
+=======
+                          :href="`https://linkedin.com/in/${card.linkedin}`"
+                          target="_blank"
+                          text-decoration="underline"
+                          class="d-flex align-center"
+>>>>>>> d828446b5 (updating curators block)
                         ><v-icon
                             left
                             class="mr-2"
@@ -158,12 +207,21 @@
                   class="pa-0 full-width"
               >
                 <v-btn
+<<<<<<< HEAD
                     elevation="2"
                     dark
                     color="primary"
                     :href="`/users/${card.id}`"
                     class="full-width py-6"
                     tile
+=======
+                  elevation="2"
+                  dark
+                  color="primary"
+                  :href="`/users/${card.id}`"
+                  class="full-width py-6"
+                  tile
+>>>>>>> d828446b5 (updating curators block)
                 >
                   <v-icon
                       left

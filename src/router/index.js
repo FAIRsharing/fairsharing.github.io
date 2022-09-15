@@ -228,7 +228,7 @@ let routes = [
     },
     {
         name: "CuratorCohorts",
-        path: "/community_curation/:year",
+        path: "/community_curation/our_curators",
         component: CuratorCohorts,
     },
     {

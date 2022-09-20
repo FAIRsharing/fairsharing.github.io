@@ -1,6 +1,5 @@
 {
-  "year": {
-    "2022": [
+    "data": [
       {
         "name": "Kyle Copas",
         "id": 5832,
@@ -12,7 +11,8 @@
         "orcid": "0000-0002-6590-599X",
         "twitter": "kylecopas",
         "linkedin" : "kylecopas",
-        "logo": "/assets/Community/profiles/alejandra.jpg"
+        "logo": "",
+        "year_active": ["2021", "2019"]
       },
       {
         "name": "Annie Elkjær Ørum-Kristensen",
@@ -25,7 +25,8 @@
         "orcid": "0000-0002-8326-5789",
         "twitter": "",
         "linkedin" : "",
-        "logo": "/assets/Community/profiles/daniel.jpg"
+        "logo": "",
+        "year_active": ["2022", "2023"]
       },
       {
         "name": "Joe Miller",
@@ -38,7 +39,8 @@
         "orcid": "0000-0002-5788-9010",
         "twitter": "",
         "linkedin" : "",
-        "logo": "/assets/Community/profiles/dominique.jpg"
+        "logo": "",
+        "year_active": ["2011"]
       },
       {
         "name": "Lindsey Anderson",
@@ -51,7 +53,8 @@
         "orcid": "0000-0002-8741-7823",
         "twitter": "",
         "linkedin" : "",
-        "logo": "/assets/Community/profiles/allyson.jpg"
+        "logo": "",
+        "year_active": ["2022", "2021"]
       },
       {
         "name": "Malin Sandström",
@@ -64,75 +67,8 @@
         "orcid": "0000-0002-8464-2494",
         "twitter": "",
         "linkedin" : "",
-        "logo": "/assets/Community/profiles/philippe.jpg"
-      }
-    ],
-    "2021": [
-      {
-        "name": "Prakhyat",
-        "id": 5832,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
-        "scope": "Biodiversity",
-        "early_adopter" : true,
-        "show_more" : false,
-        "orcid": "0000-0002-6590-599X",
-        "twitter": "kylecopas",
-        "linkedin" : "kylecopas",
-        "logo": "/assets/Community/profiles/prakhyat.jpg"
-      },
-      {
-        "name": "Delphanie",
-        "id": 6182,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
-        "scope": "Biodiversity",
-        "early_adopter" : true,
-        "show_more" : false,
-        "orcid": "0000-0002-8326-5789",
-        "twitter": "",
-        "linkedin" : "",
-        "logo": "/assets/Community/profiles/delphine.jpg"
-      },
-      {
-        "name": "Ramon",
-        "id": 6118,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
-        "scope": "Biodiversity",
-        "early_adopter" : true,
-        "show_more" : false,
-        "orcid": "0000-0002-5788-9010",
-        "twitter": "",
-        "linkedin" : "",
-        "logo": "/assets/Community/profiles/ramon.jpg"
-      },
-      {
-        "name": "Allyson",
-        "id": 5015,
-        "organisation": "PNNL",
-        "id_organisation": 2284,
-        "scope": "Omics",
-        "early_adopter" : true,
-        "show_more" : false,
-        "orcid": "0000-0002-8741-7823",
-        "twitter": "",
-        "linkedin" : "",
-        "logo": "/assets/Community/profiles/allyson.jpg"
-      },
-      {
-        "name": "Malin Sandström",
-        "id": 464,
-        "organisation": null,
-        "id_organisation": null,
-        "scope": "Neuroscience",
-        "early_adopter" : true,
-        "show_more" : false,
-        "orcid": "0000-0002-8464-2494",
-        "twitter": "",
-        "linkedin" : "",
-        "logo": ""
+        "logo": "",
+        "year_active": ["2022"]
       }
     ]
-  }
 }

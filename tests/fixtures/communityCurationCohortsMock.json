@@ -1,0 +1,74 @@
+{
+    "data": [
+        {
+            "name": "Kyle Copas",
+            "id": 5832,
+            "organisation": "GBIF",
+            "id_organisation": 1166,
+            "scope": "Biodiversity",
+            "early_adopter" : true,
+            "show_more" : false,
+            "orcid": "0000-0002-6590-599X",
+            "twitter": "kylecopas",
+            "linkedin" : "kylecopas",
+            "logo": "",
+            "year_active": ["2021", "2019"]
+        },
+        {
+            "name": "Annie Elkjær Ørum-Kristensen",
+            "id": 6182,
+            "organisation": "GBIF",
+            "id_organisation": 1166,
+            "scope": "Biodiversity",
+            "early_adopter" : true,
+            "show_more" : false,
+            "orcid": "0000-0002-8326-5789",
+            "twitter": "",
+            "linkedin" : "",
+            "logo": "",
+            "year_active": ["2022", "2023"]
+        },
+        {
+            "name": "Joe Miller",
+            "id": 6118,
+            "organisation": "GBIF",
+            "id_organisation": 1166,
+            "scope": "Biodiversity",
+            "early_adopter" : true,
+            "show_more" : false,
+            "orcid": "0000-0002-5788-9010",
+            "twitter": "",
+            "linkedin" : "",
+            "logo": "",
+            "year_active": ["2011"]
+        },
+        {
+            "name": "Lindsey Anderson",
+            "id": 5015,
+            "organisation": "PNNL",
+            "id_organisation": 2284,
+            "scope": "Omics",
+            "early_adopter" : true,
+            "show_more" : false,
+            "orcid": "0000-0002-8741-7823",
+            "twitter": "",
+            "linkedin" : "",
+            "logo": "",
+            "year_active": ["2022", "2021"]
+        },
+        {
+            "name": "Malin Sandström",
+            "id": 464,
+            "organisation": null,
+            "id_organisation": null,
+            "scope": "Neuroscience",
+            "early_adopter" : true,
+            "show_more" : false,
+            "orcid": "0000-0002-8464-2494",
+            "twitter": "",
+            "linkedin" : "",
+            "logo": "",
+            "year_active": ["2022"]
+        }
+    ]
+}

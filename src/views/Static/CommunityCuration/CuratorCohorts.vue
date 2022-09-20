@@ -8,12 +8,31 @@
         <v-row dense>
           <v-col
             cols="12"
-            md="10"
+            md="7"
+            lg="8"
             sm="12"
           >
-            <h1 class="header">
-              Community Curators for {{ year }}
+            <h1
+              class="header"
+              :class="{'smallerHeading' : $vuetify.breakpoint.xs}"
+            >
+              {{alumniCurator ? "Alumni Community Curators": `Community Curators for ${ year }`}}
             </h1>
+          </v-col>
+          <v-col
+            cols="12"
+            md="3"
+            lg="2"
+            sm="12"
+          >
+            <v-btn
+              class="full-width white--text"
+              height="40"
+              :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.breakpoint.smAndDown}]"
+              @click="listAlumni()"
+            >
+              {{alumniCurator ? "Current Curators": "Alumni"}}
+            </v-btn>
           </v-col>
           <v-col
             cols="12"
@@ -142,7 +161,7 @@
 
               <v-card-text
                 class="text--primary"
-                style="height:70px"
+                style="height:95px"
               >
                 <div v-if="card.organisation">
                   Organisation : {{ card.organisation }}
@@ -150,6 +169,9 @@
 
                 <div v-if="card.scope">
                   Scope : {{ card.scope }}
+                </div>
+                <div>
+                  Years Active : {{ card.year_active.join(", ") }}
                 </div>
               </v-card-text>
 
@@ -195,29 +217,47 @@ export default {
   components: { NotFound },
   data: () => {
     return {
-      communityCurationCohorts,
+      communityCurationCohorts: communityCurationCohorts,
       currentCohort: [],
       year: new Date().getFullYear(),
       error: false,
-      yearList: Object.keys(communityCurationCohorts.year),
+      yearList: [],
+      alumniCurator: false
     }
   },
-  mounted() {
-    this.getCuratorsList(this.year)
+  async mounted() {
+    this.$nextTick(async () => {
+      this.error = !Object.keys(this.communityCurationCohorts).length
+      await this.getCuratorsList(this.year)
+    });
   },
   methods: {
     selectYear() {
       this.getCuratorsList(parseInt(this.year))
     },
+    listAlumni(){
+      this.alumniCurator = !this.alumniCurator
+      if(this.alumniCurator) {
+        this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
+          return !curator.year_active.includes(new Date().getFullYear().toString())
+        })
+        this.year = null;
+      } else {
+        this.year = new Date().getFullYear();
+        this.getCuratorsList(parseInt(this.year))
+      }
+
+    },
     getCuratorsList(yearSelected) {
-      const currentCohortObject = Object.keys(communityCurationCohorts.year)
-          .filter(key => parseInt(key) === yearSelected)
-          .reduce((obj, key) => {
-            obj[key] = communityCurationCohorts.year[key];
-            return obj;
-          }, {});
-      if (Object.values(currentCohortObject)[0] && Object.values(currentCohortObject)[0].length) {
-        this.currentCohort = Object.values(currentCohortObject)[0];
+      if (Object.keys(this.communityCurationCohorts).length) {
+        this.alumniCurator = false
+        this.error = false;
+        const yearsActiveList = this.communityCurationCohorts.data.map(el => el.year_active)
+
+        this.yearList = [...new Set(yearsActiveList.flat(1))].sort().reverse()
+        this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
+          return curator.year_active.includes(yearSelected.toString())
+        })
       }
       else {
         this.error = true;
@@ -291,5 +331,8 @@ export default {
   height: 0;
   overflow: hidden;
   transform:translate(50%, 0);
+}
+.smallerHeading {
+  font-size: 1.6em;
 }
 </style>

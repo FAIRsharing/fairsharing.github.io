@@ -16,7 +16,7 @@
               class="header"
               :class="{'smallerHeading' : $vuetify.breakpoint.xs}"
             >
-              {{alumniCurator ? "Alumni Community Curators": `Community Curators for ${ year }`}}
+              {{ alumniCurator ? "Alumni Community Curators": `Community Curators for ${ year }` }}
             </h1>
           </v-col>
           <v-col
@@ -31,7 +31,7 @@
               :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.breakpoint.smAndDown}]"
               @click="listAlumni()"
             >
-              {{alumniCurator ? "Current Curators": "Alumni"}}
+              {{ alumniCurator ? "Current Curators": "Alumni" }}
             </v-btn>
           </v-col>
           <v-col
@@ -49,7 +49,10 @@
             />
           </v-col>
         </v-row>
-        <v-row dense>
+        <v-row
+          v-if="currentCohort.length"
+          dense
+        >
           <v-col
             v-for="card in currentCohort"
             :key="card.id"
@@ -202,13 +205,20 @@
             </v-card>
           </v-col>
         </v-row>
+        <v-row
+          v-else
+        >
+          <v-col>
+            <NotFound />
+          </v-col>
+        </v-row>
       </v-container>
     </div>
   </main>
 </template>
 
 <script>
-import communityCurationCohorts from '@/data/communityCurationCohorts.json';
+import {communityCuration} from '@/data/communityCurationData.json';
 import NotFound from "@/views/Errors/404"
 
 
@@ -217,7 +227,7 @@ export default {
   components: { NotFound },
   data: () => {
     return {
-      communityCurationCohorts: communityCurationCohorts,
+      communityCurationCohorts: communityCuration,
       currentCohort: [],
       year: new Date().getFullYear(),
       error: false,
@@ -225,44 +235,41 @@ export default {
       alumniCurator: false
     }
   },
-  async mounted() {
-    this.$nextTick(async () => {
-      this.error = !Object.keys(this.communityCurationCohorts).length
-      await this.getCuratorsList(this.year)
-    });
+   mounted() {
+      this.error = !Object.keys(this.communityCurationCohorts.community_curators).length
+      this.getCuratorsList(this.year)
   },
   methods: {
-    selectYear() {
-      this.getCuratorsList(parseInt(this.year))
-    },
-    listAlumni(){
-      this.alumniCurator = !this.alumniCurator
-      if(this.alumniCurator) {
-        this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
-          return !curator.year_active.includes(new Date().getFullYear().toString())
-        })
-        this.year = null;
-      } else {
-        this.year = new Date().getFullYear();
-        this.getCuratorsList(parseInt(this.year))
-      }
-
-    },
     getCuratorsList(yearSelected) {
-      if (Object.keys(this.communityCurationCohorts).length) {
+      if (Object.keys(this.communityCurationCohorts.community_curators).length) {
         this.alumniCurator = false
         this.error = false;
-        const yearsActiveList = this.communityCurationCohorts.data.map(el => el.year_active)
+        const yearsActiveList = this.communityCurationCohorts.community_curators.map(el => el.year_active)
 
         this.yearList = [...new Set(yearsActiveList.flat(1))].sort().reverse()
-        this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
+        this.currentCohort = this.communityCurationCohorts.community_curators.filter(curator => {
           return curator.year_active.includes(yearSelected.toString())
         })
       }
       else {
         this.error = true;
       }
-    }
+    },
+    selectYear() {
+      this.getCuratorsList(parseInt(this.year))
+    },
+    listAlumni(){
+      this.alumniCurator = !this.alumniCurator
+      if(this.alumniCurator) {
+        this.currentCohort = this.communityCurationCohorts.community_curators.filter(curator => {
+          return curator.year_active.every(el => el < new Date().getFullYear())
+        })
+        this.year = null;
+      } else {
+        this.year = new Date().getFullYear();
+        this.getCuratorsList(new Date().getFullYear())
+      }
+    },
   }
 }
 </script>

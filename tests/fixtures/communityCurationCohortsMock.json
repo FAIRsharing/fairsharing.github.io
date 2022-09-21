@@ -6,13 +6,13 @@
             "organisation": "GBIF",
             "id_organisation": 1166,
             "scope": "Biodiversity",
+            "orcid": "0000-0002-6590-599X",
             "early_adopter" : true,
             "show_more" : false,
-            "orcid": "0000-0002-6590-599X",
             "twitter": "kylecopas",
             "linkedin" : "kylecopas",
             "logo": "",
-            "year_active": ["2021", "2019"]
+            "year_active": ["2022"]
         },
         {
             "name": "Annie Elkjær Ørum-Kristensen",
@@ -20,13 +20,13 @@
             "organisation": "GBIF",
             "id_organisation": 1166,
             "scope": "Biodiversity",
+            "orcid": "0000-0002-8326-5789",
             "early_adopter" : true,
             "show_more" : false,
-            "orcid": "0000-0002-8326-5789",
             "twitter": "",
             "linkedin" : "",
             "logo": "",
-            "year_active": ["2022", "2023"]
+            "year_active": ["2022"]
         },
         {
             "name": "Joe Miller",
@@ -34,13 +34,13 @@
             "organisation": "GBIF",
             "id_organisation": 1166,
             "scope": "Biodiversity",
+            "orcid": "0000-0002-5788-9010",
             "early_adopter" : true,
             "show_more" : false,
-            "orcid": "0000-0002-5788-9010",
-            "twitter": "",
+            "twitter": "acaciaJoe",
             "linkedin" : "",
             "logo": "",
-            "year_active": ["2011"]
+            "year_active": ["2022"]
         },
         {
             "name": "Lindsey Anderson",
@@ -48,13 +48,13 @@
             "organisation": "PNNL",
             "id_organisation": 2284,
             "scope": "Omics",
+            "orcid": "0000-0002-8741-7823",
             "early_adopter" : true,
             "show_more" : false,
-            "orcid": "0000-0002-8741-7823",
-            "twitter": "",
-            "linkedin" : "",
+            "twitter": "lnanderscience",
+            "linkedin" : "lnanderscience",
             "logo": "",
-            "year_active": ["2022", "2021"]
+            "year_active": ["2022"]
         },
         {
             "name": "Malin Sandström",
@@ -62,11 +62,11 @@
             "organisation": null,
             "id_organisation": null,
             "scope": "Neuroscience",
+            "orcid": "0000-0002-8464-2494",
             "early_adopter" : true,
             "show_more" : false,
-            "orcid": "0000-0002-8464-2494",
-            "twitter": "",
-            "linkedin" : "",
+            "twitter": "msandstr",
+            "linkedin" : "malinsandstrom",
             "logo": "",
             "year_active": ["2022"]
         }

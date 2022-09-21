@@ -1,4 +1,3 @@
-import Vue from "vue"
 import {shallowMount} from "@vue/test-utils";
 import CuratorCohorts from "@/views/Static/CommunityCuration/CuratorCohorts"
 import Vuetify from "vuetify"
@@ -8,63 +7,32 @@ const vuetify = new Vuetify();
 
 const currentCuratorsList = [
     {
-        "name": "Annie Elkjær Ørum-Kristensen",
-        "id": 6182,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
-        "scope": "Biodiversity",
-        "early_adopter" : true,
-        "show_more" : false,
-        "orcid": "0000-0002-8326-5789",
-        "twitter": "",
-        "linkedin" : "",
-        "logo": "",
-        "year_active": ["2022", "2023"]
-    },
-    {
-        "name": "Lindsey Anderson",
-        "id": 5015,
-        "organisation": "PNNL",
-        "id_organisation": 2284,
-        "scope": "Omics",
-        "early_adopter" : true,
-        "show_more" : false,
-        "orcid": "0000-0002-8741-7823",
-        "twitter": "",
-        "linkedin" : "",
-        "logo": "",
-        "year_active": ["2022", "2021"]
-    },
-    {
-        "name": "Malin Sandström",
-        "id": 464,
-        "organisation": null,
-        "id_organisation": null,
-        "scope": "Neuroscience",
-        "early_adopter" : true,
-        "show_more" : false,
-        "orcid": "0000-0002-8464-2494",
-        "twitter": "",
-        "linkedin" : "",
-        "logo": "",
-        "year_active": ["2022"]
-    }
-]
-
-const alumniCuratorsList = [
-    {
         "name": "Kyle Copas",
         "id": 5832,
         "organisation": "GBIF",
         "id_organisation": 1166,
         "scope": "Biodiversity",
+        "orcid": "0000-0002-6590-599X",
         "early_adopter" : true,
         "show_more" : false,
-        "orcid": "0000-0002-6590-599X",
         "twitter": "kylecopas",
         "linkedin" : "kylecopas",
         "logo": "",
-        "year_active": ["2021", "2019"]
+        "year_active": ["2022"]
+    },
+    {
+        "name": "Annie Elkjær Ørum-Kristensen",
+        "id": 6182,
+        "organisation": "GBIF",
+        "id_organisation": 1166,
+        "scope": "Biodiversity",
+        "orcid": "0000-0002-8326-5789",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
     },
     {
         "name": "Joe Miller",
@@ -72,17 +40,47 @@ const alumniCuratorsList = [
         "organisation": "GBIF",
         "id_organisation": 1166,
         "scope": "Biodiversity",
+        "orcid": "0000-0002-5788-9010",
         "early_adopter" : true,
         "show_more" : false,
-        "orcid": "0000-0002-5788-9010",
-        "twitter": "",
+        "twitter": "acaciaJoe",
         "linkedin" : "",
         "logo": "",
-        "year_active": ["2011"]
+        "year_active": ["2022"]
+    },
+    {
+        "name": "Lindsey Anderson",
+        "id": 5015,
+        "organisation": "PNNL",
+        "id_organisation": 2284,
+        "scope": "Omics",
+        "orcid": "0000-0002-8741-7823",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "lnanderscience",
+        "linkedin" : "lnanderscience",
+        "logo": "",
+        "year_active": ["2022"]
+    },
+    {
+        "name": "Malin Sandström",
+        "id": 464,
+        "organisation": null,
+        "id_organisation": null,
+        "scope": "Neuroscience",
+        "orcid": "0000-0002-8464-2494",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "msandstr",
+        "linkedin" : "malinsandstrom",
+        "logo": "",
+        "year_active": ["2022"]
     }
 ]
 
-// See also: '@/data/communityCurationCohorts.json'
+const alumniCuratorsList = []
+
+// See also: '@/data/communityCurationData.json'
 
 describe("CuratorCohorts.vue", function(){
     let wrapper;
@@ -91,9 +89,10 @@ describe("CuratorCohorts.vue", function(){
         wrapper = shallowMount(CuratorCohorts, {
             vuetify,
         })
-        wrapper.setData({
-            communityCurationCohorts: fakeData
-        })
+        // wrapper.setData({
+        //     communityCurationCohorts: fakeData,
+        //     currentCohort: currentCuratorsList
+        // })
 
     });
     afterEach(() => {
@@ -102,10 +101,10 @@ describe("CuratorCohorts.vue", function(){
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("CuratorCohorts");
-        expect(wrapper.vm.communityCurationCohorts).toStrictEqual(fakeData);
+        expect(wrapper.vm.communityCurationCohorts.community_curators).toStrictEqual(fakeData.data);
         expect(wrapper.vm.currentCohort).toStrictEqual(currentCuratorsList);
         expect(wrapper.vm.year).toBe(new Date().getFullYear());
-        expect(wrapper.vm.yearList).toStrictEqual(["2023", "2022", "2021", "2019", "2011"]);
+        expect(wrapper.vm.yearList).toStrictEqual([ "2022"]);
         expect(wrapper.vm.error).toBe(false);
         expect(wrapper.vm.alumniCurator).toBe(false);
     });

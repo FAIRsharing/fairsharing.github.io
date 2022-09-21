@@ -21,47 +21,6 @@
       v-html="communityCurationData.second_section.text"
     />
 
-    <!-- eslint-enable vue/no-v-html -->
-    <div
-      align="center"
-      class="lato-text-md"
-    >
-      <v-data-table
-        id="tableCurators"
-        :headers="communityCurationData.headers_table"
-        :items="communityCurationData.community_curators"
-        item-key="name"
-        class="elevation-1"
-      >
-        <template #item="props">
-          <tr>
-            <td>
-              <a :href="'/users/' + props.item.id">
-                {{ props.item.name }}
-              </a>
-              <v-avatar
-                v-if="props.item.orcid"
-                :height="17"
-              >
-                <a :href="'http://orcid.org/' + props.item.orcid">
-                  <Icon
-                    item="Orcid"
-                    :height="17"
-                    wrapper-class=""
-                  />
-                </a>
-              </v-avatar>
-            </td>
-            <td>
-              <a :href="'/organisations/' + props.item.id_organisation">
-                {{ props.item.organisation }}
-              </a>
-            </td>
-            <td>{{ props.item.scope }}</td>
-          </tr>
-        </template>
-      </v-data-table>
-    </div>
     <br>
     <v-expansion-panels
       v-model="panel"
@@ -168,13 +127,9 @@
 
 <script>
 import {communityCuration, communityCodeOfConductData} from '@/data/communityCurationData.json';
-import Icon from "@/components/Icon";
 import getHostname from "@/utils/generalUtils";
     export default {
       name: "CommunityCuration",
-      components: {
-        Icon
-      },
       mixins: [ getHostname ],
       data: () => {
         return {

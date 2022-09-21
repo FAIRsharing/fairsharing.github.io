@@ -8,8 +8,8 @@
         <v-row dense>
           <v-col
             cols="12"
+            lg="7"
             md="7"
-            lg="8"
             sm="12"
           >
             <h1
@@ -21,8 +21,8 @@
           </v-col>
           <v-col
             cols="12"
+            lg="3"
             md="3"
-            lg="2"
             sm="12"
           >
             <v-btn
@@ -31,11 +31,12 @@
               :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.breakpoint.smAndDown}]"
               @click="listAlumni()"
             >
-              {{ alumniCurator ? "Current Curators": "Alumni" }}
+              {{ alumniCurator ? "View Current Curators": "View Alumni" }}
             </v-btn>
           </v-col>
           <v-col
             cols="12"
+            lg="2"
             md="2"
             sm="12"
           >
@@ -105,7 +106,7 @@
                             class="mr-2"
                           >
                             {{ 'fab fa-orcid' }}
-                          </v-icon><span>Orcid</span></a>
+                          </v-icon><span>{{ card.orcid }}</span></a>
                       </v-list-item>
                       <v-list-item
                         v-if="card.twitter"
@@ -205,20 +206,13 @@
             </v-card>
           </v-col>
         </v-row>
-        <v-row
-          v-else
-        >
-          <v-col>
-            <NotFound />
-          </v-col>
-        </v-row>
       </v-container>
     </div>
   </main>
 </template>
 
 <script>
-import {communityCuration} from '@/data/communityCurationData.json';
+import communityCurationCohorts from '@/data/communityCurationCohorts.json';
 import NotFound from "@/views/Errors/404"
 
 
@@ -227,7 +221,7 @@ export default {
   components: { NotFound },
   data: () => {
     return {
-      communityCurationCohorts: communityCuration,
+      communityCurationCohorts: communityCurationCohorts,
       currentCohort: [],
       year: new Date().getFullYear(),
       error: false,
@@ -236,20 +230,23 @@ export default {
     }
   },
    mounted() {
-      this.error = !Object.keys(this.communityCurationCohorts.community_curators).length
+      this.error = !Object.keys(this.communityCurationCohorts).length
       this.getCuratorsList(this.year)
   },
   methods: {
     getCuratorsList(yearSelected) {
-      if (Object.keys(this.communityCurationCohorts.community_curators).length) {
+      if (Object.keys(this.communityCurationCohorts).length) {
         this.alumniCurator = false
         this.error = false;
-        const yearsActiveList = this.communityCurationCohorts.community_curators.map(el => el.year_active)
+        const yearsActiveList = this.communityCurationCohorts.data.map(el => el.year_active)
 
         this.yearList = [...new Set(yearsActiveList.flat(1))].sort().reverse()
-        this.currentCohort = this.communityCurationCohorts.community_curators.filter(curator => {
+
+        this.communityCurationCohorts.data = this.communityCurationCohorts.data.sort((a, b) => a.name.localeCompare(b.name))
+        this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
           return curator.year_active.includes(yearSelected.toString())
         })
+
       }
       else {
         this.error = true;
@@ -261,7 +258,7 @@ export default {
     listAlumni(){
       this.alumniCurator = !this.alumniCurator
       if(this.alumniCurator) {
-        this.currentCohort = this.communityCurationCohorts.community_curators.filter(curator => {
+        this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
           return curator.year_active.every(el => el < new Date().getFullYear())
         })
         this.year = null;

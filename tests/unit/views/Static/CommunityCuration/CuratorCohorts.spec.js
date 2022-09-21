@@ -80,19 +80,18 @@ const currentCuratorsList = [
 
 const alumniCuratorsList = []
 
-// See also: '@/data/communityCurationData.json'
-
 describe("CuratorCohorts.vue", function(){
     let wrapper;
+    fakeData.data.sort((a, b) => a.name.localeCompare(b.name))
 
     beforeEach(() => {
         wrapper = shallowMount(CuratorCohorts, {
             vuetify,
         })
-        // wrapper.setData({
-        //     communityCurationCohorts: fakeData,
-        //     currentCohort: currentCuratorsList
-        // })
+        wrapper.setData({
+            communityCurationCohorts: fakeData,
+            currentCohort: currentCuratorsList
+        })
 
     });
     afterEach(() => {
@@ -101,7 +100,7 @@ describe("CuratorCohorts.vue", function(){
 
     it("can be instantiated", () => {
         expect(wrapper.name()).toMatch("CuratorCohorts");
-        expect(wrapper.vm.communityCurationCohorts.community_curators).toStrictEqual(fakeData.data);
+        expect(wrapper.vm.communityCurationCohorts).toStrictEqual(fakeData);
         expect(wrapper.vm.currentCohort).toStrictEqual(currentCuratorsList);
         expect(wrapper.vm.year).toBe(new Date().getFullYear());
         expect(wrapper.vm.yearList).toStrictEqual([ "2022"]);

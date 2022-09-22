@@ -26,6 +26,7 @@ import {
     Stat,
     Community,
     CommunityCuration,
+    CuratorCohorts,
     Stakeholders,
     Timeline,
     Licence,
@@ -224,6 +225,11 @@ let routes = [
         name: "CommunityCuration",
         path: "/community_curation",
         component: CommunityCuration,
+    },
+    {
+        name: "CuratorCohorts",
+        path: "/community_curation/our_curators",
+        component: CuratorCohorts,
     },
     {
         name: "CommunityCurationBis",

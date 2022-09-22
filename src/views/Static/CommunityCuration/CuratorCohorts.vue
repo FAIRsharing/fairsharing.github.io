@@ -168,7 +168,12 @@
                 style="height:95px"
               >
                 <div v-if="card.organisation">
-                  Organisation : {{ card.organisation }}
+                  Organisation :
+                  <a
+                    :href="`/${card.id_organisation}`"
+                  >
+                    {{ card.organisation }}
+                  </a>
                 </div>
 
                 <div v-if="card.scope">

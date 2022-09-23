@@ -178,6 +178,16 @@ let routes = [
             }
         }
     },
+    /* See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1833 */
+    {
+        name: 'srao_term',
+        path: '/ontology/subject/:id',
+        redirect: to => {
+            const url = 'https://www.ebi.ac.uk/ols/ontologies/srao/terms?iri=http://www.fairsharing.org/ontology/subject/';
+            window.location.assign(url + to.params.id);
+        }
+
+    },
     /* See: https://github.com/FAIRsharing/fairsharing.github.io/issues/1561 */
     {
         name: 'iso20691',

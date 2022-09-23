@@ -161,6 +161,9 @@ describe("Routes", () => {
         let raw_srao_file_by_version = router.options.routes.find((obj) => { return obj.name === 'raw_srao_file_by_version'} );
         await raw_srao_file_by_version.redirect();
         expect(window.location.assign).toHaveBeenCalledWith('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/0.3.0/SRAO.owl');
+        let srao_term = router.options.routes.find((obj) => { return obj.name === 'srao_term'} );
+        await srao_term.redirect({params: {id: 'SRAO_0000307'}});
+        expect(window.location.assign).toHaveBeenCalledWith('https://www.ebi.ac.uk/ols/ontologies/srao/terms?iri=http://www.fairsharing.org/ontology/subject/SRAO_0000307');
 
     });
 

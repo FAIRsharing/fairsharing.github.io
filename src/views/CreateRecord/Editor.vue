@@ -66,7 +66,9 @@
           color="primary"
           dark
         >
-          <v-toolbar-title> Edit Record - {{ sections.generalInformation.initialData.metadata.name }} </v-toolbar-title>
+          <v-toolbar-title>
+            Edit Record - {{ sections.generalInformation.initialData.metadata.name }} ({{ $route.params.id }})
+          </v-toolbar-title>
           <v-spacer />
 
           <v-btn

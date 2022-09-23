@@ -1,0 +1,88 @@
+{
+  "data": [
+      {
+        "name": "Kyle Copas",
+        "id": 5832,
+        "organisation": "GBIF",
+        "id_organisation": 1166,
+        "scope": "Biodiversity",
+        "orcid": "0000-0002-6590-599X",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "kylecopas",
+        "linkedin" : "kylecopas",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Annie Elkjær Ørum-Kristensen",
+        "id": 6182,
+        "organisation": "GBIF",
+        "id_organisation": 1166,
+        "scope": "Biodiversity",
+        "orcid": "0000-0002-8326-5789",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Joe Miller",
+        "id": 6118,
+        "organisation": "GBIF",
+        "id_organisation": 1166,
+        "scope": "Biodiversity",
+        "orcid": "0000-0002-5788-9010",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "acaciaJoe",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Lindsey Anderson",
+        "id": 5015,
+        "organisation": "PNNL",
+        "id_organisation": 2284,
+        "scope": "Omics",
+        "orcid": "0000-0002-8741-7823",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "lnanderscience",
+        "linkedin" : "lnanderscience",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Malin Sandström",
+        "id": 464,
+        "organisation": "Karolinska Institutet, INCF",
+        "id_organisation": 1321,
+        "scope": "Neuroscience",
+        "orcid": "0000-0002-8464-2494",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "msandstr",
+        "linkedin" : "malinsandstrom",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Gabriel Pelletier",
+        "id": 7670,
+        "organisation": "McGill University",
+        "id_organisation": 1802,
+        "scope": "Neuroscience",
+        "orcid": "0000-0003-3257-0545",
+        "early_adopter" : true,
+        "show_more" : false,
+        "twitter": "neuropelletier",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      }
+    ]
+}

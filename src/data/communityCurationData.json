@@ -7,7 +7,7 @@
     },
     "second_section":{
       "main_title": "Our Community Curators",
-      "text": "Our user community is diverse in breadth and scope, with a number of <a href='/stakeholders' class='underline-effect' target=blank>stakeholder groups</a>  across all areas of research and research support. In early 2022, we began with a few Early Adopters, who have contributed greatly to the initial success of the programme"
+      "text": "Our user community is diverse in breadth and scope, with a number of <a href='/stakeholders' class='underline-effect' target=blank>stakeholder groups</a> across all areas of research and research support. In early 2022, we began with a few Early Adopters, who have contributed greatly to the initial success of the programme, and we now have our first full Intake of community curators. Our full <a href='/community_curation/our_curators' class='underline-effect'>list of community curators</a> shows the breadth and diversity of research areas within the programme."
     },
     "third_section":{
       "main_title": "The Role of Community Curators",
@@ -50,48 +50,6 @@
         "text": "Scope",
         "value": "scope",
         "width": 30
-      }
-    ],
-    "community_curators": [
-      {
-        "name": "Kyle Copas",
-        "id": 5832,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
-        "scope": "Biodiversity",
-        "orcid": "0000-0002-6590-599X"
-      },
-      {
-        "name": "Annie Elkjær Ørum-Kristensen",
-        "id": 6182,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
-        "scope": "Biodiversity",
-        "orcid": "0000-0002-8326-5789"
-      },
-      {
-        "name": "Joe Miller",
-        "id": 6118,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
-        "scope": "Biodiversity",
-        "orcid": "0000-0002-5788-9010"
-      },
-      {
-        "name": "Lindsey Anderson",
-        "id": 5015,
-        "organisation": "PNNL",
-        "id_organisation": 2284,
-        "scope": "Omics",
-        "orcid": "0000-0002-8741-7823"
-      },
-      {
-        "name": "Malin Sandström",
-        "id": 464,
-        "organisation": null,
-        "id_organisation": null,
-        "scope": "Neuroscience",
-        "orcid": "0000-0002-8464-2494"
       }
     ]
   },

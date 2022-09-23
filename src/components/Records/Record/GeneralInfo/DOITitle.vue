@@ -59,7 +59,13 @@
             </v-tooltip>
           </div>
           <span v-else-if="getField('registry')!=='Collection'">
-            Awaiting DOI
+            <a
+              href="https://fairsharing.gitbook.io/fairsharing/#getting-a-record-doi"
+              target="_blank"
+              class="underline-effect"
+            >
+              Awaiting DOI
+            </a>
           </span>
         </div>
       </div>

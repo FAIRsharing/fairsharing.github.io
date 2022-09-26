@@ -67,8 +67,8 @@
               class="full-width"
             >
               <v-img
-                :src="card.logo ? card.logo : '/assets/Community/profiles/profileplaceholder.png'"
-                class="white--text align-end"
+                :src="card.logo ? `/assets/Community/profiles/${card.logo}` : '/assets/Community/profiles/profileplaceholder.png'"
+                class="white--text align-end profileImage"
                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                 cover
                 aspect-ratio="1"
@@ -137,7 +137,7 @@
                           class="mr-2"
                         >
                           {{ 'fab fa-linkedin' }}
-                        </v-icon><span>LinkedIn</span></a>
+                        </v-icon><span>{{ card.linkedin }}</span></a>
                       </v-list-item>
                     </v-list-item-content>
                   </v-list-item>
@@ -167,13 +167,19 @@
                 class="text--primary"
                 style="height:95px"
               >
-                <div v-if="card.organisation">
+                <div v-if="card.organisation && card.organisation.length">
                   Organisation :
-                  <a
-                    :href="`/${card.id_organisation}`"
+                  <span
+                    v-for="(org, i) in card.organisation"
+                    :key="org.id"
                   >
-                    {{ card.organisation }}
-                  </a>
+                    <a
+                      :href="`/organisations/${org.id}`"
+                      class="d-inline-block"
+                    >
+                      {{ org.name }}
+                    </a><span v-if="i+1 < card.organisation.length">, </span>
+                  </span>
                 </div>
 
                 <div v-if="card.scope">

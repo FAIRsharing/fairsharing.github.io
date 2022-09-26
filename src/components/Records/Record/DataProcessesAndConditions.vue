@@ -62,7 +62,7 @@
         </v-card>
       </div>
       <!-- Other data items component -->
-      <div v-if="(getField('metadata')['data_access_condition'] && Object.keys('data_access_condition').length) || (getField('metadata')['data_curation'] && Object.keys('data_curation').length) ||(getField('metadata')['data_deposition_condition'] && Object.keys('data_deposition_condition').length) ||(getField('metadata')['data_preservation_policy'] && Object.keys('data_preservation_policy').length)">
+      <div v-if="(getField('metadata')['data_access_condition'] && Object.keys(getField('metadata')['data_access_condition']).length) || (getField('metadata')['data_curation'] && Object.keys(getField('metadata')['data_curation'] ).length) ||(getField('metadata')['data_deposition_condition'] && Object.keys(getField('metadata')['data_deposition_condition']).length) ||(getField('metadata')['data_preservation_policy'] && Object.keys(getField('metadata')['data_preservation_policy']).length)">
         <OtherDataProcesses />
       </div>
     </div>

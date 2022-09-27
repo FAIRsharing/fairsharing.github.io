@@ -68,7 +68,7 @@
             >
               <v-img
                 :src="card.logo ? `/assets/Community/profiles/${card.logo}` : '/assets/Community/profiles/profileplaceholder.png'"
-                class="white--text align-end profileImage"
+                class="white--text align-end"
                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                 cover
                 aspect-ratio="1"

@@ -130,7 +130,6 @@
                         <a
                           :href="`https://linkedin.com/in/${card.linkedin}`"
                           target="_blank"
-                          text-decoration="underline"
                           class="d-flex align-center"
                         ><v-icon
                           left
@@ -165,7 +164,6 @@
 
               <v-card-text
                 class="text--primary"
-                style="height:95px"
               >
                 <div v-if="card.organisation && card.organisation.length">
                   Organisation :
@@ -173,12 +171,20 @@
                     v-for="(org, i) in card.organisation"
                     :key="org.id"
                   >
-                    <a
-                      :href="`/organisations/${org.id}`"
-                      class="d-inline-block"
+                    <v-tooltip
+                      bottom
                     >
-                      {{ org.name }}
-                    </a><span v-if="i+1 < card.organisation.length">, </span>
+                      <template #activator="{ on }">
+                        <a
+                          :href="`/organisations/${org.id}`"
+                          class="d-inline-block"
+                          v-on="on"
+                        >{{ org.name }}
+                        </a>
+                      </template>
+                      <span>{{ org.tooltip ? org.tooltip : org.name }}</span>
+                    </v-tooltip>
+                    <span v-if="i+1 < card.organisation.length">, </span>
                   </span>
                 </div>
 
@@ -243,6 +249,7 @@ export default {
    mounted() {
       this.error = !Object.keys(this.communityCurationCohorts).length
       this.getCuratorsList(this.year)
+
   },
   methods: {
     getCuratorsList(yearSelected) {

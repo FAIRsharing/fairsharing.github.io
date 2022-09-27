@@ -96,7 +96,8 @@
         "organisation": [
           {
             "id": 1802,
-            "name": "McGill University"
+            "name": "McGill University",
+            "tooltip": "McGill University"
           },
           {
             "id": 2840,
@@ -109,7 +110,7 @@
         ],
         "scope": "Neuroscience",
         "orcid": "0000-0003-3257-0545",
-        "early_adopter" : true,
+        "early_adopter" : false,
         "show_more" : false,
         "twitter": "neuropelletier",
         "linkedin" : "",

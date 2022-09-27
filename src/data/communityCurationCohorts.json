@@ -6,7 +6,8 @@
         "organisation": [
           {
             "id": 1166,
-            "name": "GBIF"
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
           }
         ],
         "scope": "Biodiversity",
@@ -24,7 +25,8 @@
         "organisation": [
           {
             "id": 1166,
-            "name": "GBIF"
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
           }
         ],
         "scope": "Biodiversity",
@@ -42,7 +44,8 @@
         "organisation": [
           {
             "id": 1166,
-            "name": "GBIF"
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
           }
         ],
         "scope": "Biodiversity",
@@ -60,7 +63,8 @@
         "organisation": [
           {
             "id": 2284,
-            "name": "PNNL"
+            "name": "PNNL",
+            "tooltip": "Pacific Northwest National Laboratory"
           }
         ],
         "scope": "Omics",
@@ -96,16 +100,18 @@
         "organisation": [
           {
             "id": 1802,
-            "name": "McGill University",
+            "name": "McGill",
             "tooltip": "McGill University"
           },
           {
             "id": 2840,
-            "name": "Tanenbaum Open Science Institute (TOSI)"
+            "name": "TOSI",
+            "tooltip": "Tanenbaum Open Science Institute (TOSI)"
           },
           {
             "id": 1896,
-            "name": "The Montreal Neurological Institute and Hospital (The Neuro)"
+            "name": "The Neuro",
+            "tooltip": "The Montreal Neurological Institute and Hospital (The Neuro)"
           }
         ],
         "scope": "Neuroscience",
@@ -141,7 +147,8 @@
         "organisation": [
           {
             "id": 3699,
-            "name": "Centro de Química Estrutural"
+            "name": "CQE",
+            "tooltip": "Centro de Química Estrutural"
           }
         ],
         "scope": "Catalysis",
@@ -159,7 +166,8 @@
         "organisation": [
           {
             "id": 3677,
-            "name": "University College Cork"
+            "name": "UCC",
+            "tooltip": "University College Cork"
           }
         ],
         "scope": "Humanities",
@@ -177,7 +185,8 @@
         "organisation": [
           {
             "id": 3692,
-            "name": "Institute of Information Management, University of the Punjab"
+            "name": "Institute of Information Management, PU",
+            "tooltip": "Institute of Information Management, University of the Punjab"
           }
         ],
         "scope": "Library and Information Science",
@@ -195,7 +204,8 @@
         "organisation": [
           {
             "id": 3708,
-            "name": "Institute of Marine Sciences"
+            "name": "ICM",
+            "tooltip": "Institute of Marine Sciences"
           }
         ],
         "scope": "Earth Sciences",
@@ -217,7 +227,8 @@
           },
           {
             "id": 1974,
-            "name": "The CNRS (National Center for Scientific Research)"
+            "name": "CNRS",
+            "tooltip": "The CNRS (National Center for Scientific Research)"
           }
         ],
         "scope": "Humanities and Social Science",
@@ -235,7 +246,7 @@
         "organisation": [
           {
             "id": 3143,
-            "name": "Computer Science"
+            "name": "University of Twente"
           }
         ],
         "scope": "Computer Science",
@@ -289,7 +300,8 @@
         "organisation": [
           {
             "id": 3710,
-            "name": "Social Sciences Research Institute"
+            "name": "SSRI",
+            "tooltip": "Social Sciences Research Institute"
           }
         ],
         "scope": "Humanities and Social Science",
@@ -307,7 +319,8 @@
         "organisation": [
           {
             "id": 3676,
-            "name": "University Stefan cel Mare of Suceava"
+            "name": "USV",
+            "tooltip": "University Stefan cel Mare of Suceava"
           }
         ],
         "scope": "Humanities and Social Science",
@@ -325,7 +338,8 @@
         "organisation": [
           {
             "id": 3711,
-            "name": "Society for Chemical Engineering and Biotechnology"
+            "name": "DECHEMA",
+            "tooltip": "Society for Chemical Engineering and Biotechnology"
           }
         ],
         "scope": "Material sciences and catalysis",
@@ -361,7 +375,8 @@
         "organisation": [
           {
             "id": 2816,
-            "name": "The Open University"
+            "name": "OU",
+            "tooltip": "The Open University"
           }
         ],
         "scope": "Physics",

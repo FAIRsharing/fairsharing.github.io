@@ -164,6 +164,8 @@
 
               <v-card-text
                 class="text--primary"
+                style="height: 100%"
+                :style="$vuetify.breakpoint.xl ? 'height: 115px': $vuetify.breakpoint.mdAndUp ? 'height: 135px' : 'height: 100%'"
               >
                 <div v-if="card.organisation && card.organisation.length">
                   Organisation :
@@ -172,6 +174,7 @@
                     :key="org.id"
                   >
                     <v-tooltip
+                      v-if="org.tooltip"
                       bottom
                     >
                       <template #activator="{ on }">
@@ -182,8 +185,14 @@
                         >{{ org.name }}
                         </a>
                       </template>
-                      <span>{{ org.tooltip ? org.tooltip : org.name }}</span>
+                      <span>{{ org.tooltip }}</span>
                     </v-tooltip>
+                    <a
+                      v-else
+                      :href="`/organisations/${org.id}`"
+                      class="d-inline-block"
+                    >{{ org.name }}
+                    </a>
                     <span v-if="i+1 < card.organisation.length">, </span>
                   </span>
                 </div>

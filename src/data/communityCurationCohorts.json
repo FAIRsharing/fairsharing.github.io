@@ -3,8 +3,13 @@
       {
         "name": "Kyle Copas",
         "id": 5832,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
+        "organisation": [
+          {
+            "id": 1166,
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
+          }
+        ],
         "scope": "Biodiversity",
         "orcid": "0000-0002-6590-599X",
         "early_adopter" : true,
@@ -17,8 +22,13 @@
       {
         "name": "Annie Elkjær Ørum-Kristensen",
         "id": 6182,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
+        "organisation": [
+          {
+            "id": 1166,
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
+          }
+        ],
         "scope": "Biodiversity",
         "orcid": "0000-0002-8326-5789",
         "early_adopter" : true,
@@ -31,8 +41,13 @@
       {
         "name": "Joe Miller",
         "id": 6118,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
+        "organisation": [
+          {
+            "id": 1166,
+            "name": "GBIF",
+            "tooltip": "Global Biodiversity Information Facility"
+          }
+        ],
         "scope": "Biodiversity",
         "orcid": "0000-0002-5788-9010",
         "early_adopter" : true,
@@ -45,41 +60,330 @@
       {
         "name": "Lindsey Anderson",
         "id": 5015,
-        "organisation": "PNNL",
-        "id_organisation": 2284,
+        "organisation": [
+          {
+            "id": 2284,
+            "name": "PNNL",
+            "tooltip": "Pacific Northwest National Laboratory"
+          }
+        ],
         "scope": "Omics",
         "orcid": "0000-0002-8741-7823",
         "early_adopter" : true,
         "show_more" : false,
         "twitter": "lnanderscience",
         "linkedin" : "lnanderscience",
-        "logo": "",
+        "logo": "lindseyanderson.jpg",
         "year_active": ["2022"]
       },
       {
         "name": "Malin Sandström",
         "id": 464,
-        "organisation": "Karolinska Institutet, INCF",
-        "id_organisation": 1321,
+        "organisation": [
+          {
+            "id": 1321,
+            "name": "Karolinska Institutet, INCF"
+          }
+        ],
         "scope": "Neuroscience",
         "orcid": "0000-0002-8464-2494",
         "early_adopter" : true,
         "show_more" : false,
         "twitter": "msandstr",
         "linkedin" : "malinsandstrom",
-        "logo": "",
+        "logo": "malin.jpg",
         "year_active": ["2022"]
       },
       {
         "name": "Gabriel Pelletier",
         "id": 7670,
-        "organisation": "McGill University",
-        "id_organisation": 1802,
+        "organisation": [
+          {
+            "id": 1802,
+            "name": "McGill",
+            "tooltip": "McGill University"
+          },
+          {
+            "id": 2840,
+            "name": "TOSI",
+            "tooltip": "Tanenbaum Open Science Institute (TOSI)"
+          },
+          {
+            "id": 1896,
+            "name": "The Neuro",
+            "tooltip": "The Montreal Neurological Institute and Hospital (The Neuro)"
+          }
+        ],
         "scope": "Neuroscience",
         "orcid": "0000-0003-3257-0545",
-        "early_adopter" : true,
+        "early_adopter" : false,
         "show_more" : false,
         "twitter": "neuropelletier",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Antonella Delmestri",
+        "id": 7747,
+        "organisation": [
+          {
+            "id": 3112,
+            "name": "University of Oxford"
+          }
+        ],
+        "scope": "Medical Informatics",
+        "orcid": "0000-0003-0388-3403",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "antonella-delmestri",
+        "logo": "antonelladelmestri.jpg",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Daniel Pereira Costa",
+        "id": 7754 ,
+        "organisation": [
+          {
+            "id": 3699,
+            "name": "CQE",
+            "tooltip": "Centro de Química Estrutural"
+          }
+        ],
+        "scope": "Catalysis",
+        "orcid": "0000-0001-7271-430X",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "daniel-costa-64a54a1a3",
+        "logo": "danielpereiracosta.jpg",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Deborah Thorpe",
+        "id": 7663 ,
+        "organisation": [
+          {
+            "id": 3677,
+            "name": "UCC",
+            "tooltip": "University College Cork"
+          }
+        ],
+        "scope": "Humanities",
+        "orcid": "0000-0002-2307-8770",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Muhammad Rafiq",
+        "id": 7730 ,
+        "organisation": [
+          {
+            "id": 3692,
+            "name": "Institute of Information Management, PU",
+            "tooltip": "Institute of Information Management, University of the Punjab"
+          }
+        ],
+        "scope": "Library and Information Science",
+        "orcid": "0000-0002-8291-2569",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "muhammadrafiq.jpg",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Enrique Wulff",
+        "id": 7667 ,
+        "organisation": [
+          {
+            "id": 3708,
+            "name": "ICM",
+            "tooltip": "Institute of Marine Sciences"
+          }
+        ],
+        "scope": "Earth Sciences",
+        "orcid": "0000-0001-8104-6147",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Geneviève MICHAUD",
+        "id": 2439 ,
+        "organisation": [
+          {
+            "id": 2521,
+            "name": "Sciences Po"
+          },
+          {
+            "id": 1974,
+            "name": "CNRS",
+            "tooltip": "The CNRS (National Center for Scientific Research)"
+          }
+        ],
+        "scope": "Humanities and Social Science",
+        "orcid": "0000-0001-9288-2888",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "GenevievMichaud",
+        "linkedin" : "",
+        "logo": "genevievemichaud.jpg",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Joao Moreira",
+        "id": 7678 ,
+        "organisation": [
+          {
+            "id": 3143,
+            "name": "University of Twente"
+          }
+        ],
+        "scope": "Computer Science",
+        "orcid": "0000-0002-4547-7000",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Lars Vilhuber",
+        "id": 5216 ,
+        "organisation": [
+          {
+            "id": 614,
+            "name": "Cornell University"
+          }
+        ],
+        "scope": "Economics",
+        "orcid": "0000-0001-5733-8932",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Guillaume Gay",
+        "id": 7729 ,
+        "organisation": [
+          {
+            "id": 3101,
+            "name": "University of Montpellier"
+          }
+        ],
+        "scope": "Microscopy",
+        "orcid": "0000-0002-5444-5246",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "MorphoLg",
+        "linkedin" : "",
+        "logo": "guillaumegay.jpg",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Maja Dolinar",
+        "id": 7669 ,
+        "organisation": [
+          {
+            "id": 3710,
+            "name": "SSRI",
+            "tooltip": "Social Sciences Research Institute"
+          }
+        ],
+        "scope": "Humanities and Social Science",
+        "orcid": "0000-0002-8307-6486",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Mitrea Geta",
+        "id": 7660 ,
+        "organisation": [
+          {
+            "id": 3676,
+            "name": "USV",
+            "tooltip": "University Stefan cel Mare of Suceava"
+          }
+        ],
+        "scope": "Humanities and Social Science",
+        "orcid": "0000-0002-2411-1798",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "GetaMitreaRo",
+        "linkedin" : "geta-mitrea",
+        "logo": "getamitrea.jpg",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Sara Espinoza",
+        "id": 7751 ,
+        "organisation": [
+          {
+            "id": 3711,
+            "name": "DECHEMA",
+            "tooltip": "Society for Chemical Engineering and Biotechnology"
+          }
+        ],
+        "scope": "Material sciences and catalysis",
+        "orcid": "0000-0002-5902-650X",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Shukadev Amgain",
+        "id": 7745 ,
+        "organisation": [
+          {
+            "id": 3698,
+            "name": "Open Knowledge Nepal"
+          }
+        ],
+        "scope": "Social Sciences and Humanities",
+        "orcid": "0000-0002-5113-6878",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
+      },
+      {
+        "name": "Stephen Serjeant",
+        "id": 7735,
+        "organisation": [
+          {
+            "id": 2816,
+            "name": "OU",
+            "tooltip": "The Open University"
+          }
+        ],
+        "scope": "Physics",
+        "orcid": "0000-0002-0517-7943",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
         "linkedin" : "",
         "logo": "",
         "year_active": ["2022"]

@@ -67,7 +67,7 @@
               class="full-width"
             >
               <v-img
-                :src="card.logo ? card.logo : '/assets/Community/profiles/profileplaceholder.png'"
+                :src="card.logo ? `/assets/Community/profiles/${card.logo}` : '/assets/Community/profiles/profileplaceholder.png'"
                 class="white--text align-end"
                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                 cover
@@ -130,14 +130,13 @@
                         <a
                           :href="`https://linkedin.com/in/${card.linkedin}`"
                           target="_blank"
-                          text-decoration="underline"
                           class="d-flex align-center"
                         ><v-icon
                           left
                           class="mr-2"
                         >
                           {{ 'fab fa-linkedin' }}
-                        </v-icon><span>LinkedIn</span></a>
+                        </v-icon><span>{{ card.linkedin }}</span></a>
                       </v-list-item>
                     </v-list-item-content>
                   </v-list-item>
@@ -165,15 +164,37 @@
 
               <v-card-text
                 class="text--primary"
-                style="height:95px"
+                style="height: 100%"
+                :style="$vuetify.breakpoint.xl ? 'height: 115px': $vuetify.breakpoint.mdAndUp ? 'height: 135px' : 'height: 100%'"
               >
-                <div v-if="card.organisation">
+                <div v-if="card.organisation && card.organisation.length">
                   Organisation :
-                  <a
-                    :href="`/${card.id_organisation}`"
+                  <span
+                    v-for="(org, i) in card.organisation"
+                    :key="org.id"
                   >
-                    {{ card.organisation }}
-                  </a>
+                    <v-tooltip
+                      v-if="org.tooltip"
+                      bottom
+                    >
+                      <template #activator="{ on }">
+                        <a
+                          :href="`/organisations/${org.id}`"
+                          class="d-inline-block"
+                          v-on="on"
+                        >{{ org.name }}
+                        </a>
+                      </template>
+                      <span>{{ org.tooltip }}</span>
+                    </v-tooltip>
+                    <a
+                      v-else
+                      :href="`/organisations/${org.id}`"
+                      class="d-inline-block"
+                    >{{ org.name }}
+                    </a>
+                    <span v-if="i+1 < card.organisation.length">, </span>
+                  </span>
                 </div>
 
                 <div v-if="card.scope">
@@ -251,7 +272,6 @@ export default {
         this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
           return curator.year_active.includes(yearSelected.toString())
         })
-
       }
       else {
         this.error = true;

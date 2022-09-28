@@ -1,9 +1,8 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-card
     v-if="
-      (Object.keys(getField('metadata')).includes(
-        'data_processes_and_conditions') && (getField('metadata').data_processes_and_conditions.length)
-      ) ||
+      Object.keys(getField('metadata')).includes(
+        'data_processes_and_conditions') ||
         (getField('licences') && getField('licences').length)
     "
     class="pa-4 d-flex flex-column"

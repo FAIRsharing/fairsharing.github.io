@@ -258,7 +258,6 @@ export default {
    mounted() {
       this.error = !Object.keys(this.communityCurationCohorts).length
       this.getCuratorsList(this.year)
-
   },
   methods: {
     getCuratorsList(yearSelected) {
@@ -273,7 +272,6 @@ export default {
         this.currentCohort = this.communityCurationCohorts.data.filter(curator => {
           return curator.year_active.includes(yearSelected.toString())
         })
-
       }
       else {
         this.error = true;

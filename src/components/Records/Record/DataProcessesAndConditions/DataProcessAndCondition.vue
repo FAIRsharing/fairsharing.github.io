@@ -1,6 +1,6 @@
 <template>
   <v-card
-    v-if="Object.keys(getField('metadata')).includes('data_processes_and_conditions')"
+    v-if="Object.keys(getField('metadata')).includes('data_processes_and_conditions')&& (getField('metadata').data_processes_and_conditions.length)"
     class="pa-4 mt-15 d-flex flex-column"
     outlined
     :color="backColor"

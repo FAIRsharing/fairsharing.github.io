@@ -9,8 +9,13 @@ const currentCuratorsList = [
     {
         "name": "Kyle Copas",
         "id": 5832,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
+        "organisation": [
+            {
+                "id": 1166,
+                "name": "GBIF",
+                "tooltip": "Global Biodiversity Information Facility"
+            }
+        ],
         "scope": "Biodiversity",
         "orcid": "0000-0002-6590-599X",
         "early_adopter" : true,
@@ -23,8 +28,13 @@ const currentCuratorsList = [
     {
         "name": "Annie Elkjær Ørum-Kristensen",
         "id": 6182,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
+        "organisation": [
+            {
+                "id": 1166,
+                "name": "GBIF",
+                "tooltip": "Global Biodiversity Information Facility"
+            }
+        ],
         "scope": "Biodiversity",
         "orcid": "0000-0002-8326-5789",
         "early_adopter" : true,
@@ -37,8 +47,13 @@ const currentCuratorsList = [
     {
         "name": "Joe Miller",
         "id": 6118,
-        "organisation": "GBIF",
-        "id_organisation": 1166,
+        "organisation": [
+            {
+                "id": 1166,
+                "name": "GBIF",
+                "tooltip": "Global Biodiversity Information Facility"
+            }
+        ],
         "scope": "Biodiversity",
         "orcid": "0000-0002-5788-9010",
         "early_adopter" : true,
@@ -51,8 +66,13 @@ const currentCuratorsList = [
     {
         "name": "Lindsey Anderson",
         "id": 5015,
-        "organisation": "PNNL",
-        "id_organisation": 2284,
+        "organisation": [
+            {
+                "id": 2284,
+                "name": "PNNL",
+                "tooltip": "Pacific Northwest National Laboratory"
+            }
+        ],
         "scope": "Omics",
         "orcid": "0000-0002-8741-7823",
         "early_adopter" : true,
@@ -65,8 +85,12 @@ const currentCuratorsList = [
     {
         "name": "Malin Sandström",
         "id": 464,
-        "organisation": null,
-        "id_organisation": null,
+        "organisation": [
+            {
+                "id": 1321,
+                "name": "Karolinska Institutet, INCF"
+            }
+        ],
         "scope": "Neuroscience",
         "orcid": "0000-0002-8464-2494",
         "early_adopter" : true,

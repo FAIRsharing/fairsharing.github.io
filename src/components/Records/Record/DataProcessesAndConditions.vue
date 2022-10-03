@@ -3,7 +3,18 @@
     v-if="
       Object.keys(getField('metadata')).includes(
         'data_processes_and_conditions') ||
-        (getField('licences') && getField('licences').length)
+        (getField('licences') && getField('licences').length) ||
+        (getField('metadata')['data_access_condition'] &&
+          Object.keys(getField('metadata')['data_access_condition'])
+            .length) ||
+        (getField('metadata')['data_curation'] &&
+          Object.keys(getField('metadata')['data_curation']).length) ||
+        (getField('metadata')['data_deposition_condition'] &&
+          Object.keys(getField('metadata')['data_deposition_condition'])
+            .length) ||
+        (getField('metadata')['data_preservation_policy'] &&
+          Object.keys(getField('metadata')['data_preservation_policy'])
+            .length)        
     "
     class="pa-4 d-flex flex-column"
     outlined

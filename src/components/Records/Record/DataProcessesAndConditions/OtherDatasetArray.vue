@@ -52,7 +52,7 @@
     <!--  Notes    -->
     <div
       v-if="currentItem.notes"
-      class="full-width min-width-200 max-width-200"
+      class="full-width max-width-200"
     >
       {{ currentItem.notes }}
     </div>

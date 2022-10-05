@@ -67,7 +67,7 @@
           dark
         >
           <v-toolbar-title>
-            Edit Record - {{ sections.generalInformation.initialData.metadata.name }} ({{ $route.params.id }})
+            Edit Record - {{ sections.generalInformation.initialData.metadata.name }} ({{ recordId }})
           </v-toolbar-title>
           <v-spacer />
 
@@ -226,6 +226,17 @@
       userToken(){
         const _module = this;
         return (_module.user().credentials) ? _module.user().credentials.token : null ;
+      },
+      recordId() {
+        let _module = this;
+        let id;
+        try {
+          id = _module.currentRecord['fairsharingRecord'].id;
+        }
+        catch {
+          id = _module.$route.params.id;
+        }
+        return id;
       }
     },
     watch: {
@@ -241,7 +252,7 @@
         _module.$store.commit("record/setEditingRecord");
         // Fix URL if it's a name not an ID.
         let id = _module.$route.params.id;
-        if (!Number.isInteger(id)) {
+        if (isNaN(parseInt(id))) {
           id = _module.currentRecord['fairsharingRecord'].id;
           await this.$router.push({path: '/' + id + '/edit'});
         }

@@ -46,4 +46,9 @@ describe("RecordsCardStack.vue", function () {
         expect(wrapper.vm.organizeChips(record, 'userDefinedTags', 3)).toBe(true);
     });
 
+    it("can truncate long text", () => {
+        expect(wrapper.vm.truncateString("testes", 10)).toEqual("testes");
+        expect(wrapper.vm.truncateString("testes", 4)).toEqual("test...");
+    });
+
 });

@@ -27,10 +27,10 @@
           >
             <div class="text-center">
               <h2
-                style="max-width: 150px"
+                style="max-width: 150px;"
                 class="text-body-2 text-md-body-1 text-lg-h6 text-xl-h5 min-height-25"
               >
-                {{ record.abbreviation }}
+                {{ truncateString(record.abbreviation, 30) }}
               </h2>
               <RecordStatus
                 :record="record"
@@ -78,6 +78,7 @@ import recordsCardUtils from "@/utils/recordsCardUtils";
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
+
 export default {
   name: "RecordsCardStack",
   components: {SearchLinkChips, AssociatedRecordsSummary, RecordStatus},

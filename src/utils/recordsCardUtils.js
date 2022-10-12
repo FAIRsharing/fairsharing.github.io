@@ -96,6 +96,9 @@ const recordsCardUtils = {
             }
         },
         truncateString(str, num) {
+            if (str === null || str.trim() === "") {
+                return str;
+            }
             if (str.length > num) {
                 return str.slice(0, num) + "...";
             } else {

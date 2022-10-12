@@ -49,6 +49,7 @@ describe("RecordsCardStack.vue", function () {
     it("can truncate long text", () => {
         expect(wrapper.vm.truncateString("testes", 10)).toEqual("testes");
         expect(wrapper.vm.truncateString("testes", 4)).toEqual("test...");
+        expect(wrapper.vm.truncateString("", 10)).toEqual("");
     });
 
 });

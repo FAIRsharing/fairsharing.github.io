@@ -149,13 +149,6 @@ describe("EditRelationships.vue", function() {
         });
     });
 
-    it('can pop a preview overlay', () => {
-        wrapper.vm.showPreviewOverlay({id: 12});
-        expect(wrapper.vm.targetPreview).toBe(12);
-        expect(wrapper.vm.showPreview).toBe(true);
-        wrapper.vm.showPreview = false;
-    });
-
     it ("can search for records", async () => {
         wrapper.vm.searchFilters.standards = false;
         await wrapper.vm.runSearch();

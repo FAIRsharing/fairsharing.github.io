@@ -110,7 +110,7 @@
                             icon
                             class="blue white--text mr-2"
                             v-on="on"
-                            @click="showPreviewOverlay(record)"
+                            @click="viewRecord(record)"
                           >
                             <v-icon small>
                               fas fa-eye
@@ -240,7 +240,7 @@
                           icon
                           class="blue white--text mr-2"
                           v-on="on"
-                          @click="showPreviewOverlay(association.linkedRecord)"
+                          @click="viewRecord(association.linkedRecord)"
                         >
                           <v-icon small>
                             fas fa-eye
@@ -417,22 +417,6 @@
       </v-container>
     </v-dialog>
 
-    <!-- PREVIEW RECORD -->
-    <v-dialog v-model="showPreview">
-      <v-btn
-        fab
-        small
-        class="grey--text absolute"
-        @click="showPreview = false"
-      >
-        <v-icon>fa-times</v-icon>
-      </v-btn>
-
-      <v-card>
-        <Record :target="targetPreview" />
-      </v-card>
-    </v-dialog>
-
     <!-- attempt to add duplicate relationship -->
     <v-snackbar
       v-model="duplicateRelationship"
@@ -448,7 +432,6 @@
     import { mapState, mapActions, mapGetters } from "vuex"
     import { isEqual, capitalize } from "lodash"
     import stringUtils from '@/utils/stringUtils';
-    import Record from "@/views/Records/Record";
     import RecordStatus from "@/components/Records/Shared/RecordStatus";
     import Loaders from "../Navigation/Loaders";
     import Icon from "@/components/Icon";
@@ -457,7 +440,7 @@
 
     export default {
         name: "EditRelationships",
-        components: {Alerts, Icon, Loaders, Record, RecordStatus},
+        components: {Alerts, Icon, Loaders, RecordStatus},
         mixins: [stringUtils],
         data(){
           return {
@@ -470,7 +453,6 @@
             addingRelation: null,
             formValid: false,
             targets: [],
-            showPreview: false,
             targetPreview: null,
             rules: { isRequired: () => {return isRequired()} },
             labelsFilter: {},
@@ -627,9 +609,8 @@
             });
             this.$nextTick(() => {this.$refs['editRecordAssociation'].validate()});
           },
-          showPreviewOverlay(record){
-            this.targetPreview = record.id;
-            this.showPreview = true;
+          viewRecord(record){
+            window.open('/' + record.id, '_blank');
           },
           getRelations() {
             let labelsFilter = {};

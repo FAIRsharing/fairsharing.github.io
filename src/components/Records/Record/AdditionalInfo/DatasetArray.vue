@@ -18,7 +18,7 @@
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
             class="underline-effect"
-            :href="item.url"
+            :href="item[Object.keys(item)[0]]"
             target="_blank"
           >
             {{ item[Object.keys(item)[0]] }}

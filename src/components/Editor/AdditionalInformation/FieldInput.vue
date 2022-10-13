@@ -5,6 +5,7 @@
     :class="{'reposition': !isSwitch}"
   >
     <v-tooltip
+      v-if="fieldProps.description"
       bottom
       class="d-inline-block mr-2"
     >

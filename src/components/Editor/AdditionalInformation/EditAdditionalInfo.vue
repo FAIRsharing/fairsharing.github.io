@@ -20,8 +20,9 @@
             <v-col cols="12">
               <div>
                 <v-tooltip
-                  bottom
+                  v-if="getFields('array')[fieldName]['description']"
                   class="d-inline-block mr-2"
+                  bottom
                 >
                   <template #activator="{ on }">
                     <v-icon v-on="on">
@@ -134,6 +135,7 @@
               >
                 <v-card-title>
                   <v-tooltip
+                    v-if="getFields('object')[fieldName]['description']"
                     bottom
                     class="d-inline-block mr-2"
                   >

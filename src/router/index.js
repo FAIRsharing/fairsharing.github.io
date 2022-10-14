@@ -194,7 +194,55 @@ let routes = [
         path: '/collection/ISOCD20691CollectionDRAFT',
         redirect: '/3533'
     },
+    /* Yet more redirections: https://github.com/FAIRsharing/fairsharing.github.io/issues/1865 */
+    {
+        name: 'hupopsi',
+        path: '/HUPOPSI',
+        redirect: '/HUPO-PSI'
+    },
+    {
+        name: 'communities_activities',
+        path: '/communities/activities',
+        redirect: '/communities#activities'
+    },
+    {
+        name: 'licence_with_s',
+        path: '/license',
+        redirect: '/licence'
+    },
+    {
+        name: 'old_recommendations',
+        path: '/recommendations',
+        redirect: () => {
+            /*
+            This hack is necessary because simply redirecting to a search URL causes it to be interpreted as a
+            record name rather than parsed, and passing parameters means the searchAnd parameter isn't recognised
+            until the page refreshes (it's not at all clear why).
+             */
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard'
+                ].join('')
+            );
+        }
+    },
+    /* Even more, from #1865 as well. */
+    {
+        name: 'old_standards_reporting_guidelines',
+        path: '/standards/(reporting_guideline|reporting_guidelines)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Standard&recordType=reporting_guideline&page=1'
+                ].join('')
+            );
+        }
+    },
 
+    /* End of the hackery from #1865 */
     /* OTHER MODES */
     {
         name: "Maintenance",

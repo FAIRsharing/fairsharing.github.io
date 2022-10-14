@@ -20,7 +20,7 @@ const stringUtils = {
             if (!str) return "";
             return str.charAt(0).toUpperCase() + str.slice(1)
         },
-        pretty (val) {
+        pretty(val) {
             return JSON.stringify(val)
                 .replace(/,/g, '<br/>')          // commas -> newlines
                 .replace(/\{|\}|\[|\]/g, '')  // remove brackets

@@ -19,8 +19,12 @@
           >
             <b>
               For more information on how to complete these sections, please see our
-              <a href="https://fairsharing.gitbook.io/fairsharing/additional-information/policy-content"
-                 target="_blank">documentation</a>.
+              <a
+                href="https://fairsharing.gitbook.io/fairsharing/additional-information/policy-content"
+                target="_blank"
+              >
+                documentation
+              </a>.
             </b>
           </div>
 

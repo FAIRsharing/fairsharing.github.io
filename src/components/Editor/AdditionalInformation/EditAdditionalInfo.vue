@@ -13,6 +13,21 @@
         <v-container
           fluid
         >
+          <div
+            v-if="isPolicy"
+            class="d-flex full-width pb-3"
+          >
+            <b>
+              For more information on how to complete these sections, please see our
+              <a
+                href="https://fairsharing.gitbook.io/fairsharing/additional-information/policy-content"
+                target="_blank"
+              >
+                documentation.
+              </a>
+            </b>
+          </div>
+
           <v-row
             v-for="(field, fieldName, fieldIndex) in getFields('array')"
             :key="'arrayFields_' + fieldIndex"
@@ -20,8 +35,9 @@
             <v-col cols="12">
               <div>
                 <v-tooltip
-                  bottom
+                  v-if="getFields('array')[fieldName]['description']"
                   class="d-inline-block mr-2"
+                  bottom
                 >
                   <template #activator="{ on }">
                     <v-icon v-on="on">
@@ -134,6 +150,7 @@
               >
                 <v-card-title>
                   <v-tooltip
+                    v-if="getFields('object')[fieldName]['description']"
                     bottom
                     class="d-inline-block mr-2"
                   >
@@ -311,6 +328,7 @@ export default {
   mixins: [ stringUtils ],
   data() {
     return {
+      isPolicy: false,
       initialized: false,
       loading: false,
       overlay: {
@@ -353,6 +371,9 @@ export default {
     }
   },
   mounted(){
+    if (this.allowedFields.id && this.allowedFields.id.includes('policy')) {
+      this.isPolicy = true;
+    }
     this.$nextTick(() => {this.$refs['editAdditionalInfo'].validate()});
   },
   methods: {

@@ -8,141 +8,35 @@
       v-for="(item,index) in currentField"
       :key="item.name+'_'+index"
     >
-      <!--  Name    -->
-      <div
-        v-if="item.name"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">{{ getUpdatedNameTitle() }}</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          {{ item.name }}
-        </div>
-      </div>
 
-      <!--  Type    -->
+      <!--  URLs    -->
       <div
-        v-if="item.type"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">{{ getUpdatedTypeTitle() }}</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <p class="ma-0">
-            {{ item.type }}
-          </p>
-        </div>
-      </div>
-
-      <!--  AccessMethod   -->
-      <div
-        v-if="item.access_method"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">Access Method</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          {{ item.access_method }}
-        </div>
-      </div>
-
-      <!--  URL    -->
-      <div
-        v-if="item.url"
+        v-if="item.url || item.documentation_url || item.example_url "
         class="d-flex flex-row align-center min-height-40"
       >
         <b class="width-200">URL</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
             class="underline-effect"
-            :href="item.url"
+            :href="item[Object.keys(item)[0]]"
             target="_blank"
           >
-            {{ item.url }}
+            {{ item[Object.keys(item)[0]] }}
           </a>
         </div>
       </div>
 
-      <!--  Notes    -->
+      <!-- placeholder for whatever else might be used as the key -->
       <div
-        v-if="item.notes"
-        class="d-flex flex-row align-center min-height-80"
+        v-else
+        class="d-flex flex-row align-center min-height-40"
       >
-        <b class="width-200">Notes</b>
+        <b class="width-200 text-capitalize">{{ setTitle(cleanString(Object.keys(item)[0])) }}</b>
         <div class="d-flex full-width ml-md-12 ml-13">
-          {{ item.notes }}
+          {{ item[Object.keys(item)[0]] }}
         </div>
       </div>
 
-      <!--  Portal    -->
-      <div
-        v-if="item.portal"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">Portal</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <p class="ma-0">
-            {{ item.portal }}
-          </p>
-        </div>
-      </div>
-
-      <!--  ExampleURL    -->
-      <div
-        v-if="item.example_url"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">Example URL</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <a
-            class="underline-effect"
-            target="_blank"
-            :href="item.example_url"
-          >
-            {{ item.example_url }}
-          </a>
-        </div>
-      </div>
-
-      <!--  DocumentationURL   -->
-      <div
-        v-if="item.documentation_url"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">Documentation URL</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <a
-            class="underline-effect"
-            target="_blank"
-            :href="item.documentation_url"
-          >
-            {{ item.documentation_url }}
-          </a>
-        </div>
-      </div>
-
-      <!--  cos_top_guidelines  -->
-      <!--  cos_top_guidelines.ranking    -->
-      <div
-        v-if="item.ranking"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">TOP Level Data Transparency</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <p class="ma-0">
-            {{ item.ranking }}
-          </p>
-        </div>
-      </div>
-      <!--  cos_top_guidelines.comments    -->
-      <div
-        v-if="item.comment"
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <b class="width-200">TOP qualifying comments</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <p class="ma-0">
-            {{ item.comment }}
-          </p>
-        </div>
-      </div>
 
       <v-divider v-if="currentField.length-1!==index" />
     </div>
@@ -167,8 +61,14 @@ export default {
   },
   methods: {
     setTitle(title) {
-      if (title === "cos top guidelines")
-        return "COS TOP Guidelines"
+      const titles = {
+        "cos top guidelines": "COS TOP Guidelines",
+        "dmp development": "DMP Development",
+        "updating of dmp": "Updating of DMP",
+        "mandated dmp creation": "Mandated DMP creation"
+      }
+      if (titles[title])
+        return titles[title]
       else {
         return title
       }

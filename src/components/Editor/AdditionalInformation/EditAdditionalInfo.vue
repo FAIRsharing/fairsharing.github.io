@@ -23,8 +23,8 @@
                 href="https://fairsharing.gitbook.io/fairsharing/additional-information/policy-content"
                 target="_blank"
               >
-                documentation
-              </a>.
+                documentation.
+              </a>
             </b>
           </div>
 

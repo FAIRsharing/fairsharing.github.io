@@ -8,7 +8,6 @@
       v-for="(item,index) in currentField"
       :key="item.name+'_'+index"
     >
-
       <!--  URLs    -->
       <div
         v-if="item.url || item.documentation_url || item.example_url "

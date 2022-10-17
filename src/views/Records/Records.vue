@@ -259,7 +259,6 @@ export default {
      * @returns {Object} parameters - parameters and types allowed for this query
      */
     getParameters: function () {
-      console.log(JSON.stringify(this.$store.getters["introspection/buildQueryParameters"](this.currentPath)));
       return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
     }
   },

@@ -229,6 +229,84 @@ let routes = [
     },
     /* Even more, from #1865 as well. */
     {
+        name: 'old_databases_repository',
+        path: '/databases/(repository|repositories)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Database&recordType=repository&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_databases_knowledgebase',
+        path: '/databases/(knowledgebase|knowledgebases)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Database&recordType=knowledgebase&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_databases_knowledgebase_and_repsitory',
+        path: '/databases/(knowledgebase_and_repository|knowledgebases_and_repositories)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Database&recordType=knowledgebase_and_repository&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_standards_model_and_format',
+        path: '/standards/(model_and_format|models_and_formats)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Standard&recordType=model_and_format&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_standards_metric',
+        path: '/standards/(metric|metrics)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Standard&recordType=metric&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_standards_terminology_artefact',
+        path: '/standards/(terminology_artefact|terminology_artefacts)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Standard&recordType=terminology_artefact&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
         name: 'old_standards_reporting_guidelines',
         path: '/standards/(reporting_guideline|reporting_guidelines)',
         redirect: () => {
@@ -241,7 +319,97 @@ let routes = [
             );
         }
     },
-
+    {
+        name: 'old_standards_identifier_schema',
+        path: '/standards/(identifier_schema|identifier_schemas)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Standard&recordType=identifier_schema&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_policies_project',
+        path: '/policies/(project|projects)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Policy&recordType=project&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_policies_journal',
+        path: '/policies/(journal|journals)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Policy&recordType=journal&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_policies_institution',
+        path: '/policies/(institution|institutions)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Policy&recordType=institution&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_policies_society',
+        path: '/policies/(society|societies)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Policy&recordType=society&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_policies_journal_publisher',
+        path: '/policies/(journal_publisher|journal_publishers)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Policy&recordType=journal_publisher&page=1'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_policies_funder',
+        path: '/policies/(funder|funders)',
+        redirect: () => {
+            // See recommendations hack...
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/search?fairsharingRegistry=Policy&recordType=funder&page=1'
+                ].join('')
+            );
+        }
+    },
     /* End of the hackery from #1865 */
     /* OTHER MODES */
     {

@@ -99,7 +99,9 @@
           <span
             v-if="fields[fieldName][subfieldName]"
             class="ml-1"
-          >{{ fields[fieldName][subfieldName] }}</span>
+          >
+            {{ fields[fieldName][subfieldName] }}
+          </span>
           <span
             v-else
             class="ml-1"

@@ -13,7 +13,19 @@
         v-if="item.url || item.documentation_url || item.example_url "
         class="d-flex flex-row align-center min-height-40"
       >
-        <b class="width-200">URL</b>
+        <v-tooltip
+          v-if="currentTooltips['properties'][Object.keys(item)[0]]['description']"
+          bottom
+          class="d-inline-block mr-2"
+        >
+          <template #activator="{ on }">
+            <v-icon v-on="on">
+              fa-question-circle
+            </v-icon>
+          </template>
+          {{ currentTooltips['properties'][Object.keys(item)[0]]['description'] }}
+        </v-tooltip>
+        <b class="width-200">{{ setTitle(cleanString(Object.keys(item)[0])) }}</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           <a
             class="underline-effect"
@@ -30,6 +42,18 @@
         v-else
         class="d-flex flex-row align-center min-height-40"
       >
+        <v-tooltip
+          v-if="currentTooltips['properties'][Object.keys(item)[0]]['description']"
+          bottom
+          class="d-inline-block mr-2"
+        >
+          <template #activator="{ on }">
+            <v-icon v-on="on">
+              fa-question-circle
+            </v-icon>
+          </template>
+          {{ currentTooltips['properties'][Object.keys(item)[0]]['description'] }}
+        </v-tooltip>
         <b class="width-200 text-capitalize">{{ setTitle(cleanString(Object.keys(item)[0])) }}</b>
         <div class="d-flex full-width ml-md-12 ml-13">
           {{ item[Object.keys(item)[0]] }}
@@ -51,7 +75,8 @@ export default {
   props: {
     title: {default: null, type: String},
     currentField: {default: () => [], type: Array},
-    currentKey: {default: null, type: String}
+    currentKey: {default: null, type: String},
+    currentTooltips: {default: () => {}, type: Object},
   },
   computed: {
     getCurrentKey() {

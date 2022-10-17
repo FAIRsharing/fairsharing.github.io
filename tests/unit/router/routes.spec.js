@@ -138,7 +138,19 @@ describe("Routes", () => {
         ).toStrictEqual(
             {"path": "/"}
         );
-
+        // Those below are from #1865
+        let hupopsi = router.options.routes.find((obj) => {
+            return obj.name === 'hupopsi'
+        });
+        expect(hupopsi.redirect).toEqual( "/HUPO-PSI");
+        let communities_activities = router.options.routes.find((obj) => {
+            return obj.name === 'communities_activities'
+        });
+        expect(communities_activities.redirect).toEqual( "/communities#activities");
+        let licence_with_s = router.options.routes.find((obj) => {
+            return obj.name === 'licence_with_s'
+        });
+        expect(licence_with_s.redirect).toEqual( "/licence");
     });
 
     it("performs harcoded ontology redirections correctly", async () => {
@@ -164,8 +176,51 @@ describe("Routes", () => {
         let srao_term = router.options.routes.find((obj) => { return obj.name === 'srao_term'} );
         await srao_term.redirect({params: {id: 'SRAO_0000307'}});
         expect(window.location.assign).toHaveBeenCalledWith('https://www.ebi.ac.uk/ols/ontologies/srao/terms?iri=http://www.fairsharing.org/ontology/subject/SRAO_0000307');
+        let old_recommendations = router.options.routes.find((obj) => {
+            return obj.name === 'old_recommendations'
+        });
+        await old_recommendations.redirect();
+        expect(window.location.assign).toHaveBeenCalledWith(
+            '/search?isRecommended=true&page=1&searchAnd=false&fairsharingRegistry=database,standard'
+        );
+    });
+
+    // See #1865.
+    it("performs hardcoded registry/type redirections correctly", async () => {
+        let link;
+        let assignMock = jest.fn();
+        delete window.location;
+        window.location = {assign: assignMock};
+        const redirections = {
+            old_databases_repository: '/search?fairsharingRegistry=Database&recordType=repository&page=1',
+            old_databases_knowledgebase: '/search?fairsharingRegistry=Database&recordType=knowledgebase&page=1',
+            old_databases_knowledgebase_and_repsitory: '/search?fairsharingRegistry=Database&recordType=knowledgebase_and_repository&page=1',
+            old_standards_model_and_format: '/search?fairsharingRegistry=Standard&recordType=model_and_format&page=1',
+            old_standards_metric: '/search?fairsharingRegistry=Standard&recordType=metric&page=1',
+            old_standards_terminology_artefact: '/search?fairsharingRegistry=Standard&recordType=terminology_artefact&page=1',
+            old_standards_reporting_guidelines: '/search?fairsharingRegistry=Standard&recordType=reporting_guideline&page=1',
+            old_standards_identifier_schema: '/search?fairsharingRegistry=Standard&recordType=identifier_schema&page=1',
+            old_policies_project: '/search?fairsharingRegistry=Policy&recordType=project&page=1',
+            old_policies_journal: '/search?fairsharingRegistry=Policy&recordType=journal&page=1',
+            old_policies_institution: '/search?fairsharingRegistry=Policy&recordType=institution&page=1',
+            old_policies_society: '/search?fairsharingRegistry=Policy&recordType=society&page=1',
+            old_policies_journal_publisher: '/search?fairsharingRegistry=Policy&recordType=journal_publisher&page=1',
+            old_policies_funder: '/search?fairsharingRegistry=Policy&recordType=funder&page=1'
+        }
+
+        // eslint-disable no-promise-executor-return
+        Object.keys(redirections).forEach(async (goto) => {
+            link = router.options.routes.find((obj) => {
+                return obj.name === goto;
+            });
+            await link.redirect();
+            expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
+        });
+        // eslint-enable no-promise-executor-return
 
     });
+
+
 
     it("gets sitemap from the api", async () => {
         process.env.VUE_APP_API_ENDPOINT = 'https://api.fairsharing.org'

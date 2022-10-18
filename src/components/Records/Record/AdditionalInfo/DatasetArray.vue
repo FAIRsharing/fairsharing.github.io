@@ -14,7 +14,7 @@
         class="d-flex flex-row align-center min-height-40"
       >
         <v-tooltip
-          v-if="currentTooltips['properties'][Object.keys(item)[0]]['description']"
+          v-if="getDescription(Object.keys(item)[0])"
           bottom
           class="d-inline-block mr-2"
         >
@@ -23,7 +23,7 @@
               fa-question-circle
             </v-icon>
           </template>
-          {{ currentTooltips['properties'][Object.keys(item)[0]]['description'] }}
+          {{ getDescription(Object.keys(item)[0]) }}
         </v-tooltip>
         <b class="width-200">{{ setTitle(cleanString(Object.keys(item)[0])) }}</b>
         <div class="d-flex full-width ml-md-12 ml-13">
@@ -43,7 +43,7 @@
         class="d-flex flex-row align-center min-height-40"
       >
         <v-tooltip
-          v-if="currentTooltips['properties'][Object.keys(item)[0]]['description']"
+          v-if="getDescription(Object.keys(item)[0])"
           bottom
           class="d-inline-block mr-2"
         >
@@ -52,7 +52,7 @@
               fa-question-circle
             </v-icon>
           </template>
-          {{ currentTooltips['properties'][Object.keys(item)[0]]['description'] }}
+          {{ getDescription(Object.keys(item)[0]) }}
         </v-tooltip>
         <b class="width-200 text-capitalize">{{ setTitle(cleanString(Object.keys(item)[0])) }}</b>
         <div class="d-flex full-width ml-md-12 ml-13">
@@ -89,7 +89,8 @@ export default {
         "cos top guidelines": "COS TOP Guidelines",
         "dmp development": "DMP Development",
         "updating of dmp": "Updating of DMP",
-        "mandated dmp creation": "Mandated DMP creation"
+        "mandated dmp creation": "Mandated DMP creation",
+        "url": "URL"
       }
       if (titles[title])
         return titles[title]
@@ -114,6 +115,18 @@ export default {
         default:
           return "Name"
       }
+    },
+    getDescription(field) {
+      let _module = this;
+      if (_module.currentTooltips['properties'] !== undefined) {
+        if (_module.currentTooltips['properties'][field]['description']) {
+          return _module.currentTooltips['properties'][field]['description']
+        }
+      }
+      else if (_module.currentTooltips['description']) {
+        return _module.currentTooltips['description'];
+      }
+      return false;
     }
   }
 }

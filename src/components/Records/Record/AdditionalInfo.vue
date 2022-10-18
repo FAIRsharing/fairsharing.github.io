@@ -29,6 +29,7 @@
       :key="item.name+'_'+index+'_'+key"
       :title="key"
       :current-field="finalData[key]"
+      :current-tooltips="allowedFields['properties'][key]"
       :current-key="key"
     />
   </v-card>

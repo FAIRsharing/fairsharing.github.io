@@ -222,7 +222,7 @@
         <v-btn
           :disabled="!formValid"
           class="info"
-          :loading="loading"
+          :loading="saving"
           @click="saveRecord(false)"
         >
           Save and continue
@@ -230,7 +230,7 @@
         <v-btn
           :disabled="!formValid"
           class="info"
-          :loading="loading"
+          :loading="saving"
           @click="saveRecord(true)"
         >
           Save And Exit
@@ -330,7 +330,6 @@ export default {
     return {
       isPolicy: false,
       initialized: false,
-      loading: false,
       overlay: {
         show: false,
         id: null,

@@ -69,7 +69,7 @@
                   :href="subItem.example_url"
                   target="_blank"
                 >
-                  {{ subItem.example_url }}
+                  {{ truncate(subItem.example_url, 100) }}
                 </a>
               </div>
             </div>
@@ -86,7 +86,7 @@
                   :href="subItem.documentation_url"
                   target="_blank"
                 >
-                  {{ subItem.documentation_url }}
+                  {{ truncate(subItem.documentation_url, 100) }}
                 </a>
               </div>
             </div>
@@ -157,6 +157,7 @@
 <script>
 import {mapGetters} from "vuex";
 import clearString from '@/utils/stringUtils';
+import truncate from "@/utils/stringUtils";
 import Icon from "@/components/Icon";
 
 export default {
@@ -164,7 +165,7 @@ export default {
   components: {
     Icon
   },
-  mixins: [clearString],
+  mixins: [clearString, truncate],
   props:{
     backColor:{
       default:null,

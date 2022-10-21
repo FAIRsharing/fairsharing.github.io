@@ -112,6 +112,14 @@
       ]
     },
     {
+      "name": "watchers",
+      "fields": [
+        "username",
+        "id",
+        "orcid"
+      ]
+    },
+    {
       "name": "organisations",
       "fields": [
         "id"

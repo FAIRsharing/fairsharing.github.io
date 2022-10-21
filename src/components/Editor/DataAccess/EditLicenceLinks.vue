@@ -224,11 +224,33 @@
         </v-container>
       </v-dialog>
     </v-expand-transition>
+    <v-col cols="12">
+      <v-switch
+        v-model="fields.exhaustiveLicences"
+        class="d-inline-block mr-2"
+        color="green"
+        label="List is exhaustive?"
+      >
+        <template #label>
+          <span class="v-label-white">
+            As described in our
+            <a
+              href="https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/licences-and-support-links/licences"
+              target="_blank"
+            >licence documentation
+            </a>,
+            you may choose to provide a complete list of all applicable licences, or a subset of licences that
+            are recommended by your or most commonly used by your users. Please let us know if the
+            licences you have provided are an exhaustive/complete list (if selected), or are non-exhaustive/partial
+            list of licences (default).</span>
+        </template>
+      </v-switch>
+    </v-col>
   </div>
 </template>
 
 <script>
-    import { mapState } from "vuex"
+import {mapGetters, mapState} from "vuex"
     import { isEqual } from 'lodash'
     import { isRequired, isUrl } from "@/utils/rules.js"
 
@@ -259,11 +281,15 @@
         computed: {
             ...mapState('record', ['sections']),
             ...mapState('editor', ['availableLicences', 'licenceRelations']),
+            ...mapGetters("record", ["getSection"]),
             currentLicences(){
                 return this.sections.dataAccess.data.licences
             },
             initialLicences(){
               return this.sections.dataAccess.initialData.licences
+            },
+            fields(){
+              return this.getSection("dataAccess").data;
             }
         },
         watch: {

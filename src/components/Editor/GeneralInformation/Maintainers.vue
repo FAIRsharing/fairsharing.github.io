@@ -222,11 +222,9 @@ export default {
     },
     completeRemoval(removeWatcher) {
       let _module = this;
-      console.log("Removing: " + _module.watcherToRemove);
       if (removeWatcher) {
         let index = _module.watchers.findIndex( element => {
           if (element.id === _module.watcherToRemove) {
-            console.log("Found user: " + _module.watcherToRemove);
             return true;
           }
         });

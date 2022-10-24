@@ -19,10 +19,12 @@ let maintainer = {
 recordStore.state.sections = {
     generalInformation: {
         data: {
-            maintainers: [maintainer]
+            maintainers: [maintainer],
+            watchers: []
         },
         initialData: {
-            maintainers: [maintainer]
+            maintainers: [maintainer],
+            watchers: []
         }
     }
 };
@@ -60,6 +62,7 @@ describe('Editor -> Maintainers.vue', () => {
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("Maintainers");
         expect(wrapper.vm.getSection("generalInformation").data.maintainers).toStrictEqual([maintainer]);
+        expect(wrapper.vm.getSection("generalInformation").data.watchers).toStrictEqual([]);
     });
 
     it("can add a new maintainer", async () => {

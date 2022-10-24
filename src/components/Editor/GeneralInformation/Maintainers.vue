@@ -230,9 +230,7 @@ export default {
             return true;
           }
         });
-        console.log("BEFORE: " + JSON.stringify(_module.watchers));
         _module.watchers.splice(index, index+1);
-        console.log("After: " + JSON.stringify(_module.watchers));
       }
       this.showRemoveWatcher = false;
     },

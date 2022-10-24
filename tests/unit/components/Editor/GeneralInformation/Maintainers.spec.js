@@ -20,11 +20,11 @@ recordStore.state.sections = {
     generalInformation: {
         data: {
             maintainers: [maintainer],
-            watchers: []
+            watchers: [maintainer]
         },
         initialData: {
             maintainers: [maintainer],
-            watchers: []
+            watchers: [maintainer]
         }
     }
 };
@@ -62,7 +62,7 @@ describe('Editor -> Maintainers.vue', () => {
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("Maintainers");
         expect(wrapper.vm.getSection("generalInformation").data.maintainers).toStrictEqual([maintainer]);
-        expect(wrapper.vm.getSection("generalInformation").data.watchers).toStrictEqual([]);
+        expect(wrapper.vm.getSection("generalInformation").data.watchers).toStrictEqual([maintainer]);
     });
 
     it("can add a new maintainer", async () => {
@@ -95,8 +95,12 @@ describe('Editor -> Maintainers.vue', () => {
 
     it("can remove maintainers", () => {
         expect(wrapper.vm.maintainers.length).toEqual(2);
+        expect(wrapper.vm.watchers.length).toEqual(1);
         wrapper.vm.removeMaintainer(0);
         expect(wrapper.vm.maintainers.length).toEqual(1);
+        expect(wrapper.vm.watchers.length).toEqual(1);
+        wrapper.vm.completeRemoval(maintainer.id);
+        expect(wrapper.vm.watchers.length).toEqual(0);
     });
 
     it("determines if a maintainer is newly added", () => {

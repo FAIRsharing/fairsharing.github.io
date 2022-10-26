@@ -75,7 +75,7 @@
 
     <v-switch
       v-if="isSwitch && subfieldName"
-      v-model="fields[fieldName][subfieldName]"
+      :v-model="fieldCheck()[subfieldName]"
       inset
       class="field ml-3 switch"
       true-value="yes"
@@ -86,9 +86,9 @@
         {{ getName }}:
         <span v-if="!subfieldName">
           <span
-            v-if="fields[fieldName]"
+            v-if="fieldCheck()"
             class="ml-1"
-          >{{ fields[fieldName] }}</span>
+          >{{ fieldCheck() }}</span>
           <span
             v-else
             class="ml-1"
@@ -97,10 +97,10 @@
 
         <span v-else>
           <span
-            v-if="fields[fieldName][subfieldName]"
+            v-if="fieldCheck()[subfieldName]"
             class="ml-1"
           >
-            {{ fields[fieldName][subfieldName] }}
+            {{ fieldCheck()[subfieldName] }}
           </span>
           <span
             v-else
@@ -168,6 +168,21 @@
                 else {
                   return this.fields[this.fieldName][this.subfieldName];
                 }
+            },
+            // For some annoying yes/no values which throw console errors.
+            // See https://github.com/FAIRsharing/fairsharing.github.io/issues/1874
+            fieldCheck() {
+              let _module = this;
+              if (_module.fields[_module.fieldName] !== undefined) {
+                return _module.fields[_module.fieldName];
+              }
+              let retval = {
+                [_module.fieldName]: {
+                  [_module.subfieldName]: 'no'
+                }
+              }
+              retval[_module.fieldName] = _module.subfieldName;
+              return retval;
             }
         }
     }

@@ -319,13 +319,14 @@ import {mapActions, mapGetters, mapState, mapMutations} from "vuex";
 import stringUtils from '@/utils/stringUtils'
 import FieldInput from "./FieldInput";
 import { isUrl, isRequired } from "@/utils/rules.js"
+import sortObj from "@/utils/generalUtils"
 import Alerts from "../Alerts";
 const diff = require("deep-object-diff").diff;
 
 export default {
   name: "EditAdditionalInfo",
   components: { Alerts, FieldInput },
-  mixins: [ stringUtils ],
+  mixins: [ stringUtils, sortObj ],
   data() {
     return {
       isPolicy: false,
@@ -381,7 +382,7 @@ export default {
     getFields(type) {
       let output = {};
       if (this.allowedFields && this.allowedFields.properties){
-        Object.keys(this.allowedFields.properties).forEach((fieldName) => {
+        Object.keys(this.sortObj(this.allowedFields.properties)).forEach((fieldName) => {
           if (this.allowedFields.properties[fieldName].type === type
           && !this.allowedFields.properties[fieldName].enum) {
             output[fieldName] = this.allowedFields.properties[fieldName]

@@ -5,6 +5,12 @@ const generalUtils = {
         },
         getAPIEndPoint() {
             return process.env.VUE_APP_API_ENDPOINT;
+        },
+        sortObj(obj) {
+            return Object.keys(obj).sort().reduce(function (result, key) {
+                result[key] = obj[key];
+                return result;
+            }, {});
         }
     }
 }

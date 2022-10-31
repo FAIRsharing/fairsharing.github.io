@@ -1,0 +1,26 @@
+{
+  "de": {
+    "text": "BITTE BEACHTEN SIE: Dies ist KEINE Website zum Hochladen Ihrer Daten. Stattdessen bietet Ihnen FAIRsharing Beschreibungen verschiedener Datenbanken und Standards und führt Sie zu anderen Websites, auf denen Sie Ihre Daten hochladen können. Bitte laden Sie Ihre Daten NICHT hier hoch. Danke.",
+    "close": "Verstanden. Danke"
+  },
+  "es": {
+    "text": "POR FAVOR, FÍJESE: esta NO es una plataforma para subir los datos de su base de datos. FAIRsharing proporciona descripciones de bases de datos y estándares, y ayuda a encontrar el lugar adecuado donde pueda subir sus datos. Por favor, NO SUBA los datos de su base de datos aquí. Muchas gracias.",
+    "close": "Entendido, gracias"
+  },
+  "fr": {
+    "text": "Veuillez noter qu'il ne s'agit PAS d'un entrepôt de données, destiné à télécharger vos propres données. FAIRsharing fournit les descriptions de plusieurs bases de données, ainsi que des normes et des informations sur les données, et vous guide vers d'autres sites où vous pouvez télécharger vos données. Donc, s'il vous plaît, ne téléchargez pas vos données ici. Merci.",
+    "close": "D'accord, merci"
+  },
+  "it": {
+    "text": "Prego notare che questo non e' un sito per caricare i tuoi dati. Al contrario, FAIRsharing fornisce le descrizioni di diversi banche dati, oltre a standards per e informative su i dati, e ti guida verso altri siti dove puoi caricare i tuoi dati. Quindi, per favore NON caricare i tuoi dati qui. Grazie.",
+    "close": "Capito grazie"
+  },
+  "jp": {
+    "text": "注意: これはデータをアップロードするためのサイトではありません。代わりに、FAIRsharingに他のデータベースと使用方法の説明があり、データをアップロードできる他のサイトに案内します。ここでデータをアップロードしないでください。",
+    "close": "わかりましたありがとう"
+  },
+  "zh": {
+    "text": "请注意：这网站不是上传数据的地方。FAIRsharing 仅能为您提供不同数据库和标准的描述，然后引导您到其他可以上传数据的网站。 请不要在这里上传您的数据。谢谢。",
+    "close": "明白了谢谢"
+  }
+}

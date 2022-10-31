@@ -366,7 +366,7 @@ let recordStore = {
             commit("resetMessage", "generalInformation");
             let {
                 type, countries, userDefinedTags, domains, subjects, taxonomies, status, curator_notes, isHidden,
-                    logo, maintainers,
+                    logo, maintainers, watchers,
                 ...record
             } = JSON.parse(JSON.stringify(state.sections.generalInformation.data)),
                 newTags = [],
@@ -406,6 +406,7 @@ let recordStore = {
             record.subject_ids = subjects.map(obj => obj.id);
             record.taxonomy_ids = taxonomies.map(obj => obj.id);
             record.maintainer_ids = maintainers.map(obj => obj.id);
+            record.watcher_ids = watchers.map(obj => obj.id);
             record.user_defined_tag_ids = tags.concat(oldTags.filter(function (el) {return el != null;}));
             if (options.change) {
                 record.remove_additional_properties = true

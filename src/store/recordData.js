@@ -481,6 +481,7 @@ let recordStore = {
                     toUpdate.push(newLicence);
                 }
             });
+            newRecord.exhaustive_licences = state.sections.dataAccess.data.exhaustiveLicences;
             let responses = await Promise.all([
                 restClient.updateRecord({
                     record: newRecord,

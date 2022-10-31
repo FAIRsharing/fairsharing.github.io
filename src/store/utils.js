@@ -99,7 +99,8 @@ export function initEditorSections(data, sectionsNames){
             organisations: data.organisationLinks,
             dataAccess: {
                 support_links: (data.metadata.support_links) ? JSON.parse(JSON.stringify(data.metadata.support_links)): [],
-                licences: data.licenceLinks
+                licences: data.licenceLinks,
+                exhaustiveLicences: data.exhaustiveLicences
             },
             relations: {
                 recordAssociations: data.recordAssociations,

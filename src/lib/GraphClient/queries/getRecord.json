@@ -18,6 +18,7 @@
     "isHidden",
     "isApproved",
     "curatorNotes",
+    "exhaustiveLicences",
     "urlForLogo",
     {
       "name": "reviews",

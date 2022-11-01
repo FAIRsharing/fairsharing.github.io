@@ -35,7 +35,7 @@ let record = {
     taxonomies: [{id: 2, label: "Nope"}],
     domains: [{label: 'tester', id: 2}],
     maintainers: [{username: 'bod', id: 100, orcid: 'abc-123'}],
-    watchers: [],
+    watchers: [{username: 'bod', id: 100, orcid: 'abc-123'}],
     userDefinedTags: [],
     type: 'abc',
     status: "ready",

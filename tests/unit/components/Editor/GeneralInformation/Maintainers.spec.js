@@ -16,15 +16,20 @@ let maintainer = {
     id: 100,
     orcid: '0000-'
 };
+let extra = {
+    username: 'de fleur',
+    id: 101,
+    orcid: '1111-'
+};
 recordStore.state.sections = {
     generalInformation: {
         data: {
             maintainers: [maintainer],
-            watchers: [maintainer]
+            watchers: [maintainer, extra]
         },
         initialData: {
             maintainers: [maintainer],
-            watchers: [maintainer]
+            watchers: [maintainer, extra]
         }
     }
 };
@@ -62,7 +67,7 @@ describe('Editor -> Maintainers.vue', () => {
     it("can be mounted", () => {
         expect(wrapper.name()).toMatch("Maintainers");
         expect(wrapper.vm.getSection("generalInformation").data.maintainers).toStrictEqual([maintainer]);
-        expect(wrapper.vm.getSection("generalInformation").data.watchers).toStrictEqual([maintainer]);
+        expect(wrapper.vm.getSection("generalInformation").data.watchers).toStrictEqual([maintainer, extra]);
     });
 
     it("can add a new maintainer", async () => {
@@ -95,12 +100,12 @@ describe('Editor -> Maintainers.vue', () => {
 
     it("can remove maintainers", () => {
         expect(wrapper.vm.maintainers.length).toEqual(2);
-        expect(wrapper.vm.watchers.length).toEqual(1);
+        expect(wrapper.vm.watchers.length).toEqual(2);
         wrapper.vm.removeMaintainer(0);
         expect(wrapper.vm.maintainers.length).toEqual(1);
-        expect(wrapper.vm.watchers.length).toEqual(1);
+        expect(wrapper.vm.watchers.length).toEqual(2);
         wrapper.vm.completeRemoval(maintainer.id);
-        expect(wrapper.vm.watchers.length).toEqual(0);
+        expect(wrapper.vm.watchers.length).toEqual(1);
     });
 
     it("determines if a maintainer is newly added", () => {

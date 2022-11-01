@@ -230,7 +230,7 @@ export default {
         });
         _module.watchers.splice(index, index+1);
       }
-      this.showRemoveWatcher = false;
+      _module.showRemoveWatcher = false;
     },
     addItem(item){
       let _module = this;

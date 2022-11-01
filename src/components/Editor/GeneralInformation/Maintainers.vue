@@ -216,7 +216,7 @@ export default {
       let maintainerId = this.maintainers[maintainerIndex].id;
       _module.maintainers.splice(maintainerIndex, maintainerIndex+1)
       if (_module.watchers.some(m => m.id === maintainerId)) {
-        this.watcherToRemove = maintainerId;
+        _module.watcherToRemove = maintainerId;
         _module.showRemoveWatcher = true;
       }
     },

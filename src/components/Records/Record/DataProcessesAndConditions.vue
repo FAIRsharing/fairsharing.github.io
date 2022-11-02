@@ -55,6 +55,16 @@
             {{ cleanString(key) | capitalize }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
+            <p
+              v-if="currentRecord.fairsharingRecord.exhaustiveLicences"
+            >
+              This is a complete list of licences applicable to the resource.
+            </p>
+            <p
+              v-else
+            >
+              This is a subset of licences recommended by the resource or most commonly used by its users.
+            </p>
             <v-card
               v-for="(subItem, subIndex) in item.data"
               :key="subItem.name + '_' + subIndex"
@@ -114,7 +124,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters, mapState} from "vuex";
 import SectionTitle from "@/components/Records/Record/SectionTitle";
 import clearString from "@/utils/stringUtils";
 import Icon from "@/components/Icon";
@@ -138,6 +148,7 @@ export default {
   },
   computed: {
     ...mapGetters("record", ["getField"]),
+    ...mapState('record', ["currentRecord"])
   },
   methods: {
     generateDataConditions: function () {

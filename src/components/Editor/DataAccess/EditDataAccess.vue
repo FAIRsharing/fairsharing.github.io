@@ -76,11 +76,15 @@
               let initialLicences = this.sections['dataAccess'].initialData.licences,
                   initialSupportLinks = this.sections['dataAccess'].initialData['support_links'],
                   licences = val.licences,
+                  exhaustive = this.sections['dataAccess'].initialData.exhaustiveLicences,
                   supportLinks = val['support_links'];
               if (!isEqual(initialLicences, licences)){
                 changes += 1;
               }
               if (!isEqual(initialSupportLinks, supportLinks)){
+                changes += 1;
+              }
+              if (exhaustive !== this.dataAccess.exhaustiveLicences) {
                 changes += 1;
               }
               this.$store.commit("record/setChanges", {

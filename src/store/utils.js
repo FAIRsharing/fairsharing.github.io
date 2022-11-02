@@ -70,6 +70,7 @@ export function initEditorSections(data, sectionsNames){
                 name: data.name,
                 curator_notes: data.curatorNotes || data.curator_notes,
                 maintainers: data.maintainers,
+                watchers: data.watchers,
                 isHidden: data.isHidden,
                 domains: data.domains.map((obj) => {
                     obj.label = obj.label.toLowerCase();
@@ -98,7 +99,8 @@ export function initEditorSections(data, sectionsNames){
             organisations: data.organisationLinks,
             dataAccess: {
                 support_links: (data.metadata.support_links) ? JSON.parse(JSON.stringify(data.metadata.support_links)): [],
-                licences: data.licenceLinks
+                licences: data.licenceLinks,
+                exhaustiveLicences: data.exhaustiveLicences
             },
             relations: {
                 recordAssociations: data.recordAssociations,

@@ -85,6 +85,50 @@
             width="100"
           />
         </div>
+        <div class="text-center">
+          <v-chip
+            class="ma-2"
+            color="white"
+            @click="translate('de')"
+          >
+            DE
+          </v-chip>
+          <v-chip
+            class="ma-2"
+            color="white"
+            @click="translate('es')"
+          >
+            ES
+          </v-chip>
+          <v-chip
+            class="ma-2"
+            color="white"
+            @click="translate('fr')"
+          >
+            FR
+          </v-chip>
+          <v-chip
+            class="ma-2"
+            color="white"
+            @click="translate('it')"
+          >
+            IT
+          </v-chip>
+          <v-chip
+            class="ma-2"
+            color="white"
+            @click="translate('jp')"
+          >
+            JP
+          </v-chip>
+          <v-chip
+            class="ma-2"
+            color="white"
+            @click="translate('zh')"
+          >
+            ZH
+          </v-chip>
+        </div>
         <h2 class="text-h4 my-2">
           No datasets, please
         </h2>
@@ -174,16 +218,56 @@
       </v-sheet>
     </div>
     <!-- eslint-enable vue/no-v-html -->
+    <v-layout
+      row
+      justify-center
+    >
+      <v-dialog
+        v-model="showTranslation"
+        max-width="700px"
+      >
+        <v-card>
+          <v-card-title>
+            <!-- nothing to see here -->
+          </v-card-title>
+          <v-card-text>
+            {{ translatedText }}
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="showTranslation = false"
+            >
+              {{ closeButton }}
+            </v-btn>
+            <v-spacer />
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
   </main>
 </template>
 
 <script>
 import newData from '@/data/NewStaticPageData.json'
+import noDatasetsPlease from '@/data/noDatasetsPlease.json'
 export default {
   name: "New",
   data: () => {
     return {
       newData,
+      showTranslation: false,
+      translatedText: '',
+      closeButton: ''
+    }
+  },
+  methods: {
+    translate(language) {
+      this.translatedText = noDatasetsPlease[language].text;
+      this.closeButton = noDatasetsPlease[language].close;
+      this.showTranslation = true;
     }
   }
 }

@@ -108,6 +108,41 @@
         </v-card>
       </v-overlay>
     </v-expand-transition>
+    <v-layout
+      row
+      justify-center
+    >
+      <v-dialog
+        v-model="showRemoveWatcher"
+        max-width="700px"
+      >
+        <v-card>
+          <v-card-title
+            class="headline"
+          >
+            Also remove this maintainer as watcher?
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="completeRemoval(false)"
+            >
+              No
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="completeRemoval(true)"
+            >
+              Yes
+            </v-btn>
+            <v-spacer />
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
   </v-form>
 </template>
 
@@ -137,7 +172,9 @@ export default {
         content: null,
         index: null
       },
-      formValid: false
+      formValid: false,
+      showRemoveWatcher: false,
+      watcherToRemove: null
     }
   },
   computed: {
@@ -146,6 +183,11 @@ export default {
     maintainers:{
       get(){
         return this.getSection("generalInformation").data.maintainers;
+      }
+    },
+    watchers:{
+      get(){
+        return this.getSection("generalInformation").data.watchers;
       }
     },
     initialMaintainer(){
@@ -170,7 +212,25 @@ export default {
       };
     },
     removeMaintainer(maintainerIndex){
-      this.maintainers.splice(maintainerIndex, maintainerIndex+1)
+      let _module = this;
+      let maintainerId = _module.maintainers[maintainerIndex].id;
+      _module.maintainers.splice(maintainerIndex, maintainerIndex+1)
+      if (_module.watchers.some(m => m.id === maintainerId)) {
+        _module.watcherToRemove = maintainerId;
+        _module.showRemoveWatcher = true;
+      }
+    },
+    completeRemoval(removeWatcher) {
+      let _module = this;
+      if (removeWatcher) {
+        let index = _module.watchers.findIndex( element => {
+          if (element.id === _module.watcherToRemove) {
+            return true;
+          }
+        });
+        _module.watchers.splice(index, index+1);
+      }
+      _module.showRemoveWatcher = false;
     },
     addItem(item){
       let _module = this;

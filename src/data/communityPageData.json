@@ -228,7 +228,7 @@
           {"link": "https://orcid.org/0000-0002-3401-8597", "text": "<b>Imma Subirats, </b>FAO of the United Nations"},
           {"link": "https://orcid.org/0000-0003-2839-4067", "text": "<b>Kiera McNiece, </b>Cambridge University Press"},
           {"link": "https://orcid.org/0000-0002-1164-1351", "text": "<b>Luiz Olavo Bonino, </b>GO-FAIR"},
-          [{"link": "https://orcid.org/0000-0003-4407-2180", "text": "<b>Lorenzo Feri, </b>"},{"link": "https://orcid.org/0000-0002-0517-1031", "text": "and <b>Sarah Callaghan, </b>Elsevier"}],
+          [{"link": "https://orcid.org/0000-0003-4407-2180", "text": "<b>Lorenzo Feri, </b>"},{"link": "https://orcid.org/0000-0002-0517-1031", "text": "and <b>Sarah Callaghan, </b>Research Strategy & Policy Unit, University of Oxford"}],
           {"link": "https://orcid.org/0000-0001-7322-7642", "text": "<b>Michael Ball, </b>Medical Research Council"},
           {"link": "https://orcid.org/0000-0001-7787-8864", "text": "<b>Mike Huerta, </b>NIH National Library of Medicine"},
           [{"link": "https://orcid.org/0000-0002-7134-499X", "text": "<b>Molly Cranston, </b>"},{"link": "https://orcid.org/0000-0003-0166-9200", "text": "and <b>Guillaume Wright, </b>F1000Research"}],
@@ -239,7 +239,8 @@
           {"link": "https://orcid.org/0000-0002-2499-4025", "text": "<b>Thomas Lemberger, </b>EMBO Press"},
           {"link": "https://orcid.org/0000-0002-0285-4910", "text": "<b>Wei-Mun Chan, </b>eLife"},
           {"link": "https://orcid.org/0000-0002-9971-813X", "text": "<b>Sowmya Swaminathan, </b>Springer Nature"},
-          {"link": "https://orcid.org/0000-0001-8520-5598", "text": "<b>Marta Teperek, </b>TUDelft"}
+          {"link": "https://orcid.org/0000-0001-8520-5598", "text": "<b>Marta Teperek, </b>TUDelft"},
+          {"link": "https://orcid.org/0000-0002-9465-4042", "text": "<b>Sarah Stewart, </b>Bodleian Libraries, University of Oxford"}
         ]
       }
     ]

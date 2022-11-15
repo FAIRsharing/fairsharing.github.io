@@ -387,6 +387,24 @@
         "linkedin" : "",
         "logo": "",
         "year_active": ["2022"]
+      },
+      {
+        "name": "Kay Burrows",
+        "id": 8056,
+        "organisation": [
+          {
+            "id": 979,
+            "name": "F1000"
+          }
+        ],
+        "scope": "Policies; Chemistry",
+        "orcid": "0000-0002-5485-6256",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
       }
     ]
 }

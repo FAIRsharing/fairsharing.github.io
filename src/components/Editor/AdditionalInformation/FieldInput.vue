@@ -75,7 +75,7 @@
 
     <v-switch
       v-if="isSwitch && subfieldName"
-      :v-model="fieldCheck()[subfieldName]"
+      v-model="fieldCheck()[subfieldName]"
       inset
       class="field ml-3 switch"
       true-value="yes"

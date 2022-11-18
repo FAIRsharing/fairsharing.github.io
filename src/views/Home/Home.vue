@@ -30,6 +30,9 @@ import SearchBlock from "@/components/Home/SearchBlock";
 import CategoryBlock from "@/components/Home/CategoryBlock";
 import CommunityCarousel from "@/components/Home/CommunityCarousel";
 import StatisticsBlock from "@/components/Home/StatisticsBlock";
+import RestClient from "@/lib/Client/RESTClient.js"
+
+const restClient = new RestClient();
 
 /** Component to handle the front page (landing page)
  *
@@ -37,83 +40,21 @@ import StatisticsBlock from "@/components/Home/StatisticsBlock";
 export default {
   name: "Home",
   components:{CommunityCarousel, Carousel, InfoBlock, SearchBlock, CategoryBlock, StatisticsBlock },
-  computed: {
-    JSONLD: () => {
-      return JSON.stringify(  {
-        "@context": "http://schema.org",
-        "@type": "DataCatalog",
-        "identifier":"https://identifiers.org/MIR:00000364",
-        "name": "FAIRsharing.org",
-        "description": "A manually curated, informative and educational resource on data and metadata standards, inter-related to databases/data repositories and funder and journal publisher data policies from across disciplines. FAIRsharing is an ELIXIR-UK node resource and has an active role in the RDA and Force11 data initiatives.",
-        "url": "https://fairsharing.org/",
-        "dataset": [
-          {
-            "@type" : "Dataset",
-            "name" : "Metadata Standard",
-            "description" : "A manually curated registry of standards, split into three types - Terminology Artifacts (ontologies, e.g. Gene Ontology), Models and Formats (conceptual schema, formats, data models, e.g. FASTA), and Reporting Guidelines (e.g. the ARRIVE guidelines for in vivo animal testing). These are linked to the databases that implement them and the funder and journal publisher data policies that recommend or endorse their use.",
-            "identifier": "https://www.fairsharing.org/bsg-sXXXXXX",
-            "url" : "https://fairsharing.org/standards",
-            "keywords" : "Standards, Metadata, Formats, Ontologies, Terminology Artifacts, Reporting Guidelines",
-            "includedInDataCatalog" : "https://www.fairsharing.org"
-          },
-          {
-            "@type" : "Dataset",
-            "name" : "Database",
-            "description": "A manually curated registry of databases/data repositories, conforming to the BioDBcore standard (from the Life Sciences). These are linked to the standards that they use and the funder and journal publisher data policies that recommend or endorse their use.",
-            "identifier": "https://www.fairsharing.org/bsg-dXXXXXX",
-            "url": "https://fairsharing.org/databases",
-            "keywords": "Database, Data repository",
-            "includedInDataCatalog" : "https://www.fairsharing.org"
-          },
-          {
-            "@type" : "Dataset",
-            "name" : "Data Policy",
-            "description": "A manually curated registry of data policies from research funders, journal publishers, societies, and other organisations. These are linked to the databases and standards that they recommend for use",
-            "identifier": "https://www.fairsharing.org/bsg-pXXXXXX",
-            "url": "https://fairsharing.org/policies",
-            "keywords": "Data policy, journal, funder, society"
-          }
-        ],
-        "keywords": "registry, life science, natural science, social science, ",
-        "provider":
-            [
-              {
-                "@type":"Person",
-                "name": "FAIRsharing.org support",
-                "email": "contact@fairsharing.org"
-              },
-              {
-                "@type":"Organization",
-                "name": "Oxford e-Research Centre, University of Oxford",
-                "url": "http://www.oerc.ox.ac.uk/"
-              },
-              {
-                "@type":"Organization",
-                "name": "ELIXIR-UK",
-                "url": "http://www.elixir-uk.org"
-              },
-              {
-                "alternateName": ["FAIRsharing.org Registry", "BioSharing.org"]
-              }
-            ],
-        "license": {
-          "@type": "CreativeWork",
-          "name": "Creative Commons CC BY-SA 4.0 Attribution",
-          "url": "https://creativecommons.org/licenses/by-sa/4.0/"
-        },
-        "publication":[
-          {
-            "@type":"PublicationEvent",
-            "name": "BioSharing: curated and crowd-sourced metadata standards, databases and data policies in the life sciences.",
-            "url": "https://academic.oup.com/database/article-lookup/doi/10.1093/database/baw075"
-          }
-        ]
-
-      });
+  data() {
+    return {
+      JSONLD: {}
     }
+  },
+  mounted() {
+    this.getJsonld();
   },
   destroyed() {
     this.$scrollTo('body',0,{});
+  },
+  methods: {
+    async getJsonld() {
+      this.JSONLD = await restClient.getHomepageJsonld();
+    },
   }
 };
 </script>

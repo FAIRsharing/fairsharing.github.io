@@ -55,16 +55,18 @@
             {{ cleanString(key) | capitalize }}
           </v-card-title>
           <v-card-text class="ma-0 pt-8">
-            <p
-              v-if="currentRecord.fairsharingRecord.exhaustiveLicences"
-            >
-              This is a complete list of licences applicable to the resource.
-            </p>
-            <p
-              v-else
-            >
-              This is a subset of licences recommended by the resource or most commonly used by its users.
-            </p>
+            <div v-if="key === 'licences'">
+              <p
+                v-if="currentRecord.fairsharingRecord.exhaustiveLicences"
+              >
+                This is a complete list of licences applicable to the resource.
+              </p>
+              <p
+                v-else
+              >
+                This is a subset of licences recommended by the resource or most commonly used by its users.
+              </p>
+            </div>
             <v-card
               v-for="(subItem, subIndex) in item.data"
               :key="subItem.name + '_' + subIndex"

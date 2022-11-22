@@ -930,6 +930,20 @@ class RESTClient {
         return response.data;
     }
 
+    /**
+     * Get JSON+LD for homepage.
+     * @returns {Promise}
+     */
+    async getHomepageJsonld(){
+        let _client = this;
+        const request = {
+            method: "get",
+            baseURL: _client.baseURL + "/homepage_jsonld",
+        };
+        let response = await _client.executeQuery(request);
+        return response.data;
+    }
+
 }
 
 export default RESTClient;

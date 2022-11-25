@@ -26,6 +26,7 @@
             sm="12"
           >
             <v-btn
+              elevation="2"
               class="full-width white--text"
               height="40"
               :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.breakpoint.smAndDown}]"
@@ -42,6 +43,7 @@
           >
             <v-select
               v-model="year"
+              solo
               :items="yearList"
               label="Year"
               outlined
@@ -56,9 +58,10 @@
             sm="12"
           >
             <v-btn
-              class="white--text"
+              elevation="2"
+              class="full-width white--text green text-md-caption text-lg-body-2 font-weight-medium"
+              :class="{'mt-n4 mb-4' : $vuetify.breakpoint.smAndDown}"
               height="40"
-              :class="{'green': 'accent3'}"
               href="/community_curation"
             >
               Community curation

@@ -22,9 +22,9 @@
     />
     <v-card-actions class="justify-center">
       <v-btn
-        class="white--text"
+        elevation="2"
+        class="white--text green"
         height="40"
-        :class="{'green': 'accent3'}"
         href="/community_curation/our_curators"
       >
         Meet our community curators

@@ -8,8 +8,8 @@
         <v-row dense>
           <v-col
             cols="12"
-            lg="7"
-            md="7"
+            lg="6"
+            md="6"
             sm="12"
           >
             <h1
@@ -21,11 +21,12 @@
           </v-col>
           <v-col
             cols="12"
-            lg="3"
-            md="3"
+            lg="2"
+            md="2"
             sm="12"
           >
             <v-btn
+              elevation="2"
               class="full-width white--text"
               height="40"
               :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.breakpoint.smAndDown}]"
@@ -42,12 +43,29 @@
           >
             <v-select
               v-model="year"
+              solo
               :items="yearList"
               label="Year"
               outlined
               dense
               @change="selectYear()"
             />
+          </v-col>
+          <v-col
+            cols="12"
+            lg="2"
+            md="2"
+            sm="12"
+          >
+            <v-btn
+              elevation="2"
+              class="full-width white--text green text-md-caption text-lg-body-2 font-weight-medium"
+              :class="{'mt-n4 mb-4' : $vuetify.breakpoint.smAndDown}"
+              height="40"
+              href="/community_curation"
+            >
+              Community curation
+            </v-btn>
           </v-col>
         </v-row>
         <v-row

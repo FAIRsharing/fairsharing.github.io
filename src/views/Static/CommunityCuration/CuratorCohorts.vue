@@ -8,8 +8,8 @@
         <v-row dense>
           <v-col
             cols="12"
-            lg="7"
-            md="7"
+            lg="6"
+            md="6"
             sm="12"
           >
             <h1
@@ -21,8 +21,8 @@
           </v-col>
           <v-col
             cols="12"
-            lg="3"
-            md="3"
+            lg="2"
+            md="2"
             sm="12"
           >
             <v-btn
@@ -48,6 +48,21 @@
               dense
               @change="selectYear()"
             />
+          </v-col>
+          <v-col
+            cols="12"
+            lg="2"
+            md="2"
+            sm="12"
+          >
+            <v-btn
+              class="white--text"
+              height="40"
+              :class="{'green': 'accent3'}"
+              href="/community_curation"
+            >
+              Community curation
+            </v-btn>
           </v-col>
         </v-row>
         <v-row

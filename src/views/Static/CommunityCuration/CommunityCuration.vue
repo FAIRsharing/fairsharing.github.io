@@ -20,8 +20,18 @@
       :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       v-html="communityCurationData.second_section.text"
     />
-
+    <v-card-actions class="justify-center">
+      <v-btn
+        class="white--text"
+        height="40"
+        :class="{'green': 'accent3'}"
+        href="/community_curation/our_curators"
+      >
+        Meet our community curators
+      </v-btn>
+    </v-card-actions>
     <br>
+
     <v-expansion-panels
       v-model="panel"
       :readonly="readonly"

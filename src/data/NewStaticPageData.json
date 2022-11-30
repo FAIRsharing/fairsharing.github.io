@@ -3,24 +3,24 @@
     "title": "What to add",
     "items": [
       {
-        "title": "Database",
+        "title": "Databases",
         "icon": "repository",
-        "description":"Findable, accessible and organised collections of datasets, software, and other digital objects that can be browsed and downloaded."
+        "description":"Findable, accessible and organised collections of datasets, software, and other digital objects that can be browsed and downloaded. Please visit our <a href='https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/registry-type#databases' target='_blank'>documentation</a> to learn more about the type of databases you can describe."
       },
       {
         "title": "Standards",
         "icon": "model_and_format",
-        "description":"Requirements, specifications or guidelines that can be used for the description, interoperability, citation, sharing, publication, or preservation of all kinds of digital objects."
+        "description":"Requirements, specifications or guidelines that can be used for the description, interoperability, citation, sharing, publication, or preservation of all kinds of digital objects. Please visit our <a href='https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/registry-type#standards' _target='blank'>documentation</a> to learn more about the type of standards you can describe."
       },
       {
         "title": "Policies",
         "icon": "journal",
-        "description":"Data policy statements implemented by an organisation such as a journal publisher, a project consortium, a funder or an institution."
+        "description":"Data policy statements implemented by an organisation such as a journal publisher, a project consortium, a funder or an institution. Please visit our <a href='https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/registry-type#policies' _target='blank'>documentation</a> to learn more about the type of policies you can describe."
       },
       {
         "title": "Collections",
         "icon": "collection",
-        "description":"Groups of records spanning these three registries according to specific criteria (common standards, organisations or a particular journal’s data policy)."
+        "description":"Groups of records spanning these three registries according to specific criteria (common standards, organisations or a particular journal’s data policy). Please visit our <a href='https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/registry-type#collections' _target=''>documentation</a. to learn more about collections."
       }
     ]
   }

@@ -7,7 +7,15 @@
     "title": "Standards",
     "subtitle": "A registry of terminology artefacts, models/formats, reporting guidelines, and identifier schemas."
   },
+  "standards": {
+    "title": "Standards",
+    "subtitle": "A registry of terminology artefacts, models/formats, reporting guidelines, and identifier schemas."
+  },
   "database": {
+    "title": "Databases",
+    "subtitle": "A registry of knowledgebases and repositories of data and other digital assets."
+  },
+  "databases": {
     "title": "Databases",
     "subtitle": "A registry of knowledgebases and repositories of data and other digital assets."
   },
@@ -15,7 +23,15 @@
     "title": "Policies",
     "subtitle": "A registry of data preservation, management and sharing policies from international funding agencies, regulators, journals, and other organisations."
   },
+  "policies": {
+    "title": "Policies",
+    "subtitle": "A registry of data preservation, management and sharing policies from international funding agencies, regulators, journals, and other organisations."
+  },
   "collection": {
+    "title": "Collections",
+    "subtitle": " Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation. A Recommendation is a core-set of resources that are selected or endorsed by data policies from journals, funders or other organisations. "
+  },
+  "collections": {
     "title": "Collections",
     "subtitle": " Collections group together one or more types of resource (standard, database or policy) by domain, project or organisation. A Recommendation is a core-set of resources that are selected or endorsed by data policies from journals, funders or other organisations. "
   },

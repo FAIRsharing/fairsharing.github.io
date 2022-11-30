@@ -39,6 +39,12 @@
         "url": "https://www.twitter.com/fairsharing_org",
         "urlType": "external",
         "icon": "fab fa-twitter"
+      },
+      {
+        "title": "Mastodon",
+        "url": "https://fediscience.org/@fairsharing",
+        "urlType": "external",
+        "icon": "fab fa-mastodon"
       }
     ]
   },

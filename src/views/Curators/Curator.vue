@@ -307,6 +307,34 @@
             </v-data-table>
           </v-card-text>
         </v-card>
+        <!-- Curator Summary Information -->
+        <v-card>
+          <v-card-text>
+            <v-card-title
+              id="download-curator-summary"
+              class="green white--text"
+            >
+              CURATOR SUMMARY STATISTICS
+              <v-btn
+                v-if="downloadCuratorContent"
+                class="info ml-5"
+              >
+                <a
+                  :href="downloadCuratorContent"
+                  download="curatorSummaryStatistics.txt"
+                >
+                  <v-icon
+                    color="white"
+                    class="mr-1"
+                  >
+                    fa fa-download
+                  </v-icon>
+                  <span class="white--text">Obtain file</span>
+                </a>
+              </v-btn>
+            </v-card-title>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
     <!-- this shouldn't appear as an unauthorised user shouldn't be here -->
@@ -489,6 +517,7 @@
           loading: false,
           downloadContent: null,
           downloadReviewContent: null,
+          downloadCuratorContent: null,
           error: {
             general: null
           }
@@ -520,6 +549,8 @@
           this.loading = false;
           let review = this.allDataCuration.needsReview || [];
           this.downloadReviewContent = "data:text/json;charset=utf-8," + encodeURIComponent(review.join('\n'));
+          let curatorSummary = this.allDataCuration.curatorSummaryStatistics || [];
+          this.downloadCuratorContent = "data:text/json;charset=utf-8," + encodeURIComponent(curatorSummary.join('\n'));
         })
       },
       methods: {

@@ -3,6 +3,7 @@
   "queryParam": null,
   "fields": [
     "needsReview",
+    "curatorSummaryStatistics",
     {
       "name": "messages",
       "fields": [

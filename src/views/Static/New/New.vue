@@ -68,7 +68,9 @@
               <v-card-text
                 class="text--primary height-100"
               >
-                {{ newData.firstBlock.items[index].description }}
+                <!-- eslint-disable vue/no-v-html -->
+                <span v-html="newData.firstBlock.items[index].description" />
+                <!-- eslint-enable vue/no-v-html -->
               </v-card-text>
             </v-card>
           </v-col>

@@ -20,7 +20,7 @@
       {
         "title": "Collections",
         "icon": "collection",
-        "description":"Groups of records spanning these three registries according to specific criteria (common standards, organisations or a particular journal’s data policy). Please visit our <a href='https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/registry-type#collections' _target=''>documentation</a. to learn more about collections."
+        "description":"Groups of records spanning these three registries according to specific criteria (common standards, organisations or a particular journal’s data policy). Please visit our <a href='https://fairsharing.gitbook.io/fairsharing/record-sections-and-fields/general-information/registry-type#collections' _target=''>documentation</a>. to learn more about collections."
       }
     ]
   }

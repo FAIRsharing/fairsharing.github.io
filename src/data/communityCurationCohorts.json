@@ -124,24 +124,6 @@
         "year_active": ["2022"]
       },
       {
-        "name": "Antonella Delmestri",
-        "id": 7747,
-        "organisation": [
-          {
-            "id": 3112,
-            "name": "University of Oxford"
-          }
-        ],
-        "scope": "Medical Informatics",
-        "orcid": "0000-0003-0388-3403",
-        "early_adopter" : false,
-        "show_more" : false,
-        "twitter": "",
-        "linkedin" : "antonella-delmestri",
-        "logo": "antonelladelmestri.jpg",
-        "year_active": ["2022"]
-      },
-      {
         "name": "Daniel Pereira Costa",
         "id": 7754 ,
         "organisation": [
@@ -177,25 +159,6 @@
         "twitter": "",
         "linkedin" : "",
         "logo": "",
-        "year_active": ["2022"]
-      },
-      {
-        "name": "Muhammad Rafiq",
-        "id": 7730 ,
-        "organisation": [
-          {
-            "id": 3692,
-            "name": "Institute of Information Management, PU",
-            "tooltip": "Institute of Information Management, University of the Punjab"
-          }
-        ],
-        "scope": "Library and Information Science",
-        "orcid": "0000-0002-8291-2569",
-        "early_adopter" : false,
-        "show_more" : false,
-        "twitter": "",
-        "linkedin" : "",
-        "logo": "muhammadrafiq.jpg",
         "year_active": ["2022"]
       },
       {
@@ -238,24 +201,6 @@
         "twitter": "GenevievMichaud",
         "linkedin" : "",
         "logo": "genevievemichaud.jpg",
-        "year_active": ["2022"]
-      },
-      {
-        "name": "Joao Moreira",
-        "id": 7678 ,
-        "organisation": [
-          {
-            "id": 3143,
-            "name": "University of Twente"
-          }
-        ],
-        "scope": "Computer Science",
-        "orcid": "0000-0002-4547-7000",
-        "early_adopter" : false,
-        "show_more" : false,
-        "twitter": "",
-        "linkedin" : "",
-        "logo": "",
         "year_active": ["2022"]
       },
       {
@@ -344,24 +289,6 @@
         ],
         "scope": "Material sciences and catalysis",
         "orcid": "0000-0002-5902-650X",
-        "early_adopter" : false,
-        "show_more" : false,
-        "twitter": "",
-        "linkedin" : "",
-        "logo": "",
-        "year_active": ["2022"]
-      },
-      {
-        "name": "Shukadev Amgain",
-        "id": 7745 ,
-        "organisation": [
-          {
-            "id": 3698,
-            "name": "Open Knowledge Nepal"
-          }
-        ],
-        "scope": "Social Sciences and Humanities",
-        "orcid": "0000-0002-5113-6878",
         "early_adopter" : false,
         "show_more" : false,
         "twitter": "",

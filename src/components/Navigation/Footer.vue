@@ -84,13 +84,8 @@
         src="/assets/home/Footer/FAIRsharingCC-BY-SA.png"
         alt="fairsharing licence"
       ></a>
+
     </v-row>
-    <a 
-      rel="me"
-      href="https://fediscience.org/@fairsharing"
-    >
-      Mastodon
-    </a>
   </v-row>
 </template>
 

@@ -2,9 +2,23 @@
   "communityCuration":{
     "first_section":{
       "main_title": "What is the FAIRsharing Community Curation Programme?",
-      "text_1": "Under the auspices of RDA Europe and EOSC Future, <a href='https://fairsharing.org/'>FAIRsharing</a> the Community Curation Programme brings together domain experts to promote and describe the standards and databases most relevant to their research domain or area of focus. They also promote their research community and ensure that the resources within that community are findable, accessible, and exposed to data management tools, knowledge graphs and other research software. FAIRsharing Community Curators help us help their communities to be more accurately and comprehensively represented with us. And in return, FAIRsharing provides a number of professional benefits.",
-      "text_2": "Each Community Curator chooses their own focus within the programme according to the needs of their organisation and community. In general, however, there are two main aspects to the role: <b>curation</b>, where they gain expertise by curating and overseeing the database, standards and data policy records relevant to their community; and <b>education</b>, where they gain attribution by creating educational material relevant to FAIRsharing and the research data community and bringing their knowledge back to the communities they serve.",
-      "text_3": "We are happy to receive applications for community curators across <b>all subject areas</b> (Engineering, Natural Sciences, and Humanities and the Social Sciences). This work is linked to the <a href='https://eoscfuture-grants.eu/provider/research-data-alliance/rda-open-call-rda-eosc-future-domain-ambassadors-1'>RDA / EOSC Future Domain Ambassador</a> call, which is intended to create conduits of communication and outreach among the <a href='https://www.rd-alliance.org/'>RDA</a>, <a href='https://eoscfuture.eu/'>EOSC Future</a>, and the communities of which each ambassador is a part."
+      "text_1": "The FAIRsharing the Community Curation Programme is a thriving community of domain and discipline experts who:",
+      "commitments": [
+        {
+          "black_text": "act as advocates",
+          "text": "to promote the value of standards, databases and policies for digital objects (incl. data, software);"
+        },
+        {
+          "black_text": "create educational material",
+          "text": "describing these resources helping researchers and other stakeholders to find, use and adopt them;"
+        },
+        {
+          "black_text": "enrich the content",
+          "text": "of FAIRsharing, adding and enhancing the description and discoverability of these resources."
+        }
+      ],
+      "text_2": "The FAIRsharing Community Curators put their expertise into action in one of more disciplines or area of activities, according to their interest, and are credited for their contribution via visible attribution in their ORCID and FAIRsharing profiles. Their contribution to and engagement with the FAIRsharing team gives them more knowledge about the wealth of standards (terminologies, models/formats, guidelines, identifier schema), databases (repositories and knowledge bases) and policies (by institutions, funders, journals and other stakeholders) relevant to them.",
+      "text_3": "Launched in the summer of 2022, and supported by the <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' class='underline-effect' target=blank>RDA FAIRsharing WG</a> and the <a href='https://eoscfuture-grants.eu/node/262' class='underline-effect' target=blank>RDA/EOSC-Future Ambassadorship</a> Programme, the FAIRsharing the Community Curation Programme shows the importance of cultivating and sharing the collective knowledge on standards, databases and policies to map this complex landscape that enables the FAIR Principles."
     },
     "second_section":{
       "main_title": "Our Community Curators",

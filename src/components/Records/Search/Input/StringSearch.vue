@@ -126,7 +126,8 @@ export default {
         }
         else {
           query = {
-            q: _module.searchTerm
+            // Changed due to: https://github.com/FAIRsharing/FAIRsharing-API/issues/625
+            q: _module.searchTerm.replace(/[^0-9a-z]/gi, ' ')
           }
         }
         _module.$router.push({

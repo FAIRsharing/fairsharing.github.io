@@ -482,7 +482,9 @@
             newOrganisation: {
               data: {
                 organisation_type_ids: [],
-                country_ids:[]
+                country_ids: [],
+                parent_ror_links: [],
+                child_ror_links: [],
               },
               loading: false,
               formValid: false,
@@ -586,6 +588,12 @@
           if (organisationInput.country_ids) {
             organisationInput.country_ids = organisationInput.country_ids.map(obj => obj.id);
           }
+          if (organisationInput.parent_ror_links) {
+            organisationInput.parent_ror_links = organisationInput.parent_ror_links.map(obj => obj.id);
+          }
+          if (organisationInput.child_ror_links) {
+            organisationInput.child_ror_links = organisationInput.child_ror_links.map(obj => obj.id);
+          }
           let data = await restClient.createOrganisation(organisationInput, this.user().credentials.token);
           if (!data.error) {
             let newOrganisation = {
@@ -593,7 +601,7 @@
               name: data.data.attributes.name,
               homepage: data.data.attributes.homepage,
               types: organisation_type_ids.map(obj => obj.name),
-              urlForLogo: data.data.attributes.url_for_logo,
+              urlForLogo: data.data.attributes.url_for_logo
             };
             this.$store.commit('record/setEditOrganisationLinkOrganisation', newOrganisation);
             Vue.set(this.organisations, this.organisations.length, newOrganisation);
@@ -687,6 +695,9 @@
             this.selectTypes()
             /*************  Country Select *************/
             this.menus.newOrganisation.data.country_ids = this.countries.filter(country => country.name === this.menus.newOrganisation.selectOrganisation.country["country_name"])
+            /*************  Parent ror relationship *************/
+            this.menus.newOrganisation.data.parent_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "Parent")
+            this.menus.newOrganisation.data.child_ror_links = this.menus.newOrganisation.selectOrganisation.relationships.filter(obj => obj.type === "Child")
           }
         },
 
@@ -721,6 +732,9 @@
           this.importROR = false
           this.validName = true
           this.menus.newOrganisation.data.name = ''
+          this.menus.newOrganisation.data.ror_link = null
+          this.menus.newOrganisation.data.parent_ror_links = []
+          this.menus.newOrganisation.data.child_ror_links = []
           this.$refs.createNewOrganisation.reset()
         },
       }

@@ -196,7 +196,7 @@
           {
             "id": 3831,
             "name": "SSHOC",
-            "tooltip": "SSHOC"
+            "tooltip": "Social Sciences and Humanities Open Cloud"
           }
         ],
         "scope": "Humanities and Social Science",
@@ -318,7 +318,7 @@
           {
             "id": 3829,
             "name": "ESCAPE",
-            "tooltip": "ESCAPE"
+            "tooltip": "European Science Cluster of Astronomy & Particle physics ESFRI research infrastructures"
           }
         ],
         "scope": "Physics",

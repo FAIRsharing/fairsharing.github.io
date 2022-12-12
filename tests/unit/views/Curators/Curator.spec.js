@@ -187,6 +187,7 @@ describe("Curator.vue", () => {
       });
       expect(wrapper.vm.approvalRequired.length).toBe(0);
       expect(wrapper.vm.hiddenRecords.length).toBe(0);
+      graphStub.restore();
   });
 
 

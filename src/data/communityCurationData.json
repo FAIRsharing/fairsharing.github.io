@@ -2,7 +2,21 @@
   "communityCuration":{
     "first_section":{
       "main_title": "What is the FAIRsharing Community Curation Programme?",
-      "text_1": "The FAIRsharing the Community Curation Programme is a thriving community of domain and discipline experts who: <b>act as advocates</b> to promote the value of standards, databases and policies for digital objects (incl. data, software); <b>create educational material</b> describing these resources helping researchers and other stakeholders to find, use and adopt them; <b>enrich the content</b> of FAIRsharing, adding and enhancing the description and discoverability of these resources.",
+      "text_1": "The FAIRsharing the Community Curation Programme is a thriving community of domain and discipline experts who:",
+      "items": [
+        {
+          "black_text": "act as advocates",
+          "text": "to promote the value of standards, databases and policies for digital objects (incl. data, software)."
+        },
+        {
+          "black_text": "create educational material",
+          "text": "escribing these resources helping researchers and other stakeholders to find, use and adopt them."
+        },
+        {
+          "black_text": "enrich the content",
+          "text": "of FAIRsharing, adding and enhancing the description and discoverability of these resources."
+        }
+      ],
       "text_2": "The FAIRsharing Community Curators put their expertise into action in one of more disciplines or area of activities, according to their interest, and are credited for their contribution via visible attribution in their ORCID and FAIRsharing profiles. Their contribution to and engagement with the FAIRsharing team gives them more knowledge about the wealth of standards (terminologies, models/formats, guidelines, identifier schema), databases (repositories and knowledge bases) and policies (by institutions, funders, journals and other stakeholders) relevant to them.",
       "text_3": "Launched in the summer of 2022, and supported by the <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' class='underline-effect' target=blank>RDA FAIRsharing WG</a> and the <a href='https://eoscfuture-grants.eu/node/262' class='underline-effect' target=blank>RDA/EOSC-Future Ambassadorship</a> Programme, the FAIRsharing the Community Curation Programme shows the importance of cultivating and sharing the collective knowledge on standards, databases and policies to map this complex landscape that enables the FAIR Principles."
     },

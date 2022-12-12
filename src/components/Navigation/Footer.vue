@@ -84,7 +84,6 @@
         src="/assets/home/Footer/FAIRsharingCC-BY-SA.png"
         alt="fairsharing licence"
       ></a>
-
     </v-row>
   </v-row>
 </template>

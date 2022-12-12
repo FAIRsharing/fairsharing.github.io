@@ -5,6 +5,15 @@
       :class="['mb-2 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       v-html="communityCurationData.first_section.text_1"
     />
+    <div
+      v-for="(item,index) in communityCurationData.first_section.items"
+      :key="'T'+ index"
+    >
+      <p :class="['mb-2 ml-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]">
+        {{ index+1 }} . <b>{{ item.black_text }}</b> {{ item.text }}
+      </p>
+    </div>
+    <!-- eslint-enable vue/no-v-html -->
     <!-- eslint-enable vue/no-v-html -->
     <div
       v-for="(item,index) in communityCurationData.first_section.items"
@@ -19,6 +28,10 @@
       :class="['tb-4 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       v-html="communityCurationData.first_section.text_2"
     />
+    <p
+      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      v-html="communityCurationData.first_section.text_3"
+    />
     <!-- eslint-enable vue/no-v-html -->
     <!-- eslint-disable vue/no-v-html -->
     <p
@@ -31,7 +44,7 @@
     </h1>
     <!-- eslint-disable vue/no-v-html -->
     <p
-      :class="['mb-8 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      :class="['mb-6 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       v-html="communityCurationData.second_section.text"
     />
     <v-card-actions class="justify-center">

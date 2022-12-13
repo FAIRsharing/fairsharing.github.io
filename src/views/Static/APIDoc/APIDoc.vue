@@ -150,6 +150,7 @@ curl --location --request GET 'https://api.fairsharing.org/fairsharing_records/1
       <pre>
 
 import requests
+import json
 
 url = "https://api.fairsharing.org/users/sign_in"
 
@@ -159,7 +160,7 @@ headers = {
   'Content-Type': 'application/json'
 }
 
-response = requests.request("POST", url, headers=headers, data=payload)
+response = requests.request("POST", url, headers=headers, data=json.dumps(payload))
 
 # Get the JWT from the response.text to use in the next part.
 data = response.json()

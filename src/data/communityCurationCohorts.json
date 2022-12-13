@@ -192,6 +192,11 @@
             "id": 1974,
             "name": "CNRS",
             "tooltip": "The CNRS (National Center for Scientific Research)"
+          },
+          {
+            "id": 3831,
+            "name": "SSHOC",
+            "tooltip": "Social Sciences and Humanities Open Cloud"
           }
         ],
         "scope": "Humanities and Social Science",
@@ -228,6 +233,11 @@
           {
             "id": 3101,
             "name": "University of Montpellier"
+          },
+          {
+            "id": 873,
+            "name": "EOSC-Life",
+            "tooltip": "EOSC-Life"
           }
         ],
         "scope": "Microscopy",
@@ -304,6 +314,11 @@
             "id": 2816,
             "name": "OU",
             "tooltip": "The Open University"
+          },
+          {
+            "id": 3829,
+            "name": "ESCAPE",
+            "tooltip": "European Science Cluster of Astronomy & Particle physics ESFRI research infrastructures"
           }
         ],
         "scope": "Physics",

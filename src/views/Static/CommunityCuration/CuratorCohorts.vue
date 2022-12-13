@@ -70,6 +70,7 @@
         </v-row>
         <v-row
           dense
+          mb-6
         >
           <v-col
             cols="12"

@@ -88,7 +88,7 @@
             sm="6"
           >
             <i>I find myself dedicating more and more time on curating […] In doing so, I experienced how much standards are key, but also that [these] curation skills and activities are indeed valuable activities that make a difference in increasing discoverability and reusability of resources we want to share..</i>
-            br>
+            <br>
             <b>Geneviève Michaud</b> - Humanities and Social Science
           </v-col>
         </v-row>

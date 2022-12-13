@@ -73,20 +73,22 @@
         >
           <v-col
             cols="12"
-            lg="6"
-            md="6"
-            sm="12"
+            lg="12"
+            md="12"
+            sm="6"
           >
             <i>The Community Curator Programme at FAIRsharing.org is a great working example demonstrating when data communities work FAIR together, they can sustain FAIR innovation together.</i>
+            <br>
             <b>Lindsey Anderson</b> - Life Science, Omics
           </v-col>
           <v-col
             cols="12"
-            lg="6"
-            md="6"
-            sm="12"
+            lg="12"
+            md="12"
+            sm="6"
           >
             <i>I find myself dedicating more and more time on curating […] In doing so, I experienced how much standards are key, but also that [these] curation skills and activities are indeed valuable activities that make a difference in increasing discoverability and reusability of resources we want to share..</i>
+            br>
             <b>Geneviève Michaud</b> - Humanities and Social Science
           </v-col>
         </v-row>

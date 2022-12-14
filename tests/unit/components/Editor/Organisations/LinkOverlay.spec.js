@@ -46,6 +46,9 @@ const organisation = {
         "links":["http://www.obsmedical.com/"],
         "name":"OBS Medical (United Kingdom)",
         "types":["Company"],
+        "ror_link": "https:rororere.rere",
+        "parent_ror_links": ["https:rororere.rere1", "https:rororere.rere2"],
+        "child_ror_links": ["https:rororere.rere3", "https:rororere.rere4"]
     }],
 };
 
@@ -129,7 +132,20 @@ describe("Edit -> LinkOverlay.vue", function() {
             name: "test",
             homepage: "https://example.com/test",
             organisation_type_ids: [{id:1, name: "?"}],
-            country_ids: [{id:1}]
+            country_ids: [{id:1}],
+            parent_ror_links: [
+            {
+                id: "https:rororere.rere1"
+              },
+              {
+                id: "https:rororere.rere2"
+              }
+            ],
+            child_ror_links: [
+            {
+              id : "https:rororere.rere3"
+            }
+          ]
         };
         wrapper.vm.menus.newOrganisation.data.country_ids = [];
         await wrapper.vm.createNewOrganisation();
@@ -140,9 +156,21 @@ describe("Edit -> LinkOverlay.vue", function() {
                 data: {
                     id: 1,
                     attributes: {
-                        name: "test"
+                        name: "test",
+                        relationships: [
+                         { type: "Parent",
+                         id: "https:rororere.rere1"
+                        },
+                        { type: "Parent",
+                         id: "https:rororere.rere2"
+                        },
+                        {type: "Child",
+                        id : "https:rororere.rere3"
+                        }
+                    ]
                     },
                     types: [{name: "?"}]
+
                 }
             }
          });
@@ -214,12 +242,16 @@ describe("Edit -> LinkOverlay.vue", function() {
                 },
                 "links":["http://www.obsmedical.com/"],
                 "name":"OBS Medical (United Kingdom)",
+                "ror_link": "https:rororere.rere",
                 "types":["Company"],
+                "parent_ror_links": ["https:rororere.rere1", "https:rororere.rere2"],
+                "child_ror_links": ["https:rororere.rere3", "https:rororere.rere4"]
             }]
         wrapper.vm.enterName = true
         wrapper.vm.importROR = false
         wrapper.vm.validName = true
         wrapper.vm.menus.newOrganisation.data.name = 'Oxford'
+        wrapper.vm.menus.newOrganisation.data.child_ror_links[1] = 'https:rororere.rere4'
         await wrapper.vm.getOrganisations();
         expect(wrapper.vm.enterName).toBe(false)
         expect(wrapper.vm.importROR).toBe(true)
@@ -255,7 +287,9 @@ describe("Edit -> LinkOverlay.vue", function() {
             "name": "abc",
             "homepage": "http://www.abc.com",
             "organisation_type_ids": "dummy",
-            "country_ids":"dummy"
+            "country_ids":"dummy",
+            "parent_ror_links": ["https:rororere.rere1", "https:rororere.rere2"],
+            "child_ror_links": ["https:rororere.rere3"]
         }
         wrapper.vm.selectOrganisationFromList()
         wrapper.vm.menus.newOrganisation.selectOrganisation = {
@@ -265,13 +299,28 @@ describe("Edit -> LinkOverlay.vue", function() {
             country:{
                 country_code: "DM",
                 country_name: "dummy"
-            }
+            },
+            parent_ror_links: [
+              {
+                id: "https:rororere.rere1"
+              },
+              {
+                id: "https:rororere.rere2"
+              }
+          ],
+          child_ror_links: [
+            {
+            id : "https:rororere.rere3"
+          }
+        ]
         }
         expect(wrapper.vm.menus.newOrganisation.data).toStrictEqual({
             "name": "abc",
             "homepage": "http://www.abc.com",
             "organisation_type_ids": "dummy",
-            "country_ids":"dummy"
+            "country_ids":"dummy",
+            "parent_ror_links": ["https:rororere.rere1", "https:rororere.rere2"],
+            "child_ror_links": ["https:rororere.rere3"]
         });
     });
 

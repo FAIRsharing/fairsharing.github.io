@@ -228,7 +228,7 @@
           {"link": "https://orcid.org/0000-0002-3401-8597", "text": "<b>Imma Subirats, </b>FAO of the United Nations"},
           {"link": "https://orcid.org/0000-0003-2839-4067", "text": "<b>Kiera McNiece, </b>Cambridge University Press"},
           {"link": "https://orcid.org/0000-0002-1164-1351", "text": "<b>Luiz Olavo Bonino, </b>GO-FAIR"},
-          {"link": "https://orcid.org/0000-0003-4407-2180", "text": "<b>Lorenzo Feri, Elsevier</b>"},
+          {"link": "https://orcid.org/0000-0003-4407-2180", "text": "<b>Lorenzo Feri, </b>Elsevier"},
           {"link": "https://orcid.org/0000-0003-1392-7799", "text": "<b>Mark Leggott, </b>Digital Research Alliance of Canada"},
           {"link": "https://orcid.org/0000-0001-7322-7642", "text": "<b>Michael Ball, </b>Medical Research Council"},
           {"link": "https://orcid.org/0000-0001-7787-8864", "text": "<b>Mike Huerta, </b>NIH National Library of Medicine"},
@@ -341,6 +341,28 @@
           {"link": "https://github.com/prakhyatox", "icon": "github"},
           {"link": "prakhyat.gailani@eng.ox.ac.uk", "icon": "contacts"}
         ]
+      }
+    ]
+  },
+  "rda": {
+    "title": "RDA FAIRsharing WG",
+    "description": "\n\n   The Research Data Alliance <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' target='_blank'>FAIRsharing Registry: Connecting data policies, standards and databases</a> Working Group (WG) was created to promote further adoption and drive improvement of the FAIRsharing registry. The WG contributes to a number of activities with other RDA groups; these activities reflect the requests and needs of the community, and are open and inclusive for all stakeholders. The WG community network encompasses repository mantainers and developers, standard-developing organizations, journals and journal publishers, funders, librarians, data stewards, and other scholarly organizations and alliances.\n",
+    "subsections": [
+      {
+        "title": "Chairs",
+        "data": [
+          {"text": "<b>Graham Smith, </b>Springer Nature"},
+          {"link": "https://orcid.org/0000-0002-8243-2493", "text": "<b>Holly Murray, </b>Health Data Research UK"},
+          {"link": "https://orcid.org/0000-0003-2687-1982", "text": "<b>Peter McQuilton, </b>GSK"},
+          {"link": "https://orcid.org/0000-0002-7614-0806", "text": "<b>Rebecca Grant, </b>F1000"},
+          {"link": "https://orcid.org/0000-0003-3179-7270", "text": "<b>Simon Hodson, </b>CODATA"},
+          {"link": "https://orcid.org/0000-0002-7702-4495", "text": "<b>Allyson Lister, </b>University of Oxford"},
+          {"link": "https://orcid.org/0000-0001-5306-5690", "text": "<b>Susanna-Assunta Sansone, </b>University of Oxford"}
+        ]
+      },
+      {
+        "title": "Members",
+        "data": "View our members on the <a href='https://www.rd-alliance.org/node/44787/members' target='_blank'>RDA FAIRsharing WG members' pages</a>.\n"
       }
     ]
   }

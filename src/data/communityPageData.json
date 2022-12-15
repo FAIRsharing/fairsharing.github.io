@@ -346,7 +346,7 @@
   },
   "rda": {
     "title": "RDA FAIRsharing WG",
-    "description": "\n\n   The Research Data Alliance <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' target='_blank'>FAIRsharing Registry: Connecting data policies, standards and databases</a> Working Group (WG) was created to promote further adoption and drive improvement of the FAIRsharing registry. The WG contributes to a number of activities with other RDA groups; these activities reflect the requests and needs of the community, and are open and inclusive for all stakeholders. The WG community network encompasses repository mantainers and developers, standard-developing organizations, journals and journal publishers, funders, librarians, data stewards, and other scholarly organizations and alliances.\n",
+    "description": "The Research Data Alliance <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' target='_blank'>FAIRsharing Registry: Connecting data policies, standards and databases</a> Working Group (WG) was created to promote further adoption and drive improvement of the FAIRsharing registry. The WG contributes to a number of activities with other RDA groups; these activities reflect the requests and needs of the community, and are open and inclusive for all stakeholders. The WG community network encompasses repository mantainers and developers, standard-developing organizations, journals and journal publishers, funders, librarians, data stewards, and other scholarly organizations and alliances.\n",
     "subsections": [
       {
         "title": "Chairs",
@@ -362,7 +362,7 @@
       },
       {
         "title": "Members",
-        "data": "View our members on the <a href='https://www.rd-alliance.org/node/44787/members' target='_blank'>RDA FAIRsharing WG members' pages</a>.\n"
+        "data": "View our members on the <a href='https://www.rd-alliance.org/node/44787/members' target='_blank'>RDA FAIRsharing WG members' pages</a>."
       }
     ]
   }

@@ -351,7 +351,7 @@
       {
         "title": "Chairs",
         "data": [
-          {"text": "<b>Graham Smith, </b>Springer Nature"},
+          {"link": "https://orcid.org/0000-0001-9520-0109","text": "<b>Graham Smith, </b>Springer Nature"},
           {"link": "https://orcid.org/0000-0002-8243-2493", "text": "<b>Holly Murray, </b>Health Data Research UK"},
           {"link": "https://orcid.org/0000-0003-2687-1982", "text": "<b>Peter McQuilton, </b>GSK"},
           {"link": "https://orcid.org/0000-0002-7614-0806", "text": "<b>Rebecca Grant, </b>F1000"},

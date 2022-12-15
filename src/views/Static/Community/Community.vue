@@ -466,8 +466,8 @@ export default {
       tables,
       governance,
       meettheteam,
-      rda,
-      Icon
+      Icon,
+      rda
     }
   },
   watch: {

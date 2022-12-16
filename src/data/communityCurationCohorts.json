@@ -353,12 +353,12 @@
       {
         "text": "The Community Curator Programme at FAIRsharing.org is a great working example demonstrating when data communities work FAIR together, they can sustain FAIR innovation together.",
         "author": "Lindsey Anderson",
-        "area": "Life Science, Omics"
+        "scope": "Life Science, Omics"
       },
       {
-        "text": "I find myself dedicating more and more time on curating [...] In doing so, I experienced how much standards are key, but also that [these] curation skills and activities are indeed valuable activities that make a difference in increasing discoverability and reusability of resources we want to share..",
+        "text": "I find myself dedicating more and more time on curating. In doing so, I experienced how much standards are key, but also that these curation skills and activities are indeed valuable activities that make a difference in increasing discoverability and reusability of resources we want to share.",
         "author": "Geneviève Michaud",
-        "area": "Humanities and Social Science"
+        "scope": "Humanities and Social Science"
       }
     ]
 }

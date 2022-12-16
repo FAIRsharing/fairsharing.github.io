@@ -69,9 +69,11 @@
           </v-col>
         </v-row>
         <v-row
-          dense
+          v-if="curatorQuotes.length"
         >
           <v-col
+            v-for="quote in curatorQuotes"
+            :key="quote.author"
             cols="12"
             lg="6"
             md="6"
@@ -80,23 +82,16 @@
             <div
               class="mb-2"
             >
-              <i>The Community Curator Programme at FAIRsharing.org is a great working example demonstrating when data communities work FAIR together, they can sustain FAIR innovation together.</i>
-              <br>
-              <b>Lindsey Anderson</b> - Life Science, Omics
-            </div>
-          </v-col>
-          <v-col
-            cols="12"
-            lg="6"
-            md="6"
-            sm="12"
-          >
-            <div
-              class="mb-2"
-            >
-              <i>I find myself dedicating more and more time on curating […] In doing so, I experienced how much standards are key, but also that [these] curation skills and activities are indeed valuable activities that make a difference in increasing discoverability and reusability of resources we want to share..</i>
-              <br>
-              <b>Geneviève Michaud</b> - Humanities and Social Science
+              <p>
+                <span class="font-italic">
+                  {{ quote.text }}
+                </span> 
+                <br>
+                <span class="font-weight-bold">
+                  {{ quote.author }}
+                </span> - 
+                <span> {{ quote.scope }} </span>
+              </p>
             </div>
           </v-col>
         </v-row>
@@ -302,7 +297,8 @@ export default {
       year: new Date().getFullYear(),
       error: false,
       yearList: [],
-      alumniCurator: false
+      alumniCurator: false,
+      curatorQuotes: communityCurationCohorts.quotes
     }
   },
    mounted() {

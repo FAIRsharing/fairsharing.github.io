@@ -70,6 +70,7 @@
         </v-row>
         <v-row
           v-if="curatorQuotes.length"
+          class="mt-0"
         >
           <v-col
             v-for="quote in curatorQuotes"
@@ -82,7 +83,7 @@
             <div
               class="mb-2"
             >
-              <p>
+              <p style="text-align: initial;">
                 <span class="font-italic">
                   {{ quote.text }}
                 </span> 

@@ -354,7 +354,8 @@
         "organisation": [
           {
             "id": 3835,
-            "name": "Good Clinical Practice Alliance - Europe (GCPA)"
+            "name": "GCPA",
+            "tooltip": "Good Clinical Practice Alliance - Europe (GCPA)"
           }
         ],
         "scope": "Ethics",

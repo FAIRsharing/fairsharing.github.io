@@ -347,6 +347,25 @@
         "linkedin" : "kayeburrows",
         "logo": "kay_burrows.jpg",
         "year_active": ["2022"]
+      },
+      {
+        "name": "Francis P. Crawley",
+        "id": 8056,
+        "organisation": [
+          {
+            "id": 3835,
+            "name": "GCPA",
+            "tooltip": "Good Clinical Practice Alliance - Europe (GCPA)"
+          }
+        ],
+        "scope": "Ethics",
+        "orcid": "0000-0002-6893-5916",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
       }
     ],
     "quotes": [

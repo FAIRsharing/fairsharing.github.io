@@ -347,18 +347,37 @@
         "linkedin" : "kayeburrows",
         "logo": "kay_burrows.jpg",
         "year_active": ["2022"]
+      },
+      {
+        "name": "Francis P. Crawley",
+        "id": 8056,
+        "organisation": [
+          {
+            "id": 3835,
+            "name": "GCPA",
+            "tooltip": "Good Clinical Practice Alliance - Europe (GCPA)"
+          }
+        ],
+        "scope": "Ethics",
+        "orcid": "0000-0002-6893-5916",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "",
+        "year_active": ["2022"]
       }
     ],
     "quotes": [
       {
         "text": "The Community Curator Programme at FAIRsharing.org is a great working example demonstrating when data communities work FAIR together, they can sustain FAIR innovation together.",
         "author": "Lindsey Anderson",
-        "area": "Life Science, Omics"
+        "scope": "Life Science, Omics"
       },
       {
-        "text": "I find myself dedicating more and more time on curating [...] In doing so, I experienced how much standards are key, but also that [these] curation skills and activities are indeed valuable activities that make a difference in increasing discoverability and reusability of resources we want to share..",
+        "text": "I find myself dedicating more and more time on curating. In doing so, I experienced how much standards are key, but also that these curation skills and activities are indeed valuable activities that make a difference in increasing discoverability and reusability of resources we want to share.",
         "author": "Geneviève Michaud",
-        "area": "Humanities and Social Science"
+        "scope": "Humanities and Social Science"
       }
     ]
 }

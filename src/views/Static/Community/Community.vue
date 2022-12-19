@@ -373,6 +373,65 @@
           </div>
         </div>
       </div>
+      <!--   RDA FAIRsharing WG    -->
+      <h4 class="text-h5 mb-2">
+        {{ rda.title }}
+      </h4>
+      <p
+        :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        v-html="$sanitize(rda.description)"
+      />
+      <div
+        v-for="(item,itemIndex) in rda.subsections"
+        :key="item.title+'_'+itemIndex"
+        class="ml-8"
+      >
+        <div class="mb-5">
+          <h4 class="text-h5">
+            {{ item.title }}
+          </h4>
+          <div
+            v-if="isArray(item.data)"
+          >
+            <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
+              <li
+                v-for="(itemData,itemDataIndex) in item.data"
+                :key="itemData+'_'+itemDataIndex"
+                :class="['mb-1',{'d-flex': $vuetify.breakpoint.lgAndUp}]"
+              >
+                <div
+                  class="d-flex mb-2"
+                >
+                  <p
+                    class="ma-0"
+                    v-html="$sanitize(itemData.text)"
+                  />
+                  <a
+                    v-if="itemData.link"
+                    class="ml-2 pr-2"
+                    :href="itemData.link.toString().includes('@')?`mailto:${itemData.link}`:itemData.link"
+                    target="_blank"
+                  >
+                    <Icon
+                      class="mr-1"
+                      item="Orcid"
+                      :height="25"
+                      size="30"
+                      wrapper-class=""
+                    />
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div v-else>
+            <p
+              :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+              v-html="$sanitize(item.data)"
+            />
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- eslint-enable vue/no-v-html -->
@@ -385,7 +444,7 @@
 * @namespace Static
 */
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import {externalLinks, contentTabs, tables, governance, meettheteam} from "@/data/communityPageData.json"
+import {externalLinks, contentTabs, tables, governance, meettheteam, rda} from "@/data/communityPageData.json"
 import Icon from "@/components/Icon";
 import {isArray} from "lodash";
 /** This component handles the sign-up/register page
@@ -407,7 +466,8 @@ export default {
       tables,
       governance,
       meettheteam,
-      Icon
+      Icon,
+      rda
     }
   },
   watch: {

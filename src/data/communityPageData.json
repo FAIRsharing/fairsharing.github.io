@@ -199,6 +199,25 @@
           "externalLink": "https://elixir-europe.org/"
         }
       ]
+    },
+    "toolsTable": {
+      "data": [
+        {
+          "organisations": [
+            {
+              "name": "",
+              "url": ""
+            }
+          ],
+          "name": "",
+          "type": [""],
+          "logo": "",
+          "status": "",
+          "description": "",
+          "homepage": "",
+          "image": ""
+        }
+      ]
     }
   },
   "governance": {

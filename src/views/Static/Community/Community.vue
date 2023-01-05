@@ -78,7 +78,75 @@
         Adopters
       </h3>
 
+      <p>
+        A broad range of <a href="/stakeholders">stakeholders</a> come to FAIRsharing from across all research domains.
+        However, adopters use FAIRsharing specifically to do one or more of the following:
+      </p>
+
+      <ol type="i">
+        <li>
+          Educate their users/community on the variety of existing standards, repositories and policies that exist in
+          FAIRsharing and actively encourage them to submit/claim records, where relevant;
+        </li>
+        <li>
+          Recommend resources by registering their data policy, and then link it to standards and/or databases
+          <a href="/search?page=1&isRecommended=true">recommended</a> in the policy;
+        </li>
+        <li>
+          Create a <a href="/collections">Collection</a> that pulls together a list of standards and/or databases
+          around a given domain of interest relevant to them.
+        </li>
+      </ol>
+
+      <p>
+        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure
+        programmes, societies and other organisations or projects that in turn serve and guide individual
+        researchers or other stakeholders on research data management matters. Adopters display a FAIRsharing logo
+        on their websites with a link from their website to our homepage.
+      </p>
+
+      <p>
+        In general, our adopters fall into the following broad categories. If you don't see your project on the
+        list of adopters, please <a href="mailto:contact@fairsharing.org">get in touch</a>.
+      </p>
+
+      <ul>
+        <li>
+          <router-link
+            v-scroll-to="'#funders'"
+            to="#"
+          >
+            Funders
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            v-scroll-to="'#publishers'"
+            to="#"
+          >
+            Publishers
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            v-scroll-to="'#funders'"
+            to="#"
+          >
+            Organisations
+          </router-link>
+        </li>
+        <li>
+          <router-link
+            v-scroll-to="'#tools'"
+            to="#"
+          >
+            Tools
+          </router-link>
+        </li>
+      </ul>
+
       <p
+        id="funders"
         :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
         A selection of official reports from funders and other organisations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
@@ -114,56 +182,12 @@
       </v-row>
 
       <p
-        :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        id="publishers"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
-        Anyone can use FAIRsharing. Adopters, however, use FAIRsharing specifically to:
+        A selection of the publishers that use FAIRsharing to define and refine their data policies:
       </p>
-      <ul>
-        <li><b class="mr-4">i:</b>Educate their users/community on the variety of existing standards, repositories and policies, and actively encourage them to submit/claim records, where relevant;</li>
-        <li>
-          <b class="mr-3">ii:</b>Recommend resources by registering their data policy, and then link it to standards and/or databases
-          <router-link
-            to="/policies"
-            class="underline-effect"
-          >
-            recommended
-          </router-link> in the policy; and/or
-        </li>
-        <li>
-          <b class="mr-2">iii:</b>Create a <router-link
-            to="/collections"
-            target="_blank"
-            class="underline-effect"
-          >
-            Collection
-          </router-link> by pulling together a list of standards and/or databases around a given domain of interest relevant to them.
-        </li>
-      </ul>
-      <p
-        :class="['mb-0 mt-2 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        If you wish to create a new metadata record on FAIRsharing, you can find <router-link
-          to="/new"
-          class="underline-effect"
-        >
-          instructions
-        </router-link> here.
-      </p>
-      <p
-        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure programmes, societies and other organisations or projects that in turn serve and guide individual researchers or other stakeholders on research data management matters.
-      </p>
-      <p
-        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Adopters display a FAIRsharing logo on their websites with a link from their website to our homepage.
-      </p>
-      <b
-        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        We cannot list all of our adopters, but we've listed here some publishers that use FAIRsharing to define and refine their data policy.
-      </b>
+
       <!--Adopter table-->
       <v-row
         class="mt-2 ml-0"
@@ -214,7 +238,17 @@
       </v-row>
     </section>
 
-    <!--  content  -->
+    <!--  new tools section  -->
+    <p
+      id="tools"
+      :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Tools that make use of FAIRsharing content. If you would like your tool included in this list, please use
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdl1lKj9xlgN5Od_LyqWfnqBl-8aOLXhdFQa2nfm5CBmZ1TgQ/viewform?usp=sf_link" target="_blank">this form</a>
+      to let us know how you're using FAIRsharing.
+    </p>
+
+    <p>TBC...</p>
 
 
     <!-- Activities   -->

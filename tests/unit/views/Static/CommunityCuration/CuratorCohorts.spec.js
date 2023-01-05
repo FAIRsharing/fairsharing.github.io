@@ -102,7 +102,112 @@ const currentCuratorsList = [
     }
 ]
 
-const alumniCuratorsList = []
+const alumniCuratorsList = [
+    {
+        "early_adopter": true,
+        "id": 6182,
+        "linkedin": "",
+        "logo": "",
+        "name": "Annie Elkjær Ørum-Kristensen",
+        "orcid": "0000-0002-8326-5789",
+        "organisation": [
+            {
+                "id": 1166,
+                "name": "GBIF",
+                "tooltip": "Global Biodiversity Information Facility"
+            }
+        ],
+        "scope": "Biodiversity",
+        "show_more": false,
+        "twitter": "",
+        "year_active": [
+            "2022"
+        ]
+    },
+    {
+        "early_adopter": true,
+        "id": 6118,
+        "linkedin": "",
+        "logo": "",
+        "name": "Joe Miller",
+        "orcid": "0000-0002-5788-9010",
+        "organisation": [
+            {
+                "id": 1166,
+                "name": "GBIF",
+                "tooltip": "Global Biodiversity Information Facility"
+            }
+        ],
+        "scope": "Biodiversity",
+        "show_more": false,
+        "twitter": "acaciaJoe",
+        "year_active": [
+            "2022"
+        ]
+    },
+    {
+        "early_adopter": true,
+        "id": 5832,
+        "linkedin": "kylecopas",
+        "logo": "",
+        "name": "Kyle Copas",
+        "orcid": "0000-0002-6590-599X",
+        "organisation": [
+            {
+                "id": 1166,
+                "name": "GBIF",
+                "tooltip": "Global Biodiversity Information Facility"
+            }
+        ],
+        "scope": "Biodiversity",
+        "show_more": false,
+        "twitter": "kylecopas",
+        "year_active": [
+            "2022"
+        ]
+    },
+    {
+        "early_adopter": true,
+        "id": 5015,
+        "linkedin": "lnanderscience",
+        "logo": "",
+        "name": "Lindsey Anderson",
+        "orcid": "0000-0002-8741-7823",
+        "organisation": [
+            {
+                "id": 2284,
+                "name": "PNNL",
+                "tooltip": "Pacific Northwest National Laboratory"
+            }
+        ],
+        "scope": "Omics",
+        "show_more": false,
+        "twitter": "lnanderscience",
+        "year_active": [
+            "2022"
+        ]
+    },
+    {
+        "early_adopter": true,
+        "id": 464,
+        "linkedin": "malinsandstrom",
+        "logo": "",
+        "name": "Malin Sandström",
+        "orcid": "0000-0002-8464-2494",
+        "organisation": [
+            {
+                "id": 1321,
+                "name": "Karolinska Institutet, INCF"
+            }
+        ],
+        "scope": "Neuroscience",
+        "show_more": false,
+        "twitter": "msandstr",
+        "year_active": [
+            "2022"
+        ]
+    }
+]
 
 describe("CuratorCohorts.vue", function(){
     let wrapper;

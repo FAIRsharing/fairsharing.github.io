@@ -222,21 +222,21 @@
                   !(newOrganisation.data.country_ids.length === 0)]"
               >
                 <!-- autocomplete selected -->
-                <template #selection="data">
+                <template #selection="cnameData">
                   <v-chip
                     class="blue white--text removeStyle"
                     close
-                    @click:close="removeCountry(data.item)"
+                    @click:close="removeCountry(cnameData.item)"
                   >
-                    {{ data.item.name }}
+                    {{ cnameData.item.name }}
                   </v-chip>
                 </template>
 
                 <!-- autocomplete data -->
-                <template #item="data">
+                <template #item="ccodeData">
                   <country-flag
-                    v-if="data.item.code !== null"
-                    :country="data.item.code"
+                    v-if="ccodeData.item.code !== null"
+                    :country="ccodeData.item.code"
                     size="normal"
                   />
                   <img
@@ -244,7 +244,7 @@
                     src="@/assets/placeholders/country.png"
                     class="ml-4 mr-3"
                   >
-                  <div> {{ data.item.name }} </div>
+                  <div> {{ccodeData.item.name }} </div>
                 </template>
               </v-autocomplete>
             </v-form>

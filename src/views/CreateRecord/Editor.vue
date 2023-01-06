@@ -254,7 +254,7 @@
         let id = _module.$route.params.id;
         if (isNaN(parseInt(id))) {
           id = _module.currentRecord['fairsharingRecord'].id;
-          await this.$router.push({path: '/' + id + '/edit'});
+          await _module.$router.push({path: '/' + id + '/edit'});
         }
       })
     },

@@ -240,8 +240,8 @@
 
     <!--  new tools section  -->
     <p
-      id="tools"
       v-if="tables.toolsTable.data.length"
+      id="tools"
       :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
       Tools that make use of FAIRsharing content. If you would like your tool included in this list, please use

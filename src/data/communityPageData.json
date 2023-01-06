@@ -205,17 +205,20 @@
         {
           "organisations": [
             {
-              "name": "",
-              "url": ""
+              "name": "Placeholder Org.",
+              "url": "https://example.com",
+              "id": 123
             }
           ],
-          "name": "",
-          "type": [""],
+          "name": "Example App",
+          "type": ["other"],
+          "other_type": "text here",
           "logo": "",
-          "status": "",
-          "description": "",
-          "homepage": "",
-          "image": ""
+          "status": "Proposed",
+          "description": "Placeholder for description",
+          "homepage": "https://example.org/example_app",
+          "image": "",
+          "id": "example"
         }
       ]
     }

@@ -241,14 +241,113 @@
     <!--  new tools section  -->
     <p
       id="tools"
+      v-if="tables.toolsTable.data.length"
       :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
       Tools that make use of FAIRsharing content. If you would like your tool included in this list, please use
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdl1lKj9xlgN5Od_LyqWfnqBl-8aOLXhdFQa2nfm5CBmZ1TgQ/viewform?usp=sf_link" target="_blank">this form</a>
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSdl1lKj9xlgN5Od_LyqWfnqBl-8aOLXhdFQa2nfm5CBmZ1TgQ/viewform?usp=sf_link"
+        target="_blank"
+      >this form</a>
       to let us know how you're using FAIRsharing.
     </p>
 
-    <p>TBC...</p>
+    <!-- Tools table begins -->
+    <v-row
+      v-if="tables.toolsTable.data.length"
+      dense
+    >
+      <v-col
+        v-for="tool in tables.toolsTable.data"
+        :key="tool.id"
+        cols="12"
+        sm="12"
+        md="4"
+        lg="3"
+        xl="2"
+      >
+        <v-card
+          class="full-width"
+        >
+          <v-img
+            :src="tool.logo ? `/assets/Community/tools/${tool.logo}` : '/assets/Community/tools/toolplaceholder.png'"
+            class="white--text align-end"
+            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            cover
+            aspect-ratio="1"
+          >
+            <div
+              class="toolLinks"
+            >
+              <v-list-item class="align-baseline">
+                <v-list-item-content>
+                  <v-list-item
+                    v-if="tool.hompeage"
+                    dark
+                  >
+                    <a
+                      :href="tool.homepage"
+                      target="_blank"
+                      class="d-flex align-center"
+                    >
+                      {{ tool.homepage }}
+                    </a>
+                  </v-list-item>
+                </v-list-item-content>
+              </v-list-item>
+            </div>
+
+            <v-card-title>
+              <h4 style="word-break: initial">
+                {{ tool.name }}
+              </h4>
+            </v-card-title>
+            <v-card-subtitle
+              v-if="tool.description"
+            >
+              {{ tool.description }}
+            </v-card-subtitle>
+          </v-img>
+
+          <v-card-text
+            class="text--primary"
+            style="height: 100%"
+            :style="$vuetify.breakpoint.xl ? 'height: 115px': $vuetify.breakpoint.mdAndUp ? 'height: 135px' : 'height: 100%'"
+          >
+            <div v-if="tool.organisations && tool.organisations.length">
+              Organisation :
+              <span
+                v-for="(org, i) in tool.organisations"
+                :key="org.id"
+              >
+                <v-tooltip
+                  v-if="org.tooltip"
+                  bottom
+                >
+                  <template #activator="{ on }">
+                    <a
+                      :href="`/organisations/${org.id}`"
+                      class="d-inline-block"
+                      v-on="on"
+                    >{{ org.name }}
+                    </a>
+                  </template>
+                  <span>{{ org.tooltip }}</span>
+                </v-tooltip>
+                <a
+                  v-else
+                  :href="`/organisations/${org.id}`"
+                  class="d-inline-block"
+                >{{ org.name }}
+                </a>
+                <span v-if="i+1 < tool.organisations.length">, </span>
+              </span>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <!-- Tools table ends -->
 
 
     <!-- Activities   -->

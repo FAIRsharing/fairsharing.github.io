@@ -244,7 +244,7 @@
                     src="@/assets/placeholders/country.png"
                     class="ml-4 mr-3"
                   >
-                  <div> {{ccodeData.item.name }} </div>
+                  <div> {{ ccodeData.item.name }} </div>
                 </template>
               </v-autocomplete>
             </v-form>

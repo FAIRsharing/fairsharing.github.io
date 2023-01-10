@@ -5,6 +5,7 @@ docTemp
 /source/index.html
 package-lock.json
 coverage
+out
 
 # local env files
 .env.local

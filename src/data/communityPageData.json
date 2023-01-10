@@ -337,6 +337,7 @@
         "profileImg": "assets/Community/profiles/prakhyat.jpg",
         "social": [
           {"link": "https://datareadiness.eng.ox.ac.uk/#people", "icon": "home"},
+          {"link": "https://orcid.org/0000-0002-9109-9266", "icon": "Orcid"},
           {"link": "https://github.com/prakhyatox", "icon": "github"},
           {"link": "prakhyat.gailani@eng.ox.ac.uk", "icon": "contacts"}
         ]

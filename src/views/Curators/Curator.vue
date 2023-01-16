@@ -335,6 +335,63 @@
             </v-card-title>
           </v-card-text>
         </v-card>
+
+        <!-- Button to obtain records created by month -->
+        <v-card>
+          <v-card-text>
+            <v-card-title
+              id="download-curator-summary"
+              class="green white--text"
+            >
+              RECORDS CREATED BY MONTH
+              <v-btn
+                v-if="downloadRecordsByMonth"
+                class="info ml-5"
+              >
+                <a
+                  :href="downloadRecordsByMonth"
+                  download="recordsCreatedByMonth.txt"
+                >
+                  <v-icon
+                    color="white"
+                    class="mr-1"
+                  >
+                    fa fa-download
+                  </v-icon>
+                  <span class="white--text">Obtain file</span>
+                </a>
+              </v-btn>
+            </v-card-title>
+          </v-card-text>
+        </v-card>
+        <!-- Button to obtain record edits by month -->
+        <v-card>
+          <v-card-text>
+            <v-card-title
+              id="download-curator-summary"
+              class="green white--text"
+            >
+              RECORD EDITS BY MONTH
+              <v-btn
+                v-if="downloadEditsByMonth"
+                class="info ml-5"
+              >
+                <a
+                  :href="downloadEditsByMonth"
+                  download="editsPerformedByMonth.txt"
+                >
+                  <v-icon
+                    color="white"
+                    class="mr-1"
+                  >
+                    fa fa-download
+                  </v-icon>
+                  <span class="white--text">Obtain file</span>
+                </a>
+              </v-btn>
+            </v-card-title>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
     <!-- this shouldn't appear as an unauthorised user shouldn't be here -->
@@ -518,6 +575,8 @@
           downloadContent: null,
           downloadReviewContent: null,
           downloadCuratorContent: null,
+          downloadRecordsByMonth: null,
+          downloadEditsByMonth: null,
           error: {
             general: null
           }
@@ -546,6 +605,8 @@
           client.initalizeHeader();
           this.prepareData();
           await this.obtainFileRecordsWODois();
+          await this.obtainFileRecordCreatedByMonth();
+          await this.obtainFileEditByMonth();
           this.loading = false;
           let review = this.allDataCuration.needsReview || [];
           this.downloadReviewContent = "data:text/json;charset=utf-8," + encodeURIComponent(review.join('\n'));
@@ -742,7 +803,32 @@
             else {
               this.downloadContent = "data:text/json;charset=utf-8," + "";
             }
-
+          },
+          async obtainFileRecordCreatedByMonth(){
+            let data = await restClient.getRecordCreatedByMonth(this.user().credentials.token);
+            if (data) {
+              let content = JSON.stringify(data)
+                  .replace(/^\[(.+)\]$/,'$1')
+                  .replace(/","/g,'"\r\n"')
+                  .replace(/['"]+/g, '');
+              this.downloadRecordsByMonth = "data:text/json;charset=utf-8," + encodeURIComponent(content);
+            }
+            else {
+              this.downloadRecordsByMonth = "data:text/json;charset=utf-8," + "";
+            }
+          },
+          async obtainFileEditByMonth(){
+            let data = await restClient.getEditByMonth(this.user().credentials.token);
+            if (data) {
+              let content = JSON.stringify(data)
+                  .replace(/^\[(.+)\]$/,'$1')
+                  .replace(/","/g,'"\r\n"')
+                  .replace(/['"]+/g, '');
+              this.downloadEditsByMonth = "data:text/json;charset=utf-8," + encodeURIComponent(content);
+            }
+            else {
+              this.downloadEditsByMonth = "data:text/json;charset=utf-8," + "";
+            }
           },
           showAddMessage() {
             const _module = this;

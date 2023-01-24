@@ -381,7 +381,7 @@
                       let url = null;
                       if (obj['work-summary'][0]['external-ids'] && obj['work-summary'][0]['external-ids']['external-id']) {
                         let DOI = obj['work-summary'][0]['external-ids']['external-id'].filter(
-                            obj => obj['external-id-type'] = "doi"
+                            obj => obj['external-id-type'] === "doi"
                         )[0];
                         // See ORCIDpub.json
                         url = null;

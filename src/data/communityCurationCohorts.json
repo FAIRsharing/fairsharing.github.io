@@ -36,7 +36,7 @@
         "twitter": "",
         "linkedin" : "anniekristensen",
         "logo": "annie_kristensen.jpg",
-        "year_active": ["2022"]
+        "year_active": ["2022", "2023"]
       },
       {
         "name": "Joe Miller",
@@ -55,7 +55,7 @@
         "twitter": "acaciaJoe",
         "linkedin" : "joe-miller-biodiversity",
         "logo": "joe_miller.jpg",
-        "year_active": ["2022"]
+        "year_active": ["2022", "2023"]
       },
       {
         "name": "Lindsey Anderson",
@@ -82,7 +82,12 @@
         "organisation": [
           {
             "id": 1321,
-            "name": "Karolinska Institutet, INCF"
+            "name": "INCF",
+            "tooltip": "International Neuroinformatics Coordinating Facility "
+          },
+          {
+            "id": 1626,
+            "name": "Karolinska Institutet"
           }
         ],
         "scope": "Neuroscience",
@@ -215,6 +220,10 @@
           {
             "id": 614,
             "name": "Cornell University"
+          },
+          {
+            "id": 3682,
+            "name": "American Economic Association"
           }
         ],
         "scope": "Economics",
@@ -224,7 +233,7 @@
         "twitter": "",
         "linkedin" : "lars-vilhuber",
         "logo": "lars_vilhuber.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022"]
       },
       {
         "name": "Guillaume Gay",

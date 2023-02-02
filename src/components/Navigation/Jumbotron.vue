@@ -11,6 +11,8 @@
     <!-- eslint-disable vue/no-v-html -->
     <Particles
       id="particles"
+      :particles-init="particlesInit"
+      :particles-loaded="particlesLoaded"
       :options="options"
       :class="{'largeScreen': $vuetify.breakpoint.xlOnly}"
     />
@@ -38,11 +40,23 @@
 
 <script>
 import jumbotronData from "@/data/jumbotronData.json";
+import { loadFull } from "tsparticles";
+
+const particlesInit = async engine => {
+  await loadFull(engine);
+};
+
+// eslint-disable-next-line no-unused-vars
+const particlesLoaded = async container => {
+  //console.log("Particles container loaded", container);
+};
 
 export default {
   name: "Jumbotron",
   data:() => {
     return {
+      particlesInit,
+      particlesLoaded,
       options: {
         background: {
           color: {

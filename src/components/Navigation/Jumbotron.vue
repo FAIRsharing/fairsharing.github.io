@@ -68,7 +68,7 @@ export default {
           move: {
             direction: 'none',
             enable: true,
-            outMode: 'bounce',
+            outModes: 'bounce',
             random: false,
             speed: 1,
             straight: false

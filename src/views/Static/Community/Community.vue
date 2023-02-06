@@ -74,7 +74,7 @@
 
     <!-- Adopters   -->
     <section id="adopters">
-      <h3 class="text-h4 mb-4 mt-5">
+      <h3 class="text-h3 mb-4 mt-5">
         Adopters
       </h3>
 
@@ -110,40 +110,56 @@
         list of adopters, please <a href="mailto:contact@fairsharing.org">get in touch</a>.
       </p>
 
-      <ul>
-        <li>
+      <div class="text-center">
+        <v-btn
+          class="ma-2 text-white"
+        >
           <router-link
             v-scroll-to="'#funders'"
             to="#"
+            text-color="white"
           >
             Funders
           </router-link>
-        </li>
-        <li>
+        </v-btn>
+        <v-btn
+          class="ma-2 text-white"
+        >
           <router-link
             v-scroll-to="'#publishers'"
             to="#"
+            text-color="white"
           >
             Publishers
           </router-link>
-        </li>
-        <li>
+        </v-btn>
+        <v-btn
+          class="ma-2 text-white"
+        >
           <router-link
-            v-scroll-to="'#funders'"
+            v-scroll-to="'#publishers'"
             to="#"
+            text-color="white"
           >
             Organisations
           </router-link>
-        </li>
-        <li>
+        </v-btn>
+        <v-btn
+          class="ma-2 text-white"
+        >
           <router-link
             v-scroll-to="'#tools'"
             to="#"
+            text-color="white"
           >
             Tools
           </router-link>
-        </li>
-      </ul>
+        </v-btn>
+      </div>
+
+      <h4 class="text-h4 mb-4 mt-5 pt-10">
+        Funders
+      </h4>
 
       <p
         id="funders"
@@ -181,6 +197,10 @@
         </v-col>
       </v-row>
 
+      <h4 class="text-h4 mb-4 mt-5 pt-10">
+        Publishers
+      </h4>
+
       <p
         id="publishers"
         :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -211,8 +231,15 @@
           />
         </v-col>
       </v-row>
-      <p class="text-h6 mt-16">
+
+      <h4 class="text-h4 mt-5 pt-10">
         Other Organisations
+      </h4>
+      <p
+        id="organisations"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Some other organisations using FAIRsharing.
       </p>
       <v-row
         class="mt-2 ml-0"
@@ -239,6 +266,9 @@
     </section>
 
     <!--  new tools section  -->
+    <h4 class="text-h4 mt-5 pt-10">
+      Tools
+    </h4>
     <p
       v-if="tables.toolsTable.data.length"
       id="tools"
@@ -342,6 +372,9 @@
                 </a>
                 <span v-if="i+1 < tool.organisations.length">, </span>
               </span>
+            </div>
+            <div v-if="tool.status">
+              Status: {{ tool.status }}
             </div>
           </v-card-text>
         </v-card>

@@ -90,6 +90,6 @@
   },
   "optionalDependencies": {
     "fibers": "^5.0.0",
-    "fsevents": "*"
+    "fsevents": "^2.3.2"
   }
 }

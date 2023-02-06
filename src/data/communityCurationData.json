@@ -1,8 +1,8 @@
 {
   "communityCuration":{
     "first_section":{
-      "main_title": "What is the FAIRsharing Community Curation Programme?",
-      "text_1": "The FAIRsharing the Community Curation Programme is a thriving community of domain and discipline experts who:",
+      "main_title": "What is the FAIRsharing Community Champions Programme?",
+      "text_1": "The FAIRsharing Community Champions Programme is a thriving community of domain and discipline experts who:",
       "items": [
         {
           "black_text": "act as advocates",
@@ -17,8 +17,8 @@
           "text": "of FAIRsharing, adding and enhancing the description and discoverability of these resources."
         }
       ],
-      "text_2": "The FAIRsharing Community Curators put their expertise into action in one of more disciplines or area of activities, according to their interest, and are credited for their contribution via visible attribution in their ORCID and FAIRsharing profiles. Their contribution to and engagement with the FAIRsharing team gives them more knowledge about the wealth of standards (terminologies, models/formats, guidelines, identifier schema), databases (repositories and knowledge bases) and policies (by institutions, funders, journals and other stakeholders) relevant to them.",
-      "text_3": "Launched in the summer of 2022, and supported by the <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' class='underline-effect' target=blank>RDA FAIRsharing WG</a> and the <a href='https://eoscfuture-grants.eu/node/262' class='underline-effect' target=blank>RDA/EOSC-Future Ambassadorship</a> Programme, the FAIRsharing the Community Curation Programme shows the importance of cultivating and sharing the collective knowledge on standards, databases and policies to map this complex landscape that enables the FAIR Principles.",
+      "text_2": "The FAIRsharing Community Champions put their expertise into action in one of more disciplines or area of activities, according to their interest, and are credited for their contribution via visible attribution in their ORCID and FAIRsharing profiles. Their contribution to and engagement with the FAIRsharing team gives them more knowledge about the wealth of standards (terminologies, models/formats, guidelines, identifier schema), databases (repositories and knowledge bases) and policies (by institutions, funders, journals and other stakeholders) relevant to them.",
+      "text_3": "Launched in the summer of 2022, and supported by the <a href='https://www.rd-alliance.org/group/fairsharing-registry-connecting-data-policies-standards-databases.html' class='underline-effect' target=blank>RDA FAIRsharing WG</a> and the <a href='https://eoscfuture-grants.eu/node/262' class='underline-effect' target=blank>RDA/EOSC-Future Ambassadorship</a> Programme, the FAIRsharing the Community Champions Programme shows the importance of cultivating and sharing the collective knowledge on standards, databases and policies to map this complex landscape that enables the FAIR Principles.",
       "items": [
         {
           "black_text": "act as advocates",
@@ -35,42 +35,42 @@
       ]
     },
     "second_section":{
-      "main_title": "Our Community Curators",
+      "main_title": "Our Community Champions",
       "text": "Our user community is diverse in breadth and scope, with a number of stakeholder groups across all areas of research and research support. In early 2022, we began with a few Early Adopters, who have contributed greatly to the initial success of the programme, and we are now up and running with an active group of curators across all research disciplines. Our full list of community curators shows the breadth and diversity of research areas within the programme."
     },
     "third_section":{
-      "main_title": "The Role of Community Curators",
-      "text": "The Community Curation Programme creates a collaborative environment where domain experts are selected to oversee certain areas within the FAIRsharing registry in return for a number of professional benefits.",
+      "main_title": "The Role of Community Champions",
+      "text": "The Community Champions Programme creates a collaborative environment where domain experts are selected to oversee certain areas within the FAIRsharing registry in return for a number of professional benefits.",
       "subsections": [
         {
           "title": "Curate for your Community",
-          "content": "Community Curators self-describe their area of expertise. Through their own knowledge and via engagement with the network of experts available on our Community Curation Slack channel, they manage and curate records within their domain of interest to increase coverage and improve the content of FAIRsharing records. Community Curators work in concert with our existing maintainer community, supplementing their efforts as well as suggesting new maintainers for the in-house FAIRsharing curation team to contact. Each record has over 40 different descriptors, which allows an accurate summary of each resource to be curated within FAIRsharing. Of particular importance to our records is the curation of the ecosystem of resources within any given domain. FAIRsharing allows the connections among standards, databases and policies to be richly described, creating a dynamic network of relationships that can be navigated by our users. Each curator is attributed for their curation efforts through their user profile pages, which display their curation activities."
+          "content": "Community Champions self-describe their area of expertise. Through their own knowledge and via engagement with the network of experts available on our Community Champions Slack channel, they manage and curate records within their domain of interest to increase coverage and improve the content of FAIRsharing records. Community Champions work in concert with our existing maintainer community, supplementing their efforts as well as suggesting new maintainers for the in-house FAIRsharing curation team to contact. Each record has over 40 different descriptors, which allows an accurate summary of each resource to be curated within FAIRsharing. Of particular importance to our records is the curation of the ecosystem of resources within any given domain. FAIRsharing allows the connections among standards, databases and policies to be richly described, creating a dynamic network of relationships that can be navigated by our users. Each curator is attributed for their curation efforts through their user profile pages, which display their curation activities."
         },
         {
           "title": "Educational Material",
-          "content": "FAIRsharing is committed to increasing awareness of FAIR generally and of FAIRsharing specifically. We are always adding educational content, and utilise the Community Curation programme to ensure that we are providing material that is useful for all of the communities within our stakeholder groups. Our curators are properly cited and attributed for every contribution to FAIRsharing educational material."
+          "content": "FAIRsharing is committed to increasing awareness of FAIR generally and of FAIRsharing specifically. We are always adding educational content, and utilise the Community Champions programme to ensure that we are providing material that is useful for all of the communities within our stakeholder groups. Our curators are properly cited and attributed for every contribution to FAIRsharing educational material."
         },
         {
           "title": "Help your Community",
-          "content": "Record maintainers in FAIRsharing are experts in – and must be developers of – a particular standard, database or policy. They curate only those resources they are directly involved with. They form the core of our user community and create a network of collaboration that ensures our records are up to date, but more importantly promotes their resource to help it be more visible, more widely adopted and more cited. In contrast, Community Curators update and manage across an ecosystem of records within their domains of interest. They are able to access all records in their discipline as well as create new ones. Community curators help their own research domains by creating records and collections that aid resource discovery and gap analysis as well as identifying targeted outreach and engagement activities."
+          "content": "Record maintainers in FAIRsharing are experts in – and must be developers of – a particular standard, database or policy. They curate only those resources they are directly involved with. They form the core of our user community and create a network of collaboration that ensures our records are up to date, but more importantly promotes their resource to help it be more visible, more widely adopted and more cited. In contrast, Community Champions update and manage across an ecosystem of records within their domains of interest. They are able to access all records in their discipline as well as create new ones. Community curators help their own research domains by creating records and collections that aid resource discovery and gap analysis as well as identifying targeted outreach and engagement activities."
         },
         {
           "title": "Attribution for you and your organisations",
-          "content": "All organisations and users within FAIRsharing have their own profiles / homepages with us that describe not just their community, but also link back to all of the records that they are associated with, ensuring attribution for their efforts. Community Curators have their status and domain of expertise listed in the Awards section within their user profiles. Further, as a trusted partner with ORCID, we also push this award to each Curator’s ORCID profile. Such ORCID Service items are awarded annually, as long as the Curator is active with us for at least part of the year."
+          "content": "All organisations and users within FAIRsharing have their own profiles / homepages with us that describe not just their community, but also link back to all of the records that they are associated with, ensuring attribution for their efforts. Community Champions have their status and domain of expertise listed in the Awards section within their user profiles. Further, as a trusted partner with ORCID, we also push this award to each Champion’s ORCID profile. Such ORCID Service items are awarded annually, as long as the Champion is active with us for at least part of the year."
         },
         {
           "title": "Engagement",
-          "content": "Community Curators have their own Slack workspace to provide a space for engagement and networking with a community of like-minded people. During the course of their tenure, Community Curators will be learning data curation at a resource-level of granularity, a skill that gives them knowledge not only about the landscape of standards and databases within their community, but how to accurately describe them. Finally, curators are asked for feedback on new features such as new educational material, certification schemes, and design choices, providing them with a voice in the direction of the project."
+          "content": "Community Champions have their own Slack workspace to provide a space for engagement and networking with a community of like-minded people. During the course of their tenure, Community Champions will be learning data curation at a resource-level of granularity, a skill that gives them knowledge not only about the landscape of standards and databases within their community, but how to accurately describe them. Finally, curators are asked for feedback on new features such as new educational material, certification schemes, and design choices, providing them with a voice in the direction of the project."
         }
       ]
     },
     "fourth_section":{
       "main_title": "Getting Started",
-      "text": "Information on <a href='https://fairsharing.gitbook.io/fairsharing/community-curation/join-us'>joining us</a> is available within our <a href='https://fairsharing.gitbook.io/fairsharing/community-curation'>Community Curation documentation</a>. We engage with communities across all of the Natural Sciences, Engineering Sciences and Humanities & Social Sciences. After <a href='https://fairsharing.gitbook.io/fairsharing/community-curation/join-us'>expressing your interest</a> in the programme, we'll be in touch and, if successful, we’ll get you set up with the proper roles."
+      "text": "Information on <a href='https://fairsharing.gitbook.io/fairsharing/community-curation/join-us'>joining us</a> is available within our <a href='https://fairsharing.gitbook.io/fairsharing/community-curation'>Community Champions documentation</a>. We engage with communities across all of the Natural Sciences, Engineering Sciences and Humanities & Social Sciences. After <a href='https://fairsharing.gitbook.io/fairsharing/community-curation/join-us'>expressing your interest</a> in the programme, we'll be in touch and, if successful, we’ll get you set up with the proper roles."
     },
     "headers_table": [
       {
-        "text": "Community Curator",
+        "text": "Community Champion",
         "value": "name",
         "width": 60
       },
@@ -90,7 +90,7 @@
     "main_title": "Code of Conduct",
     "sections": [
       {
-        "text": "The FAIRsharing Community Curation Programme is an engaged and respectful community made up of people from all over the world. Your involvement helps us to further our mission and to create an open platform that serves a broad range of communities, from research and research support, to policymakers, funders and societies/organisations."
+        "text": "The FAIRsharing Community Champions Programme is an engaged and respectful community made up of people from all over the world. Your involvement helps us to further our mission and to create an open platform that serves a broad range of communities, from research and research support, to policymakers, funders and societies/organisations."
       },
       {
         "text": "Naturally, this implies diversity of ideas and perspectives on often complex problems. Disagreement and healthy discussion of conflicting viewpoints is welcome: the best solutions to hard problems rarely come from a single angle. Sometimes, we have a tendency to take disagreement personally and easily drift into behaviour that ultimately degrades a community. This is particularly acute with online communication across language and cultural gaps, where many cues of human behaviour are unavailable. We are outlining here a set of principles and processes to support a healthy community in the face of these challenges."

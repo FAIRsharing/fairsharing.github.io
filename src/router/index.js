@@ -449,12 +449,12 @@ let routes = [
     },
     {
         name: "CommunityCuration",
-        path: "/community_curation",
+        path: "/community_champions",
         component: CommunityCuration,
     },
     {
         name: "CuratorCohorts",
-        path: "/community_curation/our_curators",
+        path: "/community_champions/our_champions",
         component: CuratorCohorts,
     },
     {
@@ -497,7 +497,30 @@ let routes = [
         path: "/API_doc",
         component: APIDoc,
     },
-
+    {
+        name: 'old_community_curation',
+        path: '/community_curation',
+        redirect: () => {
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/community_champions'
+                ].join('')
+            );
+        }
+    },
+    {
+        name: 'old_our_curators',
+        path: '/community_curation/our_curators',
+        redirect: () => {
+            window.location.assign(
+                [
+                    process.env.VUE_APP_API_HOSTNAME,
+                    '/community_champions/our_champions'
+                ].join('')
+            );
+        }
+    },
     // AUTHENTICATION AND USERS
     {
         name: "OAuth Login",

@@ -220,6 +220,29 @@ describe("Routes", () => {
 
     });
 
+    // See #2005
+    it("performs 'champion' redirections correctly", async () => {
+        let link;
+        let assignMock = jest.fn();
+        delete window.location;
+        window.location = {assign: assignMock};
+        const redirections = {
+            old_community_curation: '/community_champions',
+            old_our_curators: '/community_champions/our_champions',
+        }
+
+        // eslint-disable no-promise-executor-return
+        Object.keys(redirections).forEach(async (goto) => {
+            link = router.options.routes.find((obj) => {
+                return obj.name === goto;
+            });
+            await link.redirect();
+            expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
+        });
+        // eslint-enable no-promise-executor-return
+
+    });
+
 
 
     it("gets sitemap from the api", async () => {

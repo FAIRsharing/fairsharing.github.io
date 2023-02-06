@@ -167,7 +167,7 @@
 
     &lt;!-- Adopters   -->
     &lt;section id="adopters">
-      &lt;h3 class="text-h4 mb-4 mt-5">
+      &lt;h3 class="text-h3 mb-4 mt-5">
         Adopters
       &lt;/h3>
 
@@ -203,40 +203,56 @@
         list of adopters, please &lt;a href="mailto:contact@fairsharing.org">get in touch&lt;/a>.
       &lt;/p>
 
-      &lt;ul>
-        &lt;li>
+      &lt;div class="text-center">
+        &lt;v-btn
+          class="ma-2 text-white"
+        >
           &lt;router-link
             v-scroll-to="'#funders'"
             to="#"
+            text-color="white"
           >
             Funders
           &lt;/router-link>
-        &lt;/li>
-        &lt;li>
+        &lt;/v-btn>
+        &lt;v-btn
+          class="ma-2 text-white"
+        >
           &lt;router-link
             v-scroll-to="'#publishers'"
             to="#"
+            text-color="white"
           >
             Publishers
           &lt;/router-link>
-        &lt;/li>
-        &lt;li>
+        &lt;/v-btn>
+        &lt;v-btn
+          class="ma-2 text-white"
+        >
           &lt;router-link
-            v-scroll-to="'#funders'"
+            v-scroll-to="'#publishers'"
             to="#"
+            text-color="white"
           >
             Organisations
           &lt;/router-link>
-        &lt;/li>
-        &lt;li>
+        &lt;/v-btn>
+        &lt;v-btn
+          class="ma-2 text-white"
+        >
           &lt;router-link
             v-scroll-to="'#tools'"
             to="#"
+            text-color="white"
           >
             Tools
           &lt;/router-link>
-        &lt;/li>
-      &lt;/ul>
+        &lt;/v-btn>
+      &lt;/div>
+
+      &lt;h4 class="text-h4 mb-4 mt-5 pt-10">
+        Funders
+      &lt;/h4>
 
       &lt;p
         id="funders"
@@ -274,6 +290,10 @@
         &lt;/v-col>
       &lt;/v-row>
 
+      &lt;h4 class="text-h4 mb-4 mt-5 pt-10">
+        Publishers
+      &lt;/h4>
+
       &lt;p
         id="publishers"
         :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -304,8 +324,15 @@
           />
         &lt;/v-col>
       &lt;/v-row>
-      &lt;p class="text-h6 mt-16">
+
+      &lt;h4 class="text-h4 mt-5 pt-10">
         Other Organisations
+      &lt;/h4>
+      &lt;p
+        id="organisations"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Some other organisations using FAIRsharing.
       &lt;/p>
       &lt;v-row
         class="mt-2 ml-0"
@@ -332,6 +359,9 @@
     &lt;/section>
 
     &lt;!--  new tools section  -->
+    &lt;h4 class="text-h4 mt-5 pt-10">
+      Tools
+    &lt;/h4>
     &lt;p
       v-if="tables.toolsTable.data.length"
       id="tools"
@@ -435,6 +465,9 @@
                 &lt;/a>
                 &lt;span v-if="i+1 &lt; tool.organisations.length">, &lt;/span>
               &lt;/span>
+            &lt;/div>
+            &lt;div v-if="tool.status">
+              Status: {{ tool.status }}
             &lt;/div>
           &lt;/v-card-text>
         &lt;/v-card>

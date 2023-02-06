@@ -17,7 +17,7 @@ import options3D from 'highcharts/highcharts-3d'
 import Sunburst from 'highcharts/modules/sunburst'
 import VueCodeHighlight from 'vue-code-highlight';
 import VueSanitize from "vue-sanitize";
-import Particles from "particles.vue";
+import Particles from "vue2-particles";
 import VueGtag from "vue-gtag";
 import VueHead from 'vue-head';
 import "vue-code-highlight/themes/prism-twilight.css";

@@ -863,6 +863,37 @@ class RESTClient {
      }
 
      /**
+      * Get count of records created by month
+      * @param {String} token - the user token that needs to be a curator
+      * @returns {Promise}
+      */
+      async getRecordCreatedByMonth(userToken){
+          let _client = this;
+          const request = {
+              method: "get",
+              baseURL: _client.baseURL + "/files/creation_dates",
+              headers: this.auth_headers(userToken),
+          };
+          let response = await _client.executeQuery(request);
+          return response.data;
+      }
+
+      /**
+       * Get count of edits by month
+       * @param {String} token - the user token that needs to be a curator
+       * @returns {Promise}
+       */
+       async getEditByMonth(userToken){
+           let _client = this;
+           const request = {
+               method: "get",
+               baseURL: _client.baseURL + "/files/edit_dates",
+               headers: this.auth_headers(userToken),
+           };
+           let response = await _client.executeQuery(request);
+           return response.data;
+       }
+     /**
       * Get Zenodo call
       * @param {String} call
       * @param {String} userToken - the user jwt

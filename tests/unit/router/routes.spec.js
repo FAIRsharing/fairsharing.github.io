@@ -240,7 +240,6 @@ describe("Routes", () => {
             expect(window.location.assign).toHaveBeenCalledWith(redirections[goto]);
         });
         // eslint-enable no-promise-executor-return
-
     });
 
 

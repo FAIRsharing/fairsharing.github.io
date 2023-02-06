@@ -20,6 +20,16 @@ module.exports = {
       "./jest-setup.js",
       "trace-unhandled/register"
     ],
-    transform: { '^.*\\.js$': 'babel-jest' },
-    transformIgnorePatterns: ['node_modules/(?!vue-router|@babel|vuetify|particles.vue)']
+    "moduleFileExtensions": [
+        "js",
+        "json",
+        "vue"
+    ],
+    transform: {
+        '^.*\\.js$': 'babel-jest',
+        '.*\\.(vue)$': 'vue-jest'
+    },
+    transformIgnorePatterns: [
+        'node_modules/(?!vue-router|@babel|vuetify|vue2-particles)',
+    ]
 };

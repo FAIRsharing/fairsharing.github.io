@@ -145,7 +145,10 @@ describe('Actions/Mutations', () => {
         actions.logout(state);
         expect(actions.commit).toHaveBeenCalledWith(
             "users/setError",
-            {"field": "logout", "message": "Cannot read property 'user' of undefined"}
+            {
+                "field": "logout",
+                "message": "Cannot read properties of undefined (reading 'user')"
+            }
         );
     });
 
@@ -237,7 +240,7 @@ describe('Actions/Mutations', () => {
         await actions.getUser(state);
         expect(actions.commit).toHaveBeenCalledWith("users/setError", {
             "field": "getUser",
-            "message": "Cannot read property 'user' of undefined"
+            "message": "Cannot read properties of undefined (reading 'user')"
         });
 
     });
@@ -295,7 +298,7 @@ describe('Actions/Mutations', () => {
         await actions.getUserMeta(state);
         expect(actions.commit).toHaveBeenCalledWith("users/setError", {
             field: "getUser",
-            message: "Cannot read property 'user' of undefined"
+            message: "Cannot read properties of undefined (reading 'user')"
         })
     });
 
@@ -328,7 +331,7 @@ describe('Actions/Mutations', () => {
         await actions.updateUser(state);
         expect(actions.commit).toHaveBeenCalledWith("users/setError", {
             field: "updateProfile",
-            message: "Cannot read property 'user' of undefined"
+            message: "Cannot read properties of undefined (reading 'user')"
         })
     });
 
@@ -349,7 +352,7 @@ describe('Actions/Mutations', () => {
         });
         await actions.updateUser(state);
         expect(actions.commit).toHaveBeenCalledWith("users/setError",{
-            "field": "updateProfile", "message": "Cannot read property 'data' of undefined"
+            "field": "updateProfile", "message": "Cannot read properties of undefined (reading 'data')"
         });
     });
 
@@ -405,7 +408,7 @@ describe('Actions/Mutations', () => {
         await actions.resetPwd(state);
         expect(actions.commit).toHaveBeenCalledWith("users/setError", {
             field: "resetPassword",
-            message: "Cannot read property 'error' of undefined"
+            message: "Cannot read properties of undefined (reading 'error')"
         })
     });
 
@@ -415,7 +418,7 @@ describe('Actions/Mutations', () => {
         await actions.resetPwdWithoutToken(state);
         expect(actions.commit).toHaveBeenCalledWith("users/setError", {
             field: "resetPassword",
-            message: "Cannot read property 'user' of undefined"
+            message: "Cannot read properties of undefined (reading 'user')"
         })
     });
 

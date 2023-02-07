@@ -37,9 +37,9 @@
         elevation="2"
         class="white--text green"
         height="40"
-        href="/community_curation/our_curators"
+        href="/community_champions/our_champions"
       >
-        Meet our community curators
+        Meet our community champions
       </v-btn>
     </v-card-actions>
     <br>

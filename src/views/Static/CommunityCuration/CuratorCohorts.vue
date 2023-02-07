@@ -16,7 +16,7 @@
               class="header"
               :class="{'smallerHeading' : $vuetify.breakpoint.xs}"
             >
-              {{ alumniCurator ? "Alumni Community Curators": `Community Curators for ${ year }` }}
+              {{ alumniCurator ? "Alumni Community Champions": `Community Champions for ${ year }` }}
             </h1>
           </v-col>
           <v-col
@@ -32,7 +32,7 @@
               :class="[alumniCurator ? 'green': 'accent3',{'mb-2': $vuetify.breakpoint.smAndDown}]"
               @click="listAlumni()"
             >
-              {{ alumniCurator ? "View Current Curators": "View Alumni" }}
+              {{ alumniCurator ? "View Current Champions": "View Alumni" }}
             </v-btn>
           </v-col>
           <v-col
@@ -62,9 +62,9 @@
               class="full-width white--text green text-md-caption text-lg-body-2 font-weight-medium"
               :class="{'mt-n4 mb-4' : $vuetify.breakpoint.smAndDown}"
               height="40"
-              href="/community_curation"
+              href="/community_champions"
             >
-              Community curation
+              Community champions
             </v-btn>
           </v-col>
         </v-row>
@@ -86,11 +86,11 @@
               <p style="text-align: initial;">
                 <span class="font-italic">
                   {{ quote.text }}
-                </span> 
+                </span>
                 <br>
                 <span class="font-weight-bold">
                   {{ quote.author }}
-                </span> - 
+                </span> -
                 <span> {{ quote.scope }} </span>
               </p>
             </div>

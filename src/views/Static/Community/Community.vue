@@ -302,7 +302,7 @@
           <v-img
             :src="tool.logo ? `/assets/Community/tools/${tool.logo}` : '/assets/Community/tools/toolplaceholder.png'"
             class="white--text align-end"
-            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+            gradient="to bottom, rgba(10,10,10,.7), rgba(10,10,10,.9)"
             cover
             aspect-ratio="1"
           >
@@ -342,7 +342,7 @@
           <v-card-text
             class="text--primary"
             style="height: 100%"
-            :style="$vuetify.breakpoint.xl ? 'height: 115px': $vuetify.breakpoint.mdAndUp ? 'height: 135px' : 'height: 100%'"
+            :style="$vuetify.breakpoint.xl ? 'height: 215px': $vuetify.breakpoint.mdAndUp ? 'height: 235px' : 'height: 100%'"
           >
             <div v-if="tool.organisations && tool.organisations.length">
               Organisation :
@@ -375,6 +375,33 @@
             </div>
             <div v-if="tool.status">
               Status: {{ tool.status }}
+            </div>
+            <div v-if="tool.contacts && tool.contacts.length">
+              Contacts:<br>
+              <span
+                v-for="(contact) in tool.contacts"
+                :key="contact.id"
+              >
+                -> <a :href="contact.url">{{ contact.name }}</a><br>
+              </span>
+            </div>
+            <div v-if="tool.methods && tool.methods.length">
+              Methods of using FAIRsharing:<br>
+              <span
+                v-for="(method) in tool.methods"
+                :key="tool.name + method"
+              >
+                -> {{ method }}<br>
+              </span>
+            </div>
+            <div v-if="tool.types && tool.types.length">
+              Type of resource:<br>
+              <span
+                v-for="(type) in tool.types"
+                :key="tool.name + type"
+              >
+                -> {{ type }}<br>
+              </span>
             </div>
           </v-card-text>
         </v-card>

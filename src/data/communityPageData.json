@@ -205,20 +205,30 @@
         {
           "organisations": [
             {
-              "name": "Placeholder Org.",
-              "url": "https://example.com",
-              "id": 123
+              "name": "INDRA Labs",
+              "url": "https://indralab.github.io/",
+              "id": 3851
             }
           ],
-          "name": "Example App",
-          "type": ["other"],
-          "other_type": "text here",
-          "logo": "",
-          "status": "Proposed",
-          "description": "Placeholder for description",
-          "homepage": "https://example.org/example_app",
-          "image": "",
-          "id": "example"
+          "contacts": [
+            {
+              "name": "Charles Tapley Hoyt",
+              "url": "mailto:cthoyt@gmail.com",
+              "id": "cthoyt"
+            }
+          ],
+          "methods": [
+            "FAIRsharing API",
+            "Cross-referencing FAIRsharing content"
+          ],
+          "name": "The Bioregistry",
+          "types": ["(Meta)data retrieval/integration"],
+          "logo": "bioregistry.png",
+          "status": "Completed",
+          "description": "The Bioregistry aligns, harmonizes, and improves upon 20+ registries describing ontologies, databases, and other terminology artifacts in the life and natural sciences, including FAIRsharing.",
+          "homepage": "https://bioregistry.io",
+          "usage_image": "",
+          "id": "bioregistry"
         }
       ]
     }

@@ -342,7 +342,7 @@
           <v-card-text
             class="text--primary"
             style="height: 100%"
-            :style="$vuetify.breakpoint.xl ? 'height: 215px': $vuetify.breakpoint.mdAndUp ? 'height: 235px' : 'height: 100%'"
+            :style="$vuetify.breakpoint.xl ? 'height: 255px': $vuetify.breakpoint.mdAndUp ? 'height: 285px' : 'height: 100%'"
           >
             <div v-if="tool.organisations && tool.organisations.length">
               Organisation :
@@ -382,7 +382,12 @@
                 v-for="(contact) in tool.contacts"
                 :key="contact.id"
               >
-                -> <a :href="contact.url">{{ contact.name }}</a><br>
+                <v-chip
+                  class="ma-2"
+                  x-small
+                >
+                  <a :href="contact.url">{{ contact.name }}</a>
+                </v-chip>
               </span>
             </div>
             <div v-if="tool.methods && tool.methods.length">
@@ -391,7 +396,12 @@
                 v-for="(method) in tool.methods"
                 :key="tool.name + method"
               >
-                -> {{ method }}<br>
+                <v-chip
+                  class="ma-2"
+                  x-small
+                >
+                  {{ method }}
+                </v-chip>
               </span>
             </div>
             <div v-if="tool.types && tool.types.length">
@@ -400,7 +410,12 @@
                 v-for="(type) in tool.types"
                 :key="tool.name + type"
               >
-                -> {{ type }}<br>
+                <v-chip
+                  class="ma-2"
+                  x-small
+                >
+                  {{ type }}
+                </v-chip>
               </span>
             </div>
           </v-card-text>

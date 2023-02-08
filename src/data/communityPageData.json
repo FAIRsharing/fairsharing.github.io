@@ -229,6 +229,33 @@
           "homepage": "https://bioregistry.io",
           "usage_image": "",
           "id": "bioregistry"
+        },
+        {
+          "organisations": [
+            {
+              "name": "Elixir UK",
+              "url": "https://elixiruknode.org/",
+              "id": 843
+            },
+            {
+              "name": "Oxford e-Research Centre",
+              "url": "https://oerc.ox.ac.uk",
+              "id": 2281
+            }
+          ],
+          "contacts": [
+          ],
+          "methods": [
+            "Cross-referencing FAIRsharing content"
+          ],
+          "name": "FAIR Cookbook",
+          "types": ["Training Material / documentation"],
+          "logo": "faircookbook.png",
+          "status": "In progress",
+          "description": "Identification of data standards, semantic models, MI guidelines.",
+          "homepage": "https://faircookbook.elixir-europe.org/content/home.html",
+          "usage_image": "",
+          "id": "faircookbook"
         }
       ]
     }

@@ -306,30 +306,11 @@
             cover
             aspect-ratio="1"
           >
-            <div
-              class="toolLinks"
-            >
-              <v-list-item class="align-baseline">
-                <v-list-item-content>
-                  <v-list-item
-                    v-if="tool.hompeage"
-                    dark
-                  >
-                    <a
-                      :href="tool.homepage"
-                      target="_blank"
-                      class="d-flex align-center"
-                    >
-                      {{ tool.homepage }}
-                    </a>
-                  </v-list-item>
-                </v-list-item-content>
-              </v-list-item>
-            </div>
-
             <v-card-title>
               <h4 style="word-break: initial">
-                {{ tool.name }}
+                <a :href="tool.homepage">
+                  {{ tool.name }}
+                </a>
               </h4>
             </v-card-title>
             <v-card-subtitle

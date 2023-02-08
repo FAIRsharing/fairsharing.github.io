@@ -399,30 +399,11 @@
             cover
             aspect-ratio="1"
           >
-            &lt;div
-              class="toolLinks"
-            >
-              &lt;v-list-item class="align-baseline">
-                &lt;v-list-item-content>
-                  &lt;v-list-item
-                    v-if="tool.hompeage"
-                    dark
-                  >
-                    &lt;a
-                      :href="tool.homepage"
-                      target="_blank"
-                      class="d-flex align-center"
-                    >
-                      {{ tool.homepage }}
-                    &lt;/a>
-                  &lt;/v-list-item>
-                &lt;/v-list-item-content>
-              &lt;/v-list-item>
-            &lt;/div>
-
             &lt;v-card-title>
               &lt;h4 style="word-break: initial">
-                {{ tool.name }}
+                &lt;a :href="tool.homepage">
+                  {{ tool.name }}
+                &lt;/a>
               &lt;/h4>
             &lt;/v-card-title>
             &lt;v-card-subtitle

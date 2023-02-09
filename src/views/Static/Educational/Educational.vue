@@ -151,8 +151,9 @@
         }
       },
       async created() {
-        await this.$nextTick();
-        this.applyCss = true
+        let _module = this;
+        await _module.$nextTick();
+        _module.applyCss = true
         Object.keys(this.education).forEach(item => {
           Object.keys(this.education[item]).forEach(obj => {
             let foundHash = this.education[item][obj].find(it => `#${it.anchorLink}` === this.$route.hash)

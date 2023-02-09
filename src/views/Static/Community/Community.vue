@@ -302,7 +302,7 @@
           <v-img
             :src="tool.logo ? `/assets/Community/tools/${tool.logo}` : '/assets/Community/tools/toolplaceholder.png'"
             class="white--text align-end"
-            gradient="to bottom, rgba(10,10,10,.7), rgba(10,10,10,.9)"
+            gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
             cover
             aspect-ratio="1"
           >

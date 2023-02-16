@@ -112,7 +112,16 @@
             },
             async plotGraph(){
               let _module = this;
-              graph.import(this.graphData);
+              try {
+                graph.import(this.graphData);
+                // eslint-disable-next-line no-empty
+              }
+              catch {
+                // graph has presumably been loaded already...
+                // Reloading the page like this to re-draw the graph is a dreadful hack.
+                // TODO: Something better is needed here.
+                this.$router.go();
+              }
 
               // Graphology provides a easy to use implementation of Force Atlas 2 in a web worker
               _module.sensibleSettings = forceAtlas2.inferSettings(graph);
@@ -121,7 +130,7 @@
               });
 
               // eslint-disable-next-line no-unused-vars
-              renderer = new Sigma(graph, container);
+              renderer = new Sigma(graph, container, { allowInvalidContainer: true });
               renderer.on("enterNode", ({ node }) => {
                 this.setHoveredNode(node);
               });

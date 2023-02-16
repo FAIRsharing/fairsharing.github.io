@@ -55,7 +55,8 @@
               chart: null,
               cancelCurrentAnimation: null,
               sensibleSettings: null,
-              fa2Layout: null
+              fa2Layout: null,
+              highlighted: 0 // ID of currently-hovered node.
             }
         },
         computed: {
@@ -133,7 +134,8 @@
             },
             setHoveredNode(node) {
               // TODO: Use this to highlight links
-              console.log("NODE: " + JSON.stringify(node));
+              //console.log("NODE: " + JSON.stringify(node));
+              this.highlighted = node;
             },
             setClickedNode(node) {
               // node is the fairsharing_record_id

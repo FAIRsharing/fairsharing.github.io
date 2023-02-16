@@ -22,6 +22,7 @@
     const graphClient = new GraphClient();
     const graph = new Graph();
     let container;
+    let renderer;
 
     export default {
         name: "NetworkGraph",
@@ -69,9 +70,9 @@
         },
         async mounted() {
             this.$nextTick(async function () {
-                await this.getData();
-                container = document.getElementById("sigma-container");
-                this.plotGraph();
+              await this.getData();
+              container = document.getElementById("sigma-container");
+              this.plotGraph();
             })
         },
         methods: {
@@ -119,28 +120,35 @@
               });
 
               // eslint-disable-next-line no-unused-vars
-              const renderer = new Sigma(graph, container);
+              renderer = new Sigma(graph, container);
+              renderer.on("enterNode", ({ node }) => {
+                this.setHoveredNode(node);
+              });
+              renderer.on("clickNode", ({ node }) => {
+                this.setClickedNode(node);
+              });
               this.fa2Layout.start();
               await new Promise(r => setTimeout(r, 10000));
               this.fa2Layout.stop();
+            },
+            setHoveredNode(node) {
+              // TODO: Use this to highlight links
+              console.log("NODE: " + JSON.stringify(node));
+            },
+            setClickedNode(node) {
+              // node is the fairsharing_record_id
+              let _module = this;
+              if (parseInt(_module.$route.params.id) == parseInt(node)) {
+                _module.$router.push({
+                  path: "/" +  node
+                })
+              }
+              else {
+                _module.$router.push({
+                  path: "/graph/" +  node
+                })
+              }
             }
-        },
-        stopFA2() {
-          this.fa2Layout.stop();
-          //FA2StartLabel.style.display = "flex";
-          //FA2StopLabel.style.display = "none";
-        },
-        startFA2() {
-          this.fa2Layout.start();
-          //FA2StartLabel.style.display = "none";
-          //FA2StopLabel.style.display = "flex";
-        },
-        toggleFA2Layout() {
-          if (this.fa2Layout.isRunning()) {
-            this.stopFA2();
-          } else {
-            this.startFA2();
-          }
         }
     }
 </script>

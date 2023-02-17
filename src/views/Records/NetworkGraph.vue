@@ -169,8 +169,11 @@
                     !_module.state.hoveredNeighbors.has(node) &&
                     _module.state.hoveredNode !== node
                 ) {
-                  res.label = "";
-                  res.color = "#f6f6f6";
+                  if (parseInt(node) !== parseInt(_module.$route.params.id))
+                  {
+                    res.label = "";
+                    res.color = "#f6f6f6";
+                  }
                 }
 
                 if (_module.state.selectedNode === node) {

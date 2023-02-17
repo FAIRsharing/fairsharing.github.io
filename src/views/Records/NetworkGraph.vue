@@ -5,6 +5,15 @@
       <p>Colours: Collection orange, Database yellow, Standard green, policy blue.</p>
     </div>
     <div id="sigma-container" />
+    <v-fade-transition>
+      <v-overlay
+        v-if="loading"
+        :absolute="false"
+        opacity="0.8"
+      >
+        <Loaders />
+      </v-overlay>
+    </v-fade-transition>
   </v-container>
 </template>
 
@@ -13,7 +22,7 @@
     import graphQuery from '@/lib/GraphClient/queries/getGraphRelations.json'
     //import Loaders from "../../components/Navigation/Loaders";
     import relationColors from "@/data/RelationsColors.json"
-
+    import Loaders from "@/components/Navigation/Loaders";
     import Graph from "graphology";
     import Sigma from "sigma";
     import FA2Layout from "graphology-layout-forceatlas2/worker";
@@ -26,11 +35,9 @@
 
     export default {
         name: "NetworkGraph",
-        /*
         components: {
           Loaders,
         },
-       */
         data () {
           return {
               loading: false,
@@ -56,7 +63,8 @@
               cancelCurrentAnimation: null,
               sensibleSettings: null,
               fa2Layout: null,
-              highlighted: 0 // ID of currently-hovered node.
+              highlighted: 0, // ID of currently-hovered node.
+              state: {}
             }
         },
         computed: {
@@ -101,11 +109,11 @@
                 }
                 else {
                   this.graphData = response.fairsharingGraph.data;
+                  this.loading = false;
                   /*
                   this.registry = this.graphData.registry;
                   this.type = this.graphData.type;
                   this.drawGraph(true)
-                  this.loading = false;
                   this.initialized = true;
                    */
                 }
@@ -131,33 +139,74 @@
 
               // eslint-disable-next-line no-unused-vars
               renderer = new Sigma(graph, container, { allowInvalidContainer: true });
+              /*
               renderer.on("enterNode", ({ node }) => {
                 this.setHoveredNode(node);
               });
               renderer.on("clickNode", ({ node }) => {
                 this.setClickedNode(node);
               });
+               */
               this.fa2Layout.start();
-              await new Promise(r => setTimeout(r, 10000));
+
+
+              // Attempt to highlight nodes on hover...
+              renderer.on("enterNode", ({ node }) => {
+                _module.state.hoveredNode = node;
+                _module.state.hoveredNeighbors = new Set(graph.neighbors(node));
+                renderer.refresh();
+              });
+              renderer.on("leaveNode", () => {
+                _module.state.hoveredNode = undefined;
+                _module.state.hoveredNeighbors = undefined;
+                renderer.refresh();
+              });
+              renderer.setSetting("nodeReducer", (node, data) => {
+                const res = { ...data };
+
+                if (
+                    _module.state.hoveredNeighbors &&
+                    !_module.state.hoveredNeighbors.has(node) &&
+                    _module.state.hoveredNode !== node
+                ) {
+                  res.label = "";
+                  res.color = "#f6f6f6";
+                }
+
+                if (_module.state.selectedNode === node) {
+                  _module.res.highlighted = true;
+                }
+                return res;
+              });
+
+              renderer.setSetting("edgeReducer", (edge, data) => {
+                const res = { ...data };
+                if (_module.state.hoveredNode && !graph.hasExtremity(edge, _module.state.hoveredNode)) {
+                  res.hidden = true;
+                }
+                return res;
+              });
+              renderer.refresh();
+              await new Promise(r => setTimeout(r, 20000));
               this.fa2Layout.stop();
-            },
-            setHoveredNode(node) {
-              // TODO: Use this to highlight links
-              //console.log("NODE: " + JSON.stringify(node));
-              this.highlighted = node;
             },
             setClickedNode(node) {
               // node is the fairsharing_record_id
               let _module = this;
               if (parseInt(_module.$route.params.id) == parseInt(node)) {
+                this.loading = true;
+                // TODO: This requires two clicks to activate! Why?
                 _module.$router.push({
                   path: "/" +  node
                 })
+                //this.loading = false;
               }
               else {
+                this.loading = true;
                 _module.$router.push({
                   path: "/graph/" +  node
                 })
+                //this.loading = false;
               }
             }
         }

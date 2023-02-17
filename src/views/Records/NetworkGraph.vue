@@ -1,19 +1,144 @@
 <template>
   <v-container fluid>
-    <div id="temporary_text">
-      <p>N.B. This is work in progress, not yet ready for change requests.</p>
-      <p>Colours: Collection orange, Database yellow, Standard green, policy blue.</p>
-    </div>
-    <div id="sigma-container" />
-    <v-fade-transition>
-      <v-overlay
-        v-if="loading"
-        :absolute="false"
-        opacity="0.8"
+    <v-row>
+      <v-col
+        cols="3"
+        xs="12"
+        sm="12"
+        md="12"
+        lg="12"
+        xl="3"
+        class="pt-0 mt-2"
       >
-        <Loaders />
-      </v-overlay>
-    </v-fade-transition>
+        <v-card height="100%">
+          <v-card-title class="blue white--text">
+            Legend and configuration
+          </v-card-title>
+          <v-card-text class="pt-3">
+            <v-container fluid>
+              <v-row no-gutters>
+                <v-col cols="12">
+                  Important note: This feature is not yet ready for change requests.
+                </v-col>
+                <v-col cols="12">
+                  The graph's centre is shown in <span class="red--text">red.</span>
+                </v-col>
+                <v-col cols="12">
+                  Click on any point to re-draw the graph with that point as the centre. 
+                  Click on the centre to view the record. Hover over to view direct connections. Use the mouse/trackpad
+                  to scroll and zoom.
+                </v-col>
+              </v-row>
+              <v-divider />
+              <!-- Color definition meaning in NetworkGraph -->
+              <p class="ma-0">
+                Record Status
+              </p>
+              <v-row no-gutters>
+                <v-container
+                  fluid
+                  class="pl-4"
+                >
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    color="ready_color"
+                    style="width: 150px;"
+                  >
+                    ready
+                  </v-chip>
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    color="deprecated_color"
+                    style="width: 150px;"
+                  >
+                    deprecated
+                  </v-chip>
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    color="uncertain_color"
+                    style="width: 150px;"
+                  >
+                    uncertain
+                  </v-chip>
+                  <v-chip
+                    class="white--text d-flex align-center justify-center status_style"
+                    color="dev_color"
+                    style="width: 150px;"
+                  >
+                    In Development
+                  </v-chip>
+                </v-container>
+              </v-row>
+              <v-divider />
+              <v-row v-if="initialized">
+                <v-col
+                  cols="12"
+                  class="mt-0 pt-0 mb-0"
+                >
+                  <h4>Record Relationships</h4>
+                </v-col>
+                <v-col
+                  v-for="(relationName, relationColor, relationIndex) in legend.relations"
+                  :key="'relationInLegend_' + relationIndex"
+                  cols="12"
+                  sm="12"
+                  md="12"
+                  lg="6"
+                  xl="4"
+                  class="pt-1"
+                >
+                  <div
+                    class="legendColor"
+                    :style="'background:' + relationColor"
+                  >
+                    <span class="white--text">{{ relationName }}</span>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col
+        cols="9"
+        xs="12"
+        sm="12"
+        md="12"
+        lg="12"
+        xl="9"
+        class="pt-0 mt-2"
+      >
+        <v-card-title class="blue white--text">
+          Relation graph for: {{ this.graphData.name }} ({{ this.graphData.id }})
+        </v-card-title>
+        <v-card
+          v-if="loading"
+          height="100%"
+        >
+          <v-card-text class="text-center blue--text body-1">
+            Loading your data
+          </v-card-text>
+          <Loaders />
+        </v-card>
+        
+        <v-card
+          v-else
+          height="100%"
+        >
+          <div id="sigma-container" />
+        </v-card>
+        
+        <v-fade-transition>
+          <v-overlay
+            v-if="loading"
+            :absolute="false"
+            opacity="0.8"
+          >
+            <Loaders />
+          </v-overlay>
+        </v-fade-transition>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -27,6 +152,8 @@
     import Sigma from "sigma";
     import FA2Layout from "graphology-layout-forceatlas2/worker";
     import forceAtlas2 from "graphology-layout-forceatlas2";
+    import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
+
 
     const graphClient = new GraphClient();
     const graph = new Graph();
@@ -138,15 +265,15 @@
               });
 
               // eslint-disable-next-line no-unused-vars
-              renderer = new Sigma(graph, container, { allowInvalidContainer: true });
-              /*
-              renderer.on("enterNode", ({ node }) => {
-                this.setHoveredNode(node);
-              });
-              renderer.on("clickNode", ({ node }) => {
-                this.setClickedNode(node);
-              });
-               */
+              renderer = new Sigma(
+                  graph,
+                  container,
+                  {
+                    allowInvalidContainer: true,
+                    nodeProgramClasses: {
+                      image: getNodeProgramImage()
+                    },
+                  });
               this.fa2Layout.start();
 
 
@@ -196,7 +323,7 @@
             setClickedNode(node) {
               // node is the fairsharing_record_id
               let _module = this;
-              if (parseInt(_module.$route.params.id) == parseInt(node)) {
+              if (parseInt(_module.$route.params.id) === parseInt(node)) {
                 this.loading = true;
                 // TODO: This requires two clicks to activate! Why?
                 _module.$router.push({

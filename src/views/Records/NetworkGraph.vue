@@ -291,6 +291,11 @@
                 }
                 return res;
               });
+
+              renderer.on("clickNode", ({ node }) => {
+                this.setClickedNode(node);
+              });
+
               renderer.refresh();
               await new Promise(r => setTimeout(r, 20000));
               this.fa2Layout.stop();

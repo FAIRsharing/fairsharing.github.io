@@ -84,7 +84,7 @@
         class="pt-0 mt-2"
       >
         <v-card-title class="blue white--text">
-          Relation graph for: {{ this.graphData.name }} ({{ this.graphData.id }})
+          Relation graph for: {{ graphData.name }} ({{ graphData.id }})
         </v-card-title>
         <v-card
           v-if="loading"

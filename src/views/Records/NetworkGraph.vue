@@ -32,7 +32,7 @@
               <v-divider />
               <!-- Color definition meaning in NetworkGraph -->
               <p class="ma-0">
-                Record Status
+                Registry
               </p>
               <v-row no-gutters>
                 <v-container
@@ -41,60 +41,35 @@
                 >
                   <v-chip
                     class="white--text d-flex align-center justify-center status_style mb-2"
-                    color="ready_color"
+                    color="orange"
                     style="width: 150px;"
                   >
-                    ready
+                    Collection
                   </v-chip>
                   <v-chip
                     class="white--text d-flex align-center justify-center status_style mb-2"
-                    color="deprecated_color"
+                    color="yellow"
                     style="width: 150px;"
                   >
-                    deprecated
+                    Database
                   </v-chip>
                   <v-chip
                     class="white--text d-flex align-center justify-center status_style mb-2"
-                    color="uncertain_color"
+                    color="green"
                     style="width: 150px;"
                   >
-                    uncertain
+                    Standard
                   </v-chip>
                   <v-chip
                     class="white--text d-flex align-center justify-center status_style"
-                    color="dev_color"
+                    color="blue"
                     style="width: 150px;"
                   >
-                    In Development
+                    Policy
                   </v-chip>
                 </v-container>
               </v-row>
               <v-divider />
-              <v-row v-if="initialized">
-                <v-col
-                  cols="12"
-                  class="mt-0 pt-0 mb-0"
-                >
-                  <h4>Record Relationships</h4>
-                </v-col>
-                <v-col
-                  v-for="(relationName, relationColor, relationIndex) in legend.relations"
-                  :key="'relationInLegend_' + relationIndex"
-                  cols="12"
-                  sm="12"
-                  md="12"
-                  lg="6"
-                  xl="4"
-                  class="pt-1"
-                >
-                  <div
-                    class="legendColor"
-                    :style="'background:' + relationColor"
-                  >
-                    <span class="white--text">{{ relationName }}</span>
-                  </div>
-                </v-col>
-              </v-row>
             </v-container>
           </v-card-text>
         </v-card>

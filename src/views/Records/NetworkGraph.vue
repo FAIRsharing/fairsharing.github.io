@@ -79,6 +79,7 @@
                   fluid
                   class="pl-4"
                 >
+                  <!--
                   <v-btn
                     id="distance_0"
                     class="d-flex align-center justify-center status_style mb-2 pa-2"
@@ -88,6 +89,7 @@
                   >
                     Centre only (0)
                   </v-btn>
+                  -->
                   <v-btn
                     id="distance_1"
                     class="d-flex align-center justify-center status_style mb-2 pa-2"
@@ -106,6 +108,7 @@
                   >
                     Neighbours (2)
                   </v-btn>
+                  <!--
                   <v-btn
                     id="distance_3"
                     class="d-flex align-center justify-center status_style pa-2"
@@ -115,6 +118,7 @@
                   >
                     Distant (3)
                   </v-btn>
+                  -->
                 </v-container>
               </v-row>
             </v-container>
@@ -214,7 +218,7 @@
               fa2Layout: null,
               highlighted: 0, // ID of currently-hovered node.
               state: {},
-              selectedLength: 3
+              selectedLength: 2
             }
         },
         computed: {

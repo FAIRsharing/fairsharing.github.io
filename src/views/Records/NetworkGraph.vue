@@ -70,6 +70,49 @@
                 </v-container>
               </v-row>
               <v-divider />
+              <!-- buttons here -->
+              <p class="ma-0">
+                Distance from centre
+              </p>
+              <v-row no-gutters>
+                <v-container
+                  fluid
+                  class="pl-4"
+                >
+                  <v-btn
+                    id="distance_0"
+                    class="d-flex align-center justify-center status_style mb-2 pa-2"
+                    style="width: 150px;"
+                    @click="lengthLimit(0)"
+                  >
+                    Centre only (0)
+                  </v-btn>
+                  <v-btn
+                    id="distance_1"
+                    class="d-flex align-center justify-center status_style mb-2 pa-2"
+                    style="width: 150px;"
+                    @click="lengthLimit(1)"
+                  >
+                    Adjacent (1)
+                  </v-btn>
+                  <v-btn
+                    id="distance_2"
+                    class="d-flex align-center justify-center status_style mb-2 pa-2"
+                    style="width: 150px;"
+                    @click="lengthLimit(2)"
+                  >
+                    Neighbours (2)
+                  </v-btn>
+                  <v-btn
+                    id="distance_3"
+                    class="d-flex align-center justify-center status_style pa-2"
+                    style="width: 150px;"
+                    @click="lengthLimit(3)"
+                  >
+                    Distant (3)
+                  </v-btn>
+                </v-container>
+              </v-row>
             </v-container>
           </v-card-text>
         </v-card>
@@ -273,8 +316,11 @@
                 ) {
                   if (parseInt(node) !== parseInt(_module.$route.params.id))
                   {
+                    /*
                     res.label = "";
                     res.color = "#f6f6f6";
+                     */
+                    res.hidden = true;
                   }
                 }
 
@@ -297,7 +343,7 @@
               });
 
               renderer.refresh();
-              await new Promise(r => setTimeout(r, 20000));
+              await new Promise(r => setTimeout(r, 30000));
               this.fa2Layout.stop();
             },
             setClickedNode(node) {
@@ -318,6 +364,20 @@
                 })
                 //this.loading = false;
               }
+            },
+            lengthLimit(len) {
+              console.log("LEN: " + len);
+              //let _module = this;
+              renderer.setSetting("nodeReducer", (node, data) => {
+                const res = { ...data };
+
+                if (res.length > len)
+                {
+                  res.hidden = true;
+                }
+
+                return res;
+              });
             }
         }
     }

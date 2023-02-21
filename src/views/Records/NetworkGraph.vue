@@ -83,6 +83,7 @@
                     id="distance_0"
                     class="d-flex align-center justify-center status_style mb-2 pa-2"
                     style="width: 150px;"
+                    :color="getLengthColour(0)"
                     @click="lengthLimit(0)"
                   >
                     Centre only (0)
@@ -91,6 +92,7 @@
                     id="distance_1"
                     class="d-flex align-center justify-center status_style mb-2 pa-2"
                     style="width: 150px;"
+                    :color="getLengthColour(1)"
                     @click="lengthLimit(1)"
                   >
                     Adjacent (1)
@@ -99,6 +101,7 @@
                     id="distance_2"
                     class="d-flex align-center justify-center status_style mb-2 pa-2"
                     style="width: 150px;"
+                    :color="getLengthColour(2)"
                     @click="lengthLimit(2)"
                   >
                     Neighbours (2)
@@ -107,6 +110,7 @@
                     id="distance_3"
                     class="d-flex align-center justify-center status_style pa-2"
                     style="width: 150px;"
+                    :color="getLengthColour(3)"
                     @click="lengthLimit(3)"
                   >
                     Distant (3)
@@ -209,7 +213,8 @@
               sensibleSettings: null,
               fa2Layout: null,
               highlighted: 0, // ID of currently-hovered node.
-              state: {}
+              state: {},
+              selectedLength: 3
             }
         },
         computed: {
@@ -365,9 +370,9 @@
               }
             },
             lengthLimit(len) {
-              console.log("LEN: " + len);
-              //let _module = this;
+              let _module = this;
               renderer.setSetting("nodeReducer", (node, data) => {
+                _module.selectedLength = len;
                 const res = { ...data };
 
                 if (res.length > len)
@@ -377,6 +382,14 @@
 
                 return res;
               });
+            },
+            getLengthColour(len) {
+              if (len === this.selectedLength) {
+                return "orange"
+              }
+              else {
+                return "gray"
+              }
             }
         }
     }

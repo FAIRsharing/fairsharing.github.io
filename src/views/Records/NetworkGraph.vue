@@ -238,11 +238,10 @@
                     triangle: false,
                     diamond: false
                 }
-                /* A maxPathLength of 1-4 may be specified (API's default is 2).
+                /* A maxPathLength of 1-3 may be specified (API's default is 2).
                  Higher values may make the resulting graph rather large... */
                 graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
                 const response = await graphClient.executeQuery(graphQuery);
-                //if (Object.entries(this.graphData).length === 0 || this.graphData.edges.length === 0) {
                 if (response.fairsharingGraph === undefined ||
                     response.fairsharingGraph.data === undefined ||
                     response.fairsharingGraph.data.length === 0) {

@@ -324,17 +324,22 @@
                 ) {
                   if (parseInt(node) !== parseInt(_module.$route.params.id))
                   {
-                    /*
                     res.label = "";
                     res.color = "#f6f6f6";
-                     */
-                    res.hidden = true;
+                    //res.hidden = true;
                   }
                 }
 
                 if (_module.state.selectedNode === node) {
                   _module.res.highlighted = true;
                 }
+
+                if (res.length > _module.selectedLength)
+                {
+                  res.hidden = true;
+                }
+
+
                 return res;
               });
 
@@ -374,18 +379,7 @@
               }
             },
             lengthLimit(len) {
-              let _module = this;
-              renderer.setSetting("nodeReducer", (node, data) => {
-                _module.selectedLength = len;
-                const res = { ...data };
-
-                if (res.length > len)
-                {
-                  res.hidden = true;
-                }
-
-                return res;
-              });
+              this.selectedLength = len;
             },
             getLengthColour(len) {
               if (len === this.selectedLength) {

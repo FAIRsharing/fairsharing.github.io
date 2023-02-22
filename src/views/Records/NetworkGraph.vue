@@ -39,34 +39,38 @@
                   fluid
                   class="pl-4"
                 >
-                  <v-chip
+                  <v-btn
                     class="white--text d-flex align-center justify-center status_style mb-2"
-                    color="orange"
+                    :color="active['collection'] ? 'orange' : 'gray' "
                     style="width: 150px;"
+                    @click="toggleRegistry('collection')"
                   >
                     Collection
-                  </v-chip>
-                  <v-chip
+                  </v-btn>
+                  <v-btn
                     class="white--text d-flex align-center justify-center status_style mb-2"
-                    color="yellow"
+                    :color="active['database'] ? 'yellow' : 'gray' "
                     style="width: 150px;"
+                    @click="toggleRegistry('database')"
                   >
                     Database
-                  </v-chip>
-                  <v-chip
+                  </v-btn>
+                  <v-btn
                     class="white--text d-flex align-center justify-center status_style mb-2"
-                    color="green"
+                    :color="active['standard'] ? 'green' : 'gray' "
                     style="width: 150px;"
+                    @click="toggleRegistry('standard')"
                   >
                     Standard
-                  </v-chip>
-                  <v-chip
+                  </v-btn>
+                  <v-btn
                     class="white--text d-flex align-center justify-center status_style"
-                    color="blue"
+                    :color="active['policy'] ? 'blue' : 'gray' "
                     style="width: 150px;"
+                    @click="toggleRegistry('policy')"
                   >
                     Policy
-                  </v-chip>
+                  </v-btn>
                 </v-container>
               </v-row>
               <v-divider />
@@ -218,7 +222,13 @@
               fa2Layout: null,
               highlighted: 0, // ID of currently-hovered node.
               state: {},
-              selectedLength: 2
+              selectedLength: 2,
+              active: {
+                database: true,
+                collection: true,
+                standard: true,
+                policy: true
+              }
             }
         },
         computed: {
@@ -302,7 +312,6 @@
                   });
               this.fa2Layout.start();
 
-
               // Attempt to highlight nodes on hover...
               renderer.on("enterNode", ({ node }) => {
                 _module.state.hoveredNode = node;
@@ -317,6 +326,7 @@
               renderer.setSetting("nodeReducer", (node, data) => {
                 const res = { ...data };
 
+                // This is for hiding everything except the node being hovered over.
                 if (
                     _module.state.hoveredNeighbors &&
                     !_module.state.hoveredNeighbors.has(node) &&
@@ -334,15 +344,24 @@
                   _module.res.highlighted = true;
                 }
 
+                // Hide nodes which are further away than the path length.
                 if (res.length > _module.selectedLength)
                 {
                   res.hidden = true;
                 }
 
+                // Hide nodes when their registry is not selected
+                if (!this.active[res.registry] && parseInt(_module.$route.params.id) !== parseInt(node)  )
+                {
+                  //res.hidden = true;
+                  res.label = "";
+                  res.color = "#f6f6f6";
+                }
 
                 return res;
               });
 
+              // This is for hiding everything except the node being hovered over.
               renderer.setSetting("edgeReducer", (edge, data) => {
                 const res = { ...data };
                 if (_module.state.hoveredNode && !graph.hasExtremity(edge, _module.state.hoveredNode)) {
@@ -351,30 +370,30 @@
                 return res;
               });
 
+              // This is to link to another record's graph.
               renderer.on("clickNode", ({ node }) => {
                 this.setClickedNode(node);
               });
 
               renderer.refresh();
-              await new Promise(r => setTimeout(r, 30000));
-              this.fa2Layout.stop();
+              //await new Promise(r => setTimeout(r, 30000));
+              //this.fa2Layout.stop();
             },
             setClickedNode(node) {
               // node is the fairsharing_record_id
+              // TODO: This window.location.assign hackery is not great, but does at least cause
+              // TODO: the correct graph to load and render.
               let _module = this;
+              console.log("NODE: " + node);
+              console.log("ROUTE: " + _module.$route.params.id);
               if (parseInt(_module.$route.params.id) === parseInt(node)) {
                 this.loading = true;
-                // TODO: This requires two clicks to activate! Why?
-                _module.$router.push({
-                  path: "/" +  node
-                })
+                window.location.assign("/" + node);
                 //this.loading = false;
               }
               else {
                 this.loading = true;
-                _module.$router.push({
-                  path: "/graph/" +  node
-                })
+                window.location.assign("/graph/" + node);
                 //this.loading = false;
               }
             },
@@ -388,6 +407,9 @@
               else {
                 return "gray"
               }
+            },
+            toggleRegistry(reg) {
+              this.active[reg] = !this.active[reg];
             }
         }
     }

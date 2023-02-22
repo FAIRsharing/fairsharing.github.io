@@ -384,8 +384,6 @@
               // TODO: This window.location.assign hackery is not great, but does at least cause
               // TODO: the correct graph to load and render.
               let _module = this;
-              console.log("NODE: " + node);
-              console.log("ROUTE: " + _module.$route.params.id);
               if (parseInt(_module.$route.params.id) === parseInt(node)) {
                 this.loading = true;
                 window.location.assign("/" + node);

@@ -244,6 +244,11 @@
             }
           ],
           "contacts": [
+            {
+              "name": "FAIR Cookbook",
+              "url": "mailto:fairplus-cookbook@elixir-europe.org",
+              "id": "fair_cookbook"
+            }
           ],
           "methods": [
             "Cross-referencing FAIRsharing content"

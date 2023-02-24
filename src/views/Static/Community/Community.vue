@@ -74,11 +74,95 @@
 
     <!-- Adopters   -->
     <section id="adopters">
-      <h3 class="text-h4 mb-4 mt-5">
+      <h3 class="text-h3 mb-4 mt-5">
         Adopters
       </h3>
 
+      <p>
+        A broad range of <a href="/stakeholders">stakeholders</a> come to FAIRsharing from across all research domains.
+        However, adopters use FAIRsharing specifically to do one or more of the following:
+      </p>
+
+      <ol type="i">
+        <li>
+          Educate their users/community on the variety of existing standards, repositories and policies that exist in
+          FAIRsharing and actively encourage them to submit/claim records, where relevant;
+        </li>
+        <li>
+          Recommend resources by registering their data policy, and then link it to standards and/or databases
+          <a href="/search?page=1&isRecommended=true">recommended</a> in the policy;
+        </li>
+        <li>
+          Create a <a href="/collections">Collection</a> that pulls together a list of standards and/or databases
+          around a given domain of interest relevant to them.
+        </li>
+      </ol>
+
+      <p>
+        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure
+        programmes, societies and other organisations or projects that in turn serve and guide individual
+        researchers or other stakeholders on research data management matters. Adopters display a FAIRsharing logo
+        on their websites with a link from their website to our homepage.
+      </p>
+
+      <p>
+        In general, our adopters fall into the following broad categories. If you don't see your project on the
+        list of adopters, please <a href="mailto:contact@fairsharing.org">get in touch</a>.
+      </p>
+
+      <div class="text-center">
+        <v-btn
+          class="ma-2 text-white"
+        >
+          <router-link
+            v-scroll-to="'#funders'"
+            to="#"
+            text-color="white"
+          >
+            Funders
+          </router-link>
+        </v-btn>
+        <v-btn
+          class="ma-2 text-white"
+        >
+          <router-link
+            v-scroll-to="'#publishers'"
+            to="#"
+            text-color="white"
+          >
+            Publishers
+          </router-link>
+        </v-btn>
+        <v-btn
+          class="ma-2 text-white"
+        >
+          <router-link
+            v-scroll-to="'#publishers'"
+            to="#"
+            text-color="white"
+          >
+            Organisations
+          </router-link>
+        </v-btn>
+        <v-btn
+          class="ma-2 text-white"
+        >
+          <router-link
+            v-scroll-to="'#tools'"
+            to="#"
+            text-color="white"
+          >
+            Tools
+          </router-link>
+        </v-btn>
+      </div>
+
+      <h4 class="text-h4 mb-4 mt-5 pt-10">
+        Funders
+      </h4>
+
       <p
+        id="funders"
         :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
         A selection of official reports from funders and other organisations that recommend the use of FAIRsharing as a key asset for all stakeholders to enable FAIR data:
@@ -113,57 +197,17 @@
         </v-col>
       </v-row>
 
+      <h4 class="text-h4 mb-4 mt-5 pt-10">
+        Publishers
+      </h4>
+
       <p
-        :class="['mb-0 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+        id="publishers"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
       >
-        Anyone can use FAIRsharing. Adopters, however, use FAIRsharing specifically to:
+        A selection of the publishers that use FAIRsharing to define and refine their data policies:
       </p>
-      <ul>
-        <li><b class="mr-4">i:</b>Educate their users/community on the variety of existing standards, repositories and policies, and actively encourage them to submit/claim records, where relevant;</li>
-        <li>
-          <b class="mr-3">ii:</b>Recommend resources by registering their data policy, and then link it to standards and/or databases
-          <router-link
-            to="/policies"
-            class="underline-effect"
-          >
-            recommended
-          </router-link> in the policy; and/or
-        </li>
-        <li>
-          <b class="mr-2">iii:</b>Create a <router-link
-            to="/collections"
-            target="_blank"
-            class="underline-effect"
-          >
-            Collection
-          </router-link> by pulling together a list of standards and/or databases around a given domain of interest relevant to them.
-        </li>
-      </ul>
-      <p
-        :class="['mb-0 mt-2 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        If you wish to create a new metadata record on FAIRsharing, you can find <router-link
-          to="/new"
-          class="underline-effect"
-        >
-          instructions
-        </router-link> here.
-      </p>
-      <p
-        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Adopters are generally representatives of institutions, libraries, journal publishers, infrastructure programmes, societies and other organisations or projects that in turn serve and guide individual researchers or other stakeholders on research data management matters.
-      </p>
-      <p
-        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        Adopters display a FAIRsharing logo on their websites with a link from their website to our homepage.
-      </p>
-      <b
-        :class="['mb-0 mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-      >
-        We cannot list all of our adopters, but we've listed here some publishers that use FAIRsharing to define and refine their data policy.
-      </b>
+
       <!--Adopter table-->
       <v-row
         class="mt-2 ml-0"
@@ -187,8 +231,15 @@
           />
         </v-col>
       </v-row>
-      <p class="text-h6 mt-16">
+
+      <h4 class="text-h4 mt-5 pt-10">
         Other Organisations
+      </h4>
+      <p
+        id="organisations"
+        :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+      >
+        Some other organisations using FAIRsharing.
       </p>
       <v-row
         class="mt-2 ml-0"
@@ -214,7 +265,145 @@
       </v-row>
     </section>
 
-    <!--  content  -->
+    <!--  new tools section  -->
+    <h4 class="text-h4 mt-5 pt-10">
+      Tools
+    </h4>
+    <p
+      v-if="tables.toolsTable.data.length"
+      id="tools"
+      :class="['mb-0 mt-10 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
+    >
+      Tools that make use of FAIRsharing content. If you would like your tool included in this list, please use
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSdl1lKj9xlgN5Od_LyqWfnqBl-8aOLXhdFQa2nfm5CBmZ1TgQ/viewform?usp=sf_link"
+        target="_blank"
+      >this form</a>
+      to let us know how you're using FAIRsharing.
+    </p>
+
+    <!-- Tools table begins -->
+    <v-row
+      v-if="tables.toolsTable.data.length"
+      dense
+    >
+      <v-col
+        v-for="tool in tables.toolsTable.data"
+        :key="tool.id"
+        cols="12"
+        sm="12"
+        md="4"
+        lg="3"
+        xl="2"
+      >
+        <v-card
+          class="full-width"
+        >
+          <v-img
+            :src="tool.logo ? `/assets/Community/tools/${tool.logo}` : '/assets/Community/tools/toolplaceholder.png'"
+            class="white--text align-end"
+            gradient="to top, rgba(0, 0, 0, 0.9), rgba(255, 255, 255, 0.9)"
+            cover
+            aspect-ratio="1"
+          >
+            <v-card-title>
+              <h4 style="word-break: initial">
+                <a :href="tool.homepage">
+                  {{ tool.name }}
+                </a>
+              </h4>
+            </v-card-title>
+            <v-card-subtitle
+              v-if="tool.description"
+            >
+              {{ tool.description }}
+            </v-card-subtitle>
+          </v-img>
+
+          <v-card-text
+            class="text--primary"
+            style="height: 100%"
+            :style="$vuetify.breakpoint.xl ? 'height: 255px': $vuetify.breakpoint.mdAndUp ? 'height: 285px' : 'height: 100%'"
+          >
+            <div v-if="tool.organisations && tool.organisations.length">
+              Organisation :
+              <span
+                v-for="(org, i) in tool.organisations"
+                :key="org.id"
+              >
+                <v-tooltip
+                  v-if="org.tooltip"
+                  bottom
+                >
+                  <template #activator="{ on }">
+                    <a
+                      :href="`/organisations/${org.id}`"
+                      class="d-inline-block"
+                      v-on="on"
+                    >{{ org.name }}
+                    </a>
+                  </template>
+                  <span>{{ org.tooltip }}</span>
+                </v-tooltip>
+                <a
+                  v-else
+                  :href="`/organisations/${org.id}`"
+                  class="d-inline-block"
+                >{{ org.name }}
+                </a>
+                <span v-if="i+1 < tool.organisations.length">, </span>
+              </span>
+            </div>
+            <div v-if="tool.status">
+              Status: {{ tool.status }}
+            </div>
+            <div v-if="tool.contacts && tool.contacts.length">
+              Contacts:<br>
+              <span
+                v-for="(contact) in tool.contacts"
+                :key="contact.id"
+              >
+                <v-chip
+                  class="ma-2"
+                  x-small
+                >
+                  <a :href="contact.url">{{ contact.name }}</a>
+                </v-chip>
+              </span>
+            </div>
+            <div v-if="tool.methods && tool.methods.length">
+              Methods of using FAIRsharing:<br>
+              <span
+                v-for="(method) in tool.methods"
+                :key="tool.name + method"
+              >
+                <v-chip
+                  class="ma-2"
+                  x-small
+                >
+                  {{ method }}
+                </v-chip>
+              </span>
+            </div>
+            <div v-if="tool.types && tool.types.length">
+              Type of resource:<br>
+              <span
+                v-for="(type) in tool.types"
+                :key="tool.name + type"
+              >
+                <v-chip
+                  class="ma-2"
+                  x-small
+                >
+                  {{ type }}
+                </v-chip>
+              </span>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <!-- Tools table ends -->
 
 
     <!-- Activities   -->

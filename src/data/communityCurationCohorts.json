@@ -394,6 +394,25 @@
         "linkedin" : "debora-drucker",
         "logo": "debora_druker.jpeg",
         "year_active": ["2022", "2023"]
+      },
+      {
+        "name": "Yuhe Liang",
+        "id": 8448,
+        "organisation": [
+          {
+            "id": 2423,
+            "name": "RCSB",
+            "tooltip": "Research Collaboratory for Structural Bioinformatics"
+          }
+        ],
+        "scope": "Structural Biology; Biochemistry; Biophysics; Crystallography; Biocuration",
+        "orcid": "0000-0002-0574-2041",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "yu-he-liang-66650033",
+        "logo": "yuhen.jpg",
+        "year_active": ["2023"]
       }
     ],
     "quotes": [

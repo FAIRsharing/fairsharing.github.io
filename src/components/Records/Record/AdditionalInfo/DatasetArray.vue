@@ -3,6 +3,18 @@
     v-if="currentField && currentField.length > 0"
     class="pa-4 mt-4 data-holder"
   >
+    <v-tooltip
+      v-if="getDescription('head')"
+      bottom
+      class="d-inline-block mr-2"
+    >
+      <template #activator="{ on }">
+        <v-icon v-on="on">
+          fa-question-circle
+        </v-icon>
+      </template>
+      {{ getDescription('head') }}
+    </v-tooltip>
     <b class="text-h6 text-capitalize">{{ setTitle(cleanString(title)) }}</b>
     <div
       v-for="(item,index) in currentField"
@@ -10,53 +22,59 @@
     >
       <!--  URLs    -->
       <div
-        v-if="item.url || item.documentation_url || item.example_url "
-        class="d-flex flex-row align-center min-height-40"
+        v-for="(key, keyindex) in Object.keys(item)"
+        :key="key+'_'+keyindex"
       >
-        <v-tooltip
-          v-if="getDescription(Object.keys(item)[0])"
-          bottom
-          class="d-inline-block mr-2"
+        <div
+          v-if="key === 'url' || key === 'documentation_url' || key === 'example_url'"
+          class="d-flex flex-row align-center min-height-40"
         >
-          <template #activator="{ on }">
-            <v-icon v-on="on">
-              fa-question-circle
-            </v-icon>
-          </template>
-          {{ getDescription(Object.keys(item)[0]) }}
-        </v-tooltip>
-        <b class="width-200">{{ setTitle(cleanString(Object.keys(item)[0])) }}</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          <a
-            class="underline-effect"
-            :href="item[Object.keys(item)[0]]"
-            target="_blank"
+          <v-tooltip
+            v-if="getDescription(item[key])"
+            bottom
+            class="d-inline-block mr-2"
           >
-            {{ item[Object.keys(item)[0]] }}
-          </a>
+            <template #activator="{ on }">
+              <v-icon v-on="on">
+                fa-question-circle
+              </v-icon>
+            </template>
+            {{ getDescription(item[key]) }}
+          </v-tooltip>
+          <b class="width-200">{{ setTitle(cleanString(key)) }}</b>
+          <div class="d-flex full-width ml-md-12 ml-13">
+            <!-- See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2021 -->
+            <a
+              class="underline-effect"
+              :href="item[key]"
+              target="_blank"
+            >
+              {{ item[key] }}
+            </a>
+          </div>
         </div>
-      </div>
 
-      <!-- placeholder for whatever else might be used as the key -->
-      <div
-        v-else
-        class="d-flex flex-row align-center min-height-40"
-      >
-        <v-tooltip
-          v-if="getDescription(Object.keys(item)[0])"
-          bottom
-          class="d-inline-block mr-2"
+        <!-- placeholder for whatever else might be used as the key -->
+        <div
+          v-else
+          class="d-flex flex-row align-center min-height-40"
         >
-          <template #activator="{ on }">
-            <v-icon v-on="on">
-              fa-question-circle
-            </v-icon>
-          </template>
-          {{ getDescription(Object.keys(item)[0]) }}
-        </v-tooltip>
-        <b class="width-200 text-capitalize">{{ setTitle(cleanString(Object.keys(item)[0])) }}</b>
-        <div class="d-flex full-width ml-md-12 ml-13">
-          {{ item[Object.keys(item)[0]] }}
+          <v-tooltip
+            v-if="getDescription(item[key])"
+            bottom
+            class="d-inline-block mr-2"
+          >
+            <template #activator="{ on }">
+              <v-icon v-on="on">
+                fa-question-circle
+              </v-icon>
+            </template>
+            {{ getDescription(item[key]) }}
+          </v-tooltip>
+          <b class="width-200 text-capitalize">{{ setTitle(cleanString(key)) }}</b>
+          <div class="d-flex full-width ml-md-12 ml-13">
+            {{ item[key] }}
+          </div>
         </div>
       </div>
 
@@ -118,13 +136,13 @@ export default {
     },
     getDescription(field) {
       let _module = this;
-      if (_module.currentTooltips['properties'] !== undefined) {
+      if (field === 'head') {
+        return _module.currentTooltips['description'] || false;
+      }
+      else if (_module.currentTooltips['properties'] !== undefined) {
         if (_module.currentTooltips['properties'][field]['description']) {
           return _module.currentTooltips['properties'][field]['description']
         }
-      }
-      else if (_module.currentTooltips['description']) {
-        return _module.currentTooltips['description'];
       }
       return false;
     }

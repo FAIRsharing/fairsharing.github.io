@@ -11,7 +11,7 @@
     </v-alert>
 
     <v-alert
-      v-if="messages().getPublicUser.message && !pageLoad"
+      v-if="messages().getPublicUser.message && !pageLoad && currentPublicUser.username"
       class="white--text"
       type="error"
     >

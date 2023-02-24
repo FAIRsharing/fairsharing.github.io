@@ -199,6 +199,70 @@
           "externalLink": "https://elixir-europe.org/"
         }
       ]
+    },
+    "toolsTable": {
+      "data": [
+        {
+          "organisations": [
+            {
+              "name": "INDRA Labs",
+              "url": "https://indralab.github.io/",
+              "id": 3851
+            }
+          ],
+          "contacts": [
+            {
+              "name": "Charles Tapley Hoyt",
+              "url": "mailto:cthoyt@gmail.com",
+              "id": "cthoyt"
+            }
+          ],
+          "methods": [
+            "FAIRsharing API",
+            "Cross-referencing FAIRsharing content"
+          ],
+          "name": "The Bioregistry",
+          "types": ["(Meta)data retrieval/integration"],
+          "logo": "bioregistry.png",
+          "status": "Completed",
+          "description": "The Bioregistry aligns, harmonizes, and improves upon 20+ registries describing ontologies, databases, and other terminology artifacts in the life and natural sciences, including FAIRsharing.",
+          "homepage": "https://bioregistry.io",
+          "usage_image": "",
+          "id": "bioregistry"
+        },
+        {
+          "organisations": [
+            {
+              "name": "Elixir UK",
+              "url": "https://elixiruknode.org/",
+              "id": 843
+            },
+            {
+              "name": "Oxford e-Research Centre",
+              "url": "https://oerc.ox.ac.uk",
+              "id": 2281
+            }
+          ],
+          "contacts": [
+            {
+              "name": "FAIR Cookbook",
+              "url": "mailto:fairplus-cookbook@elixir-europe.org",
+              "id": "fair_cookbook"
+            }
+          ],
+          "methods": [
+            "Cross-referencing FAIRsharing content"
+          ],
+          "name": "FAIR Cookbook",
+          "types": ["Training Material / documentation"],
+          "logo": "faircookbook.png",
+          "status": "In progress",
+          "description": "Identification of data standards, semantic models, MI guidelines.",
+          "homepage": "https://faircookbook.elixir-europe.org/content/home.html",
+          "usage_image": "",
+          "id": "faircookbook"
+        }
+      ]
     }
   },
   "governance": {

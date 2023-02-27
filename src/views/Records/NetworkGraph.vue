@@ -101,7 +101,7 @@
                     :color="getLengthColour(1)"
                     @click="lengthLimit(1)"
                   >
-                    Adjacent (1)
+                    One hop.
                   </v-btn>
                   <v-btn
                     id="distance_2"
@@ -110,9 +110,8 @@
                     :color="getLengthColour(2)"
                     @click="lengthLimit(2)"
                   >
-                    Neighbours (2)
+                    Two hops.
                   </v-btn>
-                  <!--
                   <v-btn
                     id="distance_3"
                     class="d-flex align-center justify-center status_style pa-2"
@@ -120,9 +119,8 @@
                     :color="getLengthColour(3)"
                     @click="lengthLimit(3)"
                   >
-                    Distant (3)
+                    Three hops
                   </v-btn>
-                  -->
                 </v-container>
               </v-row>
             </v-container>
@@ -222,7 +220,7 @@
               fa2Layout: null,
               highlighted: 0, // ID of currently-hovered node.
               state: {},
-              selectedLength: 2,
+              selectedLength: 3,
               active: {
                 database: true,
                 collection: true,

@@ -101,7 +101,7 @@
                     :color="getLengthColour(1)"
                     @click="lengthLimit(1)"
                   >
-                    One hop.
+                    One hop
                   </v-btn>
                   <v-btn
                     id="distance_2"
@@ -110,7 +110,7 @@
                     :color="getLengthColour(2)"
                     @click="lengthLimit(2)"
                   >
-                    Two hops.
+                    Two hops
                   </v-btn>
                   <v-btn
                     id="distance_3"

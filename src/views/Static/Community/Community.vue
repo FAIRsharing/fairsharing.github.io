@@ -308,7 +308,7 @@
           >
             <v-card-title>
               <h4 style="word-break: initial">
-                <a :href="tool.homepage">
+                <a :href="tool.homepage" :id="tool.id">
                   {{ tool.name }}
                 </a>
               </h4>

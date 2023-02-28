@@ -274,7 +274,7 @@
             {
               "name": "Mark Wilkinson",
               "url": "mailto:mark.wilkinson@upm.es",
-              "id": 866
+              "id": "866"
             }
           ],
           "methods": [
@@ -352,12 +352,12 @@
             {
               "name": "GO FAIR Foundation",
               "url": "https://www.gofair.foundation/",
-              "id": ""
+              "id": 3901
             },
             {
               "name": "Codevence",
               "url": "https://codevence.com",
-              "id": ""
+              "id": 3902
             }
           ],
           "contacts": [

@@ -326,7 +326,7 @@
           <v-card-text
             class="text--primary"
             style="height: 100%"
-            :style="$vuetify.breakpoint.xl ? 'height: 305px': $vuetify.breakpoint.mdAndUp ? 'height: 235px' : 'height: 100%'"
+            :style="$vuetify.breakpoint.xl ? 'height: 305px': $vuetify.breakpoint.mdAndUp ? 'height: 335px' : 'height: 100%'"
           >
             <div v-if="tool.organisations && tool.organisations.length">
               Organisation :

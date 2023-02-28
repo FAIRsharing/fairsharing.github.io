@@ -431,19 +431,6 @@
             },
             toggleRegistry(reg) {
               this.active[reg] = !this.active[reg];
-            },
-            toggleDrawing() {
-              let _module = this;
-              if (_module.drawing === true) {
-                console.log("Stopping!");
-                this.fa2Layout.stop();
-                _module.drawing = false;
-              }
-              else {
-                console.log("Starting!");
-                this.fa2Layout.start();
-                _module.drawing = true;
-              }
             }
         }
     }

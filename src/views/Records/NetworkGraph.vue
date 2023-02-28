@@ -121,6 +121,22 @@
                   >
                     Three hops
                   </v-btn>
+                  <v-divider />
+                  <p class="ma-0">
+                    Graph rendering
+                  </p>
+                  <v-row no-gutters>
+                    <v-container
+                      fluid
+                      class="pl-4"
+                    />
+                    <v-switch
+                      id="drawing_active"
+                      v-model="drawing"
+                      class="d-flex align-center justify-center status_style pa-2"
+                      label="Automatic adjustment of node position."
+                    />
+                  </v-row>
                 </v-container>
               </v-row>
             </v-container>
@@ -137,8 +153,11 @@
         class="pt-0 mt-2"
       >
         <v-card-title class="blue white--text">
-          Relation graph for: {{ graphData.name }} ({{ graphData.id }})
+          {{ graphData.name }} ({{ graphData.id }})
         </v-card-title>
+        <v-card-subtitle class="blue white--text">
+          {{ registry }}/{{ type }}
+        </v-card-subtitle>
         <v-card
           v-if="loading"
           height="100%"
@@ -148,14 +167,14 @@
           </v-card-text>
           <Loaders />
         </v-card>
-        
+
         <v-card
           v-else
           height="100%"
         >
           <div id="sigma-container" />
         </v-card>
-        
+
         <v-fade-transition>
           <v-overlay
             v-if="loading"
@@ -226,7 +245,8 @@
                 collection: true,
                 standard: true,
                 policy: true
-              }
+              },
+              drawing: true
             }
         },
         computed: {
@@ -238,6 +258,16 @@
           async currentRoute() {
             await this.getData();
           },
+          drawing: {
+            handler() {
+              if (this.drawing) {
+                this.fa2Layout.start();
+              }
+              else {
+                this.fa2Layout.stop();
+              }
+            }
+          }
         },
         async mounted() {
             this.$nextTick(async function () {
@@ -271,12 +301,8 @@
                 else {
                   this.graphData = response.fairsharingGraph.data;
                   this.loading = false;
-                  /*
                   this.registry = this.graphData.registry;
                   this.type = this.graphData.type;
-                  this.drawGraph(true)
-                  this.initialized = true;
-                   */
                 }
             },
             async plotGraph(){
@@ -332,9 +358,9 @@
                 ) {
                   if (parseInt(node) !== parseInt(_module.$route.params.id))
                   {
-                    res.label = "";
-                    res.color = "#f6f6f6";
-                    //res.hidden = true;
+                    //res.label = "";
+                    //res.color = "#f6f6f6";
+                    res.hidden = true;
                   }
                 }
 
@@ -351,9 +377,9 @@
                 // Hide nodes when their registry is not selected
                 if (!this.active[res.registry] && parseInt(_module.$route.params.id) !== parseInt(node)  )
                 {
-                  //res.hidden = true;
-                  res.label = "";
-                  res.color = "#f6f6f6";
+                  res.hidden = true;
+                  //res.label = "";
+                  //res.color = "#f6f6f6";
                 }
 
                 return res;
@@ -374,8 +400,6 @@
               });
 
               renderer.refresh();
-              //await new Promise(r => setTimeout(r, 30000));
-              //this.fa2Layout.stop();
             },
             setClickedNode(node) {
               // node is the fairsharing_record_id
@@ -406,6 +430,19 @@
             },
             toggleRegistry(reg) {
               this.active[reg] = !this.active[reg];
+            },
+            toggleDrawing() {
+              let _module = this;
+              if (_module.drawing === true) {
+                console.log("Stopping!");
+                this.fa2Layout.stop();
+                _module.drawing = false;
+              }
+              else {
+                console.log("Starting!");
+                this.fa2Layout.start();
+                _module.drawing = true;
+              }
             }
         }
     }

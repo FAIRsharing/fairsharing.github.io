@@ -321,6 +321,7 @@
               // Graphology provides a easy to use implementation of Force Atlas 2 in a web worker
               _module.sensibleSettings = forceAtlas2.inferSettings(graph);
               _module.fa2Layout = new FA2Layout(graph, {
+                iterations: 50,
                 settings: _module.sensibleSettings,
               });
 

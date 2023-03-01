@@ -30,7 +30,7 @@
 import {throttle} from "lodash"
 import filterChipsUtils from "@/utils/filterChipsUtils";
 import filterMapping from "@/data/FiltersLabelMapping.json"
-
+import extraFilterChips from "@/data/extraFilterChips.json"
 
 export default {
   name: "FilterChips",
@@ -49,6 +49,15 @@ export default {
         let field = filterMapping["autocomplete"][filterName];
         filterLabels[field.filterName] = field.filterLabel;
       });
+      /*
+       * These labels are specific to the FAIRsharing Wizard and aren't normally required in the search sidebar,
+       * so they are defined here rather than in filterMapping.
+       */
+      extraFilterChips.forEach(function(extra) {
+        let key = Object.keys(extra)[0]
+        filterLabels[key] = extra[key];
+      })
+      console.log(JSON.stringify(filterLabels));
       return filterLabels;
     }
   },

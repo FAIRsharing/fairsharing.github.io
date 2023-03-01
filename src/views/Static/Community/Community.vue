@@ -116,7 +116,7 @@
         >
           <router-link
             v-scroll-to="'#funders'"
-            to="#"
+            to="#funders"
             text-color="white"
           >
             Funders
@@ -127,7 +127,7 @@
         >
           <router-link
             v-scroll-to="'#publishers'"
-            to="#"
+            to="#publishers"
             text-color="white"
           >
             Publishers
@@ -137,8 +137,8 @@
           class="ma-2 text-white"
         >
           <router-link
-            v-scroll-to="'#publishers'"
-            to="#"
+            v-scroll-to="'#organisations'"
+            to="#organisations"
             text-color="white"
           >
             Organisations
@@ -149,7 +149,7 @@
         >
           <router-link
             v-scroll-to="'#tools'"
-            to="#"
+            to="#tools"
             text-color="white"
           >
             Tools

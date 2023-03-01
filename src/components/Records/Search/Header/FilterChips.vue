@@ -57,7 +57,6 @@ export default {
         let key = Object.keys(extra)[0]
         filterLabels[key] = extra[key];
       })
-      console.log(JSON.stringify(filterLabels));
       return filterLabels;
     }
   },

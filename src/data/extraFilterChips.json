@@ -1,0 +1,41 @@
+[
+  {
+    "dataVersioning": "Data versioning"
+  },
+  {
+    "hasPublication": "Has publication"
+  },
+  {
+    "isImplemented": "Is implemented"
+  },
+  {
+    "usesPersistentIdentifier": "Uses persistent identifer"
+  },
+  {
+    "dataPreservationPolicy": "Data preservation policy"
+  },
+  {
+    "resourceSustainability": "Resource sustainability"
+  },
+  {
+    "dataAccessCondition": "Data access condition"
+  },
+  {
+    "dataCuration": "Data curation"
+  },
+  {
+    "dataDepositionCondition": "Data deposition condition"
+  },
+  {
+    "citationToRelatedPublications": "Citation to related publications"
+  },
+  {
+    "dataAccessForPrePublicationReview": "Data access for pre-publication review"
+  },
+  {
+    "dataContactInformation": "Data contact information"
+  },
+  {
+    "dataVersioning": "Data versioning"
+  }
+]

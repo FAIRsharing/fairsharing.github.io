@@ -119,21 +119,29 @@
                     Three hops
                   </v-btn>
                   <v-divider />
-                  <p class="ma-0">
-                    Graph rendering
-                  </p>
-                  <v-row no-gutters>
-                    <v-container
-                      fluid
-                      class="pl-4"
-                    />
-                    <v-switch
-                      id="drawing_active"
-                      v-model="drawing"
-                      class="d-flex align-center justify-center status_style pa-2"
-                      label="Automatic adjustment of node position."
-                    />
-                  </v-row>
+                  <div
+                    v-if="user().is_curator"
+                    id="curators_only_switch"
+                  >
+                    <p class="ma-0">
+                      Graph rendering (curators only)
+                    </p>
+                    <v-row no-gutters>
+                      <v-container
+                        fluid
+                        class="pl-4"
+                      />
+                      <v-switch
+                        id="drawing_active"
+                        v-model="drawing"
+                        class="d-flex align-center justify-center status_style pa-2"
+                        label="Automatic adjustment of node position."
+                      />
+                      <p class="ma-0">
+                        N.B. Some buttons may not function whilst the graph is not rendering.
+                      </p>
+                    </v-row>
+                  </div>
                 </v-container>
               </v-row>
             </v-container>
@@ -228,7 +236,7 @@
     import FA2Layout from "graphology-layout-forceatlas2/worker";
     import forceAtlas2 from "graphology-layout-forceatlas2";
     import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
-
+    import { mapState } from "vuex"
 
     const graphClient = new GraphClient();
     const graph = new Graph();
@@ -278,6 +286,7 @@
             }
         },
         computed: {
+          ...mapState('users', ['user']),
           currentRoute() {
             return this.target || this.$route.params['id'];
           }

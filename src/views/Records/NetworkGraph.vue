@@ -228,7 +228,6 @@
 <script>
     import GraphClient from '@/lib/GraphClient/GraphClient.js'
     import graphQuery from '@/lib/GraphClient/queries/getGraphRelations.json'
-    //import Loaders from "../../components/Navigation/Loaders";
     import relationColors from "@/data/RelationsColors.json"
     import Loaders from "@/components/Navigation/Loaders";
     import Graph from "graphology";

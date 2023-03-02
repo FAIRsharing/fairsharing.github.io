@@ -116,7 +116,7 @@
         >
           <router-link
             v-scroll-to="'#funders'"
-            to="#"
+            to="#funders"
             text-color="white"
           >
             Funders
@@ -127,7 +127,7 @@
         >
           <router-link
             v-scroll-to="'#publishers'"
-            to="#"
+            to="#publishers"
             text-color="white"
           >
             Publishers
@@ -137,8 +137,8 @@
           class="ma-2 text-white"
         >
           <router-link
-            v-scroll-to="'#publishers'"
-            to="#"
+            v-scroll-to="'#organisations'"
+            to="#organisations"
             text-color="white"
           >
             Organisations
@@ -149,7 +149,7 @@
         >
           <router-link
             v-scroll-to="'#tools'"
-            to="#"
+            to="#tools"
             text-color="white"
           >
             Tools
@@ -326,7 +326,7 @@
           <v-card-text
             class="text--primary"
             style="height: 100%"
-            :style="$vuetify.breakpoint.xl ? 'height: 255px': $vuetify.breakpoint.mdAndUp ? 'height: 285px' : 'height: 100%'"
+            :style="$vuetify.breakpoint.xl ? 'height: 320px': $vuetify.breakpoint.mdAndUp ? 'height: 350px' : 'height: 100%'"
           >
             <div v-if="tool.organisations && tool.organisations.length">
               Organisation :

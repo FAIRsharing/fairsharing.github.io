@@ -208,6 +208,11 @@
               "name": "INDRA Labs",
               "url": "https://indralab.github.io/",
               "id": 3851
+            },
+            {
+              "name": "Harvard Medical School",
+              "url": "https://hms.harvard.edu",
+              "id": 1213
             }
           ],
           "contacts": [
@@ -261,6 +266,124 @@
           "homepage": "https://faircookbook.elixir-europe.org/content/home.html",
           "usage_image": "",
           "id": "faircookbook"
+        },
+        {
+          "organisations": [
+            {
+              "name": "FAIR Data Systems",
+              "url": "https://fairdata.systems",
+              "id": 3899
+            }
+          ],
+          "contacts": [
+            {
+              "name": "Mark Wilkinson",
+              "url": "mailto:mark.wilkinson@upm.es",
+              "id": "866"
+            }
+          ],
+          "methods": [
+            "FAIRsharing API"
+          ],
+          "name": "The FAIR Maturity Evaluation Service",
+          "types": ["FAIR evaluation/assessment"],
+          "logo": "metrics.png",
+          "status": "Planned",
+          "description": "Lookups of standards after metric test failure",
+          "homepage": "https://w3id.org/AmIFAIR",
+          "usage_image": "",
+          "id": "AmIFAIR"
+        },
+
+        {
+          "organisations": [
+            {
+              "name": "ELIXIR Europe",
+              "url": "https://elixir-europe.org",
+              "id": 841
+            }
+          ],
+          "contacts": [
+            {
+              "name": "RDMkit editorial team",
+              "url": "mailto:rdm-editors@elixir-europe.org",
+              "id": "rdm-editors"
+            }
+          ],
+          "methods": [
+            "FAIRsharing API",
+            "Cross-referencing FAIRsharing content within your resource"
+          ],
+          "name": "RDMkit: The Research Data Management toolkit for Life Sciences",
+          "types": ["Data Management Plan (DMP) development/lifecycle"],
+          "logo": "RDMkit.png",
+          "status": "Completed",
+          "description": "RDMkit mainly links out to FAIRsharing from the tools and resources section in the page. Contributors of these tools and resources can give up a FAIRsharing ID when a standard, policy or database is given. When this is not given, RDMkit will do an automatic lookup using the FAIRsharing API to identify if the resource given could be matched with a FAIRsharing ID. These IDs are used to visually link out to FAIRsharing using a badge. ",
+          "homepage": "https://rdmkit.elixir-europe.org/",
+          "usage_image": "",
+          "id": "RDMkit"
+        },
+        {
+          "organisations": [
+            {
+              "name": "Faculty of Information Technology, Czech Technical University in Prague",
+              "url": "https://fit.cvut.cz/cs",
+              "id": 3900
+            }
+          ],
+          "contacts": [
+            {
+              "name": "Info DSW",
+              "url": "mailto:info@ds-wizard.org",
+              "id": "info-dsw"
+            }
+          ],
+          "methods": [
+            "FAIRsharing API",
+            "Cross-referencing FAIRsharing content within your resource"
+          ],
+          "name": "Data Stewardship Wizard",
+          "types": ["Data Management Plan (DMP) development/lifecycle"],
+          "logo": "dsw.png",
+          "status": "Completed",
+          "description": "When users fill questionnaires to go through data stewardship knowledge model (and create DMP), they encounter questions where type hints are provided via FAIRsharing API (e.g. for reused reference datasets, metadata standards, file formats, and others). Moreover, some questions have reference to URL to guide users to use it directly to search for a certain types of resources.",
+          "homepage": "https://ds-wizard.org",
+          "usage_image": "",
+          "id": "dsw"
+        },
+
+        {
+          "organisations": [
+            {
+              "name": "GO FAIR Foundation",
+              "url": "https://www.gofair.foundation/",
+              "id": 3901
+            },
+            {
+              "name": "Codevence",
+              "url": "https://codevence.com",
+              "id": 3902
+            }
+          ],
+          "contacts": [
+            {
+              "name": "FIP Team",
+              "url": "mailto:barbara@gofair.foundation",
+              "id": "FIP_team"
+            }
+          ],
+          "methods": [
+            "FAIRsharing API",
+            "Cross-referencing FAIRsharing content within your resource"
+          ],
+          "name": "FIP Wizard",
+          "types": ["(Meta)data retrieval/integration"],
+          "logo": "fipWizard.png",
+          "status": "In progress",
+          "description": "We use FAIRsharing metadata in the description and provenance fields of FAIR Enabling Resource (FER) nanopublications when availabe in FAIRsharing and use SKOS relations to specify how FERs relate to FAIRsharing resources.",
+          "homepage": "https://fip-wizard.ds-wizard.org/",
+          "usage_image": "",
+          "id": "fip_wizard"
         }
       ]
     }

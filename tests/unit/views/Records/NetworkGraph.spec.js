@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import GraphTest from "@/views/Records/NetworkGraph.vue";
 import Vuetify from "vuetify"
 import GraphClient from "@/lib/GraphClient/GraphClient";
+import users from "@/store/users.js";
 const sinon = require("sinon");
 import Networkgraph from 'highcharts/modules/networkgraph'
 import Highcharts from 'highcharts'
@@ -20,6 +21,16 @@ let $route = {
     path: "/graph/1234",
     params: {id: 1234}
 };
+
+users.state.user = function(){
+    return { is_curator: true }
+};
+const $store = new Vuex.Store({
+    modules: {
+        users: users
+    }
+})
+
 
 let graphStub;
 let graphMock = {
@@ -112,7 +123,7 @@ describe("NetworkGraph.vue", function() {
             localVue,
             vuetify,
             router,
-            mocks: { $router, $route }
+            mocks: { $router, $route, $store }
         });
         getData = jest.spyOn(wrapper.vm, "getData");
     });
@@ -146,7 +157,7 @@ describe("NetworkGraph.vue", function() {
             localVue,
             vuetify,
             router,
-            mocks: { $router, $route }
+            mocks: { $router, $route, $store }
         });
         await wrapper.vm.getData();
         expect(wrapper.vm.noData).toBe(true);

@@ -18,9 +18,6 @@
             <v-container fluid>
               <v-row no-gutters>
                 <v-col cols="12">
-                  Important note: This feature is not yet ready for change requests.
-                </v-col>
-                <v-col cols="12">
                   The graph's centre is shown in <span class="red--text">red.</span>
                 </v-col>
                 <v-col cols="12">
@@ -152,12 +149,19 @@
         xl="9"
         class="pt-0 mt-2"
       >
-        <v-card-title class="blue white--text">
-          {{ graphData.name }} ({{ graphData.id }})
-        </v-card-title>
-        <v-card-subtitle class="blue white--text">
-          {{ registry }}/{{ type }}
-        </v-card-subtitle>
+        <div v-if="noData">
+          <v-card-title class="blue white--text"> 
+            No graph found!
+          </v-card-title>
+        </div>
+        <div v-else>
+          <v-card-title class="blue white--text">
+            {{ graphData.name }} ({{ graphData.id }})
+          </v-card-title>
+          <v-card-subtitle class="blue white--text">
+            {{ registry }}/{{ type }}
+          </v-card-subtitle>
+        </div>
         <v-card
           v-if="loading"
           height="100%"
@@ -172,8 +176,32 @@
           v-else
           height="100%"
         >
-          <div id="sigma-container" />
+          <div
+            v-if="noData"
+            height="100%"
+          >
+            <v-card-text class="pt-3">
+              <v-container fluid>
+                <v-row no-gutters>
+                  <v-col cols="12">
+                    <p>No data were found showing links between this record and others. This could be because:</p>
+                    <ul style="list-style-type: square;">
+                      <li>The record has just been created and the graph data are still being generated.</li>
+                      <li>This record has no links to other records.</li>
+                      <li>Something went wrong.</li>
+                    </ul>
+                    <br>
+                    <p>If you need assistance, please <a href="mailto:contact@fairsharing.org">contact us</a>.</p>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </div>
+          <div
+            id="sigma-container"
+          />
         </v-card>
+
 
         <v-fade-transition>
           <v-overlay
@@ -291,7 +319,8 @@
                 const response = await graphClient.executeQuery(graphQuery);
                 if (response.fairsharingGraph === undefined ||
                     response.fairsharingGraph.data === undefined ||
-                    response.fairsharingGraph.data.length === 0) {
+                    response.fairsharingGraph.data.length === 0 ||
+                    Object.keys(response.fairsharingGraph.data).length === 0) {
                   this.loading = false;
                   this.noData = true;
                   this.registry = "N/A";
@@ -334,6 +363,7 @@
                     nodeProgramClasses: {
                       image: getNodeProgramImage()
                     },
+                    type: 'canvas'
                   });
               this.fa2Layout.start();
 

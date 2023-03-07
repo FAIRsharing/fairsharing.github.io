@@ -140,8 +140,10 @@ export default {
         return _module.currentTooltips['description'] || false;
       }
       else if (_module.currentTooltips['properties'] !== undefined) {
-        if (_module.currentTooltips['properties'][field]['description']) {
-          return _module.currentTooltips['properties'][field]['description']
+        if (_module.currentTooltips['properties'][field] !== undefined) {
+          if (_module.currentTooltips['properties'][field]['description']) {
+            return _module.currentTooltips['properties'][field]['description']
+          }
         }
       }
       return false;

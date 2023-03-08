@@ -26,6 +26,103 @@
                   to scroll and zoom.
                 </v-col>
               </v-row>
+              <v-row no-gutters>
+                <v-col cols="12">
+                  Relations between records are coloured as follows:
+                </v-col>
+                <v-col cols="12">
+                  <v-list dense>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="red">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Deprecates
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="orange">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Recommends
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="yellow">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Collects
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="green">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Profiles
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="blue">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Accepts
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="indigo">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Outputs
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="#9966ff">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Shares code with
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="#993300">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Shares data with
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="#ff99ff">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Implements
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="black">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Extends
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon>
+                        <v-icon color="grey">
+                          fa fa-long-arrow-alt-right
+                        </v-icon>
+                      </v-list-item-icon>
+                      Related to
+                    </v-list-item>
+                  </v-list>
+                </v-col>
+              </v-row>
               <v-divider />
               <!-- Color definition meaning in NetworkGraph -->
               <p class="ma-0">

@@ -254,31 +254,36 @@
         xl="9"
         class="pt-0 mt-2"
       >
+        <v-btn
+          class="ml-2 my-2 white"
+          :to="`/${$route.params.id}`"
+        >
+          <v-icon :class="`primary--text`">
+            fa-arrow-left
+          </v-icon>
+          <span :class="`primary--text ml-3`"> Go to Record </span>
+        </v-btn>
         <div v-if="noData">
           <v-card-title class="blue white--text"> 
             No graph found!
           </v-card-title>
         </div>
         <div v-else>
-          <v-card-title class="blue white--text">
+          <v-card-title 
+            v-if="!loading"
+            class="blue white--text"
+          >
             {{ graphData.name }} ({{ graphData.id }})
           </v-card-title>
-          <v-card-subtitle class="blue white--text">
+          <v-card-subtitle
+            v-if="!loading"
+            class="blue white--text"
+          >
             {{ registry }}/{{ type }}
           </v-card-subtitle>
         </div>
-        <v-card
-          v-if="loading"
-          height="100%"
-        >
-          <v-card-text class="text-center blue--text body-1">
-            Loading your data
-          </v-card-text>
-          <Loaders />
-        </v-card>
 
         <v-card
-          v-else
           height="100%"
         >
           <div

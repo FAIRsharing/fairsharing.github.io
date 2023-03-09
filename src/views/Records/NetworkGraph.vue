@@ -50,7 +50,7 @@
                     </v-list-item>
                     <v-list-item>
                       <v-list-item-icon>
-                        <v-icon color="yellow">
+                        <v-icon color="#e6e600">
                           fa fa-long-arrow-alt-right
                         </v-icon>
                       </v-list-item-icon>
@@ -408,11 +408,15 @@
           }
         },
         async mounted() {
-            this.$nextTick(async function () {
-              await this.getData();
-              container = document.getElementById("sigma-container");
-              this.plotGraph();
-            })
+          let _module = this;
+          this.$nextTick(async function () {
+            await this.getData();
+            container = document.getElementById("sigma-container");
+            if (_module.fa2Layout && _module.fa2Layout.isRunning()) {
+              _module.fa2Layout.kill();
+            }
+            _module.plotGraph();
+          })
         },
         methods: {
             async getData(){
@@ -454,7 +458,8 @@
                 // graph has presumably been loaded already...
                 // Reloading the page like this to re-draw the graph is a dreadful hack.
                 // TODO: Something better is needed here.
-                this.$router.go();
+                _module.fa2Layout.kill();
+                graph.import(this.graphData);
               }
 
               // Graphology provides a easy to use implementation of Force Atlas 2 in a web worker
@@ -472,10 +477,9 @@
                     allowInvalidContainer: true,
                     nodeProgramClasses: {
                       image: getNodeProgramImage()
-                    },
-                    type: 'canvas'
+                    }
                   });
-              this.fa2Layout.start();
+              _module.fa2Layout.start();
 
               // Attempt to highlight nodes on hover...
               renderer.on("enterNode", ({ node }) => {

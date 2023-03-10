@@ -194,7 +194,7 @@
     },
     "thirdColumn":{
       "title": "Educational",
-      "description": "About standards, their use in databases and policies, and how we can help you.",
+      "description": "Infographics and factsheets covering content and functionalities for all stakeholders",
       "icon": "educational",
       "buttonTitle": "learn",
       "link": "/educational"

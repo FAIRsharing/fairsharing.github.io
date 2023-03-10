@@ -260,5 +260,94 @@
         }
       ]
     }
+  },
+  "infographics": {
+    "data": [
+      {
+        "id": "nutshell",
+        "logo": "nutshell.png",
+        "text": ""
+      },
+      {
+        "id": "standards_overview",
+        "logo": "standards_overview.png",
+        "text": ""
+      },
+      {
+        "id": "databases_overview",
+        "logo": "databases_overview.png",
+        "text": ""
+      },
+      {
+        "id": "policies_overview",
+        "logo": "policies_overview.png",
+        "text": ""
+      },
+      {
+        "id": "collections_overview",
+        "logo": "collections_overview.png",
+        "text": "Coming Soon"
+      },
+      {
+        "id": "researchers",
+        "logo": "researchers.png",
+        "text": ""
+      },
+      {
+        "id": "journal_publishers",
+        "logo": "journal_publishers.png",
+        "text": ""
+      },
+      {
+        "id": "funders",
+        "logo": "funders.png",
+        "text": ""
+      },
+      {
+        "id": "societies_and_alliances",
+        "logo": "societies_and_alliances.png",
+        "text": "Coming Soon"
+      },
+      {
+        "id": "librarians_and_trainers",
+        "logo": "librarians_and_trainers.png",
+        "text": ""
+      },
+      {
+        "id": "developers_and_curators",
+        "logo": "developers_and_curators.png",
+        "text": ""
+      },
+      {
+        "id": "searching",
+        "logo": "searching.png",
+        "text": "Coming Soon"
+      },
+      {
+        "id": "create_a_view_using_collection",
+        "logo": "create_a_view_using_collection.png",
+        "text": "Coming Soon"
+      },
+      {
+        "id": "capturing_the_resource_life_cycle",
+        "logo": "capturing_the_resource_life_cycle.png",
+        "text": "Coming Soon"
+      },
+      {
+        "id": "the_fairness_of_fairsharing",
+        "logo": "the_fairness_of_fairsharing.png",
+        "text": "Coming Soon"
+      },
+      {
+        "id": "categorizing_the_content",
+        "logo": "categorizing_the_content.png",
+        "text": "Coming Soon"
+      },
+      {
+        "id": "tips",
+        "logo": "tips.png",
+        "text": ""
+      }
+    ]
   }
 }

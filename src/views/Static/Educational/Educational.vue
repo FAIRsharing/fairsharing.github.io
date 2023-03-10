@@ -1,15 +1,47 @@
 <template>
   <main :class="applyCss?'pa-15 mb-10':''">
+    <v-row
+      v-if="infographics.data.length"
+      dense
+      class="mb-10"
+    >
+      <v-col
+        v-for="infographic in infographics.data"
+        :key="infographic.id"
+        cols="12"
+        sm="12"
+        md="4"
+        lg="3"
+        xl="3"
+      >
+        <v-card
+          class="full-width"
+        >
+          <v-img
+            :src="`/assets/Educational/Infographic/${infographic.logo}`"
+            class="align-end"
+            contain
+            aspect-ratio="1"
+            style="top:-41px"
+          >
+            <v-card-title
+                v-if="infographic.text"
+                class="justify-center"
+
+            >
+              <h3 style="word-break: initial;" class="grey--text text--darken-1">
+              {{ infographic.text }}
+              </h3>
+            </v-card-title>
+          </v-img>
+        </v-card>
+      </v-col>
+    </v-row>
     <!-- hard-coded part -->
-    <!--  title  -->
-    <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-      Educational
-    </h1>
     <!--  subtitle  -->
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      Across the research disciplines there are thousands of standards and several thousand databases, designed to assist the virtuous data cycle, from collection to annotation, through preservation and publication to subsequent sharing and reuse. As consumers of these standards and databases, it is often difficult to know which resources are the most relevant for your specific domain and needs. As producers, you want to be sure your standard or database is findable by prospective users, and recommended in data policies by funders, journals and other organisations.
+    >Across the research disciplines there are thousands of standards and several thousand databases, designed to assist the virtuous data cycle, from collection to annotation, through preservation and publication to subsequent sharing and reuse. As consumers of these standards and databases, it is often difficult to know which resources are the most relevant for your specific domain and needs. As producers, you want to be sure your standard or database is findable by prospective users, and recommended in data policies by funders, journals and other organisations.
     </p>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -129,12 +161,13 @@
 </template>
 
 <script>
-  import {education} from '@/data/EducationData.json'
+  import {education, infographics} from '@/data/EducationData.json'
     export default {
       name: "Educational",
       data: () => {
         return {
           education: education,
+          infographics: infographics,
           applyCss: false,
           selectedExpansion:{}
         }

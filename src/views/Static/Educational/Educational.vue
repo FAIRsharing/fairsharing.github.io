@@ -25,12 +25,14 @@
             style="top:-41px"
           >
             <v-card-title
-                v-if="infographic.text"
-                class="justify-center"
-
+              v-if="infographic.text"
+              class="justify-center"
             >
-              <h3 style="word-break: initial;" class="grey--text text--darken-1">
-              {{ infographic.text }}
+              <h3
+                style="word-break: initial;"
+                class="grey--text text--darken-1"
+              >
+                {{ infographic.text }}
               </h3>
             </v-card-title>
           </v-img>
@@ -41,7 +43,8 @@
     <!--  subtitle  -->
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >Across the research disciplines there are thousands of standards and several thousand databases, designed to assist the virtuous data cycle, from collection to annotation, through preservation and publication to subsequent sharing and reuse. As consumers of these standards and databases, it is often difficult to know which resources are the most relevant for your specific domain and needs. As producers, you want to be sure your standard or database is findable by prospective users, and recommended in data policies by funders, journals and other organisations.
+    >
+      Across the research disciplines there are thousands of standards and several thousand databases, designed to assist the virtuous data cycle, from collection to annotation, through preservation and publication to subsequent sharing and reuse. As consumers of these standards and databases, it is often difficult to know which resources are the most relevant for your specific domain and needs. As producers, you want to be sure your standard or database is findable by prospective users, and recommended in data policies by funders, journals and other organisations.
     </p>
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"

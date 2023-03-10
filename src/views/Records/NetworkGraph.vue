@@ -168,6 +168,50 @@
                 </v-container>
               </v-row>
               <v-divider />
+              <!-- Color definition meaning in NetworkGraph -->
+              <p class="ma-0">
+                Status (shown on mouseover)
+              </p>
+              <v-row no-gutters>
+                <v-container
+                  fluid
+                  class="pl-4"
+                >
+                  <v-btn
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    :color="active['ready'] ? 'purple' : 'gray' "
+                    style="width: 150px;"
+                    @click="toggleStatus('ready')"
+                  >
+                    Ready
+                  </v-btn>
+                  <v-btn
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    :color="active['in_development'] ? 'purple' : 'gray' "
+                    style="width: 150px;"
+                    @click="toggleStatus('in_development')"
+                  >
+                    In development
+                  </v-btn>
+                  <v-btn
+                    class="white--text d-flex align-center justify-center status_style mb-2"
+                    :color="active['uncertain'] ? 'purple' : 'gray' "
+                    style="width: 150px;"
+                    @click="toggleStatus('uncertain')"
+                  >
+                    Uncertain
+                  </v-btn>
+                  <v-btn
+                    class="white--text d-flex align-center justify-center status_style"
+                    :color="active['deprecated'] ? 'purple' : 'gray' "
+                    style="width: 150px;"
+                    @click="toggleStatus('deprecated')"
+                  >
+                    Deprecated
+                  </v-btn>
+                </v-container>
+              </v-row>
+              <v-divider />
               <!-- buttons here -->
               <p class="ma-0">
                 Distance from centre
@@ -381,7 +425,11 @@
                 database: true,
                 collection: true,
                 standard: true,
-                policy: true
+                policy: true,
+                ready: true,
+                in_development: true,
+                uncertain: true,
+                deprecated: true
               },
               drawing: true
             }
@@ -472,8 +520,7 @@
                     allowInvalidContainer: true,
                     nodeProgramClasses: {
                       image: getNodeProgramImage()
-                    },
-                    type: 'canvas'
+                    }
                   });
               this.fa2Layout.start();
 
@@ -517,6 +564,14 @@
 
                 // Hide nodes when their registry is not selected
                 if (!this.active[res.registry] && parseInt(_module.$route.params.id) !== parseInt(node)  )
+                {
+                  res.hidden = true;
+                  //res.label = "";
+                  //res.color = "#f6f6f6";
+                }
+
+                // Hide nodes when their status is not selected
+                if (!this.active[res.status] && parseInt(_module.$route.params.id) !== parseInt(node)  )
                 {
                   res.hidden = true;
                   //res.label = "";
@@ -571,6 +626,9 @@
             },
             toggleRegistry(reg) {
               this.active[reg] = !this.active[reg];
+            },
+            toggleStatus(status) {
+              this.active[status] = !this.active[status];
             }
         }
     }

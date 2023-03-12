@@ -3,7 +3,7 @@
     <v-row
       v-if="infographics.data.length"
       dense
-      class="mb-10"
+      class="mb-10 justify-space-between"
     >
       <v-col
         v-for="infographic in infographics.data"

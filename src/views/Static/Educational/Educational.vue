@@ -12,7 +12,8 @@
         sm="12"
         md="4"
         lg="3"
-        xl="3"
+        xl="2"
+        class="ma-xl-8"
       >
         <v-card
           class="full-width"
@@ -22,7 +23,7 @@
             class="align-end"
             contain
             aspect-ratio="1"
-            style="top:-41px"
+            position="top center"
           >
             <v-card-title
               v-if="infographic.text"
@@ -250,4 +251,5 @@ P {
 .v-expansion-panel-header {
   min-height: 0;
 }
+
 </style>

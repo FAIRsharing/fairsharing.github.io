@@ -3,7 +3,8 @@
     <v-row
       v-if="infographics.data.length"
       dense
-      class="mb-10 justify-space-between"
+      class="mb-10"
+      :class="{'justify-center': $vuetify.breakpoint.xlOnly}"
     >
       <v-col
         v-for="infographic in infographics.data"
@@ -13,7 +14,7 @@
         md="4"
         lg="3"
         xl="2"
-        class="ma-xl-8"
+        class="ma-xl-4"
       >
         <v-card
           class="full-width"

@@ -44,10 +44,12 @@
                   target="_blank"
                   class="underline-effect font-weight-medium "
                   :class="{
-                    'text-body': $vuetify.breakpoint.mdOnly,
+                    'text-body-2 ': $vuetify.breakpoint.xs,
                     'text-subtitle-1': $vuetify.breakpoint.smOnly,
-                    'text-h6': $vuetify.breakpoint.lgAndUp,
-                    'text-body-2 ': $vuetify.breakpoint.xs
+                    'text-body': $vuetify.breakpoint.mdOnly,
+                    'fontSize18': $vuetify.breakpoint.mdAndUp,
+                    'fontSize20': $vuetify.breakpoint.lg,
+                    'text-h6': $vuetify.breakpoint.xl,
                   }"
                   style="word-break: initial;"
                 >
@@ -309,6 +311,13 @@ P {
 
 .v-expansion-panel-header {
   min-height: 0;
+}
+.fontSize20 {
+  font-size: 20px
+}
+
+.fontSize18 {
+  font-size: 18px
 }
 
 </style>

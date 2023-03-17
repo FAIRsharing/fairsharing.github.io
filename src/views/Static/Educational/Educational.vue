@@ -1,13 +1,13 @@
 <template>
   <main :class="applyCss?'pa-15 mb-10':''">
     <v-row
-      v-if="infographics.data.length"
+      v-if="infographics.length"
       dense
       class="mb-10"
       :class="{'justify-center': $vuetify.breakpoint.xlOnly}"
     >
       <v-col
-        v-for="infographic in infographics.data"
+        v-for="infographic in infographics"
         :key="infographic.id"
         cols="12"
         sm="12"
@@ -27,10 +27,52 @@
             position="top center"
           >
             <v-card-title
-              v-if="infographic.text"
               class="justify-center"
             >
+              <div
+                v-if="infographic.doi"
+                class="d-flex align-center"
+              >
+                <Icon
+                  item="DOI"
+                  heigh="30"
+                  wrapper-class=""
+                  class="mr-2 width-35"
+                />
+                <a
+                  :href="generateDoiLink(infographic.doi)"
+                  target="_blank"
+                  class="underline-effect font-weight-medium "
+                  :class="{
+                    'text-body': $vuetify.breakpoint.mdOnly,
+                    'text-subtitle-1': $vuetify.breakpoint.smOnly,
+                    'text-h6': $vuetify.breakpoint.lgAndUp,
+                    'text-body-2 ': $vuetify.breakpoint.xs
+                  }"
+                  style="word-break: initial;"
+                >
+                  {{ infographic.doi }}
+                </a>
+                <v-tooltip top>
+                  <template #activator="{on, click, attrs }">
+                    <span @click.prevent="copyURL(infographic)">
+                      <v-icon
+                        v-ripple
+                        v-bind="attrs"
+                        class="primary--text ml-2 cursor-pointer"
+                        small
+                        v-on="on"
+                      >
+                        fa fa-copy
+                      </v-icon>
+                    </span>
+                  </template>
+                  <span v-if="!infographic.copyButtonStatus"> Copy URL </span>
+                  <span v-else> URL copied </span>
+                </v-tooltip>
+              </div>
               <h3
+                v-else-if="infographic.text"
                 style="word-break: initial;"
                 class="grey--text text--darken-1"
               >
@@ -167,14 +209,18 @@
 
 <script>
   import {education, infographics} from '@/data/EducationData.json'
+  import Icon from "@/components/Icon";
     export default {
       name: "Educational",
+      components: {
+        Icon
+      },
       data: () => {
         return {
           education: education,
-          infographics: infographics,
+          infographics: infographics["data"],
           applyCss: false,
-          selectedExpansion:{}
+          selectedExpansion:{},
         }
       },
       watch: {
@@ -209,6 +255,18 @@
           })
         })
         // update the UI padding and margin after DOM is fully loaded.
+      },
+      methods: {
+        generateDoiLink(doi) {
+          return `https://doi.org/${doi}`
+        },
+        copyURL(item) {
+          navigator.clipboard.writeText(this.generateDoiLink(item.doi));
+          this.infographics.forEach(e => e.copyButtonStatus = false)
+          const itemClicked = this.infographics.filter(e => e.id === item.id)
+          itemClicked[0].copyButtonStatus = !itemClicked[0].copyButtonStatus
+
+        }
       }
     }
 </script>

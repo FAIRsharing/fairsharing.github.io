@@ -54,8 +54,8 @@
                   {{ infographic.doi }}
                 </a>
                 <v-tooltip top>
-                  <template #activator="{on, click, attrs }">
-                    <span @click.prevent="copyURL(infographic)">
+                  <template #activator="{on, attrs }">
+                    <span @click="copyURL(infographic)">
                       <v-icon
                         v-ripple
                         v-bind="attrs"

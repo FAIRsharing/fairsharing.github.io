@@ -14,7 +14,7 @@ let $route = {
 
 const originalClipboard = { ...global.navigator.clipboard };
 
-describe("Privacy.vue", function(){
+describe("Educational.vue", function(){
     let wrapper;
 
     beforeEach(() => {
@@ -61,6 +61,35 @@ describe("Privacy.vue", function(){
         wrapper.vm.copyURL(selectedInfoGraphic)
         expect(navigator.clipboard.writeText).toBeCalledTimes(1);
         expect(navigator.clipboard.writeText).toHaveBeenCalledWith(mockDoi)
+    });
+
+    it("can generatePopup", () => {
+        const $route = {
+            hash: '#nutshell'
+        }
+        wrapper = shallowMount(Educational, {
+            localVue,
+            vuetify,
+            mocks: {$route},
+            stubs: ['router-link', 'router-view']
+        })
+        const selectedInfoGraphic =
+            {
+                "id": "nutshell",
+                "logo": "nutshell.png",
+                "text": "",
+                "doi": "10.5281/zenodo.7737366",
+                "copyButtonStatus": true,
+                "hash": "nutshell"
+            }
+        wrapper.vm.$route.hash
+        wrapper.vm.inforgraphicPopup.data = {};
+        wrapper.vm.inforgraphicPopup.show = false;
+        wrapper.vm.inforgraphicPopup.loading = false;
+        wrapper.vm.generatePopup()
+        expect(wrapper.vm.inforgraphicPopup.data).toStrictEqual(selectedInfoGraphic)
+        expect(wrapper.vm.inforgraphicPopup.show).toBe(true)
+        expect(wrapper.vm.inforgraphicPopup.loading).toBe(true)
     });
 
 });

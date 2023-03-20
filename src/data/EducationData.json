@@ -268,21 +268,24 @@
         "logo": "nutshell.png",
         "text": "",
         "doi": "10.5281/zenodo.7737366",
-        "copyButtonStatus": false
+        "copyButtonStatus": false,
+        "hash": "nutshell"
       },
       {
         "id": "standards_overview",
         "logo": "standards_overview.png",
         "text": "",
         "doi": "10.5281/zenodo.7737795",
-        "copyButtonStatus": false
+        "copyButtonStatus": false,
+        "hash": "standards"
       },
       {
         "id": "databases_overview",
         "logo": "databases_overview.png",
         "text": "",
         "doi": "10.5281/zenodo.7737841",
-        "copyButtonStatus": false
+        "copyButtonStatus": false,
+        "hash": "databases"
       },
       {
         "id": "policies_overview",
@@ -303,21 +306,24 @@
         "logo": "researchers.png",
         "text": "",
         "doi": "10.5281/zenodo.7733025",
-        "copyButtonStatus": false
+        "copyButtonStatus": false,
+        "hash": "researchers"
       },
       {
         "id": "journal_publishers",
         "logo": "journal_publishers.png",
         "text": "",
         "doi": "10.5281/zenodo.7737417",
-        "copyButtonStatus": false
+        "copyButtonStatus": false,
+        "hash": "publishers"
       },
       {
         "id": "funders",
         "logo": "funders.png",
         "text": "",
         "doi": "10.5281/zenodo.7737551",
-        "copyButtonStatus": false
+        "copyButtonStatus": false,
+        "hash": "funders"
       },
       {
         "id": "societies_and_alliances",

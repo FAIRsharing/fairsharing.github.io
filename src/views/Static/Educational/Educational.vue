@@ -208,7 +208,7 @@
     </ul>
     <!-- Infographics dialog box-->
     <v-dialog
-      v-model="inforgraphicPopup.show"
+      v-model="infographicPopup.show"
       class="pa-0"
       max-width="600"
       @click:outside="closeDialog"
@@ -218,8 +218,8 @@
         tile
       >
         <v-img
-          :src="`/assets/Educational/Infographic/${inforgraphicPopup.data.logo}`"
-          class="align-end inforgraphicPopupImage"
+          :src="`/assets/Educational/Infographic/${infographicPopup.data.logo}`"
+          class="align-end infographicPopup"
           contain
           position="top center"
         >
@@ -237,7 +237,7 @@
           class="justify-center"
         >
           <div
-            v-if="inforgraphicPopup.data.doi"
+            v-if="infographicPopup.data.doi"
             class="d-flex align-center"
           >
             <Icon
@@ -247,16 +247,16 @@
               class="mr-2 width-35"
             />
             <a
-              :href="generateDoiLink(inforgraphicPopup.data.doi)"
+              :href="generateDoiLink(infographicPopup.data.doi)"
               target="_blank"
               class="underline-effect font-weight-medium "
               style="word-break: initial;"
             >
-              {{ inforgraphicPopup.data.doi }}
+              {{ infographicPopup.data.doi }}
             </a>
             <v-tooltip top>
               <template #activator="{on, attrs }">
-                <span @click="copyURL(inforgraphicPopup.data)">
+                <span @click="copyURL(infographicPopup.data)">
                   <v-icon
                     v-ripple
                     v-bind="attrs"
@@ -268,16 +268,16 @@
                   </v-icon>
                 </span>
               </template>
-              <span v-if="!inforgraphicPopup.data.copyButtonStatus"> Copy URL </span>
+              <span v-if="!infographicPopup.data.copyButtonStatus"> Copy URL </span>
               <span v-else> URL copied </span>
             </v-tooltip>
           </div>
           <h3
-            v-else-if="inforgraphicPopup.data.text"
+            v-else-if="infographicPopup.data.text"
             style="word-break: initial;"
             class="grey--text text--darken-1"
           >
-            {{ inforgraphicPopup.data.text }}
+            {{ infographicPopup.data.text }}
           </h3>
         </v-card-title>
       </v-card>
@@ -299,7 +299,7 @@
           infographics: infographics["data"],
           applyCss: false,
           selectedExpansion:{},
-          inforgraphicPopup:{
+          infographicPopup:{
             data: {},
             show: false,
             loading: false
@@ -360,9 +360,9 @@
           const hashArray = this.infographics.map(({hash}) => hash)
           const isHash = hashArray.includes(hash)
           if (isHash) {
-            const hashInforgraphic = this.infographics.filter(e => e.hash === hash)
-            _module.inforgraphicPopup = {
-              data: hashInforgraphic[0],
+            const hashInfographic = this.infographics.filter(e => e.hash === hash)
+            _module.infographicPopup = {
+              data: hashInfographic[0],
               show: true,
               loading: true
             };
@@ -370,9 +370,9 @@
         },
         closeDialog(){
           let _module = this;
-          _module.inforgraphicPopup.data = {};
-          _module.inforgraphicPopup.show = false;
-          _module.inforgraphicPopup.show = false;
+          _module.infographicPopup.data = {};
+          _module.infographicPopup.show = false;
+          _module.infographicPopup.show = false;
           _module.$router.replace({hash: ""});
         }
       }
@@ -431,7 +431,7 @@ P {
   top: 0;
   right: 0
 }
-.inforgraphicPopupImage {
+.infographicPopupImage {
   height: 100%;
 }
 

@@ -83,13 +83,13 @@ describe("Educational.vue", function(){
                 "hash": "nutshell"
             }
         wrapper.vm.$route.hash
-        wrapper.vm.inforgraphicPopup.data = {};
-        wrapper.vm.inforgraphicPopup.show = false;
-        wrapper.vm.inforgraphicPopup.loading = false;
+        wrapper.vm.infographicPopup.data = {};
+        wrapper.vm.infographicPopup.show = false;
+        wrapper.vm.infographicPopup.loading = false;
         wrapper.vm.generatePopup()
-        expect(wrapper.vm.inforgraphicPopup.data).toStrictEqual(selectedInfoGraphic)
-        expect(wrapper.vm.inforgraphicPopup.show).toBe(true)
-        expect(wrapper.vm.inforgraphicPopup.loading).toBe(true)
+        expect(wrapper.vm.infographicPopup.data).toStrictEqual(selectedInfoGraphic)
+        expect(wrapper.vm.infographicPopup.show).toBe(true)
+        expect(wrapper.vm.infographicPopup.loading).toBe(true)
     });
 
 });

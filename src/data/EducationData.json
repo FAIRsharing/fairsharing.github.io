@@ -260,5 +260,134 @@
         }
       ]
     }
+  },
+  "infographics": {
+    "data": [
+      {
+        "id": "nutshell",
+        "logo": "nutshell.png",
+        "text": "",
+        "doi": "10.5281/zenodo.7737366",
+        "copyButtonStatus": false,
+        "hash": "nutshell"
+      },
+      {
+        "id": "standards_overview",
+        "logo": "standards_overview.png",
+        "text": "",
+        "doi": "10.5281/zenodo.7737795",
+        "copyButtonStatus": false,
+        "hash": "standards"
+      },
+      {
+        "id": "databases_overview",
+        "logo": "databases_overview.png",
+        "text": "",
+        "doi": "10.5281/zenodo.7737841",
+        "copyButtonStatus": false,
+        "hash": "databases"
+      },
+      {
+        "id": "policies_overview",
+        "logo": "policies_overview.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "collections_overview",
+        "logo": "collections_overview.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "researchers",
+        "logo": "researchers.png",
+        "text": "",
+        "doi": "10.5281/zenodo.7733025",
+        "copyButtonStatus": false,
+        "hash": "researchers"
+      },
+      {
+        "id": "journal_publishers",
+        "logo": "journal_publishers.png",
+        "text": "",
+        "doi": "10.5281/zenodo.7737417",
+        "copyButtonStatus": false,
+        "hash": "publishers"
+      },
+      {
+        "id": "funders",
+        "logo": "funders.png",
+        "text": "",
+        "doi": "10.5281/zenodo.7737551",
+        "copyButtonStatus": false,
+        "hash": "funders"
+      },
+      {
+        "id": "societies_and_alliances",
+        "logo": "societies_and_alliances.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "librarians_and_trainers",
+        "logo": "librarians_and_trainers.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "developers_and_curators",
+        "logo": "developers_and_curators.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "searching",
+        "logo": "searching.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "create_a_view_using_collection",
+        "logo": "create_a_view_using_collection.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "capturing_the_resource_life_cycle",
+        "logo": "capturing_the_resource_life_cycle.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "the_fairness_of_fairsharing",
+        "logo": "the_fairness_of_fairsharing.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "categorizing_the_content",
+        "logo": "categorizing_the_content.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      },
+      {
+        "id": "tips",
+        "logo": "tips.png",
+        "text": "Coming Soon",
+        "doi": "",
+        "copyButtonStatus": false
+      }
+    ]
   }
 }

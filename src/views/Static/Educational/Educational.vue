@@ -1,10 +1,91 @@
 <template>
   <main :class="applyCss?'pa-15 mb-10':''">
+    <v-row
+      v-if="infographics.length"
+      dense
+      class="mb-10"
+      :class="{'justify-center': $vuetify.breakpoint.xlOnly}"
+    >
+      <v-col
+        v-for="infographic in infographics"
+        :key="infographic.id"
+        cols="12"
+        sm="12"
+        md="4"
+        lg="3"
+        xl="2"
+        class="ma-xl-4"
+      >
+        <v-card
+          class="full-width"
+        >
+          <v-img
+            :src="`/assets/Educational/Infographic/${infographic.logo}`"
+            class="align-end"
+            contain
+            aspect-ratio="1"
+            position="top center"
+          >
+            <v-card-title
+              class="justify-center"
+            >
+              <div
+                v-if="infographic.doi"
+                class="d-flex align-center"
+              >
+                <Icon
+                  item="DOI"
+                  heigh="30"
+                  wrapper-class=""
+                  class="mr-2 width-35"
+                />
+                <a
+                  :href="generateDoiLink(infographic.doi)"
+                  target="_blank"
+                  class="underline-effect font-weight-medium "
+                  :class="{
+                    'text-body-2 ': $vuetify.breakpoint.xs,
+                    'text-subtitle-1': $vuetify.breakpoint.smOnly,
+                    'text-body': $vuetify.breakpoint.mdOnly,
+                    'fontSize18': $vuetify.breakpoint.mdAndUp,
+                    'fontSize20': $vuetify.breakpoint.lg,
+                    'text-h6': $vuetify.breakpoint.xl,
+                  }"
+                  style="word-break: initial;"
+                >
+                  {{ infographic.doi }}
+                </a>
+                <v-tooltip top>
+                  <template #activator="{on, attrs }">
+                    <span @click="copyURL(infographic)">
+                      <v-icon
+                        v-ripple
+                        v-bind="attrs"
+                        class="primary--text ml-2 cursor-pointer"
+                        small
+                        v-on="on"
+                      >
+                        fa fa-copy
+                      </v-icon>
+                    </span>
+                  </template>
+                  <span v-if="!infographic.copyButtonStatus"> Copy URL </span>
+                  <span v-else> URL copied </span>
+                </v-tooltip>
+              </div>
+              <h3
+                v-else-if="infographic.text"
+                style="word-break: initial;"
+                class="grey--text text--darken-1"
+              >
+                {{ infographic.text }}
+              </h3>
+            </v-card-title>
+          </v-img>
+        </v-card>
+      </v-col>
+    </v-row>
     <!-- hard-coded part -->
-    <!--  title  -->
-    <h1 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
-      Educational
-    </h1>
     <!--  subtitle  -->
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
@@ -125,18 +206,104 @@
         </ul>
       </li>
     </ul>
+    <!-- Infographics dialog box-->
+    <v-dialog
+      v-model="infographicPopup.show"
+      class="pa-0"
+      max-width="600"
+      @click:outside="closeDialog"
+    >
+      <v-card
+        class="full-width fill-height"
+        tile
+      >
+        <v-img
+          :src="`/assets/Educational/Infographic/${infographicPopup.data.logo}`"
+          class="align-end infographicPopup"
+          contain
+          position="top center"
+        >
+          <v-card-actions class="justify-end closeInfoPopup">
+            <v-btn
+              x-small
+              fab
+              @click="closeDialog()"
+            >
+              <v-icon> fa-times </v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-img>
+        <v-card-title
+          class="justify-center"
+        >
+          <div
+            v-if="infographicPopup.data.doi"
+            class="d-flex align-center"
+          >
+            <Icon
+              item="DOI"
+              heigh="30"
+              wrapper-class=""
+              class="mr-2 width-35"
+            />
+            <a
+              :href="generateDoiLink(infographicPopup.data.doi)"
+              target="_blank"
+              class="underline-effect font-weight-medium "
+              style="word-break: initial;"
+            >
+              {{ infographicPopup.data.doi }}
+            </a>
+            <v-tooltip top>
+              <template #activator="{on, attrs }">
+                <span @click="copyURL(infographicPopup.data)">
+                  <v-icon
+                    v-ripple
+                    v-bind="attrs"
+                    class="primary--text ml-2 cursor-pointer"
+                    small
+                    v-on="on"
+                  >
+                    fa fa-copy
+                  </v-icon>
+                </span>
+              </template>
+              <span v-if="!infographicPopup.data.copyButtonStatus"> Copy URL </span>
+              <span v-else> URL copied </span>
+            </v-tooltip>
+          </div>
+          <h3
+            v-else-if="infographicPopup.data.text"
+            style="word-break: initial;"
+            class="grey--text text--darken-1"
+          >
+            {{ infographicPopup.data.text }}
+          </h3>
+        </v-card-title>
+      </v-card>
+    </v-dialog>
   </main>
 </template>
 
 <script>
-  import {education} from '@/data/EducationData.json'
+  import {education, infographics} from '@/data/EducationData.json'
+  import Icon from "@/components/Icon";
     export default {
       name: "Educational",
+      components: {
+        Icon
+      },
       data: () => {
         return {
           education: education,
+          infographics: infographics["data"],
           applyCss: false,
-          selectedExpansion:{}
+          selectedExpansion:{},
+          infographicPopup:{
+            data: {},
+            show: false,
+            loading: false
+          }
         }
       },
       watch: {
@@ -171,6 +338,43 @@
           })
         })
         // update the UI padding and margin after DOM is fully loaded.
+      },
+      mounted() {
+        this.generatePopup()
+      },
+      methods: {
+        generateDoiLink(doi) {
+          return `https://doi.org/${doi}`
+        },
+        copyURL(item) {
+          navigator.clipboard.writeText(this.generateDoiLink(item.doi));
+          this.infographics.forEach(e => e.copyButtonStatus = false)
+          const itemClicked = this.infographics.filter(e => e.id === item.id)
+          itemClicked[0].copyButtonStatus = !itemClicked[0].copyButtonStatus
+
+        },
+        generatePopup() {
+          let _module = this;
+          let hash = _module.$route.hash;
+          hash = hash.substring(1)
+          const hashArray = this.infographics.map(({hash}) => hash)
+          const isHash = hashArray.includes(hash)
+          if (isHash) {
+            const hashInfographic = this.infographics.filter(e => e.hash === hash)
+            _module.infographicPopup = {
+              data: hashInfographic[0],
+              show: true,
+              loading: true
+            };
+          }
+        },
+        closeDialog(){
+          let _module = this;
+          _module.infographicPopup.data = {};
+          _module.infographicPopup.show = false;
+          _module.infographicPopup.show = false;
+          _module.$router.replace({hash: ""});
+        }
       }
     }
 </script>
@@ -214,4 +418,21 @@ P {
 .v-expansion-panel-header {
   min-height: 0;
 }
+.fontSize20 {
+  font-size: 20px
+}
+
+.fontSize18 {
+  font-size: 18px
+}
+
+.closeInfoPopup {
+  position: absolute;
+  top: 0;
+  right: 0
+}
+.infographicPopupImage {
+  height: 100%;
+}
+
 </style>

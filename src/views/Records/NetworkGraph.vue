@@ -502,10 +502,12 @@
                 graph.import(this.graphData);
                 // eslint-disable-next-line no-empty
               }
+              //catch(e) {
               catch {
                 // graph has presumably been loaded already...
                 // Reloading the page like this to re-draw the graph is a dreadful hack.
                 // TODO: Something better is needed here.
+                //console.log("E: " + JSON.stringify(e));
                 if (_module.fa2Layout !== null) {
                   _module.fa2Layout.kill();
                   graph.import(this.graphData);

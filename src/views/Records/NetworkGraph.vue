@@ -420,7 +420,7 @@
               fa2Layout: null,
               highlighted: 0, // ID of currently-hovered node.
               state: {},
-              selectedLength: 3,
+              selectedLength: 1,
               active: {
                 database: true,
                 collection: true,

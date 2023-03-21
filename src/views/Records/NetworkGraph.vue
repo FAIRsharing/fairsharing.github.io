@@ -506,8 +506,10 @@
                 // graph has presumably been loaded already...
                 // Reloading the page like this to re-draw the graph is a dreadful hack.
                 // TODO: Something better is needed here.
-                _module.fa2Layout.kill();
-                graph.import(this.graphData);
+                if (_module.fa2Layout !== null) {
+                  _module.fa2Layout.kill();
+                  graph.import(this.graphData);
+                }
               }
 
               // Graphology provides a easy to use implementation of Force Atlas 2 in a web worker

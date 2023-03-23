@@ -432,7 +432,6 @@
           active: {
             async handler() {
               let _module = this;
-              console.log("Active changed!");
               if (!_module.fa2Layout.isRunning()) {
                 _module.fa2Layout.start();
                 await new Promise(r => setTimeout(r, 1000));
@@ -448,7 +447,6 @@
           selectedLength: {
             async handler() {
               let _module = this;
-              console.log("Length changed!");
               if (!_module.fa2Layout.isRunning()) {
                 _module.fa2Layout.start();
                 await new Promise(r => setTimeout(r, 1000));

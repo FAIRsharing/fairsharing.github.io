@@ -137,6 +137,7 @@
                     class="white--text d-flex align-center justify-center status_style mb-2"
                     :color="active['collection'] ? 'orange' : 'gray' "
                     style="width: 150px;"
+                    :disabled="!buttonsActive"
                     @click="toggleRegistry('collection')"
                   >
                     Collection
@@ -145,6 +146,7 @@
                     class="white--text d-flex align-center justify-center status_style mb-2"
                     :color="active['database'] ? 'yellow' : 'gray' "
                     style="width: 150px;"
+                    :disabled="!buttonsActive"
                     @click="toggleRegistry('database')"
                   >
                     Database
@@ -153,6 +155,7 @@
                     class="white--text d-flex align-center justify-center status_style mb-2"
                     :color="active['standard'] ? 'green' : 'gray' "
                     style="width: 150px;"
+                    :disabled="!buttonsActive"
                     @click="toggleRegistry('standard')"
                   >
                     Standard
@@ -161,6 +164,7 @@
                     class="white--text d-flex align-center justify-center status_style"
                     :color="active['policy'] ? 'blue' : 'gray' "
                     style="width: 150px;"
+                    :disabled="!buttonsActive"
                     @click="toggleRegistry('policy')"
                   >
                     Policy
@@ -181,6 +185,7 @@
                     class="white--text d-flex align-center justify-center status_style mb-2"
                     :color="active['ready'] ? 'purple' : 'gray' "
                     style="width: 150px;"
+                    :disabled="!buttonsActive"
                     @click="toggleStatus('ready')"
                   >
                     Ready
@@ -189,6 +194,7 @@
                     class="white--text d-flex align-center justify-center status_style mb-2"
                     :color="active['in_development'] ? 'purple' : 'gray' "
                     style="width: 150px;"
+                    :disabled="!buttonsActive"
                     @click="toggleStatus('in_development')"
                   >
                     In development
@@ -197,6 +203,7 @@
                     class="white--text d-flex align-center justify-center status_style mb-2"
                     :color="active['uncertain'] ? 'purple' : 'gray' "
                     style="width: 150px;"
+                    :disabled="!buttonsActive"
                     @click="toggleStatus('uncertain')"
                   >
                     Uncertain
@@ -205,6 +212,7 @@
                     class="white--text d-flex align-center justify-center status_style"
                     :color="active['deprecated'] ? 'purple' : 'gray' "
                     style="width: 150px;"
+                    :disabled="!buttonsActive"
                     @click="toggleStatus('deprecated')"
                   >
                     Deprecated
@@ -237,6 +245,7 @@
                     class="d-flex align-center justify-center status_style mb-2 pa-2"
                     style="width: 150px;"
                     :color="getLengthColour(1)"
+                    :disabled="!buttonsActive"
                     @click="lengthLimit(1)"
                   >
                     One hop
@@ -246,6 +255,7 @@
                     class="d-flex align-center justify-center status_style mb-2 pa-2"
                     style="width: 150px;"
                     :color="getLengthColour(2)"
+                    :disabled="!buttonsActive"
                     @click="lengthLimit(2)"
                   >
                     Two hops
@@ -255,34 +265,11 @@
                     class="d-flex align-center justify-center status_style pa-2"
                     style="width: 150px;"
                     :color="getLengthColour(3)"
+                    :disabled="!buttonsActive"
                     @click="lengthLimit(3)"
                   >
                     Three hops
                   </v-btn>
-                  <v-divider />
-                  <div
-                    v-if="user().is_curator"
-                    id="curators_only_switch"
-                  >
-                    <p class="ma-0">
-                      Graph rendering (curators only)
-                    </p>
-                    <v-row no-gutters>
-                      <v-container
-                        fluid
-                        class="pl-4"
-                      />
-                      <v-switch
-                        id="drawing_active"
-                        v-model="drawing"
-                        class="d-flex align-center justify-center status_style pa-2"
-                        label="Automatic adjustment of node position."
-                      />
-                      <p class="ma-0">
-                        N.B. Some buttons may not function whilst the graph is not rendering.
-                      </p>
-                    </v-row>
-                  </div>
                 </v-container>
               </v-row>
             </v-container>
@@ -381,7 +368,6 @@
     import FA2Layout from "graphology-layout-forceatlas2/worker";
     import forceAtlas2 from "graphology-layout-forceatlas2";
     import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
-    import { mapState } from "vuex"
 
     const graphClient = new GraphClient();
     const graph = new Graph();
@@ -431,11 +417,10 @@
                 uncertain: true,
                 deprecated: true
               },
-              drawing: true
+              buttonsActive: false
             }
         },
         computed: {
-          ...mapState('users', ['user']),
           currentRoute() {
             return this.target || this.$route.params['id'];
           }
@@ -444,13 +429,34 @@
           async currentRoute() {
             await this.getData();
           },
-          drawing: {
-            handler() {
-              if (this.drawing) {
-                this.fa2Layout.start();
+          active: {
+            async handler() {
+              let _module = this;
+              console.log("Active changed!");
+              if (!_module.fa2Layout.isRunning()) {
+                _module.fa2Layout.start();
+                await new Promise(r => setTimeout(r, 1000));
+                _module.fa2Layout.stop();
               }
               else {
-                this.fa2Layout.stop();
+                await new Promise(r => setTimeout(r, 1000));
+                _module.fa2Layout.stop();
+              }
+            },
+            deep: true
+          },
+          selectedLength: {
+            async handler() {
+              let _module = this;
+              console.log("Length changed!");
+              if (!_module.fa2Layout.isRunning()) {
+                _module.fa2Layout.start();
+                await new Promise(r => setTimeout(r, 1000));
+                _module.fa2Layout.stop();
+              }
+              else {
+                await new Promise(r => setTimeout(r, 1000));
+                _module.fa2Layout.stop();
               }
             }
           }
@@ -514,8 +520,16 @@
                 }
               }
 
-              // Graphology provides a easy to use implementation of Force Atlas 2 in a web worker
+              // Graphology implementation of Force Atlas 2 in a web worker
               _module.sensibleSettings = forceAtlas2.inferSettings(graph);
+              /*
+              _module.sensibleSettings.slowDown = 10;
+              _module.sensibleSettings.iterationsPerRender = 1;
+              _module.sensibleSettings.barnesHutOptimize = true;
+              _module.sensibleSettings.barnesHutTheta = 1;
+              _module.sensibleSettings.timeout = 2000;
+              _module.sensibleSettings.delay = 2000;
+               */
               _module.fa2Layout = new FA2Layout(graph, {
                 iterations: 50,
                 settings: _module.sensibleSettings,
@@ -605,6 +619,10 @@
               });
 
               renderer.refresh();
+
+              await new Promise(r => setTimeout(r, 10000));
+              _module.fa2Layout.stop();
+              _module.buttonsActive = true;
             },
             setClickedNode(node) {
               // node is the fairsharing_record_id

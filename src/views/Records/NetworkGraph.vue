@@ -294,6 +294,14 @@
           </v-icon>
           <span :class="`primary--text ml-3`"> Go to Record </span>
         </v-btn>
+        <v-chip
+          v-if="layoutRendering"
+          class="ma-2"
+          color="red"
+          text-color="white"
+        >
+          Rendering
+        </v-chip>
         <div v-if="noData">
           <v-card-title class="blue white--text"> 
             No graph found!
@@ -423,6 +431,12 @@
         computed: {
           currentRoute() {
             return this.target || this.$route.params['id'];
+          },
+          layoutRendering() {
+            if (this.fa2Layout === undefined || this.fa2Layout === null) {
+              return false
+            }
+            return this.fa2Layout.isRunning();
           }
         },
         watch: {

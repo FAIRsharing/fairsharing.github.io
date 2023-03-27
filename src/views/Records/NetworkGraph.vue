@@ -182,8 +182,8 @@
                   class="pl-4"
                 >
                   <v-btn
-                    class="white--text d-flex align-center justify-center status_style mb-2"
-                    :color="active['ready'] ? 'purple' : 'gray' "
+                    class="d-flex align-center justify-center status_style mb-2"
+                    :color="active['ready'] ? '#27aae1' : 'gray' "
                     style="width: 150px;"
                     :disabled="!buttonsActive"
                     @click="toggleStatus('ready')"
@@ -191,8 +191,8 @@
                     Ready
                   </v-btn>
                   <v-btn
-                    class="white--text d-flex align-center justify-center status_style mb-2"
-                    :color="active['in_development'] ? 'purple' : 'gray' "
+                    class="d-flex align-center justify-center status_style mb-2"
+                    :color="active['in_development'] ? '#27aae1' : 'gray' "
                     style="width: 150px;"
                     :disabled="!buttonsActive"
                     @click="toggleStatus('in_development')"
@@ -200,8 +200,8 @@
                     In development
                   </v-btn>
                   <v-btn
-                    class="white--text d-flex align-center justify-center status_style mb-2"
-                    :color="active['uncertain'] ? 'purple' : 'gray' "
+                    class="d-flex align-center justify-center status_style mb-2"
+                    :color="active['uncertain'] ? '#27aae1' : 'gray' "
                     style="width: 150px;"
                     :disabled="!buttonsActive"
                     @click="toggleStatus('uncertain')"
@@ -209,8 +209,8 @@
                     Uncertain
                   </v-btn>
                   <v-btn
-                    class="white--text d-flex align-center justify-center status_style"
-                    :color="active['deprecated'] ? 'purple' : 'gray' "
+                    class="d-flex align-center justify-center status_style"
+                    :color="active['deprecated'] ? '#27aae1' : 'gray' "
                     style="width: 150px;"
                     :disabled="!buttonsActive"
                     @click="toggleStatus('deprecated')"
@@ -657,7 +657,7 @@
             },
             getLengthColour(len) {
               if (len === this.selectedLength) {
-                return "orange"
+                return "#27aae1"
               }
               else {
                 return "gray"

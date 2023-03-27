@@ -135,7 +135,7 @@
                 >
                   <v-btn
                     class="white--text d-flex align-center justify-center status_style mb-2"
-                    :color="active['collection'] ? 'orange' : 'gray' "
+                    :color="active['collection'] ? '#A37146' : 'gray' "
                     style="width: 150px;"
                     :disabled="!buttonsActive"
                     @click="toggleRegistry('collection')"
@@ -144,7 +144,7 @@
                   </v-btn>
                   <v-btn
                     class="white--text d-flex align-center justify-center status_style mb-2"
-                    :color="active['database'] ? 'yellow' : 'gray' "
+                    :color="active['database'] ? '#4678A3' : 'gray' "
                     style="width: 150px;"
                     :disabled="!buttonsActive"
                     @click="toggleRegistry('database')"
@@ -153,7 +153,7 @@
                   </v-btn>
                   <v-btn
                     class="white--text d-flex align-center justify-center status_style mb-2"
-                    :color="active['standard'] ? 'green' : 'gray' "
+                    :color="active['standard'] ? '#29AE9E' : 'gray' "
                     style="width: 150px;"
                     :disabled="!buttonsActive"
                     @click="toggleRegistry('standard')"
@@ -162,7 +162,7 @@
                   </v-btn>
                   <v-btn
                     class="white--text d-flex align-center justify-center status_style"
-                    :color="active['policy'] ? 'blue' : 'gray' "
+                    :color="active['policy'] ? '#A046A3' : 'gray' "
                     style="width: 150px;"
                     :disabled="!buttonsActive"
                     @click="toggleRegistry('policy')"

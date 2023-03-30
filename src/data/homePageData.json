@@ -8,7 +8,7 @@
       "title": "Researchers"
     },
     {
-      "link": "educational#developers_and_curators",
+      "link": "stakeholders#developers",
       "image": "assets/Home/Tabs/developer.svg",
       "header": "Developers & curators of resources and tools",
       "description": "Increase the discoverability and adoption of your resource by adding it in FAIRsharing; if you are a tool developer, access FAIRsharing content via its API to power your system.....",

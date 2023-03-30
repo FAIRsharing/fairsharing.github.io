@@ -1,14 +1,14 @@
 {
   "blockTabs": [
     {
-      "link": "stakeholders#researchers",
+      "link": "educational#researchers",
       "image": "assets/Home/Tabs/researcher.svg",
       "header": "Researchers in academia, industry and government",
       "description": "Identify and cite the standards, databases or repositories that exist for your discipline when creating a data management plan, releasing data or submitting a manuscript to a journal...",
       "title": "Researchers"
     },
     {
-      "link": "stakeholders#developers",
+      "link": "educational#developers_and_curators",
       "image": "assets/Home/Tabs/developer.svg",
       "header": "Developers & curators of resources and tools",
       "description": "Increase the discoverability and adoption of your resource by adding it in FAIRsharing; if you are a tool developer, access FAIRsharing content via its API to power your system.....",
@@ -22,7 +22,7 @@
       "title": "Journal Publishers"
     },
     {
-      "link": "stakeholders#trainers",
+      "link": "stakeholders#librarians",
       "image": "assets/Home/Tabs/trainer.svg",
       "header": "Research data facilitators, librarians, trainers",
       "description": "Use FAIRsharing to provide a foundation on which to create or enrich educational lectures, training and teaching material, and to plug into data management planning tools...",
@@ -36,7 +36,7 @@
       "title": "Societies & Alliances"
     },
     {
-      "link": "stakeholders#funders",
+      "link": "educational#funders",
       "image": "assets/Home/Tabs/funder.svg",
       "header": "Funders & data policy makers",
       "description": "Recommend FAIRsharing to your awardees to inform the development of their data management plan, and select the appropriate resources to recommend in your data policy...",

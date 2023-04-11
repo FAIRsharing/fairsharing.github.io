@@ -370,17 +370,12 @@
     import GraphClient from '@/lib/GraphClient/GraphClient.js'
     import graphQuery from '@/lib/GraphClient/queries/getGraphRelations.json'
     import relationColors from "@/data/RelationsColors.json"
-    import Loaders from "@/components/Navigation/Loaders";
-    import Graph from "graphology";
-    import Sigma from "sigma";
-    import FA2Layout from "graphology-layout-forceatlas2/worker";
-    import forceAtlas2 from "graphology-layout-forceatlas2";
-    import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
+    import Loaders from "@/components/Navigation/Loaders"
+    import * as d3 from "d3"
 
     const graphClient = new GraphClient();
-    const graph = new Graph();
-    let container;
-    let renderer;
+
+    //let container;
 
     export default {
         name: "NetworkGraph",
@@ -477,7 +472,7 @@
           let _module = this;
           this.$nextTick(async function () {
             await this.getData();
-            container = document.getElementById("sigma-container");
+            //container = document.getElementById("sigma-container");
             if (_module.fa2Layout && _module.fa2Layout.isRunning()) {
               _module.fa2Layout.kill();
             }
@@ -516,158 +511,151 @@
             },
             async plotGraph(){
               let _module = this;
-              try {
-                graph.import(this.graphData);
-                // eslint-disable-next-line no-empty
-              }
-              //catch(e) {
-              catch {
-                // graph has presumably been loaded already...
-                // Reloading the page like this to re-draw the graph is a dreadful hack.
-                // TODO: Something better is needed here.
-                //console.log("E: " + JSON.stringify(e));
-                if (_module.fa2Layout !== null) {
-                  _module.fa2Layout.kill();
-                  graph.import(this.graphData);
-                }
-              }
+              //console.log(JSON.stringify(_module.graphData));
+              let nodes = _module.graphData.nodes;
+              console.log("NODES: " + JSON.stringify(nodes));
+              let links = _module.graphData.edges;
+              console.log("LINKS: " + JSON.stringify(links));
+              let graph = _module.ForceGraph(nodes, links);
+              console.log(graph);
 
-              // Graphology implementation of Force Atlas 2 in a web worker
-              _module.sensibleSettings = forceAtlas2.inferSettings(graph);
-              /*
-              _module.sensibleSettings.slowDown = 10;
-              _module.sensibleSettings.iterationsPerRender = 1;
-              _module.sensibleSettings.barnesHutOptimize = true;
-              _module.sensibleSettings.barnesHutTheta = 1;
-              _module.sensibleSettings.timeout = 2000;
-              _module.sensibleSettings.delay = 2000;
-               */
-              _module.fa2Layout = new FA2Layout(graph, {
-                iterations: 50,
-                settings: _module.sensibleSettings,
-              });
-
-              // eslint-disable-next-line no-unused-vars
-              renderer = new Sigma(
-                  graph,
-                  container,
-                  {
-                    allowInvalidContainer: true,
-                    nodeProgramClasses: {
-                      image: getNodeProgramImage()
-                    }
-                  });
-              _module.fa2Layout.start();
-
-              // Attempt to highlight nodes on hover...
-              renderer.on("enterNode", ({ node }) => {
-                _module.state.hoveredNode = node;
-                _module.state.hoveredNeighbors = new Set(graph.neighbors(node));
-                renderer.refresh();
-              });
-              renderer.on("leaveNode", () => {
-                _module.state.hoveredNode = undefined;
-                _module.state.hoveredNeighbors = undefined;
-                renderer.refresh();
-              });
-              renderer.setSetting("nodeReducer", (node, data) => {
-                const res = { ...data };
-
-                // This is for hiding everything except the node being hovered over.
-                if (
-                    _module.state.hoveredNeighbors &&
-                    !_module.state.hoveredNeighbors.has(node) &&
-                    _module.state.hoveredNode !== node
-                ) {
-                  if (parseInt(node) !== parseInt(_module.$route.params.id))
-                  {
-                    //res.label = "";
-                    //res.color = "#f6f6f6";
-                    res.hidden = true;
-                  }
-                }
-
-                if (_module.state.selectedNode === node) {
-                  _module.res.highlighted = true;
-                }
-
-                // Hide nodes which are further away than the path length.
-                if (res.length > _module.selectedLength)
-                {
-                  res.hidden = true;
-                }
-
-                // Hide nodes when their registry is not selected
-                if (!this.active[res.registry] && parseInt(_module.$route.params.id) !== parseInt(node)  )
-                {
-                  res.hidden = true;
-                  //res.label = "";
-                  //res.color = "#f6f6f6";
-                }
-
-                // Hide nodes when their status is not selected
-                if (!this.active[res.status] && parseInt(_module.$route.params.id) !== parseInt(node)  )
-                {
-                  res.hidden = true;
-                  //res.label = "";
-                  //res.color = "#f6f6f6";
-                }
-
-                return res;
-              });
-
-              // This is for hiding everything except the node being hovered over.
-              renderer.setSetting("edgeReducer", (edge, data) => {
-                const res = { ...data };
-                if (_module.state.hoveredNode && !graph.hasExtremity(edge, _module.state.hoveredNode)) {
-                  res.hidden = true;
-                }
-                return res;
-              });
-
-              // This is to link to another record's graph.
-              renderer.on("clickNode", ({ node }) => {
-                this.setClickedNode(node);
-              });
-
-              renderer.refresh();
-
-              await new Promise(r => setTimeout(r, 10000));
-              _module.fa2Layout.stop();
-              _module.buttonsActive = true;
             },
-            setClickedNode(node) {
-              // node is the fairsharing_record_id
-              // TODO: This window.location.assign hackery is not great, but does at least cause
-              // TODO: the correct graph to load and render.
-              let _module = this;
-              if (parseInt(_module.$route.params.id) === parseInt(node)) {
-                this.loading = true;
-                window.location.assign("/" + node);
-                //this.loading = false;
+            ForceGraph({
+                nodes, // an iterable of node objects (typically [{id}, …])
+                links // an iterable of link objects (typically [{source, target}, …])
+              }, {
+                  nodeId = d => d.id, // given d in nodes, returns a unique identifier (string)
+                  nodeGroup, // given d in nodes, returns an (ordinal) value for color
+                  nodeGroups, // an array of ordinal values representing the node groups
+                  nodeTitle, // given d in nodes, a title string
+                  nodeFill = "currentColor", // node stroke fill (if not using a group color encoding)
+                  nodeStroke = "#fff", // node stroke color
+                  nodeStrokeWidth = 1.5, // node stroke width, in pixels
+                  nodeStrokeOpacity = 1, // node stroke opacity
+                  nodeRadius = 5, // node radius, in pixels
+                  nodeStrength,
+                  linkSource = ({source}) => source, // given d in links, returns a node identifier string
+                  linkTarget = ({target}) => target, // given d in links, returns a node identifier string
+                  linkStroke = "#999", // link stroke color
+                  linkStrokeOpacity = 0.6, // link stroke opacity
+                  linkStrokeWidth = 1.5, // given d in links, returns a stroke width in pixels
+                  linkStrokeLinecap = "round", // link stroke linecap
+                  linkStrength,
+                  colors = d3.schemeTableau10, // an array of color strings, for the node groups
+                  width = 640, // outer width, in pixels
+                  height = 400, // outer height, in pixels
+                  invalidation // when this promise resolves, stop the simulation
+              } = {}) {
+          // Compute values.
+          const N = d3.map(nodes, nodeId).map(intern);
+          const LS = d3.map(links, linkSource).map(intern);
+          const LT = d3.map(links, linkTarget).map(intern);
+          if (nodeTitle === undefined) nodeTitle = (_, i) => N[i];
+          const T = nodeTitle == null ? null : d3.map(nodes, nodeTitle);
+          const G = nodeGroup == null ? null : d3.map(nodes, nodeGroup).map(intern);
+          const W = typeof linkStrokeWidth !== "function" ? null : d3.map(links, linkStrokeWidth);
+          const L = typeof linkStroke !== "function" ? null : d3.map(links, linkStroke);
+
+          // Replace the input nodes and links with mutable objects for the simulation.
+          nodes = d3.map(nodes, (_, i) => ({id: N[i]}));
+          links = d3.map(links, (_, i) => ({source: LS[i], target: LT[i]}));
+
+          // Compute default domains.
+          if (G && nodeGroups === undefined) nodeGroups = d3.sort(G);
+
+          // Construct the scales.
+          const color = nodeGroup == null ? null : d3.scaleOrdinal(nodeGroups, colors);
+
+          // Construct the forces.
+          const forceNode = d3.forceManyBody();
+          const forceLink = d3.forceLink(links).id(({index: i}) => N[i]);
+          if (nodeStrength !== undefined) forceNode.strength(nodeStrength);
+          if (linkStrength !== undefined) forceLink.strength(linkStrength);
+
+          const simulation = d3.forceSimulation(nodes)
+              .force("link", forceLink)
+              .force("charge", forceNode)
+              .force("center",  d3.forceCenter())
+              .on("tick", ticked);
+
+          const svg = d3.create("svg")
+              .attr("width", width)
+              .attr("height", height)
+              .attr("viewBox", [-width / 2, -height / 2, width, height])
+              .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+
+          const link = svg.append("g")
+              .attr("stroke", typeof linkStroke !== "function" ? linkStroke : null)
+              .attr("stroke-opacity", linkStrokeOpacity)
+              .attr("stroke-width", typeof linkStrokeWidth !== "function" ? linkStrokeWidth : null)
+              .attr("stroke-linecap", linkStrokeLinecap)
+              .selectAll("line")
+              .data(links)
+              .join("line");
+
+          const node = svg.append("g")
+              .attr("fill", nodeFill)
+              .attr("stroke", nodeStroke)
+              .attr("stroke-opacity", nodeStrokeOpacity)
+              .attr("stroke-width", nodeStrokeWidth)
+              .selectAll("circle")
+              .data(nodes)
+              .join("circle")
+              .attr("r", nodeRadius)
+              .call(drag(simulation));
+
+          if (W) link.attr("stroke-width", ({index: i}) => W[i]);
+          if (L) link.attr("stroke", ({index: i}) => L[i]);
+          if (G) node.attr("fill", ({index: i}) => color(G[i]));
+          if (T) node.append("title").text(({index: i}) => T[i]);
+          if (invalidation != null) invalidation.then(() => simulation.stop());
+
+          function intern(value) {
+              return value !== null && typeof value === "object" ? value.valueOf() : value;
+          }
+
+          function ticked() {
+              link
+                  .attr("x1", d => d.source.x)
+                  .attr("y1", d => d.source.y)
+                  .attr("x2", d => d.target.x)
+                  .attr("y2", d => d.target.y);
+
+              node
+                  .attr("cx", d => d.x)
+                  .attr("cy", d => d.y);
+          }
+
+          function drag(simulation) {
+              function dragstarted(event) {
+                  if (!event.active) simulation.alphaTarget(0.3).restart();
+                  event.subject.fx = event.subject.x;
+                  event.subject.fy = event.subject.y;
               }
-              else {
-                this.loading = true;
-                window.location.assign("/graph/" + node);
-                //this.loading = false;
+
+              function dragged(event) {
+                  event.subject.fx = event.x;
+                  event.subject.fy = event.y;
               }
-            },
-            lengthLimit(len) {
-              this.selectedLength = len;
-            },
-            getLengthColour(len) {
-              if (len === this.selectedLength) {
-                return "#27aae1"
+
+              function dragended(event) {
+                  if (!event.active) simulation.alphaTarget(0);
+                  event.subject.fx = null;
+                  event.subject.fy = null;
               }
-              else {
-                return "gray"
-              }
-            },
-            toggleRegistry(reg) {
-              this.active[reg] = !this.active[reg];
-            },
-            toggleStatus(status) {
-              this.active[status] = !this.active[status];
+
+              return d3.drag()
+                  .on("start", dragstarted)
+                  .on("drag", dragged)
+                  .on("end", dragended);
+          }
+          return Object.assign(svg.node(), {scales: {color}});
+          },
+            getLengthColour(length) {
+                if (length) {
+                    return 'green';
+                }
+                return 'red';
             }
         }
     }

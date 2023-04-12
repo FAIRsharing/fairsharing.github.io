@@ -348,6 +348,7 @@
           </div>
           <div
             id="sigma-container"
+            ref="chartdiv"
           />
         </v-card>
 
@@ -372,6 +373,7 @@
     import relationColors from "@/data/RelationsColors.json"
     import Loaders from "@/components/Navigation/Loaders"
     import * as d3 from "d3"
+    import miserables from "./miserables.json"
 
     const graphClient = new GraphClient();
 
@@ -420,7 +422,9 @@
                 uncertain: true,
                 deprecated: true
               },
-              buttonsActive: false
+              buttonsActive: false,
+              nodesArray: [],
+              linksArray: []
             }
         },
         computed: {
@@ -480,183 +484,118 @@
           })
         },
         methods: {
-            async getData(){
-                this.loading = true;
-                this.legend.types = {
-                    circle: false,
-                    square: false,
-                    triangle: false,
-                    diamond: false
-                }
-                /* A maxPathLength of 1-3 may be specified (API's default is 2).
-                 Higher values may make the resulting graph rather large... */
-                graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
-                const response = await graphClient.executeQuery(graphQuery);
-                if (response.fairsharingGraph === undefined ||
-                    response.fairsharingGraph.data === undefined ||
-                    response.fairsharingGraph.data.length === 0 ||
-                    Object.keys(response.fairsharingGraph.data).length === 0) {
-                  this.loading = false;
-                  this.noData = true;
-                  this.registry = "N/A";
-                  this.type = "N/A";
-                  this.initialized = true;
-                }
-                else {
-                  this.graphData = response.fairsharingGraph.data;
-                  this.loading = false;
-                  this.registry = this.graphData.registry;
-                  this.type = this.graphData.type;
-                }
-            },
-            async plotGraph(){
-              let _module = this;
-              //console.log(JSON.stringify(_module.graphData));
-              let nodes = _module.graphData.nodes;
-              console.log("NODES: " + JSON.stringify(nodes));
-              let links = _module.graphData.edges;
-              console.log("LINKS: " + JSON.stringify(links));
-              let graph = _module.ForceGraph(nodes, links);
-              console.log(graph);
-
-            },
-            ForceGraph({
-                nodes, // an iterable of node objects (typically [{id}, …])
-                links // an iterable of link objects (typically [{source, target}, …])
-              }, {
-                  nodeId = d => d.id, // given d in nodes, returns a unique identifier (string)
-                  nodeGroup, // given d in nodes, returns an (ordinal) value for color
-                  nodeGroups, // an array of ordinal values representing the node groups
-                  nodeTitle, // given d in nodes, a title string
-                  nodeFill = "currentColor", // node stroke fill (if not using a group color encoding)
-                  nodeStroke = "#fff", // node stroke color
-                  nodeStrokeWidth = 1.5, // node stroke width, in pixels
-                  nodeStrokeOpacity = 1, // node stroke opacity
-                  nodeRadius = 5, // node radius, in pixels
-                  nodeStrength,
-                  linkSource = ({source}) => source, // given d in links, returns a node identifier string
-                  linkTarget = ({target}) => target, // given d in links, returns a node identifier string
-                  linkStroke = "#999", // link stroke color
-                  linkStrokeOpacity = 0.6, // link stroke opacity
-                  linkStrokeWidth = 1.5, // given d in links, returns a stroke width in pixels
-                  linkStrokeLinecap = "round", // link stroke linecap
-                  linkStrength,
-                  colors = d3.schemeTableau10, // an array of color strings, for the node groups
-                  width = 640, // outer width, in pixels
-                  height = 400, // outer height, in pixels
-                  invalidation // when this promise resolves, stop the simulation
-              } = {}) {
-          // Compute values.
-          const N = d3.map(nodes, nodeId).map(intern);
-          const LS = d3.map(links, linkSource).map(intern);
-          const LT = d3.map(links, linkTarget).map(intern);
-          if (nodeTitle === undefined) nodeTitle = (_, i) => N[i];
-          const T = nodeTitle == null ? null : d3.map(nodes, nodeTitle);
-          const G = nodeGroup == null ? null : d3.map(nodes, nodeGroup).map(intern);
-          const W = typeof linkStrokeWidth !== "function" ? null : d3.map(links, linkStrokeWidth);
-          const L = typeof linkStroke !== "function" ? null : d3.map(links, linkStroke);
-
-          // Replace the input nodes and links with mutable objects for the simulation.
-          nodes = d3.map(nodes, (_, i) => ({id: N[i]}));
-          links = d3.map(links, (_, i) => ({source: LS[i], target: LT[i]}));
-
-          // Compute default domains.
-          if (G && nodeGroups === undefined) nodeGroups = d3.sort(G);
-
-          // Construct the scales.
-          const color = nodeGroup == null ? null : d3.scaleOrdinal(nodeGroups, colors);
-
-          // Construct the forces.
-          const forceNode = d3.forceManyBody();
-          const forceLink = d3.forceLink(links).id(({index: i}) => N[i]);
-          if (nodeStrength !== undefined) forceNode.strength(nodeStrength);
-          if (linkStrength !== undefined) forceLink.strength(linkStrength);
-
-          const simulation = d3.forceSimulation(nodes)
-              .force("link", forceLink)
-              .force("charge", forceNode)
-              .force("center",  d3.forceCenter())
-              .on("tick", ticked);
-
-          const svg = d3.create("svg")
-              .attr("width", width)
-              .attr("height", height)
-              .attr("viewBox", [-width / 2, -height / 2, width, height])
-              .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
-
-          const link = svg.append("g")
-              .attr("stroke", typeof linkStroke !== "function" ? linkStroke : null)
-              .attr("stroke-opacity", linkStrokeOpacity)
-              .attr("stroke-width", typeof linkStrokeWidth !== "function" ? linkStrokeWidth : null)
-              .attr("stroke-linecap", linkStrokeLinecap)
-              .selectAll("line")
-              .data(links)
-              .join("line");
-
-          const node = svg.append("g")
-              .attr("fill", nodeFill)
-              .attr("stroke", nodeStroke)
-              .attr("stroke-opacity", nodeStrokeOpacity)
-              .attr("stroke-width", nodeStrokeWidth)
-              .selectAll("circle")
-              .data(nodes)
-              .join("circle")
-              .attr("r", nodeRadius)
-              .call(drag(simulation));
-
-          if (W) link.attr("stroke-width", ({index: i}) => W[i]);
-          if (L) link.attr("stroke", ({index: i}) => L[i]);
-          if (G) node.attr("fill", ({index: i}) => color(G[i]));
-          if (T) node.append("title").text(({index: i}) => T[i]);
-          if (invalidation != null) invalidation.then(() => simulation.stop());
-
-          function intern(value) {
-              return value !== null && typeof value === "object" ? value.valueOf() : value;
-          }
-
-          function ticked() {
-              link
-                  .attr("x1", d => d.source.x)
-                  .attr("y1", d => d.source.y)
-                  .attr("x2", d => d.target.x)
-                  .attr("y2", d => d.target.y);
-
-              node
-                  .attr("cx", d => d.x)
-                  .attr("cy", d => d.y);
-          }
-
-          function drag(simulation) {
-              function dragstarted(event) {
-                  if (!event.active) simulation.alphaTarget(0.3).restart();
-                  event.subject.fx = event.subject.x;
-                  event.subject.fy = event.subject.y;
-              }
-
-              function dragged(event) {
-                  event.subject.fx = event.x;
-                  event.subject.fy = event.y;
-              }
-
-              function dragended(event) {
-                  if (!event.active) simulation.alphaTarget(0);
-                  event.subject.fx = null;
-                  event.subject.fy = null;
-              }
-
-              return d3.drag()
-                  .on("start", dragstarted)
-                  .on("drag", dragged)
-                  .on("end", dragended);
-          }
-          return Object.assign(svg.node(), {scales: {color}});
-          },
-            getLengthColour(length) {
-                if (length) {
-                    return 'green';
-                }
-                return 'red';
+          async getData() {
+            this.loading = true;
+            this.legend.types = {
+              circle: false,
+              square: false,
+              triangle: false,
+              diamond: false
             }
+            /* A maxPathLength of 1-3 may be specified (API's default is 2).
+                 Higher values may make the resulting graph rather large... */
+            graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
+            const response = await graphClient.executeQuery(graphQuery);
+            if (response.fairsharingGraph === undefined ||
+                response.fairsharingGraph.data === undefined ||
+                response.fairsharingGraph.data.length === 0 ||
+                Object.keys(response.fairsharingGraph.data).length === 0) {
+              this.loading = false;
+              this.noData = true;
+              this.registry = "N/A";
+              this.type = "N/A";
+              this.initialized = true;
+            } else {
+              this.graphData = response.fairsharingGraph.data;
+              this.loading = false;
+              this.registry = this.graphData.registry;
+              this.type = this.graphData.type;
+            }
+          },
+          getLengthColour(length) {
+            if (length) {
+              return 'green';
+            }
+            return 'red';
+          },
+          async plotGraph() {
+            let _module = this;
+            // console.log(JSON.stringify(_module.graphData));
+            // let nodes = _module.graphData.nodes;
+            // console.log("NODES: " + JSON.stringify(nodes));
+            // let links = _module.graphData.edges;
+            // console.log("LINKS: " + JSON.stringify(links));
+            // let graph = _module.forceGraph(miserables.nodes, miserables.links);
+            // console.log(graph);
+            await _module.d3Graph(miserables.nodes, miserables.edges)
+          },
+
+          async d3Graph(nodes, links) {
+            function getNodeColor(node) {
+              return node.group === 1 ? 'red' : 'gray'
+            }
+
+            var width = window.innerWidth
+            var height = window.innerHeight
+
+            const divSelected = this.$refs.chartdiv;
+            d3.select(divSelected).append("svg")
+            var svg = d3.select(divSelected).append("svg")
+            svg.attr('width', width).attr('height', height)
+
+          // simulation setup with all forces
+            var linkForce = d3
+                .forceLink()
+                .id(function (link) { return link.id })
+
+            var simulation = d3
+                .forceSimulation()
+                .force('link', linkForce)
+                .force('charge', d3.forceManyBody().strength(-120))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+
+            var linkElements = svg.append("g")
+                .attr("class", "links")
+                .selectAll("line")
+                .data(links)
+                .enter().append("line")
+                .attr("stroke-width", 1)
+                .attr("stroke", "rgba(50, 50, 50, 0.2)")
+
+            var nodeElements = svg.append("g")
+                .attr("class", "nodes")
+                .selectAll("circle")
+                .data(nodes)
+                .enter().append("circle")
+                .attr("r", 10)
+                .attr("fill", getNodeColor)
+
+            var textElements = svg.append("g")
+                .attr("class", "texts")
+                .selectAll("text")
+                .data(nodes)
+                .enter().append("text")
+                .text(function (node) { return  node.id })
+                .attr("font-size", 15)
+                .attr("dx", 15)
+                .attr("dy", 4)
+
+            simulation.nodes(nodes).on('tick', () => {
+              nodeElements
+                  .attr('cx', function (node) { return node.x })
+                  .attr('cy', function (node) { return node.y })
+              textElements
+                  .attr('x', function (node) { return node.x })
+                  .attr('y', function (node) { return node.y })
+              linkElements
+                  .attr('x1', function (link) { return link.source.x })
+                  .attr('y1', function (link) { return link.source.y })
+                  .attr('x2', function (link) { return link.target.x })
+                  .attr('y2', function (link) { return link.target.y })
+            })
+
+            simulation.force("link").links(links)
+          }
         }
     }
 </script>

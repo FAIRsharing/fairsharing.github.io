@@ -414,7 +414,11 @@
               fa2Layout: null,
               highlighted: 0, // ID of currently-hovered node.
               state: {},
-              selectedLength: 1,
+              selectedLengths: {
+                  1: true,
+                  2: false,
+                  3: false
+              },
               active: {
                 database: true,
                 collection: true,
@@ -448,29 +452,30 @@
               let _module = this;
               if (!_module.fa2Layout.isRunning()) {
                 _module.fa2Layout.start();
-                await new Promise(r => setTimeout(r, 1000));
+                await new Promise(r => setTimeout(r, 2000));
                 _module.fa2Layout.stop();
               }
               else {
-                await new Promise(r => setTimeout(r, 1000));
+                await new Promise(r => setTimeout(r, 2000));
                 _module.fa2Layout.stop();
               }
             },
             deep: true
           },
-          selectedLength: {
+          selectedLengths: {
             async handler() {
               let _module = this;
               if (!_module.fa2Layout.isRunning()) {
                 _module.fa2Layout.start();
-                await new Promise(r => setTimeout(r, 1000));
+                await new Promise(r => setTimeout(r, 2000));
                 _module.fa2Layout.stop();
               }
               else {
-                await new Promise(r => setTimeout(r, 1000));
+                await new Promise(r => setTimeout(r, 2000));
                 _module.fa2Layout.stop();
               }
-            }
+            },
+            deep: true,
           }
         },
         async mounted() {
@@ -592,7 +597,7 @@
                 }
 
                 // Hide nodes which are further away than the path length.
-                if (res.length > _module.selectedLength)
+                if (_module.selectedLengths[res.length] === false)
                 {
                   res.hidden = true;
                 }
@@ -653,10 +658,10 @@
               }
             },
             lengthLimit(len) {
-              this.selectedLength = len;
+              this.selectedLengths[len] = !this.selectedLengths[len];
             },
             getLengthColour(len) {
-              if (len === this.selectedLength) {
+              if (this.selectedLengths[len] === true) {
                 return "#27aae1"
               }
               else {

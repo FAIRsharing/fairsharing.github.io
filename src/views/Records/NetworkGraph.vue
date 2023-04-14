@@ -505,6 +505,8 @@
                 if (response.fairsharingGraph === undefined ||
                     response.fairsharingGraph.data === undefined ||
                     response.fairsharingGraph.data.length === 0 ||
+                    response.fairsharingGraph.data.name === null ||
+                    response.fairsharingGraph.data.name === undefined ||
                     Object.keys(response.fairsharingGraph.data).length === 0) {
                   this.loading = false;
                   this.noData = true;

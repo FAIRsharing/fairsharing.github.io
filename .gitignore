@@ -25,3 +25,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Random rubbish
+out.txt
+errors.txt

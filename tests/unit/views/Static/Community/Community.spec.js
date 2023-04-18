@@ -4,9 +4,11 @@ import Vuetify from "vuetify"
 import icons from "@/plugins/icons";
 import linkify from "vue-linkify";
 import VueSanitize from "vue-sanitize";
+import VueScrollTo from "vue-scrollto";
 
 const localVue = createLocalVue();
 localVue.use(VueSanitize)
+localVue.use(VueScrollTo,{})
 
 let $route = {
     name: "Community",

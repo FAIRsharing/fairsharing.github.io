@@ -33,16 +33,16 @@
                 <v-col cols="12">
                   <v-list dense>
                     <v-list-item
-                      v-for="legend in networkGraph['legend']"
-                      :key="legend['name']"
+                      v-for="legendItem in networkGraph['legend']"
+                      :key="legendItem['name']"
                     >
                       <v-list-item-icon>
-                        <v-icon :color="legend['color']">
+                        <v-icon :color="legendItem['color']">
                           fa fa-long-arrow-alt-right
                         </v-icon>
                       </v-list-item-icon>
                       <v-list-item-title class="font-weight-regular text-body-2">
-                        {{ legend['name'] }}
+                        {{ legendItem['name'] }}
                       </v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -70,18 +70,18 @@
                     :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
                   >
                     <v-btn
-                      v-for="registry in networkGraph['registry']"
-                      :key="registry['name']"
+                      v-for="registryItem in networkGraph['registry']"
+                      :key="registryItem['name']"
                       class="status_style mx-3 mb-2"
-                      :color="registry['active'] ? registry['color'] : 'gray' "
+                      :color="registryItem['active'] ? registryItem['color'] : 'gray' "
                       :class="[
                         $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
-                        registry['active'] ? 'white--text ' : 'black--text '
+                        registryItem['active'] ? 'white--text ' : 'black--text '
                       ]"
                       :disabled="!buttonsActive"
-                      @click="toggleClick(registry)"
+                      @click="toggleClick(registryItem)"
                     >
-                      {{ registry['name'] }}
+                      {{ registryItem['name'] }}
                     </v-btn>
                   </v-col>
                 </v-row>

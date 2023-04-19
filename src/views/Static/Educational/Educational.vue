@@ -351,7 +351,6 @@
           this.infographics.forEach(e => e.copyButtonStatus = false)
           const itemClicked = this.infographics.filter(e => e.id === item.id)
           itemClicked[0].copyButtonStatus = !itemClicked[0].copyButtonStatus
-
         },
         generatePopup() {
           let _module = this;

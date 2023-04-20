@@ -1,0 +1,110 @@
+{
+  "legend": [
+    {
+      "name": "Deprecates",
+      "color": "red"
+    },
+    {
+      "name": "Recommends",
+      "color": "orange"
+    },
+    {
+      "name": "Collects",
+      "color": "#e6e600"
+    },
+    {
+      "name": "Profiles",
+      "color": "green"
+    },
+    {
+      "name": "Accepts",
+      "color": "blue"
+    },
+    {
+      "name": "Outputs",
+      "color": "indigo"
+    },
+    {
+      "name": " Shares code with",
+      "color": "#9966ff"
+    },
+    {
+      "name": "Shares data with",
+      "color": "#993300"
+    },
+    {
+      "name": "Implements",
+      "color": "#ff99ff"
+    },
+    {
+      "name": "Extends",
+      "color": "black"
+    },
+    {
+      "name": "Related to",
+      "color": "grey"
+    }
+  ],
+  "registry":[
+      {
+        "name": "Collection",
+        "color": "#A37146",
+
+        "active": true
+      },
+      {
+        "name": "Database",
+        "color": "#4678A3",
+        "active": true
+      },
+      {
+        "name": "Standard",
+        "color": "#29AE9E",
+        "active": true
+      },
+      {
+        "name": "Policy",
+        "color": "#A046A3",
+        "active": true
+      }
+  ],
+  "status":[
+    {
+      "name": "Ready",
+      "color": "#27aae1",
+      "active": true
+    },
+    {
+      "name": "In development",
+      "color": "#27aae1",
+      "active": true
+    },
+    {
+      "name": "Uncertain",
+      "color": "#27aae1",
+      "active": true
+    },
+    {
+      "name": "Deprecated",
+      "color": "#27aae1",
+      "active": true
+    }
+  ],
+  "distance":[
+    {
+      "name": "One hop",
+      "hops": 1,
+      "active": true
+    },
+    {
+      "name": "Two hops",
+      "hops": 2,
+      "active": false
+    },
+    {
+      "name": "Three hops",
+      "hops": 3,
+      "active": false
+    }
+  ]
+}

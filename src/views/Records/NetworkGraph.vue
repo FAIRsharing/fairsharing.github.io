@@ -25,6 +25,10 @@
                   Click on the centre to view the record. Hover over to view direct connections. Use the mouse/trackpad
                   to scroll and zoom.
                 </v-col>
+                <v-col cols="12">
+                  For more information, please see the
+                    <a href="https://fairsharing.gitbook.io/fairsharing/about-our-records/network-graphs" target="_blank">documentation</a>.
+                </v-col>
               </v-row>
               <v-row no-gutters>
                 <v-col cols="12">

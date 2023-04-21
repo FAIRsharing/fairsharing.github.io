@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import GraphTest from "@/views/Records/NetworkGraph.vue";
 import Vuetify from "vuetify"
 import GraphClient from "@/lib/GraphClient/GraphClient";
+import users from "@/store/users.js";
 const sinon = require("sinon");
 import Networkgraph from 'highcharts/modules/networkgraph'
 import Highcharts from 'highcharts'
@@ -21,77 +22,89 @@ let $route = {
     params: {id: 1234}
 };
 
+users.state.user = function(){
+    return { is_curator: true }
+};
+const $store = new Vuex.Store({
+    modules: {
+        users: users
+    }
+})
+
+
 let graphStub;
 let graphMock = {
     "fairsharingGraph": {
-        "nodes": [
-            {
-                "id": "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
-                "record_id": 1410,
-                "status":"ready",
-                "marker": {
-                    "symbol": "circle",
-                    "radius": 20,
-                    "fillColor": "red"
+        data: {
+            "nodes": [
+                {
+                    "id": "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                    "record_id": 1410,
+                    "status": "ready",
+                    "marker": {
+                        "symbol": "circle",
+                        "radius": 20,
+                        "fillColor": "red"
+                    }
+                },
+                {
+                    "id": "Virtual Observatory Data Modeling Languages",
+                    "record_id": 1412,
+                    "status": "in_development",
+                    "marker": {
+                        "symbol": "square",
+                        "radius": 10
+                    }
+                },
+                {
+                    "id": "Third",
+                    "status": "uncertain",
+                    "record_id": 140,
+                    "marker": {
+                        "symbol": "diamond",
+                        "radius": 10
+                    }
+                },
+                {
+                    "id": "Fourth",
+                    "status": "deprecated",
+                    "record_id": 160,
+                    "marker": {
+                        "symbol": "triangle",
+                        "radius": 10
+                    }
                 }
-            },
-            {
-                "id": "Virtual Observatory Data Modeling Languages",
-                "record_id": 1412,
-                "status":"in_development",
-                "marker": {
-                    "symbol": "square",
-                    "radius": 10
-                }
-            },
-            {
-                "id": "Third",
-                "status":"uncertain",
-                "record_id": 140,
-                "marker": {
-                    "symbol": "diamond",
-                    "radius": 10
-                }
-            },
-            {
-                "id": "Fourth",
-                "status":"deprecated",
-                "record_id": 160,
-                "marker": {
-                    "symbol": "triangle",
-                    "radius": 10
-                }
-            }
-        ],
-        "edges": [
-            [
-                "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
-                "Virtual Observatory Data Modeling Languages",
-                "Related To"
             ],
-            [
-                "Virtual Observatory Data Modeling Languages",
-                "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
-                "test2"
+            "edges": [
+                [
+                    "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                    "Virtual Observatory Data Modeling Languages",
+                    "Related To"
+                ],
+                [
+                    "Virtual Observatory Data Modeling Languages",
+                    "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                    "test2"
+                ],
+                [
+                    "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                    "Virtual Observatory Data Modeling Languages",
+                    "Related To"
+                ],
+                [
+                    "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                    "Third",
+                    "Related To"
+                ],
+                [
+                    "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
+                    "Fourth",
+                    "??"
+                ]
             ],
-            [
-                "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
-                "Virtual Observatory Data Modeling Languages",
-                "Related To"
-            ],
-            [
-                "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
-                "Third",
-                "Related To"
-            ],
-            [
-                "Observation Data Model Core Components and its Implementation in the Table Access Protocol",
-                "Fourth",
-                "??"
-            ]
-        ],
-        "linkLength": 80,
-        "maxIterations": 300
+            "linkLength": 80,
+            "maxIterations": 300
+        }
     }
 }
 
@@ -110,7 +123,7 @@ describe("NetworkGraph.vue", function() {
             localVue,
             vuetify,
             router,
-            mocks: { $router, $route }
+            mocks: { $router, $route, $store }
         });
         getData = jest.spyOn(wrapper.vm, "getData");
     });
@@ -121,14 +134,12 @@ describe("NetworkGraph.vue", function() {
 
     it("is all present and correct", async () => {
         expect(wrapper.name()).toMatch("NetworkGraph");
-        expect(wrapper.vm.options.plotOptions.networkgraph.layoutAlgorithm.linkLength).toEqual(80);
-        expect(wrapper.vm.options.plotOptions.networkgraph.layoutAlgorithm.maxIterations).toEqual(300);
-        expect(wrapper.vm.options.series[0].nodes.length).toBe(4)
+        expect(wrapper.vm.graphData.nodes.length).toBe(4)
         wrapper.vm.legend.types.square = false;
         await wrapper.vm.getData();
         expect(wrapper.vm.noData).toBe(false);
-        expect(wrapper.vm.options.series[0].nodes.length).toBe(4)
-        wrapper.vm.drawGraph()
+        expect(wrapper.vm.graphData.nodes.length).toBe(4)
+        wrapper.vm.plotGraph()
     });
 
     it("reloads page when route changes", async () => {
@@ -146,7 +157,7 @@ describe("NetworkGraph.vue", function() {
             localVue,
             vuetify,
             router,
-            mocks: { $router, $route }
+            mocks: { $router, $route, $store }
         });
         await wrapper.vm.getData();
         expect(wrapper.vm.noData).toBe(true);

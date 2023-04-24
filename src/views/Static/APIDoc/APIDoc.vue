@@ -154,7 +154,7 @@ import json
 
 url = "https://api.fairsharing.org/users/sign_in"
 
-payload="{\"user\": {\"login\":\"your_username\",\"password\":\"your_password\"} }"
+payload={"user": {"login":"your_username","password":"your_password"} }
 headers = {
   'Accept': 'application/json',
   'Content-Type': 'application/json'

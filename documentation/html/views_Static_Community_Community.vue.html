@@ -401,9 +401,9 @@
           >
             &lt;v-card-title>
               &lt;h4 style="word-break: initial">
-                &lt;a 
+                &lt;a
                   :id="tool.id"
-                  :href="tool.homepage" 
+                  :href="tool.homepage"
                 >
                   {{ tool.name }}
                 &lt;/a>
@@ -615,6 +615,7 @@
                       v-html="$sanitize(itemData.text)"
                     />
                     &lt;a
+                      v-if="itemData.link"
                       class="ml-2 pr-2"
                       :href="itemData.link.toString().includes('@')?`mailto:${itemData.link}`:itemData.link"
                       target="_blank"

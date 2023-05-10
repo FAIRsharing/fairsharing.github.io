@@ -13,7 +13,7 @@ localVue.use(Vuex);
 describe("OrganisationsList.vue", () => {
         let wrapper;
 
-        const organisationsDataList = [{id: 1, name: 'one', homepage: 'http://abc.com'}]
+        const organisationsDataList = [{id: 1, name: 'one', homepage: 'http://abc.com', rorLink: 'http://ror.link12'}]
 
         let graphStub;
 

@@ -5,6 +5,7 @@
     "id",
     "name",
     "homepage",
-    "types"
+    "types",
+    "rorLink"
   ]
 }

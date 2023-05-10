@@ -42,6 +42,15 @@
             {{ item.homepage }}
           </a>
         </template>
+        <template #[`item.rorLink`]="{ item }">
+          <a
+            target="_blank"
+            class="underline-effect"
+            :href="item.rorLink"
+          >
+            {{ item.rorLink }}
+          </a>
+        </template>
       </v-data-table>
     </v-card>
   </v-container>
@@ -67,6 +76,7 @@ export default {
         },
         { text: "Types", value: "types", sortable: false },
         { text: "Homepage", value: "homepage", sortable: false },
+        { text: "ROR", value: "rorLink", sortable: false }
       ],
       loading: false,
       organisations: [],

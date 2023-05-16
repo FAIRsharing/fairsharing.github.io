@@ -42,7 +42,6 @@ let graphMock = {
                     "record_id": 1410,
                     "status": "ready",
                     "marker": {
-                        "symbol": "circle",
                         "radius": 20,
                         "fillColor": "red"
                     }
@@ -52,7 +51,6 @@ let graphMock = {
                     "record_id": 1412,
                     "status": "in_development",
                     "marker": {
-                        "symbol": "square",
                         "radius": 10
                     }
                 },
@@ -61,7 +59,6 @@ let graphMock = {
                     "status": "uncertain",
                     "record_id": 140,
                     "marker": {
-                        "symbol": "diamond",
                         "radius": 10
                     }
                 },
@@ -70,7 +67,6 @@ let graphMock = {
                     "status": "deprecated",
                     "record_id": 160,
                     "marker": {
-                        "symbol": "triangle",
                         "radius": 10
                     }
                 }
@@ -135,7 +131,6 @@ describe("NetworkGraph.vue", function() {
     it("is all present and correct", async () => {
         expect(wrapper.name()).toMatch("NetworkGraph");
         expect(wrapper.vm.graphData.nodes.length).toBe(4)
-        wrapper.vm.legend.types.square = false;
         await wrapper.vm.getData();
         expect(wrapper.vm.noData).toBe(false);
         expect(wrapper.vm.graphData.nodes.length).toBe(4)

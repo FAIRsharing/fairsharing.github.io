@@ -61,7 +61,49 @@
               <!-- Color definition meaning in NetworkGraph -->
               <div>
                 <h3 class="mb-4">
-                  Registry
+                  Toggle by registry and distance
+                </h3>
+                <v-row
+                  v-for="buttonGroup in Object.keys(nodeVisibility)"
+                  :key="'hopRow-' + buttonGroup"
+                  no-gutters
+                  :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
+                >
+                  <h4 class="mb-4 pt-4">
+                    Distance from centre: {{ buttonGroup }}
+                  </h4>
+                  <v-col
+                    cols="12"
+                    xs="12"
+                    sm="3"
+                    md="12"
+                    lg="12"
+                    xl="12"
+                    fluid
+                    class="d-flex justify-center"
+                    :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
+                  >
+                    <v-btn
+                      v-for="registryItem in networkGraph['registry']"
+                      :key="registryItem['name']"
+                      class="status_style mx-3 mb-2"
+                      :color="nodeVisibility[buttonGroup][registryItem['name']] ? registryItem['color'] : 'gray' "
+                      :class="[
+                        $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
+                        nodeVisibility[buttonGroup][registryItem['name']] ? 'white--text ' : 'black--text '
+                      ]"
+                      :disabled="!buttonsActive"
+                      @click="toggleRegistry(registryItem['name'], buttonGroup)"
+                    >
+                      {{ registryItem['name'] }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </div>
+              <v-divider />
+              <div>
+                <h3 class="mb-4">
+                  Toggle all switches at a specified distance
                 </h3>
                 <v-row
                   no-gutters
@@ -79,18 +121,19 @@
                     :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
                   >
                     <v-btn
-                      v-for="registryItem in networkGraph['registry']"
-                      :key="registryItem['name']"
+                      v-for="distance in networkGraph['distance']"
+                      :id="`distance_${distance['hops']}`"
+                      :key="distance['name']"
                       class="status_style mx-3 mb-2"
-                      :color="registryItem['active'] ? registryItem['color'] : 'gray' "
+                      :color="distanceSummary[distance['hops']] ? '#27aae1' : 'gray'"
                       :class="[
                         $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
-                        registryItem['active'] ? 'white--text ' : 'black--text '
+                        distanceSummary[distance['hops']] ? 'white--text ' : 'black--text '
                       ]"
                       :disabled="!buttonsActive"
-                      @click="toggleClick(registryItem)"
+                      @click="lengthLimit(distance)"
                     >
-                      {{ registryItem['name'] }}
+                      {{ distance['name'] }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -126,48 +169,9 @@
                         status['active'] ? 'white--text ' : 'black--text '
                       ]"
                       :disabled="!buttonsActive"
-                      @click="toggleClick(status)"
+                      @click="toggleStatus(status)"
                     >
                       {{ status['name'] }}
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </div>
-              <v-divider />
-              <div>
-                <!-- buttons here -->
-                <h3 class="mb-4">
-                  Distance from centre
-                </h3>
-                <v-row
-                  no-gutters
-                  :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
-                >
-                  <v-col
-                    cols="12"
-                    xs="12"
-                    sm="3"
-                    md="12"
-                    lg="12"
-                    xl="12"
-                    fluid
-                    class="d-flex justify-center"
-                    :class="$vuetify.breakpoint.smOnly ? 'flex-row align-center flex-grow-0 flex-shrink-1' : 'flex-column'"
-                  >
-                    <v-btn
-                      v-for="distance in networkGraph['distance']"
-                      :id="`distance_${distance['hops']}`"
-                      :key="distance['name']"
-                      class="status_style mx-3 mb-2"
-                      :color="getLengthColour(distance['hops'])"
-                      :class="[
-                        $vuetify.breakpoint.xsOnly ? 'full-width' : 'button-filters',
-                        distance['active'] ? 'white--text ' : 'black--text '
-                      ]"
-                      :disabled="!buttonsActive"
-                      @click="lengthLimit(distance)"
-                    >
-                      {{ distance['name'] }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -292,12 +296,6 @@ export default {
       relations_colors: relationColors,
       legend: {
         relations: {},
-        types: {
-          circle: false,
-          square: false,
-          triangle: false,
-          diamond: false
-        }
       },
       typesFound: [],
       graphData: {},
@@ -307,16 +305,32 @@ export default {
       fa2Layout: null,
       highlighted: 0, // ID of currently-hovered node.
       state: {},
+      nodeVisibility: {
+          1: {
+              Database: true,
+              Collection: true,
+              Standard: true,
+              Policy: true,
+          },
+          2: {
+              Database: false,
+              Collection: false,
+              Standard: false,
+              Policy: false,
+          },
+          3: {
+              Database: false,
+              Collection: false,
+              Standard: false,
+              Policy: false,
+          },
+      },
       selectedLengths: {
         1: true,
         2: false,
         3: false
       },
       active: {
-        database: true,
-        collection: true,
-        standard: true,
-        policy: true,
         ready: true,
         in_development: true,
         uncertain: true,
@@ -335,6 +349,14 @@ export default {
         return false
       }
       return this.fa2Layout.isRunning();
+    },
+    distanceSummary() {
+      let _module = this;
+      return {
+        1: !Object.keys(_module.nodeVisibility['1']).some(k => !_module.nodeVisibility['1'][k]),
+        2: !Object.keys(_module.nodeVisibility['2']).some(k => !_module.nodeVisibility['2'][k]),
+        3: !Object.keys(_module.nodeVisibility['3']).some(k => !_module.nodeVisibility['3'][k]),
+      }
     }
   },
   watch: {
@@ -354,6 +376,21 @@ export default {
           _module.fa2Layout.stop();
         }
       },
+      deep: true
+    },
+    nodeVisibility: {
+      async handler() {
+          let _module = this;
+          if (!_module.fa2Layout.isRunning()) {
+              _module.fa2Layout.start();
+              await new Promise(r => setTimeout(r, 2000));
+              _module.fa2Layout.stop();
+          }
+          else {
+              await new Promise(r => setTimeout(r, 2000));
+              _module.fa2Layout.stop();
+          }
+        },
       deep: true
     },
     selectedLengths: {
@@ -386,12 +423,6 @@ export default {
   methods: {
     async getData(){
       this.loading = true;
-      this.legend.types = {
-        circle: false,
-        square: false,
-        triangle: false,
-        diamond: false
-      }
       /* A maxPathLength of 1-3 may be specified (API's default is 2).
        Higher values may make the resulting graph rather large... */
       graphQuery.queryParam = {id: parseInt(this.$route.params.id)};
@@ -474,17 +505,14 @@ export default {
           _module.res.highlighted = true;
         }
 
-        // Hide nodes which are further away than the path length.
-        if (_module.selectedLengths[res.length] === false)
-        {
-          res.hidden = true;
+        // Hide by distance and registry combined
+        if (res.length > 0) {
+            let regName = res.registry.charAt(0).toUpperCase() + res.registry.slice(1)
+            if (!_module.nodeVisibility[res.length][regName]) {
+                res.hidden = true;
+            }
         }
 
-        // Hide nodes when their registry is not selected
-        if (!this.active[res.registry] && parseInt(_module.$route.params.id) !== parseInt(node)  )
-        {
-          res.hidden = true;
-        }
 
         // Hide nodes when their status is not selected
         if (!this.active[res.status] && parseInt(_module.$route.params.id) !== parseInt(node)  )
@@ -532,9 +560,18 @@ export default {
       }
     },
     lengthLimit(item) {
-      const itemLength = item.hops
-      this.selectedLengths[itemLength] = !this.selectedLengths[itemLength];
-      item.active = !item.active
+      let _module = this;
+      const itemLength = item.hops.toString();
+      if (!_module.distanceSummary[itemLength]) {
+        Object.keys(_module.nodeVisibility[itemLength]).forEach(function(key) {
+          _module.nodeVisibility[itemLength][key] = true;
+        });
+      }
+      else {
+        Object.keys(_module.nodeVisibility[itemLength]).forEach(function(key) {
+            _module.nodeVisibility[itemLength][key] = false;
+        });
+      }
     },
     getLengthColour(len) {
       if (this.selectedLengths[len] === true) {
@@ -544,11 +581,14 @@ export default {
         return "gray"
       }
     },
-    toggleClick(item) {
-      let itemName = item.name.toLowerCase()
+    toggleRegistry(item, distance) {
+      this.nodeVisibility[distance][item] = !this.nodeVisibility[distance][item];
+    },
+    toggleStatus(item) {
+      let itemName = item.name.toLowerCase();
       if (itemName === 'in development')  itemName = "in_development"
       this.active[itemName] = !this.active[itemName];
-      item.active = !item.active
+      item.active = !item.active;
     }
   }
 }

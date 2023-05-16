@@ -5,8 +5,9 @@ import icons from "@/plugins/icons";
 import linkify from "vue-linkify";
 import VueSanitize from "vue-sanitize";
 
+const VueScrollTo = require('vue-scrollto');
 const localVue = createLocalVue();
-localVue.use(VueSanitize)
+localVue.use(VueSanitize, VueScrollTo)
 
 let $route = {
     name: "Community",
@@ -19,7 +20,7 @@ const $router = {
 };
 
 describe("Community.vue", function () {
-    let wrapper;
+    let wrapper
     localVue.directive('linkified', linkify)
     const vuetify = new Vuetify({'icons': icons});
     beforeEach(() => {

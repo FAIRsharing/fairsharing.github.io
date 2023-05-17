@@ -352,9 +352,9 @@ export default {
     distanceSummary() {
       let _module = this;
       return {
-        1: !Object.keys(_module.nodeVisibility['1']).some(k => !_module.nodeVisibility['1'][k]),
-        2: !Object.keys(_module.nodeVisibility['2']).some(k => !_module.nodeVisibility['2'][k]),
-        3: !Object.keys(_module.nodeVisibility['3']).some(k => !_module.nodeVisibility['3'][k]),
+        1: Object.values(_module.nodeVisibility['1']).includes(true),
+        2: Object.values(_module.nodeVisibility['2']).includes(true),
+        3: Object.values(_module.nodeVisibility['3']).includes(true),
       }
     }
   },

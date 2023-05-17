@@ -928,48 +928,20 @@ data&lt;-query_con$data
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
-      Are you looking for structured data within an individual record's page? If so then a simple wget or equivalent
-      will fail as the application renders html in the client. All that will normally be returned is a placeholder HTML
-      file asking that you turn on Javascript. We would therefore recommend using the API as described above.
-    </p>
-
-    <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      Otherwise, a technique such as that described in
-      <a
-        href="https://developers.google.com/web/tools/puppeteer/articles/ssr"
-        target="_blank"
-      >
-        this Google development document</a>
-      can be used. Here's their simple example:
+      Are you looking for structured data within an individual record's page? The FAIRsharing site implements content
+      negotiation, so if you make a request for a record, specifying JSON or JSON+LD headers, some basic JSON data
+        will be provided. For example:
     </p>
 
     <vue-code-highlight
       class="code-container mt-2 mb-4"
-      language="ruby"
+      language="bash"
     >
       <pre>
-  const puppeteer = require('puppeteer');
-
-  async function ssr(url) {
-    const browser = await puppeteer.launch({headless: true});
-    const page = await browser.newPage();
-    await page.goto(url, {waitUntil: 'networkidle0'});
-    const html = await page.content();
-    await browser.close();
-    console.log(html);
-  }
-  ssr('https://fairsharing.org/#/1');
+         curl -i -H "Accept: application/json" "https://fairsharing.org/FAIRsharing.vr52p3"
       </pre>
     </vue-code-highlight>
 
-
-    <p
-      :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
-    >
-      This will return rendered html from which you may parse the JSON+LD data.
-    </p>
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">
       Contact

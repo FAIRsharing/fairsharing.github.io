@@ -59,19 +59,18 @@
               </v-row>
               <v-divider />
               <!-- Color definition meaning in NetworkGraph -->
-              <div>
+              <div
+                v-for="buttonGroup in Object.keys(nodeVisibility)"
+                :key="'hopRow-' + buttonGroup"
+              >
                 <h3 class="mb-4">
-                  Toggle by registry and distance
+                  {{ buttonRowTitle(buttonGroup) }}
                 </h3>
                 <v-row
-                  v-for="buttonGroup in Object.keys(nodeVisibility)"
-                  :key="'hopRow-' + buttonGroup"
+
                   no-gutters
                   :class="{'d-flex justify-space-around': $vuetify.breakpoint.smOnly}"
                 >
-                  <h4 class="mb-4 pt-4">
-                    Distance from centre: {{ buttonGroup }}
-                  </h4>
                   <v-col
                     cols="12"
                     xs="12"
@@ -589,6 +588,14 @@ export default {
       if (itemName === 'in development')  itemName = "in_development"
       this.active[itemName] = !this.active[itemName];
       item.active = !item.active;
+    },
+    buttonRowTitle(distance) {
+      const messages = {
+        1: 'Registries at one hop',
+        2: 'Registries at two hops',
+        3: 'Registries at three hops'
+      }
+      return messages[distance.toString()];
     }
   }
 }

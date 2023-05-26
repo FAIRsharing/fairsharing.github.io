@@ -388,11 +388,13 @@ export default {
             output[fieldName] = this.allowedFields.properties[fieldName]
           }
           else if (type === 'string' && this.allowedFields.properties[fieldName].enum){
-              let expected = new Set(["yes", "no"]);
-              let fieldEnum = new Set(this.allowedFields.properties[fieldName].enum);
-              if (isEqual(expected, fieldEnum)) {
-                output[fieldName] = this.allowedFields.properties[fieldName]
-              }
+            // TODO: These types must be checked, or perhaps this check removed, if the schema is modified
+            // TODO: to add additional properties.
+            let expected = new Set(["yes", "no", "not found"]);
+            let fieldEnum = new Set(this.allowedFields.properties[fieldName].enum);
+            if (isEqual(expected, fieldEnum)) {
+              output[fieldName] = this.allowedFields.properties[fieldName]
+            }
           }
         });
       }

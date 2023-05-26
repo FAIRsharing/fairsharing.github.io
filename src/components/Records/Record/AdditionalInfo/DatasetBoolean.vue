@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties[fieldName] && getField('metadata')[fieldName]==='yes'"
+    v-if="Object.keys(allowedFields).includes('properties') && allowedFields.properties[fieldName]"
     class="d-flex pa-4 data-holder flex-row mt-4 align-center min-height-40 mb-4"
   >
     <b class="full-width min-width-200 max-width-200 text-capitalize">{{ cleanString(fieldName) }}</b>

@@ -45,6 +45,9 @@
       <!--Keywords-->
       <Keywords />
 
+      <!-- Licence needs to go here -->
+      <Licence v-if="currentRecord.fairsharingRecord.registry==='Collection'" />
+
       <!-- Duplicate link to graph (see also action menu) -->
       <div class="d-flex flex-row">
         <router-link :to="`/graph/${currentRecord['fairsharingRecord'].id}`">
@@ -97,6 +100,7 @@ import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedBy
 import ContactsData from "@/components/Records/Record/GeneralInfo/ContactsData";
 import Organisations from "@/components/Records/Record/Organisations";
 import CommunityCuratorInfo from "@/components/Records/Record/GeneralInfo/CommunityCuratorInfo";
+import Licence from '@/components/Records/Record/CollectionRecord/Licence.vue'
 
 export default {
   name: "GeneralInfo",
@@ -118,7 +122,8 @@ export default {
     DOITitle,
     Keywords,
     SectionTitle,
-    CommunityCuratorInfo
+    CommunityCuratorInfo,
+    Licence
   },
   props: {
     canClaim: {

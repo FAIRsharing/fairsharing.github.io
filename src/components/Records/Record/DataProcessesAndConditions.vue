@@ -32,7 +32,7 @@
             getField('metadata')['data_processes_and_conditions'].length) ||
             (getField('licences').length && getField('licences')) ||
             (getField('metadata')['certifications_and_community_badges'] &&
-              getField('metadata')['certifications_and_community_badges'].length)
+              getField('metadata')['certifications_and_community_badges'].length > 0)
         "
       >
         <!-- DataProcessAndCondition component -->
@@ -160,7 +160,7 @@ export default {
       const licences = this.getField("licences");
 
       // // adding community badges if available
-      if (community_badges) {
+      if (community_badges && community_badges.length > 0) {
         processedData["certifications_and_community_badges"] = {
           data: [],
           icon: "certificate",

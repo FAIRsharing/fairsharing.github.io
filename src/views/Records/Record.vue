@@ -36,7 +36,7 @@
 
           <!-- Menu component -->
           <record-menu
-            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error"
+            v-if="currentRecord.fairsharingRecord['isHidden']!==undefined && !error && !recordHidden"
             :buttons="buttons"
             :read-only-mode="readOnlyMode"
           />
@@ -55,8 +55,18 @@
         id="tombStone"
         :record="currentRecord['fairsharingRecord']"
       />
+
+      <Hidden
+        v-if="recordHidden"
+        id="hidden"
+        :record-name="currentRecord['fairsharingRecord'].metadata.name"
+        :is-logged-in="user().isLoggedIn"
+      />
+
+      <!-- handle situations where the record is hidden -->
+
       <!--  Content  -->
-      <div v-if="currentRecord['fairsharingRecord'] && !error && !currentRecord['fairsharingRecord'].metadata.tombstone">
+      <div v-if="currentRecord['fairsharingRecord'] && !error && !recordHidden && !currentRecord['fairsharingRecord'].metadata.tombstone">
         <!-- Top Block -->
         <GeneralInfo
           id="generalInfo"
@@ -303,12 +313,14 @@ import RecordHistory from "@/components/Records/Record/History/RecordHistory";
 import Loaders from "@/components/Navigation/Loaders";
 import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
 import Tombstone from "../Errors/Tombstone";
+import Hidden from "../Errors/Hidden";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
 import CuratorNotes from "@/components/Records/Record/CuratorNotes";
 import RecordMenu from "@/components/Records/Record/RecordMenu";
 import RecordAlert from "@/components/Records/Record/RecordAlert";
 import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
 import RecordSnackbar from "@/components/Records/Record/RecordSnackBar";
+import {isLoggedIn} from "@/router";
 
 const client = new RestClient();
 export default {
@@ -320,6 +332,7 @@ export default {
     CuratorNotes,
     AdditionalInfo,
     Tombstone,
+    Hidden,
     SearchCollection,
     Loaders,
     RecordHistory,
@@ -341,6 +354,7 @@ export default {
     return {
       recordID: null,
       error: null,
+      visible: true,
       queryTriggered: false,
       showScrollToTopButton: false,
       canEdit: false,
@@ -432,6 +446,20 @@ export default {
     ...mapState('users', ["user", "messages"]),
     ...mapGetters("record", ["getField"]),
     ...mapState('introspection', ["readOnlyMode"]),
+    recordHidden() {
+        let _module = this;
+        if (_module.currentRecord.fairsharingRecord.isHidden) {
+            if (!_module.user().isLoggedIn) {
+                return true;
+            }
+            else {
+                if (!_module.canEdit) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    },
     getRecordCardBackground() {
       let finalCardBackColor
       switch (this.currentRecord.fairsharingRecord.registry) {
@@ -554,6 +582,7 @@ export default {
     }
   },
   methods: {
+      isLoggedIn,
     closeHistory() {
       this.history.show = false;
       this.$router.replace({query: {}});

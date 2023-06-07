@@ -47,8 +47,11 @@ let $store = new Vuex.Store({
         path: "/",
         params: {id: "980190962"},
     };
+
+$store.state.users.user = function (){return {isLoggedIn: false}};
+
 const router = new VueRouter(),
-    $router = { push: jest.fn(), replace: jest.fn() };
+$router = { push: jest.fn(), replace: jest.fn() };
 
 $router.go = jest.fn();
 //-- making a mock div element

@@ -40,7 +40,7 @@
                   class="mr-2 width-35"
                 />
                 <a
-                  :href="generateDoiLink(infographic.doi)"
+                  :href="infographic.url"
                   target="_blank"
                   class="underline-effect font-weight-medium "
                   :class="{

@@ -354,7 +354,6 @@ export default {
     return {
       recordID: null,
       error: null,
-      visible: true,
       queryTriggered: false,
       showScrollToTopButton: false,
       canEdit: false,

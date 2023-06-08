@@ -15,7 +15,7 @@ describe("Hidden record notification", () => {
     });
 
     it("can mount", () => {
-        expect(wrapper.name()).toBe("Maintenance");
+        expect(wrapper.name()).toBe("Hidden");
     });
 
 });

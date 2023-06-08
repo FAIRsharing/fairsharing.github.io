@@ -320,7 +320,6 @@ import RecordMenu from "@/components/Records/Record/RecordMenu";
 import RecordAlert from "@/components/Records/Record/RecordAlert";
 import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
 import RecordSnackbar from "@/components/Records/Record/RecordSnackBar";
-import {isLoggedIn} from "@/router";
 
 const client = new RestClient();
 export default {
@@ -581,7 +580,6 @@ export default {
     }
   },
   methods: {
-      isLoggedIn,
     closeHistory() {
       this.history.show = false;
       this.$router.replace({query: {}});
@@ -999,6 +997,9 @@ export default {
         }
         const canEdit = await client.canEdit(recordID, _module.user().credentials.token);
         _module.canEdit = !canEdit.error;
+      }
+      else {
+        return false;
       }
     },
     /**

@@ -47,8 +47,11 @@ let $store = new Vuex.Store({
         path: "/",
         params: {id: "980190962"},
     };
+
+$store.state.users.user = function (){return {isLoggedIn: false}};
+
 const router = new VueRouter(),
-    $router = { push: jest.fn(), replace: jest.fn() };
+$router = { push: jest.fn(), replace: jest.fn() };
 
 $router.go = jest.fn();
 //-- making a mock div element
@@ -205,9 +208,10 @@ describe("Record.vue", function() {
         expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | IAT");
     });
 
-    it('Can react to user logging out', () => {
+    it('Can react to user logging out', async () => {
         wrapper.vm.canEdit = true;
         $store.state.users.user = function (){return {isLoggedIn: false}};
+        await wrapper.vm.canEditRecord();
         expect(wrapper.vm.canEdit).toBe(false);
     });
 

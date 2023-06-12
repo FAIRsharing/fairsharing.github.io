@@ -268,6 +268,7 @@
         "logo": "nutshell.png",
         "text": "",
         "doi": "10.5281/zenodo.7737366",
+        "url": "https://zenodo.org/record/7737367/files/FAIRsharing%20in%20a%20nutshell%20V1.0.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "nutshell"
       },
@@ -276,6 +277,7 @@
         "logo": "standards_overview.png",
         "text": "",
         "doi": "10.5281/zenodo.7737795",
+        "url": "https://zenodo.org/record/7737796/files/FAIRsharing%20content_%20standards%20overview%20V1.0.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "standards"
       },
@@ -284,6 +286,7 @@
         "logo": "databases_overview.png",
         "text": "",
         "doi": "10.5281/zenodo.7737841",
+        "url": "https://zenodo.org/record/7737842/files/FAIRsharing%20content_%20databases%20overview%20V1.0.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "databases"
       },
@@ -292,6 +295,7 @@
         "logo": "policies_overview.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -299,6 +303,7 @@
         "logo": "collections_overview.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -306,6 +311,7 @@
         "logo": "researchers.png",
         "text": "",
         "doi": "10.5281/zenodo.7733025",
+        "url": "https://zenodo.org/record/7733026/files/FAIRsharing%20for%20you_%20researchers%20V1.0.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "researchers"
       },
@@ -314,6 +320,7 @@
         "logo": "journal_publishers.png",
         "text": "",
         "doi": "10.5281/zenodo.7737417",
+        "url": "https://zenodo.org/record/7737418/files/FAIRsharing%20for%20you_%20journal%20publishers%20V1.0.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "publishers"
       },
@@ -322,6 +329,7 @@
         "logo": "funders.png",
         "text": "",
         "doi": "10.5281/zenodo.7737551",
+        "url": "https://zenodo.org/record/7737552/files/FAIRsharing%20for%20you_%20funders%20V1.0.pdf?download=1",
         "copyButtonStatus": false,
         "hash": "funders"
       },
@@ -330,6 +338,7 @@
         "logo": "societies_and_alliances.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -337,6 +346,7 @@
         "logo": "librarians_and_trainers.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -344,6 +354,7 @@
         "logo": "developers_and_curators.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -351,6 +362,7 @@
         "logo": "searching.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -358,6 +370,7 @@
         "logo": "create_a_view_using_collection.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -365,6 +378,7 @@
         "logo": "capturing_the_resource_life_cycle.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -372,6 +386,7 @@
         "logo": "the_fairness_of_fairsharing.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -379,6 +394,7 @@
         "logo": "categorizing_the_content.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       },
       {
@@ -386,6 +402,7 @@
         "logo": "tips.png",
         "text": "Coming Soon",
         "doi": "",
+        "url": "",
         "copyButtonStatus": false
       }
     ]

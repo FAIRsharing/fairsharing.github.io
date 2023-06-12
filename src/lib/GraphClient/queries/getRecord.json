@@ -16,6 +16,7 @@
     "lastEdited",
     "schemaOrg",
     "isHidden",
+    "isOwner",
     "isApproved",
     "curatorNotes",
     "exhaustiveLicences",

@@ -53,6 +53,7 @@ describe("Educational.vue", function(){
                 "logo": "nutshell.png",
                 "text": "",
                 "doi": "10.5281/zenodo.7737366",
+                "url": "https://zenodo.org/record/7737367/files/FAIRsharing%20in%20a%20nutshell%20V1.0.pdf?download=1",
                 "copyButtonStatus": false
             }
 
@@ -79,6 +80,7 @@ describe("Educational.vue", function(){
                 "logo": "nutshell.png",
                 "text": "",
                 "doi": "10.5281/zenodo.7737366",
+                "url": "https://zenodo.org/record/7737367/files/FAIRsharing%20in%20a%20nutshell%20V1.0.pdf?download=1",
                 "copyButtonStatus": true,
                 "hash": "nutshell"
             }

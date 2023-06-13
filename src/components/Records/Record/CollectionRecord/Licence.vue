@@ -1,17 +1,10 @@
 <template>
-  <div class="d-flex flex-row mt-4 min-height-40">
+  <div
+    v-if="licences && licences.length"
+    class="d-flex flex-row mt-4 min-height-40"
+  >
     <b class="width-15-percent-flex">Licences</b>
     <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
-      <NoneFound
-        v-if="!licences"
-        :data-field="licences"
-      />
-      <p
-        v-else-if="!licences.length"
-        class="my-0"
-      >
-        None found
-      </p>
       <router-link
         v-for="(licence,index) in licences"
         :key="licence.id"
@@ -36,12 +29,10 @@
 </template>
 
 <script>
-import NoneFound from "@/components/Records/Record/NoneFound";
 import { mapGetters } from "vuex";
 
 export default {
     name: "Licence",
-    components: { NoneFound },
     computed: {
         ...mapGetters({
             getField: "record/getField"

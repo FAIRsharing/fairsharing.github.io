@@ -16,7 +16,7 @@
           Object.keys(getField('metadata')['data_preservation_policy'])
             .length) ||
         (getField('metadata')['certifications_and_community_badges'] &&
-          getField('metadata')['certifications_and_community_badges'].length > 0)
+          getField('metadata')['certifications_and_community_badges'].length)
     "
     class="pa-4 d-flex flex-column"
     outlined

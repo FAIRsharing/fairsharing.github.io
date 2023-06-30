@@ -56,9 +56,10 @@ const recordsCardUtils = {
                 database: [],
                 policy: []
             }
+            let type
             records['registry'] = record.registry.toLowerCase()
             record['recordAssociations'].forEach(function (association) {
-                let type = association['linkedRecord'].registry.toLowerCase()
+                type = association['linkedRecord'].registry.toLowerCase()
                 if (type !== 'collection') {
                     if (!link_records[type].includes(association['linkedRecord'].id)){
                         link_records[type].push(association['linkedRecord'].id)
@@ -67,7 +68,7 @@ const recordsCardUtils = {
                 }
             });
             record['reverseRecordAssociations'].forEach(function (association) {
-                let type =  association['fairsharingRecord'].registry.toLowerCase()
+                type =  association['fairsharingRecord'].registry.toLowerCase()
                 if (type !== 'collection') {
                     if (!link_records[type].includes(association['fairsharingRecord'].id)){
                         link_records[type].push(association['fairsharingRecord'].id)

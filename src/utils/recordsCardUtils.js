@@ -51,15 +51,29 @@ const recordsCardUtils = {
                 },
                 registry: null
             };
+            let link_records ={
+                standard: [],
+                database: [],
+                policy: []
+            }
+            let type
             records['registry'] = record.registry.toLowerCase()
             record['recordAssociations'].forEach(function (association) {
-                if (association['linkedRecord'].registry.toLowerCase() !== 'collection') {
-                    records['registryNumber'][association['linkedRecord'].registry.toLowerCase()].val += 1
+                type = association['linkedRecord'].registry.toLowerCase()
+                if (type !== 'collection') {
+                    if (!link_records[type].includes(association['linkedRecord'].id)){
+                        link_records[type].push(association['linkedRecord'].id)
+                        records['registryNumber'][type].val += 1
+                    }
                 }
             });
             record['reverseRecordAssociations'].forEach(function (association) {
-                if (association['fairsharingRecord'].registry.toLowerCase() !== 'collection') {
-                    records['registryNumber'][association['fairsharingRecord'].registry.toLowerCase()].val += 1
+                type =  association['fairsharingRecord'].registry.toLowerCase()
+                if (type !== 'collection') {
+                    if (!link_records[type].includes(association['fairsharingRecord'].id)){
+                        link_records[type].push(association['fairsharingRecord'].id)
+                        records['registryNumber'][type].val += 1
+                    }
                 }
             });
             return records;

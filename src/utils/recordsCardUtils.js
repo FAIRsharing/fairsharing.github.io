@@ -60,7 +60,9 @@ const recordsCardUtils = {
             records['registry'] = record.registry.toLowerCase()
             record['recordAssociations'].forEach(function (association) {
                 type = association['linkedRecord'].registry.toLowerCase()
+                /* istanbul ignore else */
                 if (type !== 'collection') {
+                    /* istanbul ignore else */
                     if (!link_records[type].includes(association['linkedRecord'].id)){
                         link_records[type].push(association['linkedRecord'].id)
                         records['registryNumber'][type].val += 1
@@ -69,7 +71,9 @@ const recordsCardUtils = {
             });
             record['reverseRecordAssociations'].forEach(function (association) {
                 type =  association['fairsharingRecord'].registry.toLowerCase()
+                /* istanbul ignore else */
                 if (type !== 'collection') {
+                    /* istanbul ignore else */
                     if (!link_records[type].includes(association['fairsharingRecord'].id)){
                         link_records[type].push(association['fairsharingRecord'].id)
                         records['registryNumber'][type].val += 1

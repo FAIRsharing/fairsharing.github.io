@@ -25,7 +25,7 @@
     <p
       id="subtitle"
       :class="[
-        'lato-font-medium my-4 primary--text px-1 text-center ',
+        'lato-font-medium my-4 primary--text px-1 text-center',
         {
           'lato-text-md': $vuetify.breakpoint.mdOnly,
           'lato-text-lg': $vuetify.breakpoint.lgAndUp,

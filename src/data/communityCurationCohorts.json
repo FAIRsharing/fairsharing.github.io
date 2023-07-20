@@ -81,13 +81,9 @@
         "id": 464,
         "organisation": [
           {
-            "id": 1321,
-            "name": "INCF",
-            "tooltip": "International Neuroinformatics Coordinating Facility "
-          },
-          {
-            "id": 1626,
-            "name": "Karolinska Institutet"
+            "id": 2675,
+            "name": "Swedish Research Council",
+            "tooltip": "Swedish Research Council"
           }
         ],
         "scope": "Neuroscience",

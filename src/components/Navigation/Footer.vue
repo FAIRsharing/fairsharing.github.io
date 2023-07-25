@@ -128,7 +128,6 @@ li {
   position: absolute;
   top: -59px;
   left: 48%;
-
   #arrow-up {
     position: absolute;
     left: -7px;

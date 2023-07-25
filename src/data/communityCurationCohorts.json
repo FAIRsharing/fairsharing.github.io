@@ -409,8 +409,26 @@
         "linkedin" : "yu-he-liang-66650033",
         "logo": "yuhen.jpg",
         "year_active": ["2023"]
+      },
+      {
+        "name": "Adam Partridge",
+        "id": 9376,
+        "organisation": [
+          {
+            "id": 4066,
+            "name": "University of Sheffield"
+          }
+        ],
+        "scope": "Brain Stimulation; Open Research",
+        "orcid": "0000-0002-0133-4155",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "adam_partridge.jpg",
+        "year_active": ["2023"]
       }
-    ],
+  ],
     "quotes": [
       {
         "text": "The Community Curator Programme at FAIRsharing.org is a great working example demonstrating when data communities work FAIR together, they can sustain FAIR innovation together.",

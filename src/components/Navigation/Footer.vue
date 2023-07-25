@@ -81,7 +81,7 @@
         href="/licence"
         class="underline-effect"
       ><img
-        src="/assets/home/Footer/FAIRsharingCC-BY-SA.png"
+        src="/assets/Home/Footer/FAIRsharingCC-BY-SA.png"
         alt="fairsharing licence"
       ></a>
     </v-row>
@@ -128,7 +128,6 @@ li {
   position: absolute;
   top: -59px;
   left: 48%;
-
   #arrow-up {
     position: absolute;
     left: -7px;

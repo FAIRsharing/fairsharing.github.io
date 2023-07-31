@@ -445,6 +445,24 @@
         "linkedin" : "kelly-cobey-b0a83b55",
         "logo": "k_cobey.jpg",
         "year_active": ["2023"]
+      },
+      {
+        "name": "Yojana Gadiya",
+        "id": 9417,
+        "organisation": [
+          {
+            "id": 4072,
+            "name": "Fraunhofer ITMP"
+          }
+        ],
+        "scope": "Knowledge graphs; Chemoinformatics",
+        "orcid": "0000-0002-7683-0452",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "y_gadiya.jpg",
+        "year_active": ["2023"]
       }
   ],
     "quotes": [

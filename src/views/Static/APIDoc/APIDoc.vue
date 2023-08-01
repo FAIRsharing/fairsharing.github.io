@@ -930,7 +930,7 @@ data&lt;-query_con$data
     >
       Are you looking for structured data within an individual record's page? The FAIRsharing site implements content
       negotiation, so if you make a request for a record, specifying JSON or JSON+LD headers, some basic JSON data
-        will be provided. For example:
+      will be provided. For example:
     </p>
 
     <vue-code-highlight

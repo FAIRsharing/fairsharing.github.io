@@ -6,7 +6,7 @@
     <div id="search">
       <section class="d-flex flex-column justify-center">
         <v-row class="justify-center">
-          <!--FAIRassistant Image -->
+          <!--FAIRassistant Logo -->
           <v-col
             cols="12"
             sm="12"

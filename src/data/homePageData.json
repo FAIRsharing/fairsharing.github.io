@@ -200,6 +200,22 @@
       "link": "/educational"
     }
   },
+  "communityBlock": {
+    "firstColumn":{
+      "title": "Community Champions",
+      "description": "Put your expertise into action and get credited by joining our Community Champions programme.",
+      "icon": "users",
+      "buttonTitle": "view and join in",
+      "link": "/community_champions"
+    },
+    "secondColumn":{
+      "title": "Adopters and Collaborators",
+      "description": "Standards and/or databases grouped by domain, species or organisation.",
+      "icon": "users",
+      "buttonTitle": "view all",
+      "link": "/communities"
+    }
+  },
   "blockLogos":
   {
     "singleImageSlider": [

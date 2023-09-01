@@ -274,6 +274,10 @@ const customIcons  = {
         user: {
             type: "icon",
             icon: "fa-user"
+        },
+        users: {
+            type: "icon",
+            icon: "fa-users"
         }
     },
     iconfont: 'fa'

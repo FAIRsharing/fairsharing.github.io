@@ -8,6 +8,7 @@
       <InfoBlock class="mb-12" />
       <SearchBlock />
       <CategoryBlock class="mt-12" />
+      <CommunityBlock class="mt-12" />
       <CommunityCarousel class="mt-12 mb-12" />
       <v-lazy>
         <StatisticsBlock class="my-12" />
@@ -28,9 +29,9 @@ import Carousel from "@/components/Home/Carousel";
 import InfoBlock from "@/components/Home/InfoBlock";
 import SearchBlock from "@/components/Home/SearchBlock";
 import CategoryBlock from "@/components/Home/CategoryBlock";
-import CommunityCarousel from "@/components/Home/CommunityCarousel";
 import StatisticsBlock from "@/components/Home/StatisticsBlock";
 import RestClient from "@/lib/Client/RESTClient.js"
+import CommunityBlock from "@/components/Home/CommunityBlock";
 
 const restClient = new RestClient();
 
@@ -39,7 +40,7 @@ const restClient = new RestClient();
  */
 export default {
   name: "Home",
-  components:{CommunityCarousel, Carousel, InfoBlock, SearchBlock, CategoryBlock, StatisticsBlock },
+  components:{Carousel, InfoBlock, SearchBlock, CategoryBlock, StatisticsBlock, CommunityBlock },
   data() {
     return {
       JSONLD: {}

@@ -3,43 +3,122 @@
     id="container-back"
     fluid
   >
-    <v-container id="search">
+    <div id="search">
       <section class="d-flex flex-column justify-center">
-        <v-row>
+        <v-row class="justify-center">
+          <!--FAIRassistant Logo -->
           <v-col
             cols="12"
             sm="12"
-            md="12"
-            lg="6"
-            class="d-flex align-center"
+            md="3"
+            lg="3"
+            class="d-flex justify-content-center align-center flex-column py-10"
+          >
+            <v-btn
+              color="primary"
+              class="mr-8 mb-8"
+              :class="['mt-1',$vuetify.breakpoint.lgAndDown?'home-search-bt':'home-search-bt-xl']"
+              href="https://assist.fairsharing.org/"
+              target="_blank"
+            >
+              <v-icon
+                x-small
+                class="mr-1"
+              >
+                fas fa-search fa-graduation-cap
+              </v-icon>
+              <v-icon
+                x-small
+                class="mr-1"
+              >
+                fas fa-graduation-cap
+              </v-icon>
+              <span class="button-text-size">Explore & Learn</span>
+            </v-btn>
+            <v-img
+              src="/assets/Home/BlockSearch/fairassist.svg"
+              height="auto"
+              width="100%"
+              max-height="400"
+              max-width="400"
+              contain
+              alt="FAIRassistant"
+            />
+          </v-col>
+          <!--Divider -->
+          <v-col
+            cols="12"
+            sm="12"
+            md="1"
+            lg="1"
+            class="d-flex align-center pa-0"
+            :class="[
+              {
+                'verticalDividerWrp mx-3' : $vuetify.breakpoint.mdAndUp,
+                'horizontalDividerWrp my-3' : $vuetify.breakpoint.smAndDown
+              }
+            ]"
+          >
+            <div
+              v-if="$vuetify.breakpoint.mdAndUp"
+              class="vertical-divider"
+            />
+            <div
+              v-else
+              class="horizontal-divider"
+            />
+          </v-col>
+          <!--Search Block -->
+          <v-col
+            cols="12"
+            sm="12"
+            md="4"
+            lg="4"
+            class="d-flex align-center pa-8 "
+            :class="{'mt-16': $vuetify.breakpoint.mdAndUp}"
           >
             <string-search
+              class="mt-13"
               style="width: 100%"
               show-home-search
               placeholder="search through all content"
             />
-            <div
-              v-if="$vuetify.breakpoint.lgAndUp"
-              :class="$vuetify.breakpoint.width>1893?'vertical-divider':'vertical-divider-sm'"
-            />
           </v-col>
+          <!--Divider -->
           <v-col
             cols="12"
             sm="12"
-            md="12"
-            lg="6"
-            class="d-flex justify-content-center align-center"
+            md="1"
+            lg="1"
+            class="d-flex align-center pa-0"
+            :class="[
+              {
+                'verticalDividerWrp mx-3' : $vuetify.breakpoint.mdAndUp,
+                'horizontalDividerWrp my-3' : $vuetify.breakpoint.smAndDown
+              }
+            ]"
           >
-            <v-img
-              src="/assets/Home/BlockSearch/browser.svg"
-              height="400"
-              contain
-              alt="browse by subject"
-              class="ml-md-15"
+            <div
+              v-if="$vuetify.breakpoint.mdAndUp"
+              class="vertical-divider"
             />
+            <div
+              v-else
+              class="horizontal-divider"
+            />
+          </v-col>
+          <!--Browse Subject -->
+          <v-col
+            cols="12"
+            sm="12"
+            md="3"
+            lg="3"
+            class="d-flex justify-content-center align-center flex-column py-10"
+          >
             <v-btn
               color="primary"
-              :class="['mt-1 mt-lg-1 ml-2',$vuetify.breakpoint.lgAndDown?'home-search-bt':'home-search-bt-xl']"
+              class="mb-8"
+              :class="['mt-1',$vuetify.breakpoint.lgAndDown?'home-search-bt':'home-search-bt-xl']"
               to="/browse/subject"
             >
               <v-icon
@@ -50,10 +129,19 @@
               </v-icon>
               <span class="button-text-size">Browse by Subject</span>
             </v-btn>
+            <v-img
+              src="/assets/Home/BlockSearch/browser.svg"
+              height="auto"
+              width="80%"
+              max-height="340"
+              max-width="340"
+              contain
+              alt="browse by subject"
+            />
           </v-col>
         </v-row>
       </section>
-    </v-container>
+    </div>
   </v-container>
 </template>
 
@@ -70,22 +158,25 @@ export default {
   background: rgb(37, 52, 66);
 }
 
-section {
-  max-height: 650px;
+.verticalDividerWrp {
+    max-width: 2px
 }
 
 .vertical-divider {
   width: .1rem;
-  height: 100%;
+  height: 90%;
   background: #809bb5;
-  margin-left: 14rem;
 }
 
-.vertical-divider-sm {
-  width: .1rem;
-  height: 100%;
-  background: #809bb5;
-  margin-left: 9rem;
+.horizontalDividerWrp {
+    max-height: 2px
+}
+
+.horizontal-divider {
+    width: 90%;
+    height: .1rem;
+    background: #809bb5;
+    margin: 0 auto;
 }
 
 .home-search-bt {

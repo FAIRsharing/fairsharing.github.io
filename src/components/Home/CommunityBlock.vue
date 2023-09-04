@@ -123,7 +123,6 @@ export default {
     -webkit-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
     -moz-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
     -o-box-shadow: 0 1rem 2rem rgba(black, .15) !important;
-
     &:hover {
       transform: scale(1.05);
       -moz-transform: scale(1.05);

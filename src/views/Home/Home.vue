@@ -9,7 +9,6 @@
       <SearchBlock />
       <CategoryBlock class="mt-12" />
       <CommunityBlock class="mt-12" />
-      <CommunityCarousel class="mt-12 mb-12" />
       <v-lazy>
         <StatisticsBlock class="my-12" />
       </v-lazy>

@@ -278,6 +278,10 @@ const customIcons  = {
         users: {
             type: "icon",
             icon: "fa-users"
+        },
+        collaborators: {
+            type: "icon",
+            icon: "fa-users-cog"
         }
     },
     iconfont: 'fa'

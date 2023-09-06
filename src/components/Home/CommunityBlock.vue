@@ -4,13 +4,14 @@
       <v-col
         cols="12"
         sm="12"
-        md="4"
+        md="6"
         lg="4"
       >
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
           height="350px"
+          width="350"
         >
           <div
             :style="{ backgroundImage: 'linear-gradient(90deg, #e67e22, #ea862d, #ed8e38, #f19642, #f59e4c, #f8a657, #fcad61, #ffb56b),url(' + 'assets/Home/BlockHero/pattern-orange.png',backgroundSize:'100%',backgroundBlendMode:'color'}"
@@ -50,13 +51,14 @@
       <v-col
         cols="12"
         sm="12"
-        md="4"
+        md="6"
         lg="4"
       >
         <v-card
           class="mx-auto block-category__card"
           max-width="350"
           height="350px"
+          width="350"
         >
           <div
             :style="{ backgroundImage: 'linear-gradient(180deg, #7d7d7d, #868686, #8f8f8f, #989898, #a1a1a1, #aaaaaa, #b4b4b4, #bdbdbd),url(' + 'assets/Home/BlockHero/pattern-gray.png',backgroundSize:'300px',backgroundBlendMode:'lighten'}"

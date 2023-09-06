@@ -211,7 +211,7 @@
     "secondColumn":{
       "title": "Adopters and Collaborators",
       "description": "Standards and/or databases grouped by domain, species or organisation.",
-      "icon": "users",
+      "icon": "collaborators",
       "buttonTitle": "view all",
       "link": "/communities"
     }

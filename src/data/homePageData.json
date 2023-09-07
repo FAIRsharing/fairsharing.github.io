@@ -210,7 +210,7 @@
     },
     "secondColumn":{
       "title": "Adopters and Collaborators",
-      "description": "Working with our community to enable the FAIR Principles by promoting the value and the use of standards, databases and policies.",
+      "description": "Learn about the people and communities who contribute to and advocate for FAIRsharing.",
       "icon": "collaborators",
       "buttonTitle": "view all",
       "link": "/communities"

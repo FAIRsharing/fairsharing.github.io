@@ -210,7 +210,7 @@
     },
     "secondColumn":{
       "title": "Adopters and Collaborators",
-      "description": "Standards and/or databases grouped by domain, species or organisation.",
+      "description": "Working with our community to enable the FAIR Principles by promoting the value and the use of standards, databases and policies.",
       "icon": "collaborators",
       "buttonTitle": "view all",
       "link": "/communities"

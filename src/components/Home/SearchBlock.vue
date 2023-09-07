@@ -132,7 +132,7 @@
             <v-img
               src="/assets/Home/BlockSearch/browser.svg"
               height="auto"
-              width="80%"
+              width="85%"
               max-height="340"
               max-width="340"
               contain

@@ -81,7 +81,7 @@
             </v-card-title>
           </div>
           <v-card-text class="text--primary height-75">
-            {{ truncate(communityBlock.secondColumn.description,100) }}
+            {{ truncate(communityBlock.secondColumn.description,150) }}
           </v-card-text>
           <v-card-actions class="text-center d-block">
             <router-link :to="communityBlock.secondColumn.link">

@@ -39,6 +39,18 @@
               flat
               outlined
             >
+              <span 
+                v-if="organisationLink.organisation.rorLink"
+                class="ror_icon"
+              >
+                <a
+                  :href="organisationLink.organisation.rorLink"
+                >
+                  <img
+                    src="/assets/icons/ror-icon-rbg-24.png"
+                  >
+                </a>
+              </span>
               <a
                 :href="'/organisations/' + organisationLink.organisation.id"
                 target="_blank"
@@ -199,3 +211,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.ror_icon {
+  white-space: nowrap;
+  color: crimson;
+}
+</style>

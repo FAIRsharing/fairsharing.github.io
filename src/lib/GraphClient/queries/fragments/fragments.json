@@ -49,6 +49,7 @@
             "homepage",
             "types",
             "urlForLogo",
+            "rorLink",
             {
               "queryName": "countries",
               "name": "countries",

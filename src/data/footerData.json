@@ -87,8 +87,8 @@
     "header": "Users and Contributors",
     "content": [
       {
-        "title": "Adopters",
-        "url": "/communities#adopters",
+        "title": "Adopters and Collaborators",
+        "url": "/communities",
         "urlType": "internal"
       },
       {
@@ -99,11 +99,6 @@
       {
         "title": "Educational",
         "url": "/educational",
-        "urlType": "internal"
-      },
-      {
-        "title": "Stakeholders",
-        "url": "/stakeholders",
         "urlType": "internal"
       },
       {

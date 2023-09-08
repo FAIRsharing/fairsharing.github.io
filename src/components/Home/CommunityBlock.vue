@@ -15,7 +15,7 @@
         >
           <div
             :style="{ backgroundImage: 'linear-gradient(90deg, #e67e22, #ea862d, #ed8e38, #f19642, #f59e4c, #f8a657, #fcad61, #ffb56b),url(' + 'assets/Home/BlockHero/pattern-orange.png',backgroundSize:'100%',backgroundBlendMode:'color'}"
-            class="white--text d-flex flex-column justify-center block-category__card__gradiant__2"
+            class="white--text d-flex flex-column justify-center block-category__card__gradient__2"
           >
             <div
               style="height: 136px"
@@ -62,7 +62,7 @@
         >
           <div
             :style="{ backgroundImage: 'linear-gradient(180deg, #7d7d7d, #868686, #8f8f8f, #989898, #a1a1a1, #aaaaaa, #b4b4b4, #bdbdbd),url(' + 'assets/Home/BlockHero/pattern-gray.png',backgroundSize:'300px',backgroundBlendMode:'lighten'}"
-            class="white--text d-flex flex-column justify-center  block-category__card__gradiant__1"
+            class="white--text d-flex flex-column justify-center  block-category__card__gradient__1"
           >
             <div
               style="height: 136px"
@@ -132,7 +132,7 @@ export default {
       -o-transform: scale(1.05);
     }
 
-    &__gradiant__1 {
+    &__gradient__1 {
       height: 200px;
       background: rgb(37, 52, 66);
       background: linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
@@ -141,7 +141,7 @@ export default {
       background: -ms-linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgba(39, 170, 225, 1) 100%);
     }
 
-    &__gradiant__2 {
+    &__gradient__2 {
       height: 200px;
       background: rgb(37, 52, 66);
       background: linear-gradient(180deg, rgba(37, 52, 66, 1) 0%, rgb(26, 110, 27) 100%);

@@ -194,7 +194,7 @@
     },
     "thirdColumn":{
       "title": "Educational",
-      "description": "Infographics and factsheets covering content and functionalities for all stakeholders",
+      "description": "Infographics and factsheets covering content and functionalities for all stakeholders.",
       "icon": "educational",
       "buttonTitle": "learn",
       "link": "/educational"

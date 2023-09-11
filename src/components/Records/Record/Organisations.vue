@@ -213,6 +213,7 @@ export default {
 </script>
 <style scoped>
 .ror_icon {
+  display: inline-block;
   white-space: nowrap;
   color: crimson;
 }

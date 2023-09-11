@@ -68,6 +68,7 @@
                 <span v-if="organisationLink.organisation.rorLink">
                   <a
                     :href="organisationLink.organisation.rorLink"
+                    target="_blank"
                   >
                     <img
                       src="/assets/icons/ror-icon-rbg-24.png"

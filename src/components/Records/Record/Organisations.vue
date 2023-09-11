@@ -39,43 +39,42 @@
               flat
               outlined
             >
-              <span 
-                v-if="organisationLink.organisation.rorLink"
-                class="ror_icon"
-              >
+              <div>
                 <a
-                  :href="organisationLink.organisation.rorLink"
+                  :href="'/organisations/' + organisationLink.organisation.id"
+                  target="_blank"
+                  class="underline-effect"
                 >
-                  <img
-                    src="/assets/icons/ror-icon-rbg-24.png"
+                  {{ organisationLink.organisation.name }}
+                  <v-tooltip
+                    bottom
                   >
-                </a>
-              </span>
-              <a
-                :href="'/organisations/' + organisationLink.organisation.id"
-                target="_blank"
-                class="underline-effect"
-              >
-                {{ organisationLink.organisation.name }}
-                <v-tooltip
-                  bottom
-                >
-                  <template #activator="{ on }">
-                    <v-chip
-                      v-if="organisationLink.isLead"
-                      class="ma-2"
-                      color="primary"
-                      label
-                      x-small
-                      v-on="on"
-                    >
-                      Lead
+                    <template #activator="{ on }">
+                      <v-chip
+                        v-if="organisationLink.isLead"
+                        class="ma-2"
+                        color="primary"
+                        label
+                        x-small
+                        v-on="on"
+                      >
+                        Lead
 
-                    </v-chip>
-                  </template>
-                  <span>This is a leading organisation in relation to this resource</span>
-                </v-tooltip>
-              </a>
+                      </v-chip>
+                    </template>
+                    <span>This is a leading organisation in relation to this resource</span>
+                  </v-tooltip>
+                </a>
+                <span v-if="organisationLink.organisation.rorLink">
+                  <a
+                    :href="organisationLink.organisation.rorLink"
+                  >
+                    <img
+                      src="/assets/icons/ror-icon-rbg-24.png"
+                    >
+                  </a>
+                </span>
+              </div>
               <p
                 v-if="organisationLink.organisation.types.length > 0 && !organisationLink.organisation.types.includes('Undefined')"
                 class="ma-0"
@@ -211,10 +210,4 @@ export default {
   }
 }
 </script>
-<style scoped>
-.ror_icon {
-  display: inline-block;
-  white-space: nowrap;
-  color: crimson;
-}
-</style>
+

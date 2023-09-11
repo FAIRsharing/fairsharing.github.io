@@ -194,10 +194,26 @@
     },
     "thirdColumn":{
       "title": "Educational",
-      "description": "Infographics and factsheets covering content and functionalities for all stakeholders",
+      "description": "Infographics and factsheets covering content and functionalities for all stakeholders.",
       "icon": "educational",
       "buttonTitle": "learn",
       "link": "/educational"
+    }
+  },
+  "communityBlock": {
+    "firstColumn":{
+      "title": "Community Champions",
+      "description": "Put your expertise into action and get credited by joining our Community Champions programme.",
+      "icon": "users",
+      "buttonTitle": "view and join in",
+      "link": "/community_champions"
+    },
+    "secondColumn":{
+      "title": "Adopters and Collaborators",
+      "description": "Learn about the people and communities who contribute to and advocate for FAIRsharing.",
+      "icon": "collaborators",
+      "buttonTitle": "view all",
+      "link": "/communities"
     }
   },
   "blockLogos":

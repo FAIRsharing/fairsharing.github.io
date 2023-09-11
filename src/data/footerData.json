@@ -49,6 +49,31 @@
     ]
   },
   "thirdBlock": {
+    "header": "Users and Contributors",
+    "content": [
+      {
+        "title": "Adopters and Collaborators",
+        "url": "/communities",
+        "urlType": "internal"
+      },
+      {
+        "title": "Community Champions",
+        "url": "/community_champions",
+        "urlType": "internal"
+      },
+      {
+        "title": "Educational / FAQ",
+        "url": "/educational",
+        "urlType": "internal"
+      },
+      {
+        "title": "Activities",
+        "url": "/communities#activities ",
+        "urlType": "internal"
+      }
+    ]
+  },
+  "fourthBlock": {
     "header": "About Us",
     "content": [
       {
@@ -82,35 +107,6 @@
         "urlType": "internal"
       }
     ]
-  },
-  "fourthBlock": {
-    "header": "Users and Contributors",
-    "content": [
-      {
-        "title": "Adopters",
-        "url": "/communities#adopters",
-        "urlType": "internal"
-      },
-      {
-        "title": "Community Champions",
-        "url": "/community_champions",
-        "urlType": "internal"
-      },
-      {
-        "title": "Educational",
-        "url": "/educational",
-        "urlType": "internal"
-      },
-      {
-        "title": "Stakeholders",
-        "url": "/stakeholders",
-        "urlType": "internal"
-      },
-      {
-        "title": "Activities",
-        "url": "/communities#activities ",
-        "urlType": "internal"
-      }
-    ]
   }
+
 }

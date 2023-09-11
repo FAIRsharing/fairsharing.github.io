@@ -39,31 +39,43 @@
               flat
               outlined
             >
-              <a
-                :href="'/organisations/' + organisationLink.organisation.id"
-                target="_blank"
-                class="underline-effect"
-              >
-                {{ organisationLink.organisation.name }}
-                <v-tooltip
-                  bottom
+              <div>
+                <a
+                  :href="'/organisations/' + organisationLink.organisation.id"
+                  target="_blank"
+                  class="underline-effect"
                 >
-                  <template #activator="{ on }">
-                    <v-chip
-                      v-if="organisationLink.isLead"
-                      class="ma-2"
-                      color="primary"
-                      label
-                      x-small
-                      v-on="on"
-                    >
-                      Lead
+                  {{ organisationLink.organisation.name }}
+                  <v-tooltip
+                    bottom
+                  >
+                    <template #activator="{ on }">
+                      <v-chip
+                        v-if="organisationLink.isLead"
+                        class="ma-2"
+                        color="primary"
+                        label
+                        x-small
+                        v-on="on"
+                      >
+                        Lead
 
-                    </v-chip>
-                  </template>
-                  <span>This is a leading organisation in relation to this resource</span>
-                </v-tooltip>
-              </a>
+                      </v-chip>
+                    </template>
+                    <span>This is a leading organisation in relation to this resource</span>
+                  </v-tooltip>
+                </a>
+                <span v-if="organisationLink.organisation.rorLink">
+                  <a
+                    :href="organisationLink.organisation.rorLink"
+                    target="_blank"
+                  >
+                    <img
+                      src="/assets/icons/ror-icon-rbg-24.png"
+                    >
+                  </a>
+                </span>
+              </div>
               <p
                 v-if="organisationLink.organisation.types.length > 0 && !organisationLink.organisation.types.includes('Undefined')"
                 class="ma-0"
@@ -199,3 +211,4 @@ export default {
   }
 }
 </script>
+

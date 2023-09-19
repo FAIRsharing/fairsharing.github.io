@@ -5,7 +5,7 @@
       <b class="width-15-percent-flex">Subjects</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('subjects').length">
-          None
+          N/A
         </span>
         <v-chip
           v-for="item in getField('subjects')"
@@ -27,7 +27,7 @@
       <b class="width-15-percent-flex">Domains</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('domains').length">
-          None
+          N/A
         </span>
         <v-chip
           v-for="item in getField('domains')"
@@ -49,7 +49,7 @@
       <b class="width-15-percent-flex">Taxonomic Range</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('taxonomies').length">
-          None
+          N/A
         </span>
         <v-chip
           v-for="item in getField('taxonomies')"
@@ -71,7 +71,7 @@
       <b class="width-15-percent-flex">User Defined Tags</b>
       <div class="d-flex full-width flex-wrap ml-md-12 ml-13">
         <span v-if="!getField('userDefinedTags').length">
-          None
+          N/A
         </span>
         <v-chip
           v-for="item in getField('userDefinedTags')"

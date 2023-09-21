@@ -20,6 +20,7 @@ import VueSanitize from "vue-sanitize";
 import Particles from "vue2-particles";
 import VueGtag from "vue-gtag";
 import VueHead from 'vue-head';
+import SimpleAnalytics from "simple-analytics-vue";
 import "vue-code-highlight/themes/prism-twilight.css";
 import "vue-code-highlight/themes/window.css";
 import 'prism-es6/components/prism-ruby.min';
@@ -63,6 +64,10 @@ Vue.use(VueGtag, {
     config: { id:  process.env.VUE_APP_ANALYTICS_ID }
 });
 Vue.use(VueHead);
+Vue.use(SimpleAnalytics, {
+    skip: process.env.NODE_ENV !== 'production',
+    domain: "fairsharing.org"
+})
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 router.afterEach(async(to) => await afterEach(to));

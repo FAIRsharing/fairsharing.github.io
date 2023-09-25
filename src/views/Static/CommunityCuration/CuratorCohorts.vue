@@ -186,6 +186,22 @@
                       </v-list-item>
                     </v-list-item-content>
                   </v-list-item>
+                  <v-card-subtitle
+                    v-for="skill in card.gained_skills"
+                    :key="skill.name"
+                  >
+                    <v-chip
+                      class="ma-0"
+                      color="pink"
+                      label
+                      text-color="white"
+                      small
+                      :href="skill.url"
+                      target="_blank"
+                    >
+                      {{ skill.name }}
+                    </v-chip>
+                  </v-card-subtitle>
                 </div>
 
                 <v-card-title>
@@ -248,6 +264,11 @@
                 </div>
                 <div>
                   Years Active : {{ card.year_active.join(", ") }}
+                </div>
+                <div
+                  v-if="card.gained_skills"
+                >
+                  Skills gained : {{ card.gained_skills.length }}
                 </div>
               </v-card-text>
 

@@ -17,7 +17,14 @@
         "twitter": "kylecopas",
         "linkedin" : "kylecopas",
         "logo": "kyle_copas.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023"],
+        "gained_skills": [
+          {
+            "name": "using persistent identifiers",
+            "date": "20.10.2022",
+            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
+          }
+        ]
       },
       {
         "name": "Annie Elkjær Ørum-Kristensen",
@@ -36,7 +43,19 @@
         "twitter": "",
         "linkedin" : "anniekristensen",
         "logo": "annie_kristensen.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023"],
+        "gained_skills": [
+          {
+            "name": "using persistent identifiers",
+            "date": "20.10.2022",
+            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
+          },
+          {
+            "name": "Learning things",
+            "date": "01.10.2022",
+            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
+          }
+        ]
       },
       {
         "name": "Joe Miller",
@@ -55,7 +74,14 @@
         "twitter": "acaciaJoe",
         "linkedin" : "joe-miller-biodiversity",
         "logo": "joe_miller.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023"],
+        "gained_skills": [
+          {
+            "name": "Learning things",
+            "date": "01.10.2022",
+            "url": ""
+          }
+        ]
       },
       {
         "name": "Lindsey Anderson",

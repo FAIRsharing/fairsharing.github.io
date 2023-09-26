@@ -232,7 +232,7 @@
                       text-color="white"
                       small
                     >
-                      Curator Expert
+                      Curation Expert
                     </v-chip>
                   </v-row>
                 </v-card-subtitle>

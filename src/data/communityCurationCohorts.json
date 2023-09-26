@@ -54,6 +54,16 @@
             "name": "Learning things",
             "date": "01.10.2022",
             "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
+          },
+          {
+            "name": "Being awesome",
+            "date": "01.10.2022",
+            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
+          },
+          {
+            "name": "Volunteering for code testing",
+            "date": "01.10.2022",
+            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
           }
         ]
       },

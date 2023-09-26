@@ -189,9 +189,10 @@
                   <v-card-subtitle
                     v-for="skill in card.gained_skills"
                     :key="skill.name"
+                    class="mb-n5 mt-n4"
                   >
                     <v-chip
-                      class="ma-0"
+                      class="pa-1"
                       color="pink"
                       label
                       text-color="white"
@@ -265,11 +266,12 @@
                 <div>
                   Years Active : {{ card.year_active.join(", ") }}
                 </div>
-                <div
+                <a
                   v-if="card.gained_skills"
+                  @click="card.show_more = !card.show_more"
                 >
                   Skills gained : {{ card.gained_skills.length }}
-                </div>
+                </a>
               </v-card-text>
 
               <v-card-actions

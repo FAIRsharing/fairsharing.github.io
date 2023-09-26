@@ -211,17 +211,30 @@
                   </h4>
                 </v-card-title>
                 <v-card-subtitle
-                  v-if="card.early_adopter"
+                  v-if="card.early_adopter || card.curator_expert"
                 >
-                  <v-chip
-                    class="ma-0"
-                    color="pink"
-                    label
-                    text-color="white"
-                    small
-                  >
-                    Early Adopter
-                  </v-chip>
+                  <v-row>
+                    <v-chip
+                      v-if="card.early_adopter"
+                      class="ml-2"
+                      color="pink"
+                      label
+                      text-color="white"
+                      small
+                    >
+                      Early Adopter
+                    </v-chip>
+                    <v-chip
+                      v-if="card.curator_expert"
+                      class="ml-2"
+                      color="pink"
+                      label
+                      text-color="white"
+                      small
+                    >
+                      Curator Expert
+                    </v-chip>
+                  </v-row>
                 </v-card-subtitle>
               </v-img>
 

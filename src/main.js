@@ -65,8 +65,7 @@ Vue.use(VueGtag, {
 });
 Vue.use(VueHead);
 Vue.use(SimpleAnalytics, {
-    skip: process.env.NODE_ENV !== 'production',
-    domain: "fairsharing.org"
+    skip: process.env.NODE_ENV !== 'production'
 })
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));

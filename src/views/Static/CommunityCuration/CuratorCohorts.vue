@@ -186,6 +186,23 @@
                       </v-list-item>
                     </v-list-item-content>
                   </v-list-item>
+                  <v-card-subtitle
+                    v-for="skill in card.gained_skills"
+                    :key="skill.name"
+                    class="mb-n5 mt-n4"
+                  >
+                    <v-chip
+                      class="pa-1"
+                      color="pink"
+                      label
+                      text-color="white"
+                      small
+                      :href="skill.url"
+                      target="_blank"
+                    >
+                      {{ skill.name }}
+                    </v-chip>
+                  </v-card-subtitle>
                 </div>
 
                 <v-card-title>
@@ -194,17 +211,30 @@
                   </h4>
                 </v-card-title>
                 <v-card-subtitle
-                  v-if="card.early_adopter"
+                  v-if="card.early_adopter || card.curator_expert"
                 >
-                  <v-chip
-                    class="ma-0"
-                    color="pink"
-                    label
-                    text-color="white"
-                    small
-                  >
-                    Early Adopter
-                  </v-chip>
+                  <v-row>
+                    <v-chip
+                      v-if="card.early_adopter"
+                      class="ml-2"
+                      color="pink"
+                      label
+                      text-color="white"
+                      small
+                    >
+                      Early Adopter
+                    </v-chip>
+                    <v-chip
+                      v-if="card.curator_expert"
+                      class="ml-2"
+                      color="pink"
+                      label
+                      text-color="white"
+                      small
+                    >
+                      Curation Expert
+                    </v-chip>
+                  </v-row>
                 </v-card-subtitle>
               </v-img>
 
@@ -249,6 +279,12 @@
                 <div>
                   Years Active : {{ card.year_active.join(", ") }}
                 </div>
+                <a
+                  v-if="card.gained_skills"
+                  @click="card.show_more = !card.show_more"
+                >
+                  Skills gained : {{ card.gained_skills.length }}
+                </a>
               </v-card-text>
 
               <v-card-actions

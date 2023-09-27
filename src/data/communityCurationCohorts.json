@@ -17,14 +17,7 @@
         "twitter": "kylecopas",
         "linkedin" : "kylecopas",
         "logo": "kyle_copas.jpg",
-        "year_active": ["2022", "2023"],
-        "gained_skills": [
-          {
-            "name": "using persistent identifiers",
-            "date": "20.10.2022",
-            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
-          }
-        ]
+        "year_active": ["2022", "2023"]
       },
       {
         "name": "Annie Elkjær Ørum-Kristensen",
@@ -43,29 +36,7 @@
         "twitter": "",
         "linkedin" : "anniekristensen",
         "logo": "annie_kristensen.jpg",
-        "year_active": ["2022", "2023"],
-        "gained_skills": [
-          {
-            "name": "using persistent identifiers",
-            "date": "20.10.2022",
-            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
-          },
-          {
-            "name": "Learning things",
-            "date": "01.10.2022",
-            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
-          },
-          {
-            "name": "Being awesome",
-            "date": "01.10.2022",
-            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
-          },
-          {
-            "name": "Volunteering for code testing",
-            "date": "01.10.2022",
-            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
-          }
-        ]
+        "year_active": ["2022", "2023"]
       },
       {
         "name": "Joe Miller",
@@ -80,19 +51,11 @@
         "scope": "Biodiversity",
         "orcid": "0000-0002-5788-9010",
         "early_adopter" : true,
-        "curator_expert" : true,
         "show_more" : false,
         "twitter": "acaciaJoe",
         "linkedin" : "joe-miller-biodiversity",
         "logo": "joe_miller.jpg",
-        "year_active": ["2022", "2023"],
-        "gained_skills": [
-          {
-            "name": "Learning things",
-            "date": "01.10.2022",
-            "url": "http://purl.obolibrary.org/obo/T4FS_0000492"
-          }
-        ]
+        "year_active": ["2022", "2023"]
       },
       {
         "name": "Lindsey Anderson",
@@ -111,7 +74,8 @@
         "twitter": "lnanderscience",
         "linkedin" : "lnanderscience",
         "logo": "lindseyanderson.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023"],
+        "curator_expert" : true
       },
       {
         "name": "Malin Sandström",
@@ -155,7 +119,6 @@
         "scope": "Neuroscience",
         "orcid": "0000-0003-3257-0545",
         "early_adopter" : false,
-        "curator_expert" : true,
         "show_more" : false,
         "twitter": "neuropelletier",
         "linkedin" : "gabrielpelletier",

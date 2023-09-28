@@ -68,7 +68,7 @@ describe("Edit -> LinkOverlay.vue", function() {
 
     it("can be mounted", () => {
         wrapper.vm.menus.show = "organisation";
-        expect(wrapper.name()).toMatch("LinkOverlay");
+        expect(wrapper.vm.$options.name).toMatch("LinkOverlay");
         expect(wrapper.vm.organisationLinks).toStrictEqual([{id: 1, organisation: {name: "abc", id: 1}}]);
     });
 

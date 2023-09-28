@@ -53,7 +53,7 @@ describe("Edit -> EditLicenceLinks.vue", function() {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("EditLicences");
+        expect(wrapper.vm.$options.name).toMatch("EditLicences");
         expect(wrapper.vm.isNew({field: 'test'})).toBe(true);
     });
 

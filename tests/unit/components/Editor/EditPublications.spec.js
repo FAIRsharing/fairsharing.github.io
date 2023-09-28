@@ -192,7 +192,7 @@ describe("EditPublications.vue", function() {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("EditPublications");
+        expect(wrapper.vm.$options.name).toMatch("EditPublications");
         expect(wrapper.vm.section.data).toStrictEqual(recordStore.state.sections.publications.data);
         expect(wrapper.vm.metadata).toStrictEqual(recordStore.state.sections.generalInformation.data.metadata);
         expect(wrapper.vm.message.type()).toBe("success");

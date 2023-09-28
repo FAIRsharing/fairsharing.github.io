@@ -74,7 +74,7 @@ describe('Editor -> BaseFields.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("BaseFields");
+        expect(wrapper.vm.$options.name).toMatch("BaseFields");
         expect(wrapper.vm.$route.path).toEqual('/create');
     });
 

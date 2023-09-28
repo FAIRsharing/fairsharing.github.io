@@ -48,7 +48,7 @@ describe("OntologyBrowser.vue", function() {
     })
 
     it("can be mounted and get dynamic width", async() => {
-        expect(wrapper.name()).toMatch("OntologySunburst");
+        expect(wrapper.vm.$options.name).toMatch("OntologySunburst");
         expect(wrapper.vm.getWidth()).toBe("100%")
         wrapper.vm.$vuetify.breakpoint.xlOnly = true
         expect(wrapper.vm.getWidth()).toBe("60%")

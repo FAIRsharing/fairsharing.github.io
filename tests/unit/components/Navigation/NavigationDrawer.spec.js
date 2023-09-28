@@ -26,7 +26,7 @@ describe("NavigationDrawer.vue", () => {
             router,
             mocks: {$store}
         });
-        expect(wrapper.name()).toMatch("NavigationDrawer");
+        expect(wrapper.vm.$options.name).toMatch("NavigationDrawer");
         await wrapper.vm.goTo({
             path: "collections",
             query: {}

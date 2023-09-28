@@ -45,7 +45,7 @@ describe("Licence.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Licence");
+        expect(wrapper.vm.$options.name).toMatch("Licence");
     });
 
 });

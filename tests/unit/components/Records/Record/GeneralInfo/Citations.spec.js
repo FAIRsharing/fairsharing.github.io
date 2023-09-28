@@ -36,7 +36,7 @@ describe("Citations.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Citations");
+        expect(wrapper.vm.$options.name).toMatch("Citations");
     });
 
 });

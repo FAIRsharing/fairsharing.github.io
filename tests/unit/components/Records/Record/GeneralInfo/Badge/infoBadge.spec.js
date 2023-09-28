@@ -73,7 +73,7 @@ describe("infoBadge.vue", function(){
               }
             },
         })
-        expect(wrapper.name()).toMatch("InfoBadge");
+        expect(wrapper.vm.$options.name).toMatch("InfoBadge");
     });
 
 });

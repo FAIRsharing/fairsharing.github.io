@@ -17,14 +17,13 @@ describe("Statistics.vue", () => {
   let wrapper;
   let graphStub;
 
-  beforeAll( async (done) => {
+  beforeAll( async () => {
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns(fakeDataStats);
     wrapper = await shallowMount(Stats, {
         localVue,
         router,
         mocks: {$router}
     });
-    done();
   });
 
   afterEach(() => {

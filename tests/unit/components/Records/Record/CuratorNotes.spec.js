@@ -31,7 +31,7 @@ describe("CuratorNotes.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CuratorNotes");
+        expect(wrapper.vm.$options.name).toMatch("CuratorNotes");
     });
 
     it("can add newlines", () => {

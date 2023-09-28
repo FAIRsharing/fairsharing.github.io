@@ -14,7 +14,7 @@ describe("OtherDatasetArray.vue", function () {
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("OtherDatasetArray");
+        expect(wrapper.vm.$options.name).toMatch("OtherDatasetArray");
     });
 
 });

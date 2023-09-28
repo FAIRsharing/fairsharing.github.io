@@ -83,7 +83,7 @@ describe("EditRelationships.vue", function() {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("EditRelationships");
+        expect(wrapper.vm.$options.name).toMatch("EditRelationships");
         wrapper.vm.labelsFilter = null;
         expect(wrapper.vm.getAssociations).toStrictEqual([relations[0]]);
     });

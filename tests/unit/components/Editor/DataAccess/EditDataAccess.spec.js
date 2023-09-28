@@ -75,7 +75,7 @@ describe("Edit -> DataAccess.vue", function() {
     });
 
     it("can be mounted", async () => {
-        expect(wrapper.name()).toMatch("EditDataAccess");
+        expect(wrapper.vm.$options.name).toMatch("EditDataAccess");
     });
 
     it("can react to changes of values", async () => {

@@ -53,7 +53,7 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("RecordsAwaitingApproval");
+        expect(wrapper.vm.$options.name).toMatch("RecordsAwaitingApproval");
         expect(wrapper.vm.approvalRequiredProcessed.length).toBe(4);
         expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch("Record3 (99)");
     });

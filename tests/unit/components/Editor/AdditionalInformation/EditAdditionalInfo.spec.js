@@ -63,7 +63,7 @@ describe("EditAdditionalInfo.vue", function() {
             mocks: {$store, $route, $router},
             stubs: {'router-link': true, 'v-form': editAdditionalInfo}
         });
-        expect(wrapper.name()).toMatch("EditAdditionalInfo");
+        expect(wrapper.vm.$options.name).toMatch("EditAdditionalInfo");
     });
 
     it("can be mounted with allowed fields", () => {
@@ -74,7 +74,7 @@ describe("EditAdditionalInfo.vue", function() {
             mocks: {$store, $route, $router},
             stubs: {'router-link': true, 'v-form': editAdditionalInfo}
         });
-        expect(wrapper.name()).toMatch("EditAdditionalInfo");
+        expect(wrapper.vm.$options.name).toMatch("EditAdditionalInfo");
     });
 
     it("can show/hide an overlay", () => {

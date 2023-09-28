@@ -83,7 +83,7 @@ describe("Edit -> Organisations.vue", function() {
     });
 
     it("can be mounted", async () => {
-        expect(wrapper.name()).toMatch("Organisations");
+        expect(wrapper.vm.$options.name).toMatch("Organisations");
     });
 
     it("can compute changes when adding, editing or removing a link", () => {

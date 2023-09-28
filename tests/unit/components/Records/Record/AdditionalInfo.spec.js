@@ -52,7 +52,7 @@ describe("AdditionalInfo.vue", function(){
 
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("AdditionalInfo");
+        expect(wrapper.vm.$options.name).toMatch("AdditionalInfo");
     });
 
     it("can check if data is available", async () => {

@@ -42,7 +42,7 @@ describe('Editor -> NewTags.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("NewTags");
+        expect(wrapper.vm.$options.name).toMatch("NewTags");
     });
 
     it("can add a term to the add list", () => {

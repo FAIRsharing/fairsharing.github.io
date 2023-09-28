@@ -25,7 +25,7 @@ describe("PublicMessages.vue", () => {
             vuetify,
             mocks:{$store}
         });
-        expect(wrapper.name()).toMatch("PublicMessages");
+        expect(wrapper.vm.$options.name).toMatch("PublicMessages");
     })
 
     it("can be check moment method", () => {

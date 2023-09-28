@@ -22,7 +22,7 @@ describe("Jumbotron.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Jumbotron");
+        expect(wrapper.vm.$options.name).toMatch("Jumbotron");
     });
 
     it("can handle sub-search routes", () => {

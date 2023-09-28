@@ -45,7 +45,7 @@ describe("DataProcessesAndConditions.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("DataProcessesAndConditions");
+        expect(wrapper.vm.$options.name).toMatch("DataProcessesAndConditions");
     });
 
     it("can be check the reaction of page if appropriate data not provided", () => {

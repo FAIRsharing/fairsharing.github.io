@@ -17,7 +17,7 @@ describe("jumpToTop.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch('JumpToTop');
+        expect(wrapper.vm.$options.name).toMatch('JumpToTop');
     });
 
 });

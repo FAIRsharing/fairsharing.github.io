@@ -286,7 +286,7 @@
 </template>
 
 <script>
-  import {education, infographics} from '@/data/EducationData.json'
+  import educationData from '@/data/EducationData.json'
   import Icon from "@/components/Icon";
     export default {
       name: "Educational",
@@ -295,8 +295,8 @@
       },
       data: () => {
         return {
-          education: education,
-          infographics: infographics["data"],
+          education: educationData.education,
+          infographics: educationData.infographics["data"],
           applyCss: false,
           selectedExpansion:{},
           infographicPopup:{

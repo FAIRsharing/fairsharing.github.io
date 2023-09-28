@@ -53,7 +53,7 @@ describe("OtherDataProcesses.vue", function () {
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("OtherDataProcesses");
+        expect(wrapper.vm.$options.name).toMatch("OtherDataProcesses");
     });
 
     it("can check if data is available", async () => {

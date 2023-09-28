@@ -21,6 +21,6 @@ describe("Footer.vue", () => {
                 scrollTo() { /* stub */ }
             }
         });
-        expect(wrapper.name()).toMatch("Footer");
+        expect(wrapper.vm.$options.name).toMatch("Footer");
     })
 });

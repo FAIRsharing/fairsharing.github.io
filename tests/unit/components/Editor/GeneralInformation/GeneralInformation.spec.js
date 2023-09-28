@@ -130,7 +130,7 @@ describe("Edit -> GeneralInformation.vue", function() {
     });
 
     it("can be mounted", async () => {
-        expect(wrapper.name()).toMatch("GeneralInformation");
+        expect(wrapper.vm.$options.name).toMatch("GeneralInformation");
         // expect(wrapper.vm.currentFields).toStrictEqual(wrapper.vm.initialFields);
         await wrapper.vm.getData();
         expect(wrapper.vm.currentFields.type).toBe("abc");

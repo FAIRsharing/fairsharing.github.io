@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {blockTabs} from "@/data/homePageData.json";
+import homePageData from "@/data/homePageData.json";
 import TabContent from "@/components/Home/CarouselContent";
 
 export default {
@@ -42,7 +42,7 @@ name: "Carousel",
     return {
       tabsData: {
         selectedTab: 0,
-        tabs: blockTabs,
+        tabs: homePageData.blockTabs,
       }
     }
   },

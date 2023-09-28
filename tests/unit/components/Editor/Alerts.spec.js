@@ -32,7 +32,7 @@ describe("Edit -> Alerts.vue", function() {
             },
             mocks: {$store}
         });
-        expect(wrapper.name()).toMatch("Alerts");
+        expect(wrapper.vm.$options.name).toMatch("Alerts");
         recordStore.state.sections.organisations.error = false;
         expect(wrapper.vm.message.type()).toBe("success");
     });

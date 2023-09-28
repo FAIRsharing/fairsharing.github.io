@@ -34,7 +34,7 @@ describe("CommunityCuratorInfo.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("CommunityCuratorInfo");
+        expect(wrapper.vm.$options.name).toMatch("CommunityCuratorInfo");
     });
 
 });

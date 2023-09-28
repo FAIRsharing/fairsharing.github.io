@@ -43,7 +43,7 @@ describe("DataProcessAndCondition.vue", function () {
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("DataProcessAndCondition");
+        expect(wrapper.vm.$options.name).toMatch("DataProcessAndCondition");
     });
 
     it("can be check the reaction of page if appropriate data not provided", () => {

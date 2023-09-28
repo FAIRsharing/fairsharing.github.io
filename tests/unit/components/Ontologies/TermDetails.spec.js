@@ -58,7 +58,7 @@ describe("TermDetails.vue", () => {
     })
 
     it("can be mounted", async() => {
-        expect(wrapper.name()).toMatch("TermDetails");
+        expect(wrapper.vm.$options.name).toMatch("TermDetails");
         expect(wrapper.vm.perPage).toBe(50)
         expect(wrapper.vm.currentPage).toBe(1)
         expect(wrapper.vm.selectedOntology).toBe("Subject")

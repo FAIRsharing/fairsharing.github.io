@@ -101,13 +101,13 @@
 
 <script>
 import {truncate} from "@/utils/stringUtils";
-import {communityBlock} from "@/data/homePageData.json"
+import homePageData from "@/data/homePageData.json"
 export default {
   name: "CommunityBlock",
   mixins: [ truncate ],
   data: () => {
     return {
-        communityBlock: communityBlock
+        communityBlock: homePageData.communityBlock
     }
   }
 }

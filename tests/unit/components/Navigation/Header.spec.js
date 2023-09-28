@@ -78,7 +78,7 @@ describe("Header.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch('Header');
+        expect(wrapper.vm.$options.name).toMatch('Header');
     })
 
     it("can update the uiController store's UIGeneralStatus state", () => {

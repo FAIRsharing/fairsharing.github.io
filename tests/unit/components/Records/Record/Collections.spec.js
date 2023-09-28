@@ -118,7 +118,7 @@ describe("Collections.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Collections");
+        expect(wrapper.vm.$options.name).toMatch("Collections");
     });
 
     it("runs prepareAssociations correctly", () => {

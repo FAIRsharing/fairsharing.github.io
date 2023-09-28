@@ -67,7 +67,7 @@ describe("Edit -> EditSupportLinks.vue", function() {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("EditSupportLinks");
+        expect(wrapper.vm.$options.name).toMatch("EditSupportLinks");
         expect(wrapper.vm.isNew({field: 'test'})).toBe(true);
     });
 

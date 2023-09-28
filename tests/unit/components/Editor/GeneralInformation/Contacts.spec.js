@@ -54,7 +54,7 @@ describe('Editor -> Contact.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("Contact");
+        expect(wrapper.vm.$options.name).toMatch("Contact");
         wrapper.vm.rules.isRequired();
         wrapper.vm.rules.isEmail();
         wrapper.vm.rules.isOrcid("0000");

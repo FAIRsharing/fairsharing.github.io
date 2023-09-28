@@ -637,7 +637,7 @@
 * @namespace Static
 */
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import {externalLinks, contentTabs, tables, governance, meettheteam, rda} from "@/data/communityPageData.json"
+import communityPageData from "@/data/communityPageData.json"
 import Icon from "@/components/Icon";
 import {isArray} from "lodash";
 /** This component handles the sign-up/register page
@@ -654,13 +654,13 @@ export default {
     return {
       applyCss: false,
       currentAnchor:'',
-      externalLinks,
-      contentTabs,
-      tables,
-      governance,
-      meettheteam,
+      externalLinks: communityPageData.externalLinks,
+      contentTabs: communityPageData.contentTabs,
+      tables: communityPageData.tables,
+      governance: communityPageData.governance,
+      meettheteam: communityPageData.meettheteam,
       Icon,
-      rda
+      rda: communityPageData.rda
     }
   },
   watch: {

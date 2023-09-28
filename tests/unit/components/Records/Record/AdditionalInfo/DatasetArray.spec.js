@@ -14,7 +14,7 @@ describe("DatasetArray.vue", function () {
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("DatasetArray");
+        expect(wrapper.vm.$options.name).toMatch("DatasetArray");
     });
 
     it("can react to changes in currentKey prop", () => {

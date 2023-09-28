@@ -49,7 +49,7 @@ describe('Curator -> MaintenanceRequest.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("MaintenanceRequest");
+        expect(wrapper.vm.$options.name).toMatch("MaintenanceRequest");
         expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(4);
         expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch("Record1 (23)");
     });

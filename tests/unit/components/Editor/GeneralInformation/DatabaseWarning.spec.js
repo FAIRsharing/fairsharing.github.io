@@ -38,7 +38,7 @@ describe('Editor -> DatabaseWarning.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("DatabaseWarning");
+        expect(wrapper.vm.$options.name).toMatch("DatabaseWarning");
     });
 
     it("can watch the type", () => {

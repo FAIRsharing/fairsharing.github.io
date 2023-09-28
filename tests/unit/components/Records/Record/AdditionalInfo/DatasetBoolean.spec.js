@@ -27,7 +27,7 @@ describe("Citations.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("DatasetBoolean");
+        expect(wrapper.vm.$options.name).toMatch("DatasetBoolean");
     });
 
 });

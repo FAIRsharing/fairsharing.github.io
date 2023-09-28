@@ -37,7 +37,7 @@ describe("GeneralInfo.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("GeneralInfo");
+        expect(wrapper.vm.$options.name).toMatch("GeneralInfo");
     });
 
     it("can call callRequestOwnership method", () => {

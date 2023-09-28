@@ -68,7 +68,7 @@ describe('Editor -> EditTags.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("EditTags");
+        expect(wrapper.vm.$options.name).toMatch("EditTags");
         expect(wrapper.vm.recordTags.length).toBe(4);
         expect(wrapper.vm.buttonIcon).toBe("fa-plus-circle");
         expect(wrapper.vm.buttonLabel).toBe("Add new term(s)");

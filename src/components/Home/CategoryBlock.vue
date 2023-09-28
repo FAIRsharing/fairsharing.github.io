@@ -139,13 +139,13 @@
 
 <script>
 import {truncate} from "@/utils/stringUtils";
-import {blockCategories} from "@/data/homePageData.json"
+import homePageData from "@/data/homePageData.json"
 export default {
   name: "CategoryBlock",
   mixins: [ truncate ],
   data: () => {
     return {
-      blockCategories: blockCategories
+      blockCategories: homePageData.blockCategories
     }
   }
 }

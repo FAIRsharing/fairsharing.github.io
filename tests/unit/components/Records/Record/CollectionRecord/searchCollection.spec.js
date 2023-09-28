@@ -119,7 +119,7 @@ describe("SearchCollection.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SearchCollection");
+        expect(wrapper.vm.$options.name).toMatch("SearchCollection");
     });
 
     it("can check the mocked html element is correctly added", () => {

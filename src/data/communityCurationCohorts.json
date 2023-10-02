@@ -74,7 +74,8 @@
         "twitter": "lnanderscience",
         "linkedin" : "lnanderscience",
         "logo": "lindseyanderson.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023"],
+        "curator_expert" : true
       },
       {
         "name": "Malin Sandström",

@@ -71,6 +71,7 @@ describe("AdditionalInfo.vue", function(){
         await wrapper.vm.setAvailableData(selectedNode,'n')
         selectedNode = [{}]
         await wrapper.vm.setAvailableData(selectedNode,'a')
+        await wrapper.vm.setAvailableData("Hello",'justString')
         expect(wrapper.vm.tempData).toStrictEqual({
             "a": [
                 {
@@ -87,6 +88,11 @@ describe("AdditionalInfo.vue", function(){
             "n": [
                 {
                     "a": []
+                }
+            ],
+            "justString": [
+                {
+                    "Value": "Hello"
                 }
             ]
         });

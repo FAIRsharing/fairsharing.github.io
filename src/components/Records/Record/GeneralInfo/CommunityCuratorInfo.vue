@@ -3,7 +3,7 @@
     v-if="getField('communityCurators').length > 0"
     class="d-flex flex-row flex-wrap align-center mt-4 min-height-40"
   >
-    <b class="mr-2">The following community curators have contributed to this record: </b>
+    <b class="mr-2">The following community champions have contributed to this record: </b>
     <div
       v-for="(curator,index) in getField('communityCurators')"
       :key="curator.id"

@@ -90,7 +90,7 @@ export default {
         this.tempData[key] = []
         // Special case this is a string
         if (typeof selectedNode === 'string' ){
-            this.tempData[key].push({"": selectedNode})
+            this.tempData[key].push({"Value": selectedNode})
         }
         else {
             Object.keys(selectedNode).forEach(item_key => {

@@ -92,7 +92,7 @@ describe("AdditionalInfo.vue", function(){
             ],
             "justString": [
                 {
-                    "": "Hello"
+                    "Value": "Hello"
                 }
             ]
         });

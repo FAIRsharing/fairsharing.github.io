@@ -391,21 +391,13 @@
   "governance": {
     "Stakeholder Advisory Board": [
       {
-        "title": "Executive Advisors",
-        "data": [
-          {"link": "https://orcid.org/0000-0003-1435-307X", "text": "<b>David Carr, </b>Independent expert"},
-          {"link": "https://orcid.org/0000-0003-2687-1982", "text": "<b>Peter McQuilton, </b>(FAIRsharing Founding Member), GSK"},
-          {"link": "https://orcid.org/0000-0002-6853-4602", "text": "<b>Robert Hanisch, </b>National Institute of Standards and Technology"},
-          {"link": "https://orcid.org/0000-0002-2743-6918", "text": "<b>Varsha Khodiyar, </b>Independent Expert"}
-        ]
-      },
-      {
         "title":"Stakeholder Advisors",
         "data": [
           {"link": "https://orcid.org/0000-0002-3030-8001", "text": "<b>Amye Kenall, </b>Research Square"},
           {"link": "https://orcid.org/0000-0002-9147-8397", "text": "<b>Adam Leary, </b>Oxford University Press"},
           {"link": "https://orcid.org/0000-0001-9623-2225", "text": "<b>Catriona MacCallum, </b>Hindawi"},
           {"link": "https://orcid.org/0000-0002-2094-0230", "text": "<b>Dagmar Meyer, </b>European Research Council, Executive Agency"},
+          {"link": "https://orcid.org/0000-0003-1435-307X", "text": "<b>David Carr, </b>Independent expert"},
           {"link": "https://orcid.org/0000-0001-5352-4666", "text": "<b>Dominic Fripp, </b>JISC"},
           {"link": "https://orcid.org/0000-0002-2557-6204", "text": "<b>Emma Ganley, </b>Protocols.io"},
           {"link": "https://orcid.org/0000-0001-9305-7230", "text": "<b>Geraldine Clement-Stoneham, </b>Medical Research Council"},
@@ -420,8 +412,10 @@
           {"link": "https://orcid.org/0000-0003-4139-0802", "text": "<b>Michael Ball, </b>Medical Research Council"},
           {"link": "https://orcid.org/0000-0001-7787-8864", "text": "<b>Mike Huerta, </b>NIH National Library of Medicine"},
           [{"link": "https://orcid.org/0000-0001-8343-8910", "text": "<b>Nick Everitt, </b>"},{"link": "https://orcid.org/0000-0002-1496-8392", "text": "and <b>Matthew Cannon, </b>Taylor and Francis"}],
+          {"link": "https://orcid.org/0000-0003-2687-1982", "text": "<b>Peter McQuilton, </b>(FAIRsharing Founding Member), GSK"},
           {"link": "https://orcid.org/0000-0002-7614-0806", "text": "<b>Rebecca Grant, </b>F1000"},
           {"text": "<b>Richard Brown, </b> BBSRC UKRI"},
+          {"link": "https://orcid.org/0000-0002-6853-4602", "text": "<b>Robert Hanisch, </b>National Institute of Standards and Technology"},
           {"link": "https://orcid.org/0000-0002-0517-1031", "text": "<b>Sarah Callaghan, </b>Research Strategy & Policy Unit, University of Oxford"},
           {"link": "https://orcid.org/0000-0002-9465-4042", "text": "<b>Sarah Stewart, </b>St. George's, University of London; Oxford Internet Institute"},
           {"link": "https://orcid.org/0000-0001-6444-1436", "text": "<b>Scott Edmunds, </b>GigaScience, Oxford University Press"},
@@ -429,11 +423,20 @@
           {"link": "https://orcid.org/0000-0002-9971-813X", "text": "<b>Sowmya Swaminathan, </b>Springer Nature"},
           {"link": "https://orcid.org/000-0002-0222-4177", "text": "<b>Theo Bloom, </b>British Medical Journal"},
           {"link": "https://orcid.org/0000-0002-2499-4025", "text": "<b>Thomas Lemberger, </b>EMBO Press"},
+          {"link": "https://orcid.org/0000-0002-2743-6918", "text": "<b>Varsha Khodiyar, </b>Independent Expert"},
           {"link": "https://orcid.org/0000-0002-0285-4910", "text": "<b>Wei-Mun Chan, </b>eLife"}
         ]
       }
     ]
   },
+  "governance_text":[
+    {
+      "text": "The FAIRsharing Stakeholder Advisory Board is composed of international experts across many disciplines, representing diverse groups and organisations, including researchers, developers and curators, publishers, librarians and trainers, funders, societies and alliances. Advisors provide <b>advice</b> on specific community needs, <b>feedback</b> on new features, <b>connection</b> with other activities, and FAIRsharing advocacy. Membership is regularly reviewed to ensure coverage and engagement remains high and active."
+    },
+    {
+      "text": "As representatives of diverse groups and organisations, Advisors participate in and influence the development of FAIRsharing in a low-volume, high-impact way. The FAIRsharing Operational Team engages with its Advisors primarily through an annual webinar that highlights recent activities and describes how FAIRsharing can better support their communities. Advisors are also contacted for their opinions and suggestions on specific areas of work according to their community needs. All Advisors receive quarterly emails providing tailored updates on FAIRsharing news, events and achievements."
+    }
+  ],
   "meettheteam": {
     "title": "Meet The Team",
   "description": "\n\n    Based at the University of Oxford, UK, FAIRsharing has become a sustainable service, operating since 2011 with and for the researchers and all other stakeholders involved in the data life cycle.\n    The operational team is based in the <a href='https://datareadiness.eng.ox.ac.uk#people' class='underline-effect' target='_blank'>Data Readiness Group</a>, at the University of Oxford, supported by the <a href='https://www.bodleian.ox.ac.uk/' target='_blank'>Bodleian Library</a>  for DOI generation and access to the ORCID member-only API.\n",

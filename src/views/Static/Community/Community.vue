@@ -510,9 +510,9 @@
           <div
             v-for="(item,itemIndex) in governanceItem"
             :key="item.title+'_'+itemIndex"
-
+            class="mt-5"
           >
-            <div class="mt-4">
+            <div class="mb-5">
               <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"

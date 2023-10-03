@@ -85,7 +85,6 @@ export default {
       }
     },
     setAvailableData(selectedNode, key) {
-      (typeof selectedNode)
       // if received node is not an array
       if (!isArray(selectedNode)) {
         this.tempData[key] = []

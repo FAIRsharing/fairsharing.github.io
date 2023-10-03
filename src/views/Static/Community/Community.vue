@@ -503,7 +503,7 @@
             :key="itemText+'_'+itemIndex"
           >
             <p
-              class="ma-0"
+              class="ma-1"
               v-html="$sanitize(itemText.text)"
             />
           </div>

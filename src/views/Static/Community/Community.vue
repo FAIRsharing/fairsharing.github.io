@@ -512,7 +512,7 @@
             :key="item.title+'_'+itemIndex"
 
           >
-            <div class="mb-5">
+            <div class="mt-4">
               <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"

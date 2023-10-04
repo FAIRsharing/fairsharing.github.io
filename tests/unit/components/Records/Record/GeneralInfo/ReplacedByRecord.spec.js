@@ -30,7 +30,7 @@ describe("ReplacedByRecord.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("ReplacedByRecord");
+        expect(wrapper.vm.$options.name).toMatch("ReplacedByRecord");
         Record.state.currentRecord["fairsharingRecord"] = {
             reverseRecordAssociations:[{id:3,recordAssocLabel:'re',fairsharingRecord:{name:'na',id:1254}}],
             recordAssociations:[{id:4,recordAssocLabel:'deprecates',linkedRecord:{name:'asd',id:1255}}]

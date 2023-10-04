@@ -21,7 +21,7 @@ describe("Register.vue", () => {
 
     it("can be instantiated", () => {
         const title = "Register";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
     });
 
     it("can create new accounts", async () => {

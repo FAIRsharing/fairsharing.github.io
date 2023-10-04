@@ -38,7 +38,7 @@ describe("Countries.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Countries");
+        expect(wrapper.vm.$options.name).toMatch("Countries");
     });
 
     it("can sort countries", () => {

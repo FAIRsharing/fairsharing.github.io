@@ -24,6 +24,6 @@ describe('StatusPills.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("StatusPills");
+        expect(wrapper.vm.$options.name).toMatch("StatusPills");
     });
 });

@@ -33,7 +33,7 @@ describe("DOITitle.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Type");
+        expect(wrapper.vm.$options.name).toMatch("Type");
     });
 
 });

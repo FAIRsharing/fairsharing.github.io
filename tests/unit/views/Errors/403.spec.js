@@ -13,7 +13,7 @@ describe("403 unauthorized page", () => {
         wrapper = shallowMount(Error, {
             localVue
         });
-        expect(wrapper.name()).toBe("Error403");
+        expect(wrapper.vm.$options.name).toBe("Error403");
         expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Not Authorized");
     });
 

@@ -36,7 +36,7 @@ describe("Maintainers.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Maintainers");
+        expect(wrapper.vm.$options.name).toMatch("Maintainers");
     });
 
 });

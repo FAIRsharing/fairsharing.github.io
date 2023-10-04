@@ -16,6 +16,6 @@ describe("CommunityCuration.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CommunityCuration");
+        expect(wrapper.vm.$options.name).toMatch("CommunityCuration");
     });
 });

@@ -14,7 +14,7 @@ describe("ActivitiesStaticTable.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("ActivitiesStaticTable");
+        expect(wrapper.vm.$options.name).toMatch("ActivitiesStaticTable");
     });
 
 });

@@ -32,7 +32,7 @@ describe("FilterChips.vue", () => {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("FilterChips");
+        expect(wrapper.vm.$options.name).toMatch("FilterChips");
     });
 
     it("can remove a parameter value", async () => {

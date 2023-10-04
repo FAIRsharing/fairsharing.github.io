@@ -32,7 +32,7 @@ describe("Publications.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Publications");
+        expect(wrapper.vm.$options.name).toMatch("Publications");
         expect(wrapper.vm.getField('publications')[0].title).toMatch("Publication One");
         expect(wrapper.vm.getField('publications')[1].title).toMatch("Publication Two");
     });

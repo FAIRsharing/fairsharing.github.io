@@ -20,7 +20,7 @@ describe("CommunityCarousel", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CommunityCarousel");
+        expect(wrapper.vm.$options.name).toMatch("CommunityCarousel");
         breakpoint = {
             init: jest.fn(),
             framework: {},

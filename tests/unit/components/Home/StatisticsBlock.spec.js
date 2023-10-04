@@ -20,7 +20,7 @@ describe("StatisticsBlock.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("StatisticsBlock");
+        expect(wrapper.vm.$options.name).toMatch("StatisticsBlock");
     });
 
     it("can get statistics count data", async () => {

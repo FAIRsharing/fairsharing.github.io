@@ -8,8 +8,6 @@ const $router = {
 describe("Sorting.vue", () => {
     // Set up the wrapper
     let wrapper;
-    // let anotherWrapper;
-    // let anotherWrapper2;
     beforeEach(() => {
 
     });
@@ -24,11 +22,11 @@ describe("Sorting.vue", () => {
         wrapper = shallowMount(Sorting, {
             mocks: {$route, $router},
         });
-        expect(wrapper.name()).toBe("Sorting");
+        expect(wrapper.vm.$options.name).toBe("Sorting");
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Sorting");
+        expect(wrapper.vm.$options.name).toMatch("Sorting");
     });
 
     it('can check applySortQuery', async () => {
@@ -56,7 +54,7 @@ describe("Sorting.vue", () => {
         let anotherWrapper = shallowMount(Sorting, {
             mocks: {$route, $router}
         });
-        expect(anotherWrapper.name()).toBe("Sorting");
+        expect(anotherWrapper.vm.$options.name).toBe("Sorting");
         expect(anotherWrapper.vm['activeFilter']).toBe("_score,asc")
     })
 

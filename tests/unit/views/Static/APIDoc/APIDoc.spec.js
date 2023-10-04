@@ -16,6 +16,6 @@ describe("APIDoc.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("APIDoc");
+        expect(wrapper.vm.$options.name).toMatch("APIDoc");
     });
 });

@@ -16,7 +16,7 @@ describe("ResendConfirmation.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("ResendConfirmation");
+        expect(wrapper.vm.$options.name).toMatch("ResendConfirmation");
     });
 
     it("sends an resend request and responds", async () => {

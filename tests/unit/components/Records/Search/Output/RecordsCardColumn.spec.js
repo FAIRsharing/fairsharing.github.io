@@ -21,6 +21,6 @@ describe("RecordsCardColumn.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("RecordsCardColumn");
+        expect(wrapper.vm.$options.name).toMatch("RecordsCardColumn");
     });
 });

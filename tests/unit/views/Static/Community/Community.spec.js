@@ -7,7 +7,8 @@ import VueSanitize from "vue-sanitize";
 
 const VueScrollTo = require('vue-scrollto');
 const localVue = createLocalVue();
-localVue.use(VueSanitize, VueScrollTo)
+localVue.use(VueSanitize)
+localVue.use(VueScrollTo)
 
 let $route = {
     name: "Community",
@@ -35,7 +36,7 @@ describe("Community.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Community");
+        expect(wrapper.vm.$options.name).toMatch("Community");
         wrapper.vm.$route.hash = '#anotherAnchor'
         expect(wrapper.vm.applyCss).toBe(false);
     });

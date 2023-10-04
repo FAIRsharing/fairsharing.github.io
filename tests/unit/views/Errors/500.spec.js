@@ -15,7 +15,7 @@ describe("500 error page", () => {
     });
 
     it("can mount", () => {
-        expect(wrapper.name()).toBe("Error500");
+        expect(wrapper.vm.$options.name).toBe("Error500");
         expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Server Error");
     });
 

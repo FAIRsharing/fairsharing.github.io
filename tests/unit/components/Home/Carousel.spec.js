@@ -14,7 +14,7 @@ describe("Carousel", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Carousel");
+        expect(wrapper.vm.$options.name).toMatch("Carousel");
     });
 
     it("can cycle through tabs", () => {

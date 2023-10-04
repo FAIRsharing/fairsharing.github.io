@@ -40,7 +40,7 @@ describe("Keywords.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Keywords");
+        expect(wrapper.vm.$options.name).toMatch("Keywords");
         expect(wrapper.vm.getField('taxonomies')[0].label).toMatch("Turdus turdus");
         expect(wrapper.vm.getField('subjects')[0].label).toMatch("Javascript Fun");
         expect(wrapper.vm.getField('domains')[0].label).toMatch("Deneb");

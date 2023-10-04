@@ -37,7 +37,7 @@ describe("Home.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Home");
+        expect(wrapper.vm.$options.name).toMatch("Home");
     });
 
     it("can get JSON+LD from API", async () => {

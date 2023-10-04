@@ -36,7 +36,7 @@ describe("Curator.vue", () => {
   let restStub;
   let graphStub;
 
-  beforeAll( async (done) => {
+  beforeAll( async () => {
      restStub = sinon.stub(Client.prototype, "executeQuery").returns({
          data: {id: "12345", name: 123, token: 123}
      });
@@ -49,12 +49,11 @@ describe("Curator.vue", () => {
         router,
         mocks: {$store, $router}
     });
-    done();
   });
 
   it("can be mounted", async () => {
       const title = "Curator";
-      expect(wrapper.name()).toMatch(title);
+      expect(wrapper.vm.$options.name).toMatch(title);
       expect(wrapper.vm.approvalRequired.length).toBe(3);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazu");//Name reduced number to six characters
       expect(wrapper.vm.approvalRequired[1].creator).toBe("unknown");

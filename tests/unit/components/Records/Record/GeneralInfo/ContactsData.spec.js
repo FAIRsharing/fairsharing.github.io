@@ -34,7 +34,7 @@ describe("ContactsData.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("ContactsData");
+        expect(wrapper.vm.$options.name).toMatch("ContactsData");
     });
 
 });

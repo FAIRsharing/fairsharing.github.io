@@ -35,7 +35,7 @@ describe("ReferenceURL.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("ReferenceURL");
+        expect(wrapper.vm.$options.name).toMatch("ReferenceURL");
     });
 
 });

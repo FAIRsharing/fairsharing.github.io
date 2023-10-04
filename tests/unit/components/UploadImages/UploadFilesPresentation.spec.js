@@ -36,7 +36,7 @@ describe('UploadFilesPresentation.vue', () => {
             reset: jest.fn()
         };
         await wrapper.vm.afterUpload()
-        expect(wrapper.name()).toMatch("UploadFilesPresentation");
+        expect(wrapper.vm.$options.name).toMatch("UploadFilesPresentation");
 
         expect(wrapper.vm.imageInfo).toStrictEqual([]);
         wrapper.vm.clearImages();

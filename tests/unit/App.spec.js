@@ -31,7 +31,7 @@ describe("App.vue", () => {
             stubs: ['router-link', 'router-view']
         });
         wrapper.vm.loading = false
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
     });
 
 });

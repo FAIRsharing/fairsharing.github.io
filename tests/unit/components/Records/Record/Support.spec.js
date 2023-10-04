@@ -51,7 +51,7 @@ describe("Support.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Support");
+        expect(wrapper.vm.$options.name).toMatch("Support");
         expect(wrapper.vm.getField('metadata')['contacts'][0].contact_name).toMatch("A Contact");
         expect(wrapper.vm.getField('metadata')['contacts'][0].contact_email).toMatch("contact@goatse.cx");
     });

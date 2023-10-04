@@ -10,6 +10,6 @@ describe('AbbreviationTooltip.vue', () => {
                 propsData: {abbreviation: abbreviation}
             }
         );
-        expect(wrapper.name()).toMatch("AbbreviationTooltip");
+        expect(wrapper.vm.$options.name).toMatch("AbbreviationTooltip");
     });
 });

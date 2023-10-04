@@ -32,7 +32,7 @@ describe("Citations.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("DeprecationReason");
+        expect(wrapper.vm.$options.name).toMatch("DeprecationReason");
     });
 
     it("shows deprecation reason", () => {

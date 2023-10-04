@@ -69,7 +69,7 @@ describe("Organisation", () => {
             stubs: {RouterLink: RouterLinkStub}
         });
         const title = "Organisation";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.organisation.id).toEqual(1);
         expect(wrapper.vm.currentRoute).toEqual(1);
     });

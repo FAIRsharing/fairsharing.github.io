@@ -32,7 +32,7 @@ describe("Statistics.vue", () => {
 
   it("can be mounted and data properly created", async () => {
       const title = "Statistics";
-      expect(wrapper.name()).toMatch(title);
+      expect(wrapper.vm.$options.name).toMatch(title);
       //console.log(wrapper.vm.allDataStats.aggregations.policy.subjects);
       expect(wrapper.vm.chartRegistries.title).toBe("Content divided by type");
       expect(wrapper.vm.chartRegistries.data[0].name).toBe("Standards");

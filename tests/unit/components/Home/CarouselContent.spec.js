@@ -15,7 +15,7 @@ describe("TabContent.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CarouselContent");
+        expect(wrapper.vm.$options.name).toMatch("CarouselContent");
     });
 
 });

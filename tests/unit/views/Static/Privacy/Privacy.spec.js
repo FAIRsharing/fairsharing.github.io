@@ -14,7 +14,7 @@ describe("Privacy.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Privacy");
+        expect(wrapper.vm.$options.name).toMatch("Privacy");
     });
 
 });

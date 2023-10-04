@@ -55,9 +55,10 @@ describe("OntologyBrowser.vue", function() {
             router,
             mocks: {$store, $route, $router}
         });
-        expect(wrapper.name()).toMatch("OntologyBrowser");
+        expect(wrapper.vm.$options.name).toMatch("OntologyBrowser");
         expect(wrapper.vm.term.id).toBe("287245 - Biology");
-        wrapper.vm.search = "Biology"
+        // wrapper.vm.search = "Biology"
+        await wrapper.setData({search : "Biology"})
         expect(wrapper.vm.open).toEqual([' - Natural Science', '287 - Life Science'])
         wrapper.destroy();
     })
@@ -70,7 +71,7 @@ describe("OntologyBrowser.vue", function() {
             router,
             mocks: {$store, $route, $router}
         });
-        expect(wrapper.name()).toMatch("OntologyBrowser");
+        expect(wrapper.vm.$options.name).toMatch("OntologyBrowser");
         expect(wrapper.vm.term).toBeUndefined();
         await wrapper.vm.activateTerms()
         wrapper.vm.searchTerm({identifier: 351, name: 'biology'})

@@ -162,7 +162,7 @@ describe("CuratorCohorts.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CuratorCohorts");
+        expect(wrapper.vm.$options.name).toMatch("CuratorCohorts");
         expect(wrapper.vm.communityCurationCohorts.data).toStrictEqual(fakeData.data);
         expect(wrapper.vm.currentCohort).toStrictEqual(currentCuratorsList);
         expect(wrapper.vm.year).toBe(new Date().getFullYear());

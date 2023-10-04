@@ -34,7 +34,7 @@ describe("SearchLinkChips.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SearchLinkChips");
+        expect(wrapper.vm.$options.name).toMatch("SearchLinkChips");
     });
 
     it("can check updateSearchQuery function", () => {

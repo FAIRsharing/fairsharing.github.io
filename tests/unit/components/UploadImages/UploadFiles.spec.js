@@ -62,7 +62,7 @@ describe('UploadFiles.vue', () => {
         wrapper.vm.$refs['FileUpload'] = {
             afterUpload: jest.fn()
         };
-        expect(wrapper.name()).toMatch("UploadFiles");
+        expect(wrapper.vm.$options.name).toMatch("UploadFiles");
     });
 
     it("can check selectFiles method functionality", () => {

@@ -29,7 +29,7 @@ describe("AnyAllButton.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("AnyAllButton");
+        expect(wrapper.vm.$options.name).toMatch("AnyAllButton");
     });
 
     it("can change the value for searchAnd", () => {

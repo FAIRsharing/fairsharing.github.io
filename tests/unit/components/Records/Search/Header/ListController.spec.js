@@ -30,7 +30,7 @@ describe("ListController.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("ListController");
+        expect(wrapper.vm.$options.name).toMatch("ListController");
     });
 
     it("can check changeListType function", () => {

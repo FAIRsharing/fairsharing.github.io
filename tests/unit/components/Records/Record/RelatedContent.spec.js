@@ -78,7 +78,7 @@ describe("RelatedContent.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("RelatedContent");
+        expect(wrapper.vm.$options.name).toMatch("RelatedContent");
     });
 
     it("search data is reactive when user changes text box value", () => {

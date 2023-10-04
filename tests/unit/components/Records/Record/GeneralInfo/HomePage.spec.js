@@ -36,7 +36,7 @@ describe("HomePage.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("HomePage");
+        expect(wrapper.vm.$options.name).toMatch("HomePage");
     });
 
 });

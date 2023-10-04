@@ -14,7 +14,7 @@ describe('ViewOrganisations', () => {
             }
         });
         const title = "ViewOrganisations";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.perPage).toBe(5)
     });
 

@@ -55,7 +55,7 @@ describe("Login.vue", ()=> {
             }
         });
         const title = "Login";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
     });
 
     it("can log users in", async () => {

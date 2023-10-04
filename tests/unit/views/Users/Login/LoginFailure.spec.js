@@ -40,7 +40,7 @@ describe("Login.vue", ()=> {
             mocks: {$store, $route, $router}
         });
         const title = "LoginFailure";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
     });
 
 });

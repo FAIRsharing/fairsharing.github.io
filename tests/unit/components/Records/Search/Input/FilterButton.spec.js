@@ -42,7 +42,7 @@ describe("FilterButton.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("FilterButton");
+        expect(wrapper.vm.$options.name).toMatch("FilterButton");
     });
 
     it("can check selectFilter method", () => {

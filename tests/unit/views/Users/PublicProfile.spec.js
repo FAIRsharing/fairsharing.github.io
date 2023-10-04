@@ -69,7 +69,7 @@ describe("PublicProfile.vue", () => {
 
     it("can be instantiated", () => {
         const title = "PublicProfile";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.publications.length).toBeGreaterThan(0);
         expect(getpubs).toHaveBeenCalledTimes(1);
     });

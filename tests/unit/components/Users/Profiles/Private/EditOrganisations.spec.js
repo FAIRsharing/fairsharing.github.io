@@ -107,7 +107,7 @@ describe('OrganisationTable.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("EditOrganisations");
+        expect(wrapper.vm.$options.name).toMatch("EditOrganisations");
         expect(wrapper.vm.perPage).toBe(5)
         wrapper.vm.rules.isRequired();
         wrapper.vm.rules.isURL();

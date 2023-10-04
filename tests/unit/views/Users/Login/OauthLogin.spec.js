@@ -50,7 +50,7 @@ describe("Login.vue", ()=> {
             mocks: {$store, $route, $router}
         });
         const title = "OauthLogin";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
     });
 
     it("can process missing token error", async () =>{

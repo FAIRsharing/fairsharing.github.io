@@ -20,7 +20,7 @@ describe("StringSearch.vue", () => {
     });
 
     it("can mount", () => {
-        expect(wrapper.name()).toBe('StringSearch')
+        expect(wrapper.vm.$options.name).toBe('StringSearch')
     });
 
     it("can pass the search term to the correct route", () => {

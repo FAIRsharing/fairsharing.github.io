@@ -18,7 +18,7 @@ describe("CategoryBlock.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CategoryBlock");
+        expect(wrapper.vm.$options.name).toMatch("CategoryBlock");
     });
 
 });

@@ -15,7 +15,7 @@ describe("404 error page", () => {
     });
 
     it("can mount", () => {
-        expect(wrapper.name()).toBe("Error404");
+        expect(wrapper.vm.$options.name).toBe("Error404");
         expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Not Found");
     });
 

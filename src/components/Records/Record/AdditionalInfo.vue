@@ -88,9 +88,15 @@ export default {
       // if received node is not an array
       if (!isArray(selectedNode)) {
         this.tempData[key] = []
-        Object.keys(selectedNode).forEach(item_key => {
-          this.tempData[key].push({[item_key]: selectedNode[item_key]})
-        })
+        // Special case this is a string
+        if (typeof selectedNode === 'string' ){
+            this.tempData[key].push({"Value": selectedNode})
+        }
+        else {
+            Object.keys(selectedNode).forEach(item_key => {
+             this.tempData[key].push({[item_key]: selectedNode[item_key]})
+            })
+        }
         return
       }
       // if received node is an array

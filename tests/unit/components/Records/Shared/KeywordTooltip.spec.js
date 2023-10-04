@@ -12,7 +12,7 @@ describe('KeywordTooltip.vue', () => {
 
     it("can be mounted", () => {
         wrapper = shallowMount(KeywordTooltip, { propsData: { keyword: keyword } });
-        expect(wrapper.name()).toMatch("KeywordTooltip");
+        expect(wrapper.vm.$options.name).toMatch("KeywordTooltip");
         expect(wrapper.vm.processArray(wrapper.vm.keyword.synonyms)).toBe("abc, def: test.")
     });
 

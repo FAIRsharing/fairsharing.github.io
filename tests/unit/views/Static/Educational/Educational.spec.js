@@ -36,7 +36,7 @@ describe("Educational.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Educational");
+        expect(wrapper.vm.$options.name).toMatch("Educational");
         wrapper.vm.$route.hash = '#anotherAnchor'
         expect(wrapper.vm.applyCss).toBe(false);
     });

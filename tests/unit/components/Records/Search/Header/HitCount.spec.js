@@ -25,7 +25,7 @@ describe("HitCount.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("HitCount");
+        expect(wrapper.vm.$options.name).toMatch("HitCount");
     });
 
     it("sets maximum number of hits correctly", () => {

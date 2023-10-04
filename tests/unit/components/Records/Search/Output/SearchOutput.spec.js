@@ -38,7 +38,7 @@ describe("SearchOutput.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SearchOutput");
+        expect(wrapper.vm.$options.name).toMatch("SearchOutput");
     });
 
     it("can check changeListType function", () => {

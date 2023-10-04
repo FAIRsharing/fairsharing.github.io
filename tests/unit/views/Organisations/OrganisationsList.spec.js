@@ -43,7 +43,7 @@ describe("OrganisationsList.vue", () => {
         })
 
         it("can be instantiated", () => {
-            expect(wrapper.name()).toMatch("OrganisationsList");
+            expect(wrapper.vm.$options.name).toMatch("OrganisationsList");
             expect(wrapper.vm.organisations).toStrictEqual(organisationsDataList)
         });
 

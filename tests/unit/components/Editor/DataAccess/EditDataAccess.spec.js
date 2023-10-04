@@ -81,9 +81,9 @@ describe("Edit -> DataAccess.vue", function() {
     it("can react to changes of values", async () => {
         wrapper.vm.dataAccess.support_links[0] = {type: "Other", url: "https://example.com/test"};
         expect(recordStore.state.sections.dataAccess.changes).toBe(0);
-        wrapper.vm.dataAccess.support_links.push({type: "Other", url: "https://example.com/test2"});
+        await wrapper.vm.dataAccess.support_links.push({type: "Other", url: "https://example.com/test2"});
         expect(recordStore.state.sections.dataAccess.changes).toBe(1);
-        wrapper.vm.dataAccess.licences = [{id: 1, name: "test", licence: {id: 123}}];
+        await wrapper.vm.dataAccess.licences.push({id: 1, name: "test", licence: {id: 123}});
         expect(recordStore.state.sections.dataAccess.changes).toBe(2);
     });
 

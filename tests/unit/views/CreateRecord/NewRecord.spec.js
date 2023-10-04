@@ -82,7 +82,7 @@ describe("CreateRecord.vue", function() {
     });
 
     it("can be instantiated", async () => {
-        expect(wrapper.name()).toMatch("NewRecordPage");
+        expect(wrapper.vm.$options.name).toMatch("NewRecordPage");
     });
 
     it("can create records", async () => {

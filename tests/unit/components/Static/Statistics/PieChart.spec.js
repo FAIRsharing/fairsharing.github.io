@@ -27,7 +27,7 @@ describe("PieChart.vue", () => {
         });
     });
   it("can be mounted", () => {
-      expect(wrapper.name()).toMatch("PieChart");
+      expect(wrapper.vm.$options.name).toMatch("PieChart");
       expect(wrapper.vm.optionChartPie.title.text).toBe("This a pie chart");
       expect(wrapper.vm.nameChart).toBe("Name of the Pie chart");
       expect(wrapper.vm.optionChartPie.series[0].data[1].y).toBe(10);

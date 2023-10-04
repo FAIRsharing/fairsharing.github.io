@@ -67,7 +67,7 @@ describe("User.vue", () => {
             stubs: {RouterLink: RouterLinkStub}
         });
         const title = "User";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.booleanToString(true)).toBe("Yes");
         expect(wrapper.vm.booleanToString(false)).toBe("No");
         wrapper.vm.user().records = null;

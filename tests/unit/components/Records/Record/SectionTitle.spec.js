@@ -14,7 +14,7 @@ describe("SectionTitle.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SectionTitle");
+        expect(wrapper.vm.$options.name).toMatch("SectionTitle");
         expect(wrapper.vm.title).toMatch("Exciting Title");
     });
 

@@ -28,7 +28,7 @@ describe("FilterButtons.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("FilterButtons");
+        expect(wrapper.vm.$options.name).toMatch("FilterButtons");
     });
 
     it("shows everything to curators", () => {

@@ -49,7 +49,7 @@ describe("SummaryDownload.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SummaryDownload");
+        expect(wrapper.vm.$options.name).toMatch("SummaryDownload");
     });
 
     it('can calculate the current path', () => {

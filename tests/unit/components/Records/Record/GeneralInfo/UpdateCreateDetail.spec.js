@@ -35,7 +35,7 @@ describe("UpdateCreateDetail.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("UpdateCreateDetail");
+        expect(wrapper.vm.$options.name).toMatch("UpdateCreateDetail");
     });
 
 });

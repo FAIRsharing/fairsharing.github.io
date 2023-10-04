@@ -23,7 +23,6 @@ record.state.currentRecord.fairsharingRecord.metadata = {
     dataset_deposition: {},
 };
 $store.state.editor.allowedFields.properties = {dataset_deposition: {}}
-let graphStub;
 let restStub;
 
 describe("OtherDataProcesses.vue", function () {
@@ -48,7 +47,6 @@ describe("OtherDataProcesses.vue", function () {
     });
 
     afterAll(() => {
-        graphStub.restore();
         restStub.restore();
     });
 

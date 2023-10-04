@@ -14,7 +14,7 @@ describe('ValidityProgress.vue', () => {
         let wrapper = shallowMount(ValidityProgress, {
             localVue
         });
-        expect(wrapper.name()).toBe("ValidityProgress");
+        expect(wrapper.vm.$options.name).toBe("ValidityProgress");
         expect(wrapper.vm['passwordValidity']).toBe(0);
         expect(wrapper.vm['passwordColor']).toBe("red");
     });

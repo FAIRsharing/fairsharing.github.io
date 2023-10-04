@@ -96,7 +96,7 @@ describe("EditPrivateProfile.vue", () => {
 
     it("can be instantiated", () => {
         const title = "EditProfile";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
 
         for (const rule in wrapper.vm.rules) {
             expect(typeof wrapper.vm.rules[rule]()).toBe('function');

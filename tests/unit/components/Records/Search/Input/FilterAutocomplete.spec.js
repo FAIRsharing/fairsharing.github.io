@@ -48,7 +48,7 @@ describe("FilterAutocomplete.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("FilterAutocomplete");
+        expect(wrapper.vm.$options.name).toMatch("FilterAutocomplete");
     });
 
     it("check getValues computed", () => {

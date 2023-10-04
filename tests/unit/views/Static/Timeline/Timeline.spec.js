@@ -14,7 +14,7 @@ describe("Timeline.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Timeline");
+        expect(wrapper.vm.$options.name).toMatch("Timeline");
     });
 
 });

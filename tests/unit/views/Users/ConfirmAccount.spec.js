@@ -32,7 +32,7 @@ describe('ConfirmAccount.vue', () => {
             mocks: { $route },
         });
         const title = "ConfirmAccount";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.message).toStrictEqual({Confirmation_token: "missing"})
     });
 

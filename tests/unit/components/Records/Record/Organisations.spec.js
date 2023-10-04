@@ -65,7 +65,7 @@ describe("Organisations.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Organisations");
+        expect(wrapper.vm.$options.name).toMatch("Organisations");
         expect(wrapper.vm.getField('organisationLinks')[0].organisation.name).toMatch("Organisation One");
         expect(wrapper.vm.getField('organisationLinks')[0].grant.name).toMatch("generous grant");
         expect(wrapper.vm.getField('organisationLinks')[1].organisation.name).toMatch("Organisation Two");

@@ -125,7 +125,8 @@ describe('Editor -> BaseFields.vue', () => {
         await wrapper.vm.changeLogoData([data]);
         expect(wrapper.vm.fields.logo).toStrictEqual({
             filename: 'testfile.jpg',
-            data: "alongstringofdata",
+            // data: "alongstringofdata",
+            data: "YWxvbmdzdHJpbmdvZmRhdGE=",
             content_type: "image/png"
         });
         await wrapper.vm.changeLogoData([]);

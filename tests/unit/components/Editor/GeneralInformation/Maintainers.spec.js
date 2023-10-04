@@ -65,7 +65,7 @@ describe('Editor -> Maintainers.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("Maintainers");
+        expect(wrapper.vm.$options.name).toMatch("Maintainers");
         expect(wrapper.vm.getSection("generalInformation").data.maintainers).toStrictEqual([maintainer]);
         expect(wrapper.vm.getSection("generalInformation").data.watchers).toStrictEqual([maintainer, extra]);
     });

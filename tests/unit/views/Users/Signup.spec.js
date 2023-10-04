@@ -8,6 +8,6 @@ describe("Community.vue", function(){
     });
 
     it("can be mounted", function(){
-        expect(wrapper.name()).toMatch("Signup");
+        expect(wrapper.vm.$options.name).toMatch("Signup");
     })
 });

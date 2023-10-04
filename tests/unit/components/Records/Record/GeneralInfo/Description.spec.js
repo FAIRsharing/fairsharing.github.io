@@ -32,7 +32,7 @@ describe("Registry.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Description");
+        expect(wrapper.vm.$options.name).toMatch("Description");
     });
 
 });

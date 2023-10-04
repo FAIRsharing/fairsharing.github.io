@@ -16,7 +16,7 @@ describe('RecordsTable.vue', () => {
             }
         });
         const title = "RecordsTable";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.perPage).toBe(7)
     });
 
@@ -29,7 +29,7 @@ describe('RecordsTable.vue', () => {
             }
         });
         const title = "RecordsTable";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.perPage).toBe(5)
     });
 
@@ -41,7 +41,7 @@ describe('RecordsTable.vue', () => {
             }
         });
         const title = "RecordsTable";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.perPage).toBe(5);
     });
 

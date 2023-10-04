@@ -15,7 +15,7 @@ describe("Hidden record notification", () => {
     });
 
     it("can mount", () => {
-        expect(wrapper.name()).toBe("Hidden");
+        expect(wrapper.vm.$options.name).toBe("Hidden");
     });
 
 });

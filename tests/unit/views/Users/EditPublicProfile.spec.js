@@ -80,7 +80,7 @@ describe("EditPublicProfile.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("EditPublicProfile");
+        expect(wrapper.vm.$options.name).toMatch("EditPublicProfile");
         expect(wrapper.vm.pageLoad).toBe(false);
     });
 

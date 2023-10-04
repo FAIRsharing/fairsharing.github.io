@@ -42,7 +42,8 @@ describe('Editor -> DatabaseWarning.vue', () => {
     });
 
     it("can watch the type", () => {
-        recordStore.state.sections.generalInformation.data.type.name = "repository";
+        // recordStore.state.sections.generalInformation.data.type.name = "repository";
+        wrapper.vm.$options.watch.type.call(wrapper.vm, "repository")
         expect(wrapper.vm.showOverlay).toBe(true);
         wrapper.vm.showOverlay = false;
         recordStore.state.sections.generalInformation.data.type.name = "test";

@@ -39,7 +39,7 @@ describe("DOITitle.vue", function(){
             vuetify,
             mocks: {$store}
         })
-        expect(wrapper.name()).toMatch("DOITitle");
+        expect(wrapper.vm.$options.name).toMatch("DOITitle");
     });
 
     it("generates correct doi link", () => {

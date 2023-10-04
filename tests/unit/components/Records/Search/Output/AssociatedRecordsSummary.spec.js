@@ -11,7 +11,7 @@ describe("AssociatedRecordsSummary.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("AssociatedRecordsSummary");
+        expect(wrapper.vm.$options.name).toMatch("AssociatedRecordsSummary");
         expect(wrapper.vm.associatedRecords.registry).toMatch("standard");
     });
 

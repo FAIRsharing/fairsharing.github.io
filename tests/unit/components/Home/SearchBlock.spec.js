@@ -14,7 +14,7 @@ describe("BlockSearch.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SearchBlock");
+        expect(wrapper.vm.$options.name).toMatch("SearchBlock");
     });
 
 });

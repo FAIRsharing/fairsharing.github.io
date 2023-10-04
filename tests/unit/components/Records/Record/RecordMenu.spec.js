@@ -6,6 +6,6 @@ describe("RecordMenu.vue", function(){
 
     it("can be instantiated", () => {
         wrapper = shallowMount(RecordMenu, {});
-        expect(wrapper.name()).toMatch("RecordMenu");
+        expect(wrapper.vm.$options.name).toMatch("RecordMenu");
     });
 });

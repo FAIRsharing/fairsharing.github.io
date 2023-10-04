@@ -41,7 +41,7 @@ describe("Tools.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Tools");
+        expect(wrapper.vm.$options.name).toMatch("Tools");
     });
 
     it("doesn't display if there are no tools to display", () => {

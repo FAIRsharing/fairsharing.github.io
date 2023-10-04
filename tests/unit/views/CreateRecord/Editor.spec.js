@@ -50,7 +50,7 @@ describe("Editor.vue", function() {
             mocks: {$store, $route},
             stubs: ['router-link']
         });
-        expect(wrapper.name()).toMatch("Editor");
+        expect(wrapper.vm.$options.name).toMatch("Editor");
         expect(wrapper.vm.userToken).toBe("123");
         $store.state.users.user = async () => {return {}};
         expect(wrapper.vm.userToken).toBe(null);
@@ -132,7 +132,7 @@ describe("Editor.vue", function() {
             mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
-        expect(wrapper.name()).toMatch("Editor");
+        expect(wrapper.vm.$options.name).toMatch("Editor");
     });
 
 });

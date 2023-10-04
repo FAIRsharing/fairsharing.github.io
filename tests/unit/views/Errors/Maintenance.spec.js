@@ -15,7 +15,7 @@ describe("Maintenance page", () => {
     });
 
     it("can mount", () => {
-        expect(wrapper.name()).toBe("Maintenance");
+        expect(wrapper.vm.$options.name).toBe("Maintenance");
         expect(wrapper.vm.$meta().refresh().metaInfo.title).toBe("FAIRsharing | Maintenance Mode");
     });
 

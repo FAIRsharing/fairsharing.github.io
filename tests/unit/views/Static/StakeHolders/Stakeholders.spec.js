@@ -14,7 +14,7 @@ describe("Stakeholders.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Stakeholders");
+        expect(wrapper.vm.$options.name).toMatch("Stakeholders");
     });
 
 });

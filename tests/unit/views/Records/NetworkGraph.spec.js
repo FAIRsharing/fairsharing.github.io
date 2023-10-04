@@ -133,7 +133,7 @@ describe("NetworkGraph.vue", function() {
     });
 
     it("is all present and correct", async () => {
-        expect(wrapper.name()).toMatch("NetworkGraph");
+        expect(wrapper.vm.$options.name).toMatch("NetworkGraph");
         expect(wrapper.vm.graphData.nodes.length).toBe(4)
         wrapper.vm.legend.types.square = false;
         await wrapper.vm.getData();

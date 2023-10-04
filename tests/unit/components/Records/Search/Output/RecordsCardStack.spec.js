@@ -21,7 +21,7 @@ describe("RecordsCardStack.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("RecordsCardStack");
+        expect(wrapper.vm.$options.name).toMatch("RecordsCardStack");
     });
 
     it("can generate correct link depending on doi presence", () => {

@@ -36,7 +36,7 @@ describe("YearOfCreation.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("YearOfCreation");
+        expect(wrapper.vm.$options.name).toMatch("YearOfCreation");
     });
 
 });

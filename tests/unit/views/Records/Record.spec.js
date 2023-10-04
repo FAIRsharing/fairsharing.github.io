@@ -95,6 +95,7 @@ let mocks = {
 
 describe("Record.vue", function() {
     let wrapper,
+        anotherWrapper,
         vuetify,
         graphMockValue = {
             fairsharingRecord: {
@@ -182,20 +183,20 @@ describe("Record.vue", function() {
     });
 
     it("Testing currentRoute & getTitle with a integer style", () => {
-        expect(wrapper.name()).toMatch("Record");
+        expect(wrapper.vm.$options.name).toMatch("Record");
         expect(wrapper.vm.getTitle).toBe('FAIRsharing | 980190962');
         expect(wrapper.vm.currentRoute).toBe('980190962');
     });
 
     it("can be mounted with a target", async ()  => {
-        let anotherWrapper = await shallowMount(Record, {
+        anotherWrapper = await shallowMount(Record, {
             mocks: {$route, $store, $router},
             localVue,
             vuetify,
             router,
             propsData: {target: 123}
         });
-        expect(anotherWrapper.name()).toMatch("Record");
+        expect(anotherWrapper.vm.$options.name).toMatch("Record");
         expect(anotherWrapper.vm.getTitle).toBe('FAIRsharing | 123');
         expect(anotherWrapper.vm.currentRoute).toBe(123);
         expect(anotherWrapper.vm.error).toBe(null);

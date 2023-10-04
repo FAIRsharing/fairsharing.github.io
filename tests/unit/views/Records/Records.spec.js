@@ -80,7 +80,7 @@ describe("Records.vue", () => {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Records");
+        expect(wrapper.vm.$options.name).toMatch("Records");
     });
 
     it("has a currentPath computed attribute", () => {

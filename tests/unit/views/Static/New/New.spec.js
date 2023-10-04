@@ -20,7 +20,7 @@ describe("New.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("New");
+        expect(wrapper.vm.$options.name).toMatch("New");
     });
 
     it("translates text", () => {

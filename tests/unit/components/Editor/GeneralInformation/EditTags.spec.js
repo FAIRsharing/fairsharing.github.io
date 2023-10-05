@@ -85,6 +85,7 @@ describe('Editor -> EditTags.vue', () => {
             subject: true,
             user_defined_tag: true
         };
+        wrapper.vm.partialTags();
         expect(wrapper.vm.tags.length).toBe(3);
     });
 
@@ -117,7 +118,8 @@ describe('Editor -> EditTags.vue', () => {
         let graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         const newTag = {id: 1, label: 'test124', model: "subject"};
         graphStub.returns({searchTags: [newTag]});
-        wrapper.vm.searchString = "test";
+        // wrapper.vm.searchString = "test";
+        wrapper.vm.$options.watch.searchString.call(wrapper.vm, "test")
         expect(wrapper.vm.tags).toStrictEqual([]);
         await wrapper.vm.getTags('test');
         expect(wrapper.vm.tags).toStrictEqual([newTag]);

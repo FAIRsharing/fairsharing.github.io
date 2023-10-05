@@ -84,6 +84,7 @@ describe("Edit -> DataAccess.vue", function() {
         await wrapper.vm.dataAccess.support_links.push({type: "Other", url: "https://example.com/test2"});
         expect(recordStore.state.sections.dataAccess.changes).toBe(1);
         await wrapper.vm.dataAccess.licences.push({id: 1, name: "test", licence: {id: 123}});
+
         expect(recordStore.state.sections.dataAccess.changes).toBe(2);
     });
 

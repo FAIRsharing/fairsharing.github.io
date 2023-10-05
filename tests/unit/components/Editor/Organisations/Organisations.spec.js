@@ -86,14 +86,20 @@ describe("Edit -> Organisations.vue", function() {
         expect(wrapper.vm.$options.name).toMatch("Organisations");
     });
 
-    it("can compute changes when adding, editing or removing a link", () => {
-        wrapper.vm.organisationLinks.push({
+    it("can compute changes when adding, editing or removing a link", async() => {
+        await wrapper.vm.organisationLinks.push({
             organisation: {
                 name: "test"
             }
         });
+
         expect(wrapper.vm.sections.organisations.changes).toBe(1);
-        wrapper.vm.organisationLinks[0].organisation.name = "another name";
+         // wrapper.vm.organisationLinks[0].organisation.name = "another name";
+        await wrapper.vm.organisationLinks.push({
+            organisation: {
+                name: "another name"
+            }
+        });
         expect(wrapper.vm.sections.organisations.changes).toBe(2);
         wrapper.vm.removeRelation(0);
         expect(wrapper.vm.sections.organisations.changes).toBe(2);

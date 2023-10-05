@@ -145,7 +145,20 @@ describe("NetworkGraph.vue", function() {
     it("reloads page when route changes", async () => {
         expect(getData).toHaveBeenCalledTimes(0);
         expect(wrapper.vm.currentRoute).toEqual(1234);
+        // $route.params.id = 10;
+        // expect(getData).toHaveBeenCalledTimes(1);
+        // expect(wrapper.vm.currentRoute).toEqual(10);
+    })
+
+    it("reloads page when route changes and id is 10", async () => {
         $route.params.id = 10;
+        wrapper = await shallowMount(GraphTest, {
+            localVue,
+            vuetify,
+            router,
+            mocks: { $router, $route, $store }
+        });
+
         expect(getData).toHaveBeenCalledTimes(1);
         expect(wrapper.vm.currentRoute).toEqual(10);
     })

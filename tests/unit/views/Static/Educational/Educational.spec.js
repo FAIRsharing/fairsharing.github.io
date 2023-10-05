@@ -37,7 +37,14 @@ describe("Educational.vue", function(){
 
     it("can be instantiated", () => {
         expect(wrapper.vm.$options.name).toMatch("Educational");
-        wrapper.vm.$route.hash = '#anotherAnchor'
+        // wrapper.vm.$route.hash = '#anotherAnchor'
+        $route.hash = "#anotherAnchor"
+        wrapper = shallowMount(Educational, {
+            localVue,
+            vuetify,
+            mocks: {$route},
+            stubs: ['router-link']
+        })
         expect(wrapper.vm.applyCss).toBe(false);
     });
 

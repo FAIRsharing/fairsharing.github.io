@@ -97,9 +97,9 @@ describe("EditRelationships.vue", function() {
             "recordAssocLabel":"?",
             "recordAssocLabelId":1
         };
-        recordStore.state.sections.relations.data.recordAssociations.push(pushItem);
+        await recordStore.state.sections.relations.data.recordAssociations.push(pushItem);
         expect(recordStore.state.sections.relations.changes).toBe(1);
-        wrapper.vm.removeItem({
+        await wrapper.vm.removeItem({
             linkedRecord: {
                 id: 456
             },

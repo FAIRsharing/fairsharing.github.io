@@ -91,7 +91,7 @@ describe("EditPublicProfile.vue", function () {
             localVue,
             mocks:{$store, $route}
         })
-        expect(wrapper2.name()).toMatch("EditPublicProfile");
+        expect(wrapper2.vm.$options.name).toMatch("EditPublicProfile");
     });
 
     it("can check updatePublicProfile method", async () => {

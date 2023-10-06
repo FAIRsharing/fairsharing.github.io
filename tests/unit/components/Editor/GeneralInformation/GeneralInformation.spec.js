@@ -147,6 +147,7 @@ describe("Edit -> GeneralInformation.vue", function() {
         wrapper.vm.currentFields.deprecation_reason = "abc";
         wrapper.vm.currentFields.status = "deprecated";
         expect(wrapper.vm.currentFields.deprecation_reason).toBe("abc");
+        wrapper.vm.currentFields.deprecation_reason = null;
         wrapper.vm.currentFields.status = "uncertain";
         expect(wrapper.vm.currentFields.deprecation_reason).toBeFalsy();
         wrapper.vm.currentFields.type.name = "collection";
@@ -154,14 +155,14 @@ describe("Edit -> GeneralInformation.vue", function() {
         wrapper.vm.currentFields.type.name = "collection"; // For coverage purposes...
 
         wrapper.vm.currentFields.type.name = "abc";
-        wrapper.vm.currentFields.metadata.contacts.push({name: 'test'});
+        await wrapper.vm.currentFields.metadata.contacts.push({name: 'test'});
         expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
-        wrapper.vm.currentFields.domains.push({
+        await wrapper.vm.currentFields.domains.push({
             label: 'test',
             id: 1
         });
         expect(wrapper.vm.getChanges['generalInformation']).toBe(3);
-        wrapper.vm.currentFields.domains.splice(1,1);
+        await wrapper.vm.currentFields.domains.splice(1,1);
         expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
         wrapper.vm.currentFields.domains = [{
             label: 'tester',

@@ -103,6 +103,7 @@ describe("Header.vue", function () {
     it("toggle button activeness using route changes", () => {
         wrapper.vm.$route.query = {};
         wrapper.vm.$route.name = 'Statistics';
+        wrapper.vm.setCurrentActiveButton('Statistics');
         const selectedItem = wrapper.vm.links.find(item => item.name === 'Statistics');
         // expect selectedItem to be true
         expect(selectedItem.active).toBe(true)

@@ -46,6 +46,11 @@ let mocks = {
     editPublicUserStub: null,
     editUserStub: null,
     getUserStub: null,
+    /**
+     * Commenting as it is giving null output
+     * Need to check it again later
+     */
+
     // restore: function(mockKey) {
     //     this[mockKey].restore();
     // },

@@ -50,7 +50,6 @@ let mocks = {
      * Commenting as it is giving null output
      * Need to check it again later
      */
-
     // restore: function(mockKey) {
     //     this[mockKey].restore();
     // },

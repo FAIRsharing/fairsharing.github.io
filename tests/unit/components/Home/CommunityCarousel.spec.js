@@ -30,7 +30,7 @@ describe("CommunityCarousel", function () {
         const wrapper2 = shallowMount(CommunityCarousel, {
             vuetify,
         })
-        expect(wrapper2.name()).toMatch("CommunityCarousel");
+        expect(wrapper2.vm.$options.name).toMatch("CommunityCarousel");
     });
 
 });

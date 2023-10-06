@@ -1,7 +1,13 @@
-import {shallowMount} from "@vue/test-utils";
+import {createLocalVue, shallowMount} from "@vue/test-utils";
 import UploadFiles from "@/components/UploadFiles/UploadFiles"
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
+import Vuex from "vuex";
+import Vuetify from "vuetify"
 import sinon from "sinon";
+
+const localVue = createLocalVue();
+localVue.use(Vuex);
+const vuetify = new Vuetify();
 
 // Preparing mocks
 let mocks = {
@@ -28,7 +34,19 @@ describe('UploadFiles.vue', () => {
     let wrapper;
     let wrapper2;
     let wrapper3;
-    beforeAll( async () => {
+    beforeAll(() => {
+        wrapper = shallowMount(UploadFiles, {
+            localVue,
+            vuetify,
+            propsData: {
+                credentialInfo: {id: 1, token: 'myToken'},
+                initialImages: ['/hoseinmirian.jpg'],
+                uploadServiceName: "uploadOneFilePerRequest",
+                allowedFileSizeMb: 3,
+                baseApiEndpoint: "https://fairsharing-api.org/",
+                mimeType: "image/*",
+            }
+        });
         mocks.setMock("uploadOneFilePerRequestMock",
             UploadService,
             "uploadOneFilePerRequest",
@@ -47,18 +65,20 @@ describe('UploadFiles.vue', () => {
 
 
     it("can be instantiated", () => {
-        wrapper = shallowMount(UploadFiles,
-            {
-                propsData: {
-                    credentialInfo: {id: 1, token: 'myToken'},
-                    initialImages: ['/hoseinmirian.jpg'],
-                    uploadServiceName: "uploadOneFilePerRequest",
-                    allowedFileSizeMb: 3,
-                    baseApiEndpoint: "https://fairsharing-api.org/",
-                    mimeType: "image/*",
-                }
-            }
-        );
+        // wrapper = shallowMount(UploadFiles,
+        //     localVue,
+        //     vuetify,
+        //     {
+        //         propsData: {
+        //             credentialInfo: {id: 1, token: 'myToken'},
+        //             initialImages: ['/hoseinmirian.jpg'],
+        //             uploadServiceName: "uploadOneFilePerRequest",
+        //             allowedFileSizeMb: 3,
+        //             baseApiEndpoint: "https://fairsharing-api.org/",
+        //             mimeType: "image/*",
+        //         }
+        //     }
+        // );
         wrapper.vm.$refs['FileUpload'] = {
             afterUpload: jest.fn()
         };
@@ -72,10 +92,10 @@ describe('UploadFiles.vue', () => {
         expect(wrapper.vm.selectedFiles.length).toBe(1);
     })
 
-    it("can check downloadFiles method functionality", () => {
+    it("can check downloadFiles method functionality", async() => {
         wrapper.vm.downloadFiles(['a.jpg','b.jpg'])
         expect(wrapper.vm.fileInfos.length).toBe(2);
-        wrapper.setProps({initialImages:null})
+        await wrapper.setProps({initialImages:null})
         wrapper.vm.downloadFiles()
         expect(wrapper.vm.fileInfos.length).toBe(0);
         wrapper.vm.downloadFiles('a.jpg')
@@ -109,7 +129,7 @@ describe('UploadFiles.vue', () => {
         wrapper2.vm.$refs['FileUpload'] = {
             afterUpload: jest.fn()
         };
-        expect(wrapper2.name()).toMatch("UploadFiles");
+        expect(wrapper2.vm.$options.name).toMatch("UploadFiles");
     });
 
 
@@ -131,7 +151,7 @@ describe('UploadFiles.vue', () => {
         wrapper3.vm.$refs['FileUpload'] = {
             afterUpload: jest.fn()
         };
-        expect(wrapper3.name()).toMatch("UploadFiles");
+        expect(wrapper3.vm.$options.name).toMatch("UploadFiles");
     });
 
     it("can check selectFiles to test multiple files in one request functionality", () => {

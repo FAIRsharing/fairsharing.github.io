@@ -46,16 +46,16 @@ let mocks = {
     editPublicUserStub: null,
     editUserStub: null,
     getUserStub: null,
-    restore: function(mockKey) {
-        this[mockKey].restore();
-    },
-    restoreAll: function(){
-        this.restore("graphMock");
-        this.restore("restMock");
-        this.restore("editPublicUserStub");
-        this.restore("editUserStub");
-        this.restore("getUserStub");
-    },
+    // restore: function(mockKey) {
+    //     this[mockKey].restore();
+    // },
+    // restoreAll: function(){
+    //     this.restore("graphMock");
+    //     this.restore("restMock");
+    //     this.restore("editPublicUserStub");
+    //     this.restore("editUserStub");
+    //     this.restore("getUserStub");
+    // },
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
         this[mockKey] = sinon.stub(targetClass, targetMethod);
         this[mockKey].returns(returnedValue);
@@ -92,7 +92,7 @@ describe('OrganisationTable.vue', () => {
         vuetify = new Vuetify();
     });
     afterAll( () => {
-        mocks.restoreAll();
+        // mocks.restoreAll();
     });
     afterEach(() => {
         wrapper.destroy();

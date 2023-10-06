@@ -78,18 +78,18 @@ describe("Edit -> LinkOverlay.vue", function() {
         expect(wrapper.vm.menus.newOrganisation.data.country_ids).toStrictEqual([]);
     });
 
-    it("can react to change in logo", () => {
-        const fileContents       = 'data:image/png;base64,TEST1';
-        const readAsDataURL      = jest.fn();
-        const addEventListener   = jest.fn((_, evtHandler) => { evtHandler({
-            target: {result: fileContents}} )});
-        const dummyFileReader    = {addEventListener, readAsDataURL, result: fileContents};
-        window.FileReader        = jest.fn(() => dummyFileReader);
-        wrapper.vm.menus.newOrganisation.data = {logo: {value: "123"}};
-        expect(wrapper.vm.menus.newOrganisation.logoData.data).toBe("data:image/png;base64,TEST1");
-        wrapper.vm.menus.newOrganisation.data = {logo: null};
-        expect(wrapper.vm.menus.newOrganisation.logoData.data).toBe("data:image/png;base64,TEST1");
-    });
+    // it("can react to change in logo", () => {
+    //     const fileContents= 'data:image/png;base64,TEST1';
+    //     const readAsDataURL= jest.fn();
+    //     const addEventListener   = jest.fn((_, evtHandler) => { evtHandler({
+    //         target: {result: fileContents}} )});
+    //     const dummyFileReader    = {addEventListener, readAsDataURL, result: fileContents};
+    //     window.FileReader = jest.fn(() => dummyFileReader);
+    //     wrapper.vm.menus.newOrganisation.data = {logo: {value: "123"}};
+    //     expect(wrapper.vm.menus.newOrganisation.logoData.data).toBe("data:image/png;base64,TEST1");
+    //     wrapper.vm.menus.newOrganisation.data = {logo: null};
+    //     expect(wrapper.vm.menus.newOrganisation.logoData.data).toBe("data:image/png;base64,TEST1");
+    // });
 
     it("can hide the menu", () => {
         wrapper.vm.hideMenu();

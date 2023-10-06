@@ -114,7 +114,7 @@ describe("SearchCollection.vue", function(){
             mocks: {$route, $store},
             localVue,
             vuetify,
-            attachToDocument:element
+            attachTo:element
         });
     });
 

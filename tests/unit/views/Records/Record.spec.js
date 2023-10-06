@@ -433,7 +433,7 @@ describe("Record.vue", function() {
             vuetify,
             router
         });
-        expect(wrapper2.name()).toMatch("Record");
+        expect(wrapper2.vm.$options.name).toMatch("Record");
     });
 
 

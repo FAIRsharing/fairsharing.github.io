@@ -60,6 +60,7 @@ let mocks = {
     //     this.restore("editUserStub");
     //     this.restore("getUserStub");
     // },
+
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
         this[mockKey] = sinon.stub(targetClass, targetMethod);
         this[mockKey].returns(returnedValue);

@@ -33,5 +33,4 @@ describe("App.vue", () => {
         wrapper.vm.loading = false
         expect(wrapper.vm.$options.name).toMatch(title);
     });
-
 });

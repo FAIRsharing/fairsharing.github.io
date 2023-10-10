@@ -92,5 +92,4 @@ describe("OntologyBrowser.vue", function() {
         wrapper.destroy();
     });
 
-
 });

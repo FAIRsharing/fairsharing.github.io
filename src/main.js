@@ -64,10 +64,9 @@ Vue.use(VueGtag, {
     config: { id:  process.env.VUE_APP_ANALYTICS_ID }
 });
 Vue.use(VueHead);
-// Vue.use(SimpleAnalytics, {
-//     skip: process.env.NODE_ENV !== 'production'
-// })
-Vue.use(SimpleAnalytics, { domain: "https://fairsharing.org/" });
+Vue.use(SimpleAnalytics, {
+    skip: process.env.NODE_ENV !== 'production'
+})
 
 router.beforeEach(async(to, from, next) => await beforeEach(to, from, next, store));
 router.afterEach(async(to) => await afterEach(to));

@@ -41,7 +41,7 @@
     "prettier": "^2.8.6",
     "roboto-fontface": "*",
     "sigma": "^2.4.0",
-    "simple-analytics-vue": "^3.0.2",
+    "simple-analytics-vue": "^2.0.0",
     "trace-unhandled": "^2.0.1",
     "tsparticles": "^2.8.0",
     "v-clipboard": "^2.2.3",

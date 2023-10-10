@@ -432,6 +432,7 @@ describe('Actions/Mutations', () => {
         await actions.validateUserToken(state);
         expect(actions.commit).toHaveBeenCalledTimes(0);
         restClientStub.restore();
+        restClientStub.restore();
 
         restClientStub = sinon.stub(Client.prototype, 'executeQuery');
         restClientStub.returns({data: {success: false}});
@@ -447,5 +448,16 @@ describe('Actions/Mutations', () => {
         restClientStub.restore();
     });
 
+    it('Error Handling: getPublicUser', async () => {
+        let state = {
+            state: {
+                user: function(){
+                    return {}
+                }
+            }
+        };
 
+        await actions.getPublicUser(state, 1);
+        expect(actions.commit).toHaveBeenCalledTimes(0);
+    });
 });

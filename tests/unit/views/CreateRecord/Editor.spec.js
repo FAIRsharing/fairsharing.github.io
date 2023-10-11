@@ -47,7 +47,8 @@ describe("Editor.vue", function() {
     it("can be instantiated", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route},
+            router,
+            mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
         expect(wrapper.vm.$options.name).toMatch("Editor");
@@ -65,7 +66,8 @@ describe("Editor.vue", function() {
     it("can clean the store on destroy", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route},
+            router,
+            mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
         wrapper.vm.hasLoaded = false;
@@ -81,7 +83,7 @@ describe("Editor.vue", function() {
         restStub.withArgs(sinon.match.any).returns({data: {error: "error"}});
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route},
+            mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
         $store.state.users.user = function(){return {credentials: {token: "123"}}};
@@ -92,7 +94,8 @@ describe("Editor.vue", function() {
     it("reloads data correctly", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route},
+            router,
+            mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
         wrapper.vm.confirmPanels[0].show = true;

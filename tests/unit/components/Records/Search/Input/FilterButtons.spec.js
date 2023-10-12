@@ -1,9 +1,10 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import FilterButtons from "@/components/Records/Search/Input/FilterButtons.vue"
-import users from "@/store/users.js";
 import searchFilters from "@/store/searchFilters.js";
+import users from "@/store/users.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

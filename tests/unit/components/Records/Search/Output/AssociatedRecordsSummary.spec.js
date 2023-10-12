@@ -1,5 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
+
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary.vue"
+
 import associatedRecords from "../../../../../fixtures/associatedRecords.json"
 
 describe("AssociatedRecordsSummary.vue", function () {

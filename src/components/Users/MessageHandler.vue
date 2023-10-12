@@ -24,6 +24,7 @@
 
 <script>
     import { mapState } from "vuex";
+
     import stringUtils from '@/utils/stringUtils';
 
     export default {

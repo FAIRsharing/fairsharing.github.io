@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import Stakeholders from "@/views/Static/Stakeholders/Stakeholders"
 import Vuetify from "vuetify"
+
+import Stakeholders from "@/views/Static/Stakeholders/Stakeholders"
 
 const vuetify = new Vuetify();
 

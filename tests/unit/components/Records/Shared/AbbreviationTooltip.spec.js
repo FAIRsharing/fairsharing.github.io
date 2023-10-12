@@ -1,4 +1,5 @@
 import {shallowMount} from "@vue/test-utils";
+
 import AbbreviationTooltip from "@/components/Records/Shared/AbbreviationTooltip.vue"
 
 describe('AbbreviationTooltip.vue', () => {

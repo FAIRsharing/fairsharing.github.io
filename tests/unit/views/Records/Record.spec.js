@@ -1,18 +1,19 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
+import sinon from "sinon";
+import VueHead from "vue-head";
 import VueMeta from "vue-meta";
-import Vuetify from "vuetify";
 import VueRouter from "vue-router";
-import Record from "@/views/Records/Record.vue";
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import VueSanitize from "vue-sanitize";
+import VueScrollTo from "vue-scrollto";
+import Vuetify from "vuetify";
+import Vuex from "vuex";
+
 import RESTClient from "@/lib/Client/RESTClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import light from "@/plugins/theme";
 import record from "@/store/recordData.js";
 import users from "@/store/users.js";
-import sinon from "sinon";
-import VueScrollTo from "vue-scrollto";
-import VueSanitize from "vue-sanitize";
-import VueHead from "vue-head";
-import light from "@/plugins/theme";
+import Record from "@/views/Records/Record.vue";
 
 
 // Initializing context for mounting

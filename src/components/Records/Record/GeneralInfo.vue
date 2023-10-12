@@ -81,26 +81,27 @@
 </template>
 
 <script>
-import SectionTitle from '@/components/Records/Record/SectionTitle';
-import Keywords from "@/components/Records/Record/GeneralInfo/Keywords";
-import DOITitle from "@/components/Records/Record/GeneralInfo/DOITitle";
-import Type from "@/components/Records/Record/GeneralInfo/Type";
-import YearOfCreation from "@/components/Records/Record/GeneralInfo/YearOfCreation";
-import Registry from "@/components/Records/Record/GeneralInfo/Registry";
-import Description from "@/components/Records/Record/GeneralInfo/Description";
-import HomePage from "@/components/Records/Record/GeneralInfo/HomePage";
-import Countries from "@/components/Records/Record/GeneralInfo/Countries";
-import Citations from "@/components/Records/Record/GeneralInfo/Citations";
-import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail";
-import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
 import {mapGetters, mapState} from "vuex";
-import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
-import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason";
-import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord";
-import ContactsData from "@/components/Records/Record/GeneralInfo/ContactsData";
-import Organisations from "@/components/Records/Record/Organisations";
-import CommunityCuratorInfo from "@/components/Records/Record/GeneralInfo/CommunityCuratorInfo";
+
 import Licence from '@/components/Records/Record/CollectionRecord/Licence.vue'
+import Citations from "@/components/Records/Record/GeneralInfo/Citations";
+import CommunityCuratorInfo from "@/components/Records/Record/GeneralInfo/CommunityCuratorInfo";
+import ContactsData from "@/components/Records/Record/GeneralInfo/ContactsData";
+import Countries from "@/components/Records/Record/GeneralInfo/Countries";
+import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason";
+import Description from "@/components/Records/Record/GeneralInfo/Description";
+import DOITitle from "@/components/Records/Record/GeneralInfo/DOITitle";
+import HomePage from "@/components/Records/Record/GeneralInfo/HomePage";
+import Keywords from "@/components/Records/Record/GeneralInfo/Keywords";
+import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers";
+import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL";
+import Registry from "@/components/Records/Record/GeneralInfo/Registry";
+import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord";
+import Type from "@/components/Records/Record/GeneralInfo/Type";
+import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail";
+import YearOfCreation from "@/components/Records/Record/GeneralInfo/YearOfCreation";
+import Organisations from "@/components/Records/Record/Organisations";
+import SectionTitle from '@/components/Records/Record/SectionTitle';
 
 export default {
   name: "GeneralInfo",

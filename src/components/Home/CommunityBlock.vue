@@ -100,8 +100,8 @@
 </template>
 
 <script>
-import {truncate} from "@/utils/stringUtils";
 import homePageData from "@/data/homePageData.json"
+import {truncate} from "@/utils/stringUtils";
 export default {
   name: "CommunityBlock",
   mixins: [ truncate ],

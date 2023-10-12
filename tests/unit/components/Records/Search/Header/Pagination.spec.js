@@ -1,7 +1,8 @@
-import Pagination from "@/components/Records/Search/Header/Pagination";
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
 import Vuex from "vuex";
+
+import Pagination from "@/components/Records/Search/Header/Pagination";
 import records from "@/store/recordSearch.js"
 
 const localVue = createLocalVue();

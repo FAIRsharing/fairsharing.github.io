@@ -1,6 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import SearchInput from "@/components/Records/Search/Input/SearchInput"
 import searchFiltersStore from "@/store/searchFilters.js";
 import uiControllerStore from "@/store/uiController.js";

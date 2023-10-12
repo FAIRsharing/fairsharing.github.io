@@ -49,9 +49,10 @@
 </template>
 
 <script>
-import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import {isArray} from "lodash";
+
 import UploadFilesPresentation from "@/components/UploadFiles/UploadFilesPresentation";
+import UploadService from "@/lib/UploadingServices/UploadFilesService";
 
 export default {
   name: "UploadFiles",

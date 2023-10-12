@@ -1,11 +1,12 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import AdditionalInfo from "@/components/Records/Record/AdditionalInfo"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import AdditionalInfo from "@/components/Records/Record/AdditionalInfo"
+import RESTClient from "@/lib/Client/RESTClient";
 import editorStore from "@/store/editor";
 import record from "@/store/recordData";
-import RESTClient from "@/lib/Client/RESTClient";
+import Record from "@/store/recordData.js"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

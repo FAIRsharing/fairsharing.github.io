@@ -286,8 +286,8 @@
 </template>
 
 <script>
-  import educationData from '@/data/EducationData.json'
   import Icon from "@/components/Icon";
+  import educationData from '@/data/EducationData.json'
     export default {
       name: "Educational",
       components: {

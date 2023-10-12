@@ -36,10 +36,11 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
-import SectionTitle from "@/components/Records/Record/SectionTitle";
-import DatasetArray from "@/components/Records/Record/AdditionalInfo/DatasetArray";
 import {isArray} from "lodash";
+import {mapActions, mapGetters, mapState} from "vuex";
+
+import DatasetArray from "@/components/Records/Record/AdditionalInfo/DatasetArray";
+import SectionTitle from "@/components/Records/Record/SectionTitle";
 
 export default {
   name: "AdditionalInfo",

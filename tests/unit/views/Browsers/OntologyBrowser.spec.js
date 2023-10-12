@@ -1,13 +1,14 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import OntologyBrowser from "@/views/Browsers/OntologyBrowser.vue"
-import editorStore from "@/store/editor.js";
-import ontologyBrowserStore from "@/store/ontologyBrowser";
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json"
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import ontologyQuery from "@/lib/GraphClient/queries/ontologies/subjectBrowser.json";
-import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json"
+import editorStore from "@/store/editor.js";
+import ontologyBrowserStore from "@/store/ontologyBrowser";
+import OntologyBrowser from "@/views/Browsers/OntologyBrowser.vue"
 const sinon = require("sinon"),
     localVue = createLocalVue();
 localVue.use(Vuex);

@@ -1,6 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
-import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray"
 import Vuetify from "vuetify"
+
+import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray"
 
 const vuetify = new Vuetify();
 

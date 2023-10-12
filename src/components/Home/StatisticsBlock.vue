@@ -75,9 +75,9 @@
 </template>
 
 <script>
+import homePageData from "@/data/homePageData.json"
 import RestClient from "@/lib/Client/RESTClient.js"
 import {truncate} from "@/utils/stringUtils";
-import homePageData from "@/data/homePageData.json"
 
 const restClient = new RestClient();
 

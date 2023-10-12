@@ -1,6 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
-import Licence from "@/views/Static/Licence/Licence"
 import Vuetify from "vuetify"
+
+import Licence from "@/views/Static/Licence/Licence"
 
 const vuetify = new Vuetify();
 

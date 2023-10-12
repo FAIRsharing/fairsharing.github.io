@@ -1,4 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
+
 import SectionTitle from "@/components/Records/Record/SectionTitle.vue"
 
 describe("SectionTitle.vue", function(){

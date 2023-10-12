@@ -113,11 +113,12 @@
 </template>
 
 <script>
+    import { isEqual } from 'lodash'
     import Vue from "vue"
     import { mapGetters, mapMutations } from "vuex"
-    import { isEqual } from 'lodash'
-    import stringUtils from '@/utils/stringUtils'
+
     import { isUrl } from "@/utils/rules.js"
+    import stringUtils from '@/utils/stringUtils'
 
     export default {
         name: "FieldInput",

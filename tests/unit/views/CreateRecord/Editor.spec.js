@@ -1,13 +1,15 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
+import VueRouter from "vue-router";
 import Vuex from "vuex";
-import CreateRecord from "@/views/CreateRecord/Editor.vue"
+
+import RESTClient from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import editorStore from "@/store/editor.js"
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
-import editorStore from "@/store/editor.js"
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import RESTClient from "@/lib/Client/RESTClient.js"
+import CreateRecord from "@/views/CreateRecord/Editor.vue"
+
 import metaTemplate from "../../../fixtures/metaTemplate.json"
-import VueRouter from "vue-router";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

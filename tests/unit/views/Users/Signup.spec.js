@@ -1,4 +1,5 @@
 import {shallowMount} from "@vue/test-utils";
+
 import SignUp from "@/views/Users/Signup";
 
 describe("Community.vue", function(){

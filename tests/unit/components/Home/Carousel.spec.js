@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import Carousel from "@/components/Home/Carousel"
 import Vuetify from "vuetify"
+
+import Carousel from "@/components/Home/Carousel"
 
 const vuetify = new Vuetify();
 

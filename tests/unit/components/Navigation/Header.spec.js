@@ -1,11 +1,12 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
-import Header from "@/components/Navigation/Header.vue";
 import { RouterLinkStub } from '@vue/test-utils';
+import {isEqual} from 'lodash';
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import Header from "@/components/Navigation/Header.vue";
 import uiControllerStore from "@/store/uiController.js";
 import usersStore from "@/store/users.js";
-import {isEqual} from 'lodash';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

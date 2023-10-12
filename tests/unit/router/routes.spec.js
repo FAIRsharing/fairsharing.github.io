@@ -1,6 +1,6 @@
-import router, {afterEach, scrollBehavior, isSuperCurator, isNotLoggedIn} from "@/router"
-import { beforeEach, isLoggedIn, isMaintenanceMode } from "@/router"
 import RestClient from "@/lib/Client/RESTClient.js"
+import router, {afterEach, isNotLoggedIn,isSuperCurator, scrollBehavior} from "@/router"
+import { beforeEach, isLoggedIn, isMaintenanceMode } from "@/router"
 //import VueRouter from "vue-router";
 const sinon = require("sinon");
 

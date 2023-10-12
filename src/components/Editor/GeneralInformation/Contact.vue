@@ -120,9 +120,10 @@
 </template>
 
 <script>
-    import { mapGetters } from "vuex"
     import { isEqual } from 'lodash'
-    import { isRequired, isEmail, isOrcid } from "@/utils/rules.js"
+    import { mapGetters } from "vuex"
+
+    import { isEmail, isOrcid,isRequired } from "@/utils/rules.js"
 
     export default {
         name: "Contact",

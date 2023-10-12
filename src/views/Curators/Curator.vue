@@ -497,16 +497,17 @@
 </template>
 
 <script>
-    import GraphClient from "@/lib/GraphClient/GraphClient.js"
-    import getCurationRecords from "@/lib/GraphClient/queries/curators/getSummary.json"
     import { mapActions, mapState } from "vuex"
-    import Unauthorized from "@/views/Errors/403.vue"
-    import headersTables from "@/data/headersCuratorDashboard.json"
+
     import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
     import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
-    import RestClient from "@/lib/Client/RESTClient.js"
     import Icon from "@/components/Icon"
+    import headersTables from "@/data/headersCuratorDashboard.json"
+    import RestClient from "@/lib/Client/RESTClient.js"
+    import GraphClient from "@/lib/GraphClient/GraphClient.js"
+    import getCurationRecords from "@/lib/GraphClient/queries/curators/getSummary.json"
     import store from "@/store";
+    import Unauthorized from "@/views/Errors/403.vue"
 
 
     const client = new GraphClient();

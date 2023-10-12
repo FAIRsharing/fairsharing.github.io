@@ -58,7 +58,7 @@
 
 <script>
     import Client from "@/lib/Client/RESTClient.js"
-    import { isRequired, isEmail } from "@/utils/rules.js"
+    import { isEmail,isRequired } from "@/utils/rules.js"
 
     const client = new Client();
 

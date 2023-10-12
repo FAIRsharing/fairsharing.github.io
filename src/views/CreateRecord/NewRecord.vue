@@ -85,12 +85,14 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from "vuex"
-    import RESTClient from "@/lib/Client/RESTClient.js"
+    import { mapActions, mapGetters,mapState } from "vuex"
+
     import status from "@/data/status.json"
+    import RESTClient from "@/lib/Client/RESTClient.js"
+    import { isUrl } from "@/utils/rules.js"
+
     import BaseFields from "../../components/Editor/GeneralInformation/BaseFields";
     import Loaders from "../../components/Navigation/Loaders";
-    import { isUrl } from "@/utils/rules.js"
 
     let restClient = new RESTClient();
 

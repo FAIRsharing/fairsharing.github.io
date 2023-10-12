@@ -1,7 +1,8 @@
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import ResendConfirmation from "@/views/Users/ResendConfirmation";
+
 import Client from "@/lib/Client/RESTClient.js"
+import ResendConfirmation from "@/views/Users/ResendConfirmation";
 
 describe("ResendConfirmation.vue", function(){
     let wrapper;

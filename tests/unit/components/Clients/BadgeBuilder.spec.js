@@ -1,5 +1,5 @@
-import BadgeBuilder from "@/lib/BadgeBuilder/BadgeBuilder";
 import badgeBuilderFakeData from "@/../tests/fixtures/badgeBuilderFakeData.json"
+import BadgeBuilder from "@/lib/BadgeBuilder/BadgeBuilder";
 
 describe("BadgeBuilder", () => {
 

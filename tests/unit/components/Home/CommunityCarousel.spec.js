@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import CommunityCarousel from "@/components/Home/CommunityCarousel"
 import Vuetify from "vuetify"
+
+import CommunityCarousel from "@/components/Home/CommunityCarousel"
 
 const vuetify = new Vuetify();
 let breakpoint = {

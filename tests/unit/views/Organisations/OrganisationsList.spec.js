@@ -1,10 +1,11 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import OrganisationsList from "@/views/Organisations/OrganisationsList"
+import sinon from "sinon";
 import Vuetify from "vuetify"
 import Vuex from "vuex";
-import sinon from "sinon";
-import allOrganisationsQuery from "@/lib/GraphClient/queries/getAllOrganisations.json";
+
 import GraphClient from "@/lib/GraphClient/GraphClient";
+import allOrganisationsQuery from "@/lib/GraphClient/queries/getAllOrganisations.json";
+import OrganisationsList from "@/views/Organisations/OrganisationsList"
 
 const vuetify = new Vuetify();
 const localVue = createLocalVue();

@@ -1,11 +1,12 @@
-import Vue from "vue"
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
+import Vue from "vue"
 import Vuetify from "vuetify"
-import ExternalClients from "@/lib/Client/ExternalClients.js"
+import Vuex from "vuex"
+
 import EditSupportLinks from "@/components/Editor/DataAccess/EditSupportLinks.vue"
-import recordStore from "@/store/recordData.js"
+import ExternalClients from "@/lib/Client/ExternalClients.js"
 import editorStore from "@/store/editor.js"
+import recordStore from "@/store/recordData.js"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

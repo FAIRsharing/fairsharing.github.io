@@ -1,14 +1,16 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import VueRouter from "vue-router"
-import Vuex from "vuex"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
+import axios from 'axios'
 import sinon from "sinon"
+import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import Client from "@/lib/Client/RESTClient.js"
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import Curator from "@/views/Curators/Curator.vue"
+
 import dataDashboard from "../../../fixtures/curationDashboardData.json"
-import Vuetify from "vuetify"
-import axios from 'axios'
 
 axios.defaults.adapter = require('axios/lib/adapters/http');
 

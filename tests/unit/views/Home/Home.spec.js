@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Home from "@/views/Home/Home"
-import Vuetify from "vuetify"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import VueScrollTo from "vue-scrollto";
+import Vuetify from "vuetify"
+
 import RestClient from "@/lib/Client/RESTClient.js"
+import Home from "@/views/Home/Home"
 const sinon = require("sinon");
 
 const vuetify = new Vuetify();

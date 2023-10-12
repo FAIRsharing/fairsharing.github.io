@@ -1,9 +1,10 @@
-import { mutations, actions } from "@/store/users.js"
+import sinon from "sinon"
+import Vue from "vue"
+
 import Client from "@/lib/Client/RESTClient.js"
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import { actions,mutations } from "@/store/users.js"
 import { initUserDataState } from "@/store/utils.js"
-import Vue from "vue"
-import sinon from "sinon"
 
 Vue.config.silent = true;
 

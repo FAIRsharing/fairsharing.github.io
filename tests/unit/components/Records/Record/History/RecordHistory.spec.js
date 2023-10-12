@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import History from "@/components/Records/Record/History/RecordHistory.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import History from "@/components/Records/Record/History/RecordHistory.vue"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

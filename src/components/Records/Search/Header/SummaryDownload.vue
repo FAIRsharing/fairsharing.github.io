@@ -32,11 +32,12 @@
 
 <script>
 import {mapState} from "vuex";
+
 import listControllerData from "@/data/ListControllerData.json";
-import getHostname from "@/utils/generalUtils";
 import recordsLabels from "@/data/recordsTypes.json";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import downloadSearchResults from "@/lib/GraphClient/queries/downloadSearchResults.json";
+import getHostname from "@/utils/generalUtils";
 
 const client = new GraphClient();
 

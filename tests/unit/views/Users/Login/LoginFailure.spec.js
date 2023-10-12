@@ -1,9 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import Vuex from "vuex"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import VueRouter from "vue-router"
-import LoginFailure from "@/views/Users/Login/LoginFailure.vue"
-import usersStore from "@/store/users.js";
 import Vuetify from "vuetify"
+import Vuex from "vuex"
+
+import usersStore from "@/store/users.js";
+import LoginFailure from "@/views/Users/Login/LoginFailure.vue"
 
 const vuetify = new Vuetify();
 

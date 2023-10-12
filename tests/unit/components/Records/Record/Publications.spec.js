@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
-import Record from "@/store/recordData.js"
+
 import Publications from "@/components/Records/Record/Publications.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

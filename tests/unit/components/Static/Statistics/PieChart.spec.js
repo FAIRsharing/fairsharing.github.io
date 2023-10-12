@@ -1,4 +1,5 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
+
 import PieChart from "@/components/Static/Statistics/PieChart.vue"
 
 const localVue = createLocalVue();

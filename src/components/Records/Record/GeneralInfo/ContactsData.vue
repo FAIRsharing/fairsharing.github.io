@@ -48,6 +48,7 @@
 
 <script>
 import {mapGetters} from "vuex";
+
 import Icon from "@/components/Icon";
 export default {
   name: "ContactsData",

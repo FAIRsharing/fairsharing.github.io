@@ -1,10 +1,11 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
+import { RouterLinkStub } from '@vue/test-utils';
+import sinon from "sinon"
 import VueRouter from "vue-router"
 import Vuex from "vuex"
-import sinon from "sinon"
-import { RouterLinkStub } from '@vue/test-utils';
-import Organisation from "@/views/Organisations/Organisation";
+
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import Organisation from "@/views/Organisations/Organisation";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

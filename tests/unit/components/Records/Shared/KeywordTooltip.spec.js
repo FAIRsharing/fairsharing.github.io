@@ -1,4 +1,5 @@
 import {shallowMount} from "@vue/test-utils";
+
 import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip.vue"
 
 describe('KeywordTooltip.vue', () => {

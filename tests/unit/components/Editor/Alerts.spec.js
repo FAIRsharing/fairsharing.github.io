@@ -1,8 +1,9 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
 import Vuetify from "vuetify"
-import recordStore from "@/store/recordData.js"
+import Vuex from "vuex"
+
 import Alerts from "@/components/Editor/Alerts.vue"
+import recordStore from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

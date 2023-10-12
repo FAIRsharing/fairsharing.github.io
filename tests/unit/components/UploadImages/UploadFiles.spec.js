@@ -1,9 +1,10 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
+import sinon from "sinon";
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import UploadFiles from "@/components/UploadFiles/UploadFiles"
 import UploadService from "@/lib/UploadingServices/UploadFilesService";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
-import sinon from "sinon";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

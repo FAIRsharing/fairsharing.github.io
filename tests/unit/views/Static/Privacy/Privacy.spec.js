@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import Privacy from "@/views/Static/Privacy/Privacy"
 import Vuetify from "vuetify"
+
+import Privacy from "@/views/Static/Privacy/Privacy"
 
 const vuetify = new Vuetify();
 

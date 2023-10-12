@@ -1,15 +1,16 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import Vuex from "vuex"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
-import EditProfile from "@/views/Users/EditProfile.vue"
+import Vuex from "vuex"
+
 import Client from "@/lib/Client/RESTClient.js"
 import GraphClient from "@/lib/GraphClient/GraphClient"
+import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
 import getUserQuery from "@/lib/GraphClient/queries/getUserMeta.json"
 import getOrganisationsQuery from "@/lib/GraphClient/queries/Organisations/getOrganisations.json"
 import getOrganisationsTypesQuery from "@/lib/GraphClient/queries/Organisations/getOrganisationTypes.json"
-import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
-import userStore from "@/store/users";
 import editorStore from "@/store/editor";
+import userStore from "@/store/users";
+import EditProfile from "@/views/Users/EditProfile.vue"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

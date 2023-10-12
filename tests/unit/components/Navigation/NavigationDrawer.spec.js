@@ -1,9 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import VueRouter from "vue-router"
-import NavDrawer from "@/components/Navigation/NavigationDrawer.vue"
 import Vuetify from 'vuetify'
-import userStore from "@/store/users.js";
 import Vuex from "vuex";
+
+import NavDrawer from "@/components/Navigation/NavigationDrawer.vue"
+import userStore from "@/store/users.js";
 
 const vuetify = new Vuetify();
 const localVue = createLocalVue();

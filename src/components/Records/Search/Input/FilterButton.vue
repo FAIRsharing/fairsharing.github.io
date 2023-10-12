@@ -29,6 +29,7 @@
 <script>
     import { isEqual } from "lodash";
     import { mapActions } from 'vuex'
+
     import currentParameter from "@/utils/currentParameterMixin.js"
 
     export default {

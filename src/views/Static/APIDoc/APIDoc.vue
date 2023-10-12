@@ -956,6 +956,7 @@ data&lt;-query_con$data
 
 <script>
 import {component as VueCodeHighlight} from 'vue-code-highlight';
+
 import getHostname from "@/utils/generalUtils";
 
 export default {

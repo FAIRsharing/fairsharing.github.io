@@ -115,12 +115,13 @@
 </template>
 
 <script>
-import SectionTitle from '@/components/Records/Record/SectionTitle';
 import {mapState} from "vuex";
-import stringUtils from "@/utils/stringUtils"
+
+import SectionTitle from '@/components/Records/Record/SectionTitle';
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
-import recordTabUtils from "@/utils/recordTabUtils";
 import recordRelationShipsDefinitions from "@/data/RecordRelationShipsDefinitions.json";
+import recordTabUtils from "@/utils/recordTabUtils";
+import stringUtils from "@/utils/stringUtils"
 
 export default {
   name: "Collections",

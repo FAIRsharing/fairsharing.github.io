@@ -1,7 +1,8 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Educational from "@/views/Static/Educational/Educational"
-import Vuetify from "vuetify"
 import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify"
+
+import Educational from "@/views/Static/Educational/Educational"
 
 const vuetify = new Vuetify();
 const localVue = createLocalVue();

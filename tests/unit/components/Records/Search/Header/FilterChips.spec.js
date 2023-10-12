@@ -1,6 +1,7 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils";
-import FilterChips from "@/components/Records/Search/Header/FilterChips.vue"
+import {createLocalVue,shallowMount} from "@vue/test-utils";
 import Vuex from "vuex";
+
+import FilterChips from "@/components/Records/Search/Header/FilterChips.vue"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

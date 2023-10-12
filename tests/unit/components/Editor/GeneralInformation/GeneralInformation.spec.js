@@ -1,17 +1,18 @@
-import Vue from "vue"
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
-import Vuetify from "vuetify"
+import Vue from "vue"
 import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import GeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue"
-import recordStore from "@/store/recordData.js"
-import editorStore from "@/store/editor.js"
-import userStore from "@/store/users.js"
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import RestClient from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
 import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
 import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
-import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
+import editorStore from "@/store/editor.js"
+import recordStore from "@/store/recordData.js"
+import userStore from "@/store/users.js"
 const sinon = require("sinon");
 const VueScrollTo = require('vue-scrollto');
 const localVue = createLocalVue();

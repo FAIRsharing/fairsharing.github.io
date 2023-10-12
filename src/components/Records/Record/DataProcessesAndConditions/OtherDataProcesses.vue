@@ -35,12 +35,13 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
-import clearString from '@/utils/stringUtils'
 import {isArray} from "lodash";
+import {mapActions, mapGetters, mapState} from "vuex";
+
 import Icon from "@/components/Icon";
-import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray";
 import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean";
+import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray";
+import clearString from '@/utils/stringUtils'
 
 export default {
   name: "OtherDataProcesses",

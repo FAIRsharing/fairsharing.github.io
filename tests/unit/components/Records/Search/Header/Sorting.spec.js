@@ -1,5 +1,6 @@
-import Sorting from "@/components/Records/Search/Header/Sorting";
 import {shallowMount} from "@vue/test-utils";
+
+import Sorting from "@/components/Records/Search/Header/Sorting";
 
 const $router = {
     push: jest.fn(),

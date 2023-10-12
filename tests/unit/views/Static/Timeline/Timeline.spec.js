@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import Home from "@/views/Static/Timeline/Timeline"
 import Vuetify from "vuetify"
+
+import Home from "@/views/Static/Timeline/Timeline"
 
 const vuetify = new Vuetify();
 

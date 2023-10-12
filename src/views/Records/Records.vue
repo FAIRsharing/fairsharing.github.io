@@ -85,13 +85,14 @@
 </template>
 
 <script>
+import {mapActions, mapMutations,mapState} from 'vuex'
+
+import JumpToTop from "@/components/Navigation/jumpToTop";
+import Loaders from "@/components/Navigation/Loaders";
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
-import {mapActions, mapState, mapMutations} from 'vuex'
-import JumpToTop from "@/components/Navigation/jumpToTop";
 import recordsLabels from "@/data/recordsTypes.json"
 import filterChipsUtils from "@/utils/filterChipsUtils";
-import Loaders from "@/components/Navigation/Loaders";
 
 export default {
   name: "Records",

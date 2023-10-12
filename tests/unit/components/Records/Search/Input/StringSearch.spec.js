@@ -1,6 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
-import StringSearch from "@/components/Records/Search/Input/StringSearch"
 import Vuetify from "vuetify"
+
+import StringSearch from "@/components/Records/Search/Input/StringSearch"
 
 const $router = {
     push: jest.fn()

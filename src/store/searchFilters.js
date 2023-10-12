@@ -1,9 +1,10 @@
+import {isEqual} from 'lodash'
+
+import buttonOptions from '@/data/ButtonOptions.json'
 import filterMapping from "@/data/FiltersLabelMapping.json"
+import homePageData from "@/data/homePageData.json"
 import GraphQLClient from "@/lib/GraphClient/GraphClient.js"
 import query from "@/lib/GraphClient/queries/getFilters.json";
-import homePageData from "@/data/homePageData.json"
-import {isEqual} from 'lodash'
-import buttonOptions from '@/data/ButtonOptions.json'
 
 const graphClient = new GraphQLClient();
 

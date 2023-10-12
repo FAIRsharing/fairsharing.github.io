@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
+import sinon from "sinon"
 import VueRouter from "vue-router"
+
 import Register from "@/components/Users/Register.vue"
 import Client from "@/lib/Client/RESTClient.js"
-import sinon from "sinon"
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);

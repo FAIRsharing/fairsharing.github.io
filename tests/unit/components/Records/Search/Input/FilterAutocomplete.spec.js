@@ -1,10 +1,12 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify";
+import Vuex from "vuex";
+
 import ExpansionPanel from "@/components/Records/Search/Input/FilterAutocomplete.vue"
 import recordsStore from "@/store/recordSearch.js";
 import uiController from "@/store/uiController.js";
+
 import getGrants from '../../../../../fixtures/getGrants.json'
-import Vuex from "vuex";
 
 jest.useFakeTimers();
 const localVue = createLocalVue();

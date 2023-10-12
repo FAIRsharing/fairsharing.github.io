@@ -1,5 +1,6 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
+
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips.vue"
 
 let $route = {

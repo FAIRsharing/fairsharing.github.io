@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import StatisticsBlock from "@/components/Home/StatisticsBlock"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
 import Vuex from "vuex"
+
+import StatisticsBlock from "@/components/Home/StatisticsBlock"
 import RestClient from "@/lib/Client/RESTClient.js"
 const sinon = require("sinon");
 

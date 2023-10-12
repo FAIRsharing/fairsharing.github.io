@@ -463,11 +463,12 @@
 
 <script>
     import Vue from "vue"
-    import {mapGetters, mapState} from "vuex"
-    import { isRequired, isUrl } from "@/utils/rules.js"
-    import RestClient from "@/lib/Client/RESTClient.js"
     import CountryFlag from "vue-country-flag";
+    import {mapGetters, mapState} from "vuex"
+
     import PublicationClient from "@/lib/Client/ExternalClients.js"
+    import RestClient from "@/lib/Client/RESTClient.js"
+    import { isRequired, isUrl } from "@/utils/rules.js"
     const restClient = new RestClient();
     const pubClient = new PublicationClient();
 

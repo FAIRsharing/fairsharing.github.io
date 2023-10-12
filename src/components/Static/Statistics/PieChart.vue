@@ -6,8 +6,8 @@
 </template>
 
 <script>
-    import {Chart} from 'highcharts-vue'
     import Highcharts from 'highcharts'
+    import {Chart} from 'highcharts-vue'
 
     //Pie (Highcharts);
     const colourPalete = ['#aec7e8', '#ffbb78', '#98df8a', '#ff9896', '#c5b0d5', '#c49c94', '#f7b6d2', '#c7c7c7', '#dbdb8d', '#9edae5'];

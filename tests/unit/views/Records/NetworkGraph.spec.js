@@ -1,13 +1,14 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
 import VueRouter from "vue-router";
-import GraphTest from "@/views/Records/NetworkGraph.vue";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import users from "@/store/users.js";
+import GraphTest from "@/views/Records/NetworkGraph.vue";
 const sinon = require("sinon");
-import Networkgraph from 'highcharts/modules/networkgraph'
 import Highcharts from 'highcharts'
+import Networkgraph from 'highcharts/modules/networkgraph'
 Networkgraph(Highcharts);
 
 

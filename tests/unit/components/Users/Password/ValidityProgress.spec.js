@@ -1,6 +1,7 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import Vue from "vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
+import Vue from "vue"
+
 import ValidityProgress from "@/components/Users/Password/ValidityProgress"
 import Client from "@/lib/Client/RESTClient.js"
 

@@ -1,9 +1,10 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import New from "@/views/Static/New/New"
-import noDatasetsPlease from '@/data/noDatasetsPlease.json';
-import Vuetify from "vuetify"
 import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify"
+
+import noDatasetsPlease from '@/data/noDatasetsPlease.json';
 import icons from "@/plugins/icons";
+import New from "@/views/Static/New/New"
 
 const vuetify = new Vuetify({'icons':icons});
 const localVue = createLocalVue();

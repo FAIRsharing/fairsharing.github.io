@@ -1,12 +1,13 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
 import Vuetify from "vuetify"
-import RestClient from "@/lib/Client/RESTClient.js"
+import Vuex from "vuex"
+
 import LinkOverlay from "@/components/Editor/Organisations/LinkOverlay.vue"
-import recordStore from "@/store/recordData.js"
-import editorStore from "@/store/editor.js"
-import userStore from "@/store/users.js"
 import ExternalClient from "@/lib/Client/ExternalClients";
+import RestClient from "@/lib/Client/RESTClient.js"
+import editorStore from "@/store/editor.js"
+import recordStore from "@/store/recordData.js"
+import userStore from "@/store/users.js"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

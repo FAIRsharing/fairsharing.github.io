@@ -1,14 +1,15 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
-import VueRouter from "vue-router"
-import Sunburst from 'highcharts/modules/sunburst'
 import Highcharts from 'highcharts'
+import Sunburst from 'highcharts/modules/sunburst'
 import HighchartsVue from 'highcharts-vue'
-import OntologySunburst from "@/components/Ontologies/OntologySunburst";
-import ontologyBrowserStore from "@/store/ontologyBrowser";
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json"
+import OntologySunburst from "@/components/Ontologies/OntologySunburst";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import ontologyBrowserStore from "@/store/ontologyBrowser";
 Sunburst(Highcharts)
 
 const sinon = require("sinon"),

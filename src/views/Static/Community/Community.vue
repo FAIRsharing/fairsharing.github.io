@@ -636,10 +636,11 @@
 * All static pages will be handle through this namespace
 * @namespace Static
 */
+import {isArray} from "lodash";
+
+import Icon from "@/components/Icon";
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import communityPageData from "@/data/communityPageData.json"
-import Icon from "@/components/Icon";
-import {isArray} from "lodash";
 /** This component handles the sign-up/register page
 * @memberOf Static
 * @name Community

@@ -1,15 +1,16 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
+import { RouterLinkStub } from '@vue/test-utils';
+import sinon from "sinon"
 import VueRouter from "vue-router"
 import Vuex from "vuex"
-import sinon from "sinon"
-import { RouterLinkStub } from '@vue/test-utils';
-import User from "@/views/Users/User.vue"
-import Client from "@/lib/Client/RESTClient.js"
-import ExternalClient from "@/lib/Client/ExternalClients.js"
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
-import usersStore from "@/store/users";
-import editorStore from "@/store/editor";
+
 import ORCIDfixture from "@/../tests/fixtures/ORCIDpub.json"
+import ExternalClient from "@/lib/Client/ExternalClients.js"
+import Client from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import editorStore from "@/store/editor";
+import usersStore from "@/store/users";
+import User from "@/views/Users/User.vue"
 
 
 const localVue = createLocalVue();

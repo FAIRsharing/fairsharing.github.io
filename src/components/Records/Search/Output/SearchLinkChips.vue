@@ -43,8 +43,10 @@
 
 <script>
 import {isEqual} from "lodash";
-import KeywordTooltip from "../../Shared/KeywordTooltip";
+
 import recordsCardUtils from "@/utils/recordsCardUtils";
+
+import KeywordTooltip from "../../Shared/KeywordTooltip";
 export default {
   name: "SearchLinkChips",
   components: {KeywordTooltip},

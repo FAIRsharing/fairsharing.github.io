@@ -1,5 +1,6 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuetify from "vuetify"
+
 import StatusPills from "@/components/Records/Shared/StatusPills.vue"
 import light from "@/plugins/theme";
 

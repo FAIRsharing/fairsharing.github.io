@@ -1,6 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
-import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 import Vuetify from "vuetify"
+
+import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
 
 describe("ActivitiesStaticTable.vue", function () {
     let wrapper;

@@ -1,17 +1,18 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import RestClient from "@/lib/Client/RESTClient.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import CreateRecord from "@/views/CreateRecord/NewRecord.vue"
-import usersStore from "@/store/users.js";
-import recordStore from "@/store/recordData.js";
-import editorStore from "@/store/editor.js";
-import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
-import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
 import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
+import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
 import getDuplicates from "@/lib/GraphClient/queries/getDuplicates.json"
+import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
+import editorStore from "@/store/editor.js";
+import recordStore from "@/store/recordData.js";
+import usersStore from "@/store/users.js";
+import CreateRecord from "@/views/CreateRecord/NewRecord.vue"
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

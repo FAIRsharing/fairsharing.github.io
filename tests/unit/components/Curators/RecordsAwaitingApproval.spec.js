@@ -1,12 +1,13 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
-import fakeData from "@/../tests/fixtures/curationDashboardRecAwaitApproval.json"
-import Client from "@/lib/Client/RESTClient.js"
-import Vuex from "vuex"
-import recordStore from "@/store/recordData.js"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
-import usersStore from "@/store/users"
 import VueRouter from "vue-router"
+import Vuex from "vuex"
+
+import fakeData from "@/../tests/fixtures/curationDashboardRecAwaitApproval.json"
+import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
+import Client from "@/lib/Client/RESTClient.js"
+import recordStore from "@/store/recordData.js"
+import usersStore from "@/store/users"
 
 
 

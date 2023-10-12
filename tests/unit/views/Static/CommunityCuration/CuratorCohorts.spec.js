@@ -1,7 +1,8 @@
 import {shallowMount} from "@vue/test-utils";
-import CuratorCohorts from "@/views/Static/CommunityCuration/CuratorCohorts"
 import Vuetify from "vuetify"
+
 import fakeData from "@/../tests/fixtures/communityCurationCohortsMock.json"
+import CuratorCohorts from "@/views/Static/CommunityCuration/CuratorCohorts"
 
 const vuetify = new Vuetify();
 

@@ -1,4 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
+
 import NoneFound from "@/components/Records/Record/NoneFound.vue"
 
 

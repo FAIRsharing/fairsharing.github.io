@@ -1,4 +1,5 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils"
+import {createLocalVue,shallowMount} from "@vue/test-utils"
+
 import RecordTable from "@/components/Users/Profiles/Private/RecordsTable"
 const localVue = createLocalVue();
 const $router = { push: jest.fn() };

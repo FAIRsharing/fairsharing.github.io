@@ -1,15 +1,16 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
-import userStore from "@/store/users.js";
-import editor from "@/store/editor.js";
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import RESTClient from "@/lib/Client/RESTClient.js";
-import Vuex from "vuex";
-import VueRouter from "vue-router";
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon";
+import VueRouter from "vue-router";
 import Vuetify from "vuetify";
+import Vuex from "vuex";
+
+import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
 import RestClient from "@/lib/Client/RESTClient";
+import RESTClient from "@/lib/Client/RESTClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import editor from "@/store/editor.js";
 import editorStore from "@/store/editor.js";
+import userStore from "@/store/users.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

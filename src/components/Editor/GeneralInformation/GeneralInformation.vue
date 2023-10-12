@@ -120,13 +120,15 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions, mapState, mapMutations } from "vuex"
-    import Contact from "./Contact";
-    import Maintainers from "./Maintainers";
-    import EditTags from "./EditTags";
-    import BaseFields from "./BaseFields";
+    import { mapActions, mapGetters, mapMutations,mapState } from "vuex"
+
     import Loaders from "@/components/Navigation/Loaders";
+
     import Alerts from "../Alerts";
+    import BaseFields from "./BaseFields";
+    import Contact from "./Contact";
+    import EditTags from "./EditTags";
+    import Maintainers from "./Maintainers";
 
     const diff = require("deep-object-diff").diff;
 

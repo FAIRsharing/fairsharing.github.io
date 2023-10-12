@@ -250,8 +250,9 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex"
     import { isEqual } from 'lodash'
+import {mapGetters, mapState} from "vuex"
+
     import { isRequired, isUrl } from "@/utils/rules.js"
 
     export default {

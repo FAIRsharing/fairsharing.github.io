@@ -1,5 +1,6 @@
-import Client from "@/lib/Client/RESTClient.js"
 import sinon from "sinon"
+
+import Client from "@/lib/Client/RESTClient.js"
 
 describe("RESTClient.js", function () {
     let restStub = sinon.stub(Client.prototype, "getUserRoles");

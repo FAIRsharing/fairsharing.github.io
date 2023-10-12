@@ -1,10 +1,11 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import Vuex from "vuex"
-import VueRouter from "vue-router"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
-import OauthLogin from "@/views/Users/Login/OauthLogin.vue"
+import VueRouter from "vue-router"
+import Vuex from "vuex"
+
 import Client from "@/lib/Client/RESTClient.js"
 import usersStore from "@/store/users.js";
+import OauthLogin from "@/views/Users/Login/OauthLogin.vue"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

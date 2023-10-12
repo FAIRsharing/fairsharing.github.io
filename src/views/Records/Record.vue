@@ -296,30 +296,32 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
-import Client from '@/lib/GraphClient/GraphClient.js'
-import RestClient from "@/lib/Client/RESTClient.js"
-import stringUtils from '@/utils/stringUtils';
-import getHostname from "@/utils/generalUtils";
-import GeneralInfo from "@/components/Records/Record/GeneralInfo";
-import Tools from '@/components/Records/Record/Tools';
-import DataProcessesAndConditions from '@/components/Records/Record/DataProcessesAndConditions';
-import Publications from '@/components/Records/Record/Publications';
-import Support from '@/components/Records/Record/Support';
-import NotFound from "@/views/Errors/404"
-import Organisations from "@/components/Records/Record/Organisations";
-import Collections from "@/components/Records/Record/Collections";
-import RelatedContent from "@/components/Records/Record/RelatedContent";
-import RecordHistory from "@/components/Records/Record/History/RecordHistory";
+
 import Loaders from "@/components/Navigation/Loaders";
-import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
-import Tombstone from "../Errors/Tombstone";
-import Hidden from "../Errors/Hidden";
 import AdditionalInfo from "@/components/Records/Record/AdditionalInfo";
+import SearchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection";
+import Collections from "@/components/Records/Record/Collections";
 import CuratorNotes from "@/components/Records/Record/CuratorNotes";
-import RecordMenu from "@/components/Records/Record/RecordMenu";
+import DataProcessesAndConditions from '@/components/Records/Record/DataProcessesAndConditions';
+import GeneralInfo from "@/components/Records/Record/GeneralInfo";
+import RecordHistory from "@/components/Records/Record/History/RecordHistory";
+import Organisations from "@/components/Records/Record/Organisations";
+import Publications from '@/components/Records/Record/Publications';
 import RecordAlert from "@/components/Records/Record/RecordAlert";
-import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
+import RecordMenu from "@/components/Records/Record/RecordMenu";
 import RecordSnackbar from "@/components/Records/Record/RecordSnackBar";
+import RelatedContent from "@/components/Records/Record/RelatedContent";
+import Support from '@/components/Records/Record/Support';
+import Tools from '@/components/Records/Record/Tools';
+import AlertBuilder from "@/lib/AlertBuilder/AlertBuilder";
+import RestClient from "@/lib/Client/RESTClient.js"
+import Client from '@/lib/GraphClient/GraphClient.js'
+import getHostname from "@/utils/generalUtils";
+import stringUtils from '@/utils/stringUtils';
+import NotFound from "@/views/Errors/404"
+
+import Hidden from "../Errors/Hidden";
+import Tombstone from "../Errors/Tombstone";
 
 const client = new RestClient();
 export default {

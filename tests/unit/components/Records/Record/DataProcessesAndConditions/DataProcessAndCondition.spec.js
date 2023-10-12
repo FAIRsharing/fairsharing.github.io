@@ -1,8 +1,9 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition"
+import Record from "@/store/recordData.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

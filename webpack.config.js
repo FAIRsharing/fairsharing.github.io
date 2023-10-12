@@ -1,6 +1,5 @@
 // webpack.config.js
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const path = require("path");
 const webpack = require('webpack');
@@ -29,7 +28,6 @@ module.exports = {
                 test: /\.css$/,
                 use: [
                     "vue-style-loader",
-                    MiniCssExtractPlugin.loader,
                     "css-loader"
                 ]
             },
@@ -66,7 +64,6 @@ module.exports = {
         new webpack.DefinePlugin( {
             "process.env": dotenv.parsed
         } ),
-        new MiniCssExtractPlugin()
     ],
 
 };

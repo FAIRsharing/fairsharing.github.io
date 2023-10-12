@@ -1,6 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import AnyAllButton from "@/components/Records/Search/Input/AnyAllButton.vue"
 
 const localVue = createLocalVue();

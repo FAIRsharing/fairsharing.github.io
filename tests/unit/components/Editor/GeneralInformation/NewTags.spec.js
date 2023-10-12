@@ -1,10 +1,11 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import NewTags from "@/components/Editor/GeneralInformation/NewTags.vue"
-import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
+import recordStore from "@/store/recordData.js"
 const VueScrollTo = require('vue-scrollto');
 
 const localVue = createLocalVue();

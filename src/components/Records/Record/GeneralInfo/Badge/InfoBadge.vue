@@ -77,10 +77,10 @@
 </template>
 
 <script>
-import BadgeBuilder from "@/lib/BadgeBuilder/BadgeBuilder";
-import RecordStatus from "@/components/Records/Shared/RecordStatus";
-import {prepareAssociations} from "@/utils/recordTabUtils";
 import Icon from "@/components/Icon"
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import BadgeBuilder from "@/lib/BadgeBuilder/BadgeBuilder";
+import {prepareAssociations} from "@/utils/recordTabUtils";
 
 export default {
   name: "InfoBadge",

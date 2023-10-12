@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
-import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
+
 import Client from "@/lib/Client/RESTClient.js"
+import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
 
 const localVue = createLocalVue();
 

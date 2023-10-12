@@ -1,5 +1,6 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
+
 import jumpToTop from "@/components/Navigation/jumpToTop.vue"
 const vuetify = new Vuetify();
 import VueScrollTo from "vue-scrollto";

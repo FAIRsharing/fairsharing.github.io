@@ -1,14 +1,15 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import relationTypes from "@/../tests/fixtures/relationTypes.json"
 import editRelations from "@/components/Editor/EditRelationships.vue"
-import recordStore from "@/store/recordData.js";
-import editorStore from "@/store/editor.js";
-import userStore from "@/store/users.js";
 import RestClient from "@/lib/Client/RESTClient.js"
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import relationTypes from "@/../tests/fixtures/relationTypes.json"
+import editorStore from "@/store/editor.js";
+import recordStore from "@/store/recordData.js";
+import userStore from "@/store/users.js";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();

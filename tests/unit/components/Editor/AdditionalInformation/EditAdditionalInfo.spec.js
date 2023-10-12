@@ -1,13 +1,14 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
+import VueRouter from "vue-router";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import additionalInformationFixture from "@/../tests/fixtures/additionalInformation.json"
 import EditAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo.vue"
+import RestClient from "@/lib/Client/RESTClient.js"
+import editorStore from "@/store/editor.js"
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
-import editorStore from "@/store/editor.js"
-import VueRouter from "vue-router";
-import additionalInformationFixture from "@/../tests/fixtures/additionalInformation.json"
-import RestClient from "@/lib/Client/RESTClient.js"
 const sinon = require('sinon');
 const VueScrollTo = require('vue-scrollto');
 

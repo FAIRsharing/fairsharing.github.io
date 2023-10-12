@@ -1,9 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import GeneralInfo from "@/components/Records/Record/GeneralInfo.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
+import VueRouter from "vue-router";
 import Vuetify from "vuetify"
 import Vuex from "vuex";
+
+import GeneralInfo from "@/components/Records/Record/GeneralInfo.vue"
 import Record from "@/store/recordData";
-import VueRouter from "vue-router";
 import record from "@/store/recordData";
 
 const localVue = createLocalVue();

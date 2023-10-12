@@ -1,6 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
-import UploadFilesPresentation from "@/components/UploadFiles/UploadFilesPresentation"
 import Vue from "vue"
+
+import UploadFilesPresentation from "@/components/UploadFiles/UploadFilesPresentation"
 
 
 describe('UploadFilesPresentation.vue', () => {

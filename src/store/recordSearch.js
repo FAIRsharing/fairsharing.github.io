@@ -1,6 +1,6 @@
+import filterMapping from "@/data/FiltersLabelMapping.json"
 import Client from "@/lib/GraphClient/GraphClient.js"
 import recordsQuery from "@/lib/GraphClient/queries/getRecords.json"
-import filterMapping from "@/data/FiltersLabelMapping.json"
 
 let client = new Client();
 

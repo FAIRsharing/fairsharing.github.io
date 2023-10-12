@@ -1,5 +1,6 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import VueMeta from "vue-meta";
+
 import Maintenance from "@/views/Errors/Maintenance.vue";
 
 const localVue = createLocalVue();

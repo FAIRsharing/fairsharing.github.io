@@ -168,7 +168,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
+
 import Icon from "@/components/Icon";
 import StatusPills from "@/components/Users/Profiles/Private/StatusPills"
 import stringUtils from "@/utils/stringUtils";

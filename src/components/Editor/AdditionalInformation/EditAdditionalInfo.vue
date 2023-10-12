@@ -313,14 +313,16 @@
 </template>
 
 <script>
-import Vue from "vue"
 import { isEqual } from "lodash"
-import {mapActions, mapGetters, mapState, mapMutations} from "vuex";
-import stringUtils from '@/utils/stringUtils'
-import FieldInput from "./FieldInput";
-import { isUrl, isRequired } from "@/utils/rules.js"
+import Vue from "vue"
+import {mapActions, mapGetters, mapMutations,mapState} from "vuex";
+
 import sortObj from "@/utils/generalUtils"
+import { isRequired,isUrl } from "@/utils/rules.js"
+import stringUtils from '@/utils/stringUtils'
+
 import Alerts from "../Alerts";
+import FieldInput from "./FieldInput";
 const diff = require("deep-object-diff").diff;
 
 export default {

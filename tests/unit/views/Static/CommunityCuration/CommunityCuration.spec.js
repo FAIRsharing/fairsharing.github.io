@@ -1,7 +1,8 @@
 import {shallowMount} from "@vue/test-utils";
 import VueCodeHighlight  from 'vue-code-highlight';
-import CommunityCuration from "@/views/Static/CommunityCuration/CommunityCuration"
 import Vuetify from "vuetify"
+
+import CommunityCuration from "@/views/Static/CommunityCuration/CommunityCuration"
 
 const vuetify = new Vuetify();
 

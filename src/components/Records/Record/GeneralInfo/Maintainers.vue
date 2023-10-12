@@ -74,6 +74,7 @@
 
 <script>
 import {mapGetters, mapState} from "vuex";
+
 import Icon from "@/components/Icon";
 export default {
   name: "Maintainers",

@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
-import RequestNewPassword from "@/views/Users/RequestNewPassword.vue"
+
 import Client from "@/lib/Client/RESTClient.js"
+import RequestNewPassword from "@/views/Users/RequestNewPassword.vue"
 
 const localVue = createLocalVue();
 

@@ -1,13 +1,15 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import EditPublicProfile from "@/views/Users/EditPublicProfile"
 import Vuetify from "vuetify"
 import Vuex from "vuex";
+
+import EditPublicProfile from "@/views/Users/EditPublicProfile"
 const vuetify = new Vuetify();
 const localVue = createLocalVue();
-import userStore from "@/store/users";
 import sinon from "sinon"
-import Client from "@/lib/Client/RESTClient.js"
 import VueScrollTo from "vue-scrollto";
+
+import Client from "@/lib/Client/RESTClient.js"
+import userStore from "@/store/users";
 
 localVue.use(Vuex);
 localVue.use(VueScrollTo,{})

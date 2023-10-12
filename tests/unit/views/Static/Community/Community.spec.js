@@ -1,9 +1,10 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Community from "@/views/Static/Community/Community.vue";
-import Vuetify from "vuetify"
-import icons from "@/plugins/icons";
 import linkify from "vue-linkify";
 import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify"
+
+import icons from "@/plugins/icons";
+import Community from "@/views/Static/Community/Community.vue";
 
 const VueScrollTo = require('vue-scrollto');
 const localVue = createLocalVue();

@@ -1,4 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
+
 import RecordMenu from "@/components/Records/Record/RecordMenu.vue"
 
 describe("RecordMenu.vue", function(){

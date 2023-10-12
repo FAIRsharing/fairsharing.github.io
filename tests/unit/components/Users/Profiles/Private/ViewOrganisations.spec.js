@@ -1,4 +1,5 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
+
 import OrganisationsTable from "@/components/Users/Profiles/Private/ViewOrganisations";
 const localVue = createLocalVue();
 

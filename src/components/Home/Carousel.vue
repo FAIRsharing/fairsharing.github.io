@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import homePageData from "@/data/homePageData.json";
 import TabContent from "@/components/Home/CarouselContent";
+import homePageData from "@/data/homePageData.json";
 
 export default {
 name: "Carousel",

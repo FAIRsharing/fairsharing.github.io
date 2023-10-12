@@ -1,6 +1,7 @@
-import Client from "@/lib/Client/ExternalClients.js";
 import axios from "axios"
 import Vue from "vue";
+
+import Client from "@/lib/Client/ExternalClients.js";
 
 const sinon = require("sinon");
 

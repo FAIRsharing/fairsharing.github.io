@@ -40,12 +40,13 @@
 </template>
 
 <script>
-    import { mapActions, mapState, mapGetters } from "vuex"
     import { isEqual } from "lodash"
-    import EditLicences from "./EditLicenceLinks";
-    import EditSupportLinks from "./EditSupportLinks"
+    import { mapActions, mapGetters,mapState } from "vuex"
+
     import Loaders from "../../Navigation/Loaders";
     import Alerts from "../Alerts";
+    import EditLicences from "./EditLicenceLinks";
+    import EditSupportLinks from "./EditSupportLinks"
 
     export default {
         name: "EditDataAccess",

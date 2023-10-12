@@ -282,11 +282,12 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from "vuex"
     import { isEqual } from "lodash"
+    import { mapActions, mapGetters,mapState } from "vuex"
+
+    import Alerts from "@/components/Editor/Alerts";
     import PublicationClient from "@/lib/Client/ExternalClients.js"
     import RestClient from "@/lib/Client/RESTClient.js"
-    import Alerts from "@/components/Editor/Alerts";
     import { isRequired } from "@/utils/rules.js"
     const pubClient = new PublicationClient();
     const restClient = new RestClient();

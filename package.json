@@ -39,6 +39,7 @@
     "node-gyp": "^3.8.0",
     "npm-check": "^6.0.1",
     "prettier": "^2.8.6",
+    "regenerator-runtime": "^0.13.11",
     "roboto-fontface": "*",
     "sigma": "^2.4.0",
     "simple-analytics-vue": "^2.0.0",
@@ -102,5 +103,10 @@
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }

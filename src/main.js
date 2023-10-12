@@ -26,6 +26,7 @@ import "vue-code-highlight/themes/window.css";
 import 'prism-es6/components/prism-ruby.min';
 import 'prism-es6/components/prism-python.min';
 import 'core-js/stable'
+import 'regenerator-runtime/runtime';
 
 
 /* import router & store */
@@ -37,7 +38,7 @@ import store from './store'
 import linkify from 'vue-linkify'
 Vue.directive('linkified', linkify)
 
-import '@babel/polyfill'
+// import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 

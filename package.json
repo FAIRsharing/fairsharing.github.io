@@ -91,6 +91,7 @@
     "jsdoc": "^4.0.0",
     "jsdoc-vuejs": "^3.0.9",
     "lint-staged": "^9.5.0",
+    "mini-css-extract-plugin": "^2.4.5",
     "node-sass": "^7.0.1",
     "path": "*",
     "postcss": "^8.4.21",

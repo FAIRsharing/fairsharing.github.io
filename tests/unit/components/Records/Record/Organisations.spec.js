@@ -76,5 +76,4 @@ describe("Organisations.vue", function () {
         expect(wrapper.vm.getRelations('funds').length).toEqual(1);
     });
 
-
 });

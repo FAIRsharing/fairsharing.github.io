@@ -732,80 +732,66 @@
 
 &lt;script>
 /**
-* All static pages will be handle through this namespace
-* @namespace Static
-*/
-<<<<<<< HEAD
-=======
-import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import {externalLinks, contentTabs, tables, governance, governance_text, meettheteam, rda} from "@/data/communityPageData.json"
-import Icon from "@/components/Icon";
->>>>>>> dev
+ * All static pages will be handle through this namespace
+ * @namespace Static
+ */
 import {isArray} from "lodash";
 
 import Icon from "@/components/Icon";
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import communityPageData from "@/data/communityPageData.json"
+import {contentTabs, externalLinks, governance, governance_text, meettheteam, rda,tables} from "@/data/communityPageData.json"
 /** This component handles the sign-up/register page
-* @memberOf Static
-* @name Community
-* @type module
-* @instance
-* */
+ * @memberOf Static
+ * @name Community
+ * @type module
+ * @instance
+ * */
 export default {
-  name: "Community",
-  components: {Icon, ActivitiesStaticTable},
-  title: "This will be the community page",
-  data: () => {
-    return {
-      applyCss: false,
-      currentAnchor:'',
-<<<<<<< HEAD
-      externalLinks: communityPageData.externalLinks,
-      contentTabs: communityPageData.contentTabs,
-      tables: communityPageData.tables,
-      governance: communityPageData.governance,
-      meettheteam: communityPageData.meettheteam,
-=======
-      externalLinks,
-      contentTabs,
-      tables,
-      governance,
-      governance_text,
-      meettheteam,
->>>>>>> dev
-      Icon,
-      rda: communityPageData.rda
-    }
-  },
-  watch: {
-    $route: {
-      deep:true,
-      handler() {
-        this.applyCss = false
-        this.$nextTick(() => {
-          this.applyCss = true
-        })
-      }
-    }
-  },
-  created() {
-    this.$nextTick(() => {
-      // update the UI padding and margin after DOM is fully loaded.
-      this.applyCss = true
-    })
-  },
-  methods: {
-    jumpToAnchor(selectedAnchor) {
-      if (selectedAnchor !== this.currentAnchor) {
-        this.$router.push({hash: `${selectedAnchor}`});
-        this.currentAnchor = selectedAnchor;
-      }
+    name: "Community",
+    components: {Icon, ActivitiesStaticTable},
+    title: "This will be the community page",
+    data: () => {
+        return {
+            applyCss: false,
+            currentAnchor:'',
+            externalLinks,
+            contentTabs,
+            tables,
+            governance,
+            governance_text,
+            meettheteam,
+            Icon,
+            rda
+        }
     },
-    isArray(input){
-      return isArray(input)
+    watch: {
+        $route: {
+            deep:true,
+            handler() {
+                this.applyCss = false
+                this.$nextTick(() => {
+                    this.applyCss = true
+                })
+            }
+        }
+    },
+    created() {
+        this.$nextTick(() => {
+            // update the UI padding and margin after DOM is fully loaded.
+            this.applyCss = true
+        })
+    },
+    methods: {
+        jumpToAnchor(selectedAnchor) {
+            if (selectedAnchor !== this.currentAnchor) {
+                this.$router.push({hash: `${selectedAnchor}`});
+                this.currentAnchor = selectedAnchor;
+            }
+        },
+        isArray(input){
+            return isArray(input)
+        }
     }
-  }
 }
 &lt;/script>
 
@@ -878,9 +864,7 @@ td {
   white-space: break-spaces;
 }
 
-&lt;/style>
-
-</pre>
+&lt;/style></pre>
     </article>
 </section>
 

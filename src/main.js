@@ -1,11 +1,11 @@
 /*  import base */
 import "vue-code-highlight/themes/prism-twilight.css";
 import "vue-code-highlight/themes/window.css";
-import 'prism-es6/components/prism-ruby.min';
-import 'prism-es6/components/prism-python.min';
 import 'core-js/stable'
 import 'regenerator-runtime/runtime';
 
+// import 'prism-es6/components/prism-ruby.min';
+// import 'prism-es6/components/prism-python.min';
 import Highcharts from 'highcharts'
 import options3D from 'highcharts/highcharts-3d'
 import More from 'highcharts/highcharts-more'

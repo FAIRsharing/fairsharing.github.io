@@ -499,14 +499,20 @@
             {{ key }}
           </h4>
           <div
+            v-for="(itemText,itemIndex) in governance_text"
+            :key="itemText+'_'+itemIndex"
+          >
+            <p
+              class="ma-1"
+              v-html="$sanitize(itemText.text)"
+            />
+          </div>
+          <div
             v-for="(item,itemIndex) in governanceItem"
             :key="item.title+'_'+itemIndex"
-            class="ml-8"
+            class="mt-5"
           >
             <div class="mb-5">
-              <h4 class="text-h5">
-                {{ item.title }}
-              </h4>
               <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"
@@ -636,6 +642,12 @@
 * All static pages will be handle through this namespace
 * @namespace Static
 */
+<<<<<<< HEAD
+=======
+import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+import {externalLinks, contentTabs, tables, governance, governance_text, meettheteam, rda} from "@/data/communityPageData.json"
+import Icon from "@/components/Icon";
+>>>>>>> dev
 import {isArray} from "lodash";
 
 import Icon from "@/components/Icon";
@@ -655,11 +667,20 @@ export default {
     return {
       applyCss: false,
       currentAnchor:'',
+<<<<<<< HEAD
       externalLinks: communityPageData.externalLinks,
       contentTabs: communityPageData.contentTabs,
       tables: communityPageData.tables,
       governance: communityPageData.governance,
       meettheteam: communityPageData.meettheteam,
+=======
+      externalLinks,
+      contentTabs,
+      tables,
+      governance,
+      governance_text,
+      meettheteam,
+>>>>>>> dev
       Icon,
       rda: communityPageData.rda
     }
@@ -765,3 +786,4 @@ td {
 }
 
 </style>
+

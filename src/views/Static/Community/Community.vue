@@ -499,14 +499,20 @@
             {{ key }}
           </h4>
           <div
+            v-for="(itemText,itemIndex) in governance_text"
+            :key="itemText+'_'+itemIndex"
+          >
+            <p
+              class="ma-1"
+              v-html="$sanitize(itemText.text)"
+            />
+          </div>
+          <div
             v-for="(item,itemIndex) in governanceItem"
             :key="item.title+'_'+itemIndex"
-            class="ml-8"
+            class="mt-5"
           >
             <div class="mb-5">
-              <h4 class="text-h5">
-                {{ item.title }}
-              </h4>
               <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"
@@ -637,7 +643,7 @@
 * @namespace Static
 */
 import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import {externalLinks, contentTabs, tables, governance, meettheteam, rda} from "@/data/communityPageData.json"
+import {externalLinks, contentTabs, tables, governance, governance_text, meettheteam, rda} from "@/data/communityPageData.json"
 import Icon from "@/components/Icon";
 import {isArray} from "lodash";
 /** This component handles the sign-up/register page
@@ -658,6 +664,7 @@ export default {
       contentTabs,
       tables,
       governance,
+      governance_text,
       meettheteam,
       Icon,
       rda
@@ -764,3 +771,4 @@ td {
 }
 
 </style>
+

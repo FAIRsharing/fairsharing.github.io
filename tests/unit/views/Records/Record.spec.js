@@ -15,7 +15,6 @@ import record from "@/store/recordData.js";
 import users from "@/store/users.js";
 import Record from "@/views/Records/Record.vue";
 
-
 // Initializing context for mounting
 const localVue = createLocalVue();
 localVue.use(Vuex);

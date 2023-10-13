@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
-    "test:unit": "vue-cli-service test:unit --coverage",
+    "test:unit": "vue-cli-service test:unit --coverage --silent",
     "lint": "vue-cli-service lint",
     "lint:fix": "vue-cli-service lint --fix",
     "codacy": "cat ./coverage/lcov.info | codacy-coverage -t ",

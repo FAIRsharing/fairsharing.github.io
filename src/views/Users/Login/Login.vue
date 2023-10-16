@@ -143,9 +143,10 @@
 
 <script>
 import {mapActions, mapState} from 'vuex'
+
 import MessageHandler from "@/components/Users/MessageHandler";
-import stringUtils from '@/utils/stringUtils';
 import { isRequired } from "@/utils/rules.js"
+import stringUtils from '@/utils/stringUtils';
 
 /** This component handles the login page
  *

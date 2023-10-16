@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import Home from "@/views/Static/Timeline/Timeline"
 import Vuetify from "vuetify"
+
+import Home from "@/views/Static/Timeline/Timeline"
 
 const vuetify = new Vuetify();
 
@@ -14,7 +15,7 @@ describe("Timeline.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Timeline");
+        expect(wrapper.vm.$options.name).toMatch("Timeline");
     });
 
 });

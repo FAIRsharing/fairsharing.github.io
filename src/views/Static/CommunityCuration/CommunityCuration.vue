@@ -148,15 +148,15 @@
 </template>
 
 <script>
-import {communityCuration, communityCodeOfConductData} from '@/data/communityCurationData.json';
+import communityCurationData from '@/data/communityCurationData.json';
 import getHostname from "@/utils/generalUtils";
     export default {
       name: "CommunityCuration",
       mixins: [ getHostname ],
       data: () => {
         return {
-          communityCurationData: communityCuration,
-          communityCodeOfConductData: communityCodeOfConductData
+          communityCurationData: communityCurationData.communityCuration,
+          communityCodeOfConductData: communityCurationData.communityCodeOfConductData
         }
       }
     }

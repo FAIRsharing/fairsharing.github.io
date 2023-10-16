@@ -217,9 +217,11 @@
 </template>
 
 <script>
-    import { mapGetters, mapState, mapActions } from "vuex"
+    import { mapActions,mapGetters, mapState } from "vuex"
+
     import KeywordTooltip from "@/components/Records/Shared/KeywordTooltip.vue";
     import recordsCardUtils from "@/utils/recordsCardUtils";
+
     import NewTags from "./NewTags";
 
     export default {

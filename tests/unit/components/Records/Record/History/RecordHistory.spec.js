@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import History from "@/components/Records/Record/History/RecordHistory.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import History from "@/components/Records/Record/History/RecordHistory.vue"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -22,7 +23,7 @@ describe("RecordHistory.vue", function() {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("RecordHistory");
+        expect(wrapper.vm.$options.name).toMatch("RecordHistory");
     });
 
     it('has proper watchers', () => {
@@ -33,8 +34,8 @@ describe("RecordHistory.vue", function() {
         wrapper.vm.subTab = 2;
         expect(wrapper.vm.currentPanel.length).toBe(0);
         expect(wrapper.vm.legacyPanels.length).toBe(0);
-
-        wrapper.vm.reverseDate = false;
+        // wrapper.vm.reverseDate = false;
+        wrapper.vm.$options.watch.reverseDate.call(wrapper.vm, false)
         expect(wrapper.vm.currentPanel.length).toBe(0);
         expect(wrapper.vm.legacyPanels.length).toBe(0);
         expect(wrapper.vm.page).toBe(1);

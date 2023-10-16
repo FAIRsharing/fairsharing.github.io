@@ -36,8 +36,9 @@
 </template>
 
 <script>
-import NoneFound from "@/components/Records/Record/NoneFound";
 import {mapGetters} from "vuex";
+
+import NoneFound from "@/components/Records/Record/NoneFound";
 
 export default {
   name: "Countries",

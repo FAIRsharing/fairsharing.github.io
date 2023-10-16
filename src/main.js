@@ -1,45 +1,45 @@
 /*  import base */
-import Vue from "vue";
-import App from "./App.vue";
-import VueMeta from "vue-meta";
-import vuetify from './plugins/vuetify'
-import VueScrollTo from 'vue-scrollto';
-import VueMoment from 'vue-moment';
-import Clipboard from 'v-clipboard'
-import HighchartsVue from 'highcharts-vue'
-import Highcharts from 'highcharts'
-import Networkgraph from 'highcharts/modules/networkgraph'
-import Variablepie from 'highcharts/modules/variable-pie'
-import More from 'highcharts/highcharts-more'
-import Export from 'highcharts/modules/exporting'
-import Drilldown from 'highcharts/modules/drilldown'
-import options3D from 'highcharts/highcharts-3d'
-import Sunburst from 'highcharts/modules/sunburst'
-import VueCodeHighlight from 'vue-code-highlight';
-import VueSanitize from "vue-sanitize";
-import Particles from "vue2-particles";
-import VueGtag from "vue-gtag";
-import VueHead from 'vue-head';
-import SimpleAnalytics from "simple-analytics-vue";
 import "vue-code-highlight/themes/prism-twilight.css";
 import "vue-code-highlight/themes/window.css";
-import 'prism-es6/components/prism-ruby.min';
-import 'prism-es6/components/prism-python.min';
+import 'core-js/stable'
+import 'regenerator-runtime/runtime';
 
-
-/* import router & store */
-import router from './router'
-import {beforeEach,afterEach} from "./router";
-import store from './store'
-
+// import 'prism-es6/components/prism-ruby.min';
+// import 'prism-es6/components/prism-python.min';
+import Highcharts from 'highcharts'
+import options3D from 'highcharts/highcharts-3d'
+import More from 'highcharts/highcharts-more'
+import Drilldown from 'highcharts/modules/drilldown'
+import Export from 'highcharts/modules/exporting'
+import Networkgraph from 'highcharts/modules/networkgraph'
+import Sunburst from 'highcharts/modules/sunburst'
+import Variablepie from 'highcharts/modules/variable-pie'
+import HighchartsVue from 'highcharts-vue'
+import SimpleAnalytics from "simple-analytics-vue";
+import Clipboard from 'v-clipboard'
+import Vue from "vue";
+import VueCodeHighlight from 'vue-code-highlight';
+import VueGtag from "vue-gtag";
+import VueHead from 'vue-head';
 /* import linkify to turn url within text into an actual url link */
 import linkify from 'vue-linkify'
+import VueMeta from "vue-meta";
+import VueMoment from 'vue-moment';
+import VueSanitize from "vue-sanitize";
+import VueScrollTo from 'vue-scrollto';
+import Particles from "vue2-particles";
+
+import App from "./App.vue";
+import vuetify from './plugins/vuetify'
+/* import router & store */
+import router from './router'
+import {afterEach,beforeEach} from "./router";
+import store from './store'
 Vue.directive('linkified', linkify)
 
-import '@babel/polyfill'
+// import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@fortawesome/fontawesome-free/css/all.css'
-
 import 'vue-json-pretty/lib/styles.css'
 
 

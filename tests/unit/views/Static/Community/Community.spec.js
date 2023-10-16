@@ -1,13 +1,15 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Community from "@/views/Static/Community/Community.vue";
-import Vuetify from "vuetify"
-import icons from "@/plugins/icons";
 import linkify from "vue-linkify";
 import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify"
+
+import icons from "@/plugins/icons";
+import Community from "@/views/Static/Community/Community.vue";
 
 const VueScrollTo = require('vue-scrollto');
 const localVue = createLocalVue();
-localVue.use(VueSanitize, VueScrollTo)
+localVue.use(VueSanitize)
+localVue.use(VueScrollTo)
 
 let $route = {
     name: "Community",
@@ -35,8 +37,15 @@ describe("Community.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Community");
-        wrapper.vm.$route.hash = '#anotherAnchor'
+        expect(wrapper.vm.$options.name).toMatch("Community");
+        // wrapper.vm.$route.hash = '#anotherAnchor'
+        $route.hash = "#anotherAnchor"
+        wrapper = shallowMount(Community, {
+            localVue,
+            vuetify,
+            mocks: {$route},
+            stubs: ['router-link']
+        })
         expect(wrapper.vm.applyCss).toBe(false);
     });
 

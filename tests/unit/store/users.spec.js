@@ -1,9 +1,10 @@
-import { mutations, actions } from "@/store/users.js"
+import sinon from "sinon"
+import Vue from "vue"
+
 import Client from "@/lib/Client/RESTClient.js"
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import { actions,mutations } from "@/store/users.js"
 import { initUserDataState } from "@/store/utils.js"
-import Vue from "vue"
-import sinon from "sinon"
 
 Vue.config.silent = true;
 
@@ -432,6 +433,7 @@ describe('Actions/Mutations', () => {
         await actions.validateUserToken(state);
         expect(actions.commit).toHaveBeenCalledTimes(0);
         restClientStub.restore();
+        restClientStub.restore();
 
         restClientStub = sinon.stub(Client.prototype, 'executeQuery');
         restClientStub.returns({data: {success: false}});
@@ -447,5 +449,16 @@ describe('Actions/Mutations', () => {
         restClientStub.restore();
     });
 
+    it('Error Handling: getPublicUser', async () => {
+        let state = {
+            state: {
+                user: function(){
+                    return {}
+                }
+            }
+        };
 
+        await actions.getPublicUser(state, 1);
+        expect(actions.commit).toHaveBeenCalledTimes(0);
+    });
 });

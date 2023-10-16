@@ -1,6 +1,7 @@
-import {actions, mutations, getters, buildFilters} from "@/store/searchFilters.js"
-import RecordsData from '../../../tests/fixtures/getRecords.json'
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import {actions, buildFilters,getters, mutations} from "@/store/searchFilters.js"
+
+import RecordsData from '../../../tests/fixtures/getRecords.json'
 
 let sinon = require("sinon");
 

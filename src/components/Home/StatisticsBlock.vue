@@ -75,9 +75,9 @@
 </template>
 
 <script>
+import homePageData from "@/data/homePageData.json"
 import RestClient from "@/lib/Client/RESTClient.js"
 import {truncate} from "@/utils/stringUtils";
-import {blockCategories, statisticsData} from "@/data/homePageData.json"
 
 const restClient = new RestClient();
 
@@ -91,8 +91,8 @@ export default {
         resources: 1,
         views: 1,
       },
-      blockCategories: blockCategories,
-      statisticsData: statisticsData
+      blockCategories: homePageData.blockCategories,
+      statisticsData: homePageData.statisticsData
     }
   },
 

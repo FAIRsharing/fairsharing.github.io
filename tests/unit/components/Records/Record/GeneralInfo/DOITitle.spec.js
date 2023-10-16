@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import DOITitle from "@/components/Records/Record/GeneralInfo/DOITitle.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import DOITitle from "@/components/Records/Record/GeneralInfo/DOITitle.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -39,7 +40,7 @@ describe("DOITitle.vue", function(){
             vuetify,
             mocks: {$store}
         })
-        expect(wrapper.name()).toMatch("DOITitle");
+        expect(wrapper.vm.$options.name).toMatch("DOITitle");
     });
 
     it("generates correct doi link", () => {

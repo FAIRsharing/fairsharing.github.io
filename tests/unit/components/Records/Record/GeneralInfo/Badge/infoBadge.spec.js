@@ -1,6 +1,7 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import infoBadge from "@/components/Records/Record/GeneralInfo/Badge/InfoBadge.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+
+import infoBadge from "@/components/Records/Record/GeneralInfo/Badge/InfoBadge.vue"
 
 const localVue = createLocalVue();
 const vuetify = new Vuetify();
@@ -73,7 +74,7 @@ describe("infoBadge.vue", function(){
               }
             },
         })
-        expect(wrapper.name()).toMatch("InfoBadge");
+        expect(wrapper.vm.$options.name).toMatch("InfoBadge");
     });
 
 });

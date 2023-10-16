@@ -1,9 +1,10 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils";
-import App from "@/App.vue";
+import {createLocalVue,shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
-import uiControllerStore from "@/store/uiController.js";
-import introspection from "@/store/introspector.js"
 import Vuex from "vuex";
+
+import App from "@/App.vue";
+import introspection from "@/store/introspector.js"
+import uiControllerStore from "@/store/uiController.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -31,7 +32,6 @@ describe("App.vue", () => {
             stubs: ['router-link', 'router-view']
         });
         wrapper.vm.loading = false
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
     });
-
 });

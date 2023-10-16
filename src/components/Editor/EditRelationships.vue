@@ -429,14 +429,16 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from "vuex"
-    import { isEqual, capitalize } from "lodash"
-    import stringUtils from '@/utils/stringUtils';
-    import RecordStatus from "@/components/Records/Shared/RecordStatus";
-    import Loaders from "../Navigation/Loaders";
+    import { capitalize,isEqual } from "lodash"
+    import { mapActions, mapGetters,mapState } from "vuex"
+
     import Icon from "@/components/Icon";
-    import Alerts from "./Alerts";
+    import RecordStatus from "@/components/Records/Shared/RecordStatus";
     import { isRequired } from "@/utils/rules.js"
+    import stringUtils from '@/utils/stringUtils';
+
+    import Loaders from "../Navigation/Loaders";
+    import Alerts from "./Alerts";
 
     export default {
         name: "EditRelationships",

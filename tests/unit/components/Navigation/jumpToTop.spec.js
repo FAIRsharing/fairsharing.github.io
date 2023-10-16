@@ -1,5 +1,6 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
+
 import jumpToTop from "@/components/Navigation/jumpToTop.vue"
 const vuetify = new Vuetify();
 import VueScrollTo from "vue-scrollto";
@@ -17,7 +18,7 @@ describe("jumpToTop.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch('JumpToTop');
+        expect(wrapper.vm.$options.name).toMatch('JumpToTop');
     });
 
 });

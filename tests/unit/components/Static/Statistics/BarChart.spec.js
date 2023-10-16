@@ -1,4 +1,5 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
+
 import BarChart from "@/components/Static/Statistics/BarChart.vue"
 
 const localVue = createLocalVue();
@@ -37,7 +38,7 @@ describe("BarChart.vue", () => {
   });
 
   it("can be mounted", () => {
-      expect(wrapper.name()).toMatch("BarChart");
+      expect(wrapper.vm.$options.name).toMatch("BarChart");
       expect(wrapper.vm.optionChartBars.title.text).toBe("This a bar chart");
       expect(wrapper.vm.nameChart).toBe("Name of the chart");
       expect(wrapper.vm.optionChartBars.series[1].name).toMatch("EU");

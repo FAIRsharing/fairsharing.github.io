@@ -187,15 +187,16 @@
 </template>
 
 <script>
-import {truncate} from "@/utils/stringUtils";
 import {mapGetters} from "vuex";
-import {blockInfo} from "@/data/homePageData.json"
+
+import homePageData from "@/data/homePageData.json"
+import {truncate} from "@/utils/stringUtils";
 export default {
   name: "InfoBlock",
   mixins: [truncate],
   data: () => {
     return {
-      blockInfo: blockInfo
+      blockInfo: homePageData.blockInfo
     }
   },
   computed: {

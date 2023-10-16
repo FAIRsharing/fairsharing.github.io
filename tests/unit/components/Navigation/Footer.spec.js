@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import VueRouter from "vue-router"
-import Footer from "@/components/Navigation/Footer.vue"
-import Vuetify from 'vuetify'
 import VueScrollTo from "vue-scrollto";
+import Vuetify from 'vuetify'
+
+import Footer from "@/components/Navigation/Footer.vue"
 
 const vuetify = new Vuetify();
 const localVue = createLocalVue();
@@ -21,6 +22,6 @@ describe("Footer.vue", () => {
                 scrollTo() { /* stub */ }
             }
         });
-        expect(wrapper.name()).toMatch("Footer");
+        expect(wrapper.vm.$options.name).toMatch("Footer");
     })
 });

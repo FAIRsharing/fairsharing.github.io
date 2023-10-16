@@ -28,12 +28,12 @@
 </template>
 
 <script>
-import {privacy} from '@/data/PrivacyPolicyData.json'
+import privacyPolicyData from '@/data/PrivacyPolicyData.json'
 export default {
   name: "Privacy",
   data: () => {
     return {
-      privacyData: privacy,
+      privacyData: privacyPolicyData.privacy,
       panel:[]
     }
   },

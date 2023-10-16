@@ -1,13 +1,14 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import OntologyBrowser from "@/views/Browsers/OntologyBrowser.vue"
-import editorStore from "@/store/editor.js";
-import ontologyBrowserStore from "@/store/ontologyBrowser";
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json"
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import ontologyQuery from "@/lib/GraphClient/queries/ontologies/subjectBrowser.json";
-import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json"
+import editorStore from "@/store/editor.js";
+import ontologyBrowserStore from "@/store/ontologyBrowser";
+import OntologyBrowser from "@/views/Browsers/OntologyBrowser.vue"
 const sinon = require("sinon"),
     localVue = createLocalVue();
 localVue.use(Vuex);
@@ -55,9 +56,10 @@ describe("OntologyBrowser.vue", function() {
             router,
             mocks: {$store, $route, $router}
         });
-        expect(wrapper.name()).toMatch("OntologyBrowser");
+        expect(wrapper.vm.$options.name).toMatch("OntologyBrowser");
         expect(wrapper.vm.term.id).toBe("287245 - Biology");
-        wrapper.vm.search = "Biology"
+        // wrapper.vm.search = "Biology"
+        await wrapper.setData({search : "Biology"})
         expect(wrapper.vm.open).toEqual([' - Natural Science', '287 - Life Science'])
         wrapper.destroy();
     })
@@ -70,7 +72,7 @@ describe("OntologyBrowser.vue", function() {
             router,
             mocks: {$store, $route, $router}
         });
-        expect(wrapper.name()).toMatch("OntologyBrowser");
+        expect(wrapper.vm.$options.name).toMatch("OntologyBrowser");
         expect(wrapper.vm.term).toBeUndefined();
         await wrapper.vm.activateTerms()
         wrapper.vm.searchTerm({identifier: 351, name: 'biology'})
@@ -90,6 +92,5 @@ describe("OntologyBrowser.vue", function() {
 
         wrapper.destroy();
     });
-
 
 });

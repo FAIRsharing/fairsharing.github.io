@@ -314,8 +314,9 @@
 
 <script>
 import {mapActions, mapState} from "vuex";
-import { isRequired, isUrl,isLongEnough } from "@/utils/rules.js"
+
 import RestClient from "@/lib/Client/RESTClient.js"
+import { isLongEnough,isRequired, isUrl } from "@/utils/rules.js"
 const restClient = new RestClient();
 
 export default {

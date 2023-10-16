@@ -101,10 +101,12 @@
 
 <script>
     import { mapState } from "vuex"
-    import { cleanString } from "@/utils/stringUtils"
-    import StatusPills from "./StatusPills";
-    import Record from "@/views/Records/Record";
+
     import Icon from "@/components/Icon";
+    import { cleanString } from "@/utils/stringUtils"
+    import Record from "@/views/Records/Record";
+
+    import StatusPills from "./StatusPills";
 
     export default {
         name: "RecordsTable",

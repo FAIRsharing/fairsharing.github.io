@@ -52,8 +52,9 @@
 
 <script>
 import {mapGetters} from "vuex";
-import SectionTitle from '@/components/Records/Record/SectionTitle'
+
 import Icon from "@/components/Icon"
+import SectionTitle from '@/components/Records/Record/SectionTitle'
 
 export default {
   name: "Tools",

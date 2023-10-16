@@ -1,12 +1,13 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
+import sinon from "sinon";
 import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import Maintainers from "@/components/Editor/GeneralInformation/Maintainers.vue"
+import GraphClient from "@/lib/GraphClient/GraphClient";
+import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
 import recordStore from "@/store/recordData.js";
 import usersStore from "@/store/users";
-import sinon from "sinon";
-import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
-import GraphClient from "@/lib/GraphClient/GraphClient";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -65,7 +66,7 @@ describe('Editor -> Maintainers.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("Maintainers");
+        expect(wrapper.vm.$options.name).toMatch("Maintainers");
         expect(wrapper.vm.getSection("generalInformation").data.maintainers).toStrictEqual([maintainer]);
         expect(wrapper.vm.getSection("generalInformation").data.watchers).toStrictEqual([maintainer, extra]);
     });

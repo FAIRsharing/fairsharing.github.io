@@ -1,14 +1,16 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import VueRouter from "vue-router"
-import Vuex from "vuex"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
+import axios from 'axios'
 import sinon from "sinon"
+import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import Client from "@/lib/Client/RESTClient.js"
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import usersStore from "@/store/users";
 import Curator from "@/views/Curators/Curator.vue"
+
 import dataDashboard from "../../../fixtures/curationDashboardData.json"
-import Vuetify from "vuetify"
-import axios from 'axios'
 
 axios.defaults.adapter = require('axios/lib/adapters/http');
 
@@ -36,7 +38,7 @@ describe("Curator.vue", () => {
   let restStub;
   let graphStub;
 
-  beforeAll( async (done) => {
+  beforeAll( async () => {
      restStub = sinon.stub(Client.prototype, "executeQuery").returns({
          data: {id: "12345", name: 123, token: 123}
      });
@@ -49,12 +51,11 @@ describe("Curator.vue", () => {
         router,
         mocks: {$store, $router}
     });
-    done();
   });
 
   it("can be mounted", async () => {
       const title = "Curator";
-      expect(wrapper.name()).toMatch(title);
+      expect(wrapper.vm.$options.name).toMatch(title);
       expect(wrapper.vm.approvalRequired.length).toBe(3);
       expect(wrapper.vm.approvalRequired[0].curator).toBe("Terazu");//Name reduced number to six characters
       expect(wrapper.vm.approvalRequired[1].creator).toBe("unknown");

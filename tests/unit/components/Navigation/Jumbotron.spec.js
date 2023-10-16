@@ -1,7 +1,8 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Jumbotron from "@/components/Navigation/Jumbotron"
-import Vuetify from "vuetify"
 import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify"
+
+import Jumbotron from "@/components/Navigation/Jumbotron"
 
 const localVue = createLocalVue();
 localVue.use(VueSanitize)
@@ -22,7 +23,7 @@ describe("Jumbotron.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Jumbotron");
+        expect(wrapper.vm.$options.name).toMatch("Jumbotron");
     });
 
     it("can handle sub-search routes", () => {

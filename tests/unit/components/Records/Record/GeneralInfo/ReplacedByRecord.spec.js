@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import ReplacedByRecord from "@/components/Records/Record/GeneralInfo/ReplacedByRecord.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -30,7 +31,7 @@ describe("ReplacedByRecord.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("ReplacedByRecord");
+        expect(wrapper.vm.$options.name).toMatch("ReplacedByRecord");
         Record.state.currentRecord["fairsharingRecord"] = {
             reverseRecordAssociations:[{id:3,recordAssocLabel:'re',fairsharingRecord:{name:'na',id:1254}}],
             recordAssociations:[{id:4,recordAssocLabel:'deprecates',linkedRecord:{name:'asd',id:1255}}]

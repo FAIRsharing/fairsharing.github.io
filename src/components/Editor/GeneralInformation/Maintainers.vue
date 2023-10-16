@@ -147,8 +147,8 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex"
 import { isEqual } from 'lodash'
+import {mapActions, mapGetters, mapState} from "vuex"
 
 export default {
   name: "Maintainers",

@@ -1,4 +1,5 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils"
+import {createLocalVue,shallowMount} from "@vue/test-utils"
+
 import EditsTable from "@/components/Users/Profiles/Private/EditsTable"
 const localVue = createLocalVue();
 const $router = { push: jest.fn() };
@@ -26,7 +27,7 @@ describe('EditsTable.vue', () => {
             }
         });
         const title = "EditsTable";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.perPage).toBe(10)
     });
 

@@ -1,12 +1,13 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
-import fakeData from "@/../tests/fixtures/curationDashboardMaintReqData.json"
-import Client from "@/lib/Client/RESTClient.js"
-import Vuex from "vuex"
-import recordStore from "@/store/recordData.js"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
-import usersStore from "@/store/users"
 import VueRouter from "vue-router"
+import Vuex from "vuex"
+
+import fakeData from "@/../tests/fixtures/curationDashboardMaintReqData.json"
+import MaintenanceRequest from "@/components/Curators/MaintenanceRequests.vue"
+import Client from "@/lib/Client/RESTClient.js"
+import recordStore from "@/store/recordData.js"
+import usersStore from "@/store/users"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -49,7 +50,7 @@ describe('Curator -> MaintenanceRequest.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("MaintenanceRequest");
+        expect(wrapper.vm.$options.name).toMatch("MaintenanceRequest");
         expect(wrapper.vm.maintenanceRequestsProcessed.length).toBe(4);
         expect(wrapper.vm.maintenanceRequestsProcessed[0].recordName).toMatch("Record1 (23)");
     });

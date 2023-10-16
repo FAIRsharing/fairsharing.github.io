@@ -8,9 +8,12 @@ module.exports = {
     "plugin:vue/recommended",
     "eslint:recommended"
   ],
+  "plugins": ["simple-import-sort"],
   rules: {
     'no-console': process.env.NODE_ENV === "production" ? "error" : "off",
     'no-debugger': process.env.NODE_ENV === "production" ? "error" : "off",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
     'vue/multi-word-component-names': "off",
     "vue/order-in-components": ["error", {
 	"order": [
@@ -53,7 +56,7 @@ module.exports = {
   },
   parser: "vue-eslint-parser",
   parserOptions: {
-    parser: "babel-eslint"
+    parser: "@babel/eslint-parser"
   },
   overrides: [
     {

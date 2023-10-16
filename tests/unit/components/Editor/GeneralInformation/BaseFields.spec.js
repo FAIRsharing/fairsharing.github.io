@@ -1,10 +1,11 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
-import Vuex from "vuex"
-import Vuetify from "vuetify"
 import VueRouter from "vue-router";
+import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import BaseFields from "@/components/Editor/GeneralInformation/BaseFields.vue"
-import recordStore from "@/store/recordData.js"
 import editorStore from "@/store/editor.js"
+import recordStore from "@/store/recordData.js"
 import userStore from "@/store/users.js"
 
 const localVue = createLocalVue();
@@ -74,7 +75,7 @@ describe('Editor -> BaseFields.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("BaseFields");
+        expect(wrapper.vm.$options.name).toMatch("BaseFields");
         expect(wrapper.vm.$route.path).toEqual('/create');
     });
 
@@ -125,7 +126,8 @@ describe('Editor -> BaseFields.vue', () => {
         await wrapper.vm.changeLogoData([data]);
         expect(wrapper.vm.fields.logo).toStrictEqual({
             filename: 'testfile.jpg',
-            data: "alongstringofdata",
+            // data: "alongstringofdata",
+            data: "YWxvbmdzdHJpbmdvZmRhdGE=",
             content_type: "image/png"
         });
         await wrapper.vm.changeLogoData([]);

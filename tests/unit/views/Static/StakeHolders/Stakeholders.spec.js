@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import Stakeholders from "@/views/Static/Stakeholders/Stakeholders"
 import Vuetify from "vuetify"
+
+import Stakeholders from "@/views/Static/Stakeholders/Stakeholders"
 
 const vuetify = new Vuetify();
 
@@ -14,7 +15,7 @@ describe("Stakeholders.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Stakeholders");
+        expect(wrapper.vm.$options.name).toMatch("Stakeholders");
     });
 
 });

@@ -1,4 +1,5 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils"
+import {createLocalVue,shallowMount} from "@vue/test-utils"
+
 import RecordTable from "@/components/Users/Profiles/Private/RecordsTable"
 const localVue = createLocalVue();
 const $router = { push: jest.fn() };
@@ -16,7 +17,7 @@ describe('RecordsTable.vue', () => {
             }
         });
         const title = "RecordsTable";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.perPage).toBe(7)
     });
 
@@ -29,7 +30,7 @@ describe('RecordsTable.vue', () => {
             }
         });
         const title = "RecordsTable";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.perPage).toBe(5)
     });
 
@@ -41,7 +42,7 @@ describe('RecordsTable.vue', () => {
             }
         });
         const title = "RecordsTable";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.perPage).toBe(5);
     });
 

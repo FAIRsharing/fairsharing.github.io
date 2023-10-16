@@ -1,12 +1,13 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
-import fakeData from "@/../tests/fixtures/curationDashboardRecAwaitApproval.json"
-import Client from "@/lib/Client/RESTClient.js"
-import Vuex from "vuex"
-import recordStore from "@/store/recordData.js"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
-import usersStore from "@/store/users"
 import VueRouter from "vue-router"
+import Vuex from "vuex"
+
+import fakeData from "@/../tests/fixtures/curationDashboardRecAwaitApproval.json"
+import RecordsAwaitingApproval from "@/components/Curators/RecordsAwaitingApproval.vue"
+import Client from "@/lib/Client/RESTClient.js"
+import recordStore from "@/store/recordData.js"
+import usersStore from "@/store/users"
 
 
 
@@ -53,7 +54,7 @@ describe('Curator -> RecordsAwaitingApproval.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("RecordsAwaitingApproval");
+        expect(wrapper.vm.$options.name).toMatch("RecordsAwaitingApproval");
         expect(wrapper.vm.approvalRequiredProcessed.length).toBe(4);
         expect(wrapper.vm.approvalRequiredProcessed[0].recordName).toMatch("Record3 (99)");
     });

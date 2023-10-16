@@ -1,14 +1,15 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import relationTypes from "@/../tests/fixtures/relationTypes.json"
 import editRelations from "@/components/Editor/EditRelationships.vue"
-import recordStore from "@/store/recordData.js";
-import editorStore from "@/store/editor.js";
-import userStore from "@/store/users.js";
 import RestClient from "@/lib/Client/RESTClient.js"
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import relationTypes from "@/../tests/fixtures/relationTypes.json"
+import editorStore from "@/store/editor.js";
+import recordStore from "@/store/recordData.js";
+import userStore from "@/store/users.js";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
@@ -83,7 +84,7 @@ describe("EditRelationships.vue", function() {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("EditRelationships");
+        expect(wrapper.vm.$options.name).toMatch("EditRelationships");
         wrapper.vm.labelsFilter = null;
         expect(wrapper.vm.getAssociations).toStrictEqual([relations[0]]);
     });
@@ -97,9 +98,9 @@ describe("EditRelationships.vue", function() {
             "recordAssocLabel":"?",
             "recordAssocLabelId":1
         };
-        recordStore.state.sections.relations.data.recordAssociations.push(pushItem);
+        await recordStore.state.sections.relations.data.recordAssociations.push(pushItem);
         expect(recordStore.state.sections.relations.changes).toBe(1);
-        wrapper.vm.removeItem({
+        await wrapper.vm.removeItem({
             linkedRecord: {
                 id: 456
             },

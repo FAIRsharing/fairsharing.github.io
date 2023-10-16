@@ -455,15 +455,16 @@
 </template>
 
 <script>
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import {mapState} from "vuex";
+
 import Icon from "@/components/Icon";
 import Loaders from "@/components/Navigation/Loaders";
-import NotFound from "@/views/Errors/404"
-import Record from "@/views/Records/Record";
 import StatusPills from "@/components/Users/Profiles/Private/StatusPills";
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import getOrganisationQuery from "@/lib/GraphClient/queries/Organisations/getOrganisation.json"
 import { cleanString, formatList } from "@/utils/stringUtils"
-import {mapState} from "vuex";
+import NotFound from "@/views/Errors/404"
+import Record from "@/views/Records/Record";
 
 let graphClient = new GraphClient();
 

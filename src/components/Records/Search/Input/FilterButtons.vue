@@ -21,6 +21,7 @@
 
 <script>
     import {mapState} from "vuex";
+
     import FilterButton from "./FilterButton";
 
     export default {

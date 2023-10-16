@@ -1,14 +1,15 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import searchFilters from "./searchFilters.js"
-import records from "./recordSearch.js"
-import record from "./recordData.js"
-import introspection from "./introspector.js"
-import users from './users.js'
-import uiController from "./uiController";
+
 import editor from "./editor"
+import introspection from "./introspector.js"
 import messages from "./messages"
 import ontologyBrowser from "./ontologyBrowser"
+import record from "./recordData.js"
+import records from "./recordSearch.js"
+import searchFilters from "./searchFilters.js"
+import uiController from "./uiController";
+import users from './users.js'
 
 Vue.use(Vuex);
 

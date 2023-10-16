@@ -1,17 +1,18 @@
-import Vue from "vue"
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
-import Vuetify from "vuetify"
+import Vue from "vue"
 import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import GeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue"
-import recordStore from "@/store/recordData.js"
-import editorStore from "@/store/editor.js"
-import userStore from "@/store/users.js"
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import RestClient from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
 import countriesQuery from "@/lib/GraphClient/queries/getCountries.json"
 import typesQuery from "@/lib/GraphClient/queries/getRecordsTypes.json"
-import tagsQuery from "@/lib/GraphClient/queries/geTags.json"
+import editorStore from "@/store/editor.js"
+import recordStore from "@/store/recordData.js"
+import userStore from "@/store/users.js"
 const sinon = require("sinon");
 const VueScrollTo = require('vue-scrollto');
 const localVue = createLocalVue();
@@ -130,7 +131,7 @@ describe("Edit -> GeneralInformation.vue", function() {
     });
 
     it("can be mounted", async () => {
-        expect(wrapper.name()).toMatch("GeneralInformation");
+        expect(wrapper.vm.$options.name).toMatch("GeneralInformation");
         // expect(wrapper.vm.currentFields).toStrictEqual(wrapper.vm.initialFields);
         await wrapper.vm.getData();
         expect(wrapper.vm.currentFields.type).toBe("abc");
@@ -147,6 +148,7 @@ describe("Edit -> GeneralInformation.vue", function() {
         wrapper.vm.currentFields.deprecation_reason = "abc";
         wrapper.vm.currentFields.status = "deprecated";
         expect(wrapper.vm.currentFields.deprecation_reason).toBe("abc");
+        wrapper.vm.currentFields.deprecation_reason = null;
         wrapper.vm.currentFields.status = "uncertain";
         expect(wrapper.vm.currentFields.deprecation_reason).toBeFalsy();
         wrapper.vm.currentFields.type.name = "collection";
@@ -154,14 +156,14 @@ describe("Edit -> GeneralInformation.vue", function() {
         wrapper.vm.currentFields.type.name = "collection"; // For coverage purposes...
 
         wrapper.vm.currentFields.type.name = "abc";
-        wrapper.vm.currentFields.metadata.contacts.push({name: 'test'});
+        await wrapper.vm.currentFields.metadata.contacts.push({name: 'test'});
         expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
-        wrapper.vm.currentFields.domains.push({
+        await wrapper.vm.currentFields.domains.push({
             label: 'test',
             id: 1
         });
         expect(wrapper.vm.getChanges['generalInformation']).toBe(3);
-        wrapper.vm.currentFields.domains.splice(1,1);
+        await wrapper.vm.currentFields.domains.splice(1,1);
         expect(wrapper.vm.getChanges['generalInformation']).toBe(2);
         wrapper.vm.currentFields.domains = [{
             label: 'tester',

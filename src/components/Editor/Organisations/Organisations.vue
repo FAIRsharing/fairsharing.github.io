@@ -155,11 +155,12 @@
 </template>
 
 <script>
-    import { mapState, mapActions, mapGetters } from "vuex"
-    import Loaders from "../../Navigation/Loaders";
-    import LinkOverlay from "./LinkOverlay";
     import { isEqual } from "lodash"
+    import { mapActions, mapGetters,mapState } from "vuex"
+
+    import Loaders from "../../Navigation/Loaders";
     import Alerts from "../Alerts";
+    import LinkOverlay from "./LinkOverlay";
 
     export default {
         name: "Organisations",

@@ -1,13 +1,14 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
 import VueRouter from "vue-router";
-import GraphTest from "@/views/Records/NetworkGraph.vue";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import GraphClient from "@/lib/GraphClient/GraphClient";
 import users from "@/store/users.js";
+import GraphTest from "@/views/Records/NetworkGraph.vue";
 const sinon = require("sinon");
-import Networkgraph from 'highcharts/modules/networkgraph'
 import Highcharts from 'highcharts'
+import Networkgraph from 'highcharts/modules/networkgraph'
 Networkgraph(Highcharts);
 
 
@@ -133,7 +134,7 @@ describe("NetworkGraph.vue", function() {
     });
 
     it("is all present and correct", async () => {
-        expect(wrapper.name()).toMatch("NetworkGraph");
+        expect(wrapper.vm.$options.name).toMatch("NetworkGraph");
         expect(wrapper.vm.graphData.nodes.length).toBe(4)
         wrapper.vm.legend.types.square = false;
         await wrapper.vm.getData();
@@ -145,7 +146,20 @@ describe("NetworkGraph.vue", function() {
     it("reloads page when route changes", async () => {
         expect(getData).toHaveBeenCalledTimes(0);
         expect(wrapper.vm.currentRoute).toEqual(1234);
+        // $route.params.id = 10;
+        // expect(getData).toHaveBeenCalledTimes(1);
+        // expect(wrapper.vm.currentRoute).toEqual(10);
+    })
+
+    it("reloads page when route changes and id is 10", async () => {
         $route.params.id = 10;
+        wrapper = await shallowMount(GraphTest, {
+            localVue,
+            vuetify,
+            router,
+            mocks: { $router, $route, $store }
+        });
+
         expect(getData).toHaveBeenCalledTimes(1);
         expect(wrapper.vm.currentRoute).toEqual(10);
     })

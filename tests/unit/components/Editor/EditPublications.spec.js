@@ -1,14 +1,15 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import editPublications from "@/components/Editor/EditPublications.vue"
-import recordStore from "@/store/recordData.js";
-import editorStore from "@/store/editor.js";
-import userStore from "@/store/users.js";
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import RestClient from "@/lib/Client/RESTClient.js"
 import ExternalClient from "@/lib/Client/ExternalClients.js"
+import RestClient from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import editorStore from "@/store/editor.js";
+import recordStore from "@/store/recordData.js";
+import userStore from "@/store/users.js";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
@@ -192,7 +193,7 @@ describe("EditPublications.vue", function() {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("EditPublications");
+        expect(wrapper.vm.$options.name).toMatch("EditPublications");
         expect(wrapper.vm.section.data).toStrictEqual(recordStore.state.sections.publications.data);
         expect(wrapper.vm.metadata).toStrictEqual(recordStore.state.sections.generalInformation.data.metadata);
         expect(wrapper.vm.message.type()).toBe("success");

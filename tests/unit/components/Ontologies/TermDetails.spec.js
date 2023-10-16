@@ -1,13 +1,14 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json"
 import TermDetails from "@/components/Ontologies/TermDetails";
-import ontologyBrowserStore from "@/store/ontologyBrowser";
-import editorStore from "@/store/editor"
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import ontologyQuery from "@/lib/GraphClient/queries/ontologies/subjectBrowser.json"
-import terms from "@/../tests/fixtures/subjectsOntologyBrowser.json"
+import editorStore from "@/store/editor"
+import ontologyBrowserStore from "@/store/ontologyBrowser";
 
 const sinon = require("sinon"),
     localVue = createLocalVue();
@@ -58,7 +59,7 @@ describe("TermDetails.vue", () => {
     })
 
     it("can be mounted", async() => {
-        expect(wrapper.name()).toMatch("TermDetails");
+        expect(wrapper.vm.$options.name).toMatch("TermDetails");
         expect(wrapper.vm.perPage).toBe(50)
         expect(wrapper.vm.currentPage).toBe(1)
         expect(wrapper.vm.selectedOntology).toBe("Subject")

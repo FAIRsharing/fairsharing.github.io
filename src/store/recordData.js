@@ -1,12 +1,14 @@
-import Vue from "vue"
 import {isEmpty, isEqual} from "lodash"
-import Client from "../lib/GraphClient/GraphClient.js"
+import Vue from "vue"
+
 import RESTClient from "@/lib/Client/RESTClient.js"
+
+import Client from "../lib/GraphClient/GraphClient.js"
+import recordDataAccessQuery from "../lib/GraphClient/queries/editor/getRecordDataAccess.json"
+import recordRelationsQuery from "../lib/GraphClient/queries/editor/getRecordRelations.json"
 import recordQuery from "../lib/GraphClient/queries/getRecord.json"
 import recordHistory from '../lib/GraphClient/queries/getRecordHistory.json'
 import recordOrganisationsQuery from "../lib/GraphClient/queries/getRecordOrganisations.json"
-import recordDataAccessQuery from "../lib/GraphClient/queries/editor/getRecordDataAccess.json"
-import recordRelationsQuery from "../lib/GraphClient/queries/editor/getRecordRelations.json"
 import { initEditorSections } from "./utils.js"
 
 let client = new Client();

@@ -1,4 +1,5 @@
 import {shallowMount} from "@vue/test-utils";
+
 import AbbreviationTooltip from "@/components/Records/Shared/AbbreviationTooltip.vue"
 
 describe('AbbreviationTooltip.vue', () => {
@@ -10,6 +11,6 @@ describe('AbbreviationTooltip.vue', () => {
                 propsData: {abbreviation: abbreviation}
             }
         );
-        expect(wrapper.name()).toMatch("AbbreviationTooltip");
+        expect(wrapper.vm.$options.name).toMatch("AbbreviationTooltip");
     });
 });

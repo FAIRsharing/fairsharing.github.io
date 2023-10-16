@@ -159,9 +159,10 @@
 
 <script>
 import {mapGetters} from 'vuex';
+
+import Icon from "@/components/Icon";
 import SectionTitle from '@/components/Records/Record/SectionTitle';
 import organisationRelations from '@/data/organisationRelations.json';
-import Icon from "@/components/Icon";
 
 export default {
   name: "Organisations",

@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
-import Record from "@/store/recordData.js"
+
 import Publications from "@/components/Records/Record/Publications.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -32,7 +33,7 @@ describe("Publications.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Publications");
+        expect(wrapper.vm.$options.name).toMatch("Publications");
         expect(wrapper.vm.getField('publications')[0].title).toMatch("Publication One");
         expect(wrapper.vm.getField('publications')[1].title).toMatch("Publication Two");
     });

@@ -1,6 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
 import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import Contact from "@/components/Editor/GeneralInformation/Contact.vue"
 import recordStore from "@/store/recordData.js";
 
@@ -54,7 +55,7 @@ describe('Editor -> Contact.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("Contact");
+        expect(wrapper.vm.$options.name).toMatch("Contact");
         wrapper.vm.rules.isRequired();
         wrapper.vm.rules.isEmail();
         wrapper.vm.rules.isOrcid("0000");

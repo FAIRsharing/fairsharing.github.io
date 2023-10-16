@@ -56,11 +56,11 @@
 </template>
 
 <script>
-import RecordStatus from "@/components/Records/Shared/RecordStatus"
-import recordsCardUtils from "@/utils/recordsCardUtils";
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary";
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips";
 import AbbreviationTooltip from "@/components/Records/Shared/AbbreviationTooltip";
+import RecordStatus from "@/components/Records/Shared/RecordStatus"
+import recordsCardUtils from "@/utils/recordsCardUtils";
 
 export default {
   name: "RecordsCardColumn",

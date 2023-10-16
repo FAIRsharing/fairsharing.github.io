@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import PublicMessages from "@/components/Global/PublicMessages"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import Vuetify from 'vuetify'
 import Vuex from "vuex";
+
+import PublicMessages from "@/components/Global/PublicMessages"
 import messages from "@/store/messages.js";
 const vuetify = new Vuetify();
 const localVue = createLocalVue();
@@ -25,7 +26,7 @@ describe("PublicMessages.vue", () => {
             vuetify,
             mocks:{$store}
         });
-        expect(wrapper.name()).toMatch("PublicMessages");
+        expect(wrapper.vm.$options.name).toMatch("PublicMessages");
     })
 
     it("can be check moment method", () => {

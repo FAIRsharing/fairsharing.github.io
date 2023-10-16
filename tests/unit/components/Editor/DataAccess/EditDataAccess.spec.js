@@ -1,12 +1,13 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
-import RestClient from "@/lib/Client/RESTClient.js"
+import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import DataAccess from "@/components/Editor/DataAccess/EditDataAccess.vue"
-import recordStore from "@/store/recordData.js"
+import RestClient from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
 import editorStore from "@/store/editor.js"
+import recordStore from "@/store/recordData.js"
 import userStore from "@/store/users.js"
 const sinon = require("sinon");
 const VueScrollTo = require('vue-scrollto');
@@ -75,15 +76,16 @@ describe("Edit -> DataAccess.vue", function() {
     });
 
     it("can be mounted", async () => {
-        expect(wrapper.name()).toMatch("EditDataAccess");
+        expect(wrapper.vm.$options.name).toMatch("EditDataAccess");
     });
 
     it("can react to changes of values", async () => {
         wrapper.vm.dataAccess.support_links[0] = {type: "Other", url: "https://example.com/test"};
         expect(recordStore.state.sections.dataAccess.changes).toBe(0);
-        wrapper.vm.dataAccess.support_links.push({type: "Other", url: "https://example.com/test2"});
+        await wrapper.vm.dataAccess.support_links.push({type: "Other", url: "https://example.com/test2"});
         expect(recordStore.state.sections.dataAccess.changes).toBe(1);
-        wrapper.vm.dataAccess.licences = [{id: 1, name: "test", licence: {id: 123}}];
+        await wrapper.vm.dataAccess.licences.push({id: 1, name: "test", licence: {id: 123}});
+
         expect(recordStore.state.sections.dataAccess.changes).toBe(2);
     });
 

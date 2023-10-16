@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import SearchBlock from "@/components/Home/SearchBlock"
 import Vuetify from "vuetify"
+
+import SearchBlock from "@/components/Home/SearchBlock"
 
 const vuetify = new Vuetify();
 
@@ -14,7 +15,7 @@ describe("BlockSearch.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SearchBlock");
+        expect(wrapper.vm.$options.name).toMatch("SearchBlock");
     });
 
 });

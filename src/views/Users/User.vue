@@ -383,16 +383,18 @@
 </template>
 
 <script>
-    import { mapActions, mapState, mapMutations } from "vuex"
-    import UserProfileMenu from "@/components/Users/UserProfileMenu";
+    import { mapActions, mapMutations,mapState } from "vuex"
+
     import Loaders from "@/components/Navigation/Loaders";
-    import ExternalClient from "@/lib/Client/ExternalClients.js"
-    import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
-    import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
-    import { cleanString } from "@/utils/stringUtils"
-    import getHostname from "@/utils/generalUtils"
-    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
     import ViewAwards from "@/components/Users/Profiles/Private/ViewAwards";
+    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
+    import UserProfileMenu from "@/components/Users/UserProfileMenu";
+    import ExternalClient from "@/lib/Client/ExternalClients.js"
+    import getHostname from "@/utils/generalUtils"
+    import { cleanString } from "@/utils/stringUtils"
+
+    import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
+    import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
 
     let client = new ExternalClient();
 

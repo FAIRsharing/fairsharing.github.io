@@ -1,7 +1,8 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Educational from "@/views/Static/Educational/Educational"
-import Vuetify from "vuetify"
 import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify"
+
+import Educational from "@/views/Static/Educational/Educational"
 
 const vuetify = new Vuetify();
 const localVue = createLocalVue();
@@ -36,8 +37,15 @@ describe("Educational.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Educational");
-        wrapper.vm.$route.hash = '#anotherAnchor'
+        expect(wrapper.vm.$options.name).toMatch("Educational");
+        // wrapper.vm.$route.hash = '#anotherAnchor'
+        $route.hash = "#anotherAnchor"
+        wrapper = shallowMount(Educational, {
+            localVue,
+            vuetify,
+            mocks: {$route},
+            stubs: ['router-link']
+        })
         expect(wrapper.vm.applyCss).toBe(false);
     });
 

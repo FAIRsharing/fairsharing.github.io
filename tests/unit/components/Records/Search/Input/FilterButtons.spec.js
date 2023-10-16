@@ -1,9 +1,10 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import FilterButtons from "@/components/Records/Search/Input/FilterButtons.vue"
-import users from "@/store/users.js";
 import searchFilters from "@/store/searchFilters.js";
+import users from "@/store/users.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -28,7 +29,7 @@ describe("FilterButtons.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("FilterButtons");
+        expect(wrapper.vm.$options.name).toMatch("FilterButtons");
     });
 
     it("shows everything to curators", () => {

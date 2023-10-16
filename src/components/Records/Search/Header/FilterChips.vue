@@ -28,9 +28,10 @@
 
 <script>
 import {throttle} from "lodash"
-import filterChipsUtils from "@/utils/filterChipsUtils";
-import filterMapping from "@/data/FiltersLabelMapping.json"
+
 import extraFilterChips from "@/data/extraFilterChips.json"
+import filterMapping from "@/data/FiltersLabelMapping.json"
+import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "FilterChips",

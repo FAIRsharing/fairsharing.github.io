@@ -1,16 +1,17 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils";
-import Vuex from "vuex"
-import Vuetify from "vuetify"
+import {createLocalVue,shallowMount} from "@vue/test-utils";
 import VueMeta from "vue-meta";
-import Records from "@/views/Records/Records.vue";
-import Client from "@/lib/GraphClient/GraphClient.js";
-import records from "@/store/recordSearch.js"
-import introspection from "@/store/introspector.js"
+import VueScrollTo from "vue-scrollto";
+import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import fakeIntrospection from "@/../tests/fixtures/fakeIntrospection.json"
+import Client from "@/lib/GraphClient/GraphClient.js";
+import introspection from "@/store/introspector.js"
+import records from "@/store/recordSearch.js"
 import uiController from "@/store/uiController.js"
 import {actions} from "@/store/uiController.js"
-import VueScrollTo from "vue-scrollto";
 import userStore from "@/store/users";
+import Records from "@/views/Records/Records.vue";
 
 const sinon = require("sinon");
 const axios = require("axios");
@@ -80,7 +81,7 @@ describe("Records.vue", () => {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Records");
+        expect(wrapper.vm.$options.name).toMatch("Records");
     });
 
     it("has a currentPath computed attribute", () => {

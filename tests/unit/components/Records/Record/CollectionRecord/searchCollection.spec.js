@@ -1,16 +1,18 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils";
-import Vuex from "vuex";
-import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection"
-import Vuetify from "vuetify"
-import records from "@/store/recordSearch";
-import record from "@/store/recordData";
-import introspection from "@/store/introspector";
-import uiController from "@/store/uiController";
-import Client from "@/lib/GraphClient/GraphClient";
-import Record from "@/store/recordData";
-import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
+import {createLocalVue,shallowMount} from "@vue/test-utils";
 import VueScrollTo from "vue-scrollto";
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import searchCollection from "@/components/Records/Record/CollectionRecord/SearchCollection"
+import Client from "@/lib/GraphClient/GraphClient";
+import introspection from "@/store/introspector";
+import record from "@/store/recordData";
+import Record from "@/store/recordData";
+import records from "@/store/recordSearch";
+import uiController from "@/store/uiController";
 import userStore from "@/store/users";
+
+import fakeIntrospection from "../../../../../fixtures/fakeIntrospection.json";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -114,12 +116,12 @@ describe("SearchCollection.vue", function(){
             mocks: {$route, $store},
             localVue,
             vuetify,
-            attachToDocument:element
+            attachTo:element
         });
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SearchCollection");
+        expect(wrapper.vm.$options.name).toMatch("SearchCollection");
     });
 
     it("can check the mocked html element is correctly added", () => {

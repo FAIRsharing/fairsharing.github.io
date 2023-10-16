@@ -1,9 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import Editor from "@/store/editor"
-import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import DatasetBoolean from "@/components/Records/Record/AdditionalInfo/DatasetBoolean"
+import Editor from "@/store/editor"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -27,7 +28,7 @@ describe("Citations.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("DatasetBoolean");
+        expect(wrapper.vm.$options.name).toMatch("DatasetBoolean");
     });
 
 });

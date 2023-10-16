@@ -140,11 +140,12 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex";
-import Icon from "@/components/Icon"
-import {truncate} from "@/utils/stringUtils"
 import moment from "moment";
+import {mapGetters, mapState} from "vuex";
+
+import Icon from "@/components/Icon"
 import getHostname from "@/utils/generalUtils";
+import {truncate} from "@/utils/stringUtils"
 
 export default {
   name: "Citations",

@@ -1,9 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
+import { createLocalVue,shallowMount } from "@vue/test-utils";
+import Vuetify from "vuetify"
 import Vuex from "vuex";
+
+import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers.vue"
 import Record from "@/store/recordData.js"
 import users from "@/store/users"
-import Maintainers from "@/components/Records/Record/GeneralInfo/Maintainers.vue"
-import Vuetify from "vuetify"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -36,7 +37,7 @@ describe("Maintainers.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Maintainers");
+        expect(wrapper.vm.$options.name).toMatch("Maintainers");
     });
 
 });

@@ -1,13 +1,15 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import EditPublicProfile from "@/views/Users/EditPublicProfile"
 import Vuetify from "vuetify"
 import Vuex from "vuex";
+
+import EditPublicProfile from "@/views/Users/EditPublicProfile"
 const vuetify = new Vuetify();
 const localVue = createLocalVue();
-import userStore from "@/store/users";
 import sinon from "sinon"
-import Client from "@/lib/Client/RESTClient.js"
 import VueScrollTo from "vue-scrollto";
+
+import Client from "@/lib/Client/RESTClient.js"
+import userStore from "@/store/users";
 
 localVue.use(Vuex);
 localVue.use(VueScrollTo,{})
@@ -80,7 +82,7 @@ describe("EditPublicProfile.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("EditPublicProfile");
+        expect(wrapper.vm.$options.name).toMatch("EditPublicProfile");
         expect(wrapper.vm.pageLoad).toBe(false);
     });
 
@@ -91,7 +93,7 @@ describe("EditPublicProfile.vue", function () {
             localVue,
             mocks:{$store, $route}
         })
-        expect(wrapper2.name()).toMatch("EditPublicProfile");
+        expect(wrapper2.vm.$options.name).toMatch("EditPublicProfile");
     });
 
     it("can check updatePublicProfile method", async () => {

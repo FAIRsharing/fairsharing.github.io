@@ -1,8 +1,9 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import Organisations from "@/components/Records/Record/Organisations.vue"
+import {createLocalVue,shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import Organisations from "@/components/Records/Record/Organisations.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -65,7 +66,7 @@ describe("Organisations.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Organisations");
+        expect(wrapper.vm.$options.name).toMatch("Organisations");
         expect(wrapper.vm.getField('organisationLinks')[0].organisation.name).toMatch("Organisation One");
         expect(wrapper.vm.getField('organisationLinks')[0].grant.name).toMatch("generous grant");
         expect(wrapper.vm.getField('organisationLinks')[1].organisation.name).toMatch("Organisation Two");
@@ -75,6 +76,5 @@ describe("Organisations.vue", function () {
     it("counts relations correctly", () => {
         expect(wrapper.vm.getRelations('funds').length).toEqual(1);
     });
-
 
 });

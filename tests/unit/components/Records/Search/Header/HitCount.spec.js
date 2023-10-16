@@ -1,6 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import HitCount from "@/components/Records/Search/Header/HitCount.vue"
 import recordsStore from "@/store/recordSearch.js";
 
@@ -25,7 +26,7 @@ describe("HitCount.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("HitCount");
+        expect(wrapper.vm.$options.name).toMatch("HitCount");
     });
 
     it("sets maximum number of hits correctly", () => {

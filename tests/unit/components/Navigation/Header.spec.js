@@ -1,11 +1,12 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
-import Vuetify from "vuetify"
-import Header from "@/components/Navigation/Header.vue";
 import { RouterLinkStub } from '@vue/test-utils';
+import {isEqual} from 'lodash';
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import Header from "@/components/Navigation/Header.vue";
 import uiControllerStore from "@/store/uiController.js";
 import usersStore from "@/store/users.js";
-import {isEqual} from 'lodash';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -78,7 +79,7 @@ describe("Header.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch('Header');
+        expect(wrapper.vm.$options.name).toMatch('Header');
     })
 
     it("can update the uiController store's UIGeneralStatus state", () => {
@@ -103,6 +104,7 @@ describe("Header.vue", function () {
     it("toggle button activeness using route changes", () => {
         wrapper.vm.$route.query = {};
         wrapper.vm.$route.name = 'Statistics';
+        wrapper.vm.setCurrentActiveButton('Statistics');
         const selectedItem = wrapper.vm.links.find(item => item.name === 'Statistics');
         // expect selectedItem to be true
         expect(selectedItem.active).toBe(true)

@@ -1,5 +1,6 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
 import Vuetify from "vuetify"
+
 import StatusPills from "@/components/Records/Shared/StatusPills.vue"
 import light from "@/plugins/theme";
 
@@ -24,6 +25,6 @@ describe('StatusPills.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("StatusPills");
+        expect(wrapper.vm.$options.name).toMatch("StatusPills");
     });
 });

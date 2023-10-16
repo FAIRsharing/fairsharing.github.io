@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import Privacy from "@/views/Static/Privacy/Privacy"
 import Vuetify from "vuetify"
+
+import Privacy from "@/views/Static/Privacy/Privacy"
 
 const vuetify = new Vuetify();
 
@@ -14,7 +15,7 @@ describe("Privacy.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Privacy");
+        expect(wrapper.vm.$options.name).toMatch("Privacy");
     });
 
 });

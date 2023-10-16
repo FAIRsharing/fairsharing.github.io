@@ -43,10 +43,12 @@
 
 <script>
 import {mapGetters, mapState} from "vuex"
+
+import StringSearch from "@/components/Records/Search/Input/StringSearch";
 import filterMapping from "@/data/FiltersLabelMapping.json";
+
 import FilterAutocomplete from "./FilterAutocomplete";
 import FilterButtons from "./FilterButtons";
-import StringSearch from "@/components/Records/Search/Input/StringSearch";
 
 export default {
   name: "SearchInput",

@@ -1,5 +1,6 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import VueMeta from "vue-meta";
+
 import Hidden from "@/views/Errors/Hidden.vue";
 
 const localVue = createLocalVue();
@@ -15,7 +16,7 @@ describe("Hidden record notification", () => {
     });
 
     it("can mount", () => {
-        expect(wrapper.name()).toBe("Hidden");
+        expect(wrapper.vm.$options.name).toBe("Hidden");
     });
 
 });

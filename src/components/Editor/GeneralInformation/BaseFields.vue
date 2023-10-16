@@ -448,14 +448,16 @@
 </template>
 
 <script>
-    import { mapState, mapGetters } from "vuex"
     import CountryFlag from 'vue-country-flag'
-    import StatusPills from "@/components/Records/Shared/StatusPills";
-    import { isRequired, isUrl, isLongEnough } from "@/utils/rules.js"
-    import DatabaseWarning from "./DatabaseWarning";
+    import { mapGetters,mapState } from "vuex"
+
     import Icon from "@/components/Icon"
+    import StatusPills from "@/components/Records/Shared/StatusPills";
     import UploadFiles from "@/components/UploadFiles/UploadFiles";
     import getAPIEndPoint, {toBase64} from "@/utils/generalUtils";
+    import { isLongEnough,isRequired, isUrl } from "@/utils/rules.js"
+
+    import DatabaseWarning from "./DatabaseWarning";
 
     export default {
       name: "BaseFields",

@@ -1,5 +1,6 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
+
 import SearchLinkChips from "@/components/Records/Search/Output/SearchLinkChips.vue"
 
 let $route = {
@@ -34,7 +35,7 @@ describe("SearchLinkChips.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SearchLinkChips");
+        expect(wrapper.vm.$options.name).toMatch("SearchLinkChips");
     });
 
     it("can check updateSearchQuery function", () => {

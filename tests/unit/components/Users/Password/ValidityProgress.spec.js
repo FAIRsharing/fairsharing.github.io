@@ -1,6 +1,7 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import Vue from "vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
+import Vue from "vue"
+
 import ValidityProgress from "@/components/Users/Password/ValidityProgress"
 import Client from "@/lib/Client/RESTClient.js"
 
@@ -14,7 +15,7 @@ describe('ValidityProgress.vue', () => {
         let wrapper = shallowMount(ValidityProgress, {
             localVue
         });
-        expect(wrapper.name()).toBe("ValidityProgress");
+        expect(wrapper.vm.$options.name).toBe("ValidityProgress");
         expect(wrapper.vm['passwordValidity']).toBe(0);
         expect(wrapper.vm['passwordColor']).toBe("red");
     });

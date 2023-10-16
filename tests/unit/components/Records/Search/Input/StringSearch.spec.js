@@ -1,6 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
-import StringSearch from "@/components/Records/Search/Input/StringSearch"
 import Vuetify from "vuetify"
+
+import StringSearch from "@/components/Records/Search/Input/StringSearch"
 
 const $router = {
     push: jest.fn()
@@ -20,7 +21,7 @@ describe("StringSearch.vue", () => {
     });
 
     it("can mount", () => {
-        expect(wrapper.name()).toBe('StringSearch')
+        expect(wrapper.vm.$options.name).toBe('StringSearch')
     });
 
     it("can pass the search term to the correct route", () => {

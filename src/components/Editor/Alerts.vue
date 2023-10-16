@@ -29,8 +29,8 @@
 </template>
 
 <script>
-    import { mapGetters } from "vuex"
     import VueJsonPretty from 'vue-json-pretty';
+    import { mapGetters } from "vuex"
 
     export default {
         name: "Alerts",

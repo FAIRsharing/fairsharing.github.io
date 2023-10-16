@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import {termsOfUse} from '@/data/TermsofUseData.json'
+import termsofUseData from '@/data/TermsofUseData.json'
 import getHostname from "@/utils/generalUtils";
 
 export default {
@@ -65,7 +65,7 @@ export default {
   mixins: [getHostname],
   data: () => {
     return {
-      TermsOfUse: termsOfUse
+      TermsOfUse: termsofUseData.termsOfUse
     }
   }
 }

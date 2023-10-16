@@ -1,8 +1,9 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import DataProcessesAndConditions from "@/components/Records/Record/DataProcessesAndConditions.vue"
+import {createLocalVue,shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import DataProcessesAndConditions from "@/components/Records/Record/DataProcessesAndConditions.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -45,7 +46,7 @@ describe("DataProcessesAndConditions.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("DataProcessesAndConditions");
+        expect(wrapper.vm.$options.name).toMatch("DataProcessesAndConditions");
     });
 
     it("can be check the reaction of page if appropriate data not provided", () => {

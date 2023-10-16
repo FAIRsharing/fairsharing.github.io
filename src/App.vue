@@ -32,12 +32,13 @@
 </template>
 
 <script>
-    import Jumbotron from "@/components/Navigation/Jumbotron";
-    import Header from "@/components/Navigation/Header";
     import {mapState} from 'vuex';
-    import Footer from "@/components/Navigation/Footer";
-    import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
+
     import PublicMessages from "@/components/Global/PublicMessages";
+    import Footer from "@/components/Navigation/Footer";
+    import Header from "@/components/Navigation/Header";
+    import Jumbotron from "@/components/Navigation/Jumbotron";
+    import NavigationDrawer from "@/components/Navigation/NavigationDrawer";
 
     export default {
         name: "App2",

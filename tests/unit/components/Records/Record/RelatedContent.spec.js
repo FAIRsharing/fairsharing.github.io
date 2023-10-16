@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import RelatedContent from "@/components/Records/Record/RelatedContent.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import RelatedContent from "@/components/Records/Record/RelatedContent.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -78,7 +79,7 @@ describe("RelatedContent.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("RelatedContent");
+        expect(wrapper.vm.$options.name).toMatch("RelatedContent");
     });
 
     it("search data is reactive when user changes text box value", () => {

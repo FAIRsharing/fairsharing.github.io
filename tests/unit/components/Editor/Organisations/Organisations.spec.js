@@ -1,15 +1,16 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
-import Vuetify from "vuetify"
 import VueRouter from "vue-router"
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
-import RestClient from "@/lib/Client/RESTClient.js"
-import getOrganisationsTypesQuery from "@/lib/GraphClient/queries/Organisations/getOrganisationTypes.json"
-import getOrganisationsQuery from "@/lib/GraphClient/queries/Organisations/getOrganisations.json"
-import getGrantsQuery from "@/lib/GraphClient/queries/Organisations/getGrants.json"
+import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import Organisations from "@/components/Editor/Organisations/Organisations.vue"
-import recordStore from "@/store/recordData.js"
+import RestClient from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import getGrantsQuery from "@/lib/GraphClient/queries/Organisations/getGrants.json"
+import getOrganisationsQuery from "@/lib/GraphClient/queries/Organisations/getOrganisations.json"
+import getOrganisationsTypesQuery from "@/lib/GraphClient/queries/Organisations/getOrganisationTypes.json"
 import editorStore from "@/store/editor.js"
+import recordStore from "@/store/recordData.js"
 import userStore from "@/store/users.js"
 const sinon = require("sinon");
 const VueScrollTo = require('vue-scrollto');
@@ -83,17 +84,23 @@ describe("Edit -> Organisations.vue", function() {
     });
 
     it("can be mounted", async () => {
-        expect(wrapper.name()).toMatch("Organisations");
+        expect(wrapper.vm.$options.name).toMatch("Organisations");
     });
 
-    it("can compute changes when adding, editing or removing a link", () => {
-        wrapper.vm.organisationLinks.push({
+    it("can compute changes when adding, editing or removing a link", async() => {
+        await wrapper.vm.organisationLinks.push({
             organisation: {
                 name: "test"
             }
         });
+
         expect(wrapper.vm.sections.organisations.changes).toBe(1);
-        wrapper.vm.organisationLinks[0].organisation.name = "another name";
+         // wrapper.vm.organisationLinks[0].organisation.name = "another name";
+        await wrapper.vm.organisationLinks.push({
+            organisation: {
+                name: "another name"
+            }
+        });
         expect(wrapper.vm.sections.organisations.changes).toBe(2);
         wrapper.vm.removeRelation(0);
         expect(wrapper.vm.sections.organisations.changes).toBe(2);

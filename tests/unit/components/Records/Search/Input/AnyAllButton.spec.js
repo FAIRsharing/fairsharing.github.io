@@ -1,6 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import AnyAllButton from "@/components/Records/Search/Input/AnyAllButton.vue"
 
 const localVue = createLocalVue();
@@ -29,7 +30,7 @@ describe("AnyAllButton.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("AnyAllButton");
+        expect(wrapper.vm.$options.name).toMatch("AnyAllButton");
     });
 
     it("can change the value for searchAnd", () => {

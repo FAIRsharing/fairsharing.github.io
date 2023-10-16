@@ -1,6 +1,8 @@
-import {actions, mutations, getters, buildFacets} from "@/store/recordSearch.js"
 import sinon from "sinon"
+
 import Client from "@/lib/GraphClient/GraphClient.js";
+import {actions, buildFacets,getters, mutations} from "@/store/recordSearch.js"
+
 import RecordsData from '../../../tests/fixtures/getRecords.json'
 
 describe('Mutation & Actions & Getters', () => {

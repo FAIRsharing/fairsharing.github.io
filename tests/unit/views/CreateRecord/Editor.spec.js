@@ -1,13 +1,15 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
+import VueRouter from "vue-router";
 import Vuex from "vuex";
-import CreateRecord from "@/views/CreateRecord/Editor.vue"
+
+import RESTClient from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import editorStore from "@/store/editor.js"
 import recordStore from "@/store/recordData.js";
 import userStore from "@/store/users.js";
-import editorStore from "@/store/editor.js"
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import RESTClient from "@/lib/Client/RESTClient.js"
+import CreateRecord from "@/views/CreateRecord/Editor.vue"
+
 import metaTemplate from "../../../fixtures/metaTemplate.json"
-import VueRouter from "vue-router";
 const sinon = require("sinon");
 
 const localVue = createLocalVue();
@@ -47,10 +49,11 @@ describe("Editor.vue", function() {
     it("can be instantiated", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route},
+            router,
+            mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
-        expect(wrapper.name()).toMatch("Editor");
+        expect(wrapper.vm.$options.name).toMatch("Editor");
         expect(wrapper.vm.userToken).toBe("123");
         $store.state.users.user = async () => {return {}};
         expect(wrapper.vm.userToken).toBe(null);
@@ -65,7 +68,8 @@ describe("Editor.vue", function() {
     it("can clean the store on destroy", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route},
+            router,
+            mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
         wrapper.vm.hasLoaded = false;
@@ -81,7 +85,7 @@ describe("Editor.vue", function() {
         restStub.withArgs(sinon.match.any).returns({data: {error: "error"}});
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route},
+            mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
         $store.state.users.user = function(){return {credentials: {token: "123"}}};
@@ -92,7 +96,8 @@ describe("Editor.vue", function() {
     it("reloads data correctly", async () => {
         wrapper = await shallowMount(CreateRecord, {
             localVue,
-            mocks: {$store, $route},
+            router,
+            mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
         wrapper.vm.confirmPanels[0].show = true;
@@ -132,7 +137,7 @@ describe("Editor.vue", function() {
             mocks: {$store, $route, $router},
             stubs: ['router-link']
         });
-        expect(wrapper.name()).toMatch("Editor");
+        expect(wrapper.vm.$options.name).toMatch("Editor");
     });
 
 });

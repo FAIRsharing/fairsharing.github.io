@@ -1,9 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason.vue"
-import Vuetify from "vuetify"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import linkify from 'vue-linkify'
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import DeprecationReason from "@/components/Records/Record/GeneralInfo/DeprecationReason.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -32,7 +33,7 @@ describe("Citations.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("DeprecationReason");
+        expect(wrapper.vm.$options.name).toMatch("DeprecationReason");
     });
 
     it("shows deprecation reason", () => {

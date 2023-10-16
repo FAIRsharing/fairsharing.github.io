@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Home from "@/views/Home/Home"
-import Vuetify from "vuetify"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import VueScrollTo from "vue-scrollto";
+import Vuetify from "vuetify"
+
 import RestClient from "@/lib/Client/RESTClient.js"
+import Home from "@/views/Home/Home"
 const sinon = require("sinon");
 
 const vuetify = new Vuetify();
@@ -37,7 +38,7 @@ describe("Home.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Home");
+        expect(wrapper.vm.$options.name).toMatch("Home");
     });
 
     it("can get JSON+LD from API", async () => {

@@ -1,5 +1,5 @@
-import UploadService from "@/lib/UploadingServices/UploadFilesService";
 import RestClient from "@/lib/Client/RESTClient";
+import UploadService from "@/lib/UploadingServices/UploadFilesService";
 const sinon = require("sinon");
 // jest.mock('./sound-player'); // SoundPlayer is now a mock constructor
 

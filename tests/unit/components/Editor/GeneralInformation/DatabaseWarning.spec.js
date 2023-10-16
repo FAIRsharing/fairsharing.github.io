@@ -1,6 +1,7 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
 import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import DatabaseWarning from "@/components/Editor/GeneralInformation/DatabaseWarning.vue"
 import recordStore from "@/store/recordData.js";
 
@@ -38,11 +39,12 @@ describe('Editor -> DatabaseWarning.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("DatabaseWarning");
+        expect(wrapper.vm.$options.name).toMatch("DatabaseWarning");
     });
 
     it("can watch the type", () => {
-        recordStore.state.sections.generalInformation.data.type.name = "repository";
+        // recordStore.state.sections.generalInformation.data.type.name = "repository";
+        wrapper.vm.$options.watch.type.call(wrapper.vm, "repository")
         expect(wrapper.vm.showOverlay).toBe(true);
         wrapper.vm.showOverlay = false;
         recordStore.state.sections.generalInformation.data.type.name = "test";

@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import Licence from "@/components/Records/Record/CollectionRecord/Licence.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import Licence from "@/components/Records/Record/CollectionRecord/Licence.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -45,7 +46,7 @@ describe("Licence.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Licence");
+        expect(wrapper.vm.$options.name).toMatch("Licence");
     });
 
 });

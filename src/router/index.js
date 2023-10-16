@@ -153,7 +153,7 @@ let routes = [
         name: 'raw_srao_file',
         path: '/ontology/subject/SRAO.owl',
         redirect: () => {
-            window.location.assign('https://github.com/FAIRsharing/subject-ontology/raw/master/releases/SRAO.owl');
+            window.location.assign('https://github.com/FAIRsharing/subject-ontology/raw/master/SRAO.owl');
         }
     },
     {

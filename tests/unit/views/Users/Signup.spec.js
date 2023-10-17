@@ -1,4 +1,5 @@
 import {shallowMount} from "@vue/test-utils";
+
 import SignUp from "@/views/Users/Signup";
 
 describe("Community.vue", function(){
@@ -8,6 +9,6 @@ describe("Community.vue", function(){
     });
 
     it("can be mounted", function(){
-        expect(wrapper.name()).toMatch("Signup");
+        expect(wrapper.vm.$options.name).toMatch("Signup");
     })
 });

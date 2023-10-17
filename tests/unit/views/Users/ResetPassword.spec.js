@@ -1,10 +1,11 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
+import sinon from "sinon"
 import VueRouter from "vue-router"
 import Vuex from "vuex";
-import sinon from "sinon"
-import ResetPassword from "@/views/Users/ResetPassword.vue"
+
 import Client from "@/lib/Client/RESTClient.js"
 import usersStore from "@/store/users";
+import ResetPassword from "@/views/Users/ResetPassword.vue"
 
 
 const localVue = createLocalVue();
@@ -46,7 +47,7 @@ describe('ResetPassword.vue', () => {
             mocks: {$store}
         });
         const title = "ResetPassword";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.messages().resetPassword).toStrictEqual({
             error: true,
             message: "Missing Token"

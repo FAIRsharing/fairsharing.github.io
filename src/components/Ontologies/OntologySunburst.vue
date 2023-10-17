@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex"
+import { mapActions, mapGetters,mapState } from "vuex"
 
 export default {
   name: "OntologySunburst",

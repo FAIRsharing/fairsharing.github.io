@@ -1,5 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
+
 import AssociatedRecordsSummary from "@/components/Records/Search/Output/AssociatedRecordsSummary.vue"
+
 import associatedRecords from "../../../../../fixtures/associatedRecords.json"
 
 describe("AssociatedRecordsSummary.vue", function () {
@@ -11,7 +13,7 @@ describe("AssociatedRecordsSummary.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("AssociatedRecordsSummary");
+        expect(wrapper.vm.$options.name).toMatch("AssociatedRecordsSummary");
         expect(wrapper.vm.associatedRecords.registry).toMatch("standard");
     });
 

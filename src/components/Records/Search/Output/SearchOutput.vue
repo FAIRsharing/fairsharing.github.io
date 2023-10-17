@@ -72,13 +72,15 @@
 </template>
 
 <script>
-import RecordsCardStack from "./RecordsCardStack";
-import ListController from "../Header/ListController";
-import RecordsCardColumn from "./RecordsCardColumn";
-import {mapState, mapGetters} from 'vuex'
-import FilterChips from "../Header/FilterChips";
+import {mapGetters,mapState} from 'vuex'
+
 import filterChipsUtils from "@/utils/filterChipsUtils";
+
+import FilterChips from "../Header/FilterChips";
+import ListController from "../Header/ListController";
 import Pagination from "../Header/Pagination";
+import RecordsCardColumn from "./RecordsCardColumn";
+import RecordsCardStack from "./RecordsCardStack";
 
 export default {
   name: "SearchOutput",

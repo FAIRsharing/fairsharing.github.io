@@ -1,7 +1,8 @@
 import {shallowMount} from "@vue/test-utils";
 import VueCodeHighlight  from 'vue-code-highlight';
-import APIDoc from "@/views/Static/APIDoc/APIDoc"
 import Vuetify from "vuetify"
+
+import APIDoc from "@/views/Static/APIDoc/APIDoc"
 
 const vuetify = new Vuetify();
 
@@ -16,6 +17,6 @@ describe("APIDoc.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("APIDoc");
+        expect(wrapper.vm.$options.name).toMatch("APIDoc");
     });
 });

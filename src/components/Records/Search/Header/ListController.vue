@@ -117,12 +117,14 @@
 </template>
 
 <script>
+    import {mapState} from "vuex";
+
+    import listControllerData from "@/data/ListControllerData.json";
+
     import HitCount from "./HitCount";
-    import SummaryDownload from "./SummaryDownload";
     import Pagination from "./Pagination";
     import Sorting from "./Sorting";
-    import {mapState} from "vuex";
-    import listControllerData from "@/data/ListControllerData.json";
+    import SummaryDownload from "./SummaryDownload";
 
     export default {
         name: "ListController",

@@ -1,6 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import ListController from "@/components/Records/Search/Header/ListController.vue"
 import recordsStore from "@/store/recordSearch.js";
 
@@ -30,7 +31,7 @@ describe("ListController.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("ListController");
+        expect(wrapper.vm.$options.name).toMatch("ListController");
     });
 
     it("can check changeListType function", () => {

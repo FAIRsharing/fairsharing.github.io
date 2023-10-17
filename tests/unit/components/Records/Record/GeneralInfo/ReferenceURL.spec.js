@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import ReferenceURL from "@/components/Records/Record/GeneralInfo/ReferenceURL.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -35,7 +36,7 @@ describe("ReferenceURL.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("ReferenceURL");
+        expect(wrapper.vm.$options.name).toMatch("ReferenceURL");
     });
 
 });

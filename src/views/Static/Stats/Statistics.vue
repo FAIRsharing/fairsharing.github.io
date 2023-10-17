@@ -693,14 +693,14 @@
     /** This component handles the statistic page
      *
      */
-     import GraphClient from "@/lib/GraphClient/GraphClient.js"
      import Loaders from "@/components/Navigation/Loaders"
-     import PieChart from "@/components/Static/Statistics/PieChart.vue"
      import BarChart from "@/components/Static/Statistics/BarChart.vue"
-     import getRecordStats from "@/lib/GraphClient/queries/getRecordStats.json"
-     import StatsStandard from "@/components/Static/Statistics/StatsStandard.vue"
-     import StatsPolicy from "@/components/Static/Statistics/StatsPolicy.vue"
+     import PieChart from "@/components/Static/Statistics/PieChart.vue"
      import StatsDB from "@/components/Static/Statistics/StatsDB.vue"
+     import StatsPolicy from "@/components/Static/Statistics/StatsPolicy.vue"
+     import StatsStandard from "@/components/Static/Statistics/StatsStandard.vue"
+     import GraphClient from "@/lib/GraphClient/GraphClient.js"
+     import getRecordStats from "@/lib/GraphClient/queries/getRecordStats.json"
      const client = new GraphClient();
 
      export default {

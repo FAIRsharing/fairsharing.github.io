@@ -1,8 +1,9 @@
-import {shallowMount, createLocalVue} from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import Tools from "@/components/Records/Record/Tools.vue"
+import {createLocalVue,shallowMount} from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import Tools from "@/components/Records/Record/Tools.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -41,7 +42,7 @@ describe("Tools.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Tools");
+        expect(wrapper.vm.$options.name).toMatch("Tools");
     });
 
     it("doesn't display if there are no tools to display", () => {

@@ -1,9 +1,11 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
 import VueRouter from "vue-router"
+
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
 //import getFilters from "@/lib/GraphClient/queries/getFilters.json"
 import Stats from "@/views/Static/Stats/Statistics.vue"
+
 import dataStats from "../../../../fixtures/getRecordsForStats.json"
 
 const localVue = createLocalVue();
@@ -17,14 +19,13 @@ describe("Statistics.vue", () => {
   let wrapper;
   let graphStub;
 
-  beforeAll( async (done) => {
+  beforeAll( async () => {
     graphStub = sinon.stub(GraphClient.prototype, "executeQuery").returns(fakeDataStats);
     wrapper = await shallowMount(Stats, {
         localVue,
         router,
         mocks: {$router}
     });
-    done();
   });
 
   afterEach(() => {
@@ -33,7 +34,7 @@ describe("Statistics.vue", () => {
 
   it("can be mounted and data properly created", async () => {
       const title = "Statistics";
-      expect(wrapper.name()).toMatch(title);
+      expect(wrapper.vm.$options.name).toMatch(title);
       //console.log(wrapper.vm.allDataStats.aggregations.policy.subjects);
       expect(wrapper.vm.chartRegistries.title).toBe("Content divided by type");
       expect(wrapper.vm.chartRegistries.data[0].name).toBe("Standards");

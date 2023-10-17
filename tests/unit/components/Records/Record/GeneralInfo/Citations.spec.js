@@ -1,9 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import Citations from "@/components/Records/Record/GeneralInfo/Citations.vue"
-import Vuetify from "vuetify"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import VueMoment from "vue-moment"
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import Citations from "@/components/Records/Record/GeneralInfo/Citations.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -36,7 +37,7 @@ describe("Citations.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("Citations");
+        expect(wrapper.vm.$options.name).toMatch("Citations");
     });
 
 });

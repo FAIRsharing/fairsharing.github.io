@@ -499,14 +499,20 @@
             {{ key }}
           </h4>
           <div
+            v-for="(itemText,itemIndex) in governance_text"
+            :key="itemText+'_'+itemIndex"
+          >
+            <p
+              class="ma-1"
+              v-html="$sanitize(itemText.text)"
+            />
+          </div>
+          <div
             v-for="(item,itemIndex) in governanceItem"
             :key="item.title+'_'+itemIndex"
-            class="ml-8"
+            class="mt-5"
           >
             <div class="mb-5">
-              <h4 class="text-h5">
-                {{ item.title }}
-              </h4>
               <ul :class="['mt-2',{'column-count':$vuetify.breakpoint.mdAndUp}]">
                 <li
                   v-for="(itemData,itemDataIndex) in item.data"
@@ -633,64 +639,66 @@
 
 <script>
 /**
-* All static pages will be handle through this namespace
-* @namespace Static
-*/
-import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
-import {externalLinks, contentTabs, tables, governance, meettheteam, rda} from "@/data/communityPageData.json"
-import Icon from "@/components/Icon";
+ * All static pages will be handle through this namespace
+ * @namespace Static
+ */
 import {isArray} from "lodash";
+
+import Icon from "@/components/Icon";
+import ActivitiesStaticTable from "@/components/Static/Community/ActivitiesStaticTable";
+import communityData from "@/data/communityPageData.json"
 /** This component handles the sign-up/register page
-* @memberOf Static
-* @name Community
-* @type module
-* @instance
-* */
+ * @memberOf Static
+ * @name Community
+ * @type module
+ * @instance
+ * */
 export default {
-  name: "Community",
-  components: {Icon, ActivitiesStaticTable},
-  title: "This will be the community page",
-  data: () => {
-    return {
-      applyCss: false,
-      currentAnchor:'',
-      externalLinks,
-      contentTabs,
-      tables,
-      governance,
-      meettheteam,
-      Icon,
-      rda
-    }
-  },
-  watch: {
-    $route: {
-      deep:true,
-      handler() {
-        this.applyCss = false
-        this.$nextTick(() => {
-          this.applyCss = true
-        })
-      }
-    }
-  },
-  created() {
-    this.$nextTick(() => {
-      // update the UI padding and margin after DOM is fully loaded.
-      this.applyCss = true
-    })
-  },
-  methods: {
-    jumpToAnchor(selectedAnchor) {
-      if (selectedAnchor !== this.currentAnchor) {
-        this.$router.push({hash: `${selectedAnchor}`});
-        this.currentAnchor = selectedAnchor;
-      }
+    name: "Community",
+    components: {Icon, ActivitiesStaticTable},
+    title: "This will be the community page",
+    data: () => {
+        return {
+            contentTabs:  communityData.contentTabs,
+            externalLinks:  communityData.externalLinks,
+            governance:  communityData.governance,
+            governance_text:  communityData.governance_text,
+            meettheteam:  communityData.meettheteam,
+            rda:  communityData.rda,
+            tables:  communityData.tables,
+            applyCss: false,
+            currentAnchor:'',
+            Icon
+        }
     },
-    isArray(input){
-      return isArray(input)
+    watch: {
+        $route: {
+            deep:true,
+            handler() {
+                this.applyCss = false
+                this.$nextTick(() => {
+                    this.applyCss = true
+                })
+            }
+        }
+    },
+    created() {
+        this.$nextTick(() => {
+            // update the UI padding and margin after DOM is fully loaded.
+            this.applyCss = true
+        })
+    },
+    methods: {
+        jumpToAnchor(selectedAnchor) {
+            if (selectedAnchor !== this.currentAnchor) {
+                this.$router.push({hash: `${selectedAnchor}`});
+                this.currentAnchor = selectedAnchor;
+            }
+        },
+        isArray(input){
+            return isArray(input)
+        }
     }
-  }
 }
 </script>
 

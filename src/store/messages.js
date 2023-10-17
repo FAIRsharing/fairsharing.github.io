@@ -1,5 +1,5 @@
-import queryMessages from "@/lib/GraphClient/queries/getMessages.json";
 import GraphQLClient from "@/lib/GraphClient/GraphClient";
+import queryMessages from "@/lib/GraphClient/queries/getMessages.json";
 const graphClient = new GraphQLClient();
 
 export const mutations = {

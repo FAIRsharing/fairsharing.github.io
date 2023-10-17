@@ -1,9 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import Vuex from "vuex"
-import VueRouter from "vue-router"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
-import Client from "@/lib/Client/RESTClient.js"
+import VueRouter from "vue-router"
+import Vuex from "vuex"
+
 import UserMenu from "@/components/Users/UserProfileMenu.vue"
+import Client from "@/lib/Client/RESTClient.js"
 import userStore from "@/store/users";
 
 const localVue = createLocalVue();
@@ -59,7 +60,7 @@ describe("UserProfileMenu.vue", () => {
 
     it("can be instantiated", () => {
         const title = "UserProfileMenu";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
     });
 
     it("can a user that is a curator access to the curator panel", async () => {

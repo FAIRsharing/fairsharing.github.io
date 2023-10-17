@@ -108,8 +108,9 @@
 
 <script>
     import { mapGetters } from 'vuex';
-    import stringUtils from '@/utils/stringUtils';
+
     import SectionTitle from '@/components/Records/Record/SectionTitle';
+    import stringUtils from '@/utils/stringUtils';
 
     export default {
         name: "Publications",

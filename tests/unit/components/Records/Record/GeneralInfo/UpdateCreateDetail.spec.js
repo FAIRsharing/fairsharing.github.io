@@ -1,9 +1,10 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail.vue"
-import Vuetify from "vuetify"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import VueMoment from 'vue-moment';
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import UpdateCreateDetail from "@/components/Records/Record/GeneralInfo/UpdateCreateDetail.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -35,7 +36,7 @@ describe("UpdateCreateDetail.vue", function(){
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("UpdateCreateDetail");
+        expect(wrapper.vm.$options.name).toMatch("UpdateCreateDetail");
     });
 
 });

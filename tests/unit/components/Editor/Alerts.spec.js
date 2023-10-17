@@ -1,8 +1,9 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
 import Vuetify from "vuetify"
-import recordStore from "@/store/recordData.js"
+import Vuex from "vuex"
+
 import Alerts from "@/components/Editor/Alerts.vue"
+import recordStore from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -32,7 +33,7 @@ describe("Edit -> Alerts.vue", function() {
             },
             mocks: {$store}
         });
-        expect(wrapper.name()).toMatch("Alerts");
+        expect(wrapper.vm.$options.name).toMatch("Alerts");
         recordStore.state.sections.organisations.error = false;
         expect(wrapper.vm.message.type()).toBe("success");
     });

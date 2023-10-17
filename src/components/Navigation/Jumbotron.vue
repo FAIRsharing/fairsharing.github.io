@@ -39,8 +39,9 @@
 </template>
 
 <script>
-import jumbotronData from "@/data/jumbotronData.json";
 import { loadFull } from "tsparticles";
+
+import jumbotronData from "@/data/jumbotronData.json";
 
 // These consts appear to be called by the tests but aren't shown as covered.
 /* istanbul ignore next */

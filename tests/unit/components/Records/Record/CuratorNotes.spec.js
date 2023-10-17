@@ -1,10 +1,11 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import CuratorNotes from "@/components/Records/Record/CuratorNotes"
-import Vuetify from "vuetify"
-import users from "@/store/users";
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import VueSanitize from "vue-sanitize";
+import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import CuratorNotes from "@/components/Records/Record/CuratorNotes"
+import Record from "@/store/recordData.js"
+import users from "@/store/users";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -31,7 +32,7 @@ describe("CuratorNotes.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CuratorNotes");
+        expect(wrapper.vm.$options.name).toMatch("CuratorNotes");
     });
 
     it("can add newlines", () => {

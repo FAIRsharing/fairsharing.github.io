@@ -129,15 +129,16 @@
 </template>
 
 <script>
-  import { mapActions, mapState, mapGetters, mapMutations } from "vuex"
-  import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
-  import EditRelationships from "@/components/Editor/EditRelationships";
-  import EditDataAccess from "@/components/Editor/DataAccess/EditDataAccess";
-  import EditOrganisations from "@/components/Editor/Organisations/Organisations";
-  import EditPublications from "@/components/Editor/EditPublications";
+  import { mapActions, mapGetters, mapMutations,mapState } from "vuex"
+
   import EditAdditionalInfo from "@/components/Editor/AdditionalInformation/EditAdditionalInfo";
-  import Unauthorized from "@/views/Errors/403"
+  import EditDataAccess from "@/components/Editor/DataAccess/EditDataAccess";
+  import EditPublications from "@/components/Editor/EditPublications";
+  import EditRelationships from "@/components/Editor/EditRelationships";
+  import EditGeneralInfo from "@/components/Editor/GeneralInformation/GeneralInformation.vue";
+  import EditOrganisations from "@/components/Editor/Organisations/Organisations";
   import RESTClient from "@/lib/Client/RESTClient.js"
+  import Unauthorized from "@/views/Errors/403"
 
   const client = new RESTClient();
 

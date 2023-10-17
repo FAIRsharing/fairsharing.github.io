@@ -259,16 +259,17 @@
 </template>
 
 <script>
+import Graph from "graphology";
+import forceAtlas2 from "graphology-layout-forceatlas2";
+import FA2Layout from "graphology-layout-forceatlas2/worker";
+import Sigma from "sigma";
+import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
+
+import Loaders from "@/components/Navigation/Loaders";
+import networkGraph from "@/data/networkGraph.json"
+import relationColors from "@/data/RelationsColors.json"
 import GraphClient from '@/lib/GraphClient/GraphClient.js'
 import graphQuery from '@/lib/GraphClient/queries/getGraphRelations.json'
-import relationColors from "@/data/RelationsColors.json"
-import Loaders from "@/components/Navigation/Loaders";
-import Graph from "graphology";
-import Sigma from "sigma";
-import FA2Layout from "graphology-layout-forceatlas2/worker";
-import forceAtlas2 from "graphology-layout-forceatlas2";
-import getNodeProgramImage from "sigma/rendering/webgl/programs/node.image";
-import networkGraph from "@/data/networkGraph.json"
 
 const graphClient = new GraphClient();
 const graph = new Graph();

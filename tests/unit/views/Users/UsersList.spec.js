@@ -1,11 +1,12 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
-import UsersList from "@/views/Users/UsersList"
+import sinon from "sinon";
 import Vuetify from "vuetify"
 import Vuex from "vuex";
-import usersStore from "@/store/users";
-import sinon from "sinon";
-import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
+
 import GraphClient from "@/lib/GraphClient/GraphClient";
+import allUsersQuery from "@/lib/GraphClient/queries/getAllUsers.json";
+import usersStore from "@/store/users";
+import UsersList from "@/views/Users/UsersList"
 
 const vuetify = new Vuetify();
 const localVue = createLocalVue();
@@ -50,7 +51,7 @@ describe("UsersList.vue", function () {
     })
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("UsersList");
+        expect(wrapper.vm.$options.name).toMatch("UsersList");
     });
 
 });

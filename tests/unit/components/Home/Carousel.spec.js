@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import Carousel from "@/components/Home/Carousel"
 import Vuetify from "vuetify"
+
+import Carousel from "@/components/Home/Carousel"
 
 const vuetify = new Vuetify();
 
@@ -14,7 +15,7 @@ describe("Carousel", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Carousel");
+        expect(wrapper.vm.$options.name).toMatch("Carousel");
     });
 
     it("can cycle through tabs", () => {

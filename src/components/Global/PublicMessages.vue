@@ -18,8 +18,8 @@
 
 <script>
 // no-v-html allowed as the text will come only from super_curators...
-import {mapState} from "vuex";
 import moment from "moment";
+import {mapState} from "vuex";
 
 export default {
   name: "PublicMessages",

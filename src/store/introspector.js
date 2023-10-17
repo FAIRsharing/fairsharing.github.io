@@ -1,6 +1,7 @@
+import {isEqual} from 'lodash'
+
 import Client from "../lib/GraphClient/GraphClient.js"
 import introspectionQuery from "../lib/GraphClient/queries/introspection.json"
-import {isEqual} from 'lodash'
 
 let client = new Client();
 export const mutations = {

@@ -108,10 +108,11 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
-import NotFound from "@/views/Errors/404";
+
 import Loaders from "@/components/Navigation/Loaders";
-import TermDetails from "@/components/Ontologies/TermDetails"
 import OntologySunburst from "@/components/Ontologies/OntologySunburst"
+import TermDetails from "@/components/Ontologies/TermDetails"
+import NotFound from "@/views/Errors/404";
 
 export default {
   name: "OntologyBrowser",

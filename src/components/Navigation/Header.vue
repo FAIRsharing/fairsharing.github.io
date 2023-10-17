@@ -126,10 +126,11 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
-import Login from "@/views/Users/Login/Login";
-import StringSearch from "@/components/Records/Search/Input/StringSearch";
 import {isEmpty} from "lodash";
+import {mapState} from 'vuex'
+
+import StringSearch from "@/components/Records/Search/Input/StringSearch";
+import Login from "@/views/Users/Login/Login";
 
 export default {
   name: "Header",

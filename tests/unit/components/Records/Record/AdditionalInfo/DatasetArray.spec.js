@@ -1,6 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
-import DatasetArray from "@/components/Records/Record/AdditionalInfo/DatasetArray"
 import Vuetify from "vuetify"
+
+import DatasetArray from "@/components/Records/Record/AdditionalInfo/DatasetArray"
 
 const vuetify = new Vuetify();
 
@@ -14,18 +15,18 @@ describe("DatasetArray.vue", function () {
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("DatasetArray");
+        expect(wrapper.vm.$options.name).toMatch("DatasetArray");
     });
 
-    it("can react to changes in currentKey prop", () => {
+    it("can react to changes in currentKey prop", async() => {
         expect(wrapper.vm.getUpdatedTypeTitle()).toMatch("Type");
-        wrapper.setProps({currentKey: "data_curation"})
+        await wrapper.setProps({currentKey: "data_curation"})
         expect(wrapper.vm.getUpdatedTypeTitle()).toMatch("Steps");
-        wrapper.setProps({currentKey: "data_deposition_condition"})
+        await wrapper.setProps({currentKey: "data_deposition_condition"})
         expect(wrapper.vm.getUpdatedTypeTitle()).toMatch("Restrictions");
-        wrapper.setProps({})
+        await wrapper.setProps({})
         expect(wrapper.vm.getUpdatedNameTitle()).toMatch("Name");
-        wrapper.setProps({currentKey: "resource_sustainability"})
+        await wrapper.setProps({currentKey: "resource_sustainability"})
         expect(wrapper.vm.getUpdatedNameTitle()).toMatch("Plan");
         let title = "cos top guidelines"
         expect(wrapper.vm.setTitle(title)).toMatch("COS TOP Guidelines");

@@ -272,10 +272,11 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex"
-import {isEmail, isLongEnough, isRequired, isUrl} from "@/utils/rules.js"
-import RESTClient from "@/lib/Client/RESTClient.js"
 import CountryFlag from "vue-country-flag";
+import { mapActions,mapState } from "vuex"
+
+import RESTClient from "@/lib/Client/RESTClient.js"
+import {isEmail, isLongEnough, isRequired, isUrl} from "@/utils/rules.js"
 
 const restClient = new RESTClient();
 

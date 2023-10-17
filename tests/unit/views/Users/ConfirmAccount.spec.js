@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon"
-import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
+
 import Client from "@/lib/Client/RESTClient.js"
+import ConfirmAccount from "@/views/Users/ConfirmAccount.vue"
 
 const localVue = createLocalVue();
 
@@ -32,7 +33,7 @@ describe('ConfirmAccount.vue', () => {
             mocks: { $route },
         });
         const title = "ConfirmAccount";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.message).toStrictEqual({Confirmation_token: "missing"})
     });
 

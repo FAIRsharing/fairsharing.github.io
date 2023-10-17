@@ -1,5 +1,5 @@
-import stringUtils from "@/utils/stringUtils.js";
 import {truncate} from "@/utils/stringUtils"
+import stringUtils from "@/utils/stringUtils.js";
 
 describe("stringUtils.js", function(){
 

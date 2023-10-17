@@ -1,9 +1,10 @@
+import {isEqual} from 'lodash'
+
+import buttonOptions from '@/data/ButtonOptions.json'
 import filterMapping from "@/data/FiltersLabelMapping.json"
+import homePageData from "@/data/homePageData.json"
 import GraphQLClient from "@/lib/GraphClient/GraphClient.js"
 import query from "@/lib/GraphClient/queries/getFilters.json";
-import {blockInfo} from "@/data/homePageData.json"
-import {isEqual} from 'lodash'
-import buttonOptions from '@/data/ButtonOptions.json'
 
 const graphClient = new GraphQLClient();
 
@@ -77,7 +78,7 @@ export const actions = {
         // Please refer to ticket:
         // https://github.com/FAIRsharing/fairsharing.github.io/issues/1288
         let keys = [];
-        blockInfo['database']['items'].forEach((item) => {
+        homePageData.blockInfo['database']['items'].forEach((item) => {
             keys.push(item.option.key)
         });
 

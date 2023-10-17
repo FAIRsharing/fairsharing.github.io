@@ -1,8 +1,10 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuetify from "vuetify"
-import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardColumn.vue"
-import getRecord from '../../../../../fixtures/getRecord.json'
 import VueRouter from "vue-router";
+import Vuetify from "vuetify"
+
+import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardColumn.vue"
+
+import getRecord from '../../../../../fixtures/getRecord.json'
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
@@ -21,6 +23,6 @@ describe("RecordsCardColumn.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("RecordsCardColumn");
+        expect(wrapper.vm.$options.name).toMatch("RecordsCardColumn");
     });
 });

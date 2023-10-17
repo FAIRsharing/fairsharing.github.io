@@ -1,10 +1,11 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import RESTClient from "@/lib/Client/RESTClient";
 import editorStore from "@/store/editor";
 import record from "@/store/recordData";
-import RESTClient from "@/lib/Client/RESTClient";
+import Record from "@/store/recordData.js";
 const sinon = require("sinon");
 import OtherDataProcesses from "@/components/Records/Record/DataProcessesAndConditions/OtherDataProcesses"
 
@@ -23,7 +24,6 @@ record.state.currentRecord.fairsharingRecord.metadata = {
     dataset_deposition: {},
 };
 $store.state.editor.allowedFields.properties = {dataset_deposition: {}}
-let graphStub;
 let restStub;
 
 describe("OtherDataProcesses.vue", function () {
@@ -48,12 +48,11 @@ describe("OtherDataProcesses.vue", function () {
     });
 
     afterAll(() => {
-        graphStub.restore();
         restStub.restore();
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("OtherDataProcesses");
+        expect(wrapper.vm.$options.name).toMatch("OtherDataProcesses");
     });
 
     it("can check if data is available", async () => {

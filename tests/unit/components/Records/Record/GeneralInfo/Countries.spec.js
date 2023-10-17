@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import Countries from "@/components/Records/Record/GeneralInfo/Countries.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import Countries from "@/components/Records/Record/GeneralInfo/Countries.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -38,7 +39,7 @@ describe("Countries.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Countries");
+        expect(wrapper.vm.$options.name).toMatch("Countries");
     });
 
     it("can sort countries", () => {

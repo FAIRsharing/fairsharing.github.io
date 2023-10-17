@@ -1,4 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
+
 import RecordMenu from "@/components/Records/Record/RecordMenu.vue"
 
 describe("RecordMenu.vue", function(){
@@ -6,6 +7,6 @@ describe("RecordMenu.vue", function(){
 
     it("can be instantiated", () => {
         wrapper = shallowMount(RecordMenu, {});
-        expect(wrapper.name()).toMatch("RecordMenu");
+        expect(wrapper.vm.$options.name).toMatch("RecordMenu");
     });
 });

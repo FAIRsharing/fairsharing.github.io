@@ -129,11 +129,12 @@
 
 <script>
 import {mapGetters, mapState} from "vuex";
+
+import Icon from "@/components/Icon";
+import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition";
+import OtherDataProcesses from "@/components/Records/Record/DataProcessesAndConditions/OtherDataProcesses";
 import SectionTitle from "@/components/Records/Record/SectionTitle";
 import clearString from "@/utils/stringUtils";
-import Icon from "@/components/Icon";
-import OtherDataProcesses from "@/components/Records/Record/DataProcessesAndConditions/OtherDataProcesses";
-import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition";
 
 export default {
   name: "DataProcessesAndConditions",

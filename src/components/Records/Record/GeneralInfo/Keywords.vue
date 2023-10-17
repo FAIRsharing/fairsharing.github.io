@@ -93,8 +93,10 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import KeywordTooltip from "../../Shared/KeywordTooltip";
+
 import recordsCardUtils from "@/utils/recordsCardUtils";
+
+import KeywordTooltip from "../../Shared/KeywordTooltip";
 export default {
   name: "Keywords",
   components: {

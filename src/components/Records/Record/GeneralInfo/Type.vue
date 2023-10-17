@@ -8,8 +8,9 @@
 </template>
 
 <script>
-import stringUtils from "@/utils/stringUtils";
 import {mapGetters} from "vuex";
+
+import stringUtils from "@/utils/stringUtils";
 export default {
   name: "Type",
   mixins: [stringUtils],

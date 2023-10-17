@@ -136,14 +136,15 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations, mapState} from "vuex";
-import stringUtils from "@/utils/stringUtils";
-import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
-import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
-import SearchInput from "@/components/Records/Search/Input/SearchInput";
+
+import FilterChips from "@/components/Records/Search/Header/FilterChips";
 import ListController from "@/components/Records/Search/Header/ListController";
 import Pagination from "@/components/Records/Search/Header/Pagination";
-import FilterChips from "@/components/Records/Search/Header/FilterChips";
+import SearchInput from "@/components/Records/Search/Input/SearchInput";
+import RecordsCardColumn from "@/components/Records/Search/Output/RecordsCardColumn";
+import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack";
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import stringUtils from "@/utils/stringUtils";
 
 export default {
   name: "SearchCollection",

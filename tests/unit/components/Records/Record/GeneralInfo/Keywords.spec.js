@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import Keywords from "@/components/Records/Record/GeneralInfo/Keywords.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
+import Vuex from "vuex";
+
+import Keywords from "@/components/Records/Record/GeneralInfo/Keywords.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -40,7 +41,7 @@ describe("Keywords.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Keywords");
+        expect(wrapper.vm.$options.name).toMatch("Keywords");
         expect(wrapper.vm.getField('taxonomies')[0].label).toMatch("Turdus turdus");
         expect(wrapper.vm.getField('subjects')[0].label).toMatch("Javascript Fun");
         expect(wrapper.vm.getField('domains')[0].label).toMatch("Deneb");

@@ -14,7 +14,7 @@ jobs:
       with:
         node-version: '16.x'
     - name: Install Dependencies
-      run: npm install --legacy-peer-deps
+      run: npm install
     - name: Run the documentation
       run: npm run doc:full
     - name: Commit changes

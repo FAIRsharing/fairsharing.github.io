@@ -1,14 +1,13 @@
 import {
     hasValue,
+    isAllowedSize,
     isEmail,
-    isRequired,
-    isUrl,
+    isEmailOrUrl,
+    isImage,
     isLongEnough,
     isOrcid,
-    isImage,
-    isAllowedSize,
-    isEmailOrUrl
-} from "@/utils/rules.js"
+    isRequired,
+    isUrl} from "@/utils/rules.js"
 
 describe('Form validation rules', () => {
 

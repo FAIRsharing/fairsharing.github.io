@@ -1,8 +1,9 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js"
-import Collections from "@/components/Records/Record/Collections.vue"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
+import Collections from "@/components/Records/Record/Collections.vue"
+import Record from "@/store/recordData.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -118,7 +119,7 @@ describe("Collections.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("Collections");
+        expect(wrapper.vm.$options.name).toMatch("Collections");
     });
 
     it("runs prepareAssociations correctly", () => {

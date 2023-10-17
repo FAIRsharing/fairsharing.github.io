@@ -1,7 +1,8 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils";
-import StatisticsBlock from "@/components/Home/StatisticsBlock"
+import { createLocalVue,shallowMount } from "@vue/test-utils";
 import Vuetify from "vuetify"
 import Vuex from "vuex"
+
+import StatisticsBlock from "@/components/Home/StatisticsBlock"
 import RestClient from "@/lib/Client/RESTClient.js"
 const sinon = require("sinon");
 
@@ -20,7 +21,7 @@ describe("StatisticsBlock.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("StatisticsBlock");
+        expect(wrapper.vm.$options.name).toMatch("StatisticsBlock");
     });
 
     it("can get statistics count data", async () => {

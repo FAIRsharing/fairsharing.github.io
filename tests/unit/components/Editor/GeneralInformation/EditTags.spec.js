@@ -1,10 +1,11 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils"
-import Vuex from "vuex"
 import Vuetify from "vuetify"
+import Vuex from "vuex"
+
 import EditTags from "@/components/Editor/GeneralInformation/EditTags.vue"
-import recordStore from "@/store/recordData.js";
-import editorStore from "@/store/editor.js";
 import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import editorStore from "@/store/editor.js";
+import recordStore from "@/store/recordData.js";
 const sinon = require("sinon");
 const VueScrollTo = require('vue-scrollto');
 
@@ -68,7 +69,7 @@ describe('Editor -> EditTags.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("EditTags");
+        expect(wrapper.vm.$options.name).toMatch("EditTags");
         expect(wrapper.vm.recordTags.length).toBe(4);
         expect(wrapper.vm.buttonIcon).toBe("fa-plus-circle");
         expect(wrapper.vm.buttonLabel).toBe("Add new term(s)");
@@ -85,6 +86,7 @@ describe('Editor -> EditTags.vue', () => {
             subject: true,
             user_defined_tag: true
         };
+        wrapper.vm.partialTags();
         expect(wrapper.vm.tags.length).toBe(3);
     });
 
@@ -117,7 +119,8 @@ describe('Editor -> EditTags.vue', () => {
         let graphStub = sinon.stub(GraphClient.prototype, "executeQuery");
         const newTag = {id: 1, label: 'test124', model: "subject"};
         graphStub.returns({searchTags: [newTag]});
-        wrapper.vm.searchString = "test";
+        // wrapper.vm.searchString = "test";
+        wrapper.vm.$options.watch.searchString.call(wrapper.vm, "test")
         expect(wrapper.vm.tags).toStrictEqual([]);
         await wrapper.vm.getTags('test');
         expect(wrapper.vm.tags).toStrictEqual([newTag]);

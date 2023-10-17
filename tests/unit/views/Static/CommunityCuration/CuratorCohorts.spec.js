@@ -1,7 +1,8 @@
 import {shallowMount} from "@vue/test-utils";
-import CuratorCohorts from "@/views/Static/CommunityCuration/CuratorCohorts"
 import Vuetify from "vuetify"
+
 import fakeData from "@/../tests/fixtures/communityCurationCohortsMock.json"
+import CuratorCohorts from "@/views/Static/CommunityCuration/CuratorCohorts"
 
 const vuetify = new Vuetify();
 
@@ -162,7 +163,7 @@ describe("CuratorCohorts.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CuratorCohorts");
+        expect(wrapper.vm.$options.name).toMatch("CuratorCohorts");
         expect(wrapper.vm.communityCurationCohorts.data).toStrictEqual(fakeData.data);
         expect(wrapper.vm.currentCohort).toStrictEqual(currentCuratorsList);
         expect(wrapper.vm.year).toBe(new Date().getFullYear());

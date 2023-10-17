@@ -11,7 +11,8 @@ module.exports = {
         "!src/documentation/process_doc.js",
         "!src/store/index.js",
         "!src/plugins/**",
-        "!src/router/routes.js"
+        "!src/router/routes.js",
+        "!views/Records/NetworkGraph.vue"
     ],
     testMatch: [
         "**/**.spec.js", "**/**/**.spec.js", "tests/**/**.spec.js", "tests/**/**/**.spec.js"

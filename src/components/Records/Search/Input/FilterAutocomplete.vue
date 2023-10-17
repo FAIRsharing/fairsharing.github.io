@@ -49,6 +49,7 @@
 
 <script>
 import {mapGetters, mapState} from 'vuex'
+
 import clearString from '@/utils/stringUtils'
 
 export default {

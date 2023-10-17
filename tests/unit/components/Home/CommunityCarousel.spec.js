@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import CommunityCarousel from "@/components/Home/CommunityCarousel"
 import Vuetify from "vuetify"
+
+import CommunityCarousel from "@/components/Home/CommunityCarousel"
 
 const vuetify = new Vuetify();
 let breakpoint = {
@@ -20,7 +21,7 @@ describe("CommunityCarousel", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CommunityCarousel");
+        expect(wrapper.vm.$options.name).toMatch("CommunityCarousel");
         breakpoint = {
             init: jest.fn(),
             framework: {},
@@ -30,7 +31,7 @@ describe("CommunityCarousel", function () {
         const wrapper2 = shallowMount(CommunityCarousel, {
             vuetify,
         })
-        expect(wrapper2.name()).toMatch("CommunityCarousel");
+        expect(wrapper2.vm.$options.name).toMatch("CommunityCarousel");
     });
 
 });

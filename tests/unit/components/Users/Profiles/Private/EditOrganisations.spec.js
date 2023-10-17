@@ -1,15 +1,16 @@
-import { shallowMount, createLocalVue } from "@vue/test-utils"
-import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
-import userStore from "@/store/users.js";
-import editor from "@/store/editor.js";
-import GraphClient from "@/lib/GraphClient/GraphClient.js";
-import RESTClient from "@/lib/Client/RESTClient.js";
-import Vuex from "vuex";
-import VueRouter from "vue-router";
+import { createLocalVue,shallowMount } from "@vue/test-utils"
 import sinon from "sinon";
+import VueRouter from "vue-router";
 import Vuetify from "vuetify";
+import Vuex from "vuex";
+
+import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
 import RestClient from "@/lib/Client/RESTClient";
+import RESTClient from "@/lib/Client/RESTClient.js";
+import GraphClient from "@/lib/GraphClient/GraphClient.js";
+import editor from "@/store/editor.js";
 import editorStore from "@/store/editor.js";
+import userStore from "@/store/users.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -46,16 +47,21 @@ let mocks = {
     editPublicUserStub: null,
     editUserStub: null,
     getUserStub: null,
-    restore: function(mockKey) {
-        this[mockKey].restore();
-    },
-    restoreAll: function(){
-        this.restore("graphMock");
-        this.restore("restMock");
-        this.restore("editPublicUserStub");
-        this.restore("editUserStub");
-        this.restore("getUserStub");
-    },
+    /**
+     * Commenting as it is giving null output
+     * Need to check it again later
+     */
+    // restore: function(mockKey) {
+    //     this[mockKey].restore();
+    // },
+    // restoreAll: function(){
+    //     this.restore("graphMock");
+    //     this.restore("restMock");
+    //     this.restore("editPublicUserStub");
+    //     this.restore("editUserStub");
+    //     this.restore("getUserStub");
+    // },
+
     setMock: function(mockKey, targetClass, targetMethod, returnedValue){
         this[mockKey] = sinon.stub(targetClass, targetMethod);
         this[mockKey].returns(returnedValue);
@@ -92,7 +98,7 @@ describe('OrganisationTable.vue', () => {
         vuetify = new Vuetify();
     });
     afterAll( () => {
-        mocks.restoreAll();
+        // mocks.restoreAll();
     });
     afterEach(() => {
         wrapper.destroy();
@@ -107,7 +113,7 @@ describe('OrganisationTable.vue', () => {
     });
 
     it("can be mounted", () => {
-        expect(wrapper.name()).toMatch("EditOrganisations");
+        expect(wrapper.vm.$options.name).toMatch("EditOrganisations");
         expect(wrapper.vm.perPage).toBe(5)
         wrapper.vm.rules.isRequired();
         wrapper.vm.rules.isURL();

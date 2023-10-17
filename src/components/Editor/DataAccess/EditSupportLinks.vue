@@ -216,12 +216,13 @@
 </template>
 
 <script>
-    import { mapState } from "vuex"
     import { isEqual } from "lodash"
-    import { isRequired, isUrl, isEmail, isEmailOrUrl } from "@/utils/rules.js"
-    import ExternalClient from "@/lib/Client/ExternalClients.js"
+    import { mapState } from "vuex"
+
     import Icon from "@/components/Icon";
+    import ExternalClient from "@/lib/Client/ExternalClients.js"
     import IconsMixin from "@/utils/iconsMixin.js"
+    import { isEmail, isEmailOrUrl,isRequired, isUrl } from "@/utils/rules.js"
 
     let client = new ExternalClient();
 

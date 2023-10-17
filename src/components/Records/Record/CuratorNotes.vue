@@ -19,6 +19,7 @@
 
 <script>
 import {mapState} from "vuex";
+
 import SectionTitle from "@/components/Records/Record/SectionTitle";
 
 export default {

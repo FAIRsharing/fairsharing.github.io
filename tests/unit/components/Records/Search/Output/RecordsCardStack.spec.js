@@ -1,8 +1,10 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuetify from "vuetify"
-import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack.vue"
-import getRecord from '../../../../../fixtures/getRecord.json'
 import VueRouter from "vue-router";
+import Vuetify from "vuetify"
+
+import RecordsCardStack from "@/components/Records/Search/Output/RecordsCardStack.vue"
+
+import getRecord from '../../../../../fixtures/getRecord.json'
 
 const localVue = createLocalVue();
 localVue.use(VueRouter);
@@ -21,7 +23,7 @@ describe("RecordsCardStack.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("RecordsCardStack");
+        expect(wrapper.vm.$options.name).toMatch("RecordsCardStack");
     });
 
     it("can generate correct link depending on doi presence", () => {

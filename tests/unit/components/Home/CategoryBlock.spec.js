@@ -1,6 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import CategoryBlock from "@/components/Home/CategoryBlock"
 import Vuetify from "vuetify"
+
+import CategoryBlock from "@/components/Home/CategoryBlock"
 import icons from "@/plugins/icons";
 const vuetify = new Vuetify({'icons':icons});
 const localVue = new createLocalVue()
@@ -18,7 +19,7 @@ describe("CategoryBlock.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CategoryBlock");
+        expect(wrapper.vm.$options.name).toMatch("CategoryBlock");
     });
 
 });

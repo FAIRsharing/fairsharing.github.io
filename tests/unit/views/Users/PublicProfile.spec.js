@@ -1,14 +1,15 @@
-import {shallowMount, createLocalVue, RouterLinkStub} from "@vue/test-utils"
+import {createLocalVue, RouterLinkStub,shallowMount} from "@vue/test-utils"
+import sinon from "sinon"
 import VueRouter from "vue-router"
 import Vuex from "vuex"
-import sinon from "sinon"
-import PublicProfile from "@/views/Users/PublicProfile"
-import Client from "@/lib/Client/RESTClient.js"
-import ExternalClient from "@/lib/Client/ExternalClients.js"
-import GraphClient from "@/lib/GraphClient/GraphClient.js"
-import usersStore from "@/store/users";
-import editorStore from "@/store/editor";
+
 import ORCIDfixture from "@/../tests/fixtures/ORCIDpub.json"
+import ExternalClient from "@/lib/Client/ExternalClients.js"
+import Client from "@/lib/Client/RESTClient.js"
+import GraphClient from "@/lib/GraphClient/GraphClient.js"
+import editorStore from "@/store/editor";
+import usersStore from "@/store/users";
+import PublicProfile from "@/views/Users/PublicProfile"
 import User from "@/views/Users/User";
 
 
@@ -69,7 +70,7 @@ describe("PublicProfile.vue", () => {
 
     it("can be instantiated", () => {
         const title = "PublicProfile";
-        expect(wrapper.name()).toMatch(title);
+        expect(wrapper.vm.$options.name).toMatch(title);
         expect(wrapper.vm.publications.length).toBeGreaterThan(0);
         expect(getpubs).toHaveBeenCalledTimes(1);
     });

@@ -1,8 +1,9 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
-import Record from "@/store/recordData.js";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import DataProcessAndCondition from "@/components/Records/Record/DataProcessesAndConditions/DataProcessAndCondition"
+import Record from "@/store/recordData.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -43,7 +44,7 @@ describe("DataProcessAndCondition.vue", function () {
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("DataProcessAndCondition");
+        expect(wrapper.vm.$options.name).toMatch("DataProcessAndCondition");
     });
 
     it("can be check the reaction of page if appropriate data not provided", () => {

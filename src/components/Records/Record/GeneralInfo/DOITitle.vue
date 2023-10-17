@@ -81,11 +81,12 @@
 </template>
 
 <script>
-import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import {mapGetters, mapState} from "vuex";
+
 import Icon from "@/components/Icon";
-import getAPIEndPoint from "@/utils/generalUtils";
 import InfoBadge from "@/components/Records/Record/GeneralInfo/Badge/InfoBadge";
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import getAPIEndPoint from "@/utils/generalUtils";
 
 export default {
   name: "DOITitle",

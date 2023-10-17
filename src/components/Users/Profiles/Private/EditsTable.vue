@@ -90,12 +90,13 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapState } from "vuex"
+
+import Icon from "@/components/Icon";
 import { cleanString } from "@/utils/stringUtils"
 //import StatusPills from "./StatusPills";
 import Record from "@/views/Records/Record";
-import Icon from "@/components/Icon";
-import moment from "moment";
 
 export default {
   name: "EditsTable",

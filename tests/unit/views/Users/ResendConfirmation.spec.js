@@ -1,7 +1,8 @@
 import { shallowMount } from "@vue/test-utils";
 import sinon from "sinon";
-import ResendConfirmation from "@/views/Users/ResendConfirmation";
+
 import Client from "@/lib/Client/RESTClient.js"
+import ResendConfirmation from "@/views/Users/ResendConfirmation";
 
 describe("ResendConfirmation.vue", function(){
     let wrapper;
@@ -16,7 +17,7 @@ describe("ResendConfirmation.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("ResendConfirmation");
+        expect(wrapper.vm.$options.name).toMatch("ResendConfirmation");
     });
 
     it("sends an resend request and responds", async () => {

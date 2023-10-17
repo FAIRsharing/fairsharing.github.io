@@ -187,10 +187,11 @@
 </template>
 
 <script>
-import { isEmail, isRequired, isUrl } from "@/utils/rules.js"
 import {mapActions, mapMutations, mapState} from "vuex";
-import RESTClient from "@/lib/Client/RESTClient";
+
 import EditOrganisations from "@/components/Users/Profiles/Private/EditOrganisations";
+import RESTClient from "@/lib/Client/RESTClient";
+import { isEmail, isRequired, isUrl } from "@/utils/rules.js"
 
 const restClient = new RESTClient();
 

@@ -1,8 +1,9 @@
 import { createLocalVue, shallowMount } from "@vue/test-utils";
 import Vuex from "vuex";
+
+import additionalInformationFixture from "@/../tests/fixtures/additionalInformation.json"
 import FieldInput from "@/components/Editor/AdditionalInformation/FieldInput.vue"
 import recordStore from "@/store/recordData.js";
-import additionalInformationFixture from "@/../tests/fixtures/additionalInformation.json"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -27,7 +28,7 @@ describe("FieldInput.vue", function() {
                 fieldProps: additionalInformationFixture.schema.properties['dataset_deposition']
             }
         });
-        expect(wrapper.name()).toMatch("FieldInput");
+        expect(wrapper.vm.$options.name).toMatch("FieldInput");
     });
 
     it("can be mounted with a subfield name with value", () => {
@@ -41,7 +42,7 @@ describe("FieldInput.vue", function() {
                 id: 0
             }
         });
-        expect(wrapper.name()).toMatch("FieldInput");
+        expect(wrapper.vm.$options.name).toMatch("FieldInput");
     });
 
     it("can be mounted with a switch", () => {
@@ -54,7 +55,7 @@ describe("FieldInput.vue", function() {
                 subfieldName: 'restrictions'
             }
         });
-        expect(wrapper.name()).toMatch("FieldInput");
+        expect(wrapper.vm.$options.name).toMatch("FieldInput");
     });
 
     it("can be mounted with a subfield name but without value", () => {
@@ -68,7 +69,7 @@ describe("FieldInput.vue", function() {
                 id: 0
             }
         });
-        expect(wrapper.name()).toMatch("FieldInput");
+        expect(wrapper.vm.$options.name).toMatch("FieldInput");
     });
 
     it("can set a field value without a subfield", () => {
@@ -80,7 +81,7 @@ describe("FieldInput.vue", function() {
                 fieldProps: additionalInformationFixture.schema.properties['dataset_preservation']
             }
         });
-        expect(wrapper.name()).toMatch("FieldInput");
+        expect(wrapper.vm.$options.name).toMatch("FieldInput");
         wrapper.vm.setField("AbC");
         expect(wrapper.vm.fields['dataset_preservation']).toBe("AbC");
     });
@@ -96,7 +97,7 @@ describe("FieldInput.vue", function() {
                 id: 0
             }
         });
-        expect(wrapper.name()).toMatch("FieldInput");
+        expect(wrapper.vm.$options.name).toMatch("FieldInput");
         wrapper.vm.setField("https://example.com");
         expect(wrapper.vm.fields['data_processes'].url).toBe("https://example.com");
     });

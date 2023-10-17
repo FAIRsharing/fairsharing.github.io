@@ -1,6 +1,7 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import SummaryDownload from "@/components/Records/Search/Header/SummaryDownload.vue"
 import recordsStore from "@/store/recordSearch.js";
 
@@ -49,7 +50,7 @@ describe("SummaryDownload.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SummaryDownload");
+        expect(wrapper.vm.$options.name).toMatch("SummaryDownload");
     });
 
     it('can calculate the current path', () => {

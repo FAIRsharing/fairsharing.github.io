@@ -1,7 +1,8 @@
 import {shallowMount} from "@vue/test-utils";
 import VueCodeHighlight  from 'vue-code-highlight';
-import CommunityCuration from "@/views/Static/CommunityCuration/CommunityCuration"
 import Vuetify from "vuetify"
+
+import CommunityCuration from "@/views/Static/CommunityCuration/CommunityCuration"
 
 const vuetify = new Vuetify();
 
@@ -16,6 +17,6 @@ describe("CommunityCuration.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CommunityCuration");
+        expect(wrapper.vm.$options.name).toMatch("CommunityCuration");
     });
 });

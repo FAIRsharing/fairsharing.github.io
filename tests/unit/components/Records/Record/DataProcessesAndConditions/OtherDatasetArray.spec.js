@@ -1,6 +1,7 @@
 import {shallowMount} from "@vue/test-utils";
-import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray"
 import Vuetify from "vuetify"
+
+import OtherDatasetArray from "@/components/Records/Record/DataProcessesAndConditions/OtherDatasetArray"
 
 const vuetify = new Vuetify();
 
@@ -14,7 +15,7 @@ describe("OtherDatasetArray.vue", function () {
     });
 
     it("can be initiated", () => {
-        expect(wrapper.name()).toMatch("OtherDatasetArray");
+        expect(wrapper.vm.$options.name).toMatch("OtherDatasetArray");
     });
 
 });

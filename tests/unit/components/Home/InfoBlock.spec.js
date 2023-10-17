@@ -1,10 +1,12 @@
 import {createLocalVue, RouterLinkStub, shallowMount} from "@vue/test-utils";
-import InfoBlock from "@/components/Home/InfoBlock"
 import Vuetify from "vuetify";
+
+import InfoBlock from "@/components/Home/InfoBlock"
 import icons from "@/plugins/icons";
 const vuetify = new Vuetify({'icons':icons});
 const localVue = new createLocalVue()
 import Vuex from "vuex";
+
 import searchFiltersStore from "@/store/searchFilters.js";
 
 localVue.use(vuetify);
@@ -52,7 +54,7 @@ describe("BlockInfo.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("InfoBlock");
+        expect(wrapper.vm.$options.name).toMatch("InfoBlock");
     });
 
 });

@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import CarouselContent from "@/components/Home/CarouselContent"
 import Vuetify from "vuetify"
+
+import CarouselContent from "@/components/Home/CarouselContent"
 
 const vuetify = new Vuetify();
 
@@ -15,7 +16,7 @@ describe("TabContent.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("CarouselContent");
+        expect(wrapper.vm.$options.name).toMatch("CarouselContent");
     });
 
 });

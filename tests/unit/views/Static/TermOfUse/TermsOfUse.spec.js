@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
-import Home from "@/views/Static/TermOfUse/TermsOfUse"
 import Vuetify from "vuetify"
+
+import Home from "@/views/Static/TermOfUse/TermsOfUse"
 
 const vuetify = new Vuetify();
 
@@ -14,7 +15,7 @@ describe("TermsOfUse.vue", function(){
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("TermsOfUse");
+        expect(wrapper.vm.$options.name).toMatch("TermsOfUse");
     });
 
 });

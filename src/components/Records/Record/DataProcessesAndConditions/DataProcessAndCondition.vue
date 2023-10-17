@@ -156,9 +156,10 @@
 
 <script>
 import {mapGetters} from "vuex";
+
+import Icon from "@/components/Icon";
 import clearString from '@/utils/stringUtils';
 import truncate from "@/utils/stringUtils";
-import Icon from "@/components/Icon";
 
 export default {
   name: "DataProcessAndCondition",

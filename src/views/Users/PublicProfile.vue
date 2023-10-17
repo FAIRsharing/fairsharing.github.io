@@ -302,16 +302,18 @@
 
 <script>
     import { mapActions, mapState } from "vuex"
-    import UserProfileMenu from "@/components/Users/UserProfileMenu";
-    import Loaders from "@/components/Navigation/Loaders";
-    import ExternalClient from "@/lib/Client/ExternalClients.js"
-    import NotFound from "@/views/Errors/404"
-    import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
-    import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
-    import { cleanString } from "@/utils/stringUtils"
-    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
-    import ViewAwards from "@/components/Users/Profiles/Private/ViewAwards";
+
     import Icon from "@/components/Icon";
+    import Loaders from "@/components/Navigation/Loaders";
+    import ViewAwards from "@/components/Users/Profiles/Private/ViewAwards";
+    import ViewOrganisations from "@/components/Users/Profiles/Private/ViewOrganisations";
+    import UserProfileMenu from "@/components/Users/UserProfileMenu";
+    import ExternalClient from "@/lib/Client/ExternalClients.js"
+    import { cleanString } from "@/utils/stringUtils"
+    import NotFound from "@/views/Errors/404"
+
+    import EditsTable from "../../components/Users/Profiles/Private/EditsTable";
+    import RecordsTable from "../../components/Users/Profiles/Private/RecordsTable";
 
     let client = new ExternalClient();
 

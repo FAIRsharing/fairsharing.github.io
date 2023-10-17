@@ -1,9 +1,10 @@
 import {createLocalVue, shallowMount} from "@vue/test-utils";
-import Vuex from "vuex";
 import Vuetify from "vuetify"
+import Vuex from "vuex";
+
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput.vue"
-import UIController from "@/store/uiController.js"
 import recordsStore from "@/store/recordSearch.js";
+import UIController from "@/store/uiController.js"
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -38,7 +39,7 @@ describe("SearchOutput.vue", function () {
     });
 
     it("can be instantiated", () => {
-        expect(wrapper.name()).toMatch("SearchOutput");
+        expect(wrapper.vm.$options.name).toMatch("SearchOutput");
     });
 
     it("can check changeListType function", () => {

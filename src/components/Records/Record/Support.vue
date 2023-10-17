@@ -106,11 +106,12 @@
 </template>
 
 <script>
-import SectionTitle from '@/components/Records/Record/SectionTitle';
-import clearString from '@/utils/stringUtils'
 import {mapGetters} from "vuex";
+
 import Icon from "@/components/Icon";
+import SectionTitle from '@/components/Records/Record/SectionTitle';
 import IconsMixin from "@/utils/iconsMixin.js"
+import clearString from '@/utils/stringUtils'
 
 export default {
   name: "Support",

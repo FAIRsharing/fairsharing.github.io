@@ -384,6 +384,36 @@
           "homepage": "https://fip-wizard.ds-wizard.org/",
           "usage_image": "",
           "id": "fip_wizard"
+        },
+        {
+          "organisations": [
+            {
+              "name": "OpenAIRE",
+              "url": "https://www.openaire.eu",
+              "id": 2252
+            }
+          ],
+          "contacts": [
+            {
+              "name": "Elli P.",
+              "url": "mailto:elli.p@athenarc.gr",
+              "id": "Elli_p"
+            }
+          ],
+          "methods": [
+            "FAIRsharing API"
+          ],
+          "name": "OpenDMP Software and ARGOS service",
+          "types": [
+            "Data Management Plan (DMP) development/lifecycle",
+            "(Meta)data retrieval/integration"
+          ],
+          "logo": "argos.png",
+          "status": "Completed",
+          "description": "OpenDMP software supports Active Data Management Plans enabling bi-lateral information exchange with other data services to automate processes and enhance parts of the RDM ecosystem, particularly as they are expressed in the FAIR framework. The ARGOS service is accessible from the OpenAIRE catalogue and the EOSC portal. With the FAIRsharing configuration in the templates of ARGOS and OpenDMP outputs, researchers will be able to select information from a trusted resource without leaving the platform",
+          "homepage": "https://argos.openaire.eu/splash/",
+          "usage_image": "argos_usage.png",
+          "id": "argos"
         }
       ]
     }

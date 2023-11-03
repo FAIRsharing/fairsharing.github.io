@@ -1,6 +1,7 @@
 import Vue from "vue"
 import Vuex from "vuex"
 
+import advancedSearch from './advancedSearch'
 import editor from "./editor"
 import introspection from "./introspector.js"
 import messages from "./messages"
@@ -24,7 +25,8 @@ export default new Vuex.Store({
         uiController,
         editor,
         messages,
-        ontologyBrowser: ontologyBrowser
+        ontologyBrowser: ontologyBrowser,
+        advancedSearch
     }
 })
 

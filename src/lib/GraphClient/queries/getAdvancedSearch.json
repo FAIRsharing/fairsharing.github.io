@@ -1,0 +1,8 @@
+{
+  "queryName": "advancedSearch",
+  "queryParam": null,
+  "fields": [
+    "id",
+    "name"
+  ]
+}

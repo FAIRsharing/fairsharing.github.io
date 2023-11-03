@@ -17,7 +17,12 @@
             <v-btn
               color="primary"
               class="mr-8 mb-8"
-              :class="['mt-1',$vuetify.breakpoint.lgAndDown?'home-search-bt':'home-search-bt-xl']"
+              :class="[
+                'mt-1',
+                $vuetify.breakpoint.lgAndDown
+                  ? 'home-search-bt'
+                  : 'home-search-bt-xl',
+              ]"
               href="https://assist.fairsharing.org/"
               target="_blank"
             >
@@ -54,9 +59,9 @@
             class="d-flex align-center pa-0"
             :class="[
               {
-                'verticalDividerWrp mx-3' : $vuetify.breakpoint.mdAndUp,
-                'horizontalDividerWrp my-3' : $vuetify.breakpoint.smAndDown
-              }
+                'verticalDividerWrp mx-3': $vuetify.breakpoint.mdAndUp,
+                'horizontalDividerWrp my-3': $vuetify.breakpoint.smAndDown,
+              },
             ]"
           >
             <div
@@ -74,14 +79,21 @@
             sm="12"
             md="4"
             lg="4"
-            class="d-flex align-center pa-8 "
-            :class="{'mt-16': $vuetify.breakpoint.mdAndUp}"
+            class="d-flex justify-content-center align-center flex-column py-10"
           >
+            <!--Advance Search Button -->
+            <AdvanceSearch
+              show-home-search
+              :advanced-search-term="advancedSearchValue"
+              @noAdvancedSearchTerm="noAdvancedSearchTerm"
+            />
             <string-search
-              class="mt-13"
+              class="mt-16"
               style="width: 100%"
               show-home-search
               placeholder="search through all content"
+              :is-advance-search-term="isAdvanceSearchTerm"
+              @advancedSearchTerm="advancedSearchTerm"
             />
           </v-col>
           <!--Divider -->
@@ -93,9 +105,9 @@
             class="d-flex align-center pa-0"
             :class="[
               {
-                'verticalDividerWrp mx-3' : $vuetify.breakpoint.mdAndUp,
-                'horizontalDividerWrp my-3' : $vuetify.breakpoint.smAndDown
-              }
+                'verticalDividerWrp mx-3': $vuetify.breakpoint.mdAndUp,
+                'horizontalDividerWrp my-3': $vuetify.breakpoint.smAndDown,
+              },
             ]"
           >
             <div
@@ -118,7 +130,12 @@
             <v-btn
               color="primary"
               class="mb-8"
-              :class="['mt-1',$vuetify.breakpoint.lgAndDown?'home-search-bt':'home-search-bt-xl']"
+              :class="[
+                'mt-1',
+                $vuetify.breakpoint.lgAndDown
+                  ? 'home-search-bt'
+                  : 'home-search-bt-xl',
+              ]"
               to="/browse/subject"
             >
               <v-icon
@@ -146,11 +163,26 @@
 </template>
 
 <script>
+import AdvanceSearch from "@/components/Records/Search/Input/AdvancedSearch.vue";
 import StringSearch from "@/components/Records/Search/Input/StringSearch";
 export default {
   name: "SearchBlock",
-  components: {StringSearch}
-}
+  components: { AdvanceSearch, StringSearch },
+  data() {
+    return {
+      advancedSearchValue: null,
+      isAdvanceSearchTerm: false,
+    };
+  },
+  methods: {
+    advancedSearchTerm(value) {
+      this.advancedSearchValue = value;
+    },
+    noAdvancedSearchTerm() {
+      this.isAdvanceSearchTerm = true;
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -159,28 +191,28 @@ export default {
 }
 
 .verticalDividerWrp {
-    max-width: 2px
+  max-width: 2px;
 }
 
 .vertical-divider {
-  width: .1rem;
+  width: 0.1rem;
   height: 90%;
   background: #809bb5;
 }
 
 .horizontalDividerWrp {
-    max-height: 2px
+  max-height: 2px;
 }
 
 .horizontal-divider {
-    width: 90%;
-    height: .1rem;
-    background: #809bb5;
-    margin: 0 auto;
+  width: 90%;
+  height: 0.1rem;
+  background: #809bb5;
+  margin: 0 auto;
 }
 
 .home-search-bt {
-  height: 40px!important;
+  height: 40px !important;
   right: 0;
   top: 0;
   border-radius: unset;
@@ -189,12 +221,11 @@ export default {
 }
 
 .home-search-bt-xl {
-  height: 50px!important;
+  height: 50px !important;
   right: 0;
   top: 0;
   border-radius: unset;
   -webkit-border-radius: unset;
   -moz-border-radius: unset;
 }
-
 </style>

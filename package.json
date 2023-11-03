@@ -59,6 +59,7 @@
     "vue-meta": "^2.4.0",
     "vue-moment": "^4.1.0",
     "vue-property-decorator": "^9.1.2",
+    "vue-query-builder": "^0.8.2",
     "vue-router": "^3.4.3",
     "vue-sanitize": "^0.2.3",
     "vue-scrollto": "^2.20.0",

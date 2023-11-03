@@ -1,6 +1,9 @@
 <template>
   <div>
-    <form
+    <v-form
+      ref="form"
+      v-model="formValid"
+      lazy-validation
       class="d-flex flex-row align-center align-content-center pt-1 mr-1 mr-lg-1 ml-1"
       style="position: relative"
       @submit.prevent="searchString()"
@@ -12,9 +15,11 @@
         clearable
         dense
         full-width
-        :class="$vuetify.breakpoint.lgAndDown?'v-input':'v-input-lg-up'"
+        :class="$vuetify.breakpoint.lgAndDown ? 'v-input' : 'v-input-lg-up'"
         :height="responsiveHeightTextBox"
         :placeholder="placeholder"
+        :rules="[rules.isRequired()]"
+        validate-on-blur
       />
 
       <!--  reusable search box  -->
@@ -25,6 +30,7 @@
         outlined
         :class="responsiveHeight"
         class="mt-1 mt-lg-1 ml-2"
+        type="submit"
         @click="searchString()"
       >
         <v-icon
@@ -36,11 +42,22 @@
         <span class="button-text-size">Search</span>
       </v-btn>
 
+      <!--  Advance search button  -->
+      <AdvancedSearch
+        v-if="!showHomeSearch"
+        :advanced-search-term="advancedSearchTerm"
+        @noAdvancedSearchTerm="noAdvancedSearchTerm"
+      />
       <!--  home page search box  -->
       <v-btn
         v-if="showHomeSearch"
         color="primary"
-        :class="['mt-1 mt-lg-1 ml-2',$vuetify.breakpoint.lgAndDown?'home-search-bt':'home-search-bt-xl']"
+        :class="[
+          'mt-1 mt-lg-1 ml-2',
+          $vuetify.breakpoint.lgAndDown
+            ? 'home-search-bt'
+            : 'home-search-bt-xl',
+        ]"
         @click="searchStringHomePage()"
       >
         <v-icon
@@ -51,15 +68,15 @@
         </v-icon>
         <span class="button-text-size">Search</span>
       </v-btn>
-    </form>
+    </v-form>
     <!--  home page exclusive check box for search  -->
     <div
       v-if="showHomeSearch"
       class="pt-6"
     >
       <v-checkbox
-        v-for="(checkbox,index) in registries"
-        :key="checkbox.value+'_'+index"
+        v-for="(checkbox, index) in registries"
+        :key="checkbox.value + '_' + index"
         v-model="selectedRegistries"
         class="d-inline-block mr-2"
         :label="checkbox.label"
@@ -74,46 +91,73 @@
 </template>
 
 <script>
+import AdvancedSearch from "@/components/Records/Search/Input/AdvancedSearch.vue";
+import { isRequired } from "@/utils/rules";
 export default {
   name: "StringSearch",
+  components: { AdvancedSearch },
   props: {
-    placeholder: {default: null, type: String},
-    showHomeSearch: {default: false, type: Boolean},
-    addSearchTerms: {default: false, type: Boolean},
-    searchPath: {default: '/search', type: String}
+    placeholder: { default: null, type: String },
+    showHomeSearch: { default: false, type: Boolean },
+    addSearchTerms: { default: false, type: Boolean },
+    searchPath: { default: "/search", type: String },
+    isAdvanceSearchTerm: { default: false, type: Boolean },
   },
   data() {
     return {
       searchTerm: null,
-      registries: [{label:'standards',value:'standard'},{label:'databases',value:'database'}
-        ,{label:'policies',value:'policy'},{label:'collections',value:'collection'}
+      registries: [
+        { label: "standards", value: "standard" },
+        { label: "databases", value: "database" },
+        { label: "policies", value: "policy" },
+        { label: "collections", value: "collection" },
       ],
-      selectedRegistries:[{label:'standards',value:'standard'},{label:'databases',value:'database'}
-        ,{label:'policies',value:'policy'},{label:'collections',value:'collection'}
-      ]
-    }
+      selectedRegistries: [
+        { label: "standards", value: "standard" },
+        { label: "databases", value: "database" },
+        { label: "policies", value: "policy" },
+        { label: "collections", value: "collection" },
+      ],
+      formValid: true,
+      rules: {
+        isRequired: function () {
+          return isRequired();
+        },
+      },
+      advancedSearchTerm: null,
+    };
   },
   computed: {
     responsiveHeight: function () {
       return {
-        'style-sm-xs': this.$vuetify.breakpoint.mdAndDown,
-        'style-md': this.$vuetify.breakpoint.mdOnly,
-        'style-lg': this.$vuetify.breakpoint.lgOnly,
-        'style-xl': this.$vuetify.breakpoint.xlOnly,
-      }
+        "style-sm-xs": this.$vuetify.breakpoint.mdAndDown,
+        "style-md": this.$vuetify.breakpoint.mdOnly,
+        "style-lg": this.$vuetify.breakpoint.lgOnly,
+        "style-xl": this.$vuetify.breakpoint.xlOnly,
+      };
     },
     responsiveHeightTextBox: function () {
       let boxHeight = 35;
-      if(this.$vuetify.breakpoint.xlOnly){
+      if (this.$vuetify.breakpoint.xlOnly) {
         boxHeight = 50;
       }
-        return boxHeight;
-    }
+      return boxHeight;
+    },
+  },
+  watch: {
+    searchTerm(newValue) {
+      this.advancedSearchTerm = newValue;
+      this.$emit("advancedSearchTerm", this.advancedSearchTerm);
+    },
+    isAdvanceSearchTerm(newValue) {
+      if (newValue) this.$refs.form.validate();
+    },
   },
   methods: {
     searchString() {
       const _module = this;
-      if (_module.searchTerm) {
+      const isValid = _module.$refs.form.validate();
+      if (_module.searchTerm || isValid) {
         let query;
         // For ticket #1505 using _module.$route.path allows this
         // component to trigger a search on the same page, instead of going
@@ -121,60 +165,67 @@ export default {
         if (_module.addSearchTerms) {
           query = {
             ..._module.$route.query,
-            q: _module.searchTerm
-          }
-        }
-        else {
+            q: _module.searchTerm,
+          };
+        } else {
           query = {
             // Changed due to: https://github.com/FAIRsharing/FAIRsharing-API/issues/625
-            q: _module.searchTerm.replace(/[^0-9a-z]/gi, ' ')
-          }
+            q: _module.searchTerm.replace(/[^0-9a-z]/gi, " "),
+          };
         }
         _module.$router.push({
           path: _module.searchPath,
-          query: query
+          query: query,
         });
         _module.searchTerm = null;
+        _module.$refs.form.resetValidation();
       }
     },
     searchStringHomePage() {
       const _module = this;
+      const isValid = _module.$refs.form.validate();
+      if (isValid) {
         if (_module.selectedRegistries.length === _module.registries.length) {
           _module.$router.push({
             path: "/search",
             query: {
-              q: _module.searchTerm?_module.searchTerm:undefined
-            }
+              q: _module.searchTerm ? _module.searchTerm : undefined,
+            },
           });
           _module.searchTerm = null;
-        }
-        else {
+          _module.$refs.form.resetValidation();
+        } else {
           const selectedRegistriesValues = [];
-          _module.selectedRegistries.forEach(registryItem => {
-            selectedRegistriesValues.push(registryItem.value)
+          _module.selectedRegistries.forEach((registryItem) => {
+            selectedRegistriesValues.push(registryItem.value);
           });
           _module.$router.push({
             path: "/search",
             query: {
-              q: _module.searchTerm?_module.searchTerm:undefined,
+              q: _module.searchTerm ? _module.searchTerm : undefined,
               fairsharingRegistry: selectedRegistriesValues.toString(),
-              searchAnd:false
-            }
+              searchAnd: false,
+            },
           });
           _module.searchTerm = null;
+          _module.$refs.form.resetValidation();
         }
-    }
-  }
-}
+      }
+    },
+    noAdvancedSearchTerm() {
+      this.$refs.form.validate();
+    },
+  },
+};
 </script>
 
 <style scoped>
 .v-input {
   box-shadow: 0 0 0 0;
-  height: 35px!important;
+  height: 35px !important;
   margin-bottom: 7px;
 }
-.v-input-lg-up{
+.v-input-lg-up {
   box-shadow: 0 0 0 0;
   height: 48px;
   margin-bottom: 15px;
@@ -204,7 +255,7 @@ export default {
 }
 
 .home-search-bt {
-  height: 40px!important;
+  height: 40px !important;
   position: absolute;
   right: 0;
   top: 0;
@@ -214,7 +265,7 @@ export default {
 }
 
 .home-search-bt-xl {
-  height: 50px!important;
+  height: 50px !important;
   position: absolute;
   right: 0;
   top: 0;
@@ -226,4 +277,3 @@ export default {
   color: white;
 }
 </style>
-

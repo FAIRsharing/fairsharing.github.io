@@ -93,6 +93,7 @@ export default {
       if (!newValue) {
         this.resetAdvancedSearch();
       }
+      if (!newValue) this.resetAdvancedSearch();
     },
   },
 

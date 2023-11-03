@@ -282,6 +282,10 @@ const customIcons  = {
         collaborators: {
             type: "icon",
             icon: "fa-users-cog"
+        },
+        advance_search: {
+            type: "icon",
+            icon: "fab fa-searchengin"
         }
     },
     iconfont: 'fa'

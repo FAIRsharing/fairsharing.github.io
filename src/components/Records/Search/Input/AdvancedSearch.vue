@@ -38,7 +38,7 @@
             <span class="text-h5">{{ advancedSearchTerm }}</span>
           </v-card-title>
           <v-card-text>
-            <QueryBuilderView :is-dialog="dialog" />
+            <QueryBuilder />
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -68,67 +68,60 @@
 <script>
 import { mapActions } from "vuex";
 
-import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
+import QueryBuilder from "@/components/Records/Search/Input/QueryBuilder.vue";
 
 export default {
-    name: "AdvancedSearch",
-    components: { QueryBuilderView },
-    props: {
-        showHomeSearch: {
-            default: false,
-            type: Boolean,
-        },
-        advancedSearchTerm: {
-            default: "",
-            type: String,
-        },
+  name: "AdvancedSearch",
+  components: { QueryBuilder },
+  props: {
+    showHomeSearch: {
+      default: false,
+      type: Boolean,
     },
-    data: () => {
-        return {
-            dialog: false,
-        };
+    advancedSearchTerm: {
+      default: "",
+      type: String,
     },
-    watch: {
-        dialog(newValue) {
-            if (!newValue) {
-                this.resetAdvancedSearch();
-            }
-            if (!newValue) this.resetAdvancedSearch();
-        },
-    },
+  },
+  data: () => {
+    return {
+      dialog: false,
+    };
+  },
 
-    methods: {
-        ...mapActions("advancedSearch", [
-            "fetchAdvancedSearchResults",
-            "resetAdvancedSearch",
-        ]),
-        openAdvanceSearch() {
-            if (this.advancedSearchTerm) this.dialog = true;
-            else this.$emit("noAdvancedSearchTerm");
-        },
-        closeDialog() {
-            this.dialog = false;
-        },
-        proceedDialog() {
-            this.fetchAdvancedSearchResults(this.advancedSearchTerm);
-            this.dialog = false;
-        },
+  methods: {
+    ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
+    openAdvanceSearch() {
+      if (this.advancedSearchTerm) this.dialog = true;
+      else this.$emit("noAdvancedSearchTerm");
     },
+    closeDialog() {
+      this.dialog = false;
+    },
+    proceedDialog() {
+      this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+      this.dialog = false;
+    },
+  },
 };
 </script>
 
 <style scoped>
 .home-search-bt {
-    height: 40px !important;
-    right: 0;
-    top: 0;
-    border-radius: unset;
+  height: 40px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+  -webkit-border-radius: unset;
+  -moz-border-radius: unset;
 }
 
 .home-search-bt-xl {
-    height: 50px !important;
-    right: 0;
-    top: 0;
-    border-radius: unset;
+  height: 50px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+  -webkit-border-radius: unset;
+  -moz-border-radius: unset;
 }
 </style>

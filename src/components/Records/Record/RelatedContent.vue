@@ -122,7 +122,7 @@
                     {{ item.subject }}
                   </p>
                 </v-card>
-              </router-link>.
+              </router-link>
             </template>
           </v-virtual-scroll>
         </v-tab-item>

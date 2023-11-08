@@ -521,6 +521,28 @@
         "linkedin" : "david-tomkins-83b92534",
         "logo": "d_tomkins.jpeg",
         "year_active": ["2023"]
+      },
+      {
+        "name": "Lyndon Zass",
+        "id": 9946,
+        "organisation": [
+          {
+            "id": 3039,
+            "name": "University of Cape Town"
+          },
+          {
+            "id": 1207,
+            "name": "H3ABioNet"
+          }
+        ],
+        "scope": "Research Data Management; Omics",
+        "orcid": "0000-0001-8862-1706",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "lyndon-zass-10b731145",
+        "logo": "l_zass.png",
+        "year_active": ["2023"]
       }
   ],
     "quotes": [

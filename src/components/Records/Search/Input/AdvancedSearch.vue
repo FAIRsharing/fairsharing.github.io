@@ -38,7 +38,7 @@
             <span class="text-h5">{{ advancedSearchTerm }}</span>
           </v-card-title>
           <v-card-text>
-            <QueryBuilder />
+            <QueryBuilderView />
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -68,11 +68,11 @@
 <script>
 import { mapActions } from "vuex";
 
-import QueryBuilder from "@/components/Records/Search/Input/QueryBuilder.vue";
+import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
 
 export default {
   name: "AdvancedSearch",
-  components: { QueryBuilder },
+  components: { QueryBuilderView },
   props: {
     showHomeSearch: {
       default: false,
@@ -88,9 +88,17 @@ export default {
       dialog: false,
     };
   },
+  watch: {
+    dialog(newValue) {
+      if (!newValue) this.resetAdvancedSearch();
+    },
+  },
 
   methods: {
-    ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
+    ...mapActions("advancedSearch", [
+      "fetchAdvancedSearchResults",
+      "resetAdvancedSearch",
+    ]),
     openAdvanceSearch() {
       if (this.advancedSearchTerm) this.dialog = true;
       else this.$emit("noAdvancedSearchTerm");
@@ -112,8 +120,6 @@ export default {
   right: 0;
   top: 0;
   border-radius: unset;
-  -webkit-border-radius: unset;
-  -moz-border-radius: unset;
 }
 
 .home-search-bt-xl {
@@ -121,7 +127,5 @@ export default {
   right: 0;
   top: 0;
   border-radius: unset;
-  -webkit-border-radius: unset;
-  -moz-border-radius: unset;
 }
 </style>

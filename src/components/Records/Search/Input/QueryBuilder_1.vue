@@ -10,24 +10,32 @@
 <script>
 import VueQueryBuilder from "vue-query-builder";
 
+import Input from "@/components/Records/Search/Input/QueryBuilderComponents/Registry.vue";
 import advancedSearch from "@/store";
 export default {
-  name: "QueryBuilder",
+  name: "QueryBuilder1",
   components: { VueQueryBuilder },
   data: () => {
     return {
       query: {},
       rules: [
         {
-          type: "text",
+          type: "custom-component",
           id: "_and",
           label: "And",
+          component: Input,
         },
+        // {
+        //   type: "text",
+        //   id: "_and",
+        //   label: "And",
+        // },
         {
           type: "text",
           id: "_or",
           label: "Or",
         },
+
         // {
         //   type: "radio",
         //   id: "fruit",
@@ -39,13 +47,13 @@ export default {
         // },
       ],
       labels: {
-        // matchType: "Match Type",
-        // matchTypes: [
-        //   { id: "all", label: "All" },
-        //   { id: "any", label: "Any" },
-        // ],
-        matchType: null,
-        matchTypes: [{}],
+        matchType: "Operator",
+        matchTypes: [
+          { id: "_and", label: "And" },
+          { id: "_or", label: "Or" },
+        ],
+        // matchType: null,
+        // matchTypes: [{}],
         addRule: "Add Rule",
         removeRule: "&times;",
         // addGroup: "Add Group",
@@ -68,6 +76,7 @@ export default {
 <style lang="scss" scoped>
 @import "~vuetify/src/styles/settings/_variables.scss";
 .vue-query-builder::v-deep {
+  //color: black;
   .vqb-group .rule-actions {
     margin-bottom: 20px;
   }
@@ -101,7 +110,28 @@ export default {
     -moz-appearance: none;
     min-height: 36px;
   }
-  .form-group {
+
+  .close {
+    opacity: 1;
+    color: white;
+    background-color: #6b1e1e;
+    font-size: 25px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-left: 8px !important;
+    vertical-align: middle;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    @media #{map-get($display-breakpoints, 'sm-and-down')} {
+      position: absolute;
+      right: 0;
+      top: -5px;
+    }
+  }
+
+  .form-group,
+  .match-type-container {
     select {
       box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
         0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
@@ -124,7 +154,17 @@ export default {
     }
   }
   .match-type-container {
-    display: none;
+    //display: none;
+    background-color: #ababab;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    label {
+      color: white;
+      font-weight: 500;
+    }
   }
   input[type="text"] {
     background-color: white;
@@ -137,7 +177,7 @@ export default {
       max-width: 100%;
     }
   }
-  .vqb-children {
+  .vqb-rule {
     .form-inline {
       display: flex;
       align-items: center;
@@ -169,25 +209,25 @@ export default {
         }
       }
 
-      .close {
-        opacity: 1;
-        color: white;
-        background-color: #6b1e1e;
-        font-size: 25px;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        margin-left: 8px !important;
-        vertical-align: middle;
-        box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-          0px 2px 2px 0px rgba(0, 0, 0, 0.14),
-          0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-        @media #{map-get($display-breakpoints, 'sm-and-down')} {
-          position: absolute;
-          right: 0;
-          top: -5px;
-        }
-      }
+      //.close {
+      //  opacity: 1;
+      //  color: white;
+      //  background-color: #6b1e1e;
+      //  font-size: 25px;
+      //  border-radius: 50%;
+      //  width: 30px;
+      //  height: 30px;
+      //  margin-left: 8px !important;
+      //  vertical-align: middle;
+      //  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      //    0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+      //    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+      //  @media #{map-get($display-breakpoints, 'sm-and-down')} {
+      //    position: absolute;
+      //    right: 0;
+      //    top: -5px;
+      //  }
+      //}
     }
   }
 }

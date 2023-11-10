@@ -71,64 +71,64 @@ import { mapActions } from "vuex";
 import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
 
 export default {
-  name: "AdvancedSearch",
-  components: { QueryBuilderView },
-  props: {
-    showHomeSearch: {
-      default: false,
-      type: Boolean,
+    name: "AdvancedSearch",
+    components: { QueryBuilderView },
+    props: {
+        showHomeSearch: {
+            default: false,
+            type: Boolean,
+        },
+        advancedSearchTerm: {
+            default: "",
+            type: String,
+        },
     },
-    advancedSearchTerm: {
-      default: "",
-      type: String,
+    data: () => {
+        return {
+            dialog: false,
+        };
     },
-  },
-  data: () => {
-    return {
-      dialog: false,
-    };
-  },
-  watch: {
-    dialog(newValue) {
-      if (!newValue) {
-        this.resetAdvancedSearch();
-      }
-      if (!newValue) this.resetAdvancedSearch();
+    watch: {
+        dialog(newValue) {
+            if (!newValue) {
+                this.resetAdvancedSearch();
+            }
+            if (!newValue) this.resetAdvancedSearch();
+        },
     },
-  },
 
-  methods: {
-    ...mapActions("advancedSearch", [
-      "fetchAdvancedSearchResults",
-      "resetAdvancedSearch",
-    ]),
-    openAdvanceSearch() {
-      if (this.advancedSearchTerm) this.dialog = true;
-      else this.$emit("noAdvancedSearchTerm");
+    methods: {
+        ...mapActions("advancedSearch", [
+            "fetchAdvancedSearchResults",
+            "resetAdvancedSearch",
+        ]),
+        openAdvanceSearch() {
+            if (this.advancedSearchTerm) this.dialog = true;
+            else this.$emit("noAdvancedSearchTerm");
+        },
+        closeDialog() {
+            this.dialog = false;
+        },
+        proceedDialog() {
+            this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+            this.dialog = false;
+        },
     },
-    closeDialog() {
-      this.dialog = false;
-    },
-    proceedDialog() {
-      this.fetchAdvancedSearchResults(this.advancedSearchTerm);
-      this.dialog = false;
-    },
-  },
 };
 </script>
 
 <style scoped>
 .home-search-bt {
-  height: 40px !important;
-  right: 0;
-  top: 0;
-  border-radius: unset;
+    height: 40px !important;
+    right: 0;
+    top: 0;
+    border-radius: unset;
 }
 
 .home-search-bt-xl {
-  height: 50px !important;
-  right: 0;
-  top: 0;
-  border-radius: unset;
+    height: 50px !important;
+    right: 0;
+    top: 0;
+    border-radius: unset;
 }
 </style>

@@ -10,83 +10,65 @@ import RegistryType from "@/components/Records/Search/Input/QueryBuilderComponen
 import Subject from "@/components/Records/Search/Input/QueryBuilderComponents/Subject.vue";
 import advancedSearch from "@/store";
 export default {
-    name: "QueryBuilderView",
-    components: { QueryBuilder },
-    props: {
-        isDialog: {
-            type: Boolean,
-            default: false,
-        },
+  name: "QueryBuilderView",
+  components: { QueryBuilder },
+  data: () => {
+    return {
+      query: {
+        operatorIdentifier: "_and",
+        children: [],
+      },
+    };
+  },
+  computed: {
+    config() {
+      return {
+        operators: [
+          {
+            name: "AND",
+            identifier: "_and",
+          },
+          {
+            name: "OR",
+            identifier: "_or",
+          },
+        ],
+        rules: [
+          {
+            identifier: "registry",
+            name: "Registry",
+            component: Registry,
+            initialValue: () => [],
+          },
+          {
+            identifier: "type",
+            name: "RegistryType",
+            component: RegistryType,
+            initialValue: "",
+          },
+          {
+            identifier: "subjects",
+            name: "Subject",
+            component: Subject,
+            initialValue: "",
+          },
+        ],
+        colors: [
+          "hsl(88, 50%, 55%)",
+          "hsl(187, 100%, 45%)",
+          "hsl(15, 100%, 55%)",
+        ],
+      };
     },
-    data: () => {
-        return {
-            query: {
-                operatorIdentifier: "_and",
-                children: [],
-            },
-        };
+  },
+  watch: {
+    query(newValue) {
+      advancedSearch.commit("advancedSearch/setAdvancedQuery", newValue);
+      // let searchObj = newValue["children"].map(({ query }) => query);
+      // const noNullSearchObj = searchObj.filter(({ value }) => value);
+      // advancedSearch.commit("advancedSearch/setAdvancedQuery", noNullSearchObj);
     },
-    computed: {
-        config() {
-            return {
-                operators: [
-                    {
-                        name: "AND",
-                        identifier: "_and",
-                    },
-                    {
-                        name: "OR",
-                        identifier: "_or",
-                    },
-                ],
-                rules: [
-                    {
-                        identifier: "registry",
-                        name: "Registry",
-                        component: Registry,
-                        initialValue: () => [],
-                    },
-                    {
-                        identifier: "type",
-                        name: "RegistryType",
-                        component: RegistryType,
-                        initialValue: "",
-                    },
-                    {
-                        identifier: "subjects",
-                        name: "Subject",
-                        component: Subject,
-                        initialValue: "",
-                    },
-                ],
-                colors: [
-                    "hsl(88, 50%, 55%)",
-                    "hsl(187, 100%, 45%)",
-                    "hsl(15, 100%, 55%)",
-                ],
-            };
-        },
-    },
-    watch: {
-        query(newValue) {
-            advancedSearch.commit("advancedSearch/setAdvancedQuery", newValue);
-            // let searchObj = newValue["children"].map(({ query }) => query);
-            // const noNullSearchObj = searchObj.filter(({ value }) => value);
-            // advancedSearch.commit("advancedSearch/setAdvancedQuery", noNullSearchObj);
-        },
-        /**
-         * Reset the dialog box when closed
-         * @param newValue - Boolean
-         */
-        isDialog(newValue) {
-            if (newValue) {
-                this.query = {
-                    operatorIdentifier: "_and",
-                    children: [],
-                };
-            }
-        },
-    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -96,9 +78,9 @@ export default {
 
   select {
     background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-    linear-gradient(135deg, gray 50%, transparent 50%);
+      linear-gradient(135deg, gray 50%, transparent 50%);
     background-position: calc(100% - 20px) calc(1em + 2px),
-    calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+      calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
     background-size: 5px 5px, 5px 5px, 1px 1.5em;
     background-repeat: no-repeat;
     background-color: white;
@@ -113,7 +95,7 @@ export default {
     -moz-appearance: none;
     min-height: 36px;
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   }
 
   .query-builder-child__delete-child {
@@ -127,7 +109,7 @@ export default {
     margin-left: 8px !important;
     vertical-align: middle;
     box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     @media #{map-get($display-breakpoints, 'sm-and-down')} {
       position: absolute;
       right: 0;
@@ -143,7 +125,7 @@ export default {
     background-color: #e67e22;
     border-color: #e67e22;
     box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     border-radius: 4px;
     font-weight: 500;
   }
@@ -159,7 +141,7 @@ export default {
   .query-builder-group__rule-adding-button,
   .query-builder-group__group-control select,
   .query-builder-group__group-children
-  .query-builder-group__group-adding-button {
+    .query-builder-group__group-adding-button {
     display: none;
   }
 
@@ -176,7 +158,7 @@ export default {
     padding: 15px;
     margin: 15px 0;
     box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     .query-builder-group__group-operator {
       color: white;
       font-weight: 500;
@@ -213,7 +195,7 @@ export default {
       padding: 15px;
       border-radius: 4px;
       box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+        0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
       @media #{map-get($display-breakpoints, 'sm-and-down')} {
         flex-direction: column;
         align-items: unset;

@@ -472,7 +472,7 @@
           {
             "id": 4074,
             "name": "DCC",
-            "tooltip": "Digital Curation Centre "
+            "tooltip": "Digital Curation Centre"
           }
         ],
         "scope": "Research Data Management",
@@ -482,6 +482,66 @@
         "twitter": "",
         "linkedin" : "joy-davidson",
         "logo": "Joy-Davidson.jpg",
+        "year_active": ["2023"]
+      },
+      {
+        "name": "Richard Acton",
+        "id": 9832,
+        "organisation": [
+          {
+            "id": 183,
+            "name": "Babraham Institute",
+            "tooltip": "BBSRC Babraham Institute, Cambridge"
+          }
+        ],
+        "scope": "Bioinformatics",
+        "orcid": "0000-0002-2574-9611",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "logo": "r_acton.png",
+        "year_active": ["2023"]
+      },
+      {
+        "name": "David Tomkins",
+        "id": 5491,
+        "organisation": [
+          {
+            "id": 291,
+            "name": "Bodleian Library",
+            "tooltip": "Bodleian Library, University of Oxford"
+          }
+        ],
+        "scope": "Research Data Management",
+        "orcid": "0009-0000-4679-676X",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "david-tomkins-83b92534",
+        "logo": "d_tomkins.jpeg",
+        "year_active": ["2023"]
+      },
+      {
+        "name": "Lyndon Zass",
+        "id": 9946,
+        "organisation": [
+          {
+            "id": 3039,
+            "name": "University of Cape Town"
+          },
+          {
+            "id": 1207,
+            "name": "H3ABioNet"
+          }
+        ],
+        "scope": "Research Data Management; Omics",
+        "orcid": "0000-0001-8862-1706",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "lyndon-zass-10b731145",
+        "logo": "l_zass.png",
         "year_active": ["2023"]
       }
   ],

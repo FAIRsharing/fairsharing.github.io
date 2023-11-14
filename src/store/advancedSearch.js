@@ -53,23 +53,28 @@ const actions = {
     state.advancedSearchQuery["operator"] =
       state.advancedSearch["operatorIdentifier"];
 
-    state.advancedSearch["children"].forEach((item) => {
-      let fieldsObj = {};
-      let fieldValue;
-      fieldsObj["operator"] = item["operatorIdentifier"];
-      item["children"].forEach((params) => {
-        let fieldKey = params["identifier"];
+    if (
+      state.advancedSearch["children"] &&
+      state.advancedSearch["children"].length
+    ) {
+      state.advancedSearch["children"].forEach((item) => {
+        let fieldsObj = {};
+        let fieldValue;
+        fieldsObj["operator"] = item["operatorIdentifier"];
+        item["children"].forEach((params) => {
+          let fieldKey = params["identifier"];
 
-        if (Array.isArray(params["value"])) {
-          fieldValue = params["value"];
-        } else {
-          fieldValue = [params["value"]];
-        }
+          if (Array.isArray(params["value"])) {
+            fieldValue = params["value"];
+          } else {
+            fieldValue = [params["value"]];
+          }
 
-        fieldsObj[fieldKey] = fieldValue;
+          fieldsObj[fieldKey] = fieldValue;
+        });
+        state.advancedSearchQuery["fields"].push(fieldsObj);
       });
-      state.advancedSearchQuery["fields"].push(fieldsObj);
-    });
+    }
 
     ADVANCED_TAGS.queryParam = {
       q: advancedSearchTerm,
@@ -95,9 +100,7 @@ const mutations = {
     state.loadingStatus = loadingStatus;
   },
   resetAdvancedQuery(state) {
-    console.log("state.advancedSearch BEFORE::", state.advancedSearch);
     state.advancedSearch = {};
-    console.log("state.advancedSearch AFTER::", state.advancedSearch);
   },
 };
 const advancedSearch = {

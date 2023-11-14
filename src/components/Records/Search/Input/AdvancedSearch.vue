@@ -38,7 +38,7 @@
             <span class="text-h5">{{ advancedSearchTerm }}</span>
           </v-card-title>
           <v-card-text>
-            <QueryBuilderView />
+            <QueryBuilderView :is-dialog="dialog" />
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -90,7 +90,9 @@ export default {
   },
   watch: {
     dialog(newValue) {
-      if (!newValue) this.resetAdvancedSearch();
+      if (!newValue) {
+        this.resetAdvancedSearch();
+      }
     },
   },
 

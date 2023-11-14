@@ -12,6 +12,12 @@ import advancedSearch from "@/store";
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder },
+  props: {
+    isDialog: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: () => {
     return {
       query: {
@@ -67,6 +73,18 @@ export default {
       // let searchObj = newValue["children"].map(({ query }) => query);
       // const noNullSearchObj = searchObj.filter(({ value }) => value);
       // advancedSearch.commit("advancedSearch/setAdvancedQuery", noNullSearchObj);
+    },
+    /**
+     * Reset the dialog box when closed
+     * @param newValue - Boolean
+     */
+    isDialog(newValue) {
+      if (newValue) {
+        this.query = {
+          operatorIdentifier: "_and",
+          children: [],
+        };
+      }
     },
   },
 };

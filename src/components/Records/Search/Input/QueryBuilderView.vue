@@ -74,6 +74,7 @@ export default {
       // const noNullSearchObj = searchObj.filter(({ value }) => value);
       // advancedSearch.commit("advancedSearch/setAdvancedQuery", noNullSearchObj);
     },
+
     /**
      * Reset the dialog box when closed
      * @param newValue - Boolean

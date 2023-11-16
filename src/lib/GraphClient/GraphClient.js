@@ -1,4 +1,6 @@
 const axios = require("axios");
+// import { jsonToGraphQLQuery } from "json-to-graphql-query";
+
 import Fragments from "./queries/fragments/fragments.json";
 
 class GraphQLClient {
@@ -69,13 +71,12 @@ class GraphQLClient {
         ) {
           queryString += `${key}:${query.queryParam[key]} `;
         } else if (typeof query.queryParam[key] === "string") {
-          queryString += `${key}:"${query.queryParam[key]}" `;
-        } else if (
-          typeof query.queryParam[key] === "object" &&
-          !Array.isArray(query.queryParam[key]) &&
-          query.queryParam[key] !== null
-        ) {
-          queryString += `${key}:"${JSON.stringify(query.queryParam[key])}" `;
+          const regExp = /\(|\)|\{|\}/g;
+          const hasBrackets = regExp.test(query.queryParam[key]);
+
+          if (hasBrackets) queryString += `${key}:${query.queryParam[key]}`;
+          else queryString += `${key}:"${query.queryParam[key]}" `;
+          // queryString += `${key}:"${query.queryParam[key]}" `;
         } else {
           let param = [];
           query.queryParam[key].forEach(function (paramVal) {

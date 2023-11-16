@@ -34,6 +34,7 @@
     "jest-offline": "^1.0.1",
     "jquery": "^3.5.1",
     "jsdoc-vuex-plugin": "^1.0.0",
+    "json-to-graphql-query": "^2.2.5",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-gyp": "^3.8.0",

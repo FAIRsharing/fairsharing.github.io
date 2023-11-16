@@ -3,6 +3,9 @@
   "queryParam": null,
   "fields": [
     "id",
-    "name"
+    "type",
+    "name",
+    "registry",
+    "status"
   ]
 }

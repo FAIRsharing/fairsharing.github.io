@@ -70,9 +70,6 @@ export default {
   watch: {
     query(newValue) {
       advancedSearch.commit("advancedSearch/setAdvancedQuery", newValue);
-      // let searchObj = newValue["children"].map(({ query }) => query);
-      // const noNullSearchObj = searchObj.filter(({ value }) => value);
-      // advancedSearch.commit("advancedSearch/setAdvancedQuery", noNullSearchObj);
     },
     /**
      * Reset the dialog box when closed

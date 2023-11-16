@@ -1,113 +1,103 @@
+import { jsonToGraphQLQuery } from "json-to-graphql-query";
+
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import advancedQuery from "@/lib/GraphClient/queries/getAdvancedSearch.json";
 
 const CLIENT = new GraphClient(),
-    ADVANCED_TAGS = JSON.parse(JSON.stringify(advancedQuery));
+  ADVANCED_TAGS = JSON.parse(JSON.stringify(advancedQuery));
 
 const state = {
-    advancedSearch: {},
-    advancedSearchQuery: {
-        operator: "",
-        fields: [],
-    },
-    error: false,
-    loadingStatus: false,
+  advancedSearch: {},
+  advancedSearchQuery: {
+    operator: "",
+    fields: [],
+  },
+  advancedSearchResponse: [],
+  error: false,
+  loadingStatus: false,
 };
 
 const actions = {
-    /* istanbul ignore next */
-    // async fetchAdvancedSearchResults({ commit }, advancedSearchTerm) {
-    //   // eslint-disable-next-line no-console
-    //   if (state.advancedSearch && state.advancedSearch.length) {
-    //     commit("setLoadingStatus", true);
-    //     // eslint-disable-next-line no-console
-    //     console.log("state.advancedSearch::", state.advancedSearch);
-    //
-    //     state.advancedSearch.forEach((item) => {
-    //       let obj = { key: item["operator"], value: item["value"] };
-    //       if (item["rule"] === "_and") {
-    //         state.advancedSearchQuery["_and"].push(obj);
-    //       } else if (item["rule"] === "_or") {
-    //         state.advancedSearchQuery["_or"].push(obj);
-    //       }
-    //     });
-    //     console.log("state.advancedSearchQuery::", state.advancedSearchQuery);
-    //
-    //     ADVANCED_TAGS.queryParam = {
-    //       q: advancedSearchTerm,
-    //       where: state.advancedSearchQuery,
-    //     };
-    //     console.log("ADVANCED_TAGS.queryParam::", ADVANCED_TAGS);
-    //     let response = await CLIENT.executeQuery(ADVANCED_TAGS);
-    //     console.log("response:", response);
-    //     // commit("setVariableResponse", response["advancedQuery"].data);
-    //     commit("setLoadingStatus", false);
-    //   }
-    // },
+  /* istanbul ignore next */
 
-    async fetchAdvancedSearchResults({ commit }, advancedSearchTerm) {
-        // eslint-disable-next-line no-console
+  async fetchAdvancedSearchResults({ commit }, advancedSearchTerm) {
+    commit("setLoadingStatus", true);
+    state.advancedSearchQuery["operator"] =
+      state.advancedSearch["operatorIdentifier"];
 
-        commit("setLoadingStatus", true);
-        // eslint-disable-next-line no-console
-        state.advancedSearchQuery["operator"] =
-            state.advancedSearch["operatorIdentifier"];
+    if (
+      state.advancedSearch["children"] &&
+      state.advancedSearch["children"].length
+    ) {
+      state.advancedSearch["children"].forEach((item) => {
+        let fieldsObj = {};
+        let fieldValue;
+        fieldsObj["operator"] = item["operatorIdentifier"];
+        item["children"].forEach((params) => {
+          let fieldKey = params["identifier"];
 
-        if (
-            state.advancedSearch["children"] &&
-            state.advancedSearch["children"].length
-        ) {
-            state.advancedSearch["children"].forEach((item) => {
-                let fieldsObj = {};
-                let fieldValue;
-                fieldsObj["operator"] = item["operatorIdentifier"];
-                item["children"].forEach((params) => {
-                    let fieldKey = params["identifier"];
+          if (Array.isArray(params["value"])) {
+            fieldValue = params["value"];
+          } else {
+            fieldValue = [params["value"]];
+          }
 
-                    if (Array.isArray(params["value"])) {
-                        fieldValue = params["value"];
-                    } else {
-                        fieldValue = [params["value"]];
-                    }
+          fieldsObj[fieldKey] = fieldValue;
+        });
+        state.advancedSearchQuery["fields"].push(fieldsObj);
+      });
+    }
 
-                    fieldsObj[fieldKey] = fieldValue;
-                });
-                state.advancedSearchQuery["fields"].push(fieldsObj);
-            });
-        }
+    //Below is the format required for jsonToGraphQlQuery
+    let parentQuery = {};
+    parentQuery["query"] = {};
+    parentQuery["__args"] = state.advancedSearchQuery;
+    parentQuery.query["__args"] = {
+      where: state.advancedSearchQuery,
+    };
+    let graphqlQuery = jsonToGraphQLQuery(parentQuery, {
+      pretty: true,
+    });
 
-        ADVANCED_TAGS.queryParam = {
-            q: advancedSearchTerm,
-            where: state.advancedSearchQuery,
-        };
-        console.log("ADVANCED_TAGS::", ADVANCED_TAGS);
-        let response = await CLIENT.executeQuery(ADVANCED_TAGS);
-        console.log("response:", response);
-        // commit("setVariableResponse", response["advancedQuery"].data);
-        commit("setLoadingStatus", false);
-    },
+    graphqlQuery = graphqlQuery.match(/\(([^)]+)\)/)[1];
 
-    resetAdvancedSearch({ commit }) {
-        commit("resetAdvancedQuery");
-    },
+    let whereObj = graphqlQuery.replace("where:", "");
+
+    ADVANCED_TAGS.queryParam = {
+      q: advancedSearchTerm,
+      where: whereObj,
+    };
+    console.log("ADVANCED_TAGS::", ADVANCED_TAGS);
+    let response = await CLIENT.executeQuery(ADVANCED_TAGS);
+    console.log("response:", response["advancedSearch"]);
+    commit("setAdvancedSearchResponse", response["advancedSearch"]);
+    commit("setLoadingStatus", false);
+  },
+
+  resetAdvancedSearch({ commit }) {
+    commit("resetAdvancedQuery");
+  },
 };
 
 const mutations = {
-    setAdvancedQuery(state, advancedSearch) {
-        state.advancedSearch = advancedSearch;
-    },
-    setLoadingStatus(state, loadingStatus) {
-        state.loadingStatus = loadingStatus;
-    },
-    resetAdvancedQuery(state) {
-        state.advancedSearch = {};
-    },
+  setAdvancedQuery(state, advancedSearch) {
+    state.advancedSearch = advancedSearch;
+  },
+  setAdvancedSearchResponse(state, advancedSearchResponse) {
+    state.advancedSearchResponse = advancedSearchResponse;
+  },
+  setLoadingStatus(state, loadingStatus) {
+    state.loadingStatus = loadingStatus;
+  },
+  resetAdvancedQuery(state) {
+    state.advancedSearch = {};
+  },
 };
 const advancedSearch = {
-    namespaced: true,
-    state,
-    actions,
-    mutations,
+  namespaced: true,
+  state,
+  actions,
+  mutations,
 };
 
 export default advancedSearch;

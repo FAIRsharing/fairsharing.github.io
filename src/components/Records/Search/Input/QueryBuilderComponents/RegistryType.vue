@@ -1,5 +1,5 @@
 <template>
-  <input v-model="model" type="text" placeholder="RegistryType" />
+  <input v-model="model" type="text" />
 </template>
 <script>
 export default {

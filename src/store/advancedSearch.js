@@ -18,13 +18,11 @@ const state = {
 };
 
 const actions = {
-  /* istanbul ignore next */
-
   async fetchAdvancedSearchResults({ commit }, advancedSearchTerm) {
     commit("setLoadingStatus", true);
     state.advancedSearchQuery["operator"] =
       state.advancedSearch["operatorIdentifier"];
-
+    /* istanbul ignore next */
     if (
       state.advancedSearch["children"] &&
       state.advancedSearch["children"].length

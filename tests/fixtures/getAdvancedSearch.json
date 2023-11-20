@@ -1,0 +1,20 @@
+{
+  "data": {
+    "advancedSearch": [
+      {
+        "id": 2676,
+        "type": "repository",
+        "name": "BioDare2 - Biological Data Repository",
+        "registry": "Database",
+        "status": "ready"
+      },
+      {
+        "id": 2858,
+        "type": "knowledgebase",
+        "name": "BBMRI-ERIC CRC-Cohort",
+        "registry": "Database",
+        "status": "ready"
+      }
+    ]
+  }
+}

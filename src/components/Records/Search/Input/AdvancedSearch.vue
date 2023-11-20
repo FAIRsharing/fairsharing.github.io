@@ -29,7 +29,7 @@
     <v-row justify="center">
       <v-dialog
         :value="dialog"
-        max-width="600px"
+        max-width="800px"
         @keydown.esc="closeDialog()"
         @click:outside="closeDialog()"
       >
@@ -38,7 +38,7 @@
             <span class="text-h5">{{ advancedSearchTerm }}</span>
           </v-card-title>
           <v-card-text>
-            <QueryBuilderView />
+            <QueryBuilderView :is-dialog="dialog" />
           </v-card-text>
           <v-card-actions>
             <v-btn
@@ -90,6 +90,9 @@ export default {
   },
   watch: {
     dialog(newValue) {
+      if (!newValue) {
+        this.resetAdvancedSearch();
+      }
       if (!newValue) this.resetAdvancedSearch();
     },
   },
@@ -100,8 +103,7 @@ export default {
       "resetAdvancedSearch",
     ]),
     openAdvanceSearch() {
-      if (this.advancedSearchTerm) this.dialog = true;
-      else this.$emit("noAdvancedSearchTerm");
+      this.dialog = true;
     },
     closeDialog() {
       this.dialog = false;

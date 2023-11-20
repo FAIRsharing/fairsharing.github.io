@@ -33,12 +33,7 @@
         type="submit"
         @click="searchString()"
       >
-        <v-icon
-          x-small
-          class="mr-1"
-        >
-          fas fa-search
-        </v-icon>
+        <v-icon x-small class="mr-1"> fas fa-search </v-icon>
         <span class="button-text-size">Search</span>
       </v-btn>
 
@@ -46,7 +41,6 @@
       <AdvancedSearch
         v-if="!showHomeSearch"
         :advanced-search-term="advancedSearchTerm"
-        @noAdvancedSearchTerm="noAdvancedSearchTerm"
       />
       <!--  home page search box  -->
       <v-btn
@@ -60,20 +54,12 @@
         ]"
         @click="searchStringHomePage()"
       >
-        <v-icon
-          x-small
-          class="mr-1"
-        >
-          fas fa-search
-        </v-icon>
+        <v-icon x-small class="mr-1"> fas fa-search </v-icon>
         <span class="button-text-size">Search</span>
       </v-btn>
     </v-form>
     <!--  home page exclusive check box for search  -->
-    <div
-      v-if="showHomeSearch"
-      class="pt-6"
-    >
+    <div v-if="showHomeSearch" class="pt-6">
       <v-checkbox
         v-for="(checkbox, index) in registries"
         :key="checkbox.value + '_' + index"
@@ -211,9 +197,6 @@ export default {
           _module.$refs.form.resetValidation();
         }
       }
-    },
-    noAdvancedSearchTerm() {
-      this.$refs.form.validate();
     },
   },
 };

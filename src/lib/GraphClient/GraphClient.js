@@ -71,9 +71,9 @@ class GraphQLClient {
         ) {
           queryString += `${key}:${query.queryParam[key]} `;
         } else if (typeof query.queryParam[key] === "string") {
+          //Modified to adjust multiple arguments in GraphQl query params
           const regExp = /\(|\)|\{|\}/g;
           const hasBrackets = regExp.test(query.queryParam[key]);
-
           if (hasBrackets) queryString += `${key}:${query.queryParam[key]}`;
           else queryString += `${key}:"${query.queryParam[key]}" `;
           // queryString += `${key}:"${query.queryParam[key]}" `;

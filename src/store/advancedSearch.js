@@ -67,7 +67,6 @@ const actions = {
       q: advancedSearchTerm,
       where: whereObj,
     };
-    console.log("ADVANCED_TAGS::", ADVANCED_TAGS);
     let response = await CLIENT.executeQuery(ADVANCED_TAGS);
     console.log("response:", response["advancedSearch"]);
     commit("setAdvancedSearchResponse", response["advancedSearch"]);

@@ -64,6 +64,7 @@
               color="green"
               variant="text"
               class="white--text"
+              :disabled="isContinue"
               @click="proceedDialog()"
             >
               Proceed
@@ -76,7 +77,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
 
@@ -98,19 +99,42 @@ export default {
       dialog: false,
     };
   },
+  computed: {
+    ...mapGetters("advancedSearch", ["getAdvancedSearch"]),
+    isContinue() {
+      let isDisabled = true;
+      if (
+        this.getAdvancedSearch["children"] &&
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].some((item) => {
+          item["children"].forEach((params) => {
+            let fieldValue = [];
+            if (Array.isArray(params["value"])) {
+              fieldValue = params["value"];
+            } else if (params["value"]) {
+              fieldValue = [params["value"]];
+            }
+
+            if (fieldValue && fieldValue.length) {
+              isDisabled = false;
+            }
+          });
+        });
+      }
+      return isDisabled;
+    },
+  },
   watch: {
     dialog(newValue) {
-      if (!newValue) {
-        this.resetAdvancedSearch();
-      }
-      if (!newValue) this.resetAdvancedSearch();
+      if (!newValue) this.resetAdvancedSearchQuery();
     },
   },
 
   methods: {
     ...mapActions("advancedSearch", [
       "fetchAdvancedSearchResults",
-      "resetAdvancedSearch",
+      "resetAdvancedSearchQuery",
     ]),
     openAdvanceSearch() {
       this.dialog = true;

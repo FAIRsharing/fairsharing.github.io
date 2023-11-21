@@ -29,14 +29,14 @@ const actions = {
     ) {
       state.advancedSearch["children"].forEach((item) => {
         let fieldsObj = {};
-        let fieldValue;
+        let fieldValue = [];
         fieldsObj["operator"] = item["operatorIdentifier"];
         item["children"].forEach((params) => {
           let fieldKey = params["identifier"];
 
           if (Array.isArray(params["value"])) {
             fieldValue = params["value"];
-          } else {
+          } else if (params["value"]) {
             fieldValue = [params["value"]];
           }
 
@@ -61,17 +61,24 @@ const actions = {
 
     let whereObj = graphqlQuery.replace("where:", "");
 
-    ADVANCED_TAGS.queryParam = {
-      q: advancedSearchTerm,
-      where: whereObj,
-    };
+    if (advancedSearchTerm) {
+      ADVANCED_TAGS.queryParam = {
+        q: advancedSearchTerm,
+        where: whereObj,
+      };
+    } else {
+      ADVANCED_TAGS.queryParam = {
+        where: whereObj,
+      };
+    }
+
     let response = await CLIENT.executeQuery(ADVANCED_TAGS);
     console.log("response:", response["advancedSearch"]);
     commit("setAdvancedSearchResponse", response["advancedSearch"]);
     commit("setLoadingStatus", false);
   },
 
-  resetAdvancedSearch({ commit }) {
+  resetAdvancedSearchQuery({ commit }) {
     commit("resetAdvancedQuery");
   },
 };
@@ -87,7 +94,16 @@ const mutations = {
     state.loadingStatus = loadingStatus;
   },
   resetAdvancedQuery(state) {
-    state.advancedSearch = {};
+    state.advancedSearchQuery = {
+      operator: "",
+      fields: [],
+    };
+  },
+};
+
+const getters = {
+  getAdvancedSearch(state) {
+    return state.advancedSearch;
   },
 };
 const advancedSearch = {
@@ -95,6 +111,7 @@ const advancedSearch = {
   state,
   actions,
   mutations,
+  getters,
 };
 
 export default advancedSearch;

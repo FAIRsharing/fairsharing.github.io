@@ -35,9 +35,9 @@ describe("AdvancedSearch store methods", () => {
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
-  it("can check resetAdvancedSearch actions", () => {
+  it("can check resetAdvancedSearchQuery actions", () => {
     const commit = jest.fn();
-    actions.resetAdvancedSearch({ commit });
+    actions.resetAdvancedSearchQuery({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
@@ -82,6 +82,7 @@ describe("AdvancedSearch store methods", () => {
 
   it("can check resetAdvancedQuery mutations", () => {
     mutations.resetAdvancedQuery(state);
-    expect(state.advancedSearch).toStrictEqual({});
+    expect(state.advancedSearchQuery["operator"]).toStrictEqual("");
+    expect(state.advancedSearchQuery["fields"]).toStrictEqual([]);
   });
 });

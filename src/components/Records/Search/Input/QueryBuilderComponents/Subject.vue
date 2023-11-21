@@ -1,5 +1,8 @@
 <template>
-  <input v-model="model" type="text" />
+  <input
+    v-model="model"
+    type="text"
+  >
 </template>
 <script>
 export default {

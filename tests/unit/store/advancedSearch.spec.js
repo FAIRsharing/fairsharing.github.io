@@ -87,7 +87,7 @@ describe("AdvancedSearch store methods", () => {
   });
 
   it("can check getAdvancedSearch getters", () => {
-    const returnedVal = {
+    const getSearchResult = {
       advancedSearch: {
         operatorIdentifier: "_and",
         children: [
@@ -103,7 +103,7 @@ describe("AdvancedSearch store methods", () => {
         ],
       },
     };
-    const builtData = getters.getAdvancedSearch(returnedVal);
-    expect(builtData).toStrictEqual(returnedVal["advancedSearch"]);
+    const builtData = getters.getAdvancedSearch(getSearchResult);
+    expect(builtData).toStrictEqual(getSearchResult["advancedSearch"]);
   });
 });

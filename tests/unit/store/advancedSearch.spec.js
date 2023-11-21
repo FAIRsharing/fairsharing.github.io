@@ -6,7 +6,7 @@ import AdvancedSearchStore from "@/store/advancedSearch.js";
 import AdvancedSearchData from "../../../tests/fixtures/getAdvancedSearch.json";
 
 describe("AdvancedSearch store methods", () => {
-  const { actions, mutations } = AdvancedSearchStore;
+  const { actions, mutations, getters } = AdvancedSearchStore;
   const returnedVal = AdvancedSearchData;
   let state = {
     advancedSearch: {},
@@ -84,5 +84,26 @@ describe("AdvancedSearch store methods", () => {
     mutations.resetAdvancedQuery(state);
     expect(state.advancedSearchQuery["operator"]).toStrictEqual("");
     expect(state.advancedSearchQuery["fields"]).toStrictEqual([]);
+  });
+
+  it("can check getAdvancedSearch getters", () => {
+    const returnedVal = {
+      advancedSearch: {
+        operatorIdentifier: "_and",
+        children: [
+          {
+            operatorIdentifier: "_and",
+            children: [
+              {
+                identifier: "registry",
+                value: ["database", "standard"],
+              },
+            ],
+          },
+        ],
+      },
+    };
+    const builtData = getters.getAdvancedSearch(returnedVal);
+    expect(builtData).toStrictEqual(returnedVal["advancedSearch"]);
   });
 });

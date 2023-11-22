@@ -73,7 +73,7 @@ const actions = {
     }
 
     let response = await CLIENT.executeQuery(ADVANCED_TAGS);
-    // console.log("response:", response["advancedSearch"]);
+    console.log("response:", response["advancedSearch"]);
     commit("setAdvancedSearchResponse", response["advancedSearch"]);
     commit("setLoadingStatus", false);
   },
@@ -104,6 +104,9 @@ const mutations = {
 const getters = {
   getAdvancedSearch(state) {
     return state.advancedSearch;
+  },
+  getAdvancedSearchResponse(state) {
+    return state.advancedSearchResponse;
   },
   getLoadingStatus(state) {
     return state.loadingStatus;

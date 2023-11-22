@@ -65,7 +65,7 @@
               variant="text"
               class="white--text"
               :disabled="isContinue"
-              @click="proceedDialog()"
+              @click="goToAdvancedSearch()"
             >
               Proceed
             </v-btn>
@@ -142,9 +142,12 @@ export default {
     closeDialog() {
       this.dialog = false;
     },
-    proceedDialog() {
+    goToAdvancedSearch() {
       this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       this.dialog = false;
+      this.$router.push({
+        name: "AdvancedSearch",
+      });
     },
   },
 };

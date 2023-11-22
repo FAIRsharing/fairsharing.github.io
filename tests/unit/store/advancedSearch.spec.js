@@ -106,4 +106,26 @@ describe("AdvancedSearch store methods", () => {
     const builtData = getters.getAdvancedSearch(getSearchResult);
     expect(builtData).toStrictEqual(getSearchResult["advancedSearch"]);
   });
+
+  it("can check getAdvancedSearchResponse getters", () => {
+    const getSearchResult = {
+      advancedSearchResponse: {
+        id: 1,
+        name: "Abc",
+        registry: "xyz",
+        status: "active",
+        type: "any",
+      },
+    };
+    const builtData = getters.getAdvancedSearchResponse(getSearchResult);
+    expect(builtData).toStrictEqual(getSearchResult["advancedSearchResponse"]);
+  });
+
+  it("can check getLoadingStatus getters", () => {
+    const getSearchResult = {
+      loadingStatus: true,
+    };
+    const builtData = getters.getLoadingStatus(getSearchResult);
+    expect(builtData).toStrictEqual(getSearchResult["loadingStatus"]);
+  });
 });

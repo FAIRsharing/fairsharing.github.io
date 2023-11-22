@@ -5,7 +5,36 @@
     "id",
     "type",
     "name",
+    "description",
     "registry",
-    "status"
+    "status",
+    {
+      "name": "subjects",
+      "fields": [
+        "label",
+        "id",
+        "definitions",
+        "iri",
+        "synonyms"
+      ]
+    },
+    {
+      "name": "domains",
+      "fields": [
+        "label",
+        "id",
+        "definitions",
+        "iri",
+        "synonyms",
+        "inFairsharing"
+      ]
+    },
+    {
+      "name": "taxonomies",
+      "fields": [
+        "id",
+        "label"
+      ]
+    }
   ]
 }

@@ -1,14 +1,28 @@
 <template>
   <div>
     <v-fade-transition>
-      <v-overlay v-if="getLoadingStatus" :absolute="false" opacity="0.8">
+      <v-overlay
+        v-if="getLoadingStatus"
+        :absolute="false"
+        opacity="0.8"
+      >
         <Loaders />
       </v-overlay>
     </v-fade-transition>
-    <v-container v-if="error" fluid class="pa-0">
-      <p class="pa-10">Sorry, something went wrong!</p>
+    <v-container
+      v-if="error"
+      fluid
+      class="pa-0"
+    >
+      <p class="pa-10">
+        Sorry, something went wrong!
+      </p>
     </v-container>
-    <v-container v-else fluid class="pa-5">
+    <v-container
+      v-else
+      fluid
+      class="pa-5"
+    >
       <v-data-iterator
         :items="getAdvancedSearchResponse"
         :items-per-page.sync="itemsPerPage"
@@ -20,7 +34,11 @@
       >
         <!-- headers start -->
         <template #header>
-          <v-toolbar dark color="blue lighten-1" class="mb-5">
+          <v-toolbar
+            dark
+            color="blue lighten-1"
+            class="mb-5"
+          >
             <v-text-field
               v-model="search"
               clearable
@@ -42,11 +60,24 @@
                 label="Sort by"
               />
               <v-spacer />
-              <v-btn-toggle v-model="sortDesc" mandatory>
-                <v-btn large depressed color="blue" :value="false">
+              <v-btn-toggle
+                v-model="sortDesc"
+                mandatory
+              >
+                <v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="false"
+                >
                   <v-icon>mdi-arrow-up</v-icon>
                 </v-btn>
-                <v-btn large depressed color="blue" :value="true">
+                <v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="true"
+                >
                   <v-icon>mdi-arrow-down</v-icon>
                 </v-btn>
               </v-btn-toggle>
@@ -57,7 +88,11 @@
         <!-- data section begins -->
         <template #default="props">
           <v-row>
-            <v-col v-for="item in props.items" :key="item.name" cols="12">
+            <v-col
+              v-for="item in props.items"
+              :key="item.name"
+              cols="12"
+            >
               <v-card>
                 <v-card-title class="subheading font-weight-bold">
                   <RecordStatus :record="item" />
@@ -76,7 +111,10 @@
                   {{ item.description }}
                 </p>
 
-                <TagChips :record="item" class="ml-10" />
+                <TagChips
+                  :record="item"
+                  class="ml-10"
+                />
 
                 <!-- TODO: this is a hacky placeholder -->
                 <p class="pb-5" />

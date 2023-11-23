@@ -72,15 +72,6 @@ describe("TagChips.vue", function () {
             },
           ],
         },
-        /*
-        type: 'domains',
-        chips: [
-          {
-            label: 'first chip',
-            active: false
-          }
-        ]
-         */
       },
       mocks: { $route, $router },
     });

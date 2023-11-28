@@ -1,5 +1,6 @@
 import sinon from "sinon";
 
+import Client from "@/lib/GraphClient/GraphClient";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import AdvancedSearchStore from "@/store/advancedSearch.js";
 
@@ -15,7 +16,7 @@ describe("AdvancedSearch store methods", () => {
       fields: [],
     },
     advancedSearchResponse: [],
-    error: false,
+    errorStatus: false,
     loadingStatus: false,
   };
   let stub;
@@ -35,9 +36,25 @@ describe("AdvancedSearch store methods", () => {
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
-  it("can check resetAdvancedSearchQuery actions", () => {
+  it("can check fetchAdvancedSearchResults actions without advanceSearchTerm", () => {
     const commit = jest.fn();
-    actions.resetAdvancedSearchQuery({ commit });
+    actions.fetchAdvancedSearchResults({ commit });
+    expect(commit).toHaveBeenCalledTimes(1);
+  });
+
+  it("can check fetchAdvancedSearchResults actions with Error response", async () => {
+    const commit = jest.fn();
+    stub.returns({
+      error: "error",
+    });
+
+    await actions.fetchAdvancedSearchResults({ commit });
+    expect(commit).toHaveBeenCalledWith("setError", true);
+  });
+
+  it("can check resetAdvancedSearchResponse actions", () => {
+    const commit = jest.fn();
+    actions.resetAdvancedSearchResponse({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
@@ -80,10 +97,18 @@ describe("AdvancedSearch store methods", () => {
     expect(state.loadingStatus).toBe(true);
   });
 
-  it("can check resetAdvancedQuery mutations", () => {
-    mutations.resetAdvancedQuery(state);
+  it("can check resetAdvancedSearch mutations", () => {
+    mutations.resetAdvancedSearch(state);
+    expect(state.advancedSearch).toStrictEqual({});
     expect(state.advancedSearchQuery["operator"]).toStrictEqual("");
     expect(state.advancedSearchQuery["fields"]).toStrictEqual([]);
+    expect(state.advancedSearchResponse).toStrictEqual([]);
+  });
+
+  it("can check setError mutations", () => {
+    const errorStatus = true;
+    mutations.setError(state, errorStatus);
+    expect(state.errorStatus).toBe(true);
   });
 
   it("can check getAdvancedSearch getters", () => {
@@ -127,5 +152,13 @@ describe("AdvancedSearch store methods", () => {
     };
     const builtData = getters.getLoadingStatus(getSearchResult);
     expect(builtData).toStrictEqual(getSearchResult["loadingStatus"]);
+  });
+
+  it("can check getErrorStatus getters", () => {
+    const getSearchResult = {
+      errorStatus: true,
+    };
+    const builtData = getters.getErrorStatus(getSearchResult);
+    expect(builtData).toStrictEqual(getSearchResult["errorStatus"]);
   });
 });

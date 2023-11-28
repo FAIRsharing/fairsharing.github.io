@@ -129,5 +129,5 @@ export const OrganisationsList = () =>
 
 export const AdvancedSearchRecords = () =>
   import(
-    /* webpackChunkName: "organisationsList-chunk" */ "@/views/Records/AdvancedSearchRecords"
+    /* webpackChunkName: "organisationsList-chunk" */ "@/views/Records/AdvancedSearchRecordsView.vue"
   );

@@ -13,16 +13,22 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 import Loaders from "@/components/Navigation/Loaders";
 import AdvancedSearchResultTable from "@/views/Records/AdvancedSearchResultTable.vue";
 
 export default {
-  name: "AdvancedSearchRecords",
+  name: "AdvancedSearchRecordsView",
   components: { Loaders, AdvancedSearchResultTable },
   computed: {
     ...mapGetters("advancedSearch", ["getLoadingStatus"]),
+  },
+  destroyed() {
+    this.resetAdvancedSearchResponse();
+  },
+  methods: {
+    ...mapActions("advancedSearch", ["resetAdvancedSearchResponse"]),
   },
 };
 </script>

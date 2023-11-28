@@ -127,14 +127,14 @@ export default {
   },
   watch: {
     dialog(newValue) {
-      if (!newValue) this.resetAdvancedSearchQuery();
+      if (!newValue) this.resetAdvancedSearchResponse();
     },
   },
 
   methods: {
     ...mapActions("advancedSearch", [
       "fetchAdvancedSearchResults",
-      "resetAdvancedSearchQuery",
+      "resetAdvancedSearchResponse",
     ]),
     openAdvanceSearch() {
       this.dialog = true;

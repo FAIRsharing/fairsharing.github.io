@@ -1,13 +1,11 @@
 <template>
   <div>
     <v-container
-      v-if="error"
+      v-if="getErrorStatus"
       fluid
       class="pa-0"
     >
-      <p class="pa-10">
-        Sorry, something went wrong!
-      </p>
+      <ErrorPage />
     </v-container>
     <v-container
       v-else
@@ -135,24 +133,21 @@ import { mapGetters } from "vuex";
 
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import recordsCardUtils from "@/utils/recordsCardUtils";
+import ErrorPage from "@/views/Errors/404.vue";
 
 import TagChips from "./TagChips";
 export default {
   name: "AdvancedSearchResultTable",
-  components: { RecordStatus, TagChips },
+  components: { RecordStatus, TagChips, ErrorPage },
   mixins: [recordsCardUtils],
   data() {
     return {
       itemsPerPageArray: [10, 20, 50, 100, 200],
       search: "",
-      filter: {},
       sortDesc: false,
       page: 1,
       itemsPerPage: 5,
       sortBy: "name",
-      records: [],
-      loading: true,
-      error: false,
       keys: ["Name", "Registry", "Type", "Status", "Description"],
       fairSharingURL: process.env.VUE_APP_FAIRSHARING_URL,
     };
@@ -161,16 +156,8 @@ export default {
     ...mapGetters("advancedSearch", [
       "getAdvancedSearchResponse",
       "getLoadingStatus",
+      "getErrorStatus",
     ]),
-  },
-  mounted() {
-    // this.showResults();
-  },
-  methods: {
-    // showResults() {
-    //   let _module = this;
-    //   _module.records = _module.getAdvancedSearchResponse || [];
-    // },
   },
 };
 </script>

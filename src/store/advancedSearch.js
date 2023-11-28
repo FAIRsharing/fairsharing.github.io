@@ -13,8 +13,8 @@ const state = {
     fields: [],
   },
   advancedSearchResponse: [],
-  error: false,
   loadingStatus: false,
+  errorStatus: false,
 };
 
 const actions = {
@@ -72,14 +72,24 @@ const actions = {
       };
     }
 
-    let response = await CLIENT.executeQuery(ADVANCED_TAGS);
-    console.log("response:", response["advancedSearch"]);
-    commit("setAdvancedSearchResponse", response["advancedSearch"]);
+    try {
+      let response = await CLIENT.executeQuery(ADVANCED_TAGS);
+      commit("setAdvancedSearchResponse", response["advancedSearch"]);
+      if (!response["error"]) {
+        commit("setError", false);
+        commit("setAdvancedSearchResponse", response["advancedSearch"]);
+      } else {
+        commit("setError", true);
+      }
+    } catch (error) {
+      /* istanbul ignore next */
+      commit("setError", true);
+    }
     commit("setLoadingStatus", false);
   },
 
-  resetAdvancedSearchQuery({ commit }) {
-    commit("resetAdvancedQuery");
+  resetAdvancedSearchResponse({ commit }) {
+    commit("resetAdvancedSearch");
   },
 };
 
@@ -93,11 +103,16 @@ const mutations = {
   setLoadingStatus(state, loadingStatus) {
     state.loadingStatus = loadingStatus;
   },
-  resetAdvancedQuery(state) {
+  resetAdvancedSearch(state) {
+    state.advancedSearch = {};
     state.advancedSearchQuery = {
       operator: "",
       fields: [],
     };
+    state.advancedSearchResponse = [];
+  },
+  setError(state, errorStatus) {
+    state.errorStatus = errorStatus;
   },
 };
 
@@ -110,6 +125,9 @@ const getters = {
   },
   getLoadingStatus(state) {
     return state.loadingStatus;
+  },
+  getErrorStatus(state) {
+    return state.errorStatus;
   },
 };
 const advancedSearch = {

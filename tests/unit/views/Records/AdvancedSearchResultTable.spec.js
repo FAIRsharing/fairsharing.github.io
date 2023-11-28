@@ -86,6 +86,9 @@ describe("AdvancedSearchResultTable.vue", function () {
           },
         ];
       },
+      getErrorStatus: () => {
+        return [false];
+      },
     };
 
     store = new Vuex.Store({

@@ -51,7 +51,6 @@ export const actions = {
       subjects: subject,
     };
     let response = await CLIENT.executeQuery(RECORDS_QUERY);
-    console.log("response::", response);
     commit("setRecords", response.searchFairsharingRecords.records);
     commit("setTotalPages", response.searchFairsharingRecords.totalPages);
     commit("setLoadingData", false);

@@ -11,12 +11,7 @@
       ]"
       @click="openAdvanceSearch()"
     >
-      <v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      </v-icon>
+      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--  On Header Block  -->
@@ -27,12 +22,7 @@
       class="mr-10"
       @click="openAdvanceSearch()"
     >
-      <v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      </v-icon>
+      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
@@ -101,36 +91,31 @@ export default {
   },
   computed: {
     ...mapGetters("advancedSearch", ["getAdvancedSearch"]),
+    /**
+     * Enables the proceed button when all the selected fields are non-empty
+     * @returns {boolean}
+     */
     isContinue() {
       let isDisabled = true;
+      let isTrue;
+      let isTrueArr = [];
       if (
         this.getAdvancedSearch["children"] &&
         this.getAdvancedSearch["children"].length
       ) {
-        this.getAdvancedSearch["children"].some((item) => {
-          item["children"].forEach((params) => {
-            let fieldValue = [];
-            if (Array.isArray(params["value"])) {
-              fieldValue = params["value"];
-            } else if (params["value"]) {
-              fieldValue = [params["value"]];
-            }
-
-            if (fieldValue && fieldValue.length) {
-              isDisabled = false;
-            }
-          });
+        this.getAdvancedSearch["children"].forEach(({ children }) => {
+          if (children && children.length) {
+            isTrue = children.every(({ value: { length } }) => length);
+            isTrueArr.push(isTrue);
+          }
         });
       }
+      //Check if all values in the array is true
+      const allTrue = isTrueArr.every((item) => item);
+      if (allTrue) isDisabled = !allTrue;
       return isDisabled;
     },
   },
-  watch: {
-    dialog(newValue) {
-      if (!newValue) this.resetAdvancedSearchResponse();
-    },
-  },
-
   methods: {
     ...mapActions("advancedSearch", [
       "fetchAdvancedSearchResults",
@@ -145,9 +130,20 @@ export default {
     goToAdvancedSearch() {
       this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       this.dialog = false;
-      this.$router.push({
-        name: "AdvancedSearch",
-      });
+      if (this.$route.path !== "/advancedsearch") {
+        this.$router.push({
+          name: "AdvancedSearchResult",
+          query: {
+            x: "ab",
+          },
+        });
+      } else {
+        this.$router.push({
+          query: {
+            x: "df",
+          },
+        });
+      }
     },
   },
 };

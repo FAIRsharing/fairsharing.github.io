@@ -46,6 +46,14 @@ import {
   UsersList,
 } from "./routes.js";
 
+/*
+  Added to catch NavigationDuplicated router error
+*/
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err);
+};
+
 Vue.use(VueRouter);
 
 let routes = [
@@ -107,7 +115,7 @@ let routes = [
     },
   },
   {
-    name: "AdvancedSearch",
+    name: "AdvancedSearchResult",
     path: "/advancedsearch",
     component: AdvancedSearchRecords,
   },

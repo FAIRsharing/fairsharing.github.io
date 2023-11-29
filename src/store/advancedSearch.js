@@ -39,9 +39,9 @@ const actions = {
           } else if (params["value"]) {
             fieldValue = [params["value"]];
           }
-
-          fieldsObj[fieldKey] = fieldValue;
+          if (fieldValue && fieldValue.length) fieldsObj[fieldKey] = fieldValue;
         });
+        state.advancedSearchQuery["fields"] = [];
         state.advancedSearchQuery["fields"].push(fieldsObj);
       });
     }

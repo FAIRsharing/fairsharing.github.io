@@ -1,8 +1,5 @@
 <template>
-  <query-builder
-    v-model="query"
-    :config="config"
-  />
+  <query-builder v-model="query" :config="config" />
 </template>
 
 <script>
@@ -15,6 +12,12 @@ import advancedSearch from "@/store";
 export default {
   name: "QueryBuilderView",
   components: { QueryBuilder },
+  props: {
+    isDialog: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data: () => {
     return {
       query: {
@@ -67,6 +70,18 @@ export default {
   watch: {
     query(newValue) {
       advancedSearch.commit("advancedSearch/setAdvancedQuery", newValue);
+    },
+    /**
+     * Reset the dialog box when closed
+     * @param newValue - Boolean
+     */
+    isDialog(newValue) {
+      if (newValue) {
+        this.query = {
+          operatorIdentifier: "_and",
+          children: [],
+        };
+      }
     },
   },
 };

@@ -1,5 +1,8 @@
 <template>
-  <query-builder v-model="query" :config="config" />
+  <query-builder
+    v-model="query"
+    :config="config"
+  />
 </template>
 
 <script>
@@ -69,7 +72,7 @@ export default {
   },
   watch: {
     query(newValue) {
-      advancedSearch.commit("advancedSearch/setAdvancedQuery", newValue);
+      advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
     },
     /**
      * Reset the dialog box when closed

@@ -1,6 +1,5 @@
 import sinon from "sinon";
 
-import Client from "@/lib/GraphClient/GraphClient";
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import AdvancedSearchStore from "@/store/advancedSearch.js";
 
@@ -58,7 +57,7 @@ describe("AdvancedSearch store methods", () => {
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
-  it("can check setAdvancedQuery mutations", () => {
+  it("can check setAdvancedSearch mutations", () => {
     const searchedObj = {
       operatorIdentifier: "_and",
       children: [
@@ -73,7 +72,7 @@ describe("AdvancedSearch store methods", () => {
         },
       ],
     };
-    mutations.setAdvancedQuery(state, searchedObj);
+    mutations.setAdvancedSearch(state, searchedObj);
     expect(state.advancedSearch).toBe(searchedObj);
   });
 

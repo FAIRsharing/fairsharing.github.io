@@ -2,6 +2,7 @@ import { jsonToGraphQLQuery } from "json-to-graphql-query";
 
 import GraphClient from "@/lib/GraphClient/GraphClient.js";
 import advancedQuery from "@/lib/GraphClient/queries/getAdvancedSearch.json";
+import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 const CLIENT = new GraphClient(),
   ADVANCED_TAGS = JSON.parse(JSON.stringify(advancedQuery));
@@ -31,9 +32,11 @@ const actions = {
       state.advancedSearch["children"].forEach((item) => {
         let fieldsObj = {};
         let fieldValue = [];
-
         fieldsObj["operator"] = item["operatorIdentifier"];
-        item["children"].forEach((params) => {
+
+        const mergedValues = uniqueValues(item["children"]);
+
+        mergedValues.forEach((params) => {
           let fieldKey = params["identifier"];
           if (Array.isArray(params["value"])) {
             fieldValue = params["value"];
@@ -94,7 +97,7 @@ const actions = {
 };
 
 const mutations = {
-  setAdvancedQuery(state, advancedSearch) {
+  setAdvancedSearch(state, advancedSearch) {
     state.advancedSearch = advancedSearch;
   },
   setAdvancedSearchResponse(state, advancedSearchResponse) {

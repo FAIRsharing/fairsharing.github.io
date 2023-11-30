@@ -9,7 +9,7 @@ export default {
   name: "RegistryType",
   props: {
     value: {
-      type: String,
+      type: null, //To support type any
       default: "",
     },
   },

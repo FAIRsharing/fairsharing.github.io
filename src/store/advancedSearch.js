@@ -19,6 +19,7 @@ const state = {
 
 const actions = {
   async fetchAdvancedSearchResults({ commit }, advancedSearchTerm) {
+    state.advancedSearchQuery["fields"] = [];
     commit("setLoadingStatus", true);
     state.advancedSearchQuery["operator"] =
       state.advancedSearch["operatorIdentifier"];
@@ -30,10 +31,10 @@ const actions = {
       state.advancedSearch["children"].forEach((item) => {
         let fieldsObj = {};
         let fieldValue = [];
+
         fieldsObj["operator"] = item["operatorIdentifier"];
         item["children"].forEach((params) => {
           let fieldKey = params["identifier"];
-
           if (Array.isArray(params["value"])) {
             fieldValue = params["value"];
           } else if (params["value"]) {
@@ -41,7 +42,6 @@ const actions = {
           }
           if (fieldValue && fieldValue.length) fieldsObj[fieldKey] = fieldValue;
         });
-        state.advancedSearchQuery["fields"] = [];
         state.advancedSearchQuery["fields"].push(fieldsObj);
       });
     }

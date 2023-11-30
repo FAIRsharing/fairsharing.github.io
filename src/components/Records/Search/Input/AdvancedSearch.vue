@@ -97,7 +97,7 @@ export default {
      */
     isContinue() {
       let isDisabled = true;
-      let isTrue;
+      let isTrue, allTrue;
       let isTrueArr = [];
       if (
         this.getAdvancedSearch["children"] &&
@@ -111,7 +111,8 @@ export default {
         });
       }
       //Check if all values in the array is true
-      const allTrue = isTrueArr.every((item) => item);
+      if (isTrueArr && isTrueArr.length)
+        allTrue = isTrueArr.every((item) => item);
       if (allTrue) isDisabled = !allTrue;
       return isDisabled;
     },

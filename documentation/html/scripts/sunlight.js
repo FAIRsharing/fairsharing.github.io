@@ -697,7 +697,7 @@
 
 					buffer += processCurrent ? current : context.reader.read();
 					return true;
-				}
+				};
 
 				if (!processCurrent || process(true)) {
 					while (context.reader.peek() !== context.reader.EOF && process(false)) { }
@@ -925,7 +925,7 @@
 			fireEvent("beforeAnalyze", this, { analyzerContext: analyzerContext });
 			
 			if (analyzerContext.tokens.length > 0) {
-				analyzerContext.language = languages[analyzerContext.tokens[0].language] || languages[DEFAULT_LANGUAGE];
+				analyzerContext.language = languages[analyzerContext.tokens[0].language] || languages[DEFAULT_LANGUAGE];;
 				nodes = [];
 				lastIndex = 0;
 				container = createContainer(analyzerContext);

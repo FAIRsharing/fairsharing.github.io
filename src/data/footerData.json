@@ -105,6 +105,11 @@
         "title": "Terms of use",
         "url": "/terms",
         "urlType": "internal"
+      },
+      {
+        "title": "Data Preservation Policy",
+        "url": "/preservation_policy",
+        "urlType": "internal"
       }
     ]
   }

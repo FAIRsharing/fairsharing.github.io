@@ -2,6 +2,7 @@ import { uniqWith } from "lodash";
 
 /**
  * Removes duplicate values in a set and returns unique values
+ * @returns {Array} Array with non-duplicate values
  */
 const uniqueValues = (item) => {
   let merged = uniqWith(item, (pre, cur) => {

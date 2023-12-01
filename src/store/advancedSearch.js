@@ -49,6 +49,8 @@ const actions = {
       });
     }
 
+    commit("setAdvancedSearchQuery", state.advancedSearchQuery);
+
     //Below is the format required for jsonToGraphQlQuery
     let parentQuery = {};
     parentQuery["query"] = {};
@@ -117,6 +119,12 @@ const mutations = {
   setError(state, errorStatus) {
     state.errorStatus = errorStatus;
   },
+  setAdvancedSearchQuery(state, advancedSearchQuery) {
+    state.advancedSearchQuery = {
+      operator: advancedSearchQuery["operator"],
+      fields: advancedSearchQuery["fields"],
+    };
+  },
 };
 
 const getters = {
@@ -131,6 +139,9 @@ const getters = {
   },
   getErrorStatus(state) {
     return state.errorStatus;
+  },
+  getAdvancedSearchQuery(state) {
+    return state.advancedSearchQuery;
   },
 };
 const advancedSearch = {

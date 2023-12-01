@@ -11,12 +11,7 @@
       ]"
       @click="openAdvanceSearch()"
     >
-      <v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      </v-icon>
+      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--  On Header Block  -->
@@ -27,12 +22,7 @@
       class="mr-10"
       @click="openAdvanceSearch()"
     >
-      <v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      </v-icon>
+      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
@@ -80,6 +70,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
+import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 export default {
   name: "AdvancedSearch",
@@ -141,17 +132,43 @@ export default {
     goToAdvancedSearch() {
       this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       this.dialog = false;
+      let queryString = "";
+      /*
+      Deconstruct query params for the selected values
+       */
+      if (
+        this.getAdvancedSearch["children"] &&
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].forEach((item) => {
+          queryString += "operator=";
+          queryString += item["operatorIdentifier"];
+          queryString += ",";
+          const mergedValues = uniqueValues(item["children"]);
+          mergedValues.forEach((params) => {
+            queryString += params["identifier"];
+            queryString += "=";
+            if (Array.isArray(params["value"])) {
+              queryString += params["value"].toString();
+            } else if (params["value"]) {
+              queryString += params["value"];
+            }
+            queryString += ",";
+          });
+        });
+        console.log("queryString OUTSIDE::", queryString);
+      }
+
       if (this.$route.path !== "/advancedsearch") {
         this.$router.push({
           name: "AdvancedSearchResult",
-          query: {
-            x: "ab",
-          },
+          query: queryString,
         });
       } else {
         this.$router.push({
           query: {
-            x: "df",
+            operator: this.getAdvancedSearch["operatorIdentifier"],
+            fields: queryString,
           },
         });
       }

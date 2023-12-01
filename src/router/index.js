@@ -29,6 +29,7 @@ import {
     Organisation,
     OrganisationsList,
     Privacy,
+    PreservationPolicy,
     PublicProfile,
     Record,
     Records,
@@ -491,6 +492,11 @@ let routes = [
         name: "Privacy",
         path: "/privacy",
         component: Privacy,
+    },
+    {
+        name: "PreservationPolicy",
+        path: "/preservation_policy",
+        component: PreservationPolicy,
     },
     {
         name: "API Documentation",

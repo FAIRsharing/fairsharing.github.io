@@ -11,7 +11,12 @@
       ]"
       @click="openAdvanceSearch()"
     >
-      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
+      <v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--  On Header Block  -->
@@ -22,7 +27,12 @@
       class="mr-10"
       @click="openAdvanceSearch()"
     >
-      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
+      <v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
@@ -156,13 +166,15 @@ export default {
             queryString += ",";
           });
         });
-        console.log("queryString OUTSIDE::", queryString);
       }
-
+      console.log("queryString OUTSIDE::", queryString);
       if (this.$route.path !== "/advancedsearch") {
         this.$router.push({
           name: "AdvancedSearchResult",
-          query: queryString,
+          query: {
+            operator: this.getAdvancedSearch["operatorIdentifier"],
+            fields: queryString,
+          },
         });
       } else {
         this.$router.push({

@@ -104,12 +104,7 @@
       ]"
       @click="openAdvanceSearch()"
     >
-      &lt;v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      &lt;/v-icon>
+      &lt;v-icon small class="mr-1"> fab fa-searchengin &lt;/v-icon>
       &lt;span class="button-text-size">Advanced Search&lt;/span>
     &lt;/v-btn>
     &lt;!--  On Header Block  -->
@@ -120,12 +115,7 @@
       class="mr-10"
       @click="openAdvanceSearch()"
     >
-      &lt;v-icon
-        small
-        class="mr-1"
-      >
-        fab fa-searchengin
-      &lt;/v-icon>
+      &lt;v-icon small class="mr-1"> fab fa-searchengin &lt;/v-icon>
       &lt;span class="button-text-size">Advanced Search&lt;/span>
     &lt;/v-btn>
     &lt;!--Dialog Box -->
@@ -260,7 +250,6 @@ export default {
           });
         });
       }
-      console.log("queryString OUTSIDE::", queryString);
       if (this.$route.path !== "/advancedsearch") {
         this.$router.push({
           name: "AdvancedSearchResult",

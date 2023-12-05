@@ -6,7 +6,7 @@
       v-if="hasPreview"
       class="d-flex flex-column m-1"
     >
-      <b class="mb-2">Update this resource's logo:</b>
+      <b class="mb-2">Add/change this resource's logo:</b>
       <div
         v-if="previewImages && previewImages.length"
         class="d-flex mb-2"

@@ -16,6 +16,7 @@
         "show_more" : false,
         "twitter": "kylecopas",
         "linkedin" : "kylecopas",
+        "mastodon" : "scicomm.xyz/@kylecopas",
         "logo": "kyle_copas.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -35,6 +36,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "anniekristensen",
+        "mastodon" : "",
         "logo": "annie_kristensen.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -54,6 +56,7 @@
         "show_more" : false,
         "twitter": "acaciaJoe",
         "linkedin" : "joe-miller-biodiversity",
+        "mastodon" : "",
         "logo": "joe_miller.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -73,6 +76,7 @@
         "show_more" : false,
         "twitter": "lnanderscience",
         "linkedin" : "lnanderscience",
+        "mastodon" : "fediscience.org/@lnanderscience",
         "logo": "lindseyanderson.jpg",
         "year_active": ["2022", "2023"],
         "curator_expert" : true
@@ -93,6 +97,7 @@
         "show_more" : false,
         "twitter": "msandstr",
         "linkedin" : "malinsandstrom",
+        "mastodon" : "fediscience.org/@msandstr",
         "logo": "malin.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -122,6 +127,7 @@
         "show_more" : false,
         "twitter": "neuropelletier",
         "linkedin" : "gabrielpelletier",
+        "mastodon" : "mastodon.online/@neuropelletier",
         "logo": "gabriel_pelletier.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -141,6 +147,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "daniel-costa-64a54a1a3",
+        "mastodon" : "",
         "logo": "danielpereiracosta.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -158,8 +165,9 @@
         "orcid": "0000-0002-2307-8770",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
+        "twitter": "DebsEThorpe",
         "linkedin" : "deborah-thorpe-0245a392",
+        "mastodon" : "hcommons.social/@debsethorpe",
         "logo": "deborah_thorpe.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -179,6 +187,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "enrique-wulff-01814398",
+        "mastodon" : "",
         "logo": "enrique_wulff.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -207,6 +216,7 @@
         "show_more" : false,
         "twitter": "GenevievMichaud",
         "linkedin" : "geneviève-michaud-12223746",
+        "mastodon" : "mastodon.zaclys.com/@GenevievMichaud",
         "logo": "genevievemichaud.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -229,6 +239,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "lars-vilhuber",
+        "mastodon" : "",
         "logo": "lars_vilhuber.jpg",
         "year_active": ["2022"]
       },
@@ -252,6 +263,7 @@
         "show_more" : false,
         "twitter": "MorphoLg",
         "linkedin" : "guillaume-gay-492a2227",
+        "mastodon" : "biologists.social/@glyg",
         "logo": "guillaumegay.jpg",
         "year_active": ["2022"]
       },
@@ -271,6 +283,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "majadolinar",
+        "mastodon" : "",
         "logo": "maja_dolinar.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -290,6 +303,7 @@
         "show_more" : false,
         "twitter": "GetaMitreaRo",
         "linkedin" : "geta-mitrea",
+        "mastodon" : "",
         "logo": "getamitrea.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -309,6 +323,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "sara-espinoza",
+        "mastodon" : "",
         "logo": "sara_espinoza.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -331,8 +346,9 @@
         "orcid": "0000-0002-0517-7943",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
+        "twitter": "StephenSerjeant",
         "linkedin" : "stephenserjeant",
+        "mastodon" : "mas.to/@stephenserjeant",
         "logo": "stephen_serjeant.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -349,8 +365,9 @@
         "orcid": "0000-0002-5485-6256",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
+        "twitter": "PotassiumBee",
         "linkedin" : "kayeburrows",
+        "mastodon" : "",
         "logo": "kay_burrows.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -370,6 +387,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "francispcrawley",
+        "mastodon" : "",
         "logo": "francis_crawley.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -387,8 +405,9 @@
         "orcid": "0000-0003-4177-1322",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
+        "twitter": "deboradrucker",
         "linkedin" : "debora-drucker",
+        "mastodon" : "",
         "logo": "debora_druker.jpeg",
         "year_active": ["2022", "2023"]
       },
@@ -408,6 +427,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "yu-he-liang-66650033",
+        "mastodon" : "",
         "logo": "yuhen.jpg",
         "year_active": ["2023"]
       },
@@ -424,8 +444,9 @@
         "orcid": "0000-0002-0133-4155",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
+        "twitter": "dampartridge",
         "linkedin" : "",
+        "mastodon" : "",
         "logo": "adam_partridge.jpg",
         "year_active": ["2023"]
       },
@@ -442,8 +463,9 @@
         "orcid": "0000-0003-2797-1686",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
+        "twitter": "kdcobey",
         "linkedin" : "kelly-cobey-b0a83b55",
+        "mastodon" : "",
         "logo": "k_cobey.jpg",
         "year_active": ["2023"]
       },
@@ -460,8 +482,9 @@
         "orcid": "0000-0002-7683-0452",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
+        "twitter": "YojanaGadiya",
         "linkedin" : "yojana-gadiya-477739113",
+        "mastodon" : "",
         "logo": "y_gadiya.jpg",
         "year_active": ["2023"]
       },
@@ -479,8 +502,9 @@
         "orcid": "0000-0003-3484-7675",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
+        "twitter": "jd162a",
         "linkedin" : "joy-davidson",
+        "mastodon" : "",
         "logo": "Joy-Davidson.jpg",
         "year_active": ["2023"]
       },
@@ -500,6 +524,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "",
+        "mastodon" : "",
         "logo": "r_acton.png",
         "year_active": ["2023"]
       },
@@ -519,6 +544,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "david-tomkins-83b92534",
+        "mastodon" : "",
         "logo": "d_tomkins.jpeg",
         "year_active": ["2023"]
       },
@@ -539,8 +565,9 @@
         "orcid": "0000-0001-8862-1706",
         "early_adopter" : false,
         "show_more" : false,
-        "twitter": "",
+        "twitter": "lj_zass",
         "linkedin" : "lyndon-zass-10b731145",
+        "mastodon" : "",
         "logo": "l_zass.png",
         "year_active": ["2023"]
       }

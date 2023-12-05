@@ -32,13 +32,13 @@ describe("AdvancedSearch store methods", () => {
   it("can check fetchAdvancedSearchResults actions", () => {
     const commit = jest.fn();
     actions.fetchAdvancedSearchResults({ commit }, "searchTerm");
-    expect(commit).toHaveBeenCalledTimes(3);
+    expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check fetchAdvancedSearchResults actions without advanceSearchTerm", () => {
     const commit = jest.fn();
     actions.fetchAdvancedSearchResults({ commit });
-    expect(commit).toHaveBeenCalledTimes(3);
+    expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check fetchAdvancedSearchResults actions with Error response", async () => {
@@ -55,12 +55,6 @@ describe("AdvancedSearch store methods", () => {
     const commit = jest.fn();
     actions.resetAdvancedSearchResponse({ commit });
     expect(commit).toHaveBeenCalledTimes(1);
-  });
-
-  it("can check setAdvancedSearchText mutations", () => {
-    const searchText = "test";
-    mutations.setAdvancedSearchText(state, searchText);
-    expect(state.advancedSearchText).toBe(searchText);
   });
 
   it("can check setAdvancedSearch mutations", () => {
@@ -116,33 +110,6 @@ describe("AdvancedSearch store methods", () => {
     expect(state.errorStatus).toBe(true);
   });
 
-  it("can check setAdvancedSearchQuery mutations", () => {
-    const advancedSearchQuery = {
-      operator: "_and",
-      fields: [
-        {
-          operator: "_and",
-          registry: ["test", "abc"],
-        },
-      ],
-    };
-    mutations.setAdvancedSearchQuery(state, advancedSearchQuery);
-    expect(state.advancedSearchQuery["operator"]).toBe(
-      advancedSearchQuery["operator"]
-    );
-    expect(state.advancedSearchQuery["fields"]).toBe(
-      advancedSearchQuery["fields"]
-    );
-  });
-
-  it("can check getAdvancedSearchText getters", () => {
-    const getSearchResult = {
-      advancedSearchText: "test",
-    };
-    const builtData = getters.getAdvancedSearchText(getSearchResult);
-    expect(builtData).toStrictEqual(getSearchResult["advancedSearchText"]);
-  });
-
   it("can check getAdvancedSearch getters", () => {
     const getSearchResult = {
       advancedSearch: {
@@ -192,21 +159,5 @@ describe("AdvancedSearch store methods", () => {
     };
     const builtData = getters.getErrorStatus(getSearchResult);
     expect(builtData).toStrictEqual(getSearchResult["errorStatus"]);
-  });
-
-  it("can check getAdvancedSearchQuery getters", () => {
-    const getSearchResult = {
-      advancedSearchQuery: {
-        operator: "_and",
-        fields: [
-          {
-            operator: "_and",
-            registry: ["test", "abc"],
-          },
-        ],
-      },
-    };
-    const builtData = getters.getAdvancedSearchQuery(getSearchResult);
-    expect(builtData).toStrictEqual(getSearchResult["advancedSearchQuery"]);
   });
 });

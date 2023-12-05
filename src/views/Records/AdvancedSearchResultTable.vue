@@ -1,125 +1,131 @@
 <template>
-  <div
-    v-if="getErrorStatus"
-    fluid
-    class="pa-0"
-  >
-    <ErrorPage />
-  </div>
-  <div
-    v-else
-    fluid
-    class="pa-5"
-  >
-    <v-data-iterator
-      :items="getAdvancedSearchResponse"
-      :items-per-page.sync="itemsPerPage"
-      :page.sync="page"
-      :search="search"
-      :sort-by="sortBy.toLowerCase()"
-      :sort-desc="sortDesc"
-      :hide-default-footer="noFooter"
-      :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
+  <div>
+    <v-container
+      v-if="getErrorStatus"
+      fluid
+      class="pa-0"
     >
-      <!-- headers start -->
-      <template #header>
-        <v-toolbar
-          dark
-          color="blue lighten-1"
-          class="mb-5"
-        >
-          <v-text-field
-            v-model="search"
-            clearable
-            flat
-            solo-inverted
-            hide-details
-            prepend-inner-icon="mdi-filter"
-            label="Filter these results"
-          />
-          <template v-if="$vuetify.breakpoint.mdAndUp">
-            <v-spacer />
-            <v-select
-              v-model="sortBy"
+      <ErrorPage />
+    </v-container>
+    <v-container
+      v-else
+      fluid
+      class="pa-5"
+    >
+      <v-data-iterator
+        :items="getAdvancedSearchResponse"
+        :items-per-page.sync="itemsPerPage"
+        :page.sync="page"
+        :search="search"
+        :sort-by="sortBy.toLowerCase()"
+        :sort-desc="sortDesc"
+        :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
+      >
+        <!-- headers start -->
+        <template #header>
+          <v-toolbar
+            dark
+            color="blue lighten-1"
+            class="mb-5"
+          >
+            <v-text-field
+              v-model="search"
+              clearable
               flat
               solo-inverted
               hide-details
-              :items="keys"
-              prepend-inner-icon="mdi-sort"
-              label="Sort by"
+              prepend-inner-icon="mdi-filter"
+              label="Filter these results"
             />
-            <v-spacer />
-            <v-btn-toggle
-              v-model="sortDesc"
-              mandatory
-            >
-              <v-btn
-                large
-                depressed
-                color="blue"
-                :value="false"
-              >
-                <v-icon>mdi-arrow-up</v-icon>
-              </v-btn>
-              <v-btn
-                large
-                depressed
-                color="blue"
-                :value="true"
-              >
-                <v-icon>mdi-arrow-down</v-icon>
-              </v-btn>
-            </v-btn-toggle>
-          </template>
-        </v-toolbar>
-      </template>
-      <!-- headers stop -->
-      <!-- data section begins -->
-      <template #default="props">
-        <v-row>
-          <v-col
-            v-for="item in props.items"
-            :key="item.name"
-            cols="12"
-          >
-            <v-card>
-              <v-card-title class="subheading font-weight-bold">
-                <RecordStatus :record="item" />
-                <a
-                  :href="fairSharingURL + getRecordLink(item)"
-                  target="_blank"
-                  class="ml-10"
-                >
-                  {{ item.name }}
-                </a>
-              </v-card-title>
-
-              <p
-                class="mt-2 ml-10 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
-              >
-                {{ item.description }}
-              </p>
-
-              <TagChips
-                :record="item"
-                class="ml-10"
+            <template v-if="$vuetify.breakpoint.mdAndUp">
+              <v-spacer />
+              <v-select
+                v-model="sortBy"
+                flat
+                solo-inverted
+                hide-details
+                :items="keys"
+                prepend-inner-icon="mdi-sort"
+                label="Sort by"
               />
-              <p class="pb-5" />
-            </v-card>
-          </v-col>
-        </v-row>
-      </template>
-      <!-- data section ends -->
-      <!-- footer ends -->
-      <template #no-data>
-        <v-alert
-          colored-border
-          type="info"
-        >
-          No records match your search!
-        </v-alert>
-      </template>
-    </v-data-iterator>
+              <v-spacer />
+              <v-btn-toggle
+                v-model="sortDesc"
+                mandatory
+              >
+                <v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="false"
+                >
+                  <v-icon>mdi-arrow-up</v-icon>
+                </v-btn>
+                <v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="true"
+                >
+                  <v-icon>mdi-arrow-down</v-icon>
+                </v-btn>
+              </v-btn-toggle>
+            </template>
+          </v-toolbar>
+        </template>
+        <!-- headers stop -->
+        <!-- data section begins -->
+        <template #default="props">
+          <v-row>
+            <v-col
+              v-for="item in props.items"
+              :key="item.name"
+              cols="12"
+            >
+              <v-card>
+                <v-card-title class="subheading font-weight-bold">
+                  <RecordStatus :record="item" />
+                  <a
+                    :href="fairSharingURL + getRecordLink(item)"
+                    target="_blank"
+                    class="ml-10"
+                  >
+                    {{ item.name }}
+                  </a>
+                </v-card-title>
+
+                <p
+                  class="mt-2 ml-10 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
+                >
+                  {{ item.description }}
+                </p>
+
+                <TagChips
+                  :record="item"
+                  class="ml-10"
+                />
+
+                <!-- TODO: this is a hacky placeholder -->
+                <p class="pb-5" />
+
+                <!-- TODO: change below here -->
+                <!--
+                <v-divider />
+
+                <span>
+                  Some information about number of standards etc. can go here.
+                </span>
+
+                -->
+                <!-- TODO: change above here -->
+              </v-card>
+            </v-col>
+          </v-row>
+        </template>
+        <!-- data section ends -->
+        <!-- footer ends -->
+      </v-data-iterator>
+    </v-container>
   </div>
 </template>
 <script>
@@ -129,7 +135,8 @@ import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
-import TagChips from "@/views/Records/TagChips.vue";
+
+import TagChips from "../../../../Fairsharing/fairsharing.github.io/src/views/Records/TagChips.vue";
 export default {
   name: "AdvancedSearchResultTable",
   components: { RecordStatus, TagChips, ErrorPage },
@@ -153,15 +160,6 @@ export default {
       "getErrorStatus",
       "getAdvancedSearchQuery",
     ]),
-    noFooter() {
-      if (
-        Array.isArray(this.getAdvancedSearchResponse) &&
-        !this.getAdvancedSearchResponse.length
-      ) {
-        return true;
-      }
-      return false;
-    },
   },
   mounted() {
     this.fetchQueryParams();
@@ -220,15 +218,6 @@ export default {
 
         //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
         advancedSearch.commit("advancedSearch/setAdvancedSearch", searchQuery);
-        advancedSearch.commit(
-          "advancedSearch/setEditAdvancedSearch",
-          searchQuery
-        );
-
-        // advancedSearch.commit("advancedSearch", {
-        //   setAdvancedSearch: searchQuery,
-        //   setEditAdvancedSearch: searchQuery,
-        // });
 
         //Calling the fetch method to get the result
         if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);

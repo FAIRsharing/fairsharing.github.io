@@ -80,7 +80,6 @@
 import { mapActions, mapGetters } from "vuex";
 
 import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
-import advancedSearch from "@/store";
 import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 export default {
@@ -105,7 +104,6 @@ export default {
     ...mapGetters("advancedSearch", [
       "getAdvancedSearch",
       "getAdvancedSearchText",
-      "getEditDialogStatus",
     ]),
     /**
      * Enables the proceed button when all the selected fields are non-empty
@@ -133,11 +131,6 @@ export default {
       return isDisabled;
     },
   },
-  watch: {
-    getEditDialogStatus(newValue) {
-      this.dialog = newValue;
-    },
-  },
   methods: {
     ...mapActions("advancedSearch", [
       "fetchAdvancedSearchResults",
@@ -150,7 +143,6 @@ export default {
 
     closeDialog() {
       this.dialog = false;
-      advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
     },
 
     isAdvancedSearchTerm(queryString) {
@@ -173,7 +165,6 @@ export default {
     goToAdvancedSearch() {
       this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       this.dialog = false;
-      advancedSearch.commit("advancedSearch/setEditDialogStatus", false);
       let queryString = "";
       /*
        * Add advancedSearch selection to query params in
@@ -215,7 +206,7 @@ export default {
           });
         }
       }
-      //When on advancedSearch page
+      //When  on advancedSearch page
       else {
         if (this.getAdvancedSearchText) {
           this.$router.push({

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Home</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,100 +81,260 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Home</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch.vue</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div class="d-flex mx-2">
+    &lt;!--  On Search Block  -->
+    &lt;v-btn
+      v-if="showHomeSearch"
+      color="primary"
+      class="mb-13"
+      :class="[
+        'mt-1',
+        $vuetify.breakpoint.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
+      ]"
+      @click="openAdvanceSearch()"
+    >
+      &lt;v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      &lt;/v-icon>
+      &lt;span class="button-text-size">Advanced Search&lt;/span>
+    &lt;/v-btn>
+    &lt;!--  On Header Block  -->
+    &lt;v-btn
+      v-else
+      color="primary"
+      :x-large="$vuetify.breakpoint.xlOnly ? true : false"
+      class="mr-10"
+      @click="openAdvanceSearch()"
+    >
+      &lt;v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      &lt;/v-icon>
+      &lt;span class="button-text-size">Advanced Search&lt;/span>
+    &lt;/v-btn>
+    &lt;!--Dialog Box -->
+    &lt;v-row justify="center">
+      &lt;v-dialog
+        :value="dialog"
+        max-width="800px"
+        @keydown.esc="closeDialog()"
+        @click:outside="closeDialog()"
+      >
+        &lt;v-card>
+          &lt;v-card-title>
+            &lt;span class="text-h5">{{ advancedSearchTerm }}&lt;/span>
+          &lt;/v-card-title>
+          &lt;v-card-text>
+            &lt;QueryBuilderView :is-dialog="dialog" />
+          &lt;/v-card-text>
+          &lt;v-card-actions>
+            &lt;v-btn
+              color="accent3"
+              variant="text"
+              class="white--text"
+              @click="closeDialog()"
+            >
+              Close
+            &lt;/v-btn>
+            &lt;v-spacer />
+            &lt;v-btn
+              color="green"
+              variant="text"
+              class="white--text"
+              :disabled="isContinue"
+              @click="goToAdvancedSearch()"
+            >
+              Proceed
+            &lt;/v-btn>
+          &lt;/v-card-actions>
+        &lt;/v-card>
+      &lt;/v-dialog>
+    &lt;/v-row>
+  &lt;/div>
+&lt;/template>
 
-<header>
-    
-</header>
+&lt;script>
+import { mapActions, mapGetters } from "vuex";
 
+import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
+import { uniqueValues } from "@/utils/advancedSearchUtils";
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Component to handle the front page (landing page)</p></div>
-        
+export default {
+  name: "AdvancedSearch",
+  components: { QueryBuilderView },
+  props: {
+    showHomeSearch: {
+      default: false,
+      type: Boolean,
+    },
+    advancedSearchTerm: {
+      default: "",
+      type: String,
+    },
+  },
+  data: () => {
+    return {
+      dialog: false,
+    };
+  },
+  computed: {
+    ...mapGetters("advancedSearch", [
+      "getAdvancedSearch",
+      "getAdvancedSearchText",
+    ]),
+    /**
+     * Enables the proceed button when all the selected fields are non-empty
+     * @returns {boolean}
+     */
+    isContinue() {
+      let isDisabled = true;
+      let isTrue, allTrue;
+      let isTrueArr = [];
+      if (
+        this.getAdvancedSearch["children"] &amp;&amp;
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].forEach(({ children }) => {
+          if (children &amp;&amp; children.length) {
+            isTrue = children.every(({ value: { length } }) => length);
+            isTrueArr.push(isTrue);
+          }
+        });
+      }
+      //Check if all values in the array is true
+      if (isTrueArr &amp;&amp; isTrueArr.length)
+        allTrue = isTrueArr.every((item) => item);
+      if (allTrue) isDisabled = !allTrue;
+      return isDisabled;
+    },
+  },
+  methods: {
+    ...mapActions("advancedSearch", [
+      "fetchAdvancedSearchResults",
+      "resetAdvancedSearchResponse",
+    ]),
 
-        
-<dl class="details">
-    
+    openAdvanceSearch() {
+      this.dialog = true;
+    },
 
-	
+    closeDialog() {
+      this.dialog = false;
+    },
 
-	
+    isAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        q: this.getAdvancedSearchText,
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
 
-	
+    noAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
 
-    
+    goToAdvancedSearch() {
+      this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+      this.dialog = false;
+      let queryString = "";
+      /*
+       * Add advancedSearch selection to query params in
+       * the URL by creating array of objects into string
+       */
+      if (
+        this.getAdvancedSearch["children"] &amp;&amp;
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].forEach((item) => {
+          queryString += "(operator=";
+          queryString += item["operatorIdentifier"];
+          const mergedValues = uniqueValues(item["children"]);
+          mergedValues.forEach((params) => {
+            queryString += "&amp;";
+            queryString += params["identifier"];
+            queryString += "=";
+            if (Array.isArray(params["value"])) {
+              queryString += params["value"].toString();
+            } else if (params["value"]) {
+              queryString += params["value"];
+            }
+          });
+          queryString += ")";
+        });
+      }
 
-    
+      //When not on advancedSearch page
+      if (this.$route.path !== "/advancedsearch") {
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.noAdvancedSearchTerm(queryString),
+          });
+        }
+      }
+      //When  on advancedSearch page
+      else {
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            query: this.noAdvancedSearchTerm(queryString),
+          });
+        }
+      }
+    },
+  },
+};
+&lt;/script>
 
-    
+&lt;style scoped>
+.home-search-bt {
+  height: 40px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+}
 
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_Home_Home.vue.html">views/Home/Home.vue</a>,
-				 <a href="views_Home_Home.vue.html#sunlight-1-line-15">line 15</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+.home-search-bt-xl {
+  height: 50px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+}
+&lt;/style>
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -184,10 +344,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

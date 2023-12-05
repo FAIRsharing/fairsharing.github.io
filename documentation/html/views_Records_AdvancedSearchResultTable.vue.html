@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/Input/FilterButton.vue</title>
+	<title>FAIRsharing.org Source: views/Records/AdvancedSearchResultTable.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,154 +86,240 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/Input/FilterButton.vue</h1>
+		<h1 class="page-title">Source: views/Records/AdvancedSearchResultTable.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-tooltip
-    bottom
-    :disabled="itemModified.tooltip===undefined || $vuetify.breakpoint.smAndDown"
-  >
-    &lt;template #activator="{ on }">
-      &lt;v-btn
-        color="primary"
-        class="mr-1 mr-lg-2"
-        :outlined="!itemModified.active"
-        :class="[isFirstItem &amp;&amp; !doubleItems ? 'first-child' : 'flex-1', {'button-style-md-screens' : mdScreens, 'buttons-md-style' : multipleItems &amp;&amp; !isFirstItem}]"
-        @click="selectFilter(itemModified)"
-        v-on="on"
+  &lt;div>
+    &lt;v-container
+      v-if="getErrorStatus"
+      fluid
+      class="pa-0"
+    >
+      &lt;ErrorPage />
+    &lt;/v-container>
+    &lt;v-container
+      v-else
+      fluid
+      class="pa-5"
+    >
+      &lt;v-data-iterator
+        :items="getAdvancedSearchResponse"
+        :items-per-page.sync="itemsPerPage"
+        :page.sync="page"
+        :search="search"
+        :sort-by="sortBy.toLowerCase()"
+        :sort-desc="sortDesc"
+        :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
       >
-        &lt;span v-if="itemModified.title!=='ALL'">{{ itemModified.title }}&lt;/span>
-        &lt;v-icon
-          v-else
-          small
-          color="primary"
-        >
-          {{ $vuetify.icons.values.loading }}
-        &lt;/v-icon>
-      &lt;/v-btn>
-    &lt;/template>
-    &lt;span>{{ itemModified.tooltip }}&lt;/span>
-  &lt;/v-tooltip>
+        &lt;!-- headers start -->
+        &lt;template #header>
+          &lt;v-toolbar
+            dark
+            color="blue lighten-1"
+            class="mb-5"
+          >
+            &lt;v-text-field
+              v-model="search"
+              clearable
+              flat
+              solo-inverted
+              hide-details
+              prepend-inner-icon="mdi-filter"
+              label="Filter these results"
+            />
+            &lt;template v-if="$vuetify.breakpoint.mdAndUp">
+              &lt;v-spacer />
+              &lt;v-select
+                v-model="sortBy"
+                flat
+                solo-inverted
+                hide-details
+                :items="keys"
+                prepend-inner-icon="mdi-sort"
+                label="Sort by"
+              />
+              &lt;v-spacer />
+              &lt;v-btn-toggle
+                v-model="sortDesc"
+                mandatory
+              >
+                &lt;v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="false"
+                >
+                  &lt;v-icon>mdi-arrow-up&lt;/v-icon>
+                &lt;/v-btn>
+                &lt;v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="true"
+                >
+                  &lt;v-icon>mdi-arrow-down&lt;/v-icon>
+                &lt;/v-btn>
+              &lt;/v-btn-toggle>
+            &lt;/template>
+          &lt;/v-toolbar>
+        &lt;/template>
+        &lt;!-- headers stop -->
+        &lt;!-- data section begins -->
+        &lt;template #default="props">
+          &lt;v-row>
+            &lt;v-col
+              v-for="item in props.items"
+              :key="item.name"
+              cols="12"
+            >
+              &lt;v-card>
+                &lt;v-card-title class="subheading font-weight-bold">
+                  &lt;RecordStatus :record="item" />
+                  &lt;a
+                    :href="fairSharingURL + getRecordLink(item)"
+                    target="_blank"
+                    class="ml-10"
+                  >
+                    {{ item.name }}
+                  &lt;/a>
+                &lt;/v-card-title>
+
+                &lt;p
+                  class="mt-2 ml-10 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
+                >
+                  {{ item.description }}
+                &lt;/p>
+
+                &lt;TagChips
+                  :record="item"
+                  class="ml-10"
+                />
+
+                &lt;!-- TODO: this is a hacky placeholder -->
+                &lt;p class="pb-5" />
+
+                &lt;!-- TODO: change below here -->
+                &lt;!--
+                &lt;v-divider />
+
+                &lt;span>
+                  Some information about number of standards etc. can go here.
+                &lt;/span>
+
+                -->
+                &lt;!-- TODO: change above here -->
+              &lt;/v-card>
+            &lt;/v-col>
+          &lt;/v-row>
+        &lt;/template>
+        &lt;!-- data section ends -->
+        &lt;!-- footer ends -->
+      &lt;/v-data-iterator>
+    &lt;/v-container>
+  &lt;/div>
 &lt;/template>
-
 &lt;script>
-    import { isEqual } from "lodash";
-    import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 
-    import currentParameter from "@/utils/currentParameterMixin.js"
+import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import advancedSearch from "@/store";
+import recordsCardUtils from "@/utils/recordsCardUtils";
+import ErrorPage from "@/views/Errors/404.vue";
 
-    export default {
-        name: "FilterButton",
-        mixins: [currentParameter],
-        props: {
-            item: {default: null, type: Object},
-            isFirstItem: {default: false, type: Boolean},
-            mdScreens: {default: null, type: Boolean},
-            itemParentIndex: {default: 0, type: Number},
-            multipleItems: {default: false, type: Boolean},
-            doubleItems: {default: false, type: Boolean},
-        },
-        data: () => {
-          return {
-            itemModified: {default: null, type: Object}
-          }
-        },
-        watch: {
-          currentParameter: {
-            handler(newVal) {
-              const _module = this;
-              const fieldName = _module.itemModified.filterName;
-              const fieldValue = newVal[fieldName];
-              const currentValue = _module.itemModified.value;
-              const title = _module.itemModified.title;
-              _module.checkCurrentParameters(title, fieldValue, currentValue);
-            },
-            deep: true
-          }
-        },
-        mounted(){
-          this.$nextTick(function () {
-            const _module = this;
-            _module.itemModified = JSON.parse(JSON.stringify(this.item));
-            const fieldValue = _module.currentParameter[this.itemModified.filterName];
-            const currentValue = _module.itemModified.value;
-            const title = _module.itemModified.title;
-            _module.checkCurrentParameters(title, fieldValue, currentValue);
+import TagChips from "../../../../Fairsharing/fairsharing.github.io/src/views/Records/TagChips.vue";
+export default {
+  name: "AdvancedSearchResultTable",
+  components: { RecordStatus, TagChips, ErrorPage },
+  mixins: [recordsCardUtils],
+  data() {
+    return {
+      itemsPerPageArray: [10, 20, 50, 100, 200],
+      search: "",
+      sortDesc: false,
+      page: 1,
+      itemsPerPage: 5,
+      sortBy: "name",
+      keys: ["Name", "Registry", "Type", "Status", "Description"],
+      fairSharingURL: process.env.VUE_APP_FAIRSHARING_URL,
+    };
+  },
+  computed: {
+    ...mapGetters("advancedSearch", [
+      "getAdvancedSearchResponse",
+      "getLoadingStatus",
+      "getErrorStatus",
+      "getAdvancedSearchQuery",
+    ]),
+  },
+  mounted() {
+    this.fetchQueryParams();
+  },
+  methods: {
+    ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
+    /**
+     * Fetch query from URL and display advancedSearch Result
+     */
+    fetchQueryParams() {
+      if (
+        Array.isArray(this.getAdvancedSearchResponse) &amp;&amp;
+        !this.getAdvancedSearchResponse.length &amp;&amp;
+        Array.isArray(this.getAdvancedSearchQuery["fields"]) &amp;&amp;
+        !this.getAdvancedSearchQuery["fields"].length
+      ) {
+        const routeQuery = this.$route.query;
+        //Query format is same as setAdvancedSearch mutation
+        let searchQuery = {
+          operatorIdentifier: "",
+          children: [],
+        };
+
+        searchQuery["operatorIdentifier"] = routeQuery["operator"];
+
+        //Destructuring the fields string into valid setAdvancedSearch format to execute the query
+        const searchFieldsArr = routeQuery["fields"]
+          .split("(")
+          .join("")
+          .split(")")
+          .filter((item) => item); //Filter is used to remove empty string
+
+        searchFieldsArr.forEach((item) => {
+          const itemArr = item.split("&amp;");
+          let searchObj = {
+            operatorIdentifier: "",
+            children: [],
+          };
+          itemArr.forEach((subItem) => {
+            const paramValues = subItem.split("=");
+            if (paramValues[0] === "operator") {
+              searchObj["operatorIdentifier"] = paramValues[1];
+            } else {
+              let advancedSearchParams = {
+                identifier: "",
+                value: [],
+              };
+              advancedSearchParams["identifier"] = paramValues[0];
+              advancedSearchParams["value"] = paramValues[1].split(",");
+              searchObj["children"].push(advancedSearchParams);
+            }
           });
-        },
-        methods: {
-            checkCurrentParameters: function(title, fieldValue, currentValue) {
-              if (fieldValue === null) {
-                this.itemModified.active = title === 'all' || title === 'match all terms';
-              }
-              else {
-                if (currentValue === undefined) {
-                  this.itemModified.active = false;
-                }
-                else {
-                  this.itemModified.active = currentValue.toString() === fieldValue;
-                }
-              }
-            },
-            /**
-             * Apply the filters by building the new query parameters using the form data.
-             */
-            applyFilters: function (selectedItem) {
-              const _module = this;
-              let currentQuery = {};
-              let oldQuery = {};
-              Object.keys(_module.$route.query).forEach(function (param) {
-                currentQuery[param] = _module.$route.query[param];
-                oldQuery[param] = _module.$route.query[param]
-              });
 
-              Object.prototype.hasOwnProperty.call(selectedItem, 'value') ? currentQuery[selectedItem.filterName] = encodeURIComponent(selectedItem.value)
-                                                                                  : delete currentQuery[selectedItem.filterName];
-              if (!isEqual(currentQuery, oldQuery)) {
-                currentQuery['page'] = 1;
-                this.$router.push({
-                  name: _module.$route.name,
-                  query: currentQuery
-                });
-              }
-            },
-            selectFilter: function (selectedItem) {
-                let _module = this;
-                _module.resetFilterButtons(_module.itemParentIndex);
-                _module.activateButton({
-                    'activeItem': selectedItem,
-                    'itemParentIndex': _module.itemParentIndex
-                });
-                this.applyFilters(selectedItem);
-            },
-            ...mapActions("searchFilters", ["resetFilterButtons", "activateButton"])
-        }
-    }
+          searchQuery["children"].push(searchObj);
+        });
+
+        //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
+        advancedSearch.commit("advancedSearch/setAdvancedSearch", searchQuery);
+
+        //Calling the fetch method to get the result
+        if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);
+        else this.fetchAdvancedSearchResults(routeQuery["q"]);
+      }
+    },
+  },
+};
 &lt;/script>
-
-&lt;style scoped>
-    .button-style-md-screens {
-        font-size: 9px !important;
-    }
-
-    .first-child {
-        font-size: 11px;
-        width: 16.5%;
-    }
-
-    .flex-1 {
-        font-size: 11px;
-        flex: 1;
-    }
-
-    .buttons-md-style {
-        min-width: 32px !important;
-    }
-
-&lt;/style>
 </pre>
     </article>
 </section>

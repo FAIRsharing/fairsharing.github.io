@@ -28,6 +28,7 @@ import {
     OntologyBrowser,
     Organisation,
     OrganisationsList,
+    PreservationPolicy,
     Privacy,
     PublicProfile,
     Record,
@@ -491,6 +492,11 @@ let routes = [
         name: "Privacy",
         path: "/privacy",
         component: Privacy,
+    },
+    {
+        name: "PreservationPolicy",
+        path: "/preservation_policy",
+        component: PreservationPolicy,
     },
     {
         name: "API Documentation",

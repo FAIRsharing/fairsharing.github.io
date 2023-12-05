@@ -1,5 +1,5 @@
 <template>
-  <div class="full-width mx-2">
+  <div>
     <v-container
       v-if="getErrorStatus"
       fluid
@@ -10,7 +10,7 @@
     <v-container
       v-else
       fluid
-      class="pa-0"
+      class="pa-5"
     >
       <v-data-iterator
         :items="getAdvancedSearchResponse"
@@ -19,7 +19,7 @@
         :search="search"
         :sort-by="sortBy.toLowerCase()"
         :sort-desc="sortDesc"
-        :hide-default-footer="!getAdvancedSearchResponse.length ? true : false"
+        :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
       >
         <!-- headers start -->
         <template #header>
@@ -124,14 +124,6 @@
         </template>
         <!-- data section ends -->
         <!-- footer ends -->
-        <template #no-data>
-          <v-alert
-            colored-border
-            type="info"
-          >
-            No records match your search!
-          </v-alert>
-        </template>
       </v-data-iterator>
     </v-container>
   </div>
@@ -143,7 +135,8 @@ import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
-import TagChips from "@/views/Records/TagChips.vue";
+
+import TagChips from "../../../../Fairsharing/fairsharing.github.io/src/views/Records/TagChips.vue";
 export default {
   name: "AdvancedSearchResultTable",
   components: { RecordStatus, TagChips, ErrorPage },

@@ -206,7 +206,7 @@ export default {
           });
         }
       }
-      //When on advancedSearch page
+      //When  on advancedSearch page
       else {
         if (this.getAdvancedSearchText) {
           this.$router.push({

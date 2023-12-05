@@ -16,7 +16,7 @@
         "show_more" : false,
         "twitter": "kylecopas",
         "linkedin" : "kylecopas",
-        "mastodon" : "kylecopas@spore.social",
+        "mastodon" : "scicomm.xyz/@kylecopas",
         "logo": "kyle_copas.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -76,7 +76,7 @@
         "show_more" : false,
         "twitter": "lnanderscience",
         "linkedin" : "lnanderscience",
-        "mastodon" : "lnanderscience@fediscience.org",
+        "mastodon" : "fediscience.org/@lnanderscience",
         "logo": "lindseyanderson.jpg",
         "year_active": ["2022", "2023"],
         "curator_expert" : true
@@ -97,7 +97,7 @@
         "show_more" : false,
         "twitter": "msandstr",
         "linkedin" : "malinsandstrom",
-        "mastodon" : "msandstr@fediscience.org",
+        "mastodon" : "fediscience.org/@msandstr",
         "logo": "malin.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -127,7 +127,7 @@
         "show_more" : false,
         "twitter": "neuropelletier",
         "linkedin" : "gabrielpelletier",
-        "mastodon" : "neuropelletier@mastodon.online",
+        "mastodon" : "mastodon.online/@neuropelletier",
         "logo": "gabriel_pelletier.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -167,7 +167,7 @@
         "show_more" : false,
         "twitter": "DebsEThorpe",
         "linkedin" : "deborah-thorpe-0245a392",
-        "mastodon" : "debsethorpe@hcommons.social",
+        "mastodon" : "hcommons.social/@debsethorpe",
         "logo": "deborah_thorpe.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -216,7 +216,7 @@
         "show_more" : false,
         "twitter": "GenevievMichaud",
         "linkedin" : "geneviève-michaud-12223746",
-        "mastodon" : "GenevievMichaud@mastodon.zaclys.com",
+        "mastodon" : "mastodon.zaclys.com/@GenevievMichaud",
         "logo": "genevievemichaud.jpg",
         "year_active": ["2022", "2023"]
       },
@@ -263,7 +263,7 @@
         "show_more" : false,
         "twitter": "MorphoLg",
         "linkedin" : "guillaume-gay-492a2227",
-        "mastodon" : "glyg@biologists.social",
+        "mastodon" : "biologists.social/@glyg",
         "logo": "guillaumegay.jpg",
         "year_active": ["2022"]
       },
@@ -348,7 +348,7 @@
         "show_more" : false,
         "twitter": "StephenSerjeant",
         "linkedin" : "stephenserjeant",
-        "mastodon" : "stephenserjeant@mas.to",
+        "mastodon" : "mas.to/@stephenserjeant",
         "logo": "stephen_serjeant.jpg",
         "year_active": ["2022", "2023"]
       },

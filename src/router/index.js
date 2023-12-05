@@ -50,9 +50,7 @@ import {
 /*
   Added to catch NavigationDuplicated router error
 */
-
 const originalPush = VueRouter.prototype.push;
-/* istanbul ignore next */
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch((err) => err);
 };

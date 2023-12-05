@@ -14,8 +14,8 @@
       FAIRsharing contains a wealth of hand-curated data of use and interest to the research community at large, and
       we therefore wish to make sure that it remains useful for the future. The FAIRsharing Data Preservation Policy
       exists to describe the steps that will be taken to preserve FAIRsharing
-      content and software, should there be any problem with ongoing support, or any other issue within our power to
-      mitigate against, that would prevent the ongoing operation of the FAIRsharing project.
+      content and software should there be any problem with ongoing support, or any other issue outside our control, 
+      that would prevent the continued operation of the FAIRsharing project.
     </p>
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: utils/rules.js</title>
+	<title>FAIRsharing.org Source: utils/advancedSearchUtils.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,123 +86,37 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: utils/rules.js</h1>
+		<h1 class="page-title">Source: utils/advancedSearchUtils.js</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/**
- * Assess if the string is of a certain value (useful to compare passwords)
- * @param {String} val - the value to evaluate the string against
- * @returns {function(*): (boolean|string)}
- */
-export function hasValue(val){
-    return value => value === val || "Invalid repeated password"
-}
+            class="sunlight-highlight-javascript linenums">import { uniqWith } from "lodash";
 
- /**
- * Assess email patterns.
- * @returns {function(*): (boolean|string)}
+/**
+ * Removes duplicate values in a set and returns unique values
+ * @returns {Array} Array with non-duplicate values
  */
-export function isEmail(){
-    return value => {
-        const pattern = /^(([^&lt;>()[\]\\.,;:\s@"]+(\.[^&lt;>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        return pattern.test(value) || 'Invalid e-mail.'
+const uniqueValues = (item) => {
+  let merged = uniqWith(item, (pre, cur) => {
+    if (pre.identifier === cur.identifier) {
+      cur["value"] = cur["value"] + "," + pre["value"];
+
+      //Combine string values from different text-fields in same set and convert in into array
+      if (typeof cur["value"] === "string") {
+        cur["value"] = cur["value"].split(",");
+      }
+
+      //Remove duplicates and create unique array
+      cur["value"] = [...new Set(cur["value"])];
+      return true;
     }
-}
+    return false;
+  });
+  return merged;
+};
 
-/**
- * Assess the presence of the field
- * @returns {function(*=): (boolean|string)}
- */
-export function isRequired(){
-    return value =>  !(!value || value.length === 0 || JSON.stringify(value) === '{}') || 'Required'
-}
-
-/**
- * Assess URL patterns.
- * @returns {function(*): (boolean|string)}
- */
-export function isUrl() {
-    return value => {
-        if (!value) return true;
-        const pattern = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,8}\b([-a-zA-Z0-9()@:%_+.~#?&amp;//=]*)?/gi;
-        return pattern.test(value) || 'Invalid URL.'
-    }
-}
-
-/**
-* Assess email or email  patterns.
-* @returns {function(*): (boolean|string)}
-*/
-export function isEmailOrUrl(){
-   return value => {
-       const pattern = /^(([^&lt;>()[\]\\.,;:\s@"]+(\.[^&lt;>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-       const patternUrl = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,8}\b([-a-zA-Z0-9()@:%_+.~#?&amp;//=]*)?/gi;
-       return pattern.test(value) || patternUrl.test(value) || 'Invalid e-mail/URL.'
-   }
-}
-
-
-/**
- * Assess if the string is long enough.
- * @param {Number} length - the length to evaluate the string against.
- * @returns {function(*): (boolean|string)}
- */
-export function isLongEnough(length) {
-    return value => {
-        let error = (value) ? `Value is not long enough (${value.length}/${length})` : `Value is not long enough (0/${length})`;
-        if (!value) return error;
-        return value.length >= length || error;
-    }
-}
-/**
- * Assess ORCID patterns. Can be empty if required is false.
- * @params {Boolean} required - is the field required or not.
- * @returns {function(*): (boolean|string)}
- */
-export function isOrcid(required) {
-    return value => {
-        if (!value &amp;&amp; !required) return true; // because this is an optional Orcid ID
-        const pattern = /^(\d|X){4}-(\d|X){4}-(\d|X){4}-(\d|X){4}$/gi;
-        return pattern.test(value) || "Doesn't look like a valid ORCID ID."
-    }
-}
-
-/**
- * Assess if the given file has the correct extension
- * @returns {function(*): (boolean|string)}
- */
-export function isImage(){
-    const accept = ["image/png", "image/jpeg"];
-    return value => {
-        return (!value || accept.indexOf(value.type) > -1) || "File type should be PNG or JPEG"
-    }
-}
-
-/**
- * Assess if the given file has the correct allowed size
- * @returns {function(*): (boolean|string)}
- */
-export function isAllowedSize(allowedSize) {
-    // allowedSize is based on MB
-    return value => {
-        if (!value) return false
-        // if its an array of image
-        if (value.length > 1) {
-            let finalVal = value.map(imageItem => {
-                if (imageItem.size > (1000000 * allowedSize)) {
-                    return false
-                }
-            })
-            return !finalVal.includes(false) || `One or some of your selected files' size is more than ${allowedSize} MB!`
-        }
-        else {
-            // if its a single image
-            return (!value[0] || value[0].size &lt; (1000000 * allowedSize)) || `file size should be less than ${allowedSize} MB!`
-        }
-    }
-}
+export { uniqueValues };
 </pre>
     </article>
 </section>
@@ -248,7 +162,7 @@ export function isAllowedSize(allowedSize) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a>
 	
-		on Wed Dec 6th 2023
+		on Tue Dec 5th 2023
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

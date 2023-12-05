@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: utils/rules.js</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/QueryBuilderView.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,123 +86,252 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: utils/rules.js</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/QueryBuilderView.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/**
- * Assess if the string is of a certain value (useful to compare passwords)
- * @param {String} val - the value to evaluate the string against
- * @returns {function(*): (boolean|string)}
- */
-export function hasValue(val){
-    return value => value === val || "Invalid repeated password"
-}
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;query-builder
+    v-model="query"
+    :config="config"
+  />
+&lt;/template>
 
- /**
- * Assess email patterns.
- * @returns {function(*): (boolean|string)}
- */
-export function isEmail(){
-    return value => {
-        const pattern = /^(([^&lt;>()[\]\\.,;:\s@"]+(\.[^&lt;>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        return pattern.test(value) || 'Invalid e-mail.'
+&lt;script>
+import QueryBuilder from "query-builder-vue";
+
+import Registry from "@/components/Records/Search/Input/QueryBuilderComponents/Registry.vue";
+import RegistryType from "@/components/Records/Search/Input/QueryBuilderComponents/RegistryType.vue";
+import Subject from "@/components/Records/Search/Input/QueryBuilderComponents/Subject.vue";
+import advancedSearch from "@/store";
+export default {
+  name: "QueryBuilderView",
+  components: { QueryBuilder },
+  props: {
+    isDialog: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data: () => {
+    return {
+      query: {
+        operatorIdentifier: "_and",
+        children: [],
+      },
+    };
+  },
+  computed: {
+    config() {
+      return {
+        operators: [
+          {
+            name: "AND",
+            identifier: "_and",
+          },
+          {
+            name: "OR",
+            identifier: "_or",
+          },
+        ],
+        rules: [
+          {
+            identifier: "registry",
+            name: "Registry",
+            component: Registry,
+            initialValue: () => [],
+          },
+          {
+            identifier: "type",
+            name: "RegistryType",
+            component: RegistryType,
+            initialValue: "",
+          },
+          {
+            identifier: "subjects",
+            name: "Subject",
+            component: Subject,
+            initialValue: "",
+          },
+        ],
+        colors: [
+          "hsl(88, 50%, 55%)",
+          "hsl(187, 100%, 45%)",
+          "hsl(15, 100%, 55%)",
+        ],
+      };
+    },
+  },
+  watch: {
+    query(newValue) {
+      advancedSearch.commit("advancedSearch/setAdvancedSearch", newValue);
+    },
+    /**
+     * Reset the dialog box when closed
+     * @param newValue - Boolean
+     */
+    isDialog(newValue) {
+      if (newValue) {
+        this.query = {
+          operatorIdentifier: "_and",
+          children: [],
+        };
+      }
+    },
+  },
+};
+&lt;/script>
+&lt;style lang="scss" scoped>
+@import "~vuetify/src/styles/settings/_variables.scss";
+.query-builder-group::v-deep {
+  color: black;
+
+  select {
+    background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+      linear-gradient(135deg, gray 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px),
+      calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+    background-color: white;
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 1.5em;
+    padding: 0 12px;
+    /* reset */
+    margin: 0;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    min-height: 36px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .query-builder-child__delete-child {
+    opacity: 1;
+    color: white;
+    background-color: #6b1e1e;
+    font-size: 25px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-left: 8px !important;
+    vertical-align: middle;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    @media #{map-get($display-breakpoints, 'sm-and-down')} {
+      position: absolute;
+      right: 0;
+      top: -5px;
     }
-}
+  }
+  .query-builder-group__rule-adding-button,
+  .query-builder-group__group-adding-button {
+    padding: 0 8px;
+    height: 36px;
+    min-width: 64px;
+    color: white;
+    background-color: #e67e22;
+    border-color: #e67e22;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    font-weight: 500;
+  }
 
-/**
- * Assess the presence of the field
- * @returns {function(*=): (boolean|string)}
- */
-export function isRequired(){
-    return value =>  !(!value || value.length === 0 || JSON.stringify(value) === '{}') || 'Required'
-}
+  button:disabled,
+  button[disabled] {
+    border-color: #ccc;
+    background-color: #ccc;
+    color: #666666;
+  }
 
-/**
- * Assess URL patterns.
- * @returns {function(*): (boolean|string)}
- */
-export function isUrl() {
-    return value => {
-        if (!value) return true;
-        const pattern = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,8}\b([-a-zA-Z0-9()@:%_+.~#?&amp;//=]*)?/gi;
-        return pattern.test(value) || 'Invalid URL.'
+  .query-builder-group__spacer,
+  .query-builder-group__rule-adding-button,
+  .query-builder-group__group-control select,
+  .query-builder-group__group-children
+    .query-builder-group__group-adding-button {
+    display: none;
+  }
+
+  .query-builder-group__group-children {
+    .query-builder-group__rule-adding-button,
+    .query-builder-group__group-control select {
+      display: block;
     }
-}
+  }
 
-/**
-* Assess email or email  patterns.
-* @returns {function(*): (boolean|string)}
-*/
-export function isEmailOrUrl(){
-   return value => {
-       const pattern = /^(([^&lt;>()[\]\\.,;:\s@"]+(\.[^&lt;>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-       const patternUrl = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,8}\b([-a-zA-Z0-9()@:%_+.~#?&amp;//=]*)?/gi;
-       return pattern.test(value) || patternUrl.test(value) || 'Invalid e-mail/URL.'
-   }
-}
-
-
-/**
- * Assess if the string is long enough.
- * @param {Number} length - the length to evaluate the string against.
- * @returns {function(*): (boolean|string)}
- */
-export function isLongEnough(length) {
-    return value => {
-        let error = (value) ? `Value is not long enough (${value.length}/${length})` : `Value is not long enough (0/${length})`;
-        if (!value) return error;
-        return value.length >= length || error;
+  .query-builder-group__group-selection {
+    background-color: #ababab;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    .query-builder-group__group-operator {
+      color: white;
+      font-weight: 500;
     }
-}
-/**
- * Assess ORCID patterns. Can be empty if required is false.
- * @params {Boolean} required - is the field required or not.
- * @returns {function(*): (boolean|string)}
- */
-export function isOrcid(required) {
-    return value => {
-        if (!value &amp;&amp; !required) return true; // because this is an optional Orcid ID
-        const pattern = /^(\d|X){4}-(\d|X){4}-(\d|X){4}-(\d|X){4}$/gi;
-        return pattern.test(value) || "Doesn't look like a valid ORCID ID."
+    select {
+      max-width: 80px;
+      width: 100%;
     }
-}
-
-/**
- * Assess if the given file has the correct extension
- * @returns {function(*): (boolean|string)}
- */
-export function isImage(){
-    const accept = ["image/png", "image/jpeg"];
-    return value => {
-        return (!value || accept.indexOf(value.type) > -1) || "File type should be PNG or JPEG"
+  }
+  input[type="text"] {
+    background-color: white;
+    padding: 0 12px;
+    min-height: 36px;
+    width: 90%;
+    border-radius: 4px;
+    @media #{map-get($display-breakpoints, 'sm-and-down')} {
+      max-width: 100%;
     }
-}
+  }
 
-/**
- * Assess if the given file has the correct allowed size
- * @returns {function(*): (boolean|string)}
- */
-export function isAllowedSize(allowedSize) {
-    // allowedSize is based on MB
-    return value => {
-        if (!value) return false
-        // if its an array of image
-        if (value.length > 1) {
-            let finalVal = value.map(imageItem => {
-                if (imageItem.size > (1000000 * allowedSize)) {
-                    return false
-                }
-            })
-            return !finalVal.includes(false) || `One or some of your selected files' size is more than ${allowedSize} MB!`
+  .query-builder-child {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 0;
+    .query-builder-rule {
+      background-color: #27aae1;
+      border-color: #27aae1;
+      display: flex;
+      align-items: center;
+    }
+    .query-builder-child__component {
+      padding: 15px;
+      border-radius: 4px;
+      box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+      @media #{map-get($display-breakpoints, 'sm-and-down')} {
+        flex-direction: column;
+        align-items: unset;
+        position: relative;
+      }
+      .query-builder-rule__name {
+        font-size: 14px;
+        color: white;
+        font-weight: 500;
+        @media #{map-get($display-breakpoints, 'sm-and-down')} {
+          margin-bottom: 10px;
         }
-        else {
-            // if its a single image
-            return (!value[0] || value[0].size &lt; (1000000 * allowedSize)) || `file size should be less than ${allowedSize} MB!`
+      }
+      select {
+        max-width: 150px;
+        width: 100%;
+        color: black;
+        @media #{map-get($display-breakpoints, 'sm-and-down')} {
+          max-width: 100%;
+          margin-bottom: 10px;
         }
+      }
     }
+  }
 }
+&lt;/style>
 </pre>
     </article>
 </section>
@@ -248,7 +377,7 @@ export function isAllowedSize(allowedSize) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a>
 	
-		on Wed Dec 6th 2023
+		on Tue Dec 5th 2023
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

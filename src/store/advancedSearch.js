@@ -8,6 +8,7 @@ const CLIENT = new GraphClient(),
   ADVANCED_TAGS = JSON.parse(JSON.stringify(advancedQuery));
 
 const state = {
+  advancedSearchText: "",
   advancedSearch: {},
   advancedSearchQuery: {
     operator: "",
@@ -30,22 +31,25 @@ const actions = {
       state.advancedSearch["children"].length
     ) {
       state.advancedSearch["children"].forEach((item) => {
-        let fieldsObj = {};
-        let fieldValue = [];
-        fieldsObj["operator"] = item["operatorIdentifier"];
+        if (item["children"] && item["children"].length) {
+          let fieldsObj = {};
+          let fieldValue = [];
+          fieldsObj["operator"] = item["operatorIdentifier"];
 
-        const mergedValues = uniqueValues(item["children"]);
+          const mergedValues = uniqueValues(item["children"]);
 
-        mergedValues.forEach((params) => {
-          let fieldKey = params["identifier"];
-          if (Array.isArray(params["value"])) {
-            fieldValue = params["value"];
-          } else if (params["value"]) {
-            fieldValue = [params["value"]];
-          }
-          if (fieldValue && fieldValue.length) fieldsObj[fieldKey] = fieldValue;
-        });
-        state.advancedSearchQuery["fields"].push(fieldsObj);
+          mergedValues.forEach((params) => {
+            let fieldKey = params["identifier"];
+            if (Array.isArray(params["value"])) {
+              fieldValue = params["value"];
+            } else if (params["value"]) {
+              fieldValue = [params["value"]];
+            }
+            if (fieldValue && fieldValue.length)
+              fieldsObj[fieldKey] = fieldValue;
+          });
+          state.advancedSearchQuery["fields"].push(fieldsObj);
+        }
       });
     }
 
@@ -67,11 +71,13 @@ const actions = {
     let whereObj = graphqlQuery.replace("where:", "");
 
     if (advancedSearchTerm) {
+      commit("setAdvancedSearchText", advancedSearchTerm);
       ADVANCED_TAGS.queryParam = {
-        q: advancedSearchTerm,
+        q: state.advancedSearchText,
         where: whereObj,
       };
     } else {
+      commit("setAdvancedSearchText", "");
       ADVANCED_TAGS.queryParam = {
         where: whereObj,
       };
@@ -99,6 +105,9 @@ const actions = {
 };
 
 const mutations = {
+  setAdvancedSearchText(state, advancedSearchText) {
+    state.advancedSearchText = advancedSearchText;
+  },
   setAdvancedSearch(state, advancedSearch) {
     state.advancedSearch = advancedSearch;
   },
@@ -128,6 +137,9 @@ const mutations = {
 };
 
 const getters = {
+  getAdvancedSearchText(state) {
+    return state.advancedSearchText;
+  },
   getAdvancedSearch(state) {
     return state.advancedSearch;
   },

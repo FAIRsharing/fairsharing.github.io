@@ -129,9 +129,10 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 import RecordStatus from "@/components/Records/Shared/RecordStatus";
+import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
 
@@ -157,7 +158,72 @@ export default {
       "getAdvancedSearchResponse",
       "getLoadingStatus",
       "getErrorStatus",
+      "getAdvancedSearchQuery",
     ]),
+  },
+  mounted() {
+    this.fetchQueryParams();
+  },
+  methods: {
+    ...mapActions("advancedSearch", ["fetchAdvancedSearchResults"]),
+    /**
+     * Fetch query from URL and display advancedSearch Result
+     */
+    fetchQueryParams() {
+      if (
+        Array.isArray(this.getAdvancedSearchResponse) &&
+        !this.getAdvancedSearchResponse.length &&
+        Array.isArray(this.getAdvancedSearchQuery["fields"]) &&
+        !this.getAdvancedSearchQuery["fields"].length
+      ) {
+        const routeQuery = this.$route.query;
+        //Query format is same as setAdvancedSearch mutation
+        let searchQuery = {
+          operatorIdentifier: "",
+          children: [],
+        };
+
+        searchQuery["operatorIdentifier"] = routeQuery["operator"];
+
+        //Destructuring the fields string into valid setAdvancedSearch format to execute the query
+        const searchFieldsArr = routeQuery["fields"]
+          .split("(")
+          .join("")
+          .split(")")
+          .filter((item) => item); //Filter is used to remove empty string
+
+        searchFieldsArr.forEach((item) => {
+          const itemArr = item.split("&");
+          let searchObj = {
+            operatorIdentifier: "",
+            children: [],
+          };
+          itemArr.forEach((subItem) => {
+            const paramValues = subItem.split("=");
+            if (paramValues[0] === "operator") {
+              searchObj["operatorIdentifier"] = paramValues[1];
+            } else {
+              let advancedSearchParams = {
+                identifier: "",
+                value: [],
+              };
+              advancedSearchParams["identifier"] = paramValues[0];
+              advancedSearchParams["value"] = paramValues[1].split(",");
+              searchObj["children"].push(advancedSearchParams);
+            }
+          });
+
+          searchQuery["children"].push(searchObj);
+        });
+
+        //Committing the URL query param to setAdvancedSearch mutation in appropriate format to execute the advancedSearchQuery
+        advancedSearch.commit("advancedSearch/setAdvancedSearch", searchQuery);
+
+        //Calling the fetch method to get the result
+        if (routeQuery["q"]) this.fetchAdvancedSearchResults(routeQuery["q"]);
+        else this.fetchAdvancedSearchResults(routeQuery["q"]);
+      }
+    },
   },
 };
 </script>

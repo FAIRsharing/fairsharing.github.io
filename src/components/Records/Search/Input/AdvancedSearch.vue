@@ -11,7 +11,12 @@
       ]"
       @click="openAdvanceSearch()"
     >
-      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
+      <v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--  On Header Block  -->
@@ -22,7 +27,12 @@
       class="mr-10"
       @click="openAdvanceSearch()"
     >
-      <v-icon small class="mr-1"> fab fa-searchengin </v-icon>
+      <v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      </v-icon>
       <span class="button-text-size">Advanced Search</span>
     </v-btn>
     <!--Dialog Box -->
@@ -91,7 +101,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("advancedSearch", ["getAdvancedSearch"]),
+    ...mapGetters("advancedSearch", [
+      "getAdvancedSearch",
+      "getAdvancedSearchText",
+    ]),
     /**
      * Enables the proceed button when all the selected fields are non-empty
      * @returns {boolean}
@@ -123,29 +136,50 @@ export default {
       "fetchAdvancedSearchResults",
       "resetAdvancedSearchResponse",
     ]),
+
     openAdvanceSearch() {
       this.dialog = true;
     },
+
     closeDialog() {
       this.dialog = false;
     },
+
+    isAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        q: this.getAdvancedSearchText,
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
+
+    noAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
+
     goToAdvancedSearch() {
       this.fetchAdvancedSearchResults(this.advancedSearchTerm);
       this.dialog = false;
       let queryString = "";
       /*
-      Deconstruct query params for the selected values
+       * Add advancedSearch selection to query params in
+       * the URL by creating array of objects into string
        */
       if (
         this.getAdvancedSearch["children"] &&
         this.getAdvancedSearch["children"].length
       ) {
         this.getAdvancedSearch["children"].forEach((item) => {
-          queryString += "operator=";
+          queryString += "(operator=";
           queryString += item["operatorIdentifier"];
-          queryString += ",";
           const mergedValues = uniqueValues(item["children"]);
           mergedValues.forEach((params) => {
+            queryString += "&";
             queryString += params["identifier"];
             queryString += "=";
             if (Array.isArray(params["value"])) {
@@ -153,25 +187,36 @@ export default {
             } else if (params["value"]) {
               queryString += params["value"];
             }
-            queryString += ",";
           });
+          queryString += ")";
         });
       }
+
+      //When not on advancedSearch page
       if (this.$route.path !== "/advancedsearch") {
-        this.$router.push({
-          name: "AdvancedSearchResult",
-          query: {
-            operator: this.getAdvancedSearch["operatorIdentifier"],
-            fields: queryString,
-          },
-        });
-      } else {
-        this.$router.push({
-          query: {
-            operator: this.getAdvancedSearch["operatorIdentifier"],
-            fields: queryString,
-          },
-        });
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.noAdvancedSearchTerm(queryString),
+          });
+        }
+      }
+      //When  on advancedSearch page
+      else {
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            query: this.noAdvancedSearchTerm(queryString),
+          });
+        }
       }
     },
   },

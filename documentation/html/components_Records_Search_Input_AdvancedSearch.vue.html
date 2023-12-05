@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: utils/rules.js</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,123 +86,251 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: utils/rules.js</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch.vue</h1>
     
 <section>
     <article>
         <pre
-            class="sunlight-highlight-javascript linenums">/**
- * Assess if the string is of a certain value (useful to compare passwords)
- * @param {String} val - the value to evaluate the string against
- * @returns {function(*): (boolean|string)}
- */
-export function hasValue(val){
-    return value => value === val || "Invalid repeated password"
-}
+            class="sunlight-highlight-javascript linenums">&lt;template>
+  &lt;div class="d-flex mx-2">
+    &lt;!--  On Search Block  -->
+    &lt;v-btn
+      v-if="showHomeSearch"
+      color="primary"
+      class="mb-13"
+      :class="[
+        'mt-1',
+        $vuetify.breakpoint.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
+      ]"
+      @click="openAdvanceSearch()"
+    >
+      &lt;v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      &lt;/v-icon>
+      &lt;span class="button-text-size">Advanced Search&lt;/span>
+    &lt;/v-btn>
+    &lt;!--  On Header Block  -->
+    &lt;v-btn
+      v-else
+      color="primary"
+      :x-large="$vuetify.breakpoint.xlOnly ? true : false"
+      class="mr-10"
+      @click="openAdvanceSearch()"
+    >
+      &lt;v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      &lt;/v-icon>
+      &lt;span class="button-text-size">Advanced Search&lt;/span>
+    &lt;/v-btn>
+    &lt;!--Dialog Box -->
+    &lt;v-row justify="center">
+      &lt;v-dialog
+        :value="dialog"
+        max-width="800px"
+        @keydown.esc="closeDialog()"
+        @click:outside="closeDialog()"
+      >
+        &lt;v-card>
+          &lt;v-card-title>
+            &lt;span class="text-h5">{{ advancedSearchTerm }}&lt;/span>
+          &lt;/v-card-title>
+          &lt;v-card-text>
+            &lt;QueryBuilderView :is-dialog="dialog" />
+          &lt;/v-card-text>
+          &lt;v-card-actions>
+            &lt;v-btn
+              color="accent3"
+              variant="text"
+              class="white--text"
+              @click="closeDialog()"
+            >
+              Close
+            &lt;/v-btn>
+            &lt;v-spacer />
+            &lt;v-btn
+              color="green"
+              variant="text"
+              class="white--text"
+              :disabled="isContinue"
+              @click="goToAdvancedSearch()"
+            >
+              Proceed
+            &lt;/v-btn>
+          &lt;/v-card-actions>
+        &lt;/v-card>
+      &lt;/v-dialog>
+    &lt;/v-row>
+  &lt;/div>
+&lt;/template>
 
- /**
- * Assess email patterns.
- * @returns {function(*): (boolean|string)}
- */
-export function isEmail(){
-    return value => {
-        const pattern = /^(([^&lt;>()[\]\\.,;:\s@"]+(\.[^&lt;>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        return pattern.test(value) || 'Invalid e-mail.'
-    }
-}
+&lt;script>
+import { mapActions, mapGetters } from "vuex";
 
-/**
- * Assess the presence of the field
- * @returns {function(*=): (boolean|string)}
- */
-export function isRequired(){
-    return value =>  !(!value || value.length === 0 || JSON.stringify(value) === '{}') || 'Required'
-}
+import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
+import { uniqueValues } from "@/utils/advancedSearchUtils";
 
-/**
- * Assess URL patterns.
- * @returns {function(*): (boolean|string)}
- */
-export function isUrl() {
-    return value => {
-        if (!value) return true;
-        const pattern = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,8}\b([-a-zA-Z0-9()@:%_+.~#?&amp;//=]*)?/gi;
-        return pattern.test(value) || 'Invalid URL.'
-    }
-}
+export default {
+  name: "AdvancedSearch",
+  components: { QueryBuilderView },
+  props: {
+    showHomeSearch: {
+      default: false,
+      type: Boolean,
+    },
+    advancedSearchTerm: {
+      default: "",
+      type: String,
+    },
+  },
+  data: () => {
+    return {
+      dialog: false,
+    };
+  },
+  computed: {
+    ...mapGetters("advancedSearch", [
+      "getAdvancedSearch",
+      "getAdvancedSearchText",
+    ]),
+    /**
+     * Enables the proceed button when all the selected fields are non-empty
+     * @returns {boolean}
+     */
+    isContinue() {
+      let isDisabled = true;
+      let isTrue, allTrue;
+      let isTrueArr = [];
+      if (
+        this.getAdvancedSearch["children"] &amp;&amp;
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].forEach(({ children }) => {
+          if (children &amp;&amp; children.length) {
+            isTrue = children.every(({ value: { length } }) => length);
+            isTrueArr.push(isTrue);
+          }
+        });
+      }
+      //Check if all values in the array is true
+      if (isTrueArr &amp;&amp; isTrueArr.length)
+        allTrue = isTrueArr.every((item) => item);
+      if (allTrue) isDisabled = !allTrue;
+      return isDisabled;
+    },
+  },
+  methods: {
+    ...mapActions("advancedSearch", [
+      "fetchAdvancedSearchResults",
+      "resetAdvancedSearchResponse",
+    ]),
 
-/**
-* Assess email or email  patterns.
-* @returns {function(*): (boolean|string)}
-*/
-export function isEmailOrUrl(){
-   return value => {
-       const pattern = /^(([^&lt;>()[\]\\.,;:\s@"]+(\.[^&lt;>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-       const patternUrl = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,8}\b([-a-zA-Z0-9()@:%_+.~#?&amp;//=]*)?/gi;
-       return pattern.test(value) || patternUrl.test(value) || 'Invalid e-mail/URL.'
-   }
-}
+    openAdvanceSearch() {
+      this.dialog = true;
+    },
 
+    closeDialog() {
+      this.dialog = false;
+    },
 
-/**
- * Assess if the string is long enough.
- * @param {Number} length - the length to evaluate the string against.
- * @returns {function(*): (boolean|string)}
- */
-export function isLongEnough(length) {
-    return value => {
-        let error = (value) ? `Value is not long enough (${value.length}/${length})` : `Value is not long enough (0/${length})`;
-        if (!value) return error;
-        return value.length >= length || error;
-    }
-}
-/**
- * Assess ORCID patterns. Can be empty if required is false.
- * @params {Boolean} required - is the field required or not.
- * @returns {function(*): (boolean|string)}
- */
-export function isOrcid(required) {
-    return value => {
-        if (!value &amp;&amp; !required) return true; // because this is an optional Orcid ID
-        const pattern = /^(\d|X){4}-(\d|X){4}-(\d|X){4}-(\d|X){4}$/gi;
-        return pattern.test(value) || "Doesn't look like a valid ORCID ID."
-    }
-}
+    isAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        q: this.getAdvancedSearchText,
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
 
-/**
- * Assess if the given file has the correct extension
- * @returns {function(*): (boolean|string)}
- */
-export function isImage(){
-    const accept = ["image/png", "image/jpeg"];
-    return value => {
-        return (!value || accept.indexOf(value.type) > -1) || "File type should be PNG or JPEG"
-    }
-}
+    noAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
 
-/**
- * Assess if the given file has the correct allowed size
- * @returns {function(*): (boolean|string)}
- */
-export function isAllowedSize(allowedSize) {
-    // allowedSize is based on MB
-    return value => {
-        if (!value) return false
-        // if its an array of image
-        if (value.length > 1) {
-            let finalVal = value.map(imageItem => {
-                if (imageItem.size > (1000000 * allowedSize)) {
-                    return false
-                }
-            })
-            return !finalVal.includes(false) || `One or some of your selected files' size is more than ${allowedSize} MB!`
+    goToAdvancedSearch() {
+      this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+      this.dialog = false;
+      let queryString = "";
+      /*
+       * Add advancedSearch selection to query params in
+       * the URL by creating array of objects into string
+       */
+      if (
+        this.getAdvancedSearch["children"] &amp;&amp;
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].forEach((item) => {
+          queryString += "(operator=";
+          queryString += item["operatorIdentifier"];
+          const mergedValues = uniqueValues(item["children"]);
+          mergedValues.forEach((params) => {
+            queryString += "&amp;";
+            queryString += params["identifier"];
+            queryString += "=";
+            if (Array.isArray(params["value"])) {
+              queryString += params["value"].toString();
+            } else if (params["value"]) {
+              queryString += params["value"];
+            }
+          });
+          queryString += ")";
+        });
+      }
+
+      //When not on advancedSearch page
+      if (this.$route.path !== "/advancedsearch") {
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.noAdvancedSearchTerm(queryString),
+          });
         }
-        else {
-            // if its a single image
-            return (!value[0] || value[0].size &lt; (1000000 * allowedSize)) || `file size should be less than ${allowedSize} MB!`
+      }
+      //When  on advancedSearch page
+      else {
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            query: this.noAdvancedSearchTerm(queryString),
+          });
         }
-    }
+      }
+    },
+  },
+};
+&lt;/script>
+
+&lt;style scoped>
+.home-search-bt {
+  height: 40px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
 }
+
+.home-search-bt-xl {
+  height: 50px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+}
+&lt;/style>
 </pre>
     </article>
 </section>
@@ -248,7 +376,7 @@ export function isAllowedSize(allowedSize) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a>
 	
-		on Wed Dec 13th 2023
+		on Tue Dec 5th 2023
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

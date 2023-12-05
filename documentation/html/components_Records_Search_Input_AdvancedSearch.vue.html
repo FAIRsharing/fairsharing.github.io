@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Source: components/Records/Search/Header/FilterChips.vue</title>
+	<title>FAIRsharing.org Source: components/Records/Search/Input/AdvancedSearch.vue</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,128 +86,251 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: components/Records/Search/Header/FilterChips.vue</h1>
+		<h1 class="page-title">Source: components/Records/Search/Input/AdvancedSearch.vue</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-row class="mr-2 ml-2 pb-3">
-    &lt;v-chip
-      v-if="getChips.length"
-      class="ma-2 mt-5"
-      color="red"
-      text-color="white"
-      @click="removeAllParams"
+  &lt;div class="d-flex mx-2">
+    &lt;!--  On Search Block  -->
+    &lt;v-btn
+      v-if="showHomeSearch"
+      color="primary"
+      class="mb-13"
+      :class="[
+        'mt-1',
+        $vuetify.breakpoint.lgAndDown ? 'home-search-bt' : 'home-search-bt-xl',
+      ]"
+      @click="openAdvanceSearch()"
     >
-      Clear All
-    &lt;/v-chip>
-    &lt;div
-      v-for="(chip, index) in getChips"
-      :key="'Chips_' + index"
-    >
-      &lt;v-chip
-        class="ma-2 mt-5"
-        close
-        color="white"
-        text-color="secondary"
-        @click:close="removeParam(chip.paramName, chip.paramVal)"
+      &lt;v-icon
+        small
+        class="mr-1"
       >
-        {{ getFilteredLabel[chip.paramName] }}:&lt;b class="ml-1"> {{ decodeURIComponent(chip.paramVal).replace(/_/g, " ") }}&lt;/b>
-      &lt;/v-chip>
-    &lt;/div>
-  &lt;/v-row>
+        fab fa-searchengin
+      &lt;/v-icon>
+      &lt;span class="button-text-size">Advanced Search&lt;/span>
+    &lt;/v-btn>
+    &lt;!--  On Header Block  -->
+    &lt;v-btn
+      v-else
+      color="primary"
+      :x-large="$vuetify.breakpoint.xlOnly ? true : false"
+      class="mr-10"
+      @click="openAdvanceSearch()"
+    >
+      &lt;v-icon
+        small
+        class="mr-1"
+      >
+        fab fa-searchengin
+      &lt;/v-icon>
+      &lt;span class="button-text-size">Advanced Search&lt;/span>
+    &lt;/v-btn>
+    &lt;!--Dialog Box -->
+    &lt;v-row justify="center">
+      &lt;v-dialog
+        :value="dialog"
+        max-width="800px"
+        @keydown.esc="closeDialog()"
+        @click:outside="closeDialog()"
+      >
+        &lt;v-card>
+          &lt;v-card-title>
+            &lt;span class="text-h5">{{ advancedSearchTerm }}&lt;/span>
+          &lt;/v-card-title>
+          &lt;v-card-text>
+            &lt;QueryBuilderView :is-dialog="dialog" />
+          &lt;/v-card-text>
+          &lt;v-card-actions>
+            &lt;v-btn
+              color="accent3"
+              variant="text"
+              class="white--text"
+              @click="closeDialog()"
+            >
+              Close
+            &lt;/v-btn>
+            &lt;v-spacer />
+            &lt;v-btn
+              color="green"
+              variant="text"
+              class="white--text"
+              :disabled="isContinue"
+              @click="goToAdvancedSearch()"
+            >
+              Proceed
+            &lt;/v-btn>
+          &lt;/v-card-actions>
+        &lt;/v-card>
+      &lt;/v-dialog>
+    &lt;/v-row>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-import {throttle} from "lodash"
+import { mapActions, mapGetters } from "vuex";
 
-import extraFilterChips from "@/data/extraFilterChips.json"
-import filterMapping from "@/data/FiltersLabelMapping.json"
-import filterChipsUtils from "@/utils/filterChipsUtils";
+import QueryBuilderView from "@/components/Records/Search/Input/QueryBuilderView.vue";
+import { uniqueValues } from "@/utils/advancedSearchUtils";
 
 export default {
-  name: "FilterChips",
-  mixins: [filterChipsUtils],
+  name: "AdvancedSearch",
+  components: { QueryBuilderView },
+  props: {
+    showHomeSearch: {
+      default: false,
+      type: Boolean,
+    },
+    advancedSearchTerm: {
+      default: "",
+      type: String,
+    },
+  },
+  data: () => {
+    return {
+      dialog: false,
+    };
+  },
   computed: {
+    ...mapGetters("advancedSearch", [
+      "getAdvancedSearch",
+      "getAdvancedSearchText",
+    ]),
     /**
-     * get the Filtered label that correponds to the name using the map FilterLabel
-     * @returns {Object} - object with the mapping names and labels
+     * Enables the proceed button when all the selected fields are non-empty
+     * @returns {boolean}
      */
-    getFilteredLabel: function () {
-      let filterLabels = {
-        q: "Query string",
-        userDefinedTags: "User defined tags"
-      };
-      Object.keys(filterMapping["autocomplete"]).forEach((filterName) => {
-        let field = filterMapping["autocomplete"][filterName];
-        filterLabels[field.filterName] = field.filterLabel;
-      });
-      /*
-       * These labels are specific to the FAIRsharing Wizard and aren't normally required in the search sidebar,
-       * so they are defined here rather than in filterMapping.
-       */
-      extraFilterChips.forEach(function(extra) {
-        let key = Object.keys(extra)[0]
-        filterLabels[key] = extra[key];
-      })
-      return filterLabels;
-    }
+    isContinue() {
+      let isDisabled = true;
+      let isTrue, allTrue;
+      let isTrueArr = [];
+      if (
+        this.getAdvancedSearch["children"] &amp;&amp;
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].forEach(({ children }) => {
+          if (children &amp;&amp; children.length) {
+            isTrue = children.every(({ value: { length } }) => length);
+            isTrueArr.push(isTrue);
+          }
+        });
+      }
+      //Check if all values in the array is true
+      if (isTrueArr &amp;&amp; isTrueArr.length)
+        allTrue = isTrueArr.every((item) => item);
+      if (allTrue) isDisabled = !allTrue;
+      return isDisabled;
+    },
   },
   methods: {
-    /**
-     * Removes the parameter value from the router query with a 2000ms throttle
-     * @param {String} paramName - name of the parameter to remove
-     * @param {String} paramVal - value of the parameter to remove
-     */
-    removeParam: throttle(async function (paramName, paramVal) {
-      let _module = this;
-      let query = this.buildNewQuery(paramName, paramVal);
-      await _module.$router.push({
-        name: _module.$route.name,
-        query: query
-      })
-    }, 2000),
-    /**
-     * Removes all the  parameters value from the router query with a 2000ms throttle
-     */
-    removeAllParams: throttle(async function () {
-      let _module = this;
-      let query = {};
-      await _module.$router.push({
-        name: _module.$route.name,
-        query: query
-      })
-    }, 2000),
-    /**
-     * Build the new query given a parameter name a value by getting the current query and removing the key/value given
-     * @param {String} paramName - name of the parameter to remove
-     * @param {String} paramVal - value of the parameter to remove
-     * @returns {Object} - the new query to replace in the router
-     */
-    buildNewQuery: function (paramName, paramVal) {
-      let _module = this;
-      let query = {};
-      Object.keys(_module.$route.query).forEach(function (queryParam) {
-        if (queryParam !== paramName) {
-          query[queryParam] = _module.$route.query[queryParam]
-        }
-        else {
-          if (_module.$route.query[queryParam].includes(',')) {
-            let currentValues = _module.$route.query[queryParam].split(",");
-            if (currentValues.includes(paramVal)) {
-              currentValues.splice(currentValues.indexOf(paramVal), 1)
+    ...mapActions("advancedSearch", [
+      "fetchAdvancedSearchResults",
+      "resetAdvancedSearchResponse",
+    ]),
+
+    openAdvanceSearch() {
+      this.dialog = true;
+    },
+
+    closeDialog() {
+      this.dialog = false;
+    },
+
+    isAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        q: this.getAdvancedSearchText,
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
+
+    noAdvancedSearchTerm(queryString) {
+      const queryValues = {
+        operator: this.getAdvancedSearch["operatorIdentifier"],
+        fields: queryString,
+      };
+      return queryValues;
+    },
+
+    goToAdvancedSearch() {
+      this.fetchAdvancedSearchResults(this.advancedSearchTerm);
+      this.dialog = false;
+      let queryString = "";
+      /*
+       * Add advancedSearch selection to query params in
+       * the URL by creating array of objects into string
+       */
+      if (
+        this.getAdvancedSearch["children"] &amp;&amp;
+        this.getAdvancedSearch["children"].length
+      ) {
+        this.getAdvancedSearch["children"].forEach((item) => {
+          queryString += "(operator=";
+          queryString += item["operatorIdentifier"];
+          const mergedValues = uniqueValues(item["children"]);
+          mergedValues.forEach((params) => {
+            queryString += "&amp;";
+            queryString += params["identifier"];
+            queryString += "=";
+            if (Array.isArray(params["value"])) {
+              queryString += params["value"].toString();
+            } else if (params["value"]) {
+              queryString += params["value"];
             }
-            query[paramName] = currentValues.join(",");
-          }
+          });
+          queryString += ")";
+        });
+      }
+
+      //When not on advancedSearch page
+      if (this.$route.path !== "/advancedsearch") {
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            name: "AdvancedSearchResult",
+            query: this.noAdvancedSearchTerm(queryString),
+          });
         }
-      });
-      query["page"] = 1;
-      return query;
-    }
-  }
-}
+      }
+      //When  on advancedSearch page
+      else {
+        if (this.getAdvancedSearchText) {
+          this.$router.push({
+            query: this.isAdvancedSearchTerm(queryString),
+          });
+        } else {
+          this.$router.push({
+            query: this.noAdvancedSearchTerm(queryString),
+          });
+        }
+      }
+    },
+  },
+};
 &lt;/script>
+
+&lt;style scoped>
+.home-search-bt {
+  height: 40px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+}
+
+.home-search-bt-xl {
+  height: 50px !important;
+  right: 0;
+  top: 0;
+  border-radius: unset;
+}
+&lt;/style>
 </pre>
     </article>
 </section>
@@ -253,7 +376,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a>
 	
-		on Tue Dec 19th 2023
+		on Tue Dec 5th 2023
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

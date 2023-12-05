@@ -24,7 +24,8 @@
     <p
       :class="['mb-4 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
     >
-      The document is available in PDF format, and can be downloaded at: ** link to go here **
+      The document is available in PDF format, and can be downloaded
+      <a href="https://zenodo.org/records/10255310" target="_blank">from our Zenodo collection</a>.
     </p>
 
     <h2 class="text-h5 text-xl-h4 mb-2 mb-xl-6">

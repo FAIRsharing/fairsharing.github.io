@@ -92,117 +92,117 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;div
-    v-if="getErrorStatus"
-    fluid
-    class="pa-0"
-  >
-    &lt;ErrorPage />
-  &lt;/div>
-  &lt;div
-    v-else
-    fluid
-    class="pa-5"
-  >
-    &lt;v-data-iterator
-      :items="getAdvancedSearchResponse"
-      :items-per-page.sync="itemsPerPage"
-      :page.sync="page"
-      :search="search"
-      :sort-by="sortBy.toLowerCase()"
-      :sort-desc="sortDesc"
-      :hide-default-footer="noFooter"
-      :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
+  &lt;div>
+    &lt;v-container
+      v-if="getErrorStatus"
+      fluid
+      class="pa-0"
     >
-      &lt;!-- headers start -->
-      &lt;template #header>
-        &lt;v-toolbar
-          dark
-          color="blue lighten-1"
-          class="mb-5"
-        >
-          &lt;v-text-field
-            v-model="search"
-            clearable
-            flat
-            solo-inverted
-            hide-details
-            prepend-inner-icon="mdi-filter"
-            label="Filter these results"
-          />
-          &lt;template v-if="$vuetify.breakpoint.mdAndUp">
-            &lt;v-spacer />
-            &lt;v-select
-              v-model="sortBy"
+      &lt;ErrorPage />
+    &lt;/v-container>
+    &lt;v-container
+      v-else
+      fluid
+      class="pa-5"
+    >
+      &lt;v-data-iterator
+        :items="getAdvancedSearchResponse"
+        :items-per-page.sync="itemsPerPage"
+        :page.sync="page"
+        :search="search"
+        :sort-by="sortBy.toLowerCase()"
+        :sort-desc="sortDesc"
+        :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
+      >
+        &lt;!-- headers start -->
+        &lt;template #header>
+          &lt;v-toolbar
+            dark
+            color="blue lighten-1"
+            class="mb-5"
+          >
+            &lt;v-text-field
+              v-model="search"
+              clearable
               flat
               solo-inverted
               hide-details
-              :items="keys"
-              prepend-inner-icon="mdi-sort"
-              label="Sort by"
+              prepend-inner-icon="mdi-filter"
+              label="Filter these results"
             />
-            &lt;v-spacer />
-            &lt;v-btn-toggle
-              v-model="sortDesc"
-              mandatory
-            >
-              &lt;v-btn
-                large
-                depressed
-                color="blue"
-                :value="false"
-              >
-                &lt;v-icon>mdi-arrow-up&lt;/v-icon>
-              &lt;/v-btn>
-              &lt;v-btn
-                large
-                depressed
-                color="blue"
-                :value="true"
-              >
-                &lt;v-icon>mdi-arrow-down&lt;/v-icon>
-              &lt;/v-btn>
-            &lt;/v-btn-toggle>
-          &lt;/template>
-        &lt;/v-toolbar>
-      &lt;/template>
-      &lt;!-- headers stop -->
-      &lt;!-- data section begins -->
-      &lt;template #default="props">
-        &lt;v-row>
-          &lt;v-col
-            v-for="item in props.items"
-            :key="item.name"
-            cols="12"
-          >
-            &lt;v-card>
-              &lt;v-card-title class="subheading font-weight-bold">
-                &lt;RecordStatus :record="item" />
-                &lt;a
-                  :href="fairSharingURL + getRecordLink(item)"
-                  target="_blank"
-                  class="ml-10"
-                >
-                  {{ item.name }}
-                &lt;/a>
-              &lt;/v-card-title>
-
-              &lt;p
-                class="mt-2 ml-10 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
-              >
-                {{ item.description }}
-              &lt;/p>
-
-              &lt;TagChips
-                :record="item"
-                class="ml-10"
+            &lt;template v-if="$vuetify.breakpoint.mdAndUp">
+              &lt;v-spacer />
+              &lt;v-select
+                v-model="sortBy"
+                flat
+                solo-inverted
+                hide-details
+                :items="keys"
+                prepend-inner-icon="mdi-sort"
+                label="Sort by"
               />
+              &lt;v-spacer />
+              &lt;v-btn-toggle
+                v-model="sortDesc"
+                mandatory
+              >
+                &lt;v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="false"
+                >
+                  &lt;v-icon>mdi-arrow-up&lt;/v-icon>
+                &lt;/v-btn>
+                &lt;v-btn
+                  large
+                  depressed
+                  color="blue"
+                  :value="true"
+                >
+                  &lt;v-icon>mdi-arrow-down&lt;/v-icon>
+                &lt;/v-btn>
+              &lt;/v-btn-toggle>
+            &lt;/template>
+          &lt;/v-toolbar>
+        &lt;/template>
+        &lt;!-- headers stop -->
+        &lt;!-- data section begins -->
+        &lt;template #default="props">
+          &lt;v-row>
+            &lt;v-col
+              v-for="item in props.items"
+              :key="item.name"
+              cols="12"
+            >
+              &lt;v-card>
+                &lt;v-card-title class="subheading font-weight-bold">
+                  &lt;RecordStatus :record="item" />
+                  &lt;a
+                    :href="fairSharingURL + getRecordLink(item)"
+                    target="_blank"
+                    class="ml-10"
+                  >
+                    {{ item.name }}
+                  &lt;/a>
+                &lt;/v-card-title>
 
-              &lt;!-- TODO: this is a hacky placeholder -->
-              &lt;p class="pb-5" />
+                &lt;p
+                  class="mt-2 ml-10 pr-2 text-sm-body-2 text-md-body-1 text-justify text-ellipses-height-2lines"
+                >
+                  {{ item.description }}
+                &lt;/p>
 
-              &lt;!-- TODO: change below here -->
-              &lt;!--
+                &lt;TagChips
+                  :record="item"
+                  class="ml-10"
+                />
+
+                &lt;!-- TODO: this is a hacky placeholder -->
+                &lt;p class="pb-5" />
+
+                &lt;!-- TODO: change below here -->
+                &lt;!--
                 &lt;v-divider />
 
                 &lt;span>
@@ -210,22 +210,15 @@
                 &lt;/span>
 
                 -->
-              &lt;!-- TODO: change above here -->
-            &lt;/v-card>
-          &lt;/v-col>
-        &lt;/v-row>
-      &lt;/template>
-      &lt;!-- data section ends -->
-      &lt;!-- footer ends -->
-      &lt;template #no-data>
-        &lt;v-alert
-          colored-border
-          type="info"
-        >
-          No records match your search!
-        &lt;/v-alert>
-      &lt;/template>
-    &lt;/v-data-iterator>
+                &lt;!-- TODO: change above here -->
+              &lt;/v-card>
+            &lt;/v-col>
+          &lt;/v-row>
+        &lt;/template>
+        &lt;!-- data section ends -->
+        &lt;!-- footer ends -->
+      &lt;/v-data-iterator>
+    &lt;/v-container>
   &lt;/div>
 &lt;/template>
 &lt;script>
@@ -235,7 +228,8 @@ import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
-import TagChips from "@/views/Records/TagChips.vue";
+
+import TagChips from "../../../../Fairsharing/fairsharing.github.io/src/views/Records/TagChips.vue";
 export default {
   name: "AdvancedSearchResultTable",
   components: { RecordStatus, TagChips, ErrorPage },
@@ -259,15 +253,6 @@ export default {
       "getErrorStatus",
       "getAdvancedSearchQuery",
     ]),
-    noFooter() {
-      if (
-        Array.isArray(this.getAdvancedSearchResponse) &amp;&amp;
-        !this.getAdvancedSearchResponse.length
-      ) {
-        return true;
-      }
-      return false;
-    },
   },
   mounted() {
     this.fetchQueryParams();
@@ -380,7 +365,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a>
 	
-		on Tue Dec 19th 2023
+		on Tue Dec 5th 2023
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

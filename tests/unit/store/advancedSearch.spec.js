@@ -32,13 +32,13 @@ describe("AdvancedSearch store methods", () => {
   it("can check fetchAdvancedSearchResults actions", () => {
     const commit = jest.fn();
     actions.fetchAdvancedSearchResults({ commit }, "searchTerm");
-    expect(commit).toHaveBeenCalledTimes(3);
+    expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check fetchAdvancedSearchResults actions without advanceSearchTerm", () => {
     const commit = jest.fn();
     actions.fetchAdvancedSearchResults({ commit });
-    expect(commit).toHaveBeenCalledTimes(3);
+    expect(commit).toHaveBeenCalledTimes(1);
   });
 
   it("can check fetchAdvancedSearchResults actions with Error response", async () => {

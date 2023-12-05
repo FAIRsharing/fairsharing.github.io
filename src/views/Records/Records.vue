@@ -18,12 +18,17 @@
           class="d-flex mt-2 ml-2"
         >
           <SearchInput
-            :class="['search-input-mb', {
-              'left-panel-fixed-lg': stickToTop && $vuetify.breakpoint.xlOnly,
-              'left-panel-default-lg': !stickToTop && $vuetify.breakpoint.xlOnly,
-              'left-panel-default': !stickToTop && !$vuetify.breakpoint.xlOnly,
-              'left-panel-fixed': stickToTop && !$vuetify.breakpoint.xlOnly
-            }]"
+            :class="[
+              'search-input-mb',
+              {
+                'left-panel-fixed-lg': stickToTop && $vuetify.breakpoint.xlOnly,
+                'left-panel-default-lg':
+                  !stickToTop && $vuetify.breakpoint.xlOnly,
+                'left-panel-default':
+                  !stickToTop && !$vuetify.breakpoint.xlOnly,
+                'left-panel-fixed': stickToTop && !$vuetify.breakpoint.xlOnly,
+              },
+            ]"
           />
         </v-col>
         <v-col
@@ -85,99 +90,106 @@
 </template>
 
 <script>
-import {mapActions, mapMutations,mapState} from 'vuex'
+import { mapActions, mapMutations, mapState } from "vuex";
 
 import JumpToTop from "@/components/Navigation/jumpToTop";
 import Loaders from "@/components/Navigation/Loaders";
 import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
-import recordsLabels from "@/data/recordsTypes.json"
+import recordsLabels from "@/data/recordsTypes.json";
 import filterChipsUtils from "@/utils/filterChipsUtils";
 
 export default {
   name: "Records",
-  components: {Loaders, JumpToTop, SearchOutput, SearchInput},
+  components: { Loaders, JumpToTop, SearchOutput, SearchInput },
   mixins: [filterChipsUtils],
   data: () => ({
-    searchTerm: '',
+    searchTerm: "",
     offsetTop: 0,
     bodyOverflowActive: true,
-    hideOverflow: 'overflow-hidden',
+    hideOverflow: "overflow-hidden",
     showHeader: true,
     showDrawerLeft: false,
     labels: recordsLabels,
-    recordsSubTitles: recordsLabels['recordSubTitles'],
-    recordTypes: recordsLabels['recordTypes'],
+    recordsSubTitles: recordsLabels["recordSubTitles"],
+    recordTypes: recordsLabels["recordTypes"],
     isLoading: false,
     showFiltersSM: false,
   }),
   computed: {
-    ...mapState('uiController', ['scrollStatus', 'stickToTop']),
-    ...mapState('records', ['records']),
-    ...mapState('users', ['user']),
+    ...mapState("uiController", ["scrollStatus", "stickToTop"]),
+    ...mapState("records", ["records"]),
+    ...mapState("users", ["user"]),
 
     getTitle: function () {
       const flipRecordTypes = Object.entries(this.recordTypes).reduce(
-          (obj, [key, value]) => ({...obj, [value]: key}),
-          {}
+        (obj, [key, value]) => ({ ...obj, [value]: key }),
+        {}
       );
       let title = "Search";
       /* istanbul ignore else */
-      if (Object.prototype.hasOwnProperty.call(this.$route.query, 'fairsharingRegistry')) {
-        if (Object.prototype.hasOwnProperty.call(flipRecordTypes, this.$route.query.fairsharingRegistry)) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          this.$route.query,
+          "fairsharingRegistry"
+        )
+      ) {
+        if (
+          Object.prototype.hasOwnProperty.call(
+            flipRecordTypes,
+            this.$route.query.fairsharingRegistry
+          )
+        ) {
           title = flipRecordTypes[this.$route.query.fairsharingRegistry];
         }
       }
       return title;
     },
     currentPath: function () {
-      let title = this.$route.path.replace('/', '');
+      let title = this.$route.path.replace("/", "");
       const client = this;
       let queryParams = {};
       Object.keys(this.$route.query).forEach(function (prop) {
         let queryVal = client.$route.query[prop];
         if (queryVal) {
-            queryParams[prop] = decodeURI(queryVal);
+          queryParams[prop] = decodeURI(queryVal);
         }
       });
       if (this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]) {
-          title = this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)]
-      }
-      else title = title.charAt(0).toUpperCase() + title.slice(1);
+        title =
+          this.recordTypes[title.charAt(0).toUpperCase() + title.slice(1)];
+      } else title = title.charAt(0).toUpperCase() + title.slice(1);
       return [title, queryParams];
     },
   },
   watch: {
     currentPath: async function () {
-      this.$scrollTo('body',50,{});
+      this.$scrollTo("body", 50, {});
       try {
         await this.tryRedirect();
-      }
-      // eslint-disable-next-line no-empty
-      catch(e) {
+      } catch (e) {
+        // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
-    }
+    },
   },
   mounted: function () {
     window.addEventListener("scroll", this.onScroll);
     this.$nextTick(async function () {
       try {
         await this.tryRedirect();
-        this.$scrollTo('body',50,{})
-      }
-      // eslint-disable-next-line no-empty
-      catch(e) {
+        this.$scrollTo("body", 50, {});
+      } catch (e) {
+        // eslint-disable-next-line no-empty
         // Uncaught promise thrown on Github (only).
       }
-
     });
   },
   beforeDestroy() {
     this.cleanRecordsStore();
   },
   destroyed() {
-    this.$scrollTo('body', 50, {})
+    this.$scrollTo("body", 50, {});
     window.removeEventListener("scroll", this.onScroll);
     this.setStickToTop(false);
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
@@ -186,9 +198,9 @@ export default {
     });
   },
   methods: {
-    ...mapMutations('records',['cleanRecordsStore']),
-    ...mapActions('records', ['fetchRecords']),
-    ...mapActions('uiController', ['setScrollStatus', 'setStickToTop']),
+    ...mapMutations("records", ["cleanRecordsStore"]),
+    ...mapActions("records", ["fetchRecords"]),
+    ...mapActions("uiController", ["setScrollStatus", "setStickToTop"]),
     onScroll: function () {
       let _module = this;
       _module.offsetTop = window.top.scrollY;
@@ -197,16 +209,16 @@ export default {
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           headerVisibilityState: false,
         });
-      }
-      else {
+      } else {
         _module.setStickToTop(false);
         _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
           drawerVisibilityState: false,
           headerVisibilityState: true,
         });
       }
-      _module.offsetTop > 500 ? _module.setScrollStatus(true) :
-          _module.setScrollStatus(false);
+      _module.offsetTop > 500
+        ? _module.setScrollStatus(true)
+        : _module.setScrollStatus(false);
     },
     /**
      * Try to redirect to search of the page that is hit is /standards /databases
@@ -222,22 +234,21 @@ export default {
           try {
             await this.$router.push({
               name: "search",
-              query: query
+              query: query,
             });
             return true;
-          }
-          catch (e) {
+          } catch (e) {
             return false;
           }
         }
       }
       await this.getData();
     },
-    /** This methods get the data from the client.
+    /** This methods get the data from the Client.
      * @returns {Promise}
      */
     getData: async function () {
-      this.$scrollTo('body',50,{});
+      this.$scrollTo("body", 50, {});
       this.isLoading = true;
       this.errors = null;
       const _module = this;
@@ -246,10 +257,9 @@ export default {
         let token = this.user().credentials.token;
         await _module.fetchRecords({
           params: this.getParameters(),
-          token: token
+          token: token,
         });
-      }
-      catch (e) {
+      } catch (e) {
         /* istanbul ignore next */
         this.errors = e.message;
       }
@@ -260,8 +270,10 @@ export default {
      * @returns {Object} parameters - parameters and types allowed for this query
      */
     getParameters: function () {
-      return this.$store.getters["introspection/buildQueryParameters"](this.currentPath);
-    }
+      return this.$store.getters["introspection/buildQueryParameters"](
+        this.currentPath
+      );
+    },
   },
   /**
    * Setting up the metaInfo of the page
@@ -269,10 +281,10 @@ export default {
    * */
   metaInfo() {
     return {
-      title: 'FAIRsharing | ' + this.getTitle
-    }
+      title: "FAIRsharing | " + this.getTitle,
+    };
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
@@ -317,7 +329,7 @@ export default {
   padding: 1em;
 }
 
-.search-input-mb{
+.search-input-mb {
   margin-bottom: 105px;
 }
 </style>

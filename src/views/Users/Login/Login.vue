@@ -177,11 +177,14 @@ export default {
           color: "green white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/orcid",
         },
+        // See: https://github.com/FAIRsharing/fairsharing.github.io/issues/2184
+        /*
         {
           name: "Twitter",
           color: "blue white--text",
           callback: process.env.VUE_APP_API_ENDPOINT + "/users/auth/twitter",
         },
+         */
         {
           name: "GitHub",
           color: "black white--text",

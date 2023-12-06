@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>FAIRsharing.org Module: Home</title>
+	<title>FAIRsharing.org Source: utils/advancedSearchUtils.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,100 +81,46 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: Home</h1>
+		<h1 class="page-title">Source: utils/advancedSearchUtils.js</h1>
+    
 <section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">import { uniqWith } from "lodash";
 
-<header>
-    
-</header>
+/**
+ * Removes duplicate values in a set and returns unique values
+ * @returns {Array} Array with non-duplicate values
+ */
+const uniqueValues = (item) => {
+  let merged = uniqWith(item, (pre, cur) => {
+    if (pre.identifier === cur.identifier) {
+      cur["value"] = cur["value"] + "," + pre["value"];
 
+      //Combine string values from different text-fields in same set and convert in into array
+      if (typeof cur["value"] === "string") {
+        cur["value"] = cur["value"].split(",");
+      }
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Component to handle the front page (landing page)</p></div>
-        
+      //Remove duplicates and create unique array
+      cur["value"] = [...new Set(cur["value"])];
+      return true;
+    }
+    return false;
+  });
+  return merged;
+};
 
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="views_Home_Home.vue.html">views/Home/Home.vue</a>,
-				 <a href="views_Home_Home.vue.html#sunlight-1-line-15">line 15</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+export { uniqueValues };
+</pre>
+    </article>
 </section>
+
 
 
 
@@ -184,10 +130,6 @@
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

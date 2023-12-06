@@ -135,8 +135,7 @@ import RecordStatus from "@/components/Records/Shared/RecordStatus";
 import advancedSearch from "@/store";
 import recordsCardUtils from "@/utils/recordsCardUtils";
 import ErrorPage from "@/views/Errors/404.vue";
-
-import TagChips from "../../../../Fairsharing/fairsharing.github.io/src/views/Records/TagChips.vue";
+import TagChips from "@/views/Records/TagChips.vue";
 export default {
   name: "AdvancedSearchResultTable",
   components: { RecordStatus, TagChips, ErrorPage },

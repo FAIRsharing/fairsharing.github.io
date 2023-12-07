@@ -284,12 +284,14 @@
         </v-container>
       </v-dialog>
     </v-card>
-    <template>
-      <v-dialog
-        v-model="showEmptySearch"
-        style="background: white;"
-        width="auto"
-      >
+    <v-dialog
+      v-model="showEmptySearch"
+      width="auto"
+    >
+      <v-card>
+        <v-card-title>
+          Search Term Missing
+        </v-card-title>
         <v-card-text>
           Please paste or type a value (e.g. a DOI or Pubmed ID) into the search box above.
         </v-card-text>
@@ -302,8 +304,8 @@
             OK
           </v-btn>
         </v-card-actions>
-      </v-dialog>
-    </template>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 

@@ -57,6 +57,12 @@ describe("AdvancedSearch store methods", () => {
     expect(commit).toHaveBeenCalledTimes(1);
   });
 
+  it("can check setAdvancedSearchText mutations", () => {
+    const searchText = "test";
+    mutations.setAdvancedSearchText(state, searchText);
+    expect(state.advancedSearchText).toBe(searchText);
+  });
+
   it("can check setAdvancedSearch mutations", () => {
     const searchedObj = {
       operatorIdentifier: "_and",
@@ -110,6 +116,33 @@ describe("AdvancedSearch store methods", () => {
     expect(state.errorStatus).toBe(true);
   });
 
+  it("can check setAdvancedSearchQuery mutations", () => {
+    const advancedSearchQuery = {
+      operator: "_and",
+      fields: [
+        {
+          operator: "_and",
+          registry: ["test", "abc"],
+        },
+      ],
+    };
+    mutations.setAdvancedSearchQuery(state, advancedSearchQuery);
+    expect(state.advancedSearchQuery["operator"]).toBe(
+      advancedSearchQuery["operator"]
+    );
+    expect(state.advancedSearchQuery["fields"]).toBe(
+      advancedSearchQuery["fields"]
+    );
+  });
+
+  it("can check getAdvancedSearchText getters", () => {
+    const getSearchResult = {
+      advancedSearchText: "test",
+    };
+    const builtData = getters.getAdvancedSearchText(getSearchResult);
+    expect(builtData).toStrictEqual(getSearchResult["advancedSearchText"]);
+  });
+
   it("can check getAdvancedSearch getters", () => {
     const getSearchResult = {
       advancedSearch: {
@@ -159,5 +192,21 @@ describe("AdvancedSearch store methods", () => {
     };
     const builtData = getters.getErrorStatus(getSearchResult);
     expect(builtData).toStrictEqual(getSearchResult["errorStatus"]);
+  });
+
+  it("can check getAdvancedSearchQuery getters", () => {
+    const getSearchResult = {
+      advancedSearchQuery: {
+        operator: "_and",
+        fields: [
+          {
+            operator: "_and",
+            registry: ["test", "abc"],
+          },
+        ],
+      },
+    };
+    const builtData = getters.getAdvancedSearchQuery(getSearchResult);
+    expect(builtData).toStrictEqual(getSearchResult["advancedSearchQuery"]);
   });
 });

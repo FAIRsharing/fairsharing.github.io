@@ -192,7 +192,7 @@
         "year_active": ["2022", "2023"]
       },
       {
-        "name": "Geneviève MICHAUD",
+        "name": "Geneviève Michaud",
         "id": 2439 ,
         "organisation": [
           {
@@ -361,7 +361,7 @@
             "name": "F1000"
           }
         ],
-        "scope": "Policies; Chemistry",
+        "scope": "Policies and Chemistry",
         "orcid": "0000-0002-5485-6256",
         "early_adopter" : false,
         "show_more" : false,
@@ -401,7 +401,7 @@
             "tooltip": "Brazilian Agricultural Research Corporation"
           }
         ],
-        "scope": "Ecology; Agriculture",
+        "scope": "Ecology and Agriculture",
         "orcid": "0000-0003-4177-1322",
         "early_adopter" : false,
         "show_more" : false,
@@ -421,7 +421,7 @@
             "tooltip": "Research Collaboratory for Structural Bioinformatics"
           }
         ],
-        "scope": "Structural Biology; Biochemistry; Biophysics; Crystallography; Biocuration",
+        "scope": "Structural Biology, Biochemistry, Biophysics, Crystallography and Biocuration",
         "orcid": "0000-0002-0574-2041",
         "early_adopter" : false,
         "show_more" : false,
@@ -440,7 +440,7 @@
             "name": "University of Sheffield"
           }
         ],
-        "scope": "Brain Stimulation; Open Research",
+        "scope": "Brain Stimulation and Open Research",
         "orcid": "0000-0002-0133-4155",
         "early_adopter" : false,
         "show_more" : false,
@@ -459,7 +459,7 @@
             "name": "University of Ottawa Heart Institute"
           }
         ],
-        "scope": "Open science; Medicine",
+        "scope": "Open science and Medicine",
         "orcid": "0000-0003-2797-1686",
         "early_adopter" : false,
         "show_more" : false,
@@ -478,7 +478,7 @@
             "name": "Fraunhofer ITMP"
           }
         ],
-        "scope": "Knowledge graphs; Chemoinformatics",
+        "scope": "Knowledge graphs and Chemoinformatics",
         "orcid": "0000-0002-7683-0452",
         "early_adopter" : false,
         "show_more" : false,
@@ -561,7 +561,7 @@
             "name": "H3ABioNet"
           }
         ],
-        "scope": "Research Data Management; Omics",
+        "scope": "Research Data Management and Omics",
         "orcid": "0000-0001-8862-1706",
         "early_adopter" : false,
         "show_more" : false,
@@ -576,7 +576,7 @@
       {
         "text": "The Community Curator Programme at FAIRsharing.org is a great working example demonstrating when data communities work FAIR together, they can sustain FAIR innovation together.",
         "author": "Lindsey Anderson",
-        "scope": "Life Science, Omics"
+        "scope": "Life Science and Omics"
       },
       {
         "text": "I find myself dedicating more and more time on curating. In doing so, I experienced how much standards are key, but also that these curation skills and activities are indeed valuable activities that make a difference in increasing discoverability and reusability of resources we want to share.",

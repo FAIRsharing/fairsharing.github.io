@@ -82,5 +82,9 @@
   "communitycuration": {
     "title": "FAIRsharing Community Champions Programme",
     "subtitle": "Put your expertise into action and get credited by joining our Community Champions programme."
+  },
+  "advancedsearchresult": {
+    "title": "Advanced Search",
+    "subtitle": "Advance Search the FAIRsharing records"
   }
 }

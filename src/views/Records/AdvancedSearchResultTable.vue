@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="full-width mx-2">
     <v-container
       v-if="getErrorStatus"
       fluid
@@ -10,7 +10,7 @@
     <v-container
       v-else
       fluid
-      class="pa-5"
+      class="pa-0"
     >
       <v-data-iterator
         :items="getAdvancedSearchResponse"
@@ -19,7 +19,7 @@
         :search="search"
         :sort-by="sortBy.toLowerCase()"
         :sort-desc="sortDesc"
-        :footer-props="{ 'items-per-page-options': [5, 10, 25, 50, 100] }"
+        :hide-default-footer="!getAdvancedSearchResponse.length ? true : false"
       >
         <!-- headers start -->
         <template #header>
@@ -124,6 +124,14 @@
         </template>
         <!-- data section ends -->
         <!-- footer ends -->
+        <template #no-data>
+          <v-alert
+            colored-border
+            type="info"
+          >
+            No records match your search!
+          </v-alert>
+        </template>
       </v-data-iterator>
     </v-container>
   </div>

@@ -1135,12 +1135,24 @@ export default {
     try {
       if (this.currentRecord.fairsharingRecord.abbreviation) {
         return {
-          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation
+          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation,
+          meta: [
+            {
+              name: 'description',
+              content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name} (${this.currentRecord.fairsharingRecord.abbreviation})`
+            }
+          ]
         }
       }
       else {
         return {
-          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.name
+          title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.name,
+          meta: [
+            {
+              name: 'description',
+              content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name}`
+            }
+          ]
         }
       }
     } catch (e) {

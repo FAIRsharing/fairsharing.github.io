@@ -72,6 +72,7 @@
                   >
                     <img
                       src="/assets/icons/ror-icon-rbg-24.png"
+                      alt="Icon for ROR (Research Organisation Registry)"
                     >
                   </a>
                 </span>

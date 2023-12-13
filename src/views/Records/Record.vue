@@ -1133,6 +1133,13 @@ export default {
   },
   metaInfo() {
     try {
+      let id;
+      if (this.currentRecord.fairsharingRecord.doi) {
+        id = this.currentRecord.fairsharingRecord.doi.split('/')[1];
+      }
+      else {
+        id = this.currentRecord.fairsharingRecord.id;
+      }
       if (this.currentRecord.fairsharingRecord.abbreviation) {
         return {
           title: 'FAIRsharing | ' + this.currentRecord.fairsharingRecord.abbreviation,
@@ -1140,6 +1147,11 @@ export default {
             {
               name: 'description',
               content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name} (${this.currentRecord.fairsharingRecord.abbreviation})`
+            },
+            {
+              name: 'link',
+              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
+              rel: 'canonical'
             }
           ]
         }
@@ -1151,6 +1163,11 @@ export default {
             {
               name: 'description',
               content: `FAIRsharing record for ${this.currentRecord.fairsharingRecord.name}`
+            },
+            {
+              name: 'link',
+              content: `${process.env.VUE_APP_HOSTNAME}${id}`,
+              rel: 'canonical'
             }
           ]
         }

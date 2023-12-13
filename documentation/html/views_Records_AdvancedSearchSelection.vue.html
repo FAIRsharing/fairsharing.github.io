@@ -92,71 +92,46 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">&lt;template>
-  &lt;v-card
-    elevation="3"
-    :class="[
-      'mx-2 py-2 full-width',
-      $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
-    ]"
-  >
-    &lt;div
-      v-if="getAdvancedSearchText"
-      class="searchText chips-holder ma-2"
+  &lt;div class="mx-2">
+    &lt;v-card
+      elevation="3"
+      class="py-2"
     >
-      &lt;v-chip
-        v-bind="attrs"
-        class="ma-2 mt-2 text-capitalize"
-        color="accent3"
-        text-color="white"
-        label
-        v-on="on"
+      &lt;div
+        v-for="(item, index) in getAdvancedSearchQuery['fields']"
+        :key="index"
+        class="ma-2 selectionWrapper"
       >
-        Search Text : {{ getAdvancedSearchText }}
-      &lt;/v-chip>
-    &lt;/div>
-
-    &lt;div
-      v-for="(item, index) in getAdvancedSearchQuery['fields']"
-      :key="index"
-      class="ma-2 selectionWrapper d-flex flex-column"
-    >
-      &lt;div class="chips-holder mb-2">
-        &lt;div
-          v-for="([key, value], idx) in Object.entries(item)"
-          :key="idx"
-          class="individualChips d-flex flex-column align-center"
-        >
-          &lt;v-chip
-            class="ma-2 mt-2 text-capitalize"
-            color="primary"
-            text-color="white"
-            label
+        &lt;div class="chips-holder">
+          &lt;div
+            v-for="([key, value], idx) in Object.entries(item)"
+            :key="idx"
+            class="individualChips"
           >
-            {{ printSelectionChips(key, value) }}
-          &lt;/v-chip>
-          &lt;v-chip
-            class="operatorChip"
-            color="accent"
-            text-color="accent"
-            outlined
-            small
-          >
-            {{ printSelectedOperator(item) }}
-          &lt;/v-chip>
+            &lt;v-chip
+              class="ma-2 mt-5"
+              color="grey"
+              text-color="secondary"
+            >
+              {{ printSelectionChips(key, value) }}
+            &lt;/v-chip>
+            &lt;div class="operatorChip">
+              {{ printSelectedOperator(item) }}
+            &lt;/div>
+          &lt;/div>
         &lt;/div>
+        &lt;v-chip
+          color="red"
+          class="parentOperatorChip"
+        >
+          {{ printOperator(getAdvancedSearchQuery["operator"]) }}
+        &lt;/v-chip>
       &lt;/div>
-      &lt;v-chip
-        color="accent2"
-        class="parentOperatorChip text-uppercase font-weight-medium"
-        text-color="white"
-      >
-        {{ printOperator(getAdvancedSearchQuery["operator"]) }}
-      &lt;/v-chip>
-    &lt;/div>
-  &lt;/v-card>
+    &lt;/v-card>
+  &lt;/div>
 &lt;/template>
 &lt;script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "AdvancedSearchSelection",
@@ -166,19 +141,10 @@ export default {
     };
   },
   computed: {
-    ...mapState("uiController", ["UIGeneralStatus"]),
     ...mapGetters("advancedSearch", [
       "getAdvancedSearchQuery",
       "getAdvancedSearch",
-      "getAdvancedSearchText",
     ]),
-    responsiveClassObject() {
-      return {
-        "filters-holder-default": this.UIGeneralStatus.headerVisibilityState,
-        "filters-holder-after-scroll":
-          !this.UIGeneralStatus.headerVisibilityState,
-      };
-    },
   },
 
   methods: {
@@ -207,64 +173,36 @@ export default {
     },
 
     printOperator(value) {
-      if (value === "_and") return "And";
-      else if (value === "_or") return "Or";
+      if (value === "_and") return "and";
+      else if (value === "_or") return "or";
     },
   },
 };
 &lt;/script>
 
 &lt;style scoped lang="scss">
-.fullHeight {
-  height: 90vh;
-  overflow: scroll;
-}
-.filters-holder-default {
-  overflow-x: hidden;
-  height: calc(100vh - 355px);
-  position: sticky;
-  top: 0;
-  transition: height ease-in 500ms;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-}
-.filters-holder-after-scroll {
-  overflow-x: hidden;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  transition: height ease-in 500ms;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  margin-bottom: 94px;
-}
-.chips-holder {
-  background: #f5f5f5;
-  border: 2px dotted #dbdbdb;
-  border-radius: 10px;
-}
 .selectionWrapper {
-  .parentOperatorChip {
-    width: 50%;
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    //font-weight: 500;
-  }
   &amp;:last-child {
     .parentOperatorChip {
       display: none;
     }
   }
   .chips-holder {
+    //position: sticky;
+    //top: 0;
+    //z-index: 2;
+    background: #f5f5f5;
+    border: 2px dotted #dbdbdb;
+    border-radius: 10px;
+
     .individualChips {
       &amp;:first-child {
-        display: none !important;
+        display: none;
       }
 
       &amp;:last-child {
         .operatorChip {
-          display: none !important;
+          display: none;
         }
       }
     }
@@ -316,7 +254,7 @@ export default {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a>
 	
-		on Tue Dec 19th 2023
+		on Wed Dec 13th 2023
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

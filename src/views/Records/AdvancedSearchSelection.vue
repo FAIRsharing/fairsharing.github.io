@@ -1,69 +1,44 @@
 <template>
-  <v-card
-    elevation="3"
-    :class="[
-      'mx-2 py-2 full-width',
-      $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
-    ]"
-  >
-    <div
-      v-if="getAdvancedSearchText"
-      class="searchText chips-holder ma-2"
+  <div class="mx-2">
+    <v-card
+      elevation="3"
+      class="py-2"
     >
-      <v-chip
-        v-bind="attrs"
-        class="ma-2 mt-2 text-capitalize"
-        color="accent3"
-        text-color="white"
-        label
-        v-on="on"
+      <div
+        v-for="(item, index) in getAdvancedSearchQuery['fields']"
+        :key="index"
+        class="ma-2 selectionWrapper"
       >
-        Search Text : {{ getAdvancedSearchText }}
-      </v-chip>
-    </div>
-
-    <div
-      v-for="(item, index) in getAdvancedSearchQuery['fields']"
-      :key="index"
-      class="ma-2 selectionWrapper d-flex flex-column"
-    >
-      <div class="chips-holder mb-2">
-        <div
-          v-for="([key, value], idx) in Object.entries(item)"
-          :key="idx"
-          class="individualChips d-flex flex-column align-center"
-        >
-          <v-chip
-            class="ma-2 mt-2 text-capitalize"
-            color="primary"
-            text-color="white"
-            label
+        <div class="chips-holder">
+          <div
+            v-for="([key, value], idx) in Object.entries(item)"
+            :key="idx"
+            class="individualChips"
           >
-            {{ printSelectionChips(key, value) }}
-          </v-chip>
-          <v-chip
-            class="operatorChip"
-            color="accent"
-            text-color="accent"
-            outlined
-            small
-          >
-            {{ printSelectedOperator(item) }}
-          </v-chip>
+            <v-chip
+              class="ma-2 mt-5"
+              color="grey"
+              text-color="secondary"
+            >
+              {{ printSelectionChips(key, value) }}
+            </v-chip>
+            <div class="operatorChip">
+              {{ printSelectedOperator(item) }}
+            </div>
+          </div>
         </div>
+        <v-chip
+          color="red"
+          class="parentOperatorChip"
+        >
+          {{ printOperator(getAdvancedSearchQuery["operator"]) }}
+        </v-chip>
       </div>
-      <v-chip
-        color="accent2"
-        class="parentOperatorChip text-uppercase font-weight-medium"
-        text-color="white"
-      >
-        {{ printOperator(getAdvancedSearchQuery["operator"]) }}
-      </v-chip>
-    </div>
-  </v-card>
+    </v-card>
+  </div>
 </template>
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "AdvancedSearchSelection",
@@ -73,19 +48,10 @@ export default {
     };
   },
   computed: {
-    ...mapState("uiController", ["UIGeneralStatus"]),
     ...mapGetters("advancedSearch", [
       "getAdvancedSearchQuery",
       "getAdvancedSearch",
-      "getAdvancedSearchText",
     ]),
-    responsiveClassObject() {
-      return {
-        "filters-holder-default": this.UIGeneralStatus.headerVisibilityState,
-        "filters-holder-after-scroll":
-          !this.UIGeneralStatus.headerVisibilityState,
-      };
-    },
   },
 
   methods: {
@@ -114,64 +80,36 @@ export default {
     },
 
     printOperator(value) {
-      if (value === "_and") return "And";
-      else if (value === "_or") return "Or";
+      if (value === "_and") return "and";
+      else if (value === "_or") return "or";
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
-.fullHeight {
-  height: 90vh;
-  overflow: scroll;
-}
-.filters-holder-default {
-  overflow-x: hidden;
-  height: calc(100vh - 355px);
-  position: sticky;
-  top: 0;
-  transition: height ease-in 500ms;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-}
-.filters-holder-after-scroll {
-  overflow-x: hidden;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  transition: height ease-in 500ms;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  margin-bottom: 94px;
-}
-.chips-holder {
-  background: #f5f5f5;
-  border: 2px dotted #dbdbdb;
-  border-radius: 10px;
-}
 .selectionWrapper {
-  .parentOperatorChip {
-    width: 50%;
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    //font-weight: 500;
-  }
   &:last-child {
     .parentOperatorChip {
       display: none;
     }
   }
   .chips-holder {
+    //position: sticky;
+    //top: 0;
+    //z-index: 2;
+    background: #f5f5f5;
+    border: 2px dotted #dbdbdb;
+    border-radius: 10px;
+
     .individualChips {
       &:first-child {
-        display: none !important;
+        display: none;
       }
 
       &:last-child {
         .operatorChip {
-          display: none !important;
+          display: none;
         }
       }
     }

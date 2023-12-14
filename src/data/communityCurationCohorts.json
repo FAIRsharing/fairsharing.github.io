@@ -592,11 +592,11 @@
       },
       {
         "name": "Priyadarshini Thirunavukkarasu",
-        "id": 1111,
+        "id": 10145,
         "organisation": [
           {
-            "id": 979,
-            "name": "F1000"
+            "id": 3573,
+            "name": "University of Basel "
           }
         ],
         "scope": "Human genetics",
@@ -607,7 +607,7 @@
         "linkedin" : "",
         "mastodon" : "",
         "logo": "priyadarshini_large.jpg",
-        "year_active": [2024"]
+        "year_active": ["2024"]
       }
   ],
     "quotes": [

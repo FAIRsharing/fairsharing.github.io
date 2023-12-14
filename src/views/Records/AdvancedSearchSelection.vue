@@ -1,44 +1,45 @@
 <template>
-  <div class="mx-2">
-    <v-card
-      elevation="3"
-      class="py-2"
+  <v-card
+    elevation="3"
+    :class="[
+      'mx-2 py-2 full-width',
+      $vuetify.breakpoint.mdAndUp ? responsiveClassObject : 'fullHeight',
+    ]"
+  >
+    <div
+      v-for="(item, index) in getAdvancedSearchQuery['fields']"
+      :key="index"
+      class="ma-2 selectionWrapper"
     >
-      <div
-        v-for="(item, index) in getAdvancedSearchQuery['fields']"
-        :key="index"
-        class="ma-2 selectionWrapper"
-      >
-        <div class="chips-holder">
-          <div
-            v-for="([key, value], idx) in Object.entries(item)"
-            :key="idx"
-            class="individualChips"
+      <div class="chips-holder">
+        <div
+          v-for="([key, value], idx) in Object.entries(item)"
+          :key="idx"
+          class="individualChips"
+        >
+          <v-chip
+            class="ma-2 mt-5"
+            color="grey"
+            text-color="secondary"
           >
-            <v-chip
-              class="ma-2 mt-5"
-              color="grey"
-              text-color="secondary"
-            >
-              {{ printSelectionChips(key, value) }}
-            </v-chip>
-            <div class="operatorChip">
-              {{ printSelectedOperator(item) }}
-            </div>
+            {{ printSelectionChips(key, value) }}
+          </v-chip>
+          <div class="operatorChip">
+            {{ printSelectedOperator(item) }}
           </div>
         </div>
-        <v-chip
-          color="red"
-          class="parentOperatorChip"
-        >
-          {{ printOperator(getAdvancedSearchQuery["operator"]) }}
-        </v-chip>
       </div>
-    </v-card>
-  </div>
+      <v-chip
+        color="red"
+        class="parentOperatorChip"
+      >
+        {{ printOperator(getAdvancedSearchQuery["operator"]) }}
+      </v-chip>
+    </div>
+  </v-card>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "AdvancedSearchSelection",
@@ -48,10 +49,18 @@ export default {
     };
   },
   computed: {
+    ...mapState("uiController", ["UIGeneralStatus"]),
     ...mapGetters("advancedSearch", [
       "getAdvancedSearchQuery",
       "getAdvancedSearch",
     ]),
+    responsiveClassObject() {
+      return {
+        "filters-holder-default": this.UIGeneralStatus.headerVisibilityState,
+        "filters-holder-after-scroll":
+          !this.UIGeneralStatus.headerVisibilityState,
+      };
+    },
   },
 
   methods: {
@@ -88,6 +97,30 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.fullHeight {
+  height: 90vh;
+  overflow: scroll;
+}
+.filters-holder-default {
+  border-radius: 0;
+  overflow-x: hidden;
+  height: calc(100vh - 355px);
+  position: sticky;
+  top: 0;
+  transition: height ease-in 500ms;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.filters-holder-after-scroll {
+  border-radius: 0;
+  overflow-x: hidden;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  transition: height ease-in 500ms;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
 .selectionWrapper {
   &:last-child {
     .parentOperatorChip {

@@ -570,6 +570,44 @@
         "mastodon" : "",
         "logo": "l_zass.png",
         "year_active": ["2023"]
+      },
+      {
+        "name": "Christian Bonatto Minella",
+        "id": 9795,
+        "organisation": [
+          {
+            "id": 1020,
+            "name": "FIZ Karlsruhe"
+          }
+        ],
+        "scope": "Chemistry",
+        "orcid": "0000-0001-7696-7662",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "mastodon" : "",
+        "logo": "christian_bonatto.jpg",
+        "year_active": ["2024"]
+      },
+      {
+        "name": "Priyadarshini Thirunavukkarasu",
+        "id": 1111,
+        "organisation": [
+          {
+            "id": 979,
+            "name": "F1000"
+          }
+        ],
+        "scope": "Human genetics",
+        "orcid": "0000-0002-3528-7721",
+        "early_adopter" : false,
+        "show_more" : false,
+        "twitter": "",
+        "linkedin" : "",
+        "mastodon" : "",
+        "logo": "priyadarshini_large.jpg",
+        "year_active": [2024"]
       }
   ],
     "quotes": [

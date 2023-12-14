@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <v-main>
+    <!--Jump to top arrow button -->
+    <v-fade-transition>
+      <JumpToTop v-if="scrollStatus" />
+    </v-fade-transition>
+    <!--Loader-->
     <v-fade-transition>
       <v-overlay
         v-if="getLoadingStatus"
@@ -9,30 +14,94 @@
         <Loaders />
       </v-overlay>
     </v-fade-transition>
-    <div class="d-flex full-width my-4">
-      <AdvancedSearchSelection />
-      <AdvancedSearchResultTable />
-    </div>
-  </div>
+    <!--Search result -->
+    <v-container
+      fluid
+      class="pa-0"
+    >
+      <v-row no-gutters>
+        <!-- Advanced search selection left column-->
+        <v-col
+          v-if="$vuetify.breakpoint.lgAndUp"
+          cols="12"
+          lg="4"
+          md="4"
+          xl="3"
+          class="d-flex mt-2 ml-2"
+        >
+          <AdvancedSearchSelection />
+        </v-col>
+        <!-- Advanced search result right column-->
+        <v-col>
+          <AdvancedSearchResultTable />
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
+import JumpToTop from "@/components/Navigation/jumpToTop.vue";
 import Loaders from "@/components/Navigation/Loaders";
 import AdvancedSearchResultTable from "@/views/Records/AdvancedSearchResultTable.vue";
 import AdvancedSearchSelection from "@/views/Records/AdvancedSearchSelection.vue";
 
 export default {
   name: "AdvancedSearchRecordsView",
-  components: { Loaders, AdvancedSearchResultTable, AdvancedSearchSelection },
+  components: {
+    JumpToTop,
+    Loaders,
+    AdvancedSearchResultTable,
+    AdvancedSearchSelection,
+  },
+  data() {
+    return {
+      offsetTop: 0,
+    };
+  },
   computed: {
-    ...mapGetters("advancedSearch", ["getLoadingStatus"]),
+    ...mapState("uiController", ["scrollStatus", "stickToTop"]),
+    ...mapGetters("advancedSearch", [
+      "getLoadingStatus",
+      "getAdvancedSearchResponse",
+    ]),
+  },
+  mounted() {
+    window.addEventListener("scroll", this.onScroll);
   },
   destroyed() {
     this.resetAdvancedSearchResponse();
+    window.removeEventListener("scroll", this.onScroll);
+    this.setStickToTop(false);
+    this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+      drawerVisibilityState: false,
+      headerVisibilityState: true,
+    });
   },
   methods: {
+    ...mapActions("uiController", ["setScrollStatus", "setStickToTop"]),
     ...mapActions("advancedSearch", ["resetAdvancedSearchResponse"]),
+
+    onScroll() {
+      let _module = this;
+      _module.offsetTop = window.top.scrollY;
+      if (_module.offsetTop > 100 && this.getAdvancedSearchResponse.length) {
+        _module.setStickToTop(true);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          headerVisibilityState: false,
+        });
+      } else {
+        _module.setStickToTop(false);
+        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
+          drawerVisibilityState: false,
+          headerVisibilityState: true,
+        });
+      }
+      _module.offsetTop > 500
+        ? _module.setScrollStatus(true)
+        : _module.setScrollStatus(false);
+    },
   },
 };
 </script>

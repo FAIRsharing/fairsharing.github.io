@@ -170,6 +170,21 @@
                         </v-icon><span>@{{ card.twitter }}</span></a>
                       </v-list-item>
                       <v-list-item
+                        v-if="card.mastodon"
+                        dark
+                      >
+                        <a
+                          :href="`https://${card.mastodon}`"
+                          target="_blank"
+                          class="d-flex align-center"
+                        ><v-icon
+                          left
+                          class="mr-2"
+                        >
+                          {{ 'fab fa-mastodon' }}
+                        </v-icon><span>@{{ card.mastodon }}</span></a>
+                      </v-list-item>
+                      <v-list-item
                         v-if="card.linkedin"
                         dark
                       >

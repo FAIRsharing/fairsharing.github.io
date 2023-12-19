@@ -7,31 +7,55 @@
     ]"
   >
     <div
+      v-if="getAdvancedSearchText"
+      class="searchText chips-holder ma-2"
+    >
+      <v-chip
+        v-bind="attrs"
+        class="ma-2 mt-2 text-capitalize"
+        color="accent3"
+        text-color="white"
+        label
+        v-on="on"
+      >
+        Search Text : {{ getAdvancedSearchText }}
+      </v-chip>
+    </div>
+
+    <div
       v-for="(item, index) in getAdvancedSearchQuery['fields']"
       :key="index"
-      class="ma-2 selectionWrapper"
+      class="ma-2 selectionWrapper d-flex flex-column"
     >
-      <div class="chips-holder">
+      <div class="chips-holder mb-2">
         <div
           v-for="([key, value], idx) in Object.entries(item)"
           :key="idx"
-          class="individualChips"
+          class="individualChips d-flex flex-column align-center"
         >
           <v-chip
-            class="ma-2 mt-5"
-            color="grey"
-            text-color="secondary"
+            class="ma-2 mt-2 text-capitalize"
+            color="primary"
+            text-color="white"
+            label
           >
             {{ printSelectionChips(key, value) }}
           </v-chip>
-          <div class="operatorChip">
+          <v-chip
+            class="operatorChip"
+            color="accent"
+            text-color="accent"
+            outlined
+            small
+          >
             {{ printSelectedOperator(item) }}
-          </div>
+          </v-chip>
         </div>
       </div>
       <v-chip
-        color="red"
-        class="parentOperatorChip"
+        color="accent2"
+        class="parentOperatorChip text-uppercase font-weight-medium"
+        text-color="white"
       >
         {{ printOperator(getAdvancedSearchQuery["operator"]) }}
       </v-chip>
@@ -53,6 +77,7 @@ export default {
     ...mapGetters("advancedSearch", [
       "getAdvancedSearchQuery",
       "getAdvancedSearch",
+      "getAdvancedSearchText",
     ]),
     responsiveClassObject() {
       return {
@@ -89,8 +114,8 @@ export default {
     },
 
     printOperator(value) {
-      if (value === "_and") return "and";
-      else if (value === "_or") return "or";
+      if (value === "_and") return "And";
+      else if (value === "_or") return "Or";
     },
   },
 };
@@ -102,7 +127,6 @@ export default {
   overflow: scroll;
 }
 .filters-holder-default {
-  border-radius: 0;
   overflow-x: hidden;
   height: calc(100vh - 355px);
   position: sticky;
@@ -112,7 +136,6 @@ export default {
   scrollbar-width: thin;
 }
 .filters-holder-after-scroll {
-  border-radius: 0;
   overflow-x: hidden;
   height: 100vh;
   position: sticky;
@@ -120,29 +143,35 @@ export default {
   transition: height ease-in 500ms;
   overscroll-behavior: contain;
   scrollbar-width: thin;
+  margin-bottom: 94px;
+}
+.chips-holder {
+  background: #f5f5f5;
+  border: 2px dotted #dbdbdb;
+  border-radius: 10px;
 }
 .selectionWrapper {
+  .parentOperatorChip {
+    width: 50%;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    //font-weight: 500;
+  }
   &:last-child {
     .parentOperatorChip {
       display: none;
     }
   }
   .chips-holder {
-    //position: sticky;
-    //top: 0;
-    //z-index: 2;
-    background: #f5f5f5;
-    border: 2px dotted #dbdbdb;
-    border-radius: 10px;
-
     .individualChips {
       &:first-child {
-        display: none;
+        display: none !important;
       }
 
       &:last-child {
         .operatorChip {
-          display: none;
+          display: none !important;
         }
       }
     }

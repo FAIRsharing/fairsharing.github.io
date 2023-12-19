@@ -44,6 +44,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 import JumpToTop from "@/components/Navigation/jumpToTop.vue";
 import Loaders from "@/components/Navigation/Loaders";
+import onScrollUtil from "@/utils/onScrollUtil";
 import AdvancedSearchResultTable from "@/views/Records/AdvancedSearchResultTable.vue";
 import AdvancedSearchSelection from "@/views/Records/AdvancedSearchSelection.vue";
 
@@ -55,6 +56,7 @@ export default {
     AdvancedSearchResultTable,
     AdvancedSearchSelection,
   },
+  mixins: [onScrollUtil],
   data() {
     return {
       offsetTop: 0,
@@ -68,11 +70,15 @@ export default {
     ]),
   },
   mounted() {
-    window.addEventListener("scroll", this.onScroll);
+    window.addEventListener("scroll", () => {
+      this.onScroll(this.getAdvancedSearchResponse);
+    });
   },
   destroyed() {
     this.resetAdvancedSearchResponse();
-    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("scroll", () => {
+      this.onScroll(this.getAdvancedSearchResponse);
+    });
     this.setStickToTop(false);
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
       drawerVisibilityState: false,
@@ -80,28 +86,8 @@ export default {
     });
   },
   methods: {
-    ...mapActions("uiController", ["setScrollStatus", "setStickToTop"]),
+    ...mapActions("uiController", ["setStickToTop"]),
     ...mapActions("advancedSearch", ["resetAdvancedSearchResponse"]),
-
-    onScroll() {
-      let _module = this;
-      _module.offsetTop = window.top.scrollY;
-      if (_module.offsetTop > 100 && this.getAdvancedSearchResponse.length) {
-        _module.setStickToTop(true);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          headerVisibilityState: false,
-        });
-      } else {
-        _module.setStickToTop(false);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          drawerVisibilityState: false,
-          headerVisibilityState: true,
-        });
-      }
-      _module.offsetTop > 500
-        ? _module.setScrollStatus(true)
-        : _module.setScrollStatus(false);
-    },
   },
 };
 </script>

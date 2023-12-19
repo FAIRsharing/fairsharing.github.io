@@ -98,11 +98,12 @@ import SearchInput from "@/components/Records/Search/Input/SearchInput";
 import SearchOutput from "@/components/Records/Search/Output/SearchOutput";
 import recordsLabels from "@/data/recordsTypes.json";
 import filterChipsUtils from "@/utils/filterChipsUtils";
+import onScrollUtil from "@/utils/onScrollUtil";
 
 export default {
   name: "Records",
   components: { Loaders, JumpToTop, SearchOutput, SearchInput },
-  mixins: [filterChipsUtils],
+  mixins: [filterChipsUtils, onScrollUtil],
   data: () => ({
     searchTerm: "",
     offsetTop: 0,
@@ -174,7 +175,9 @@ export default {
     },
   },
   mounted: function () {
-    window.addEventListener("scroll", this.onScroll);
+    window.addEventListener("scroll", () => {
+      this.onScroll(this.records);
+    });
     this.$nextTick(async function () {
       try {
         await this.tryRedirect();
@@ -190,7 +193,9 @@ export default {
   },
   destroyed() {
     this.$scrollTo("body", 50, {});
-    window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("scroll", () => {
+      this.onScroll(this.records);
+    });
     this.setStickToTop(false);
     this.$store.dispatch("uiController/setGeneralUIAttributesAction", {
       drawerVisibilityState: false,
@@ -201,25 +206,7 @@ export default {
     ...mapMutations("records", ["cleanRecordsStore"]),
     ...mapActions("records", ["fetchRecords"]),
     ...mapActions("uiController", ["setScrollStatus", "setStickToTop"]),
-    onScroll: function () {
-      let _module = this;
-      _module.offsetTop = window.top.scrollY;
-      if (_module.offsetTop > 100 && _module.records.length > 1) {
-        _module.setStickToTop(true);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          headerVisibilityState: false,
-        });
-      } else {
-        _module.setStickToTop(false);
-        _module.$store.dispatch("uiController/setGeneralUIAttributesAction", {
-          drawerVisibilityState: false,
-          headerVisibilityState: true,
-        });
-      }
-      _module.offsetTop > 500
-        ? _module.setScrollStatus(true)
-        : _module.setScrollStatus(false);
-    },
+
     /**
      * Try to redirect to search of the page that is hit is /standards /databases
      * /policies or /collections

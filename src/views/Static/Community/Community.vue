@@ -631,6 +631,29 @@
           </div>
         </div>
       </div>
+      <div>
+        <p
+          class="lato-font-medium lato-text-sm lato-text-md"
+        >
+          <a
+            href="https://zulip.com/"
+            target="_blank"
+          >
+            <img
+              height="35px"
+              width="35px"
+              src="/assets/icons/zulip-icon.png"
+            >
+          </a>
+          We'd like to thank <a
+            href="https://zulip.com/"
+            target="_blank"
+            class="underline-effect"
+          >Zulip</a>
+          for access to their community plan, which helps both our core team and our champions.
+          Zulip is an open-source modern team chat app designed to keep both live and asynchronous conversations organized.
+        </p>
+      </div>
     </section>
 
     <!-- eslint-enable vue/no-v-html -->

@@ -27,7 +27,7 @@
           lg="4"
           md="4"
           xl="3"
-          class="d-flex mt-2 ml-2"
+          class="d-flex mt-5 ml-2"
         >
           <AdvancedSearchSelection />
         </v-col>

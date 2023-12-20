@@ -633,7 +633,7 @@
       </div>
       <div>
         <p
-          class="mb-5 lato-font-medium lato-text-sm lato-text-md"
+          :class="['mb-5 lato-font-medium lato-text-sm',{'lato-text-md':$vuetify.breakpoint.xlOnly }]"
         >
           <a
             href="https://zulip.com/"

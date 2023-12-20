@@ -633,15 +633,15 @@
       </div>
       <div>
         <p
-          class="lato-font-medium lato-text-sm lato-text-md"
+          class="mb-5 lato-font-medium lato-text-sm lato-text-md"
         >
           <a
             href="https://zulip.com/"
             target="_blank"
           >
             <img
-              height="35px"
-              width="35px"
+              height="27px"
+              width="27px"
               src="/assets/icons/zulip-icon.png"
             >
           </a>

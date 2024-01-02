@@ -54,4 +54,10 @@ describe("UsersList.vue", function () {
         expect(wrapper.vm.$options.name).toMatch("UsersList");
     });
 
+    it('can get users', async () => {
+        let spy = jest.spyOn(wrapper.vm, "getUsersList");
+        await wrapper.setData({ searchString: "search string" });
+        expect(spy).toHaveBeenCalled();
+    })
+
 });

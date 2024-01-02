@@ -360,7 +360,7 @@ describe('Actions/Mutations', () => {
     it('Error Handling: getUsersList', async () => {
         let state = {
             state: {
-                usersList:[]
+                usersList: []
             }
         };
         restClientStub.returns({

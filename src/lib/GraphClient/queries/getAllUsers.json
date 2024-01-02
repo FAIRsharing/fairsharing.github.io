@@ -1,6 +1,8 @@
 {
   "queryName": "allUsers",
-  "queryParam": null,
+  "queryParam": {
+    "q": null
+  },
   "fields": [
     "id",
     "username",

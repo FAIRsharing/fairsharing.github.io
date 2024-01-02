@@ -23,6 +23,9 @@ describe("CuratorCohorts.vue", function(){
     it("can be instantiated", () => {
         expect(wrapper.vm.$options.name).toMatch("CuratorCohorts");
         expect(wrapper.vm.communityCurationCohorts.data).toStrictEqual(realData.data);
+        currentCuratorsList = realData.data.filter(curator => {
+          return curator.year_active.includes(Date().getFullYear().toString())
+        })
         expect(wrapper.vm.currentCohort).toStrictEqual(currentCuratorsList);
         expect(wrapper.vm.year).toBe(new Date().getFullYear());
         //expect(wrapper.vm.yearList).toStrictEqual([ "2023", "2022"]);

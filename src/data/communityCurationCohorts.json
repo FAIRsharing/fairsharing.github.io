@@ -18,7 +18,7 @@
         "linkedin" : "kylecopas",
         "mastodon" : "scicomm.xyz/@kylecopas",
         "logo": "kyle_copas.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023","2024"]
       },
       {
         "name": "Annie Elkjær Ørum-Kristensen",
@@ -78,7 +78,7 @@
         "linkedin" : "lnanderscience",
         "mastodon" : "fediscience.org/@lnanderscience",
         "logo": "lindseyanderson.jpg",
-        "year_active": ["2022", "2023"],
+        "year_active": ["2022", "2023","2024"],
         "curator_expert" : true
       },
       {
@@ -129,7 +129,7 @@
         "linkedin" : "gabrielpelletier",
         "mastodon" : "mastodon.online/@neuropelletier",
         "logo": "gabriel_pelletier.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023","2024"]
       },
       {
         "name": "Daniel Pereira Costa",
@@ -305,7 +305,7 @@
         "linkedin" : "geta-mitrea",
         "mastodon" : "",
         "logo": "getamitrea.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023","2024"]
       },
       {
         "name": "Sara Espinoza",
@@ -369,7 +369,7 @@
         "linkedin" : "kayeburrows",
         "mastodon" : "",
         "logo": "kay_burrows.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023","2024"]
       },
       {
         "name": "Francis P. Crawley",
@@ -389,7 +389,7 @@
         "linkedin" : "francispcrawley",
         "mastodon" : "",
         "logo": "francis_crawley.jpg",
-        "year_active": ["2022", "2023"]
+        "year_active": ["2022", "2023","2024"]
       },
       {
         "name": "Debora Drucker",
@@ -429,7 +429,7 @@
         "linkedin" : "yu-he-liang-66650033",
         "mastodon" : "",
         "logo": "yuhen.jpg",
-        "year_active": ["2023"]
+        "year_active": ["2023","2024"]
       },
       {
         "name": "Adam Partridge",
@@ -448,7 +448,7 @@
         "linkedin" : "",
         "mastodon" : "",
         "logo": "adam_partridge.jpg",
-        "year_active": ["2023"]
+        "year_active": ["2023","2024"]
       },
       {
         "name": "Kelly Cobey",
@@ -467,7 +467,7 @@
         "linkedin" : "kelly-cobey-b0a83b55",
         "mastodon" : "",
         "logo": "k_cobey.jpg",
-        "year_active": ["2023"]
+        "year_active": ["2023","2024"]
       },
       {
         "name": "Yojana Gadiya",
@@ -486,7 +486,7 @@
         "linkedin" : "yojana-gadiya-477739113",
         "mastodon" : "",
         "logo": "y_gadiya.jpg",
-        "year_active": ["2023"]
+        "year_active": ["2023","2024"]
       },
       {
         "name": "Joy Davidson",
@@ -506,7 +506,7 @@
         "linkedin" : "joy-davidson",
         "mastodon" : "",
         "logo": "Joy-Davidson.jpg",
-        "year_active": ["2023"]
+        "year_active": ["2023","2024"]
       },
       {
         "name": "Richard Acton",
@@ -526,7 +526,7 @@
         "linkedin" : "",
         "mastodon" : "",
         "logo": "r_acton.png",
-        "year_active": ["2023"]
+        "year_active": ["2023","2024"]
       },
       {
         "name": "David Tomkins",
@@ -546,7 +546,7 @@
         "linkedin" : "david-tomkins-83b92534",
         "mastodon" : "",
         "logo": "d_tomkins.jpeg",
-        "year_active": ["2023"]
+        "year_active": ["2023","2024"]
       },
       {
         "name": "Lyndon Zass",
@@ -569,7 +569,7 @@
         "linkedin" : "lyndon-zass-10b731145",
         "mastodon" : "",
         "logo": "l_zass.png",
-        "year_active": ["2023"]
+        "year_active": ["2023","2024"]
       },
       {
         "name": "Christian Bonatto Minella",

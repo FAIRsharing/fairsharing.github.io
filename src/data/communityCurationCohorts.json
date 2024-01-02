@@ -524,7 +524,7 @@
         "show_more" : false,
         "twitter": "",
         "linkedin" : "",
-        "mastodon" : "",
+        "mastodon" : "fosstodon.org/@RichardJActon",
         "logo": "r_acton.png",
         "year_active": ["2023","2024"]
       },

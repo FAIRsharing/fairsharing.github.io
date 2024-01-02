@@ -37,7 +37,10 @@ describe("CuratorCohorts.vue", function(){
         wrapper.vm.alumniCurator = false;
         wrapper.vm.listAlumni()
         expect(wrapper.vm.alumniCurator).toBe(true)
-        expect(wrapper.vm.currentCohort).toStrictEqual("");
+        let currentCuratorsList = !realData.data.filter(curator => {
+          return curator.year_active.includes(new Date().getFullYear().toString())
+        })
+        expect(wrapper.vm.currentCohort).toStrictEqual(currentCuratorsList);
         expect(wrapper.vm.year).toBe(null);
     });
 

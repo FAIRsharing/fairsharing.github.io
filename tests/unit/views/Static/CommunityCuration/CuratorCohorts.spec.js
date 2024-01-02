@@ -8,7 +8,7 @@ const vuetify = new Vuetify();
 
 describe("CuratorCohorts.vue", function(){
     let wrapper;
-    fakeData.data.sort((a, b) => a.name.localeCompare(b.name))
+    realData.data.sort((a, b) => a.name.localeCompare(b.name))
 
     beforeEach(() => {
         wrapper = shallowMount(CuratorCohorts, {
